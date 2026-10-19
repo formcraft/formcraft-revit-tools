@@ -18,6 +18,22 @@ namespace RevitMCPCommandSet.Services.Fmc
     {
         private static double ToMm(double ft) => UnitUtils.ConvertFromInternalUnits(ft, UnitTypeId.Millimeters);
 
+        /// <summary>The solid's size along x, y and z (mm), from the points of its faces' triangulation and its edges: tight on smooth faces, where the bounding box isn't.</summary>
+        private static double[] TightSizeMm(Solid solid)
+        {
+            double[] lo = { double.MaxValue, double.MaxValue, double.MaxValue }, hi = { double.MinValue, double.MinValue, double.MinValue };
+            void Add(XYZ p) { double[] v = { p.X, p.Y, p.Z }; for (int k = 0; k < 3; k++) { lo[k] = Math.Min(lo[k], v[k]); hi[k] = Math.Max(hi[k], v[k]); } }
+            foreach (Face f in solid.Faces) { Mesh m = f.Triangulate(); if (m != null) foreach (XYZ p in m.Vertices) Add(p); }
+            foreach (Edge e in solid.Edges) foreach (XYZ p in e.Tessellate()) Add(p);
+            if (lo[0] == double.MaxValue)
+            {
+                BoundingBoxXYZ bb = solid.GetBoundingBox();
+                XYZ d = bb.Max - bb.Min;
+                return new[] { ToMm(d.X), ToMm(d.Y), ToMm(d.Z) };
+            }
+            return new[] { ToMm(hi[0] - lo[0]), ToMm(hi[1] - lo[1]), ToMm(hi[2] - lo[2]) };
+        }
+
         public static (string, string) ImportPart(Document doc, JObject op)
         {
             string name = op.Value<string>("name");
@@ -41,21 +57,29 @@ namespace RevitMCPCommandSet.Services.Fmc
             for (int i = 1; i < solids.Count; i++)
                 solid = BooleanOperationsUtils.ExecuteBooleanOperation(solid, solids[i], BooleanOperationsType.Union);
 
-            // the size Rhino reported (fmc_rhino facts): a part that arrives at another size came in the wrong units
+            // the size Rhino reported (fmc_rhino facts). Measured on the solid's own surface (its triangulation), not its
+            // bounding box: Revit's box around smooth (NURBS) faces is loose by a few mm. Wrong units show as a whole
+            // factor (10, 25.4, 304.8, 1000); a few mm or per cent is the smoothing, and passes with a note.
             string sizeNote = "";
             if (op["size_mm"] is JArray want && want.Count == 3)
             {
-                BoundingBoxXYZ bb = solid.GetBoundingBox();
-                XYZ d = bb.Max - bb.Min;
-                double[] got = { ToMm(d.X), ToMm(d.Y), ToMm(d.Z) };
+                double[] got = TightSizeMm(solid);
+                double[] w = { want[0].Value<double>(), want[1].Value<double>(), want[2].Value<double>() };
+                string arrived = $"{Math.Round(got[0], 1)} × {Math.Round(got[1], 1)} × {Math.Round(got[2], 1)} mm";
+                string made = $"{w[0]} × {w[1]} × {w[2]} mm";
+                double worst = 0;
                 for (int k = 0; k < 3; k++)
                 {
-                    double w = want[k].Value<double>();
-                    if (w > 1 && Math.Abs(got[k] - w) > Math.Max(1.0, 0.02 * w))
-                        throw new InvalidOperationException($"{name} arrived {Math.Round(got[0])} × {Math.Round(got[1])} × {Math.Round(got[2])} mm, Rhino made it "
-                            + $"{want[0]} × {want[1]} × {want[2]} mm: the file's units were not read as millimetres");
+                    if (w[k] <= 1) continue;
+                    double ratio = got[k] / w[k];
+                    foreach (double f in new[] { 10.0, 25.4, 304.8, 1000.0 })
+                        if (Math.Abs(ratio - f) < 0.05 * f || Math.Abs(ratio - 1 / f) < 0.05 / f)
+                            throw new InvalidOperationException($"{name} arrived {arrived}, Rhino made it {made}: about {f}× off, so the file's units were not read as millimetres");
+                    worst = Math.Max(worst, Math.Abs(got[k] - w[k]));
+                    if (Math.Abs(got[k] - w[k]) > Math.Max(3.0, 0.05 * w[k]))
+                        throw new InvalidOperationException($"{name} arrived {arrived}, Rhino made it {made}: not a units slip (no whole factor); the part changed, or the file isn't the one fmc_rhino exported (export_parts again)");
                 }
-                sizeNote = $", {Math.Round(got[0])} × {Math.Round(got[1])} × {Math.Round(got[2])} mm";
+                sizeNote = worst > 1.0 ? $", {arrived} (Rhino {made}: within the smoothing allowance)" : $", {arrived}";
             }
 
             FreeFormElement form = FreeFormElement.Create(doc, solid);
