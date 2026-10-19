@@ -12,6 +12,8 @@ import { Downloader, Runner, WHISPER_MODELS, WhisperModel, languageProblem, runS
 import { ElementFacts, intentAfterReply, parseNote, planFix } from "../fmc/noteparse.js";
 import { readDb } from "./fmc_material.js";
 import { applyProblems, applySteps, fixApplied, fixFailed, planHash } from "../fmc/applyfix.js";
+import { findRecipeElement } from "./fmc_room.js";
+import { FMC_TREE_SHAPE, runFmcTree } from "./fmc_tree.js";
 
 const win = path.win32;
 
@@ -76,6 +78,8 @@ export const FMC_REVIEW_SHAPE = {
   action: z.enum(["list", "item", "raise", "answer", "solve", "check", "cloud", "print", "prints", "mark", "comment", "take", "queue", "bcf_export", "bcf_import", "plan_fix", "apply_fix", "show", "clashes", "transcribe", "whisper_setup"]),
   approved_by: z.string().optional().default("").describe("apply_fix: the person who said yes to the steps (never the AI)"),
   plan_hash: z.string().optional().default("").describe("apply_fix: the plan_hash from the dry run that person saw"),
+  tree: z.enum(["ask", "adopt", "override"]).optional().default("ask")
+    .describe("apply_fix, on an element the recipe tree made: adopt the fix into its recipe, keep it as an override, or ask (default: say what to do)"),
   facts: z.object({ unique_id: z.string().optional(), category: z.string().optional(), family: z.string().optional(), type_name: z.string().optional(),
     params: z.record(z.union([z.number(), z.string(), z.null()])).optional(), types: z.array(z.string()).optional(),
     reference: z.object({ type_name: z.string().optional(), unique_id: z.string().optional() }).optional(), view: z.string().optional() })
@@ -237,9 +241,20 @@ export async function runFmcReview(args: FmcReviewArgs, deps: ReviewDeps = {}) {
         return reply({ done: false, id: item.id, failed_step: r?.failed_step, reason: r?.reason, note: "Nothing in the model changed; the thread says why" }, true);
       }
       fixApplied(item, by, args.approved_by.trim(), steps, now);
+      // an element the recipe tree made: the fix goes into its node too, or a rebuild would undo it (T3)
+      const made = item.links?.recipe_node && item.links.recipe_key ? { node: item.links.recipe_node, key: item.links.recipe_key }
+        : findRecipeElement(args.project_folder, steps[0]?.unique_id ?? "");
+      let tree: Record<string, unknown> | undefined;
+      if (made && args.tree !== "ask") {
+        const t = await runFmcTree(z.object(FMC_TREE_SHAPE).parse({ action: "adopt", project_folder: args.project_folder, id: made.node,
+          choices: [{ key: made.key, choice: args.tree }], by: args.approved_by.trim(), dry_run: false }));
+        const body = JSON.parse(t.content[0].text);
+        tree = { node: made.node, key: made.key, ...(t.isError ? { not_recorded: body.reasons ?? body.error, next: "fmc_tree edits / adopt (override keeps it the person's)" } : { recorded: body.decided }) };
+        item.history.push({ at: now.toISOString(), by, what: t.isError ? `The fix isn't in recipe node ${made.node} yet` : `The fix ${args.tree === "adopt" ? "adopted into" : "kept as an override in"} recipe node ${made.node}` });
+      } else if (made) tree = { node: made.node, key: made.key, next: `Made by recipe node ${made.node}: fmc_tree adopt (or override) ${made.key}, or the next rebuild undoes this fix` };
       fs.writeFileSync(file, JSON.stringify(reg, null, 2));
       log(config, "review_apply_fix", file, "applied", `${item.id}: ${steps.length} steps, approved by ${args.approved_by.trim()}`);
-      return reply({ done: true, id: item.id, status: item.status, applied: r.steps, undo: r.undo,
+      return reply({ done: true, id: item.id, status: item.status, applied: r.steps, undo: r.undo, ...(tree ? { tree } : {}),
         next: `${item.raised_by || "The raiser"} checks it: accept and close, or reopen with a reason` });
     }
     const media = (id: string) => win.join(win.dirname(file), "media", id);
@@ -281,6 +296,9 @@ export async function runFmcReview(args: FmcReviewArgs, deps: ReviewDeps = {}) {
       if (audio) item.notes![0].audio = audio;
       if (picture) item.pictures = { ...item.pictures, raised: picture };
       item.intent = parseNote(item.notes![0].text, { materials: materials() });
+      // an element the recipe tree made: the ticket knows its node, so its fix can go into the recipe (T3)
+      const made = findRecipeElement(args.project_folder, item.where?.unique_ids[0] ?? "");
+      if (made) item.links = { ...item.links, recipe_node: made.node, recipe_key: made.key };
     } else if (args.action === "comment") {
       item = find(reg, args.id);
       const audio = keep(args.audio, item.id, `note-${(item.notes?.length ?? 0) + 1}`);
