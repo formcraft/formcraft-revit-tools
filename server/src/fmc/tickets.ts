@@ -137,3 +137,47 @@ export function applyBcf(reg: Register, topics: Array<{
   }
   return { added, updated };
 }
+
+/** A model's discipline from its container name ([Project]-[Originator]-…-[Role]-[Number].rvt, Manual 4.1); BIM otherwise. */
+export function roleOfModel(file: string): string {
+  const base = (file.split(/[\/]/).pop() ?? "").replace(/\.(rvt|nwc|nwd|ifc)$/i, "");
+  const m = /-([A-Z]{1,2})-\d{4}$/.exec(base);
+  return m ? m[1] : "BIM";
+}
+
+export interface ClashIn {
+  name: string; status: string; distance_mm: number; center_mm?: number[];
+  item1: { name: string; category: string; revit_id: string; source: string };
+  item2: { name: string; category: string; revit_id: string; source: string };
+}
+
+/**
+ * Navisworks clashes into the register (R5): one ticket per New or Active clash, for the disciplines whose models
+ * clash (the lead: the first model's; within one model, that model's), at the clash point, with both elements' Revit ids
+ * and models; deeper clashes come first (High past 50 mm, else Medium). A clash already ticketed (same test and name) is
+ * left as it is.
+ */
+export function clashTickets(reg: Register, test: string, rows: ClashIn[], by: string, now: Date): { added: string[]; skipped: number } {
+  const known = new Set(reg.items.filter((i) => i.links?.clash).map((i) => `${i.links!.clash!.test}|${i.links!.clash!.name}`));
+  const added: string[] = [];
+  let skipped = 0;
+  for (const r of rows) {
+    if (!/^(new|active)$/i.test(r.status)) { skipped++; continue; }
+    if (known.has(`${test}|${r.name}`)) { skipped++; continue; }
+    const a = roleOfModel(r.item1.source), b = roleOfModel(r.item2.source);
+    const depth = Math.abs(Math.min(0, r.distance_mm ?? 0));
+    const item = mark(reg, {
+      to: "discipline", assignee: a, lead: a, disciplines: [a, b],
+      title: `${test} · ${r.name}: ${r.item1.category || "element"} × ${r.item2.category || "element"}`,
+      text: `Clash ${r.name} in ${test}: ${r.item1.category} ${r.item1.revit_id} (${r.item1.source.split(/[\/]/).pop()}) × ${r.item2.category} ${r.item2.revit_id} (${r.item2.source.split(/[\/]/).pop()}), ${depth} mm deep.`,
+      priority: depth > 50 ? "High" : "Medium", raised_by: by, model: r.item1.source,
+      where: { unique_ids: [], ...(r.center_mm ? { point_mm: r.center_mm } : { point_mm: [0, 0, 0] }) },
+      source: "clash",
+      links: { clash: { test, name: r.name, distance_mm: r.distance_mm, items: [
+        { model: r.item1.source, id: r.item1.revit_id, category: r.item1.category },
+        { model: r.item2.source, id: r.item2.revit_id, category: r.item2.category }] } },
+    }, now);
+    added.push(item.id);
+  }
+  return { added, skipped };
+}
