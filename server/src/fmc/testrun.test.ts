@@ -77,6 +77,21 @@ test("F75: placeholders fill strings, keep a whole value's type, and refuse unkn
   assert.equal(getPath({ a: null }, "a.b"), undefined);
 });
 
+test("F75: a path picks a list item by a key: [key=value] whole, [key^=value] by its start", () => {
+  const gate = { lines: [{ check: "Keynote set", state: "Pass" }, { check: "Hosts as the register says", state: "Not checked" },
+    { check: "Host test", state: "Pass", n: 3 }] };
+  assert.equal(getPath(gate, "lines[check^=Hosts].state"), "Not checked");
+  assert.equal(getPath(gate, "lines[check=Host test].state"), "Pass");
+  assert.equal(getPath(gate, "lines[n=3].check"), "Host test", "a number key compares as text");
+  assert.equal(getPath(gate, "lines[check=Host].state"), undefined, "= is the whole value");
+  assert.equal(getPath(gate, "lines[check=Nothing].state"), undefined);
+  assert.equal(getPath({ a: { b: 1 } }, "a[b=1]"), undefined, "a selector needs a list");
+  assert.equal(getPath({ a: [{ b: [{ c: "x" }] }] }, "a.0.b[c=x].c"), "x");
+  for (const bad of ["lines[check", "lines..state", "lines.", "lines[=x]"]) assert.equal(getPath(gate, bad), undefined, bad);
+  const r = evalCheck({ path: "lines[check^=Hosts].state", equals: "Pass" }, { exit: 0, body: gate });
+  assert.deepEqual([r.ok, r.expected, r.got], [false, 'lines[check^=Hosts].state = "Pass"', '"Not checked"']);
+});
+
 test("F75: checks on a reply: no error, an error, equals, at least, at most, contains, matches, exists", () => {
   const ok = { exit: 0, body: { done: true, made: 6, notes: [], elements: [1, 2, 3], text: "Ready to test", verdict: "Pass" } };
   const refused = { exit: 1, body: { refused: true, reasons: ["No"] } };

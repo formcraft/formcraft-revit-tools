@@ -10,7 +10,9 @@
       "args": { "action": "create_from_template", "kind": "project", "template_path": "{{project_template}}", "save_path": "{{scratch}}\\FMC_ChainTest_A.rvt", "close_after": true, "dry_run": false },
       "checks": [{ "no_error": true }, { "path": "done", "equals": true }]
     },
-    { "id": "open", "runner": "open_in_revit", "path": "{{scratch}}\\FMC_ChainTest_A.rvt" }
+    { "id": "open", "runner": "open_in_revit", "path": "{{scratch}}\\FMC_ChainTest_A.rvt" },
+    { "id": "levels", "note": "The scratch project's levels (the kit template names them): the room goes on the lowest", "revit": "fmc_document_info", "params": {},
+      "checks": [{ "path": "active.levels", "at_least": 1 }] }
   ],
   "steps": [
     {
@@ -19,7 +21,7 @@
       "args": {
         "action": "plan",
         "room": {
-          "name": "ICU bay", "number": "L2-ICU-01", "level": "Level 2", "origin_mm": [0, 0], "width": 4200, "depth": 5000, "height": 3300,
+          "name": "ICU bay", "number": "L2-ICU-01", "level": "{{steps.levels.active.levels.0.name}}", "origin_mm": [0, 0], "width": 4200, "depth": 5000, "height": 3300,
           "walls": { "type": "Generic - 200mm", "thickness": 200 }, "ceiling": { "type": "Generic", "height": 2900 },
           "openings": [
             { "kind": "door", "family": "FMC_A_Door_FlushSingle_Hygienic_Detailed", "type": "1026x2100_S", "wall": "south", "along": 900, "width": 1026 },
@@ -40,7 +42,7 @@
       "args": {
         "action": "build", "node": "ICU-Bay-01.Room", "project_folder": "{{scratch}}", "dry_run": false,
         "room": {
-          "name": "ICU bay", "number": "L2-ICU-01", "level": "Level 2", "origin_mm": [0, 0], "width": 4200, "depth": 5000, "height": 3300,
+          "name": "ICU bay", "number": "L2-ICU-01", "level": "{{steps.levels.active.levels.0.name}}", "origin_mm": [0, 0], "width": 4200, "depth": 5000, "height": 3300,
           "walls": { "type": "Generic - 200mm", "thickness": 200 }, "ceiling": { "type": "Generic", "height": 2900 },
           "openings": [
             { "kind": "door", "family": "FMC_A_Door_FlushSingle_Hygienic_Detailed", "type": "1026x2100_S", "wall": "south", "along": 900, "width": 1026 },

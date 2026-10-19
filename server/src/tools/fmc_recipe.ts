@@ -9,7 +9,7 @@ import { hostTemplateProblem } from "../fmc/opsgeom.js";
 import { BRIDGE_LIMIT_BYTES, BuildRecord, CHUNK_BYTES, DEFAULT_CHUNK_OPS, applyEnvelope, dropTemplateNotes, planChunks, readBuilds, requestBytes, templatePlanes } from "../fmc/recipebuild.js";
 import { buildRecipe, cleanupBackground } from "./fmc_recipe_build.js";
 import { JobStillRunning, softTimeoutMs } from "../utils/SocketClient.js";
-import { HostTestResult, RecordedSides, Recipe, followParams, gateA, hostTestKind, parseRecipe, releasePath, roleOf, stagingPath } from "../fmc/recipes.js";
+import { HostTestResult, LodLadder, NestedLod, RecordedSides, Recipe, familyHost, followParams, gateA, hostTestKindFor, lodLadder, parseRecipe, releasePath, roleOf, stagingPath } from "../fmc/recipes.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { SpecFile } from "../fmc/specs.js";
 import { idleLimit } from "../fmc/doc.js";
@@ -148,6 +148,26 @@ function recordedSides(cfg: GuardConfig, family: string, file: string): Recorded
   return rec.sides;
 }
 
+/**
+ * QS01: a nested component's ladder, read from its recipe beside the gated family or in its role's staging folder (the
+ * detailed door's hinges, lever and closer carry the Rhino twins); nested parts of nested parts too, three deep.
+ */
+function nestedLod(cfg: GuardConfig, file: string): NestedLod {
+  const staging = expandEnv(cfg.family_staging_root);
+  const read = (family: string, depth: number): LodLadder | null => {
+    if (depth > 3) return null;
+    for (const f of [win.join(win.dirname(file), family + ".recipe.json"), stagingPath(staging, family).replace(/\.rfa$/i, ".recipe.json")]) {
+      try {
+        if (!fs.existsSync(f)) continue;
+        const r = parseRecipe(fs.readFileSync(f, "utf8")).recipe;
+        if (r) return lodLadder(r.family, r.ops as Array<Record<string, any>>, (n) => read(n, depth + 1));
+      } catch { /* unreadable: try the next place */ }
+    }
+    return null;
+  };
+  return (family) => read(family, 1);
+}
+
 export async function runGate(file: string, cfg: GuardConfig, flex: object | null = null) {
   const family = win.basename(file, ".rfa");
   const recipeFile = file.replace(/\.rfa$/i, ".recipe.json");
@@ -167,18 +187,25 @@ export async function runGate(file: string, cfg: GuardConfig, flex: object | nul
       await runFmcDoc({ action: "close", session: open.session, template: "", file: "", ops: [], dry_run: true, path: "", overwrite: false, detail_level: "fine", style: "shaded", views: ["3d"] });
     } else flexError = String(open.error ?? (open.reasons ?? []).join("; ") ?? "");
   }
-  // F-061: a family the register hosts on a wall or ceiling face is placed in a throw-away project and its host moved
+  // F-061: a family the register hosts on a wall or ceiling face is placed in a throw-away project and its host moved;
+  // a family the register gives no Host (the new _Detailed samples) is tested on the host its own template gives it
   const registerHostText = registerHost(cfg, family);
-  const kind = hostTestKind(registerHostText);
+  const famHost = registerHostText ? null : familyHost(family, recipe?.template, inspect.plan?.category);
+  const kind = hostTestKindFor(registerHostText, famHost);
   let hostTest: HostTestResult | null = null, hostTestError = "";
   if (kind) {
-    try { hostTest = (await withRevitConnection((c) => c.sendRaw("fmc_family_host_test", { path: file, host: kind }, 180000))) as HostTestResult; }
-    catch (e) { hostTestError = e instanceof Error ? e.message : String(e); }
+    try {
+      hostTest = (await withRevitConnection((c) => c.sendRaw("fmc_family_host_test", { path: file, host: kind }, 180000))) as HostTestResult;
+      const err = (hostTest as { error?: unknown } | null)?.error;
+      if (err) hostTestError = String(err);
+    } catch (e) { hostTestError = (e instanceof Error ? e.message : String(e)) || "the host test failed"; }
   }
   const gate = gateA(family, recipe, { inspect: inspect.plan ?? null, inspectError, flex: flexResult as any, flexError, registerCategory: registerCategory(cfg, family),
     specCategory: specCategory(cfg, family), tokenCategories: tokenCategories(cfg), recordedSides: recordedSides(cfg, family, file),
-    registerHost: registerHostText, hostTest, hostTestError });
-  const result = { family, file, at: new Date().toISOString(), ...gate };
+    registerHost: registerHostText, hostTest, hostTestError, familyHost: famHost, nestedLod: nestedLod(cfg, file) });
+  // callers (the test runner) check these directly: hostTestError is "" when the host test ran fine or wasn't needed
+  const result = { family, file, at: new Date().toISOString(), ...gate,
+    hostFrom: registerHostText ? "register" : famHost ? "family" : "", hostKind: kind ?? "", hostTest, hostTestError };
   try { fs.writeFileSync(file.replace(/\.rfa$/i, ".gate.json"), JSON.stringify(result, null, 2)); } catch { /* the gate still answers */ }
   return result;
 }

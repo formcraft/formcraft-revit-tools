@@ -1,5 +1,5 @@
 import { expandSkeletons } from "./ops.js";
-import { hostNeeds } from "./opsgeom.js";
+import { hostNeeds, templateHosting } from "./opsgeom.js";
 import path from "node:path";
 import { z } from "zod";
 import { OP } from "./ops.js";
@@ -282,6 +282,10 @@ export interface GateInputs {
   /** F-061: fmc_family_host_test in Revit (null when it couldn't run; hostTestError says why). */
   hostTest?: HostTestResult | null;
   hostTestError?: string;
+  /** F-061: with no register Host, the host the family itself has (its template or category); see familyHost. */
+  familyHost?: FamilyHost | null;
+  /** QS01: the ladder of a nested component (from its recipe), so the Rhino twins in nested parts count on Fine. */
+  nestedLod?: NestedLod;
 }
 
 /** What fmc_family_host_test answers: placement type, and whether the placed family followed its host. */
@@ -301,26 +305,42 @@ export interface HostTestResult {
 export const LOD_RENDER = "LOD 400 + Render";
 export type LodLevel = "LOD 100" | "LOD 200" | "LOD 300" | "LOD 400 + Render" | "none";
 
-export function lodLadder(family: string, ops: Array<Record<string, any>>): { coarse: LodLevel; medium: LodLevel; fine: LodLevel } {
+export type LodLadder = { coarse: LodLevel; medium: LodLevel; fine: LodLevel };
+/** A nested family's own ladder (read from its recipe), or null when it can't be read: the gate's look-up for place_nested. */
+export type NestedLod = (family: string) => LodLadder | null;
+
+const LOD_RANK: Record<LodLevel, number> = { none: 0, "LOD 100": 1, "LOD 200": 2, "LOD 300": 3, "LOD 400 + Render": 4 };
+/** Solids that aren't the body: clearance and maintenance zones, connector pads, a lighting fixture's light path beam. */
+const NOT_BODY = /clearance|connector|^CN |light path/i;
+
+/**
+ * What each detail level shows, as the highest LOD among what is seen there: the Coarse envelope box (LOD 100), the
+ * native body (LOD 200 standard, LOD 300 detailed), Rhino twins (import_part, LOD 400 + Render). A nested component
+ * (place_nested) counts with its own ladder at that level, so a detailed door whose hinges, lever and closer carry the
+ * Rhino twins on Fine is LOD 400 + Render on Fine (the twins live in the parts, not in the door's own ops).
+ */
+export function lodLadder(family: string, ops: Array<Record<string, any>>, nested?: NestedLod): LodLadder {
   const SOLIDS = new Set(["extrusion", "revolution", "sweep", "blend", "import_part"]);
   const vis = new Map<string, Record<string, any>>();
   for (const o of ops) if (o.op === "set_visibility") vis.set(o.name, o);
-  const solids = ops.filter((o) => SOLIDS.has(o.op) && !/clearance|connector|^CN /i.test(String(o.name)));
+  const solids = ops.filter((o) => SOLIDS.has(o.op) && !NOT_BODY.test(String(o.name)));
+  const parts = nested ? ops.filter((o) => o.op === "place_nested" && o.family) : [];
   const shows = (o: Record<string, any>, level: "coarse" | "medium" | "fine") => vis.get(o.name)?.[level] ?? true;
   const envelope = (o: Record<string, any>) => /coarse envelope|envelope/i.test(String(o.name));
   const detailed = /_Detailed$/.test(family);
+  const ladders = new Map<string, LodLadder | null>();
+  const ladderOf = (f: string) => { if (!ladders.has(f)) ladders.set(f, nested!(f)); return ladders.get(f) ?? null; };
   const at = (level: "coarse" | "medium" | "fine"): LodLevel => {
-    const seen = solids.filter((o) => shows(o, level));
-    if (seen.length === 0) return "none";
-    if (seen.every(envelope)) return "LOD 100";
-    if (seen.some((o) => o.op === "import_part")) return LOD_RENDER;
-    return detailed ? "LOD 300" : "LOD 200";
+    const seen: LodLevel[] = solids.filter((o) => shows(o, level))
+      .map((o): LodLevel => envelope(o) ? "LOD 100" : o.op === "import_part" ? LOD_RENDER : detailed ? "LOD 300" : "LOD 200");
+    for (const p of parts) if (shows(p, level)) { const l = ladderOf(String(p.family)); if (l && l[level] !== "none") seen.push(l[level]); }
+    return seen.reduce<LodLevel>((best, l) => (LOD_RANK[l] > LOD_RANK[best] ? l : best), "none");
   };
   return { coarse: at("coarse"), medium: at("medium"), fine: at("fine") };
 }
 
-export function lodLine(family: string, ops: Array<Record<string, any>>): GateLine {
-  const l = lodLadder(family, ops);
+export function lodLine(family: string, ops: Array<Record<string, any>>, nested?: NestedLod): GateLine {
+  const l = lodLadder(family, ops, nested);
   const detail = `Coarse ${l.coarse}, Medium ${l.medium}, Fine ${l.fine}`;
   const want = /_Detailed$/.test(family) ? ["LOD 100", "LOD 300", LOD_RENDER] : ["LOD 100", "LOD 200", "LOD 200"];
   const got = [l.coarse, l.medium, l.fine];
@@ -339,15 +359,63 @@ export function hostTestKind(registerHost: string | null | undefined): "wall" | 
   return needs.includes("ceiling") && !needs.includes("wall") ? "ceiling" : "wall";
 }
 
-/** F-061: the two host lines of Gate A, from the register's Host and the host test in Revit. */
-export function hostLines(registerHost: string | null | undefined, test: HostTestResult | null | undefined, testError = ""): GateLine[] {
+/** F-061: the host a family has by itself, for a family the register gives no Host (e.g. the new _Detailed samples). */
+export interface FamilyHost {
+  /** A Host the way the register would write it (hostNeeds reads it). */
+  host: string;
+  kind: "wall" | "ceiling" | "face" | "floor" | "roof" | "none";
+  /** Where it came from, for the gate line: "its template Metric Door.rft", "its category Doors". */
+  from: string;
+}
+
+/**
+ * F-061: the host kind from the family itself when the register has none: its template (the recipe's, the same hosting
+ * the saved file's FAMILY_HOSTING_BEHAVIOR comes from): Metric Door/Window and Wall Based on a wall; Ceiling Based on a
+ * ceiling; Face Based on a face, a ceiling face when the template or the name says Ceiling (the way the pictures tell a
+ * hanging family, FmcPreview HangsDown); Floor/Roof Based; anything else unhosted. With no template, a Doors or Windows
+ * category is on a wall. Null: nothing to tell from.
+ */
+export function familyHost(family: string, template: string | null | undefined, category?: string | null): FamilyHost | null {
+  const t = path.win32.basename(String(template ?? "").trim());
+  if (t) {
+    const from = `its template ${t}`;
+    switch (templateHosting(t)) {
+      case "face": return /ceiling/i.test(t) || /ceiling/i.test(family) ? { host: "Ceiling face", kind: "ceiling", from } : { host: "Face", kind: "face", from };
+      case "wall": return { host: "Wall", kind: "wall", from };
+      case "ceiling": return { host: "Ceiling", kind: "ceiling", from };
+      case "floor": return { host: "Floor", kind: "floor", from };
+      case "roof": return { host: "Roof", kind: "roof", from };
+      default: return { host: "-", kind: "none", from };
+    }
+  }
+  const c = String(category ?? "").trim();
+  if (/^(doors|windows)$/i.test(c)) return { host: "Wall", kind: "wall", from: `its category ${c}` };
+  return null;
+}
+
+/** F-061: the host fmc_family_host_test makes: from the register's Host, else from the family (walls and ceilings only). */
+export function hostTestKindFor(registerHost: string | null | undefined, fam: FamilyHost | null | undefined): "wall" | "ceiling" | null {
+  if (registerHost) return hostTestKind(registerHost);
+  if (!fam) return null;
+  return fam.kind === "wall" || fam.kind === "face" ? "wall" : fam.kind === "ceiling" ? "ceiling" : null;
+}
+
+/** F-061: the two host lines of Gate A, from the register's Host (else the family's own) and the host test in Revit. */
+export function hostLines(registerHost: string | null | undefined, test: HostTestResult | null | undefined, testError = "", fam?: FamilyHost | null): GateLine[] {
   const placeCheck = "Hosts as the register says", testCheck = "Host test";
-  if (!registerHost) return [{ check: placeCheck, state: "Not checked", detail: "The register gives no Host for this family" }];
-  const needs = hostNeeds(registerHost);
-  if (!needs) return [{ check: placeCheck, state: "Pass", detail: `The register's host is "${registerHost}": an unhosted family is fine` }];
+  if (!registerHost && !fam) return [{ check: placeCheck, state: "Not checked", detail: "The register gives no Host for this family, and its hosting couldn't be read (no recipe template, not a door or window)" }];
+  const host = registerHost || fam!.host;
+  const said0 = registerHost ? `The register's host is "${registerHost}"`
+    : `The register gives no Host; from the family (${fam!.from}, not the register) the host is "${fam!.host}"`;
+  if (!registerHost && (fam!.kind === "floor" || fam!.kind === "roof"))
+    return [{ check: placeCheck, state: "Not checked", detail: `${said0}: the host test makes walls and ceilings only` }];
+  if (!registerHost && fam!.kind === "none")
+    return [{ check: placeCheck, state: "Pass", detail: `The register gives no Host; the family is unhosted (${fam!.from}, not the register): nothing to place on a host` }];
+  const needs = hostNeeds(host);
+  if (!needs) return [{ check: placeCheck, state: "Pass", detail: `${said0}: an unhosted family is fine` }];
   if (!test || !test.placement) {
     const why = testError || "the host test gave no answer";
-    return [{ check: placeCheck, state: "Not checked", detail: `The register's host is "${registerHost}"; the placement couldn't be read: ${why}` },
+    return [{ check: placeCheck, state: "Not checked", detail: `${said0}; the placement couldn't be read: ${why}` },
       { check: testCheck, state: "Not checked", detail: why }];
   }
   const p = test.placement;
@@ -355,8 +423,8 @@ export function hostLines(registerHost: string | null | undefined, test: HostTes
   const fits = hosts.some((h) => needs.includes(h as never));
   const said = p === "WorkPlaneBased" ? "face based" : p === "OneLevelBasedHosted" ? "hosted" : `${p} (unhosted)`;
   const place: GateLine = { check: placeCheck, state: fits ? "Pass" : "Fail",
-    detail: fits ? `The register's host is "${registerHost}" and the family is ${said}`
-      : `The register's host is "${registerHost}", but the family is ${said}, so it can't be placed there: build it on a face based template` };
+    detail: fits ? `${said0} and the family is ${said}`
+      : `${said0}, but the family is ${said}, so it can't be placed there: build it on a face based template` };
   const state: GateState = test.state === "Pass" ? "Pass" : test.state === "Fail" ? "Fail" : "Not checked";
   return [place, { check: testCheck, state, detail: test.detail || (state === "Pass" ? "Placed, followed its host" : "no detail") }];
 }
@@ -513,7 +581,7 @@ export function gateA(family: string, recipe: Recipe | null, inputs: GateInputs)
       const small = [...typeValues(recipe)].filter(([, v]) => typeof v.get(param) === "number" && (v.get(param) as number) < min).map(([t, v]) => `${t} ${v.get(param)} mm`);
       lines.push({ check: `Clear opening at least ${min} mm`, state: small.length ? "Fail" : "Pass", detail: small.length ? small.join(", ") : `every type's ${param} is ${min} mm or more` });
     }
-    lines.push(lodLine(recipe.family, recipe.ops as Array<Record<string, any>>));
+    lines.push(lodLine(recipe.family, recipe.ops as Array<Record<string, any>>, inputs.nestedLod));
     const ifc = (recipe.ops as Array<Record<string, any>>).some((o) => (o.op === "set_type_value" || o.op === "set_family_params") && /IfcExportAs/i.test(String(o.param ?? o.name ?? "")));
     lines.push({ check: "IFC class set", state: ifc ? "Pass" : "Warn", detail: ifc ? "IfcExportAs is set" : "IfcExportAs isn't set by the recipe (IFC export guesses the class)" });
     const by = (s: string) => Object.entries(recipe.values).filter(([, v]) => v.source_status === s).map(([k]) => k);
@@ -524,7 +592,7 @@ export function gateA(family: string, recipe: Recipe | null, inputs: GateInputs)
         : ea.length ? `East African, not local: ${ea.join(", ")}` : `${Object.keys(recipe.values).length || "No"} values recorded, all verified` });
   }
   // F-061: the family hosts the way the register says, and a placed one follows its host
-  lines.push(...hostLines(inputs.registerHost, inputs.hostTest, inputs.hostTestError));
+  lines.push(...hostLines(inputs.registerHost, inputs.hostTest, inputs.hostTestError, inputs.familyHost));
   lines.push({ check: "Tag, schedule and legend; Coarse, Medium and Fine", state: "Not checked", detail: "Run the load test in the role's chain-test project (fmc_family load_test)" });
   return { verdict: lines.some((l) => l.state === "Fail") ? "Fail" : "Pass", lines, ...(fc.follows.length ? { follows: fc.follows } : {}) };
 }
