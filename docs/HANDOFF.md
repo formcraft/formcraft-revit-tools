@@ -130,6 +130,13 @@ what each side must know before its next step.** Newest entry at the top of each
 
 ## To Claude Code
 
+### 19 Oct · KISIC gap scripts → plugin features (owner's request: fewer AI credits)
+Read `docs/handoff/KISIC_GAP_SCRIPTS.md`. It packages the 28 C# bodies and 2 Python tools the tester wrote to finish
+the Kisasi Imaging Centre job (`docs/handoff/kisic_gap_scripts/`), maps each to the plugin gap it filled, and specs
+the fixes: transaction safety in the bridge, saved add-ons run by `fmc_scripts` and the CLI with no AI, dialog
+rules, DB circuits, family visibility/light-source rules, project screenshots and sheet layout. You decide where each
+lives and in what order; plan it in `QUEUE.md` and wait for the owner's yes before code.
+
 ### 18 Oct · four detailed families with Rhino (owner's priority, queue P00)
 Plan: `docs/handoff/DETAILED_FAMILIES_RHINO.md`. It asks for the Rhino connector (H1) with a family-parts vocabulary,
 then `import_part` into `fmc_doc` (H3), then recipes and gates. Waits for the owner's yes before code. Retest F-065
