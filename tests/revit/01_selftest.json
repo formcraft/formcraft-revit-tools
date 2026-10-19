@@ -1,0 +1,27 @@
+{
+  "schema": "fmc-testrun/0.1",
+  "id": "01_selftest",
+  "title": "Self-test in the runner's Revit: build, AI connection, commands, guard, kit",
+  "features": ["F10", "F63"],
+  "setup": [],
+  "steps": [
+    {
+      "id": "selftest",
+      "tool": "fmc_selftest",
+      "args": {},
+      "checks": [
+        { "no_error": true },
+        { "path": "result", "equals": "Ready to test" },
+        { "path": "fail", "equals": 0 },
+        { "path": "addin", "exists": true }
+      ]
+    },
+    {
+      "id": "open_docs",
+      "tool": "fmc_file",
+      "args": { "action": "list_open" },
+      "checks": [{ "no_error": true }]
+    }
+  ],
+  "teardown": []
+}

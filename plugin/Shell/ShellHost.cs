@@ -132,7 +132,8 @@ namespace revit_mcp_plugin.Shell
             {
                 // start_with_revit in fmc_connect.json (Connect › "Switch on when Revit starts"): once, at the first idle moment.
                 _autoStartDone = true;
-                if (ConnectSettings.Load().StartWithRevit && !SocketService.Instance.IsRunning)
+                // F75: the unattended test runner's own Revit always switches it on (the runner reaches it by its pid)
+                if ((ConnectSettings.Load().StartWithRevit || UnattendedMode.On) && !SocketService.Instance.IsRunning)
                     FormcraftBrowser.RequestToggleService();
             }
             Connection.Update(SocketService.Instance.IsRunning);

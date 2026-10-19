@@ -24,6 +24,7 @@ namespace revit_mcp_plugin.Core
         /// <summary>Results larger than this are kept cut (characters), so one answer can't swell the file.</summary>
         public const int MaxResultChars = 5_000_000;
 
+        private static readonly int Pid = System.Diagnostics.Process.GetCurrentProcess().Id;
         private readonly string _job;
         private readonly string _command;
         private readonly DateTime _started = DateTime.UtcNow;
@@ -126,7 +127,8 @@ namespace revit_mcp_plugin.Core
         {
             try
             {
-                var line = new JObject { ["at"] = DateTime.UtcNow.ToString("o"), ["job"] = _job, ["command"] = _command };
+                // pid: which Revit wrote it, so the unattended test runner reads only its own Revit's jobs (F75)
+                var line = new JObject { ["at"] = DateTime.UtcNow.ToString("o"), ["job"] = _job, ["command"] = _command, ["pid"] = Pid };
                 foreach (var p in detail.Properties()) line[p.Name] = p.Value;
                 Append("FMC_Jobs_Revit.jsonl", line);
             }

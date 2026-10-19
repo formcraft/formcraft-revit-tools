@@ -1,0 +1,81 @@
+{
+  "schema": "fmc-testrun/0.1",
+  "id": "07_review_select",
+  "title": "Mark & Review on a scratch wall: a ticket, its fix plan from Revit's facts, apply_fix dry run, the real apply refused without a person's yes, review show; selection read and show",
+  "features": ["F71", "F26", "F69"],
+  "setup": [
+    {
+      "id": "new",
+      "tool": "fmc_file",
+      "args": { "action": "create_from_template", "kind": "project", "template_path": "{{project_template}}", "save_path": "{{scratch}}\\FMC_ChainTest_A.rvt", "close_after": true, "dry_run": false },
+      "checks": [{ "no_error": true }, { "path": "done", "equals": true }]
+    },
+    { "id": "open", "runner": "open_in_revit", "path": "{{scratch}}\\FMC_ChainTest_A.rvt" },
+    {
+      "id": "build",
+      "tool": "fmc_room",
+      "args": {
+        "action": "build", "node": "Review-Bay", "project_folder": "{{scratch}}", "dry_run": false,
+        "room": {
+          "name": "Review bay", "number": "T-01", "level": "Level 2", "origin_mm": [0, 0], "width": 4200, "depth": 5000, "height": 3300,
+          "walls": { "type": "Generic - 200mm", "thickness": 200 }
+        }
+      },
+      "timeout_s": 600,
+      "checks": [{ "no_error": true }, { "path": "made", "at_least": 4 }]
+    },
+    { "id": "record", "read_json": "{{steps.build.record}}", "checks": [{ "path": "elements.0.unique_id", "exists": true }] }
+  ],
+  "steps": [
+    {
+      "id": "mark",
+      "tool": "fmc_review",
+      "args": {
+        "action": "mark", "project_folder": "{{scratch}}", "project_code": "TEST", "title": "Unattended test: move the wall",
+        "text": "move it 300 left", "to": "ai", "by": "Formcraft test runner",
+        "where": { "unique_ids": ["{{steps.record.elements.0.unique_id}}"] }
+      },
+      "checks": [{ "no_error": true }, { "path": "item.id", "exists": true }]
+    },
+    {
+      "id": "plan_fix",
+      "tool": "fmc_review",
+      "args": { "action": "plan_fix", "project_folder": "{{scratch}}", "id": "{{steps.mark.item.id}}" },
+      "checks": [{ "no_error": true }, { "path": "facts_from", "equals": "Revit" }, { "path": "plan.ready", "equals": true }]
+    },
+    {
+      "id": "fix_dry",
+      "tool": "fmc_review",
+      "args": { "action": "apply_fix", "project_folder": "{{scratch}}", "id": "{{steps.mark.item.id}}", "dry_run": true },
+      "checks": [{ "no_error": true }, { "path": "plan_hash", "exists": true }, { "path": "steps", "at_least": 1 }]
+    },
+    {
+      "id": "fix_without_yes",
+      "note": "The real apply needs a person's yes (approved_by and the plan_hash they saw); the runner is not a person, so it must be refused",
+      "tool": "fmc_review",
+      "args": { "action": "apply_fix", "project_folder": "{{scratch}}", "id": "{{steps.mark.item.id}}", "dry_run": false },
+      "expect_error": true,
+      "checks": [{ "is_error": true }, { "path": "refused", "equals": true }]
+    },
+    {
+      "id": "show",
+      "tool": "fmc_review",
+      "args": { "action": "show", "project_folder": "{{scratch}}", "id": "{{steps.mark.item.id}}" },
+      "checks": [{ "no_error": true }]
+    },
+    {
+      "id": "select_read",
+      "tool": "fmc_select",
+      "args": { "action": "read" },
+      "note": "review show selected the ticket's wall, so Revit's selection holds it",
+      "checks": [{ "no_error": true }, { "path": "apps.revit.selected", "at_least": 1 }]
+    },
+    {
+      "id": "select_show",
+      "tool": "fmc_select",
+      "args": { "action": "show", "from": "revit", "ids": ["{{steps.record.elements.0.unique_id}}"] },
+      "checks": [{ "no_error": true }]
+    }
+  ],
+  "teardown": [{ "runner": "close_revit" }]
+}
