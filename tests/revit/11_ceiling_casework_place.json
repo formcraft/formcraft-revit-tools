@@ -59,8 +59,11 @@
         "place": { "level": "{{steps.levels.active.levels.0.name}}", "origin_mm": { "x": 0, "y": 0 }, "ceiling_type": "Generic" }
       },
       "timeout_s": 600,
+      "note": "The field and bulkhead ceilings are placed (made >= 2). The bulkhead faces are the one thing allowed unplaced: they wait for a line-based family in the kit, which the reply raises as a kit change request (TR-20261019-1830 found the old check too strict)",
       "checks": [{ "no_error": true }, { "path": "done", "equals": true }, { "path": "made", "at_least": 1 },
-        { "path": "not_placed", "at_most": 0 }, { "path": "removed", "equals": 0 }]
+        { "path": "not_placed", "at_most": 1 }, { "path": "removed", "equals": 0 },
+        { "path": "made", "at_least": 2 }, { "path": "not_placed[role=face].why", "contains": "no line-based family" },
+        { "path": "kit_change_requests", "contains": "line-based family for the bulkhead" }]
     },
     {
       "id": "ceiling_record",
