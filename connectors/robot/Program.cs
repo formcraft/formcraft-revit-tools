@@ -27,7 +27,9 @@ namespace Formcraft.Robot
                     case "send": return Reply(Send(input), 0);
                     case "calculate": return Reply(Calculate(input), 0);
                     case "results": return Reply(Results(input), 0);
-                    default: return Reply(new JObject { ["error"] = "Use status, send, calculate or results" }, 2);
+                    case "select": return Reply(Select(input), 0);
+                    case "selection": return Reply(Selection(input), 0);
+                    default: return Reply(new JObject { ["error"] = "Use status, send, calculate, results, select or selection" }, 2);
                 }
             }
             catch (Exception e) { return Reply(new JObject { ["error"] = e.Message }, 1); }
@@ -215,6 +217,48 @@ namespace Formcraft.Robot
                 outBars.Add(new JObject { ["n"] = n, ["id"] = b["id"], ["ned_kn"] = Math.Round(nEd, 1), ["med_knm"] = Math.Round(mEd, 1), ["ned_case"] = nCase, ["med_case"] = mCase });
             }
             return new JObject { ["rtd"] = rtd, ["cases"] = cases.Count, ["bars"] = outBars };
+        }
+
+        // ---------- select, selection: one selection across the apps (X1 of the hub plan) ----------
+
+        /// <summary>
+        /// The Robot already open, never a new one: selection is about what the engineer is looking at. It must have a
+        /// project open; its run is the file's name (FEA-yyyymmdd-hhmm), which is how the identity map names its bars.
+        /// </summary>
+        private static (IRobotProject Project, string Run) OpenRobot()
+        {
+            if (Process.GetProcessesByName("robot").Length == 0) throw new InvalidOperationException("Robot isn't open: open the run's model in Robot first");
+            IRobotApplication app = new RobotApplication();
+            string file = app.Project.FileName ?? "";
+            if (file.Length == 0) throw new InvalidOperationException("Robot has no saved project open");
+            return (app.Project, Path.GetFileNameWithoutExtension(file));
+        }
+
+        /// <summary>Selects bars by number in the open project (only when it is the run they came from) and refreshes the view.</summary>
+        private static JObject Select(JObject p)
+        {
+            var (project, run) = OpenRobot();
+            string want = p.Value<string>("run") ?? "";
+            var asked = (p["bars"] as JArray ?? new JArray()).Select(x => x.Value<int>()).Distinct().ToList();
+            if (want.Length > 0 && !string.Equals(want, run, StringComparison.OrdinalIgnoreCase))
+                return new JObject { ["run"] = run, ["selected"] = 0, ["missing"] = new JArray(asked), ["note"] = $"Robot has {run} open, not {want}: open {want}.rtd to see these bars" };
+            IRobotStructure st = project.Structure;
+            var found = asked.Where(n => st.Bars.Exist(n) == 1).ToList();
+            IRobotSelection sel = st.Selections.Get(IRobotObjectType.I_OT_BAR);
+            sel.Clear();
+            if (found.Count > 0) sel.FromText(string.Join(" ", found));
+            try { project.ViewMngr.Refresh(); } catch (Exception) { /* no view open: the selection still holds */ }
+            return new JObject { ["run"] = run, ["selected"] = found.Count, ["bars"] = new JArray(found), ["missing"] = new JArray(asked.Except(found)) };
+        }
+
+        /// <summary>The bars selected in the open project, as numbers ("1to5 8" in Robot's own text, expanded).</summary>
+        private static JObject Selection(JObject p)
+        {
+            var (project, run) = OpenRobot();
+            IRobotSelection sel = project.Structure.Selections.Get(IRobotObjectType.I_OT_BAR);
+            var bars = new JArray();
+            for (int i = 1; i <= sel.Count; i++) bars.Add(sel.Get(i));
+            return new JObject { ["run"] = run, ["file"] = project.FileName, ["text"] = sel.ToText(), ["bars"] = bars };
         }
     }
 }
