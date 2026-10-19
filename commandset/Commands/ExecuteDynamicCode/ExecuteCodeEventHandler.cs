@@ -28,6 +28,9 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
     /// <item>Errors carry stable codes in English (F-034): FMC-CODE-COMPILE, FMC-CODE-RUNTIME, FMC-CODE-ROLLED-BACK,
     /// FMC-CODE-CANCELLED, FMC-CODE-NO-DOCUMENT, FMC-CODE-USINGS, FMC-CODE-PARAMS, FMC-CODE-TOO-LARGE, FMC-CODE-BUSY,
     /// FMC-CODE-TIMEOUT.</item>
+    /// <item>Transaction safety (KISIC §4.1): a transaction not in a using is refused before the run (FMC-CODE-TX-USING,
+    /// with each line); whatever a script leaves open is rolled back after it and reported (FMC-CODE-TX-LEAK, or txLeak
+    /// beside a runtime error); a document left modifiable is marked "needs a person" and refuses further scripts.</item>
     /// <item>Optional <c>usings</c> (F-035); the helper types in RevitMCPCommandSet.Bridge are always available.</item>
     /// <item>transactionMode "auto" wraps the script in one transaction with the default failures preprocessor
     /// (warnings deleted and returned, errors roll back with their text: F-032).</item>
@@ -37,15 +40,10 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
     {
         public const string TransactionModeAuto = "auto";
         public const string TransactionModeNone = "none";
-        private const string ScriptPath = "script.cs";
+        private const string ScriptPath = FmcScriptSource.ScriptPath;
 
         /// <summary>Always there: the old template's namespaces, rooms and structure, and the Formcraft helpers.</summary>
-        public static readonly string[] DefaultUsings =
-        {
-            "System", "System.Linq", "System.Collections.Generic", "System.Text",
-            "Autodesk.Revit.DB", "Autodesk.Revit.DB.Architecture", "Autodesk.Revit.DB.Structure", "Autodesk.Revit.UI",
-            "RevitMCPCommandSet.Bridge",
-        };
+        public static readonly string[] DefaultUsings = FmcScriptSource.DefaultUsings;
 
         private static readonly Regex UsingPattern = new Regex(
             @"^(static\s+)?([A-Za-z_][A-Za-z0-9_]*\s*=\s*)?[A-Za-z_][A-Za-z0-9_]*(\.[A-Za-z_][A-Za-z0-9_]*)*$", RegexOptions.CultureInvariant);
@@ -107,17 +105,32 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
                 using (target)
                 {
                     info.Document = doc.Title;
+                    // KISIC §4.1: a document a script left with an open transaction the bridge couldn't roll back.
+                    string blocked = FmcTxGuard.BlockedReason(doc);
+                    if (blocked != null)
+                        throw new ScriptFailure("FMC-CODE-TX-LEAK",
+                            $"{doc.Title} needs a person: a script left a transaction open that couldn't be rolled back ({blocked}). " +
+                            "No script runs on it until a person checks it in Revit (Undo history, any open edit mode) and closes and reopens it.");
                     CompiledScript script = Compile(_code, _usings, info);
                     FmcAiJob.ThrowIfCancelled();
 
+                    FmcTxGuard.Begin(app);
                     var run = Stopwatch.StartNew();
                     object result;
                     try
                     {
                         if (_transactionMode == TransactionModeNone)
                         {
-                            result = script.Invoke(doc, _executionParameters);
+                            try
+                            {
+                                result = script.Invoke(doc, _executionParameters);
+                            }
+                            finally
+                            {
+                                CloseLeaks(info);
+                            }
                             info.Transaction = "none (the script manages its own)";
+                            if (info.TxLeak != null) throw LeakFailure(info, result);
                         }
                         else
                         {
@@ -125,7 +138,19 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
                             {
                                 FmcAiJob.Failures.Attach(transaction);
                                 transaction.Start();
-                                result = script.Invoke(doc, _executionParameters);
+                                try
+                                {
+                                    result = script.Invoke(doc, _executionParameters);
+                                }
+                                finally
+                                {
+                                    CloseLeaks(info);
+                                }
+                                if (info.TxLeak != null)
+                                {
+                                    transaction.RollBack();
+                                    throw LeakFailure(info, result);
+                                }
                                 if (FmcAiJob.CancelRequested(job))
                                 {
                                     transaction.RollBack();
@@ -143,7 +168,10 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
                     finally
                     {
                         info.RunMs = run.ElapsedMilliseconds;
+                        CheckStillOpen(doc, info);
                     }
+                    if (info.DocumentBlocked)
+                        throw new ScriptFailure("FMC-CODE-TX-LEAK", NeedsAPerson(doc), new JObject { ["result"] = Serialize(result, info) });
 
                     info.Result = Serialize(result, info);
                     info.Success = true;
@@ -173,6 +201,41 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
                 _resetEvent.Set();
             }
         }
+
+        // ---------------------------------------------------------------- transaction safety (KISIC §4.1)
+
+        /// <summary>Rolls back what the script left open (tracked transactions) and keeps the list in the result.</summary>
+        private static void CloseLeaks(ExecutionResultInfo info)
+        {
+            FmcTxGuard.Cleanup cleanup = FmcTxGuard.RollBackLeaks();
+            if (!cleanup.Any) return;
+            info.TxLeak = new List<string>(cleanup.Leaks);
+            if (!cleanup.AllRolledBack) info.DocumentBlocked = true;
+        }
+
+        private static ScriptFailure LeakFailure(ExecutionResultInfo info, object result) =>
+            new ScriptFailure("FMC-CODE-TX-LEAK",
+                $"The script left {info.TxLeak.Count} transaction{(info.TxLeak.Count == 1 ? "" : "s")} open: {string.Join("; ", info.TxLeak)}. " +
+                "Their changes were undone (transactions the script committed before stay). Put every transaction in a using, or use FmcScript.Tx.",
+                new JObject { ["leaks"] = new JArray(info.TxLeak), ["result"] = Serialize(result, info) });
+
+        /// <summary>After every run: a document still modifiable has a transaction the bridge can't see or close.</summary>
+        private static void CheckStillOpen(Document doc, ExecutionResultInfo info)
+        {
+            bool open;
+            try { open = doc.IsValidObject && doc.IsModifiable; } catch (Exception) { open = false; }
+            if (open)
+            {
+                info.TxLeak = info.TxLeak ?? new List<string>();
+                info.TxLeak.Add("the document still has an open transaction after the run (not one the bridge could roll back)");
+                info.DocumentBlocked = true;
+            }
+            if (info.DocumentBlocked) FmcTxGuard.Block(doc, string.Join("; ", info.TxLeak ?? new List<string>()));
+        }
+
+        private static string NeedsAPerson(Document doc) =>
+            $"The script left a transaction open in {doc.Title} that couldn't be rolled back. The document is marked \"needs a person\": " +
+            "no further script runs on it until a person checks it in Revit and closes and reopens it.";
 
         // ---------------------------------------------------------------- compile and run
 
@@ -221,16 +284,25 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
                     if (!usings.Contains(u)) usings.Add(u);
                 }
 
-                var source = new StringBuilder();
-                foreach (string u in usings) source.Append("using ").Append(u).Append(";\n");
-                source.Append("namespace AIGeneratedCode\n{\n    public static class CodeExecutor\n    {\n");
-                source.Append("        public static object Execute(Document document, object[] parameters)\n        {\n");
-                source.Append("#line 1 \"").Append(ScriptPath).Append("\"\n");
-                source.Append(code).Append('\n');
-                source.Append("#line default\n        }\n    }\n}\n");
+                SyntaxTree tree = FmcScriptSource.Parse(FmcScriptSource.Build(code, usings));
 
-                SyntaxTree tree = CSharpSyntaxTree.ParseText(SourceText.From(source.ToString(), Encoding.UTF8),
-                    new CSharpParseOptions(LanguageVersion.Latest), path: "template.cs");
+                // KISIC §4.1: every transaction in a using (FMC-CODE-TX-USING), checked when the script parses (a syntax
+                // error is reported by the compile below). Then each creation is tracked, so a leak is rolled back after the run.
+                if (!tree.GetDiagnostics().Any(d => d.Severity == DiagnosticSeverity.Error))
+                {
+                    List<FmcScriptSource.TxUse> unguarded = FmcScriptSource.UnguardedTransactions(tree);
+                    if (unguarded.Count > 0)
+                        throw new ScriptFailure("FMC-CODE-TX-USING", FmcScriptSource.UsingMessage(unguarded), new JObject
+                        {
+                            ["transactions"] = new JArray(unguarded.Select(u => new JObject
+                            {
+                                ["line"] = u.Line.HasValue ? (JToken)u.Line.Value : JValue.CreateNull(),
+                                ["type"] = u.Type,
+                                ["code"] = u.Code,
+                            })),
+                        });
+                    tree = FmcScriptSource.AddTracking(tree);
+                }
                 CSharpCompilation compilation = CSharpCompilation.Create(
                     "FmcScript_" + Guid.NewGuid().ToString("N"),
                     new[] { tree },
@@ -458,6 +530,14 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
 
         [JsonProperty("note", NullValueHandling = NullValueHandling.Ignore)]
         public string Note { get; set; }
+
+        /// <summary>KISIC §4.1: transactions the script left open and what the bridge did (rolled back, or not).</summary>
+        [JsonProperty("txLeak", NullValueHandling = NullValueHandling.Ignore)]
+        public List<string> TxLeak { get; set; }
+
+        /// <summary>True when the document was marked "needs a person" after this run.</summary>
+        [JsonProperty("documentBlocked", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public bool DocumentBlocked { get; set; }
 
         public void SetError(string code, string message, JObject detail)
         {

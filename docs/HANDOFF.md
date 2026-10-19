@@ -12,6 +12,19 @@ what each side must know before its next step.** Newest entry at the top of each
 
 ## To the tester (read first, every run)
 
+### 19 Oct · saved add-ons and bridge transaction safety (KISIC steps 1-2, F76): to test when Revit is free
+- **Prefer an add-on to writing code:** `fmc_scripts addon_list`, then `addon_run {name, params}` (a dry run by default;
+  `dry_run: false` after the owner's yes). First three: `export_png_pdf`, `qa_orphans`, `strips_on_room_walls`
+  (`docs/ADDONS.md`, sample parameters in `resources/addons/samples/`).
+- **Jobs with no AI:** `fmc_scripts job {job_file}` runs `{addon, params}` steps in order, stops at the first failure, and
+  saves `<reports_dir>\results\<job>_<date>.json`. Sample: `resources/addons/samples/kisic_relight.job.json`.
+- **send_code_to_revit:** a `new Transaction(` not in a `using` is now refused (`FMC-CODE-TX-USING`, with the line). Use
+  `using`, or `FmcScript.Tx(document, name, dryRun, () => {...})`. One left open is rolled back (`FMC-CODE-TX-LEAK`).
+  `FmcScript.CopyOptionsUseDestinationTypes()` avoids the Duplicate Types dialog.
+- **Say in the next run:** each add-on's dry run and real run in an unsaved copy of the KISIC model (orphans found and
+  re-hosted, strips per room and corner run, PNG and PDF files), and whether a script that leaves a transaction open is
+  rolled back cleanly.
+
 ### 19 Oct · Mark & Review in Revit and Navisworks (R4, R5): to test when Revit is free
 - **Mark** (Flow's small buttons: Settings › Flow › pick "Mark"): pick elements, linked elements or a place; say what
   is wrong; choose who fixes it. The ticket lands in `<project>\01_WIP\_Reviews\FMC_Review_Register.json` with the
