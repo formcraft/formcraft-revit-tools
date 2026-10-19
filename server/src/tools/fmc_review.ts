@@ -5,6 +5,8 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { Filter, PRIORITIES, Register, ReviewItem, answer, filterItems, find, printItems, printList, raise, raiseProblems, shownStatus, solve, verdict } from "../fmc/review.js";
+import { AI_OWNER, applyBcf, comment, mark, markProblems, queue, take } from "../fmc/tickets.js";
+import { fromBcf, toBcf } from "../fmc/bcf.js";
 
 const win = path.win32;
 
@@ -29,7 +31,8 @@ export function registerFile(projectFolder: string): string { return win.join(pr
 const registerFileFor = (projectFolder: string) => registerFile(projectFolder.trim());
 
 function load(file: string, project: string): Register {
-  try { const r = JSON.parse(fs.readFileSync(file, "utf8")) as Register; return { project: r.project || project, items: r.items ?? [] }; }
+  // the print history is kept too: every write saves the whole register
+  try { const r = JSON.parse(fs.readFileSync(file, "utf8")) as Register; return { project: r.project || project, items: r.items ?? [], ...(r.prints ? { prints: r.prints } : {}) }; }
   catch { return { project, items: [] }; }
 }
 
@@ -46,10 +49,27 @@ export const FMC_REVIEW_DESCRIPTION =
     "check (the raiser accepts and closes, or reopens with a reason); cloud (draws a revision cloud around the item's " +
     "linked elements in the active view, on the open review revision: changes the model, so a dry run first and refused " +
     "on live projects); print (a sheet's PDF and its list of items, for review or as revised, into " +
-    "01_WIP\\_Reviews\\Prints\\<sheet>\\<date>_<kind>, with the sheet's print history).";
+    "01_WIP\\_Reviews\\Prints\\<sheet>\\<date>_<kind>, with the sheet's print history). Mark & Review tickets: mark (to ai, " +
+    "a person, a discipline or anyone; where: element UniqueIds, a point, the view, camera, section box; a note, a voice " +
+    "note's audio and transcript, a picture); comment (a reply in the thread, typed or spoken); take (start it; a ticket " +
+    "for anyone gets its owner); queue (what waits for the AI, a person or a discipline, most urgent first, with " +
+    "everything the fix needs); bcf_export and bcf_import (BCF 2.1 for Navisworks, Solibri, BIMcollab, ACC; a dry run " +
+    "first). Marking never changes the model.";
 
 export const FMC_REVIEW_SHAPE = {
-  action: z.enum(["list", "item", "raise", "answer", "solve", "check", "cloud", "print", "prints"]),
+  action: z.enum(["list", "item", "raise", "answer", "solve", "check", "cloud", "print", "prints", "mark", "comment", "take", "queue", "bcf_export", "bcf_import"]),
+  to: z.enum(["ai", "person", "discipline", "anyone"]).optional().default("ai").describe("mark: who fixes it; queue: whose list"),
+  assignee: z.string().optional().default("").describe("mark: the person or discipline; queue: the person or discipline to list"),
+  where: z.object({ unique_ids: z.array(z.string()).default([]), ifc_guids: z.array(z.string()).optional(),
+    linked: z.array(z.object({ link: z.string(), unique_id: z.string() })).optional(), point_mm: z.array(z.number()).length(3).optional(),
+    view: z.string().optional(), camera: z.object({ eye: z.array(z.number()).length(3), direction: z.array(z.number()).length(3), up: z.array(z.number()).length(3),
+      perspective: z.boolean(), field_of_view: z.number().optional(), scale: z.number().optional() }).optional(),
+    section_box: z.object({ min: z.array(z.number()).length(3), max: z.array(z.number()).length(3) }).optional() }).optional().describe("mark: where it is in the model"),
+  audio: z.string().optional().default("").describe("mark, comment: a voice note audio file (copied beside the register)"),
+  transcript: z.string().optional().default("").describe("mark, comment: its transcript (offline Whisper)"),
+  picture: z.string().optional().default("").describe("mark: the view with the pin (copied beside the register)"),
+  ids: z.array(z.string()).optional().default([]).describe("bcf_export: these tickets (default: every open ticket)"),
+  file: z.string().optional().default("").describe("bcf_import: the .bcfzip to read"),
   sheet: z.string().optional().default("").describe("print, prints: the sheet number, e.g. A-1001"),
   kind: z.enum(["For review", "As revised"]).optional().default("For review").describe("print: open items to fix, or solved items with their solutions"),
   dry_run: z.boolean().optional().default(true).describe("cloud: a dry run unless false"),
@@ -91,14 +111,55 @@ export async function runFmcReview(args: FmcReviewArgs) {
         items: items.map((i) => args.full ? { ...i, shown_status: shownStatus(i, today) } : line(i, today)) });
     }
     if (args.action === "item") return reply({ item: { ...find(reg, args.id), shown_status: shownStatus(find(reg, args.id), today) } });
+    if (args.action === "queue") {
+      const q = queue(reg, args.to === "ai" ? { ai: true } : args.to === "discipline" ? { discipline: args.assignee } : { person: args.assignee || args.by });
+      return reply({ file, for: args.to === "ai" ? AI_OWNER : args.assignee || args.by, count: q.length,
+        // compact by default (tokens): one short line per ticket; the AI asks for a whole ticket (item) when it starts on it
+        tickets: q.map((i) => args.full ? { ...i, shown_status: shownStatus(i, today), media: win.join(win.dirname(file), "media", i.id) } : {
+          id: i.id, title: i.title, priority: i.priority, due: i.due, status: shownStatus(i, today), to: i.to, lead: i.lead,
+          note: (i.notes?.[i.notes.length - 1]?.text ?? i.description).slice(0, 160), notes: i.notes?.length ?? 0,
+          elements: (i.where?.unique_ids.length ?? 0) + (i.where?.linked?.length ?? 0), voice: (i.notes ?? []).some((n) => !!n.audio),
+          picture: !!i.pictures?.raised, source: i.source }),
+        next: args.to === "ai" ? "Take the first ticket (take), make its fix as a dry run, and show it to the person who raised it" : undefined });
+    }
     if (args.action === "prints")
       return reply({ sheet: args.sheet, prints: (reg.prints ?? []).filter((p) => !args.sheet || p.sheet.toUpperCase() === args.sheet.toUpperCase()).slice(-20).reverse() });
 
     const verdictWrite = checkWritePath(file, config, { checkName: false });
     if (!verdictWrite.ok) return reply({ refused: true, reasons: verdictWrite.reasons }, true);
     const by = args.by.trim() || "Claude (via MCP)";
+    const media = (id: string) => win.join(win.dirname(file), "media", id);
+    // a voice note or a picture is copied beside the register, so the ticket keeps it whatever happens to the original
+    const keep = (src: string, id: string, name: string): string => {
+      if (!src.trim()) return "";
+      const from = expandEnv(src.trim());
+      if (!fs.existsSync(from)) throw new Error(`No file at ${from}`);
+      const dir = media(id);
+      fs.mkdirSync(dir, { recursive: true });
+      const to = win.join(dir, `${name}${win.extname(from).toLowerCase()}`);
+      if (win.resolve(from) !== win.resolve(to)) fs.copyFileSync(from, to);
+      return win.relative(win.dirname(file), to);
+    };
+    if (args.action === "bcf_export" || args.action === "bcf_import") return reply(...bcf(args, reg, file, config, now, by, media));
     let item: ReviewItem;
-    if (args.action === "raise") {
+    if (args.action === "mark") {
+      const q = { to: args.to, assignee: args.assignee, title: args.title, text: args.description || args.text, transcript: args.transcript,
+        audio: args.audio ? "pending" : "", lead: args.lead, disciplines: args.disciplines, priority: args.priority, due: args.due.trim(),
+        raised_by: by, model: "", where: args.where ?? { unique_ids: [] } };
+      const problems = markProblems(q, today);
+      if (problems.length) return reply({ refused: true, reasons: problems }, true);
+      item = mark(reg, { ...q, audio: undefined }, now);
+      const audio = keep(args.audio, item.id, "note-1"), picture = keep(args.picture, item.id, "raised");
+      if (audio) item.notes![0].audio = audio;
+      if (picture) item.pictures = { ...item.pictures, raised: picture };
+    } else if (args.action === "comment") {
+      item = find(reg, args.id);
+      const audio = keep(args.audio, item.id, `note-${(item.notes?.length ?? 0) + 1}`);
+      comment(item, { by, text: args.text || args.transcript, ...(audio ? { audio } : {}), ...(args.transcript ? { transcript: args.transcript } : {}) }, now);
+    } else if (args.action === "take") {
+      item = find(reg, args.id);
+      take(item, by, now);
+    } else if (args.action === "raise") {
       let ctx: { model?: string; view?: string; sheet?: string; selected?: number[] } = {};
       try { ctx = await withRevitConnection((c) => c.sendRaw("fmc_review_context", {}, 15000)); } catch { ctx = {}; }
       const q = { title: args.title, description: args.description, disciplines: args.disciplines, lead: args.lead, owner: args.owner,
@@ -153,6 +214,48 @@ export async function runFmcReview(args: FmcReviewArgs) {
     log(config, "review_" + args.action, args.project_folder, "error", msg);
     return reply({ error: msg }, true);
   }
+}
+
+/** BCF out (every open ticket, or the ids given) and in (a .bcfzip's topics), each a dry run first. */
+function bcf(args: FmcReviewArgs, reg: Register, file: string, config: GuardConfig, now: Date, by: string, media: (id: string) => string): [object, boolean?] {
+  const reviews = win.dirname(file);
+  if (args.action === "bcf_export") {
+    const items = args.ids.length ? args.ids.map((id) => find(reg, id)) : reg.items.filter((i) => i.to && i.status !== "Closed");
+    if (!items.length) return [{ refused: true, reasons: ["No tickets to send (mark some, or name them in ids)"] }, true];
+    const stamp = now.toISOString().slice(0, 16).replace(/[-:]/g, "").replace("T", "-");
+    const out = win.join(reviews, "BCF", `${reg.project || "PROJ"}_${stamp}.bcfzip`);
+    const v = checkWritePath(out, config, { checkName: false });
+    if (!v.ok) return [{ refused: true, reasons: v.reasons }, true];
+    if (args.dry_run !== false) return [{ dry_run: true, would_write: out, tickets: items.map((i) => ({ id: i.id, title: i.title, status: i.status })), next: "Run again with dry_run=false" }];
+    const { zip, guids } = toBcf(items, (i) => {
+      const pic = i.pictures?.raised ? win.join(reviews, i.pictures.raised) : "";
+      return pic && fs.existsSync(pic) && pic.toLowerCase().endsWith(".png") ? fs.readFileSync(pic) : null;
+    }, reg.project);
+    fs.mkdirSync(win.dirname(out), { recursive: true });
+    fs.writeFileSync(out, zip);
+    for (const i of items) i.guid = guids.get(i.id);
+    fs.writeFileSync(file, JSON.stringify(reg, null, 2));
+    log(config, "review_bcf_export", out, "done", `${items.length} tickets`);
+    return [{ done: true, file: out, tickets: items.length, next: "Send the .bcfzip; answers come back with bcf_import" }];
+  }
+  if (!args.file.trim()) return [{ refused: true, reasons: ["Name the .bcfzip to read (file)"] }, true];
+  const src = expandEnv(args.file.trim());
+  if (!fs.existsSync(src)) return [{ refused: true, reasons: [`No file at ${src}`] }, true];
+  const topics = fromBcf(fs.readFileSync(src));
+  const known = new Set(reg.items.map((i) => i.guid).filter(Boolean));
+  if (args.dry_run !== false)
+    return [{ dry_run: true, file: src, topics: topics.length, new: topics.filter((t) => !known.has(t.guid)).map((t) => t.title), known: topics.filter((t) => known.has(t.guid)).length, next: "Run again with dry_run=false" }];
+  const r = applyBcf(reg, topics, now, (guid, id) => {
+    const t = topics.find((x) => x.guid === guid);
+    if (!t?.snapshot) return undefined;
+    const dir = media(id);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(win.join(dir, "raised.png"), t.snapshot);
+    return win.relative(reviews, win.join(dir, "raised.png"));
+  });
+  fs.writeFileSync(file, JSON.stringify(reg, null, 2));
+  log(config, "review_bcf_import", src, "done", `${r.added.length} new, ${r.updated.length} updated (by ${by})`);
+  return [{ done: true, file: src, added: r.added, updated: r.updated }];
 }
 
 export function registerFmcReviewTool(server: McpServer) {
