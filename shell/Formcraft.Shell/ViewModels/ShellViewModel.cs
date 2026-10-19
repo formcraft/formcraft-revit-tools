@@ -125,7 +125,7 @@ namespace Formcraft.Shell.ViewModels
                               IMaterialTools? materials = null, ISheetTools? sheets = null,
                               IAnnotateTools? annotate = null, IIssueTools? issue = null, ILinkTools? links = null, IWorkshareTools? workshare = null, IReviewTools? review = null, IReportTools? reports = null,
                               IFlowTools? flow = null, IBriefTools? brief = null, IScriptTools? scripts = null, ISystemTools? systems = null, IBuildTools? build = null, IAskTools? ask = null, IAiTools? ai = null, IReleaseTools? release = null, IRobotTools? robot = null, ILiveDataService? liveData = null,
-                              ICaseworkTools? casework = null, ICeilingTools? ceilings = null)
+                              ICaseworkTools? casework = null, ICeilingTools? ceilings = null, IVoiceRecorder? recorder = null)
         {
             _licence = licence;
             _connection = connection;
@@ -171,7 +171,7 @@ namespace Formcraft.Shell.ViewModels
             Workshare = new WorksharePage(workshare ?? new MockWorkshareTools(), Project, settings, s => Status = s, ShowDialog);
             _hostSections["Workshare"] = Workshare;
             Review = new ReviewPage(review ?? new MockReviewTools(), qa ?? new MockQaTools(), Project, settings,
-                                    () => _licence.Current.Account?.Name ?? "", s => Status = s, ShowDialog);
+                                    () => _licence.Current.Account?.Name ?? "", s => Status = s, ShowDialog, recorder);
             _hostSections["Review"] = Review;
             Reports = new ReportsPage(reports ?? new MockReportTools(), Project, settings, s => Status = s, ShowDialog);
             _hostSections["Reports"] = Reports;
