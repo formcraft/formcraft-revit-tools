@@ -40,3 +40,13 @@ The hub server sends MCP `instructions` on connect (what Formcraft is, hard rule
 fmc_context -> task, where the maps are) and serves resources: `fmc://map/folders`, `fmc://map/data`,
 `fmc://map/pane`, `fmc://map/apps` (generated from the kit and code) and `fmc://state` (a session journal: last
 work, open findings, what is waiting on the owner). Goal: no AI relearns the app each session.
+
+## AC4 · Touch features (Formcraft Flow / TouchKit) in ArchiCAD — owner, 19 Oct
+Owner wants the touch features in ArchiCAD too. Suggested shape (Claude Code to confirm against the TouchKit code):
+- Split TouchKit into a **touch layer** (the overlay, radial menus, gestures, pen palette) that runs as its own small
+  Windows app, and **app profiles** that say what each button does in each program (Revit, ArchiCAD).
+- ArchiCAD profile: map buttons to ArchiCAD menu commands and keyboard shortcuts (ArchiCAD can export its shortcut
+  scheme from Work Environment, so the profile can be generated, not typed), and to `fmc_archicad` / Tapir calls
+  where a command needs data (place an FMC object, switch layer combination, set scale).
+- One touch UI then serves Revit, ArchiCAD and later other apps; only the profile changes. A native ArchiCAD
+  add-on (C++ palette) is the fallback if the overlay cannot do something.
