@@ -178,10 +178,25 @@ export function formulaAbsorbs(recipe: Recipe): (solid: string, param: string) =
   const formulas = new Map<string, string[]>();
   // a formula's terms: the names between its operators (parameter names may hold spaces)
   for (const o of ops) if (o.op === "set_formula") formulas.set(String(o.name), String(o.formula).split(/[-+*/()<>=,^]/).map((t) => t.trim()).filter(Boolean));
-  const labels = new Map<string, string[]>();
-  for (const o of ops) if (o.op === "add_dimension" && o.label) for (const pl of (o.between ?? []) as string[]) labels.set(pl, [...(labels.get(pl) ?? []), String(o.label)]);
+  // the dimensions between planes: a plane can hang off another (the panel below the vision glass, off the glass's
+  // bottom, off the head), so the chain is followed a few steps out
+  const dims = new Map<string, Array<{ to: string; label?: string }>>();
+  for (const o of ops) if (o.op === "add_dimension" && Array.isArray(o.between) && o.between.length === 2) {
+    const [a, b] = o.between as string[];
+    dims.set(a, [...(dims.get(a) ?? []), { to: b, label: o.label }]);
+    dims.set(b, [...(dims.get(b) ?? []), { to: a, label: o.label }]);
+  }
   return (solid, param) => {
-    for (const pl of planes.get(solid) ?? []) for (const label of labels.get(pl) ?? []) if (formulas.get(label)?.includes(param)) return label;
+    const seen = new Set<string>(planes.get(solid) ?? []);
+    let ring = [...seen];
+    for (let depth = 0; depth < 4 && ring.length; depth++) {
+      const next: string[] = [];
+      for (const pl of ring) for (const d of dims.get(pl) ?? []) {
+        if (d.label && formulas.get(d.label)?.includes(param)) return d.label;
+        if (!seen.has(d.to)) { seen.add(d.to); next.push(d.to); }
+      }
+      ring = next;
+    }
     return null;
   };
 }
