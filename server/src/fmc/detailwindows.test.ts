@@ -4,7 +4,7 @@ import { COMPONENTS } from "./detailgen.js";
 import { clearanceOps, detailWindow, substituteMaterials } from "./detailwindows.js";
 import { detailProduct, swungOpen } from "./detailproducts.js";
 import { OP, opsProblems } from "./ops.js";
-import { RECIPE } from "./recipes.js";
+import { LOD_RENDER, NestedLod, RECIPE, lodLadder, lodLine } from "./recipes.js";
 
 const realProblems = (ops: any[]) => opsProblems(ops.map((o) => OP.parse(o)), null).filter((x) => !/isn't readable|isn't made earlier/.test(x));
 const plane = (name: string, a: number, kind: "x" | "y" | "z") => kind === "x" ? { op: "add_ref_plane", name, from: [a, -1500], to: [a, 1500] }
@@ -65,6 +65,63 @@ test("QS03: a dispensing hatch splits into a fixed light and a sliding panel; Op
   const keys = ops.map((o) => `${o.op}|${o.name}`);
   assert.equal(new Set(keys).size, keys.length);
   assert.deepEqual(realProblems(ops), []);
+});
+
+/** The ladder of a generated component with its Rhino twins on Fine (what fmc_rhino twins adds). */
+const twinned: NestedLod = (family) => {
+  const r = Object.values(COMPONENTS).map((c) => c.recipe("A")).find((x) => x.family === family);
+  return r ? lodLadder(r.family, [...r.ops, { op: "import_part", name: "Twin" }, { op: "set_visibility", name: "Twin", coarse: false, medium: false, fine: true }]) : null;
+};
+
+test("F-071: every generated window is Coarse LOD 100 (its envelope box), Medium LOD 300, Fine LOD 400 + Render with the parts' twins", () => {
+  const body = [
+    plane("Sill Out", -90, "y"), plane("Board In", 230, "y"), plane("Board L", -510, "x"), plane("Board R", 510, "x"), plane("Board Bot", 775, "z"),
+    plane("Arch Out", 70, "y"), plane("Spacer L", -390, "x"), plane("Spacer R", 390, "x"), plane("Pane Ext In", -1, "y"), plane("Pane Int In", 1, "y"),
+    plane("Spacer Top", 1338, "z"), plane("Blind Front", -0.5, "y"), plane("Blind Back", 0.5, "y"),
+    plane("Knob L", 300, "x"), plane("Knob R", 330, "x"), plane("Knob Bot", 1100, "z"),
+    { op: "extrusion", name: "Jamb L", rect: ["Left", "Frame L In", "Frame Ext", "Frame Int"], start: 800, end: 1400, end_plane: "Head" },
+    { op: "extrusion", name: "Sill Rail", rect: ["Left", "Right", "Sill Out", "Frame Int"], start: 800, end: 850, end_plane: "Sill Inner" },
+    { op: "extrusion", name: "Window Board", rect: ["Board L", "Board R", "Frame Int", "Board In"], start: 775, end: 800, end_plane: "Sill" },
+    { op: "extrusion", name: "Architrave Head", rect: ["Arch L", "Arch R", "Frame Int", "Arch Out"], start: 1400, end: 1470, end_plane: "Arch Top" },
+    { op: "set_visibility", name: "Architrave Head", coarse: false, medium: true, fine: true },
+    { op: "extrusion", name: "Spacer L", rect: ["Frame L In", "Spacer L", "Pane Ext In", "Pane Int In"], start: 850, end: 1350, end_plane: "Head Inner" },
+    { op: "set_visibility", name: "Spacer L", coarse: false, medium: false, fine: true },
+  ];
+  const blind = window([...body,
+    { op: "add_family_param", name: "Blind Material", type: "Material", group: "Materials" },
+    { op: "extrusion", name: "Integral Blind", rect: ["Spacer L", "Spacer R", "Blind Front", "Blind Back"], start: 900, end: 1338, end_plane: "Spacer Top" },
+    { op: "set_visible_param", name: "Integral Blind/Visible", solid: "Integral Blind", param: "Show Blind" },
+    { op: "extrusion", name: "Blind Control Knob", rect: ["Knob L", "Knob R", "Frame Int", "Board In"], start: 1100, end: 1130 },
+  ]);
+  const hatch = window([...body,
+    { op: "extrusion", name: "Glass", rect: ["Frame L In", "Frame R In", "Glass Ext", "Glass Int"], start: 850, end: 1350, end_plane: "Head Inner" },
+    { op: "set_subcategory", name: "Glass", subcategory: "Glass" },
+    { op: "set_material_param", name: "Glass", param: "Glass Material" },
+    plane("Shelf Out", -350, "y"), plane("Shelf In", 350, "y"),
+    { op: "extrusion", name: "Shelf", rect: ["Left", "Right", "Shelf Out", "Shelf In"], start: 800, end: 820 },
+  ]);
+  const lab = { ...hatch, family: "FMC_A_Window_Laboratory_Fixed", ops: hatch.ops.filter((o: any) => o.name !== "Shelf") };
+  for (const [w, rect, top, topPlane] of [[blind, ["Arch L", "Arch R", "Sill Out", "Board In"], 1470, "Arch Top"],
+    [hatch, ["Arch L", "Arch R", "Shelf Out", "Shelf In"], 1630, "Shutter Box Top"], [lab, ["Arch L", "Arch R", "Sill Out", "Board In"], 1470, "Arch Top"]] as const) {
+    const d = detailWindow(w as any, (f) => `A\\${f}.rfa`);
+    const ops = d.recipe.ops;
+    const env = ops.find((o) => o.op === "extrusion" && o.name === "Coarse Envelope")!;
+    assert.deepEqual(env.rect, rect, `${w.family}: flexes with Width and the frame depth`);
+    assert.deepEqual([env.start, env.start_plane, env.end, env.end_plane], [775, "Board Bot", top, topPlane], `${w.family}: and with Height`);
+    const vis = (n: string) => ops.filter((o) => o.op === "set_visibility" && o.name === n).map((o) => [o.coarse, o.medium, o.fine]);
+    assert.deepEqual(vis("Coarse Envelope"), [[true, false, false]]);
+    for (const n of ["Jamb L", "Sill Rail", "Window Board", "Architrave Head"]) assert.deepEqual(vis(n), [[false, true, true]], `${w.family}: ${n}`);
+    assert.deepEqual(vis("Spacer L"), [[false, false, true]], "Fine-only stays Fine-only");
+    assert.deepEqual(vis("Clearance Zone"), [[true, true, false]], "the clearance keeps its levels");
+    for (const o of ops.filter((x) => x.op === "extrusion" && !/Envelope|Clearance/.test(x.name)))
+      assert.deepEqual(vis(o.name).map((v) => v[0]), [false], `${w.family}: ${o.name} hidden on Coarse`);
+    assert.deepEqual(lodLadder(d.recipe.family, ops, twinned), { coarse: "LOD 100", medium: "LOD 300", fine: LOD_RENDER }, w.family);
+    assert.equal(lodLine(d.recipe.family, ops, twinned).state, "Pass", w.family);
+    assert.equal(RECIPE.safeParse(d.recipe).success, true);
+    const keys = ops.map((o) => `${o.op}|${o.name}`);
+    assert.equal(new Set(keys).size, keys.length, w.family);
+    assert.deepEqual(realProblems(ops), [], w.family);
+  }
 });
 
 test("QS03: a front-face door swings 90° outward about its hinge edge, with what it carries", () => {

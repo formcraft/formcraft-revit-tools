@@ -265,11 +265,14 @@
       "state": "Partly built",
       "evidence": [
         "server/src/tools/fmc_calc.ts",
-        "server/src/fmc/calc/sheet.ts"
+        "server/src/fmc/calc/sheet.ts",
+        "server/src/tools/fmc_diagram.ts",
+        "server/src/fmc/diagram/sheets.ts",
+        "commandset/Services/Fmc/FmcDiagramSheet.cs"
       ],
       "feature": "F78",
       "step": "E2",
-      "note": "The calculation sheet is written by fmc_calc sheet (E1, F77) to 01_WIP _Calcs as a draft for the engineer. Still to come: Diagram sheets from the Sheet Register (E-0003 single-line diagram and load summary, E-6002 riser diagram) and Gate D in LD5"
+      "note": "The calculation sheet is written by fmc_calc sheet (E1, F77) to 01_WIP _Calcs as a draft for the engineer. The single-line diagrams go on E-0003 and the power riser on E-6002 (fmc_diagram sheets, LD5), checked by Gate D; not yet checked on a real model. Still to come: E-0003's load summary schedule (E10_Load_Summary) and the board schedules (E-5001) placed by a tool"
     },
     {
       "system": "lighting",
@@ -510,11 +513,15 @@
     {
       "system": "elv_security",
       "capability": "document",
-      "state": "Planned",
-      "evidence": [],
-      "feature": "",
-      "step": "",
-      "note": "No diagram sheet for this system in the Sheet Register yet: a kit change request"
+      "state": "Partly built",
+      "evidence": [
+        "server/src/tools/fmc_diagram.ts",
+        "server/src/fmc/diagram/sheets.ts",
+        "commandset/Services/Fmc/FmcDiagramSheet.cs"
+      ],
+      "feature": "F78",
+      "step": "E2",
+      "note": "The ELV riser goes on E-6002 Riser Diagram, the register's one riser sheet (fmc_diagram sheets, LD5), checked by Gate D; not yet checked on a real model. An ELV sheet of its own would be a kit change request"
     },
     {
       "system": "fire_alarm",
@@ -585,11 +592,15 @@
     {
       "system": "fire_alarm",
       "capability": "document",
-      "state": "Planned",
-      "evidence": [],
-      "feature": "",
-      "step": "",
-      "note": "No diagram sheet for this system in the Sheet Register yet: a kit change request"
+      "state": "Partly built",
+      "evidence": [
+        "server/src/tools/fmc_diagram.ts",
+        "server/src/fmc/diagram/sheets.ts",
+        "commandset/Services/Fmc/FmcDiagramSheet.cs"
+      ],
+      "feature": "F78",
+      "step": "E2",
+      "note": "The fire alarm riser and zone chart go on E-6002 Riser Diagram, the register's one riser sheet (fmc_diagram sheets, LD5), checked by Gate D; not yet checked on a real model. A fire alarm sheet of its own would be a kit change request"
     },
     {
       "system": "fire_fighting",
@@ -671,7 +682,7 @@
       ],
       "feature": "",
       "step": "",
-      "note": "The calculation sheet is written by fmc_calc sheet (E1, F77) to 01_WIP _Calcs as a draft for the engineer. Still to come: No diagram sheet for this system in the Sheet Register yet: a kit change request"
+      "note": "The calculation sheet is written by fmc_calc sheet (E1, F77) to 01_WIP _Calcs as a draft for the engineer. Still to come: the FP schematic has no Sheet Register row; fmc_diagram sheets lists it as a kit change request (LD5)"
     },
     {
       "system": "sprinklers",
@@ -746,7 +757,7 @@
       "evidence": [],
       "feature": "",
       "step": "",
-      "note": "No diagram sheet for this system in the Sheet Register yet: a kit change request"
+      "note": "The FP schematic has no Sheet Register row; fmc_diagram sheets lists it as a kit change request (LD5)"
     },
     {
       "system": "cold_water",
@@ -821,14 +832,17 @@
     {
       "system": "cold_water",
       "capability": "document",
-      "state": "Partly built",
+      "state": "Built, Revit check due",
       "evidence": [
         "server/src/tools/fmc_calc.ts",
-        "server/src/fmc/calc/sheet.ts"
+        "server/src/fmc/calc/sheet.ts",
+        "server/src/tools/fmc_diagram.ts",
+        "server/src/fmc/diagram/sheets.ts",
+        "commandset/Services/Fmc/FmcDiagramSheet.cs"
       ],
       "feature": "F78",
       "step": "E2",
-      "note": "The calculation sheet is written by fmc_calc sheet (E1, F77) to 01_WIP _Calcs as a draft for the engineer. Still to come: Diagram sheets from the Sheet Register (P-0003 water and drainage schematics) and Gate D in LD5"
+      "note": "The calculation sheet is written by fmc_calc sheet (E1, F77) to 01_WIP _Calcs as a draft for the engineer. The water schematics go on P-0003 Water & Drainage Schematics (fmc_diagram sheets, LD5), checked by Gate D; not yet checked on a real model"
     },
     {
       "system": "hot_water",
@@ -899,11 +913,15 @@
     {
       "system": "hot_water",
       "capability": "document",
-      "state": "Planned",
-      "evidence": [],
+      "state": "Built, Revit check due",
+      "evidence": [
+        "server/src/tools/fmc_diagram.ts",
+        "server/src/fmc/diagram/sheets.ts",
+        "commandset/Services/Fmc/FmcDiagramSheet.cs"
+      ],
       "feature": "F78",
       "step": "E2",
-      "note": "Diagram sheets from the Sheet Register (P-0003 water and drainage schematics) and Gate D in LD5"
+      "note": "The water schematics (hot water with the cold) go on P-0003 Water & Drainage Schematics (fmc_diagram sheets, LD5), checked by Gate D; not yet checked on a real model"
     },
     {
       "system": "drainage",
@@ -981,11 +999,14 @@
       "state": "Partly built",
       "evidence": [
         "server/src/tools/fmc_calc.ts",
-        "server/src/fmc/calc/sheet.ts"
+        "server/src/fmc/calc/sheet.ts",
+        "server/src/tools/fmc_diagram.ts",
+        "server/src/fmc/diagram/sheets.ts",
+        "commandset/Services/Fmc/FmcDiagramSheet.cs"
       ],
       "feature": "F78",
       "step": "E2",
-      "note": "The calculation sheet is written by fmc_calc sheet (E1, F77) to 01_WIP _Calcs as a draft for the engineer. Still to come: Diagram sheets from the Sheet Register (P-0003 water and drainage schematics, and the drainage long section) and Gate D in LD5"
+      "note": "The calculation sheet is written by fmc_calc sheet (E1, F77) to 01_WIP _Calcs as a draft for the engineer. The drainage schematics go on P-0003 Water & Drainage Schematics (fmc_diagram sheets, LD5), checked by Gate D; not yet checked on a real model. The drainage long section (P-3001, C-3002) stays TBC: the scan reads no inverts, lengths or manholes yet"
     },
     {
       "system": "rainwater",
@@ -1056,11 +1077,15 @@
     {
       "system": "rainwater",
       "capability": "document",
-      "state": "Planned",
-      "evidence": [],
+      "state": "Built, Revit check due",
+      "evidence": [
+        "server/src/tools/fmc_diagram.ts",
+        "server/src/fmc/diagram/sheets.ts",
+        "commandset/Services/Fmc/FmcDiagramSheet.cs"
+      ],
       "feature": "F78",
       "step": "E2",
-      "note": "Diagram sheets from the Sheet Register (P-0003 water and drainage schematics) and Gate D in LD5"
+      "note": "The rainwater stacks are on the drainage schematic on P-0003 Water & Drainage Schematics (fmc_diagram sheets, LD5), checked by Gate D; not yet checked on a real model"
     },
     {
       "system": "gas",
@@ -1405,7 +1430,7 @@
       "evidence": [],
       "feature": "",
       "step": "",
-      "note": "No diagram sheet for this system in the Sheet Register yet: a kit change request"
+      "note": "The refrigerant schematic has no Sheet Register row; fmc_diagram sheets lists it as a kit change request (LD5)"
     },
     {
       "system": "bms",
@@ -1474,7 +1499,7 @@
       "evidence": [],
       "feature": "",
       "step": "",
-      "note": "No diagram sheet for this system in the Sheet Register yet: a kit change request"
+      "note": "The controls riser and points list have no Sheet Register row; fmc_diagram sheets lists them as a kit change request (LD5)"
     },
     {
       "system": "lightning",
@@ -1545,11 +1570,15 @@
     {
       "system": "lightning",
       "capability": "document",
-      "state": "Planned",
-      "evidence": [],
-      "feature": "",
-      "step": "",
-      "note": "No diagram sheet for this system in the Sheet Register yet: a kit change request"
+      "state": "Partly built",
+      "evidence": [
+        "server/src/tools/fmc_diagram.ts",
+        "server/src/fmc/diagram/sheets.ts",
+        "commandset/Services/Fmc/FmcDiagramSheet.cs"
+      ],
+      "feature": "F78",
+      "step": "E2",
+      "note": "The LP and earthing schematic goes on E-0004 Earthing & Bonding Schematic (fmc_diagram sheets, LD5), checked by Gate D; not yet checked on a real model. The register has no LP schematic sheet of its own (kit change request)"
     },
     {
       "system": "earthing",
@@ -1624,14 +1653,17 @@
     {
       "system": "earthing",
       "capability": "document",
-      "state": "Partly built",
+      "state": "Built, Revit check due",
       "evidence": [
         "server/src/tools/fmc_calc.ts",
-        "server/src/fmc/calc/sheet.ts"
+        "server/src/fmc/calc/sheet.ts",
+        "server/src/tools/fmc_diagram.ts",
+        "server/src/fmc/diagram/sheets.ts",
+        "commandset/Services/Fmc/FmcDiagramSheet.cs"
       ],
       "feature": "F78",
       "step": "E2",
-      "note": "The calculation sheet is written by fmc_calc sheet (E1, F77) to 01_WIP _Calcs as a draft for the engineer. Still to come: Diagram sheets from the Sheet Register (E-0004 earthing and bonding schematic) and Gate D in LD5"
+      "note": "The calculation sheet is written by fmc_calc sheet (E1, F77) to 01_WIP _Calcs as a draft for the engineer. The earthing and bonding schematic goes on E-0004 Earthing & Bonding Schematic (fmc_diagram sheets, LD5), checked by Gate D; not yet checked on a real model"
     },
     {
       "system": "solar",

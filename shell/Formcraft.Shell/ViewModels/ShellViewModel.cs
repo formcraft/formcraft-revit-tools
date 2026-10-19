@@ -187,7 +187,7 @@ namespace Formcraft.Shell.ViewModels
             Automation = new AutomationPage(balance ?? new MockBalanceTools(), Project, settings, s => Status = s, ShowDialog);
             _hostSections["Automation"] = Automation;
             var systemTools = systems ?? new MockSystemTools();
-            Systems = new SystemsPage(systemTools, Project, settings, s => Status = s);
+            Systems = new SystemsPage(systemTools, Project, settings, s => Status = s, ShowDialog);
             _hostSections["Systems"] = Systems;
             Structural = new StructuralPage(systemTools, Project, settings, s => Status = s, robot, ShowDialog);
             _hostSections["Structural"] = Structural;
