@@ -47,4 +47,25 @@ namespace RevitMCPCommandSet.Commands.Fmc
             }
         }
     }
+
+    /// <summary>Revit's design option sets and options, and the active one (O3); read-only.</summary>
+    public class FmcDesignOptionsCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcDesignOptionsHandler _handler => (FmcDesignOptionsHandler)Handler;
+
+        public FmcDesignOptionsCommand(UIApplication uiApp) : base(new FmcDesignOptionsHandler(), uiApp) { }
+        public override string CommandName => "fmc_design_options";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = parameters ?? new JObject();
+                if (!RaiseAndWaitForCompletion(30000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
 }
