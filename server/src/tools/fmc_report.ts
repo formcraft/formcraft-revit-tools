@@ -6,6 +6,8 @@ import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../
 import { AUDIENCES, KINDS, PERIODS, SECTIONS, Sources, buildReport, reportCsv, reportName } from "../fmc/report.js";
 import { Register } from "../fmc/review.js";
 import { csvRow } from "./fmc_sheets.js";
+import { digest, lastWeeks } from "../fmc/balance.js";
+import { ledgerEvents, loadFeatures, loadHomes } from "../fmc/balance_io.js";
 
 const win = path.win32;
 
@@ -58,6 +60,22 @@ export function readSources(cfg: GuardConfig, projectFolder: string): Sources {
   };
 }
 
+/**
+ * F74: the weekly report's automation balance, from the call ledger: this project's calls, or every project's when the
+ * ledger names none for it (calls without a project folder or document carry no project). Never fails the report.
+ */
+function balanceFor(code: string, today: string): Sources["balance"] {
+  try {
+    const events = ledgerEvents(lastWeeks(today, 4).from, today);
+    const homes = loadHomes(), features = loadFeatures().features;
+    const own = digest(events, today, homes, features, code);
+    if (own.week.total || own.last_week.total) return { digest: own, scope: `${code}'s calls` };
+    return { digest: digest(events, today, homes, features, ""), scope: `every project's calls (the ledger names none for ${code})` };
+  } catch {
+    return undefined;
+  }
+}
+
 export const FMC_REPORT_DESCRIPTION =
   "Formcraft reports, traced to the plugin's own saved files (MAN 13.1): Weekly project report, Model health and QA, " +
     "Review register, Sync log and workshare, Ready to issue record, Rule exceptions, Activity log. Period: Last 7 days, " +
@@ -97,7 +115,9 @@ export async function runFmcReport(args: FmcReportArgs) {
     }
     const code = args.project_code.trim().toUpperCase() || win.basename(folder).split("_")[0].toUpperCase();
     const today = new Date().toISOString().slice(0, 10);
-    const built = buildReport(args.kind, readSources(config, folder), { project: code, period: args.period, audience: args.audience, disciplines: args.disciplines, today });
+    const sources = readSources(config, folder);
+    sources.balance = balanceFor(code, today);
+    const built = buildReport(args.kind, sources, { project: code, period: args.period, audience: args.audience, disciplines: args.disciplines, today });
     if (args.dry_run !== false)
       return reply({ dry_run: true, title: built.title, sections: SECTIONS[args.kind], left_out: built.left_out, preview: built.markdown,
         next: "Run again with dry_run=false to save it" });

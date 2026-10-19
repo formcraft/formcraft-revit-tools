@@ -5,6 +5,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { BUILTIN_FLOWS, FLOW, Flow, runFlow } from "../hub/flows.js";
 import { exchangeRoot, identityStats, listPackages, loadIdentity, verifyPackage } from "../hub/exchange.js";
+import { recorded, startedByFrom } from "../fmc/ledger.js";
 
 const win = path.win32;
 
@@ -68,7 +69,9 @@ export async function callTool(tool: string, args: Record<string, unknown>): Pro
   const shape = Object.entries(mod).find(([k]) => /^FMC_[A-Z_]+_SHAPE$/.test(k))?.[1];
   const run = Object.entries(mod).find(([k, v]) => /^runFmc/.test(k) && typeof v === "function")?.[1];
   if (!shape || !run) throw new Error(`${tool} can't run in a flow (no argument shape or run function)`);
-  const r = await run(z.object(shape).parse(args));
+  // F74: a step is a call started by a job (by the schedule when a scheduled task runs the flow), in the call ledger
+  const by = startedByFrom(process.env, "ai") === "schedule" ? "schedule" : "job";
+  const r = await recorded(tool, args, by, () => run(z.object(shape).parse(args)));
   let body: any = {};
   try { body = JSON.parse(r?.content?.[0]?.text ?? "{}"); } catch { body = { text: r?.content?.[0]?.text }; }
   return { ok: !r?.isError, body };

@@ -13,11 +13,11 @@ namespace revit_mcp_plugin.Shell
     /// <summary>
     /// Engineer › Casework in Revit (CW3): fmc_casework through the installed server, the very engine Claude uses. The run
     /// and, while the kit has none, the workshop standards come from the person's run file; the pane adds nothing (rule 7).
-    /// Placing units is CW2 (fmc_casework_place): not in the add-in yet, so CanPlace is false and nothing is placed.
+    /// Placing units is CW2: fmc_casework place, whose dry run places and rolls back; the real run is behind the lock.
     /// </summary>
     public sealed class RevitCaseworkTools : ICaseworkTools
     {
-        public bool CanPlace => false;
+        public bool CanPlace => true;
         public string SampleRunFile => null;
 
         public async Task<CaseworkLayout> LayOutAsync(CaseworkRequest request)
@@ -124,8 +124,55 @@ namespace revit_mcp_plugin.Shell
             return pack;
         }
 
-        public Task<ToolResult> PlaceAsync(CaseworkRequest request, bool dryRun) =>
-            Task.FromResult(ToolResult.Refused("Placing units in Revit comes with CW2 (fmc_casework_place): the add-in can't place them yet. Nothing was changed."));
+        /// <summary>
+        /// fmc_casework place (CW2). The run file's "place" block carries what placing needs and the pane doesn't ask:
+        /// level, wall_unit_bottom, and optionally family and type_for; the walls need their start and end (from room).
+        /// </summary>
+        public async Task<ToolResult> PlaceAsync(CaseworkRequest request, bool dryRun)
+        {
+            string problem;
+            var args = Args("place", request, out problem);
+            if (args == null) return ToolResult.Refused(problem);
+            try
+            {
+                if (JObject.Parse(File.ReadAllText(request.RunFile))["place"] is JObject place)
+                    foreach (var key in new[] { "level", "wall_unit_bottom", "family", "type_for", "room" })
+                        if (place[key] != null) args[key] = place[key].DeepClone();
+            }
+            catch (Exception ex) { return ToolResult.Refused("The run file can't be read: " + ex.Message); }
+            if (args["level"] == null) return ToolResult.Refused("The run file's \"place\" block needs the level (and wall_unit_bottom for wall units). Nothing was changed.");
+            args["label"] = request.Label.Length > 0 ? request.Label : "Casework";
+            args["dry_run"] = dryRun;
+
+            CliResult r = await ServerCli.RunAsync("fmc_casework", args);
+            var result = new ToolResult();
+            if (!r.Ok)
+            {
+                result.Messages.Add(new ToolMessage(ChipKind.Bad, (dryRun ? "Dry run refused: " : "Place refused: ") + string.Join(" ", r.Reasons()) + " Nothing was changed."));
+                foreach (JObject k in (r.Body["kit_requests"] as JArray ?? new JArray()).OfType<JObject>())
+                    result.Messages.Add(new ToolMessage(ChipKind.Warn, "Kit change request: " + k.Value<string>("request")));
+                return result;
+            }
+            var b = r.Body;
+            var will = Strings(b["will_place"]).ToList();
+            var revit = b["result"] as JObject ?? new JObject();
+            var placed = (revit["placed"] as JArray ?? new JArray()).Count;
+            result.Ok = true;
+            result.Count = will.Count;
+            result.Details.AddRange(will);
+            foreach (JObject s in (b["skipped"] as JArray ?? new JArray()).OfType<JObject>())
+                result.Details.Add("Not placed: " + s.Value<string>("mark") + " (" + s.Value<string>("why") + ")");
+            foreach (JObject f in ((b["checks"] as JObject)?["flags"] as JArray ?? new JArray()).OfType<JObject>().Where(f => f.Value<string>("state") == "flag"))
+                result.Details.Add("Check: " + f.Value<string>("detail") + " (" + f.Value<string>("rule") + ")");
+            foreach (var n in Strings(revit["notes"]).Concat(Strings(revit["errors"])))
+                result.Details.Add("Revit: " + n);
+            result.Messages.Add(dryRun
+                ? new ToolMessage(ChipKind.Info, "Dry run: " + placed + " of " + will.Count + " units placed in Revit and rolled back.")
+                : new ToolMessage(placed == will.Count ? ChipKind.Good : ChipKind.Warn, "Placed " + placed + " of " + will.Count + " units. One Undo takes them out. Logged."));
+            foreach (JObject k in (b["kit_requests"] as JArray ?? new JArray()).OfType<JObject>())
+                result.Messages.Add(new ToolMessage(ChipKind.Warn, "Kit change request: " + k.Value<string>("request")));
+            return result;
+        }
 
         /// <summary>The call's arguments: the run from the person's file (with fronts from the unit editor) or the editor's unit list, and the file's standards.</summary>
         private static JObject Args(string action, CaseworkRequest q, out string problem)

@@ -47,6 +47,8 @@ export interface GuardConfig {
   materials_file: string;
   /** The kit's annotation standard (FMC_Annotation_Standard.json), read by Drawings › Annotate */
   annotation_standard_file: string;
+  /** The kit's clash matrix (fmc-clash-matrix, docs/CLASH_MATRIX.md), read by fmc_navis; not in the kit yet (a kit change request) */
+  clash_matrix_file: string;
   /**
    * F-046: an fmc_doc session idle for longer than this (hours) is stale: fmc_doc list and background say so, and
    * fmc_recipe cleanup closes it without saving (dry run first). Never a document in a Revit window or one the person opened.
@@ -70,6 +72,7 @@ export const DEFAULT_CONFIG: GuardConfig = {
   rulebooks_dir: "Z:\\00_Standards\\03_Master_Data\\FMC_Rulebook", // kit r4: the rulebooks live with the master data
   materials_file: "Z:\\00_Standards\\07_Materials\\FMC_Materials.json",
   annotation_standard_file: "Z:\\00_Standards\\03_Master_Data\\FMC_Annotation_Standard.json",
+  clash_matrix_file: "Z:\\00_Standards\\08_Navisworks\\FMC_Clash_Matrix.json",
   session_idle_hours: 12,
 };
 
@@ -83,6 +86,10 @@ export const WRITE_COMMANDS = new Set<string>([
   // Line diagrams (owner, 15 Oct): the tool draws only in new documents, _Staging and _ChainTests; in a live project a
   // person presses Generate in the pane.
   "fmc_diagram_draw",
+  // Casework (CW2): units placed, and shop-drawing views, sheets and the cut-list schedule; the dry runs roll back.
+  "fmc_casework_place", "fmc_casework_pack",
+  // Ceilings (CL2, CL4): placing, replacing and the RCP sheet and set-out drawing; same rule as the line diagrams.
+  "fmc_ceiling_place", "fmc_ceiling_edit", "fmc_ceiling_sheet",
   // schedule sets made or updated (F60)
   "fmc_schedules_apply",
   // The recipe tree's room builds (T1) and Mark & Review's applied fixes (R6)

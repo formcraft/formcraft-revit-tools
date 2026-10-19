@@ -56,6 +56,9 @@ namespace Formcraft.Shell.Services
             ("annotate", "Annotation check (current view)"),
             ("review", "Open review items"),
             ("report", "Weekly project report (Markdown and CSV)"),
+            // Hub step T: kit tables by script. Both only read; the real import is a person's yes (fmc_tables import).
+            ("tables", "Kit tables check (the kit's Excel against its CSV and JSON)"),
+            ("tables_import", "Edited kit tables (dry run of the workbooks in staging)"),
         };
 
         public static string Title(string id) => All.FirstOrDefault(s => s.Id == id).Title ?? id;
@@ -66,6 +69,7 @@ namespace Formcraft.Shell.Services
             new Automation("Before sync", "selftest", "qa", "workshare"),
             new Automation("Model check", "selftest", "links", "annotate", "qa"),
             new Automation("Friday issue prep", "qa", "review", "report"),
+            new Automation("Kit tables (dry run)", "tables", "tables_import"),
         };
     }
 

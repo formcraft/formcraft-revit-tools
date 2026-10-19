@@ -294,7 +294,7 @@
     "feature": "Casework Assistant",
     "status": "In progress",
     "ref": "#116, #141",
-    "note": "Engine merged; pane screens built on sample data; Revit placement next (CW2)"
+    "note": "Engine merged; pane screens built on sample data; CW2 (room reading, checks, placement as the kit's FMC_I_Casework_KitchenUnit, shop drawings on A3) and CW4 (workshop pack PDF) built, not Revit-checked; kit lacks Corner and Sink unit types"
   },
   {
     "id": "F34",
@@ -303,7 +303,7 @@
     "feature": "Ceiling Design Assistant",
     "status": "In progress",
     "ref": "PR #118, #141",
-    "note": "Engine in review (PR #118); pane screens built on sample data; Revit placement next (CL2)"
+    "note": "Engine (PR #118) and pane screens on sample data (PR #141); CL2 placement (ceilings per zone, line features where families are loaded, fixtures as marked positions only) and CL4 drawings (set-out and section drafting views, RCP with kit symbols, RCP sheet) built, not Revit-checked; the pane's Place button isn't wired yet"
   },
   {
     "id": "F35",
@@ -354,10 +354,10 @@
     "id": "F40",
     "area": "App",
     "group": "Integrations",
-    "feature": "Navisworks bridge (read-only)",
+    "feature": "Navisworks bridge: read clashes, federate, clash matrix tests, clashes back to Revit",
     "status": "Built, Revit check due",
-    "ref": "#94",
-    "note": ""
+    "ref": "#94; H3 docs/CLASH_MATRIX.md",
+    "note": "H3 built, not checked in Navisworks yet: fmc_navis federate, matrix, clash_create, clash_run, back (tickets or clouds) and clash_status (a person's yes). The clash matrix is a kit change request (fmc-clash-matrix/0.1 proposed)"
   },
   {
     "id": "F41",
@@ -609,7 +609,7 @@
     "feature": "One engineering hub: Revit, Navisworks, Robot, Rhino, Power BI",
     "status": "In progress",
     "ref": "docs/PLAN_ENGINEERING_HUB.md",
-    "note": "H0 built: fmc_apps (list, switch), per-app tool loading, Apps lines in fmc_selftest; all five apps detected on the pilot PC. H1 built: Rhino connector (Formcraft.Rhino package, fmc_rhino: parts vocabulary, check, render, export_parts to .3dm). Next: Power BI (H2)"
+    "note": "H0 built: fmc_apps (list, switch), per-app tool loading, Apps lines in fmc_selftest; all five apps detected on the pilot PC. H1 built: Rhino connector (Formcraft.Rhino package, fmc_rhino: parts vocabulary, check, render, export_parts to .3dm). H3 built, not checked in Navisworks yet: federate, clash tests from the clash matrix (kit change request), clashes back to Revit through the identity map. H2 built: fmc_powerbi writes the project data model (CSV tables and a TMDL PBIP) to the project's 01_WIP _Exchange (PowerBI folder); not checked in Power BI yet, Modeling MCP gateway not set up."
   },
   {
     "id": "F69",
@@ -618,7 +618,7 @@
     "feature": "Apps work as one: identity map, exchange packages, saved flows (X0–X4)",
     "status": "In progress",
     "ref": "docs/PLAN_ENGINEERING_HUB.md",
-    "note": "X0 built: identity map (FMC_Identity.json), exchange packages with SHA-256 manifests, fmc_flow saved flows (built in: health, pack_rebuild, chain_test, robot_send, robot_results); Revit ↔ Robot recorded on the identity map. X1 and X3 built (19 Oct), not app-checked: fmc_select (one selection Revit ↔ Navisworks ↔ Rhino ↔ Robot through the identity map; Revit fmc_selection_get/show, navis_select/selection, rhino_select/selection, fmc-robot select/selection) and fmc_find (find: identity map, Revit by mark/number/name and what touches it, Navisworks items and clashes, review tickets, tree nodes, packages; log: one timeline of the file log, packages, ticket history and identity links). Next: X2 changes, X4 pane"
+    "note": "X0 built: identity map (FMC_Identity.json), exchange packages with SHA-256 manifests, fmc_flow saved flows (built in: health, pack_rebuild, chain_test, robot_send, robot_results); Revit ↔ Robot recorded on the identity map. Next: X1 selection, X2 changes, X3 search and log, X4 pane. Step T built (Revit check due): fmc_tables compares, exports and imports kit tables (Excel ↔ CSV/JSON) by script, dry run first, proposals and a kit change request in staging; Check › Scripts runs it as \"Kit tables (dry run)\". X1 and X3 built (19 Oct), not app-checked: fmc_select (one selection Revit ↔ Navisworks ↔ Rhino ↔ Robot through the identity map; Revit fmc_selection_get/show, navis_select/selection, rhino_select/selection, fmc-robot select/selection) and fmc_find (find: identity map, Revit by mark/number/name and what touches it, Navisworks items and clashes, review tickets, tree nodes, packages; log: one timeline of the file log, packages, ticket history and identity links). Next: X2 changes, X4 pane"
   },
   {
     "id": "F70",
@@ -655,6 +655,15 @@
     "status": "In progress",
     "ref": "docs/PLAN_OPTIONS.md",
     "note": "Approved 19 Oct; cost as quantities only, daylight as a glazing proxy. Built: O0 variants, O1 comparison, O3 build into Revit design options (a person makes the options: the API can't), O4 choosing; O2 the pane's Engineer › Options cards side by side (numbers, what fails, differences highlighted, Make active after a dry run, Choose this one under the signed-in person, Save the comparison; the plan sketch opens in the default app). The PaneOptions board is a placeholder still to draw. None Revit-checked"
+  },
+  {
+    "id": "F74",
+    "area": "App",
+    "group": "Check",
+    "feature": "Automation balance tracker: AI-written code against plugin tools, add-ons and outside scripts, and the move list",
+    "status": "In progress",
+    "ref": "docs/AUTOMATION_BALANCE.md",
+    "note": "Owner's decisions 19 Oct: the tracker before the add-on work, in the pane, Power BI and the weekly report. Built: the local call ledger (every server call: tool, action, ok, ms, project, started by ai/pane/job/schedule/cli; send_code adds purpose and a code hash; never names or content), one-line hooks for pyRevit, Dynamo, Grasshopper, Python, JS, PowerShell and batch (resources/hooks), fmc_balance summary/backlog/inventory/export (move list seeded with the KISIC inventory, status from this tracker), Check › Automation in the pane, an Automation balance section in the weekly report, tidy CSVs for Power BI. The PaneAutomation board is a placeholder still to draw; the Power BI model table waits for #220. None Revit-checked"
   },
   {
     "id": "F75",

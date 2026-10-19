@@ -5,7 +5,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { Filter, PRIORITIES, Register, ReviewItem, answer, filterItems, find, printItems, printList, raise, raiseProblems, shownStatus, solve, verdict } from "../fmc/review.js";
-import { AI_OWNER, applyBcf, clashTickets, comment, mark, markProblems, queue, take, titleFrom } from "../fmc/tickets.js";
+import { AI_OWNER, ClashIn, applyBcf, clashTickets, comment, mark, markProblems, queue, take, titleFrom } from "../fmc/tickets.js";
 import { navisCall, processAlive, readState } from "../fmc/navis.js";
 import { fromBcf, toBcf } from "../fmc/bcf.js";
 import { Downloader, Runner, WHISPER_MODELS, WhisperModel, languageProblem, runSetup, setupPlan, transcribe, whisperHome } from "../fmc/whisper.js";
@@ -41,6 +41,36 @@ function load(file: string, project: string): Register {
   // the print history is kept too: every write saves the whole register
   try { const r = JSON.parse(fs.readFileSync(file, "utf8")) as Register; return { project: r.project || project, items: r.items ?? [], ...(r.prints ? { prints: r.prints } : {}) }; }
   catch { return { project, items: [] }; }
+}
+
+/**
+ * Navisworks clash rows into the project's register (R5), the one place this happens: fmc_review clashes and
+ * fmc_navis back (H3) both call it. A dry run counts what would be added and writes nothing.
+ */
+export function clashesIntoRegister(o: { projectFolder: string; projectCode?: string; test: string; rows: ClashIn[]; by: string; dryRun: boolean; config: GuardConfig; now?: Date }):
+  { dry_run: boolean; test: string; clashes: number; would_add: number; added: string[]; skipped: number; file: string } {
+  const file = registerFile(o.projectFolder.trim());
+  const now = o.now ?? new Date();
+  const reg = load(file, (o.projectCode ?? "").trim().toUpperCase());
+  if (o.dryRun) {
+    const would = clashTickets({ ...reg, items: [...reg.items] }, o.test, o.rows, o.by, now);
+    return { dry_run: true, test: o.test, clashes: o.rows.length, would_add: would.added.length, added: [], skipped: would.skipped, file };
+  }
+  const done = clashTickets(reg, o.test, o.rows, o.by, now);
+  fs.mkdirSync(win.dirname(file), { recursive: true });
+  fs.writeFileSync(file, JSON.stringify(reg, null, 2));
+  log(o.config, "review_clashes", file, "done", `${o.test}: ${done.added.length} tickets, ${done.skipped} skipped`);
+  return { dry_run: false, test: o.test, clashes: o.rows.length, would_add: done.added.length, added: done.added, skipped: done.skipped, file };
+}
+
+/** The register as it is on disk (read-only): fmc_navis back reads the clash tickets from it. */
+export function loadRegister(projectFolder: string): Register { return load(registerFile(projectFolder.trim()), ""); }
+
+/** Writes the whole register back (fmc_navis back records which elements a clash ticket clouds). */
+export function saveRegister(projectFolder: string, reg: Register) {
+  const file = registerFile(projectFolder.trim());
+  fs.mkdirSync(win.dirname(file), { recursive: true });
+  fs.writeFileSync(file, JSON.stringify(reg, null, 2));
 }
 
 /** One line per item for lists (the full item comes with action item). */
@@ -276,13 +306,9 @@ export async function runFmcReview(args: FmcReviewArgs, deps: ReviewDeps = {}) {
       if (!st || !processAlive(st.pid)) return reply({ refused: true, reasons: ["Navisworks with the Formcraft bridge isn't open (fmc_navis status)"] }, true);
       const res = await navisCall(st.port, "navis_clash_results", { test: args.test.trim(), status: "", limit: 2000 });
       const rows = ((res.results ?? []) as Array<Record<string, any>>).map((x) => ({ ...x, center_mm: x.center_mm })) as any;
-      const preview = { ...reg, items: [...reg.items] };
-      const would = clashTickets(preview, args.test.trim(), rows, by, now);
-      if (args.dry_run !== false) return reply({ dry_run: true, test: args.test, clashes: rows.length, would_add: would.added.length, skipped: would.skipped, next: "Run again with dry_run=false" });
-      const done = clashTickets(reg, args.test.trim(), rows, by, now);
-      fs.writeFileSync(file, JSON.stringify(reg, null, 2));
-      log(config, "review_clashes", file, "done", `${args.test}: ${done.added.length} tickets, ${done.skipped} skipped`);
-      return reply({ done: true, test: args.test, added: done.added, skipped: done.skipped, next: "Open a ticket with show: Revit selects the elements and opens your review view on the clash" });
+      const r = clashesIntoRegister({ projectFolder: args.project_folder, projectCode: args.project_code, test: args.test.trim(), rows, by, dryRun: args.dry_run !== false, config, now });
+      if (r.dry_run) return reply({ dry_run: true, test: args.test, clashes: r.clashes, would_add: r.would_add, skipped: r.skipped, next: "Run again with dry_run=false" });
+      return reply({ done: true, test: args.test, added: r.added, skipped: r.skipped, next: "Open a ticket with show: Revit selects the elements and opens your review view on the clash" });
     }
     let item: ReviewItem;
     if (args.action === "mark") {
