@@ -318,6 +318,7 @@ namespace Formcraft.Shell.ViewModels
             "Section Box" or "Section box" => "on a floor plan, drag the area; your own 3D view opens with the box.",
             "Align" or "Sheet Layout" => "on a sheet, select the viewports (or none for all) and pick how to line them up.",
             "Tag Tidy" => "select the tags in the view, then pick how to tidy them.",
+            "Mark" => "pick elements or a place, then say what is wrong; the ticket goes to the review register for the AI or the team.",
             _ => "runs in Revit.",
         };
 

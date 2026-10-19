@@ -49,6 +49,7 @@ namespace revit_mcp_plugin.Shell
                     case "Section box": case "Section Box": SectionBox(ui); break;
                     case "Align": case "Sheet Layout": Align(ui); break;
                     case "Tag Tidy": TagTidy(ui); break;
+                    case "Mark": MarkTool.Run(ui); break;
                     case "Shortcuts import": app.PostCommand(RevitCommandId.LookupPostableCommandId(PostableCommand.KeyboardShortcuts)); break;
                     default: TaskDialog.Show(Title, tool + " isn't a Flow tool."); break;
                 }
