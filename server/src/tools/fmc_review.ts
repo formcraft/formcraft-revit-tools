@@ -11,6 +11,7 @@ import { fromBcf, toBcf } from "../fmc/bcf.js";
 import { Downloader, Runner, WHISPER_MODELS, WhisperModel, languageProblem, runSetup, setupPlan, transcribe, whisperHome } from "../fmc/whisper.js";
 import { ElementFacts, intentAfterReply, parseNote, planFix } from "../fmc/noteparse.js";
 import { readDb } from "./fmc_material.js";
+import { applyProblems, applySteps, fixApplied, fixFailed, planHash } from "../fmc/applyfix.js";
 
 const win = path.win32;
 
@@ -65,10 +66,16 @@ export const FMC_REVIEW_DESCRIPTION =
     "intent kept on the ticket (resize, set_param, move, raise_lower, swap_type, material, delete, add_clearance, " +
     "same_as, unclear); plan_fix (id; optional facts: the element's category, type, parameters in mm, loadable types) " +
     "returns the structured fix as a dry run: each step with a sentence, what is unclear (for the AI), what needs an " +
-    "engineer (rule 5). Materials only from the kit's list (rule 7). It never applies a fix.";
+    "engineer (rule 5). Materials only from the kit's list (rule 7). plan_fix never applies a fix. apply_fix (R6, id): a " +
+    "dry run plans again from the model's facts and returns the steps with their plan_hash, to show the person who " +
+    "raised it; with dry_run false, approved_by (that person) and the plan_hash they saw, the steps are applied in one " +
+    "transaction (refused on live models, refused when the plan changed, anything unclear or for an engineer, or no " +
+    "element facts) and the ticket goes back to the raiser as Resolved to check.";
 
 export const FMC_REVIEW_SHAPE = {
-  action: z.enum(["list", "item", "raise", "answer", "solve", "check", "cloud", "print", "prints", "mark", "comment", "take", "queue", "bcf_export", "bcf_import", "transcribe", "whisper_setup", "show", "clashes", "plan_fix"]),
+  action: z.enum(["list", "item", "raise", "answer", "solve", "check", "cloud", "print", "prints", "mark", "comment", "take", "queue", "bcf_export", "bcf_import", "plan_fix", "apply_fix", "show", "clashes", "transcribe", "whisper_setup"]),
+  approved_by: z.string().optional().default("").describe("apply_fix: the person who said yes to the steps (never the AI)"),
+  plan_hash: z.string().optional().default("").describe("apply_fix: the plan_hash from the dry run that person saw"),
   facts: z.object({ unique_id: z.string().optional(), category: z.string().optional(), family: z.string().optional(), type_name: z.string().optional(),
     params: z.record(z.union([z.number(), z.string(), z.null()])).optional(), types: z.array(z.string()).optional(),
     reference: z.object({ type_name: z.string().optional(), unique_id: z.string().optional() }).optional(), view: z.string().optional() })
@@ -165,13 +172,11 @@ export async function runFmcReview(args: FmcReviewArgs, deps: ReviewDeps = {}) {
     }
     // the kit's material names: a parsed material is only ever one of these (rule 7)
     const materials = (): string[] => readDb(config)?.materials.map((m) => m.name) ?? [];
-    if (args.action === "plan_fix") {
-      // a dry run, always: it reads and plans, never applies (applying is R6, after a person's yes)
-      const item = find(reg, args.id);
+    const makePlan = async (item: ReviewItem, given: ElementFacts | null) => {
       const text = (item.notes ?? []).map((n) => n.text || n.transcript || "").filter(Boolean).join(". ") || item.description;
       const kit = materials();
       const intents = item.intent ?? parseNote(text, { materials: kit });
-      let facts: ElementFacts | null = args.facts ?? null, source = args.facts ? "given" : "none";
+      let facts: ElementFacts | null = given, source = given ? "given" : "none";
       const uid = item.where?.unique_ids[0];
       if (!facts && uid) {
         // the element's facts from Revit, if it is open and answers; a plan from the note alone otherwise
@@ -181,11 +186,27 @@ export async function runFmcReview(args: FmcReviewArgs, deps: ReviewDeps = {}) {
           if (e && (e.category || e.type_name || e.params)) { facts = { unique_id: uid, ...e }; source = "Revit"; }
         } catch { facts = null; }
       }
-      const plan = planFix(intents, facts, { materials: kit });
+      return { kit, intents, facts_from: source, plan: planFix(intents, facts, { materials: kit }) };
+    };
+    if (args.action === "plan_fix") {
+      // a dry run, always: it reads and plans, never applies (apply_fix does, after a person's yes)
+      const item = find(reg, args.id);
+      const { kit, intents, facts_from: source, plan } = await makePlan(item, args.facts ?? null);
       return reply({ id: item.id, intents, facts_from: source, plan,
         ...(plan.from_note_only ? { note: "No element facts (Revit not reachable or the ticket marks no element): planned from the note alone; plan again with Revit open, or pass facts" } : {}),
         ...(kit.length ? {} : { kit: `Material database not readable at ${config.materials_file}: material requests can't be matched` }),
-        next: plan.ready ? "Show the steps to the person who raised it; applying them (after a clear yes) is R6" : "Settle what is unclear (the AI or a person) and plan again" });
+        next: plan.ready ? "Show the steps to the person who raised it; apply_fix applies them after a clear yes" : "Settle what is unclear (the AI or a person) and plan again" });
+    }
+    if (args.action === "apply_fix" && args.dry_run !== false) {
+      // planned again from the model as it is now (facts from Revit only): what the person sees is what will be applied
+      const item = find(reg, args.id);
+      const { plan, facts_from } = await makePlan(item, null);
+      const steps = applySteps(item, plan);
+      const problems = applyProblems(item, plan);
+      return reply({ dry_run: true, id: item.id, raised_by: item.raised_by, facts_from, steps: steps.map((s) => s.sentence),
+        plan_hash: planHash(steps), ...(problems.length ? { refused: true, reasons: problems } : {}),
+        next: problems.length ? "Settle these first (the AI, a person or an engineer), then run the dry run again"
+          : `Show these steps to ${item.raised_by || "the person who raised it"}; on a clear yes run again with dry_run=false, approved_by and this plan_hash` }, problems.length > 0);
     }
     if (args.action === "show") {
       // selecting and your own review view only: no element of the model changes
@@ -200,6 +221,27 @@ export async function runFmcReview(args: FmcReviewArgs, deps: ReviewDeps = {}) {
     const verdictWrite = checkWritePath(file, config, { checkName: false });
     if (!verdictWrite.ok) return reply({ refused: true, reasons: verdictWrite.reasons }, true);
     const by = args.by.trim() || "Claude (via MCP)";
+    if (args.action === "apply_fix") {
+      const item = find(reg, args.id);
+      const { plan } = await makePlan(item, null);
+      const problems = applyProblems(item, plan, { approved_by: args.approved_by, plan_hash: args.plan_hash });
+      if (problems.length) return reply({ refused: true, id: item.id, reasons: problems }, true);
+      const steps = applySteps(item, plan);
+      // a model write: through the live-model lock, one transaction, all or nothing
+      const r = await withRevitConnection((c) => c.sendCommand("fmc_element_apply",
+        { ticket: item.id, view: item.where?.view ?? "", unique_id: item.where?.unique_ids[0] ?? "", steps }, 60000)) as Record<string, any>;
+      if (!r?.applied) {
+        fixFailed(item, by, r?.failed_step ?? 0, r?.reason ?? "no answer from Revit", now);
+        fs.writeFileSync(file, JSON.stringify(reg, null, 2));
+        log(config, "review_apply_fix", file, "not applied", `${item.id} step ${r?.failed_step}: ${r?.reason}`);
+        return reply({ done: false, id: item.id, failed_step: r?.failed_step, reason: r?.reason, note: "Nothing in the model changed; the thread says why" }, true);
+      }
+      fixApplied(item, by, args.approved_by.trim(), steps, now);
+      fs.writeFileSync(file, JSON.stringify(reg, null, 2));
+      log(config, "review_apply_fix", file, "applied", `${item.id}: ${steps.length} steps, approved by ${args.approved_by.trim()}`);
+      return reply({ done: true, id: item.id, status: item.status, applied: r.steps, undo: r.undo,
+        next: `${item.raised_by || "The raiser"} checks it: accept and close, or reopen with a reason` });
+    }
     const media = (id: string) => win.join(win.dirname(file), "media", id);
     // a voice note or a picture is copied beside the register, so the ticket keeps it whatever happens to the original
     const keep = (src: string, id: string, name: string): string => {
