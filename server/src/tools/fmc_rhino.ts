@@ -133,6 +133,8 @@ export async function runFmcRhino(args: FmcRhinoArgs) {
         const parts = ((r.parts ?? []) as PartFacts[]).map((p) => ({ ...p, sha256: p.file && fs.existsSync(p.file) ? sha256(p.file) : "" }));
         const manifest = { family: args.family, exported: new Date().toISOString(), from: "rhino", to: "revit", units: "mm",
           note: "Each part is a closed solid in its own .3dm, its origin the point Revit places it at (fmc_doc import_part)", parts };
+        // a family exported for the first time has no parts folder yet
+        fs.mkdirSync(win.dirname(where.manifest), { recursive: true });
         fs.writeFileSync(where.manifest, JSON.stringify(manifest, null, 2));
         log(config, "rhino_export_parts", false, where.parts, "exported", `${parts.length} parts`);
         // the hub (X0): the hand-over is kept as an exchange package; a hub problem never stops the export
@@ -213,6 +215,8 @@ async function twins(args: FmcRhinoArgs, config: GuardConfig, staging: string, w
   const parts = ((ex.parts ?? []) as PartFacts[]).map((p) => ({ ...p, sha256: p.file && fs.existsSync(p.file) ? sha256(p.file) : "" }));
   const manifest = { family: args.family, exported: new Date().toISOString(), from: "rhino", to: "revit", units: "mm", level: "Fine (LOD 400)",
     note: "Smooth twins of the recipe's native solids, at the recipe's own coordinates (fmc_rhino twins)", parts };
+  // a family twinned for the first time has no parts folder yet
+  fs.mkdirSync(win.dirname(where.manifest), { recursive: true });
   fs.writeFileSync(where.manifest, JSON.stringify(manifest, null, 2));
   await call("rhino_save", { path: where.model });
   const renders: string[] = [];
