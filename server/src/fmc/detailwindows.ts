@@ -3,7 +3,7 @@
  * Window.rft, the wgen plane scheme) becomes its `_Detailed` recipe: what opens gets the instance switch `Open`, the small
  * parts become components on its planes, and it gets the working-zone clearance. Pure: recipes in, recipes out.
  */
-import { COMPONENTS, DetailResult, RecipeLike, componentHead, finish, PART_CHECKS, PART_VALUES, withoutSolids } from "./detailgen.js";
+import { COMPONENTS, DetailResult, RecipeLike, coarseEnvelope, componentHead, finish, hideBodyOnCoarse, PART_CHECKS, PART_VALUES, withoutSolids } from "./detailgen.js";
 
 type Op = Record<string, any>;
 type Pt = number[];
@@ -280,10 +280,15 @@ export function detailWindow(std: RecipeLike, componentPath: (family: string) =>
     why: "standing zone in front of a hospital window or hatch; confirm (owner or engineer)" });
   add.push(...clr.ops);
 
+  // Coarse (F-071): the LOD 100 box over frame, architraves, board and shelf; the body shows on Medium and Fine
+  const env = coarseEnvelope([...ops, ...add]);
+  if (env) add.push(...env);
+  else if (!ops.some((o) => /envelope/i.test(String(o.name)))) notes.push("no Coarse envelope: the window's body isn't drawn between planes on every side");
+
   const at = ops.map((o) => o.op).lastIndexOf("set_type_value") + 1;
   return {
-    recipe: { ...std, family: `${std.family}_Detailed`, ops: [...ops.slice(0, at), ...add, ...ops.slice(at)], values: { ...(std.values ?? {}), ...swapped.values, ...clr.value },
-      about: `Detailed window (QS03 generator, ${new Date().toISOString().slice(0, 10)}): ${std.family}; ${notes.join("; ")}; working-zone clearance; instance switch Open.` },
+    recipe: { ...std, family: `${std.family}_Detailed`, ops: hideBodyOnCoarse([...ops.slice(0, at), ...add, ...ops.slice(at)]), values: { ...(std.values ?? {}), ...swapped.values, ...clr.value },
+      about: `Detailed window (QS03 generator, ${new Date().toISOString().slice(0, 10)}): ${std.family}; ${notes.join("; ")}; working-zone clearance; instance switch Open; Coarse LOD 100 envelope, Medium LOD 300, Fine LOD 400 after fmc_rhino twins of the components.` },
     components,
     notes,
   };

@@ -1,10 +1,144 @@
 {
   "schema": "fmc-testrun/0.1",
   "id": "11_ceiling_casework_place",
-  "title": "fmc_ceiling place and fmc_casework place, dry runs",
+  "title": "fmc_ceiling place (CL2) and fmc_casework place (CW2) in a scratch room: dry runs, then the real places, counted",
   "features": ["F34", "F33"],
-  "skip": "Neither tool has a place action on main (fmc_ceiling: designs, checks, setout, quantities, boq, pack; fmc_casework: units, parts, nest, cutlist, hardware, summary, pack): write the steps when place merges",
-  "setup": [],
-  "steps": [],
-  "teardown": []
+  "setup": [
+    {
+      "id": "new_dry",
+      "tool": "fmc_file",
+      "args": { "action": "create_from_template", "kind": "project", "template_path": "{{project_template}}", "save_path": "{{scratch}}\\FMC_ChainTest_A.rvt", "dry_run": true }
+    },
+    {
+      "id": "new",
+      "note": "A new scratch project from the kit's template in _ChainTests\\_TestRun (a new folder per run and try: nothing is saved over)",
+      "tool": "fmc_file",
+      "args": { "action": "create_from_template", "kind": "project", "template_path": "{{project_template}}", "save_path": "{{scratch}}\\FMC_ChainTest_A.rvt", "close_after": true, "dry_run": false },
+      "checks": [{ "no_error": true }, { "path": "done", "equals": true }]
+    },
+    { "id": "open", "runner": "open_in_revit", "path": "{{scratch}}\\FMC_ChainTest_A.rvt" },
+    { "id": "levels", "note": "The scratch project's levels (the kit template names them): the room goes on the lowest", "revit": "fmc_document_info", "params": {},
+      "checks": [{ "path": "active.levels", "at_least": 1 }] }
+  ],
+  "steps": [
+    {
+      "id": "room",
+      "note": "The room to place into: four walls and the room, no ceiling (fmc_ceiling places that). Its south-west inner corner is at 0,0; the north wall's inner face runs along y = 5000",
+      "tool": "fmc_room",
+      "args": {
+        "action": "build", "node": "Pantry-01.Shell", "project_folder": "{{scratch}}", "dry_run": false,
+        "room": {
+          "name": "Ward pantry", "number": "L1-PAN-01", "level": "{{steps.levels.active.levels.0.name}}", "origin_mm": [0, 0], "width": 4200, "depth": 5000, "height": 3300,
+          "walls": { "type": "Generic - 200mm", "thickness": 200 }
+        }
+      },
+      "timeout_s": 600,
+      "checks": [{ "no_error": true }, { "path": "done", "equals": true }, { "path": "made", "at_least": 5 }]
+    },
+    {
+      "id": "ceiling_dry",
+      "note": "The design for the room (tray with bulkhead under a 3300 slab), placed in Revit and rolled back. ceiling_type names the template's Generic type: the kit template has no ceiling type keynoted I.CLG_xx yet (a kit change request, if Revit reports it)",
+      "tool": "fmc_ceiling",
+      "args": {
+        "action": "place", "dry_run": true, "project_folder": "{{scratch}}",
+        "room": { "name": "Ward pantry", "width_mm": 4200, "depth_mm": 5000, "structure_height_mm": 3300, "structure": "slab" },
+        "brief": { "styles": ["tray", "bulkhead"] },
+        "place": { "level": "{{steps.levels.active.levels.0.name}}", "origin_mm": { "x": 0, "y": 0 }, "ceiling_type": "Generic" }
+      },
+      "timeout_s": 600,
+      "checks": [{ "no_error": true }, { "path": "dry_run", "equals": true }, { "path": "plan.ceilings", "at_least": 1 }, { "path": "plan.problems", "at_most": 0 },
+        { "path": "revit.not_reached", "exists": false }, { "path": "revit.result", "equals": "would place (rolled back)" }, { "path": "revit.counts.ceilings", "at_least": 1 }]
+    },
+    {
+      "id": "ceiling",
+      "tool": "fmc_ceiling",
+      "args": {
+        "action": "place", "dry_run": false, "confirm": true, "project_folder": "{{scratch}}",
+        "room": { "name": "Ward pantry", "width_mm": 4200, "depth_mm": 5000, "structure_height_mm": 3300, "structure": "slab" },
+        "brief": { "styles": ["tray", "bulkhead"] },
+        "place": { "level": "{{steps.levels.active.levels.0.name}}", "origin_mm": { "x": 0, "y": 0 }, "ceiling_type": "Generic" }
+      },
+      "timeout_s": 600,
+      "checks": [{ "no_error": true }, { "path": "done", "equals": true }, { "path": "made", "at_least": 1 },
+        { "path": "not_placed", "at_most": 0 }, { "path": "removed", "equals": 0 }]
+    },
+    {
+      "id": "ceiling_record",
+      "read_json": "{{steps.ceiling.record}}",
+      "checks": [{ "path": "made", "at_least": 1 }]
+    },
+    {
+      "id": "ceiling_facts",
+      "revit": "fmc_element_facts",
+      "params": { "unique_ids": "{{steps.ceiling_record.made}}" },
+      "checks": [{ "path": "missing", "at_most": 0 }]
+    },
+    {
+      "id": "load_unit",
+      "note": "fmc_casework place needs the unit family loaded. The register's FMC_I_Casework_KitchenUnit isn't built (no .rfa in the kit), so the staged FMC_I_Casework_Vanity (types 0600, 0900, ...) stands in; load_test loads it into the open scratch project",
+      "tool": "fmc_family",
+      "args": { "action": "load_test", "families": ["FMC_I_Casework_Vanity"], "dry_run": false },
+      "timeout_s": 300,
+      "checks": [{ "no_error": true }, { "path": "done", "equals": true }]
+    },
+    {
+      "id": "casework_dry",
+      "note": "Three 600 base units and three 600 wall units (underside 1450) on the north wall's inner face from x = 3000 to 1200 (the room on their left, facing south); the workshop standards come with the call (the kit has no FMC_Casework_Standards.json yet); the Vanity type 0600 stands in for both kinds (the register's KitchenUnit Base and Wall types aren't built). The dry run places and rolls back, and checks the services against the room",
+      "tool": "fmc_casework",
+      "args": {
+        "action": "place", "dry_run": true, "label": "PAN-01 Pantry", "level": "{{steps.levels.active.levels.0.name}}", "room": "L1-PAN-01",
+        "family": "FMC_I_Casework_Vanity", "type_for": { "base": "0600", "wall": "0600" }, "wall_unit_bottom": 1450,
+        "run": { "walls": [{ "name": "N", "length": 1800, "start": [3000, 5000], "end": [1200, 5000] }], "modules": [600] },
+        "standards": {
+          "sheet": { "length": 2440, "width": 1220 }, "kerf": 4,
+          "carcass_board": "FMC_Board_Plywood_Marine18", "carcass_thickness": 18, "front_board": "FMC_Board_MDF_Raw", "back_board": "FMC_Board_MDF_Back6",
+          "worktop": "FMC_Stone_Granite_Black_Polished", "worktop_depth": 600,
+          "base": { "height": 720, "depth": 560 }, "wall": { "height": 720, "depth": 320 }, "tall": { "height": 2100, "depth": 560 },
+          "plinth": 150, "corner_return": 600,
+          "construction": { "front_gap": 3, "back_clearance": 6, "top_rail": 100, "top_rails": 2, "sink_top_rails": 1, "shelf_setback": 30, "shelf_clearance": 2,
+            "blind_panel": 420, "corner_door": 577,
+            "drawer": { "side_length": 500, "side_drop": 60, "back_allowance": 58, "bottom_allowance": 26, "bottom_depth": 490, "heights": { "2": [287, 430], "3": [140, 287, 287] } } },
+          "shelves": { "base": 1, "wall": 1, "tall": 4 },
+          "hardware": { "hinges_per_door": 2, "hinges_per_tall_door": 4, "legs": 4, "legs_wide": 6, "legs_wide_from": 900, "shelf_pins_per_shelf": 4,
+            "hangers_per_wall_unit": 2, "runner_length": 500 }
+        }
+      },
+      "timeout_s": 600,
+      "checks": [{ "no_error": true }, { "path": "dry_run", "equals": true }, { "path": "will_place", "at_least": 6 }, { "path": "skipped", "at_most": 0 },
+        { "path": "result.placed", "at_least": 6 }, { "path": "result.errors", "at_most": 0 }, { "path": "checks.room", "exists": true }]
+    },
+    {
+      "id": "casework",
+      "tool": "fmc_casework",
+      "args": {
+        "action": "place", "dry_run": false, "label": "PAN-01 Pantry", "level": "{{steps.levels.active.levels.0.name}}",
+        "family": "FMC_I_Casework_Vanity", "type_for": { "base": "0600", "wall": "0600" }, "wall_unit_bottom": 1450,
+        "run": { "walls": [{ "name": "N", "length": 1800, "start": [3000, 5000], "end": [1200, 5000] }], "modules": [600] },
+        "standards": {
+          "sheet": { "length": 2440, "width": 1220 }, "kerf": 4,
+          "carcass_board": "FMC_Board_Plywood_Marine18", "carcass_thickness": 18, "front_board": "FMC_Board_MDF_Raw", "back_board": "FMC_Board_MDF_Back6",
+          "worktop": "FMC_Stone_Granite_Black_Polished", "worktop_depth": 600,
+          "base": { "height": 720, "depth": 560 }, "wall": { "height": 720, "depth": 320 }, "tall": { "height": 2100, "depth": 560 },
+          "plinth": 150, "corner_return": 600,
+          "construction": { "front_gap": 3, "back_clearance": 6, "top_rail": 100, "top_rails": 2, "sink_top_rails": 1, "shelf_setback": 30, "shelf_clearance": 2,
+            "blind_panel": 420, "corner_door": 577,
+            "drawer": { "side_length": 500, "side_drop": 60, "back_allowance": 58, "bottom_allowance": 26, "bottom_depth": 490, "heights": { "2": [287, 430], "3": [140, 287, 287] } } },
+          "shelves": { "base": 1, "wall": 1, "tall": 4 },
+          "hardware": { "hinges_per_door": 2, "hinges_per_tall_door": 4, "legs": 4, "legs_wide": 6, "legs_wide_from": 900, "shelf_pins_per_shelf": 4,
+            "hangers_per_wall_unit": 2, "runner_length": 500 }
+        }
+      },
+      "timeout_s": 600,
+      "checks": [{ "no_error": true }, { "path": "dry_run", "equals": false }, { "path": "result.placed", "at_least": 6 }, { "path": "result.errors", "at_most": 0 },
+        { "path": "result.removed", "equals": 0 }, { "path": "result.placed.0.unique_id", "matches": "." }]
+    },
+    {
+      "id": "casework_facts",
+      "revit": "fmc_element_facts",
+      "params": { "unique_ids": ["{{steps.casework.result.placed.0.unique_id}}", "{{steps.casework.result.placed.1.unique_id}}", "{{steps.casework.result.placed.2.unique_id}}",
+        "{{steps.casework.result.placed.3.unique_id}}", "{{steps.casework.result.placed.4.unique_id}}", "{{steps.casework.result.placed.5.unique_id}}"] },
+      "checks": [{ "path": "elements", "at_least": 6 }, { "path": "missing", "at_most": 0 }]
+    }
+  ],
+  "teardown": [{ "runner": "close_revit" }]
 }
