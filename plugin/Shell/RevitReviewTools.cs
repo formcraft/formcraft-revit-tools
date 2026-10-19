@@ -16,13 +16,66 @@ namespace revit_mcp_plugin.Shell
             Disciplines = RevitFamilyTools.Strings(i["disciplines"]), Lead = i.Value<string>("lead") ?? "", Owner = i.Value<string>("owner") ?? "",
             Priority = i.Value<string>("priority") ?? "", Due = i.Value<string>("due") ?? "",
             Status = i.Value<string>("shown_status") ?? i.Value<string>("status") ?? "", RaisedBy = i.Value<string>("raised_by") ?? "",
-            View = i.Value<string>("view") ?? "",
+            View = i.Value<string>("view") is string v && v.Length > 0 ? v : (i["where"] as JObject)?.Value<string>("view") ?? "",
             ElementIds = (i["element_ids"] as JArray ?? new JArray()).Select(x => x.Value<long>()).ToList(),
             Answers = (i["answers"] as JArray ?? new JArray()).OfType<JObject>()
                 .Select(a => new ReviewAnswer(a.Value<string>("discipline") ?? "", a.Value<string>("by") ?? "", a.Value<string>("text") ?? "", a.Value<string>("status") == "Done")).ToList(),
             Solution = i.Value<string>("solution") ?? "",
             Cloud = i["cloud"] is JObject c ? (c.Value<string>("view") ?? "") + " · " + (c.Value<string>("revision") ?? "") : "",
+            // Mark & Review tickets (R1): absent on plain review items
+            To = i.Value<string>("to") ?? "", Source = i.Value<string>("source") ?? "",
+            Notes = (i["notes"] as JArray ?? new JArray()).OfType<JObject>().Select(n => new TicketNote
+            {
+                At = n.Value<string>("at") ?? "", By = n.Value<string>("by") ?? "", Text = n.Value<string>("text") ?? "", Audio = n.Value<string>("audio") ?? "",
+                Transcript = n.Value<string>("transcript") ?? "", TranscribedBy = n.Value<string>("transcribed_by") ?? "",
+            }).ToList(),
+            HasPicture = !string.IsNullOrEmpty((i["pictures"] as JObject)?.Value<string>("raised")),
+            Elements = Count(i["where"]?["unique_ids"]) + Count(i["where"]?["linked"]),
         };
+
+        private static int Count(JToken t) => (t as JArray)?.Count ?? 0;
+
+        public async Task<(bool Ok, string Message, ReviewItemInfo? Item)> ReplyAsync(string projectFolder, string id, string by, string text, string audioPath)
+        {
+            CliResult r = await ServerCli.RunAsync("fmc_review", new JObject
+            {
+                ["action"] = "comment", ["project_folder"] = projectFolder, ["id"] = id, ["by"] = by, ["text"] = text, ["audio"] = audioPath ?? "",
+            });
+            if (!r.Ok || !(r.Body["item"] is JObject i)) return (false, string.Join(" ", r.Reasons()), null);
+            return (true, (string.IsNullOrEmpty(audioPath) ? "Reply added to " : "Voice reply added to ") + id + ".", Item(i));
+        }
+
+        public async Task<(bool Ok, string Message, ReviewItemInfo? Item)> TranscribeAsync(string projectFolder, string id, int note, string model, string language, string by)
+        {
+            // whisper runs in the server's child process at below-normal priority; a minute of speech takes about a minute on the small model
+            CliResult r = await ServerCli.RunAsync("fmc_review", new JObject
+            {
+                ["action"] = "transcribe", ["project_folder"] = projectFolder, ["id"] = id, ["note"] = note, ["model"] = model, ["language"] = language, ["by"] = by,
+            });
+            if (!r.Ok || !(r.Body["item"] is JObject i)) return (false, string.Join(" ", r.Reasons()), null);
+            var item = Item(i);
+            var n = note >= 1 && note <= item.Notes.Count ? item.Notes[note - 1] : null;
+            return (true, $"Note {note} transcribed ({n?.TranscribedBy ?? "whisper " + model + " (offline)"}).", item);
+        }
+
+        public async Task<ToolResult> WhisperSetupAsync(string model, bool dryRun)
+        {
+            CliResult r = await ServerCli.RunAsync("fmc_review", new JObject { ["action"] = "whisper_setup", ["model"] = model, ["dry_run"] = dryRun });
+            if (!r.Ok) return ToolResult.Refused("Whisper: " + string.Join(" ", r.Reasons()));
+            var result = new ToolResult { Ok = true };
+            if (r.Body.Value<bool?>("ready") == true)
+                result.Messages.Add(new ToolMessage(ChipKind.Good, $"Whisper is ready: voice notes transcribe offline ({model} model)."));
+            else if (r.Body["would_download"] is JArray steps)
+            {
+                result.Count = steps.Count;
+                foreach (var s in steps.OfType<JObject>())
+                    result.Details.Add($"{s.Value<string>("what")}, {s.Value<int?>("mb")} MB, into {s.Value<string>("to")}");
+            }
+            else
+                foreach (var line in (r.Body["installed"] as JArray ?? new JArray()).Select(x => x.ToString()))
+                    result.Messages.Add(new ToolMessage(ChipKind.Good, "Installed " + line + "."));
+            return result;
+        }
 
         public async Task<ToolResult> CloudAsync(string projectFolder, string id, bool dryRun)
         {
