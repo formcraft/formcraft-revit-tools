@@ -6,6 +6,7 @@ import { z } from "zod";
 import { documentTarget, revitTarget } from "../fmc/target.js";
 import { appStatuses, realProbe, toolsOff } from "../hub/apps.js";
 import { annotateInvalidOp, annotateToolResult, isInvalidOpMessage } from "../fmc/buildinfo.js";
+import { startedByFrom, withLedger } from "../fmc/ledger.js";
 
 export const REVIT_ARG = z.string().optional()
   .describe("Which Revit, when two or more are open: a project or document name, a pid or a port (fmc_revit list shows them). Leave out with one Revit.");
@@ -86,6 +87,11 @@ export async function registerTools(server: McpServer) {
   // Two or more Revits: every tool takes an optional `revit` (a project or document name, a pid or a port) saying which
   // Revit the call goes to. The wrapper strips it before the tool sees its arguments and runs the call in that context.
   withRevitTarget(server);
+
+  // F74: every call is recorded in the local call ledger (%APPDATA%\Formcraft\ledger: tool, action, ok, ms, project, who
+  // started it; never model content or names). Installed after the target wrapper, so the call's document names the
+  // project when no argument does. MCP stdio is an AI unless FMC_STARTED_BY says otherwise.
+  withLedger(server, startedByFrom(process.env, "ai"), () => documentTarget.getStore());
 
   // The engineering hub (H0): an app's tools load only while the app is switched on (fmc_apps; by default every
   // installed app is on, and Revit always), so an app nobody uses costs no tokens.

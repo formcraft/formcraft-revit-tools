@@ -7,6 +7,7 @@
  * issue exceptions and the action log. Client reports leave out names, logs and internal notes.
  */
 import { Register, overdue } from "./review.js";
+import { Digest, digestMarkdown } from "./balance.js";
 
 export const KINDS = ["Weekly project report", "Model health and QA", "Review register", "Sync log and workshare",
   "Ready to issue record", "Rule exceptions", "Activity log"] as const;
@@ -23,6 +24,8 @@ export interface Sources {
   issues: Array<{ folder: string; date: string; revision: string; result: string }>;
   exceptions: Array<{ recorded: string; sheet: string; item: string; why: string; approved_by: string; until: string }>;
   log: Array<{ at: string; action: string; result: string }>;      // FMC_MCP_FileLog.csv
+  /** F74: the automation balance from the call ledger (fmc/balance.ts digest), and whose calls it counts. */
+  balance?: { digest: Digest; scope: string };
 }
 
 /** The first day the period covers (YYYY-MM-DD); "" means since the beginning. */
@@ -38,7 +41,7 @@ const inPeriod = (at: string, from: string) => !from || at.slice(0, 10) >= from;
 
 /** What each report holds. */
 export const SECTIONS: Record<Kind, string[]> = {
-  "Weekly project report": ["Summary", "QA", "Reviews", "Syncs", "Issue status"],
+  "Weekly project report": ["Summary", "QA", "Reviews", "Syncs", "Issue status", "Automation balance"],
   "Model health and QA": ["QA"],
   "Review register": ["Reviews"],
   "Sync log and workshare": ["Syncs"],
@@ -142,6 +145,20 @@ export function buildReport(kind: Kind, src: Sources, opts: { project: string; p
       }
       add("Exceptions", "in force", live.length);
       md.push("");
+    }
+    if (section === "Automation balance" && src.balance) {
+      // How much work still runs as AI-written code: internal, like the activity log.
+      if (client) leftOut.push("Automation balance (internal)");
+      else {
+        const d = src.balance.digest;
+        md.push(...digestMarkdown(d));
+        if (src.balance.scope) md.splice(md.length - 1, 0, `Counted over ${src.balance.scope}.`);
+        add("Automation balance", "calls this week", d.week.total);
+        for (const s of d.week.by_kind) add("Automation balance", `${s.label} share %`, s.share);
+        add("Automation balance", "AI code share last week %", d.last_week.ai_share);
+        add("Automation balance", "AI code change (points)", d.change_ai_pts);
+        for (const t of d.top) add("Automation balance", `move list ${t.rank}: ${t.purpose}`, t.calls);
+      }
     }
     if (section === "Activity") {
       md.push("## Tool activity (counts per action)", "");

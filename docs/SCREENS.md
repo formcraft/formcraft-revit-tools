@@ -5,7 +5,7 @@ Every screen is drawn and clickable on the central canvas, page "Formcraft Revit
 
 | Column | Screens |
 |---|---|
-| Manage | Settings › Manage (PaneSettingsManage), Materials (PaneMaterials), Project (PaneProject), Revision on the drawing (ReviewOnSheet), Sheet prints (SheetPrints), ribbon (R_Manage). Templates, Families, Issue, Review, Workshare, Links, QA, Rules, Reports are on the Manage page |
+| Manage | Settings › Manage (PaneSettingsManage), Materials (PaneMaterials), Project (PaneProject), Revision on the drawing (ReviewOnSheet), Sheet prints (SheetPrints), ribbon (R_Manage). Templates, Families, Issue, Review, Workshare, Links, QA, Rules, Reports are on the Manage page. Check › Automation (PaneAutomation, F74, `docs/AUTOMATION_BALANCE.md`): built code first, its board is a placeholder still to draw |
 | Flow | Settings › Flow, Touch (PaneFlowTouch), Sheets, Annotate, Flow on the view (UI_Overlays), Gestures (Flow_Gestures), ribbon (R_Flow) |
 | Model | Settings › Model, Start from brief (PaneModelBrief), Systems, Structural, ribbon (R_Model), Scripts and automation (PaneScripts, under Check › Scripts with a +Model tag), automation flow (M_Automation) |
 | Engineer | Casework (CW_Pane, CW_Overview, CW_Outputs) and Ceilings (CL_Pane, CL_Overview, CL_Pack), +Model: each step is mapped below. Options (PaneOptions, O2 of `docs/PLAN_OPTIONS.md`): built code first, its board is a placeholder still to draw |

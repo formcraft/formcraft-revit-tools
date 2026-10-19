@@ -81,7 +81,7 @@ namespace revit_mcp_plugin.Shell
                                       library: new RevitLibraryTools(), qa: new RevitQaTools(),
                                       materials: new RevitMaterialTools(), sheets: new RevitSheetTools(),
                                       annotate: new RevitAnnotateTools(), issue: new RevitIssueTools(), links: new RevitLinkTools(), workshare: new RevitWorkshareTools(), review: new RevitReviewTools(), reports: new RevitReportTools(), liveData: LiveData, flow: new RevitFlowTools(), brief: new RevitBriefTools(), scripts: new RevitScriptTools(), systems: new RevitSystemTools(), build: new RevitBuildTools(), ask: new RevitAskTools(), ai: new RevitAiTools(), release: new RevitReleaseTools(), robot: new RevitRobotTools(),
-                                      casework: new RevitCaseworkTools(), ceilings: new RevitCeilingTools(), options: new RevitOptionsTools(),
+                                      casework: new RevitCaseworkTools(), ceilings: new RevitCeilingTools(), options: new RevitOptionsTools(), balance: new RevitBalanceTools(),
                                       // F-013: no update feed yet; the installed build from the build stamp.
                                       updates: new NoFeedUpdateService("build " + revit_mcp_plugin.FmcBuildInfo.Commit + " · " + revit_mcp_plugin.FmcBuildInfo.Time.Replace("T", " ").TrimEnd('Z') + " UTC"))
             {
