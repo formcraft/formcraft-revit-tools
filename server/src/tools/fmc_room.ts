@@ -4,7 +4,8 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
-import { ROOM, planRoom } from "../tree/room.js";
+import { ROOM, Op, planRoom, resolveRoomFamilies, roomFamilies } from "../tree/room.js";
+import { familyRoots } from "../fmc/ops.js";
 import { Edit, LiveFacts, Snapshot, findEdits, opKeys, snapshot } from "../tree/drift.js";
 
 const win = path.win32;
@@ -26,7 +27,8 @@ function reply(body: object, isError = false) {
 export const FMC_ROOM_DESCRIPTION =
   "Formcraft room recipe (docs/PLAN_RECIPE_TREE.md, T1, T3): a room as data (size, walls, door and window on a wall, the " +
     "families in it placed relative to the room, its ceiling, clearances) planned into exact elements, then built in the " +
-    "open WIP model. plan (no Revit): every wall, opening, family, the ceiling and the room, positioned in mm, and the " +
+    "open WIP model, first loading each family it places that the model doesn't hold yet from the kit (staging, " +
+    "04_Families, library roots: <root>\\<Role>\\<family>.rfa; the dry run lists what it would load). plan (no Revit): every wall, opening, family, the ceiling and the room, positioned in mm, and the " +
     "checks (openings fit their walls, items inside the room, clearances free). build: a dry run lists the plan; with " +
     "dry_run false the Revit command builds it in one transaction (refused on live models) and records what it made, each " +
     "element with its key (item:Bed, door@south:…, wall:north) and a snapshot, in <project>\\01_WIP\\_Tree\\rooms\\<node>.json, " +
@@ -88,6 +90,26 @@ export async function roomEdits(project: string, node: string): Promise<{ record
   return { record, edits: findEdits(record.elements, live, new Set(record.keep ?? [])) };
 }
 
+/**
+ * F-073: the files the build loads the room's families from when the model doesn't hold them yet: the kit's staging
+ * root, 04_Families and the guard's library roots (the roots fmc_doc's load_family reads), never a blocked folder.
+ */
+export function roomFamilyFiles(ops: Op[], config: GuardConfig, exists: (f: string) => boolean = (f) => fs.existsSync(f)) {
+  const staging = expandEnv(config.family_staging_root ?? "").trim();
+  const library = (config.library_roots ?? []).map((r) => expandEnv(r)).filter((r) => r.trim());
+  const roots = staging ? familyRoots(staging, library) : familyRoots("", library).filter((r) => r !== ".");
+  return resolveRoomFamilies(roomFamilies(ops), roots, exists, config.blocked_segments ?? []);
+}
+
+/** The dry run's lines for the families: what would load from where, and what can't be found (naming the folders searched). */
+export function familyPlanLines(r: ReturnType<typeof roomFamilyFiles>): { would_load: string[]; not_found: string[] } {
+  return {
+    would_load: r.files.filter((f) => f.found).map((f) => `would load: ${f.family} from ${f.path}`),
+    not_found: r.files.filter((f) => !f.found).map((f) =>
+      `${f.family}: no ${f.family}.rfa in ${r.searched.join("; ") || "any folder (fmc_guard.json sets no family_staging_root or library_roots)"}`),
+  };
+}
+
 export async function runFmcRoom(args: FmcRoomArgs) {
   const { config } = loadConfig();
   try {
@@ -115,10 +137,20 @@ export async function runFmcRoom(args: FmcRoomArgs) {
     const ops = plan.ops.map((o, i) => ({ ...o, key: keys[i] })).filter((o) => !keep.has(o.key));
     const kept = (before?.elements ?? []).filter((e) => keep.has(e.key));
     const replace = before?.elements ? before.elements.filter((e) => !keep.has(e.key)).map((e) => e.unique_id) : (before?.made ?? []);
-    if (args.dry_run) return reply({ dry_run: true, room: args.room.name, would_build: ops.length, would_replace: replace.length, kept: kept.map((e) => e.key),
-      warnings: plan.warnings, plan: ops, next: "Run again with dry_run=false in the WIP model" });
+    // F-073: the families it places are loaded from the kit when the model doesn't hold them (one already loaded is used as it is)
+    const famFiles = roomFamilyFiles(ops, config);
+    const lines = familyPlanLines(famFiles);
+    if (args.dry_run) {
+      if (lines.not_found.length) return reply({ refused: true, dry_run: true,
+        reasons: ["A family the room places can't be found to load: stage it, or load it into the model by hand (the build then uses the loaded one)", ...lines.not_found],
+        would_load: lines.would_load, not_found: lines.not_found }, true);
+      return reply({ dry_run: true, room: args.room.name, would_build: ops.length, would_replace: replace.length, kept: kept.map((e) => e.key),
+        would_load: lines.would_load, families_note: "A family already in the model is used as it is (not reloaded)",
+        warnings: plan.warnings, plan: ops, next: "Run again with dry_run=false in the WIP model" });
+    }
     // the write goes through the live-model lock (sendCommand); the command removes what it made last time, then builds
-    const r = await withRevitConnection((c) => c.sendCommand("fmc_room_build", { node: args.node, level: args.room!.level, ops, replace, design_option: args.design_option.trim() }, 300000)) as Record<string, any>;
+    const r = await withRevitConnection((c) => c.sendCommand("fmc_room_build", { node: args.node, level: args.room!.level, ops, replace, design_option: args.design_option.trim(),
+      families: famFiles.files.map((f) => ({ family: f.family, path: f.path })), searched: famFiles.searched }, 300000)) as Record<string, any>;
     const made: Array<{ unique_id: string; key: string }> = r.elements ?? (r.made ?? []).map((u: string) => ({ unique_id: u, key: "" }));
     // snapshots of what was made, and of the kept elements as they are now, so the next look finds only new edits
     let elements: Snapshot[] = [];
@@ -130,8 +162,9 @@ export async function runFmcRoom(args: FmcRoomArgs) {
       made: [...made.map((m) => m.unique_id), ...kept.map((e) => e.unique_id)], elements, keep: [...keep], notes: r.notes ?? [] };
     fs.mkdirSync(win.dirname(record), { recursive: true });
     fs.writeFileSync(record, JSON.stringify(rec, null, 2));
-    log(config, "room_build", false, args.node, "built", `${made.length} elements, ${(r.removed ?? 0)} replaced, ${kept.length} kept`);
-    return reply({ done: true, node: args.node, made: made.length, removed: r.removed ?? 0, kept: kept.length, notes: r.notes ?? [], record });
+    const loaded: Array<{ family: string; path: string }> = r.loaded ?? [];
+    log(config, "room_build", false, args.node, "built", `${made.length} elements, ${(r.removed ?? 0)} replaced, ${kept.length} kept, ${loaded.length} families loaded`);
+    return reply({ done: true, node: args.node, made: made.length, removed: r.removed ?? 0, kept: kept.length, loaded, notes: r.notes ?? [], record });
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
     log(config, "room_" + args.action, args.dry_run, args.node || args.room?.name || "", "error", msg);
