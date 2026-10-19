@@ -1,0 +1,228 @@
+{
+  "schema": "fmc-testrun/0.1",
+  "id": "17_mep_model",
+  "title": "MEP test model in a scratch project: the staged board rebuilt with Part Type Panelboard and gated, a small room with the board, sockets and lights, circuits made (dry run, then real), the MEP facts, CA-E-01 and the line diagrams drawn from real circuits, Gate D",
+  "features": ["F31", "F77", "F78"],
+  "setup": [
+    {
+      "id": "new",
+      "note": "A new scratch project from the kit's template in _ChainTests\\_TestRun (a new folder per run and try: nothing is saved over)",
+      "tool": "fmc_file",
+      "args": { "action": "create_from_template", "kind": "project", "template_path": "{{project_template}}", "save_path": "{{scratch}}\\FMC_ChainTest_A.rvt", "close_after": true, "dry_run": false },
+      "checks": [{ "no_error": true }, { "path": "done", "equals": true }]
+    },
+    { "id": "open", "runner": "open_in_revit", "path": "{{scratch}}\\FMC_ChainTest_A.rvt" },
+    { "id": "levels", "note": "The scratch project's levels (the kit template names them): the room goes on the lowest", "revit": "fmc_document_info", "params": {},
+      "checks": [{ "path": "active.levels", "at_least": 1 }] }
+  ],
+  "steps": [
+    {
+      "id": "board_build",
+      "note": "The staged board recipe now sets Part Type Panelboard and the supply connector's Load Classification (kit change request 2026-10-19 MEP section 6). It is rebuilt every run: the batch reads the revision from the recipe beside the staged family, which is this recipe, so without rebuild it would be skipped as current. The old staged file is archived before the save",
+      "tool": "fmc_recipe",
+      "args": { "action": "batch", "recipe_files": ["{{staging}}\\E\\FMC_E_EQ_DB_Final_TPN.recipe.json"], "rebuild": ["FMC_E_EQ_DB_Final_TPN"], "batch": "B-{{run}}-MEP-{{attempt}}", "dry_run": false },
+      "timeout_s": 3600,
+      "checks": [{ "no_error": true }, { "path": "to_build", "equals": 1 }, { "path": "invalid", "equals": 0 }]
+    },
+    {
+      "id": "board_gate",
+      "note": "Gate A on the rebuilt board, unchanged: the board goes into the room only if it passes",
+      "tool": "fmc_recipe",
+      "args": { "action": "batch_gate", "batch": "{{steps.board_build.batch}}" },
+      "repeat_until": { "check": { "path": "left", "equals": 0 }, "max": 10 },
+      "timeout_s": 1800,
+      "checks": [{ "no_error": true }, { "path": "left", "equals": 0 }]
+    },
+    {
+      "id": "board_gated",
+      "tool": "fmc_recipe",
+      "args": { "action": "batch_status", "batch": "{{steps.board_build.batch}}" },
+      "checks": [{ "no_error": true }, { "path": "failed", "equals": 0 }, { "path": "gate_fails", "at_most": 0 }]
+    },
+    {
+      "id": "plan",
+      "tool": "fmc_room",
+      "args": {
+        "action": "plan",
+        "room": {
+          "name": "MEP test room", "number": "L0-MEP-01", "level": "{{steps.levels.active.levels.0.name}}", "origin_mm": [0, 0], "width": 4000, "depth": 3000, "height": 3000,
+          "walls": { "type": "Generic - 200mm", "thickness": 200 }, "ceiling": { "type": "Generic", "height": 2700 },
+          "items": [
+            { "id": "DB", "family": "FMC_E_EQ_DB_Final_TPN", "type": "12Way_TPN", "at": { "wall": "west", "along": 1500 }, "z": 1400, "host": "wall" },
+            { "id": "S1", "family": "FMC_E_ElecFixture_Socket_13A_Twin", "type": "13A_TwinSwitched", "at": { "wall": "north", "along": 1000 }, "z": 450, "host": "wall" },
+            { "id": "S2", "family": "FMC_E_ElecFixture_Socket_13A_Twin", "type": "13A_TwinSwitched", "at": { "wall": "north", "along": 3000 }, "z": 450, "host": "wall" },
+            { "id": "S3", "family": "FMC_E_ElecFixture_Socket_13A_Twin", "type": "13A_TwinSwitched", "at": { "wall": "east", "along": 1500 }, "z": 450, "host": "wall" },
+            { "id": "L1", "family": "FMC_E_LightFixture_Panel_600_Cleanroom_IP65", "type": "600x600_IP65", "at": { "centre": true, "dx": -1000 }, "host": "ceiling" },
+            { "id": "L2", "family": "FMC_E_LightFixture_Panel_600_Cleanroom_IP65", "type": "600x600_IP65", "at": { "centre": true, "dx": 1000 }, "host": "ceiling" }
+          ]
+        }
+      },
+      "checks": [{ "no_error": true }, { "path": "problems", "at_most": 0 }]
+    },
+    {
+      "id": "build_dry",
+      "note": "The dry run lists the families it would load from staging (the board, the socket, the light) and refuses if one can't be found",
+      "tool": "fmc_room",
+      "args": {
+        "action": "build", "node": "MEP-Test-01.Room", "project_folder": "{{scratch}}", "dry_run": true,
+        "room": {
+          "name": "MEP test room", "number": "L0-MEP-01", "level": "{{steps.levels.active.levels.0.name}}", "origin_mm": [0, 0], "width": 4000, "depth": 3000, "height": 3000,
+          "walls": { "type": "Generic - 200mm", "thickness": 200 }, "ceiling": { "type": "Generic", "height": 2700 },
+          "items": [
+            { "id": "DB", "family": "FMC_E_EQ_DB_Final_TPN", "type": "12Way_TPN", "at": { "wall": "west", "along": 1500 }, "z": 1400, "host": "wall" },
+            { "id": "S1", "family": "FMC_E_ElecFixture_Socket_13A_Twin", "type": "13A_TwinSwitched", "at": { "wall": "north", "along": 1000 }, "z": 450, "host": "wall" },
+            { "id": "S2", "family": "FMC_E_ElecFixture_Socket_13A_Twin", "type": "13A_TwinSwitched", "at": { "wall": "north", "along": 3000 }, "z": 450, "host": "wall" },
+            { "id": "S3", "family": "FMC_E_ElecFixture_Socket_13A_Twin", "type": "13A_TwinSwitched", "at": { "wall": "east", "along": 1500 }, "z": 450, "host": "wall" },
+            { "id": "L1", "family": "FMC_E_LightFixture_Panel_600_Cleanroom_IP65", "type": "600x600_IP65", "at": { "centre": true, "dx": -1000 }, "host": "ceiling" },
+            { "id": "L2", "family": "FMC_E_LightFixture_Panel_600_Cleanroom_IP65", "type": "600x600_IP65", "at": { "centre": true, "dx": 1000 }, "host": "ceiling" }
+          ]
+        }
+      },
+      "checks": [{ "no_error": true }, { "path": "would_build", "at_least": 12 }, { "path": "would_load", "at_least": 3 }]
+    },
+    {
+      "id": "build",
+      "note": "4 walls, the ceiling, the board, 3 sockets, 2 lights and the room; a family that won't place is a note, so notes must be 0",
+      "tool": "fmc_room",
+      "args": {
+        "action": "build", "node": "MEP-Test-01.Room", "project_folder": "{{scratch}}", "dry_run": false,
+        "room": {
+          "name": "MEP test room", "number": "L0-MEP-01", "level": "{{steps.levels.active.levels.0.name}}", "origin_mm": [0, 0], "width": 4000, "depth": 3000, "height": 3000,
+          "walls": { "type": "Generic - 200mm", "thickness": 200 }, "ceiling": { "type": "Generic", "height": 2700 },
+          "items": [
+            { "id": "DB", "family": "FMC_E_EQ_DB_Final_TPN", "type": "12Way_TPN", "at": { "wall": "west", "along": 1500 }, "z": 1400, "host": "wall" },
+            { "id": "S1", "family": "FMC_E_ElecFixture_Socket_13A_Twin", "type": "13A_TwinSwitched", "at": { "wall": "north", "along": 1000 }, "z": 450, "host": "wall" },
+            { "id": "S2", "family": "FMC_E_ElecFixture_Socket_13A_Twin", "type": "13A_TwinSwitched", "at": { "wall": "north", "along": 3000 }, "z": 450, "host": "wall" },
+            { "id": "S3", "family": "FMC_E_ElecFixture_Socket_13A_Twin", "type": "13A_TwinSwitched", "at": { "wall": "east", "along": 1500 }, "z": 450, "host": "wall" },
+            { "id": "L1", "family": "FMC_E_LightFixture_Panel_600_Cleanroom_IP65", "type": "600x600_IP65", "at": { "centre": true, "dx": -1000 }, "host": "ceiling" },
+            { "id": "L2", "family": "FMC_E_LightFixture_Panel_600_Cleanroom_IP65", "type": "600x600_IP65", "at": { "centre": true, "dx": 1000 }, "host": "ceiling" }
+          ]
+        }
+      },
+      "timeout_s": 900,
+      "checks": [{ "no_error": true }, { "path": "done", "equals": true }, { "path": "made", "at_least": 12 }, { "path": "notes", "at_most": 0 }, { "path": "loaded", "at_least": 3 }]
+    },
+    {
+      "id": "record",
+      "note": "What the build made, each element with its key (item:DB, item:S1, ...): the circuits below take their unique ids from here",
+      "read_json": "{{steps.build.record}}",
+      "checks": [{ "path": "elements", "at_least": 12 }, { "path": "elements[key=item:DB].unique_id", "exists": true },
+        { "path": "elements[key=item:S3].unique_id", "exists": true }, { "path": "elements[key=item:L2].unique_id", "exists": true }]
+    },
+    {
+      "id": "circuits_dry",
+      "note": "The real run rolled back: a board Revit refuses as a panel (no Part Type, no distribution system) shows here as a problem",
+      "tool": "fmc_systems",
+      "args": {
+        "action": "create_circuits", "kit_folder": "{{kit}}", "dry_run": true,
+        "board": "{{steps.record.elements[key=item:DB].unique_id}}", "board_name": "DB-MEP-01", "distribution_system": "DS_415-240V_3Ph_4W",
+        "circuits": [
+          { "load_name": "Sockets", "elements": ["{{steps.record.elements[key=item:S1].unique_id}}", "{{steps.record.elements[key=item:S2].unique_id}}", "{{steps.record.elements[key=item:S3].unique_id}}"] },
+          { "load_name": "Lighting", "elements": ["{{steps.record.elements[key=item:L1].unique_id}}", "{{steps.record.elements[key=item:L2].unique_id}}"] }
+        ]
+      },
+      "timeout_s": 300,
+      "checks": [{ "no_error": true }, { "path": "dry_run", "equals": true }, { "path": "problems", "at_most": 0 }, { "path": "made", "equals": 2 },
+        { "path": "board.part_type", "equals": "PanelBoard" }, { "path": "board.distribution_system", "equals": "DS_415-240V_3Ph_4W" }]
+    },
+    {
+      "id": "circuits",
+      "note": "One Undo, all or nothing; nothing is sized (rule 5)",
+      "tool": "fmc_systems",
+      "args": {
+        "action": "create_circuits", "kit_folder": "{{kit}}", "dry_run": false,
+        "board": "{{steps.record.elements[key=item:DB].unique_id}}", "board_name": "DB-MEP-01", "distribution_system": "DS_415-240V_3Ph_4W",
+        "circuits": [
+          { "load_name": "Sockets", "elements": ["{{steps.record.elements[key=item:S1].unique_id}}", "{{steps.record.elements[key=item:S2].unique_id}}", "{{steps.record.elements[key=item:S3].unique_id}}"] },
+          { "load_name": "Lighting", "elements": ["{{steps.record.elements[key=item:L1].unique_id}}", "{{steps.record.elements[key=item:L2].unique_id}}"] }
+        ]
+      },
+      "timeout_s": 300,
+      "checks": [{ "no_error": true }, { "path": "committed", "equals": true }, { "path": "made", "equals": 2 }, { "path": "problems", "at_most": 0 },
+        { "path": "circuits[load_name=Sockets].elements", "equals": 3 }, { "path": "circuits[load_name=Lighting].elements", "equals": 2 }]
+    },
+    {
+      "id": "electrical",
+      "note": "Read-only: the board, its distribution system and its two circuits as Revit reports them",
+      "tool": "fmc_systems",
+      "args": { "action": "electrical" },
+      "checks": [{ "no_error": true }, { "path": "boards[name=DB-MEP-01].circuits", "equals": 2 }, { "path": "boards[name=DB-MEP-01].distribution", "equals": "DS_415-240V_3Ph_4W" }]
+    },
+    {
+      "id": "mep_facts",
+      "note": "Read-only: the command opens no transaction",
+      "revit": "fmc_mep_facts",
+      "params": {},
+      "timeout_s": 300,
+      "checks": [{ "no_error": true }, { "path": "counts.circuits", "equals": 2 }, { "path": "counts.mep", "at_least": 2 },
+        { "path": "circuits[load_name=Sockets].board", "equals": "DB-MEP-01" }, { "path": "circuits[load_name=Lighting].board", "equals": "DB-MEP-01" }]
+    },
+    {
+      "id": "calc_run",
+      "note": "Every calc on the model's facts. CA-E-01 adds up the two circuits; its TBC lines (a demand factor or load classification the kit or the families lack) are allowed. No plumbing fixture in the staged kit carries discharge units yet, so CA-P-01/P-02 have no input here",
+      "tool": "fmc_calc",
+      "args": { "action": "run", "kit_folder": "{{kit}}" },
+      "timeout_s": 600,
+      "checks": [{ "no_error": true }, { "path": "header", "matches": "Draft for the engineer" }, { "path": "results", "at_least": 7 }, { "path": "counts.circuits", "equals": 2 },
+        { "path": "results[id=CA-E-01].rows", "at_least": 1 }, { "path": "results[id=CA-E-01].result", "matches": "^(pass|fail|TBC)$" },
+        { "path": "results[id=CA-E-01].totals[item=DB-MEP-01 total].values.connected_kw.value", "at_least": 0.001 }]
+    },
+    {
+      "id": "calc_sheet_dry",
+      "tool": "fmc_calc",
+      "args": { "action": "sheet", "calcs": ["CA-E-01"], "kit_folder": "{{kit}}", "project_folder": "{{scratch}}", "dry_run": true },
+      "timeout_s": 600,
+      "checks": [{ "no_error": true }, { "path": "dry_run", "equals": true }, { "path": "files", "at_least": 1 }, { "path": "files", "at_most": 1 }, { "path": "files.0.calc", "equals": "CA-E-01" }, { "path": "files.0.md", "matches": "_Calcs" }]
+    },
+    {
+      "id": "scan",
+      "note": "Read-only: the SLD graph from Revit's own connections: the supply, the board and a load per circuit",
+      "tool": "fmc_diagram",
+      "args": { "action": "scan", "kinds": ["e_sld"], "kit_folder": "{{kit}}" },
+      "timeout_s": 300,
+      "checks": [{ "no_error": true }, { "path": "diagrams[kind=e_sld].system", "equals": "DB-MEP-01" }, { "path": "diagrams[kind=e_sld].by_kind.board", "equals": 1 },
+        { "path": "diagrams[kind=e_sld].by_kind.load", "equals": 2 }, { "path": "diagrams[kind=e_sld].edges", "at_least": 3 }]
+    },
+    {
+      "id": "plan_diagrams",
+      "tool": "fmc_diagram",
+      "args": { "action": "plan", "kinds": ["e_sld"], "kit_folder": "{{kit}}" },
+      "timeout_s": 300,
+      "checks": [{ "no_error": true }, { "path": "views", "at_least": 1 }, { "path": "views[kind=e_sld].collisions", "equals": 0 }, { "path": "views[kind=e_sld].items.symbols", "at_least": 3 }]
+    },
+    {
+      "id": "draw_dry",
+      "tool": "fmc_diagram",
+      "args": { "action": "draw", "kinds": ["e_sld"], "kit_folder": "{{kit}}", "dry_run": true },
+      "timeout_s": 600,
+      "checks": [{ "no_error": true }, { "path": "dry_run", "equals": true }, { "path": "result.dry_run", "equals": true }, { "path": "result.views", "at_least": 1 }]
+    },
+    {
+      "id": "draw",
+      "note": "The scratch project is under _ChainTests, where the tool may draw; confirm stands for the person's yes to the dry run above",
+      "tool": "fmc_diagram",
+      "args": { "action": "draw", "kinds": ["e_sld"], "kit_folder": "{{kit}}", "dry_run": false, "confirm": true },
+      "timeout_s": 600,
+      "checks": [{ "no_error": true }, { "path": "dry_run", "equals": false }, { "path": "result.views", "at_least": 1 }, { "path": "result.views.0.view_id", "exists": true },
+        { "path": "result.views.0.symbols", "at_least": 3 }]
+    },
+    {
+      "id": "sheets_dry",
+      "note": "The register's SLD sheet with the drawn view placed, rolled back",
+      "tool": "fmc_diagram",
+      "args": { "action": "sheets", "kinds": ["e_sld"], "kit_folder": "{{kit}}", "dry_run": true },
+      "timeout_s": 600,
+      "checks": [{ "no_error": true }, { "path": "dry_run", "equals": true }, { "path": "sheets", "at_least": 1 }, { "path": "revit.dry_run", "equals": true },
+        { "path": "revit.sheets", "at_least": 1 }, { "path": "revit.sheets.0.views.0.result", "equals": "placed" }, { "path": "sheets.0.title_block", "matches": "^FMC_TitleBlock" }]
+    },
+    {
+      "id": "gate",
+      "note": "Gate D, read-only: what is drawn against what the model holds now; after a draw it must not fail (and is not Not checked)",
+      "tool": "fmc_diagram",
+      "args": { "action": "gate", "kinds": ["e_sld"], "kit_folder": "{{kit}}" },
+      "timeout_s": 300,
+      "checks": [{ "no_error": true }, { "path": "gate", "equals": "D" }, { "path": "verdict", "matches": "^(Pass|Warn)$" }, { "path": "lines", "at_least": 1 }]
+    }
+  ],
+  "teardown": [{ "runner": "close_revit" }]
+}

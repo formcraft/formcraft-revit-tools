@@ -373,3 +373,24 @@ test("QS03: a nested component can be locked to the host's planes, and an unknow
   assert.ok(p.some((x) => /lock plane "Lever Mid" isn't made earlier/.test(x)), p.join("\n"));
   assert.ok(!p.some((x) => /lock plane "Leaf Ext"/.test(x)));
 });
+
+test("MEP test model: set_family_params takes a Part Type; a panel one only on Electrical Equipment; a connector's load classification by name", () => {
+  const board = OPS.parse([
+    { op: "set_category", name: "Electrical Equipment" },
+    { op: "set_family_params", name: "family", part_type: "Panelboard" },
+    { op: "extrusion", name: "Box", points: [[0, 0], [1, 0], [1, 1]] },
+    { op: "add_connector", name: "E", solid: "Box", side: "bottom", domain: "electrical", system: "PowerBalanced", load_classification: "Other" },
+  ]);
+  assert.equal((board[1] as any).part_type, "Panelboard");
+  assert.equal((board[3] as any).load_classification, "Other");
+  const problems = opsProblems(board, dict);
+  assert.ok(!problems.some((x) => /Part Type|load_classification/.test(x)), problems.join(" | "));
+  assert.equal(OP.safeParse({ op: "set_family_params", name: "family", part_type: "Panel" }).success, false, "only Revit's Part Types");
+  assert.equal(OP.safeParse({ op: "set_family_params", name: "family", part_type: "Other Panel" }).success, true);
+  const wrong = opsProblems(OPS.parse([{ op: "set_category", name: "Generic Models" }, { op: "set_family_params", name: "family", part_type: "Switchboard" }]), dict);
+  assert.ok(wrong.some((x) => /Part Type Switchboard is for Electrical Equipment/.test(x)), wrong.join(" | "));
+  assert.deepEqual(opsProblems(OPS.parse([{ op: "set_family_params", name: "family", part_type: "Panelboard" }]), dict), [], "no category in the batch: the file's own may be right");
+  const pipe = opsProblems(OPS.parse([{ op: "extrusion", name: "Box", points: [[0, 0], [1, 0], [1, 1]] },
+    { op: "add_connector", name: "W", solid: "Box", domain: "pipe", system: "Sanitary", load_classification: "Other" }]), dict);
+  assert.ok(pipe.some((x) => /load_classification is for an electrical connector/.test(x)), pipe.join(" | "));
+});

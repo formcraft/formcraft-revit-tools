@@ -52,6 +52,10 @@ const sweepShape = {
 
 export const DATA_TYPES = ["Length", "Number", "Integer", "YesNo", "Text", "Material", "Area", "Volume", "Angle",
   "Voltage", "ApparentPower", "NumberOfPoles", "PipeSize", "Flow", "LoadClassification"] as const;
+/** Part Type values a recipe may set (Revit's PartType, spaces as Revit's dialog shows them); the panel ones make a board. */
+export const PART_TYPES = ["Normal", "Panelboard", "Switchboard", "Other Panel", "Transformer", "Equipment Switch", "Junction Box", "Switch"] as const;
+export const PANEL_PART_TYPES: readonly string[] = ["Panelboard", "Switchboard", "Other Panel"];
+
 export const CONNECTOR_PARAMS = ["Diameter", "Radius", "Width", "Height", "Voltage", "Number of Poles", "Apparent Load", "Power Factor",
   "Load Classification", "Pipe Flow", "Duct Flow"] as const;
 export const GROUPS = ["Dimensions", "Constraints", "Data", "Text", "Materials", "IdentityData", "Graphics", "Electrical", "ElectricalLoads",
@@ -68,7 +72,9 @@ export const lockPlane = (l: string | { plane: string } | undefined) => (typeof 
 export const OP = z.discriminatedUnion("op", [
   z.object({ op: z.literal("set_category"), name: z.string().min(1).describe("Revit category name, e.g. Generic Models, or OST_ name") }),
   z.object({ op: z.literal("set_family_params"), name: z.literal("family"), work_plane_based: z.boolean().optional(),
-    always_vertical: z.boolean().optional(), shared: z.boolean().optional(), room_calculation_point: z.boolean().optional() }),
+    always_vertical: z.boolean().optional(), shared: z.boolean().optional(), room_calculation_point: z.boolean().optional(),
+    part_type: z.enum(PART_TYPES).optional().describe("Family Category and Parameters › Part Type (FAMILY_CONTENT_PART_TYPE). A board is Panelboard, " +
+      "Switchboard or Other Panel: only then does Revit give it a Distribution System and accept it as a circuit's panel (STD-002 5.2)") }),
   z.object({ op: z.literal("add_ref_plane"), name: z.string().min(1), from: point, to: point,
     view: z.string().optional().describe("the view to draw in (default: Ref. Level). In plan, from/to are [x, y]; in an elevation (e.g. Front), [across, up], so level planes such as Head or Sill can be drawn"),
     is_reference: z.enum(REFERENCES).optional() }),
@@ -102,7 +108,9 @@ export const OP = z.discriminatedUnion("op", [
   z.object({ op: z.literal("add_connector"), name: z.string().min(1), domain: z.enum(["electrical", "pipe", "duct"]),
     system: z.string().min(1).describe("e.g. Domestic Cold Water, PowerUnBalanced, SupplyAir"), solid: z.string().min(1),
     side: z.enum(["left", "right", "front", "back", "top", "bottom"]).default("top"),
-    flow: z.enum(["In", "Out", "Bidirectional"]).optional(), diameter: mm.positive().optional(), width: mm.positive().optional(), height: mm.positive().optional() }),
+    flow: z.enum(["In", "Out", "Bidirectional"]).optional(), diameter: mm.positive().optional(), width: mm.positive().optional(), height: mm.positive().optional(),
+    load_classification: z.string().min(1).optional().describe("electrical: the connector's Load Classification by name (one of the kit's Electrical_Settings " +
+      "classes, e.g. Other for a board; made in the family by name if missing). The name only: demand factors stay the engineer's (rule 5)") }),
   z.object({ op: z.literal("link_connector_param"), name: z.string().min(1).describe("<connector>/<connector parameter>"),
     connector: z.string().min(1), connector_param: z.enum(CONNECTOR_PARAMS), param: z.string().min(1) }),
   z.object({ op: z.literal("set_visibility"), name: z.string().min(1).describe("the solid"), coarse: z.boolean().optional(), medium: z.boolean().optional(),
@@ -448,6 +456,7 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
   const integerParam = typedParam("Integer"), lengthParam = typedParam("Length");
   const solidAt = new Map<string, number>();
   const SOLID_OPS = new Set(["extrusion", "void_extrusion", "sweep", "void_sweep", "revolution", "blend", "import_part"]);
+  let category: string | null = null;
   ops.forEach((o, i) => {
     const at = `op ${i + 1} (${o.op} ${o.name})`;
     const key = `${o.op}|${o.name.toLowerCase()}`;
@@ -503,6 +512,12 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
         }
         break;
       case "add_type": types.add(o.name); break;
+      case "set_category": category = o.name; break;
+      case "set_family_params":
+        // a panel Part Type means something only on Electrical Equipment (Revit offers the Distribution System only there)
+        if (o.part_type && PANEL_PART_TYPES.includes(o.part_type) && category !== null && !/^(electrical equipment|OST_ElectricalEquipment)$/i.test(category.trim()))
+          p.push(`${at}: Part Type ${o.part_type} is for Electrical Equipment, and this batch sets the category to ${category}`);
+        break;
       case "extrusion":
       case "void_extrusion":
         if (!o.rect && !o.points) p.push(`${at}: give rect (four reference planes) or points`);
@@ -516,6 +531,7 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
       case "add_connector":
         if (!solids.has(o.solid)) p.push(`${at}: solid "${o.solid}" isn't made earlier in this batch (it may exist in the file: then it's fine)`);
         if (o.domain === "duct" && o.width && !o.height) p.push(`${at}: a rectangular duct connector needs width and height`);
+        if (o.load_classification && o.domain !== "electrical") p.push(`${at}: load_classification is for an electrical connector`);
         connectors.add(o.name);
         break;
       case "link_connector_param":

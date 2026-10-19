@@ -94,8 +94,27 @@ namespace RevitMCPCommandSet.Services.Fmc
                 Parameter fp = ce.get_Parameter(domain == "duct" ? BuiltInParameter.RBS_DUCT_FLOW_DIRECTION_PARAM : BuiltInParameter.RBS_PIPE_FLOW_DIRECTION_PARAM);
                 if (fp != null && !fp.IsReadOnly) fp.Set((int)fd);
             }
+            string load = op.Value<string>("load_classification") ?? "", loadNote = "";
+            if (domain == "electrical" && load.Length > 0)
+            {
+                // the connector is kept either way; a classification Revit refuses is named in the op's answer, not hidden
+                try { SetLoadClassification(doc, ce, load); loadNote = ", load classification " + load; }
+                catch (Exception ex) { loadNote = $", load classification {load} NOT set ({ex.Message}): set it in the connector's properties"; }
+            }
             FmcDocGeometry.Label(ce, name);
-            return ("create", $"{domain} {system} on {op.Value<string>("solid")} {op.Value<string>("side") ?? "top"}");
+            return ("create", $"{domain} {system} on {op.Value<string>("solid")} {op.Value<string>("side") ?? "top"}" + loadNote);
+        }
+
+        /// <summary>The connector's Load Classification by name, made in the family if it isn't there (the name only:
+        /// demand factors are the engineer's, rule 5).</summary>
+        private static void SetLoadClassification(Document doc, ConnectorElement ce, string name)
+        {
+            Parameter p = ce.get_Parameter(BuiltInParameter.RBS_ELEC_LOAD_CLASSIFICATION)
+                ?? throw new InvalidOperationException("The connector has no Load Classification (it isn't a power connector)");
+            ElectricalLoadClassification lc = new FilteredElementCollector(doc).OfClass(typeof(ElectricalLoadClassification))
+                .Cast<ElectricalLoadClassification>().FirstOrDefault(x => string.Equals(x.Name, name, StringComparison.OrdinalIgnoreCase))
+                ?? ElectricalLoadClassification.Create(doc, name);
+            if (p.IsReadOnly || !p.Set(lc.Id)) throw new InvalidOperationException("Revit didn't take Load Classification " + name + " on the connector");
         }
 
         private static readonly Dictionary<string, BuiltInParameter> ConnectorParams = new Dictionary<string, BuiltInParameter>(StringComparer.OrdinalIgnoreCase)

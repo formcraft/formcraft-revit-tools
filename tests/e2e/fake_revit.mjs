@@ -85,6 +85,16 @@ const fixtures = {
       views: (s.views || []).map((v) => ({ view: v.name, result: "placed" })) })), warnings: [], kit_change_requests: [] }),
   fmc_diagram_drawn: { model: doc.title, views: [{ name: "E-SLD-MDB", view_id: "900", keys: ["E-SLD-MDB|b-1|symbol", "E-SLD-MDB|ckt-11|symbol", "E-SLD-MDB|ckt-11|text", "E-SLD-MDB|3|line"],
     symbols: 2, lines: 1, texts: 1, tbc_texts: 1, kept_by_hand: 0, sheets: ["E-0003"] }] },
+  // KISIC 4.4: circuits on a named board (the dry run is the real run rolled back); never sizes
+  fmc_circuits_create: (p) => {
+    const real = p.dry_run === false;
+    const name = p.board_name || "MDB";
+    const circuits = (p.circuits || []).map((c, i) => ({ id: real ? 800 + i : null, unique_id: real ? `ckt-${800 + i}` : "", board: name, number: String(i + 1),
+      load_name: c.load_name || "", elements: (c.elements || []).length, poles: 1 }));
+    return { dry_run: !real, committed: real, board: { id: 1, unique_id: p.board, family: "FMC_E_EQ_DB_Final_TPN", type: "12Way_TPN", part_type: "PanelBoard", name,
+      distribution_system: p.distribution_system?.name ?? "400/230", distribution_set: !!p.distribution_system }, circuits, made: circuits.length,
+      skipped: [], problems: [], notes: [], warnings: [], errors: [], rolled_back: false };
+  },
   fmc_brief_apply: (p) => ({ dry_run: p.dry_run, model: doc.title, levels_created: (p.levels || []).length, plans_created: (p.levels || []).length,
     project_info_set: Object.keys(p.project_info || {}).length, rooms_created: (p.rooms || []).length, room_values_set: 3, families_loaded: 0, notes: [] }),
   fmc_link_facts: { model: doc.title, workshared: doc.isWorkshared, coordinates: { site: "Internal", easting_mm: 0, northing_mm: 0, elevation_mm: 0, angle_deg: 0, crs: "" }, links: [], worksets: [] },

@@ -138,7 +138,16 @@ without a person's yes, review show) and selection read and show; 08 3D pictures
 plan; one per detail level); 09 offline: the bay's room plan and ceiling designs; 10 schedules from
 `tests/schedules/FMC_Schedules_sample.json` (check, plan, apply in a scratch project, plan again); 11 ceiling and
 casework place in a scratch room (fmc_ceiling place and fmc_casework place, each a dry run then the real place, the
-counts and the placed elements' facts; the staged Vanity stands in for the unbuilt KitchenUnit); 12 to 14 Navisworks, Rhino and Robot (need the app open).
+counts and the placed elements' facts; the staged Vanity stands in for the unbuilt KitchenUnit); 12 to 14 Navisworks, Rhino and Robot (need the app open);
+15 the MEP facts and calc list, and 16 the line diagrams, on the empty template (their runs and draws are skipped there);
+17 the MEP test model: the staged board `FMC_E_EQ_DB_Final_TPN` rebuilt from its recipe (Part Type Panelboard, the supply
+connector's Load Classification Other; rebuilt every run, because the batch reads the revision from the recipe beside the
+staged family) and gated (Gate A unchanged), a 4 x 3 m room with the board, 3 sockets and 2 ceiling lights from staging
+(fmc_room build), two circuits made by `fmc_systems create_circuits` (dry run, then real; the board gets
+`DS_415-240V_3Ph_4W` from the kit's Electrical_Settings), then `fmc_systems electrical`, `fmc_mep_facts`, `fmc_calc run`
+(CA-E-01 on the two circuits, TBC lines allowed) and a CA-E-01 sheet dry run, and the SLD scanned, planned, drawn (dry run,
+then real), its register sheet as a dry run and Gate D (Pass or Warn). It covers electrical only: no staged plumbing
+fixture carries discharge units yet, so CA-P-01/P-02 have no input.
 
 **The runner** (`fmc_testrun`, a tool and a CLI command): `list`; `plan` (dry: what would run now, the power state, the
 paths); `run` (a new run; in the background unless `foreground`); `resume` (the last unfinished run; with `auto`, a new

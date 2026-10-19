@@ -218,6 +218,14 @@ side looks right: Power Balanced, with Voltage 415 and 3 poles linked to type pa
 
    Then `fmc_systems create_circuits` and `fmc_diagram` can work from real circuits.
 
+**Plugin side, 19 Oct (MEP test model PR):** `set_family_params` now takes `part_type` and `add_connector` takes
+`load_classification` (docs/RECIPES.md). The staged recipe `04_Families\_Staging\E\FMC_E_EQ_DB_Final_TPN.recipe.json`
+now sets Part Type Panelboard and the supply connector's Load Classification Other (the original is in
+`_Staging\_Batch\_Archive\FMC_E_EQ_DB_Final_TPN.recipe_before_20261019-parttype.json`). Items 3 and 4 (a single-phase
+type, FMC_Ways = 12) are still open. `fmc_systems create_circuits` makes circuits and sets the distribution system
+(`DS_415-240V_3Ph_4W`) on the board; scenario `tests/revit/17_mep_model.json` runs step 5 unattended. Until that scenario
+passes in Revit, the fix stays unproven.
+
 **Why:** with no circuits there is no SLD, no panel schedule and no load summary. **Needed by:** E2, E3 and E1 (it
 blocks the KISIC P1 item).
 

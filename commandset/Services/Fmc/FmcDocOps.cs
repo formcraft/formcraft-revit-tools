@@ -184,6 +184,22 @@ namespace RevitMCPCommandSet.Services.Fmc
             Flag("always_vertical", BuiltInParameter.FAMILY_ALWAYS_VERTICAL);
             Flag("shared", BuiltInParameter.FAMILY_SHARED);
             Flag("room_calculation_point", BuiltInParameter.ROOM_CALCULATION_POINT);
+            // Part Type (STD-002 5.2): a board must be Panelboard, Switchboard or Other Panel, or Revit gives it no
+            // Distribution System and refuses it as a circuit's panel.
+            string partType = op.Value<string>("part_type") ?? "";
+            if (partType.Length > 0)
+            {
+                if (!System.Enum.TryParse(partType.Replace(" ", ""), true, out PartType pt))
+                    throw new InvalidOperationException("Part Type " + partType + " isn't one Revit knows");
+                Parameter p = doc.OwnerFamily.get_Parameter(BuiltInParameter.FAMILY_CONTENT_PART_TYPE)
+                    ?? throw new InvalidOperationException("This family's category has no Part Type (set_category first: a board is Electrical Equipment)");
+                if (p.IsReadOnly) throw new InvalidOperationException("Part Type is read-only in this family");
+                if (p.AsInteger() != (int)pt)
+                {
+                    p.Set((int)pt);
+                    changed.Add("part_type=" + pt);
+                }
+            }
             return changed.Count == 0 ? ("skip", "") : ("update", string.Join(", ", changed));
         }
 

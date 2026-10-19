@@ -332,6 +332,24 @@ failures were already fixed in their recipes, so the "catches failures" side res
 A build's result also names each **skipped op** and why (`skipped_ops`): "already as asked" when nothing needed
 changing, or the engine's reason.
 
+## Boards: Part Type and the supply connector (MEP test model)
+`set_family_params` takes `part_type` (Revit's Part Type, `FAMILY_CONTENT_PART_TYPE`): Normal, Panelboard, Switchboard,
+Other Panel, Transformer, Equipment Switch, Junction Box or Switch. A board must be Panelboard, Switchboard or Other
+Panel: only then does Revit give it a Distribution System and accept it as a circuit's panel. `check` refuses a panel
+Part Type in a batch that sets a category other than Electrical Equipment. `add_connector` takes `load_classification`
+on an electrical connector: one of the kit's Electrical_Settings classes by name (made in the family if missing; the
+name only, never a demand factor). If Revit refuses it, the connector is still made and the op's answer says
+"NOT set".
+
+```json
+{ "op": "set_category", "name": "Electrical Equipment" }
+{ "op": "set_family_params", "name": "family", "part_type": "Panelboard" }
+{ "op": "add_connector", "name": "E", "solid": "CN E Pad", "side": "bottom", "domain": "electrical", "system": "PowerBalanced", "load_classification": "Other" }
+```
+
+Circuits are made in the project, not in the family: `fmc_systems create_circuits` groups devices into circuits on a
+named board and sets the kit's distribution system on the board when it has none. It never sizes.
+
 ## Recipe ops from the field review (run 9)
 The Ogala LOD 400 review found that recipes flexed only in plan. These ops close the gaps it listed (`lock_face`,
 `set_visible_param` and `profile_lines` were already there). `tests/doc/FMC_A_Door_RecipeOps_Sample.ops.json` uses all
