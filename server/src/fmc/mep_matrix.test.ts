@@ -26,7 +26,7 @@ test("systems and capabilities in the agreed order", () => {
   assert.deepEqual(m.states, [...MATRIX_STATES]);
 });
 
-test("honest today: nothing is tested in Revit yet, line diagrams are built, the kit's calcs wait for E1", () => {
+test("honest today: nothing is tested in Revit yet, line diagrams and the E1 calcs are built", () => {
   const m = validateMatrix(raw()).matrix!;
   const s = summarize(m);
   assert.equal(s.tested, 0);
@@ -35,8 +35,11 @@ test("honest today: nothing is tested in Revit yet, line diagrams are built, the
   const cell = (sys: string, cap: string) => m.cells.find((c) => c.system === sys && c.capability === cap)!;
   assert.equal(cell("power_distribution", "diagram").state, "Built, Revit check due");
   assert.equal(cell("power_distribution", "diagram").feature, "F23");
-  assert.equal(cell("drainage", "calculate").state, "Kit calculation only");
-  assert.equal(cell("drainage", "calculate").step, "E1");
+  assert.equal(cell("drainage", "calculate").state, "Built, Revit check due");
+  assert.equal(cell("drainage", "calculate").feature, "F77");
+  assert.ok(cell("drainage", "calculate").evidence.includes("server/src/fmc/calc/drainage.ts"));
+  assert.equal(cell("earthing", "calculate").state, "Partly built");
+  assert.equal(cell("ventilation", "calculate").state, "Kit calculation only");
   assert.equal(cell("power_distribution", "enrich").step, "E3");
   assert.match(cell("power_distribution", "enrich").note, /Electrical 0\.1/);
   assert.equal(cell("structural", "diagram").state, "Not applicable");
