@@ -5,9 +5,10 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { Filter, PRIORITIES, Register, ReviewItem, answer, filterItems, find, printItems, printList, raise, raiseProblems, shownStatus, solve, verdict } from "../fmc/review.js";
-import { AI_OWNER, applyBcf, clashTickets, comment, mark, markProblems, queue, take } from "../fmc/tickets.js";
+import { AI_OWNER, applyBcf, clashTickets, comment, mark, markProblems, queue, take, titleFrom } from "../fmc/tickets.js";
 import { navisCall, processAlive, readState } from "../fmc/navis.js";
 import { fromBcf, toBcf } from "../fmc/bcf.js";
+import { Downloader, Runner, WHISPER_MODELS, WhisperModel, languageProblem, runSetup, setupPlan, transcribe, whisperHome } from "../fmc/whisper.js";
 import { ElementFacts, intentAfterReply, parseNote, planFix } from "../fmc/noteparse.js";
 import { readDb } from "./fmc_material.js";
 import { applyProblems, applySteps, fixApplied, fixFailed, planHash } from "../fmc/applyfix.js";
@@ -58,7 +59,10 @@ export const FMC_REVIEW_DESCRIPTION =
     "note's audio and transcript, a picture); comment (a reply in the thread, typed or spoken); take (start it; a ticket " +
     "for anyone gets its owner); queue (what waits for the AI, a person or a discipline, most urgent first, with " +
     "everything the fix needs); bcf_export and bcf_import (BCF 2.1 for Navisworks, Solibri, BIMcollab, ACC; a dry run " +
-    "first). Marking never changes the model. Each mark and reply is read by the offline note parser (no AI) into an " +
+    "first); transcribe (a voice note in a ticket's thread, by id and note number, or any audio file: offline whisper.cpp, " +
+    "small model by default or medium, language auto or e.g. en, sw; it reads 16 kHz mono 16-bit WAV, as the pane records); " +
+    "whisper_setup (what is installed in %LOCALAPPDATA%\\Formcraft\\whisper; downloads the tool and the model only with " +
+    "dry_run=false). Marking never changes the model. Each mark and reply is read by the offline note parser (no AI) into an " +
     "intent kept on the ticket (resize, set_param, move, raise_lower, swap_type, material, delete, add_clearance, " +
     "same_as, unclear); plan_fix (id; optional facts: the element's category, type, parameters in mm, loadable types) " +
     "returns the structured fix as a dry run: each step with a sentence, what is unclear (for the AI), what needs an " +
@@ -69,7 +73,7 @@ export const FMC_REVIEW_DESCRIPTION =
     "element facts) and the ticket goes back to the raiser as Resolved to check.";
 
 export const FMC_REVIEW_SHAPE = {
-  action: z.enum(["list", "item", "raise", "answer", "solve", "check", "cloud", "print", "prints", "mark", "comment", "take", "queue", "bcf_export", "bcf_import", "plan_fix", "apply_fix", "show", "clashes"]),
+  action: z.enum(["list", "item", "raise", "answer", "solve", "check", "cloud", "print", "prints", "mark", "comment", "take", "queue", "bcf_export", "bcf_import", "plan_fix", "apply_fix", "show", "clashes", "transcribe", "whisper_setup"]),
   approved_by: z.string().optional().default("").describe("apply_fix: the person who said yes to the steps (never the AI)"),
   plan_hash: z.string().optional().default("").describe("apply_fix: the plan_hash from the dry run that person saw"),
   facts: z.object({ unique_id: z.string().optional(), category: z.string().optional(), family: z.string().optional(), type_name: z.string().optional(),
@@ -85,7 +89,10 @@ export const FMC_REVIEW_SHAPE = {
     view: z.string().optional(), camera: z.object({ eye: z.array(z.number()).length(3), direction: z.array(z.number()).length(3), up: z.array(z.number()).length(3),
       perspective: z.boolean(), field_of_view: z.number().optional(), scale: z.number().optional() }).optional(),
     section_box: z.object({ min: z.array(z.number()).length(3), max: z.array(z.number()).length(3) }).optional() }).optional().describe("mark: where it is in the model"),
-  audio: z.string().optional().default("").describe("mark, comment: a voice note audio file (copied beside the register)"),
+  audio: z.string().optional().default("").describe("mark, comment: a voice note audio file (copied beside the register); transcribe: an audio file to transcribe without a ticket"),
+  note: z.number().int().optional().default(0).describe("transcribe: the note's number in the thread, 1 = the first (0: the newest voice note without a transcript)"),
+  model: z.enum(WHISPER_MODELS).optional().default("small").describe("transcribe, whisper_setup: small (default, about 490 MB) or medium (about 1.5 GB, more memory)"),
+  language: z.string().optional().default("auto").describe("transcribe: auto, or a language code such as en or sw"),
   transcript: z.string().optional().default("").describe("mark, comment: its transcript (offline Whisper)"),
   picture: z.string().optional().default("").describe("mark: the view with the pin (copied beside the register)"),
   ids: z.array(z.string()).optional().default([]).describe("bcf_export: these tickets (default: every open ticket)"),
@@ -93,7 +100,7 @@ export const FMC_REVIEW_SHAPE = {
   sheet: z.string().optional().default("").describe("print, prints: the sheet number, e.g. A-1001"),
   kind: z.enum(["For review", "As revised"]).optional().default("For review").describe("print: open items to fix, or solved items with their solutions"),
   dry_run: z.boolean().optional().default(true).describe("cloud: a dry run unless false"),
-  project_folder: z.string().describe("The project folder (the register lives in its 01_WIP)"),
+  project_folder: z.string().optional().default("").describe("The project folder (the register lives in its 01_WIP); not needed for whisper_setup or a bare audio file"),
   project_code: z.string().optional().default(""),
   filter: z.enum(["All", "Open", "My discipline", "Overdue", "Closed"]).optional().default("Open"),
   my_disciplines: z.array(z.string()).optional().default([]),
@@ -116,9 +123,30 @@ export const FMC_REVIEW_SHAPE = {
 
 export type FmcReviewArgs = z.infer<z.ZodObject<typeof FMC_REVIEW_SHAPE>>;
 
-export async function runFmcReview(args: FmcReviewArgs) {
+/** What the tests swap: the child process, the downloader and where whisper lives. */
+export interface ReviewDeps { run?: Runner; download?: Downloader; whisperHome?: string }
+
+export async function runFmcReview(args: FmcReviewArgs, deps: ReviewDeps = {}) {
   const { config } = loadConfig();
   try {
+    const home = deps.whisperHome ?? whisperHome();
+    if (args.action === "whisper_setup") {
+      const plan = setupPlan(home, args.model as WhisperModel);
+      if (!plan.steps.length) return reply({ ready: true, status: plan.status, next: "Voice notes transcribe offline" });
+      if (args.dry_run !== false)
+        return reply({ dry_run: true, status: plan.status, would_download: plan.steps, total_mb: plan.steps.reduce((t, s) => t + s.mb, 0),
+          next: "Run again with dry_run=false to download (once per PC); each file's SHA-256 is checked against the published one" });
+      const r = await runSetup(home, args.model as WhisperModel, deps.download);
+      log(config, "whisper_setup", home, "done", r.done.join("; "));
+      return reply({ done: true, installed: r.done, status: r.status });
+    }
+    const lp = args.action === "transcribe" ? languageProblem(args.language.trim().toLowerCase() || "auto") : undefined;
+    if (lp) return reply({ refused: true, reasons: [lp] }, true);
+    if (args.action === "transcribe" && !args.id.trim()) {
+      if (!args.audio.trim()) return reply({ refused: true, reasons: ["Name the ticket and note (id, note), or an audio file (audio)"] }, true);
+      const t = await transcribe({ wav: expandEnv(args.audio.trim()), model: args.model as WhisperModel, language: args.language, home, run: deps.run });
+      return reply({ done: true, file: args.audio.trim(), ...t });
+    }
     if (!args.project_folder.trim()) return reply({ refused: true, reasons: ["Set the project folder: the review register lives in its 01_WIP"] }, true);
     const file = registerFile(args.project_folder.trim());
     const now = new Date(), today = now.toISOString().slice(0, 10);
@@ -137,7 +165,7 @@ export async function runFmcReview(args: FmcReviewArgs) {
         // compact by default (tokens): one short line per ticket; the AI asks for a whole ticket (item) when it starts on it
         tickets: q.map((i) => args.full ? { ...i, shown_status: shownStatus(i, today), media: win.join(win.dirname(file), "media", i.id) } : {
           id: i.id, title: i.title, priority: i.priority, due: i.due, status: shownStatus(i, today), to: i.to, lead: i.lead,
-          note: (i.notes?.[i.notes.length - 1]?.text ?? i.description).slice(0, 160), notes: i.notes?.length ?? 0,
+          note: ((i.notes?.length ? i.notes[i.notes.length - 1].text || i.notes[i.notes.length - 1].transcript : "") || i.description || "").slice(0, 160), notes: i.notes?.length ?? 0,
           elements: (i.where?.unique_ids.length ?? 0) + (i.where?.linked?.length ?? 0), voice: (i.notes ?? []).some((n) => !!n.audio),
           picture: !!i.pictures?.raised, source: i.source, intent: i.intent?.map((x) => x.kind) }),
         next: args.to === "ai" ? "Take the first ticket (take), make its fix as a dry run, and show it to the person who raised it" : undefined });
@@ -259,6 +287,24 @@ export async function runFmcReview(args: FmcReviewArgs) {
       comment(item, { by, text: args.text || args.transcript, ...(audio ? { audio } : {}), ...(args.transcript ? { transcript: args.transcript } : {}) }, now);
       const said = (args.text || args.transcript).trim();
       if (said) item.intent = intentAfterReply(item.intent, parseNote(said, { materials: materials() }));
+    } else if (args.action === "transcribe") {
+      item = find(reg, args.id);
+      const notes = item.notes ?? [];
+      const n = args.note > 0 ? args.note : newestVoiceNote(notes);
+      const note = notes[n - 1];
+      if (!note) return reply({ refused: true, reasons: [args.note > 0 ? `${item.id} has no note ${args.note} (it has ${notes.length})` : `${item.id} has no voice note`] }, true);
+      if (!note.audio) return reply({ refused: true, reasons: [`Note ${n} of ${item.id} is typed, not a voice note`] }, true);
+      const wav = win.isAbsolute(note.audio) ? note.audio : win.join(win.dirname(file), note.audio);
+      const t = await transcribe({ wav, model: args.model as WhisperModel, language: args.language, home, run: deps.run });
+      note.transcript = t.text;
+      note.transcribed_by = t.transcribed_by;
+      // a ticket marked by voice alone gets its words now: the title and description it couldn't have before
+      if (n === 1 && t.text && !item.description.trim()) {
+        item.description = t.text;
+        if (item.title === "Voice note") item.title = titleFrom(t.text);
+      }
+      item.history.push({ at: now.toISOString(), by, what: `Note ${n} transcribed (${t.transcribed_by}${t.language ? ", " + t.language : ""})` });
+      if (t.text) item.intent = n === 1 ? parseNote(t.text, { materials: materials() }) : intentAfterReply(item.intent, parseNote(t.text, { materials: materials() }));
     } else if (args.action === "take") {
       item = find(reg, args.id);
       take(item, by, now);
@@ -317,6 +363,13 @@ export async function runFmcReview(args: FmcReviewArgs) {
     log(config, "review_" + args.action, args.project_folder, "error", msg);
     return reply({ error: msg }, true);
   }
+}
+
+/** The newest voice note still without a transcript (else the newest voice note), 1-based; 0 when there is none. */
+export function newestVoiceNote(notes: Array<{ audio?: string; transcript?: string }>): number {
+  for (let k = notes.length - 1; k >= 0; k--) if (notes[k].audio && !notes[k].transcript) return k + 1;
+  for (let k = notes.length - 1; k >= 0; k--) if (notes[k].audio) return k + 1;
+  return 0;
 }
 
 /** BCF out (every open ticket, or the ids given) and in (a .bcfzip's topics), each a dry run first. */
