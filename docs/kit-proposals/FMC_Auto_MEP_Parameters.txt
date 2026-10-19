@@ -1,0 +1,26 @@
+# This is a Revit shared parameter file.
+# Do not edit manually.
+# PROPOSED additions to FMC_SharedParameters.txt (kit change request 19 Oct 2026, MEP). Not standard until the BIM Manager approves.
+*META	VERSION	MINVERSION
+META	2	1
+*GROUP	ID	NAME
+GROUP	8	FMC_08_Electrical
+GROUP	18	FMC_18_QA_Information_Status
+GROUP	23	FMC_23_Spaces
+*PARAM	GUID	NAME	DATATYPE	DATACATEGORY	GROUP	VISIBLE	DESCRIPTION	USERMODIFIABLE	HIDEWHENNOVALUE
+PARAM	3b48cf39-ccbc-526d-8815-01bf173e70dc	FMC_Room_Type	TEXT		23	1	Room services type id from FMC_Rulebook_RoomServices (e.g. office, ward_bay, icu_bed); picks the room's services rules	1	0
+PARAM	aa262cd9-969b-58a6-83a3-9f0684dcf11e	FMC_Auto_Stage	TEXT		18	1	On an element: the Auto-MEP stage that placed it. On a room: the last stage a person approved for that room	1	0
+PARAM	319d4502-1552-5b58-a23b-632ead9ae772	FMC_Auto_Run	TEXT		18	1	Auto-MEP run id (fmc-auto-run journal) that placed or last changed this element; blank = placed by a person	1	0
+PARAM	b48f327e-4af6-5377-ae73-7fd24d96b0dd	FMC_Auto_Locked	YESNO		18	1	Yes = a person has taken this element (or room) over; Auto-MEP never moves, re-types or deletes it	1	0
+PARAM	d7c3e7fc-b045-58e5-a582-2454cf23cc0b	FMC_AI_Hint_Kind	TEXT		18	1	Kind of AI hint marker: DB_Here, Riser_Zone, No_Services, Keep_Clear, Feature_Light, Supply_Intake (FMC_AI_Hint_Marker types)	1	0
+PARAM	18438d3f-1c56-5df6-9f08-4387c0de6b00	FMC_Switch_Ref	TEXT		8	1	Switch or switch group that controls this fitting, e.g. L4 (Revit's Switch ID is read-only without circuits)	1	0
+PARAM	459e686a-02fb-56dc-874c-bb71947f62ae	FMC_Elec_System	TEXT		8	1	Electrical service: Power, Lighting, Emergency Lighting, Fire, Data, Security, Mechanical	1	0
+PARAM	c8bc67d6-c1f4-5ebf-87d0-b00ec35ce4ae	FMC_Phases	INTEGER		8	1	Supply phases for the load: 1 or 3	1	0
+PARAM	e7bee2d4-11b0-5057-97d9-90d83e5c8e33	FMC_Design_Current_A	NUMBER		8	1	Design current Ib (A), written by the calculation; the engineer checks it	1	0
+PARAM	641c13bd-fdb2-5444-b44d-e39098b6d4d4	FMC_Protective_Device_A	NUMBER		8	1	Rated current In (A) of the protective device feeding this equipment	1	0
+PARAM	a6c2566c-70cc-586b-aa61-40cfb722d43b	FMC_Conductor_Size_mm2	TEXT		8	1	Sized line conductor, e.g. 4C 16 mm2 Cu XLPE/SWA; written by the calculation, the engineer approves	1	0
+PARAM	fc307f32-71e9-5d4d-b148-d74797a179f5	FMC_CPC_Size_mm2	TEXT		8	1	Circuit protective conductor size, e.g. 16 mm2 (or armour as CPC)	1	0
+PARAM	f2c7b8e0-1ac5-5cbe-a454-77daad4457ad	FMC_Voltage_Drop_Pct	NUMBER		8	1	Calculated voltage drop (%) to this equipment, written back from CA-E-02 or the calculation (limits 3% lighting, 5% other per BS 7671 App. 4)	1	0
+PARAM	5305a647-c339-55f7-bc88-47b9cdbfba45	FMC_Calc_Status	TEXT		18	1	Result of the last calculation on this element: OK, WARN or FAIL (never 'approved': that is the engineer's)	1	0
+PARAM	37a31656-814a-56e0-b6b8-b794e070ce16	FMC_Data_Source	TEXT		18	1	Where this element's electrical data came from: Model, Library:<id> (assumed), or Manual (a person)	1	0
+PARAM	8ab46453-f9cd-5e8f-a3f4-b836a3b56f95	FMC_Elec_Code_Pack	TEXT		8	1	Electrical code pack for calculations: iec (BS 7671 / IEC 60364) or nec; the kit default is iec	1	0
