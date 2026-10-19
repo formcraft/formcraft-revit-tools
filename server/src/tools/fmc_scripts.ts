@@ -11,6 +11,7 @@ import { FMC_WORKSHARE_SHAPE, runFmcWorkshare } from "./fmc_workshare.js";
 import { FMC_ANNOTATE_SHAPE, runFmcAnnotate } from "./fmc_annotate.js";
 import { FMC_REVIEW_SHAPE, runFmcReview } from "./fmc_review.js";
 import { FMC_REPORT_SHAPE, runFmcReport } from "./fmc_report.js";
+import { recorded, startedByFrom } from "../fmc/ledger.js";
 
 const win = path.win32;
 
@@ -110,7 +111,9 @@ export async function runFmcScripts(args: FmcScriptsArgs) {
     for (const step of args.steps) {
       let body: any = null, ok = false;
       try {
-        const r = await stepRunner(step, args)();
+        // F74: each step is a call started by a job (the automation), in the call ledger
+        const r = await recorded(`fmc_${step}`, { project_folder: args.project_folder, project_code: args.project_code },
+          startedByFrom(process.env, "ai") === "schedule" ? "schedule" : "job", stepRunner(step, args));
         body = JSON.parse(r.content[0]?.text ?? "{}");
         ok = !r.isError;
       } catch (e) { body = { error: e instanceof Error ? e.message : String(e) }; }

@@ -76,6 +76,7 @@ A project's exchange is `<project>\01_WIP\_Exchange` (or `<reports>\Exchange` wi
 Without AI, from a command line (or a scheduled task):
 
 ```
+set FMC_STARTED_BY=schedule                     (in a Task Scheduler action: the call ledger counts it as scheduled, docs/AUTOMATION_BALANCE.md)
 node build\fmc\cli.js fmc_flow < run.json      (run.json: {"action":"run","flow":"chain_test","vars":{"role":"A"}})
 ```
 

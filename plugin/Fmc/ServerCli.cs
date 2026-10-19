@@ -149,6 +149,8 @@ namespace revit_mcp_plugin.Fmc
                     StandardOutputEncoding = Encoding.UTF8,
                     StandardErrorEncoding = Encoding.UTF8,
                 };
+                // F74: the call ledger records the pane's calls as started by the pane (an MCP client's are "ai").
+                psi.EnvironmentVariables["FMC_STARTED_BY"] = "pane";
                 // The pane's tools reach this Revit, even when another Revit is open on another port.
                 if (revit_mcp_plugin.Core.SocketService.Instance.IsRunning)
                     psi.EnvironmentVariables["REVIT_PORT"] = revit_mcp_plugin.Core.SocketService.Instance.Port.ToString();
