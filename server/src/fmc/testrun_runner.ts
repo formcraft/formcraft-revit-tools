@@ -26,7 +26,7 @@ import { appStatuses, realProbe } from "../hub/apps.js";
 import { BridgeBusy, bridgeState, busyWords, parseBusy, waitForBridgeFree } from "./busy.js";
 import {
   Action, CLI_TOOLS, Finding, addFinding, GAP_MS, NeedsApp, PowerStatus, Reply, RunState, Scenario, autoDecision, evalCheck, finishScenario,
-  findingDrafts, interruptScenario, lockVerdict, newRun, nextScenario, parsePowerLine, parseScenario, powerDecision, resumeRun,
+  findingDrafts, interruptScenario, lockVerdict, newRun, nextScenario, parsePowerLine, parseScenario, powerDecision, powerOverride, resumeRun,
   runId, skipReason, sleptBetween, startScenario, stepChecks, substitute, summaryMarkdown,
 } from "./testrun.js";
 
@@ -144,10 +144,35 @@ const POWER_PS = "Add-Type -Namespace FmcTestrun -Name Power -MemberDefinition '
   "[DllImport(\"kernel32.dll\")] public static extern bool GetSystemPowerStatus(out S s);'; " +
   "$s = New-Object FmcTestrun.Power+S; [void][FmcTestrun.Power]::GetSystemPowerStatus([ref]$s); \"$($s.AC) $($s.Bat) $($s.Pct) $($s.Flag)\"";
 
-/** Windows' GetSystemPowerStatus through PowerShell; null when it can't be read. */
-export function readPower(): PowerStatus | null {
+/**
+ * TEST ONLY seams (docs/TESTING.md, "Testing the runner itself"); none is set on a real run:
+ * - FMC_TESTRUN_POWER=ac|battery|saver|unknown, or FMC_TESTRUN_POWER_FILE=<file holding one of those words, re-read at
+ *   every check>, stands in for Windows' power reading (the file wins when it holds a known word);
+ * - FMC_TESTRUN_POLL_MS: the pause's re-check interval in ms, in place of power_poll_s (at least 5 s otherwise);
+ * - FMC_TESTRUN_STOP_AFTER_STEPS=N: the process ends as the PC sleeping would (no clean-up, the lock left behind, the
+ *   checkpoint as it was) when action N+1 is about to run;
+ * - FMC_TESTRUN_REVIT_STANDIN=<script>: the runner's "Revit" is that node script (tests/e2e/fake_revit.mjs, which
+ *   registers itself like the add-in when FAKE_REGISTER=1), started and known the same way, instead of Revit.exe.
+ */
+export function powerOverrideWord(env: NodeJS.ProcessEnv = process.env): string | undefined {
+  if (env.FMC_TESTRUN_POWER_FILE) {
+    try {
+      const w = fs.readFileSync(env.FMC_TESTRUN_POWER_FILE, "utf8").trim().toLowerCase();
+      if (powerOverride(w) !== undefined) return w;
+    } catch { /* no file: the variable, else the real reading */ }
+  }
+  const v = (env.FMC_TESTRUN_POWER ?? "").trim().toLowerCase();
+  return powerOverride(v) !== undefined ? v : undefined;
+}
+
+/** Windows' GetSystemPowerStatus through PowerShell; null when it can't be read. A test's override wins (see above). */
+export function readPower(env: NodeJS.ProcessEnv = process.env): PowerStatus | null {
+  const word = powerOverrideWord(env);
+  if (word !== undefined) return powerOverride(word) ?? null;
   try { return parsePowerLine(powershell(POWER_PS).trim().split(/\r?\n/).pop() ?? ""); } catch { return null; }
 }
+
+const standin = () => process.env.FMC_TESTRUN_REVIT_STANDIN || "";
 
 /** A process's name and start time (UTC, ISO), or null when it isn't running. */
 export function processInfo(pid: number): { name: string; start: string } | null {
@@ -188,7 +213,7 @@ export class OwnRevit {
     const r = this.state.revit;
     if (!r) return false;
     const p = processInfo(r.pid);
-    return !!p && /^revit$/i.test(p.name) && p.start === r.process_start;
+    return !!p && (/^revit$/i.test(p.name) || (!!standin() && /^node$/i.test(p.name))) && p.start === r.process_start;
   }
 
   instance(): RevitInstance & { unattended?: boolean } | null {
@@ -211,12 +236,14 @@ export class OwnRevit {
 
   private async launch(open?: string) {
     const want = open ? norm(open) : undefined;
-    if (!fs.existsSync(this.cfg.revit_exe)) throw new Error(`Revit isn't at ${this.cfg.revit_exe} (set revit_exe in ${win.join(testrunHome(), "config.json")})`);
+    const fake = standin();
+    if (!fake && !fs.existsSync(this.cfg.revit_exe)) throw new Error(`Revit isn't at ${this.cfg.revit_exe} (set revit_exe in ${win.join(testrunHome(), "config.json")})`);
     if (open && !fs.existsSync(open)) throw new Error(`Nothing to open at ${open}`);
     this.log(`Starting Revit${open ? ` with ${open}` : ""}`);
-    const child = spawn(this.cfg.revit_exe, open ? [open] : [], {
-      detached: true, stdio: "ignore", windowsHide: false,
-      env: { ...process.env, FMC_UNATTENDED_TEST: "1", FMC_NO_KEEP_AWAKE: "1" },
+    const args = open ? [open] : [];
+    const child = spawn(fake ? process.execPath : this.cfg.revit_exe, fake ? [fake, ...args] : args, {
+      detached: true, stdio: "ignore", windowsHide: !!fake,
+      env: { ...process.env, FMC_UNATTENDED_TEST: "1", FMC_NO_KEEP_AWAKE: "1", ...(fake ? { FAKE_REGISTER: "1" } : {}) },
     });
     child.unref();
     const pid = child.pid ?? 0;
@@ -227,7 +254,7 @@ export class OwnRevit {
     this.save();
     const deadline = Date.now() + this.cfg.revit_start_timeout_s * 1000;
     while (Date.now() < deadline) {
-      await sleep(5000);
+      await sleep(fake ? 300 : 5000);
       if (!processAlive(pid)) throw new Error("Revit closed while starting (a licence or start-up dialog, or a crash)");
       const inst = this.instance();
       if (!inst?.port) continue;
@@ -378,6 +405,12 @@ export async function runForeground(opts: RunOptions): Promise<RunOutcome> {
     writeJson(path.join(results, "findings.json"), { run: s.run, findings: s.findings, drafts: findingDrafts(s) });
   };
 
+  const testPoll = Number(process.env.FMC_TESTRUN_POLL_MS);
+  const pollMs = Number.isFinite(testPoll) && testPoll > 0 ? testPoll : Math.max(5, cfg.power_poll_s) * 1000;
+  // TEST ONLY: end the process as the PC sleeping would, before action N+1 (see readPower's seams)
+  const stopAfter = process.env.FMC_TESTRUN_STOP_AFTER_STEPS ? Number(process.env.FMC_TESTRUN_STOP_AFTER_STEPS) : NaN;
+  let actionsRun = 0;
+
   /** Paused: no new action starts until the power state allows it (checked every power_poll_s). */
   const waitWhilePaused = async () => {
     for (;;) {
@@ -388,7 +421,7 @@ export async function runForeground(opts: RunOptions): Promise<RunOutcome> {
         return;
       }
       if (!open || open.to) { s.pauses.push({ from: new Date().toISOString(), reason: d.reason }); s.status = "paused"; save(); log(`Paused: ${d.reason}`); }
-      await sleep(Math.max(5, cfg.power_poll_s) * 1000);
+      await sleep(pollMs);
       beat();
     }
   };
@@ -448,6 +481,11 @@ export async function runForeground(opts: RunOptions): Promise<RunOutcome> {
         if (phase !== "teardown") await waitWhilePaused();
         s.scenarios[sc.id].step = name;
         save();
+        if (Number.isInteger(stopAfter) && stopAfter >= 0 && actionsRun >= stopAfter) {
+          log(`${sc.id}: ${name}: stopping here as if the PC slept (FMC_TESTRUN_STOP_AFTER_STEPS=${stopAfter}, a test)`);
+          process.exit(75);
+        }
+        actionsRun++;
         let ok = true;
         try {
           const r = await runAction(sc, a, vars, name, add, phase === "teardown");
