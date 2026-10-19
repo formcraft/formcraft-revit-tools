@@ -13,6 +13,8 @@ owner's yes.
 
 Everything referenced is in `docs/handoff/kisic_gap_scripts/`:
 
+- `IMPACT_REPORT.md`: **read first**: how much the plugin was used on the job, what it delivered, where it helped and where it got in the way
+
 - `revit/`: the 28 C# bodies sent through `send_code_to_revit` (numbered in build order; `_superseded_*` kept for history)
 - `python/`: `make_lod400.py` (staged recipe + Rhino parts → LOD 400 recipe) and `tex4k_gen.py` (procedural 4K albedo/bump textures)
 - `data/`: `KISIC_Model_Recipe.json` (the project's positions, rules and layers), `BUILD_LOG.md`, `RECIPE_README.md`, LOD 400 specs, parts and recipes
