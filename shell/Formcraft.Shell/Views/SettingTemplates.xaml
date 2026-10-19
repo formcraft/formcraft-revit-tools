@@ -424,6 +424,45 @@
     </StackPanel>
   </DataTemplate>
 
+  <!-- Check › Automation (F74): share bars; the tone picks the fill (AI code warm, tools green, add-ons accent, outside scripts model blue) -->
+  <DataTemplate DataType="{x:Type vm:ShareBarsSetting}">
+    <StackPanel Margin="0,0,0,10">
+      <ItemsControl ItemsSource="{Binding Bars}" Focusable="False">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Grid Margin="0,0,0,5" AutomationProperties.Name="{Binding Label}" ToolTip="{Binding Value}">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto" MinWidth="78"/>
+              </Grid.ColumnDefinitions>
+              <TextBlock Text="{Binding Label}" FontSize="11.5" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Margin="0,0,8,0"
+                         Foreground="{DynamicResource Fmc.InkBrush}"/>
+              <Border Grid.Column="1" Height="10" CornerRadius="5" Background="{DynamicResource Fmc.TrackBrush}" VerticalAlignment="Center">
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding Fill}"/>
+                    <ColumnDefinition Width="{Binding Rest}"/>
+                  </Grid.ColumnDefinitions>
+                  <Border x:Name="Bar" CornerRadius="5" Background="{DynamicResource Fmc.MutedBrush}"/>
+                </Grid>
+              </Border>
+              <TextBlock Grid.Column="2" Text="{Binding Value}" FontSize="11" TextAlignment="Right" VerticalAlignment="Center" Margin="8,0,0,0"
+                         Foreground="{DynamicResource Fmc.MutedBrush}"/>
+            </Grid>
+            <DataTemplate.Triggers>
+              <DataTrigger Binding="{Binding Tone}" Value="ai"><Setter TargetName="Bar" Property="Background" Value="{DynamicResource Fmc.OrangeBrush}"/></DataTrigger>
+              <DataTrigger Binding="{Binding Tone}" Value="tool"><Setter TargetName="Bar" Property="Background" Value="{DynamicResource Fmc.GoodBrush}"/></DataTrigger>
+              <DataTrigger Binding="{Binding Tone}" Value="addon"><Setter TargetName="Bar" Property="Background" Value="{DynamicResource Fmc.AccentBrush}"/></DataTrigger>
+              <DataTrigger Binding="{Binding Tone}" Value="external"><Setter TargetName="Bar" Property="Background" Value="{DynamicResource Fmc.ModelBrush}"/></DataTrigger>
+            </DataTemplate.Triggers>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+      <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource Hint}"/>
+    </StackPanel>
+  </DataTemplate>
+
   <!-- Engineer › Options (O2): a card per option, side by side in the server's order; the measures that differ are highlighted -->
   <DataTemplate x:Key="OptionRow">
     <Border x:Name="Row" CornerRadius="3" Padding="4,2" Margin="0,0,0,1">

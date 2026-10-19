@@ -156,6 +156,16 @@ export interface RunWall {
   openings?: Opening[];
   fixed?: Fixed[];
   tall?: { at: "start" | "end"; width: number; fronts?: string };
+  /**
+   * Where the wall's room-side face runs in the model, mm (CW2: read from the room, or given). The units stand on the
+   * left of start → end, which is the room side of a room boundary read anticlockwise.
+   */
+  start?: [number, number];
+  end?: [number, number];
+  /** The room's side of start → end when it isn't the left (a wall given by hand, measured from a corner) */
+  side?: "left" | "right";
+  /** The Revit wall the face belongs to (from the room reading) */
+  wall_id?: number;
 }
 export interface Run {
   walls: RunWall[];
@@ -549,7 +559,7 @@ export function worktopMetres(runs: WorktopRun[]): number {
 // Prices from the kit's material library (07_Materials\FMC_Materials.json): never invented
 
 export interface LibPrice { ugx: string; unit: string; date: string; source: string; status: string }
-export interface LibMaterial { name: string; price: LibPrice | null }
+export interface LibMaterial { name: string; price: LibPrice | null; keynote?: string }
 
 export function readLibrary(json: unknown): Map<string, LibMaterial> {
   const list = Array.isArray(json) ? json : isObj(json) && Array.isArray(json.materials) ? json.materials : [];
@@ -558,7 +568,8 @@ export function readLibrary(json: unknown): Map<string, LibMaterial> {
     const name = typeof m?.name === "string" ? m.name.trim() : "";
     if (!name) continue;
     const p = isObj(m.price) ? m.price : null;
-    map.set(name, { name, price: p ? { ugx: String(p.ugx ?? ""), unit: String(p.unit ?? ""), date: String(p.date ?? ""), source: String(p.source ?? ""), status: String(p.status ?? "") } : null });
+    const keynote = typeof m.keynote === "string" && m.keynote.trim() ? { keynote: m.keynote.trim() } : {};
+    map.set(name, { name, price: p ? { ugx: String(p.ugx ?? ""), unit: String(p.unit ?? ""), date: String(p.date ?? ""), source: String(p.source ?? ""), status: String(p.status ?? "") } : null, ...keynote });
   }
   return map;
 }
@@ -691,9 +702,10 @@ export function packLabel(label: string): string {
   return label.trim().replace(/[^A-Za-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40);
 }
 
-export function packNames(code: string, label: string): { cutlist: string; nesting: string; hardware: string; boq: string } {
+export function packNames(code: string, label: string): { cutlist: string; nesting: string; hardware: string; boq: string; pdf: string; shop: string } {
   const stem = `${code}_Casework_${packLabel(label)}`;
-  return { cutlist: `${stem}_CutList.csv`, nesting: `${stem}_Nesting.csv`, hardware: `${stem}_Hardware.csv`, boq: `${stem}_BoQ.csv` };
+  return { cutlist: `${stem}_CutList.csv`, nesting: `${stem}_Nesting.csv`, hardware: `${stem}_Hardware.csv`, boq: `${stem}_BoQ.csv`,
+    pdf: `${stem}_WorkshopPack.pdf`, shop: `${stem}_ShopDrawings.pdf` };
 }
 
 export function packFiles(c: Casework, cost: ReturnType<typeof costs>, csvLine: (f: Array<string | number | boolean>) => string, code: string, label: string): Array<{ name: string; content: string; rows: number }> {

@@ -94,20 +94,32 @@ namespace Formcraft.Shell.Tests
         }
 
         [Test]
-        public async Task Place_stays_disabled_until_CW2_and_says_so()
+        public async Task Place_shows_its_rolled_back_dry_run_and_places_only_after_a_yes()
         {
-            var (canPlace, footer, note, ran) = Sta.Run(() =>
+            var (canPlace, footer, note, title, details, before, after) = Sta.Run(() =>
             {
                 var p = new Pane("Casework");
-                p.Vm.Casework.Go(2);
-                var n = p.Group(p.Vm.Casework, "Place in the model").Items.OfType<NoteSetting>().First().Text;
-                return (p.Vm.Casework.PlaceCommand.CanExecute(null), p.Footer, n, string.Join(",", p.Casework.Ran));
+                var page = p.Vm.Casework;
+                page.Go(2);
+                var n = p.Group(page, "Place in the model").Items.OfType<NoteSetting>().First().Text;
+                var can = page.PlaceCommand.CanExecute(null);
+                var f = p.Footer;
+                page.PlaceCommand.Execute(null);
+                var t = p.Vm.Dialog!.Title;
+                var d = p.Vm.Dialog.Items.OfType<ReadOnlySetting>().Single().Value;
+                var b = string.Join(",", p.Casework.Ran.Where(r => r.StartsWith("place")));
+                p.Vm.Dialog.ConfirmCommand!.Execute(null);
+                return (can, f, n, t, d, b, string.Join(",", p.Casework.Ran.Where(r => r.StartsWith("place"))));
             });
 
-            await Assert.That(canPlace).IsFalse();
-            await Assert.That(footer).IsEqualTo("Back,Place 12 units (off)");
-            await Assert.That(note).Contains("comes with CW2");
-            await Assert.That(ran).DoesNotContain("place");
+            await Assert.That(canPlace).IsTrue();
+            await Assert.That(footer).IsEqualTo("Back,Place 12 units");
+            await Assert.That(note).Contains("rolls back");
+            await Assert.That(title).IsEqualTo("Place 12 units?");
+            await Assert.That(details).Contains("K02 Base 600");
+            await Assert.That(details).Contains("no corner type");
+            await Assert.That(before).IsEqualTo("place dry run");
+            await Assert.That(after).IsEqualTo("place dry run,place");
         }
 
         [Test]

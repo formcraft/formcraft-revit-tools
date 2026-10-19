@@ -125,7 +125,8 @@ namespace Formcraft.Shell.ViewModels
                               IMaterialTools? materials = null, ISheetTools? sheets = null,
                               IAnnotateTools? annotate = null, IIssueTools? issue = null, ILinkTools? links = null, IWorkshareTools? workshare = null, IReviewTools? review = null, IReportTools? reports = null,
                               IFlowTools? flow = null, IBriefTools? brief = null, IScriptTools? scripts = null, ISystemTools? systems = null, IBuildTools? build = null, IAskTools? ask = null, IAiTools? ai = null, IReleaseTools? release = null, IRobotTools? robot = null, ILiveDataService? liveData = null,
-                              ICaseworkTools? casework = null, ICeilingTools? ceilings = null, IVoiceRecorder? recorder = null, IOptionsTools? options = null)
+                              ICaseworkTools? casework = null, ICeilingTools? ceilings = null, IVoiceRecorder? recorder = null, IOptionsTools? options = null,
+                              IBalanceTools? balance = null)
         {
             _licence = licence;
             _connection = connection;
@@ -182,6 +183,9 @@ namespace Formcraft.Shell.ViewModels
             _hostSections["Options"] = Options;
             Scripts = new ScriptsPage(scripts ?? new MockScriptTools(), Project, settings, s => Status = s, ShowDialog);
             _hostSections["Scripts"] = Scripts;
+            // Check › Automation (F74): the balance between AI-written code and saved automation, and the move list.
+            Automation = new AutomationPage(balance ?? new MockBalanceTools(), Project, settings, s => Status = s, ShowDialog);
+            _hostSections["Automation"] = Automation;
             var systemTools = systems ?? new MockSystemTools();
             Systems = new SystemsPage(systemTools, Project, settings, s => Status = s);
             _hostSections["Systems"] = Systems;
@@ -435,6 +439,9 @@ namespace Formcraft.Shell.ViewModels
 
         /// <summary>Check › Scripts: the kit's scripts and automations of Formcraft's own checks (U24).</summary>
         public ScriptsPage Scripts { get; }
+
+        /// <summary>Check › Automation: AI code against saved automation, from the call ledger, and the move list (F74).</summary>
+        public AutomationPage Automation { get; }
 
         /// <summary>Engineer › Systems and Structural: honest capability status and read-only checks (U25).</summary>
         public SystemsPage Systems { get; }

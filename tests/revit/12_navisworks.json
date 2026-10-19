@@ -1,0 +1,14 @@
+{
+  "schema": "fmc-testrun/0.1",
+  "id": "12_navisworks",
+  "title": "Navisworks bridge, read-only: status and the clash tests of the open file",
+  "features": ["F40"],
+  "needs": ["navisworks"],
+  "revit": false,
+  "setup": [],
+  "steps": [
+    { "id": "status", "tool": "fmc_navis", "args": { "action": "status" }, "checks": [{ "no_error": true }] },
+    { "id": "tests", "tool": "fmc_navis", "args": { "action": "tests" }, "checks": [{ "no_error": true }] }
+  ],
+  "teardown": []
+}

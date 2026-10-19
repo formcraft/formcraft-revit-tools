@@ -73,7 +73,7 @@ namespace Formcraft.Shell.Tests
             var registry = SectionRegistry.LoadEmbedded();
 
             await Assert.That(string.Join(",", registry.Groups.Select(g => g.Name))).IsEqualTo("Setup,Drawings,Team,Check,Engineer,Build,Ask");
-            await Assert.That(registry.Sections.Count()).IsEqualTo(22);
+            await Assert.That(registry.Sections.Count()).IsEqualTo(23);
             await Assert.That(string.Join(",", registry.QuickTools.Select(t => t.Name))).IsEqualTo("Touch,Section Box,Tag Tidy");
         }
 

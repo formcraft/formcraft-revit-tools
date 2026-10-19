@@ -211,20 +211,20 @@ test("fmc_casework: refuses without standards, packs only inside the write roots
     const folder = path.join(project, "01_WIP", "_Casework");
     const dry = await call(base);
     assert.equal(dry.body.dry_run, true);
-    assert.deepEqual(dry.body.files.map((f: { action: string }) => f.action), ["new", "new", "new", "new"]);
+    assert.deepEqual(dry.body.files.map((f: { action: string }) => f.action), ["new", "new", "new", "new", "new"]);
     assert.equal(fs.existsSync(folder), false, "a dry run writes nothing");
 
     const done = await call({ ...base, dry_run: false });
     assert.equal(done.body.done, true);
     const names = fs.readdirSync(folder).sort();
-    assert.deepEqual(names, ["HA_Casework_K-01-Kitchen_BoQ.csv", "HA_Casework_K-01-Kitchen_CutList.csv", "HA_Casework_K-01-Kitchen_Hardware.csv", "HA_Casework_K-01-Kitchen_Nesting.csv"]);
+    assert.deepEqual(names, ["HA_Casework_K-01-Kitchen_BoQ.csv", "HA_Casework_K-01-Kitchen_CutList.csv", "HA_Casework_K-01-Kitchen_Hardware.csv", "HA_Casework_K-01-Kitchen_Nesting.csv", "HA_Casework_K-01-Kitchen_WorkshopPack.pdf"]);
     const cut = fs.readFileSync(path.join(folder, "HA_Casework_K-01-Kitchen_CutList.csv"), "utf8").trim().split(/\r\n/);
     assert.equal(cut.length, 89);
     assert.equal(fs.readFileSync(path.join(folder, "HA_Casework_K-01-Kitchen_Nesting.csv"), "utf8").trim().split(/\r\n/).length, 121);
     assert.match(fs.readFileSync(path.join(folder, "HA_Casework_K-01-Kitchen_BoQ.csv"), "utf8"), /FMC_Board_MDF_Raw,3,sheet,,,price needed/);
 
     const again = await call({ ...base, dry_run: false });
-    assert.deepEqual(again.body.files.map((f: { action: string }) => f.action), ["unchanged", "unchanged", "unchanged", "unchanged"]);
+    assert.deepEqual(again.body.files.map((f: { action: string }) => f.action), ["unchanged", "unchanged", "unchanged", "unchanged", "unchanged"]);
     assert.deepEqual(fs.readdirSync(folder).sort(), names, "same names, nothing new");
 
     const changed = await call({ ...base, dry_run: false, run: { ...RUN, fronts: { K02: "3drawer", K08: "3drawer" } } });

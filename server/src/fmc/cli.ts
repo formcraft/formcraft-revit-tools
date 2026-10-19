@@ -8,10 +8,13 @@
  *
  *   node build/fmc/cli.js <command>        JSON arguments on stdin (none for specs and probe)
  *
- *   fmc_file | fmc_family | fmc_project | fmc_template | fmc_library | fmc_qa | fmc_material | fmc_sheets | fmc_annotate | fmc_issue | fmc_links | fmc_selftest | fmc_workshare | fmc_review | fmc_report | fmc_doc | fmc_revit | fmc_brief | fmc_scripts | fmc_systems | fmc_build | fmc_ai | fmc_recipe | fmc_robot | fmc_navis | fmc_rhino | fmc_casework | fmc_ceiling | fmc_legend | fmc_apps | fmc_flow | fmc_tree | fmc_room | fmc_powerbi | fmc_select | fmc_find | fmc_schedules | fmc_changes   run the tool with the same argument schema and defaults; prints the tool's JSON reply
+ *   fmc_file | fmc_family | fmc_project | fmc_template | fmc_library | fmc_qa | fmc_material | fmc_sheets | fmc_annotate | fmc_issue | fmc_links | fmc_selftest | fmc_workshare | fmc_review | fmc_report | fmc_doc | fmc_revit | fmc_brief | fmc_scripts | fmc_systems | fmc_build | fmc_ai | fmc_recipe | fmc_robot | fmc_navis | fmc_rhino | fmc_casework | fmc_ceiling | fmc_legend | fmc_apps | fmc_flow | fmc_tree | fmc_room | fmc_schedules | fmc_changes | fmc_select | fmc_find | fmc_testrun | fmc_balance | fmc_tables | fmc_powerbi   run the tool with the same argument schema and defaults; prints the tool's JSON reply
  *   specs                   the families and the pilot set in FMC_Family_Specs.json, for the pane's family picker
  *   probe                   connects to Revit on port 8080 and reads the open documents (tests the whole chain)
  *   ask                     {question, history?}: asks Claude with the firm's API key; read-only Revit tools (fmc/ask.ts)
+ *
+ * Every tool command (fmc_*) is recorded in the call ledger (fmc/ledger.ts) as started by FMC_STARTED_BY (the pane sets "pane",
+ * a scheduled task "schedule"), else "cli".
  *
  * Exit code 0: done. 1: refused or failed (the JSON says why). 2: bad usage.
  */
@@ -57,6 +60,10 @@ import { FMC_SELECT_SHAPE, runFmcSelect } from "../tools/fmc_select.js";
 import { FMC_FIND_SHAPE, runFmcFind } from "../tools/fmc_find.js";
 import { FMC_CASEWORK_SHAPE, runFmcCasework } from "../tools/fmc_casework.js";
 import { FMC_CEILING_SHAPE, runFmcCeiling } from "../tools/fmc_ceiling.js";
+import { FMC_TESTRUN_SHAPE, runFmcTestrun } from "../tools/fmc_testrun.js";
+import { FMC_BALANCE_SHAPE, runFmcBalance } from "../tools/fmc_balance.js";
+import { appendLedger, callLine, startedByFrom } from "./ledger.js";
+import { FMC_TABLES_SHAPE, runFmcTables } from "../tools/fmc_tables.js";
 import { FMC_POWERBI_SHAPE, runFmcPowerbi } from "../tools/fmc_powerbi.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { askLogFile, askStatus, readApiKey, runAsk } from "./ask.js";
@@ -64,12 +71,25 @@ import { annotateInvalidOp } from "./buildinfo.js";
 
 type Reply = { content: Array<{ type: "text"; text: string }>; isError?: boolean };
 
+/** F74: the command running now, recorded in the call ledger when it answers (never blocks or fails the command). */
+let pending: { tool: string; args: Record<string, unknown>; t0: number; at: Date } | null = null;
+function record(ok: boolean) {
+  if (!pending) return;
+  try {
+    appendLedger("calls", callLine(pending.tool, pending.args, ok, Date.now() - pending.t0, startedByFrom(process.env, "cli"), pending.at,
+      documentTarget.getStore()), process.env, pending.at);
+  } catch { /* never block the work */ }
+  pending = null;
+}
+
 function print(body: unknown, failed: boolean): never {
+  record(!failed);
   process.stdout.write(JSON.stringify(body, null, 2) + "\n");
   process.exit(failed ? 1 : 0);
 }
 
 function printReply(r: Reply): never {
+  record(!r.isError);
   process.stdout.write((r.content[0]?.text ?? "{}") + "\n");
   process.exit(r.isError ? 1 : 0);
 }
@@ -125,6 +145,8 @@ async function main() {
     // "document" (a title or path) is the document every command goes to; tools that have their own keep it in input.
     const doc = (input as Record<string, unknown>).document;
     documentTarget.enterWith(typeof doc === "string" && doc.trim() ? doc.trim() : undefined);
+    // the tools only: housekeeping (specs, probe, ask_status) and a person's own acts in the pane aren't automation
+    if (/^fmc_[a-z_]+$/.test(command ?? "")) pending = { tool: command, args: input as Record<string, unknown>, t0: Date.now(), at: new Date() };
     switch (command) {
       case "fmc_file":
         return printReply(await runFmcFile(z.object(FMC_FILE_SHAPE).parse(input)));
@@ -215,6 +237,13 @@ async function main() {
         return printReply(await runFmcCasework(z.object(FMC_CASEWORK_SHAPE).parse(input)));
       case "fmc_ceiling":
         return printReply(await runFmcCeiling(z.object(FMC_CEILING_SHAPE).parse(input)));
+      // F75: unattended Revit tests (no AI); foreground runs until the run ends
+      case "fmc_testrun":
+        return printReply(await runFmcTestrun(z.object(FMC_TESTRUN_SHAPE).parse(input)));
+      case "fmc_balance":
+        return printReply(await runFmcBalance(z.object(FMC_BALANCE_SHAPE).parse(input)));
+      case "fmc_tables":
+        return printReply(await runFmcTables(z.object(FMC_TABLES_SHAPE).parse(input)));
       case "fmc_powerbi":
         return printReply(await runFmcPowerbi(z.object(FMC_POWERBI_SHAPE).parse(input)));
       // A person releases a family, or sends it back, in the pane. Never MCP tools.
@@ -234,7 +263,7 @@ async function main() {
         return print(askStatus(text, new Date(), process.env, !!readApiKey()), false);
       }
       default:
-        process.stderr.write("Usage: node build/fmc/cli.js <fmc_file|fmc_family|fmc_project|fmc_template|fmc_library|fmc_qa|fmc_material|fmc_sheets|fmc_annotate|fmc_issue|fmc_links|fmc_selftest|fmc_workshare|fmc_review|fmc_report|fmc_doc|fmc_revit|fmc_brief|fmc_scripts|fmc_systems|fmc_build|fmc_ai|fmc_recipe|fmc_robot|fmc_navis|fmc_rhino|fmc_casework|fmc_ceiling|fmc_legend|fmc_apps|fmc_flow|fmc_tree|fmc_room|fmc_powerbi|specs|probe|ask|ask_status|fmc_select|fmc_find|fmc_schedules|fmc_changes>  (JSON arguments on stdin)\n");
+        process.stderr.write("Usage: node build/fmc/cli.js <fmc_file|fmc_family|fmc_project|fmc_template|fmc_library|fmc_qa|fmc_material|fmc_sheets|fmc_annotate|fmc_issue|fmc_links|fmc_selftest|fmc_workshare|fmc_review|fmc_report|fmc_doc|fmc_revit|fmc_brief|fmc_scripts|fmc_systems|fmc_build|fmc_ai|fmc_recipe|fmc_robot|fmc_navis|fmc_rhino|fmc_casework|fmc_ceiling|fmc_legend|fmc_apps|fmc_flow|fmc_tree|fmc_room|fmc_schedules|specs|probe|ask|ask_status|fmc_changes|fmc_select|fmc_find|fmc_testrun|fmc_balance|fmc_tables|fmc_powerbi>  (JSON arguments on stdin)\n");
         process.exit(2);
     }
   } catch (e) {

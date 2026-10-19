@@ -1,0 +1,51 @@
+{
+  "schema": "fmc-testrun/0.1",
+  "id": "03_batch_QS03",
+  "title": "Hospital sample, QS03 doors, windows and parts: batch dry run, real run, status and Gate A (batch_gate)",
+  "features": ["F66", "F44", "F64"],
+  "setup": [],
+  "steps": [
+    {
+      "id": "dry",
+      "tool": "fmc_recipe",
+      "args": { "action": "batch", "recipe_files": ["{{batch_dir}}\\batch_QS03_SAMPLE_LOD400_run.json"], "batch": "B-{{run}}-QS03-{{attempt}}", "dry_run": true },
+      "checks": [
+        { "no_error": true },
+        { "path": "recipes", "at_least": 14 },
+        { "path": "invalid", "equals": 0 }
+      ]
+    },
+    {
+      "id": "real",
+      "note": "Builds only what changed since its last staging (rebuild false); each old staged file is archived before the save",
+      "tool": "fmc_recipe",
+      "args": { "action": "batch", "recipe_files": ["{{batch_dir}}\\batch_QS03_SAMPLE_LOD400_run.json"], "batch": "B-{{run}}-QS03-{{attempt}}", "dry_run": false },
+      "timeout_s": 14400,
+      "checks": [{ "no_error": true }]
+    },
+    {
+      "id": "status",
+      "when": { "path": "steps.real.to_build", "at_least": 1 },
+      "tool": "fmc_recipe",
+      "args": { "action": "batch_status", "batch": "{{steps.real.batch}}" },
+      "checks": [{ "no_error": true }, { "path": "failed", "equals": 0 }]
+    },
+    {
+      "id": "gate",
+      "when": { "path": "steps.real.to_build", "at_least": 1 },
+      "tool": "fmc_recipe",
+      "args": { "action": "batch_gate", "batch": "{{steps.real.batch}}" },
+      "repeat_until": { "check": { "path": "left", "equals": 0 }, "max": 40 },
+      "timeout_s": 1800,
+      "checks": [{ "no_error": true }, { "path": "left", "equals": 0 }]
+    },
+    {
+      "id": "gated",
+      "when": { "path": "steps.real.to_build", "at_least": 1 },
+      "tool": "fmc_recipe",
+      "args": { "action": "batch_status", "batch": "{{steps.real.batch}}" },
+      "checks": [{ "no_error": true }, { "path": "gate_fails", "at_most": 0 }]
+    }
+  ],
+  "teardown": []
+}

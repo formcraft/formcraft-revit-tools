@@ -12,7 +12,8 @@ namespace Formcraft.Shell.ViewModels
     /// Engineer › Casework (+Model, CW3; boards CW_Pane, CW_Overview, CW_Outputs): five steps from a room to a workshop pack.
     /// Every number comes from the engine (fmc_casework); the pane only shows and asks. The workshop standards come from
     /// the kit, or with the run while the kit has none: nothing is filled in here (rules 5 and 7). Placing units in Revit
-    /// is CW2: until the add-in can, the Place button says so and stays disabled; nothing is ever faked.
+    /// is CW2 (fmc_casework place): a dry run places and rolls back, a yes places them in one Undo; when the add-in can't,
+    /// the Place button says so and stays disabled; nothing is ever faked.
     /// </summary>
     public sealed class CaseworkPage : SectionPage
     {
@@ -206,8 +207,8 @@ namespace Formcraft.Shell.ViewModels
             Groups.Add(new SettingsGroup("Layout from your run", items.ToArray()));
 
             Groups.Add(new SettingsGroup("On the plan view",
-                new ToggleSetting(_store, "casework.overlay", "Show the layout on the plan view", false, "Ghosted in blue on the view with the Flow overlay: comes with CW2.",
-                                  locked: true, lockedWhy: "Comes with CW2 (placement in Revit)"),
+                new ToggleSetting(_store, "casework.overlay", "Show the layout on the plan view", false, "Ghosted in blue on the view with the Flow overlay: comes later.",
+                                  locked: true, lockedWhy: "Not built yet: Place puts the units in the model"),
                 new NoteSetting("Three layouts from a brief, with the work triangle, storage and routes, and mixing options in a sentence, come later (board CW_Overview).", ChipKind.Grey),
                 new ButtonsSetting("", new[] { new SettingButton("More options", NotYetCommand, ai: true) })));
             AskGroup("Ask about this layout…");
@@ -224,8 +225,8 @@ namespace Formcraft.Shell.ViewModels
             foreach (var n in l.Notes)
                 rows.Add(new CheckRow(new HealthCheck(n, n.Contains("rule 5") ? "Decide" : "Info", n.Contains("rule 5") ? ChipKind.Warn : ChipKind.Info), null));
             if (l.Problems.Count == 0) rows.Add(new CheckRow(new HealthCheck("The run fits: no unit overlaps or runs past a wall", "OK", ChipKind.Good), null));
-            rows.Add(new CheckRow(new HealthCheck("Services, clearances, routes, windows and accessibility in the model", "With CW2", ChipKind.Grey,
-                detail: "Read from the model once Revit reads the room (waste, sill, gas point, sockets, door route), each flagged with its kit rule. It flags; you decide."), null));
+            rows.Add(new CheckRow(new HealthCheck("Services and window sills in the model", "Ask Claude", ChipKind.Grey,
+                detail: "fmc_casework check reads the room in Revit (waste and water at the sink, gas at the cooker, sockets behind tall units or over the cooker, window sills) and flags each with its rule. It flags; you decide. Not on this screen yet."), null));
             Groups.Add(new SettingsGroup("Checks before anything is placed", new CheckListSetting(rows)));
 
             Groups.Add(new SettingsGroup("Counts",
@@ -341,14 +342,15 @@ namespace Formcraft.Shell.ViewModels
                 Groups.Add(new SettingsGroup("Kit change requests", l.KitRequests.Select(k => (SettingItem)new NoteSetting(k, ChipKind.Warn)).ToArray()));
 
             Groups.Add(new SettingsGroup("Send",
-                new NoteSetting(@"Make workshop pack writes the cut list, nesting, hardware and BoQ as CSV into <project>\01_WIP\_Casework, after a dry run you see first. A file it replaces moves to _Archive; nothing is deleted.", ChipKind.Info),
+                new NoteSetting(@"Make workshop pack writes the cut list, nesting, hardware and BoQ as CSV, and the workshop pack PDF (cut list per mark, nesting drawings, hardware, cost with its sources), into <project>\01_WIP\_Casework, after a dry run you see first. A file it replaces moves to _Archive; nothing is deleted.", ChipKind.Info),
                 new TableSetting("", new[] { "Output", "Format", "State" }, new[]
                 {
                     new TableRow(null, "Cut list and nesting", "CSV (Excel)", "Now"),
                     new TableRow(null, "Hardware and BoQ", "CSV (Excel)", "Now"),
-                    new TableRow(null, "Shop drawings (A3)", "PDF", "With CW2 and CW4"),
+                    new TableRow(null, "Workshop pack", "PDF", "Now"),
+                    new TableRow(null, "Shop drawings (A3)", "Revit sheets and PDF", "Ask Claude (after Place)"),
                     new TableRow(null, "CNC parts", "DXF", "Later"),
-                    new TableRow(null, "Schedule I11_Joinery_Cutlist", "Revit", "With CW2"),
+                    new TableRow(null, "Schedule I11_Joinery_Cutlist", "Revit", "With the shop drawings"),
                 }),
                 new ButtonsSetting("", new[] { new SettingButton("Make workshop pack", PackCommand, primary: true) }),
                 _messages));

@@ -1,0 +1,46 @@
+{
+  "schema": "fmc-testrun/0.1",
+  "id": "10_schedules",
+  "title": "Schedules (fmc_schedules) from the repo's sample set: check, plan, apply in a scratch project, then a second plan",
+  "features": ["F60"],
+  "setup": [
+    {
+      "id": "new",
+      "tool": "fmc_file",
+      "args": { "action": "create_from_template", "kind": "project", "template_path": "{{project_template}}", "save_path": "{{scratch}}\\FMC_ChainTest_A.rvt", "close_after": true, "dry_run": false },
+      "checks": [{ "no_error": true }, { "path": "done", "equals": true }]
+    },
+    { "id": "open", "runner": "open_in_revit", "path": "{{scratch}}\\FMC_ChainTest_A.rvt" }
+  ],
+  "steps": [
+    {
+      "id": "check",
+      "tool": "fmc_schedules",
+      "args": { "action": "check", "file": "{{scenarios_dir}}\\..\\schedules\\FMC_Schedules_sample.json", "kit_folder": "{{kit}}" },
+      "checks": [{ "no_error": true }, { "path": "problems", "at_most": 0 }, { "path": "schedules", "at_least": 1 }]
+    },
+    {
+      "id": "plan",
+      "tool": "fmc_schedules",
+      "args": { "action": "plan", "file": "{{scenarios_dir}}\\..\\schedules\\FMC_Schedules_sample.json", "kit_folder": "{{kit}}" },
+      "timeout_s": 600,
+      "checks": [{ "no_error": true }, { "path": "dry_run", "equals": true }]
+    },
+    {
+      "id": "apply",
+      "tool": "fmc_schedules",
+      "args": { "action": "apply", "file": "{{scenarios_dir}}\\..\\schedules\\FMC_Schedules_sample.json", "kit_folder": "{{kit}}", "dry_run": false },
+      "timeout_s": 600,
+      "checks": [{ "no_error": true }, { "path": "dry_run", "equals": false }]
+    },
+    {
+      "id": "plan_again",
+      "note": "After the apply, a second plan has nothing new to make",
+      "tool": "fmc_schedules",
+      "args": { "action": "plan", "file": "{{scenarios_dir}}\\..\\schedules\\FMC_Schedules_sample.json", "kit_folder": "{{kit}}" },
+      "timeout_s": 600,
+      "checks": [{ "no_error": true }]
+    }
+  ],
+  "teardown": [{ "runner": "close_revit" }]
+}

@@ -11,6 +11,8 @@ import { FMC_WORKSHARE_SHAPE, runFmcWorkshare } from "./fmc_workshare.js";
 import { FMC_ANNOTATE_SHAPE, runFmcAnnotate } from "./fmc_annotate.js";
 import { FMC_REVIEW_SHAPE, runFmcReview } from "./fmc_review.js";
 import { FMC_REPORT_SHAPE, runFmcReport } from "./fmc_report.js";
+import { recorded, startedByFrom } from "../fmc/ledger.js";
+import { FMC_TABLES_SHAPE, runFmcTables } from "./fmc_tables.js";
 
 const win = path.win32;
 
@@ -61,7 +63,8 @@ export const FMC_SCRIPTS_DESCRIPTION =
     "nodes, pyRevit buttons, Python tools) from their own headers: what each does, inputs, the status line, whether it " +
     "changes the model, where it runs and the Formcraft section that does the same job. Formcraft doesn't run kit " +
     "scripts (they pass the Manual 17 release gate in pyRevit or Dynamo). run runs an automation: Formcraft's own " +
-    "read-only checks and the weekly report in a row (selftest, qa, links, workshare, annotate, review, report), " +
+    "read-only checks and the weekly report in a row (selftest, qa, links, workshare, annotate, review, report, tables: the " +
+    "kit's Excel against its tables, tables_import: a dry run of the edited kit tables in staging), " +
     "stopping at the first that fails; each step is logged. No step changes the model.";
 
 export const FMC_SCRIPTS_SHAPE = {
@@ -89,6 +92,8 @@ function stepRunner(step: StepId, a: FmcScriptsArgs): () => Promise<Reply> {
     case "annotate": return () => runFmcAnnotate(z.object(FMC_ANNOTATE_SHAPE).parse({ action: "check" }));
     case "review": return () => runFmcReview(z.object(FMC_REVIEW_SHAPE).parse({ action: "list", project_folder: folder, project_code: code, filter: "Open" }));
     case "report": return () => runFmcReport(z.object(FMC_REPORT_SHAPE).parse({ action: "make", project_folder: folder, project_code: code, dry_run: false }));
+    case "tables": return () => runFmcTables(z.object(FMC_TABLES_SHAPE).parse({ action: "check", kit_folder: a.kit_folder }));
+    case "tables_import": return () => runFmcTables(z.object(FMC_TABLES_SHAPE).parse({ action: "pending", kit_folder: a.kit_folder, project_folder: folder }));
   }
 }
 
@@ -110,7 +115,9 @@ export async function runFmcScripts(args: FmcScriptsArgs) {
     for (const step of args.steps) {
       let body: any = null, ok = false;
       try {
-        const r = await stepRunner(step, args)();
+        // F74: each step is a call started by a job (the automation), in the call ledger
+        const r = await recorded(`fmc_${step}`, { project_folder: args.project_folder, project_code: args.project_code },
+          startedByFrom(process.env, "ai") === "schedule" ? "schedule" : "job", stepRunner(step, args));
         body = JSON.parse(r.content[0]?.text ?? "{}");
         ok = !r.isError;
       } catch (e) { body = { error: e instanceof Error ? e.message : String(e) }; }
