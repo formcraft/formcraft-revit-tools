@@ -83,6 +83,8 @@ export const WRITE_COMMANDS = new Set<string>([
   // Line diagrams (owner, 15 Oct): the tool draws only in new documents, _Staging and _ChainTests; in a live project a
   // person presses Generate in the pane.
   "fmc_diagram_draw",
+  // Casework (CW2): units placed, and shop-drawing views, sheets and the cut-list schedule; the dry runs roll back.
+  "fmc_casework_place", "fmc_casework_pack",
 ]);
 
 /** Commands that read or steer the Formcraft pane only. They never change the model, so they work on live models. */

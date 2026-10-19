@@ -19,9 +19,9 @@ The owner approved building everything that doesn't need Revit first.
 | Step | Delivers | State |
 |---|---|---|
 | CW1 Engine | `fmc_casework` (pure, no Revit): `units` from a run (walls, openings, fixed sink and appliances, corner unit, tall unit at an end; greedy fill from the module list, fillers at the stretch end), `parts` (panels per unit with board and edge banding), `nest` (guillotine shelf packing per board on the standard sheet with the kerf), `cutlist`, `hardware`, `summary` (with cost from the library and kit change requests), `pack` (cut list, nesting per sheet, hardware and BoQ as CSV). Golden test: the boards' kitchen (12 units, 120 pieces, 15 sheets, 98.5 m edge, 4.8 m worktop, 28 hinges), nesting identical to the reference `cw_kitchen.py` | This PR |
-| CW2 Revit placement and shop drawings | Revit commands `fmc_casework_place` (FMC_I_Casework_* unit families from the kit, FMC_Assembly_Mark, FMC_Carcass_Spec, FMC_Worktop_Spec; one transaction group, one Undo; dry run is the real run rolled back; behind the live-model lock) and `fmc_casework_pack` (shop-drawing views and sheets on FMC_TB_A3, the I11_Joinery_Cutlist schedule). Room reading (walls, openings, water, waste, gas, sockets) becomes the run; the coordination checks on board CW_Pane step 3 read the model and flag with the kit rule. Needs the unit families through Gate A first | Next |
+| CW2 Revit placement and shop drawings | Revit commands `fmc_casework_place` (FMC_I_Casework_* unit families from the kit, FMC_Assembly_Mark, FMC_Carcass_Spec, FMC_Worktop_Spec; one transaction group, one Undo; dry run is the real run rolled back; behind the live-model lock) and `fmc_casework_pack` (shop-drawing views and sheets on FMC_TB_A3, the I11_Joinery_Cutlist schedule). Room reading (walls, openings, water, waste, gas, sockets) becomes the run; the coordination checks on board CW_Pane step 3 read the model and flag with the kit rule. Needs the unit families through Gate A first | Built, Revit check due |
 | CW3 Pane screens | Engineer › Casework from board CW_Pane: Room and brief, Layouts, Checks and dry run, Unit editor, Workshop pack; in `sections.json` with the +Model tag and part. Built on sample data before CW2 (owner, 15 Oct: everything that doesn't need Revit first); Place stays disabled until CW2 | Built, Revit check due |
-| CW4 Workshop pack PDF | The pack as a PDF the workshop reads: shop drawings, cut list per assembly mark, nesting drawings per sheet, hardware, cost with its sources | After CW3 |
+| CW4 Workshop pack PDF | The pack as a PDF the workshop reads: shop drawings, cut list per assembly mark, nesting drawings per sheet, hardware, cost with its sources | Built, Revit check due |
 
 Later, from board CW_Overview: layouts from a brief (three options), style from the design-movement profile sets,
 beyond kitchens (wardrobes, vanities, counters, labs), CNC DXF and workshop rules learned into the kit.
@@ -47,3 +47,11 @@ beyond kitchens (wardrobes, vanities, counters, labs), CNC DXF and workshop rule
 - An edge-band material (per metre) and a hardware price list (hinges, runners, handles, legs, shelf pins, hangers,
   kick board) are not in the kit.
 - MDF, melamine, HPL and granite or quartz worktops have no price yet (the library's own `gaps` list says so).
+
+## Kit change requests from CW2
+- `FMC_I_Casework_KitchenUnit` has Base, Wall and Tall types only: corner and sink units need a Corner and a Sink type (the A family
+  `FMC_A_Casework_KitchenBase` has 1000_Corner and 1200_SinkUnit). Until then they are not placed, unless the person names a type for them
+  (`type_for`). The family is in the register but not built yet (no .rfa in `04_Families\_Staging\I`).
+- The wall units' mounting height (underside above the floor) belongs in `FMC_Casework_Standards.json`; placing asks for it.
+- Casework coordination rules (sink over the waste, sockets clear of tall units and the hob, sill above the worktop) belong in the kit;
+  the checks flag without a threshold until then.
