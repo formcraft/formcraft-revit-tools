@@ -24,6 +24,11 @@ namespace Formcraft.Navis
                 case "navis_clash_tests": return Tests(doc);
                 case "navis_clash_results": return Results(doc, p);
                 case "navis_search_sets": return SearchSets(doc, p);
+                case "navis_append": return NavisFederate.Append(doc, p);
+                case "navis_save_as": return NavisFederate.SaveAs(doc, p);
+                case "navis_clash_create": return NavisClash.Create(doc, p);
+                case "navis_clash_run": return NavisClash.Run(doc, p);
+                case "navis_clash_status": return NavisClash.Status(doc, p);
                 // X1, one selection: NavisSelection.cs
                 case "navis_select": return NavisSelection.Select(doc, p);
                 case "navis_selection": return NavisSelection.Selection(doc, p);
