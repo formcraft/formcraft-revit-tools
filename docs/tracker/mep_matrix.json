@@ -215,16 +215,20 @@
     {
       "system": "power_distribution",
       "capability": "calculate",
-      "state": "Partly built",
+      "state": "Built, Revit check due",
       "evidence": [
+        "server/src/tools/fmc_calc.ts",
+        "server/src/fmc/calc/max_demand.ts",
+        "server/src/fmc/calc/volt_drop.ts",
+        "commandset/Services/Fmc/FmcMepFacts.cs",
         "server/src/tools/fmc_systems.ts",
         "server/src/fmc/systems.ts",
         "commandset/Services/Fmc/FmcSystemsEventHandler.cs",
         "commandset/Commands/Fmc/FmcSystemsCommands.cs"
       ],
-      "feature": "F31",
+      "feature": "F77",
       "step": "E1",
-      "note": "fmc_systems electrical reads each board's connected and demand VA from Revit's own panel values; kit CA-E-01 maximum demand and CA-E-02 voltage drop are ported in E1"
+      "note": "fmc_calc CA-E-01 maximum demand per board and building (demand factors from the kit's Electrical_Settings only) and CA-E-02 voltage drop; mV/A/m is TBC until the kit has a table. Board VA also read by fmc_systems (F31)"
     },
     {
       "system": "power_distribution",
@@ -258,11 +262,14 @@
     {
       "system": "power_distribution",
       "capability": "document",
-      "state": "Planned",
-      "evidence": [],
+      "state": "Partly built",
+      "evidence": [
+        "server/src/tools/fmc_calc.ts",
+        "server/src/fmc/calc/sheet.ts"
+      ],
       "feature": "F78",
       "step": "E2",
-      "note": "Diagram sheets from the Sheet Register (E-0003 single-line diagram and load summary, E-6002 riser diagram) and Gate D in LD5"
+      "note": "The calculation sheet is written by fmc_calc sheet (E1, F77) to 01_WIP _Calcs as a draft for the engineer. Still to come: Diagram sheets from the Sheet Register (E-0003 single-line diagram and load summary, E-6002 riser diagram) and Gate D in LD5"
     },
     {
       "system": "lighting",
@@ -301,11 +308,15 @@
     {
       "system": "lighting",
       "capability": "calculate",
-      "state": "Kit calculation only",
-      "evidence": [],
+      "state": "Partly built",
+      "evidence": [
+        "server/src/tools/fmc_calc.ts",
+        "server/src/fmc/calc/volt_drop.ts",
+        "commandset/Services/Fmc/FmcMepFacts.cs"
+      ],
       "feature": "F77",
       "step": "E1",
-      "note": "Kit CA-E-03 lighting levels (lumen method or DIALux) and CA-E-02 voltage drop (3% limit) (FMC_Revit_Kit.xlsx, Calculations); ported to code in E1"
+      "note": "fmc_calc CA-E-02 voltage drop on lighting circuits (mV/A/m TBC until the kit has a table); CA-E-03 lux stays in DIALux per kit"
     },
     {
       "system": "lighting",
@@ -382,11 +393,15 @@
     {
       "system": "small_power",
       "capability": "calculate",
-      "state": "Kit calculation only",
-      "evidence": [],
+      "state": "Partly built",
+      "evidence": [
+        "server/src/tools/fmc_calc.ts",
+        "server/src/fmc/calc/volt_drop.ts",
+        "commandset/Services/Fmc/FmcMepFacts.cs"
+      ],
       "feature": "F77",
       "step": "E1",
-      "note": "Kit CA-E-02 voltage drop (5% limit) (FMC_Revit_Kit.xlsx, Calculations); ported to code in E1"
+      "note": "fmc_calc CA-E-02 voltage drop on power circuits; mV/A/m TBC until the kit has a table"
     },
     {
       "system": "small_power",
@@ -612,11 +627,15 @@
     {
       "system": "fire_fighting",
       "capability": "calculate",
-      "state": "Kit calculation only",
-      "evidence": [],
+      "state": "Built, Revit check due",
+      "evidence": [
+        "server/src/tools/fmc_calc.ts",
+        "server/src/fmc/calc/fire.ts",
+        "commandset/Services/Fmc/FmcMepFacts.cs"
+      ],
       "feature": "F77",
       "step": "E1",
-      "note": "Kit CA-FP-01 portable extinguishers and CA-FP-02 hose reel coverage (FMC_Revit_Kit.xlsx, Calculations); ported to code in E1"
+      "note": "fmc_calc CA-FP-01 extinguishers per storey and CA-FP-02 hose-reel coverage (throw and travel distance TBC until the kit gives them)"
     },
     {
       "system": "fire_fighting",
@@ -645,11 +664,14 @@
     {
       "system": "fire_fighting",
       "capability": "document",
-      "state": "Planned",
-      "evidence": [],
+      "state": "Partly built",
+      "evidence": [
+        "server/src/tools/fmc_calc.ts",
+        "server/src/fmc/calc/sheet.ts"
+      ],
       "feature": "",
       "step": "",
-      "note": "No diagram sheet for this system in the Sheet Register yet: a kit change request"
+      "note": "The calculation sheet is written by fmc_calc sheet (E1, F77) to 01_WIP _Calcs as a draft for the engineer. Still to come: No diagram sheet for this system in the Sheet Register yet: a kit change request"
     },
     {
       "system": "sprinklers",
@@ -762,11 +784,15 @@
     {
       "system": "cold_water",
       "capability": "calculate",
-      "state": "Kit calculation only",
-      "evidence": [],
+      "state": "Built, Revit check due",
+      "evidence": [
+        "server/src/tools/fmc_calc.ts",
+        "server/src/fmc/calc/water.ts",
+        "commandset/Services/Fmc/FmcMepFacts.cs"
+      ],
       "feature": "F77",
       "step": "E1",
-      "note": "Kit CA-P-01 water demand, storage and septic tank (FMC_Revit_Kit.xlsx, Calculations); ported to code in E1"
+      "note": "fmc_calc CA-P-01 water demand, storage, tanks and septic tank from the kit's values"
     },
     {
       "system": "cold_water",
@@ -795,11 +821,14 @@
     {
       "system": "cold_water",
       "capability": "document",
-      "state": "Planned",
-      "evidence": [],
+      "state": "Partly built",
+      "evidence": [
+        "server/src/tools/fmc_calc.ts",
+        "server/src/fmc/calc/sheet.ts"
+      ],
       "feature": "F78",
       "step": "E2",
-      "note": "Diagram sheets from the Sheet Register (P-0003 water and drainage schematics) and Gate D in LD5"
+      "note": "The calculation sheet is written by fmc_calc sheet (E1, F77) to 01_WIP _Calcs as a draft for the engineer. Still to come: Diagram sheets from the Sheet Register (P-0003 water and drainage schematics) and Gate D in LD5"
     },
     {
       "system": "hot_water",
@@ -912,11 +941,15 @@
     {
       "system": "drainage",
       "capability": "calculate",
-      "state": "Kit calculation only",
-      "evidence": [],
+      "state": "Built, Revit check due",
+      "evidence": [
+        "server/src/tools/fmc_calc.ts",
+        "server/src/fmc/calc/drainage.ts",
+        "commandset/Services/Fmc/FmcMepFacts.cs"
+      ],
       "feature": "F77",
       "step": "E1",
-      "note": "Kit CA-P-02 drainage design flow (BS EN 12056-2) (FMC_Revit_Kit.xlsx, Calculations); ported to code in E1"
+      "note": "fmc_calc CA-P-02 Qww = K x sqrt(sum DU), DU and K from the kit"
     },
     {
       "system": "drainage",
@@ -945,11 +978,14 @@
     {
       "system": "drainage",
       "capability": "document",
-      "state": "Planned",
-      "evidence": [],
+      "state": "Partly built",
+      "evidence": [
+        "server/src/tools/fmc_calc.ts",
+        "server/src/fmc/calc/sheet.ts"
+      ],
       "feature": "F78",
       "step": "E2",
-      "note": "Diagram sheets from the Sheet Register (P-0003 water and drainage schematics, and the drainage long section) and Gate D in LD5"
+      "note": "The calculation sheet is written by fmc_calc sheet (E1, F77) to 01_WIP _Calcs as a draft for the engineer. Still to come: Diagram sheets from the Sheet Register (P-0003 water and drainage schematics, and the drainage long section) and Gate D in LD5"
     },
     {
       "system": "rainwater",
@@ -1551,11 +1587,15 @@
     {
       "system": "earthing",
       "capability": "calculate",
-      "state": "Kit calculation only",
-      "evidence": [],
+      "state": "Partly built",
+      "evidence": [
+        "server/src/tools/fmc_calc.ts",
+        "server/src/fmc/calc/earth.ts",
+        "commandset/Services/Fmc/FmcMepFacts.cs"
+      ],
       "feature": "F77",
       "step": "E1",
-      "note": "Kit CA-LP-02 earth resistance record (FMC_Revit_Kit.xlsx, Calculations); ported to code in E1"
+      "note": "fmc_calc CA-LP-02 earth resistance per pit; the design target in ohms is TBC until the kit gives it"
     },
     {
       "system": "earthing",
@@ -1584,11 +1624,14 @@
     {
       "system": "earthing",
       "capability": "document",
-      "state": "Planned",
-      "evidence": [],
+      "state": "Partly built",
+      "evidence": [
+        "server/src/tools/fmc_calc.ts",
+        "server/src/fmc/calc/sheet.ts"
+      ],
       "feature": "F78",
       "step": "E2",
-      "note": "Diagram sheets from the Sheet Register (E-0004 earthing and bonding schematic) and Gate D in LD5"
+      "note": "The calculation sheet is written by fmc_calc sheet (E1, F77) to 01_WIP _Calcs as a draft for the engineer. Still to come: Diagram sheets from the Sheet Register (E-0004 earthing and bonding schematic) and Gate D in LD5"
     },
     {
       "system": "solar",
@@ -1683,11 +1726,15 @@
     {
       "system": "generators",
       "capability": "calculate",
-      "state": "Kit calculation only",
-      "evidence": [],
+      "state": "Built, Revit check due",
+      "evidence": [
+        "server/src/tools/fmc_calc.ts",
+        "server/src/fmc/calc/max_demand.ts",
+        "commandset/Services/Fmc/FmcMepFacts.cs"
+      ],
       "feature": "F77",
       "step": "E1",
-      "note": "Kit CA-E-01 maximum demand, transformer and generator selection (FMC_Revit_Kit.xlsx, Calculations); ported to code in E1"
+      "note": "fmc_calc CA-E-01 gives kVA and the generator and transformer size from the maximum demand"
     },
     {
       "system": "generators",
@@ -1710,11 +1757,14 @@
     {
       "system": "generators",
       "capability": "document",
-      "state": "Planned",
-      "evidence": [],
+      "state": "Partly built",
+      "evidence": [
+        "server/src/tools/fmc_calc.ts",
+        "server/src/fmc/calc/sheet.ts"
+      ],
       "feature": "",
       "step": "",
-      "note": "Sheet Register E-6003 generator and ATS arrangement; no tool yet"
+      "note": "The calculation sheet is written by fmc_calc sheet (E1, F77) to 01_WIP _Calcs as a draft for the engineer. Still to come: Sheet Register E-6003 generator and ATS arrangement; no tool yet"
     },
     {
       "system": "lifts",
