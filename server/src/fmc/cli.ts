@@ -8,7 +8,7 @@
  *
  *   node build/fmc/cli.js <command>        JSON arguments on stdin (none for specs and probe)
  *
- *   fmc_file | fmc_family | fmc_project | fmc_template | fmc_library | fmc_qa | fmc_material | fmc_sheets | fmc_annotate | fmc_issue | fmc_links | fmc_selftest | fmc_workshare | fmc_review | fmc_report | fmc_doc | fmc_revit | fmc_brief | fmc_scripts | fmc_systems | fmc_build | fmc_ai | fmc_recipe | fmc_robot | fmc_navis | fmc_rhino | fmc_casework | fmc_ceiling | fmc_legend | fmc_apps | fmc_flow | fmc_tree | fmc_room   run the tool with the same argument schema and defaults; prints the tool's JSON reply
+ *   fmc_file | fmc_family | fmc_project | fmc_template | fmc_library | fmc_qa | fmc_material | fmc_sheets | fmc_annotate | fmc_issue | fmc_links | fmc_selftest | fmc_workshare | fmc_review | fmc_report | fmc_doc | fmc_revit | fmc_brief | fmc_scripts | fmc_systems | fmc_build | fmc_ai | fmc_recipe | fmc_robot | fmc_navis | fmc_rhino | fmc_casework | fmc_ceiling | fmc_legend | fmc_apps | fmc_flow | fmc_tree | fmc_room | fmc_tables   run the tool with the same argument schema and defaults; prints the tool's JSON reply
  *   specs                   the families and the pilot set in FMC_Family_Specs.json, for the pane's family picker
  *   probe                   connects to Revit on port 8080 and reads the open documents (tests the whole chain)
  *   ask                     {question, history?}: asks Claude with the firm's API key; read-only Revit tools (fmc/ask.ts)
@@ -53,6 +53,7 @@ import { FMC_TREE_SHAPE, runFmcTree } from "../tools/fmc_tree.js";
 import { FMC_FLOW_SHAPE, runFmcFlow } from "../tools/fmc_flow.js";
 import { FMC_CASEWORK_SHAPE, runFmcCasework } from "../tools/fmc_casework.js";
 import { FMC_CEILING_SHAPE, runFmcCeiling } from "../tools/fmc_ceiling.js";
+import { FMC_TABLES_SHAPE, runFmcTables } from "../tools/fmc_tables.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { askLogFile, askStatus, readApiKey, runAsk } from "./ask.js";
 import { annotateInvalidOp } from "./buildinfo.js";
@@ -202,6 +203,8 @@ async function main() {
         return printReply(await runFmcCasework(z.object(FMC_CASEWORK_SHAPE).parse(input)));
       case "fmc_ceiling":
         return printReply(await runFmcCeiling(z.object(FMC_CEILING_SHAPE).parse(input)));
+      case "fmc_tables":
+        return printReply(await runFmcTables(z.object(FMC_TABLES_SHAPE).parse(input)));
       // A person releases a family, or sends it back, in the pane. Never MCP tools.
       case "family_release": case "family_sendback": {
         const r = paneRelease(command, input as Record<string, unknown>, process.env.USERNAME || "unknown");
@@ -219,7 +222,7 @@ async function main() {
         return print(askStatus(text, new Date(), process.env, !!readApiKey()), false);
       }
       default:
-        process.stderr.write("Usage: node build/fmc/cli.js <fmc_file|fmc_family|fmc_project|fmc_template|fmc_library|fmc_qa|fmc_material|fmc_sheets|fmc_annotate|fmc_issue|fmc_links|fmc_selftest|fmc_workshare|fmc_review|fmc_report|fmc_doc|fmc_revit|fmc_brief|fmc_scripts|fmc_systems|fmc_build|fmc_ai|fmc_recipe|fmc_robot|fmc_navis|fmc_rhino|fmc_casework|fmc_ceiling|fmc_legend|fmc_apps|fmc_flow|fmc_tree|fmc_room|specs|probe|ask|ask_status>  (JSON arguments on stdin)\n");
+        process.stderr.write("Usage: node build/fmc/cli.js <fmc_file|fmc_family|fmc_project|fmc_template|fmc_library|fmc_qa|fmc_material|fmc_sheets|fmc_annotate|fmc_issue|fmc_links|fmc_selftest|fmc_workshare|fmc_review|fmc_report|fmc_doc|fmc_revit|fmc_brief|fmc_scripts|fmc_systems|fmc_build|fmc_ai|fmc_recipe|fmc_robot|fmc_navis|fmc_rhino|fmc_casework|fmc_ceiling|fmc_legend|fmc_apps|fmc_flow|fmc_tree|fmc_room|fmc_tables|specs|probe|ask|ask_status>  (JSON arguments on stdin)\n");
         process.exit(2);
     }
   } catch (e) {
