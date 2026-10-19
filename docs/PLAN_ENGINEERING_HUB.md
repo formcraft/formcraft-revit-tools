@@ -1,6 +1,6 @@
 # One engineering hub: the apps work as one
 
-**Status:** plan, the owner's direction of 18 Oct 2026. H0 is built (#181, docs/HUB.md). Each later step waits for the
+**Status:** plan, the owner's direction of 18 Oct 2026. H0 is built (#181, docs/HUB.md). X0, H1, X1 (fmc_select) and X3 (fmc_find) are built; X1 and X3 wait for their check in the apps. Each later step waits for the
 owner's yes.
 
 ## The vision

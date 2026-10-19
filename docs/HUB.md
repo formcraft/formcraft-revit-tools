@@ -78,3 +78,35 @@ Without AI, from a command line (or a scheduled task):
 ```
 node build\fmc\cli.js fmc_flow < run.json      (run.json: {"action":"run","flow":"chain_test","vars":{"role":"A"}})
 ```
+
+## One selection: `fmc_select` (X1)
+Select elements in one app and the same elements are selected, and zoomed to, in the others. Selection changes only
+what each app shows (its selection and camera), never a model, so it has no dry run.
+
+- **`show`** (`from`, `to`, `ids`): `from` is revit, navisworks, rhino or robot; without `ids` it takes that app's
+  current selection. Each app is asked in its own terms, and the identity map fills in the rest:
+  - **Revit:** `fmc_selection_get` reads the selection (UniqueIds, element ids, categories, model, and elements picked
+    in links); `fmc_selection_show` selects by UniqueId or element id and zooms (`select: false` only looks them up).
+    Revit is asked first, so every element has both its UniqueId and its element id + model.
+  - **Navisworks:** `navis_select` finds the items a Revit element became by its "Element ID" property in the model
+    from the same file (as the clash results read it), selects them and zooms; `navis_selection` reads the selection
+    back as Revit ids.
+  - **Rhino:** `rhino_select` selects objects in the open drawing by id, or by the user text `fmc.id` (the Formcraft
+    id); `rhino_selection` reads it back. These run on Rhino's window thread and give up after 30 s when Rhino is busy.
+  - **Robot:** `fmc-robot.exe select` selects the bars of the run open in Robot (`<run>#<bar>` in the map) and
+    `selection` reads them back. It never starts Robot; Robot's API selects but doesn't zoom.
+- **`read`:** every open app's current selection with what the map knows about each element; nothing changes.
+
+The answer says, per app, what was selected, what wasn't found, and which elements have no id there yet (`not_mapped`).
+
+## One search and one log: `fmc_find` (X3)
+- **`find`** (`query`: a mark such as D-12, a room number, a name, a Formcraft id, a UniqueId or element id): the
+  identity map; Revit (`fmc_find_elements`: mark, type mark, number, room name, sheet number, name, comments holding
+  the tree's FMC: mark; with `touching`, the model elements within 25 mm of each match's box); Navisworks (the items
+  the matches became, looked up without selecting, and every clash naming them with what they clash with); review
+  tickets (by their elements, clash items, recipe node or words); recipe tree nodes (by id, name or a value such as a
+  room number); exchange packages that carry it (manifest, or a text file under 1 MB).
+- **`log`:** one timeline, newest first, for the same query: `FMC_MCP_FileLog.csv`, exchange packages, review ticket
+  history and identity links, read from files only.
+
+Both are read-only; an app that isn't open is skipped and said so.
