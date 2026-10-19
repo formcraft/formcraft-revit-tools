@@ -23,8 +23,54 @@ namespace Formcraft.Navis
                 case "navis_info": return Info(doc);
                 case "navis_clash_tests": return Tests(doc);
                 case "navis_clash_results": return Results(doc, p);
-                default: throw new ArgumentException($"Unknown command '{method}': use navis_info, navis_clash_tests or navis_clash_results");
+                case "navis_search_sets": return SearchSets(doc, p);
+                default: throw new ArgumentException($"Unknown command '{method}': use navis_info, navis_clash_tests, navis_clash_results or navis_search_sets");
             }
+        }
+
+        /// <summary>
+        /// The recipe tree's search sets (T6): one folder (replaced whole on every run, so it always matches the tree), with
+        /// a sub-folder per level and department and a search set per room. Each set finds the items whose Revit Comments
+        /// contain the tree's mark (FMC:<node>, written by the room build), so a set follows its room through every rebuild.
+        /// Only the open document's selection sets change; saving the .nwf is a person's step.
+        /// </summary>
+        public static JObject SearchSets(Document doc, JObject p)
+        {
+            string top = p.Value<string>("folder") ?? "FMC Recipe tree";
+            var sets = (p["sets"] as JArray ?? new JArray()).OfType<JObject>().ToList();
+            bool dry = p.Value<bool?>("dry_run") ?? true;
+            var root = new FolderItem { DisplayName = top };
+            var folders = new Dictionary<string, FolderItem>();
+            int made = 0;
+            foreach (JObject s in sets)
+            {
+                GroupItem parent = root;
+                string key = "";
+                foreach (string part in (s["path"] as JArray ?? new JArray()).Select(x => x.Value<string>()))
+                {
+                    key += "/" + part;
+                    if (!folders.TryGetValue(key, out FolderItem f))
+                    {
+                        f = new FolderItem { DisplayName = part };
+                        parent.Children.Add(f);
+                        folders[key] = f;
+                    }
+                    parent = f;
+                }
+                var search = new Search();
+                search.Selection.SelectAll();
+                search.Locations = SearchLocations.DescendantsAndSelf;
+                search.SearchConditions.Add(SearchCondition.HasPropertyByDisplayName("Element", "Comments").DisplayStringContains(s.Value<string>("contains") ?? ""));
+                parent.Children.Add(new SelectionSet(search) { DisplayName = s.Value<string>("name") ?? "set" });
+                made++;
+            }
+            SavedItem existing = doc.SelectionSets.RootItem.Children.FirstOrDefault(c => c.DisplayName == top);
+            if (!dry)
+            {
+                if (existing != null) doc.SelectionSets.ReplaceWithCopy(doc.SelectionSets.RootItem.Children.IndexOf(existing), root);
+                else doc.SelectionSets.AddCopy(root);
+            }
+            return new JObject { ["dry_run"] = dry, ["folder"] = top, ["sets"] = made, ["folders"] = folders.Count, ["replaced"] = existing != null };
         }
 
         private static double Mm(Document doc) => UnitConversion.ScaleFactor(doc.Units, Units.Millimeters);
