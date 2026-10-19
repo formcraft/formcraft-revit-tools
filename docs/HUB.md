@@ -10,7 +10,7 @@ One Formcraft MCP server reaches every engineering app through a connector per a
 | Navisworks Manage 2025 | `Formcraft.Navis` add-in, local socket 8190 | Add-in bridge | `fmc_navis` |
 | Robot Structural Analysis 2025 | `fmc-robot.exe` beside the server | Process | `fmc_robot` |
 | Rhino 8 | `Formcraft.Rhino` package, local socket 8191 (H1) | Add-in bridge | `fmc_rhino` |
-| Power BI Desktop | Not built yet (plan step H2): a gateway to Microsoft's Power BI Modeling MCP server | Gateway | `fmc_powerbi` (to come) |
+| Power BI Desktop | Files Power BI reads (H2); the gateway to Microsoft's Power BI Modeling MCP server is designed, not set up | Gateway | `fmc_powerbi` |
 
 ## Rhino: `fmc_rhino` (H1)
 The smooth, fixed-shape parts of LOD 400 families (castors, grips, light heads, knobs, canopies): the hybrid family in
@@ -41,6 +41,41 @@ only (8191, the next free port up to 8199 for a second Rhino) and writes `%APPDA
   The twins are checked one by one (a failing twin stays native on Fine), exported, rendered, and the recipe gets,
   per twin, `import_part` + the native solid's subcategory, material parameter and type switch on Fine only, while
   the native solid becomes Medium only. Written to `<staging>\_Batch\<family>_LOD400.json`.
+
+## Power BI: `fmc_powerbi` (H2)
+The project's data model as files Power BI Desktop reads, with no binary step and no connector to install.
+
+- **Tables** (tidy CSV in `data\`): `Rooms` (Revit's rooms joined by number to the recipe tree's planned area and the
+  brief's target; Over, Under or On target past `tolerance_pct`), `Quantities` (by keynote code, from the same read as
+  `fmc_build`; quantities only, never rates), `QA` (one row per rule result of a read-only QA run), `Tickets` and
+  `TicketElements` (the review register by discipline and priority; no owner, raiser or answerer, rule 9), `Clashes`
+  (every Navisworks clash test, both Revit elements, the ticket raised for it; never Navisworks' "assigned to"),
+  `Structural` (NEd and MEd from the newest Robot results package), `Identity` (the identity map) and `Sources` (where
+  each table came from and why one is empty). Keys: room number, Revit UniqueId or element id, ticket id, Formcraft id.
+- **The model:** `FMC_Project.pbip` with a TMDL semantic model (`FMC_Project.SemanticModel\definition\`): each table
+  reads its CSV through Power Query from one parameter, `DataFolder`; relationships TicketElements → Tickets,
+  TicketElements → Identity, Clashes → Tickets, Rooms → Identity, Structural → Identity; measures for rooms over and
+  under target, open and overdue tickets (slice by `lead_discipline` and `priority`), clashes open and with a ticket,
+  quantity lines and unmeasured lines by bill, QA fails and warnings, the largest NEd and MEd. The report is one blank
+  page for a person to build on.
+- **Where:** an exchange package (hub → powerbi, `Packages\<time>_hub-powerbi_Project_data_model\`, its model pointing
+  at its own `data\`), and `<project>\01_WIP\_Exchange\PowerBI\latest\` for Power BI to point at. Each build replaces
+  the latest CSVs; the latest model is written once and then kept with the person's edits (`refresh_model=true`
+  archives it to `PowerBI\_Archive\` and writes a new one, refused while Power BI Desktop is open). Writes are checked
+  with the guard's write folders and go only to the project's WIP.
+- **Actions:** `plan` (the tables, their columns and what each reads now; read-only), `build` (a dry run first; Revit
+  and Navisworks are read only when they answer, otherwise the table is empty with a note; `live=false` reads files
+  only), `status` (the newest package, the latest folder, whether Power BI Desktop is running), `gateway`.
+- **Opening it:** in Power BI Desktop, File › Open › `PowerBI\latest\FMC_Project.pbip`, then Refresh. If Desktop asks,
+  turn on the preview features for Power BI Project files and the TMDL format (Options › Preview features). To read
+  another folder: Transform data › Edit parameters › `DataFolder` (ending in a backslash).
+
+**The gateway to Microsoft's Power BI Modeling MCP server (design note; not set up).** Microsoft's Modeling MCP server
+(preview) edits a semantic model open in Power BI Desktop. The hub will start it as a gateway like any connector: off by
+default, a dry run first, and passing on only an allow-list of read operations (list tables, columns, measures and
+relationships; run a DAX query), every write refused until the owner decides otherwise, each call through the same log.
+Its exact package name and start command are to be confirmed from Microsoft's release before it is wired; until then
+`fmc_powerbi gateway` answers "not set up" and nothing is started. The Formcraft data model above works without it.
 
 ## `fmc_apps`
 - **`list`:** each app, whether it is installed (its program exists) and running (its process), its connector and
