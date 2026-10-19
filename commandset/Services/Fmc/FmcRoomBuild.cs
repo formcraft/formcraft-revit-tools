@@ -39,6 +39,8 @@ namespace RevitMCPCommandSet.Services.Fmc
         private JObject Build(Document doc)
         {
             if (doc.IsFamilyDocument) throw new InvalidOperationException("A room is built in a project model, not a family");
+            // new elements go into the active design option: only the one asked for (O3), or the main model when none is
+            FmcDesignOption.Check(doc, Parameters.Value<string>("design_option") ?? "");
             string node = Parameters.Value<string>("node") ?? "";
             var ops = (Parameters["ops"] as JArray ?? new JArray()).OfType<JObject>().ToList();
             var notes = new JArray();
