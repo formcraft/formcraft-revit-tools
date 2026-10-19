@@ -177,9 +177,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             string widthParam = Parameters.Value<string>("width_param") ?? "";
             if (tag.Length == 0) throw new InvalidOperationException("A placement needs its tag (the label's mark in Comments)");
             string levelName = Parameters.Value<string>("level") ?? "";
-            Level level = new FilteredElementCollector(doc).OfClass(typeof(Level)).Cast<Level>()
-                .FirstOrDefault(l => string.Equals(l.Name, levelName, StringComparison.OrdinalIgnoreCase))
-                ?? throw new InvalidOperationException($"No level {levelName} in the model");
+            Level level = FmcLevels.Find(doc, levelName);
             if (!new FilteredElementCollector(doc).OfClass(typeof(Family)).Cast<Family>().Any(f => f.Name == family))
                 throw new InvalidOperationException($"{family} isn't loaded in the model: load it from the kit's families first");
 

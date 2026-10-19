@@ -116,7 +116,9 @@ findings into `test-finding` issues.
   `node build/fmc/cli.js <tool>` takes them), a read-only Revit command (`revit`: `fmc_document_info`,
   `fmc_element_facts` or `fmc_design_options`), `read_json` (a file a step wrote, such as a room build's record) or a
   runner action (`open_in_revit` a scratch file, `close_revit` without saving).
-- `checks` on each reply: `no_error`, `is_error`, and on a `path` (`elements.0.unique_id`): `equals`, `at_least`,
+- `checks` on each reply: `no_error`, `is_error`, and on a `path` (`elements.0.unique_id`; in a list, `[key=value]`
+  picks the first item whose key is that value and `[key^=value]` the first that starts with it:
+  `lines[check^=Hosts].state`): `equals`, `at_least`,
   `at_most` (a list counts its items), `contains`, `matches`, `exists`. No checks means `no_error`. `when` runs a step
   only if a check on earlier replies holds; `repeat_until` runs it again until a check holds (batch_gate).
 - Placeholders: `{{run}}`, `{{scenario}}`, `{{attempt}}`, `{{scratch}}` (a new folder per run and try under

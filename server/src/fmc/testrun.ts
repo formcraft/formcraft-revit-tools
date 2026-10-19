@@ -171,12 +171,30 @@ export function parseScenario(text: string, knownTools: string[]): { scenario: S
 
 // ---------------------------------------------------------------- values in replies and templates
 
-/** The value at a dotted path ("elements.0.unique_id"); undefined when any part is missing. */
+const PATH_PART = /^(?:([^.[\]]+)|\[([^\]=^]+)(\^?=)([^\]]*)\])(?:\.(?=[^.])|(?=\[)|$)/;
+
+/**
+ * The value at a dotted path ("elements.0.unique_id"); undefined when any part is missing or the path is malformed.
+ * In a list, "[key=value]" is the first item whose key is that value (as text) and "[key^=value]" the first whose key
+ * starts with it: "lines[check^=Hosts].state" is the state of a gate's host line, wherever it is in the list.
+ */
 export function getPath(root: unknown, path: string): unknown {
   if (!path) return root;
   let cur: any = root;
-  for (const part of path.split(".")) {
+  let rest = path;
+  while (rest.length) {
+    const m = PATH_PART.exec(rest);
+    if (!m) return undefined;
+    rest = rest.slice(m[0].length);
     if (cur === null || cur === undefined) return undefined;
+    if (m[2] !== undefined) {
+      if (!Array.isArray(cur)) return undefined;
+      const key = m[2].trim(), want = m[4].trim(), starts = m[3] === "^=";
+      cur = cur.find((x) => x && typeof x === "object" && x[key] !== undefined && x[key] !== null &&
+        (starts ? String(x[key]).startsWith(want) : String(x[key]) === want));
+      continue;
+    }
+    const part = m[1];
     if (Array.isArray(cur) && part === "length") { cur = cur.length; continue; }
     if (typeof cur !== "object") return undefined;
     cur = cur[part];
