@@ -6,7 +6,7 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { findingDrafts, powerDecision, runId, skipReason, summaryMarkdown } from "../fmc/testrun.js";
 import {
-  appRunning, loadScenarios, loadState, readLock, readPower, readTestrunConfig, resultsDir, runForeground, runStatus, statePath, testrunHome,
+  appRunning, loadScenarios, loadState, powerOverrideWord, readLock, readPower, readTestrunConfig, resultsDir, runForeground, runStatus, statePath, testrunHome,
 } from "../fmc/testrun_runner.js";
 
 function reply(body: object, isError = false) {
@@ -62,7 +62,7 @@ export async function runFmcTestrun(args: FmcTestrunArgs) {
       const power = readPower();
       return reply({
         dry_run: true, scenarios_dir: dir, scenarios,
-        power: { status: power, decision: powerDecision(power, cfg) },
+        power: { status: power, decision: powerDecision(power, cfg), ...(powerOverrideWord() !== undefined ? { test_override: powerOverrideWord() } : {}) },
         revit_exe: { path: cfg.revit_exe, found: fs.existsSync(cfg.revit_exe) },
         project_template: { path: cfg.project_template, found: fs.existsSync(cfg.project_template) },
         checkpoint_dir: testrunHome(), results_dir: resultsDir("<run>"),

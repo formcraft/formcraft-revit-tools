@@ -316,6 +316,24 @@ export function parsePowerLine(line: string): PowerStatus | null {
   return { ac: Number(m[1]), battery_flag: Number(m[2]), percent: Number(m[3]), system_status_flag: Number(m[4]) };
 }
 
+/** The power states a test can ask for instead of Windows' reading (FMC_TESTRUN_POWER / FMC_TESTRUN_POWER_FILE). */
+export const POWER_OVERRIDES = ["ac", "battery", "saver", "unknown"] as const;
+
+/**
+ * TEST ONLY: a power state from a word ("ac", "battery", "saver", "unknown"), in place of GetSystemPowerStatus.
+ * undefined: no override (or a word it doesn't know), so the real reading is used; null: "unknown" (unreadable).
+ * Saver is battery saver on, on battery: it pauses whatever pause_on_battery says.
+ */
+export function powerOverride(word: string | undefined): PowerStatus | null | undefined {
+  switch ((word ?? "").trim().toLowerCase()) {
+    case "ac": return { ac: 1, battery_flag: 1, percent: 100, system_status_flag: 0 };
+    case "battery": return { ac: 0, battery_flag: 0, percent: 60, system_status_flag: 0 };
+    case "saver": return { ac: 0, battery_flag: 2, percent: 15, system_status_flag: 1 };
+    case "unknown": return null;
+    default: return undefined;
+  }
+}
+
 export interface PowerDecision { pause: boolean; reason: string }
 
 /**
@@ -441,7 +459,15 @@ export function resumeRun(s: RunState, lastBeat: string | undefined, now: Date):
   const last = lastBeat ? Date.parse(lastBeat) : NaN;
   if (Number.isFinite(last) && now.getTime() - last > GAP_MS)
     s.gaps.push({ from: new Date(last).toISOString(), to: now.toISOString(), seconds: Math.round((now.getTime() - last) / 1000) });
-  for (const id of s.order) if (s.scenarios[id]?.status === "running") interruptScenario(s, id, "the runner stopped (sleep, shutdown or closed)", now);
+  for (const id of s.order) {
+    const sc = s.scenarios[id];
+    if (sc?.status !== "running") continue;
+    // findings of the try that was cut off aren't findings (as for a sleep the runner sees itself): it runs again
+    const attempt = sc.tries + sc.interruptions + 1;
+    for (const f of s.findings) if (f.scenario === id) f.tries = f.tries.filter((t) => t !== attempt);
+    s.findings = s.findings.filter((f) => f.tries.length > 0);
+    interruptScenario(s, id, "the runner stopped (sleep, shutdown or closed)", now);
+  }
   const open = s.pauses[s.pauses.length - 1];
   if (open && !open.to) open.to = now.toISOString();
   s.status = "running";
