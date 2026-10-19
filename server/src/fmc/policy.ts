@@ -54,6 +54,8 @@ export interface GuardConfig {
    * fmc_recipe cleanup closes it without saving (dry run first). Never a document in a Revit window or one the person opened.
    */
   session_idle_hours: number;
+  /** Gate A's family file size limit, MB (default 2; the owner may raise it for a while, e.g. for LOD 400 twins). */
+  family_max_mb?: number;
 }
 
 export const DEFAULT_CONFIG: GuardConfig = {
@@ -74,6 +76,7 @@ export const DEFAULT_CONFIG: GuardConfig = {
   annotation_standard_file: "Z:\\00_Standards\\03_Master_Data\\FMC_Annotation_Standard.json",
   clash_matrix_file: "Z:\\00_Standards\\08_Navisworks\\FMC_Clash_Matrix.json",
   session_idle_hours: 12,
+  family_max_mb: 2,
 };
 
 /** Tools that change the model. They are refused on live project models. */

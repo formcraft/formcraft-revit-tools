@@ -1,4 +1,4 @@
-import { projectFamily, ROLE_CODES } from "./policy.js";
+import { loadConfig, projectFamily, ROLE_CODES } from "./policy.js";
 import { FamilySpec, SpParam } from "./specs.js";
 
 /**
@@ -127,8 +127,10 @@ export function checkFamily(f: ScannedFamily, specs: Map<string, FamilySpec>, ki
 
   if (f.size_mb == null) checks.push({ check: CHECKS[3], state: "na", detail: "Checked when the family file is opened (Bring in)", fixable: false });
   else {
-    const bad = f.size_mb >= 2 || (f.imported_cad ?? 0) > 0;
-    checks.push({ check: CHECKS[3], state: bad ? "fail" : "pass", detail: `${f.size_mb} MB · ${f.imported_cad ?? 0} imported CAD`, fixable: false });
+    // the limit is the guard's family_max_mb (default 2 MB), so the owner can raise it for a while without a release
+    const set = Number(loadConfig().config.family_max_mb), max = set > 0 ? set : 2;
+    const bad = f.size_mb >= max || (f.imported_cad ?? 0) > 0;
+    checks.push({ check: CHECKS[3], state: bad ? "fail" : "pass", detail: `${f.size_mb} MB (limit ${max} MB) · ${f.imported_cad ?? 0} imported CAD`, fixable: false });
   }
 
   // F-045: profiles are typed by design movement or size (Greek, 300), title blocks by sheet size (A1)
