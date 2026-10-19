@@ -60,7 +60,19 @@ namespace RevitMCPCommandSet.Services.Fmc
 
             FreeFormElement form = FreeFormElement.Create(doc, solid);
             FmcDocGeometry.Label(form, name);
-            return ("create", "form from Rhino " + Path.GetFileName(full) + (solids.Count > 1 ? " (" + solids.Count + " solids joined)" : "") + sizeNote);
+            // F-068: the twin takes its source solid's kit material on the form itself, so it holds even before (or without)
+            // the material parameter; set_material_param then ties it to the parameter as for every solid
+            string matNote = "";
+            string matName = op.Value<string>("material");
+            if (!string.IsNullOrEmpty(matName))
+            {
+                Material m = new FilteredElementCollector(doc).OfClass(typeof(Material)).Cast<Material>().FirstOrDefault(x => x.Name == matName);
+                Parameter mp = form.get_Parameter(BuiltInParameter.MATERIAL_ID_PARAM);
+                if (m == null) matNote = ", material " + matName + " isn't in the family (add_material first)";
+                else if (mp == null || mp.IsReadOnly) matNote = ", the form takes no material";
+                else { mp.Set(m.Id); matNote = ", " + matName; }
+            }
+            return ("create", "form from Rhino " + Path.GetFileName(full) + (solids.Count > 1 ? " (" + solids.Count + " solids joined)" : "") + sizeNote + matNote);
         }
     }
 }
