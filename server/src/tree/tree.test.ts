@@ -19,7 +19,7 @@ test("T0: a first plan builds everything; after a build nothing; a wider room re
   assert.ok(planTree(t, built).every((l) => l.state === "unchanged"), "the ancestors count as built once everything under them is");
   findNode(t, "ICU-Bay-01")!.inputs!.width = 4500;
   const changed = planTree(t, built).filter((l) => l.state !== "unchanged").map((l) => l.id);
-  assert.deepEqual(changed, ["Hospital", "L2", "ICU", "ICU-Bay-01", "ICU-Bay-01.Ceiling"], "the families don't use the width: they stay");
+  assert.deepEqual(changed, ["Hospital", "L2", "ICU", "ICU-Bay-01", "ICU-Bay-01.Room", "ICU-Bay-01.Ceiling"], "the families don't use the width: they stay");
 });
 
 test("T0: the check finds duplicate ids, unknown tools, missing values and nodes that make nothing", () => {
@@ -36,4 +36,13 @@ test("T0: the check finds duplicate ids, unknown tools, missing values and nodes
   assert.ok(p.some((x) => /Y: makes nothing/.test(x)));
   assert.ok(p.some((x) => /fmc_flow can't run in the tree/.test(x)));
   assert.throws(() => TREE.parse({ root: { id: "a", kind: "room", make: { tool: "rm", args: {} } } }), "only Formcraft tools");
+});
+
+test("T1: the room's inputs reach its build: the room recipe gets the bay's size, level and the project's wall type", () => {
+  const room = resolve(sample()).find((r) => r.node.id === "ICU-Bay-01.Room")!;
+  const a = (room.args as any).room;
+  assert.equal(a.width, 4200);
+  assert.equal(a.level, "Level 2");
+  assert.equal(a.walls.type, "Generic - 200mm");
+  assert.deepEqual(a.origin_mm, [0, 0]);
 });
