@@ -167,6 +167,25 @@ export function expectedFollows(recipe: Recipe, follow: FollowParam[] = followPa
 }
 const order = (p: string) => (p === "Width" ? 0 : p === "Height" ? 1 : 2);
 
+/**
+ * When a size parameter reaches a solid's plane through a labelled dimension whose formula uses that same parameter,
+ * the formula may cancel the move on purpose: a kick plate's top tied to the head by "Kick Drop = Height - Frame Width
+ * - Kick Height" stays at its height above the floor when the door gets taller. Returns the label that absorbs it.
+ */
+export function formulaAbsorbs(recipe: Recipe): (solid: string, param: string) => string | null {
+  const ops = recipe.ops as Array<Record<string, any>>;
+  const planes = solidPlanes(recipe);
+  const formulas = new Map<string, string[]>();
+  // a formula's terms: the names between its operators (parameter names may hold spaces)
+  for (const o of ops) if (o.op === "set_formula") formulas.set(String(o.name), String(o.formula).split(/[-+*/()<>=,^]/).map((t) => t.trim()).filter(Boolean));
+  const labels = new Map<string, string[]>();
+  for (const o of ops) if (o.op === "add_dimension" && o.label) for (const pl of (o.between ?? []) as string[]) labels.set(pl, [...(labels.get(pl) ?? []), String(o.label)]);
+  return (solid, param) => {
+    for (const pl of planes.get(solid) ?? []) for (const label of labels.get(pl) ?? []) if (formulas.get(label)?.includes(param)) return label;
+    return null;
+  };
+}
+
 /** fmc_doc flex's follow report: per size parameter the values used, per named solid the parameters it moved with. */
 export interface FlexFollow {
   params: Array<{ param: string; low_mm?: number; high_mm?: number; type?: string; ok: boolean; error?: string }>;
@@ -183,13 +202,17 @@ function followCheck(recipe: Recipe, follow: FlexFollow | undefined): { line: Ga
   const okParams = new Set(follow.params.filter((p) => p.ok).map((p) => p.param));
   const bad = follow.params.filter((p) => !p.ok);
   const byName = new Map(follow.elements.map((e) => [e.name, e]));
+  const absorbs = formulaAbsorbs(recipe);
   const follows: FollowLine[] = [];
   for (const [solid, gov] of expected) {
     const e = byName.get(solid);
     const tested = gov.filter((p) => okParams.has(p));
     if (!e || e.no_box) { follows.push({ solid, follows: e ? "no bounding box" : "not in the family", governed_by: gov.join("/"), state: "Not checked" }); continue; }
-    const missed = tested.filter((p) => !e.moved.includes(p));
-    follows.push({ solid, follows: e.moved.length ? `follows ${e.moved.join("/")}` : "follows nothing", governed_by: gov.join("/"),
+    // a parameter a formula absorbs on purpose isn't a miss (the kick plate keeps its height when the door grows)
+    const absorbed = tested.filter((p) => !e.moved.includes(p)).map((p) => [p, absorbs(solid, p)] as const).filter(([, l]) => l);
+    const missed = tested.filter((p) => !e.moved.includes(p) && !absorbed.some(([q]) => q === p));
+    const note = absorbed.length ? ` (${absorbed.map(([p, l]) => `${p} absorbed by ${l}`).join(", ")})` : "";
+    follows.push({ solid, follows: (e.moved.length ? `follows ${e.moved.join("/")}` : "follows nothing") + note, governed_by: gov.join("/"),
       state: missed.length ? "Fail" : tested.length ? "Pass" : "Not checked" });
   }
   const failing = follows.filter((f) => f.state === "Fail");
@@ -286,6 +309,9 @@ export function lodLine(family: string, ops: Array<Record<string, any>>): GateLi
   const detail = `Coarse ${l.coarse}, Medium ${l.medium}, Fine ${l.fine}`;
   const want = /_Detailed$/.test(family) ? ["LOD 100", "LOD 300", LOD_RENDER] : ["LOD 100", "LOD 200", "LOD 200"];
   const got = [l.coarse, l.medium, l.fine];
+  // a nested part (FMC_*_Part_*) shows nothing at Coarse on purpose: its host's envelope stands in for it there
+  if (/_Part_/.test(family) && l.coarse === "none" && l.medium !== "none" && l.fine !== "none")
+    return { check: "Levels of detail", state: "Pass", detail: `${detail}: a nested part, its host's Coarse envelope stands in for it` };
   if (got.includes("none")) return { check: "Levels of detail", state: "Fail", detail: `${detail}: a level shows nothing` };
   const ok = got.every((g, i) => g === want[i] || (i === 2 && want[2] === LOD_RENDER && g === "LOD 300"));
   return { check: "Levels of detail", state: ok && !(want[2] === LOD_RENDER && l.fine === "LOD 300") ? "Pass" : "Warn",
