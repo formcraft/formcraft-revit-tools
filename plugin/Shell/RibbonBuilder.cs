@@ -25,7 +25,7 @@ namespace revit_mcp_plugin.Shell
         public static readonly Dictionary<FmcModule, string[]> SmallOptions = new Dictionary<FmcModule, string[]>
         {
             [FmcModule.Manage] = new[] { "Run QA", "Raise issue", "Ready to issue", "Sync reminder" },
-            [FmcModule.Flow] = new[] { "Touch on", "Section box", "Tag Tidy", "Align" },
+            [FmcModule.Flow] = new[] { "Touch on", "Section box", "Tag Tidy", "Align", "Mark" },
             [FmcModule.Model] = new[] { "Check system", "Quantities", "Diagram" },
             [FmcModule.Build] = new[] { "Workspace", "Web app" },
         };
@@ -33,7 +33,7 @@ namespace revit_mcp_plugin.Shell
         private static readonly Dictionary<string, string> Icon = new Dictionary<string, string>
         {
             ["Run QA"] = "qa", ["Raise issue"] = "issue", ["Ready to issue"] = "check", ["Sync reminder"] = "work",
-            ["Touch on"] = "touch", ["Section box"] = "box", ["Tag Tidy"] = "check", ["Align"] = "pane",
+            ["Touch on"] = "touch", ["Section box"] = "box", ["Tag Tidy"] = "check", ["Align"] = "pane", ["Mark"] = "issue",
             ["Check system"] = "check", ["Quantities"] = "qty", ["Diagram"] = "work", ["Workspace"] = "work", ["Web app"] = "web",
         };
 

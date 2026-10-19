@@ -406,7 +406,7 @@ namespace Formcraft.Shell.ViewModels
 
         private IEnumerable<SettingsGroup> Flow() => new[]
         {
-            Ribbon("Flow", new[] { "Touch on", "Section box", "Tag Tidy", "Align" }, 0, 1),
+            Ribbon("Flow", new[] { "Touch on", "Section box", "Tag Tidy", "Align", "Mark" }, 0, 1),
         }.Concat(Touch()).Concat(new[]
         {
             new SettingsGroup("Flow · sheet layout and tags",
