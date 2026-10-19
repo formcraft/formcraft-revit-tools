@@ -14,7 +14,7 @@ const CLI = path.join(HERE, "cli.js");
 const FIX = path.resolve(HERE, "../../src/fmc/fixtures");
 const PILOT = JSON.parse(fs.readFileSync(path.join(FIX, "pilot_specs.json"), "utf8")).pilot_set as string[];
 
-function run(command: string, args: unknown, guard: Record<string, unknown> = {}) {
+function run(command: string, args: unknown, guard: Record<string, unknown> = {}, env: Record<string, string> = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-cli-"));
   const config = path.join(dir, "fmc_guard.json");
   fs.writeFileSync(config, JSON.stringify({
@@ -25,11 +25,14 @@ function run(command: string, args: unknown, guard: Record<string, unknown> = {}
   }));
   const r = spawnSync(process.execPath, [CLI, command], {
     input: args === undefined ? "" : JSON.stringify(args),
-    env: { ...process.env, FMC_GUARD_CONFIG: config },
+    // the call ledger (F74) goes to the run's own folder, never the user's %APPDATA%
+    env: { ...process.env, FMC_GUARD_CONFIG: config, FMC_LEDGER_DIR: path.join(dir, "ledger"), FMC_STARTED_BY: "", ...env },
     encoding: "utf8",
   });
   const log = path.join(dir, "FMC_MCP_FileLog.csv");
-  return { code: r.status, out: r.stdout, body: r.stdout.trim() ? JSON.parse(r.stdout) : null, log: fs.existsSync(log) ? fs.readFileSync(log, "utf8") : "" };
+  const ledgerDir = path.join(dir, "ledger");
+  const ledger = fs.existsSync(ledgerDir) ? fs.readdirSync(ledgerDir).map((f) => fs.readFileSync(path.join(ledgerDir, f), "utf8")).join("") : "";
+  return { code: r.status, out: r.stdout, body: r.stdout.trim() ? JSON.parse(r.stdout) : null, log: fs.existsSync(log) ? fs.readFileSync(log, "utf8") : "", ledger };
 }
 
 test("specs lists the families and the kit's pilot set, as pure JSON on stdout", () => {
@@ -101,4 +104,22 @@ test("bad arguments use the tool's own schema; an unknown command is a usage err
   const usage = run("nope", {});
   assert.equal(usage.code, 2);
   assert.equal(usage.body, null);
+});
+
+test("F74: a tool command is recorded in the call ledger as started by FMC_STARTED_BY; housekeeping is not", () => {
+  const pane = run("fmc_balance", { action: "summary", project_folder: "Z:\\Projects\\F26001_Clinic" }, {}, { FMC_STARTED_BY: "pane" });
+  assert.equal(pane.code, 0);
+  const line = JSON.parse(pane.ledger.trim().split("\n").pop()!);
+  assert.equal(line.tool, "fmc_balance");
+  assert.equal(line.action, "summary");
+  assert.equal(line.started_by, "pane");
+  assert.equal(line.project, "F26001");
+  assert.equal(line.ok, true);
+  assert.deepEqual(Object.keys(line).sort(), ["action", "at", "ms", "ok", "project", "started_by", "tool"]);
+  const cli = run("fmc_balance", { action: "inventory" });
+  assert.equal(cli.code, 1);
+  const refused = JSON.parse(cli.ledger.trim());
+  assert.equal(refused.started_by, "cli");
+  assert.equal(refused.ok, false);
+  assert.equal(run("specs", undefined).ledger, "");
 });

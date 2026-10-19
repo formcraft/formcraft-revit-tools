@@ -87,7 +87,24 @@ namespace Formcraft.Shell.Tests
 
             await Assert.That(added).IsEqualTo("Before Ready to issue=selftest,review");
             await Assert.That(error).IsEqualTo("Give it a name.");
-            await Assert.That(afterDelete).IsEqualTo(3);
+            await Assert.That(afterDelete).IsEqualTo(4);
+        }
+
+        [Test]
+        public async Task The_kit_tables_automation_runs_the_check_and_the_import_dry_run_without_a_project()
+        {
+            var (ran, lines) = Sta.Run(() =>
+            {
+                var (vm, tools, s) = Pane(project: false);
+                s.Set("settings.scripts.automation", "Kit tables (dry run)");
+                vm.Scripts.RunCommand.Execute(null);
+                vm.Dialog!.ConfirmCommand!.Execute(null);
+                return (string.Join(",", tools.Ran.Single().Steps), vm.Scripts.RunLines.Lines.Select(l => l.Kind + ":" + l.Text).ToList());
+            });
+
+            await Assert.That(ran).IsEqualTo("tables,tables_import");
+            await Assert.That(lines[0]).StartsWith("Good:Kit tables check");
+            await Assert.That(lines[1]).StartsWith("Good:Edited kit tables (dry run");
         }
 
         [Test]

@@ -37,6 +37,15 @@ namespace RevitMCPCommandSet.Services.Fmc
                 }
                 catch (Exception) { /* a category this family doesn't have */ }
             }
+            // connectors (the green circle on an electrical one): the category often can't be hidden in a family's view,
+            // so the connector elements themselves are hidden in this view
+            try
+            {
+                var connectors = new FilteredElementCollector(doc).OfClass(typeof(ConnectorElement)).ToElements()
+                    .Where(e => e.CanBeHidden(v)).Select(e => e.Id).ToList();
+                if (connectors.Count > 0) v.HideElements(connectors);
+            }
+            catch (Exception) { /* kept visible */ }
             Category own = doc.IsFamilyDocument ? doc.OwnerFamily?.FamilyCategory : null;
             if (own == null) return;
             foreach (Category sub in own.SubCategories)

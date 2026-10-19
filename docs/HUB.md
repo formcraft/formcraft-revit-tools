@@ -10,7 +10,28 @@ One Formcraft MCP server reaches every engineering app through a connector per a
 | Navisworks Manage 2025 | `Formcraft.Navis` add-in, local socket 8190 | Add-in bridge | `fmc_navis` |
 | Robot Structural Analysis 2025 | `fmc-robot.exe` beside the server | Process | `fmc_robot` |
 | Rhino 8 | `Formcraft.Rhino` package, local socket 8191 (H1) | Add-in bridge | `fmc_rhino` |
-| Power BI Desktop | Not built yet (plan step H2): a gateway to Microsoft's Power BI Modeling MCP server | Gateway | `fmc_powerbi` (to come) |
+| Power BI Desktop | Files Power BI reads (H2); the gateway to Microsoft's Power BI Modeling MCP server is designed, not set up | Gateway | `fmc_powerbi` |
+
+## Navisworks: `fmc_navis` (H3)
+Built, not yet checked in Navisworks. The bridge (`connectors/navisworks`) answers on `127.0.0.1:8190`; reading
+(`info`, `tests`, `results`) is as in #94. H3 adds, each a dry run unless `dry_run` is false:
+
+- **`federate`** (project_folder): the project's discipline models by container name (Manual 4.1), from `02_Shared`
+  and/or `01_WIP` (`source`; 02_Shared wins, NWC before NWD before RVT; `_Archive`, backups and role Z are left out),
+  or the given `files`. Appends the ones not in the open document (`navis_append`) and saves the federation as
+  `01_WIP\_Navisworks\<Project>-<Originator>-ZZ-ZZ-M3-Z-0001.nwf` (`navis_save_as`; only an .nwf, only in 01_WIP and the
+  guard's write roots, checked by the server and again by the bridge). An older .nwf is moved to `_Archive` first;
+  nothing is overwritten. The hand-over is kept as a revit → navisworks exchange package.
+- **`matrix`, `clash_create`, `clash_run`:** clash tests from the clash matrix (`docs/CLASH_MATRIX.md`,
+  `fmc-clash-matrix/0.1`, a kit change request). Tests are named `FMC <id> …`; only those are ever edited, run or
+  removed, never a person's test.
+- **`back`** (project_folder): the newest results (or `test`), each item traced to its Revit element through the
+  identity map (by its Navisworks item, else its Element ID in that model; new ones are linked on a real run), handed over
+  as Mark & Review tickets (`handover: tickets`, through fmc_review's clash logic) or review clouds in the Revit model
+  open now (`handover: clouds`, after tickets; fmc_review cloud, behind the live-model lock). A navisworks → revit
+  package keeps the clashes handed over.
+- **`clash_status`:** a status and a comment on the results a person names; the real run needs `approved_by` (a person)
+  and the dry run's `plan_hash`. Saving the .nwf afterwards is a person's step.
 
 ## Rhino: `fmc_rhino` (H1)
 The smooth, fixed-shape parts of LOD 400 families (castors, grips, light heads, knobs, canopies): the hybrid family in
@@ -41,6 +62,41 @@ only (8191, the next free port up to 8199 for a second Rhino) and writes `%APPDA
   The twins are checked one by one (a failing twin stays native on Fine), exported, rendered, and the recipe gets,
   per twin, `import_part` + the native solid's subcategory, material parameter and type switch on Fine only, while
   the native solid becomes Medium only. Written to `<staging>\_Batch\<family>_LOD400.json`.
+
+## Power BI: `fmc_powerbi` (H2)
+The project's data model as files Power BI Desktop reads, with no binary step and no connector to install.
+
+- **Tables** (tidy CSV in `data\`): `Rooms` (Revit's rooms joined by number to the recipe tree's planned area and the
+  brief's target; Over, Under or On target past `tolerance_pct`), `Quantities` (by keynote code, from the same read as
+  `fmc_build`; quantities only, never rates), `QA` (one row per rule result of a read-only QA run), `Tickets` and
+  `TicketElements` (the review register by discipline and priority; no owner, raiser or answerer, rule 9), `Clashes`
+  (every Navisworks clash test, both Revit elements, the ticket raised for it; never Navisworks' "assigned to"),
+  `Structural` (NEd and MEd from the newest Robot results package), `Identity` (the identity map) and `Sources` (where
+  each table came from and why one is empty). Keys: room number, Revit UniqueId or element id, ticket id, Formcraft id.
+- **The model:** `FMC_Project.pbip` with a TMDL semantic model (`FMC_Project.SemanticModel\definition\`): each table
+  reads its CSV through Power Query from one parameter, `DataFolder`; relationships TicketElements → Tickets,
+  TicketElements → Identity, Clashes → Tickets, Rooms → Identity, Structural → Identity; measures for rooms over and
+  under target, open and overdue tickets (slice by `lead_discipline` and `priority`), clashes open and with a ticket,
+  quantity lines and unmeasured lines by bill, QA fails and warnings, the largest NEd and MEd. The report is one blank
+  page for a person to build on.
+- **Where:** an exchange package (hub → powerbi, `Packages\<time>_hub-powerbi_Project_data_model\`, its model pointing
+  at its own `data\`), and `<project>\01_WIP\_Exchange\PowerBI\latest\` for Power BI to point at. Each build replaces
+  the latest CSVs; the latest model is written once and then kept with the person's edits (`refresh_model=true`
+  archives it to `PowerBI\_Archive\` and writes a new one, refused while Power BI Desktop is open). Writes are checked
+  with the guard's write folders and go only to the project's WIP.
+- **Actions:** `plan` (the tables, their columns and what each reads now; read-only), `build` (a dry run first; Revit
+  and Navisworks are read only when they answer, otherwise the table is empty with a note; `live=false` reads files
+  only), `status` (the newest package, the latest folder, whether Power BI Desktop is running), `gateway`.
+- **Opening it:** in Power BI Desktop, File › Open › `PowerBI\latest\FMC_Project.pbip`, then Refresh. If Desktop asks,
+  turn on the preview features for Power BI Project files and the TMDL format (Options › Preview features). To read
+  another folder: Transform data › Edit parameters › `DataFolder` (ending in a backslash).
+
+**The gateway to Microsoft's Power BI Modeling MCP server (design note; not set up).** Microsoft's Modeling MCP server
+(preview) edits a semantic model open in Power BI Desktop. The hub will start it as a gateway like any connector: off by
+default, a dry run first, and passing on only an allow-list of read operations (list tables, columns, measures and
+relationships; run a DAX query), every write refused until the owner decides otherwise, each call through the same log.
+Its exact package name and start command are to be confirmed from Microsoft's release before it is wired; until then
+`fmc_powerbi gateway` answers "not set up" and nothing is started. The Formcraft data model above works without it.
 
 ## `fmc_apps`
 - **`list`:** each app, whether it is installed (its program exists) and running (its process), its connector and
@@ -76,6 +132,7 @@ A project's exchange is `<project>\01_WIP\_Exchange` (or `<reports>\Exchange` wi
 Without AI, from a command line (or a scheduled task):
 
 ```
+set FMC_STARTED_BY=schedule                     (in a Task Scheduler action: the call ledger counts it as scheduled, docs/AUTOMATION_BALANCE.md)
 node build\fmc\cli.js fmc_flow < run.json      (run.json: {"action":"run","flow":"chain_test","vars":{"role":"A"}})
 ```
 

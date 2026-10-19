@@ -1,0 +1,98 @@
+{
+  "schema": "fmc-testrun/0.1",
+  "id": "05_room_icu",
+  "title": "ICU bay shell (walls, ceiling, room) built in a scratch project, its element facts, no hand edits, a rebuild, design options read",
+  "features": ["F72", "F73", "F71"],
+  "setup": [
+    {
+      "id": "new_dry",
+      "tool": "fmc_file",
+      "args": { "action": "create_from_template", "kind": "project", "template_path": "{{project_template}}", "save_path": "{{scratch}}\\FMC_ChainTest_A.rvt", "dry_run": true }
+    },
+    {
+      "id": "new",
+      "note": "A new scratch project from the kit's template in _ChainTests\\_TestRun (a new folder per run and try: nothing is saved over)",
+      "tool": "fmc_file",
+      "args": { "action": "create_from_template", "kind": "project", "template_path": "{{project_template}}", "save_path": "{{scratch}}\\FMC_ChainTest_A.rvt", "close_after": true, "dry_run": false },
+      "checks": [{ "no_error": true }, { "path": "done", "equals": true }]
+    },
+    { "id": "open", "runner": "open_in_revit", "path": "{{scratch}}\\FMC_ChainTest_A.rvt" }
+  ],
+  "steps": [
+    {
+      "id": "plan",
+      "tool": "fmc_room",
+      "args": {
+        "action": "plan",
+        "room": {
+          "name": "ICU bay", "number": "L2-ICU-01", "level": "Level 2", "origin_mm": [0, 0], "width": 4200, "depth": 5000, "height": 3300,
+          "walls": { "type": "Generic - 200mm", "thickness": 200 }, "ceiling": { "type": "Generic", "height": 2900 }
+        }
+      },
+      "checks": [{ "no_error": true }, { "path": "problems", "at_most": 0 }, { "path": "ops", "at_least": 6 }]
+    },
+    {
+      "id": "build_dry",
+      "tool": "fmc_room",
+      "args": {
+        "action": "build", "node": "ICU-Bay-01.Shell", "project_folder": "{{scratch}}", "dry_run": true,
+        "room": {
+          "name": "ICU bay", "number": "L2-ICU-01", "level": "Level 2", "origin_mm": [0, 0], "width": 4200, "depth": 5000, "height": 3300,
+          "walls": { "type": "Generic - 200mm", "thickness": 200 }, "ceiling": { "type": "Generic", "height": 2900 }
+        }
+      },
+      "checks": [{ "no_error": true }, { "path": "would_build", "at_least": 6 }]
+    },
+    {
+      "id": "build",
+      "tool": "fmc_room",
+      "args": {
+        "action": "build", "node": "ICU-Bay-01.Shell", "project_folder": "{{scratch}}", "dry_run": false,
+        "room": {
+          "name": "ICU bay", "number": "L2-ICU-01", "level": "Level 2", "origin_mm": [0, 0], "width": 4200, "depth": 5000, "height": 3300,
+          "walls": { "type": "Generic - 200mm", "thickness": 200 }, "ceiling": { "type": "Generic", "height": 2900 }
+        }
+      },
+      "timeout_s": 600,
+      "checks": [{ "no_error": true }, { "path": "done", "equals": true }, { "path": "made", "at_least": 6 }, { "path": "notes", "at_most": 0 }]
+    },
+    {
+      "id": "record",
+      "read_json": "{{steps.build.record}}",
+      "checks": [{ "path": "elements", "at_least": 6 }]
+    },
+    {
+      "id": "facts",
+      "revit": "fmc_element_facts",
+      "params": { "unique_ids": "{{steps.record.made}}" },
+      "checks": [{ "path": "elements", "at_least": 6 }, { "path": "missing", "at_most": 0 }]
+    },
+    {
+      "id": "edits",
+      "tool": "fmc_room",
+      "args": { "action": "edits", "node": "ICU-Bay-01.Shell", "project_folder": "{{scratch}}" },
+      "checks": [{ "no_error": true }, { "path": "edits", "at_most": 0 }]
+    },
+    {
+      "id": "rebuild",
+      "note": "A rebuild replaces what the node made last time, and nothing else",
+      "tool": "fmc_room",
+      "args": {
+        "action": "build", "node": "ICU-Bay-01.Shell", "project_folder": "{{scratch}}", "dry_run": false,
+        "room": {
+          "name": "ICU bay", "number": "L2-ICU-01", "level": "Level 2", "origin_mm": [0, 0], "width": 4200, "depth": 5000, "height": 3300,
+          "walls": { "type": "Generic - 200mm", "thickness": 200 }, "ceiling": { "type": "Generic", "height": 2900 }
+        }
+      },
+      "timeout_s": 600,
+      "checks": [{ "no_error": true }, { "path": "removed", "at_least": 6 }, { "path": "made", "at_least": 6 }]
+    },
+    {
+      "id": "options",
+      "revit": "fmc_design_options",
+      "params": {},
+      "checks": [{ "path": "options", "exists": true }]
+    }
+  ],
+  "teardown": [{ "runner": "close_revit" }]
+}

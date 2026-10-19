@@ -167,8 +167,9 @@ export function detailWindow(std: RecipeLike, componentPath: (family: string) =>
     const steel = "FMC_Metal_StainlessSteel_Brushed";
     const ownSteel = ops.find((o) => o.op === "add_material" && o.name === steel)?.param as string | undefined;
     const boxMat = ownSteel ?? "Pass Box Material";
-    const box = (name: string, rect: string[], start: number, end: number, sp: string, ep: string, sw: string, material = boxMat): Op[] => [
-      { op: "extrusion", name, rect, start, end, start_plane: sp, end_plane: ep },
+    // a slab locked to one plane only (sp or ep null) keeps its own thickness: both ends on the same plane would be flat
+    const box = (name: string, rect: string[], start: number, end: number, sp: string | null, ep: string | null, sw: string, material = boxMat): Op[] => [
+      { op: "extrusion", name, rect, start, end, ...(sp ? { start_plane: sp } : {}), ...(ep ? { end_plane: ep } : {}) },
       { op: "set_subcategory", name, subcategory: "Pass Box" },
       { op: "set_material_param", name, param: material },
       { op: "set_visible_param", name: `${name}/Visible`, solid: name, param: sw },
@@ -209,8 +210,8 @@ export function detailWindow(std: RecipeLike, componentPath: (family: string) =>
       { op: "add_ref_plane", name: "Pass Handle", from: [-2500, 1180], to: [2500, 1180], view: "Exterior", is_reference: "WeakReference" },
       { op: "add_dimension", name: "Pass Handle Height", between: ["Sill Inner", "Pass Handle"], label: "Pass Handle Height", view: "Exterior" },
       // the box: two cheeks and a top, so it reads as a box through the wall; the doors in its faces
-      ...box("Pass Box Top", ["Box L", "Box R", "Box Out Ext", "Box Out Int"], 1240, 1250, "Box Top", "Box Top", "Pass Hatch"),
-      ...box("Pass Box Base", ["Box L", "Box R", "Box Out Ext", "Box Out Int"], 850, 860, "Sill Inner", "Sill Inner", "Pass Hatch"),
+      ...box("Pass Box Top", ["Box L", "Box R", "Box Out Ext", "Box Out Int"], 1240, 1250, null, "Box Top", "Pass Hatch"),
+      ...box("Pass Box Base", ["Box L", "Box R", "Box Out Ext", "Box Out Int"], 850, 860, "Sill Inner", null, "Pass Hatch"),
       ...box("Pass Door Ext", ["Box L", "Box R", "Box Out Ext", "Pass Door Ext In"], 850, 1250, "Sill Inner", "Box Top", "Pass Hatch"),
       ...box("Pass Door Int", ["Box L", "Box R", "Pass Door Int In", "Box Out Int"], 850, 1250, "Sill Inner", "Box Top", "Pass Door Shut"),
       ...box("Pass Door Int Open", ["Box L", "Box R", "Box Out Int", "Pass Door Open Tip"], 844, 850, "Pass Door Open Bottom", "Sill Inner", "Pass Door Open"),

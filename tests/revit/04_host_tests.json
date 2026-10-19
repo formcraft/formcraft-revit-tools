@@ -1,0 +1,32 @@
+{
+  "schema": "fmc-testrun/0.1",
+  "id": "04_host_tests",
+  "title": "Gate A with the host test (F-061) on the sample's hosted families: door and window on a wall, light on a ceiling",
+  "features": ["F44", "F70"],
+  "setup": [],
+  "steps": [
+    {
+      "id": "door",
+      "note": "Gate A places a wall-hosted family in a throw-away project and moves its host (fmc_family_host_test)",
+      "tool": "fmc_recipe",
+      "args": { "action": "gate", "file": "{{staging}}\\A\\FMC_A_Door_FlushSingle_Hygienic_Detailed.rfa" },
+      "timeout_s": 1200,
+      "checks": [{ "no_error": true }, { "path": "verdict", "equals": "Pass" }, { "path": "hostTestError", "equals": "" }]
+    },
+    {
+      "id": "window",
+      "tool": "fmc_recipe",
+      "args": { "action": "gate", "file": "{{staging}}\\A\\FMC_A_Window_Observation_Internal_Nurse_Detailed.rfa" },
+      "timeout_s": 1200,
+      "checks": [{ "no_error": true }, { "path": "verdict", "equals": "Pass" }, { "path": "hostTestError", "equals": "" }]
+    },
+    {
+      "id": "light",
+      "tool": "fmc_recipe",
+      "args": { "action": "gate", "file": "{{staging}}\\E\\FMC_E_LightFixture_OperatingLight_Ceiling_Detailed.rfa" },
+      "timeout_s": 1200,
+      "checks": [{ "no_error": true }, { "path": "verdict", "equals": "Pass" }, { "path": "hostTestError", "equals": "" }]
+    }
+  ],
+  "teardown": []
+}

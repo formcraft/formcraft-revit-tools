@@ -33,7 +33,8 @@ export const SEND_CODE_DESCRIPTION =
     `Scripts up to ${MAX_CODE_CHARS.toLocaleString("en")} characters. The result gives compile and run times apart; ` +
     "errors carry a code (FMC-CODE-COMPILE with line and column, FMC-CODE-RUNTIME with the exception's type, message and " +
     "script line, FMC-CODE-ROLLED-BACK with Revit's errors). A script still running after about 50 s answers " +
-    "[FMC-JOB-RUNNING] with a job id: it has not failed; follow it with fmc_job, never send it again.";
+    "[FMC-JOB-RUNNING] with a job id: it has not failed; follow it with fmc_job, never send it again. Give a short `purpose`: " +
+    "repeated scripts are what Formcraft turns into tools next.";
 
 export const SEND_CODE_SHAPE = {
   code: z
@@ -48,9 +49,15 @@ export const SEND_CODE_SHAPE = {
     .optional()
     .describe("Extra namespaces for the script, e.g. [\"System.IO\", \"Autodesk.Revit.DB.Mechanical\"]"),
   transactionMode: transactionModeSchema,
+  purpose: z
+    .string()
+    .max(300)
+    .optional()
+    .describe("A few words on what the code is for, e.g. \"export sheet PNGs\" or \"LED strips on room walls\". Recorded in the local call " +
+      "ledger (never the code) so repeated scripts can be moved into a plugin tool (fmc_balance backlog)."),
 };
 
-type SendCodeArgs = { code: string; parameters?: string[]; usings?: string[]; transactionMode?: "auto" | "none" };
+type SendCodeArgs = { code: string; parameters?: string[]; usings?: string[]; transactionMode?: "auto" | "none"; purpose?: string };
 
 /** The add-in's answer as text: the result, or the error with its code, and the times. */
 export function formatCodeResult(response: any): { text: string; isError: boolean } {

@@ -72,6 +72,8 @@ namespace revit_mcp_plugin.Core
         /// <summary>Resets Windows' sleep timer, at most every 30 s (any thread may call it; it holds no state).</summary>
         public static void KeepSystemAwake()
         {
+            // F75: a Revit the unattended test runner started never holds the PC awake (it pauses with the PC instead)
+            if (UnattendedMode.NoKeepAwake) return;
             long now = DateTime.UtcNow.Ticks, last = Interlocked.Read(ref _lastAwakeTicks);
             if (now - last < TimeSpan.TicksPerSecond * 30) return;
             Interlocked.Exchange(ref _lastAwakeTicks, now);
