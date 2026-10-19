@@ -8,6 +8,8 @@ import { ICU_BAY_SAMPLE } from "../tree/samples.js";
 import { ROOM } from "../tree/room.js";
 import { adoptEdit } from "../tree/drift.js";
 import { DEPARTMENT, applyLayout, layoutDepartment } from "../tree/department.js";
+import { treeFromBrief, treeQuantities } from "../tree/building.js";
+import { parseCis } from "../fmc/brief.js";
 import { roomEdits } from "./fmc_room.js";
 
 const win = path.win32;
@@ -41,10 +43,25 @@ export const FMC_TREE_DESCRIPTION =
     "element is the person's: rebuilds leave it), recorded on the node; a dry run first. layout (T4, a department node whose " +
     "inputs hold layout: corridor, north and south rows of rooms, and template: a room node to copy): every room gets its " +
     "origin and the walls it builds (a shared wall once), and becomes a child node; a changed layout updates only the " +
-    "rooms it moves or resizes, keeping their adopted edits (refresh re-copies them from the template). It never changes a model by itself.";
+    "rooms it moves or resizes, keeping their adopted edits (refresh re-copies them from the template). brief (T5): the " +
+    "approved CIS (cis_file) becomes the whole tree: levels, a department per FMC_Department laid out along a corridor, " +
+    "each room copied from a library template (never built itself) with its number, name and programme data; widths come " +
+    "from FMC_Target_Area over the template's depth and the dry run lists every size and where it came from (replace " +
+    "archives an existing tree). quantities (T5): planned against target area per room, department and level, walls, " +
+    "doors, windows, and every room's own checks. It never changes a model by itself.";
 
 export const FMC_TREE_SHAPE = {
-  action: z.enum(["show", "check", "plan", "set", "init", "built", "build", "edits", "adopt", "layout"]),
+  action: z.enum(["show", "check", "plan", "set", "init", "built", "build", "edits", "adopt", "layout", "brief", "quantities"]),
+  cis_file: z.string().optional().default("").describe("brief: the approved CIS .json (fmc-cis/0.1)"),
+  brief: z.object({
+    wall_type: z.string().min(1), wall_thickness: z.number().positive(), ceiling_type: z.string().min(1), ceiling_height: z.number().positive(),
+    corridor_width: z.number().positive(),
+    level_prefixes: z.record(z.string(), z.string()).optional(),
+    templates: z.array(z.object({ match: z.string(), template: z.string() })).optional(),
+    default_template: z.string().optional(), top_structure_height: z.number().positive().optional(),
+  }).optional().describe("brief: the project template's wall and ceiling types, the corridor width, and how rooms find their level and template"),
+  replace: z.boolean().optional().default(false).describe("brief: replace an existing tree (it is archived first)"),
+  tolerance_pct: z.number().optional().default(10).describe("quantities: how far a room may be off its target area"),
   choices: z.array(z.object({ key: z.string(), choice: z.enum(["adopt", "override"]) })).optional().default([])
     .describe("adopt: per hand edit's key (from edits), adopt it into the recipe or keep it as an override"),
   by: z.string().optional().default("").describe("adopt: who decided (recorded on the node)"),
@@ -99,13 +116,44 @@ export async function runFmcTree(args: FmcTreeArgs) {
       log(config, "tree_init", false, file, "written", "ICU bay sample");
       return reply({ done: true, file, next: "fmc_tree plan, then set a room's inputs and plan again" });
     }
-    if (!fs.existsSync(file)) return reply({ refused: true, reasons: [`No tree yet: ${file} (fmc_tree init writes a sample)`] }, true);
+    if (args.action === "brief") {
+      if (!args.cis_file.trim()) return reply({ refused: true, reasons: ["Give the approved CIS (cis_file)"] }, true);
+      if (!args.brief) return reply({ refused: true, reasons: ["Give brief: wall_type, wall_thickness, ceiling_type, ceiling_height (the project template's) and corridor_width"] }, true);
+      const cisPath = expandEnv(args.cis_file.trim());
+      if (!fs.existsSync(cisPath)) return reply({ refused: true, reasons: [`No CIS at ${cisPath}`] }, true);
+      const { cis, problems: cisProblems } = parseCis(fs.readFileSync(cisPath, "utf8"));
+      if (!cis || cisProblems.length) return reply({ refused: true, reasons: cisProblems }, true);
+      const made = treeFromBrief(cis, args.brief);
+      const q = treeQuantities(made.tree, args.tolerance_pct);
+      const body = { cis: `${cis.project} ${cis.revision}`, levels: made.tree.root.children!.filter((c) => c.kind === "level").map((l) => l.name),
+        rooms: made.sizes, warnings: made.warnings, problems: [...made.problems, ...q.problems], total: q.total, off_target: q.off_target };
+      if (args.dry_run || made.problems.length) return reply({ dry_run: true, would_write: file, ...body,
+        next: made.problems.length ? "Settle the problems (the CIS or the options), then run again" : fs.existsSync(file) && !args.replace ? "A tree exists: run with replace=true (archived first) and dry_run=false" : "Run again with dry_run=false" }, made.problems.length > 0);
+      if (fs.existsSync(file) && !args.replace) return reply({ refused: true, reasons: [`The project has a tree already: ${file} (replace=true archives it first)`] }, true);
+      const v4 = checkWritePath(file, config, { checkName: false });
+      if (!v4.ok) return reply({ refused: true, reasons: v4.reasons }, true);
+      fs.mkdirSync(win.dirname(file), { recursive: true });
+      if (fs.existsSync(file)) {
+        const archive = win.join(win.dirname(file), "_Archive");
+        fs.mkdirSync(archive, { recursive: true });
+        fs.copyFileSync(file, win.join(archive, `FMC_Recipe_Tree_${Date.now()}.json`));
+      }
+      fs.writeFileSync(file, JSON.stringify(made.tree, null, 2));
+      log(config, "tree_brief", false, file, "written", `${cis.project} ${cis.revision}: ${made.sizes.length} rooms`);
+      return reply({ done: true, file, ...body, next: "fmc_tree check, plan, then build (families first, then each room)" });
+    }
+    if (!fs.existsSync(file)) return reply({ refused: true, reasons: [`No tree yet: ${file} (fmc_tree init writes a sample, brief writes one from the CIS)`] }, true);
     const tree: Tree = TREE.parse(JSON.parse(fs.readFileSync(file, "utf8").replace(/^﻿/, "")));
     const last: BuiltState | null = fs.existsSync(state) ? JSON.parse(fs.readFileSync(state, "utf8")) : null;
 
     if (args.action === "show") {
       const outline = resolve(tree).map((r) => `${"  ".repeat(r.path.length - 1)}${r.node.id} (${r.node.kind})${r.node.make ? ` ← ${r.node.make.tool}` : ""}`);
       return reply({ file, project: tree.project, nodes: outline.length, outline });
+    }
+    if (args.action === "quantities") {
+      const q = treeQuantities(tree, args.tolerance_pct);
+      return reply({ file, total: q.total, by_level: q.by_level, by_department: q.by_department, off_target: q.off_target, problems: q.problems,
+        rooms: args.id ? q.rows.filter((r) => r.node.startsWith(args.id)) : q.rows.length <= 40 ? q.rows : `${q.rows.length} rooms: name an id to list a part` });
     }
     if (args.action === "check") {
       const problems = treeProblems(tree, toolExists);

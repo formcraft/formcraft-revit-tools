@@ -9,7 +9,7 @@ const win = path.win32;
  * (03_Master_Data\FMC_Master_Data.json, rule 7). Blanks stay blank and nothing here is geometry.
  */
 export interface CisLevel { name: string; elevation_mm: number }
-export interface CisRoom { number: string; name: string; params: Record<string, string | number> }
+export interface CisRoom { number: string; name: string; params: Record<string, string | number>; level?: string }
 export interface Cis {
   schema: string;
   project: string;
@@ -46,7 +46,7 @@ export function parseCis(raw: string): { cis: Cis | null; problems: string[] } {
   const dupLevels = levels.map((l) => l.name.toLowerCase()).filter((n, i, a) => n && a.indexOf(n) !== i);
   if (dupLevels.length) problems.push(`Level names repeat: ${[...new Set(dupLevels)].join(", ")}`);
   const rooms: CisRoom[] = Array.isArray(o?.rooms) ? o.rooms.map((r: any) => ({ number: str(r?.number), name: str(r?.name),
-    params: r?.params && typeof r.params === "object" ? r.params : {} })) : [];
+    params: r?.params && typeof r.params === "object" ? r.params : {}, ...(str(r?.level) ? { level: str(r.level) } : {}) })) : [];
   rooms.forEach((r, i) => { if (!r.number || !r.name) problems.push(`rooms[${i}]: number and name are needed`); });
   const dupRooms = rooms.map((r) => r.number).filter((n, i, a) => n && a.indexOf(n) !== i);
   if (dupRooms.length) problems.push(`Room numbers repeat: ${[...new Set(dupRooms)].join(", ")}`);
