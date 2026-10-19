@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "fmc-auto-run/0.1",
+  "title": "FMC Auto-MEP run journal",
+  "description": "PROPOSED (kit change request 19 Oct 2026, MEP item 4). One journal per Auto-MEP run (E4), written beside the WIP model in _Auto\\<run_id>.json. It records what the run did, what a person approved, and where to resume, so a run can stop at any time (sleep, battery saver, a person's veto) and carry on without redoing or undoing approved work. Elements carry FMC_Auto_Run = run_id and FMC_Auto_Stage; a person's FMC_Auto_Locked = Yes always wins over the journal.",
+  "type": "object",
+  "required": ["schema", "run_id", "model", "started", "rules", "stages", "rooms", "elements", "locked_by_person", "resume"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": { "const": "fmc-auto-run/0.1" },
+    "run_id": {
+      "type": "string",
+      "pattern": "^AR-[0-9]{8}-[0-9]{4}-[A-Z0-9]{4}$",
+      "description": "AR-<yyyymmdd>-<hhmm>-<4 random>; written to FMC_Auto_Run on every element the run places or changes"
+    },
+    "model": {
+      "type": "object",
+      "required": ["path", "title"],
+      "additionalProperties": false,
+      "properties": {
+        "path": { "type": "string", "description": "Full path of the WIP model; Auto-MEP never runs on a central, shared or published model" },
+        "title": { "type": "string" },
+        "container_name": { "type": "string", "description": "FMC_Container_Name when the model has one" },
+        "revit_version": { "type": "string" },
+        "episode_guid": { "type": "string", "description": "Document version GUID when the run started; a mismatch on resume means someone else changed the model" }
+      }
+    },
+    "started": { "type": "string", "format": "date-time" },
+    "updated": { "type": "string", "format": "date-time" },
+    "finished": { "type": ["string", "null"], "format": "date-time" },
+    "started_by": { "type": "string", "description": "Windows user who started the run" },
+    "involvement": { "type": "integer", "minimum": 0, "maximum": 100, "description": "AI involvement level at the start (FMC_Rulebook_AIUse)" },
+    "rules": {
+      "type": "object",
+      "required": ["room_services"],
+      "additionalProperties": false,
+      "description": "The kit files the run used, with their revision and hash, so results trace to the exact rules",
+      "properties": {
+        "room_services": { "$ref": "#/$defs/fileRef" },
+        "aiuse": { "$ref": "#/$defs/fileRef" },
+        "family_specs": { "$ref": "#/$defs/fileRef" },
+        "any_assumed": { "type": "boolean", "description": "True while any rule value used is source_status assumed: the run's output is a draft for an engineer, never a design" }
+      }
+    },
+    "stages": {
+      "type": "object",
+      "required": ["done", "approved", "left"],
+      "additionalProperties": false,
+      "properties": {
+        "done": { "type": "array", "items": { "$ref": "#/$defs/stage" }, "uniqueItems": true, "description": "Stages the run has finished placing" },
+        "approved": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["stage", "by", "at"],
+            "additionalProperties": false,
+            "properties": {
+              "stage": { "$ref": "#/$defs/stage" },
+              "by": { "type": "string", "description": "The person who approved" },
+              "at": { "type": "string", "format": "date-time" },
+              "rooms": { "type": "array", "items": { "type": "string" }, "description": "Room unique ids approved; absent = every room in the stage" },
+              "note": { "type": "string" }
+            }
+          }
+        },
+        "left": { "type": "array", "items": { "$ref": "#/$defs/stage" }, "uniqueItems": true, "description": "Stages not started yet, in order" }
+      }
+    },
+    "rooms": {
+      "type": "array",
+      "description": "Per-room stamps: one entry per room the run touched",
+      "items": {
+        "type": "object",
+        "required": ["room_uid", "room_type", "stages"],
+        "additionalProperties": false,
+        "properties": {
+          "room_uid": { "type": "string", "description": "Revit UniqueId of the room or space" },
+          "number": { "type": "string" },
+          "name": { "type": "string" },
+          "level": { "type": "string" },
+          "room_type": { "type": "string", "description": "FMC_Room_Type used (a room_types id in FMC_Rulebook_RoomServices)" },
+          "room_type_from": { "enum": ["parameter", "suggested_and_confirmed"], "description": "Never 'guessed': an unconfirmed suggestion is not run" },
+          "area_m2": { "type": "number" },
+          "stages": {
+            "type": "object",
+            "description": "Stage -> stamp for this room",
+            "propertyNames": { "$ref": "#/$defs/stage" },
+            "additionalProperties": {
+              "type": "object",
+              "required": ["state", "at"],
+              "additionalProperties": false,
+              "properties": {
+                "state": { "enum": ["placed", "approved", "skipped", "failed", "locked"] },
+                "at": { "type": "string", "format": "date-time" },
+                "placed": { "type": "integer", "minimum": 0 },
+                "rule_values": { "type": "object", "description": "The rule values used, e.g. {\"maintained_lux\": 500}", "additionalProperties": true },
+                "achieved": { "type": "object", "description": "What the run achieved, e.g. {\"lux_estimate\": 520}", "additionalProperties": true },
+                "message": { "type": "string" }
+              }
+            }
+          },
+          "hints": { "type": "array", "items": { "type": "string" }, "description": "UniqueIds of FMC_AI_Hint_Marker instances that steered this room" }
+        }
+      }
+    },
+    "elements": {
+      "type": "array",
+      "description": "Every element the run placed or changed",
+      "items": {
+        "type": "object",
+        "required": ["uid", "element_id", "stage", "action", "family", "type"],
+        "additionalProperties": false,
+        "properties": {
+          "uid": { "type": "string", "description": "Revit UniqueId (stable across sessions)" },
+          "element_id": { "type": "integer", "description": "ElementId at the time; for display only" },
+          "room_uid": { "type": "string" },
+          "stage": { "$ref": "#/$defs/stage" },
+          "action": { "enum": ["placed", "moved", "retyped", "parameter_set", "connected", "deleted"] },
+          "category": { "type": "string" },
+          "family": { "type": "string" },
+          "type": { "type": "string" },
+          "xyz_mm": { "type": "array", "items": { "type": "number" }, "minItems": 3, "maxItems": 3 },
+          "host": { "type": "string", "description": "Host face or level" },
+          "params": { "type": "object", "description": "Parameters the run wrote, name -> value", "additionalProperties": true },
+          "at": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "locked_by_person": {
+      "type": "array",
+      "description": "Elements or rooms a person locked (FMC_Auto_Locked = Yes) as found by the run; the run never moves, re-types or deletes them",
+      "items": {
+        "type": "object",
+        "required": ["uid", "found_at"],
+        "additionalProperties": false,
+        "properties": {
+          "uid": { "type": "string" },
+          "element_id": { "type": "integer" },
+          "kind": { "enum": ["element", "room"] },
+          "by": { "type": "string", "description": "Last editor from worksharing history, when known" },
+          "found_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "resume": {
+      "type": "object",
+      "required": ["stage", "next_room_uid", "reason"],
+      "additionalProperties": false,
+      "description": "Where to carry on. Null stage = the run is complete",
+      "properties": {
+        "stage": { "oneOf": [{ "$ref": "#/$defs/stage" }, { "type": "null" }] },
+        "next_room_uid": { "type": ["string", "null"] },
+        "reason": { "enum": ["running", "paused_by_person", "paused_sleep", "paused_battery_saver", "waiting_approval", "limit_reached", "error", "complete"] },
+        "message": { "type": "string" },
+        "batch": { "type": "integer", "minimum": 0, "description": "Batches done today, against FMC_Rulebook_AIUse limits" }
+      }
+    },
+    "problems": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["severity", "message"],
+        "additionalProperties": false,
+        "properties": {
+          "severity": { "enum": ["info", "warning", "error"] },
+          "room_uid": { "type": "string" },
+          "uid": { "type": "string" },
+          "message": { "type": "string" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "stage": {
+      "enum": ["typed", "lighting", "small_power", "data", "fire_detection", "emergency_lighting", "water_fixtures", "drainage", "medical_gases", "ventilation", "circuits"],
+      "description": "Auto-MEP stages, in run order; the same values as FMC_Auto_Stage"
+    },
+    "fileRef": {
+      "type": "object",
+      "required": ["path", "sha256"],
+      "additionalProperties": false,
+      "properties": {
+        "path": { "type": "string" },
+        "revision": { "type": "string" },
+        "approved": { "type": "string" },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    }
+  }
+}

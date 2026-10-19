@@ -1,0 +1,398 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_A_GenericModel_AIHint_Marker",
+ "template": "Metric Generic Model.rft",
+ "about": "PROPOSED for the kit (kit change request 19 Oct 2026, MEP item 3). A marker a person drops in a WIP model to steer Auto-MEP (E4): one type per hint kind; the kind is in FMC_AI_Hint_Kind so Auto-MEP reads data, not type names. A flat 10 mm zone, sized per placement (instance Width and Depth, 600 x 600 mm as drawn; the person stretches zones to size), on the subcategory 'Clearance AI Hint' so it follows the kit's Clearance rule: shown in working views, turned off by every print view template, like Clearance zones. Never scheduled, priced or exported as a building element. Needs FMC_AI_Hint_Kind, FMC_Auto_Run and FMC_Auto_Locked from FMC_Auto_MEP_Parameters (GUIDs by the kit's uuid5 method). Not built or Revit-checked: Gate A runs when the kit approves it. The name follows the kit's token order; the request calls it FMC_AI_Hint_Marker for short.",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Generic Models"
+  },
+  {
+   "op": "set_family_params",
+   "name": "family",
+   "work_plane_based": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Width",
+   "type": "Length",
+   "instance": true,
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Depth",
+   "type": "Length",
+   "instance": true,
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Left",
+   "from": [
+    -300,
+    -3000
+   ],
+   "to": [
+    -300,
+    3000
+   ],
+   "is_reference": "Left"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Right",
+   "from": [
+    300,
+    -3000
+   ],
+   "to": [
+    300,
+    3000
+   ],
+   "is_reference": "Right"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Front",
+   "from": [
+    -3000,
+    -300
+   ],
+   "to": [
+    3000,
+    -300
+   ],
+   "is_reference": "Front"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Back",
+   "from": [
+    -3000,
+    300
+   ],
+   "to": [
+    3000,
+    300
+   ],
+   "is_reference": "Back"
+  },
+  {
+   "op": "add_dimension",
+   "name": "Width",
+   "between": [
+    "Left",
+    "Right"
+   ],
+   "label": "Width",
+   "offset": 300
+  },
+  {
+   "op": "add_eq_dimension",
+   "name": "EQ width",
+   "planes": [
+    "Left",
+    "Center (Left/Right)",
+    "Right"
+   ],
+   "offset": 600
+  },
+  {
+   "op": "add_dimension",
+   "name": "Depth",
+   "between": [
+    "Front",
+    "Back"
+   ],
+   "label": "Depth",
+   "offset": 300
+  },
+  {
+   "op": "add_eq_dimension",
+   "name": "EQ depth",
+   "planes": [
+    "Front",
+    "Center (Front/Back)",
+    "Back"
+   ],
+   "offset": 600
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_AI_Hint_Kind",
+   "guid": "d7c3e7fc-b045-58e5-a582-2454cf23cc0b"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Auto_Run",
+   "guid": "319d4502-1552-5b58-a23b-632ead9ae772",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Auto_Locked",
+   "guid": "b48f327e-4af6-5377-ae73-7fd24d96b0dd",
+   "instance": true
+  },
+  {
+   "op": "add_type",
+   "name": "600_DBHere"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_DBHere/FMC_AI_Hint_Kind",
+   "type": "600_DBHere",
+   "param": "FMC_AI_Hint_Kind",
+   "value": "DB_Here"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_DBHere/FMC_Geometry_Stage",
+   "type": "600_DBHere",
+   "param": "FMC_Geometry_Stage",
+   "value": "G1"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_DBHere/IfcExportAs",
+   "type": "600_DBHere",
+   "param": "IfcExportAs",
+   "value": "IfcBuildingElementProxy"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_DBHere/Description",
+   "type": "600_DBHere",
+   "param": "Description",
+   "value": "AI hint: put the distribution board here (Auto-MEP E4 uses it as the board position)"
+  },
+  {
+   "op": "add_type",
+   "name": "1000_RiserZone"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000_RiserZone/FMC_AI_Hint_Kind",
+   "type": "1000_RiserZone",
+   "param": "FMC_AI_Hint_Kind",
+   "value": "Riser_Zone"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000_RiserZone/FMC_Geometry_Stage",
+   "type": "1000_RiserZone",
+   "param": "FMC_Geometry_Stage",
+   "value": "G1"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000_RiserZone/IfcExportAs",
+   "type": "1000_RiserZone",
+   "param": "IfcExportAs",
+   "value": "IfcBuildingElementProxy"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000_RiserZone/Description",
+   "type": "1000_RiserZone",
+   "param": "Description",
+   "value": "AI hint: vertical services riser zone; risers and stacks run inside it"
+  },
+  {
+   "op": "add_type",
+   "name": "1000_NoServices"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000_NoServices/FMC_AI_Hint_Kind",
+   "type": "1000_NoServices",
+   "param": "FMC_AI_Hint_Kind",
+   "value": "No_Services"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000_NoServices/FMC_Geometry_Stage",
+   "type": "1000_NoServices",
+   "param": "FMC_Geometry_Stage",
+   "value": "G1"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000_NoServices/IfcExportAs",
+   "type": "1000_NoServices",
+   "param": "IfcExportAs",
+   "value": "IfcBuildingElementProxy"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000_NoServices/Description",
+   "type": "1000_NoServices",
+   "param": "Description",
+   "value": "AI hint: no services may be placed or routed through this zone"
+  },
+  {
+   "op": "add_type",
+   "name": "1000_KeepClear"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000_KeepClear/FMC_AI_Hint_Kind",
+   "type": "1000_KeepClear",
+   "param": "FMC_AI_Hint_Kind",
+   "value": "Keep_Clear"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000_KeepClear/FMC_Geometry_Stage",
+   "type": "1000_KeepClear",
+   "param": "FMC_Geometry_Stage",
+   "value": "G1"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000_KeepClear/IfcExportAs",
+   "type": "1000_KeepClear",
+   "param": "IfcExportAs",
+   "value": "IfcBuildingElementProxy"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000_KeepClear/Description",
+   "type": "1000_KeepClear",
+   "param": "Description",
+   "value": "AI hint: keep clear (access, equipment or future use); nothing placed inside"
+  },
+  {
+   "op": "add_type",
+   "name": "600_FeatureLight"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_FeatureLight/FMC_AI_Hint_Kind",
+   "type": "600_FeatureLight",
+   "param": "FMC_AI_Hint_Kind",
+   "value": "Feature_Light"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_FeatureLight/FMC_Geometry_Stage",
+   "type": "600_FeatureLight",
+   "param": "FMC_Geometry_Stage",
+   "value": "G1"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_FeatureLight/IfcExportAs",
+   "type": "600_FeatureLight",
+   "param": "IfcExportAs",
+   "value": "IfcBuildingElementProxy"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_FeatureLight/Description",
+   "type": "600_FeatureLight",
+   "param": "Description",
+   "value": "AI hint: a feature light goes here; the lighting layout works around it"
+  },
+  {
+   "op": "add_type",
+   "name": "600_SupplyIntake"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_SupplyIntake/FMC_AI_Hint_Kind",
+   "type": "600_SupplyIntake",
+   "param": "FMC_AI_Hint_Kind",
+   "value": "Supply_Intake"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_SupplyIntake/FMC_Geometry_Stage",
+   "type": "600_SupplyIntake",
+   "param": "FMC_Geometry_Stage",
+   "value": "G1"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_SupplyIntake/IfcExportAs",
+   "type": "600_SupplyIntake",
+   "param": "IfcExportAs",
+   "value": "IfcBuildingElementProxy"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_SupplyIntake/Description",
+   "type": "600_SupplyIntake",
+   "param": "Description",
+   "value": "AI hint: incoming supply (power, water or data) enters here"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Clearance AI Hint",
+   "line_weight_projection": 1,
+   "line_weight_cut": 1,
+   "color": [
+    255,
+    0,
+    255
+   ]
+  },
+  {
+   "op": "extrusion",
+   "name": "Hint Zone",
+   "rect": [
+    "Left",
+    "Right",
+    "Front",
+    "Back"
+   ],
+   "start": 0,
+   "end": 10
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hint Zone",
+   "subcategory": "Clearance AI Hint"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hint Zone",
+   "coarse": true,
+   "medium": true,
+   "fine": true,
+   "plan_rcp": true
+  }
+ ],
+ "values": {
+  "Drawn size 600 x 600 mm": {
+   "value": "600 x 600",
+   "source_status": "assumed",
+   "source": "firm practice (Formcraft): big enough to see at 1:100, stretched per placement"
+  },
+  "Marker colour magenta": {
+   "value": "255,0,255",
+   "source_status": "assumed",
+   "source": "firm practice (Formcraft): a colour no discipline uses, so a hint is never read as design"
+  },
+  "Thickness 10 mm": {
+   "value": 10,
+   "source_status": "assumed",
+   "source": "matches the turning-circle clearance solid"
+  }
+ },
+ "checks": {
+  "keynote_exempt": "AI hint marker on a Clearance subcategory, never scheduled, priced or printed"
+ }
+}

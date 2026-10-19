@@ -1,0 +1,3399 @@
+{
+  "schema": "fmc-room-services/0.1",
+  "about": "PROPOSED for the kit (03_Master_Data\\FMC_Rulebook\\FMC_Rulebook_RoomServices.json), drafted 19 Oct 2026 for the engineering-services track (Auto-MEP E4 and recipe-tree step T2 room rule sets). Owner direction 19 Oct 2026: draft with values marked 'assumed' from the standards; a person approves before anything uses them as standard. EVERY value below is source_status 'assumed': none is verified, none is a design. The building services engineer, the public health engineer, the fire engineer and (for hospitals) the client's medical-equipment and infection-control leads confirm or replace each value per project. A room type with no entry for a service gets none by rule; a person adds what the brief needs.",
+  "name": "FMC Room Services",
+  "revision": "P01",
+  "approved": "",
+  "value_format": {
+    "value": "the number, yes/no or text",
+    "unit": "unit or basis (per bed, per m of wall...)",
+    "source": "the standard or practice it was taken from",
+    "source_status": "assumed until a professional confirms; then EA or verified (docs/RECIPES.md table)"
+  },
+  "matching": "A room's FMC_Room_Type names its type id below. When it is empty, Auto-MEP may suggest a type from the room name using 'aliases' (whole words, case-insensitive) and asks a person to confirm; it never places services on a guessed type.",
+  "defaults": {
+    "smoke_detector_coverage_radius_m": {
+      "value": 7.5,
+      "unit": "m (flat ceiling)",
+      "source": "BS 5839-1:2017 (fire detection, non-domestic)",
+      "source_status": "assumed"
+    },
+    "heat_detector_coverage_radius_m": {
+      "value": 5.3,
+      "unit": "m (flat ceiling)",
+      "source": "BS 5839-1:2017 (fire detection, non-domestic)",
+      "source_status": "assumed"
+    },
+    "detector_min_from_wall_m": {
+      "value": 0.5,
+      "unit": "m minimum clearance from walls",
+      "source": "BS 5839-1:2017 (fire detection, non-domestic)",
+      "source_status": "assumed"
+    },
+    "socket_height_general_mm": {
+      "value": 450,
+      "unit": "mm AFL to centre",
+      "source": "Approved Document M (450-1200 mm band)",
+      "source_status": "assumed"
+    },
+    "switch_height_mm": {
+      "value": 1200,
+      "unit": "mm AFL to centre",
+      "source": "Approved Document M (450-1200 mm band) with firm practice",
+      "source_status": "assumed"
+    },
+    "emergency_duration_h": {
+      "value": 3,
+      "unit": "h",
+      "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+      "source_status": "assumed"
+    },
+    "supply_voltage": {
+      "value": "415/240 V 3-phase 4-wire, 50 Hz (DS_415-240V_3Ph_4W)",
+      "unit": "text",
+      "source": "Kit Electrical_Settings (UEDCL / Umeme supply)",
+      "source_status": "assumed"
+    },
+    "natural_ventilation_rule": {
+      "value": "Openable area at least 5% of floor area where a room is naturally ventilated (CA-A-01)",
+      "unit": "text",
+      "source": "Uganda National Building Code 2019 / Building Control Regulations 2020 (natural ventilation where not mechanical)",
+      "source_status": "assumed"
+    }
+  },
+  "room_types": {
+    "office": {
+      "name": "Office (open plan or cellular)",
+      "sector": "general",
+      "aliases": [
+        "office",
+        "workroom",
+        "admin",
+        "study"
+      ],
+      "services": {
+        "lighting": {
+          "maintained_lux": {
+            "value": 500,
+            "unit": "lx",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "uniformity_u0": {
+            "value": 0.6,
+            "unit": "ratio",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "ugr_limit": {
+            "value": 19,
+            "unit": "UGR",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "fitting_hint": {
+            "value": "Recessed LED panel 600x600 or linear LED, 4000 K",
+            "unit": "text",
+            "source": "firm practice (Formcraft), to confirm with the lighting designer",
+            "source_status": "assumed"
+          },
+          "switching": {
+            "value": "Absence detection with daylight dimming by the window row",
+            "unit": "text",
+            "source": "firm practice (Formcraft) with Approved Document L (lighting controls)",
+            "source_status": "assumed"
+          }
+        },
+        "small_power": {
+          "twin_13A_min_per_room": {
+            "value": 2,
+            "unit": "nr",
+            "source": "BCO Guide to Specification 2019 (offices); BS 7671:2018+A2 with IET Guidance Note 1 / On-Site Guide (no statutory socket count: firm practice)",
+            "source_status": "assumed"
+          },
+          "twin_13A_per_workstation": {
+            "value": 2,
+            "unit": "nr/workstation",
+            "source": "BCO Guide to Specification 2019 (offices); BS 7671:2018+A2 with IET Guidance Note 1 / On-Site Guide (no statutory socket count: firm practice)",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 450,
+            "unit": "mm AFL to centre",
+            "source": "Approved Document M (450-1200 mm band) with firm practice",
+            "source_status": "assumed"
+          }
+        },
+        "data": {
+          "outlets": {
+            "value": 2,
+            "unit": "nr/workstation",
+            "source": "BS EN 50173-1 / BS 6701 with firm practice (no statutory outlet count)",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 450,
+            "unit": "mm AFL to centre",
+            "source": "firm practice (matches sockets)",
+            "source_status": "assumed"
+          },
+          "wireless_access_point_per_m2": {
+            "value": 150,
+            "unit": "m2 per AP",
+            "source": "firm practice (one AP per 150 m2), to confirm with the ICT designer",
+            "source_status": "assumed"
+          }
+        },
+        "fire_detection": {
+          "detector_type": {
+            "value": "Optical smoke",
+            "unit": "text",
+            "source": "BS 5839-1:2017 (fire detection, non-domestic)",
+            "source_status": "assumed"
+          }
+        },
+        "emergency_lighting": {
+          "required": {
+            "value": true,
+            "unit": "yes/no",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "mode": {
+            "value": "non-maintained",
+            "unit": "text",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "min_lux": {
+            "value": 0.5,
+            "unit": "lx",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "duration_h": {
+            "value": 3,
+            "unit": "h",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "applies_when": {
+            "value": "open area over 60 m2, or on an escape route",
+            "unit": "text",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          }
+        },
+        "ventilation": {
+          "outdoor_air_l_s_per_person": {
+            "value": 10,
+            "unit": "L/s/person",
+            "source": "CIBSE Guide A (2015) Table 1.5 (outdoor air supply rates)",
+            "source_status": "assumed"
+          }
+        }
+      }
+    },
+    "meeting": {
+      "name": "Meeting room",
+      "sector": "general",
+      "aliases": [
+        "meeting",
+        "conference",
+        "boardroom",
+        "seminar"
+      ],
+      "services": {
+        "lighting": {
+          "maintained_lux": {
+            "value": 500,
+            "unit": "lx",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "uniformity_u0": {
+            "value": 0.6,
+            "unit": "ratio",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "ugr_limit": {
+            "value": 19,
+            "unit": "UGR",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "fitting_hint": {
+            "value": "Recessed LED panel or linear LED, dimmable",
+            "unit": "text",
+            "source": "firm practice (Formcraft), to confirm with the lighting designer",
+            "source_status": "assumed"
+          },
+          "switching": {
+            "value": "Absence detection with scene control at the door",
+            "unit": "text",
+            "source": "firm practice (Formcraft) with Approved Document L (lighting controls)",
+            "source_status": "assumed"
+          }
+        },
+        "small_power": {
+          "twin_13A_min_per_room": {
+            "value": 2,
+            "unit": "nr",
+            "source": "BS 7671:2018+A2 with IET Guidance Note 1 / On-Site Guide (no statutory socket count: firm practice)",
+            "source_status": "assumed"
+          },
+          "twin_13A_per_m_wall": {
+            "value": 0.25,
+            "unit": "nr/m",
+            "source": "BS 7671:2018+A2 with IET Guidance Note 1 / On-Site Guide (no statutory socket count: firm practice)",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 450,
+            "unit": "mm AFL to centre",
+            "source": "Approved Document M (450-1200 mm band) with firm practice",
+            "source_status": "assumed"
+          },
+          "floor_box_at_table": {
+            "value": 1,
+            "unit": "nr",
+            "source": "firm practice (Formcraft)",
+            "source_status": "assumed"
+          }
+        },
+        "data": {
+          "outlets": {
+            "value": 2,
+            "unit": "nr/room",
+            "source": "BS EN 50173-1 / BS 6701 with firm practice (no statutory outlet count)",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 450,
+            "unit": "mm AFL to centre",
+            "source": "firm practice (matches sockets)",
+            "source_status": "assumed"
+          },
+          "av_outlet_at_display": {
+            "value": 1,
+            "unit": "nr",
+            "source": "firm practice (Formcraft)",
+            "source_status": "assumed"
+          }
+        },
+        "fire_detection": {
+          "detector_type": {
+            "value": "Optical smoke",
+            "unit": "text",
+            "source": "BS 5839-1:2017 (fire detection, non-domestic)",
+            "source_status": "assumed"
+          }
+        },
+        "emergency_lighting": {
+          "required": {
+            "value": true,
+            "unit": "yes/no",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "mode": {
+            "value": "non-maintained",
+            "unit": "text",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "min_lux": {
+            "value": 0.5,
+            "unit": "lx",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "duration_h": {
+            "value": 3,
+            "unit": "h",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "applies_when": {
+            "value": "open area over 60 m2, or on an escape route",
+            "unit": "text",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          }
+        },
+        "ventilation": {
+          "outdoor_air_l_s_per_person": {
+            "value": 10,
+            "unit": "L/s/person",
+            "source": "CIBSE Guide A (2015) Table 1.5 (outdoor air supply rates)",
+            "source_status": "assumed"
+          }
+        }
+      }
+    },
+    "corridor": {
+      "name": "Corridor / circulation",
+      "sector": "general",
+      "aliases": [
+        "corridor",
+        "circulation",
+        "lobby",
+        "passage",
+        "hall"
+      ],
+      "services": {
+        "lighting": {
+          "maintained_lux": {
+            "value": 100,
+            "unit": "lx",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "uniformity_u0": {
+            "value": 0.4,
+            "unit": "ratio",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "ugr_limit": {
+            "value": 28,
+            "unit": "UGR",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "fitting_hint": {
+            "value": "Surface or recessed LED downlight / bulkhead",
+            "unit": "text",
+            "source": "firm practice (Formcraft), to confirm with the lighting designer",
+            "source_status": "assumed"
+          },
+          "switching": {
+            "value": "Presence detection, time-out; never fully off on an escape route at night",
+            "unit": "text",
+            "source": "firm practice (Formcraft) with Approved Document L (lighting controls)",
+            "source_status": "assumed"
+          }
+        },
+        "small_power": {
+          "twin_13A_per_m_wall": {
+            "value": 0.05,
+            "unit": "nr/m",
+            "source": "BS 7671:2018+A2 with IET Guidance Note 1 / On-Site Guide (no statutory socket count: firm practice)",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 450,
+            "unit": "mm AFL to centre",
+            "source": "Approved Document M (450-1200 mm band) with firm practice",
+            "source_status": "assumed"
+          },
+          "note": "One twin for cleaning every 20 m of corridor"
+        },
+        "fire_detection": {
+          "detector_type": {
+            "value": "Optical smoke",
+            "unit": "text",
+            "source": "BS 5839-1:2017 (fire detection, non-domestic)",
+            "source_status": "assumed"
+          }
+        },
+        "emergency_lighting": {
+          "required": {
+            "value": true,
+            "unit": "yes/no",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "mode": {
+            "value": "maintained or non-maintained per the fire strategy",
+            "unit": "text",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "min_lux": {
+            "value": 1.0,
+            "unit": "lx",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "duration_h": {
+            "value": 3,
+            "unit": "h",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "measured_on": {
+            "value": "centre line of the escape route",
+            "unit": "text",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          }
+        },
+        "ventilation": {
+          "air_changes_per_hour": {
+            "value": 1,
+            "unit": "ACH",
+            "source": "Approved Document F 2021 (ventilation), vol. 2 non-domestic",
+            "source_status": "assumed"
+          },
+          "note": "Natural or transfer air; smoke ventilation follows the fire strategy"
+        }
+      }
+    },
+    "stair": {
+      "name": "Stair / stair core",
+      "sector": "general",
+      "aliases": [
+        "stair",
+        "staircase",
+        "stairwell",
+        "escape stair"
+      ],
+      "services": {
+        "lighting": {
+          "maintained_lux": {
+            "value": 150,
+            "unit": "lx",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "uniformity_u0": {
+            "value": 0.4,
+            "unit": "ratio",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "ugr_limit": {
+            "value": 25,
+            "unit": "UGR",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "fitting_hint": {
+            "value": "Wall or soffit LED bulkhead at each landing",
+            "unit": "text",
+            "source": "firm practice (Formcraft), to confirm with the lighting designer",
+            "source_status": "assumed"
+          },
+          "switching": {
+            "value": "Presence detection per flight, or always on",
+            "unit": "text",
+            "source": "firm practice (Formcraft) with Approved Document L (lighting controls)",
+            "source_status": "assumed"
+          }
+        },
+        "fire_detection": {
+          "detector_type": {
+            "value": "Optical smoke",
+            "unit": "text",
+            "source": "BS 5839-1:2017 (fire detection, non-domestic)",
+            "source_status": "assumed"
+          },
+          "note": "Head of the stair and each level per BS 5839-1 for the system category"
+        },
+        "emergency_lighting": {
+          "required": {
+            "value": true,
+            "unit": "yes/no",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "mode": {
+            "value": "maintained or non-maintained per the fire strategy",
+            "unit": "text",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "min_lux": {
+            "value": 1.0,
+            "unit": "lx",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "duration_h": {
+            "value": 3,
+            "unit": "h",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "each_flight_lit_directly": {
+            "value": true,
+            "unit": "yes/no",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          }
+        },
+        "ventilation": {
+          "air_changes_per_hour": {
+            "value": 1,
+            "unit": "ACH",
+            "source": "Approved Document F 2021 (ventilation), vol. 2 non-domestic",
+            "source_status": "assumed"
+          },
+          "smoke_vent": {
+            "value": "AOV or openable vent at the head of the stair per the fire strategy",
+            "unit": "text",
+            "source": "Approved Document B / fire strategy (fire engineer decides)",
+            "source_status": "assumed"
+          }
+        }
+      }
+    },
+    "wc": {
+      "name": "WC / toilet",
+      "sector": "general",
+      "aliases": [
+        "wc",
+        "toilet",
+        "lavatory",
+        "washroom",
+        "restroom",
+        "accessible wc"
+      ],
+      "services": {
+        "lighting": {
+          "maintained_lux": {
+            "value": 200,
+            "unit": "lx",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "uniformity_u0": {
+            "value": 0.4,
+            "unit": "ratio",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "ugr_limit": {
+            "value": 25,
+            "unit": "UGR",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "fitting_hint": {
+            "value": "IP44 LED downlight or bulkhead",
+            "unit": "text",
+            "source": "firm practice (Formcraft), to confirm with the lighting designer",
+            "source_status": "assumed"
+          },
+          "switching": {
+            "value": "Presence detection",
+            "unit": "text",
+            "source": "firm practice (Formcraft) with Approved Document L (lighting controls)",
+            "source_status": "assumed"
+          }
+        },
+        "small_power": {
+          "hand_dryer_spur": {
+            "value": 1,
+            "unit": "nr per bank of basins",
+            "source": "BS 7671:2018+A2 with IET Guidance Note 1 / On-Site Guide (no statutory socket count: firm practice) (fused connection unit outside zones)",
+            "source_status": "assumed"
+          },
+          "socket_outlets": {
+            "value": 0,
+            "unit": "nr",
+            "source": "firm practice (Formcraft): none in WCs",
+            "source_status": "assumed"
+          }
+        },
+        "fire_detection": {
+          "detector_type": {
+            "value": "None in toilets of the size BS 5839-1 allows to omit; otherwise optical smoke",
+            "unit": "text",
+            "source": "BS 5839-1:2017 (fire detection, non-domestic)",
+            "source_status": "assumed"
+          },
+          "note": "Category L1 may still require detection; the fire engineer decides"
+        },
+        "emergency_lighting": {
+          "required": {
+            "value": true,
+            "unit": "yes/no",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "mode": {
+            "value": "non-maintained",
+            "unit": "text",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "min_lux": {
+            "value": 1.0,
+            "unit": "lx",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "duration_h": {
+            "value": 3,
+            "unit": "h",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "applies_when": {
+            "value": "accessible WC, or toilet over 8 m2, or without borrowed light",
+            "unit": "text",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          }
+        },
+        "water_fixtures": {
+          "wc": {
+            "value": 1,
+            "unit": "nr per cubicle",
+            "source": "firm practice (Formcraft) per cubicle; counts by population from BS 6465-1",
+            "source_status": "assumed"
+          },
+          "wash_hand_basin": {
+            "value": 1,
+            "unit": "nr per cubicle or per 2 WCs",
+            "source": "firm practice (Formcraft) per cubicle; counts by population from BS 6465-1",
+            "source_status": "assumed"
+          },
+          "floor_gully": {
+            "value": 1,
+            "unit": "nr per room",
+            "source": "firm practice (Formcraft) per cubicle; counts by population from BS 6465-1",
+            "source_status": "assumed"
+          }
+        },
+        "drainage": {
+          "wc_6l_du": {
+            "value": 1.7,
+            "unit": "DU",
+            "source": "BS EN 12056-2:2000 Table 2, System III (discharge units)",
+            "source_status": "assumed"
+          },
+          "whb_du": {
+            "value": 0.3,
+            "unit": "DU",
+            "source": "BS EN 12056-2:2000 Table 2, System III (discharge units)",
+            "source_status": "assumed"
+          },
+          "floor_gully_dn50_du": {
+            "value": 0.8,
+            "unit": "DU",
+            "source": "BS EN 12056-2:2000 Table 2, System I (System III gives no gully value)",
+            "source_status": "assumed"
+          }
+        },
+        "ventilation": {
+          "extract_l_s_per_wc": {
+            "value": 6,
+            "unit": "L/s per WC/urinal",
+            "source": "Approved Document F 2021 (ventilation), vol. 2 non-domestic",
+            "source_status": "assumed"
+          },
+          "pressure": {
+            "value": "negative",
+            "unit": "relative to corridor",
+            "source": "Approved Document F 2021 (ventilation), vol. 2 non-domestic",
+            "source_status": "assumed"
+          }
+        }
+      }
+    },
+    "kitchen": {
+      "name": "Kitchen (staff, pantry or commercial)",
+      "sector": "general",
+      "aliases": [
+        "kitchen",
+        "pantry",
+        "kitchenette",
+        "tea point",
+        "servery"
+      ],
+      "services": {
+        "lighting": {
+          "maintained_lux": {
+            "value": 500,
+            "unit": "lx",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "uniformity_u0": {
+            "value": 0.6,
+            "unit": "ratio",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "ugr_limit": {
+            "value": 22,
+            "unit": "UGR",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "fitting_hint": {
+            "value": "IP44 sealed LED linear",
+            "unit": "text",
+            "source": "firm practice (Formcraft), to confirm with the lighting designer",
+            "source_status": "assumed"
+          },
+          "switching": {
+            "value": "Local switch at the door",
+            "unit": "text",
+            "source": "firm practice (Formcraft) with Approved Document L (lighting controls)",
+            "source_status": "assumed"
+          }
+        },
+        "small_power": {
+          "twin_13A_min_per_room": {
+            "value": 2,
+            "unit": "nr",
+            "source": "BS 7671:2018+A2 with IET Guidance Note 1 / On-Site Guide (no statutory socket count: firm practice)",
+            "source_status": "assumed"
+          },
+          "twin_13A_per_m_wall": {
+            "value": 0.8,
+            "unit": "nr/m",
+            "source": "BS 7671:2018+A2 with IET Guidance Note 1 / On-Site Guide (no statutory socket count: firm practice)",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 1100,
+            "unit": "mm AFL to centre",
+            "source": "Approved Document M (450-1200 mm band) with firm practice",
+            "source_status": "assumed"
+          },
+          "note": "Worktop sockets 150 mm above the worktop; fused spurs for each fixed appliance",
+          "cooker_control_unit": {
+            "value": 1,
+            "unit": "nr per cooker",
+            "source": "BS 7671:2018+A2 with IET Guidance Note 1 / On-Site Guide (no statutory socket count: firm practice)",
+            "source_status": "assumed"
+          }
+        },
+        "fire_detection": {
+          "detector_type": {
+            "value": "Heat (rate-of-rise)",
+            "unit": "text",
+            "source": "BS 5839-1:2017 (fire detection, non-domestic)",
+            "source_status": "assumed"
+          },
+          "note": "Never smoke in a kitchen"
+        },
+        "emergency_lighting": {
+          "required": {
+            "value": true,
+            "unit": "yes/no",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "mode": {
+            "value": "non-maintained",
+            "unit": "text",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "min_lux": {
+            "value": 0.5,
+            "unit": "lx",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "duration_h": {
+            "value": 3,
+            "unit": "h",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "high_risk_task_lux_pct_of_normal": {
+            "value": 10,
+            "unit": "% of normal (min 15 lx)",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          }
+        },
+        "water_fixtures": {
+          "sink": {
+            "value": 1,
+            "unit": "nr",
+            "source": "firm practice (Formcraft)",
+            "source_status": "assumed"
+          },
+          "wash_hand_basin": {
+            "value": 1,
+            "unit": "nr (commercial kitchen)",
+            "source": "firm practice (Formcraft)",
+            "source_status": "assumed"
+          },
+          "dishwasher_point": {
+            "value": 1,
+            "unit": "nr",
+            "source": "firm practice (Formcraft)",
+            "source_status": "assumed"
+          },
+          "floor_gully": {
+            "value": 1,
+            "unit": "nr (commercial kitchen)",
+            "source": "firm practice (Formcraft)",
+            "source_status": "assumed"
+          }
+        },
+        "drainage": {
+          "sink_du": {
+            "value": 1.3,
+            "unit": "DU",
+            "source": "BS EN 12056-2:2000 Table 2, System III (discharge units)",
+            "source_status": "assumed"
+          },
+          "dishwasher_du": {
+            "value": 0.2,
+            "unit": "DU",
+            "source": "BS EN 12056-2:2000 Table 2, System III (discharge units)",
+            "source_status": "assumed"
+          },
+          "grease_trap": {
+            "value": "Required for a commercial kitchen",
+            "unit": "text",
+            "source": "BS EN 1825 (grease separators)",
+            "source_status": "assumed"
+          }
+        },
+        "ventilation": {
+          "air_changes_per_hour": {
+            "value": 30,
+            "unit": "ACH",
+            "source": "BESA DW/172 Specification for kitchen ventilation systems",
+            "source_status": "assumed"
+          },
+          "pressure": {
+            "value": "negative",
+            "unit": "relative to corridor",
+            "source": "BESA DW/172 Specification for kitchen ventilation systems",
+            "source_status": "assumed"
+          },
+          "note": "Canopy extract sized from the cooking line in a commercial kitchen; a tea point needs only general extract"
+        }
+      }
+    },
+    "store": {
+      "name": "Store",
+      "sector": "general",
+      "aliases": [
+        "store",
+        "storage",
+        "cupboard",
+        "archive",
+        "cleaners"
+      ],
+      "services": {
+        "lighting": {
+          "maintained_lux": {
+            "value": 100,
+            "unit": "lx",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "uniformity_u0": {
+            "value": 0.4,
+            "unit": "ratio",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "ugr_limit": {
+            "value": 25,
+            "unit": "UGR",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "fitting_hint": {
+            "value": "Surface LED batten",
+            "unit": "text",
+            "source": "firm practice (Formcraft), to confirm with the lighting designer",
+            "source_status": "assumed"
+          },
+          "switching": {
+            "value": "Presence detection or local switch",
+            "unit": "text",
+            "source": "firm practice (Formcraft) with Approved Document L (lighting controls)",
+            "source_status": "assumed"
+          }
+        },
+        "small_power": {
+          "twin_13A_min_per_room": {
+            "value": 1,
+            "unit": "nr",
+            "source": "BS 7671:2018+A2 with IET Guidance Note 1 / On-Site Guide (no statutory socket count: firm practice)",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 450,
+            "unit": "mm AFL to centre",
+            "source": "Approved Document M (450-1200 mm band) with firm practice",
+            "source_status": "assumed"
+          }
+        },
+        "fire_detection": {
+          "detector_type": {
+            "value": "Optical smoke",
+            "unit": "text",
+            "source": "BS 5839-1:2017 (fire detection, non-domestic)",
+            "source_status": "assumed"
+          }
+        },
+        "emergency_lighting": {
+          "required": {
+            "value": false,
+            "unit": "yes/no",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          }
+        },
+        "ventilation": {
+          "air_changes_per_hour": {
+            "value": 2,
+            "unit": "ACH",
+            "source": "CIBSE Guide B (firm practice)",
+            "source_status": "assumed"
+          }
+        }
+      }
+    },
+    "plant_room": {
+      "name": "Plant room / switch room",
+      "sector": "general",
+      "aliases": [
+        "plant",
+        "plant room",
+        "switch room",
+        "lv room",
+        "generator room",
+        "pump room",
+        "riser"
+      ],
+      "services": {
+        "lighting": {
+          "maintained_lux": {
+            "value": 200,
+            "unit": "lx",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "uniformity_u0": {
+            "value": 0.4,
+            "unit": "ratio",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "ugr_limit": {
+            "value": 25,
+            "unit": "UGR",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "fitting_hint": {
+            "value": "IP65 LED batten",
+            "unit": "text",
+            "source": "firm practice (Formcraft), to confirm with the lighting designer",
+            "source_status": "assumed"
+          },
+          "switching": {
+            "value": "Local switch at the door, no time-out",
+            "unit": "text",
+            "source": "firm practice (Formcraft) with Approved Document L (lighting controls)",
+            "source_status": "assumed"
+          }
+        },
+        "small_power": {
+          "twin_13A_min_per_room": {
+            "value": 1,
+            "unit": "nr",
+            "source": "BS 7671:2018+A2 with IET Guidance Note 1 / On-Site Guide (no statutory socket count: firm practice)",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 1000,
+            "unit": "mm AFL to centre",
+            "source": "Approved Document M (450-1200 mm band) with firm practice",
+            "source_status": "assumed"
+          },
+          "industrial_16A_outlet": {
+            "value": 1,
+            "unit": "nr (BS EN 60309, 230 V)",
+            "source": "BS 7671:2018+A2 with IET Guidance Note 1 / On-Site Guide (no statutory socket count: firm practice)",
+            "source_status": "assumed"
+          }
+        },
+        "fire_detection": {
+          "detector_type": {
+            "value": "Optical smoke (heat where the plant makes fumes or steam)",
+            "unit": "text",
+            "source": "BS 5839-1:2017 (fire detection, non-domestic)",
+            "source_status": "assumed"
+          }
+        },
+        "emergency_lighting": {
+          "required": {
+            "value": true,
+            "unit": "yes/no",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "mode": {
+            "value": "non-maintained",
+            "unit": "text",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "min_lux": {
+            "value": 15,
+            "unit": "lx",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "duration_h": {
+            "value": 3,
+            "unit": "h",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "high_risk_task_lux_pct_of_normal": {
+            "value": 10,
+            "unit": "% of normal (min 15 lx)",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          }
+        },
+        "water_fixtures": {
+          "floor_gully": {
+            "value": 1,
+            "unit": "nr where water plant is housed",
+            "source": "firm practice (Formcraft)",
+            "source_status": "assumed"
+          }
+        },
+        "drainage": {
+          "floor_gully_dn50_du": {
+            "value": 0.8,
+            "unit": "DU",
+            "source": "BS EN 12056-2:2000 Table 2, System I (System III gives no gully value)",
+            "source_status": "assumed"
+          }
+        },
+        "ventilation": {
+          "air_changes_per_hour": {
+            "value": 4,
+            "unit": "ACH",
+            "source": "CIBSE Guide B, sized to plant heat rejection (firm practice minimum)",
+            "source_status": "assumed"
+          },
+          "note": "Generator rooms: combustion and cooling air from the generator datasheet"
+        }
+      }
+    },
+    "bedroom": {
+      "name": "Bedroom (dwelling, hostel or staff house)",
+      "sector": "residential",
+      "aliases": [
+        "bedroom",
+        "bed",
+        "master bedroom",
+        "dormitory"
+      ],
+      "services": {
+        "lighting": {
+          "maintained_lux": {
+            "value": 100,
+            "unit": "lx",
+            "source": "CIBSE SLL Code for Lighting",
+            "source_status": "assumed"
+          },
+          "uniformity_u0": {
+            "value": 0.4,
+            "unit": "ratio",
+            "source": "CIBSE SLL Code for Lighting",
+            "source_status": "assumed"
+          },
+          "ugr_limit": {
+            "value": 22,
+            "unit": "UGR",
+            "source": "CIBSE SLL Code for Lighting",
+            "source_status": "assumed"
+          },
+          "fitting_hint": {
+            "value": "Ceiling LED fitting, warm white 3000 K",
+            "unit": "text",
+            "source": "firm practice (Formcraft), to confirm with the lighting designer",
+            "source_status": "assumed"
+          },
+          "switching": {
+            "value": "Two-way at the door and the bedside",
+            "unit": "text",
+            "source": "firm practice (Formcraft) with Approved Document L (lighting controls)",
+            "source_status": "assumed"
+          }
+        },
+        "small_power": {
+          "twin_13A_min_per_room": {
+            "value": 3,
+            "unit": "nr",
+            "source": "IET Guidance Note 1 with NHBC Standards 8.1 recommended minimum socket-outlets (dwellings)",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 450,
+            "unit": "mm AFL to centre",
+            "source": "Approved Document M (450-1200 mm band) with firm practice",
+            "source_status": "assumed"
+          },
+          "bedside_height_mm": {
+            "value": 450,
+            "unit": "mm AFL",
+            "source": "firm practice (Formcraft)",
+            "source_status": "assumed"
+          }
+        },
+        "data": {
+          "outlets": {
+            "value": 1,
+            "unit": "nr/room",
+            "source": "BS EN 50173-1 / BS 6701 with firm practice (no statutory outlet count)",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 450,
+            "unit": "mm AFL to centre",
+            "source": "firm practice (matches sockets)",
+            "source_status": "assumed"
+          },
+          "tv_outlet": {
+            "value": 1,
+            "unit": "nr",
+            "source": "firm practice (Formcraft)",
+            "source_status": "assumed"
+          }
+        },
+        "fire_detection": {
+          "detector_type": {
+            "value": "Optical smoke (Grade D, LD2 where the risk assessment asks)",
+            "unit": "text",
+            "source": "BS 5839-6:2019 (fire detection, dwellings)",
+            "source_status": "assumed"
+          }
+        },
+        "emergency_lighting": {
+          "required": {
+            "value": false,
+            "unit": "yes/no",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "note": "Hostel and hotel bedrooms follow the fire strategy"
+        },
+        "ventilation": {
+          "outdoor_air_l_s_per_m2": {
+            "value": 0.3,
+            "unit": "L/s/m2",
+            "source": "Approved Document F 2021, vol. 1 dwellings",
+            "source_status": "assumed"
+          },
+          "note": "Whole-dwelling rate; natural ventilation (openable window) is normal in Uganda"
+        }
+      }
+    },
+    "living": {
+      "name": "Living / lounge (dwelling)",
+      "sector": "residential",
+      "aliases": [
+        "living",
+        "lounge",
+        "sitting",
+        "family room",
+        "dining"
+      ],
+      "services": {
+        "lighting": {
+          "maintained_lux": {
+            "value": 150,
+            "unit": "lx",
+            "source": "CIBSE SLL Code for Lighting",
+            "source_status": "assumed"
+          },
+          "uniformity_u0": {
+            "value": 0.4,
+            "unit": "ratio",
+            "source": "CIBSE SLL Code for Lighting",
+            "source_status": "assumed"
+          },
+          "ugr_limit": {
+            "value": 22,
+            "unit": "UGR",
+            "source": "CIBSE SLL Code for Lighting",
+            "source_status": "assumed"
+          },
+          "fitting_hint": {
+            "value": "Ceiling LED fitting with dimmer, 3000 K",
+            "unit": "text",
+            "source": "firm practice (Formcraft), to confirm with the lighting designer",
+            "source_status": "assumed"
+          },
+          "switching": {
+            "value": "Two-way at each door",
+            "unit": "text",
+            "source": "firm practice (Formcraft) with Approved Document L (lighting controls)",
+            "source_status": "assumed"
+          }
+        },
+        "small_power": {
+          "twin_13A_min_per_room": {
+            "value": 4,
+            "unit": "nr",
+            "source": "IET Guidance Note 1 with NHBC Standards 8.1 recommended minimum socket-outlets (dwellings)",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 450,
+            "unit": "mm AFL to centre",
+            "source": "Approved Document M (450-1200 mm band) with firm practice",
+            "source_status": "assumed"
+          }
+        },
+        "data": {
+          "outlets": {
+            "value": 2,
+            "unit": "nr/room",
+            "source": "BS EN 50173-1 / BS 6701 with firm practice (no statutory outlet count)",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 450,
+            "unit": "mm AFL to centre",
+            "source": "firm practice (matches sockets)",
+            "source_status": "assumed"
+          },
+          "tv_outlet": {
+            "value": 1,
+            "unit": "nr",
+            "source": "firm practice (Formcraft)",
+            "source_status": "assumed"
+          }
+        },
+        "fire_detection": {
+          "detector_type": {
+            "value": "Optical smoke or multi-sensor",
+            "unit": "text",
+            "source": "BS 5839-6:2019 (fire detection, dwellings)",
+            "source_status": "assumed"
+          }
+        },
+        "emergency_lighting": {
+          "required": {
+            "value": false,
+            "unit": "yes/no",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          }
+        },
+        "ventilation": {
+          "outdoor_air_l_s_per_m2": {
+            "value": 0.3,
+            "unit": "L/s/m2",
+            "source": "Approved Document F 2021, vol. 1 dwellings",
+            "source_status": "assumed"
+          },
+          "note": "Whole-dwelling rate; natural ventilation (openable window) is normal in Uganda"
+        }
+      }
+    },
+    "classroom": {
+      "name": "Classroom",
+      "sector": "education",
+      "aliases": [
+        "classroom",
+        "class",
+        "teaching",
+        "lecture",
+        "tutorial"
+      ],
+      "services": {
+        "lighting": {
+          "maintained_lux": {
+            "value": 300,
+            "unit": "lx",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "uniformity_u0": {
+            "value": 0.6,
+            "unit": "ratio",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "ugr_limit": {
+            "value": 19,
+            "unit": "UGR",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "fitting_hint": {
+            "value": "Linear LED or panel, 4000 K; board light 500 lx",
+            "unit": "text",
+            "source": "firm practice (Formcraft), to confirm with the lighting designer",
+            "source_status": "assumed"
+          },
+          "switching": {
+            "value": "Absence detection with daylight dimming by the window row",
+            "unit": "text",
+            "source": "firm practice (Formcraft) with Approved Document L (lighting controls)",
+            "source_status": "assumed"
+          },
+          "board_lux": {
+            "value": 500,
+            "unit": "lx",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          }
+        },
+        "small_power": {
+          "twin_13A_min_per_room": {
+            "value": 4,
+            "unit": "nr",
+            "source": "BS 7671:2018+A2 with IET Guidance Note 1 / On-Site Guide (no statutory socket count: firm practice)",
+            "source_status": "assumed"
+          },
+          "twin_13A_per_m_wall": {
+            "value": 0.33,
+            "unit": "nr/m",
+            "source": "BS 7671:2018+A2 with IET Guidance Note 1 / On-Site Guide (no statutory socket count: firm practice)",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 450,
+            "unit": "mm AFL to centre",
+            "source": "Approved Document M (450-1200 mm band) with firm practice",
+            "source_status": "assumed"
+          },
+          "teaching_wall_twin": {
+            "value": 2,
+            "unit": "nr",
+            "source": "firm practice (Formcraft)",
+            "source_status": "assumed"
+          }
+        },
+        "data": {
+          "outlets": {
+            "value": 2,
+            "unit": "nr/room",
+            "source": "BS EN 50173-1 / BS 6701 with firm practice (no statutory outlet count)",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 450,
+            "unit": "mm AFL to centre",
+            "source": "firm practice (matches sockets)",
+            "source_status": "assumed"
+          },
+          "wireless_access_point": {
+            "value": 1,
+            "unit": "nr per classroom",
+            "source": "firm practice (Formcraft)",
+            "source_status": "assumed"
+          }
+        },
+        "fire_detection": {
+          "detector_type": {
+            "value": "Optical smoke",
+            "unit": "text",
+            "source": "BS 5839-1:2017 (fire detection, non-domestic)",
+            "source_status": "assumed"
+          }
+        },
+        "emergency_lighting": {
+          "required": {
+            "value": true,
+            "unit": "yes/no",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "mode": {
+            "value": "non-maintained",
+            "unit": "text",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "min_lux": {
+            "value": 0.5,
+            "unit": "lx",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "duration_h": {
+            "value": 3,
+            "unit": "h",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "applies_when": {
+            "value": "open area over 60 m2",
+            "unit": "text",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          }
+        },
+        "ventilation": {
+          "outdoor_air_l_s_per_person": {
+            "value": 8,
+            "unit": "L/s/person",
+            "source": "BB101 (2018) Guidelines on ventilation, thermal comfort and indoor air quality in schools",
+            "source_status": "assumed"
+          }
+        }
+      }
+    },
+    "retail": {
+      "name": "Retail / shop floor",
+      "sector": "retail",
+      "aliases": [
+        "retail",
+        "shop",
+        "sales",
+        "showroom",
+        "pharmacy shop"
+      ],
+      "services": {
+        "lighting": {
+          "maintained_lux": {
+            "value": 300,
+            "unit": "lx",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "uniformity_u0": {
+            "value": 0.4,
+            "unit": "ratio",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "ugr_limit": {
+            "value": 22,
+            "unit": "UGR",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "fitting_hint": {
+            "value": "Track spots and linear LED, high colour rendering (Ra 80+)",
+            "unit": "text",
+            "source": "firm practice (Formcraft), to confirm with the lighting designer",
+            "source_status": "assumed"
+          },
+          "switching": {
+            "value": "Time clock with a local override",
+            "unit": "text",
+            "source": "firm practice (Formcraft) with Approved Document L (lighting controls)",
+            "source_status": "assumed"
+          }
+        },
+        "small_power": {
+          "twin_13A_min_per_room": {
+            "value": 2,
+            "unit": "nr",
+            "source": "BS 7671:2018+A2 with IET Guidance Note 1 / On-Site Guide (no statutory socket count: firm practice)",
+            "source_status": "assumed"
+          },
+          "twin_13A_per_m_wall": {
+            "value": 0.2,
+            "unit": "nr/m",
+            "source": "BS 7671:2018+A2 with IET Guidance Note 1 / On-Site Guide (no statutory socket count: firm practice)",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 450,
+            "unit": "mm AFL to centre",
+            "source": "Approved Document M (450-1200 mm band) with firm practice",
+            "source_status": "assumed"
+          },
+          "till_points": {
+            "value": 1,
+            "unit": "twin per till, clean earth",
+            "source": "BS 7671:2018+A2 with IET Guidance Note 1 / On-Site Guide (no statutory socket count: firm practice)",
+            "source_status": "assumed"
+          }
+        },
+        "data": {
+          "outlets": {
+            "value": 1,
+            "unit": "nr/till",
+            "source": "BS EN 50173-1 / BS 6701 with firm practice (no statutory outlet count)",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 450,
+            "unit": "mm AFL to centre",
+            "source": "firm practice (matches sockets)",
+            "source_status": "assumed"
+          },
+          "cctv_note": "Camera positions from the security designer"
+        },
+        "fire_detection": {
+          "detector_type": {
+            "value": "Optical smoke",
+            "unit": "text",
+            "source": "BS 5839-1:2017 (fire detection, non-domestic)",
+            "source_status": "assumed"
+          }
+        },
+        "emergency_lighting": {
+          "required": {
+            "value": true,
+            "unit": "yes/no",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "mode": {
+            "value": "non-maintained",
+            "unit": "text",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "min_lux": {
+            "value": 0.5,
+            "unit": "lx",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "duration_h": {
+            "value": 3,
+            "unit": "h",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "applies_when": {
+            "value": "open area over 60 m2, or public access",
+            "unit": "text",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          }
+        },
+        "ventilation": {
+          "outdoor_air_l_s_per_person": {
+            "value": 10,
+            "unit": "L/s/person",
+            "source": "CIBSE Guide A (2015) Table 1.5 (outdoor air supply rates)",
+            "source_status": "assumed"
+          }
+        }
+      }
+    },
+    "ward_bay": {
+      "name": "Ward bay / multi-bed ward",
+      "sector": "healthcare",
+      "aliases": [
+        "ward",
+        "bay",
+        "multi-bed",
+        "single room",
+        "isolation"
+      ],
+      "equipment_check": {
+        "value": "Check the room's equipment against the guideline for the facility level (HC III, HC IV, general, regional or national referral)",
+        "unit": "text",
+        "source": "Uganda MoH National Medical Equipment Guidelines 2024 (equipment by facility level)",
+        "source_status": "assumed"
+      },
+      "services": {
+        "lighting": {
+          "maintained_lux": {
+            "value": 100,
+            "unit": "lx",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "uniformity_u0": {
+            "value": 0.4,
+            "unit": "ratio",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "ugr_limit": {
+            "value": 19,
+            "unit": "UGR",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "fitting_hint": {
+            "value": "Bedhead luminaire (up-light, reading 300 lx, examination 1000 lx) plus a night light",
+            "unit": "text",
+            "source": "firm practice (Formcraft), to confirm with the lighting designer",
+            "source_status": "assumed"
+          },
+          "switching": {
+            "value": "Bedhead control per bed; ward lights at the nurse station",
+            "unit": "text",
+            "source": "firm practice (Formcraft) with Approved Document L (lighting controls)",
+            "source_status": "assumed"
+          },
+          "reading_lux": {
+            "value": 300,
+            "unit": "lx",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "examination_lux": {
+            "value": 1000,
+            "unit": "lx",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "night_lux": {
+            "value": 5,
+            "unit": "lx at floor",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          }
+        },
+        "small_power": {
+          "twin_13A_per_bed": {
+            "value": 4,
+            "unit": "nr/bed",
+            "source": "HBN 04-01 Adult in-patient facilities, with HTM 06-01 (electrical services)",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 1300,
+            "unit": "mm AFL to centre",
+            "source": "Approved Document M (450-1200 mm band) with firm practice",
+            "source_status": "assumed"
+          },
+          "of_which_essential_supply": {
+            "value": 2,
+            "unit": "twin per bed",
+            "source": "HTM 06-01 Electrical services supply and distribution",
+            "source_status": "assumed"
+          },
+          "medical_location_group": {
+            "value": 1,
+            "unit": "group",
+            "source": "BS 7671:2018+A2 Section 710 (medical locations)",
+            "source_status": "assumed"
+          }
+        },
+        "data": {
+          "outlets": {
+            "value": 1,
+            "unit": "nr/bed",
+            "source": "BS EN 50173-1 / BS 6701 with firm practice (no statutory outlet count)",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 450,
+            "unit": "mm AFL to centre",
+            "source": "firm practice (matches sockets)",
+            "source_status": "assumed"
+          },
+          "nurse_call_per_bed": {
+            "value": 1,
+            "unit": "call point",
+            "source": "HTM 08-03 Bedhead services (nurse call, bedhead trunking)",
+            "source_status": "assumed"
+          },
+          "nurse_call_wc": {
+            "value": 1,
+            "unit": "pull cord per en-suite",
+            "source": "HTM 08-03 Bedhead services (nurse call, bedhead trunking)",
+            "source_status": "assumed"
+          }
+        },
+        "fire_detection": {
+          "detector_type": {
+            "value": "Optical smoke or multi-sensor",
+            "unit": "text",
+            "source": "BS 5839-1:2017 (fire detection, non-domestic)",
+            "source_status": "assumed"
+          }
+        },
+        "emergency_lighting": {
+          "required": {
+            "value": true,
+            "unit": "yes/no",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "mode": {
+            "value": "maintained",
+            "unit": "text",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "min_lux": {
+            "value": 1.0,
+            "unit": "lx",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "duration_h": {
+            "value": 3,
+            "unit": "h",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "note": "Standby generator covers ward lighting (HTM 06-01)"
+        },
+        "water_fixtures": {
+          "clinical_wash_hand_basin": {
+            "value": 0.25,
+            "unit": "nr per bed (one per 4 beds in a bay; one per single room)",
+            "source": "HBN 00-09 Infection control in the built environment, with HBN 00-10 Part C (sanitary assemblies)",
+            "source_status": "assumed"
+          }
+        },
+        "drainage": {
+          "clinical_whb_du": {
+            "value": 0.3,
+            "unit": "DU",
+            "source": "BS EN 12056-2:2000 Table 2, System III (discharge units)",
+            "source_status": "assumed"
+          }
+        },
+        "medical_gases": {
+          "O2": {
+            "value": 1,
+            "unit": "nr/bed",
+            "source": "ASPE PEDH vol. 3, ch. 2, Table 2-4 (minimum; HTM 02-01 counts govern where higher), as held in the kit's staged medical-gas recipes",
+            "source_status": "assumed"
+          },
+          "VAC": {
+            "value": 1,
+            "unit": "nr/bed",
+            "source": "ASPE PEDH vol. 3, ch. 2, Table 2-4 (minimum; HTM 02-01 counts govern where higher), as held in the kit's staged medical-gas recipes",
+            "source_status": "assumed"
+          },
+          "MA4": {
+            "value": 1,
+            "unit": "nr/bed",
+            "source": "ASPE PEDH vol. 3, ch. 2, Table 2-4 (minimum; HTM 02-01 counts govern where higher), as held in the kit's staged medical-gas recipes",
+            "source_status": "assumed"
+          },
+          "outlet_height_mm": {
+            "value": 1440,
+            "unit": "mm AFL",
+            "source": "HBN 04-01 bedhead trunking at 1300 mm (kit staged recipe)",
+            "source_status": "assumed"
+          },
+          "htm_02_01_check": {
+            "value": "Compare with HTM 02-01 Part A outlet table; the higher count governs",
+            "unit": "text",
+            "source": "HTM 02-01 Medical gas pipeline systems Part A",
+            "source_status": "assumed"
+          }
+        },
+        "ventilation": {
+          "air_changes_per_hour": {
+            "value": 6,
+            "unit": "ACH",
+            "source": "HTM 03-01 Specialised ventilation for healthcare premises Part A, Appendix 5 (recommended air-change rates)",
+            "source_status": "assumed"
+          },
+          "pressure": {
+            "value": "0 or negative",
+            "unit": "relative to corridor",
+            "source": "HTM 03-01 Specialised ventilation for healthcare premises Part A, Appendix 5 (recommended air-change rates)",
+            "source_status": "assumed"
+          },
+          "note": "Natural ventilation acceptable where HTM 03-01 and the infection-control team allow"
+        }
+      }
+    },
+    "icu_bed": {
+      "name": "ICU / critical care bed space",
+      "sector": "healthcare",
+      "aliases": [
+        "icu",
+        "critical care",
+        "itu",
+        "hdu",
+        "intensive care",
+        "nicu"
+      ],
+      "equipment_check": {
+        "value": "Check the room's equipment against the guideline for the facility level (HC III, HC IV, general, regional or national referral)",
+        "unit": "text",
+        "source": "Uganda MoH National Medical Equipment Guidelines 2024 (equipment by facility level)",
+        "source_status": "assumed"
+      },
+      "services": {
+        "lighting": {
+          "maintained_lux": {
+            "value": 100,
+            "unit": "lx",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "uniformity_u0": {
+            "value": 0.6,
+            "unit": "ratio",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "ugr_limit": {
+            "value": 19,
+            "unit": "UGR",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "fitting_hint": {
+            "value": "Bed-space examination luminaire (1000 lx) plus indirect general lighting, dimmable",
+            "unit": "text",
+            "source": "firm practice (Formcraft), to confirm with the lighting designer",
+            "source_status": "assumed"
+          },
+          "switching": {
+            "value": "Dimming per bed; night watch level at the nurse station",
+            "unit": "text",
+            "source": "firm practice (Formcraft) with Approved Document L (lighting controls)",
+            "source_status": "assumed"
+          },
+          "simple_examination_lux": {
+            "value": 300,
+            "unit": "lx at bed level",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "examination_lux": {
+            "value": 1000,
+            "unit": "lx at bed level",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "night_watch_lux": {
+            "value": 20,
+            "unit": "lx",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          }
+        },
+        "small_power": {
+          "twin_13A_per_bed": {
+            "value": 12,
+            "unit": "nr/bed",
+            "source": "HBN 04-02 Critical care units, with HTM 06-01",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 1300,
+            "unit": "mm AFL to centre",
+            "source": "Approved Document M (450-1200 mm band) with firm practice",
+            "source_status": "assumed"
+          },
+          "of_which_ups_supply": {
+            "value": 6,
+            "unit": "twin per bed",
+            "source": "HTM 06-01 Electrical services supply and distribution",
+            "source_status": "assumed"
+          },
+          "medical_location_group": {
+            "value": 2,
+            "unit": "group (IT system for life-support)",
+            "source": "BS 7671:2018+A2 Section 710 (medical locations)",
+            "source_status": "assumed"
+          },
+          "pendant_or_bedhead": {
+            "value": "Ceiling pendant preferred",
+            "unit": "text",
+            "source": "HBN 04-02 Critical care units, with HTM 06-01",
+            "source_status": "assumed"
+          }
+        },
+        "data": {
+          "outlets": {
+            "value": 4,
+            "unit": "nr/bed",
+            "source": "BS EN 50173-1 / BS 6701 with firm practice (no statutory outlet count)",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 450,
+            "unit": "mm AFL to centre",
+            "source": "firm practice (matches sockets)",
+            "source_status": "assumed"
+          },
+          "nurse_call_per_bed": {
+            "value": 1,
+            "unit": "call point plus staff emergency",
+            "source": "HTM 08-03 Bedhead services (nurse call, bedhead trunking)",
+            "source_status": "assumed"
+          }
+        },
+        "fire_detection": {
+          "detector_type": {
+            "value": "Optical smoke or multi-sensor",
+            "unit": "text",
+            "source": "BS 5839-1:2017 (fire detection, non-domestic)",
+            "source_status": "assumed"
+          },
+          "note": "Progressive horizontal evacuation; detection and alarm per the fire strategy (HTM 05-03 Part B)"
+        },
+        "emergency_lighting": {
+          "required": {
+            "value": true,
+            "unit": "yes/no",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "mode": {
+            "value": "maintained",
+            "unit": "text",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "min_lux": {
+            "value": 1.0,
+            "unit": "lx",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "duration_h": {
+            "value": 3,
+            "unit": "h",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "high_risk_task": {
+            "value": "Yes: bed space treated as a high-risk task area",
+            "unit": "text",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          }
+        },
+        "water_fixtures": {
+          "clinical_wash_hand_basin": {
+            "value": 1,
+            "unit": "nr per bed space",
+            "source": "HBN 04-02 Critical care units, with HTM 06-01; HBN 00-09 Infection control in the built environment, with HBN 00-10 Part C (sanitary assemblies)",
+            "source_status": "assumed"
+          }
+        },
+        "drainage": {
+          "clinical_whb_du": {
+            "value": 0.3,
+            "unit": "DU",
+            "source": "BS EN 12056-2:2000 Table 2, System III (discharge units)",
+            "source_status": "assumed"
+          }
+        },
+        "medical_gases": {
+          "O2": {
+            "value": 2,
+            "unit": "nr/bed",
+            "source": "ASPE PEDH vol. 3, ch. 2, Table 2-4 (minimum; HTM 02-01 counts govern where higher), as held in the kit's staged medical-gas recipes",
+            "source_status": "assumed"
+          },
+          "VAC": {
+            "value": 3,
+            "unit": "nr/bed",
+            "source": "ASPE PEDH vol. 3, ch. 2, Table 2-4 (minimum; HTM 02-01 counts govern where higher), as held in the kit's staged medical-gas recipes",
+            "source_status": "assumed"
+          },
+          "MA4": {
+            "value": 1,
+            "unit": "nr/bed",
+            "source": "ASPE PEDH vol. 3, ch. 2, Table 2-4 (minimum; HTM 02-01 counts govern where higher), as held in the kit's staged medical-gas recipes",
+            "source_status": "assumed"
+          },
+          "outlet_height_mm": {
+            "value": 1440,
+            "unit": "mm AFL, or on the pendant",
+            "source": "HBN 04-01 bedhead trunking at 1300 mm (kit staged recipe)",
+            "source_status": "assumed"
+          },
+          "htm_02_01_check": {
+            "value": "Compare with HTM 02-01 Part A outlet table; the higher count governs",
+            "unit": "text",
+            "source": "HTM 02-01 Medical gas pipeline systems Part A",
+            "source_status": "assumed"
+          }
+        },
+        "ventilation": {
+          "air_changes_per_hour": {
+            "value": 10,
+            "unit": "ACH",
+            "source": "HTM 03-01 Specialised ventilation for healthcare premises Part A, Appendix 5 (recommended air-change rates)",
+            "source_status": "assumed"
+          },
+          "pressure": {
+            "value": "positive (+10 Pa)",
+            "unit": "relative to corridor",
+            "source": "HTM 03-01 Specialised ventilation for healthcare premises Part A, Appendix 5 (recommended air-change rates)",
+            "source_status": "assumed"
+          },
+          "isolation_room_note": "Isolation rooms follow their own HTM 03-01 lobby scheme"
+        }
+      }
+    },
+    "theatre": {
+      "name": "Operating theatre",
+      "sector": "healthcare",
+      "aliases": [
+        "theatre",
+        "operating",
+        "or",
+        "surgery",
+        "operating room"
+      ],
+      "equipment_check": {
+        "value": "Check the room's equipment against the guideline for the facility level (HC III, HC IV, general, regional or national referral)",
+        "unit": "text",
+        "source": "Uganda MoH National Medical Equipment Guidelines 2024 (equipment by facility level)",
+        "source_status": "assumed"
+      },
+      "services": {
+        "lighting": {
+          "maintained_lux": {
+            "value": 1000,
+            "unit": "lx",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "uniformity_u0": {
+            "value": 0.6,
+            "unit": "ratio",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "ugr_limit": {
+            "value": 19,
+            "unit": "UGR",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "fitting_hint": {
+            "value": "Ceiling-integrated IP65 cleanroom LED inside the ventilation canopy; surgical luminaires on their own pendants",
+            "unit": "text",
+            "source": "firm practice (Formcraft), to confirm with the lighting designer",
+            "source_status": "assumed"
+          },
+          "switching": {
+            "value": "Theatre control panel (dimming, scenes); surgical lights on IT supply",
+            "unit": "text",
+            "source": "firm practice (Formcraft) with Approved Document L (lighting controls)",
+            "source_status": "assumed"
+          },
+          "surgical_light_note": "Operating field 40 000-160 000 lx from the surgical luminaire (IEC 60601-2-41), not the room lighting"
+        },
+        "small_power": {
+          "twin_13A_min_per_room": {
+            "value": 4,
+            "unit": "nr",
+            "source": "HBN 26 Facilities for surgical procedures, with HTM 06-01",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 1000,
+            "unit": "mm AFL to centre",
+            "source": "Approved Document M (450-1200 mm band) with firm practice",
+            "source_status": "assumed"
+          },
+          "pendant_twin": {
+            "value": 8,
+            "unit": "twin per pendant (anaesthetic and surgical)",
+            "source": "HBN 26 Facilities for surgical procedures, with HTM 06-01",
+            "source_status": "assumed"
+          },
+          "medical_location_group": {
+            "value": 2,
+            "unit": "group (IT system)",
+            "source": "BS 7671:2018+A2 Section 710 (medical locations)",
+            "source_status": "assumed"
+          },
+          "theatre_panel": {
+            "value": 1,
+            "unit": "nr (clock, timer, gas alarms, temperature/humidity)",
+            "source": "HBN 26 Facilities for surgical procedures, with HTM 06-01",
+            "source_status": "assumed"
+          }
+        },
+        "data": {
+          "outlets": {
+            "value": 4,
+            "unit": "nr/room",
+            "source": "BS EN 50173-1 / BS 6701 with firm practice (no statutory outlet count)",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 450,
+            "unit": "mm AFL to centre",
+            "source": "firm practice (matches sockets)",
+            "source_status": "assumed"
+          },
+          "pendant_data": {
+            "value": 2,
+            "unit": "per pendant",
+            "source": "firm practice (Formcraft)",
+            "source_status": "assumed"
+          }
+        },
+        "fire_detection": {
+          "detector_type": {
+            "value": "Optical smoke in the room and the ceiling void",
+            "unit": "text",
+            "source": "BS 5839-1:2017 (fire detection, non-domestic)",
+            "source_status": "assumed"
+          },
+          "note": "No sprinkler or water heads over the table; the fire engineer decides"
+        },
+        "emergency_lighting": {
+          "required": {
+            "value": true,
+            "unit": "yes/no",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "mode": {
+            "value": "maintained",
+            "unit": "text",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "min_lux": {
+            "value": 15,
+            "unit": "lx",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "duration_h": {
+            "value": 3,
+            "unit": "h",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "standby_supply_100pct": {
+            "value": true,
+            "unit": "yes/no",
+            "source": "HTM 06-01 Electrical services supply and distribution",
+            "source_status": "assumed"
+          },
+          "high_risk_task": {
+            "value": "Yes",
+            "unit": "text",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          }
+        },
+        "water_fixtures": {
+          "note": "No basin in the theatre: scrub trough in the adjoining scrub room",
+          "scrub_positions_in_scrub_room": {
+            "value": 3,
+            "unit": "nr per theatre",
+            "source": "HBN 26 Facilities for surgical procedures, with HTM 06-01",
+            "source_status": "assumed"
+          }
+        },
+        "medical_gases": {
+          "O2": {
+            "value": 2,
+            "unit": "nr/theatre",
+            "source": "ASPE PEDH vol. 3, ch. 2, Table 2-4 (minimum; HTM 02-01 counts govern where higher), as held in the kit's staged medical-gas recipes",
+            "source_status": "assumed"
+          },
+          "VAC": {
+            "value": 3,
+            "unit": "nr/theatre",
+            "source": "ASPE PEDH vol. 3, ch. 2, Table 2-4 (minimum; HTM 02-01 counts govern where higher), as held in the kit's staged medical-gas recipes",
+            "source_status": "assumed"
+          },
+          "N2O": {
+            "value": 1,
+            "unit": "nr/theatre",
+            "source": "ASPE PEDH vol. 3, ch. 2, Table 2-4 (minimum; HTM 02-01 counts govern where higher), as held in the kit's staged medical-gas recipes",
+            "source_status": "assumed"
+          },
+          "MA4": {
+            "value": 1,
+            "unit": "nr/theatre",
+            "source": "ASPE PEDH vol. 3, ch. 2, Table 2-4 (minimum; HTM 02-01 counts govern where higher), as held in the kit's staged medical-gas recipes",
+            "source_status": "assumed"
+          },
+          "N2": {
+            "value": 1,
+            "unit": "nr/theatre",
+            "source": "ASPE PEDH vol. 3, ch. 2, Table 2-4 (minimum; HTM 02-01 counts govern where higher), as held in the kit's staged medical-gas recipes",
+            "source_status": "assumed"
+          },
+          "AGSS": {
+            "value": 1,
+            "unit": "nr/theatre",
+            "source": "ASPE PEDH vol. 3, ch. 2, Table 2-4 (minimum; HTM 02-01 counts govern where higher), as held in the kit's staged medical-gas recipes",
+            "source_status": "assumed"
+          },
+          "sa7_surgical_air_note": {
+            "value": "HTM 02-01 supplies surgical air SA7 where PEDH lists N2 for tools",
+            "unit": "text",
+            "source": "HTM 02-01 Medical gas pipeline systems Part A",
+            "source_status": "assumed"
+          },
+          "anaesthetic_room": {
+            "value": "O2x1 VACx1 N2Ox1 MA4x1 AGSSx1",
+            "unit": "outlets",
+            "source": "HTM 02-01 Medical gas pipeline systems Part A",
+            "source_status": "assumed"
+          },
+          "htm_02_01_check": {
+            "value": "Compare with HTM 02-01 Part A outlet table; the higher count governs",
+            "unit": "text",
+            "source": "HTM 02-01 Medical gas pipeline systems Part A",
+            "source_status": "assumed"
+          }
+        },
+        "ventilation": {
+          "air_changes_per_hour": {
+            "value": 25,
+            "unit": "ACH",
+            "source": "HTM 03-01 Specialised ventilation for healthcare premises Part A, Appendix 5 (recommended air-change rates)",
+            "source_status": "assumed"
+          },
+          "pressure": {
+            "value": "positive (+25 Pa)",
+            "unit": "relative to corridor",
+            "source": "HTM 03-01 Specialised ventilation for healthcare premises Part A, Appendix 5 (recommended air-change rates)",
+            "source_status": "assumed"
+          },
+          "ucv_note": "Ultra-clean (UCV) theatres for orthopaedics follow HTM 03-01 UCV rules"
+        }
+      }
+    },
+    "consulting_exam": {
+      "name": "Consulting / examination room",
+      "sector": "healthcare",
+      "aliases": [
+        "consulting",
+        "consultation",
+        "examination",
+        "exam",
+        "clinic room",
+        "opd"
+      ],
+      "equipment_check": {
+        "value": "Check the room's equipment against the guideline for the facility level (HC III, HC IV, general, regional or national referral)",
+        "unit": "text",
+        "source": "Uganda MoH National Medical Equipment Guidelines 2024 (equipment by facility level)",
+        "source_status": "assumed"
+      },
+      "services": {
+        "lighting": {
+          "maintained_lux": {
+            "value": 500,
+            "unit": "lx",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "uniformity_u0": {
+            "value": 0.6,
+            "unit": "ratio",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "ugr_limit": {
+            "value": 19,
+            "unit": "UGR",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "fitting_hint": {
+            "value": "Recessed LED panel plus a mobile or wall examination light (1000 lx)",
+            "unit": "text",
+            "source": "firm practice (Formcraft), to confirm with the lighting designer",
+            "source_status": "assumed"
+          },
+          "switching": {
+            "value": "Local switch with dimming",
+            "unit": "text",
+            "source": "firm practice (Formcraft) with Approved Document L (lighting controls)",
+            "source_status": "assumed"
+          },
+          "examination_lux": {
+            "value": 1000,
+            "unit": "lx at the couch",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          }
+        },
+        "small_power": {
+          "twin_13A_min_per_room": {
+            "value": 4,
+            "unit": "nr",
+            "source": "HTM 06-01 Electrical services supply and distribution",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 450,
+            "unit": "mm AFL to centre",
+            "source": "Approved Document M (450-1200 mm band) with firm practice",
+            "source_status": "assumed"
+          },
+          "medical_location_group": {
+            "value": 1,
+            "unit": "group",
+            "source": "BS 7671:2018+A2 Section 710 (medical locations)",
+            "source_status": "assumed"
+          }
+        },
+        "data": {
+          "outlets": {
+            "value": 2,
+            "unit": "nr/room",
+            "source": "BS EN 50173-1 / BS 6701 with firm practice (no statutory outlet count)",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 450,
+            "unit": "mm AFL to centre",
+            "source": "firm practice (matches sockets)",
+            "source_status": "assumed"
+          },
+          "nurse_call_staff_assist": {
+            "value": 1,
+            "unit": "nr",
+            "source": "HTM 08-03 Bedhead services (nurse call, bedhead trunking)",
+            "source_status": "assumed"
+          }
+        },
+        "fire_detection": {
+          "detector_type": {
+            "value": "Optical smoke",
+            "unit": "text",
+            "source": "BS 5839-1:2017 (fire detection, non-domestic)",
+            "source_status": "assumed"
+          }
+        },
+        "emergency_lighting": {
+          "required": {
+            "value": true,
+            "unit": "yes/no",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "mode": {
+            "value": "non-maintained",
+            "unit": "text",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "min_lux": {
+            "value": 1.0,
+            "unit": "lx",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "duration_h": {
+            "value": 3,
+            "unit": "h",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          }
+        },
+        "water_fixtures": {
+          "clinical_wash_hand_basin": {
+            "value": 1,
+            "unit": "nr per room",
+            "source": "HBN 00-09 Infection control in the built environment, with HBN 00-10 Part C (sanitary assemblies)",
+            "source_status": "assumed"
+          }
+        },
+        "drainage": {
+          "clinical_whb_du": {
+            "value": 0.3,
+            "unit": "DU",
+            "source": "BS EN 12056-2:2000 Table 2, System III (discharge units)",
+            "source_status": "assumed"
+          }
+        },
+        "medical_gases": {
+          "O2": {
+            "value": 1,
+            "unit": "nr/room",
+            "source": "ASPE PEDH vol. 3, ch. 2, Table 2-4 (minimum; HTM 02-01 counts govern where higher), as held in the kit's staged medical-gas recipes",
+            "source_status": "assumed"
+          },
+          "VAC": {
+            "value": 1,
+            "unit": "nr/room",
+            "source": "ASPE PEDH vol. 3, ch. 2, Table 2-4 (minimum; HTM 02-01 counts govern where higher), as held in the kit's staged medical-gas recipes",
+            "source_status": "assumed"
+          },
+          "MA4": {
+            "value": 1,
+            "unit": "nr/room",
+            "source": "ASPE PEDH vol. 3, ch. 2, Table 2-4 (minimum; HTM 02-01 counts govern where higher), as held in the kit's staged medical-gas recipes",
+            "source_status": "assumed"
+          },
+          "note": {
+            "value": "Only where the brief asks (many outpatient rooms have none)",
+            "unit": "text",
+            "source": "HTM 02-01 Medical gas pipeline systems Part A",
+            "source_status": "assumed"
+          }
+        },
+        "ventilation": {
+          "air_changes_per_hour": {
+            "value": 6,
+            "unit": "ACH",
+            "source": "HTM 03-01 Specialised ventilation for healthcare premises Part A, Appendix 5 (recommended air-change rates)",
+            "source_status": "assumed"
+          },
+          "pressure": {
+            "value": "0",
+            "unit": "relative to corridor",
+            "source": "HTM 03-01 Specialised ventilation for healthcare premises Part A, Appendix 5 (recommended air-change rates)",
+            "source_status": "assumed"
+          },
+          "note": "Natural ventilation acceptable where HTM 03-01 allows"
+        }
+      }
+    },
+    "treatment": {
+      "name": "Treatment room",
+      "sector": "healthcare",
+      "aliases": [
+        "treatment",
+        "procedure",
+        "dressing",
+        "minor ops",
+        "injection"
+      ],
+      "equipment_check": {
+        "value": "Check the room's equipment against the guideline for the facility level (HC III, HC IV, general, regional or national referral)",
+        "unit": "text",
+        "source": "Uganda MoH National Medical Equipment Guidelines 2024 (equipment by facility level)",
+        "source_status": "assumed"
+      },
+      "services": {
+        "lighting": {
+          "maintained_lux": {
+            "value": 500,
+            "unit": "lx",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "uniformity_u0": {
+            "value": 0.6,
+            "unit": "ratio",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "ugr_limit": {
+            "value": 19,
+            "unit": "UGR",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "fitting_hint": {
+            "value": "Recessed LED panel plus a ceiling examination light (1000 lx)",
+            "unit": "text",
+            "source": "firm practice (Formcraft), to confirm with the lighting designer",
+            "source_status": "assumed"
+          },
+          "switching": {
+            "value": "Local switch with dimming",
+            "unit": "text",
+            "source": "firm practice (Formcraft) with Approved Document L (lighting controls)",
+            "source_status": "assumed"
+          },
+          "examination_lux": {
+            "value": 1000,
+            "unit": "lx at the couch",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          }
+        },
+        "small_power": {
+          "twin_13A_min_per_room": {
+            "value": 6,
+            "unit": "nr",
+            "source": "HTM 06-01 Electrical services supply and distribution",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 1000,
+            "unit": "mm AFL to centre",
+            "source": "Approved Document M (450-1200 mm band) with firm practice",
+            "source_status": "assumed"
+          },
+          "medical_location_group": {
+            "value": 1,
+            "unit": "group",
+            "source": "BS 7671:2018+A2 Section 710 (medical locations)",
+            "source_status": "assumed"
+          }
+        },
+        "data": {
+          "outlets": {
+            "value": 2,
+            "unit": "nr/room",
+            "source": "BS EN 50173-1 / BS 6701 with firm practice (no statutory outlet count)",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 450,
+            "unit": "mm AFL to centre",
+            "source": "firm practice (matches sockets)",
+            "source_status": "assumed"
+          },
+          "nurse_call_staff_assist": {
+            "value": 1,
+            "unit": "nr",
+            "source": "HTM 08-03 Bedhead services (nurse call, bedhead trunking)",
+            "source_status": "assumed"
+          }
+        },
+        "fire_detection": {
+          "detector_type": {
+            "value": "Optical smoke",
+            "unit": "text",
+            "source": "BS 5839-1:2017 (fire detection, non-domestic)",
+            "source_status": "assumed"
+          }
+        },
+        "emergency_lighting": {
+          "required": {
+            "value": true,
+            "unit": "yes/no",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "mode": {
+            "value": "maintained",
+            "unit": "text",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "min_lux": {
+            "value": 15,
+            "unit": "lx",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "duration_h": {
+            "value": 3,
+            "unit": "h",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "high_risk_task": {
+            "value": "Yes",
+            "unit": "text",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          }
+        },
+        "water_fixtures": {
+          "clinical_wash_hand_basin": {
+            "value": 1,
+            "unit": "nr per room",
+            "source": "HBN 00-09 Infection control in the built environment, with HBN 00-10 Part C (sanitary assemblies)",
+            "source_status": "assumed"
+          }
+        },
+        "drainage": {
+          "clinical_whb_du": {
+            "value": 0.3,
+            "unit": "DU",
+            "source": "BS EN 12056-2:2000 Table 2, System III (discharge units)",
+            "source_status": "assumed"
+          }
+        },
+        "medical_gases": {
+          "O2": {
+            "value": 1,
+            "unit": "nr/room",
+            "source": "ASPE PEDH vol. 3, ch. 2, Table 2-4 (minimum; HTM 02-01 counts govern where higher), as held in the kit's staged medical-gas recipes",
+            "source_status": "assumed"
+          },
+          "VAC": {
+            "value": 1,
+            "unit": "nr/room",
+            "source": "ASPE PEDH vol. 3, ch. 2, Table 2-4 (minimum; HTM 02-01 counts govern where higher), as held in the kit's staged medical-gas recipes",
+            "source_status": "assumed"
+          },
+          "MA4": {
+            "value": 1,
+            "unit": "nr/room",
+            "source": "ASPE PEDH vol. 3, ch. 2, Table 2-4 (minimum; HTM 02-01 counts govern where higher), as held in the kit's staged medical-gas recipes",
+            "source_status": "assumed"
+          },
+          "htm_02_01_check": {
+            "value": "Compare with HTM 02-01 Part A outlet table; the higher count governs",
+            "unit": "text",
+            "source": "HTM 02-01 Medical gas pipeline systems Part A",
+            "source_status": "assumed"
+          }
+        },
+        "ventilation": {
+          "air_changes_per_hour": {
+            "value": 10,
+            "unit": "ACH",
+            "source": "HTM 03-01 Specialised ventilation for healthcare premises Part A, Appendix 5 (recommended air-change rates)",
+            "source_status": "assumed"
+          },
+          "pressure": {
+            "value": "positive",
+            "unit": "relative to corridor",
+            "source": "HTM 03-01 Specialised ventilation for healthcare premises Part A, Appendix 5 (recommended air-change rates)",
+            "source_status": "assumed"
+          }
+        }
+      }
+    },
+    "nurse_station": {
+      "name": "Nurse station / staff base",
+      "sector": "healthcare",
+      "aliases": [
+        "nurse station",
+        "nurses station",
+        "staff base",
+        "reception desk"
+      ],
+      "equipment_check": {
+        "value": "Check the room's equipment against the guideline for the facility level (HC III, HC IV, general, regional or national referral)",
+        "unit": "text",
+        "source": "Uganda MoH National Medical Equipment Guidelines 2024 (equipment by facility level)",
+        "source_status": "assumed"
+      },
+      "services": {
+        "lighting": {
+          "maintained_lux": {
+            "value": 300,
+            "unit": "lx",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "uniformity_u0": {
+            "value": 0.6,
+            "unit": "ratio",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "ugr_limit": {
+            "value": 19,
+            "unit": "UGR",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "fitting_hint": {
+            "value": "Linear LED over the desk, dimmable for night",
+            "unit": "text",
+            "source": "firm practice (Formcraft), to confirm with the lighting designer",
+            "source_status": "assumed"
+          },
+          "switching": {
+            "value": "Local dimming; night setting",
+            "unit": "text",
+            "source": "firm practice (Formcraft) with Approved Document L (lighting controls)",
+            "source_status": "assumed"
+          },
+          "night_lux": {
+            "value": 50,
+            "unit": "lx at the desk",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          }
+        },
+        "small_power": {
+          "twin_13A_min_per_room": {
+            "value": 4,
+            "unit": "nr",
+            "source": "HTM 06-01 Electrical services supply and distribution",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 1000,
+            "unit": "mm AFL to centre",
+            "source": "Approved Document M (450-1200 mm band) with firm practice",
+            "source_status": "assumed"
+          },
+          "of_which_essential_supply": {
+            "value": 2,
+            "unit": "twin",
+            "source": "HTM 06-01 Electrical services supply and distribution",
+            "source_status": "assumed"
+          }
+        },
+        "data": {
+          "outlets": {
+            "value": 4,
+            "unit": "nr/station",
+            "source": "BS EN 50173-1 / BS 6701 with firm practice (no statutory outlet count)",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 450,
+            "unit": "mm AFL to centre",
+            "source": "firm practice (matches sockets)",
+            "source_status": "assumed"
+          },
+          "nurse_call_master": {
+            "value": 1,
+            "unit": "display / master station",
+            "source": "HTM 08-03 Bedhead services (nurse call, bedhead trunking)",
+            "source_status": "assumed"
+          }
+        },
+        "fire_detection": {
+          "detector_type": {
+            "value": "Optical smoke",
+            "unit": "text",
+            "source": "BS 5839-1:2017 (fire detection, non-domestic)",
+            "source_status": "assumed"
+          },
+          "note": "Fire alarm repeater panel at the main staff base per the fire strategy"
+        },
+        "emergency_lighting": {
+          "required": {
+            "value": true,
+            "unit": "yes/no",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "mode": {
+            "value": "maintained",
+            "unit": "text",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "min_lux": {
+            "value": 1.0,
+            "unit": "lx",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "duration_h": {
+            "value": 3,
+            "unit": "h",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          }
+        },
+        "ventilation": {
+          "outdoor_air_l_s_per_person": {
+            "value": 10,
+            "unit": "L/s/person",
+            "source": "CIBSE Guide A (2015) Table 1.5 (outdoor air supply rates)",
+            "source_status": "assumed"
+          }
+        }
+      }
+    },
+    "clean_utility": {
+      "name": "Clean utility",
+      "sector": "healthcare",
+      "aliases": [
+        "clean utility",
+        "clean store",
+        "preparation",
+        "drug prep",
+        "medication room"
+      ],
+      "equipment_check": {
+        "value": "Check the room's equipment against the guideline for the facility level (HC III, HC IV, general, regional or national referral)",
+        "unit": "text",
+        "source": "Uganda MoH National Medical Equipment Guidelines 2024 (equipment by facility level)",
+        "source_status": "assumed"
+      },
+      "services": {
+        "lighting": {
+          "maintained_lux": {
+            "value": 300,
+            "unit": "lx",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "uniformity_u0": {
+            "value": 0.6,
+            "unit": "ratio",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "ugr_limit": {
+            "value": 19,
+            "unit": "UGR",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "fitting_hint": {
+            "value": "Recessed LED panel, IP44",
+            "unit": "text",
+            "source": "firm practice (Formcraft), to confirm with the lighting designer",
+            "source_status": "assumed"
+          },
+          "switching": {
+            "value": "Presence detection",
+            "unit": "text",
+            "source": "firm practice (Formcraft) with Approved Document L (lighting controls)",
+            "source_status": "assumed"
+          }
+        },
+        "small_power": {
+          "twin_13A_min_per_room": {
+            "value": 2,
+            "unit": "nr",
+            "source": "HTM 06-01 Electrical services supply and distribution",
+            "source_status": "assumed"
+          },
+          "twin_13A_per_m_wall": {
+            "value": 0.5,
+            "unit": "nr/m",
+            "source": "HTM 06-01 Electrical services supply and distribution",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 1100,
+            "unit": "mm AFL to centre",
+            "source": "Approved Document M (450-1200 mm band) with firm practice",
+            "source_status": "assumed"
+          },
+          "medicine_fridge_spur": {
+            "value": 1,
+            "unit": "nr on essential supply",
+            "source": "HTM 06-01 Electrical services supply and distribution",
+            "source_status": "assumed"
+          }
+        },
+        "fire_detection": {
+          "detector_type": {
+            "value": "Optical smoke",
+            "unit": "text",
+            "source": "BS 5839-1:2017 (fire detection, non-domestic)",
+            "source_status": "assumed"
+          }
+        },
+        "emergency_lighting": {
+          "required": {
+            "value": false,
+            "unit": "yes/no",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          }
+        },
+        "water_fixtures": {
+          "clinical_wash_hand_basin": {
+            "value": 1,
+            "unit": "nr",
+            "source": "HBN 00-09 Infection control in the built environment, with HBN 00-10 Part C (sanitary assemblies)",
+            "source_status": "assumed"
+          },
+          "sink": {
+            "value": 1,
+            "unit": "nr (stainless, where preparation needs it)",
+            "source": "HBN 00-09 Infection control in the built environment, with HBN 00-10 Part C (sanitary assemblies)",
+            "source_status": "assumed"
+          }
+        },
+        "drainage": {
+          "clinical_whb_du": {
+            "value": 0.3,
+            "unit": "DU",
+            "source": "BS EN 12056-2:2000 Table 2, System III (discharge units)",
+            "source_status": "assumed"
+          },
+          "sink_du": {
+            "value": 1.3,
+            "unit": "DU",
+            "source": "BS EN 12056-2:2000 Table 2, System III (discharge units)",
+            "source_status": "assumed"
+          }
+        },
+        "ventilation": {
+          "air_changes_per_hour": {
+            "value": 6,
+            "unit": "ACH",
+            "source": "HTM 03-01 Specialised ventilation for healthcare premises Part A, Appendix 5 (recommended air-change rates)",
+            "source_status": "assumed"
+          },
+          "pressure": {
+            "value": "positive",
+            "unit": "relative to corridor",
+            "source": "HTM 03-01 Specialised ventilation for healthcare premises Part A, Appendix 5 (recommended air-change rates)",
+            "source_status": "assumed"
+          }
+        }
+      }
+    },
+    "dirty_utility": {
+      "name": "Dirty utility",
+      "sector": "healthcare",
+      "aliases": [
+        "dirty utility",
+        "dirty",
+        "disposal"
+      ],
+      "equipment_check": {
+        "value": "Check the room's equipment against the guideline for the facility level (HC III, HC IV, general, regional or national referral)",
+        "unit": "text",
+        "source": "Uganda MoH National Medical Equipment Guidelines 2024 (equipment by facility level)",
+        "source_status": "assumed"
+      },
+      "services": {
+        "lighting": {
+          "maintained_lux": {
+            "value": 200,
+            "unit": "lx",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "uniformity_u0": {
+            "value": 0.4,
+            "unit": "ratio",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "ugr_limit": {
+            "value": 22,
+            "unit": "UGR",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "fitting_hint": {
+            "value": "IP65 sealed LED",
+            "unit": "text",
+            "source": "firm practice (Formcraft), to confirm with the lighting designer",
+            "source_status": "assumed"
+          },
+          "switching": {
+            "value": "Presence detection",
+            "unit": "text",
+            "source": "firm practice (Formcraft) with Approved Document L (lighting controls)",
+            "source_status": "assumed"
+          }
+        },
+        "small_power": {
+          "twin_13A_min_per_room": {
+            "value": 1,
+            "unit": "nr",
+            "source": "HTM 06-01 Electrical services supply and distribution",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 1100,
+            "unit": "mm AFL to centre",
+            "source": "Approved Document M (450-1200 mm band) with firm practice",
+            "source_status": "assumed"
+          },
+          "macerator_spur": {
+            "value": 1,
+            "unit": "nr",
+            "source": "HTM 06-01 Electrical services supply and distribution",
+            "source_status": "assumed"
+          }
+        },
+        "fire_detection": {
+          "detector_type": {
+            "value": "Heat (steam from washer-disinfectors and macerators)",
+            "unit": "text",
+            "source": "BS 5839-1:2017 (fire detection, non-domestic)",
+            "source_status": "assumed"
+          }
+        },
+        "emergency_lighting": {
+          "required": {
+            "value": false,
+            "unit": "yes/no",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          }
+        },
+        "water_fixtures": {
+          "clinical_wash_hand_basin": {
+            "value": 1,
+            "unit": "nr",
+            "source": "HBN 00-09 Infection control in the built environment, with HBN 00-10 Part C (sanitary assemblies)",
+            "source_status": "assumed"
+          },
+          "sink": {
+            "value": 1,
+            "unit": "nr",
+            "source": "HBN 00-09 Infection control in the built environment, with HBN 00-10 Part C (sanitary assemblies)",
+            "source_status": "assumed"
+          },
+          "slop_hopper": {
+            "value": 1,
+            "unit": "nr (flushing rim)",
+            "source": "HBN 00-09 Infection control in the built environment, with HBN 00-10 Part C (sanitary assemblies)",
+            "source_status": "assumed"
+          },
+          "bedpan_washer_or_macerator": {
+            "value": 1,
+            "unit": "nr",
+            "source": "HBN 00-09 Infection control in the built environment, with HBN 00-10 Part C (sanitary assemblies)",
+            "source_status": "assumed"
+          }
+        },
+        "drainage": {
+          "clinical_whb_du": {
+            "value": 0.3,
+            "unit": "DU",
+            "source": "BS EN 12056-2:2000 Table 2, System III (discharge units)",
+            "source_status": "assumed"
+          },
+          "sink_du": {
+            "value": 1.3,
+            "unit": "DU",
+            "source": "BS EN 12056-2:2000 Table 2, System III (discharge units)",
+            "source_status": "assumed"
+          },
+          "slop_hopper_du": {
+            "value": 2.0,
+            "unit": "DU",
+            "source": "assumed equal to a 9 L WC (BS EN 12056-2 gives no hopper value)",
+            "source_status": "assumed"
+          },
+          "macerator_du": {
+            "value": 2.0,
+            "unit": "DU",
+            "source": "assumed equal to a 9 L WC (BS EN 12056-2 gives no macerator value)",
+            "source_status": "assumed"
+          }
+        },
+        "ventilation": {
+          "air_changes_per_hour": {
+            "value": 6,
+            "unit": "ACH",
+            "source": "HTM 03-01 Specialised ventilation for healthcare premises Part A, Appendix 5 (recommended air-change rates)",
+            "source_status": "assumed"
+          },
+          "pressure": {
+            "value": "negative (extract)",
+            "unit": "relative to corridor",
+            "source": "HTM 03-01 Specialised ventilation for healthcare premises Part A, Appendix 5 (recommended air-change rates)",
+            "source_status": "assumed"
+          }
+        }
+      }
+    },
+    "sluice": {
+      "name": "Sluice room",
+      "sector": "healthcare",
+      "aliases": [
+        "sluice",
+        "sluice room"
+      ],
+      "equipment_check": {
+        "value": "Check the room's equipment against the guideline for the facility level (HC III, HC IV, general, regional or national referral)",
+        "unit": "text",
+        "source": "Uganda MoH National Medical Equipment Guidelines 2024 (equipment by facility level)",
+        "source_status": "assumed"
+      },
+      "services": {
+        "lighting": {
+          "maintained_lux": {
+            "value": 200,
+            "unit": "lx",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "uniformity_u0": {
+            "value": 0.4,
+            "unit": "ratio",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "ugr_limit": {
+            "value": 22,
+            "unit": "UGR",
+            "source": "CIBSE SLL LG2 Lighting for healthcare premises, with BS EN 12464-1:2021 (health care premises)",
+            "source_status": "assumed"
+          },
+          "fitting_hint": {
+            "value": "IP65 sealed LED",
+            "unit": "text",
+            "source": "firm practice (Formcraft), to confirm with the lighting designer",
+            "source_status": "assumed"
+          },
+          "switching": {
+            "value": "Presence detection",
+            "unit": "text",
+            "source": "firm practice (Formcraft) with Approved Document L (lighting controls)",
+            "source_status": "assumed"
+          }
+        },
+        "small_power": {
+          "twin_13A_min_per_room": {
+            "value": 1,
+            "unit": "nr",
+            "source": "HTM 06-01 Electrical services supply and distribution",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 1100,
+            "unit": "mm AFL to centre",
+            "source": "Approved Document M (450-1200 mm band) with firm practice",
+            "source_status": "assumed"
+          },
+          "macerator_spur": {
+            "value": 1,
+            "unit": "nr",
+            "source": "HTM 06-01 Electrical services supply and distribution",
+            "source_status": "assumed"
+          }
+        },
+        "fire_detection": {
+          "detector_type": {
+            "value": "Heat (steam from washer-disinfectors and macerators)",
+            "unit": "text",
+            "source": "BS 5839-1:2017 (fire detection, non-domestic)",
+            "source_status": "assumed"
+          }
+        },
+        "emergency_lighting": {
+          "required": {
+            "value": false,
+            "unit": "yes/no",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          }
+        },
+        "water_fixtures": {
+          "clinical_wash_hand_basin": {
+            "value": 1,
+            "unit": "nr",
+            "source": "HBN 00-09 Infection control in the built environment, with HBN 00-10 Part C (sanitary assemblies)",
+            "source_status": "assumed"
+          },
+          "slop_hopper": {
+            "value": 1,
+            "unit": "nr (flushing rim)",
+            "source": "HBN 00-09 Infection control in the built environment, with HBN 00-10 Part C (sanitary assemblies)",
+            "source_status": "assumed"
+          },
+          "bedpan_washer_or_macerator": {
+            "value": 1,
+            "unit": "nr",
+            "source": "HBN 00-09 Infection control in the built environment, with HBN 00-10 Part C (sanitary assemblies)",
+            "source_status": "assumed"
+          }
+        },
+        "drainage": {
+          "clinical_whb_du": {
+            "value": 0.3,
+            "unit": "DU",
+            "source": "BS EN 12056-2:2000 Table 2, System III (discharge units)",
+            "source_status": "assumed"
+          },
+          "slop_hopper_du": {
+            "value": 2.0,
+            "unit": "DU",
+            "source": "assumed equal to a 9 L WC (BS EN 12056-2 gives no hopper value)",
+            "source_status": "assumed"
+          },
+          "macerator_du": {
+            "value": 2.0,
+            "unit": "DU",
+            "source": "assumed equal to a 9 L WC (BS EN 12056-2 gives no macerator value)",
+            "source_status": "assumed"
+          }
+        },
+        "ventilation": {
+          "air_changes_per_hour": {
+            "value": 6,
+            "unit": "ACH",
+            "source": "HTM 03-01 Specialised ventilation for healthcare premises Part A, Appendix 5 (recommended air-change rates)",
+            "source_status": "assumed"
+          },
+          "pressure": {
+            "value": "negative (extract)",
+            "unit": "relative to corridor",
+            "source": "HTM 03-01 Specialised ventilation for healthcare premises Part A, Appendix 5 (recommended air-change rates)",
+            "source_status": "assumed"
+          }
+        }
+      }
+    },
+    "lab": {
+      "name": "Laboratory",
+      "sector": "healthcare",
+      "aliases": [
+        "lab",
+        "laboratory",
+        "pathology",
+        "sample",
+        "microbiology"
+      ],
+      "equipment_check": {
+        "value": "Check the room's equipment against the guideline for the facility level (HC III, HC IV, general, regional or national referral)",
+        "unit": "text",
+        "source": "Uganda MoH National Medical Equipment Guidelines 2024 (equipment by facility level)",
+        "source_status": "assumed"
+      },
+      "services": {
+        "lighting": {
+          "maintained_lux": {
+            "value": 500,
+            "unit": "lx",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "uniformity_u0": {
+            "value": 0.6,
+            "unit": "ratio",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "ugr_limit": {
+            "value": 19,
+            "unit": "UGR",
+            "source": "BS EN 12464-1:2021 (lighting of indoor work places)",
+            "source_status": "assumed"
+          },
+          "fitting_hint": {
+            "value": "Linear LED, IP44 where wet benches",
+            "unit": "text",
+            "source": "firm practice (Formcraft), to confirm with the lighting designer",
+            "source_status": "assumed"
+          },
+          "switching": {
+            "value": "Local switch per bench zone",
+            "unit": "text",
+            "source": "firm practice (Formcraft) with Approved Document L (lighting controls)",
+            "source_status": "assumed"
+          }
+        },
+        "small_power": {
+          "twin_13A_min_per_room": {
+            "value": 4,
+            "unit": "nr",
+            "source": "HTM 06-01 Electrical services supply and distribution",
+            "source_status": "assumed"
+          },
+          "twin_13A_per_m_wall": {
+            "value": 0.5,
+            "unit": "nr/m",
+            "source": "HTM 06-01 Electrical services supply and distribution",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 1100,
+            "unit": "mm AFL to centre",
+            "source": "Approved Document M (450-1200 mm band) with firm practice",
+            "source_status": "assumed"
+          },
+          "of_which_ups_supply": {
+            "value": 1,
+            "unit": "twin per analyser",
+            "source": "HTM 06-01 Electrical services supply and distribution",
+            "source_status": "assumed"
+          },
+          "medical_location_group": {
+            "value": 0,
+            "unit": "group",
+            "source": "BS 7671:2018+A2 Section 710 (medical locations)",
+            "source_status": "assumed"
+          }
+        },
+        "data": {
+          "outlets": {
+            "value": 1,
+            "unit": "nr/m of bench (per 2 m)",
+            "source": "BS EN 50173-1 / BS 6701 with firm practice (no statutory outlet count)",
+            "source_status": "assumed"
+          },
+          "mounting_height_mm": {
+            "value": 450,
+            "unit": "mm AFL to centre",
+            "source": "firm practice (matches sockets)",
+            "source_status": "assumed"
+          },
+          "note": "One data outlet per analyser position from the equipment list"
+        },
+        "fire_detection": {
+          "detector_type": {
+            "value": "Multi-sensor (heat where fumes or flames are used)",
+            "unit": "text",
+            "source": "BS 5839-1:2017 (fire detection, non-domestic)",
+            "source_status": "assumed"
+          }
+        },
+        "emergency_lighting": {
+          "required": {
+            "value": true,
+            "unit": "yes/no",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "mode": {
+            "value": "non-maintained",
+            "unit": "text",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "min_lux": {
+            "value": 15,
+            "unit": "lx",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "duration_h": {
+            "value": 3,
+            "unit": "h",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          },
+          "high_risk_task": {
+            "value": "Yes where hazardous processes run",
+            "unit": "text",
+            "source": "BS 5266-1:2016 with BS EN 1838:2013 (emergency lighting)",
+            "source_status": "assumed"
+          }
+        },
+        "water_fixtures": {
+          "lab_sink": {
+            "value": 1,
+            "unit": "nr per bench run",
+            "source": "HBN 00-09 Infection control in the built environment, with HBN 00-10 Part C (sanitary assemblies); BS EN 15154-2 (emergency eye wash)",
+            "source_status": "assumed"
+          },
+          "wash_hand_basin": {
+            "value": 1,
+            "unit": "nr by the exit",
+            "source": "HBN 00-09 Infection control in the built environment, with HBN 00-10 Part C (sanitary assemblies); BS EN 15154-2 (emergency eye wash)",
+            "source_status": "assumed"
+          },
+          "emergency_eye_wash": {
+            "value": 1,
+            "unit": "nr",
+            "source": "HBN 00-09 Infection control in the built environment, with HBN 00-10 Part C (sanitary assemblies); BS EN 15154-2 (emergency eye wash)",
+            "source_status": "assumed"
+          }
+        },
+        "drainage": {
+          "lab_sink_du": {
+            "value": 1.3,
+            "unit": "DU",
+            "source": "BS EN 12056-2:2000 Table 2, System III (discharge units)",
+            "source_status": "assumed"
+          },
+          "whb_du": {
+            "value": 0.3,
+            "unit": "DU",
+            "source": "BS EN 12056-2:2000 Table 2, System III (discharge units)",
+            "source_status": "assumed"
+          },
+          "chemical_drainage": {
+            "value": "Separate acid-resistant drainage with a dilution or neutralising chamber where chemicals are discharged",
+            "unit": "text",
+            "source": "firm practice (Formcraft); the public health engineer decides",
+            "source_status": "assumed"
+          }
+        },
+        "ventilation": {
+          "air_changes_per_hour": {
+            "value": 6,
+            "unit": "ACH",
+            "source": "HTM 03-01 Specialised ventilation for healthcare premises Part A, Appendix 5 (recommended air-change rates)",
+            "source_status": "assumed"
+          },
+          "pressure": {
+            "value": "negative",
+            "unit": "relative to corridor",
+            "source": "HTM 03-01 Specialised ventilation for healthcare premises Part A, Appendix 5 (recommended air-change rates)",
+            "source_status": "assumed"
+          },
+          "fume_cupboards": "Fume cupboards and safety cabinets to BS EN 14175 / BS EN 12469 add their own extract"
+        }
+      }
+    }
+  },
+  "counts": {
+    "room_types": 22,
+    "values": 462
+  }
+}
