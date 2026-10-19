@@ -6,6 +6,7 @@ import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { kitParams } from "../fmc/brief.js";
 import { electricalChecks, structuralChecks, structuralFields, systemsReport } from "../fmc/systems.js";
+import { loadMatrix, matrixGrid, summarize } from "../fmc/mep_matrix.js";
 
 const win = path.win32;
 
@@ -33,10 +34,11 @@ export const FMC_SYSTEMS_DESCRIPTION =
     "fields left empty (FMC_Member_Mark, " +
     "grades, exposure class), load cases, and analysis results already in the model (FMC_FEA_Utilisation). save: true " +
     "writes the list to <project>\\06_QA\\Systems for the engineer. Nothing in the model is changed: sizing, load cases " +
-    "and design stay with the engineer.";
+    "and design stay with the engineer. matrix: the engineering grid (23 systems by 7 capabilities) from " +
+    "docs/tracker/mep_matrix.json with its counts by state, per system and per capability; no Revit needed.";
 
 export const FMC_SYSTEMS_SHAPE = {
-  action: z.enum(["electrical", "structural"]),
+  action: z.enum(["electrical", "structural", "matrix"]),
   kit_folder: z.string().optional().default("").describe("structural: the kit folder, for the field names"),
   project_folder: z.string().optional().default("").describe("save: the project folder (06_QA\\Systems)"),
   save: z.boolean().optional().default(false),
@@ -44,7 +46,17 @@ export const FMC_SYSTEMS_SHAPE = {
 
 export type FmcSystemsArgs = z.infer<z.ZodObject<typeof FMC_SYSTEMS_SHAPE>>;
 
+/** The engineering grid (E0): read-only, from the one data file; the counts are computed, never stored. */
+export function runMatrix() {
+  const { file, matrix, errors } = loadMatrix();
+  if (!matrix) return reply({ error: "The engineering grid can't be read", file, errors }, true);
+  const summary = summarize(matrix);
+  return reply({ file, title: matrix.title, updated: matrix.updated, summary, grid: matrixGrid(matrix),
+    next: "Each cell's evidence, feature and step are in the file; a cell moves only with the PR that changes it" });
+}
+
 export async function runFmcSystems(args: FmcSystemsArgs) {
+  if (args.action === "matrix") return runMatrix();
   const { config } = loadConfig();
   try {
     let body: any;

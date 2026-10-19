@@ -5,12 +5,13 @@ Sources (the repo is the record; nothing here is typed by hand at refresh time):
   docs/tracker/kit.json        kit counts (update it with each kit release)
   docs/tracker/decisions.json  what waits on the owner or an engineer
   docs/tracker/events.json     kit releases and canvas designs (not in git history)
+  docs/tracker/mep_matrix.json the engineering grid, 23 systems x 7 capabilities (E0); counts are computed, never stored
   git log origin/main          merged pull requests
   GitHub issues (test-finding) test findings and their state
   GitHub open pull requests     what is in review and whether its checks passed
 
 Usage: python scripts/tracker/refresh.py <out_dir>
-Writes features.json, kit.json, decisions.json, timeline.json, findings.json, prs.json and manifest.json (a hash per file, so a
+Writes features.json, kit.json, decisions.json, timeline.json, findings.json, prs.json, mep_matrix.json and manifest.json (a hash per file, so a
 scheduled refresh uploads only what changed).
 """
 import hashlib, json, os, re, subprocess, sys
@@ -22,6 +23,17 @@ REPO = "formcraft/formcraft-revit-tools"
 def load(name):
     with open(os.path.join(ROOT, "docs", "tracker", name), encoding="utf-8") as f:
         return json.load(f)
+
+
+def mep_matrix():
+    """The engineering grid with its counts by state, so the dashboard and the Master Board never hard-code them."""
+    m = load("mep_matrix.json")
+    by_state = {s: 0 for s in m["states"]}
+    for c in m["cells"]:
+        by_state[c["state"]] += 1
+    applicable = len(m["cells"]) - by_state.get("Not applicable", 0)
+    m["summary"] = dict(cells=len(m["cells"]), applicable=applicable, tested=by_state.get("Tested in Revit", 0), by_state=by_state)
+    return m
 
 
 def git_timeline():
@@ -77,6 +89,7 @@ def main(out):
         "features": load("features.json"),
         "kit": load("kit.json"),
         "decisions": load("decisions.json"),
+        "mep_matrix": mep_matrix(),
         "timeline": sorted(git_timeline() + [dict(e, pr=e.get("pr")) for e in load("events.json")], key=lambda r: r["at"]),
         "findings": findings(),
         "prs": open_prs(),

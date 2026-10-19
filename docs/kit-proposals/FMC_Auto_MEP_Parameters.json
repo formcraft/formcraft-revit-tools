@@ -1,0 +1,394 @@
+{
+  "schema": "fmc-param-proposal/0.1",
+  "about": "PROPOSED for the kit (01_Shared_Parameters\\FMC_SharedParameters.txt through _build/fmc_data.py PARAMS_V22, and the Parameters_STD002 tab), drafted 19 Oct 2026 for the engineering-services track. The BIM Manager approves it through the kit change process; until then no plugin binds these names as standard. FMC_Auto_MEP_Parameters.txt beside this file is the same list as a Revit shared-parameter file.",
+  "name": "FMC Auto-MEP and Electrical parameters",
+  "revision": "P01",
+  "approved": "",
+  "guid_method": "uuid5(namespace 6f0c2b7e-4a51-4e0b-9d3a-f0c3a1b2c3d4, parameter name): the kit's own method (_build/build_kit.py, NS on line 21; it reproduces FMC_Project_Code = 9a41f255-057a-54f2-959f-d295edf4416b). So the kit build makes the same GUIDs from the names, and a renamed parameter gets a new GUID.",
+  "binding_codes": {
+    "T": "Type",
+    "I": "Instance",
+    "P": "Project Information"
+  },
+  "proposed": [
+    {
+      "name": "FMC_Room_Type",
+      "guid": "3b48cf39-ccbc-526d-8815-01bf173e70dc",
+      "group": 23,
+      "group_name": "FMC_23_Spaces",
+      "datatype": "TEXT",
+      "binding": "I",
+      "binding_name": "Instance",
+      "categories": "Rooms, Spaces",
+      "description": "Room services type id from FMC_Rulebook_RoomServices (e.g. office, ward_bay, icu_bed); picks the room's services rules",
+      "why": "Auto-MEP and the recipe tree need a stable, language-free room type; FMC_Occupancy_Type is the building-code class, not the services use",
+      "step": "E4, T2",
+      "status": "proposed",
+      "allowed_values": [
+        "office",
+        "meeting",
+        "corridor",
+        "stair",
+        "wc",
+        "kitchen",
+        "store",
+        "plant_room",
+        "bedroom",
+        "living",
+        "classroom",
+        "retail",
+        "ward_bay",
+        "icu_bed",
+        "theatre",
+        "consulting_exam",
+        "treatment",
+        "nurse_station",
+        "clean_utility",
+        "dirty_utility",
+        "sluice",
+        "lab"
+      ]
+    },
+    {
+      "name": "FMC_Auto_Stage",
+      "guid": "aa262cd9-969b-58a6-83a3-9f0684dcf11e",
+      "group": 18,
+      "group_name": "FMC_18_QA_Information_Status",
+      "datatype": "TEXT",
+      "binding": "I",
+      "binding_name": "Instance",
+      "categories": "Rooms, Spaces, Lighting Fixtures, Lighting Devices, Electrical Fixtures, Electrical Equipment, Data Devices, Fire Alarm Devices, Security Devices, Plumbing Fixtures, Plumbing Equipment, Mechanical Equipment, Air Terminals, Sprinklers, Specialty Equipment, Generic Models, Pipes, Pipe Fittings, Ducts, Duct Fittings, Conduits, Cable Trays",
+      "description": "On an element: the Auto-MEP stage that placed it. On a room: the last stage a person approved for that room",
+      "why": "Lets a run resume and lets a person approve one stage at a time",
+      "step": "E4",
+      "status": "proposed",
+      "allowed_values": [
+        "typed",
+        "lighting",
+        "small_power",
+        "data",
+        "fire_detection",
+        "emergency_lighting",
+        "water_fixtures",
+        "drainage",
+        "medical_gases",
+        "ventilation",
+        "circuits"
+      ]
+    },
+    {
+      "name": "FMC_Auto_Run",
+      "guid": "319d4502-1552-5b58-a23b-632ead9ae772",
+      "group": 18,
+      "group_name": "FMC_18_QA_Information_Status",
+      "datatype": "TEXT",
+      "binding": "I",
+      "binding_name": "Instance",
+      "categories": "Rooms, Spaces, Lighting Fixtures, Lighting Devices, Electrical Fixtures, Electrical Equipment, Data Devices, Fire Alarm Devices, Security Devices, Plumbing Fixtures, Plumbing Equipment, Mechanical Equipment, Air Terminals, Sprinklers, Specialty Equipment, Generic Models, Pipes, Pipe Fittings, Ducts, Duct Fittings, Conduits, Cable Trays",
+      "description": "Auto-MEP run id (fmc-auto-run journal) that placed or last changed this element; blank = placed by a person",
+      "why": "Ties every placed element to its run journal so a run can be undone or audited",
+      "step": "E4",
+      "status": "proposed"
+    },
+    {
+      "name": "FMC_Auto_Locked",
+      "guid": "b48f327e-4af6-5377-ae73-7fd24d96b0dd",
+      "group": 18,
+      "group_name": "FMC_18_QA_Information_Status",
+      "datatype": "YESNO",
+      "binding": "I",
+      "binding_name": "Instance",
+      "categories": "Rooms, Spaces, Lighting Fixtures, Lighting Devices, Electrical Fixtures, Electrical Equipment, Data Devices, Fire Alarm Devices, Security Devices, Plumbing Fixtures, Plumbing Equipment, Mechanical Equipment, Air Terminals, Sprinklers, Specialty Equipment, Generic Models, Pipes, Pipe Fittings, Ducts, Duct Fittings, Conduits, Cable Trays",
+      "description": "Yes = a person has taken this element (or room) over; Auto-MEP never moves, re-types or deletes it",
+      "why": "A rebuild must never silently undo a person's work (PLAN_RECIPE_TREE rule)",
+      "step": "E4, T3",
+      "status": "proposed"
+    },
+    {
+      "name": "FMC_AI_Hint_Kind",
+      "guid": "d7c3e7fc-b045-58e5-a582-2454cf23cc0b",
+      "group": 18,
+      "group_name": "FMC_18_QA_Information_Status",
+      "datatype": "TEXT",
+      "binding": "T",
+      "binding_name": "Type",
+      "categories": "Generic Models",
+      "description": "Kind of AI hint marker: DB_Here, Riser_Zone, No_Services, Keep_Clear, Feature_Light, Supply_Intake (FMC_AI_Hint_Marker types)",
+      "why": "A person steers Auto-MEP by dropping a marker in the model instead of typing instructions",
+      "step": "E4",
+      "status": "proposed",
+      "allowed_values": [
+        "DB_Here",
+        "Riser_Zone",
+        "No_Services",
+        "Keep_Clear",
+        "Feature_Light",
+        "Supply_Intake"
+      ]
+    },
+    {
+      "name": "FMC_Switch_Ref",
+      "guid": "18438d3f-1c56-5df6-9f08-4387c0de6b00",
+      "group": 8,
+      "group_name": "FMC_08_Electrical",
+      "datatype": "TEXT",
+      "binding": "I",
+      "binding_name": "Instance",
+      "categories": "Lighting Fixtures, Lighting Devices, Electrical Fixtures, Generic Models",
+      "description": "Switch or switch group that controls this fitting, e.g. L4 (Revit's Switch ID is read-only without circuits)",
+      "why": "KISIC gap script 19 binds an ad-hoc parameter 'FMC Switch'; switching cannot be recorded without it",
+      "step": "E3, E4",
+      "status": "proposed",
+      "replaces": "FMC Switch (KISIC 19_fmc_switch_param.cs): copy its values across, then remove it from the model"
+    },
+    {
+      "name": "FMC_Elec_System",
+      "guid": "459e686a-02fb-56dc-874c-bb71947f62ae",
+      "group": 8,
+      "group_name": "FMC_08_Electrical",
+      "datatype": "TEXT",
+      "binding": "I",
+      "binding_name": "Instance",
+      "categories": "Electrical Equipment, Electrical Fixtures, Lighting Fixtures, Mechanical Equipment, Plumbing Fixtures, Plumbing Equipment, Specialty Equipment, Fire Alarm Devices, Data Devices, Security Devices",
+      "description": "Electrical service: Power, Lighting, Emergency Lighting, Fire, Data, Security, Mechanical",
+      "why": "Electrical 0.1 groups loads and circuits by service",
+      "step": "E3",
+      "status": "proposed"
+    },
+    {
+      "name": "FMC_Phases",
+      "guid": "c8bc67d6-c1f4-5ebf-87d0-b00ec35ce4ae",
+      "group": 8,
+      "group_name": "FMC_08_Electrical",
+      "datatype": "INTEGER",
+      "binding": "I",
+      "binding_name": "Instance",
+      "categories": "Electrical Equipment, Electrical Fixtures, Lighting Fixtures, Mechanical Equipment, Plumbing Fixtures, Plumbing Equipment, Specialty Equipment, Fire Alarm Devices, Data Devices, Security Devices",
+      "description": "Supply phases for the load: 1 or 3",
+      "why": "Balancing and feeder sizing",
+      "step": "E1, E3",
+      "status": "proposed"
+    },
+    {
+      "name": "FMC_Design_Current_A",
+      "guid": "e7bee2d4-11b0-5057-97d9-90d83e5c8e33",
+      "group": 8,
+      "group_name": "FMC_08_Electrical",
+      "datatype": "NUMBER",
+      "binding": "I",
+      "binding_name": "Instance",
+      "categories": "Electrical Equipment, Electrical Fixtures, Lighting Fixtures, Mechanical Equipment, Plumbing Fixtures, Plumbing Equipment, Specialty Equipment, Fire Alarm Devices, Data Devices, Security Devices",
+      "description": "Design current Ib (A), written by the calculation; the engineer checks it",
+      "why": "Feeder sizing and CA-E-01 / CA-E-02 inputs",
+      "step": "E1, E3",
+      "status": "proposed"
+    },
+    {
+      "name": "FMC_Protective_Device_A",
+      "guid": "641c13bd-fdb2-5444-b44d-e39098b6d4d4",
+      "group": 8,
+      "group_name": "FMC_08_Electrical",
+      "datatype": "NUMBER",
+      "binding": "I",
+      "binding_name": "Instance",
+      "categories": "Electrical Equipment, Mechanical Equipment",
+      "description": "Rated current In (A) of the protective device feeding this equipment",
+      "why": "Feeder sizing; SLD labels",
+      "step": "E1, E2, E3",
+      "status": "proposed"
+    },
+    {
+      "name": "FMC_Conductor_Size_mm2",
+      "guid": "a6c2566c-70cc-586b-aa61-40cfb722d43b",
+      "group": 8,
+      "group_name": "FMC_08_Electrical",
+      "datatype": "TEXT",
+      "binding": "I",
+      "binding_name": "Instance",
+      "categories": "Electrical Equipment, Mechanical Equipment",
+      "description": "Sized line conductor, e.g. 4C 16 mm2 Cu XLPE/SWA; written by the calculation, the engineer approves",
+      "why": "Feeder sizing result; SLD and cable schedule",
+      "step": "E1, E2, E3",
+      "status": "proposed"
+    },
+    {
+      "name": "FMC_CPC_Size_mm2",
+      "guid": "fc307f32-71e9-5d4d-b148-d74797a179f5",
+      "group": 8,
+      "group_name": "FMC_08_Electrical",
+      "datatype": "TEXT",
+      "binding": "I",
+      "binding_name": "Instance",
+      "categories": "Electrical Equipment, Mechanical Equipment",
+      "description": "Circuit protective conductor size, e.g. 16 mm2 (or armour as CPC)",
+      "why": "Feeder sizing result",
+      "step": "E1, E3",
+      "status": "proposed"
+    },
+    {
+      "name": "FMC_Voltage_Drop_Pct",
+      "guid": "f2c7b8e0-1ac5-5cbe-a454-77daad4457ad",
+      "group": 8,
+      "group_name": "FMC_08_Electrical",
+      "datatype": "NUMBER",
+      "binding": "I",
+      "binding_name": "Instance",
+      "categories": "Electrical Equipment, Mechanical Equipment",
+      "description": "Calculated voltage drop (%) to this equipment, written back from CA-E-02 or the calculation (limits 3% lighting, 5% other per BS 7671 App. 4)",
+      "why": "Lets CA-E-02 write back like CA-E-03 does for lux",
+      "step": "E1, E3",
+      "status": "proposed"
+    },
+    {
+      "name": "FMC_Calc_Status",
+      "guid": "5305a647-c339-55f7-bc88-47b9cdbfba45",
+      "group": 18,
+      "group_name": "FMC_18_QA_Information_Status",
+      "datatype": "TEXT",
+      "binding": "I",
+      "binding_name": "Instance",
+      "categories": "Electrical Equipment, Electrical Fixtures, Lighting Fixtures, Mechanical Equipment, Plumbing Fixtures, Plumbing Equipment, Specialty Equipment, Fire Alarm Devices, Data Devices, Security Devices",
+      "description": "Result of the last calculation on this element: OK, WARN or FAIL (never 'approved': that is the engineer's)",
+      "why": "Shows what needs an engineer's eye",
+      "step": "E1, E3",
+      "status": "proposed"
+    },
+    {
+      "name": "FMC_Data_Source",
+      "guid": "37a31656-814a-56e0-b6b8-b794e070ce16",
+      "group": 18,
+      "group_name": "FMC_18_QA_Information_Status",
+      "datatype": "TEXT",
+      "binding": "I",
+      "binding_name": "Instance",
+      "categories": "Electrical Equipment, Electrical Fixtures, Lighting Fixtures, Mechanical Equipment, Plumbing Fixtures, Plumbing Equipment, Specialty Equipment, Fire Alarm Devices, Data Devices, Security Devices",
+      "description": "Where this element's electrical data came from: Model, Library:<id> (assumed), or Manual (a person)",
+      "why": "Library guesses must stay visible as assumed",
+      "step": "E3",
+      "status": "proposed"
+    },
+    {
+      "name": "FMC_Elec_Code_Pack",
+      "guid": "8ab46453-f9cd-5e8f-a3f4-b836a3b56f95",
+      "group": 8,
+      "group_name": "FMC_08_Electrical",
+      "datatype": "TEXT",
+      "binding": "P",
+      "binding_name": "Project Information",
+      "categories": "Project Information",
+      "description": "Electrical code pack for calculations: iec (BS 7671 / IEC 60364) or nec; the kit default is iec",
+      "why": "One code for the whole project",
+      "step": "E1, E3",
+      "status": "proposed"
+    }
+  ],
+  "electrical_0_1_mapping": [
+    {
+      "electrical_0_1": "FMC_System_Type",
+      "status": "proposed",
+      "kit_parameter": "FMC_Elec_System",
+      "note": "No kit parameter: FMC_Pipe_System is plumbing only; Revit's Load Classification is a load class, not the service"
+    },
+    {
+      "electrical_0_1": "FMC_Circuit_ID",
+      "status": "mapped",
+      "kit_parameter": "FMC_Circuit_Ref",
+      "note": "Same meaning. Kit binding is Electrical Fixtures and Lighting Fixtures only: widen it to the load categories (Electrical Equipment, Mechanical Equipment, Plumbing Fixtures, Specialty Equipment, Fire Alarm Devices, Data Devices)"
+    },
+    {
+      "electrical_0_1": "FMC_Load_VA",
+      "status": "mapped",
+      "kit_parameter": "FMC_Power_W + built-in connector Apparent Load",
+      "note": "Kit families carry rated power in FMC_Power_W (type) and set the connector's Apparent Load = FMC_Power_W / Power Factor (kit fmc_family_specs). Electrical 0.1 should read the connector's Apparent Load, not keep a second VA value"
+    },
+    {
+      "electrical_0_1": "FMC_Voltage",
+      "status": "mapped",
+      "kit_parameter": "built-in Voltage (family parameter linked to the connector)",
+      "note": "Every kit electrical recipe adds Voltage and links it to the connector (STD-002 5.2). For a non-kit family with no connector data Electrical 0.1 should flag it, not write a guess"
+    },
+    {
+      "electrical_0_1": "FMC_Phases",
+      "status": "proposed",
+      "kit_parameter": "FMC_Phases",
+      "note": "No kit or built-in parameter on a load says 1 or 3 phase (poles alone don't for 2-pole loads)"
+    },
+    {
+      "electrical_0_1": "FMC_Poles",
+      "status": "mapped",
+      "kit_parameter": "built-in Number of Poles (family parameter linked to the connector)",
+      "note": "Every kit electrical recipe adds Number of Poles and links it to the connector"
+    },
+    {
+      "electrical_0_1": "FMC_Demand_Factor",
+      "status": "mapped",
+      "kit_parameter": "built-in Load Classification demand factor (Electrical_Settings)",
+      "note": "The kit sets demand factors per load classification and per project, approved by the electrical engineer (Electrical_Settings; TPL-025). A per-element demand factor is not proposed: Electrical 0.1 should stop writing one"
+    },
+    {
+      "electrical_0_1": "FMC_Load_Class",
+      "status": "mapped",
+      "kit_parameter": "built-in Load Classification (connector)",
+      "note": "Kit load classifications: Lighting, Power, Water Heater, Motor, HVAC, Emergency Lighting, Site Lighting, Other (Electrical_Settings)"
+    },
+    {
+      "electrical_0_1": "FMC_Design_Amps",
+      "status": "proposed",
+      "kit_parameter": "FMC_Design_Current_A",
+      "note": "No kit parameter. BS 7671 term: design current Ib"
+    },
+    {
+      "electrical_0_1": "FMC_OCP_Amps",
+      "status": "proposed",
+      "kit_parameter": "FMC_Protective_Device_A",
+      "note": "No kit parameter. BS 7671 term: rated current In of the protective device. Revit circuits have a built-in Rating, but feeders to equipment need it on the equipment"
+    },
+    {
+      "electrical_0_1": "FMC_Conductor_Size",
+      "status": "proposed",
+      "kit_parameter": "FMC_Conductor_Size_mm2",
+      "note": "FMC_Cable_Spec is a type parameter on conduits, trays and equipment (the cable product); the sized conductor is per feeder (instance)"
+    },
+    {
+      "electrical_0_1": "FMC_Ground_Size",
+      "status": "proposed",
+      "kit_parameter": "FMC_CPC_Size_mm2",
+      "note": "No kit parameter. BS 7671 term: circuit protective conductor (CPC)"
+    },
+    {
+      "electrical_0_1": "FMC_Voltage_Drop",
+      "status": "proposed",
+      "kit_parameter": "FMC_Voltage_Drop_Pct",
+      "note": "No kit parameter; CA-E-02 (Calc_E_VoltDrop) has nowhere to write back today"
+    },
+    {
+      "electrical_0_1": "FMC_Calc_Status",
+      "status": "proposed",
+      "kit_parameter": "FMC_Calc_Status",
+      "note": "FMC_QA_Status is the model-check status (Unchecked/Checked...), not a calculation result"
+    },
+    {
+      "electrical_0_1": "FMC_Data_Source",
+      "status": "proposed",
+      "kit_parameter": "FMC_Data_Source",
+      "note": "No kit parameter. Values: Model, Library:<id> (assumed), Manual; matches the kit's source_status idea"
+    },
+    {
+      "electrical_0_1": "FMC_Code_Pack",
+      "status": "proposed",
+      "kit_parameter": "FMC_Elec_Code_Pack",
+      "note": "Project-wide, so bound to Project Information (one value), not to every element"
+    }
+  ],
+  "counts": {
+    "proposed": 16,
+    "electrical_0_1_total": 16,
+    "electrical_mapped_to_existing": 6,
+    "electrical_proposed_new": 10
+  },
+  "notes_for_electrical_0_1": [
+    "Electrical 0.1 writes its own shared-parameter file (FormCraft_SharedParameters.txt, group FormCraft) with Revit-made random GUIDs. Once the kit publishes these, it must bind the kit's file and GUIDs instead, or the same name will exist twice with different GUIDs.",
+    "Its Library/load-defaults.json is North American (120 V receptacles at 180 VA, 277 V high-bay, 240 V 2-pole water heater). Uganda projects need a 240/415 V, BS 1363 library before any default is used, and every library value stays 'assumed'.",
+    "Its IEC code pack defaults to 230 V; the kit's distribution systems are 415/240 V (Electrical_Settings)."
+  ]
+}

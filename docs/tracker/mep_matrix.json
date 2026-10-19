@@ -1,0 +1,1862 @@
+{
+  "schema": "fmc-mep-matrix/0.1",
+  "title": "Model target: 23 systems by 7 capabilities",
+  "updated": "2026-10-19",
+  "rules": [
+    "One honest record: the pane, the build tracker and the Master Board read this file; the counts are computed, never stored.",
+    "Evidence lists the files that implement a cell (paths from the repo root); empty when nothing is built.",
+    "Tested in Revit only after a passing check on a real model by a person or an unattended scenario."
+  ],
+  "states": [
+    "Tested in Revit",
+    "Built, Revit check due",
+    "Partly built",
+    "Kit calculation only",
+    "Planned",
+    "Not applicable"
+  ],
+  "disciplines": {
+    "E": "Electrical",
+    "FP": "Fire protection",
+    "P": "Plumbing",
+    "M": "Mechanical",
+    "LP": "Lightning and earthing",
+    "S": "Structural"
+  },
+  "capabilities": [
+    {
+      "id": "enrich",
+      "name": "Enrich",
+      "meaning": "Fill the kit's data on the model's elements (loads, ratings, flows, marks) so the other steps have facts to work from"
+    },
+    {
+      "id": "size",
+      "name": "Size",
+      "meaning": "Propose sizes (cables, breakers, pipes, ducts, plant) as drafts from the facts; the engineer decides"
+    },
+    {
+      "id": "diagram",
+      "name": "Diagram",
+      "meaning": "Draw the system's line diagram (single-line, riser or schematic) from the model, values from the model only"
+    },
+    {
+      "id": "calculate",
+      "name": "Calculate",
+      "meaning": "Run the kit's calculation for the system on the model's facts and write a calc sheet with TBC where data is missing"
+    },
+    {
+      "id": "review",
+      "name": "Review",
+      "meaning": "Check the model and the calculation results read-only and list what is wrong or missing for the engineer"
+    },
+    {
+      "id": "quantities",
+      "name": "Quantities",
+      "meaning": "Schedules and quantities from the model that feed the BoQ and procurement"
+    },
+    {
+      "id": "document",
+      "name": "Document",
+      "meaning": "Sheets from the Sheet Register (diagrams, schedules, calc summaries) ready to issue"
+    }
+  ],
+  "systems": [
+    {
+      "id": "power_distribution",
+      "name": "Power distribution",
+      "discipline": "E"
+    },
+    {
+      "id": "lighting",
+      "name": "Lighting",
+      "discipline": "E"
+    },
+    {
+      "id": "small_power",
+      "name": "Small power",
+      "discipline": "E"
+    },
+    {
+      "id": "elv_security",
+      "name": "ELV & security",
+      "discipline": "E"
+    },
+    {
+      "id": "fire_alarm",
+      "name": "Fire alarm",
+      "discipline": "FP"
+    },
+    {
+      "id": "fire_fighting",
+      "name": "Fire fighting",
+      "discipline": "FP"
+    },
+    {
+      "id": "sprinklers",
+      "name": "Sprinklers",
+      "discipline": "FP"
+    },
+    {
+      "id": "cold_water",
+      "name": "Cold water",
+      "discipline": "P"
+    },
+    {
+      "id": "hot_water",
+      "name": "Hot water",
+      "discipline": "P"
+    },
+    {
+      "id": "drainage",
+      "name": "Drainage",
+      "discipline": "P"
+    },
+    {
+      "id": "rainwater",
+      "name": "Rainwater",
+      "discipline": "P"
+    },
+    {
+      "id": "gas",
+      "name": "Gas",
+      "discipline": "P"
+    },
+    {
+      "id": "high_pressure",
+      "name": "High pressure",
+      "discipline": "M"
+    },
+    {
+      "id": "ventilation",
+      "name": "Ventilation",
+      "discipline": "M"
+    },
+    {
+      "id": "air_conditioning",
+      "name": "Air conditioning",
+      "discipline": "M"
+    },
+    {
+      "id": "refrigerant",
+      "name": "Refrigerant",
+      "discipline": "M"
+    },
+    {
+      "id": "bms",
+      "name": "BMS",
+      "discipline": "M"
+    },
+    {
+      "id": "lightning",
+      "name": "Lightning",
+      "discipline": "LP"
+    },
+    {
+      "id": "earthing",
+      "name": "Earthing",
+      "discipline": "LP"
+    },
+    {
+      "id": "solar",
+      "name": "Solar",
+      "discipline": "E"
+    },
+    {
+      "id": "generators",
+      "name": "Generators",
+      "discipline": "E"
+    },
+    {
+      "id": "lifts",
+      "name": "Lifts",
+      "discipline": "M"
+    },
+    {
+      "id": "structural",
+      "name": "Structural",
+      "discipline": "S"
+    }
+  ],
+  "cells": [
+    {
+      "system": "power_distribution",
+      "capability": "enrich",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F79",
+      "step": "E3",
+      "note": "Enrich load data exists in Electrical 0.1, merged in E3"
+    },
+    {
+      "system": "power_distribution",
+      "capability": "size",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F79",
+      "step": "E3",
+      "note": "Feeder sizing and voltage drop exists in Electrical 0.1, merged in E3"
+    },
+    {
+      "system": "power_distribution",
+      "capability": "diagram",
+      "state": "Built, Revit check due",
+      "evidence": [
+        "server/src/tools/fmc_diagram.ts",
+        "server/src/fmc/diagram/layout.ts",
+        "commandset/Services/Fmc/FmcDiagramScan.cs",
+        "commandset/Services/Fmc/FmcDiagramDraw.cs",
+        "server/src/fmc/diagram/sld.ts",
+        "server/src/fmc/diagram/riser.ts"
+      ],
+      "feature": "F23",
+      "step": "",
+      "note": "fmc_diagram e_sld and e_power_riser (LD1-LD4); not yet checked on a real model"
+    },
+    {
+      "system": "power_distribution",
+      "capability": "calculate",
+      "state": "Partly built",
+      "evidence": [
+        "server/src/tools/fmc_systems.ts",
+        "server/src/fmc/systems.ts",
+        "commandset/Services/Fmc/FmcSystemsEventHandler.cs",
+        "commandset/Commands/Fmc/FmcSystemsCommands.cs"
+      ],
+      "feature": "F31",
+      "step": "E1",
+      "note": "fmc_systems electrical reads each board's connected and demand VA from Revit's own panel values; kit CA-E-01 maximum demand and CA-E-02 voltage drop are ported in E1"
+    },
+    {
+      "system": "power_distribution",
+      "capability": "review",
+      "state": "Partly built",
+      "evidence": [
+        "server/src/tools/fmc_systems.ts",
+        "server/src/fmc/systems.ts",
+        "commandset/Services/Fmc/FmcSystemsEventHandler.cs",
+        "commandset/Commands/Fmc/FmcSystemsCommands.cs"
+      ],
+      "feature": "F31",
+      "step": "E1",
+      "note": "fmc_systems electrical: boards with no circuits, boards fed by no board, circuits on no board; reviewing calc results arrives with E1"
+    },
+    {
+      "system": "power_distribution",
+      "capability": "quantities",
+      "state": "Partly built",
+      "evidence": [
+        "server/src/fmc/templatekit.ts",
+        "commandset/Services/Fmc/FmcTemplateBuild.cs",
+        "server/src/tools/fmc_schedules.ts",
+        "server/src/fmc/schedules.ts",
+        "commandset/Services/Fmc/FmcSchedules.cs"
+      ],
+      "feature": "F60",
+      "step": "",
+      "note": "Kit schedules E10_Load_Summary, E11_Panel_Summary, E15_Electrical_Equipment made by the template builder and fmc_schedules; quantities only, not a full BoQ take-off"
+    },
+    {
+      "system": "power_distribution",
+      "capability": "document",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F78",
+      "step": "E2",
+      "note": "Diagram sheets from the Sheet Register (E-0003 single-line diagram and load summary, E-6002 riser diagram) and Gate D in LD5"
+    },
+    {
+      "system": "lighting",
+      "capability": "enrich",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F79",
+      "step": "E3",
+      "note": "Load data for lighting circuits exists in Electrical 0.1, merged in E3"
+    },
+    {
+      "system": "lighting",
+      "capability": "size",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F79",
+      "step": "E3",
+      "note": "Circuit sizing exists in Electrical 0.1, merged in E3"
+    },
+    {
+      "system": "lighting",
+      "capability": "diagram",
+      "state": "Partly built",
+      "evidence": [
+        "server/src/tools/fmc_diagram.ts",
+        "server/src/fmc/diagram/layout.ts",
+        "commandset/Services/Fmc/FmcDiagramScan.cs",
+        "commandset/Services/Fmc/FmcDiagramDraw.cs",
+        "server/src/fmc/diagram/sld.ts",
+        "server/src/fmc/diagram/riser.ts"
+      ],
+      "feature": "F23",
+      "step": "",
+      "note": "Lighting circuits show as ways on the board's single-line diagram; no lighting layout or circuit diagram of its own"
+    },
+    {
+      "system": "lighting",
+      "capability": "calculate",
+      "state": "Kit calculation only",
+      "evidence": [],
+      "feature": "F77",
+      "step": "E1",
+      "note": "Kit CA-E-03 lighting levels (lumen method or DIALux) and CA-E-02 voltage drop (3% limit) (FMC_Revit_Kit.xlsx, Calculations); ported to code in E1"
+    },
+    {
+      "system": "lighting",
+      "capability": "review",
+      "state": "Partly built",
+      "evidence": [
+        "server/src/tools/fmc_systems.ts",
+        "server/src/fmc/systems.ts",
+        "commandset/Services/Fmc/FmcSystemsEventHandler.cs",
+        "commandset/Commands/Fmc/FmcSystemsCommands.cs"
+      ],
+      "feature": "F31",
+      "step": "",
+      "note": "fmc_systems electrical lists lighting fixtures and devices with a power connector on no circuit"
+    },
+    {
+      "system": "lighting",
+      "capability": "quantities",
+      "state": "Partly built",
+      "evidence": [
+        "server/src/fmc/templatekit.ts",
+        "commandset/Services/Fmc/FmcTemplateBuild.cs",
+        "server/src/tools/fmc_schedules.ts",
+        "server/src/fmc/schedules.ts",
+        "commandset/Services/Fmc/FmcSchedules.cs"
+      ],
+      "feature": "F60",
+      "step": "",
+      "note": "Kit schedules E12_Lighting_Fixtures, E13_Device_Count made by the template builder and fmc_schedules; quantities only, not a full BoQ take-off"
+    },
+    {
+      "system": "lighting",
+      "capability": "document",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F60",
+      "step": "",
+      "note": "Luminaire schedule sheet E-5002 from the kit schedule; not yet placed by a tool"
+    },
+    {
+      "system": "small_power",
+      "capability": "enrich",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F79",
+      "step": "E3",
+      "note": "Enrich load data exists in Electrical 0.1, merged in E3"
+    },
+    {
+      "system": "small_power",
+      "capability": "size",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F79",
+      "step": "E3",
+      "note": "Circuit sizing and voltage drop exists in Electrical 0.1, merged in E3"
+    },
+    {
+      "system": "small_power",
+      "capability": "diagram",
+      "state": "Partly built",
+      "evidence": [
+        "server/src/tools/fmc_diagram.ts",
+        "server/src/fmc/diagram/layout.ts",
+        "commandset/Services/Fmc/FmcDiagramScan.cs",
+        "commandset/Services/Fmc/FmcDiagramDraw.cs",
+        "server/src/fmc/diagram/sld.ts",
+        "server/src/fmc/diagram/riser.ts"
+      ],
+      "feature": "F23",
+      "step": "",
+      "note": "Small power circuits show as ways on the board's single-line diagram; no layout diagram of its own"
+    },
+    {
+      "system": "small_power",
+      "capability": "calculate",
+      "state": "Kit calculation only",
+      "evidence": [],
+      "feature": "F77",
+      "step": "E1",
+      "note": "Kit CA-E-02 voltage drop (5% limit) (FMC_Revit_Kit.xlsx, Calculations); ported to code in E1"
+    },
+    {
+      "system": "small_power",
+      "capability": "review",
+      "state": "Partly built",
+      "evidence": [
+        "server/src/tools/fmc_systems.ts",
+        "server/src/fmc/systems.ts",
+        "commandset/Services/Fmc/FmcSystemsEventHandler.cs",
+        "commandset/Commands/Fmc/FmcSystemsCommands.cs"
+      ],
+      "feature": "F31",
+      "step": "",
+      "note": "fmc_systems electrical lists electrical fixtures with a power connector on no circuit"
+    },
+    {
+      "system": "small_power",
+      "capability": "quantities",
+      "state": "Partly built",
+      "evidence": [
+        "server/src/fmc/templatekit.ts",
+        "commandset/Services/Fmc/FmcTemplateBuild.cs",
+        "server/src/tools/fmc_schedules.ts",
+        "server/src/fmc/schedules.ts",
+        "commandset/Services/Fmc/FmcSchedules.cs"
+      ],
+      "feature": "F60",
+      "step": "",
+      "note": "Kit schedules E13_Device_Count, E14_Circuit_VoltageDrop made by the template builder and fmc_schedules; quantities only, not a full BoQ take-off"
+    },
+    {
+      "system": "small_power",
+      "capability": "document",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F60",
+      "step": "",
+      "note": "Device and cable schedules (E-5003, E-5004) from the kit schedules; not yet placed by a tool"
+    },
+    {
+      "system": "elv_security",
+      "capability": "enrich",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "elv_security",
+      "capability": "size",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "elv_security",
+      "capability": "diagram",
+      "state": "Built, Revit check due",
+      "evidence": [
+        "server/src/tools/fmc_diagram.ts",
+        "server/src/fmc/diagram/layout.ts",
+        "commandset/Services/Fmc/FmcDiagramScan.cs",
+        "commandset/Services/Fmc/FmcDiagramDraw.cs",
+        "server/src/fmc/diagram/bands.ts"
+      ],
+      "feature": "F23",
+      "step": "",
+      "note": "fmc_diagram e_elv_riser (LD1-LD4); not yet checked on a real model"
+    },
+    {
+      "system": "elv_security",
+      "capability": "calculate",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F77",
+      "step": "E1",
+      "note": "No kit calculation for ELV: a kit change request first"
+    },
+    {
+      "system": "elv_security",
+      "capability": "review",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": "fmc_systems electrical only lists data devices on no circuit; no ELV review yet"
+    },
+    {
+      "system": "elv_security",
+      "capability": "quantities",
+      "state": "Partly built",
+      "evidence": [
+        "server/src/fmc/templatekit.ts",
+        "commandset/Services/Fmc/FmcTemplateBuild.cs",
+        "server/src/tools/fmc_schedules.ts",
+        "server/src/fmc/schedules.ts",
+        "commandset/Services/Fmc/FmcSchedules.cs"
+      ],
+      "feature": "F60",
+      "step": "",
+      "note": "Kit schedules E13_Device_Count (data devices) made by the template builder and fmc_schedules; quantities only, not a full BoQ take-off"
+    },
+    {
+      "system": "elv_security",
+      "capability": "document",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": "No diagram sheet for this system in the Sheet Register yet: a kit change request"
+    },
+    {
+      "system": "fire_alarm",
+      "capability": "enrich",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "fire_alarm",
+      "capability": "size",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "fire_alarm",
+      "capability": "diagram",
+      "state": "Built, Revit check due",
+      "evidence": [
+        "server/src/tools/fmc_diagram.ts",
+        "server/src/fmc/diagram/layout.ts",
+        "commandset/Services/Fmc/FmcDiagramScan.cs",
+        "commandset/Services/Fmc/FmcDiagramDraw.cs",
+        "server/src/fmc/diagram/bands.ts"
+      ],
+      "feature": "F23",
+      "step": "",
+      "note": "fmc_diagram e_fa_riser (LD1-LD4); not yet checked on a real model"
+    },
+    {
+      "system": "fire_alarm",
+      "capability": "calculate",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F77",
+      "step": "E1",
+      "note": "No kit calculation for fire alarm: a kit change request first"
+    },
+    {
+      "system": "fire_alarm",
+      "capability": "review",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": "fmc_systems electrical only lists fire alarm devices on no circuit; no zone or BS 5839 review yet"
+    },
+    {
+      "system": "fire_alarm",
+      "capability": "quantities",
+      "state": "Partly built",
+      "evidence": [
+        "server/src/fmc/templatekit.ts",
+        "commandset/Services/Fmc/FmcTemplateBuild.cs",
+        "server/src/tools/fmc_schedules.ts",
+        "server/src/fmc/schedules.ts",
+        "commandset/Services/Fmc/FmcSchedules.cs"
+      ],
+      "feature": "F60",
+      "step": "",
+      "note": "Kit schedules E13_Device_Count (fire alarm devices) made by the template builder and fmc_schedules; quantities only, not a full BoQ take-off"
+    },
+    {
+      "system": "fire_alarm",
+      "capability": "document",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": "No diagram sheet for this system in the Sheet Register yet: a kit change request"
+    },
+    {
+      "system": "fire_fighting",
+      "capability": "enrich",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "fire_fighting",
+      "capability": "size",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "fire_fighting",
+      "capability": "diagram",
+      "state": "Built, Revit check due",
+      "evidence": [
+        "server/src/tools/fmc_diagram.ts",
+        "server/src/fmc/diagram/layout.ts",
+        "commandset/Services/Fmc/FmcDiagramScan.cs",
+        "commandset/Services/Fmc/FmcDiagramDraw.cs",
+        "server/src/fmc/diagram/bands.ts"
+      ],
+      "feature": "F23",
+      "step": "",
+      "note": "fmc_diagram fp_schematic (LD1-LD4); not yet checked on a real model"
+    },
+    {
+      "system": "fire_fighting",
+      "capability": "calculate",
+      "state": "Kit calculation only",
+      "evidence": [],
+      "feature": "F77",
+      "step": "E1",
+      "note": "Kit CA-FP-01 portable extinguishers and CA-FP-02 hose reel coverage (FMC_Revit_Kit.xlsx, Calculations); ported to code in E1"
+    },
+    {
+      "system": "fire_fighting",
+      "capability": "review",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F77",
+      "step": "E1",
+      "note": "Reviewing the calc results arrives with E1"
+    },
+    {
+      "system": "fire_fighting",
+      "capability": "quantities",
+      "state": "Partly built",
+      "evidence": [
+        "server/src/fmc/templatekit.ts",
+        "commandset/Services/Fmc/FmcTemplateBuild.cs",
+        "server/src/tools/fmc_schedules.ts",
+        "server/src/fmc/schedules.ts",
+        "commandset/Services/Fmc/FmcSchedules.cs"
+      ],
+      "feature": "F60",
+      "step": "",
+      "note": "Kit schedules FP10_Fire_Equipment made by the template builder and fmc_schedules; quantities only, not a full BoQ take-off"
+    },
+    {
+      "system": "fire_fighting",
+      "capability": "document",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": "No diagram sheet for this system in the Sheet Register yet: a kit change request"
+    },
+    {
+      "system": "sprinklers",
+      "capability": "enrich",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "sprinklers",
+      "capability": "size",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "sprinklers",
+      "capability": "diagram",
+      "state": "Built, Revit check due",
+      "evidence": [
+        "server/src/tools/fmc_diagram.ts",
+        "server/src/fmc/diagram/layout.ts",
+        "commandset/Services/Fmc/FmcDiagramScan.cs",
+        "commandset/Services/Fmc/FmcDiagramDraw.cs",
+        "server/src/fmc/diagram/bands.ts"
+      ],
+      "feature": "F23",
+      "step": "",
+      "note": "fmc_diagram fp_schematic (LD1-LD4); not yet checked on a real model"
+    },
+    {
+      "system": "sprinklers",
+      "capability": "calculate",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F77",
+      "step": "E1",
+      "note": "No kit calculation for sprinklers (BS EN 12845): a kit change request first"
+    },
+    {
+      "system": "sprinklers",
+      "capability": "review",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "sprinklers",
+      "capability": "quantities",
+      "state": "Partly built",
+      "evidence": [
+        "server/src/fmc/templatekit.ts",
+        "commandset/Services/Fmc/FmcTemplateBuild.cs",
+        "server/src/tools/fmc_schedules.ts",
+        "server/src/fmc/schedules.ts",
+        "commandset/Services/Fmc/FmcSchedules.cs"
+      ],
+      "feature": "F60",
+      "step": "",
+      "note": "Kit schedules FP10_Fire_Equipment (sprinklers) made by the template builder and fmc_schedules; quantities only, not a full BoQ take-off"
+    },
+    {
+      "system": "sprinklers",
+      "capability": "document",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": "No diagram sheet for this system in the Sheet Register yet: a kit change request"
+    },
+    {
+      "system": "cold_water",
+      "capability": "enrich",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "cold_water",
+      "capability": "size",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "cold_water",
+      "capability": "diagram",
+      "state": "Built, Revit check due",
+      "evidence": [
+        "server/src/tools/fmc_diagram.ts",
+        "server/src/fmc/diagram/layout.ts",
+        "commandset/Services/Fmc/FmcDiagramScan.cs",
+        "commandset/Services/Fmc/FmcDiagramDraw.cs",
+        "server/src/fmc/diagram/bands.ts"
+      ],
+      "feature": "F23",
+      "step": "",
+      "note": "fmc_diagram p_water (LD1-LD4); not yet checked on a real model"
+    },
+    {
+      "system": "cold_water",
+      "capability": "calculate",
+      "state": "Kit calculation only",
+      "evidence": [],
+      "feature": "F77",
+      "step": "E1",
+      "note": "Kit CA-P-01 water demand, storage and septic tank (FMC_Revit_Kit.xlsx, Calculations); ported to code in E1"
+    },
+    {
+      "system": "cold_water",
+      "capability": "review",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F77",
+      "step": "E1",
+      "note": "Reviewing the calc results arrives with E1"
+    },
+    {
+      "system": "cold_water",
+      "capability": "quantities",
+      "state": "Partly built",
+      "evidence": [
+        "server/src/fmc/templatekit.ts",
+        "commandset/Services/Fmc/FmcTemplateBuild.cs",
+        "server/src/tools/fmc_schedules.ts",
+        "server/src/fmc/schedules.ts",
+        "commandset/Services/Fmc/FmcSchedules.cs"
+      ],
+      "feature": "F60",
+      "step": "",
+      "note": "Kit schedules P13_Pipe_Quantities, P14_Valves, P15_Tanks_Pumps made by the template builder and fmc_schedules; quantities only, not a full BoQ take-off"
+    },
+    {
+      "system": "cold_water",
+      "capability": "document",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F78",
+      "step": "E2",
+      "note": "Diagram sheets from the Sheet Register (P-0003 water and drainage schematics) and Gate D in LD5"
+    },
+    {
+      "system": "hot_water",
+      "capability": "enrich",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "hot_water",
+      "capability": "size",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "hot_water",
+      "capability": "diagram",
+      "state": "Built, Revit check due",
+      "evidence": [
+        "server/src/tools/fmc_diagram.ts",
+        "server/src/fmc/diagram/layout.ts",
+        "commandset/Services/Fmc/FmcDiagramScan.cs",
+        "commandset/Services/Fmc/FmcDiagramDraw.cs",
+        "server/src/fmc/diagram/bands.ts"
+      ],
+      "feature": "F23",
+      "step": "",
+      "note": "fmc_diagram p_water (LD1-LD4); not yet checked on a real model"
+    },
+    {
+      "system": "hot_water",
+      "capability": "calculate",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F77",
+      "step": "E1",
+      "note": "No kit calculation for hot water (CA-P-01 is demand and storage): a kit change request first"
+    },
+    {
+      "system": "hot_water",
+      "capability": "review",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "hot_water",
+      "capability": "quantities",
+      "state": "Partly built",
+      "evidence": [
+        "server/src/fmc/templatekit.ts",
+        "commandset/Services/Fmc/FmcTemplateBuild.cs",
+        "server/src/tools/fmc_schedules.ts",
+        "server/src/fmc/schedules.ts",
+        "commandset/Services/Fmc/FmcSchedules.cs"
+      ],
+      "feature": "F60",
+      "step": "",
+      "note": "Kit schedules P11_Plumbing_Equipment, P13_Pipe_Quantities made by the template builder and fmc_schedules; quantities only, not a full BoQ take-off"
+    },
+    {
+      "system": "hot_water",
+      "capability": "document",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F78",
+      "step": "E2",
+      "note": "Diagram sheets from the Sheet Register (P-0003 water and drainage schematics) and Gate D in LD5"
+    },
+    {
+      "system": "drainage",
+      "capability": "enrich",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "drainage",
+      "capability": "size",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "drainage",
+      "capability": "diagram",
+      "state": "Built, Revit check due",
+      "evidence": [
+        "server/src/tools/fmc_diagram.ts",
+        "server/src/fmc/diagram/layout.ts",
+        "commandset/Services/Fmc/FmcDiagramScan.cs",
+        "commandset/Services/Fmc/FmcDiagramDraw.cs",
+        "server/src/fmc/diagram/bands.ts"
+      ],
+      "feature": "F23",
+      "step": "",
+      "note": "fmc_diagram p_drainage (LD1-LD4); not yet checked on a real model"
+    },
+    {
+      "system": "drainage",
+      "capability": "calculate",
+      "state": "Kit calculation only",
+      "evidence": [],
+      "feature": "F77",
+      "step": "E1",
+      "note": "Kit CA-P-02 drainage design flow (BS EN 12056-2) (FMC_Revit_Kit.xlsx, Calculations); ported to code in E1"
+    },
+    {
+      "system": "drainage",
+      "capability": "review",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F77",
+      "step": "E1",
+      "note": "Reviewing the calc results arrives with E1"
+    },
+    {
+      "system": "drainage",
+      "capability": "quantities",
+      "state": "Partly built",
+      "evidence": [
+        "server/src/fmc/templatekit.ts",
+        "commandset/Services/Fmc/FmcTemplateBuild.cs",
+        "server/src/tools/fmc_schedules.ts",
+        "server/src/fmc/schedules.ts",
+        "commandset/Services/Fmc/FmcSchedules.cs"
+      ],
+      "feature": "F60",
+      "step": "",
+      "note": "Kit schedules P10_Plumbing_Fixtures, P12_Manholes, P13_Pipe_Quantities made by the template builder and fmc_schedules; quantities only, not a full BoQ take-off"
+    },
+    {
+      "system": "drainage",
+      "capability": "document",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F78",
+      "step": "E2",
+      "note": "Diagram sheets from the Sheet Register (P-0003 water and drainage schematics, and the drainage long section) and Gate D in LD5"
+    },
+    {
+      "system": "rainwater",
+      "capability": "enrich",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "rainwater",
+      "capability": "size",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "rainwater",
+      "capability": "diagram",
+      "state": "Built, Revit check due",
+      "evidence": [
+        "server/src/tools/fmc_diagram.ts",
+        "server/src/fmc/diagram/layout.ts",
+        "commandset/Services/Fmc/FmcDiagramScan.cs",
+        "commandset/Services/Fmc/FmcDiagramDraw.cs",
+        "server/src/fmc/diagram/bands.ts"
+      ],
+      "feature": "F23",
+      "step": "",
+      "note": "fmc_diagram p_drainage (rainwater stacks) (LD1-LD4); not yet checked on a real model"
+    },
+    {
+      "system": "rainwater",
+      "capability": "calculate",
+      "state": "Kit calculation only",
+      "evidence": [],
+      "feature": "F77",
+      "step": "E1",
+      "note": "Kit CA-P-03 rainwater and storm run-off (rational method) (FMC_Revit_Kit.xlsx, Calculations); ported to code in E1"
+    },
+    {
+      "system": "rainwater",
+      "capability": "review",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F77",
+      "step": "E1",
+      "note": "Reviewing the calc results arrives with E1"
+    },
+    {
+      "system": "rainwater",
+      "capability": "quantities",
+      "state": "Partly built",
+      "evidence": [
+        "server/src/fmc/templatekit.ts",
+        "commandset/Services/Fmc/FmcTemplateBuild.cs",
+        "server/src/tools/fmc_schedules.ts",
+        "server/src/fmc/schedules.ts",
+        "commandset/Services/Fmc/FmcSchedules.cs"
+      ],
+      "feature": "F60",
+      "step": "",
+      "note": "Kit schedules P13_Pipe_Quantities, C10_Drainage_Structures made by the template builder and fmc_schedules; quantities only, not a full BoQ take-off"
+    },
+    {
+      "system": "rainwater",
+      "capability": "document",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F78",
+      "step": "E2",
+      "note": "Diagram sheets from the Sheet Register (P-0003 water and drainage schematics) and Gate D in LD5"
+    },
+    {
+      "system": "gas",
+      "capability": "enrich",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "gas",
+      "capability": "size",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "gas",
+      "capability": "diagram",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "gas",
+      "capability": "calculate",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": "No kit calculation for gas"
+    },
+    {
+      "system": "gas",
+      "capability": "review",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "gas",
+      "capability": "quantities",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": "No kit schedule for gas"
+    },
+    {
+      "system": "gas",
+      "capability": "document",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "high_pressure",
+      "capability": "enrich",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "high_pressure",
+      "capability": "size",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "high_pressure",
+      "capability": "diagram",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "high_pressure",
+      "capability": "calculate",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": "No kit calculation for high-pressure services"
+    },
+    {
+      "system": "high_pressure",
+      "capability": "review",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "high_pressure",
+      "capability": "quantities",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": "No kit schedule for high-pressure services"
+    },
+    {
+      "system": "high_pressure",
+      "capability": "document",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "ventilation",
+      "capability": "enrich",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "ventilation",
+      "capability": "size",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "ventilation",
+      "capability": "diagram",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": "No ventilation (duct) diagram kind yet"
+    },
+    {
+      "system": "ventilation",
+      "capability": "calculate",
+      "state": "Kit calculation only",
+      "evidence": [],
+      "feature": "F77",
+      "step": "E1",
+      "note": "Kit CA-M-02 ventilation rates (L/s per room use) (FMC_Revit_Kit.xlsx, Calculations); ported to code in E1"
+    },
+    {
+      "system": "ventilation",
+      "capability": "review",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F77",
+      "step": "E1",
+      "note": "Reviewing the calc results arrives with E1"
+    },
+    {
+      "system": "ventilation",
+      "capability": "quantities",
+      "state": "Partly built",
+      "evidence": [
+        "server/src/fmc/templatekit.ts",
+        "commandset/Services/Fmc/FmcTemplateBuild.cs",
+        "server/src/tools/fmc_schedules.ts",
+        "server/src/fmc/schedules.ts",
+        "commandset/Services/Fmc/FmcSchedules.cs"
+      ],
+      "feature": "F60",
+      "step": "",
+      "note": "Kit schedules M11_Air_Terminals, M12_Fans, M13_Duct_Pipe_Quantities made by the template builder and fmc_schedules; quantities only, not a full BoQ take-off"
+    },
+    {
+      "system": "ventilation",
+      "capability": "document",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "air_conditioning",
+      "capability": "enrich",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "air_conditioning",
+      "capability": "size",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "air_conditioning",
+      "capability": "diagram",
+      "state": "Partly built",
+      "evidence": [
+        "server/src/tools/fmc_diagram.ts",
+        "server/src/fmc/diagram/layout.ts",
+        "commandset/Services/Fmc/FmcDiagramScan.cs",
+        "commandset/Services/Fmc/FmcDiagramDraw.cs",
+        "server/src/fmc/diagram/schematic.ts"
+      ],
+      "feature": "F23",
+      "step": "",
+      "note": "fmc_diagram m_refrigerant draws split and VRF outdoor-indoor pairing; no chilled water or air-handling schematic"
+    },
+    {
+      "system": "air_conditioning",
+      "capability": "calculate",
+      "state": "Kit calculation only",
+      "evidence": [],
+      "feature": "F77",
+      "step": "E1",
+      "note": "Kit CA-M-01 cooling load (installed against required kW) (FMC_Revit_Kit.xlsx, Calculations); ported to code in E1"
+    },
+    {
+      "system": "air_conditioning",
+      "capability": "review",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F77",
+      "step": "E1",
+      "note": "Reviewing the calc results arrives with E1"
+    },
+    {
+      "system": "air_conditioning",
+      "capability": "quantities",
+      "state": "Partly built",
+      "evidence": [
+        "server/src/fmc/templatekit.ts",
+        "commandset/Services/Fmc/FmcTemplateBuild.cs",
+        "server/src/tools/fmc_schedules.ts",
+        "server/src/fmc/schedules.ts",
+        "commandset/Services/Fmc/FmcSchedules.cs"
+      ],
+      "feature": "F60",
+      "step": "",
+      "note": "Kit schedules M10_Mechanical_Equipment made by the template builder and fmc_schedules; quantities only, not a full BoQ take-off"
+    },
+    {
+      "system": "air_conditioning",
+      "capability": "document",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "refrigerant",
+      "capability": "enrich",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "refrigerant",
+      "capability": "size",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "refrigerant",
+      "capability": "diagram",
+      "state": "Built, Revit check due",
+      "evidence": [
+        "server/src/tools/fmc_diagram.ts",
+        "server/src/fmc/diagram/layout.ts",
+        "commandset/Services/Fmc/FmcDiagramScan.cs",
+        "commandset/Services/Fmc/FmcDiagramDraw.cs",
+        "server/src/fmc/diagram/schematic.ts"
+      ],
+      "feature": "F23",
+      "step": "",
+      "note": "fmc_diagram m_refrigerant (LD1-LD4); not yet checked on a real model"
+    },
+    {
+      "system": "refrigerant",
+      "capability": "calculate",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": "No kit calculation for refrigerant pipework"
+    },
+    {
+      "system": "refrigerant",
+      "capability": "review",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "refrigerant",
+      "capability": "quantities",
+      "state": "Partly built",
+      "evidence": [
+        "server/src/fmc/templatekit.ts",
+        "commandset/Services/Fmc/FmcTemplateBuild.cs",
+        "server/src/tools/fmc_schedules.ts",
+        "server/src/fmc/schedules.ts",
+        "commandset/Services/Fmc/FmcSchedules.cs"
+      ],
+      "feature": "F60",
+      "step": "",
+      "note": "Kit schedules M13_Duct_Pipe_Quantities (refrigerant) made by the template builder and fmc_schedules; quantities only, not a full BoQ take-off"
+    },
+    {
+      "system": "refrigerant",
+      "capability": "document",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": "No diagram sheet for this system in the Sheet Register yet: a kit change request"
+    },
+    {
+      "system": "bms",
+      "capability": "enrich",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "bms",
+      "capability": "size",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "bms",
+      "capability": "diagram",
+      "state": "Built, Revit check due",
+      "evidence": [
+        "server/src/tools/fmc_diagram.ts",
+        "server/src/fmc/diagram/layout.ts",
+        "commandset/Services/Fmc/FmcDiagramScan.cs",
+        "commandset/Services/Fmc/FmcDiagramDraw.cs",
+        "server/src/fmc/diagram/controls.ts"
+      ],
+      "feature": "F23",
+      "step": "",
+      "note": "fmc_diagram m_controls (controls network riser and points list) (LD1-LD4); not yet checked on a real model"
+    },
+    {
+      "system": "bms",
+      "capability": "calculate",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": "No kit calculation for BMS"
+    },
+    {
+      "system": "bms",
+      "capability": "review",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "bms",
+      "capability": "quantities",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": "No kit schedule for BMS points"
+    },
+    {
+      "system": "bms",
+      "capability": "document",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": "No diagram sheet for this system in the Sheet Register yet: a kit change request"
+    },
+    {
+      "system": "lightning",
+      "capability": "enrich",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "lightning",
+      "capability": "size",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "lightning",
+      "capability": "diagram",
+      "state": "Built, Revit check due",
+      "evidence": [
+        "server/src/tools/fmc_diagram.ts",
+        "server/src/fmc/diagram/layout.ts",
+        "commandset/Services/Fmc/FmcDiagramScan.cs",
+        "commandset/Services/Fmc/FmcDiagramDraw.cs",
+        "server/src/fmc/diagram/bands.ts"
+      ],
+      "feature": "F23",
+      "step": "",
+      "note": "fmc_diagram lp_schematic (LD1-LD4); not yet checked on a real model"
+    },
+    {
+      "system": "lightning",
+      "capability": "calculate",
+      "state": "Kit calculation only",
+      "evidence": [],
+      "feature": "F77",
+      "step": "E1",
+      "note": "Kit CA-LP-01 lightning protection design (BS EN 62305-3) (FMC_Revit_Kit.xlsx, Calculations); ported to code in E1"
+    },
+    {
+      "system": "lightning",
+      "capability": "review",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F77",
+      "step": "E1",
+      "note": "Reviewing the calc results arrives with E1"
+    },
+    {
+      "system": "lightning",
+      "capability": "quantities",
+      "state": "Partly built",
+      "evidence": [
+        "server/src/fmc/templatekit.ts",
+        "commandset/Services/Fmc/FmcTemplateBuild.cs",
+        "server/src/tools/fmc_schedules.ts",
+        "server/src/fmc/schedules.ts",
+        "commandset/Services/Fmc/FmcSchedules.cs"
+      ],
+      "feature": "F60",
+      "step": "",
+      "note": "Kit schedules LP10_LPS_Materials made by the template builder and fmc_schedules; quantities only, not a full BoQ take-off"
+    },
+    {
+      "system": "lightning",
+      "capability": "document",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": "No diagram sheet for this system in the Sheet Register yet: a kit change request"
+    },
+    {
+      "system": "earthing",
+      "capability": "enrich",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "earthing",
+      "capability": "size",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "earthing",
+      "capability": "diagram",
+      "state": "Built, Revit check due",
+      "evidence": [
+        "server/src/tools/fmc_diagram.ts",
+        "server/src/fmc/diagram/layout.ts",
+        "commandset/Services/Fmc/FmcDiagramScan.cs",
+        "commandset/Services/Fmc/FmcDiagramDraw.cs",
+        "server/src/fmc/diagram/bands.ts"
+      ],
+      "feature": "F23",
+      "step": "",
+      "note": "fmc_diagram lp_schematic (earth pits, test joints, bonds) (LD1-LD4); not yet checked on a real model"
+    },
+    {
+      "system": "earthing",
+      "capability": "calculate",
+      "state": "Kit calculation only",
+      "evidence": [],
+      "feature": "F77",
+      "step": "E1",
+      "note": "Kit CA-LP-02 earth resistance record (FMC_Revit_Kit.xlsx, Calculations); ported to code in E1"
+    },
+    {
+      "system": "earthing",
+      "capability": "review",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F77",
+      "step": "E1",
+      "note": "Reviewing the calc results arrives with E1"
+    },
+    {
+      "system": "earthing",
+      "capability": "quantities",
+      "state": "Partly built",
+      "evidence": [
+        "server/src/fmc/templatekit.ts",
+        "commandset/Services/Fmc/FmcTemplateBuild.cs",
+        "server/src/tools/fmc_schedules.ts",
+        "server/src/fmc/schedules.ts",
+        "commandset/Services/Fmc/FmcSchedules.cs"
+      ],
+      "feature": "F60",
+      "step": "",
+      "note": "Kit schedules LP11_Earth_Test_Record made by the template builder and fmc_schedules; quantities only, not a full BoQ take-off"
+    },
+    {
+      "system": "earthing",
+      "capability": "document",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F78",
+      "step": "E2",
+      "note": "Diagram sheets from the Sheet Register (E-0004 earthing and bonding schematic) and Gate D in LD5"
+    },
+    {
+      "system": "solar",
+      "capability": "enrich",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "solar",
+      "capability": "size",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "solar",
+      "capability": "diagram",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "solar",
+      "capability": "calculate",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": "No kit calculation for solar PV"
+    },
+    {
+      "system": "solar",
+      "capability": "review",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "solar",
+      "capability": "quantities",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": "No kit schedule for solar PV"
+    },
+    {
+      "system": "solar",
+      "capability": "document",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "generators",
+      "capability": "enrich",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "generators",
+      "capability": "size",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "generators",
+      "capability": "diagram",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": "The single-line diagram draws an ATS ahead of a board but no generator of its own yet"
+    },
+    {
+      "system": "generators",
+      "capability": "calculate",
+      "state": "Kit calculation only",
+      "evidence": [],
+      "feature": "F77",
+      "step": "E1",
+      "note": "Kit CA-E-01 maximum demand, transformer and generator selection (FMC_Revit_Kit.xlsx, Calculations); ported to code in E1"
+    },
+    {
+      "system": "generators",
+      "capability": "review",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "generators",
+      "capability": "quantities",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": "Only the generic E15_Electrical_Equipment schedule"
+    },
+    {
+      "system": "generators",
+      "capability": "document",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": "Sheet Register E-6003 generator and ATS arrangement; no tool yet"
+    },
+    {
+      "system": "lifts",
+      "capability": "enrich",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "lifts",
+      "capability": "size",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "lifts",
+      "capability": "diagram",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "lifts",
+      "capability": "calculate",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": "No kit calculation for lifts"
+    },
+    {
+      "system": "lifts",
+      "capability": "review",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "lifts",
+      "capability": "quantities",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": "No kit schedule for lifts (W12_Lift_Schedule is crane lifts)"
+    },
+    {
+      "system": "lifts",
+      "capability": "document",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": ""
+    },
+    {
+      "system": "structural",
+      "capability": "enrich",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "F32",
+      "step": "",
+      "note": "fmc_systems structural lists members with empty kit fields (FMC_Member_Mark, grades, exposure class); filling them is the engineer's"
+    },
+    {
+      "system": "structural",
+      "capability": "size",
+      "state": "Not applicable",
+      "evidence": [],
+      "feature": "F32",
+      "step": "",
+      "note": "Rule 5: structural sections are the engineer's decision; Formcraft lists the differences from analysis and never changes a section"
+    },
+    {
+      "system": "structural",
+      "capability": "diagram",
+      "state": "Not applicable",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": "Structural has no line diagram; its drawings are S plans, sections and schedules"
+    },
+    {
+      "system": "structural",
+      "capability": "calculate",
+      "state": "Built, Revit check due",
+      "evidence": [
+        "server/src/tools/fmc_robot.ts",
+        "server/src/fmc/robot.ts",
+        "commandset/Services/Fmc/FmcRobotEventHandler.cs",
+        "connectors/robot/Program.cs"
+      ],
+      "feature": "F32",
+      "step": "",
+      "note": "Robot hand-off: analytical members, the engineer's supports and load cases out; NEd and MEd back into FMC_FEA_ (the engineer designs and signs)"
+    },
+    {
+      "system": "structural",
+      "capability": "review",
+      "state": "Built, Revit check due",
+      "evidence": [
+        "server/src/tools/fmc_systems.ts",
+        "server/src/fmc/systems.ts",
+        "commandset/Services/Fmc/FmcSystemsEventHandler.cs",
+        "commandset/Commands/Fmc/FmcSystemsCommands.cs"
+      ],
+      "feature": "F32",
+      "step": "",
+      "note": "fmc_systems structural: analytical members, offsets, free ends, columns with nothing below, kit fields, utilisation already in the model"
+    },
+    {
+      "system": "structural",
+      "capability": "quantities",
+      "state": "Partly built",
+      "evidence": [
+        "server/src/fmc/templatekit.ts",
+        "commandset/Services/Fmc/FmcTemplateBuild.cs",
+        "server/src/tools/fmc_schedules.ts",
+        "server/src/fmc/schedules.ts",
+        "commandset/Services/Fmc/FmcSchedules.cs"
+      ],
+      "feature": "F60",
+      "step": "",
+      "note": "Kit schedules S10-S16 (columns, beams, foundations, BBS, concrete by grade, formwork, steel tonnage) made by the template builder and fmc_schedules; quantities only, not a full BoQ take-off"
+    },
+    {
+      "system": "structural",
+      "capability": "document",
+      "state": "Planned",
+      "evidence": [],
+      "feature": "",
+      "step": "",
+      "note": "S sheet set, schedules and BBS"
+    }
+  ]
+}
