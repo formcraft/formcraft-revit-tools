@@ -20,7 +20,8 @@ export const ROOM = z.object({
   width: mm.positive().describe("east-west, inside the walls, mm"),
   depth: mm.positive().describe("north-south, inside the walls, mm"),
   height: mm.positive().describe("floor to the structure above (wall height), mm"),
-  walls: z.object({ type: z.string().min(1), thickness: mm.positive() }),
+  walls: z.object({ type: z.string().min(1), thickness: mm.positive(),
+    skip: z.array(z.enum(WALLS)).default([]).describe("walls a neighbour builds (a shared wall is built once: T4)") }),
   ceiling: z.object({ type: z.string().min(1), height: mm.positive() }).optional(),
   openings: z.array(z.object({
     kind: z.enum(["door", "window"]), family: z.string().min(1), type: z.string().min(1), wall: z.enum(WALLS),
@@ -74,6 +75,7 @@ export function planRoom(input: Room): RoomPlan {
   const t = r.walls.thickness;
   // the walls on their centre lines, half a thickness outside the inner faces, corners overlapping by a half thickness
   for (const side of WALLS) {
+    if (r.walls.skip.includes(side)) continue;
     const l = wallLine(r, side);
     const out = [-l.into[0] * t / 2, -l.into[1] * t / 2];
     const dir = [(l.b[0] - l.a[0]) / l.length, (l.b[1] - l.a[1]) / l.length];
@@ -82,6 +84,7 @@ export function planRoom(input: Room): RoomPlan {
   }
   for (const o of r.openings) {
     const l = wallLine(r, o.wall);
+    if (r.walls.skip.includes(o.wall)) problems.push(`${o.kind} ${o.type} is on the ${o.wall} wall, which a neighbour builds: put it in that room's recipe, or build the wall here`);
     if (o.along - o.width / 2 < 100 || o.along + o.width / 2 > l.length - 100)
       problems.push(`${o.kind} ${o.type} on the ${o.wall} wall: ${o.width} wide at ${o.along} doesn't fit a ${l.length} mm wall with 100 mm returns`);
     const p = along(l, o.along);
@@ -99,6 +102,7 @@ export function planRoom(input: Room): RoomPlan {
       // the family's front faces into the room: rotated so its +y points along the wall's inward direction
       rot = Math.round((Math.atan2(l.into[1], l.into[0]) * 180) / Math.PI - 90);
       wall = it.at.wall;
+      if (it.host === "wall" && r.walls.skip.includes(wall)) problems.push(`${it.id} hangs on the ${wall} wall, which a neighbour builds: host it from that room, or build the wall here`);
       if (d < 0 || d > l.length) problems.push(`${it.id}: ${d} mm along the ${it.at.wall} wall is off a ${l.length} mm wall`);
     } else if ("centre" in it.at) p = [centre[0] + it.at.dx, centre[1] + it.at.dy];
     else p = [it.at.x, it.at.y];

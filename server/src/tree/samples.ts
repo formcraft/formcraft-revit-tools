@@ -19,7 +19,7 @@ export const ICU_BAY_SAMPLE: Tree = {
       children: [{
         id: "ICU", kind: "department", name: "Intensive care",
         children: [{
-          id: "ICU-Bay-01", kind: "room", name: "ICU bay", inputs: { width: 4200, depth: 5000, origin: [0, 0], number: "L2-ICU-01" },
+          id: "ICU-Bay-01", kind: "room", name: "ICU bay", inputs: { width: 4200, depth: 5000, origin: [0, 0], number: "L2-ICU-01", skip_walls: [], corridor_wall: "south", head_wall: "north" },
           children: [
             // the families first, so the room finds them loaded
             { id: "ICU-Bay-01.Families", kind: "group", name: "The bay's families",
@@ -35,14 +35,14 @@ export const ICU_BAY_SAMPLE: Tree = {
               make: { tool: "fmc_room", args: { action: "build", room: {
                 name: "ICU bay", number: "${var.number}", level: "${var.level}", origin_mm: "${var.origin}",
                 width: "${var.width}", depth: "${var.depth}", height: "${var.structure_height}",
-                walls: { type: "${var.wall_type}", thickness: "${var.wall_thickness}" },
+                walls: { type: "${var.wall_type}", thickness: "${var.wall_thickness}", skip: "${var.skip_walls}" },
                 ceiling: { type: "${var.ceiling_type}", height: "${var.ceiling_height}" },
                 openings: [
-                  { kind: "door", family: "FMC_A_Door_FlushSingle_Hygienic_Detailed", type: "1026x2100_S", wall: "south", along: 900, width: 1026 },
-                  { kind: "window", family: "FMC_A_Window_Observation_Internal_Nurse_Detailed", type: "1200x900_WfixedSWoption", wall: "east", along: 2500, width: 1200, sill: 900 },
+                  { kind: "door", family: "FMC_A_Door_FlushSingle_Hygienic_Detailed", type: "1026x2100_S", wall: "${var.corridor_wall}", along: 900, width: 1026 },
+                  { kind: "window", family: "FMC_A_Window_Observation_Internal_Nurse_Detailed", type: "1200x900_WfixedSWoption", wall: "${var.corridor_wall}", along: 2800, width: 1200, sill: 900 },
                 ],
                 items: [
-                  { id: "Bed", family: "FMC_I_MedEq_Bed_ICU_Electric_Detailed", type: "1020x2200_Standard", at: { wall: "north", off: 150 }, size: [1020, 2200], clearance: 1200 },
+                  { id: "Bed", family: "FMC_I_MedEq_Bed_ICU_Electric_Detailed", type: "1020x2200_Standard", at: { wall: "${var.head_wall}", off: 150 }, size: [1020, 2200], clearance: 1200 },
                   { id: "Operating light", family: "FMC_E_LightFixture_OperatingLight_Ceiling_Detailed", type: "700_Single", at: { centre: true, dy: 600 }, host: "ceiling" },
                 ],
               } } } },

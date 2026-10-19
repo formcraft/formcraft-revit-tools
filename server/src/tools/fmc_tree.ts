@@ -7,6 +7,7 @@ import { BuiltState, TREE, Tree, findNode, planTree, recordBuilt, resolve, treeP
 import { ICU_BAY_SAMPLE } from "../tree/samples.js";
 import { ROOM } from "../tree/room.js";
 import { adoptEdit } from "../tree/drift.js";
+import { DEPARTMENT, applyLayout, layoutDepartment } from "../tree/department.js";
 import { roomEdits } from "./fmc_room.js";
 
 const win = path.win32;
@@ -37,13 +38,17 @@ export const FMC_TREE_DESCRIPTION =
     "made outside the tree (revisions), so the next " +
     "plan lists only what changed. edits (T3, a room node): what people changed by hand since its build. adopt (T3): " +
     "for each edit's key, adopt (the recipe takes the move, the type, the sill; ${var} sizes stay) or override (the " +
-    "element is the person's: rebuilds leave it), recorded on the node; a dry run first. It never changes a model by itself.";
+    "element is the person's: rebuilds leave it), recorded on the node; a dry run first. layout (T4, a department node whose " +
+    "inputs hold layout: corridor, north and south rows of rooms, and template: a room node to copy): every room gets its " +
+    "origin and the walls it builds (a shared wall once), and becomes a child node; a changed layout updates only the " +
+    "rooms it moves or resizes, keeping their adopted edits (refresh re-copies them from the template). It never changes a model by itself.";
 
 export const FMC_TREE_SHAPE = {
-  action: z.enum(["show", "check", "plan", "set", "init", "built", "build", "edits", "adopt"]),
+  action: z.enum(["show", "check", "plan", "set", "init", "built", "build", "edits", "adopt", "layout"]),
   choices: z.array(z.object({ key: z.string(), choice: z.enum(["adopt", "override"]) })).optional().default([])
     .describe("adopt: per hand edit's key (from edits), adopt it into the recipe or keep it as an override"),
   by: z.string().optional().default("").describe("adopt: who decided (recorded on the node)"),
+  refresh: z.boolean().optional().default(false).describe("layout: also re-copy existing rooms from their template (their adopted edits are lost)"),
   project_folder: z.string().describe("The project folder (the tree lives in its 01_WIP)"),
   id: z.string().optional().default("").describe("set: the node; plan: only this node and what is under it"),
   inputs: z.record(z.string(), z.unknown()).optional().default({}).describe("set: inputs to change, e.g. { \"width\": 4500 }"),
@@ -165,6 +170,33 @@ export async function runFmcTree(args: FmcTreeArgs) {
       fs.writeFileSync(file, JSON.stringify(tree, null, 2));
       log(config, "tree_adopt", false, file, "written", `${node.id}: ${done.length} decided`);
       return reply({ done: true, node: node.id, decided: done, refused, next: "fmc_tree build: the room rebuilds with them; kept elements stay as they are" });
+    }
+    if (args.action === "layout") {
+      const dept = findNode(tree, args.id);
+      if (!dept) return reply({ refused: true, reasons: [`No node ${args.id} (fmc_tree show lists them)`] }, true);
+      const parsed = DEPARTMENT.safeParse(dept.inputs?.layout);
+      if (!parsed.success) return reply({ refused: true, reasons: [`${dept.id} has no valid layout in its inputs: ${parsed.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`).join("; ")}`] }, true);
+      const template = String(dept.inputs?.template ?? "");
+      const layout = layoutDepartment(parsed.data);
+      if (layout.problems.length) return reply({ refused: true, reasons: layout.problems, warnings: layout.warnings }, true);
+      const next = applyLayout(dept, layout, (id) => findNode(tree, id), template, args.refresh);
+      if (next.problems.length) return reply({ refused: true, reasons: next.problems }, true);
+      const inside = next.children.some((c) => c.id === template) || (dept.children ?? []).some((c) => c.id === template);
+      const summary = { rooms: layout.rooms.map((r) => ({ id: r.id, side: r.side, origin: r.origin, size: [r.width, r.depth], skips: r.skip })),
+        corridor: { length: layout.corridor.width, width: layout.corridor.depth, skips: layout.corridor.skip }, ...next.change, warnings: layout.warnings,
+        ...(inside ? { note: `The template ${template} is a room in this department too: it is built as well as its copies` } : {}),
+        ...(args.refresh && next.change.update.length ? { refresh: "Re-copied rooms lose their adopted edits and overrides" } : {}) };
+      if (args.dry_run) return reply({ dry_run: true, node: dept.id, ...summary, next: "Run again with dry_run=false, then fmc_tree plan: only the added and changed rooms build" });
+      const v3 = checkWritePath(file, config, { checkName: false });
+      if (!v3.ok) return reply({ refused: true, reasons: v3.reasons }, true);
+      const archive = win.join(win.dirname(file), "_Archive");
+      fs.mkdirSync(archive, { recursive: true });
+      fs.copyFileSync(file, win.join(archive, `FMC_Recipe_Tree_${Date.now()}.json`));
+      dept.children = next.children;
+      const problems = treeProblems(tree, toolExists);
+      fs.writeFileSync(file, JSON.stringify(tree, null, 2));
+      log(config, "tree_layout", false, file, "written", `${dept.id}: +${next.change.add.length} ~${next.change.update.length} -${next.change.remove.length}`);
+      return reply({ done: true, node: dept.id, ...summary, ...(problems.length ? { problems } : {}), next: "fmc_tree plan, then build" });
     }
     const v = checkWritePath(file, config, { checkName: false });
     if (!v.ok) return reply({ refused: true, reasons: v.reasons }, true);
