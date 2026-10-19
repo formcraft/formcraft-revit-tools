@@ -11,10 +11,10 @@ import { DEPARTMENT, applyLayout, layoutDepartment } from "../tree/department.js
 import { treeFromBrief, treeQuantities } from "../tree/building.js";
 import { parseCis } from "../fmc/brief.js";
 import { quantityCsv, treeSearchSets } from "../tree/apps.js";
-import { addVariant, compareOptions, optionSheet, planSvg, withActive } from "../tree/options.js";
+import { addVariant, chooseVariant, compareOptions, optionSheet, planSvg, withActive } from "../tree/options.js";
 import { exchangeRoot, writePackage } from "../hub/exchange.js";
 import { navisCall, processAlive, readState } from "../fmc/navis.js";
-import { roomEdits } from "./fmc_room.js";
+import { FMC_ROOM_SHAPE, roomEdits, runFmcRoom } from "./fmc_room.js";
 
 const win = path.win32;
 
@@ -64,7 +64,7 @@ export const FMC_TREE_DESCRIPTION =
 export const FMC_TREE_SHAPE = {
   action: z.enum(["show", "check", "plan", "set", "init", "built", "build", "edits", "adopt", "layout", "brief", "quantities", "export", "options"]),
   to: z.enum(["powerbi", "navisworks"]).optional().describe("export: which app"),
-  op: z.enum(["add", "activate", "remove", "compare"]).optional().describe("options: what to do"),
+  op: z.enum(["add", "activate", "remove", "compare", "build", "choose"]).optional().describe("options: what to do"),
   variant: z.string().optional().default("").describe("options: the variant's id (activate with none: the node as it is)"),
   name: z.string().optional().default("").describe("options add: the variant's name, e.g. 4.5 m bays"),
   note: z.string().optional().default("").describe("options add: why this option"),
@@ -175,6 +175,29 @@ export async function runFmcTree(args: FmcTreeArgs) {
       const node = findNode(tree, args.id);
       if (!node) return reply({ refused: true, reasons: [`No node ${args.id} (fmc_tree show lists them)`] }, true);
       if (!args.op) return reply({ refused: true, reasons: ["Say op: add, activate, remove or compare"] }, true);
+      if (args.op === "build") {
+        // O3: a variant built into its Revit design option (named after the variant; a person makes the set and options,
+        // and makes this one active: Revit's API can't), with its own records, so the main model's rooms stay as they are
+        const v = args.variant || "base";
+        if (v !== "base" && !node.variants?.some((x) => x.id === v)) return reply({ refused: true, reasons: [`${node.id} has no variant ${v}`] }, true);
+        const t2 = withActive(tree, node.id, v === "base" ? null : v);
+        const kindOf2 = (id: string) => findNode(t2, id)?.kind;
+        const rooms = resolve(t2).filter((r) => r.node.make?.tool === "fmc_room" && r.path.includes(node.id) && !r.path.some((id) => kindOf2(id) === "library"));
+        if (!rooms.length) return reply({ refused: true, reasons: [`${node.id} makes no rooms`] }, true);
+        const errs = rooms.filter((r) => r.error).map((r) => `${r.node.id}: ${r.error}`);
+        if (errs.length) return reply({ refused: true, reasons: errs }, true);
+        if (args.dry_run) return reply({ dry_run: true, node: node.id, variant: v, design_option: v, rooms: rooms.map((r) => r.node.id),
+          next: `In Revit: an option set "FMC ${node.name ?? node.id}" with an option named ${v}, made active (Manage › Design Options); then run again with dry_run=false` });
+        const answers: Record<string, unknown> = {};
+        for (const r of rooms) {
+          const a = await runFmcRoom(z.object(FMC_ROOM_SHAPE).parse({ ...(r.args ?? {}), action: "build", node: r.node.id, project_folder: project, design_option: v, dry_run: false }));
+          const body = JSON.parse(a.content[0].text);
+          answers[r.node.id] = a.isError ? { ok: false, ...body } : { ok: true, made: body.made, removed: body.removed };
+          if (a.isError) return reply({ done: false, node: node.id, variant: v, stopped_at: r.node.id, answers }, true);
+        }
+        log(config, "tree_options", false, file, "built", `${node.id}: ${v} into its design option`);
+        return reply({ done: true, node: node.id, variant: v, design_option: v, answers, next: "Look at it in Revit; build the other options the same way. Accepting a primary option is a person's step" });
+      }
       if (args.op === "compare") {
         const c = compareOptions(tree, node.id, args.tolerance_pct);
         if (c.options.length < 2) return reply({ refused: true, reasons: [`${node.id} has no variants yet (options op=add)`] }, true);
@@ -197,6 +220,11 @@ export async function runFmcTree(args: FmcTreeArgs) {
         if (!args.variant) return reply({ refused: true, reasons: ["Name the variant (variant), e.g. wide"] }, true);
         if (!Object.keys(args.inputs).length) return reply({ refused: true, reasons: ["Give the inputs that differ (inputs), e.g. { \"width\": 4500 }"] }, true);
         addVariant(node, { id: args.variant, name: args.name || undefined, note: args.note || undefined, inputs: args.inputs });
+      } else if (args.op === "choose") {
+        // a person's choice: the variant becomes the node; the node as it was is kept as a variant (O4)
+        if (!args.by.trim()) return reply({ refused: true, reasons: ["Say who chose (by): choosing an option is a person's decision"] }, true);
+        if (!node.variants?.some((v) => v.id === args.variant)) return reply({ refused: true, reasons: [`${node.id} has no variant ${args.variant}`] }, true);
+        chooseVariant(node, args.variant, new Date());
       } else if (args.op === "activate") {
         if (args.variant && !node.variants?.some((v) => v.id === args.variant)) return reply({ refused: true, reasons: [`${node.id} has no variant ${args.variant}`] }, true);
         if (args.variant) node.active = args.variant; else delete node.active;
@@ -207,7 +235,7 @@ export async function runFmcTree(args: FmcTreeArgs) {
         if (!node.variants.length) delete node.variants;
       }
       const would = planTree(tree, last).filter((l) => l.state !== "unchanged" && l.tool).map((l) => l.id);
-      if (args.dry_run) return reply({ dry_run: true, node: node.id, op: args.op, variant: args.variant || "base", would_rebuild: args.op === "activate" ? would : [], next: "Run again with dry_run=false" });
+      if (args.dry_run) return reply({ dry_run: true, node: node.id, op: args.op, variant: args.variant || "base", would_rebuild: args.op === "activate" || args.op === "choose" ? would : [], next: "Run again with dry_run=false" });
       const vt = checkWritePath(file, config, { checkName: false });
       if (!vt.ok) return reply({ refused: true, reasons: vt.reasons }, true);
       const archive = win.join(win.dirname(file), "_Archive");
@@ -216,7 +244,8 @@ export async function runFmcTree(args: FmcTreeArgs) {
       node.overrides = [...(node.overrides ?? []), { what: `options ${args.op} ${args.variant || "base"}`, by: args.by.trim() || "Claude (via MCP)", at: new Date().toISOString() }];
       fs.writeFileSync(file, JSON.stringify(tree, null, 2));
       log(config, "tree_options", false, file, "written", `${node.id}: ${args.op} ${args.variant}`);
-      return reply({ done: true, node: node.id, op: args.op, variant: args.variant || "base", changed: before !== JSON.stringify(node), to_rebuild: args.op === "activate" ? would : [] });
+      return reply({ done: true, node: node.id, op: args.op, variant: args.variant || "base", changed: before !== JSON.stringify(node), to_rebuild: args.op === "activate" || args.op === "choose" ? would : [],
+        ...(args.op === "choose" ? { revit: "If the options were built into Revit design options, accepting the primary there is a person's step (it deletes the others)" } : {}) });
     }
     if (args.action === "export") {
       if (!args.to) return reply({ refused: true, reasons: ["Say which app: to powerbi or navisworks"] }, true);
