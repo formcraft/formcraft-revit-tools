@@ -5,6 +5,9 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { BuiltState, TREE, Tree, findNode, planTree, recordBuilt, resolve, treeProblems } from "../tree/tree.js";
 import { ICU_BAY_SAMPLE } from "../tree/samples.js";
+import { ROOM } from "../tree/room.js";
+import { adoptEdit } from "../tree/drift.js";
+import { roomEdits } from "./fmc_room.js";
 
 const win = path.win32;
 
@@ -32,10 +35,15 @@ export const FMC_TREE_DESCRIPTION =
     "init: a sample tree (an ICU bay) when the project has none. build (T1): runs every changed node's tool for real, in tree " +
     "order (a dry run first lists them), stops at the first failure, and records what was built. built: records a build " +
     "made outside the tree (revisions), so the next " +
-    "plan lists only what changed. It never changes a model by itself.";
+    "plan lists only what changed. edits (T3, a room node): what people changed by hand since its build. adopt (T3): " +
+    "for each edit's key, adopt (the recipe takes the move, the type, the sill; ${var} sizes stay) or override (the " +
+    "element is the person's: rebuilds leave it), recorded on the node; a dry run first. It never changes a model by itself.";
 
 export const FMC_TREE_SHAPE = {
-  action: z.enum(["show", "check", "plan", "set", "init", "built", "build"]),
+  action: z.enum(["show", "check", "plan", "set", "init", "built", "build", "edits", "adopt"]),
+  choices: z.array(z.object({ key: z.string(), choice: z.enum(["adopt", "override"]) })).optional().default([])
+    .describe("adopt: per hand edit's key (from edits), adopt it into the recipe or keep it as an override"),
+  by: z.string().optional().default("").describe("adopt: who decided (recorded on the node)"),
   project_folder: z.string().describe("The project folder (the tree lives in its 01_WIP)"),
   id: z.string().optional().default("").describe("set: the node; plan: only this node and what is under it"),
   inputs: z.record(z.string(), z.unknown()).optional().default({}).describe("set: inputs to change, e.g. { \"width\": 4500 }"),
@@ -117,6 +125,46 @@ export async function runFmcTree(args: FmcTreeArgs) {
       return reply({ file, last_built: last?.built_at ?? "never", nodes: lines.length, to_build: changed.filter((l) => l.tool).length,
         changed: changed.map((l) => ({ ...l, ...(would[l.id] ? { would: would[l.id] } : {}) })), unchanged: lines.length - changed.length,
         next: changed.length ? "Build the changed nodes (T1), then fmc_tree built ids=[…]" : "Nothing changed since the last build" });
+    }
+    if (args.action === "edits" || args.action === "adopt") {
+      const node = findNode(tree, args.id);
+      if (!node) return reply({ refused: true, reasons: [`No node ${args.id} (fmc_tree show lists them)`] }, true);
+      if (node.make?.tool !== "fmc_room") return reply({ refused: true, reasons: [`${args.id} isn't made by fmc_room: hand edits are traced for rooms (T3)`] }, true);
+      const { record, edits } = await roomEdits(project, node.id);
+      if (args.action === "edits")
+        return reply({ node: node.id, built_at: record.built_at, kept: record.keep ?? [], edits,
+          next: edits.length ? "fmc_tree adopt with choices [{ key, choice: adopt | override }] (a dry run first)" : "No hand edits since the build" });
+      if (!args.choices.length) return reply({ refused: true, reasons: ["Say for each edit's key: adopt or override (choices)"] }, true);
+      const resolved = resolve(tree).find((r) => r.node.id === node.id);
+      const sized = ROOM.parse((resolved?.args as any)?.room);
+      // worked on a copy: the dry run shows it, the real run writes it
+      const args2 = JSON.parse(JSON.stringify(node.make.args)) as Record<string, any>;
+      const done: string[] = [], refused: string[] = [];
+      for (const c of args.choices) {
+        const mine = edits.filter((e) => e.key === c.key);
+        if (!mine.length) { refused.push(`${c.key}: no hand edit (fmc_tree edits lists them)`); continue; }
+        if (c.choice === "override") {
+          args2.keep = [...new Set([...(args2.keep ?? []), c.key])];
+          done.push(`${c.key} is kept as the person left it (${mine.map((e) => e.kind).join(", ")}): rebuilds leave it`);
+          continue;
+        }
+        for (const e of mine) {
+          try { done.push(adoptEdit(args2.room, sized, e)); } catch (err) { refused.push(err instanceof Error ? err.message : String(err)); }
+        }
+      }
+      if (args.dry_run) return reply({ dry_run: true, node: node.id, would: done, refused, next: "Run again with dry_run=false; the next build rebuilds the room with these" });
+      if (!done.length) return reply({ refused: true, reasons: refused }, true);
+      const v2 = checkWritePath(file, config, { checkName: false });
+      if (!v2.ok) return reply({ refused: true, reasons: v2.reasons }, true);
+      const archive = win.join(win.dirname(file), "_Archive");
+      fs.mkdirSync(archive, { recursive: true });
+      fs.copyFileSync(file, win.join(archive, `FMC_Recipe_Tree_${Date.now()}.json`));
+      const by = args.by.trim() || "Claude (via MCP)", at = new Date().toISOString();
+      node.make.args = args2;
+      node.overrides = [...(node.overrides ?? []), ...done.map((what) => ({ what, by, at }))];
+      fs.writeFileSync(file, JSON.stringify(tree, null, 2));
+      log(config, "tree_adopt", false, file, "written", `${node.id}: ${done.length} decided`);
+      return reply({ done: true, node: node.id, decided: done, refused, next: "fmc_tree build: the room rebuilds with them; kept elements stay as they are" });
     }
     const v = checkWritePath(file, config, { checkName: false });
     if (!v.ok) return reply({ refused: true, reasons: v.reasons }, true);
