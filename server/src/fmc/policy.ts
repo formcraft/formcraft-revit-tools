@@ -89,6 +89,8 @@ export const WRITE_COMMANDS = new Set<string>([
   // Line diagrams (owner, 15 Oct): the tool draws only in new documents, _Staging and _ChainTests; in a live project a
   // person presses Generate in the pane.
   "fmc_diagram_draw",
+  // LD5: the register sheets the diagrams go on (created or updated, the drawn views placed); same rule as the draw.
+  "fmc_diagram_sheet",
   // Casework (CW2): units placed, and shop-drawing views, sheets and the cut-list schedule; the dry runs roll back.
   "fmc_casework_place", "fmc_casework_pack",
   // Ceilings (CL2, CL4): placing, replacing and the RCP sheet and set-out drawing; same rule as the line diagrams.
@@ -106,6 +108,8 @@ export const WRITE_COMMANDS = new Set<string>([
 export const READ_VIA_SEND_COMMAND = new Set<string>([
   "ai_element_filter", "analyze_model_statistics", "export_room_data", "get_available_family_types", "get_current_view_elements", "fmc_diagram_scan", "get_current_view_info", "get_material_quantities",
   "get_selected_elements", "say_hello", "fmc_mep_facts",
+  // LD5 Gate D: the drafting views holding items fmc_diagram drew, with their source keys (read-only)
+  "fmc_diagram_drawn",
 ]);
 
 /** Commands that read or steer the Formcraft pane only. They never change the model, so they work on live models. */

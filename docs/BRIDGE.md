@@ -38,6 +38,13 @@ PC doesn't sleep in the middle of a batch; the screen may still turn off. send_c
 come. Times in the files are UTC (`…Z`); `fmc_job` also gives each one in this PC's local time with its offset
 (`local`, e.g. `2026-10-18T09:03:47+03:00`), so they line up with other logs.
 
+**The long-job route for one call (`sendLong`).** A call sent this way has no fixed time limit: it waits while Revit's
+heartbeats for its job are under 3 min old, up to an overall ceiling, and fails with `[FMC-BRIDGE-NO-HEARTBEAT]` when
+they stop (Revit closed or crashed) or `[FMC-BRIDGE-CEILING]` when the ceiling passes. If the socket loses the answer,
+the result Revit kept in `FMC_LateResults.jsonl` is the answer. The heartbeat comes from a timer, so it means "waiting
+or running", not "Revit's API thread is free". Gate A's host test (`fmc_family_host_test`) uses it with a 15 min
+ceiling (`FMC_HOST_TEST_MAX_MS`); the add-in waits as long (`max_wait_ms`, plus 30 s).
+
 **One command at a time, queued (F-064).** Revit's API thread runs one command at a time. A command that arrives while
 another runs **waits its turn** in the add-in instead of timing out and being refused: `fmc_job` shows it as `queued`
 ("waiting in Revit behind N command(s)"), with heartbeats, then `running` when it starts. Its result is kept like any

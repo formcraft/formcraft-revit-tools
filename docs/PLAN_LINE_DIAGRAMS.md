@@ -108,6 +108,44 @@ TBC count, collisions, warnings; `save: true` writes the draw spec JSON to `<rep
 default; `dry_run: false` needs `confirm: true`). `fmc_diagram_draw` is in `WRITE_COMMANDS`, so on a live project the
 draw is refused and a person presses Generate in the pane.
 
+## LD5: sheets, Gate D and Generate (step E2, F78; built 19 Oct, not Revit-checked)
+- **Sheets from the register** (`server/src/fmc/diagram/sheets.ts`, pure). `diagramSheets` reads the kit's
+  `03_Master_Data\FMC_Sheet_Register.csv` (read-only) and keeps the rows placed with a `VT_*_Drafting_SLD` or
+  `VT_*_Drafting_Schematic` template or named single-line, riser, schematic or long section, with the kinds each holds
+  from its name: E-0003 Single-Line Diagram → `e_sld`; E-0004 Earthing & Bonding Schematic → `lp_schematic`; E-6002 Riser
+  Diagram → `e_power_riser`, `e_fa_riser`, `e_elv_riser`; P-0003 Water & Drainage Schematics → `p_water`, `p_drainage`;
+  P-3001 and C-3002 drain long sections → `p_drainage_long`. Rows such as E-4101 Typical Installation Details (placed
+  with the SLD template but a detail sheet) are listed as not diagram sheets. `fp_schematic`, `m_refrigerant` and
+  `m_controls` have no register row: their views are listed with a kit change request, never put on an invented sheet.
+- **Frame.** `a1Frame` takes the title block (`FMC_TitleBlock : A1`), margins and the 681 × 574 mm drawing area from
+  `FMC_Rulebook_Sheets.json` (SHT-011 to SHT-014). `sheetPlan` packs each sheet's views in rows from the top left, in
+  paper mm (a view's extent is its items' boxes), with a title band under each; a view that doesn't fit is left off with
+  a kit change request for a continuation sheet. Viewports are a first arrangement; a person arranges them before issue.
+- **`fmc_diagram sheets`** (dry run first; `dry_run: false` needs `confirm: true`) sends the plan to
+  **`fmc_diagram_sheet`** (`commandset/Services/Fmc/FmcDiagramSheet.cs`, in `WRITE_COMMANDS`): the sheet by number or
+  created with the title block (any `FMC_TB_*`/`FMC_TitleBlock*` or the first one until it is loaded, reported), the
+  drawn drafting views placed at the planned centres; a view already on the sheet stays where a person put it, one on
+  another sheet is reported. One transaction group, rolled back on a dry run; never saves. Views not drawn yet are
+  "not found: draw it first".
+- **Gate D: `fmc_diagram gate`** (read-only) sends **`fmc_diagram_drawn`** (`READ_VIA_SEND_COMMAND`): every drafting
+  view with `FMC_DiagramSource` keys, its tool texts that print TBC, the person's own items and its sheets. `gateD`
+  compares it with a fresh scan and plan: items in the model missing from the drawing (Fail), drawn items no longer in
+  the model or a drawn view the model no longer makes (Fail), TBC on the drawings or in the model (Warn), views not drawn
+  or on no sheet (Warn); Pass / Warn / Fail / Not checked lines like Gate A. Ceiling set-outs drawn by the same command
+  aren't diagrams and are left out. It is a `fmc_diagram` action, not a QA rulebook check kind: `server/src/fmc/rules.ts`
+  runs checks on one QA facts read, with no pluggable registry for a check that needs a scan.
+- **Pane: Engineer › Systems › Diagrams** (`SystemsPage.DiagramsGroup`, `plugin/Shell/RevitSystemTools.DiagramAsync`),
+  per discipline: Scan (read only), Plan (dry run: the draw and the sheets rolled back), Generate (shown after a plan;
+  asks first, then sends both with `confirm`), Gate D (read only). It runs the server's command line
+  (`node build/fmc/cli.js fmc_diagram`), so the live-model lock decides as it does for Claude.
+- **Drainage long section: TBC.** The scan reads pipe size and system only; a long section needs invert levels, lengths
+  and gradients, manholes with cover and invert levels, and ground levels. `plan` and `sheets` list
+  `p_drainage_long` as TBC with that list; nothing is drawn for it.
+- **View names.** The kit's naming rulebook marks view naming as open (NAM-021, report only) and the server has no naming
+  helper for views, so the diagram views keep the kit's `layout.view_names` (`E-SLD-<board>`, `E-Power-Riser`, …).
+- Unattended scenario: `tests/revit/16_diagrams.json` (scan, plan, the draw and the sheets as dry runs, Gate D; the draw
+  is skipped on a model with nothing to draw).
+
 ## Third-party tools already on the pilot PC
 The ribbon shows the ElectroBIM Single Line and FireBIM Riser add-ins. They may cover SLDs and FP risers today. LD
 reads the same model data, but uses Formcraft's kit, keynotes and QA gates, and covers every discipline from one scan.

@@ -697,9 +697,9 @@
     "area": "App",
     "group": "Engineer",
     "feature": "Line diagram sheets and Gate D (LD5, E2)",
-    "status": "Planned",
-    "ref": "docs/PLAN_ENGINEERING_SERVICES.md",
-    "note": "Diagram sheets from the Sheet Register rows E-0003, E-0004, E-6002 and P-0003, Gate D in QA, the pane's Generate button, the drainage long section"
+    "status": "Built, Revit check due",
+    "ref": "docs/PLAN_ENGINEERING_SERVICES.md, docs/PLAN_LINE_DIAGRAMS.md (LD5), server/src/fmc/diagram/sheets.ts, commandset/Services/Fmc/FmcDiagramSheet.cs, tests/revit/16_diagrams.json",
+    "note": "Built 19 Oct: fmc_diagram sheets puts the drawn views on the Sheet Register sheets (E-0003 single-line, E-0004 earthing and bonding, E-6002 riser, P-0003 water and drainage) with FMC_TitleBlock A1, packed in the kit's drawing area (fmc_diagram_sheet, dry run first, never saves); fmc_diagram gate is Gate D (fmc_diagram_drawn, read-only: missing, gone and TBC items, views not drawn or off a sheet); Engineer › Systems › Diagrams has Scan, Plan (dry run), Generate (after a yes) and Gate D. Gate D is a fmc_diagram action, not a QA rulebook check kind (rules.ts runs only on QA facts). The drainage long section stays TBC: the scan reads no inverts, lengths or manholes. FP, refrigerant and controls diagrams have no register sheet (kit change request). Not Revit-checked; scenario tests/revit/16_diagrams.json"
   },
   {
     "id": "F79",

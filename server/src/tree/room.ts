@@ -6,7 +6,9 @@
  * project's coordinates, and checks it first: doors and windows fit their walls, items stay inside the room, and each
  * item's clearance in front of it is free. Pure.
  */
+import path from "node:path";
 import { z } from "zod";
+import { resolveFamilyPath } from "../fmc/ops.js";
 
 const mm = z.number();
 export const WALLS = ["north", "east", "south", "west"] as const;
@@ -131,4 +133,40 @@ export function planRoom(input: Room): RoomPlan {
   }
   ops.push({ op: "room", name: r.name, ...(r.number ? { number: r.number } : {}), at: [r1(centre[0]), r1(centre[1])], ...(Object.keys(r.params).length ? { params: r.params } : {}) });
   return { ops, problems, warnings };
+}
+
+/** The families a room's ops place (openings and items), each once, in plan order. */
+export function roomFamilies(ops: Op[]): string[] {
+  const out: string[] = [];
+  for (const o of ops) if ((o.op === "opening" || o.op === "place") && !out.includes(o.family)) out.push(o.family);
+  return out;
+}
+
+export interface RoomFamilyFile { family: string; path: string; found: boolean }
+
+/**
+ * F-073: where each family the room places is read from when the model doesn't hold it yet. Each root (fmc/ops.ts
+ * familyRoots: the staging root, 04_Families, the library roots) is looked in at <root>\<Role>\<family>.rfa, then
+ * <root>\<family>.rfa; the first file found wins (resolveFamilyPath). A root under a blocked folder (02_Shared,
+ * 03_Published…) is never read from. searched names every folder looked in, for the message when one isn't found.
+ */
+export function resolveRoomFamilies(families: string[], roots: string[], exists: (f: string) => boolean, blocked: string[] = []):
+  { files: RoomFamilyFile[]; searched: string[] } {
+  const bad = blocked.map((b) => b.toLowerCase());
+  const ok = roots.filter((r) => !r.toLowerCase().split(/[\\/]+/).some((s) => bad.includes(s)));
+  const searched: string[] = [];
+  const files = families.map((family) => {
+    const role = /^[A-Za-z0-9]+_([A-Z]{1,2})_/.exec(family)?.[1] ?? "";
+    const rels = [...(role ? [`${role}\\${family}.rfa`] : []), `${family}.rfa`];
+    for (const rel of rels) {
+      const r = ok.length ? resolveFamilyPath(rel, ok, exists) : { path: "", found: false };
+      if (r.found) return { family, path: r.path, found: true };
+    }
+    for (const root of ok) for (const rel of rels) {
+      const d = path.win32.dirname(path.win32.join(root, rel));
+      if (!searched.includes(d)) searched.push(d);
+    }
+    return { family, path: "", found: false };
+  });
+  return { files, searched };
 }

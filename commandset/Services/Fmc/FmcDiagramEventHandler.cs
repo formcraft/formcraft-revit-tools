@@ -52,6 +52,24 @@ namespace RevitMCPCommandSet.Services.Fmc
                         Result = FmcDiagramDraw.Draw(doc, Parameters);
                         break;
                     }
+                    case "sheet":
+                    {
+                        // LD5: the register sheets and the drawn views on them (FmcDiagramSheet); a dry run rolls back
+                        using var target = FmcTarget.Resolve(app, Parameters, mayOpen: false);
+                        Document doc = target.Doc;
+                        if (doc.IsFamilyDocument) throw new InvalidOperationException("Diagram sheets are made in a project model, not a family.");
+                        Result = FmcDiagramSheet.Sheets(doc, Parameters);
+                        break;
+                    }
+                    case "drawn":
+                    {
+                        // LD5 Gate D: read-only, like the scan
+                        using var target = FmcTarget.Resolve(app, Parameters, mayOpen: true);
+                        Document doc = target.Doc;
+                        if (doc.IsFamilyDocument) throw new InvalidOperationException("Line diagrams are read from a project model, not a family.");
+                        Result = FmcDiagramSheet.Drawn(doc, Parameters);
+                        break;
+                    }
                     default: Error = $"Unknown FMC diagram action '{Action}'"; break;
                 }
             }

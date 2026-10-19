@@ -137,7 +137,8 @@ its element facts, no hand edits, a rebuild, design options read; 06 the whole s
 without a person's yes, review show) and selection read and show; 08 3D pictures of the staged ICU bed (3D, front,
 plan; one per detail level); 09 offline: the bay's room plan and ceiling designs; 10 schedules from
 `tests/schedules/FMC_Schedules_sample.json` (check, plan, apply in a scratch project, plan again); 11 ceiling and
-casework place (skipped: no place action on main yet); 12 to 14 Navisworks, Rhino and Robot (need the app open).
+casework place in a scratch room (fmc_ceiling place and fmc_casework place, each a dry run then the real place, the
+counts and the placed elements' facts; the staged Vanity stands in for the unbuilt KitchenUnit); 12 to 14 Navisworks, Rhino and Robot (need the app open).
 
 **The runner** (`fmc_testrun`, a tool and a CLI command): `list`; `plan` (dry: what would run now, the power state, the
 paths); `run` (a new run; in the background unless `foreground`); `resume` (the last unfinished run; with `auto`, a new

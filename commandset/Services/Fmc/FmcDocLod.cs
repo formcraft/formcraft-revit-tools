@@ -290,7 +290,8 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         // ---- nested families ------------------------------------------------------------------------------------------
 
-        private sealed class NoOverwrite : IFamilyLoadOptions
+        /// <summary>Loads a family without overwriting one already in the document or its parameter values (also fmc_room_build).</summary>
+        internal sealed class NoOverwrite : IFamilyLoadOptions
         {
             public bool OnFamilyFound(bool familyInUse, out bool overwriteParameterValues) { overwriteParameterValues = false; return false; }
             public bool OnSharedFamilyFound(Family sharedFamily, bool familyInUse, out FamilySource source, out bool overwriteParameterValues)

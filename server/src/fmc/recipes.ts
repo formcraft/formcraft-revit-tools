@@ -313,7 +313,7 @@ export type NestedLod = (family: string) => LodLadder | null;
 
 const LOD_RANK: Record<LodLevel, number> = { none: 0, "LOD 100": 1, "LOD 200": 2, "LOD 300": 3, "LOD 400 + Render": 4 };
 /** Solids that aren't the body: clearance and maintenance zones, connector pads, a lighting fixture's light path beam. */
-const NOT_BODY = /clearance|connector|^CN |light path/i;
+export const NOT_BODY = /clearance|connector|^CN |light path/i;
 
 /**
  * What each detail level shows, as the highest LOD among what is seen there: the Coarse envelope box (LOD 100), the

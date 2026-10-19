@@ -10,6 +10,8 @@
  *   - "Axis" at z = 0 marked Center (Elevation) or "Base" at z = 0 marked Bottom,
  *   - "Edge" planes marked Left where a part locks by its edge (its offset is in COMPONENTS[...].refs).
  */
+import { NOT_BODY } from "./recipes.js";
+
 type Op = Record<string, any>;
 type Pt = number[];
 
@@ -192,6 +194,66 @@ export function withoutSolids(ops: Op[], drop: (name: string) => boolean): Op[] 
 
 export interface DetailResult { recipe: RecipeLike; components: string[]; notes: string[] }
 
+// ---- the Coarse envelope (F-071; owner's rule F70, 18 Oct: one family, three levels) ------------------------------
+
+/** The kit's envelope subcategory, as the product recipes (pgen) draw it. */
+export const ENVELOPE_SUBCATEGORY = { op: "add_subcategory", name: "Coarse Envelope", color: [120, 130, 140], line_weight_projection: 2 };
+const SOLID_OPS = new Set(["extrusion", "revolution", "sweep", "blend"]);
+
+/** Where each of the recipe's own reference planes sits: plan lines with a fixed x or y, elevation lines with a fixed height. */
+function planeAt(ops: Op[]): Map<string, { axis: "x" | "y" | "z"; v: number }> {
+  const at = new Map<string, { axis: "x" | "y" | "z"; v: number }>();
+  for (const o of ops) {
+    if (o.op !== "add_ref_plane" || !Array.isArray(o.from) || !Array.isArray(o.to)) continue;
+    const [a, b] = [o.from as number[], o.to as number[]];
+    if (typeof o.view === "string" && !/plan|level/i.test(o.view)) { if (a[1] === b[1]) at.set(String(o.name), { axis: "z", v: a[1] }); }
+    else if (a[0] === b[0]) at.set(String(o.name), { axis: "x", v: a[0] });
+    else if (a[1] === b[1]) at.set(String(o.name), { axis: "y", v: a[1] });
+  }
+  return at;
+}
+
+/** A body solid: not a clearance zone, connector pad or light path (recipes.ts NOT_BODY), not the envelope itself. */
+const isBody = (name: string) => !NOT_BODY.test(name) && !/envelope/i.test(name);
+
+/**
+ * The Coarse level (F-071): a "Coarse Envelope" box around the closed body, between the outermost of the recipe's own
+ * planes its body solids are drawn between (so it flexes with Width, Height and the frame depth, as they do), from the
+ * lowest bottom to the highest top of the body (on the plane there when the recipe has one), on the Coarse Envelope
+ * subcategory, shown only on Coarse. The open positions (solids named "... Open") don't count: the box is the closed
+ * element. hideBodyOnCoarse hides the body on Coarse. Null when the recipe has an envelope already or its body isn't
+ * drawn between planes on every side.
+ */
+export function coarseEnvelope(ops: Op[]): Op[] | null {
+  if (ops.some((o) => SOLID_OPS.has(o.op) && /envelope/i.test(String(o.name)))) return null;
+  const at = planeAt(ops);
+  const body = ops.filter((o) => o.op === "extrusion" && Array.isArray(o.rect) && isBody(String(o.name)) && !/ Open$/.test(String(o.name)));
+  const outer = (names: string[], axis: "x" | "y", low: boolean) => names.filter((n) => at.get(n)?.axis === axis)
+    .sort((a, b) => (low ? at.get(a)!.v - at.get(b)!.v : at.get(b)!.v - at.get(a)!.v))[0];
+  const xs = body.flatMap((o) => [o.rect[0], o.rect[1]]), ys = body.flatMap((o) => [o.rect[2], o.rect[3]]);
+  const [l, r, e, i] = [outer(xs, "x", true), outer(xs, "x", false), outer(ys, "y", true), outer(ys, "y", false)];
+  if (!l || !r || !e || !i) return null;
+  const z = (o: Op, end: boolean) => { const p = at.get(String(end ? o.end_plane : o.start_plane)); return p?.axis === "z" ? p.v : Number(end ? o.end ?? 1000 : o.start ?? 0); };
+  const z0 = Math.min(...body.map((o) => z(o, false))), z1 = Math.max(...body.map((o) => z(o, true)));
+  const zPlane = (v: number) => [...at].find(([, p]) => p.axis === "z" && p.v === v)?.[0];
+  const [b, t] = [zPlane(z0), zPlane(z1)];
+  return [
+    ...(ops.some((o) => o.op === "add_subcategory" && o.name === ENVELOPE_SUBCATEGORY.name) ? [] : [{ ...ENVELOPE_SUBCATEGORY }]),
+    { op: "extrusion", name: "Coarse Envelope", rect: [l, r, e, i], start: z0, end: z1, ...(b ? { start_plane: b } : {}), ...(t ? { end_plane: t } : {}) },
+    { op: "set_subcategory", name: "Coarse Envelope", subcategory: ENVELOPE_SUBCATEGORY.name },
+    { op: "set_visibility", name: "Coarse Envelope", coarse: true, medium: false, fine: false },
+  ];
+}
+
+/** Every body solid in the ops hidden on Coarse: existing set_visibility ops lose coarse, solids without one get one. */
+export function hideBodyOnCoarse(ops: Op[]): Op[] {
+  const solids = ops.filter((o) => SOLID_OPS.has(o.op) && isBody(String(o.name))).map((o) => String(o.name));
+  const has = new Set(ops.filter((o) => o.op === "set_visibility").map((o) => String(o.name)));
+  const out = ops.map((o) => (o.op === "set_visibility" && isBody(String(o.name)) && o.coarse !== false ? { ...o, coarse: false } : o));
+  for (const s of solids) if (!has.has(s)) out.push({ op: "set_visibility", name: s, coarse: false, medium: true, fine: true });
+  return out;
+}
+
 /**
  * A standard door (Metric Door.rft, the dgen2 plane scheme) → its detailed recipe: levers on roses both faces,
  * three hinges (and the pair leaf's when Pair), the overhead closer, nested on the door's planes; the switch Open
@@ -291,18 +353,23 @@ export function detailDoor(std: RecipeLike, componentPath: (family: string) => s
   for (const [s, sw] of [["Leaf A Open", "Open"], ["Leaf B Open", "Pair Open"]] as const) {
     if (leafSub) add.push({ op: "set_subcategory", name: s, subcategory: leafSub });
     if (leafMat) add.push({ op: "set_material_param", name: s, param: leafMat });
-    add.push({ op: "set_visibility", name: s, coarse: true, medium: true, fine: true });
+    add.push({ op: "set_visibility", name: s, coarse: false, medium: true, fine: true });
     add.push({ op: "set_visible_param", name: `${s}/Visible`, solid: s, param: sw });
   }
   notes.push("Open shows the leaf (and the pair leaf) swung 90° to the interior; the open leaf is a plain slab in this first version (no vision panel or hardware on it)");
   if (!std.ops.some((o) => o.op === "set_visible_param" && o.param === "Show Clearance")) notes.push("No Show Clearance switch in the standard door: add the clearance zones");
 
+  // Coarse (F-071): the LOD 100 box over frame and architraves; the body (and the open leaf) shows on Medium and Fine
+  const env = coarseEnvelope([...ops, ...add]);
+  if (env) add.push(...env);
+  else if (!ops.some((o) => /envelope/i.test(String(o.name)))) notes.push("No Coarse envelope: the door's body isn't drawn between planes on every side");
+
   // the generator's own ops go before the types are finished (after the last set_formula of the standard recipe)
   const at = ops.map((o) => o.op).lastIndexOf("set_type_value") + 1;
-  const out = [...ops.slice(0, at), ...add, ...ops.slice(at)];
+  const out = hideBodyOnCoarse([...ops.slice(0, at), ...add, ...ops.slice(at)]);
   return {
     recipe: { ...std, family: `${std.family}_Detailed`, ops: out,
-      about: `Detailed door (QS03 generator, ${new Date().toISOString().slice(0, 10)}): ${std.family} with lever on rose both faces, 3 hinges (pair: 6), overhead closer as nested components locked to its planes; instance switch Open; clearance kept. Medium LOD 300; Fine LOD 400 after fmc_rhino twins of the components.` },
+      about: `Detailed door (QS03 generator, ${new Date().toISOString().slice(0, 10)}): ${std.family} with lever on rose both faces, 3 hinges (pair: 6), overhead closer as nested components locked to its planes; instance switch Open; clearance kept. Coarse LOD 100 envelope; Medium LOD 300; Fine LOD 400 after fmc_rhino twins of the components.` },
     components: [lever, hinge, closer, ...(opts.pull ? [COMPONENTS.pull_handle.family(role)] : []), ...(opts.warning_light ? [COMPONENTS.warning_light.family(role)] : [])],
     notes,
   };

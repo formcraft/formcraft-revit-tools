@@ -1,7 +1,7 @@
 import * as net from "net";
 import fs from "fs";
 import path from "path";
-import { appendJobEvent, jobFiles, lastHeartbeatMs } from "../fmc/jobs.js";
+import { appendJobEvent, jobFiles, jobResult, lastHeartbeatMs } from "../fmc/jobs.js";
 import { WRITE_COMMANDS, liveLockVerdict, loadConfig } from "../fmc/policy.js";
 import { documentTarget } from "../fmc/target.js";
 import { aiGate } from "../fmc/aigate.js";
@@ -138,6 +138,18 @@ export class RevitClientConnection {
   }
 
   private sendOnce(command: string, params: any = {}, timeoutMs: number = 120000): Promise<any> {
+  /**
+   * F-064 long-job route for one call: no fixed cap while Revit works on it. The call waits as long as Revit's heartbeats
+   * for its job (FMC_Jobs_Revit.jsonl, one a minute) are fresh, up to `ceilingMs` overall; it fails with a clear message
+   * when the heartbeats stop (Revit closed or crashed) or the ceiling passes. If the socket answer is lost but Revit wrote
+   * the job's result to the late-results file itself, that result is the answer. With the MCP answer limit on, the call
+   * still answers "still running" with its job id (JobStillRunning) like any other.
+   * Note: Revit's heartbeat comes from a timer, so it says "the job is waiting or running", not that Revit's API thread
+   * is free; a Revit held by another command keeps heartbeating, and the ceiling ends that wait.
+   */
+  public sendLong(command: string, params: any = {}, opts: LongJobOptions): Promise<any> {
+    return this.sendRaw(command, params, opts.ceilingMs, opts);
+  public sendRaw(command: string, params: any = {}, timeoutMs: number = 120000, long?: LongJobOptions): Promise<any> {
     // The call's document target goes with every command (the live-model lock's document check included), unless the
     // command names its own document.
     const document = documentTarget.getStore();
@@ -220,7 +232,41 @@ export class RevitClientConnection {
           }, after);
           if (extended) t.unref?.();
         };
-        hard(timeoutMs, false);
+        if (long) {
+          // F-064: the long-job route: Revit's heartbeats decide, not a fixed time
+          const stale = long.staleMs ?? HEARTBEAT_FRESH_MS;
+          const poll = Math.max(1, long.pollMs ?? 15000);
+          const t0 = Date.now();
+          const fail = (message: string) => {
+            if (settled || !this.responseCallbacks.has(requestId)) return;
+            settled = true;
+            this.responseCallbacks.delete(requestId);
+            appendJobEvent({ job: requestId, event: "gave_up", command, after_s: Math.round((Date.now() - t0) / 1000) });
+            reject(new Error(message));
+          };
+          const check = () => {
+            // answered, or answered "still running" (the MCP limit): Revit keeps the late answer as for any job
+            if (settled || !this.responseCallbacks.has(requestId)) return;
+            // Revit keeps a long job's answer itself: if the socket lost it, take it from there
+            const kept = jobResult(requestId);
+            if (kept.found && kept.result && typeof kept.result === "object") {
+              this.responseCallbacks.get(requestId)?.(JSON.stringify({ ...(kept.result as object), id: requestId }));
+              return;
+            }
+            const now = Date.now();
+            const hb = lastHeartbeatMs(requestId);
+            if (now - t0 >= long.ceilingMs)
+              return fail(`[FMC-BRIDGE-CEILING] ${command} didn't finish in ${long.ceilingMs >= 60000 ? `${Math.round(long.ceilingMs / 60000)} min` : `${Math.round(long.ceilingMs / 1000)} s`} (job ${requestId}, ` +
+                (hb ? `last heartbeat ${Math.round((now - hb) / 1000)} s ago` : "no heartbeat from Revit") +
+                `): Revit is still busy (another command holding it?) or blocked by a dialog. fmc_job status ${requestId} follows it.`);
+            if (now - Math.max(hb, t0) >= stale)
+              return fail(`[FMC-BRIDGE-NO-HEARTBEAT] ${command}: Revit stopped sending heartbeats for job ${requestId} ` +
+                (hb ? `(last one ${Math.round((now - hb) / 1000)} s ago)` : `(none in ${Math.round((now - t0) / 1000)} s)`) +
+                ": Revit may have closed or crashed, or its add-in is too old to send them.");
+            setTimeout(check, Math.min(poll, Math.max(1, long.ceilingMs - (now - t0))));
+          };
+          setTimeout(check, Math.min(poll, long.ceilingMs));
+        } else hard(timeoutMs, false);
       } catch (error) {
         reject(error);
       }
@@ -238,6 +284,9 @@ export function softTimeoutMs(): number {
   const v = Number(process.env.FMC_SOFT_TIMEOUT_MS);
   return Number.isFinite(v) && v >= 0 ? v : 50000;
 }
+
+/** The long-job route (sendLong): the overall ceiling, how old Revit's last heartbeat may be (default 3 min), how often to look. */
+export interface LongJobOptions { ceilingMs: number; staleMs?: number; pollMs?: number }
 
 /** A heartbeat younger than this (ms) means the job is still alive in Revit (Revit writes one a minute). */
 export const HEARTBEAT_FRESH_MS = 3 * 60 * 1000;
