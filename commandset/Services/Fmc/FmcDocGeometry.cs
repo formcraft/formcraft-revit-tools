@@ -257,22 +257,35 @@ namespace RevitMCPCommandSet.Services.Fmc
             }
         }
 
+        /// <summary>The flex check's default time limit (s): under the add-in's 300 s wait for fmc_doc_flex, so its answer arrives (F-072).</summary>
+        public const double DefaultFlexSeconds = 240;
+
         /// <summary>
         /// Flex: every type in turn, regenerated; constraint errors per type, and the labelled dimensions whose plane ended
         /// on the other side of its reference in that type (F-026, F-039). Nothing is kept.
+        /// <para>F-072: one regeneration per type, and the size check (Follow) runs on the type it picks right after that
+        /// type's own regeneration, reusing it. The check stops before a regeneration that would pass <paramref name="maxSeconds"/>
+        /// (from the longest one so far) and says how far it got (unfinished), instead of holding Revit's API thread unbounded
+        /// (the detailed operating light held it about 18 minutes). The answer counts its regenerations.</para>
         /// </summary>
-        public static JObject Flex(Document doc, JArray follow = null)
+        public static JObject Flex(Document doc, JArray follow = null, double maxSeconds = DefaultFlexSeconds)
         {
             FamilyManager fm = doc.FamilyManager;
-            var results = new JArray();
+            var clock = new FlexClock(maxSeconds);
             int sidesChecked = 0, sidesUnrecorded = 0;
-            JObject followed = null;
+            var types = fm.Types.Cast<FamilyType>().Where(t => !string.IsNullOrWhiteSpace(t.Name)).ToList();
+            var byType = new Dictionary<string, JObject>();
+            var follower = follow != null && follow.Count > 0 ? new Follower(doc, follow) : null;
             using (var group = new TransactionGroup(doc, "Formcraft: flex"))
             {
                 group.Start();
                 FamilyType startType = fm.CurrentType;
-                foreach (FamilyType type in fm.Types.Cast<FamilyType>().Where(t => !string.IsNullOrWhiteSpace(t.Name)).ToList())
+                // the type the size check prefers goes first (the one already at the low values, then the current one), so
+                // its own regeneration is the size check's starting state
+                var order = follower == null ? types : follower.Order(types, startType);
+                foreach (FamilyType type in order)
                 {
+                    if (!clock.RoomForOneMore()) break;
                     var c = new ErrorCollector();
                     using (var t = new Transaction(doc, "flex " + type.Name))
                     {
@@ -285,115 +298,230 @@ namespace RevitMCPCommandSet.Services.Fmc
                         try
                         {
                             fm.CurrentType = type;
-                            doc.Regenerate();
+                            clock.Regenerate(doc);
                             var sides = FmcDimSides.Check(doc);
                             wrong = sides.Wrong;
                             sidesChecked = Math.Max(sidesChecked, sides.Checked);
                             sidesUnrecorded = Math.Max(sidesUnrecorded, sides.Unrecorded);
                         }
                         catch (Exception e) { error = e.Message; }
-                        var status = t.Commit();
+                        var status = error.Length > 0 ? RollBack(t) : t.Commit();
                         if (status != TransactionStatus.Committed && error.Length == 0 && c.Errors.Count == 0) error = "Revit couldn't regenerate it (" + status + ")";
                         var all = c.Errors.Concat(error.Length > 0 ? new[] { error } : new string[0]).ToList();
-                        results.Add(new JObject { ["type"] = type.Name, ["ok"] = all.Count == 0, ["errors"] = new JArray(all), ["dimension_sides"] = new JArray(wrong) });
+                        byType[type.Name] = new JObject { ["type"] = type.Name, ["ok"] = all.Count == 0, ["errors"] = new JArray(all), ["dimension_sides"] = new JArray(wrong) };
+                        // the size check on this type, from the state just regenerated (no second regeneration to get there)
+                        if (follower != null && follower.Pending && all.Count == 0) follower.On(type, clock);
                     }
                 }
-                if (follow != null && follow.Count > 0) followed = Follow(doc, follow, startType);
                 group.RollBack();
             }
+            // the answer keeps the family's own type order
+            var results = new JArray(types.Where(t => byType.ContainsKey(t.Name)).Select(t => byType[t.Name]));
             var answer = new JObject
             {
                 ["types"] = results, ["ok"] = results.All(r => r.Value<bool>("ok")),
                 ["dimension_sides"] = new JObject { ["checked"] = sidesChecked, ["unrecorded"] = sidesUnrecorded },
+                ["regenerations"] = clock.Regenerations, ["seconds"] = Math.Round(clock.Seconds, 1),
             };
-            if (followed != null) answer["follow"] = followed;
+            bool unfinished = results.Count < types.Count || (follower != null && follower.Pending && clock.Stopped);
+            if (unfinished)
+                answer["unfinished"] = new JObject
+                {
+                    ["minutes"] = Math.Round(maxSeconds / 60, 1), ["checked"] = results.Count, ["of"] = types.Count,
+                    ["seconds"] = Math.Round(clock.Seconds, 1), ["size_check_done"] = follower == null || !follower.Pending,
+                };
+            if (follower != null) answer["follow"] = follower.Report(clock.Stopped);
             return answer;
+        }
+
+        private static TransactionStatus RollBack(Transaction t)
+        {
+            try { return t.RollBack(); } catch (Exception) { return TransactionStatus.Error; }
+        }
+
+        /// <summary>Counts flex's regenerations and keeps it inside its time limit (F-072).</summary>
+        private sealed class FlexClock
+        {
+            private readonly System.Diagnostics.Stopwatch _watch = System.Diagnostics.Stopwatch.StartNew();
+            private readonly double _max;
+            private double _longest;
+            public FlexClock(double maxSeconds) { _max = maxSeconds > 0 ? maxSeconds : double.MaxValue; }
+            public int Regenerations { get; private set; }
+            public double Seconds => _watch.Elapsed.TotalSeconds;
+            /// <summary>True once a regeneration was refused for time.</summary>
+            public bool Stopped { get; private set; }
+
+            /// <summary>Whether one more regeneration (as long as the longest so far) still ends inside the limit.</summary>
+            public bool RoomForOneMore()
+            {
+                if (Seconds + _longest <= _max) return true;
+                Stopped = true;
+                return false;
+            }
+
+            public void Regenerate(Document doc)
+            {
+                double t0 = Seconds;
+                Regenerations++;
+                try { doc.Regenerate(); }
+                finally { _longest = Math.Max(_longest, Seconds - t0); }
+            }
         }
 
         /// <summary>
         /// Gate A's size check: each size parameter (Width, Height, Fanlight Height…) set to its lowest and then its highest
         /// type value on one type, the rest of that type left as it is, and every named solid's bounding box compared
         /// between the two. A solid whose box changed moved with the parameter. The type tried first is the one that
-        /// already has the lowest value; a type where either value doesn't regenerate is skipped for the next. Inside
-        /// flex's group, so nothing is kept.
+        /// already has the lowest values; a type where a value doesn't regenerate leaves that parameter for the next.
+        /// Inside flex's group, so nothing is kept.
+        /// <para>F-072, the same check in fewer regenerations: it starts from the type's own regeneration (flex's), sets
+        /// every parameter not already at its low value in one step (one parameter at a time only to find which one fails),
+        /// then raises one parameter per step, each step's boxes being the next one's "before". The state before raising a
+        /// parameter is the one the old code reached with a step of its own (the earlier parameters raised, this one low),
+        /// so what is compared is unchanged. P parameters on a type already at its low values: P regenerations (it was 2P).</para>
         /// </summary>
-        private static JObject Follow(Document doc, JArray follow, FamilyType startType)
+        private sealed class Follower
         {
-            FamilyManager fm = doc.FamilyManager;
-            var types = fm.Types.Cast<FamilyType>().Where(t => !string.IsNullOrWhiteSpace(t.Name)).ToList();
-            var paramsOut = new JArray();
-            var moved = new Dictionary<string, List<string>>();
-            var still = new Dictionary<string, List<string>>();
-            var noBox = new HashSet<string>();
-            foreach (JObject f in follow.OfType<JObject>())
+            private sealed class Spec
             {
-                string name = f.Value<string>("param");
-                double lo = Mm(f.Value<double>("low_mm")), hi = Mm(f.Value<double>("high_mm"));
-                var line = new JObject { ["param"] = name, ["low_mm"] = f["low_mm"], ["high_mm"] = f["high_mm"], ["ok"] = false };
-                paramsOut.Add(line);
-                FamilyParameter p = fm.get_Parameter(name);
-                if (p == null) { line["error"] = "no parameter " + name; continue; }
-                if (p.Definition.GetDataType() != SpecTypeId.Length) { line["error"] = name + " isn't a Length parameter"; continue; }
-                if (!string.IsNullOrEmpty(p.Formula) || p.IsReporting) { line["error"] = name + " is driven (formula or reporting)"; continue; }
-                var order = types.OrderBy(t => t.HasValue(p) && Math.Abs((t.AsDouble(p) ?? 0) - lo) < 1e-9 ? 0 : t == startType ? 1 : 2).ToList();
-                string firstError = "";
-                foreach (FamilyType type in order)
-                {
-                    var a = SetAndRead(doc, type, p, lo, out string e1);
-                    var b = a == null ? null : SetAndRead(doc, type, p, hi, out e1);
-                    if (a == null || b == null) { if (firstError.Length == 0) firstError = type.Name + ": " + e1; continue; }
-                    foreach (var kv in a)
-                    {
-                        if (!moved.ContainsKey(kv.Key)) { moved[kv.Key] = new List<string>(); still[kv.Key] = new List<string>(); }
-                        b.TryGetValue(kv.Key, out BoundingBoxXYZ after);
-                        if (kv.Value == null || after == null) { noBox.Add(kv.Key); continue; }
-                        (FmcDocSweep.Moved(kv.Value, after) ? moved[kv.Key] : still[kv.Key]).Add(name);
-                    }
-                    line["ok"] = true;
-                    line["type"] = type.Name;
-                    break;
-                }
-                if (!line.Value<bool>("ok")) line["error"] = firstError.Length > 0 ? firstError : "no type to flex";
+                public string Name;
+                public double Lo, Hi;
+                public FamilyParameter P;
+                public JObject Line;
+                public bool Done;
             }
-            var elements = new JArray();
-            foreach (var n in moved.Keys.OrderBy(k => k))
-            {
-                var e = new JObject { ["name"] = n, ["kind"] = FmcDocSweep.KindOf(doc, n), ["moved"] = new JArray(moved[n]), ["fixed"] = new JArray(still[n]) };
-                if (noBox.Contains(n)) e["no_box"] = true;
-                elements.Add(e);
-            }
-            return new JObject { ["params"] = paramsOut, ["elements"] = elements };
-        }
 
-        /// <summary>The type made current with the parameter at this value, committed (failures roll it back: null).</summary>
-        private static Dictionary<string, BoundingBoxXYZ> SetAndRead(Document doc, FamilyType type, FamilyParameter p, double value, out string error)
-        {
-            error = "";
-            FamilyManager fm = doc.FamilyManager;
-            var c = new ErrorCollector();
-            using (var t = new Transaction(doc, "follow " + p.Definition.Name))
+            private readonly Document _doc;
+            private readonly List<Spec> _specs = new List<Spec>();
+            private readonly JArray _lines = new JArray();
+            private readonly Dictionary<string, List<string>> _moved = new Dictionary<string, List<string>>();
+            private readonly Dictionary<string, List<string>> _still = new Dictionary<string, List<string>>();
+            private readonly HashSet<string> _noBox = new HashSet<string>();
+            private readonly Dictionary<string, string> _firstError = new Dictionary<string, string>();
+            private int _typesTried;
+
+            public Follower(Document doc, JArray follow)
             {
-                var fho = t.GetFailureHandlingOptions();
-                fho.SetFailuresPreprocessor(c);
-                t.SetFailureHandlingOptions(fho);
-                t.Start();
-                try
+                _doc = doc;
+                FamilyManager fm = doc.FamilyManager;
+                foreach (JObject f in follow.OfType<JObject>())
                 {
-                    fm.CurrentType = type;
-                    fm.Set(p, value);
-                    doc.Regenerate();
-                }
-                catch (Exception e) { error = e.Message; }
-                if (error.Length > 0) { t.RollBack(); return null; }
-                var status = t.Commit();
-                if (status != TransactionStatus.Committed || c.Errors.Count > 0)
-                {
-                    error = p.Definition.Name + " = " + Math.Round(UnitUtils.ConvertFromInternalUnits(value, UnitTypeId.Millimeters), 1) + " mm: " +
-                        (c.Errors.Count > 0 ? c.Errors[0] : "Revit couldn't regenerate it (" + status + ")");
-                    return null;
+                    string name = f.Value<string>("param");
+                    var line = new JObject { ["param"] = name, ["low_mm"] = f["low_mm"], ["high_mm"] = f["high_mm"], ["ok"] = false };
+                    _lines.Add(line);
+                    FamilyParameter p = fm.get_Parameter(name);
+                    if (p == null) { line["error"] = "no parameter " + name; continue; }
+                    if (p.Definition.GetDataType() != SpecTypeId.Length) { line["error"] = name + " isn't a Length parameter"; continue; }
+                    // a size parameter a formula or a reporting dimension drives can't be set: reported, never stepped
+                    if (!string.IsNullOrEmpty(p.Formula) || p.IsReporting) { line["error"] = name + " is driven (formula or reporting)"; continue; }
+                    _specs.Add(new Spec { Name = name, Lo = Mm(f.Value<double>("low_mm")), Hi = Mm(f.Value<double>("high_mm")), P = p, Line = line });
                 }
             }
-            return FmcDocSweep.Boxes(doc);
+
+            public bool Pending => _specs.Any(s => !s.Done);
+
+            private static bool AtLow(FamilyType t, Spec s) => t.HasValue(s.P) && Math.Abs((t.AsDouble(s.P) ?? 0) - s.Lo) < 1e-9;
+
+            /// <summary>Types in the order the size check tries them: most parameters already low, then the current type.</summary>
+            public List<FamilyType> Order(List<FamilyType> types, FamilyType current) =>
+                types.Select((t, i) => (t, i)).OrderByDescending(x => _specs.Count(s => AtLow(x.t, s))).ThenBy(x => x.t.Name == current?.Name ? 0 : 1)
+                    .ThenBy(x => x.i).Select(x => x.t).ToList();
+
+            /// <summary>The size check on this type, current and just regenerated (by flex).</summary>
+            public void On(FamilyType type, FlexClock clock)
+            {
+                _typesTried++;
+                var pending = _specs.Where(s => !s.Done).ToList();
+                var notLow = pending.Where(s => !AtLow(type, s)).ToList();
+                var failedHere = new HashSet<Spec>();
+                Dictionary<string, BoundingBoxXYZ> before;
+                if (notLow.Count == 0) before = FmcDocSweep.Boxes(_doc);   // flex's own regeneration is the low state
+                else
+                {
+                    if (!clock.RoomForOneMore()) return;
+                    before = Step(type, notLow.Select(s => (s, s.Lo)).ToList(), clock, out string e);
+                    if (before == null)
+                    {
+                        // which one fails: one at a time (only now)
+                        foreach (var s in notLow)
+                        {
+                            if (!clock.RoomForOneMore()) return;
+                            var b = Step(type, new List<(Spec, double)> { (s, s.Lo) }, clock, out string e1);
+                            if (b == null) { failedHere.Add(s); Note(s, type.Name + ": " + e1); }
+                            else before = b;
+                        }
+                        if (before == null) before = FmcDocSweep.Boxes(_doc);
+                    }
+                }
+                foreach (var s in pending)
+                {
+                    if (failedHere.Contains(s)) continue;
+                    if (!clock.RoomForOneMore()) return;
+                    var after = Step(type, new List<(Spec, double)> { (s, s.Hi) }, clock, out string e2);
+                    if (after == null) { Note(s, type.Name + ": " + e2); continue; }   // rolled back: `before` still holds
+                    foreach (var kv in before)
+                    {
+                        if (!_moved.ContainsKey(kv.Key)) { _moved[kv.Key] = new List<string>(); _still[kv.Key] = new List<string>(); }
+                        after.TryGetValue(kv.Key, out BoundingBoxXYZ b2);
+                        if (kv.Value == null || b2 == null) { _noBox.Add(kv.Key); continue; }
+                        (FmcDocSweep.Moved(kv.Value, b2) ? _moved[kv.Key] : _still[kv.Key]).Add(s.Name);
+                    }
+                    s.Done = true;
+                    s.Line["ok"] = true;
+                    s.Line["type"] = type.Name;
+                    before = after;
+                }
+            }
+
+            private void Note(Spec s, string error) { if (!_firstError.ContainsKey(s.Name)) _firstError[s.Name] = error; }
+
+            /// <summary>The values set on the current type in one transaction and one regeneration, committed; the named
+            /// solids' boxes after it, or null when Revit refused it (rolled back, the state as before).</summary>
+            private Dictionary<string, BoundingBoxXYZ> Step(FamilyType type, List<(Spec S, double Value)> set, FlexClock clock, out string error)
+            {
+                error = "";
+                FamilyManager fm = _doc.FamilyManager;
+                var c = new ErrorCollector();
+                using (var t = new Transaction(_doc, "follow " + string.Join(", ", set.Select(x => x.S.Name))))
+                {
+                    var fho = t.GetFailureHandlingOptions();
+                    fho.SetFailuresPreprocessor(c);
+                    t.SetFailureHandlingOptions(fho);
+                    t.Start();
+                    try
+                    {
+                        if (fm.CurrentType?.Name != type.Name) fm.CurrentType = type;
+                        foreach (var (s, v) in set) fm.Set(s.P, v);
+                        clock.Regenerate(_doc);
+                    }
+                    catch (Exception e) { error = e.Message; }
+                    if (error.Length > 0) { RollBack(t); return null; }
+                    var status = t.Commit();
+                    if (status != TransactionStatus.Committed || c.Errors.Count > 0)
+                    {
+                        error = string.Join(", ", set.Select(x => x.S.Name + " = " + Math.Round(ToMm(x.Value), 1) + " mm")) + ": " +
+                            (c.Errors.Count > 0 ? c.Errors[0] : "Revit couldn't regenerate it (" + status + ")");
+                        return null;
+                    }
+                }
+                return FmcDocSweep.Boxes(_doc);
+            }
+
+            public JObject Report(bool stoppedForTime)
+            {
+                foreach (var s in _specs.Where(x => !x.Done))
+                    s.Line["error"] = _firstError.TryGetValue(s.Name, out string e) ? e
+                        : stoppedForTime ? "not checked: flex reached its time limit first"
+                        : _typesTried == 0 ? "no type to flex" : "no type moved it";
+                var elements = new JArray();
+                foreach (var n in _moved.Keys.OrderBy(k => k))
+                {
+                    var e = new JObject { ["name"] = n, ["kind"] = FmcDocSweep.KindOf(_doc, n), ["moved"] = new JArray(_moved[n]), ["fixed"] = new JArray(_still[n]) };
+                    if (_noBox.Contains(n)) e["no_box"] = true;
+                    elements.Add(e);
+                }
+                return new JObject { ["params"] = _lines, ["elements"] = elements };
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ import { appendJobEvent, jobFiles, jobResult, lastHeartbeatMs } from "../fmc/job
 import { WRITE_COMMANDS, liveLockVerdict, loadConfig } from "../fmc/policy.js";
 import { documentTarget } from "../fmc/target.js";
 import { aiGate } from "../fmc/aigate.js";
+import { retryWhileBusy } from "../fmc/busy.js";
 
 export class RevitClientConnection {
   host: string;
@@ -141,6 +142,15 @@ export class RevitClientConnection {
   }
 
   public sendRaw(command: string, params: any = {}, timeoutMs: number = 120000, long?: LongJobOptions): Promise<any> {
+    // F-072: an earlier command that outlived its wait still holds Revit, and the add-in says so at once
+    // ([FMC-BRIDGE-BUSY]): wait and send again while that job's heartbeats are fresh, up to this call's own limit (the
+    // answer limit, when the MCP server's is on), instead of failing
+    const soft = softTimeoutMs();
+    return retryWhileBusy(() => this.sendOnce(command, params, timeoutMs, long),
+      { command, ceilingMs: soft > 0 ? Math.min(soft, timeoutMs) : timeoutMs, heartbeatMs: (job) => lastHeartbeatMs(job) });
+  }
+
+  private sendOnce(command: string, params: any = {}, timeoutMs: number = 120000, long?: LongJobOptions): Promise<any> {
     // The call's document target goes with every command (the live-model lock's document check included), unless the
     // command names its own document.
     const document = documentTarget.getStore();

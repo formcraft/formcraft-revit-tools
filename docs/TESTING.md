@@ -170,7 +170,8 @@ one when the last ended more than 20 hours ago); `status`; `report` (summary.md 
   records a `dialog` finding naming it, and replaces its Revit before the next scenario. A step with no answer within
   its `timeout_s` (default 900 s) is cancelled the same way.
 - Settings: `%APPDATA%\Formcraft\testrun\config.json` (optional): `revit_exe`, `pause_on_battery`, `power_poll_s`,
-  `revit_start_timeout_s`, `step_timeout_s`, `project_template` (default the kit's `FMC_A_Template_v2.2.rte`),
+  `revit_start_timeout_s`, `step_timeout_s`, `busy_wait_s` (default 1800: how long a step waits for a Revit still
+  busy with an earlier command, F-072), `project_template` (default the kit's `FMC_A_Template_v2.2.rte`),
   `new_run_after_hours`, `scenarios_dir`.
 
 **Starting it, with no AI:**

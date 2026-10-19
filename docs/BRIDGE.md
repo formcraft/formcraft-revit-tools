@@ -52,6 +52,19 @@ long job's. While a command runs, `fmc_document_info` answers from its last read
 why): Revit's interface is frozen during a command, so the active document can't change, and the live-model lock reads
 it instead of refusing because Revit was busy. A call for a named `document` is never answered from the cache.
 
+**Busy, not a false timeout (F-072).** A command's wait in the add-in can run out (300 s for `fmc_doc_flex`) while its
+work goes on on Revit's API thread: Revit can't stop an external event once it has started. Before, every later call
+queued behind it and timed out by mistake. Now the timed-out call answers `[FMC-BRIDGE-TIMEOUT] … Revit is still
+running it`, the bridge is marked **busy** (`bridge_busy` in `FMC_Jobs_Revit.jsonl`, the job keeps its heartbeats) and
+every new call is answered at once with `[FMC-BRIDGE-BUSY] Revit is still running <command> since <time> (job <id>)`.
+`fmc_selftest_facts` (its `bridge` part says busy or not) and the cached `fmc_document_info` still answer. When the work
+ends (a small external event runs once the API thread is free) the job's `finished` line and its real result go to the
+files as for any long job, `bridge_free` is written, and calls go through again. The server's socket client waits and
+sends again while the busy job's heartbeats are fresh, up to the call's own limit (the answer limit when the MCP
+server's is on), then fails with `[FMC-BRIDGE-BUSY] … wasn't sent: waited N s`. The unattended test runner waits for a
+busy Revit before a step and after a busy answer (up to `busy_wait_s`, default 30 min) without counting a try; when it
+gives up, the finding (kind `busy`) says "Revit was busy with X since T (job J)".
+
 ## send_code_to_revit (F-031, F-033, F-034, F-035)
 
 - **Size.** Scripts up to 1,000,000 characters (the server's schema and the add-in both check). The add-in now reads a

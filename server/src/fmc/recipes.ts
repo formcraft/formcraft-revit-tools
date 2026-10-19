@@ -266,6 +266,8 @@ export interface GateInputs {
     dimension_sides?: { checked: number; unrecorded: number };
     /** Each size parameter at its lowest and highest type value, and which named solids moved with it. */
     follow?: FlexFollow;
+    /** F-072: flex stopped at its time limit: the types it checked of all (types holds only the checked ones). */
+    unfinished?: { minutes: number; checked: number; of: number; seconds?: number; size_check_done?: boolean };
     /** A flex call that failed (session gone, file open in a window) answers with an error, not types. */
     error?: string; refused?: boolean; reasons?: string[];
   } | null;
@@ -563,8 +565,12 @@ export function gateA(family: string, recipe: Recipe | null, inputs: GateInputs)
     // F-039: a type bigger than the template's host wall can't cut its opening; say what to change
     const cutOut = failing.some((f) => (f.errors ?? []).some((e) => /cut-?out|cut the host|opening.*host/i.test(e)));
     lines.push({ check: "Every type flexes", state: inputs.flex.ok && !failing.length ? "Pass" : "Fail",
-      detail: (failing.length ? failing.slice(0, 3).map((f) => `${f.type}${f.errors?.length ? `: ${f.errors[0]}` : ""}`).join("; ") : `${types.length || "all"} types regenerate`) +
+      detail: (failing.length ? failing.slice(0, 3).map((f) => `${f.type}${f.errors?.length ? `: ${f.errors[0]}` : ""}`).join("; ") : inputs.flex.unfinished ? `${types.length} of ${inputs.flex.unfinished.of} types regenerate` : `${types.length || "all"} types regenerate`) +
         (cutOut ? ". The opening is bigger than the template's host wall: raise the host wall (its height, and its length for wide types) in the recipe's template so the largest type cuts" : "") });
+    // F-072: flex stops at its time limit rather than holding Revit unbounded; the types it didn't reach are a Warn
+    const u = inputs.flex.unfinished;
+    if (u) lines.push({ check: "Flex finished", state: "Warn",
+      detail: `flex not finished in ${u.minutes} min: checked ${u.checked} of ${u.of} types${u.size_check_done === false ? " (the size check didn't finish either)" : ""}` });
   }
   // F-039/F-026/F-045: a labelled dimension whose plane ended on the other side of its reference; on every gate
   lines.push(sidesLine(inputs.flex, flexUsable, flexError, inputs.recordedSides));
