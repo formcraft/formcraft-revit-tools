@@ -137,3 +137,26 @@ export function addVariant(node: TreeNode, v: { id: string; name?: string; note?
   if ((node.variants ?? []).some((x) => x.id === v.id)) throw new Error(`${node.id} has a variant ${v.id} already`);
   node.variants = [...(node.variants ?? []), { id: v.id, ...(v.name ? { name: v.name } : {}), ...(v.note ? { note: v.note } : {}), inputs: v.inputs ?? {} }];
 }
+
+/**
+ * A person chose (O4): the chosen variant becomes the node itself (its inputs over the node's, its recipe and children
+ * when it has them), and the node as it was is kept as a variant ("was-<date>"), so a rejected answer can come back.
+ * The other variants stay. Returns the kept variant's id.
+ */
+export function chooseVariant(node: TreeNode, id: string, now: Date): string {
+  const v = node.variants?.find((x) => x.id === id);
+  if (!v) throw new Error(`${node.id} has no variant ${id}`);
+  const keptId = `was-${now.toISOString().slice(0, 10)}`;
+  let kid = keptId;
+  for (let k = 2; node.variants!.some((x) => x.id === kid); k++) kid = `${keptId}-${k}`;
+  // the node as it was, as a variant: every input the chosen one changes, with its old value
+  const was = { id: kid, name: `${node.name ?? node.id} before ${v.name ?? v.id}`,
+    inputs: Object.fromEntries(Object.keys(v.inputs ?? {}).map((k) => [k, node.inputs?.[k]])),
+    ...(v.make && node.make ? { make: node.make } : {}), ...(v.children && node.children ? { children: node.children } : {}) };
+  node.inputs = { ...(node.inputs ?? {}), ...(v.inputs ?? {}) };
+  if (v.make) node.make = v.make;
+  if (v.children) node.children = v.children;
+  node.variants = [...node.variants!.filter((x) => x.id !== id), was];
+  delete node.active;
+  return kid;
+}

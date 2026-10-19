@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { ICU_BAY_SAMPLE } from "./samples.js";
 import { TREE, Tree, findNode, planTree, recordBuilt, resolve } from "./tree.js";
-import { addVariant, compareOptions, optionSheet, planSvg, withActive } from "./options.js";
+import { addVariant, chooseVariant, compareOptions, optionSheet, planSvg, withActive } from "./options.js";
 
 const sample = (): Tree => TREE.parse(JSON.parse(JSON.stringify(ICU_BAY_SAMPLE)));
 
@@ -57,4 +57,21 @@ test("O1: with window heights the daylight proxy is glazing over floor area; a p
   assert.match(svg, /^<svg /);
   assert.equal((svg.match(/<line /g) ?? []).length, 4, "four walls");
   assert.match(svg, /L2-ICU-01 ICU bay/);
+});
+
+test("O4: the chosen variant becomes the node; the node as it was is kept, so it can come back", () => {
+  const t = sample();
+  const bay = findNode(t, "ICU-Bay-01")!;
+  addVariant(bay, { id: "wide", name: "4.5 m bays", inputs: { width: 4500 } });
+  addVariant(bay, { id: "deep", inputs: { depth: 5500 } });
+  bay.active = "wide";
+  const kept = chooseVariant(bay, "wide", new Date("2026-10-19T10:00:00Z"));
+  assert.equal(kept, "was-2026-10-19");
+  assert.equal(bay.inputs!.width, 4500);
+  assert.equal(bay.active, undefined);
+  assert.deepEqual(bay.variants!.map((v) => v.id), ["deep", "was-2026-10-19"]);
+  assert.deepEqual(bay.variants![1].inputs, { width: 4200 }, "the old width, ready to come back");
+  bay.active = "was-2026-10-19";
+  assert.equal((resolve(t).find((r) => r.node.id === "ICU-Bay-01.Room")!.args as any).room.width, 4200);
+  assert.throws(() => chooseVariant(bay, "nope", new Date()), /no variant nope/);
 });
