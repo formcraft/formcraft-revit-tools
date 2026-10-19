@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { Register } from "./review.js";
-import { AI_OWNER, applyBcf, comment, mark, markProblems, queue, take, titleFrom } from "./tickets.js";
+import { AI_OWNER, applyBcf, clashTickets, comment, mark, markProblems, queue, roleOfModel, take, titleFrom } from "./tickets.js";
 import { fromBcf, toBcf } from "./bcf.js";
 import { crc32, readZip, writeZip } from "./zip.js";
 
@@ -96,4 +96,25 @@ test("BCF: a topic from another tool (IFC GUIDs, no Formcraft ids) becomes a new
   assert.deepEqual(t.where!.ifc_guids, ["2O2Fr$t4X7Zf8NOew3FLOH"]);
   assert.deepEqual(t.where!.camera!.eye, [12500, 4300, 3000]);
   assert.equal(t.notes![0].text, "Please reroute");
+});
+
+test("R5: Navisworks clashes become tickets for the clashing disciplines, deepest first, never twice", () => {
+  assert.equal(roleOfModel("D:\P\F26001-FMC-ZZ-02-M3-M-0001.rvt"), "M");
+  assert.equal(roleOfModel("Central.rvt"), "BIM");
+  const r = reg();
+  const row = (name: string, d: number, status = "New") => ({ name, status, distance_mm: d, center_mm: [12000, 4000, 2900],
+    item1: { name: "Duct", category: "Ducts", revit_id: "412233", source: "F26001-FMC-ZZ-02-M3-M-0001.rvt" },
+    item2: { name: "Beam", category: "Structural Framing", revit_id: "998877", source: "F26001-FMC-ZZ-02-M3-S-0001.rvt" } });
+  const first = clashTickets(r, "M vs S", [row("Clash1", -80), row("Clash2", -10), row("Clash3", -40, "Resolved")], "Coordinator", now);
+  assert.equal(first.added.length, 2);
+  assert.equal(first.skipped, 1, "a resolved clash isn't ticketed");
+  const t = r.items[0];
+  assert.equal(t.lead, "M");
+  assert.deepEqual(t.disciplines, ["M", "S"]);
+  assert.equal(t.priority, "High", "80 mm deep");
+  assert.equal(r.items[1].priority, "Medium");
+  assert.equal(t.source, "clash");
+  assert.deepEqual(t.links!.clash!.items!.map((x) => x.id), ["412233", "998877"]);
+  assert.deepEqual(t.where!.point_mm, [12000, 4000, 2900]);
+  assert.deepEqual(clashTickets(r, "M vs S", [row("Clash1", -80)], "Coordinator", now), { added: [], skipped: 1 }, "never twice");
 });

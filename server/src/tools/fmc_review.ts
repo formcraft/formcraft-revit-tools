@@ -5,7 +5,8 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { Filter, PRIORITIES, Register, ReviewItem, answer, filterItems, find, printItems, printList, raise, raiseProblems, shownStatus, solve, verdict } from "../fmc/review.js";
-import { AI_OWNER, applyBcf, comment, mark, markProblems, queue, take } from "../fmc/tickets.js";
+import { AI_OWNER, applyBcf, clashTickets, comment, mark, markProblems, queue, take } from "../fmc/tickets.js";
+import { navisCall, processAlive, readState } from "../fmc/navis.js";
 import { fromBcf, toBcf } from "../fmc/bcf.js";
 
 const win = path.win32;
@@ -57,7 +58,9 @@ export const FMC_REVIEW_DESCRIPTION =
     "first). Marking never changes the model.";
 
 export const FMC_REVIEW_SHAPE = {
-  action: z.enum(["list", "item", "raise", "answer", "solve", "check", "cloud", "print", "prints", "mark", "comment", "take", "queue", "bcf_export", "bcf_import"]),
+  action: z.enum(["list", "item", "raise", "answer", "solve", "check", "cloud", "print", "prints", "mark", "comment", "take", "queue", "bcf_export", "bcf_import", "show", "clashes"]),
+  test: z.string().optional().default("").describe("clashes: the Navisworks clash test"),
+  view: z.boolean().optional().default(true).describe("show: open your own review view on the ticket's camera and box (false: select and zoom only)"),
   to: z.enum(["ai", "person", "discipline", "anyone"]).optional().default("ai").describe("mark: who fixes it; queue: whose list"),
   assignee: z.string().optional().default("").describe("mark: the person or discipline; queue: the person or discipline to list"),
   where: z.object({ unique_ids: z.array(z.string()).default([]), ifc_guids: z.array(z.string()).optional(),
@@ -122,6 +125,13 @@ export async function runFmcReview(args: FmcReviewArgs) {
           picture: !!i.pictures?.raised, source: i.source }),
         next: args.to === "ai" ? "Take the first ticket (take), make its fix as a dry run, and show it to the person who raised it" : undefined });
     }
+    if (args.action === "show") {
+      // selecting and your own review view only: no element of the model changes
+      const t = find(reg, args.id);
+      const revit_ids = (t.links?.clash?.items ?? []).map((x) => ({ model: x.model, id: x.id }));
+      const r = await withRevitConnection((c) => c.sendRaw("fmc_review_show", { where: t.where ?? { unique_ids: [] }, revit_ids, view: args.view }, 60000));
+      return reply({ id: t.id, ...r });
+    }
     if (args.action === "prints")
       return reply({ sheet: args.sheet, prints: (reg.prints ?? []).filter((p) => !args.sheet || p.sheet.toUpperCase() === args.sheet.toUpperCase()).slice(-20).reverse() });
 
@@ -141,6 +151,20 @@ export async function runFmcReview(args: FmcReviewArgs) {
       return win.relative(win.dirname(file), to);
     };
     if (args.action === "bcf_export" || args.action === "bcf_import") return reply(...bcf(args, reg, file, config, now, by, media));
+    if (args.action === "clashes") {
+      if (!args.test.trim()) return reply({ refused: true, reasons: ["Name the clash test (fmc_navis tests lists them)"] }, true);
+      const st = readState();
+      if (!st || !processAlive(st.pid)) return reply({ refused: true, reasons: ["Navisworks with the Formcraft bridge isn't open (fmc_navis status)"] }, true);
+      const res = await navisCall(st.port, "navis_clash_results", { test: args.test.trim(), status: "", limit: 2000 });
+      const rows = ((res.results ?? []) as Array<Record<string, any>>).map((x) => ({ ...x, center_mm: x.center_mm })) as any;
+      const preview = { ...reg, items: [...reg.items] };
+      const would = clashTickets(preview, args.test.trim(), rows, by, now);
+      if (args.dry_run !== false) return reply({ dry_run: true, test: args.test, clashes: rows.length, would_add: would.added.length, skipped: would.skipped, next: "Run again with dry_run=false" });
+      const done = clashTickets(reg, args.test.trim(), rows, by, now);
+      fs.writeFileSync(file, JSON.stringify(reg, null, 2));
+      log(config, "review_clashes", file, "done", `${args.test}: ${done.added.length} tickets, ${done.skipped} skipped`);
+      return reply({ done: true, test: args.test, added: done.added, skipped: done.skipped, next: "Open a ticket with show: Revit selects the elements and opens your review view on the clash" });
+    }
     let item: ReviewItem;
     if (args.action === "mark") {
       const q = { to: args.to, assignee: args.assignee, title: args.title, text: args.description || args.text, transcript: args.transcript,
