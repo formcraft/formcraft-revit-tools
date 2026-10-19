@@ -204,7 +204,7 @@
     "feature": "Line diagrams from the model",
     "status": "Built, Revit check due",
     "ref": "LD1-LD4, #100, #104",
-    "note": "SLD, risers, schematics, controls"
+    "note": "SLD, risers, schematics, controls. LD5 (sheets from the Sheet Register, Gate D in QA, the pane's Generate button) is step E2 of docs/PLAN_ENGINEERING_SERVICES.md (F78)"
   },
   {
     "id": "F24",
@@ -312,7 +312,7 @@
     "feature": "MEP sizing and design tools",
     "status": "Planned",
     "ref": "Phase 5",
-    "note": ""
+    "note": "Now the engineering-services track (docs/PLAN_ENGINEERING_SERVICES.md, approved 19 Oct): calculations from the kit in E1 (F77), FormCraft Electrical 0.1 enrich and feeder sizing in the plugin in E3 (F79); the grid of what each system can do is docs/tracker/mep_matrix.json"
   },
   {
     "id": "F36",
@@ -673,5 +673,41 @@
     "status": "In progress",
     "ref": "docs/TESTING.md",
     "note": "Asked 19 Oct. Built: tests/revit scenarios (self-test, the sample batches with batch_gate and host tests, ICU bay room build, element facts, Mark & Review fix dry run, selection, design options, schedules, 3D pictures, offline ceiling; apps skipped when closed), fmc_testrun (list, plan, run, status, resume, report) with a checkpoint and findings, its own Revit only (FMC_UNATTENDED_TEST, no keep-awake), dialogs answered by rule (Duplicate Types), scripts/fmc-testrun.ps1 and fmc-testrun-schedule.ps1 (the owner registers the task). First real run not yet done"
+  },
+  {
+    "id": "F77",
+    "area": "App",
+    "group": "Engineer",
+    "feature": "MEP calculations from the kit (E1)",
+    "status": "Planned",
+    "ref": "docs/PLAN_ENGINEERING_SERVICES.md",
+    "note": "The kit's CA-E/M/P/FP/LP calculations as code: reads Revit facts read-only, writes calc sheets to the project's 01_WIP with TBC where data is missing; the engineer decides demand factors and sizes and signs"
+  },
+  {
+    "id": "F78",
+    "area": "App",
+    "group": "Engineer",
+    "feature": "Line diagram sheets and Gate D (LD5, E2)",
+    "status": "Planned",
+    "ref": "docs/PLAN_ENGINEERING_SERVICES.md",
+    "note": "Diagram sheets from the Sheet Register rows E-0003, E-0004, E-6002 and P-0003, Gate D in QA, the pane's Generate button, the drainage long section"
+  },
+  {
+    "id": "F79",
+    "area": "App",
+    "group": "Engineer",
+    "feature": "Electrical enrich and sizing in the plugin (E3)",
+    "status": "Planned",
+    "ref": "docs/PLAN_ENGINEERING_SERVICES.md",
+    "note": "FormCraft Electrical 0.1's enrich and feeder sizing folded into the one plugin through kit parameters; drafts only, the engineer signs. Waits on the kit adding the 16 parameters (kit change request)"
+  },
+  {
+    "id": "F80",
+    "area": "App",
+    "group": "Engineer",
+    "feature": "Auto-MEP from room types (E4)",
+    "status": "Planned",
+    "ref": "docs/PLAN_ENGINEERING_SERVICES.md",
+    "note": "QX1-QX7: room-type services table, FMC_Room_Type, stage stamps FMC_Auto_Stage and FMC_Auto_Run, FMC_AI_Hint marker family, run journal; lighting and small power first through the recipe-tree room build"
   }
 ]

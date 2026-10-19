@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Formcraft.Shell.Services;
@@ -9,34 +12,125 @@ using Formcraft.Shell.Services;
 namespace Formcraft.Shell.ViewModels
 {
     /// <summary>
-    /// What each building system can do today, said honestly: a system is covered only when all seven capabilities work
-    /// end to end on a real client model (board model/PaneModelSystems). Updated as each capability ships.
+    /// What each building system can do today, said honestly: the engineering grid (E0), 23 systems by 7 capabilities,
+    /// read from docs/tracker/mep_matrix.json (fmc-mep-matrix/0.1, embedded in this assembly). The build tracker and
+    /// the server's fmc_systems matrix read the same file; a cell changes only with the PR that changes it. A system is
+    /// covered only when every capability that applies is tested in Revit on a real client model.
     /// </summary>
     public static class SystemCapabilities
     {
-        public static readonly string[] Disciplines = { "Electrical", "ELV", "Fire", "Plumbing", "Mechanical", "Special" };
-        public static readonly string[] Capabilities = { "1 Enrich", "2 Size", "3 Diagram", "4 Calculate", "5 Review calcs", "6 Quantities", "7 Document" };
+        public const string Tested = "Tested in Revit";
+        public const string NotApplicable = "Not applicable";
+        public const string Planned = "Planned";
 
-        public static readonly IReadOnlyDictionary<string, string[]> Systems = new Dictionary<string, string[]>
+        [DataContract]
+        public sealed class MatrixDef
         {
-            ["Electrical"] = new[] { "Power distribution", "Small power", "Lighting", "Generator and standby" },
-            ["ELV"] = new[] { "Data and telecoms", "CCTV and access control", "Audio-visual" },
-            ["Fire"] = new[] { "Fire alarm", "Sprinklers and hose reels", "Emergency lighting" },
-            ["Plumbing"] = new[] { "Cold water", "Hot water", "Drainage", "Rainwater" },
-            ["Mechanical"] = new[] { "Ventilation", "Air conditioning", "Gas" },
-            ["Special"] = new[] { "Lightning protection", "Solar PV" },
-        };
-
-        /// <summary>The status of one capability for one system: Built, Partly, Waits on the kit, or Planned.</summary>
-        public static string Status(string system, string capability)
-        {
-            bool power = system == "Power distribution" || system == "Small power" || system == "Lighting";
-            if (power && capability == "4 Calculate") return "Partly";
-            if (system == "Power distribution" && (capability == "1 Enrich" || capability == "2 Size")) return "Waits on the kit";
-            return "Planned";
+            [DataMember(Name = "schema")] public string Schema { get; set; } = "";
+            [DataMember(Name = "disciplines")] public Dictionary<string, string> Disciplines { get; set; } = new Dictionary<string, string>();
+            [DataMember(Name = "capabilities")] public CapabilityDef[] Capabilities { get; set; } = new CapabilityDef[0];
+            [DataMember(Name = "systems")] public SystemDef[] Systems { get; set; } = new SystemDef[0];
+            [DataMember(Name = "cells")] public CellDef[] Cells { get; set; } = new CellDef[0];
         }
 
-        public static int Done(string system) => Capabilities.Count(c => Status(system, c) == "Built");
+        [DataContract]
+        public sealed class CapabilityDef
+        {
+            [DataMember(Name = "id")] public string Id { get; set; } = "";
+            [DataMember(Name = "name")] public string Name { get; set; } = "";
+            [DataMember(Name = "meaning")] public string Meaning { get; set; } = "";
+        }
+
+        [DataContract]
+        public sealed class SystemDef
+        {
+            [DataMember(Name = "id")] public string Id { get; set; } = "";
+            [DataMember(Name = "name")] public string Name { get; set; } = "";
+            [DataMember(Name = "discipline")] public string Discipline { get; set; } = "";
+        }
+
+        [DataContract]
+        public sealed class CellDef
+        {
+            [DataMember(Name = "system")] public string System { get; set; } = "";
+            [DataMember(Name = "capability")] public string Capability { get; set; } = "";
+            [DataMember(Name = "state")] public string State { get; set; } = "";
+            [DataMember(Name = "evidence")] public string[] Evidence { get; set; } = new string[0];
+            [DataMember(Name = "feature")] public string Feature { get; set; } = "";
+            [DataMember(Name = "step")] public string Step { get; set; } = "";
+            [DataMember(Name = "note")] public string Note { get; set; } = "";
+        }
+
+        /// <summary>The grid shipped in Formcraft.Shell.dll.</summary>
+        public static MatrixDef Matrix { get; } = Load();
+
+        public static MatrixDef Load()
+        {
+            using var stream = typeof(SystemCapabilities).Assembly.GetManifestResourceStream("Formcraft.Shell.mep_matrix.json")
+                ?? throw new InvalidOperationException("mep_matrix.json is not embedded in Formcraft.Shell");
+            return Load(stream);
+        }
+
+        public static MatrixDef Load(Stream json)
+        {
+            var settings = new DataContractJsonSerializerSettings { UseSimpleDictionaryFormat = true };
+            var m = (MatrixDef?)new DataContractJsonSerializer(typeof(MatrixDef), settings).ReadObject(json)
+                ?? throw new InvalidDataException("mep_matrix.json is empty");
+            if (m.Schema != "fmc-mep-matrix/0.1") throw new InvalidDataException("mep_matrix.json: unknown schema '" + m.Schema + "'");
+            return m;
+        }
+
+        /// <summary>The disciplines by name, in the order their first system appears in the grid.</summary>
+        public static readonly string[] Disciplines = Matrix.Systems.Select(s => DisciplineName(s.Discipline)).Distinct().ToArray();
+
+        /// <summary>"1 Enrich" … "7 Document".</summary>
+        public static readonly string[] Capabilities = Matrix.Capabilities.Select((c, i) => (i + 1) + " " + c.Name).ToArray();
+
+        public static readonly IReadOnlyDictionary<string, string[]> Systems = Disciplines.ToDictionary(
+            d => d, d => Matrix.Systems.Where(s => DisciplineName(s.Discipline) == d).Select(s => s.Name).ToArray());
+
+        public static string DisciplineName(string code) => Matrix.Disciplines.TryGetValue(code, out var n) ? n : code;
+
+        /// <summary>The cell for a system and a capability ("1 Enrich" or "Enrich"); null when the grid has none.</summary>
+        public static CellDef? Cell(string system, string capability)
+        {
+            var s = Matrix.Systems.FirstOrDefault(x => x.Name == system || x.Id == system);
+            int space = capability.IndexOf(' ');
+            string name = space > 0 && char.IsDigit(capability[0]) ? capability.Substring(space + 1) : capability;
+            var c = Matrix.Capabilities.FirstOrDefault(x => x.Name == name || x.Id == name);
+            return s == null || c == null ? null : Matrix.Cells.FirstOrDefault(x => x.System == s.Id && x.Capability == c.Id);
+        }
+
+        /// <summary>The state of one capability for one system, in the grid's own words (Planned when it has none).</summary>
+        public static string Status(string system, string capability) => Cell(system, capability)?.State ?? Planned;
+
+        /// <summary>Capabilities tested in Revit for this system.</summary>
+        public static int Done(string system) => Capabilities.Count(c => Status(system, c) == Tested);
+
+        /// <summary>Capabilities that apply to this system (all seven but those marked Not applicable).</summary>
+        public static int Applicable(string system) => Capabilities.Count(c => Status(system, c) != NotApplicable);
+
+        /// <summary>A short line for the systems table: "2 built · 3 partly · 1 kit calc", or Planned.</summary>
+        public static string Summary(string system)
+        {
+            var states = Capabilities.Select(c => Status(system, c)).ToList();
+            var parts = new List<string>();
+            void Add(string state, string word) { int n = states.Count(s => s == state); if (n > 0) parts.Add(n + " " + word); }
+            Add(Tested, "tested");
+            Add("Built, Revit check due", "built");
+            Add("Partly built", "partly");
+            Add("Kit calculation only", "kit calc");
+            return parts.Count == 0 ? Planned : string.Join(" · ", parts);
+        }
+
+        /// <summary>The whole grid in one line: "0 of 159 cells tested in Revit · 15 built, Revit check due · …".</summary>
+        public static string Headline()
+        {
+            var cells = Matrix.Cells;
+            int n(string state) => cells.Count(c => c.State == state);
+            return n(Tested) + " of " + (cells.Length - n(NotApplicable)) + " cells tested in Revit · " + n("Built, Revit check due") + " built, Revit check due · " +
+                   n("Partly built") + " partly built · " + n("Kit calculation only") + " kit calculation only · " + n(Planned) + " planned";
+        }
     }
 
     /// <summary>
@@ -90,8 +184,8 @@ namespace Formcraft.Shell.ViewModels
             Groups.Clear();
             var systems = SystemCapabilities.Systems[Discipline];
             var table = new TableSetting("", new[] { "System", "Done", "Status" },
-                systems.Select(s => new TableRow(s, s, SystemCapabilities.Done(s) + " of 7",
-                    SystemCapabilities.Capabilities.Any(c => SystemCapabilities.Status(s, c) != "Planned") ? "Partly" : "Planned")), selectable: true);
+                systems.Select(s => new TableRow(s, s, SystemCapabilities.Done(s) + " of " + SystemCapabilities.Applicable(s), SystemCapabilities.Summary(s))),
+                selectable: true, hint: "Done: capabilities tested in Revit on a real model, of those that apply.");
             table.Selected = table.Rows.FirstOrDefault(r => (string?)r.Tag == System);
             table.PropertyChanged += (_, e) =>
             {
@@ -102,9 +196,15 @@ namespace Formcraft.Shell.ViewModels
             Groups.Add(new SettingsGroup("System",
                 new ChoiceSetting(_store, "systems.discipline", "Discipline", SystemCapabilities.Disciplines, changed: _ => { _store.Set("systems.system", null); _last = null; Rebuild(); }),
                 table,
-                new NoteSetting("A system is covered only when all seven capabilities work end to end on a real client model.", ChipKind.Grey)));
+                new NoteSetting("A system is covered only when every capability that applies is tested in Revit on a real client model.", ChipKind.Grey),
+                new NoteSetting("Model target · 23 systems × 7 capabilities · " + SystemCapabilities.Headline() + ".", ChipKind.Info)));
             Groups.Add(new SettingsGroup("Seven capabilities · " + System,
-                new TableSetting("", new[] { "Capability", "Status" }, SystemCapabilities.Capabilities.Select(c => new TableRow(c, c, SystemCapabilities.Status(System, c))))));
+                new TableSetting("", new[] { "Capability", "Status", "Note" }, SystemCapabilities.Capabilities.Select(c =>
+                {
+                    var cell = SystemCapabilities.Cell(System, c);
+                    string next = cell == null || cell.Step.Length == 0 ? "" : " (" + cell.Step + ")";
+                    return new TableRow(c, c, SystemCapabilities.Status(System, c), (cell?.Note ?? "") + next);
+                }), hint: "From the engineering grid, docs/tracker/mep_matrix.json; E1–E4 are the next steps (docs/PLAN_ENGINEERING_SERVICES.md).")));
 
             if (Discipline == "Electrical")
             {
@@ -128,8 +228,11 @@ namespace Formcraft.Shell.ViewModels
                     new NoteSetting("Enrich Data and Size Feeders are built (FormCraft Electrical 0.1), but they write 16 FMC_ parameters the kit doesn't have yet " +
                                     "(FMC_Load_VA, FMC_Voltage, FMC_Conductor_Size and others). They join the add-in once the kit adds them: the kit wins (rule 7).", ChipKind.Warn)));
             }
+            else if (Discipline == "Structural")
+                Groups.Add(new SettingsGroup("Run on this model", new NoteSetting("Structural: the analytical model check and the Robot hand-off are in Engineer › Structural.", ChipKind.Grey)));
             else
-                Groups.Add(new SettingsGroup("Run on this model", new NoteSetting(Discipline + ": no tools yet. Each capability arrives with a dry run and the same control layer as Manage.", ChipKind.Grey)));
+                Groups.Add(new SettingsGroup("Run on this model", new NoteSetting(Discipline + ": no checks run from here yet. Line diagrams are drawn through Claude (fmc_diagram) until " +
+                    "the pane's Generate button (E2); the kit's calculations arrive with E1, each with a dry run and the same control layer as Manage.", ChipKind.Grey)));
 
             Groups.Add(new SettingsGroup("Hand-offs to Manage",
                 new NoteSetting("Diagram sheets go to Drawings › Sheets, calculation reports join Ready to issue, and quantities feed Check › Reports, as each capability ships.", ChipKind.Grey)));
