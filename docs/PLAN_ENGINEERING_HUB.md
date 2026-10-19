@@ -1,6 +1,6 @@
 # One engineering hub: the apps work as one
 
-**Status:** plan, the owner's direction of 18 Oct 2026. H0 is built (#181, docs/HUB.md). Each later step waits for the
+**Status:** plan, the owner's direction of 18 Oct 2026. H0 is built (#181, docs/HUB.md). X0, H1, X1 (fmc_select) and X3 (fmc_find) are built; X1 and X3 wait for their check in the apps. Each later step waits for the
 owner's yes.
 
 ## The vision
@@ -82,7 +82,7 @@ that uses it. build123d (free, code-made exact parts) can be a second part sourc
 |---|---|---|
 | Rhino → family parts | LOD 400 parts into recipe families | Planned (H1, first) |
 | Revit ↔ Robot | Analytical model out, forces back into `FMC_FEA_` fields | Built (#93); moves onto the identity map |
-| Revit → Navisworks → Revit | Federate, clashes traced to Revit elements, review clouds | Half built (#94 reads clashes) |
+| Revit → Navisworks → Revit | Federate, clashes traced to Revit elements, review clouds | Built (H3), not checked in Navisworks yet |
 | Rhino → Revit | Facade or massing into a Revit staging project | Planned |
 | Rhino → Robot | A structural concept checked early | Planned |
 | Revit / Navisworks / Robot → Power BI | One project data model: QA, clashes, quantities, structural results | Planned (H2) |
@@ -106,7 +106,7 @@ it is on (H0).
 | X1 | **One selection** | Select in Revit, shown in Navisworks, Rhino and Robot |
 | H2 | **Power BI** | The project data model from every app; the gateway to Microsoft's Modeling MCP |
 | X2 | **Changes flow** | A change in one app flags what it affects in the others, as a dry-run update |
-| H3 | **Navisworks, next** | Federate, clash tests from the kit's clash matrix (a kit change request), clashes back to Revit |
+| H3 | **Navisworks, next** (built, Navisworks check due; docs/CLASH_MATRIX.md) | Federate, clash tests from the kit's clash matrix (a kit change request), clashes back to Revit |
 | X3 | **One search, one log** | "Where is D-12 and what touches it", answered across apps |
 | X4 | **The pane in every app; AI conducts** | The Formcraft pane in Navisworks and Rhino; one request across three apps |
 | T | **Tables by script** (built, `fmc_tables`) | Excel ↔ kit tables, dry run first, from a button (Check › Scripts › "Kit tables (dry run)") |

@@ -24,6 +24,14 @@ namespace Formcraft.Navis
                 case "navis_clash_tests": return Tests(doc);
                 case "navis_clash_results": return Results(doc, p);
                 case "navis_search_sets": return SearchSets(doc, p);
+                case "navis_append": return NavisFederate.Append(doc, p);
+                case "navis_save_as": return NavisFederate.SaveAs(doc, p);
+                case "navis_clash_create": return NavisClash.Create(doc, p);
+                case "navis_clash_run": return NavisClash.Run(doc, p);
+                case "navis_clash_status": return NavisClash.Status(doc, p);
+                // X1, one selection: NavisSelection.cs
+                case "navis_select": return NavisSelection.Select(doc, p);
+                case "navis_selection": return NavisSelection.Selection(doc, p);
                 default: throw new ArgumentException($"Unknown command '{method}': use navis_info, navis_clash_tests, navis_clash_results or navis_search_sets");
             }
         }
@@ -114,7 +122,7 @@ namespace Formcraft.Navis
         }
 
         /// <summary>The item's Revit Element ID (from a Revit NWC) and its source file, from the item or its nearest ancestor.</summary>
-        private static JObject Item(ModelItem item)
+        internal static JObject Item(ModelItem item)
         {
             if (item == null) return new JObject();
             string id = "", category = "";
