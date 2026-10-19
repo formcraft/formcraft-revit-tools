@@ -112,12 +112,15 @@ namespace RevitMCPCommandSet.Services.Fmc
                         ["why"] = string.IsNullOrWhiteSpace(x.o.Value<string>("detail")) ? "already as asked (nothing to change)" : x.o.Value<string>("detail") }));
                 line["apply_s"] = Math.Round(clock.Elapsed.TotalSeconds, 1);
 
-                JObject flex = FmcDocGeometry.Flex(doc, item["follow"] as JArray);
+                // F-072: a batch is a long job, so its flex may take longer than fmc_doc flex's, but never unbounded
+                JObject flex = FmcDocGeometry.Flex(doc, item["follow"] as JArray, item.Value<double?>("flex_max_s") ?? 600);
                 bool flexOk = flex.Value<bool?>("ok") != false;
                 line["flex_ok"] = flexOk;
                 if (!flexOk) line["flex_errors"] = new JArray((flex["types"] as JArray ?? new JArray()).OfType<JObject>().Where(t => t.Value<bool?>("ok") == false)
                     .Take(5).Select(t => $"{t.Value<string>("type")}: {string.Join("; ", (t["errors"] as JArray ?? new JArray()).Select(e => e.ToString()))}"));
                 if (flex["follow"] != null) line["follow"] = flex["follow"];
+                if (flex["unfinished"] != null) line["flex_unfinished"] = flex["unfinished"];
+                line["flex_regenerations"] = flex["regenerations"];
 
                 // an older staged file and its records go to <Role>\_Archive first; nothing is ever deleted
                 if (File.Exists(target))

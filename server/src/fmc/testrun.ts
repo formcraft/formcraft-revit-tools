@@ -349,7 +349,8 @@ export interface Finding {
   run: string;
   scenario: string;
   step: string;
-  kind: "check" | "error" | "dialog" | "timeout" | "revit" | "setup";
+  /** busy (F-072): Revit was still running an earlier command and the step gave up waiting for it. */
+  kind: "check" | "error" | "dialog" | "timeout" | "revit" | "setup" | "busy";
   expected: string;
   got: string;
   at: string;

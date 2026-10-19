@@ -59,6 +59,8 @@ namespace revit_mcp_plugin.Fmc
                 ["installed"] = installed,
                 ["revit"] = FormcraftBrowser.RevitBuild,
                 ["connection"] = new JObject { ["port"] = SocketService.Instance.Port, ["start_with_revit"] = connect.StartWithRevit, ["listening"] = SocketService.Instance.IsRunning },
+                // F-072: busy while a command that outlived its wait still runs on Revit's API thread
+                ["bridge"] = BridgeBusy.Status(),
                 ["commands"] = new JObject
                 {
                     ["registered"] = registered.Count, ["listed"] = listed.Count,

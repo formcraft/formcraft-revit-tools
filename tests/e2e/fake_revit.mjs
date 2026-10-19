@@ -7,6 +7,9 @@ const port = Number(process.env.FAKE_PORT || 8099);
 const mode = process.env.FAKE_MODE || "rich";
 const live = process.env.FAKE_LIVE === "1";
 const logFile = process.env.FAKE_LOG;
+const [busyMethod, busyCount] = (process.env.FAKE_BUSY || "").includes(":") ? process.env.FAKE_BUSY.split(":") : ["", process.env.FAKE_BUSY || "0"];
+let busyLeft = Number(busyCount) || 0;
+const busyJob = process.env.FAKE_BUSY_JOB || "1792417040932222975";
 
 const doc = live
   ? { title: "F26001-FMC-ZZ-ZZ-M3-A-0001", path: "D:\\Projects\\F26001\\02_Shared\\A\\F26001-FMC-ZZ-ZZ-M3-A-0001.rvt", isFamily: false, isWorkshared: true, isActive: true }
@@ -105,9 +108,17 @@ const server = net.createServer((sock) => {
       if (end < 0) return;
       const req = JSON.parse(buf.slice(0, end + 1));
       buf = buf.slice(end + 1);
+      if (logFile) fs.appendFileSync(logFile, JSON.stringify({ method: req.method, params: req.params }) + "\n");
+      // F-072: FAKE_BUSY=<count> (or <method>:<count>) answers the first calls the way the add-in does while an
+      // earlier command that outlived its wait still holds Revit's API thread
+      if (busyLeft > 0 && (!busyMethod || busyMethod === req.method)) {
+        busyLeft--;
+        sock.write(JSON.stringify({ jsonrpc: "2.0", id: req.id, error: { code: -32603,
+          message: `[FMC-BRIDGE-BUSY] Revit is still running fmc_doc_flex since 2026-10-19 13:37:20 (job ${busyJob}): its wait ended after 300 s, but the work goes on on Revit's API thread.` } }));
+        continue;
+      }
       const f = mode === "empty" && req.method !== "fmc_document_info" ? {} : fixtures[req.method];
       const result = typeof f === "function" ? f(req.params || {}) : f ?? {};
-      if (logFile) fs.appendFileSync(logFile, JSON.stringify({ method: req.method, params: req.params }) + "\n");
       sock.write(JSON.stringify({ jsonrpc: "2.0", id: req.id, result }));
     }
   });

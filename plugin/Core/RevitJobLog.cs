@@ -41,6 +41,9 @@ namespace revit_mcp_plugin.Core
 
         public static RevitJobLog Watch(string job, string command) => new RevitJobLog(job, command);
 
+        /// <summary>When the call arrived (UTC).</summary>
+        public DateTime Started => _started;
+
         private void MarkRunning()
         {
             if (Volatile.Read(ref _done) == 1) return;
@@ -67,6 +70,17 @@ namespace revit_mcp_plugin.Core
         {
             if (Volatile.Read(ref _done) == 1) return;
             Write(new JObject { ["event"] = "running", ["started"] = _started.ToString("o"), ["queued_ms"] = (long)(DateTime.UtcNow - _started).TotalMilliseconds });
+        }
+
+        /// <summary>F-072: a line of its own for this job (bridge_busy, bridge_free); the job then counts as long, so its
+        /// "finished" line and result are written when it ends.</summary>
+        public void Event(string name, JObject extra = null)
+        {
+            if (Volatile.Read(ref _done) == 1) return;
+            Interlocked.Exchange(ref _running, 1);
+            var line = new JObject { ["event"] = name, ["started"] = _started.ToString("o") };
+            if (extra != null) foreach (var p in extra.Properties()) line[p.Name] = p.Value;
+            Write(line);
         }
 
         /// <summary>The call ended (answered or failed); written only when it ran long enough to be a job. A long job's

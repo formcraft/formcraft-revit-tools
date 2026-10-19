@@ -24,6 +24,9 @@ namespace revit_mcp_plugin.Core
         // F-064: one command at a time on Revit's API thread. A command that arrives while another runs waits its turn here
         // (recorded as "queued", with heartbeats) instead of timing out on its own external event and being refused.
         private static readonly SemaphoreSlim ApiQueue = new SemaphoreSlim(1, 1);
+        // F-072: calls served without Revit's API thread (they read no model), so they answer while the bridge is busy
+        private static readonly System.Collections.Generic.HashSet<string> NoApiThread =
+            new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase) { "fmc_selftest_facts" };
         private static int _waiting;
         // The last fmc_document_info answer: given (marked cached) while another command holds Revit, whose UI is frozen
         // then, so the active document can't change. The live-model lock reads it instead of timing out.
@@ -75,6 +78,8 @@ namespace revit_mcp_plugin.Core
             // 初始化事件管理器
             // Initialize ExternalEventManager
             ExternalEventManager.Instance.Initialize(uiApp, _logger);
+            // F-072: the probe that tells when a command that outlived its wait has finished (made here, on the API thread)
+            BridgeBusy.Initialize();
             // F-022: keep Revit's loop awake while a command waits, so background work runs while the person uses other apps.
             RevitWake.Initialize(uiApp);
 
@@ -332,6 +337,29 @@ namespace revit_mcp_plugin.Core
                     return CreateSuccessResponse(request.Id, answer);
                 }
 
+                // F-072: a command that doesn't need Revit's API thread answers while the bridge is busy
+                if (NoApiThread.Contains(request.Method) && BridgeBusy.IsBusy)
+                {
+                    try
+                    {
+                        object facts = command.Execute(parameters, request.Id);
+                        ActivityLog.Add(request.Method, true, watch.ElapsedMilliseconds, "while Revit is busy");
+                        return CreateSuccessResponse(request.Id, facts);
+                    }
+                    catch (Exception ex)
+                    {
+                        ActivityLog.Add(request.Method, false, watch.ElapsedMilliseconds, ex.Message);
+                        return CreateErrorResponse(request.Id, JsonRPCErrorCodes.InternalError, ex.Message);
+                    }
+                }
+                // F-072: an earlier command's work still holds Revit's API thread (its wait ran out): say so at once, never
+                // queue behind it and time out
+                if (BridgeBusy.Refusal(out string busy))
+                {
+                    ActivityLog.Add(request.Method, false, watch.ElapsedMilliseconds, "refused: Revit busy");
+                    return CreateErrorResponse(request.Id, JsonRPCErrorCodes.InternalError, busy);
+                }
+
                 var job = RevitJobLog.Watch(request.Id, request.Method);
                 bool entered = false;
                 try
@@ -344,6 +372,13 @@ namespace revit_mcp_plugin.Core
                         job.LeftQueue();
                     }
                     entered = true;
+                    // queued behind the command that went busy: refused now, not sent to wait behind it
+                    if (BridgeBusy.Refusal(out busy))
+                    {
+                        job.Done(false, busy);
+                        ActivityLog.Add(request.Method, false, watch.ElapsedMilliseconds, "refused: Revit busy");
+                        return CreateErrorResponse(request.Id, JsonRPCErrorCodes.InternalError, busy);
+                    }
                     object result;
                     using (RevitWake.Busy())
                         result = command.Execute(parameters, request.Id);
@@ -359,9 +394,16 @@ namespace revit_mcp_plugin.Core
                 }
                 catch (Exception ex)
                 {
-                    job.Done(false, ex.Message);
+                    // F-072: the wait ran out but the work may still run on Revit's API thread: the bridge is busy with it
+                    // until it ends (its job record stays open, with heartbeats; its result is kept when it ends)
+                    bool stillRunning = BridgeBusy.IsWaitTimeout(ex) && BridgeBusy.Mark(request.Method, request.Id, job.Started, job, command);
+                    if (!stillRunning) job.Done(false, ex.Message);
                     ActivityLog.Add(request.Method, false, watch.ElapsedMilliseconds, ex.Message);
-                    return CreateErrorResponse(request.Id, JsonRPCErrorCodes.InternalError, ex.Message);
+                    string message = stillRunning
+                        ? $"[FMC-BRIDGE-TIMEOUT] {ex.Message}: the add-in stopped waiting after {Math.Round(watch.Elapsed.TotalSeconds)} s, but Revit is still running it (job {request.Id}). " +
+                          "Until it ends, new calls are answered [FMC-BRIDGE-BUSY]; its result then goes to FMC_LateResults.jsonl (fmc_job result " + request.Id + ")."
+                        : ex.Message;
+                    return CreateErrorResponse(request.Id, JsonRPCErrorCodes.InternalError, message);
                 }
                 finally
                 {

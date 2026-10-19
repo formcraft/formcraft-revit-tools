@@ -23,6 +23,7 @@ import { RevitInstance, readInstances } from "./connect.js";
 import { revitTarget } from "./target.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { appStatuses, realProbe } from "../hub/apps.js";
+import { BridgeBusy, bridgeState, busyWords, parseBusy, waitForBridgeFree } from "./busy.js";
 import {
   Action, CLI_TOOLS, Finding, addFinding, GAP_MS, NeedsApp, PowerStatus, Reply, RunState, Scenario, autoDecision, evalCheck, finishScenario,
   findingDrafts, interruptScenario, lockVerdict, newRun, nextScenario, parsePowerLine, parseScenario, powerDecision, resumeRun,
@@ -43,6 +44,8 @@ export interface TestrunConfig {
   power_poll_s: number;
   revit_start_timeout_s: number;
   step_timeout_s: number;
+  /** F-072: how long a step waits for Revit to finish an earlier command that outlived its wait (bridge busy). */
+  busy_wait_s: number;
   /** The kit template a scratch project starts from ({{project_template}}). */
   project_template: string;
   /** The scheduled start (auto) begins a new run when the last one ended longer ago than this. */
@@ -72,7 +75,7 @@ export function readTestrunConfig(env: NodeJS.ProcessEnv = process.env): Testrun
   const k = kitFolders();
   const defaults: TestrunConfig = {
     revit_exe: "C:\\Program Files\\Autodesk\\Revit 2025\\Revit.exe", pause_on_battery: true, power_poll_s: 60,
-    revit_start_timeout_s: 600, step_timeout_s: 900, project_template: win.join(k.templates, "FMC_A_Template_v2.2.rte"),
+    revit_start_timeout_s: 600, step_timeout_s: 900, busy_wait_s: 1800, project_template: win.join(k.templates, "FMC_A_Template_v2.2.rte"),
     new_run_after_hours: 20, scenarios_dir: defaultScenariosDir(env),
   };
   try {
@@ -260,6 +263,11 @@ export class OwnRevit {
     return readJsonLines(jobFiles().revit, 800)
       .filter((e) => e?.pid === this.pid && e.event === "dialog" && String(e.at ?? "") >= since && /^(left for a person|not answered)/.test(String(e.answer ?? "")))
       .map((e) => ({ job: String(e.job ?? ""), dialog_id: String(e.dialog_id ?? ""), message: String(e.message ?? "") }));
+  }
+
+  /** F-072: the command this Revit is still running after its wait ran out (its bridge is busy), or null. */
+  bridgeBusy() {
+    return this.pid ? bridgeState(readJsonLines(jobFiles().revit, 2000), this.pid) : null;
   }
 
   /** Jobs this Revit started since `since`, for a cancel request. */
@@ -487,8 +495,15 @@ export async function runForeground(opts: RunOptions): Promise<RunOutcome> {
     let input: unknown;
     const repeats = a.repeat_until?.max ?? 1;
     let n = 0;
+    let busyRedos = 0;
     for (; n < repeats; n++) {
       if (n > 0) await waitWhilePaused();
+      // F-072: Revit still busy with an earlier command (its wait ran out, its work goes on): wait for it first, so the
+      // step isn't counted against a Revit that can't take it
+      if ((a.tool || a.revit) && sc.revit !== false && revit.isOurs()) {
+        const gaveUp = await waitForBridge(name, null);
+        if (gaveUp) return busyFailure(gaveUp.busy, gaveUp.waitedMs, name, add, started, input);
+      }
       if (a.tool) {
         input = substitute(a.args ?? {}, vars);
         if (sc.revit !== false) await revit.ensure(revit.opened);
@@ -511,6 +526,15 @@ export async function runForeground(opts: RunOptions): Promise<RunOutcome> {
         reply = { exit: 0, body: { closed: true } };
       }
       if (slept && !teardown) throw new Interrupted();
+      // F-072: answered "busy": wait for Revit to be free, then the same run again, not counted as a try
+      const busy = (a.tool || a.revit) ? parseBusy(reply.body) : null;
+      if (busy && busyRedos < 3) {
+        busyRedos++;
+        const gaveUp = await waitForBridge(name, busy);
+        if (gaveUp) return busyFailure(gaveUp.busy, gaveUp.waitedMs, name, add, started, input);
+        n--;
+        continue;
+      }
       if (!a.repeat_until || evalCheck(a.repeat_until.check, reply).ok) break;
     }
     const pngs = collectPngs(reply.body, `${sc.id}-${vars.attempt}`);
@@ -522,6 +546,24 @@ export async function runForeground(opts: RunOptions): Promise<RunOutcome> {
       ok: results.every((r) => r.ok), reply,
       record: { step: name, started, ended: new Date().toISOString(), input, runs: n + 1 > repeats ? repeats : n + 1, exit: reply.exit, reply: clip(reply.body), checks: results, pngs },
     };
+  }
+
+  /** F-072: waits (up to busy_wait_s) while this run's Revit is busy; null once free, else what it was busy with. */
+  async function waitForBridge(name: string, hint: BridgeBusy | null): Promise<{ busy: BridgeBusy; waitedMs: number } | null> {
+    const first = revit.bridgeBusy() ?? hint;
+    if (first) log(`${name}: ${busyWords(first)}; waiting for it (up to ${cfg.busy_wait_s} s)`);
+    const w = await waitForBridgeFree(() => revit.bridgeBusy(), { maxMs: cfg.busy_wait_s * 1000, hint, alive: () => revit.isOurs() });
+    if (w.free) { if (first) log(`${name}: Revit is free again after ${Math.round(w.waitedMs / 1000)} s`); return null; }
+    return { busy: w.busy ?? first!, waitedMs: w.waitedMs };
+  }
+
+  /** The step gave up on a busy Revit: the finding says what Revit was busy with. */
+  function busyFailure(b: BridgeBusy, waitedMs: number, name: string, add: (f: Omit<Finding, "run" | "scenario" | "at" | "tries">) => void,
+    started: string, input: unknown) {
+    const got = `${busyWords(b)}: still busy after the step waited ${Math.round(waitedMs / 1000)} s`;
+    add({ step: name, kind: "busy", expected: "Revit free to run the step", got });
+    const reply: Reply = { exit: 1, body: { error: got } };
+    return { ok: false, reply, record: { step: name, started, ended: new Date().toISOString(), input, exit: 1, reply: reply.body, busy: b } };
   }
 
   /** One CLI call (node build/fmc/cli.js <tool>), sent to this run's Revit only, watched for dialogs, a dead Revit and its time. */
@@ -570,7 +612,10 @@ export async function runForeground(opts: RunOptions): Promise<RunOutcome> {
       }
       if (Date.now() > deadline) {
         stop = `[runner] No answer within ${Math.round(timeoutMs / 1000)} s`;
-        add({ step: name, kind: "timeout", expected: `an answer within ${Math.round(timeoutMs / 1000)} s`, got: "no answer: the step was stopped and Revit asked to cancel it" });
+        // F-072: say what Revit was busy with, when its bridge says so
+        const busy = withRevit ? revit.bridgeBusy() : null;
+        add({ step: name, kind: "timeout", expected: `an answer within ${Math.round(timeoutMs / 1000)} s`,
+          got: `no answer${busy ? ` (${busyWords(busy)})` : ""}: the step was stopped and Revit asked to cancel it` });
         if (withRevit) { revit.requestCancel(revit.jobsSince(since)); restartRevit = true; }
         killTree(child.pid ?? 0);
       }
