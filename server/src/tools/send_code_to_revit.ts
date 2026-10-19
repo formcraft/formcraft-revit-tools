@@ -23,8 +23,13 @@ export const SEND_CODE_DESCRIPTION =
     "System.Linq, System.Collections.Generic, System.Text, Autodesk.Revit.DB (+ .Architecture, .Structure), " +
     "Autodesk.Revit.UI and RevitMCPCommandSet.Bridge; add more with `usings`. Helpers: FmcScript.Mm(mm) → feet, " +
     "FmcScript.ToMm(feet), FmcScript.PointMm(x, y, z), FmcScript.Run(document, name, action) (a transaction with the " +
-    "default failures handling, for transactionMode 'none'), FmcScript.ThrowIfCancelled(), and FmcFailures (an " +
+    "default failures handling, for transactionMode 'none'), FmcScript.Tx(document, name, dryRun, () => {...}) (commits, " +
+    "rolls back on any exception, a dry run rolls back; returns the body's value), FmcScript.CopyOptionsUseDestinationTypes() " +
+    "(no Duplicate Types dialog), FmcScript.ThrowIfCancelled(), and FmcFailures (an " +
     "IFailuresPreprocessor: warnings deleted and listed, errors roll back), e.g. for StairsEditScope.Commit(new FmcFailures()). " +
+    "Every new Transaction / SubTransaction / TransactionGroup must be in a using (else refused: FMC-CODE-TX-USING with the " +
+    "line); one left open is rolled back and reported (FMC-CODE-TX-LEAK). Before writing code, check fmc_scripts " +
+    "addon_list: a saved add-on may already do the job. " +
     `Scripts up to ${MAX_CODE_CHARS.toLocaleString("en")} characters. The result gives compile and run times apart; ` +
     "errors carry a code (FMC-CODE-COMPILE with line and column, FMC-CODE-RUNTIME with the exception's type, message and " +
     "script line, FMC-CODE-ROLLED-BACK with Revit's errors). A script still running after about 50 s answers " +
@@ -63,6 +68,8 @@ export function formatCodeResult(response: any): { text: string; isError: boolea
     warnings: response.warnings?.length ? response.warnings : undefined,
     failures: response.failures?.length ? response.failures : undefined,
     dialogs: response.dialogs?.length ? response.dialogs : undefined,
+    txLeak: response.txLeak?.length ? response.txLeak : undefined,
+    documentBlocked: response.documentBlocked || undefined,
     note: response.note,
   };
   if (response.success === false) {

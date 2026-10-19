@@ -57,8 +57,18 @@ it instead of refusing because Revit was busy. A call for a named `document` is 
   `usings` (e.g. `["System.IO", "Autodesk.Revit.DB.Mechanical", "static System.Math"]`; names only).
 - **Helpers** (`commandset/Bridge/`): `FmcScript.Mm(mm)` → feet, `FmcScript.ToMm(feet)`, `FmcScript.M2`/`ToM2`,
   `FmcScript.PointMm(x, y, z)`, `FmcScript.Run(document, name, () => …)` (a transaction with the default failures
-  handling, for `transactionMode: "none"`), `FmcScript.ThrowIfCancelled()`, and `FmcFailures`, an `IFailuresPreprocessor`
+  handling, for `transactionMode: "none"`), `FmcScript.Tx(document, name, dryRun, () => …)` (commits, rolls back on any
+  exception, a dry run rolls back; returns the body's value), `FmcScript.CopyOptionsUseDestinationTypes()` (copies never
+  stop at the Duplicate Types dialog), `FmcScript.Params(parameters)` / `FmcScript.IsDryRun(parameters)` (saved add-ons,
+  `docs/ADDONS.md`), `FmcScript.ThrowIfCancelled()`, and `FmcFailures`, an `IFailuresPreprocessor`
   (warnings deleted and listed, errors roll back), e.g. `stairsScope.Commit(new FmcFailures())`.
+- **Transaction safety** (KISIC §4.1: a transaction left open after an exception crashed Revit on 19 Oct). Before the
+  run, every `new Transaction(`, `new SubTransaction(` and `new TransactionGroup(` must be the subject of a `using`, or the
+  script is refused with `FMC-CODE-TX-USING` and each line. The bridge tracks each one (`FmcScript.Track`, added by the
+  bridge, `commandset/Bridge/FmcScriptSource.cs`); whatever is still open after the run, also after an exception, is
+  rolled back newest first and reported (`FMC-CODE-TX-LEAK`, or `txLeak` beside a runtime error). A document still
+  modifiable after that is marked "needs a person" (`documentBlocked`): scripts on it are refused until it is closed.
+  Columns in compile errors on a line with a transaction shift by the inserted call; lines don't.
 - **Document.** The script runs on the call's `document` (title or path) when it names one, else the active one: the
   same document the live-model lock checked (F-025, #110).
 - **Answer.** `success`, `result` (JSON text), `compileMs` and `runMs` apart (the first compile in a Revit session
@@ -70,6 +80,8 @@ it instead of refusing because Revit was busy. A call for a named `document` is 
 | `FMC-CODE-COMPILE` | It didn't compile | `errors[]`: id, line, column, message |
 | `FMC-CODE-RUNTIME` | The script threw (unwrapped from TargetInvocationException) | type, message, line, stack |
 | `FMC-CODE-ROLLED-BACK` | Revit rolled the transaction back (an error from the failures preprocessor) | Revit's errors in `failures` |
+| `FMC-CODE-TX-USING` | A transaction, sub-transaction or group isn't in a `using`; nothing was run | `transactions[]`: line, type, code |
+| `FMC-CODE-TX-LEAK` | The script left a transaction open: rolled back (or, when it couldn't be, the document needs a person) | `leaks[]`, the script's `result` |
 | `FMC-CODE-CANCELLED` | `fmc_job cancel` stopped it | |
 | `FMC-CODE-NO-DOCUMENT` | The document named isn't open, or none is | |
 | `FMC-CODE-USINGS` | A `usings` entry isn't a namespace | |

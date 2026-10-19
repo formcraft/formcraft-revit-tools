@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <!-- Compiles every saved add-on (resources/addons/*.cs) exactly as send_code_to_revit does (the bridge's own wrapper,
+         transaction check and tracking: commandset/Bridge/FmcScriptSource.cs, compiled as is) against Revit's API, the
+         built command set and Newtonsoft. Nothing runs in Revit; it needs Revit 2025 installed (RevitAPI.dll) and the
+         command set built in Release R25, then: dotnet run (project tests/addons/AddonCompileCheck.csproj).
+         Not in the solution, so CI's add-in build doesn't need Revit. docs/ADDONS.md. -->
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>disable</Nullable>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="..\..\commandset\Bridge\FmcScriptSource.cs" Link="FmcScriptSource.cs"/>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0"/>
+    </ItemGroup>
+</Project>
