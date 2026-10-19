@@ -76,6 +76,12 @@ const fixtures = {
     views: (p.views || []).map((v) => ({ name: v.name, result: "create", view_id: p.dry_run === false ? "900" : null,
       symbols: (v.items || []).filter((i) => i.t === "symbol").length, lines: (v.items || []).filter((i) => i.t === "line").length,
       texts: (v.items || []).filter((i) => i.t === "text").length, kept_by_hand: 0 })), warnings: [] }),
+  // LD5: the register sheets (a dry run is the real run rolled back) and Gate D's read of what is drawn
+  fmc_diagram_sheet: (p) => ({ dry_run: p.dry_run !== false, result: p.dry_run === false ? "placed" : "would place (rolled back)",
+    sheets: (p.sheets || []).map((s) => ({ number: s.number, name: s.name, result: "create", title_block: s.title_block || "FMC_TitleBlock : A1",
+      views: (s.views || []).map((v) => ({ view: v.name, result: "placed" })) })), warnings: [], kit_change_requests: [] }),
+  fmc_diagram_drawn: { model: doc.title, views: [{ name: "E-SLD-MDB", view_id: "900", keys: ["E-SLD-MDB|b-1|symbol", "E-SLD-MDB|ckt-11|symbol", "E-SLD-MDB|ckt-11|text", "E-SLD-MDB|3|line"],
+    symbols: 2, lines: 1, texts: 1, tbc_texts: 1, kept_by_hand: 0, sheets: ["E-0003"] }] },
   fmc_brief_apply: (p) => ({ dry_run: p.dry_run, model: doc.title, levels_created: (p.levels || []).length, plans_created: (p.levels || []).length,
     project_info_set: Object.keys(p.project_info || {}).length, rooms_created: (p.rooms || []).length, room_values_set: 3, families_loaded: 0, notes: [] }),
   fmc_link_facts: { model: doc.title, workshared: doc.isWorkshared, coordinates: { site: "Internal", easting_mm: 0, northing_mm: 0, elevation_mm: 0, angle_deg: 0, crs: "" }, links: [], worksets: [] },

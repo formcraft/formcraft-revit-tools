@@ -146,22 +146,52 @@ namespace Formcraft.Shell.ViewModels
         private readonly Action<string> _status;
         private readonly MessagesSetting _messages = new MessagesSetting();
         private SystemsCheck? _last;
+        private readonly IUserSettings _settings;
+        private readonly Action<DialogViewModel> _ask;
+        private readonly MessagesSetting _diagramMessages = new MessagesSetting();
+        private DiagramRun? _diagram;
+        private string? _plannedFor;
 
-        public SystemsPage(ISystemTools tools, ProjectPage project, IUserSettings settings, Action<string> status)
+        /// <summary>
+        /// The diagram kinds each discipline's Diagrams group draws (fmc_diagram, server/src/fmc/diagram/contract.ts). The fire
+        /// alarm riser goes on the electrical riser sheet (E-6002) but is listed under Fire protection, where the grid has it.
+        /// </summary>
+        public static readonly IReadOnlyDictionary<string, string[]> DiagramKinds = new Dictionary<string, string[]>
+        {
+            ["Electrical"] = new[] { "e_sld", "e_power_riser", "e_elv_riser" },
+            ["Fire protection"] = new[] { "e_fa_riser", "fp_schematic" },
+            ["Plumbing"] = new[] { "p_water", "p_drainage" },
+            ["Mechanical"] = new[] { "m_refrigerant", "m_controls" },
+            ["Lightning and earthing"] = new[] { "lp_schematic" },
+        };
+
+        public SystemsPage(ISystemTools tools, ProjectPage project, IUserSettings settings, Action<string> status, Action<DialogViewModel>? ask = null)
             : base("Engineer › Systems", "Each building system's seven capabilities, and the checks that run on this model.")
         {
             _tools = tools;
             _project = project;
+            _settings = settings;
             _store = new SettingStore(settings);
             _status = status;
+            _ask = ask ?? (_ => { });
             CheckCommand = new AsyncCommand(() => Check(false), status);
             SaveCommand = new AsyncCommand(() => Check(true), status);
+            DiagramScanCommand = new AsyncCommand(() => Diagram(DiagramActions.Scan), status);
+            DiagramPlanCommand = new AsyncCommand(() => Diagram(DiagramActions.Plan), status);
+            DiagramGenerateCommand = new AsyncCommand(Generate, status);
+            DiagramGateCommand = new AsyncCommand(() => Diagram(DiagramActions.Gate), status);
             Rebuild();
         }
 
         public ICommand CheckCommand { get; }
         public ICommand SaveCommand { get; }
         public SystemsCheck? Last => _last;
+        public ICommand DiagramScanCommand { get; }
+        public ICommand DiagramPlanCommand { get; }
+        public ICommand DiagramGenerateCommand { get; }
+        public ICommand DiagramGateCommand { get; }
+        public DiagramRun? LastDiagram => _diagram;
+        public MessagesSetting DiagramMessages => _diagramMessages;
 
         public override IEnumerable<FooterAction> Footer => Discipline == "Electrical"
             ? new[] { new FooterAction("Save the list", SaveCommand), new FooterAction("Check (read only)", CheckCommand, primary: true) }
@@ -194,7 +224,7 @@ namespace Formcraft.Shell.ViewModels
                 Rebuild();
             };
             Groups.Add(new SettingsGroup("System",
-                new ChoiceSetting(_store, "systems.discipline", "Discipline", SystemCapabilities.Disciplines, changed: _ => { _store.Set("systems.system", null); _last = null; Rebuild(); }),
+                new ChoiceSetting(_store, "systems.discipline", "Discipline", SystemCapabilities.Disciplines, changed: _ => { _store.Set("systems.system", null); _last = null; _diagram = null; _plannedFor = null; Rebuild(); }),
                 table,
                 new NoteSetting("A system is covered only when every capability that applies is tested in Revit on a real client model.", ChipKind.Grey),
                 new NoteSetting("Model target · 23 systems × 7 capabilities · " + SystemCapabilities.Headline() + ".", ChipKind.Info)));
@@ -231,8 +261,10 @@ namespace Formcraft.Shell.ViewModels
             else if (Discipline == "Structural")
                 Groups.Add(new SettingsGroup("Run on this model", new NoteSetting("Structural: the analytical model check and the Robot hand-off are in Engineer › Structural.", ChipKind.Grey)));
             else
-                Groups.Add(new SettingsGroup("Run on this model", new NoteSetting(Discipline + ": no checks run from here yet. Line diagrams are drawn through Claude (fmc_diagram) until " +
-                    "the pane's Generate button (E2); the kit's calculations arrive with E1, each with a dry run and the same control layer as Manage.", ChipKind.Grey)));
+                Groups.Add(new SettingsGroup("Run on this model", new NoteSetting(Discipline + ": no checks run from here yet. Its line diagrams are in Diagrams below; " +
+                    "the kit's calculations run through Claude (fmc_calc), each with a dry run and the same control layer as Manage.", ChipKind.Grey)));
+
+            if (DiagramKinds.ContainsKey(Discipline)) Groups.Add(DiagramsGroup());
 
             Groups.Add(new SettingsGroup("Hand-offs to Manage",
                 new NoteSetting("Diagram sheets go to Drawings › Sheets, calculation reports join Ready to issue, and quantities feed Check › Reports, as each capability ships.", ChipKind.Grey)));
@@ -240,6 +272,77 @@ namespace Formcraft.Shell.ViewModels
         }
 
         private static string Kva(double va) => (va / 1000).ToString("0.0", CultureInfo.InvariantCulture);
+
+        /// <summary>
+        /// Engineer › Systems › Diagrams (LD5): Scan and Plan read only (Plan is the draw and the sheets as dry runs, rolled
+        /// back in Revit); Generate draws the views and places them on the Sheet Register sheets after a person's yes to the
+        /// plan, behind the same live-model lock as Claude; Gate D compares the drawings with the model.
+        /// </summary>
+        private SettingsGroup DiagramsGroup()
+        {
+            var kinds = DiagramKinds[Discipline];
+            bool planned = _plannedFor == Discipline && _diagram != null && _diagram.Ok;
+            var items = new List<SettingItem>
+            {
+                new NoteSetting("Line diagrams from the model (" + string.Join(", ", kinds) + "): values only from the model, TBC where one is missing. " +
+                                "Each view goes on its Sheet Register sheet (E-0003, E-0004, E-6002, P-0003) with the kit's title block. The engineer signs them off.", ChipKind.Info),
+            };
+            var buttons = new List<SettingButton>
+            {
+                new SettingButton("Scan (read only)", DiagramScanCommand),
+                new SettingButton("Plan (dry run)", DiagramPlanCommand, primary: !planned),
+            };
+            if (planned) buttons.Add(new SettingButton("Generate", DiagramGenerateCommand, primary: true));
+            buttons.Add(new SettingButton("Gate D (read only)", DiagramGateCommand));
+            items.Add(new ButtonsSetting("", buttons));
+            if (_diagram != null && _diagram.Ok)
+            {
+                if (_diagram.Views.Count > 0)
+                    items.Add(new TableSetting("Views", new[] { "View", "Items", "Result" }, _diagram.Views.Select(v => new TableRow(v, v.Check, v.Found, v.State))));
+                if (_diagram.Sheets.Count > 0)
+                    items.Add(new TableSetting("Sheets", new[] { "Sheet", "Views", "Result" }, _diagram.Sheets.Select(v => new TableRow(v, v.Check, v.Found, v.State))));
+                if (_diagram.Lines.Count > 0)
+                    items.Add(new TableSetting("Gate D · " + _diagram.Verdict, new[] { "Check", "Found", "Result" }, _diagram.Lines.Select(v => new TableRow(v, v.Check, v.Found, v.State))));
+                if (_diagram.KitRequests.Count > 0)
+                    items.Add(new NoteSetting("Kit change requests: " + string.Join(" · ", _diagram.KitRequests), ChipKind.Warn));
+            }
+            items.Add(new NoteSetting("Generate draws and places for real only after Plan, and asks first. In a live project the live-model lock still decides, as for Claude; " +
+                                      "nothing is ever saved or synchronised. The drainage long section stays TBC until the scan reads inverts, lengths and manholes.", ChipKind.Grey));
+            items.Add(_diagramMessages);
+            return new SettingsGroup("Diagrams · " + Discipline, items.ToArray());
+        }
+
+        private string KitFolder => _settings.Get(SettingKeys.KitFolder) ?? "";
+
+        private async Task Diagram(string action)
+        {
+            string discipline = Discipline;
+            _diagram = await _tools.DiagramAsync(action, DiagramKinds[discipline], KitFolder);
+            _plannedFor = action == DiagramActions.Plan && _diagram.Ok ? discipline : null;
+            ChipKind chip = !_diagram.Ok ? ChipKind.Bad : _diagram.Verdict == "Fail" ? ChipKind.Bad : _diagram.Verdict == "Warn" ? ChipKind.Warn : ChipKind.Info;
+            _diagramMessages.Show(chip, _diagram.Message);
+            _status(_diagram.Message);
+            Rebuild();
+        }
+
+        private Task Generate()
+        {
+            if (_plannedFor != Discipline || _diagram == null || !_diagram.Ok) { _diagramMessages.Show(ChipKind.Warn, "Run Plan (dry run) first."); return Task.CompletedTask; }
+            string discipline = Discipline;
+            int views = _diagram.Views.Count, sheets = _diagram.Sheets.Count;
+            _ask(new DialogViewModel("Generate the " + discipline.ToLowerInvariant() + " diagrams?",
+                views + " drafting views are drawn (or redrawn in place, keeping notes a person added) and placed on " + sheets + " Sheet Register sheets, as one Undo each. " +
+                "The model isn't saved.",
+                "Generate", async () =>
+                {
+                    _diagram = await _tools.DiagramAsync(DiagramActions.Generate, DiagramKinds[discipline], KitFolder);
+                    _plannedFor = null;
+                    _diagramMessages.Show(_diagram.Ok ? ChipKind.Good : ChipKind.Bad, _diagram.Message);
+                    _status(_diagram.Message);
+                    Rebuild();
+                }));
+            return Task.CompletedTask;
+        }
 
 
         private async Task Check(bool save)

@@ -85,6 +85,40 @@ namespace Formcraft.Shell.Tests
         }
 
         [Test]
+        public async Task Diagrams_scan_and_plan_read_only_and_generate_only_after_a_yes()
+        {
+            var (before, after, title, ran, sheets, gate, structural) = Sta.Run(() =>
+            {
+                var (vm, tools) = Pane("Systems");
+                vm.Systems.Groups.Single(g => g.Title == "System").Items.OfType<ChoiceSetting>().Single().Selected = "Plumbing";
+                string Buttons() => string.Join(",", vm.Systems.Groups.Single(g => g.Title == "Diagrams · Plumbing").Items.OfType<ButtonsSetting>().Single().Buttons.Select(b => b.Label));
+                var b0 = Buttons();
+                vm.Systems.DiagramScanCommand.Execute(null);
+                vm.Systems.DiagramGenerateCommand.Execute(null); // refused: no plan yet
+                var noDialog = vm.Dialog == null;
+                vm.Systems.DiagramPlanCommand.Execute(null);
+                var b1 = Buttons();
+                vm.Systems.DiagramGenerateCommand.Execute(null);
+                var t = vm.Dialog!.Title;
+                vm.Dialog.ConfirmCommand!.Execute(null);
+                var s = vm.Systems.Groups.Single(g => g.Title == "Diagrams · Plumbing").Items.OfType<TableSetting>().Single(x => x.Label == "Sheets").Rows.Count;
+                vm.Systems.DiagramGateCommand.Execute(null);
+                var g = vm.Systems.Groups.Single(x => x.Title == "Diagrams · Plumbing").Items.OfType<TableSetting>().Any(x => x.Label.StartsWith("Gate D"));
+                vm.Systems.Groups.Single(x => x.Title == "System").Items.OfType<ChoiceSetting>().Single().Selected = "Structural";
+                var st = vm.Systems.Groups.Any(x => x.Title.StartsWith("Diagrams"));
+                return (b0, b1, noDialog ? t : "dialog before the plan", string.Join(",", tools.Ran), s, g, st);
+            });
+
+            await Assert.That(before).IsEqualTo("Scan (read only),Plan (dry run),Gate D (read only)");
+            await Assert.That(after).IsEqualTo("Scan (read only),Plan (dry run),Generate,Gate D (read only)");
+            await Assert.That(title).IsEqualTo("Generate the plumbing diagrams?");
+            await Assert.That(ran).IsEqualTo("diagram scan p_water+p_drainage,diagram plan p_water+p_drainage,diagram generate p_water+p_drainage,diagram gate p_water+p_drainage");
+            await Assert.That(sheets).IsEqualTo(2);
+            await Assert.That(gate).IsTrue();
+            await Assert.That(structural).IsFalse();
+        }
+
+        [Test]
         public async Task The_structural_check_lists_problems_and_results_and_leaves_design_to_the_engineer()
         {
             var (checks, results, warn) = Sta.Run(() =>

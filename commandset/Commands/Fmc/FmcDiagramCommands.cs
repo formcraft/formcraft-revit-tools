@@ -44,4 +44,20 @@ namespace RevitMCPCommandSet.Commands.Fmc
         public override string CommandName => "fmc_diagram_draw";
         protected override string Action => "draw";
     }
+
+    /// <summary>LD5: the Sheet Register sheets with the kit's title block and the drawn diagram views placed (dry run first; never saves).</summary>
+    public class FmcDiagramSheetCommand : FmcDiagramCommandBase
+    {
+        public FmcDiagramSheetCommand(UIApplication uiApp) : base(uiApp) { }
+        public override string CommandName => "fmc_diagram_sheet";
+        protected override string Action => "sheet";
+    }
+
+    /// <summary>LD5 Gate D: the drafting views holding items fmc_diagram drew, with their source keys and TBC texts (read-only).</summary>
+    public class FmcDiagramDrawnCommand : FmcDiagramCommandBase
+    {
+        public FmcDiagramDrawnCommand(UIApplication uiApp) : base(uiApp) { }
+        public override string CommandName => "fmc_diagram_drawn";
+        protected override string Action => "drawn";
+    }
 }
