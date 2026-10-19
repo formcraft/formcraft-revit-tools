@@ -12,6 +12,27 @@ One Formcraft MCP server reaches every engineering app through a connector per a
 | Rhino 8 | `Formcraft.Rhino` package, local socket 8191 (H1) | Add-in bridge | `fmc_rhino` |
 | Power BI Desktop | Not built yet (plan step H2): a gateway to Microsoft's Power BI Modeling MCP server | Gateway | `fmc_powerbi` (to come) |
 
+## Navisworks: `fmc_navis` (H3)
+Built, not yet checked in Navisworks. The bridge (`connectors/navisworks`) answers on `127.0.0.1:8190`; reading
+(`info`, `tests`, `results`) is as in #94. H3 adds, each a dry run unless `dry_run` is false:
+
+- **`federate`** (project_folder): the project's discipline models by container name (Manual 4.1), from `02_Shared`
+  and/or `01_WIP` (`source`; 02_Shared wins, NWC before NWD before RVT; `_Archive`, backups and role Z are left out),
+  or the given `files`. Appends the ones not in the open document (`navis_append`) and saves the federation as
+  `01_WIP\_Navisworks\<Project>-<Originator>-ZZ-ZZ-M3-Z-0001.nwf` (`navis_save_as`; only an .nwf, only in 01_WIP and the
+  guard's write roots, checked by the server and again by the bridge). An older .nwf is moved to `_Archive` first;
+  nothing is overwritten. The hand-over is kept as a revit → navisworks exchange package.
+- **`matrix`, `clash_create`, `clash_run`:** clash tests from the clash matrix (`docs/CLASH_MATRIX.md`,
+  `fmc-clash-matrix/0.1`, a kit change request). Tests are named `FMC <id> …`; only those are ever edited, run or
+  removed, never a person's test.
+- **`back`** (project_folder): the newest results (or `test`), each item traced to its Revit element through the
+  identity map (by its Navisworks item, else its Element ID in that model; new ones are linked on a real run), handed over
+  as Mark & Review tickets (`handover: tickets`, through fmc_review's clash logic) or review clouds in the Revit model
+  open now (`handover: clouds`, after tickets; fmc_review cloud, behind the live-model lock). A navisworks → revit
+  package keeps the clashes handed over.
+- **`clash_status`:** a status and a comment on the results a person names; the real run needs `approved_by` (a person)
+  and the dry run's `plan_hash`. Saving the .nwf afterwards is a person's step.
+
 ## Rhino: `fmc_rhino` (H1)
 The smooth, fixed-shape parts of LOD 400 families (castors, grips, light heads, knobs, canopies): the hybrid family in
 `docs/handoff/DETAILED_FAMILIES_RHINO.md`. The add-in (`connectors/rhino`) is a Rhino 8 package in

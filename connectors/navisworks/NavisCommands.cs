@@ -24,6 +24,11 @@ namespace Formcraft.Navis
                 case "navis_clash_tests": return Tests(doc);
                 case "navis_clash_results": return Results(doc, p);
                 case "navis_search_sets": return SearchSets(doc, p);
+                case "navis_append": return NavisFederate.Append(doc, p);
+                case "navis_save_as": return NavisFederate.SaveAs(doc, p);
+                case "navis_clash_create": return NavisClash.Create(doc, p);
+                case "navis_clash_run": return NavisClash.Run(doc, p);
+                case "navis_clash_status": return NavisClash.Status(doc, p);
                 default: throw new ArgumentException($"Unknown command '{method}': use navis_info, navis_clash_tests, navis_clash_results or navis_search_sets");
             }
         }
