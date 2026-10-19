@@ -1,0 +1,13 @@
+{
+  "schema": "fmc-testrun/0.1",
+  "id": "14_robot",
+  "title": "Robot connector: status (it never starts Robot)",
+  "features": ["F32"],
+  "needs": ["robot"],
+  "revit": false,
+  "setup": [],
+  "steps": [
+    { "id": "status", "tool": "fmc_robot", "args": { "action": "status" }, "checks": [{ "no_error": true }, { "path": "installed", "equals": true }] }
+  ],
+  "teardown": []
+}

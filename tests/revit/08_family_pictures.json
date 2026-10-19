@@ -1,0 +1,46 @@
+{
+  "schema": "fmc-testrun/0.1",
+  "id": "08_family_pictures",
+  "title": "3D pictures of a staged sample family (the ICU bed): 3D, front and plan at Fine, in a background session closed without saving",
+  "features": ["F43", "F70"],
+  "setup": [
+    {
+      "id": "open",
+      "tool": "fmc_doc",
+      "args": { "action": "open", "file": "{{staging}}\\I\\FMC_I_MedEq_Bed_ICU_Electric_Detailed.rfa" },
+      "timeout_s": 600,
+      "checks": [{ "no_error": true }, { "path": "session", "exists": true }]
+    }
+  ],
+  "steps": [
+    {
+      "id": "report",
+      "tool": "fmc_doc",
+      "args": { "action": "report", "session": "{{steps.open.session}}" },
+      "checks": [{ "no_error": true }]
+    },
+    {
+      "id": "pictures",
+      "tool": "fmc_doc",
+      "args": { "action": "screenshot", "session": "{{steps.open.session}}", "views": ["3d", "front", "plan"], "detail_level": "fine", "style": "shaded" },
+      "timeout_s": 600,
+      "checks": [{ "no_error": true }, { "path": "files", "at_least": 3 }]
+    },
+    {
+      "id": "pictures_levels",
+      "note": "One 3D picture per detail level: Coarse box, Medium standard, Fine detailed",
+      "tool": "fmc_doc",
+      "args": { "action": "screenshot", "session": "{{steps.open.session}}", "views": ["3d"], "detail_level": "all", "style": "shaded" },
+      "timeout_s": 600,
+      "checks": [{ "no_error": true }, { "path": "files", "at_least": 3 }]
+    }
+  ],
+  "teardown": [
+    {
+      "id": "close",
+      "tool": "fmc_doc",
+      "args": { "action": "close", "session": "{{steps.open.session}}" },
+      "checks": [{ "no_error": true }]
+    }
+  ]
+}
