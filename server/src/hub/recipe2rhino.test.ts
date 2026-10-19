@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { OP } from "../fmc/ops.js";
 import { RHINO_PART } from "./rhino.js";
-import { envelopeBox, envelopeVerdict, outsideBy, partName, recipeTwins, to3d, withTwins } from "./recipe2rhino.js";
+import { envelopeBox, envelopeVerdict, materialCheck, outsideBy, partName, recipeTwins, to3d, withTwins } from "./recipe2rhino.js";
 
 const recipe = [
   { op: "add_material", name: "FMC_Rubber_Black", param: "Rubber Material" },
@@ -63,6 +63,8 @@ test("LOD 400: the recipe gets import_part ops on Fine only, and each native sol
   const imp = ops.find((o) => o.op === "import_part" && o.name === "Castor Wheel FL Fine")!;
   assert.equal(OP.safeParse(imp).success, true);
   assert.deepEqual(imp.size_mm, [44, 124, 124]);
+  assert.equal(imp.material, "FMC_Rubber_Black", "F-068: the kit material goes on the form itself too");
+  assert.deepEqual(materialCheck(recipe, t.map), { same: 1, differs: [], without: ["Side Rail Foot L", "Chassis Cover", "Light Head Satellite"] }, "twins of solids with no material parameter are reported");
   assert.ok(ops.some((o) => o.op === "set_material_param" && o.name === "Castor Wheel FL Fine" && o.param === "Rubber Material"));
   assert.ok(ops.some((o) => o.op === "set_visible_param" && o.solid === "Light Head Satellite Fine" && o.param === "Second Light Head"));
   assert.equal(vis("Side Rail Foot L").length, 0, "not exported: untouched");

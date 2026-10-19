@@ -15,7 +15,7 @@ namespace Formcraft.Rhino
     /// </summary>
     public static class RhinoRender
     {
-        struct Look { public Color C; public double Ks, Shine; }
+        struct Look { public Color C; public double Ks, Shine; public double Alpha; }
 
         /// <summary>A plain colour for a kit material name, read from words in it (steel, white, rubber, glass, …).</summary>
         public static Color ColourOf(string material) => LookOf(material).C;
@@ -24,16 +24,18 @@ namespace Formcraft.Rhino
         {
             string m = (material ?? "").ToLowerInvariant();
             bool Has(params string[] w) { foreach (string x in w) if (m.Contains(x)) return true; return false; }
-            if (Has("glass", "acrylic", "polycarbonate", "clear")) return new Look { C = Color.FromArgb(178, 206, 222), Ks = 0.8, Shine = 90 };
-            if (Has("chrome", "stainless", "steel", "alumin", "metal", "brushed")) return new Look { C = Color.FromArgb(186, 190, 196), Ks = 0.65, Shine = 55 };
-            if (Has("black", "rubber", "elastomer")) return new Look { C = Color.FromArgb(48, 49, 52), Ks = 0.2, Shine = 14 };
-            if (Has("blue")) return new Look { C = Color.FromArgb(70, 118, 172), Ks = 0.3, Shine = 30 };
-            if (Has("green")) return new Look { C = Color.FromArgb(92, 150, 110), Ks = 0.3, Shine = 30 };
-            if (Has("grey", "gray", "anthracite")) return new Look { C = Color.FromArgb(132, 135, 140), Ks = 0.3, Shine = 28 };
-            if (Has("wood", "oak", "beech")) return new Look { C = Color.FromArgb(176, 132, 88), Ks = 0.15, Shine = 16 };
-            if (Has("vinyl", "fabric", "mattress", "foam")) return new Look { C = Color.FromArgb(96, 128, 156), Ks = 0.15, Shine = 12 };
-            if (Has("white", "plastic", "abs", "powder", "paint")) return new Look { C = Color.FromArgb(234, 234, 230), Ks = 0.3, Shine = 32 };
-            return new Look { C = Color.FromArgb(204, 204, 204), Ks = 0.25, Shine = 24 };
+            // F-068: glass is see-through (drawn over what is behind it); a screen is black glass
+            if (Has("display", "screen", "lcd", "monitor")) return new Look { C = Color.FromArgb(22, 24, 28), Ks = 0.7, Shine = 80, Alpha = 1 };
+            if (Has("glass", "acrylic", "polycarbonate", "clear", "perspex")) return new Look { C = Color.FromArgb(200, 222, 232), Ks = 0.9, Shine = 120, Alpha = 0.18 };
+            if (Has("chrome", "stainless", "steel", "alumin", "metal", "brushed")) return new Look { C = Color.FromArgb(186, 190, 196), Ks = 0.65, Shine = 55, Alpha = 1 };
+            if (Has("black", "rubber", "elastomer")) return new Look { C = Color.FromArgb(48, 49, 52), Ks = 0.2, Shine = 14, Alpha = 1 };
+            if (Has("blue")) return new Look { C = Color.FromArgb(70, 118, 172), Ks = 0.3, Shine = 30, Alpha = 1 };
+            if (Has("green")) return new Look { C = Color.FromArgb(92, 150, 110), Ks = 0.3, Shine = 30, Alpha = 1 };
+            if (Has("grey", "gray", "anthracite")) return new Look { C = Color.FromArgb(132, 135, 140), Ks = 0.3, Shine = 28, Alpha = 1 };
+            if (Has("wood", "oak", "beech")) return new Look { C = Color.FromArgb(176, 132, 88), Ks = 0.15, Shine = 16, Alpha = 1 };
+            if (Has("vinyl", "fabric", "mattress", "foam")) return new Look { C = Color.FromArgb(96, 128, 156), Ks = 0.15, Shine = 12, Alpha = 1 };
+            if (Has("white", "plastic", "abs", "powder", "paint")) return new Look { C = Color.FromArgb(234, 234, 230), Ks = 0.3, Shine = 32, Alpha = 1 };
+            return new Look { C = Color.FromArgb(204, 204, 204), Ks = 0.25, Shine = 24, Alpha = 1 };
         }
 
         public static void ToPng(IList<Part> parts, string path, int width, int height, string view)
@@ -96,10 +98,9 @@ namespace Formcraft.Rhino
             Vector3d fill = new Vector3d(0.85, 0.35, 0.35); fill.Unitize();
             Vector3d half = key + eye; half.Unitize();
 
-            for (short mi = 0; mi < meshes.Count; mi++)
+            // a mesh's triangles onto the picture: plot(pixel, depth, normal) for every covered pixel
+            void Raster(Mesh m, Action<int, float, Vector3d> plot)
             {
-                Mesh m = meshes[mi].m;
-                Look look = meshes[mi].look;
                 int n = m.Vertices.Count;
                 var sx = new double[n]; var sy = new double[n]; var sz = new double[n];
                 for (int i = 0; i < n; i++)
@@ -127,23 +128,35 @@ namespace Formcraft.Rhino
                             double w1 = ((sx[c] - fx) * (sy[a] - fy) - (sx[a] - fx) * (sy[c] - fy)) / area;
                             double w2 = 1 - w0 - w1;
                             if (w0 < -1e-6 || w1 < -1e-6 || w2 < -1e-6) continue;
-                            float depth = (float)(w0 * sz[a] + w1 * sz[b] + w2 * sz[c]);
-                            int k = py * W + px;
-                            if (depth >= z[k]) continue;
                             var nv = new Vector3d(w0 * na.X + w1 * nb.X + w2 * nc.X, w0 * na.Y + w1 * nb.Y + w2 * nc.Y, w0 * na.Z + w1 * nb.Z + w2 * nc.Z);
                             if (!nv.Unitize()) continue;
                             if (nv * eye < 0) nv.Reverse();
-                            double dif = Math.Max(0, nv * key) * 0.72 + Math.Max(0, nv * fill) * 0.22;
-                            double amb = 0.24 + (nv.Z * 0.5 + 0.5) * 0.10;
-                            double spec = look.Ks * Math.Pow(Math.Max(0, nv * half), look.Shine);
-                            double rim = Math.Pow(1 - Math.Max(0, nv * eye), 3) * 0.08;
-                            double lit = amb + dif + rim;
-                            int r = Clamp(look.C.R * lit + 255 * spec), g = Clamp(look.C.G * lit + 255 * spec), bl = Clamp(look.C.B * lit + 255 * spec);
-                            z[k] = depth; col[k] = (r << 16) | (g << 8) | bl; id[k] = mi;
-                            nrm[k] = Pack(nv);
+                            plot(py * W + px, (float)(w0 * sz[a] + w1 * sz[b] + w2 * sz[c]), nv);
                         }
                     }
                 }
+            }
+            int Shade(Look look, Vector3d nv)
+            {
+                double dif = Math.Max(0, nv * key) * 0.72 + Math.Max(0, nv * fill) * 0.22;
+                double amb = 0.24 + (nv.Z * 0.5 + 0.5) * 0.10;
+                double spec = look.Ks * Math.Pow(Math.Max(0, nv * half), look.Shine);
+                double rim = Math.Pow(1 - Math.Max(0, nv * eye), 3) * 0.08;
+                double lit = amb + dif + rim;
+                return (Clamp(look.C.R * lit + 255 * spec) << 16) | (Clamp(look.C.G * lit + 255 * spec) << 8) | Clamp(look.C.B * lit + 255 * spec);
+            }
+
+            // first the solid parts, with the depth buffer
+            for (short mi = 0; mi < meshes.Count; mi++)
+            {
+                Look look = meshes[mi].look;
+                if (look.Alpha < 1) continue;
+                short own = mi;
+                Raster(meshes[mi].m, (k, depth, nv) =>
+                {
+                    if (depth >= z[k]) return;
+                    z[k] = depth; col[k] = Shade(look, nv); id[k] = own; nrm[k] = Pack(nv);
+                });
             }
 
             // outlines: where the part changes, the depth jumps, or the surface turns sharply
@@ -168,6 +181,19 @@ namespace Formcraft.Rhino
                     }
                     outCol[k] = edge ? Blend(col[k], 0x3A3D42, 0.7) : col[k];
                 }
+
+            // then glass (F-068), laid over what is behind it: tinted, brighter where it turns away (Fresnel), never hiding it
+            for (short mi = 0; mi < meshes.Count; mi++)
+            {
+                Look look = meshes[mi].look;
+                if (look.Alpha >= 1) continue;
+                Raster(meshes[mi].m, (k, depth, nv) =>
+                {
+                    if (depth >= z[k]) return;
+                    double fresnel = Math.Pow(1 - Math.Max(0, nv * eye), 2) * 0.45;
+                    outCol[k] = Blend(outCol[k], Shade(look, nv), Math.Min(0.85, look.Alpha + fresnel));
+                });
+            }
 
             using (var bmp = new Bitmap(width, height, PixelFormat.Format24bppRgb))
             {
