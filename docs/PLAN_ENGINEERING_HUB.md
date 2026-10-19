@@ -109,7 +109,7 @@ it is on (H0).
 | H3 | **Navisworks, next** (built, Navisworks check due; docs/CLASH_MATRIX.md) | Federate, clash tests from the kit's clash matrix (a kit change request), clashes back to Revit |
 | X3 | **One search, one log** | "Where is D-12 and what touches it", answered across apps |
 | X4 | **The pane in every app; AI conducts** | The Formcraft pane in Navisworks and Rhino; one request across three apps |
-| T | **Tables by script** | Excel ↔ kit tables, dry run first, from a button |
+| T | **Tables by script** (built, `fmc_tables`) | Excel ↔ kit tables, dry run first, from a button (Check › Scripts › "Kit tables (dry run)") |
 | Later | build123d as a second part source; Blender; Speckle | — |
 
 ## The hard parts, honestly
