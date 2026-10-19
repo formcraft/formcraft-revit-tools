@@ -73,7 +73,7 @@ namespace Formcraft.Shell.Tests
             var registry = SectionRegistry.LoadEmbedded();
 
             await Assert.That(string.Join(",", registry.Groups.Select(g => g.Name))).IsEqualTo("Setup,Drawings,Team,Check,Engineer,Build,Ask");
-            await Assert.That(registry.Sections.Count()).IsEqualTo(21);
+            await Assert.That(registry.Sections.Count()).IsEqualTo(22);
             await Assert.That(string.Join(",", registry.QuickTools.Select(t => t.Name))).IsEqualTo("Touch,Section Box,Tag Tidy");
         }
 
@@ -124,7 +124,7 @@ namespace Formcraft.Shell.Tests
             });
 
             await Assert.That(groups).IsEqualTo("Setup,Drawings,Team,Check,Engineer,Build,Ask");
-            await Assert.That(engineer).IsEqualTo("Brief,Systems,Structural,Casework,Ceilings");
+            await Assert.That(engineer).IsEqualTo("Brief,Options,Systems,Structural,Casework,Ceilings");
             await Assert.That(tools).IsEqualTo("Touch,Section Box,Tag Tidy");
         }
 
@@ -157,8 +157,8 @@ namespace Formcraft.Shell.Tests
                 return (a, p.Sections("Engineer"));
             });
 
-            await Assert.That(afterSystems).IsEqualTo("Brief,Structural,Casework,Ceilings");
-            await Assert.That(afterStructural).IsEqualTo("Brief,Casework,Ceilings");
+            await Assert.That(afterSystems).IsEqualTo("Brief,Options,Structural,Casework,Ceilings");
+            await Assert.That(afterStructural).IsEqualTo("Brief,Options,Casework,Ceilings");
         }
 
         [Test]
