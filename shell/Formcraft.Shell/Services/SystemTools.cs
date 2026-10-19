@@ -45,11 +45,40 @@ namespace Formcraft.Shell.Services
         public string Saved { get; set; } = "";
     }
 
-    /// <summary>Engineer › Systems and Structural (U25): fmc_systems through the server. Read-only.</summary>
+    /// <summary>
+    /// Engineer › Systems › Diagrams (LD5, E2): one run of fmc_diagram. Views and sheets are rows of three cells
+    /// (name, detail, state); Lines are Gate D's checks.
+    /// </summary>
+    public sealed class DiagramRun
+    {
+        public bool Ok { get; set; }
+        public string Message { get; set; } = "";
+        public string Model { get; set; } = "";
+        public List<CheckLine> Views { get; } = new List<CheckLine>();
+        public List<CheckLine> Sheets { get; } = new List<CheckLine>();
+        public List<CheckLine> Lines { get; } = new List<CheckLine>();
+        public List<string> KitRequests { get; } = new List<string>();
+        public string Verdict { get; set; } = "";
+    }
+
+    /// <summary>The diagram runs the pane offers. Plan and Generate cover the drafting views and the register sheets.</summary>
+    public static class DiagramActions
+    {
+        public const string Scan = "scan";
+        /// <summary>The draw and the sheets as dry runs: the real run rolled back in Revit, nothing changed.</summary>
+        public const string Plan = "plan";
+        /// <summary>The draw and the sheets for real, after a person's yes to the plan: one Undo each, never saved.</summary>
+        public const string Generate = "generate";
+        public const string Gate = "gate";
+    }
+
+    /// <summary>Engineer › Systems and Structural (U25): fmc_systems through the server, read-only; and the line diagrams (LD5).</summary>
     public interface ISystemTools
     {
         Task<SystemsCheck> ElectricalAsync(string projectFolder, bool save);
         Task<SystemsCheck> StructuralAsync(string kitFolder, string projectFolder, bool save);
+        /// <summary>fmc_diagram for these kinds: scan, plan (dry runs), generate (real, after a yes) or gate (Gate D, read-only).</summary>
+        Task<DiagramRun> DiagramAsync(string action, IReadOnlyList<string> kinds, string kitFolder);
     }
 
     /// <summary>Sample values from boards model/PaneModelSystems and PaneModelStructural.</summary>
@@ -67,6 +96,37 @@ namespace Formcraft.Shell.Services
             c.Checks.Add(new CheckLine("Boards with no circuits", "1", "Warn"));
             c.Checks.Add(new CheckLine("Electrical Fixtures on no circuit", "6 of 40", "Warn"));
             return Task.FromResult(c);
+        }
+
+        public Task<DiagramRun> DiagramAsync(string action, IReadOnlyList<string> kinds, string kitFolder)
+        {
+            Ran.Add("diagram " + action + " " + string.Join("+", kinds));
+            var r = new DiagramRun { Ok = true, Model = "F26001-FMC-ZZ-ZZ-M3-E-0001" };
+            bool plan = action == DiagramActions.Plan;
+            switch (action)
+            {
+                case DiagramActions.Scan:
+                    r.Views.Add(new CheckLine("e_sld MDB", "14 nodes, 13 edges", "Info"));
+                    r.Views.Add(new CheckLine("Gaps", "3: circuits with no cable", "Warn"));
+                    r.Message = "Scanned: 1 diagram, 3 gaps. Read-only, nothing changed.";
+                    break;
+                case DiagramActions.Plan:
+                case DiagramActions.Generate:
+                    r.Views.Add(new CheckLine("E-SLD-MDB", "84 symbols, 120 lines, 96 texts · 3 TBC", plan ? "Would create" : "Created"));
+                    r.Views.Add(new CheckLine("E-Power-Riser", "6 symbols, 14 lines, 18 texts", plan ? "Would create" : "Created"));
+                    r.Sheets.Add(new CheckLine("E-0003 Single-Line Diagram & Load Summary", "E-SLD-MDB", plan ? "Would place" : "Placed"));
+                    r.Sheets.Add(new CheckLine("E-6002 Riser Diagram", "E-Power-Riser", plan ? "Would place" : "Placed"));
+                    r.KitRequests.Add("No Sheet Register row holds the m_controls diagram: add one");
+                    r.Message = plan ? "Dry run: 2 views on 2 sheets would be made; nothing changed." : "2 views drawn and placed on 2 sheets. One Undo each; not saved.";
+                    break;
+                default:
+                    r.Verdict = "Warn";
+                    r.Lines.Add(new CheckLine("Items in the model are on the drawing", "Every item the scan finds is drawn", "Pass"));
+                    r.Lines.Add(new CheckLine("TBC values", "3 texts with TBC on the drawings", "Warn"));
+                    r.Message = "Gate D: Warn. Read-only, nothing changed.";
+                    break;
+            }
+            return Task.FromResult(r);
         }
 
         public Task<SystemsCheck> StructuralAsync(string kitFolder, string projectFolder, bool save)

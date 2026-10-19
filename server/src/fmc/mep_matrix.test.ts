@@ -43,6 +43,19 @@ test("honest today: nothing is tested in Revit yet, line diagrams and the E1 cal
   assert.equal(cell("power_distribution", "enrich").step, "E3");
   assert.match(cell("power_distribution", "enrich").note, /Electrical 0\.1/);
   assert.equal(cell("structural", "diagram").state, "Not applicable");
+  // E2 (LD5): diagram sheets from the Sheet Register; the E1 calc sheet stays in the note where it was
+  assert.equal(cell("cold_water", "document").state, "Built, Revit check due");
+  assert.equal(cell("cold_water", "document").feature, "F78");
+  assert.ok(cell("cold_water", "document").evidence.includes("server/src/fmc/diagram/sheets.ts"));
+  assert.match(cell("cold_water", "document").note, /fmc_calc sheet .*P-0003/);
+  assert.equal(cell("earthing", "document").state, "Built, Revit check due");
+  assert.equal(cell("drainage", "document").state, "Partly built");
+  assert.match(cell("drainage", "document").note, /long section .* TBC/);
+  assert.equal(cell("power_distribution", "document").state, "Partly built");
+  assert.match(cell("power_distribution", "document").note, /E-0003.*E-6002/);
+  assert.equal(cell("fire_alarm", "document").state, "Partly built");
+  assert.equal(cell("refrigerant", "document").state, "Planned");
+  assert.match(cell("refrigerant", "document").note, /kit change request/);
   assert.equal(s.per_system.find((x) => x.id === "structural")!.applicable, 5);
   assert.match(s.headline, /^0 of 159 cells tested in Revit/);
 });
