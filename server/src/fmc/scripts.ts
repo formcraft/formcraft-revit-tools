@@ -96,6 +96,9 @@ export const STEPS = {
   annotate: "Annotation check (current view)",
   review: "Open review items",
   report: "Weekly project report (Markdown and CSV)",
+  // Hub step T: kit tables by script. Both only read; an import's real run is the person's yes in fmc_tables.
+  tables: "Kit tables check (the kit's Excel against its CSV and JSON)",
+  tables_import: "Edited kit tables (dry run of the workbooks in staging)",
 } as const;
 export type StepId = keyof typeof STEPS;
 
@@ -112,6 +115,11 @@ export function stepSummary(step: StepId, body: any): string {
     case "annotate": return `${(body.checks ?? []).filter((c: any) => c.state === "Fail").length} of ${(body.checks ?? []).length} checks fail`;
     case "review": return `${body.count ?? 0} open items, ${body.overdue ?? 0} overdue`;
     case "report": return body.done ? `Saved ${body.name ?? ""}` : "done";
+    case "tables": return `${body.tables ?? 0} tables, ${body.drift ?? 0} differ from their Excel twin`;
+    case "tables_import": {
+      const ready = (body.results ?? []).filter((r: any) => r.ready).length;
+      return `${body.workbooks ?? 0} edited workbooks, ${ready} ready to import (a dry run; importing is the person's yes)`;
+    }
   }
   return "done";
 }

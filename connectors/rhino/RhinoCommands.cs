@@ -33,6 +33,9 @@ namespace Formcraft.Rhino
                 case "rhino_facts": return FactsOf(p);
                 case "rhino_render": return Render(p);
                 case "rhino_export_parts": return ExportParts(p);
+                // X1, one selection: RhinoSelection.cs (the open drawing's selection and view, on Rhino's window thread)
+                case "rhino_select": return RhinoSelection.Select(p);
+                case "rhino_selection": return RhinoSelection.Selection(p);
                 default: throw new ArgumentException("Unknown method " + method);
             }
         }
