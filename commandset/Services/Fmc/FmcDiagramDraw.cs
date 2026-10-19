@@ -62,7 +62,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             catch (Exception) { return ""; }
         }
 
-        private static void MarkSource(Element e, string key)
+        internal static void MarkSource(Element e, string key)
         {
             var en = new Entity(SourceSchema());
             en.Set(SourceField, key);
