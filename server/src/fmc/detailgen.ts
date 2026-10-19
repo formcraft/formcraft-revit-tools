@@ -58,7 +58,7 @@ export const PART_CHECKS = { keynote_exempt: "nested hardware component: schedul
 
 /** The components the generator knows, each a recipe for one small family. */
 export const COMPONENTS: Record<string, { family: (role: string) => string; recipe: (role: string) => RecipeLike }> = {
-  /** A lever on a round rose; types "Arm Left" and "Arm Right" (which way the lever points, seen from the face). */
+  /** A lever on a round rose; types "52_ArmLeft" and "52_ArmRight" (which way the lever points, seen from the face). */
   lever_rose: {
     family: (role) => `FMC_${role}_Part_LeverRose`,
     recipe: (role) => {
@@ -70,6 +70,8 @@ export const COMPONENTS: Record<string, { family: (role: string) => string; reci
         { op: "add_ref_plane", name: "Edge", from: [-26, -500], to: [-26, 500], is_reference: "Left" },
         { op: "add_family_param", name: "Mirror", type: "YesNo", group: "Constraints" },
         { op: "add_family_param", name: "Arm To Left", type: "YesNo", group: "Constraints" },
+        // a formula needs a current type, and the Generic Model template starts with none
+        { op: "add_type", name: "52_ArmLeft" },
         { op: "set_formula", name: "Arm To Left", formula: "not(Mirror)" },
         // the rose: a disc 52 mm across, 8 mm deep with a rounded edge; the neck; the lever
         { op: "revolution", name: "Rose", axis: "y", axis_at: [0, 0], profile: [[0, 0], [26, 0], [26, 5], [25, 7], [23, 8], [0, 8]] },
@@ -79,13 +81,12 @@ export const COMPONENTS: Record<string, { family: (role: string) => string; reci
         ...finish(["Rose", "Neck", "Arm L", "Arm R"], sub, mat),
         { op: "set_visible_param", name: "Arm L/Visible", solid: "Arm L", param: "Arm To Left" },
         { op: "set_visible_param", name: "Arm R/Visible", solid: "Arm R", param: "Mirror" },
-        { op: "add_type", name: "Arm Left" },
-        { op: "set_type_value", name: "Arm Left/Mirror", type: "Arm Left", param: "Mirror", value: false },
-        { op: "add_type", name: "Arm Right" },
-        { op: "set_type_value", name: "Arm Right/Mirror", type: "Arm Right", param: "Mirror", value: true },
+        { op: "set_type_value", name: "52_ArmLeft/Mirror", type: "52_ArmLeft", param: "Mirror", value: false },
+        { op: "add_type", name: "52_ArmRight" },
+        { op: "set_type_value", name: "52_ArmRight/Mirror", type: "52_ArmRight", param: "Mirror", value: true },
       ];
       return { schema: "fmc-recipe/0.1", family: `FMC_${role}_Part_LeverRose`, template: "Metric Generic Model.rft", ops, values: PART_VALUES, checks: PART_CHECKS,
-        about: "Lever on a round rose (QS03 component): fixed true shape, nested on the door's planes. Arm Left / Arm Right types." };
+        about: "Lever on a round rose (QS03 component): fixed true shape, nested on the door's planes. 52_ArmLeft / 52_ArmRight types." };
     },
   },
   /** A butt hinge seen from the swing side: the knuckle with its tips, and the two leaves. Base at z = 0, axis at the origin. */
@@ -231,9 +232,9 @@ export function detailDoor(std: RecipeLike, componentPath: (family: string) => s
     opts.pull
       ? { op: "place_nested", name: "Lever Ext", family: COMPONENTS.pull_handle.family(role), type: COMPONENTS.pull_handle.family(role),
         lock: { x: { plane: "Rose L", ref: "Left", at: -26 }, y: { plane: "Leaf Ext", ref: "Back" }, z: { plane: "Lever Mid", ref: "CenterElevation" } } }
-      : { op: "place_nested", name: "Lever Ext", family: lever, type: "Arm Left",
+      : { op: "place_nested", name: "Lever Ext", family: lever, type: "52_ArmLeft",
         lock: { x: { plane: "Rose L", ref: "Left", at: -26 }, y: { plane: "Leaf Ext", ref: "Back" }, z: { plane: "Lever Mid", ref: "CenterElevation" } } },
-    { op: "place_nested", name: "Lever Int", family: lever, type: "Arm Right", rotate_deg: 180,
+    { op: "place_nested", name: "Lever Int", family: lever, type: "52_ArmRight", rotate_deg: 180,
       lock: { x: { plane: "Rose R", ref: "Left", at: -26 }, y: { plane: "Leaf Int", ref: "Back" }, z: { plane: "Lever Mid", ref: "CenterElevation" } } },
     { op: "place_nested", name: "Closer", family: closer, type: closer,
       lock: { x: { plane: "Closer L", ref: "CenterLeftRight" }, y: { plane: "Leaf Int", ref: "Back" }, z: { plane: "Closer Bot", ref: "Bottom" } } },

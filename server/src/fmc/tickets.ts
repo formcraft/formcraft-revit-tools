@@ -140,16 +140,21 @@ export function applyBcf(reg: Register, topics: Array<{
 
 /** A model's discipline from its container name ([Project]-[Originator]-…-[Role]-[Number].rvt, Manual 4.1); BIM otherwise. */
 export function roleOfModel(file: string): string {
-  const base = (file.split(/[\/]/).pop() ?? "").replace(/\.(rvt|nwc|nwd|ifc)$/i, "");
+  const base = (file.split(/[\\/]/).pop() ?? "").replace(/\.(rvt|nwc|nwd|ifc)$/i, "");
   const m = /-([A-Z]{1,2})-\d{4}$/.exec(base);
   return m ? m[1] : "BIM";
 }
 
+/** A clash item; fmc and unique_id are filled from the hub's identity map when it knows the element (fmc_navis back). */
+export interface ClashItemIn { name: string; category: string; revit_id: string; source: string; fmc?: string; unique_id?: string }
+
 export interface ClashIn {
   name: string; status: string; distance_mm: number; center_mm?: number[];
-  item1: { name: string; category: string; revit_id: string; source: string };
-  item2: { name: string; category: string; revit_id: string; source: string };
+  item1: ClashItemIn;
+  item2: ClashItemIn;
 }
+
+const linkItem = (x: ClashItemIn) => ({ model: x.source, id: x.revit_id, category: x.category, ...(x.fmc ? { fmc: x.fmc } : {}), ...(x.unique_id ? { unique_id: x.unique_id } : {}) });
 
 /**
  * Navisworks clashes into the register (R5): one ticket per New or Active clash, for the disciplines whose models
@@ -169,13 +174,11 @@ export function clashTickets(reg: Register, test: string, rows: ClashIn[], by: s
     const item = mark(reg, {
       to: "discipline", assignee: a, lead: a, disciplines: [a, b],
       title: `${test} · ${r.name}: ${r.item1.category || "element"} × ${r.item2.category || "element"}`,
-      text: `Clash ${r.name} in ${test}: ${r.item1.category} ${r.item1.revit_id} (${r.item1.source.split(/[\/]/).pop()}) × ${r.item2.category} ${r.item2.revit_id} (${r.item2.source.split(/[\/]/).pop()}), ${depth} mm deep.`,
+      text: `Clash ${r.name} in ${test}: ${r.item1.category} ${r.item1.revit_id} (${r.item1.source.split(/[\\/]/).pop()}) × ${r.item2.category} ${r.item2.revit_id} (${r.item2.source.split(/[\\/]/).pop()}), ${depth} mm deep.`,
       priority: depth > 50 ? "High" : "Medium", raised_by: by, model: r.item1.source,
       where: { unique_ids: [], ...(r.center_mm ? { point_mm: r.center_mm } : { point_mm: [0, 0, 0] }) },
       source: "clash",
-      links: { clash: { test, name: r.name, distance_mm: r.distance_mm, items: [
-        { model: r.item1.source, id: r.item1.revit_id, category: r.item1.category },
-        { model: r.item2.source, id: r.item2.revit_id, category: r.item2.category }] } },
+      links: { clash: { test, name: r.name, distance_mm: r.distance_mm, items: [linkItem(r.item1), linkItem(r.item2)] } },
     }, now);
     added.push(item.id);
   }
