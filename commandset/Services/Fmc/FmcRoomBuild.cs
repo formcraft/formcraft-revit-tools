@@ -51,10 +51,14 @@ namespace RevitMCPCommandSet.Services.Fmc
             int removed = 0;
             string levelName = Parameters.Value<string>("level") ?? "";
             Level level = FmcLevels.Find(doc, levelName);
+            JArray loaded = new JArray();
 
             using (var t = new Transaction(doc, "FMC room " + node))
             {
                 t.Start();
+                // F-073: each family the room places that the model doesn't hold yet is loaded from the file the server
+                // found (kit staging / library roots); one already loaded is used as it is, its values untouched
+                loaded = LoadFamilies(doc);
                 // what this node made last time goes first
                 foreach (string uid in (Parameters["replace"] as JArray ?? new JArray()).Select(x => x.Value<string>()))
                 {
@@ -131,8 +135,37 @@ namespace RevitMCPCommandSet.Services.Fmc
                 ["made"] = new JArray(made.Select(e => e.UniqueId)),
                 ["elements"] = new JArray(made.Select((e, i) => new JObject { ["unique_id"] = e.UniqueId, ["key"] = keys[i] })),
                 ["removed"] = removed,
+                ["loaded"] = loaded,
                 ["notes"] = notes,
             };
+        }
+
+        /// <summary>
+        /// The families the server resolved (families: [{family, path}], path "" when no file was found; searched: the
+        /// folders it looked in). A family already in the model is kept; a missing one is loaded from its path, or the
+        /// build stops naming the folders searched. Runs inside the build's transaction, so a failure rolls it all back.
+        /// </summary>
+        private JArray LoadFamilies(Document doc)
+        {
+            var loaded = new JArray();
+            var searched = (Parameters["searched"] as JArray ?? new JArray()).Select(x => x.Value<string>()).ToList();
+            foreach (JObject f in (Parameters["families"] as JArray ?? new JArray()).OfType<JObject>())
+            {
+                string name = f.Value<string>("family") ?? "", path = f.Value<string>("path") ?? "";
+                if (name.Length == 0) continue;
+                bool inModel = new FilteredElementCollector(doc).OfClass(typeof(Family)).Cast<Family>().Any(x => x.Name == name);
+                if (inModel) continue;
+                if (path.Length == 0)
+                    throw new InvalidOperationException($"No {name} in the model, and no {name}.rfa in " +
+                        (searched.Count > 0 ? string.Join("; ", searched) : "any folder (fmc_guard.json sets no family_staging_root or library_roots)") +
+                        ": stage the family there, or load it into the model first");
+                if (!System.IO.File.Exists(path)) throw new InvalidOperationException($"No file {path} (for {name})");
+                if (!doc.LoadFamily(path, new FmcDocLod.NoOverwrite(), out Family fam) || fam == null)
+                    throw new InvalidOperationException($"Revit didn't load {name} from {path}");
+                loaded.Add(new JObject { ["family"] = fam.Name, ["path"] = path });
+            }
+            if (loaded.Count > 0) doc.Regenerate();
+            return loaded;
         }
 
         private static FamilyInstance Place(Document doc, JObject o, Level level, Dictionary<string, Wall> walls, Dictionary<string, XYZ> into, Ceiling ceiling)
@@ -178,7 +211,9 @@ namespace RevitMCPCommandSet.Services.Fmc
         {
             FamilySymbol s = new FilteredElementCollector(doc).OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>()
                 .FirstOrDefault(x => x.Family?.Name == family && x.Name == type)
-                ?? throw new InvalidOperationException($"No {family} : {type} in the model (load the family first)");
+                ?? throw new InvalidOperationException(new FilteredElementCollector(doc).OfClass(typeof(Family)).Cast<Family>().Any(x => x.Name == family)
+                    ? $"{family} has no type {type} (check the recipe's type name against the family's types)"
+                    : $"No {family} : {type} in the model (load the family first)");
             if (!s.IsActive) { s.Activate(); doc.Regenerate(); }
             return s;
         }

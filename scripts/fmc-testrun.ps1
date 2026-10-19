@@ -21,7 +21,8 @@
     new:      start a new run.
 
 .PARAMETER Only
-    new: run just these scenario ids (e.g. 01_selftest, 05_room_icu).
+    new: run just these scenario ids (e.g. 01_selftest, 05_room_icu). Several ids are separated by commas: -Only a,b
+    works with powershell -File (one string, split here) as well as -Only @('a','b') from a PowerShell session.
 
 .PARAMETER Cli
     The server's cli.js. Default: the installed server (%USERPROFILE%\mcp\revit-fmc\build\fmc\cli.js), else this repo's
@@ -33,6 +34,7 @@
 .EXAMPLE
     powershell -ExecutionPolicy Bypass -File scripts\fmc-testrun.ps1
     powershell -ExecutionPolicy Bypass -File scripts\fmc-testrun.ps1 -Mode new -Only 01_selftest
+    powershell -ExecutionPolicy Bypass -File scripts\fmc-testrun.ps1 -Mode new -Only 01_selftest,05_room_icu,06_room_icu_families
 #>
 param(
     [ValidateSet('auto', 'resume', 'new')][string]$Mode = 'auto',
@@ -42,6 +44,10 @@ param(
     [string]$Node = ''
 )
 $ErrorActionPreference = 'Stop'
+
+# -Only a,b through powershell -File arrives as the one string 'a,b': split each item on commas, so that and
+# -Only @('a','b') (or -Only a,b in a PowerShell session) mean the same
+$Only = @($Only | ForEach-Object { "$_" -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ })
 
 # below normal: this process, and node and Revit started from it, give way to the person's own work
 try { [System.Diagnostics.Process]::GetCurrentProcess().PriorityClass = [System.Diagnostics.ProcessPriorityClass]::BelowNormal } catch { }
