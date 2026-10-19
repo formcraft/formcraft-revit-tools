@@ -29,11 +29,13 @@ export const FMC_TREE_DESCRIPTION =
     "Formcraft tools (fmc_ceiling, fmc_casework, fmc_recipe…). show: the outline. check: duplicate ids, unknown tools, " +
     "missing values. plan: every node against the last build (new, changed, unchanged); with run_tools, each changed node's " +
     "tool runs as a dry run and says what it would make. set: a node's inputs (a dry run first; the old tree is archived). " +
-    "init: a sample tree (an ICU bay) when the project has none. built: records what a build made (revisions), so the next " +
+    "init: a sample tree (an ICU bay) when the project has none. build (T1): runs every changed node's tool for real, in tree " +
+    "order (a dry run first lists them), stops at the first failure, and records what was built. built: records a build " +
+    "made outside the tree (revisions), so the next " +
     "plan lists only what changed. It never changes a model by itself.";
 
 export const FMC_TREE_SHAPE = {
-  action: z.enum(["show", "check", "plan", "set", "init", "built"]),
+  action: z.enum(["show", "check", "plan", "set", "init", "built", "build"]),
   project_folder: z.string().describe("The project folder (the tree lives in its 01_WIP)"),
   id: z.string().optional().default("").describe("set: the node; plan: only this node and what is under it"),
   inputs: z.record(z.string(), z.unknown()).optional().default({}).describe("set: inputs to change, e.g. { \"width\": 4500 }"),
@@ -48,12 +50,17 @@ const stateFile = (project: string) => win.join(project, "01_WIP", "_Tree", "FMC
 
 const toolExists = (tool: string) => fs.existsSync(new URL(`./${tool}.js`, import.meta.url));
 
-async function dryRunTool(tool: string, args: Record<string, unknown>): Promise<unknown> {
+async function dryRunTool(tool: string, args: Record<string, unknown>, real = false, ctx: { project?: string; node?: string } = {}): Promise<unknown> {
   const mod: Record<string, any> = await import(`./${tool}.js`);
   const shape = Object.entries(mod).find(([k]) => /^FMC_[A-Z_]+_SHAPE$/.test(k))?.[1];
   const run = Object.entries(mod).find(([k, v]) => /^runFmc/.test(k) && typeof v === "function")?.[1];
   if (!shape || !run) throw new Error(`${tool} can't run from the tree`);
-  const r = await run(z.object(shape).parse("dry_run" in shape ? { ...args, dry_run: true } : args));
+  // the tree gives a tool its project and node when it takes them and the node doesn't say
+  const given: Record<string, unknown> = { ...args };
+  if ("project_folder" in shape && given.project_folder === undefined && ctx.project) given.project_folder = ctx.project;
+  if ("node" in shape && given.node === undefined && ctx.node) given.node = ctx.node;
+  if ("dry_run" in shape) given.dry_run = !real;
+  const r = await run(z.object(shape).parse(given));
   const text = r?.content?.[0]?.text ?? "{}";
   let body: any;
   try { body = JSON.parse(text); } catch { body = { text }; }
@@ -126,6 +133,29 @@ export async function runFmcTree(args: FmcTreeArgs) {
       fs.writeFileSync(file, JSON.stringify(tree, null, 2));
       log(config, "tree_set", false, file, "written", `${args.id}: ${Object.keys(args.inputs).join(", ")}`);
       return reply({ done: true, node: args.id, inputs: node.inputs, to_rebuild: after });
+    }
+    if (args.action === "build") {
+      const lines = planTree(tree, last).filter((l) => l.state !== "unchanged" && l.tool);
+      if (lines.some((l) => l.error)) return reply({ refused: true, reasons: lines.filter((l) => l.error).map((l) => `${l.path}: ${l.error}`) }, true);
+      if (!lines.length) return reply({ done: true, built: [], note: "Nothing changed since the last build" });
+      if (args.dry_run) return reply({ dry_run: true, would_build: lines.map((l) => ({ id: l.id, path: l.path, tool: l.tool })), next: "Run again with dry_run=false (each tool keeps its own guard: live models stay locked)" });
+      const byId = new Map(resolve(tree).map((r) => [r.node.id, r]));
+      const done: string[] = [], answers: Record<string, unknown> = {};
+      let stopped: string | undefined;
+      for (const l of lines) {
+        const r = byId.get(l.id)!;
+        try {
+          const a = await dryRunTool(r.node.make!.tool, r.args ?? {}, true, { project, node: l.id }) as { ok: boolean };
+          answers[l.id] = a;
+          if (!a.ok) { stopped = l.id; break; }
+          done.push(l.id);
+        } catch (e) { answers[l.id] = { ok: false, error: e instanceof Error ? e.message : String(e) }; stopped = l.id; break; }
+      }
+      const next = recordBuilt(tree, last, done, new Date());
+      fs.mkdirSync(win.dirname(state), { recursive: true });
+      fs.writeFileSync(state, JSON.stringify(next, null, 2));
+      log(config, "tree_build", false, file, stopped ? `stopped at ${stopped}` : "built", `${done.length} of ${lines.length} nodes`);
+      return reply({ done: !stopped, built: done, ...(stopped ? { stopped_at: stopped } : {}), answers, next: stopped ? `Fix ${stopped} and build again: only what is left is built` : "Built: the next plan shows only what changes" }, !!stopped);
     }
     // built
     if (!args.ids.length) return reply({ refused: true, reasons: ["Name the nodes the build made (ids)"] }, true);
