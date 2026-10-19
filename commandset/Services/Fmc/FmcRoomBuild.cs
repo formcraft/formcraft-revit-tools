@@ -109,6 +109,18 @@ namespace RevitMCPCommandSet.Services.Fmc
                     Autodesk.Revit.DB.Architecture.Room room = doc.Create.NewRoom(level, new UV(Ft(at[0].Value<double>()), Ft(at[1].Value<double>())));
                     room.Name = o.Value<string>("name") ?? room.Name;
                     if (o["number"] != null) room.Number = o.Value<string>("number");
+                    // the brief's programme data (kit parameters bound to Rooms); one that won't set is noted, not fatal
+                    foreach (var kv in (o["params"] as JObject ?? new JObject()).Properties())
+                    {
+                        Parameter p = room.LookupParameter(kv.Name);
+                        if (p == null || p.IsReadOnly) { notes.Add($"room {room.Number}: no writable {kv.Name}"); continue; }
+                        bool ok;
+                        if (p.StorageType == StorageType.String) ok = p.Set(kv.Value.ToString());
+                        else if (p.StorageType == StorageType.Integer) ok = p.Set(kv.Value.Value<int>());
+                        else if (p.StorageType == StorageType.Double) ok = p.Set(UnitUtils.ConvertToInternalUnits(kv.Value.Value<double>(), p.GetUnitTypeId()));
+                        else ok = false;
+                        if (!ok) notes.Add($"room {room.Number}: {kv.Name} not set");
+                    }
                     Made(room, o);
                 }
                 foreach (Element e in made) e.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS)?.Set("FMC:" + node);

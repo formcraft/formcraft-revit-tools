@@ -19,6 +19,7 @@ const ROW_ROOM = z.object({
   width: mm.positive().describe("along the corridor, inside the walls, mm"),
   depth: mm.positive().describe("away from the corridor, inside the walls, mm"),
   template: z.string().optional().describe("a room node to copy (default: the department's template)"),
+  params: z.record(z.string(), z.union([z.string(), z.number()])).optional().describe("the room's programme data (kit parameters)"),
 });
 
 export const DEPARTMENT = z.object({
@@ -36,6 +37,7 @@ export interface LaidRoom {
   origin: number[]; width: number; depth: number; skip: WallSide[];
   /** The wall that faces the corridor, and the one opposite (a bed's head wall). */
   corridor_wall?: WallSide; head_wall?: WallSide; template?: string;
+  params?: Record<string, string | number>;
 }
 
 export interface DepartmentLayout { rooms: LaidRoom[]; corridor: LaidRoom; problems: string[]; warnings: string[] }
@@ -59,7 +61,8 @@ export function layoutDepartment(input: Department): DepartmentLayout {
       const corridor_wall: WallSide = side === "north" ? "south" : "north";
       // the room to the west builds the shared wall: this room skips its west wall when it has a western neighbour
       rooms.push({ id: r.id, name: r.name ?? r.id, ...(r.number ? { number: r.number } : {}), side, origin: [r1(x), r1(y)], width: r.width, depth: r.depth,
-        skip: i > 0 ? ["west"] : [], corridor_wall, head_wall: side === "north" ? "north" : "south", ...(r.template ? { template: r.template } : {}) });
+        skip: i > 0 ? ["west"] : [], corridor_wall, head_wall: side === "north" ? "north" : "south", ...(r.template ? { template: r.template } : {}),
+        ...(r.params ? { params: r.params } : {}) });
       x += r.width + t;
     });
     const len = rowLength(d[side]);
@@ -77,7 +80,7 @@ export function layoutDepartment(input: Department): DepartmentLayout {
 
 /** A room's own inputs in the tree (what changes when the layout moves or resizes it). */
 export function roomInputs(r: LaidRoom): Record<string, unknown> {
-  return { width: r.width, depth: r.depth, origin: r.origin, number: r.number ?? r.id, skip_walls: r.skip,
+  return { name: r.name, width: r.width, depth: r.depth, origin: r.origin, number: r.number ?? r.id, skip_walls: r.skip, params: r.params ?? {},
     ...(r.corridor_wall ? { corridor_wall: r.corridor_wall, head_wall: r.head_wall } : {}) };
 }
 
@@ -94,6 +97,10 @@ export function cloneChildren(template: TreeNode, newId: string): TreeNode[] {
     if (c.make?.tool === "fmc_room") {
       const room = (c.make.args.room ?? {}) as Record<string, any>;
       room.walls = { ...(room.walls ?? {}), skip: "${var.skip_walls}" };
+      // each copy is its own room: its name, number and programme data from its node
+      room.name = "${var.name}";
+      room.number = "${var.number}";
+      room.params = "${var.params}";
       c.make.args.room = room;
       delete c.make.args.keep; // a person's overrides belong to the room they were made in
     }

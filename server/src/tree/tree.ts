@@ -10,7 +10,7 @@ import crypto from "node:crypto";
 import { z } from "zod";
 import { fill } from "../hub/flows.js";
 
-export const KINDS = ["project", "building", "level", "zone", "department", "room", "assembly", "system", "family", "component", "group"] as const;
+export const KINDS = ["project", "building", "level", "zone", "department", "room", "assembly", "system", "family", "component", "group", "library"] as const;
 
 export interface TreeNode {
   id: string;
@@ -90,10 +90,12 @@ export interface PlanLine { id: string; path: string; kind: string; state: "new"
 
 /** Each node against the last build: new, changed or unchanged; only the nodes that make something are built. */
 export function planTree(tree: Tree, last: BuiltState | null): PlanLine[] {
+  // a library's rooms are templates (T5): copied into the building, never built themselves
+  const inLibrary = new Set(resolve(tree).filter((r) => r.path.slice(0, -1).some((id) => findNode(tree, id)?.kind === "library") || r.node.kind === "library").map((r) => r.node.id));
   return resolve(tree).map((r) => {
     const before = last?.revisions[r.node.id];
     const state = before === undefined ? "new" : before === r.revision ? "unchanged" : "changed";
-    return { id: r.node.id, path: r.path.join(" › "), kind: r.node.kind, state, ...(r.node.make ? { tool: r.node.make.tool } : {}), ...(r.error ? { error: r.error } : {}) };
+    return { id: r.node.id, path: r.path.join(" › "), kind: r.node.kind, state, ...(r.node.make && !inLibrary.has(r.node.id) ? { tool: r.node.make.tool } : {}), ...(r.error ? { error: r.error } : {}) };
   });
 }
 

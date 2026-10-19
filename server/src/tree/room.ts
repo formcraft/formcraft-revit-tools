@@ -23,6 +23,8 @@ export const ROOM = z.object({
   walls: z.object({ type: z.string().min(1), thickness: mm.positive(),
     skip: z.array(z.enum(WALLS)).default([]).describe("walls a neighbour builds (a shared wall is built once: T4)") }),
   ceiling: z.object({ type: z.string().min(1), height: mm.positive() }).optional(),
+  /** The room's programme data from the brief (kit parameters bound to Rooms, e.g. FMC_Target_Area), set on the Revit room. */
+  params: z.record(z.string(), z.union([z.string(), z.number()])).default({}),
   openings: z.array(z.object({
     kind: z.enum(["door", "window"]), family: z.string().min(1), type: z.string().min(1), wall: z.enum(WALLS),
     along: mm.describe("from the wall's left end seen from inside, to the opening's centre, mm"), width: mm.positive(),
@@ -50,7 +52,7 @@ export type Op =
   | { op: "opening"; kind: "door" | "window"; family: string; type: string; wall: WallSide; at: number[]; sill: number }
   | { op: "place"; id: string; family: string; type: string; at: number[]; rotate_deg: number; host: "floor" | "wall" | "ceiling"; wall?: WallSide }
   | { op: "ceiling"; outline: number[][]; height: number; type: string }
-  | { op: "room"; name: string; number?: string; at: number[] };
+  | { op: "room"; name: string; number?: string; at: number[]; params?: Record<string, string | number> };
 
 /** Each wall's inner face: from its left end to its right end seen from inside the room, and the direction into the room. */
 function wallLine(r: Room, side: WallSide): { a: number[]; b: number[]; into: number[]; length: number } {
@@ -126,6 +128,6 @@ export function planRoom(input: Room): RoomPlan {
     if (r.ceiling.height >= r.height) problems.push(`The ceiling at ${r.ceiling.height} is at or above the structure (${r.height})`);
     ops.push({ op: "ceiling", outline: [[x0, y0], [x0 + r.width, y0], [x0 + r.width, y0 + r.depth], [x0, y0 + r.depth]], height: r.ceiling.height, type: r.ceiling.type });
   }
-  ops.push({ op: "room", name: r.name, ...(r.number ? { number: r.number } : {}), at: [r1(centre[0]), r1(centre[1])] });
+  ops.push({ op: "room", name: r.name, ...(r.number ? { number: r.number } : {}), at: [r1(centre[0]), r1(centre[1])], ...(Object.keys(r.params).length ? { params: r.params } : {}) });
   return { ops, problems, warnings };
 }
