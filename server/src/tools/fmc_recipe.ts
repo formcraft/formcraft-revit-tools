@@ -168,6 +168,13 @@ function nestedLod(cfg: GuardConfig, file: string): NestedLod {
   return (family) => read(family, 1);
 }
 
+/** Gate A's host test: the overall ceiling of its long-job wait, 15 min (FMC_HOST_TEST_MAX_MS overrides), under the
+ * test runner's 20 min step so the gate's inspect and flex usually fit beside it. Revit waits as long (max_wait_ms). */
+export function hostTestCeilingMs(env: NodeJS.ProcessEnv = process.env): number {
+  const v = Number(env.FMC_HOST_TEST_MAX_MS);
+  return Number.isFinite(v) && v > 0 ? v : 15 * 60 * 1000;
+}
+
 export async function runGate(file: string, cfg: GuardConfig, flex: object | null = null) {
   const family = win.basename(file, ".rfa");
   const recipeFile = file.replace(/\.rfa$/i, ".recipe.json");
@@ -195,7 +202,10 @@ export async function runGate(file: string, cfg: GuardConfig, flex: object | nul
   let hostTest: HostTestResult | null = null, hostTestError = "";
   if (kind) {
     try {
-      hostTest = (await withRevitConnection((c) => c.sendRaw("fmc_family_host_test", { path: file, host: kind }, 180000))) as HostTestResult;
+      // F-064 long-job route: no fixed cap while Revit's heartbeats for the job come, up to the ceiling (TR-20261019-1635
+      // timed out at the old fixed 180 s while Revit was still held by the previous family's flex)
+      hostTest = (await withRevitConnection((c) => c.sendLong("fmc_family_host_test", { path: file, host: kind, max_wait_ms: hostTestCeilingMs() },
+        { ceilingMs: hostTestCeilingMs() }))) as HostTestResult;
       const err = (hostTest as { error?: unknown } | null)?.error;
       if (err) hostTestError = String(err);
     } catch (e) { hostTestError = (e instanceof Error ? e.message : String(e)) || "the host test failed"; }
