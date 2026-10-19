@@ -143,6 +143,14 @@ what each side must know before its next step.** Newest entry at the top of each
 
 ## To Claude Code
 
+### 19 Oct · 4D / 5D and Temporary Works plan: PARKED, read only, no code yet
+Read `docs/PLAN_4D_5D_TEMPWORKS.md`. The owner packaged these ideas for later: do not start T1–T12 (Project
+`QUEUE.md` › P9) until the owner says go. Already done on the kit (pilot PC): 16 new 4D, date and temp-works shared
+parameters (188 → 204) in `FMC_SharedParameters.txt`, with a backup beside it; not yet bound to templates. When the
+time comes, the code tasks are the Date Guard (T3), the Revit 4D check and sequence sheets (T4), the TimeLiner CSV
+export (T5), the `fmc_navis` TimeLiner upgrade (T6), the Temporary Works panel in Formcraft Model (T7) and the Build
+3D cost model (T10).
+
 ### 19 Oct · KISIC gap scripts → plugin features (owner's request: fewer AI credits)
 Read `docs/handoff/KISIC_GAP_SCRIPTS.md`. It packages the 28 C# bodies and 2 Python tools the tester wrote to finish
 the Kisasi Imaging Centre job (`docs/handoff/kisic_gap_scripts/`), maps each to the plugin gap it filled, and specs
