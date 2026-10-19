@@ -7,6 +7,8 @@ import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../
 import { Filter, PRIORITIES, Register, ReviewItem, answer, filterItems, find, printItems, printList, raise, raiseProblems, shownStatus, solve, verdict } from "../fmc/review.js";
 import { AI_OWNER, applyBcf, comment, mark, markProblems, queue, take } from "../fmc/tickets.js";
 import { fromBcf, toBcf } from "../fmc/bcf.js";
+import { ElementFacts, intentAfterReply, parseNote, planFix } from "../fmc/noteparse.js";
+import { readDb } from "./fmc_material.js";
 
 const win = path.win32;
 
@@ -54,10 +56,18 @@ export const FMC_REVIEW_DESCRIPTION =
     "note's audio and transcript, a picture); comment (a reply in the thread, typed or spoken); take (start it; a ticket " +
     "for anyone gets its owner); queue (what waits for the AI, a person or a discipline, most urgent first, with " +
     "everything the fix needs); bcf_export and bcf_import (BCF 2.1 for Navisworks, Solibri, BIMcollab, ACC; a dry run " +
-    "first). Marking never changes the model.";
+    "first). Marking never changes the model. Each mark and reply is read by the offline note parser (no AI) into an " +
+    "intent kept on the ticket (resize, set_param, move, raise_lower, swap_type, material, delete, add_clearance, " +
+    "same_as, unclear); plan_fix (id; optional facts: the element's category, type, parameters in mm, loadable types) " +
+    "returns the structured fix as a dry run: each step with a sentence, what is unclear (for the AI), what needs an " +
+    "engineer (rule 5). Materials only from the kit's list (rule 7). It never applies a fix.";
 
 export const FMC_REVIEW_SHAPE = {
-  action: z.enum(["list", "item", "raise", "answer", "solve", "check", "cloud", "print", "prints", "mark", "comment", "take", "queue", "bcf_export", "bcf_import"]),
+  action: z.enum(["list", "item", "raise", "answer", "solve", "check", "cloud", "print", "prints", "mark", "comment", "take", "queue", "bcf_export", "bcf_import", "plan_fix"]),
+  facts: z.object({ unique_id: z.string().optional(), category: z.string().optional(), family: z.string().optional(), type_name: z.string().optional(),
+    params: z.record(z.union([z.number(), z.string(), z.null()])).optional(), types: z.array(z.string()).optional(),
+    reference: z.object({ type_name: z.string().optional(), unique_id: z.string().optional() }).optional(), view: z.string().optional() })
+    .optional().describe("plan_fix: the marked element's facts (lengths in mm); without them it asks Revit, then plans from the note alone"),
   to: z.enum(["ai", "person", "discipline", "anyone"]).optional().default("ai").describe("mark: who fixes it; queue: whose list"),
   assignee: z.string().optional().default("").describe("mark: the person or discipline; queue: the person or discipline to list"),
   where: z.object({ unique_ids: z.array(z.string()).default([]), ifc_guids: z.array(z.string()).optional(),
@@ -119,8 +129,32 @@ export async function runFmcReview(args: FmcReviewArgs) {
           id: i.id, title: i.title, priority: i.priority, due: i.due, status: shownStatus(i, today), to: i.to, lead: i.lead,
           note: (i.notes?.[i.notes.length - 1]?.text ?? i.description).slice(0, 160), notes: i.notes?.length ?? 0,
           elements: (i.where?.unique_ids.length ?? 0) + (i.where?.linked?.length ?? 0), voice: (i.notes ?? []).some((n) => !!n.audio),
-          picture: !!i.pictures?.raised, source: i.source }),
+          picture: !!i.pictures?.raised, source: i.source, intent: i.intent?.map((x) => x.kind) }),
         next: args.to === "ai" ? "Take the first ticket (take), make its fix as a dry run, and show it to the person who raised it" : undefined });
+    }
+    // the kit's material names: a parsed material is only ever one of these (rule 7)
+    const materials = (): string[] => readDb(config)?.materials.map((m) => m.name) ?? [];
+    if (args.action === "plan_fix") {
+      // a dry run, always: it reads and plans, never applies (applying is R6, after a person's yes)
+      const item = find(reg, args.id);
+      const text = (item.notes ?? []).map((n) => n.text || n.transcript || "").filter(Boolean).join(". ") || item.description;
+      const kit = materials();
+      const intents = item.intent ?? parseNote(text, { materials: kit });
+      let facts: ElementFacts | null = args.facts ?? null, source = args.facts ? "given" : "none";
+      const uid = item.where?.unique_ids[0];
+      if (!facts && uid) {
+        // the element's facts from Revit, if it is open and answers; a plan from the note alone otherwise
+        try {
+          const r = await withRevitConnection((c) => c.sendRaw("fmc_element_facts", { unique_ids: [uid] }, 10000));
+          const e = (r?.elements ?? [r])[0];
+          if (e && (e.category || e.type_name || e.params)) { facts = { unique_id: uid, ...e }; source = "Revit"; }
+        } catch { facts = null; }
+      }
+      const plan = planFix(intents, facts, { materials: kit });
+      return reply({ id: item.id, intents, facts_from: source, plan,
+        ...(plan.from_note_only ? { note: "No element facts (Revit not reachable or the ticket marks no element): planned from the note alone; plan again with Revit open, or pass facts" } : {}),
+        ...(kit.length ? {} : { kit: `Material database not readable at ${config.materials_file}: material requests can't be matched` }),
+        next: plan.ready ? "Show the steps to the person who raised it; applying them (after a clear yes) is R6" : "Settle what is unclear (the AI or a person) and plan again" });
     }
     if (args.action === "prints")
       return reply({ sheet: args.sheet, prints: (reg.prints ?? []).filter((p) => !args.sheet || p.sheet.toUpperCase() === args.sheet.toUpperCase()).slice(-20).reverse() });
@@ -152,10 +186,13 @@ export async function runFmcReview(args: FmcReviewArgs) {
       const audio = keep(args.audio, item.id, "note-1"), picture = keep(args.picture, item.id, "raised");
       if (audio) item.notes![0].audio = audio;
       if (picture) item.pictures = { ...item.pictures, raised: picture };
+      item.intent = parseNote(item.notes![0].text, { materials: materials() });
     } else if (args.action === "comment") {
       item = find(reg, args.id);
       const audio = keep(args.audio, item.id, `note-${(item.notes?.length ?? 0) + 1}`);
       comment(item, { by, text: args.text || args.transcript, ...(audio ? { audio } : {}), ...(args.transcript ? { transcript: args.transcript } : {}) }, now);
+      const said = (args.text || args.transcript).trim();
+      if (said) item.intent = intentAfterReply(item.intent, parseNote(said, { materials: materials() }));
     } else if (args.action === "take") {
       item = find(reg, args.id);
       take(item, by, now);

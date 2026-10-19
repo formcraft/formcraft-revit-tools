@@ -6,7 +6,9 @@
  * The register is the project's file (01_WIP\_Reviews\FMC_Review_Register.json), so it works on any model, live ones
  * too: raising an item never changes the model. Revision clouds and prints come next, behind the live-model lock.
  */
-export const PRIORITIES = ["Critical", "High", "Medium", "Low"] as const;
+import type { Intent } from "./noteparse.js";
+
+export const PRIORITIES =["Critical", "High", "Medium", "Low"] as const;
 export type Priority = (typeof PRIORITIES)[number];
 export type ItemStatus = "Open" | "In progress" | "Resolved" | "Closed";
 
@@ -35,6 +37,8 @@ export interface ReviewItem {
   links?: { recipe_node?: string; clash?: { test: string; name: string; guid?: string }; family?: string };
   /** The BCF topic's GUID, so a ticket sent out and back is the same ticket. */
   guid?: string;
+  /** What the offline parser understood from the note (R3); the latest reply that asks for something replaces it. */
+  intent?: Intent[];
 }
 
 /** Where a ticket sits: elements (Revit UniqueIds, and in linked models), a point, the view, the camera, a section box. */
