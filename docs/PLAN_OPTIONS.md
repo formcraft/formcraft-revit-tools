@@ -42,3 +42,10 @@ whether it meets the brief, what it costs in quantities, and what it gains.
 ## Decisions (owner, 19 October 2026)
 1. **Cost:** quantities only, joined to the kit's codes and bill groups; no rates (as today).
 2. **Daylight:** the glazing-to-floor proxy; a real daylight tool only if clients ask for figures later.
+
+## Revit's limit (found building O3)
+Revit 2025's API reads design options (the active one, each option's set and name) but can't create a set or an
+option, or move an element into one; new elements go into whichever option is active. So a person makes the set
+"FMC <node>" with an option per variant, named after the variant (`base` for the node as it is), and makes one active;
+`fmc_tree options op=build` then builds that variant into it, refusing when another option is active. Every room
+build now refuses when a design option is active and none was asked for, so nothing lands in an option by accident.
