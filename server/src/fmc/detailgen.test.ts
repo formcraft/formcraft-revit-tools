@@ -88,3 +88,18 @@ test("QS03: a door's box hardware becomes components locked on its planes, and t
 test("QS03: a recipe that isn't a dgen2 door is refused, not half-detailed", () => {
   assert.throws(() => detailDoor({ family: "FMC_A_Door_X", template: "Metric Door.rft", ops: [{ op: "set_category", name: "OST_Doors" }] }, (f) => f), /isn't a dgen2 door: no plane Leaf Left/);
 });
+
+test("QS03 fix: the lever rose has a type before its formula (the Generic Model template starts with none)", () => {
+  const ops = COMPONENTS.lever_rose.recipe("A").ops as Array<{ op: string; name?: string }>;
+  const firstType = ops.findIndex((o) => o.op === "add_type"), formula = ops.findIndex((o) => o.op === "set_formula");
+  assert.ok(firstType >= 0 && firstType < formula);
+  assert.equal(ops.filter((o) => o.op === "add_type" && o.name === "Arm Left").length, 1);
+});
+
+test("QS03 fix: an extrusion locked to the same plane at both ends is refused before Revit", () => {
+  const p = opsProblems([
+    { op: "add_ref_plane", name: "Top", from: [-100, 50], to: [100, 50] },
+    { op: "extrusion", name: "Slab", rect: ["Center (Left/Right)", "Center (Left/Right)", "Center (Front/Back)", "Center (Front/Back)"], start: 40, end: 50, start_plane: "Top", end_plane: "Top" },
+  ] as any, null);
+  assert.ok(p.some((x) => /both locked to "Top"/.test(x)));
+});

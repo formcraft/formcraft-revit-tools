@@ -507,6 +507,8 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
       case "void_extrusion":
         if (!o.rect && !o.points) p.push(`${at}: give rect (four reference planes) or points`);
         if (o.end <= o.start) p.push(`${at}: end (${o.end}) must be above start (${o.start})`);
+        if (o.start_plane && o.start_plane === o.end_plane)
+          p.push(`${at}: start and end are both locked to "${o.start_plane}", so the solid would be flat: lock one end and let the other keep its thickness`);
         for (const pl of [...(o.rect ?? []), ...(o.start_plane ? [o.start_plane] : []), ...(o.end_plane ? [o.end_plane] : [])])
           if (!planes.has(pl)) p.push(`${at}: reference plane "${pl}" isn't made earlier in this batch or a template default (it may exist in the file: then it's fine)`);
         solids.add(o.name);

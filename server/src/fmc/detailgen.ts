@@ -70,6 +70,8 @@ export const COMPONENTS: Record<string, { family: (role: string) => string; reci
         { op: "add_ref_plane", name: "Edge", from: [-26, -500], to: [-26, 500], is_reference: "Left" },
         { op: "add_family_param", name: "Mirror", type: "YesNo", group: "Constraints" },
         { op: "add_family_param", name: "Arm To Left", type: "YesNo", group: "Constraints" },
+        // a formula needs a current type, and the Generic Model template starts with none
+        { op: "add_type", name: "Arm Left" },
         { op: "set_formula", name: "Arm To Left", formula: "not(Mirror)" },
         // the rose: a disc 52 mm across, 8 mm deep with a rounded edge; the neck; the lever
         { op: "revolution", name: "Rose", axis: "y", axis_at: [0, 0], profile: [[0, 0], [26, 0], [26, 5], [25, 7], [23, 8], [0, 8]] },
@@ -79,7 +81,6 @@ export const COMPONENTS: Record<string, { family: (role: string) => string; reci
         ...finish(["Rose", "Neck", "Arm L", "Arm R"], sub, mat),
         { op: "set_visible_param", name: "Arm L/Visible", solid: "Arm L", param: "Arm To Left" },
         { op: "set_visible_param", name: "Arm R/Visible", solid: "Arm R", param: "Mirror" },
-        { op: "add_type", name: "Arm Left" },
         { op: "set_type_value", name: "Arm Left/Mirror", type: "Arm Left", param: "Mirror", value: false },
         { op: "add_type", name: "Arm Right" },
         { op: "set_type_value", name: "Arm Right/Mirror", type: "Arm Right", param: "Mirror", value: true },
