@@ -11,6 +11,7 @@ import { DEPARTMENT, applyLayout, layoutDepartment } from "../tree/department.js
 import { treeFromBrief, treeQuantities } from "../tree/building.js";
 import { parseCis } from "../fmc/brief.js";
 import { quantityCsv, treeSearchSets } from "../tree/apps.js";
+import { addVariant, compareOptions, optionSheet, planSvg, withActive } from "../tree/options.js";
 import { exchangeRoot, writePackage } from "../hub/exchange.js";
 import { navisCall, processAlive, readState } from "../fmc/navis.js";
 import { roomEdits } from "./fmc_room.js";
@@ -54,11 +55,19 @@ export const FMC_TREE_DESCRIPTION =
     "doors, windows, and every room's own checks. export (T6): to powerbi, the quantities as tidy CSV in an exchange " +
     "package; to navisworks, a search set per room (and per level and department) finding its items by the tree's mark " +
     "in their Revit Comments, sent through the Formcraft Navisworks bridge into the open document (a dry run first; " +
-    "saving the .nwf is a person's step). It never changes a model by itself.";
+    "saving the .nwf is a person's step). options (docs/PLAN_OPTIONS.md, O0, O1): op add (a variant of a node: the inputs " +
+    "that differ), activate (the variant the tree builds; variant empty: the node as it is), remove, compare (the node as " +
+    "it is and each variant measured from the recipes, without Revit: area against the brief, wall and ceiling area, " +
+    "doors, windows, family counts, each room's checks, a daylight proxy; quantities only, never rates or a ranking; with " +
+    "dry_run false a sheet, a CSV and a plan sketch per option go to 01_WIP\\_Options). A person chooses. It never changes a model by itself.";
 
 export const FMC_TREE_SHAPE = {
-  action: z.enum(["show", "check", "plan", "set", "init", "built", "build", "edits", "adopt", "layout", "brief", "quantities", "export"]),
+  action: z.enum(["show", "check", "plan", "set", "init", "built", "build", "edits", "adopt", "layout", "brief", "quantities", "export", "options"]),
   to: z.enum(["powerbi", "navisworks"]).optional().describe("export: which app"),
+  op: z.enum(["add", "activate", "remove", "compare"]).optional().describe("options: what to do"),
+  variant: z.string().optional().default("").describe("options: the variant's id (activate with none: the node as it is)"),
+  name: z.string().optional().default("").describe("options add: the variant's name, e.g. 4.5 m bays"),
+  note: z.string().optional().default("").describe("options add: why this option"),
   cis_file: z.string().optional().default("").describe("brief: the approved CIS .json (fmc-cis/0.1)"),
   brief: z.object({
     wall_type: z.string().min(1), wall_thickness: z.number().positive(), ceiling_type: z.string().min(1), ceiling_height: z.number().positive(),
@@ -161,6 +170,53 @@ export async function runFmcTree(args: FmcTreeArgs) {
       const q = treeQuantities(tree, args.tolerance_pct);
       return reply({ file, total: q.total, by_level: q.by_level, by_department: q.by_department, off_target: q.off_target, problems: q.problems,
         rooms: args.id ? q.rows.filter((r) => r.node.startsWith(args.id)) : q.rows.length <= 40 ? q.rows : `${q.rows.length} rooms: name an id to list a part` });
+    }
+    if (args.action === "options") {
+      const node = findNode(tree, args.id);
+      if (!node) return reply({ refused: true, reasons: [`No node ${args.id} (fmc_tree show lists them)`] }, true);
+      if (!args.op) return reply({ refused: true, reasons: ["Say op: add, activate, remove or compare"] }, true);
+      if (args.op === "compare") {
+        const c = compareOptions(tree, node.id, args.tolerance_pct);
+        if (c.options.length < 2) return reply({ refused: true, reasons: [`${node.id} has no variants yet (options op=add)`] }, true);
+        const sheet = optionSheet(c, node.name ?? node.id);
+        if (args.dry_run) return reply({ node: node.id, active: node.active ?? "base", options: c.options, differs: c.differs,
+          next: "A person weighs these; dry_run=false keeps the sheet, CSV and plan sketches in 01_WIP; options op=activate makes one the tree's" });
+        const dir = win.join(project, "01_WIP", "_Options", node.id.replace(/[^A-Za-z0-9_.-]/g, "_"), new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-"));
+        const vo = checkWritePath(win.join(dir, "x.md"), config, { checkName: false });
+        if (!vo.ok) return reply({ refused: true, reasons: vo.reasons }, true);
+        fs.mkdirSync(dir, { recursive: true });
+        fs.writeFileSync(win.join(dir, "FMC_Options.md"), sheet);
+        fs.writeFileSync(win.join(dir, "FMC_Options.csv"), csvLine(["variant", "name", "rooms", "area_m2", "target_m2", "walls_m2", "ceilings_m2", "doors", "windows", "glazing_m2", "daylight_pct", "off_target", "problems"]) +
+          c.options.map((o) => csvLine([o.variant, o.name, o.rooms, o.area_m2, o.target_m2, o.walls_m2, o.ceilings_m2, o.doors, o.windows, o.glazing_m2 ?? "", o.daylight_pct ?? "", o.off_target.length, o.problems.length])).join(""));
+        for (const o of c.options) fs.writeFileSync(win.join(dir, `Plan_${o.variant}.svg`), planSvg(withActive(tree, node.id, o.variant === "base" ? null : o.variant), node.id));
+        log(config, "tree_options", false, dir, "written", `${node.id}: ${c.options.length} options`);
+        return reply({ done: true, node: node.id, folder: dir, options: c.options.map((o) => o.variant), differs: c.differs });
+      }
+      const before = JSON.stringify(node);
+      if (args.op === "add") {
+        if (!args.variant) return reply({ refused: true, reasons: ["Name the variant (variant), e.g. wide"] }, true);
+        if (!Object.keys(args.inputs).length) return reply({ refused: true, reasons: ["Give the inputs that differ (inputs), e.g. { \"width\": 4500 }"] }, true);
+        addVariant(node, { id: args.variant, name: args.name || undefined, note: args.note || undefined, inputs: args.inputs });
+      } else if (args.op === "activate") {
+        if (args.variant && !node.variants?.some((v) => v.id === args.variant)) return reply({ refused: true, reasons: [`${node.id} has no variant ${args.variant}`] }, true);
+        if (args.variant) node.active = args.variant; else delete node.active;
+      } else {
+        if (!node.variants?.some((v) => v.id === args.variant)) return reply({ refused: true, reasons: [`${node.id} has no variant ${args.variant}`] }, true);
+        if (node.active === args.variant) return reply({ refused: true, reasons: [`${args.variant} is the active variant: activate another first`] }, true);
+        node.variants = node.variants!.filter((v) => v.id !== args.variant);
+        if (!node.variants.length) delete node.variants;
+      }
+      const would = planTree(tree, last).filter((l) => l.state !== "unchanged" && l.tool).map((l) => l.id);
+      if (args.dry_run) return reply({ dry_run: true, node: node.id, op: args.op, variant: args.variant || "base", would_rebuild: args.op === "activate" ? would : [], next: "Run again with dry_run=false" });
+      const vt = checkWritePath(file, config, { checkName: false });
+      if (!vt.ok) return reply({ refused: true, reasons: vt.reasons }, true);
+      const archive = win.join(win.dirname(file), "_Archive");
+      fs.mkdirSync(archive, { recursive: true });
+      fs.copyFileSync(file, win.join(archive, `FMC_Recipe_Tree_${Date.now()}.json`));
+      node.overrides = [...(node.overrides ?? []), { what: `options ${args.op} ${args.variant || "base"}`, by: args.by.trim() || "Claude (via MCP)", at: new Date().toISOString() }];
+      fs.writeFileSync(file, JSON.stringify(tree, null, 2));
+      log(config, "tree_options", false, file, "written", `${node.id}: ${args.op} ${args.variant}`);
+      return reply({ done: true, node: node.id, op: args.op, variant: args.variant || "base", changed: before !== JSON.stringify(node), to_rebuild: args.op === "activate" ? would : [] });
     }
     if (args.action === "export") {
       if (!args.to) return reply({ refused: true, reasons: ["Say which app: to powerbi or navisworks"] }, true);
