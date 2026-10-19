@@ -128,6 +128,10 @@ export interface CeilingKit {
   codes: Record<string, any>;
   standard: unknown;
   problems: string[];
+  /** CL4: family names in 03_Master_Data\FMC_Family_Register.csv (null when it couldn't be read) */
+  families?: Set<string> | null;
+  /** CL4: the interiors RCP sheet in 03_Master_Data\FMC_Sheet_Register.csv (the row placed with VT_I_RCP) */
+  rcp_sheet?: { number: string; name: string; scale: string } | null;
 }
 
 export function emptyKit(problems: string[] = []): CeilingKit {

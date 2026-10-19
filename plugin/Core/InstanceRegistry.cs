@@ -43,6 +43,8 @@ namespace revit_mcp_plugin.Core
                     ["pid"] = Process.GetCurrentProcess().Id, ["port"] = _port, ["revit"] = FormcraftBrowser.RevitBuild,
                     ["user"] = Environment.UserName, ["started"] = Started.ToString("o"), ["updated"] = DateTime.UtcNow.ToString("o"),
                     ["build"] = FmcBuildInfo.Commit,
+                    // F75: started by the unattended test runner, which talks only to a Revit that says so
+                    ["unattended"] = UnattendedMode.On,
                     ["documents"] = new JArray((docs ?? new List<DocState>()).Select(d => new JObject
                     {
                         ["title"] = d.Title, ["path"] = d.Path, ["active"] = d.IsActive, ["family"] = d.IsFamily, ["workshared"] = d.IsWorkshared,

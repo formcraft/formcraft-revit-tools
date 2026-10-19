@@ -122,15 +122,17 @@ namespace Formcraft.Shell.Services
 
     /// <summary>
     /// Engineer › Casework (CW3): fmc_casework through the server. Pure computation; the pack writes only into the project's
-    /// 01_WIP after a dry run. Placing units in Revit is CW2 (fmc_casework_place, behind the live-model lock).
+    /// 01_WIP after a dry run. Placing units in Revit is CW2 (fmc_casework place → fmc_casework_place: the dry run is the
+    /// real run rolled back, the real run is behind the live-model lock, one Undo takes it out).
     /// </summary>
     public interface ICaseworkTools
     {
         Task<CaseworkLayout> LayOutAsync(CaseworkRequest request);
         Task<CaseworkPack> PackAsync(CaseworkRequest request, string projectFolder, string projectCode, bool dryRun);
 
-        /// <summary>True once the add-in can place units (CW2). Until then the pane's Place button stays disabled.</summary>
+        /// <summary>True when the add-in can place units (CW2). When false the pane's Place button stays disabled.</summary>
         bool CanPlace { get; }
+        /// <summary>The dry run lists what it placed and rolled back in <see cref="ToolResult.Details"/>; the real run places them.</summary>
         Task<ToolResult> PlaceAsync(CaseworkRequest request, bool dryRun);
 
         /// <summary>The preview's sample run (the boards' kitchen); null in Revit, where the person picks the run.</summary>
@@ -145,7 +147,7 @@ namespace Formcraft.Shell.Services
     {
         public List<string> Ran { get; } = new List<string>();
         public CaseworkRequest? LastRequest { get; private set; }
-        public bool CanPlace => false;
+        public bool CanPlace => true;
         public string? SampleRunFile => @"server\src\fmc\fixtures\cw_kitchen.json (sample)";
 
         public Task<CaseworkLayout> LayOutAsync(CaseworkRequest request)
@@ -179,15 +181,28 @@ namespace Formcraft.Shell.Services
             p.Files.Add((stem + "_Nesting.csv", 120, "new"));
             p.Files.Add((stem + "_Hardware.csv", 7, "new"));
             p.Files.Add((stem + "_BoQ.csv", 12, "new"));
+            p.Files.Add((stem + "_WorkshopPack.pdf", 23, "new"));
             p.Messages.Add(new ToolMessage(dryRun ? ChipKind.Info : ChipKind.Good,
-                dryRun ? "Dry run: 4 files would be written to " + p.Folder + "." : "Workshop pack written: 4 files in " + p.Folder + ". Logged."));
+                dryRun ? "Dry run: 5 files would be written to " + p.Folder + "." : "Workshop pack written: 5 files in " + p.Folder + ". Logged."));
             return Task.FromResult(p);
         }
 
+        /// <summary>
+        /// What fmc_casework place answers for the boards' kitchen with the kit as it is: the register's
+        /// FMC_I_Casework_KitchenUnit has Base, Wall and Tall types only, so the corner and the sink are asked of the kit.
+        /// </summary>
         public Task<ToolResult> PlaceAsync(CaseworkRequest request, bool dryRun)
         {
-            Ran.Add("place");
-            return Task.FromResult(ToolResult.Refused("Placing units in Revit comes with CW2."));
+            Ran.Add(dryRun ? "place dry run" : "place");
+            var r = new ToolResult { Ok = true, Count = 10 };
+            if (dryRun)
+            {
+                r.Details.AddRange(new[] { "K02 Base 600", "K04 Base 450", "K05 Tall 600", "K06 Base 600", "K08 Base 600", "W01 Wall 600", "W02 Wall 600", "W03 Wall 450", "W04 Wall 600", "W06 Wall 600",
+                    "Not placed: K01 (FMC_I_Casework_KitchenUnit has no corner type), K03 (no sink type), K07, K09, W05 (appliance spaces)" });
+                r.Messages.Add(new ToolMessage(ChipKind.Info, "Dry run: 10 units placed in Revit and rolled back. Kit change requests: a Corner and a Sink type for FMC_I_Casework_KitchenUnit."));
+            }
+            else r.Messages.Add(new ToolMessage(ChipKind.Good, "Placed 10 units of FMC_I_Casework_KitchenUnit with their assembly marks. One Undo takes them out. Logged."));
+            return Task.FromResult(r);
         }
 
         public static CaseworkLayout Kitchen()

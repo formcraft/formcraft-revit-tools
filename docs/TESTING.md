@@ -1,6 +1,6 @@
 # Testing
 
-Four layers. Each UI step in `UI_DEVELOPMENT.md` says which ones apply.
+Five layers. Each UI step in `UI_DEVELOPMENT.md` says which ones apply.
 
 ## C · CI (every push)
 GitHub Actions workflow `Build`: the shell (net8 and net48), the MCP server with its tests, and the add-in for Revit
@@ -105,3 +105,75 @@ is closed. Use a copy of a federated file (NWF or NWD) with clash tests in it.
 4. From U11 on: for each built section, `fmc_ui open_section`, `fmc_ui get_state`, `fmc_ui screenshot_pane`;
    compare with the board; list differences.
 5. Write the results to `tests/reports/<date>-<step>.md` and attach them to the pull request.
+
+## U · Unattended Revit tests (no AI, F75)
+The checks that say "Built, Revit check due" run by themselves, with no AI and no person: scenarios as data, a runner
+that starts its own Revit, and a scheduled task. Nothing is posted to GitHub; a person (or the AI, later) turns the
+findings into `test-finding` issues.
+
+**Scenarios** are `tests/revit/<id>.json`, one per scenario, run in file-name order:
+- `setup`, `steps`, `teardown`: lists of actions. An action is a CLI tool call (`tool` + `args`, exactly as
+  `node build/fmc/cli.js <tool>` takes them), a read-only Revit command (`revit`: `fmc_document_info`,
+  `fmc_element_facts` or `fmc_design_options`), `read_json` (a file a step wrote, such as a room build's record) or a
+  runner action (`open_in_revit` a scratch file, `close_revit` without saving).
+- `checks` on each reply: `no_error`, `is_error`, and on a `path` (`elements.0.unique_id`): `equals`, `at_least`,
+  `at_most` (a list counts its items), `contains`, `matches`, `exists`. No checks means `no_error`. `when` runs a step
+  only if a check on earlier replies holds; `repeat_until` runs it again until a check holds (batch_gate).
+- Placeholders: `{{run}}`, `{{scenario}}`, `{{attempt}}`, `{{scratch}}` (a new folder per run and try under
+  `_ChainTests\_TestRun`), `{{staging}}`, `{{batch_dir}}`, `{{chaintests}}`, `{{templates}}`, `{{kit}}`,
+  `{{project_template}}`, `{{scenarios_dir}}` and `{{steps.<id>.<path>}}` (an earlier reply).
+- `needs: ["navisworks" | "rhino" | "robot"]`: skipped, with the reason, when that app isn't open. `revit: false`: no
+  Revit (offline tools). `skip: "why"`: listed and skipped (a tool not on main yet).
+- A test (`server/src/fmc/testrun.test.ts`) parses every scenario and checks each argument is the tool's own, so a
+  scenario can't invent arguments. A scenario never passes `revit`: the runner alone says which Revit.
+
+The first set: 01 self-test; 02 and 03 the hospital sample's batches (`batch_DET_LOD400_run.json`,
+`batch_QS03_SAMPLE_LOD400_run.json`: dry run, real run, batch_status, batch_gate until nothing is left); 04 Gate A
+with the host test on the sample's door, window and operating light; 05 the ICU bay shell built in a scratch project,
+its element facts, no hand edits, a rebuild, design options read; 06 the whole sample ICU bay with its families;
+07 Mark & Review on a scratch wall (ticket, plan_fix from Revit's facts, apply_fix dry run, the real apply refused
+without a person's yes, review show) and selection read and show; 08 3D pictures of the staged ICU bed (3D, front,
+plan; one per detail level); 09 offline: the bay's room plan and ceiling designs; 10 schedules from
+`tests/schedules/FMC_Schedules_sample.json` (check, plan, apply in a scratch project, plan again); 11 ceiling and
+casework place (skipped: no place action on main yet); 12 to 14 Navisworks, Rhino and Robot (need the app open).
+
+**The runner** (`fmc_testrun`, a tool and a CLI command): `list`; `plan` (dry: what would run now, the power state, the
+paths); `run` (a new run; in the background unless `foreground`); `resume` (the last unfinished run; with `auto`, a new
+one when the last ended more than 20 hours ago); `status`; `report` (summary.md and the findings as issue drafts).
+- **Its own Revit, never the person's.** It starts `C:\Program Files\Autodesk\Revit 2025\Revit.exe` with
+  `FMC_UNATTENDED_TEST=1` and `FMC_NO_KEEP_AWAKE=1`, at below-normal priority, and knows it by its pid and the
+  process's start time. Every call goes to that pid through the multi-Revit registry (`instances\<pid>.json`, which
+  must say `unattended: true`, so an older add-in is refused). A person's Revit can be open beside it and is never
+  sent anything. Scratch projects are created from the kit template into `_ChainTests\_TestRun\<run>\<scenario>-<try>`
+  (a new folder each time: nothing is saved over), opened by restarting the runner's Revit with that file, and closed
+  by ending that Revit without saving.
+- **Results** go to `<reports_dir>\testrun\<run>\` (the reports folder, beside the logs and screenshots): one JSON per
+  scenario (every try, every reply and check), `summary.md`, `findings.json` (scenario, step, expected, got, and an
+  issue draft each) and `png\` with the pictures.
+- **Checkpoint**: `%APPDATA%\Formcraft\testrun\<run>.json`, `last.json`, and `runner.lock` (a heartbeat every 30 s);
+  `runner.log` follows the run. A scenario that fails runs once more from its setup; passed ones are never run again.
+- **Pausing, not keeping awake.** Before each step, and every 60 s while paused, it reads Windows' power state
+  (GetSystemPowerStatus): battery saver on pauses; on battery pauses too (`pause_on_battery`, default on). Paused means
+  no new step starts; a running step finishes and Revit stays open; it resumes by itself. Its Revit never calls
+  SetThreadExecutionState (`FMC_NO_KEEP_AWAKE`), so the PC sleeps as it would anyway.
+- **Sleep and shutdown** stop the runner with the PC. On the next start it sees the unfinished run, records the gap
+  (the heartbeat's age), and runs the interrupted scenario again from its setup (an interruption isn't counted as a
+  try; after 3 the scenario fails). A jump in the clock while it runs (sleep) does the same. If its Revit died, it
+  starts a fresh one.
+- **Dialogs answered by rule** (KISIC_GAP_SCRIPTS.md §4.3), only in the runner's Revit and only during a job:
+  Duplicate Types → OK (the destination's types); warnings are deleted and listed by the bridge's failure handling,
+  as for every AI job. Nothing about saving, synchronising, recovery, a crash or an error is ever answered: the dialog
+  is recorded with its id (`FMC_Jobs_Revit.jsonl`, now with the Revit's pid), the runner asks Revit to cancel the job,
+  records a `dialog` finding naming it, and replaces its Revit before the next scenario. A step with no answer within
+  its `timeout_s` (default 900 s) is cancelled the same way.
+- Settings: `%APPDATA%\Formcraft\testrun\config.json` (optional): `revit_exe`, `pause_on_battery`, `power_poll_s`,
+  `revit_start_timeout_s`, `step_timeout_s`, `project_template` (default the kit's `FMC_A_Template_v2.2.rte`),
+  `new_run_after_hours`, `scenarios_dir`.
+
+**Starting it, with no AI:**
+- By hand: `powershell -ExecutionPolicy Bypass -File scripts\fmc-testrun.ps1` (resume, or a new run once the last is
+  old); `-Mode new -Only 01_selftest` for one scenario. It uses the installed server, else this repo's build.
+- On a schedule (the owner runs this once; nothing registers it for you):
+  `powershell -ExecutionPolicy Bypass -File scripts\fmc-testrun-schedule.ps1` registers "Formcraft Unattended Revit
+  Tests": at logon, after wake and nightly at 02:00 (`-NightlyAt`), on mains power only, never waking the PC, at
+  below-normal priority. `-Remove` takes it away.

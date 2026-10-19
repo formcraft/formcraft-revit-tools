@@ -1,0 +1,41 @@
+{
+  "schema": "fmc-testrun/0.1",
+  "id": "09_offline_room_ceiling",
+  "title": "Offline (no Revit): the ICU bay's room plan and its ceiling designs (tray with bulkhead), as the sample tree asks",
+  "features": ["F72", "F34"],
+  "revit": false,
+  "setup": [],
+  "steps": [
+    {
+      "id": "room_plan",
+      "tool": "fmc_room",
+      "args": {
+        "action": "plan",
+        "room": {
+          "name": "ICU bay", "number": "L2-ICU-01", "level": "Level 2", "origin_mm": [0, 0], "width": 4200, "depth": 5000, "height": 3300,
+          "walls": { "type": "Generic - 200mm", "thickness": 200 }, "ceiling": { "type": "Generic", "height": 2900 },
+          "openings": [
+            { "kind": "door", "family": "FMC_A_Door_FlushSingle_Hygienic_Detailed", "type": "1026x2100_S", "wall": "south", "along": 900, "width": 1026 },
+            { "kind": "window", "family": "FMC_A_Window_Observation_Internal_Nurse_Detailed", "type": "1200x900_WfixedSWoption", "wall": "south", "along": 2800, "width": 1200, "sill": 900 }
+          ],
+          "items": [
+            { "id": "Bed", "family": "FMC_I_MedEq_Bed_ICU_Electric_Detailed", "type": "1020x2200_Standard", "at": { "wall": "north", "off": 150 }, "size": [1020, 2200], "clearance": 1200 },
+            { "id": "Operating light", "family": "FMC_E_LightFixture_OperatingLight_Ceiling_Detailed", "type": "700_Single", "at": { "centre": true, "dy": 600 }, "host": "ceiling" }
+          ]
+        }
+      },
+      "checks": [{ "no_error": true }, { "path": "problems", "at_most": 0 }, { "path": "ops", "equals": 10 }]
+    },
+    {
+      "id": "ceiling",
+      "tool": "fmc_ceiling",
+      "args": {
+        "action": "designs",
+        "room": { "name": "ICU bay", "width_mm": 4200, "depth_mm": 5000, "structure_height_mm": 3300, "structure": "slab" },
+        "brief": { "styles": ["tray", "bulkhead"] }
+      },
+      "checks": [{ "no_error": true }, { "path": "options", "at_least": 1 }]
+    }
+  ],
+  "teardown": []
+}

@@ -33,6 +33,8 @@ namespace RevitMCPCommandSet.Bridge
     {
         public const string JobParameter = "_fmcJob";
 
+        private static readonly int Pid = System.Diagnostics.Process.GetCurrentProcess().Id;
+
         private static bool _hooked;
         private static volatile bool _executing;
         private static string _current = "";
@@ -163,6 +165,19 @@ namespace RevitMCPCommandSet.Bridge
                 try { closed = e.OverrideResult((int)TaskDialogResult.Cancel); } catch (Exception) { closed = false; }
                 answer = closed ? "closed with Cancel (not saved)" : "not answered: Revit refused Cancel, so it waits for a person (still not saved)";
             }
+            else if (DialogRules.Unattended)
+            {
+                // F75: the unattended test runner's Revit answers its short safe list; anything else waits and the runner
+                // records it as a finding and cancels the step
+                int? result = DialogRules.Answer(id, message, out string rule);
+                if (result.HasValue)
+                {
+                    bool done = false;
+                    try { done = e.OverrideResult(result.Value); } catch (Exception) { done = false; }
+                    answer = done ? "answered by rule (unattended test run): " + rule : "not answered: Revit refused the rule's answer (" + rule + ")";
+                }
+                else answer = "left for a person (unattended test run: no rule answers it; the runner cancels the step)";
+            }
             var record = new JObject { ["at"] = DateTime.UtcNow.ToString("o"), ["dialog_id"] = id, ["message"] = Trim(message, 400), ["answer"] = answer };
             _dialogs.Add(record);
             Log(_current, "dialog", record);
@@ -201,7 +216,8 @@ namespace RevitMCPCommandSet.Bridge
         {
             try
             {
-                var line = new JObject { ["at"] = DateTime.UtcNow.ToString("o"), ["job"] = job ?? "", ["event"] = evt };
+                // pid: which Revit wrote it, so the unattended test runner reads only its own Revit's dialogs (F75)
+                var line = new JObject { ["at"] = DateTime.UtcNow.ToString("o"), ["job"] = job ?? "", ["event"] = evt, ["pid"] = Pid };
                 if (detail != null) foreach (var p in detail.Properties()) if (line[p.Name] == null) line[p.Name] = p.Value;
                 string dir = FormcraftDir();
                 Directory.CreateDirectory(dir);

@@ -61,6 +61,8 @@ namespace Formcraft.Navis
                 UseShellExecute = false, RedirectStandardInput = true, RedirectStandardOutput = true, RedirectStandardError = true,
                 CreateNoWindow = true, StandardOutputEncoding = Encoding.UTF8,
             };
+            // F74: the call ledger records this as started by a pane (Navisworks's), not an AI
+            psi.EnvironmentVariables["FMC_STARTED_BY"] = "pane";
             using (var p = Process.Start(psi) ?? throw new InvalidOperationException("Node didn't start"))
             {
                 p.StandardInput.Write(args.ToString());
