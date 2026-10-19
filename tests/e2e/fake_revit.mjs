@@ -37,6 +37,18 @@ const fixtures = {
     model: doc.title, boards: [{ id: 1, name: "MDB", family: "Panel", connected_va: 86000, demand_va: 61000, distribution: "400/230", circuits: 4, fed_by: "", feeder_wire: "" }],
     devices: { ElectricalFixtures: { with_power_connector: 10, on_no_circuit: 2 } }, circuits_without_board: 1,
   },
+  fmc_mep_facts: {
+    model: doc.title,
+    rooms: [{ id: 201, kind: "room", name: "Flat 1", number: "101", level: "Level 1", area_m2: 85, population: 4, occupancy: "Residential", x_mm: 4000, y_mm: 3000 }],
+    plumbing_fixtures: [{ id: 301, family: "FMC_P_WC_6L", type: "Standard", level: "Level 1", room: "101", du: null, pipe_system: "WW" },
+      { id: 302, family: "FMC_P_WashBasin", type: "Standard", level: "Level 1", room: "101", du: null, pipe_system: "WW" }],
+    pipe_systems: [{ id: 401, name: "WW 1", classification: "Sanitary" }],
+    tanks: [], fire_devices: [{ id: 501, kind: "extinguisher", family: "FMC_FP_Extinguisher", type: "9L Water", level: "Level 1", rating: "13A", hose_length_m: null, x_mm: 1000, y_mm: 1000 }],
+    lp_parts: [{ id: 601, family: "FMC_LP_EarthPit", type: "Rod", part: "Earth", mark: "EP-01", level: "Level 1", earth_resistance_ohm: null }],
+    circuits: [{ id: 701, board: "MDB", number: "1", load_name: "Lighting GF", classes: "Lighting", voltage_v: 240, current_a: 3.2, true_load_w: 640, apparent_load_va: 640,
+      length_m: 22, wire_size: "2#1.5mm²", rating_a: 10, poles: 1, feeds_board: false, cable_spec: "" }],
+    counts: { rooms: 1, plumbing_fixtures: 2, pipe_systems: 1, tanks: 0, fire_devices: 1, lp_parts: 1, circuits: 1, mep: 6 },
+  },
   fmc_diagram_scan: {
     model: doc.title, levels: [{ id: "lvl-0", name: "Ground Floor", elevation_mm: 0 }],
     diagrams: [{ kind: "e_sld", system: "MDB", nodes: [

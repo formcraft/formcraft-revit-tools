@@ -1,0 +1,40 @@
+{
+  "schema": "fmc-testrun/0.1",
+  "id": "15_mep_calc",
+  "title": "MEP calculations from the kit (E1), read-only: fmc_mep_facts, the calc list and a run of every calc; the run is skipped when the model has no MEP elements",
+  "setup": [
+    {
+      "id": "new",
+      "tool": "fmc_file",
+      "args": { "action": "create_from_template", "kind": "project", "template_path": "{{project_template}}", "save_path": "{{scratch}}\\FMC_ChainTest_A.rvt", "close_after": true, "dry_run": false },
+      "checks": [{ "no_error": true }, { "path": "done", "equals": true }]
+    },
+    { "id": "open", "runner": "open_in_revit", "path": "{{scratch}}\\FMC_ChainTest_A.rvt" }
+  ],
+  "steps": [
+    {
+      "id": "facts",
+      "note": "Read-only: the command opens no transaction",
+      "revit": "fmc_mep_facts",
+      "params": {},
+      "timeout_s": 300,
+      "checks": [{ "no_error": true }, { "path": "counts", "exists": true }, { "path": "circuits", "exists": true }]
+    },
+    {
+      "id": "list",
+      "tool": "fmc_calc",
+      "args": { "action": "list", "kit_folder": "{{kit}}" },
+      "checks": [{ "no_error": true }, { "path": "calcs", "at_least": 7 }, { "path": "elsewhere", "at_least": 1 }]
+    },
+    {
+      "id": "run",
+      "note": "Skipped on a model with no MEP elements (the template has none)",
+      "when": { "path": "steps.facts.counts.mep", "at_least": 1 },
+      "tool": "fmc_calc",
+      "args": { "action": "run", "kit_folder": "{{kit}}" },
+      "timeout_s": 600,
+      "checks": [{ "no_error": true }, { "path": "results", "at_least": 7 }, { "path": "header", "matches": "Draft for the engineer" }]
+    }
+  ],
+  "teardown": [{ "runner": "close_revit" }]
+}

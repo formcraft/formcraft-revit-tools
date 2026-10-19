@@ -29,6 +29,8 @@ const cases = [
   ["fmc_scripts", { action: "run", name: "Before sync", steps: ["selftest", "qa", "workshare"], kit_folder: kit, project_folder: proj }],
   ["fmc_scripts", { action: "run", name: "Friday", steps: ["qa", "review", "report"], kit_folder: kit, project_folder: proj, project_code: "F26001" }],
   ["fmc_systems", { action: "electrical", project_folder: proj, save: true }], ["fmc_systems", { action: "structural", kit_folder: kit, project_folder: proj, save: true }],
+  ["fmc_calc", { action: "list", kit_folder: kit }], ["fmc_calc", { action: "run", kit_folder: kit }],
+  ["fmc_calc", { action: "sheet", kit_folder: kit, project_folder: proj }], ["fmc_calc", { action: "sheet", kit_folder: kit, project_folder: proj, dry_run: false }],
   ["fmc_build", { action: "quantities", kit_folder: kit, project_folder: proj }], ["fmc_build", { action: "baseline", kit_folder: kit, project_folder: proj }],
   ["fmc_build", { action: "quantities", kit_folder: kit, project_folder: proj }],
   ["fmc_links", { action: "audit", link_from: path.join(proj, "02_Shared") }], ["fmc_workshare", { action: "facts" }],

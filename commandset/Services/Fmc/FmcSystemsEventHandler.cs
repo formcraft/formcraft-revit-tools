@@ -16,7 +16,7 @@ namespace RevitMCPCommandSet.Services.Fmc
     /// place, free ends), columns with nothing below, kit fields left empty, load cases, and analysis results already in
     /// the model. Nothing is changed: sizes and design stay with the engineer.
     /// </summary>
-    public class FmcSystemsEventHandler : IExternalEventHandler, IWaitableExternalEventHandler
+    public partial class FmcSystemsEventHandler : IExternalEventHandler, IWaitableExternalEventHandler
     {
         private const double FeetToMm = 304.8;
         private readonly ManualResetEvent _resetEvent = new ManualResetEvent(false);
@@ -47,6 +47,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 {
                     case "electrical": Result = Electrical(doc); break;
                     case "structural": Result = Structural(doc, Parameters); break;
+                    case "mep": Result = Mep(doc); break;
                     default: Error = $"Unknown FMC systems action '{Action}'"; break;
                 }
                 Result["model"] = doc.Title;
