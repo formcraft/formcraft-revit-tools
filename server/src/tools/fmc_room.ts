@@ -40,6 +40,7 @@ export const FMC_ROOM_SHAPE = {
   node: z.string().optional().default("").describe("build, edits: the tree node (or a name) the elements belong to"),
   room: ROOM.optional().describe("plan, build: the room"),
   keep: z.array(z.string()).optional().default([]).describe("build: keys of elements a person owns (overrides): left as they are"),
+  design_option: z.string().optional().default("").describe("build: the Revit design option to build into (it must be the active one; options, O3); its own record, so the main model's room is never replaced"),
   project_folder: z.string().optional().default("").describe("build, edits: where the record of what was made is kept"),
   dry_run: z.boolean().optional().default(true),
 };
@@ -102,10 +103,12 @@ export async function runFmcRoom(args: FmcRoomArgs) {
     if (plan.problems.length) return reply({ refused: true, reasons: ["The room's plan has problems: fix the recipe first", ...plan.problems] }, true);
     if (!args.node.trim()) return reply({ refused: true, reasons: ["Name the node the room belongs to (its elements are recorded under it)"] }, true);
     if (!args.project_folder.trim()) return reply({ refused: true, reasons: ["Set the project folder: what the build made is recorded in its 01_WIP"] }, true);
-    const record = roomRecordFile(args.project_folder, args.node);
+    // a design option's build is recorded apart: rebuilding it replaces only what was built into that option
+    const recNode = args.design_option.trim() ? `${args.node}@${args.design_option.trim()}` : args.node;
+    const record = roomRecordFile(args.project_folder, recNode);
     const v = checkWritePath(record, config, { checkName: false });
     if (!v.ok) return reply({ refused: true, reasons: v.reasons }, true);
-    const before = readRoomRecord(args.project_folder, args.node);
+    const before = readRoomRecord(args.project_folder, recNode);
     const keep = new Set(args.keep);
     // a person's elements (overrides) are neither replaced nor rebuilt
     const keys = opKeys(plan.ops);
@@ -115,7 +118,7 @@ export async function runFmcRoom(args: FmcRoomArgs) {
     if (args.dry_run) return reply({ dry_run: true, room: args.room.name, would_build: ops.length, would_replace: replace.length, kept: kept.map((e) => e.key),
       warnings: plan.warnings, plan: ops, next: "Run again with dry_run=false in the WIP model" });
     // the write goes through the live-model lock (sendCommand); the command removes what it made last time, then builds
-    const r = await withRevitConnection((c) => c.sendCommand("fmc_room_build", { node: args.node, level: args.room!.level, ops, replace }, 300000)) as Record<string, any>;
+    const r = await withRevitConnection((c) => c.sendCommand("fmc_room_build", { node: args.node, level: args.room!.level, ops, replace, design_option: args.design_option.trim() }, 300000)) as Record<string, any>;
     const made: Array<{ unique_id: string; key: string }> = r.elements ?? (r.made ?? []).map((u: string) => ({ unique_id: u, key: "" }));
     // snapshots of what was made, and of the kept elements as they are now, so the next look finds only new edits
     let elements: Snapshot[] = [];
