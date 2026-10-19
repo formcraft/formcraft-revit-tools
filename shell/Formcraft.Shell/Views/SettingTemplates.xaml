@@ -424,6 +424,90 @@
     </StackPanel>
   </DataTemplate>
 
+  <!-- Engineer › Options (O2): a card per option, side by side in the server's order; the measures that differ are highlighted -->
+  <DataTemplate x:Key="OptionRow">
+    <Border x:Name="Row" CornerRadius="3" Padding="4,2" Margin="0,0,0,1">
+      <DockPanel>
+        <TextBlock x:Name="Value" DockPanel.Dock="Right" Text="{Binding Value}" FontSize="11.5" TextWrapping="Wrap" TextAlignment="Right" MaxWidth="120"
+                   Foreground="{DynamicResource Fmc.InkBrush}"/>
+        <TextBlock x:Name="Label" Text="{Binding Label}" FontSize="11" TextWrapping="Wrap" Margin="0,0,6,0" Foreground="{DynamicResource Fmc.MutedBrush}"/>
+      </DockPanel>
+    </Border>
+    <DataTemplate.Triggers>
+      <DataTrigger Binding="{Binding Differs}" Value="True">
+        <Setter TargetName="Row" Property="Background" Value="{DynamicResource Fmc.Chip.InfoBg}"/>
+        <Setter TargetName="Row" Property="ToolTip" Value="Differs between the options"/>
+        <Setter TargetName="Value" Property="FontWeight" Value="SemiBold"/>
+        <Setter TargetName="Value" Property="Foreground" Value="{DynamicResource Fmc.Chip.InfoFg}"/>
+        <Setter TargetName="Label" Property="Foreground" Value="{DynamicResource Fmc.Chip.InfoFg}"/>
+      </DataTrigger>
+    </DataTemplate.Triggers>
+  </DataTemplate>
+
+  <DataTemplate DataType="{x:Type vm:OptionCardsSetting}">
+    <StackPanel Margin="0,0,0,10">
+      <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" PanningMode="HorizontalOnly">
+        <ItemsControl ItemsSource="{Binding Cards}" Focusable="False">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate><StackPanel Orientation="Horizontal"/></ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <Border x:Name="Card" Width="210" Margin="0,0,8,6" Padding="8" CornerRadius="6" BorderThickness="1"
+                      BorderBrush="{DynamicResource Fmc.DividerBrush}" Background="{DynamicResource Fmc.SurfaceBrush}"
+                      AutomationProperties.Name="{Binding Name}">
+                <StackPanel>
+                  <DockPanel>
+                    <ContentControl x:Name="ActiveChip" DockPanel.Dock="Right" Content="Active" FontSize="10.5" VerticalAlignment="Top" Margin="4,0,0,0"
+                                    c:Fmc.StyleKey="FmcChip.Good" Visibility="{Binding IsActive, Converter={StaticResource Vis}}"
+                                    ToolTip="The tree builds this option"/>
+                    <TextBlock Text="{Binding Name}" FontSize="13" FontWeight="SemiBold" TextWrapping="Wrap" Foreground="{DynamicResource Fmc.InkBrush}"/>
+                  </DockPanel>
+                  <TextBlock Text="{Binding Subtitle}" FontSize="11" Foreground="{DynamicResource Fmc.MutedBrush}" Margin="0,0,0,6"/>
+                  <ItemsControl ItemsSource="{Binding Rows}" ItemTemplate="{StaticResource OptionRow}" Focusable="False"/>
+
+                  <TextBlock Text="WHAT FAILS" Style="{DynamicResource FmcText.Section}" Margin="0,8,0,2"/>
+                  <Border CornerRadius="4" Padding="6,4" Background="{DynamicResource Fmc.Chip.GoodBg}" Visibility="{Binding Passes, Converter={StaticResource Vis}}">
+                    <TextBlock Text="Meets the brief; the checks pass." FontSize="11" TextWrapping="Wrap" Foreground="{DynamicResource Fmc.Chip.GoodFg}"/>
+                  </Border>
+                  <ItemsControl ItemsSource="{Binding Fails}" Focusable="False" Visibility="{Binding HasFails, Converter={StaticResource Vis}}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate>
+                        <Border CornerRadius="4" Padding="6,4" Margin="0,0,0,3" Background="{DynamicResource Fmc.Chip.BadBg}">
+                          <TextBlock Text="{Binding}" FontSize="11" TextWrapping="Wrap" Foreground="{DynamicResource Fmc.Chip.BadFg}"/>
+                        </Border>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+
+                  <StackPanel Visibility="{Binding HasFamilies, Converter={StaticResource Vis}}">
+                    <TextBlock Text="FAMILIES" Style="{DynamicResource FmcText.Section}" Margin="0,8,0,2"/>
+                    <ItemsControl ItemsSource="{Binding Families}" ItemTemplate="{StaticResource OptionRow}" Focusable="False"/>
+                  </StackPanel>
+
+                  <StackPanel Margin="0,8,0,0">
+                    <Button Content="Make active" Command="{Binding MakeActiveCommand}" Margin="0,0,0,4" c:Fmc.StyleKey="FmcButton.Secondary"
+                            Visibility="{Binding CanMakeActive, Converter={StaticResource Vis}}" ToolTip="Dry run first: shows what would rebuild"/>
+                    <Button Content="Choose this one" Command="{Binding ChooseCommand}" Margin="0,0,0,4" c:Fmc.StyleKey="FmcButton.Primary"
+                            Visibility="{Binding CanChoose, Converter={StaticResource Vis}}" ToolTip="Asks first; recorded under your name"/>
+                    <Button Content="Open the plan sketch" Command="{Binding OpenPlanCommand}" c:Fmc.StyleKey="FmcButton.Link" HorizontalAlignment="Left"
+                            ToolTip="Plan_&lt;variant&gt;.svg from the saved comparison, in your default app"/>
+                  </StackPanel>
+                </StackPanel>
+              </Border>
+              <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsActive}" Value="True">
+                  <Setter TargetName="Card" Property="BorderBrush" Value="{DynamicResource Fmc.AccentBrush}"/>
+                </DataTrigger>
+              </DataTemplate.Triggers>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </ScrollViewer>
+      <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource Hint}"/>
+    </StackPanel>
+  </DataTemplate>
+
   <!-- A section the pane builds itself -->
   <DataTemplate DataType="{x:Type vm:SectionPage}">
     <v:SectionPageView/>

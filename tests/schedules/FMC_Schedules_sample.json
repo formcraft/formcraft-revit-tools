@@ -1,0 +1,57 @@
+{
+  "schema": "fmc-schedules/0.1",
+  "name": "FMC sample schedule set",
+  "revision": "P01",
+  "schedules": [
+    {
+      "name": "A_Door_Schedule",
+      "discipline": "A",
+      "category": "OST_Doors",
+      "fields": [
+        { "name": "Mark" },
+        { "name": "Level" },
+        { "name": "Family and Type", "heading": "Door type" },
+        { "name": "Width" },
+        { "name": "Height" },
+        { "name": "FMC_Zone", "heading": "Zone" },
+        { "name": "FMC_Procurement_Status", "heading": "Procurement" },
+        { "name": "Count", "total": true }
+      ],
+      "sort": [{ "field": "Level", "group": true, "totals": true }, { "field": "Mark" }],
+      "grand_totals": true,
+      "folder": "A Architecture"
+    },
+    {
+      "name": "A_Room_Areas_Against_Brief",
+      "discipline": "A",
+      "category": "OST_Rooms",
+      "fields": [
+        { "name": "Number" },
+        { "name": "Name" },
+        { "name": "FMC_Department", "heading": "Department" },
+        { "name": "Area", "total": true },
+        { "name": "FMC_Target_Area", "heading": "Brief area", "total": true },
+        { "name": "FMC_Finish_Set", "heading": "Finishes" }
+      ],
+      "filters": [{ "field": "Area", "op": "greater", "value": 0 }],
+      "sort": [{ "field": "FMC_Department", "group": true, "totals": true }, { "field": "Number" }],
+      "grand_totals": true,
+      "folder": "A Architecture"
+    },
+    {
+      "name": "E_Lighting_Fixtures_By_Level",
+      "discipline": "E",
+      "category": "OST_LightingFixtures",
+      "fields": [
+        { "name": "Level" },
+        { "name": "Family and Type", "heading": "Fitting" },
+        { "name": "FMC_Construction_Status", "heading": "Status" },
+        { "name": "Count", "total": true }
+      ],
+      "sort": [{ "field": "Level", "group": true, "totals": true }, { "field": "Family and Type", "group": true }],
+      "itemized": false,
+      "grand_totals": true,
+      "folder": "E Electrical"
+    }
+  ]
+}

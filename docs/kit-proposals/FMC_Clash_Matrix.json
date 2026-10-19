@@ -1,0 +1,23 @@
+{
+  "schema": "fmc-clash-matrix/0.1",
+  "about": "PROPOSED for the kit (08_Navisworks\\FMC_Clash_Matrix.json), from docs/CLASH_MATRIX.md (hub step H3). The BIM Manager approves it through the kit change process and sets every pair, type and tolerance; until it is in the kit, fmc_navis clash_create needs a matrix file named with matrix.",
+  "name": "FMC Clash Matrix",
+  "revision": "P01",
+  "approved": "",
+  "tests": [
+    { "id": "S-A", "a": { "role": "S" }, "b": { "role": "A" }, "type": "hard", "tolerance_mm": 10 },
+    { "id": "S-M", "a": { "role": "S" }, "b": { "role": "M" }, "type": "hard", "tolerance_mm": 10 },
+    { "id": "S-P", "a": { "role": "S" }, "b": { "role": "P" }, "type": "hard", "tolerance_mm": 10 },
+    { "id": "S-E", "a": { "role": "S" }, "b": { "role": "E" }, "type": "hard", "tolerance_mm": 10 },
+    { "id": "S-FP", "a": { "role": "S" }, "b": { "role": "FP" }, "type": "hard", "tolerance_mm": 10 },
+    { "id": "M-P", "a": { "role": "M" }, "b": { "role": "P" }, "type": "hard", "tolerance_mm": 10 },
+    { "id": "M-E", "a": { "role": "M" }, "b": { "role": "E" }, "type": "hard", "tolerance_mm": 10 },
+    { "id": "P-E", "a": { "role": "P" }, "b": { "role": "E" }, "type": "hard", "tolerance_mm": 10 },
+    { "id": "MEP-FP", "a": { "roles": ["M", "P", "E"] }, "b": { "role": "FP" }, "type": "hard", "tolerance_mm": 10 },
+    { "id": "M-M", "a": { "role": "M" }, "b": { "role": "M" }, "type": "hard", "tolerance_mm": 5, "note": "Within the mechanical model" },
+    { "id": "CLG-M", "a": { "set": "FMC Coordination/Ceilings" }, "b": { "role": "M" }, "type": "clearance", "tolerance_mm": 50, "note": "Services keep 50 mm above the ceiling" },
+    { "id": "DB-ACCESS", "a": { "set": "FMC Coordination/Distribution boards" }, "b": { "roles": ["A", "M", "P"] }, "type": "clearance", "tolerance_mm": 600, "note": "Working space in front of boards" },
+    { "id": "DUP-A", "a": { "role": "A" }, "b": { "role": "A" }, "type": "duplicates", "tolerance_mm": 1 },
+    { "id": "DUP-S", "a": { "role": "S" }, "b": { "role": "S" }, "type": "duplicates", "tolerance_mm": 1 }
+  ]
+}

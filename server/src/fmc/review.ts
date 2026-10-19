@@ -34,7 +34,7 @@ export interface ReviewItem {
   pictures?: { raised?: string; before?: string; after?: string };
   /** What the ticket came from and what it touches. */
   source?: "mark" | "clash" | "review" | "bcf";
-  links?: { recipe_node?: string; recipe_key?: string; clash?: { test: string; name: string; guid?: string; distance_mm?: number; items?: Array<{ model: string; id: string; category: string }> }; family?: string };
+  links?: { recipe_node?: string; recipe_key?: string; clash?: { test: string; name: string; guid?: string; distance_mm?: number; items?: Array<{ model: string; id: string; category: string; fmc?: string; unique_id?: string }> }; family?: string };
   /** The BCF topic's GUID, so a ticket sent out and back is the same ticket. */
   guid?: string;
   /** What the offline parser understood from the note (R3); the latest reply that asks for something replaces it. */
