@@ -28,8 +28,28 @@ namespace Formcraft.Shell.Tests
         {
             var done = SystemCapabilities.Systems.Values.SelectMany(x => x).Select(SystemCapabilities.Done).Max();
             await Assert.That(done).IsEqualTo(0);
-            await Assert.That(SystemCapabilities.Status("Power distribution", "1 Enrich")).IsEqualTo("Waits on the kit");
-            await Assert.That(SystemCapabilities.Status("Drainage", "4 Calculate")).IsEqualTo("Planned");
+            await Assert.That(SystemCapabilities.Status("Power distribution", "1 Enrich")).IsEqualTo("Planned");
+            await Assert.That(SystemCapabilities.Status("Power distribution", "3 Diagram")).IsEqualTo("Built, Revit check due");
+            await Assert.That(SystemCapabilities.Status("Drainage", "4 Calculate")).IsEqualTo("Kit calculation only");
+            await Assert.That(SystemCapabilities.Status("Structural", "Diagram")).IsEqualTo("Not applicable");
+            await Assert.That(SystemCapabilities.Cell("Power distribution", "1 Enrich")!.Note).Contains("Electrical 0.1");
+        }
+
+        [Test]
+        public async Task The_grid_comes_from_the_one_matrix_file_all_23_systems()
+        {
+            var json = System.IO.Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "docs", "tracker", "mep_matrix.json");
+            await Assert.That(SystemCapabilities.Matrix.Systems.Length).IsEqualTo(23);
+            await Assert.That(SystemCapabilities.Matrix.Cells.Length).IsEqualTo(161);
+            await Assert.That(SystemCapabilities.Systems.Values.Sum(x => x.Length)).IsEqualTo(23);
+            await Assert.That(SystemCapabilities.Capabilities.Length).IsEqualTo(7);
+            await Assert.That(SystemCapabilities.Disciplines).Contains("Plumbing");
+            await Assert.That(SystemCapabilities.Headline()).StartsWith("0 of 159 cells tested in Revit");
+            if (System.IO.File.Exists(json))
+            {
+                using var file = System.IO.File.OpenRead(json);
+                await Assert.That(SystemCapabilities.Load(file).Cells.Length).IsEqualTo(SystemCapabilities.Matrix.Cells.Length);
+            }
         }
 
         [Test]
@@ -60,7 +80,7 @@ namespace Formcraft.Shell.Tests
                 return (n, vm.Systems.Footer.Count());
             });
 
-            await Assert.That(note).StartsWith("Plumbing: no tools yet");
+            await Assert.That(note).StartsWith("Plumbing: no checks run from here yet");
             await Assert.That(footer).IsEqualTo(0);
         }
 
