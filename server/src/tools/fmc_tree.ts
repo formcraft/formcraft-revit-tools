@@ -10,6 +10,9 @@ import { adoptEdit } from "../tree/drift.js";
 import { DEPARTMENT, applyLayout, layoutDepartment } from "../tree/department.js";
 import { treeFromBrief, treeQuantities } from "../tree/building.js";
 import { parseCis } from "../fmc/brief.js";
+import { quantityCsv, treeSearchSets } from "../tree/apps.js";
+import { exchangeRoot, writePackage } from "../hub/exchange.js";
+import { navisCall, processAlive, readState } from "../fmc/navis.js";
 import { roomEdits } from "./fmc_room.js";
 
 const win = path.win32;
@@ -48,10 +51,14 @@ export const FMC_TREE_DESCRIPTION =
     "each room copied from a library template (never built itself) with its number, name and programme data; widths come " +
     "from FMC_Target_Area over the template's depth and the dry run lists every size and where it came from (replace " +
     "archives an existing tree). quantities (T5): planned against target area per room, department and level, walls, " +
-    "doors, windows, and every room's own checks. It never changes a model by itself.";
+    "doors, windows, and every room's own checks. export (T6): to powerbi, the quantities as tidy CSV in an exchange " +
+    "package; to navisworks, a search set per room (and per level and department) finding its items by the tree's mark " +
+    "in their Revit Comments, sent through the Formcraft Navisworks bridge into the open document (a dry run first; " +
+    "saving the .nwf is a person's step). It never changes a model by itself.";
 
 export const FMC_TREE_SHAPE = {
-  action: z.enum(["show", "check", "plan", "set", "init", "built", "build", "edits", "adopt", "layout", "brief", "quantities"]),
+  action: z.enum(["show", "check", "plan", "set", "init", "built", "build", "edits", "adopt", "layout", "brief", "quantities", "export"]),
+  to: z.enum(["powerbi", "navisworks"]).optional().describe("export: which app"),
   cis_file: z.string().optional().default("").describe("brief: the approved CIS .json (fmc-cis/0.1)"),
   brief: z.object({
     wall_type: z.string().min(1), wall_thickness: z.number().positive(), ceiling_type: z.string().min(1), ceiling_height: z.number().positive(),
@@ -154,6 +161,30 @@ export async function runFmcTree(args: FmcTreeArgs) {
       const q = treeQuantities(tree, args.tolerance_pct);
       return reply({ file, total: q.total, by_level: q.by_level, by_department: q.by_department, off_target: q.off_target, problems: q.problems,
         rooms: args.id ? q.rows.filter((r) => r.node.startsWith(args.id)) : q.rows.length <= 40 ? q.rows : `${q.rows.length} rooms: name an id to list a part` });
+    }
+    if (args.action === "export") {
+      if (!args.to) return reply({ refused: true, reasons: ["Say which app: to powerbi or navisworks"] }, true);
+      const root = exchangeRoot(project, expandEnv(config.reports_dir));
+      const vx = checkWritePath(win.join(root, "Packages", "x.json"), config, { checkName: false });
+      if (args.to === "powerbi") {
+        const files = quantityCsv(tree, args.tolerance_pct);
+        if (args.dry_run) return reply({ dry_run: true, to: "powerbi", would_write: root, files: files.map((f) => ({ name: f.name, rows: f.text.trim().split(/\r?\n/).length - 1 })), next: "Run again with dry_run=false; point Power BI at the newest package" });
+        if (!vx.ok) return reply({ refused: true, reasons: vx.reasons }, true);
+        const pkg = writePackage(root, { from: "hub", to: "powerbi", what: "Recipe tree quantities", files, source: { tree: file } });
+        log(config, "tree_export", false, pkg.dir, "written", "powerbi");
+        return reply({ done: true, to: "powerbi", package: pkg.dir, files: pkg.manifest.files.map((f) => f.name) });
+      }
+      const sets = treeSearchSets(tree);
+      if (!sets.length) return reply({ refused: true, reasons: ["The tree has no rooms built by fmc_room"] }, true);
+      const st = readState();
+      const open = !!st && processAlive(st.pid);
+      if (args.dry_run) return reply({ dry_run: true, to: "navisworks", sets: sets.length, sample: sets.slice(0, 6), navisworks_open: open,
+        next: open ? "Run again with dry_run=false: the sets go into the open document's 'FMC Recipe tree' folder" : "Open Navisworks with the Formcraft bridge (fmc_navis status), then run again with dry_run=false" });
+      if (!open) return reply({ refused: true, reasons: ["Navisworks with the Formcraft bridge isn't open (fmc_navis status)"] }, true);
+      const r = await navisCall(st!.port, "navis_search_sets", { folder: "FMC Recipe tree", sets, dry_run: false });
+      if (vx.ok) writePackage(root, { from: "hub", to: "navisworks", what: "Recipe tree search sets", files: [{ name: "FMC_Tree_SearchSets.json", text: JSON.stringify(sets, null, 2) }], source: { tree: file } });
+      log(config, "tree_export", false, file, "sent", `navisworks: ${sets.length} sets`);
+      return reply({ done: true, to: "navisworks", ...r, next: "Save the .nwf to keep them (a person's step); clash tests can use the department sets" });
     }
     if (args.action === "check") {
       const problems = treeProblems(tree, toolExists);
