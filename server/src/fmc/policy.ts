@@ -99,6 +99,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_schedules_apply",
   // The recipe tree's room builds (T1) and Mark & Review's applied fixes (R6)
   "fmc_room_build", "fmc_element_apply",
+  // Circuits (KISIC 4.4): devices grouped into circuits on a board, the kit's distribution system set; the dry run rolls back
+  "fmc_circuits_create",
 ]);
 
 /**

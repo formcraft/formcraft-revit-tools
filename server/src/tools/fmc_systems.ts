@@ -7,6 +7,10 @@ import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../
 import { kitParams } from "../fmc/brief.js";
 import { electricalChecks, structuralChecks, structuralFields, systemsReport } from "../fmc/systems.js";
 import { loadMatrix, matrixGrid, summarize } from "../fmc/mep_matrix.js";
+import { CIRCUIT, KitElectrical, circuitsPayload } from "../fmc/circuits.js";
+import { electrical } from "../fmc/templatekit.js";
+import { readXlsxSheets } from "../fmc/xlsx.js";
+import { kitWorkbookPath } from "../fmc/calc/kit.js";
 
 const win = path.win32;
 
@@ -35,13 +39,25 @@ export const FMC_SYSTEMS_DESCRIPTION =
     "grades, exposure class), load cases, and analysis results already in the model (FMC_FEA_Utilisation). save: true " +
     "writes the list to <project>\\06_QA\\Systems for the engineer. Nothing in the model is changed: sizing, load cases " +
     "and design stay with the engineer. matrix: the engineering grid (23 systems by 7 capabilities) from " +
-    "docs/tracker/mep_matrix.json with its counts by state, per system and per capability; no Revit needed.";
+    "docs/tracker/mep_matrix.json with its counts by state, per system and per capability; no Revit needed. " +
+    "create_circuits (the one write, KISIC 4.4): groups the devices named in each circuit into a power circuit on the " +
+    "named board (ElectricalSystem.Create, then the board selected as its panel); when the board has no distribution " +
+    "system, the one named is set from the kit's Electrical_Settings (made in the project from the kit's values if " +
+    "missing). It never sizes: no rating, wire size, demand factor or load is set (rule 5). A dry run unless dry_run is " +
+    "false; the dry run is the real run rolled back (so a board Revit refuses shows in it), and the real run is one Undo, " +
+    "all or nothing, behind the live-model lock.";
 
 export const FMC_SYSTEMS_SHAPE = {
-  action: z.enum(["electrical", "structural", "matrix"]),
-  kit_folder: z.string().optional().default("").describe("structural: the kit folder, for the field names"),
+  action: z.enum(["electrical", "structural", "matrix", "create_circuits"]),
+  kit_folder: z.string().optional().default("").describe("structural: the kit folder, for the field names; create_circuits: for Electrical_Settings (default: beside the guard's specs file)"),
   project_folder: z.string().optional().default("").describe("save: the project folder (06_QA\\Systems)"),
   save: z.boolean().optional().default(false),
+  board: z.string().optional().default("").describe("create_circuits: the board (electrical equipment): its unique id, element id or panel name"),
+  board_name: z.string().optional().default("").describe("create_circuits: a Panel Name for the board when it has none"),
+  distribution_system: z.string().optional().default("")
+    .describe("create_circuits: a distribution system from the kit's Electrical_Settings by name (e.g. DS_415-240V_3Ph_4W), set on the board only if it has none"),
+  circuits: z.array(CIRCUIT).optional().default([]).describe("create_circuits: one entry per circuit, the devices on it"),
+  dry_run: z.boolean().optional().default(true).describe("create_circuits: a dry run (the real run rolled back) unless false"),
 };
 
 export type FmcSystemsArgs = z.infer<z.ZodObject<typeof FMC_SYSTEMS_SHAPE>>;
@@ -55,9 +71,47 @@ export function runMatrix() {
     next: "Each cell's evidence, feature and step are in the file; a cell moves only with the PR that changes it" });
 }
 
+/** The kit's Electrical_Settings (voltages, distribution systems, load classes), or why it can't be read. */
+function kitElectrical(kitFolder: string, specsPath: string): { kit: KitElectrical | null; file: string; problem: string } {
+  const file = kitWorkbookPath(kitFolder, specsPath);
+  try {
+    const notes: string[] = [];
+    return { kit: electrical(readXlsxSheets(fs.readFileSync(file)).get("Electrical_Settings"), notes), file, problem: "" };
+  } catch (e) {
+    return { kit: null, file, problem: `${file}: ${e instanceof Error ? e.message : String(e)}` };
+  }
+}
+
+/** create_circuits: checked here, then sent to Revit (the dry run reads, the real run goes through the lock). */
+export async function runCreateCircuits(args: FmcSystemsArgs, config: GuardConfig) {
+  const { kit, file, problem } = args.distribution_system.trim() ? kitElectrical(args.kit_folder, expandEnv(config.specs_path)) : { kit: null, file: "", problem: "" };
+  const { problems, payload } = circuitsPayload({ board: args.board, board_name: args.board_name, distribution_system: args.distribution_system,
+    circuits: args.circuits, dry_run: args.dry_run !== false }, kit, problem);
+  if (!payload) return reply({ refused: true, reasons: problems }, true);
+  const dry = args.dry_run !== false;
+  const r = await withRevitConnection((c) => dry ? c.sendRaw("fmc_circuits_create", payload, 300000) : c.sendCommand("fmc_circuits_create", payload, 300000)) as Record<string, any>;
+  const found: string[] = Array.isArray(r?.problems) ? r.problems : [];
+  const made = Number(r?.made) || 0;
+  if (!dry) log(config, "systems_create_circuits", String(r?.board?.name || args.board), found.length ? "rolled back" : "made",
+    `${made} circuits${found.length ? `; ${found.join("; ")}` : ""}`);
+  const body = { dry_run: dry, kit: file || undefined, ...r, made, problems: found,
+    next: found.length ? "Nothing was changed: fix each problem (a board Revit refuses needs its family fixed: Part Type, distribution system), then run again"
+      : dry ? "Show this to the person; run again with dry_run=false to make the circuits (one Undo)"
+      : "The circuits are made: fmc_mep_facts, fmc_calc run and fmc_diagram scan read them; the engineer sizes (rule 5)" };
+  return reply(body, !dry && found.length > 0);
+}
+
 export async function runFmcSystems(args: FmcSystemsArgs) {
   if (args.action === "matrix") return runMatrix();
   const { config } = loadConfig();
+  if (args.action === "create_circuits") {
+    try { return await runCreateCircuits(args, config); }
+    catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      log(config, "systems_create_circuits", args.board, "error", msg);
+      return reply({ error: msg }, true);
+    }
+  }
   try {
     let body: any;
     let extra: string[] = [];

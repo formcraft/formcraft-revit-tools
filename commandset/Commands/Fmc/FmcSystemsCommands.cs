@@ -52,4 +52,13 @@ namespace RevitMCPCommandSet.Commands.Fmc
         public override string CommandName => "fmc_mep_facts";
         protected override string Action => "mep";
     }
+
+    /// <summary>KISIC 4.4: chosen devices grouped into circuits on a named board, the kit's distribution system set on the
+    /// board if it has none; one Undo, never sizes (rule 5). The dry run is the real run rolled back; behind the lock.</summary>
+    public class FmcCircuitsCreateCommand : FmcSystemsCommandBase
+    {
+        public FmcCircuitsCreateCommand(UIApplication uiApp) : base(uiApp) { }
+        public override string CommandName => "fmc_circuits_create";
+        protected override string Action => "create_circuits";
+    }
 }

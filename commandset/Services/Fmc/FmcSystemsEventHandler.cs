@@ -40,7 +40,8 @@ namespace RevitMCPCommandSet.Services.Fmc
             Error = "";
             try
             {
-                using var target = FmcTarget.Resolve(app, Parameters, mayOpen: true);
+                // a write (create_circuits) works only on an open document; the read-only checks may open one in the background
+                using var target = FmcTarget.Resolve(app, Parameters, mayOpen: Action != "create_circuits");
                 Document doc = target.Doc;
                 if (doc.IsFamilyDocument) throw new InvalidOperationException("Systems checks run on a project model.");
                 switch (Action)
@@ -48,6 +49,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     case "electrical": Result = Electrical(doc); break;
                     case "structural": Result = Structural(doc, Parameters); break;
                     case "mep": Result = Mep(doc); break;
+                    case "create_circuits": Result = CreateCircuits(doc, Parameters); break;
                     default: Error = $"Unknown FMC systems action '{Action}'"; break;
                 }
                 Result["model"] = doc.Title;

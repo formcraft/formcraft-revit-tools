@@ -202,7 +202,8 @@ export function getPath(root: unknown, path: string): unknown {
   return cur;
 }
 
-const PLACEHOLDER = /\{\{\s*([A-Za-z0-9_.-]+)\s*\}\}/g;
+/** A name, or a path that may pick a list item by key: {{steps.record.elements[key=item:DB].unique_id}}. */
+const PLACEHOLDER = /\{\{\s*([A-Za-z0-9_.\-:^=[\]]+)\s*\}\}/g;
 
 /**
  * Fills {{name}} and {{steps.<id>.<path>}} in every string of a value. A string that is one placeholder alone takes the
@@ -210,12 +211,12 @@ const PLACEHOLDER = /\{\{\s*([A-Za-z0-9_.-]+)\s*\}\}/g;
  */
 export function substitute(value: unknown, vars: Record<string, unknown>): unknown {
   const lookup = (name: string): unknown => {
-    const v = name.includes(".") ? getPath(vars, name) : vars[name];
+    const v = /[.[]/.test(name) ? getPath(vars, name) : vars[name];
     if (v === undefined) throw new Error(`Unresolved {{${name}}}`);
     return v;
   };
   if (typeof value === "string") {
-    const whole = /^\{\{\s*([A-Za-z0-9_.-]+)\s*\}\}$/.exec(value);
+    const whole = /^\{\{\s*([A-Za-z0-9_.\-:^=[\]]+)\s*\}\}$/.exec(value);
     if (whole) return lookup(whole[1]);
     return value.replace(PLACEHOLDER, (_m, name) => {
       const v = lookup(name);

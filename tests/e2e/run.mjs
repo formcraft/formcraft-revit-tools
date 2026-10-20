@@ -29,6 +29,8 @@ const cases = [
   ["fmc_scripts", { action: "run", name: "Before sync", steps: ["selftest", "qa", "workshare"], kit_folder: kit, project_folder: proj }],
   ["fmc_scripts", { action: "run", name: "Friday", steps: ["qa", "review", "report"], kit_folder: kit, project_folder: proj, project_code: "F26001" }],
   ["fmc_systems", { action: "electrical", project_folder: proj, save: true }], ["fmc_systems", { action: "structural", kit_folder: kit, project_folder: proj, save: true }],
+  ["fmc_systems", { action: "create_circuits", kit_folder: kit, board: "MDB", board_name: "DB-01", distribution_system: "DS_415-240V_3Ph_4W", circuits: [{ elements: ["101", "102"], load_name: "Sockets" }] }],
+  ["fmc_systems", { action: "create_circuits", kit_folder: kit, board: "MDB", distribution_system: "DS_415-240V_3Ph_4W", circuits: [{ elements: ["101", "102"], load_name: "Sockets" }], dry_run: false }],
   ["fmc_calc", { action: "list", kit_folder: kit }], ["fmc_calc", { action: "run", kit_folder: kit }],
   ["fmc_calc", { action: "sheet", kit_folder: kit, project_folder: proj }], ["fmc_calc", { action: "sheet", kit_folder: kit, project_folder: proj, dry_run: false }],
   ["fmc_diagram", { action: "plan", kit_folder: kit }], ["fmc_diagram", { action: "sheets", kit_folder: kit }], ["fmc_diagram", { action: "gate", kit_folder: kit }],
@@ -57,6 +59,7 @@ const writes = [
   ["fmc_material", { action: "purge", dry_run: false }],
   ["fmc_review", { action: "cloud", project_folder: proj, dry_run: false }],
   ["fmc_workshare", { action: "create", dry_run: false }],
+  ["fmc_systems", { action: "create_circuits", kit_folder: kit, board: "MDB", circuits: [{ elements: ["101"] }], dry_run: false }],
   ["fmc_diagram", { action: "draw", kit_folder: kit, dry_run: false, confirm: true }],
   ["fmc_diagram", { action: "sheets", kit_folder: kit, dry_run: false, confirm: true }],
 ];
@@ -81,7 +84,7 @@ for (const mode of ["rich", "empty", "live"]) {
 for (const x of results) console.log(`${x.mode.padEnd(5)} ${x.crash ? "CRASH" : x.parse ? "BADJSON" : x.err ? "error" : "ok   "} ${(x.tool + " " + x.action).padEnd(26)} exit=${x.exit} ${x.parse || x.err || x.keys}`);
 fs.writeFileSync(path.join(work, "results.json"), JSON.stringify(results, null, 2));
 // Fails on a crash or an unreadable reply anywhere, or on any real write reaching Revit while a live model is open.
-const writeCmd = /"method":"(fmc_brief_apply|fmc_sheet_create|fmc_sheet_rename|fmc_link_pin|fmc_link_add|fmc_material_assign|fmc_material_purge|fmc_review_cloud|fmc_workset_create|fmc_diagram_draw|fmc_diagram_sheet)"/;
+const writeCmd = /"method":"(fmc_brief_apply|fmc_sheet_create|fmc_sheet_rename|fmc_link_pin|fmc_link_add|fmc_material_assign|fmc_material_purge|fmc_review_cloud|fmc_workset_create|fmc_diagram_draw|fmc_diagram_sheet|fmc_circuits_create)"/;
 const liveLog = path.join(work, "calls_live.jsonl");
 const liveWrites = fs.existsSync(liveLog)
   ? fs.readFileSync(liveLog, "utf8").split("\n").filter((l) => writeCmd.test(l) && !l.includes('"dry_run":true'))
