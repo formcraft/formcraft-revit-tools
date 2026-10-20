@@ -28,12 +28,39 @@ Gates as for Revit: dry run first, staging only, no saving of live projects.
 - FMC ArchiCAD template (.tpl): FMC surfaces and building materials, pen set, line types, fills, layers.
 - FMC properties: the shared parameter file mapped to the Property Manager (XML import) and to GDL parameter names.
 - Classification: Uniclass in the Classification Manager; FMC keynote code as a property (ArchiCAD has no keynotes).
-- MEP: decompile one stock ArchiCAD MEP object (libpart2xml) to learn the connection-port format, then add ports
-  to the generator for objects that need services.
+- MEP: see **AC2a** below.
+
+## AC2a · MEP connectors in ArchiCAD objects (owner talk, 19-20 Oct)
+ArchiCAD's equivalent of Revit connectors is the **MEP Modeler** (inside ArchiCAD since 25). MEP objects are GDL
+objects with an MEP subtype (MEP Equipment, MEP Terminal, ...) that declare **connection ports**: position, direction,
+shape and size, and domain (duct, pipe, cable carrier). Ducts and pipes drawn from a port snap and route.
+What ArchiCAD does not do: duct/pipe sizing and pressure checks, and electrical circuits or panel schedules. So the
+promise is **right geometry, ports that snap, all engineering data on board**; calculations stay with the engineers
+in Revit, and IFC carries the data between the two.
+- **One source.** The generator reads the connector entries already in each recipe (position, facing, size,
+  system), so one recipe still drives both formats.
+- **Base layer (any ArchiCAD).** A hotspot and a small plan mark at each connection point; the kit's flow, power and
+  pressure values as ArchiCAD properties; ports exported to IFC so a Revit engineer sees where services join.
+- **MEP layer.** MEP subtype plus real ports declared through the MEP library's own macros, so routing snaps.
+  Trade-off: needs the MEP library loaded; without it the base layer still shows, schedules and exports.
+- **Learn the real format first.** `libpart2xml` one stock MEP object from the ArchiCAD 28 library (an AHU and a
+  basin) and copy how it declares ports. Never guess the port parameter names.
+- **Test (in `fmc_archicad selftest`).** Place the object, draw a duct and a pipe from its ports, export IFC, check
+  the ports come through.
+- **First families with ports (hospital set):** clinical basin and scrub trough (water in, waste out), medical gas
+  outlets (one pipe port per gas), laminar-flow diffuser (duct), AHU and VRF outdoor unit, fire pump and hose reel,
+  final distribution board (cable carrier plus load data).
+- **Waiting on the owner:** is *Design › MEP Modeling* in the pilot PC's ArchiCAD 28? Yes: build both layers from the
+  start. No: base layer first, MEP ports when it is switched on.
 
 ## AC3 · Catalogue (Chat)
-One combined catalogue (owner, 19 Oct): Revit families + ArchiCAD objects. Prices: ArchiCAD object $2, Revit family
-$2, both formats $2.50. ArchiCAD pages show plan symbols at 1:50 / 1:100 and the measured file size.
+One combined catalogue (owner, 19 Oct): Revit families + ArchiCAD objects. Prices (owner, 20 Oct): Revit family $2,
+ArchiCAD object $2, **both formats $3** (was $2.50 on 19 Oct).
+Done 19-20 Oct: "Formcraft Family Catalogue — General Edition" (claude.ai design canvas, private until the owner
+shares it), 11 A4 pages: cover, the four hospital families, the role list, two families for each of the 10 design
+disciplines, the six other roles (title block, logistics with 3D temporary works coming, Q/G/K/Y data), "Coming soon
+· ArchiCAD" with the four ArchiCAD 28 screenshots, and prices. Every image is labelled *Revit render* or *Recipe
+preview*. Next: swap recipe previews for real Revit renders and ArchiCAD captures (`capture`) as they are built.
 
 ## Q-MCP1 · Handshake on connect (Code, after the ArchiCAD work) — owner, 19 Oct
 The hub server sends MCP `instructions` on connect (what Formcraft is, hard rules, order of work: selftest ->

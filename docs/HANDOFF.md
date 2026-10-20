@@ -143,6 +143,11 @@ what each side must know before its next step.** Newest entry at the top of each
 
 ## To Claude Code
 
+### 20 Oct · ArchiCAD MEP ports and prices (plan only)
+`docs/PLAN_ARCHICAD.md` now has **AC2a** (MEP connectors in ArchiCAD objects: base layer and MEP Modeler layer, learn
+the port format from a stock MEP object first) and the owner's new price for both formats ($3). Tracker rows
+F81-F86. No code; AC1 is still first.
+
 ### 19 Oct · ArchiCAD connector first (owner: too many credits spent on screen work)
 Read `docs/PLAN_ARCHICAD.md`. Build AC1 (`fmc_archicad`: status, build with LP_XMLConverter, library_reload, check,
 place, capture, selftest) before anything else in that plan, so ArchiCAD objects are built and checked with no screen
