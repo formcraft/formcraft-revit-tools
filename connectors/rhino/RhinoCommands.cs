@@ -257,8 +257,17 @@ namespace Formcraft.Rhino
             if (parts.Count == 0) throw new ArgumentException("Nothing to render");
             int w = p.Value<int?>("width") ?? 1600, h = p.Value<int?>("height") ?? 1200;
             string view = p.Value<string>("view") ?? "iso";
+            // owner 20 Oct: "camera" matches a reference photo's viewpoint (the likeness check): the direction from the
+            // product towards the camera, [x, y, z] (e.g. [-0.55, -1, 0.25] low from the front left)
+            Vector3d? eye = null;
+            if (p["camera"] is JArray c)
+            {
+                if (c.Count != 3) throw new ArgumentException("camera is [x, y, z]: the direction from the product towards the camera");
+                eye = new Vector3d((double)c[0], (double)c[1], (double)c[2]);
+                view = "camera";
+            }
             Directory.CreateDirectory(Path.GetDirectoryName(path));
-            RhinoRender.ToPng(parts, path, w, h, view);
+            RhinoRender.ToPng(parts, path, w, h, view, eye);
             return new JObject { ["family"] = p["family"], ["rendered"] = path, ["parts"] = parts.Count, ["width"] = w, ["height"] = h, ["view"] = view, ["bytes"] = new FileInfo(path).Length };
         }
     }

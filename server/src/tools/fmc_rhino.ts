@@ -50,6 +50,7 @@ export const FMC_RHINO_SHAPE = {
   names: z.array(z.string()).optional().default([]).describe("remove: part names; render, export_parts: only these parts"),
   envelope: z.array(z.number().positive()).length(3).optional().describe("check, export_parts: the type's width, depth, height (mm); no part may be larger"),
   view: z.enum(["iso", "back_iso", "front", "side", "top"]).optional().default("iso"),
+  camera: z.array(z.number()).length(3).optional().describe("render: the direction from the product towards the camera [x, y, z] (mm axes, -y front), to match a reference photo's viewpoint for the likeness check; overrides view"),
   width: z.number().int().min(64).max(4000).optional().default(1600),
   height: z.number().int().min(64).max(4000).optional().default(1200),
   replace: z.boolean().optional().default(false).describe("new_doc, open: replace parts already in the bridge for this family"),
@@ -82,7 +83,7 @@ export async function runFmcRhino(args: FmcRhinoArgs) {
   if (nameProblem) return reply({ refused: true, reasons: [nameProblem] }, true);
 
   const staging = expandEnv(config.family_staging_root);
-  const where = rhinoPaths(staging, args.family, args.view);
+  const where = rhinoPaths(staging, args.family, args.camera ? "camera" : args.view);
   const call = (method: string, params: object = {}) => rhinoCall(state!.port, method, { family: args.family, ...params });
   const guard = (target: string) => checkWritePath(target, config, { checkName: false });
 
@@ -128,7 +129,7 @@ export async function runFmcRhino(args: FmcRhinoArgs) {
           return reply(r);
         }
         if (args.action === "render") {
-          const r = await call("rhino_render", { path: where.render, view: args.view, width: args.width, height: args.height, ...(args.names.length ? { parts: args.names } : {}) });
+          const r = await call("rhino_render", { path: where.render, view: args.view, ...(args.camera ? { camera: args.camera } : {}), width: args.width, height: args.height, ...(args.names.length ? { parts: args.names } : {}) });
           log(config, "rhino_render", false, where.render, "rendered", `${r.parts} parts`);
           return reply(r);
         }
