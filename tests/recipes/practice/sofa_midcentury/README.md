@@ -28,6 +28,35 @@ out what Rhino and our checks need before a designer or maker can hand us any pi
 | 3 | 20 Oct | Pass (47 parts) | Blind review: **6/10**, 6 of 8 features | Close-up crops of the photo corrected the reading: a shallow tub panel, the arm floating on posts, **3 x 2** tufts (round 2's 4 x 2 was a misreading). Still wrong: a flat-topped slab panel, 18 separate pillows. |
 | 4 | 20 Oct | Pass (45 parts) | Blind review: **6/10**, 6 of 8 features | **Fixed:** the panel tapers and rises to the arm at the back, one cushion body with shallow seams, the arm overhangs. **Still wrong:** the back corner doesn't wrap the cushion ends, the bottom isn't hull-curved, the tufts look like tiles. |
 
+## Five downloaded sofa families, read 20 Oct (what makes "looks like the picture" in the wild)
+The owner opened five downloaded sofa families that look like their product photos. All five were read the same way.
+
+| Family | Geometry | Triangles | File | Size W x D x H (mm) | Types | Data |
+|---|---|---|---|---|---|---|
+| S_62 | one mesh | 73,694 | 1.9 MB | 1992 x 968 x 921 | 1 | 3 material params (cushions, legs, fabric), no dims |
+| LR2296_SF_046 | one imported mesh | 226,511 | 5.0 MB | 2561 x 1165 x 826 | 1 | none |
+| LR1190_SOFA_19 | one imported mesh + 28 plan lines | 55,251 | 1.6 MB | 3322 x 1950 x 756 | 1 | none |
+| LR1593_SOFA_14 | one imported mesh | 104,102 | 1.1 MB | 3863 x 1252 x 1051 | 0 | none |
+| LR1189_SOFA_18 | one imported mesh | 72,131 | 2.0 MB | 2871 x 1623 x 1243 | 0 | none |
+
+What it teaches:
+1. **The look comes from mesh or SubD modelling outside Revit**, not from Revit forms. Every one is a polygon model
+   (55k–227k triangles) dropped in as one import. That confirms the direction: soft shapes need SubD or mesh
+   modelling (Rhino SubD; Blender for sculpting and renders).
+2. **They fail what we sell on:**
+   - imported geometry (FAM-005: no import categories);
+   - one lump, so no material per part (wood and fabric can't change apart) and no subcategories;
+   - the full mesh at every detail level (heavy in plans; no Coarse box, no LOD ladder);
+   - no flex, no labelled sizes, no keynote or data;
+   - 1–5 MB for one sofa.
+   Gate A already fails "imported CAD".
+3. **Our route keeps their look and fixes the rest:** SubD in Rhino, then exact solids per part, then `import_part` as
+   real Revit forms, each with a subcategory, material and detail level, plus a Coarse box and the data.
+4. **A possible shortcut, and a caution.** A downloaded mesh can be the shape source: Revit reads its triangles, Rhino
+   QuadRemesh turns them into SubD and then solids per part. **But downloaded models carry their authors' licences:
+   use them as reference, not as geometry we resell, unless the licence says so.**
+5. **Their sizes are useful as reference** (1992–3863 W, 756–1243 H); they are not verified evidence.
+
 ## What rounds 3 and 4 taught us
 1. **Read the photo up close first.** Crops (`crop_*.png`) fixed three misreadings at once. The loop now starts with crops.
 2. **Booleans are fragile at near-tangent contacts.** A union failed when a part overshot another by 1 mm, and it left a
