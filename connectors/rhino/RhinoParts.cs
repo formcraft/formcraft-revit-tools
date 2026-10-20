@@ -30,7 +30,7 @@ namespace Formcraft.Rhino
         public const double AngTol = Math.PI / 180;
 
         public static readonly string[] Ops = { "box_rounded", "extrude", "revolve", "pipe", "loft", "torus", "sphere", "shell", "boolean", "fillet",
-            "extrude_points", "revolve_loop", "sweep_path" };
+            "extrude_points", "revolve_loop", "sweep_path", "subd" };
 
         public static Part Build(JObject s, IDictionary<string, Part> parts, List<string> consumed)
         {
@@ -52,6 +52,7 @@ namespace Formcraft.Rhino
                 case "extrude_points": b = ExtrudePoints(s); break;
                 case "revolve_loop": b = RevolveLoop(s); break;
                 case "sweep_path": b = SweepPath(s); break;
+                case "subd": b = SubDPart(s); break;
                 default: throw new ArgumentException($"{name}: no operation \"{op}\" (one of {string.Join(", ", Ops)})");
             }
             if (b == null) throw new InvalidOperationException($"{name}: {op} made nothing: check its values");
@@ -348,6 +349,51 @@ namespace Formcraft.Rhino
                 return c;
             }
             throw new ArgumentException($"{name}: a profile is rect, rounded_rect, circle, ellipse or points");
+        }
+
+        /// <summary>
+        /// SubD (owner 20 Oct: shapes a photo shows but flat outlines can't make: puffed cushions, a bent-wood shell that
+        /// wraps a corner, a hull-like panel). A control cage, smoothed by Rhino's SubD and returned as an exact closed
+        /// solid (NURBS), so it goes to Revit like any other part. Either
+        ///   box: { center, size [x, y, z], divisions [nx, ny, nz] }: a smoothed box (a cushion; more divisions = flatter faces), or
+        ///   vertices [[x, y, z], …] + faces [[a, b, c, d] or [a, b, c], …]: any closed cage (indices into vertices).
+        /// creases: true keeps edges where the cage's vertices are not shared (give a seam its own vertices) sharp.
+        /// </summary>
+        static Brep SubDPart(JObject s)
+        {
+            string name = (string)s["name"];
+            Mesh cage;
+            if (s["box"] is JObject bx)
+            {
+                double[] size = Arr(bx, "size", 3);
+                Point3d c = Pt(bx["center"], Point3d.Origin);
+                var div = bx["divisions"] is JArray dv && dv.Count == 3 ? dv.Select(d => Math.Max(1, (int)d)).ToArray() : new[] { 2, 2, 2 };
+                var box = new Box(new Plane(c, Vector3d.XAxis, Vector3d.YAxis), new Interval(-size[0] / 2, size[0] / 2), new Interval(-size[1] / 2, size[1] / 2), new Interval(-size[2] / 2, size[2] / 2));
+                cage = Mesh.CreateFromBox(box, div[0], div[1], div[2]) ?? throw new InvalidOperationException($"{name}: the box cage wasn't made");
+            }
+            else
+            {
+                var verts = s["vertices"] as JArray ?? throw new ArgumentException($"{name}: subd needs a box or vertices and faces");
+                var faces = s["faces"] as JArray ?? throw new ArgumentException($"{name}: subd needs faces [[a, b, c, d], …]");
+                cage = new Mesh();
+                foreach (JToken v in verts) cage.Vertices.Add(Pt(v, Point3d.Unset));
+                foreach (JToken f in faces)
+                {
+                    var ix = f.Select(i => (int)i).ToArray();
+                    if (ix.Any(i => i < 0 || i >= cage.Vertices.Count)) throw new ArgumentException($"{name}: a face uses a vertex that doesn't exist");
+                    if (ix.Length == 4) cage.Faces.AddFace(ix[0], ix[1], ix[2], ix[3]);
+                    else if (ix.Length == 3) cage.Faces.AddFace(ix[0], ix[1], ix[2]);
+                    else throw new ArgumentException($"{name}: a face has 3 or 4 vertices");
+                }
+                cage.Normals.ComputeNormals();
+                if (!cage.IsClosed) throw new ArgumentException($"{name}: the cage isn't closed (every edge must be shared by two faces), so it can't make a solid");
+            }
+            var options = s.Value<bool?>("creases") == true ? SubDCreationOptions.InteriorCreases : SubDCreationOptions.Smooth;
+            SubD subd = SubD.CreateFromMesh(cage, options) ?? throw new InvalidOperationException($"{name}: Rhino couldn't make a SubD from the cage");
+            Brep b = subd.ToBrep(SubDToBrepOptions.Default) ?? throw new InvalidOperationException($"{name}: the SubD didn't convert to a solid");
+            if (!b.IsSolid) b = b.CapPlanarHoles(Tol) ?? b;
+            if (!b.IsSolid) throw new InvalidOperationException($"{name}: the SubD isn't a closed solid: check the cage's faces face outward and close");
+            return b;
         }
 
         /// <summary>rotate { axis, deg, center? } then move [x, y, z].</summary>

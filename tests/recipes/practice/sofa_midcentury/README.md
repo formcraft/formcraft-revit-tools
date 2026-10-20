@@ -25,6 +25,20 @@ out what Rhino and our checks need before a designer or maker can hand us any pi
 | 1 | Earlier session (18–19 Oct) | Pass (49 parts) | Not reviewed then. Against the photo it fails. | Torn side shell (boolean seam), thin round-bar arms, a backboard above the cushions, 3 x 2 tufts, grey wipe-clean fabric |
 | 2 | 20 Oct | Pass (45 parts, 0 problems) | Blind review: **6 of 8** features. The outline couldn't be measured (room photo). | **Fixed:** side profile, paddle arms on front posts, wrapped front rail, legs under the panels, 4 x 2 tufts, back leaning 12°, no frame showing above the cushions. **Still wrong:** the side panel reads as a slab, not a thin bent shell with one 300–400 mm front curve; the tufts are cut lines, not puffed biscuits; the back cushions sit too upright. |
 
+| 3 | 20 Oct | Pass (47 parts) | Blind review: **6/10**, 6 of 8 features | Close-up crops of the photo corrected the reading: a shallow tub panel, the arm floating on posts, **3 x 2** tufts (round 2's 4 x 2 was a misreading). Still wrong: a flat-topped slab panel, 18 separate pillows. |
+| 4 | 20 Oct | Pass (45 parts) | Blind review: **6/10**, 6 of 8 features | **Fixed:** the panel tapers and rises to the arm at the back, one cushion body with shallow seams, the arm overhangs. **Still wrong:** the back corner doesn't wrap the cushion ends, the bottom isn't hull-curved, the tufts look like tiles. |
+
+## What rounds 3 and 4 taught us
+1. **Read the photo up close first.** Crops (`crop_*.png`) fixed three misreadings at once. The loop now starts with crops.
+2. **Booleans are fragile at near-tangent contacts.** A union failed when a part overshot another by 1 mm, and it left a
+   0.74 mm sliver edge when a face cut a fillet. Keep 15–25 mm clear of edges, and cut through flat sides.
+3. **The ceiling is the shape vocabulary.** What's left (a hull-curved shell, a corner that wraps the cushions, soft
+   sewn tufts) needs 3D-curved surfaces. Two additions to the Rhino link in this PR, untested until built on the pilot PC:
+   - a **`subd`** part: a control cage smoothed by Rhino 8's SubD into an exact solid;
+   - a render **`camera`** direction, to match the photo's low viewpoint for the likeness check.
+4. **The blind reviewer is strict, and not perfectly consistent:** it asked for more arm overhang in round 3 and less in
+   round 4. Keep it, but read its notes together with the crops.
+
 ## What round 2 taught us
 1. **A passing geometry check says nothing about likeness.** Round 1 passed every Rhino rule and still didn't look like
    the sofa. The new Gate A lines are "Reference evidence" and "Looks like the reference" (`server/src/fmc/likeness.ts`).
@@ -39,7 +53,7 @@ out what Rhino and our checks need before a designer or maker can hand us any pi
    - fillets that work on fitted arcs.
 5. **Materials.** The kit has no walnut or green velvet. Mahogany and grey wipe-clean are stand-ins, with a kit change request.
 
-## Next round (3)
+## Next round (5): needs the `subd` part (after the merge, the PC build and a Rhino restart)
 - **Side shell:** sweep a 24 mm section along the side curve; front radius 350 mm; top edge parallel under the arm; the
   rail as the shell's lower edge.
 - **Tufts:** each tuft a domed patch, with seams short and deep.

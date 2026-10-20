@@ -56,7 +56,7 @@ export function rhinoCall(port: number, method: string, params: object = {}, tim
 
 /** The parts vocabulary (the bridge checks each operation's values; this checks the shape before anything is sent). */
 export const RHINO_OPS = ["box_rounded", "extrude", "revolve", "pipe", "loft", "torus", "sphere", "shell", "boolean", "fillet",
-  "extrude_points", "revolve_loop", "sweep_path"] as const;
+  "extrude_points", "revolve_loop", "sweep_path", "subd"] as const;
 export const VISIBILITY = ["fine", "medium_fine", "all"] as const;
 
 export const RHINO_PART = z.object({

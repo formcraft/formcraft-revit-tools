@@ -37,9 +37,9 @@ export const FMC_RHINO_DESCRIPTION =
     "checks in Rhino's memory and writes nothing). " +
     "status: Rhino and the bridge. new_doc / open / save: a family's part set (files only in <staging>\\_Rhino). part: " +
     "build named closed solids from the vocabulary (box_rounded, extrude, revolve, pipe, loft, torus, sphere, shell, " +
-    "boolean, fillet; mm; each with subcategory, material, visibility fine|medium_fine|all), all or none. check: the rules " +
+    "boolean, fillet, subd: a smoothed control cage for cushions and bent shells; mm; each with subcategory, material, visibility fine|medium_fine|all), all or none. check: the rules " +
     "(closed, manifold, 1 mm edge floor, subcategory and material, the type's envelope, mesh weight). render: a shaded PNG " +
-    "for the catalogue. export_parts: each part as its own .3dm (Revit reads .3dm directly) plus parts.json, after the " +
+    "for the catalogue (camera [x, y, z] matches a reference photo's viewpoint). export_parts: each part as its own .3dm (Revit reads .3dm directly) plus parts.json, after the " +
     "check passes. describe: the parts and their specs. remove: parts by name. Files: a dry run first.";
 
 export const FMC_RHINO_SHAPE = {
