@@ -190,3 +190,30 @@ one when the last ended more than 20 hours ago); `status`; `report` (summary.md 
   `powershell -ExecutionPolicy Bypass -File scripts\fmc-testrun-schedule.ps1` registers "Formcraft Unattended Revit
   Tests": at logon, after wake and nightly at 02:00 (`-NightlyAt`), on mains power only, never waking the PC, at
   below-normal priority. `-Remove` takes it away.
+
+**Testing the runner itself (pause and resume).** `server/src/fmc/testrun_pause.test.ts` (in `npm test`) runs the
+real runner against the stand-in Revit (`tests/e2e/fake_revit.mjs`) in a temp folder (its own `APPDATA`, guard file
+and reports; never `%APPDATA%\Formcraft`, never Revit). It proves: battery mid-run pauses before the next step (the
+running one finishes), `runner.log` and the checkpoint say paused, nothing is sent, and it carries on on mains; with
+`pause_on_battery` off, battery saver still pauses (no Revit started) and battery alone doesn't; a run cut off
+mid-scenario is resumed by Mode auto (passed scenarios not run again, the cut-off one from its setup, one finding,
+each scenario once in the summary, the Revit left open reused); Mode auto starts nothing when the last run ended
+under `new_run_after_hours` ago. Test-only environment variables (never set on a real run):
+- `FMC_TESTRUN_POWER=ac|battery|saver|unknown`, or `FMC_TESTRUN_POWER_FILE=<file with one of those words>` (re-read
+  at every check; the file wins), in place of Windows' power reading; `fmc_testrun plan` shows `test_override`.
+- `FMC_TESTRUN_POLL_MS`: the pause's re-check interval. `FMC_TESTRUN_STOP_AFTER_STEPS=N`: the process ends (exit 75,
+  no clean-up) before action N+1, as the PC sleeping would.
+- `FMC_TESTRUN_REVIT_STANDIN=<node script>`: the runner's "Revit" is that script (the fake, `FAKE_REGISTER=1`).
+
+**Checking pause and resume on the real PC (a person, about 15 minutes, a laptop).** Follow the log in a second
+window: `Get-Content "$env:APPDATA\Formcraft\testrun\runner.log" -Wait -Tail 5`.
+1. Plugged in, start `powershell -ExecutionPolicy Bypass -File scripts\fmc-testrun.ps1 -Mode new -Only 01_selftest,05_room_icu`.
+2. Once a step is running, turn battery saver on (Settings › System › Power & battery, or the quick-settings tile).
+   Expect `Paused: battery saver (energy saver) is on` within a minute; the runner's Revit stays open, no new step.
+   Turn it off: expect `Resumed: on mains power` and the next step. (Unplugging does the same, as `on battery (..%)`.)
+3. While a step runs, close the lid (or Start › Sleep) for more than 3 minutes, then wake the PC. The runner, still
+   open, sees the jump in the clock: expect the scenario's `try 1 (after 1 interruption(s))` again from its setup.
+4. While a step runs, close the runner's window (as a shutdown would end it). Run `scripts\fmc-testrun.ps1` (Mode
+   auto; the scheduled task does the same at logon or after wake). Expect `Auto: resume`, `Resuming TR-...`, the
+   cut-off scenario from its setup with `(after 1 interruption(s))`, and passed scenarios not run again.
+5. `fmc_testrun report`: summary.md lists the pause under Pauses and, after a sleep over 3 minutes, a line under Gaps.

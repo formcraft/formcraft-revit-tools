@@ -2,8 +2,13 @@
 // FAKE_MODE=empty answers {} to everything (an empty model, a robustness check); otherwise the fixtures below.
 import net from "node:net";
 import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
 
-const port = Number(process.env.FAKE_PORT || 8099);
+// FAKE_REGISTER=1: it stands in for the unattended runner's own Revit (FMC_TESTRUN_REVIT_STANDIN): any free port, and
+// an entry in %APPDATA%\Formcraft\instances\<pid>.json the way the add-in writes one (unattended: true)
+const register = process.env.FAKE_REGISTER === "1";
+const port = Number(process.env.FAKE_PORT || (register ? 0 : 8099));
 const mode = process.env.FAKE_MODE || "rich";
 const live = process.env.FAKE_LIVE === "1";
 const logFile = process.env.FAKE_LOG;
@@ -13,7 +18,7 @@ const busyJob = process.env.FAKE_BUSY_JOB || "1792417040932222975";
 
 const doc = live
   ? { title: "F26001-FMC-ZZ-ZZ-M3-A-0001", path: "D:\\Projects\\F26001\\02_Shared\\A\\F26001-FMC-ZZ-ZZ-M3-A-0001.rvt", isFamily: false, isWorkshared: true, isActive: true }
-  : { title: "Project1", path: "", isFamily: false, isWorkshared: false, isActive: true };
+  : { title: "Project1", path: register && process.argv[2] ? process.argv[2] : "", isFamily: false, isWorkshared: false, isActive: true };
 
 const fixtures = {
   fmc_document_info: { active: doc, documents: [doc] },
@@ -135,9 +140,23 @@ const server = net.createServer((sock) => {
       }
       const f = mode === "empty" && req.method !== "fmc_document_info" ? {} : fixtures[req.method];
       const result = typeof f === "function" ? f(req.params || {}) : f ?? {};
-      sock.write(JSON.stringify({ jsonrpc: "2.0", id: req.id, result }));
+      const answer = JSON.stringify({ jsonrpc: "2.0", id: req.id, result });
+      // FAKE_DELAY=<method>:<ms>: that command takes a while (a step that is still running when something changes)
+      const [delayMethod, delayMs] = (process.env.FAKE_DELAY || "").split(":");
+      if (delayMethod && delayMethod === req.method) setTimeout(() => sock.write(answer), Number(delayMs) || 0);
+      else sock.write(answer);
     }
   });
   sock.on("error", () => {});
 });
-server.listen(port, "127.0.0.1", () => console.log(`fake revit on ${port} (${mode}${live ? ", live model" : ""})`));
+server.listen(port, "127.0.0.1", () => {
+  const actual = server.address().port;
+  if (register) {
+    const dir = path.join(process.env.APPDATA || path.join(os.homedir(), "AppData", "Roaming"), "Formcraft", "instances");
+    fs.mkdirSync(dir, { recursive: true });
+    const at = new Date().toISOString();
+    fs.writeFileSync(path.join(dir, `${process.pid}.json`), JSON.stringify({ pid: process.pid, port: actual, revit: "2025", user: "test", started: at, updated: at,
+      build: "fake_revit", unattended: true, documents: [{ title: doc.title, path: doc.path, active: true, family: false, workshared: false }] }));
+  }
+  console.log(`fake revit on ${actual} (${mode}${live ? ", live model" : ""})`);
+});

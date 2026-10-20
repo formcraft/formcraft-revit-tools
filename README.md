@@ -22,6 +22,46 @@ Private repository. Started fresh on 13 October 2026 from the design canvases an
 | `docs/` | Roadmap, **UI development list**, testing, decisions, UI kit, screen list; `docs/history/` keeps the fork's docs | New |
 | `.claude/commands/` | `/ui-next` (plan the next UI step), `/ui-test` (run the test session) | New |
 
+## Update · 20 October 2026
+
+**Where things stand.** The pane, the MCP server and the add-in are built and staged on the pilot PC on every merge.
+The family engine builds families from recipes and checks them with Gate A in Revit. Over 80 features are listed on
+the owner's Build Tracker (`docs/tracker/`). Open live-test findings are GitHub issues labelled `test-finding`.
+
+**New since 19 October (plans, not code yet):**
+- **ArchiCAD in the bundle** (`docs/PLAN_ARCHICAD.md`). ArchiCAD is the most used BIM tool locally, so the families
+  go to both programs from one recipe. The first four hospital objects (ICU bed, neonatal incubator, anaesthesia
+  machine, ceiling operating light) were built and script-checked in ArchiCAD 28 by hand. The first code is the
+  `fmc_archicad` connector (AC1), so the next ones are built and checked with no screen work.
+- **MEP connectors in ArchiCAD objects** (AC2a). Ports that ducts and pipes snap to through the MEP Modeler, with
+  flow, power and pressure as ArchiCAD properties and the ports carried to IFC.
+- **One family catalogue for both programs.** A general catalogue now covers every discipline, with ArchiCAD objects
+  marked as coming. Prices: Revit family $2, ArchiCAD object $2, both formats $3.
+- **4D / 5D and temporary works** (`docs/PLAN_4D_5D_TEMPWORKS.md`, parked). 4D in Navisworks TimeLiner, temporary
+  works (cranes, scaffold, props, hoarding) in Formcraft Model, the 3D cost model in Formcraft Build. The kit's
+  shared parameter file already has the 4D date parameters.
+- **Hub handshake** (Q-MCP1). When an AI connects, the hub gives it the rules, the folder, data and pane maps and a
+  session journal, so no session starts from zero.
+- **Touch in ArchiCAD** (AC4). TouchKit becomes one touch layer with a profile per program.
+
+## Ideas for later
+
+Ideas, not commitments. Each one waits for the owner's yes and a row in the queue.
+- **IFC round-trip check.** Export an ArchiCAD object to IFC, open it in Revit and the other way round. Check that
+  classification, properties and MEP ports survive, so mixed Revit/ArchiCAD teams can trust the exchange.
+- **One register for both formats.** The family register gets an ArchiCAD column (file, size, check result), so the
+  catalogue, the store and Gate A read one list. This is a kit change request.
+- **Gate A for ArchiCAD.** The same honest checks for objects: scripts pass, plan symbol at each scale, detail
+  levels, properties filled, ports where the recipe has connectors, file size limit.
+- **Catalogue from the register.** Catalogue pages and their pictures come straight from `capture`, Revit renders
+  and the register, so a new family appears with no design work. Each image is labelled with where it came from.
+- **Family store downloads.** Paid families delivered as Revit, ArchiCAD or both, from the Formcraft account
+  website (payments never happen in Revit or ArchiCAD).
+- **Temporary works with the programme.** Crane, scaffold and hoarding families take their dates and hire costs from
+  the programme, so 4D playback and the cash flow show site set-up as well as the building.
+- **Saved add-ons over AI.** Repeatable work (rebuilds, captures, selftests) runs as scripts and nightly runs. AI
+  is kept for design thinking, to keep credit use low.
+
 ## Try the shell
 
 ```

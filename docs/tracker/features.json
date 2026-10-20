@@ -672,7 +672,7 @@
     "feature": "Unattended Revit tests: scenarios as data, run with no AI in the runner's own Revit, paused on battery saver or battery, resumed after sleep",
     "status": "Built, Revit check due",
     "ref": "docs/TESTING.md, #230",
-    "note": "Asked 19 Oct. Built: tests/revit scenarios (self-test, the sample batches with batch_gate and host tests, ICU bay room build, element facts, Mark & Review fix dry run, selection, design options, schedules, 3D pictures, offline ceiling; apps skipped when closed), fmc_testrun (list, plan, run, status, resume, report) with a checkpoint and findings, its own Revit only (FMC_UNATTENDED_TEST, no keep-awake), dialogs answered by rule (Duplicate Types), scripts/fmc-testrun.ps1 and fmc-testrun-schedule.ps1 (the owner registers the task). First real run not yet done Merged 19 Oct (#230); the first unattended run is the Revit check. Unattended run TR-20261019-1528 (19 Oct): the first full run: 15 scenarios in 39 minutes with no AI or person, retries, scratch projects closed without saving, findings written (F-069, F-070, F-071). Unattended run TR-20261019-1830 (19 Oct): a second full run, 16 scenarios in 36 minutes, plus a retest run; pausing on battery saver or battery and resuming after sleep not exercised yet."
+    "note": "Asked 19 Oct. Built: tests/revit scenarios (self-test, the sample batches with batch_gate and host tests, ICU bay room build, element facts, Mark & Review fix dry run, selection, design options, schedules, 3D pictures, offline ceiling; apps skipped when closed), fmc_testrun (list, plan, run, status, resume, report) with a checkpoint and findings, its own Revit only (FMC_UNATTENDED_TEST, no keep-awake), dialogs answered by rule (Duplicate Types), scripts/fmc-testrun.ps1 and fmc-testrun-schedule.ps1 (the owner registers the task). First real run not yet done Merged 19 Oct (#230); the first unattended run is the Revit check. Unattended run TR-20261019-1528 (19 Oct): the first full run: 15 scenarios in 39 minutes with no AI or person, retries, scratch projects closed without saving, findings written (F-069, F-070, F-071). Unattended run TR-20261019-1830 (19 Oct): a second full run, 16 scenarios in 36 minutes, plus a retest run; pausing on battery saver or battery and resuming after sleep not exercised yet. Pause and resume now tested (19 Oct, testrun_pause.test.ts): the real runner with the stand-in Revit and test-only seams (FMC_TESTRUN_POWER / _POWER_FILE, _STOP_AFTER_STEPS, _REVIT_STANDIN): battery mid-run pauses before the next step and carries on on mains; with pause_on_battery off saver still pauses and battery doesn't; a run cut off mid-scenario is resumed by Mode auto with passed ones not re-run; auto starts nothing within new_run_after_hours. Fixed: a cut-off try's findings were kept on resume (tries [1,2,3] for a scenario tried twice). The person's check on the real PC (battery saver, sleep) is in docs/TESTING.md and still due."
   },
   {
     "id": "F76",
@@ -718,5 +718,59 @@
     "status": "Planned",
     "ref": "docs/PLAN_ENGINEERING_SERVICES.md",
     "note": "QX1-QX7: room-type services table, FMC_Room_Type, stage stamps FMC_Auto_Stage and FMC_Auto_Run, FMC_AI_Hint marker family, run journal; lighting and small power first through the recipe-tree room build"
+  },
+  {
+    "id": "F81",
+    "area": "App",
+    "group": "Integrations",
+    "feature": "ArchiCAD connector fmc_archicad (AC1)",
+    "status": "Planned",
+    "ref": "docs/PLAN_ARCHICAD.md",
+    "note": "status, build, library_reload, check, place, capture, selftest through ArchiCAD's JSON API and Tapir; LP_XMLConverter run by the server, no screen work. Waits on Tapir on the pilot PC"
+  },
+  {
+    "id": "F82",
+    "area": "Engine",
+    "group": "Families",
+    "feature": "ArchiCAD objects from recipes (GDL generator)",
+    "status": "In progress",
+    "ref": "docs/PLAN_ARCHICAD.md, scripts/gdl/",
+    "note": "19 Oct: four hospital objects built and script-checked in ArchiCAD 28 by hand (28-55 KB, three 3D detail levels, plan symbol by scale); generator fixes (Script_VL, PROJECT2 parameters) need one rebuild through fmc_archicad build"
+  },
+  {
+    "id": "F83",
+    "area": "Engine",
+    "group": "Families",
+    "feature": "MEP ports in ArchiCAD objects (AC2a)",
+    "status": "Planned",
+    "ref": "docs/PLAN_ARCHICAD.md",
+    "note": "Base layer (hotspots, properties, IFC ports) in any ArchiCAD; MEP Modeler ports that snap ducts and pipes. Port format copied from a stock MEP object first. Waits on the owner: is MEP Modeling in the pilot PC's ArchiCAD 28"
+  },
+  {
+    "id": "F84",
+    "area": "App",
+    "group": "Hub",
+    "feature": "Hub handshake: instructions, maps and session journal (Q-MCP1)",
+    "status": "Planned",
+    "ref": "docs/PLAN_ARCHICAD.md",
+    "note": "MCP instructions on connect and fmc://map/* and fmc://state resources, so no AI relearns the app each session; after the ArchiCAD work"
+  },
+  {
+    "id": "F85",
+    "area": "App",
+    "group": "Flow",
+    "feature": "Touch features in ArchiCAD (AC4)",
+    "status": "Planned",
+    "ref": "docs/PLAN_ARCHICAD.md",
+    "note": "TouchKit split into a touch layer and app profiles (Revit, ArchiCAD); ArchiCAD profile generated from its shortcut scheme plus fmc_archicad calls"
+  },
+  {
+    "id": "F86",
+    "area": "App",
+    "group": "Build",
+    "feature": "Temporary works and 4D/5D (T1-T12)",
+    "status": "Planned",
+    "ref": "docs/PLAN_4D_5D_TEMPWORKS.md",
+    "note": "Parked until the owner says go. Navisworks TimeLiner for 4D; Temporary Works in Formcraft Model; 3D cost model in Formcraft Build. 4D date parameters already in the kit (19 Oct)"
   }
 ]
