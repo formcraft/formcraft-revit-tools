@@ -177,6 +177,18 @@ test("F75: resume after sleep or shutdown: passed stay passed, the running one s
   assert.equal(resumeRun(JSON.parse(JSON.stringify(s)) as RunState, at(4).toISOString(), at(5)).gaps.length, 0, "a short stop isn't a gap");
 });
 
+test("F75: resume drops the findings of the try that was cut off (the process ended), keeps earlier tries' and other scenarios'", () => {
+  const s = run();
+  const f = (scenario: string, got: string) => ({ run: s.run, scenario, step: "steps: x", kind: "check" as const, expected: "= 1", got, at: at(1).toISOString() });
+  startScenario(s, "a", at(1)); addFinding(s, f("a", "2"), 1); finishScenario(s, "a", "failed", "x", at(2));
+  startScenario(s, "b", at(2)); addFinding(s, f("b", "3"), 1); finishScenario(s, "b", "failed", "x", at(3));
+  // b's second try (attempt 2) finds the same and another thing, then the PC sleeps and the runner is gone
+  startScenario(s, "b", at(3)); addFinding(s, f("b", "3"), 2); addFinding(s, f("b", "4"), 2);
+  const r = resumeRun(JSON.parse(JSON.stringify(s)) as RunState, at(4).toISOString(), at(5));
+  assert.deepEqual(r.findings.map((x) => [x.scenario, x.got, x.tries]), [["a", "2", [1]], ["b", "3", [1]]]);
+  assert.deepEqual([r.scenarios.b.status, r.scenarios.b.tries, r.scenarios.b.interruptions], ["pending", 1, 1]);
+});
+
 test("F75: a jump in the clock is sleep; another live runner holds the lock; a stale one doesn't", () => {
   assert.ok(sleptBetween(0, GAP_MS + 1));
   assert.ok(!sleptBetween(0, 30000));
