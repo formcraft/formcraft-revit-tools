@@ -188,13 +188,13 @@ export const ENVELOPE_FAMILY_SHARE = 0.2;
 export interface EnvelopeVerdict { box: Box | null; errors: Array<{ part: string; by: number }>; warnings: Array<{ part: string; by: number }>; family_off: boolean }
 
 /** Each twin's real box (Rhino's facts) against the family's Coarse envelope. */
-export function envelopeVerdict(ops: Op[], parts: Array<{ name: string; bbox_min: number[]; bbox_max: number[] }>): EnvelopeVerdict {
+export function envelopeVerdict(ops: Op[], parts: Array<{ name: string; bbox_min: number[]; bbox_max: number[] }>, errorMm = ENVELOPE_ERROR_MM): EnvelopeVerdict {
   const box = envelopeBox(ops);
   const v: EnvelopeVerdict = { box, errors: [], warnings: [], family_off: false };
   if (!box) return v;
   for (const p of parts) {
     const by = outsideBy({ min: p.bbox_min, max: p.bbox_max }, box);
-    if (by > ENVELOPE_ERROR_MM) v.errors.push({ part: p.name, by });
+    if (by > errorMm) v.errors.push({ part: p.name, by });
     else if (by > ENVELOPE_WARN_MM) v.warnings.push({ part: p.name, by });
   }
   v.family_off = parts.length > 0 && v.errors.length / parts.length > ENVELOPE_FAMILY_SHARE;

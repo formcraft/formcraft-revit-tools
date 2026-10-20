@@ -38,7 +38,7 @@ namespace Formcraft.Rhino
             return new Look { C = Color.FromArgb(204, 204, 204), Ks = 0.25, Shine = 24, Alpha = 1 };
         }
 
-        public static void ToPng(IList<Part> parts, string path, int width, int height, string view)
+        public static void ToPng(IList<Part> parts, string path, int width, int height, string view, Vector3d? camera = null)
         {
             if (width < 64 || height < 64 || (long)width * height > 4_000_000) throw new ArgumentException("width × height must be between 64 × 64 and 4 megapixels");
             const int S = 2;
@@ -52,7 +52,11 @@ namespace Formcraft.Rhino
                 case "top": eye = new Vector3d(0, 0, 1); break;
                 case "back_iso": eye = new Vector3d(0.7, 1, 0.65); break;
                 case "iso": eye = new Vector3d(-0.7, -1, 0.65); break;
-                default: throw new ArgumentException("view is iso, back_iso, front, side or top");
+                case "camera":
+                    if (camera == null || !(camera.Value.Length > 1e-9) || Math.Abs(camera.Value.X) + Math.Abs(camera.Value.Y) < 1e-9)
+                        throw new ArgumentException("camera is a direction [x, y, z] that isn't straight up or down");
+                    eye = camera.Value; break;
+                default: throw new ArgumentException("view is iso, back_iso, front, side or top, or give a camera direction");
             }
             eye.Unitize();
             Vector3d right = Vector3d.CrossProduct(view == "top" ? Vector3d.YAxis : Vector3d.ZAxis, eye);

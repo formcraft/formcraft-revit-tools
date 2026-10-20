@@ -33,6 +33,8 @@ export const RECIPE = z.object({
     clear_opening_param: z.string().optional().default("Width"),
     /** A nested helper or clearance family that is never scheduled: Gate A shows the keynote check as exempt, with this reason. */
     keynote_exempt: z.string().min(3).optional(),
+    /** Owner 20 Oct (kit RHN-011): a complex shape; its curved parts must come from Rhino as import_part, proven first. */
+    rhino_required: z.boolean().optional(),
   }).optional().default({}),
 });
 export type Recipe = z.infer<typeof RECIPE>;

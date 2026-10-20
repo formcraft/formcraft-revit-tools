@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { z } from "zod";
@@ -11,6 +12,9 @@ import { buildRecipe, cleanupBackground } from "./fmc_recipe_build.js";
 import { JobStillRunning, softTimeoutMs } from "../utils/SocketClient.js";
 import { HostTestResult, LodLadder, NestedLod, RecordedSides, Recipe, familyHost, followParams, gateA, hostTestKindFor, lodLadder, parseRecipe, releasePath, roleOf, stagingPath } from "../fmc/recipes.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
+import { loadRhinoRulebook } from "../hub/rhino.js";
+import { rhinoProofProblems } from "../hub/rhinoproof.js";
+import { Likeness, Reference, likenessLine, referenceLine } from "../fmc/likeness.js";
 import { SpecFile } from "../fmc/specs.js";
 import { idleLimit } from "../fmc/doc.js";
 import { readXlsxSheets } from "../fmc/xlsx.js";
@@ -213,6 +217,12 @@ export async function runGate(file: string, cfg: GuardConfig, flex: object | nul
   const gate = gateA(family, recipe, { inspect: inspect.plan ?? null, inspectError, flex: flexResult as any, flexError, registerCategory: registerCategory(cfg, family),
     specCategory: specCategory(cfg, family), tokenCategories: tokenCategories(cfg), recordedSides: recordedSides(cfg, family, file),
     registerHost: registerHostText, hostTest, hostTestError, familyHost: famHost, nestedLod: nestedLod(cfg, file) });
+  // owner 20 Oct (RHN-020, RHN-022): a family made from a picture has real-life evidence and looks like it before release
+  const readJson = (f: string) => { try { return JSON.parse(fs.readFileSync(f, "utf8").replace(/^\uFEFF/, "")); } catch { return null; } };
+  const ref = readJson(file.replace(/\.rfa$/i, ".reference.json")) as Reference | null;
+  const rbook = loadRhinoRulebook(expandEnv(cfg.rulebooks_dir)).book;
+  gate.lines.push(referenceLine(ref, rbook), likenessLine(ref, readJson(file.replace(/\.rfa$/i, ".likeness.json")) as Likeness | null, rbook, "revit"));
+  if (gate.lines.some((l) => l.state === "Fail")) gate.verdict = "Fail";
   // callers (the test runner) check these directly: hostTestError is "" when the host test ran fine or wasn't needed
   const result = { family, file, at: new Date().toISOString(), ...gate,
     hostFrom: registerHostText ? "register" : famHost ? "family" : "", hostKind: kind ?? "", hostTest, hostTestError };
@@ -234,6 +244,11 @@ function prepareRecipe(recipe: Recipe, config: GuardConfig, dictionary: ReturnTy
   const libraryRoots = (config.library_roots ?? []).map((r) => expandEnv(r));
   const { errors, notes } = splitProblems(opsProblems(recipe.ops, dictionary, win.dirname(expandEnv(config.family_staging_root)), materials,
     { libraryRoots, templatePlanes: planes.planes, template: win.basename(template) }));
+  // owner 20 Oct (RHN-010, RHN-011): a complex shape is proven in Rhino before Revit time is spent on it
+  errors.push(...rhinoProofProblems(recipe.ops as Array<Record<string, any>>, recipe.checks, loadRhinoRulebook(expandEnv(config.rulebooks_dir)).book, {
+    manifest: (folder) => { try { return JSON.parse(fs.readFileSync(win.join(folder, "parts.json"), "utf8").replace(/^\uFEFF/, "")); } catch { return null; } },
+    sha256: (file) => { try { return crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex"); } catch { return null; } },
+  }));
   // F-061: a family the register hosts on a wall or ceiling face can't come from an unhosted template
   const hostProblem = hostTemplateProblem(recipe.family, win.basename(template), registerHost(config, recipe.family));
   if (hostProblem) notes.push(`${WARNING} ${hostProblem}`);
