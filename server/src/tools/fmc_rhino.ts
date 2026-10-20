@@ -6,8 +6,8 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { processAlive } from "../fmc/navis.js";
 import { exchangeRoot, writePackage } from "../hub/exchange.js";
-import { PartFacts, RHINO_PART, familyNameProblem, isError, partProblems, partSize, readRhinoState, rhinoCall, rhinoPaths, rhinoStateFile } from "../hub/rhino.js";
-import { ENVELOPE_ERROR_MM, envelopeVerdict, materialCheck, openOnlySolids, recipeTwins, withTwins } from "../hub/recipe2rhino.js";
+import { PartFacts, RHINO_PART, RHINO_RULEBOOK_FILE, RhinoRulebook, familyNameProblem, isError, loadRhinoRulebook, partProblems, partSize, readRhinoState, rhinoCall, rhinoPaths, rhinoStateFile } from "../hub/rhino.js";
+import { envelopeVerdict, materialCheck, openOnlySolids, recipeTwins, withTwins } from "../hub/recipe2rhino.js";
 import { OP } from "../fmc/ops.js";
 
 const win = path.win32;
@@ -63,13 +63,16 @@ const sha256 = (file: string) => crypto.createHash("sha256").update(fs.readFileS
 
 export async function runFmcRhino(args: FmcRhinoArgs) {
   const { config } = loadConfig();
+  // owner 20 Oct: the rules come from the kit's Rhino rulebook; without it nothing passes (partProblems says why)
+  const rules = loadRhinoRulebook(expandEnv(config.rulebooks_dir));
+  const book = rules.book;
   const state = readRhinoState();
   const up = state !== null && processAlive(state.pid);
   if (args.action === "status") {
     if (!state) return reply({ rhino: "not found", detail: `No ${rhinoStateFile()}: Rhino isn't open, or the Formcraft bridge isn't loaded in it (fmc_apps list)` });
     if (!up) return reply({ rhino: "closed", detail: `Rhino (pid ${state.pid}) has closed` });
     try {
-      return reply({ rhino: "running", port: state.port, pid: state.pid, ...(await rhinoCall(state.port, "rhino_status", {}, 15000)) });
+      return reply({ rhino: "running", port: state.port, pid: state.pid, rulebook: book ? `${rules.file} v${book.version}` : rules.problems.join("; "), ...(await rhinoCall(state.port, "rhino_status", {}, 15000)) });
     } catch (e) {
       return reply({ rhino: "running", port: state.port, pid: state.pid, bridge: e instanceof Error ? e.message : String(e) }, true);
     }
@@ -85,7 +88,7 @@ export async function runFmcRhino(args: FmcRhinoArgs) {
 
   try {
     switch (args.action) {
-      case "twins": return reply(...(await twins(args, config, staging, where, call)));
+      case "twins": return reply(...(await twins(args, config, staging, where, call, book)));
       case "describe": return reply(await call("rhino_describe"));
       case "new_doc": return reply(await call("rhino_new_doc", { replace: args.replace }));
       case "remove": return reply(await call("rhino_remove", { names: args.names }));
@@ -99,12 +102,12 @@ export async function runFmcRhino(args: FmcRhinoArgs) {
         if (args.parts.length === 0) bad.push("Give the parts to build");
         if (bad.length) return reply({ refused: true, reasons: bad }, true);
         const r = await call("rhino_part", { parts: args.parts });
-        const problems = partProblems((r.facts ?? []) as PartFacts[], args.envelope);
+        const problems = partProblems((r.facts ?? []) as PartFacts[], args.envelope, book);
         return reply({ ...r, problems, next: problems.some(isError) ? "Fix the parts with errors (part again with the same name replaces one)" : "check, render, then export_parts" });
       }
       case "check": {
         const r = await call("rhino_facts");
-        const problems = partProblems((r.facts ?? []) as PartFacts[], args.envelope);
+        const problems = partProblems((r.facts ?? []) as PartFacts[], args.envelope, book);
         return reply({ family: args.family, ok: !problems.some(isError), problems, facts: r.facts });
       }
       case "save": case "render": case "export_parts": {
@@ -115,7 +118,7 @@ export async function runFmcRhino(args: FmcRhinoArgs) {
           const f = await call("rhino_facts");
           let facts = (f.facts ?? []) as PartFacts[];
           if (args.names.length) facts = facts.filter((x) => args.names.includes(x.name));
-          const errors = partProblems(facts, args.envelope).filter(isError);
+          const errors = partProblems(facts, args.envelope, book).filter(isError);
           if (errors.length) return reply({ refused: true, reasons: ["The check found errors: fix them before the parts go to Revit", ...errors] }, true);
         }
         if (args.dry_run) return reply({ dry_run: true, would_write: args.action === "export_parts" ? where.parts : target, next: "Run again with dry_run=false" });
@@ -131,7 +134,9 @@ export async function runFmcRhino(args: FmcRhinoArgs) {
         }
         const r = await call("rhino_export_parts", { folder: where.parts, ...(args.names.length ? { parts: args.names } : {}) });
         const parts = ((r.parts ?? []) as PartFacts[]).map((p) => ({ ...p, sha256: p.file && fs.existsSync(p.file) ? sha256(p.file) : "" }));
+        // RHN-010: the proof Revit asks for: these files passed the check under this rulebook (fmc_recipe checks the SHA-256)
         const manifest = { family: args.family, exported: new Date().toISOString(), from: "rhino", to: "revit", units: "mm",
+          check: { ok: true, rulebook: RHINO_RULEBOOK_FILE, rulebook_version: book!.version },
           note: "Each part is a closed solid in its own .3dm, its origin the point Revit places it at (fmc_doc import_part)", parts };
         // a family exported for the first time has no parts folder yet
         fs.mkdirSync(win.dirname(where.manifest), { recursive: true });
@@ -148,7 +153,7 @@ export async function runFmcRhino(args: FmcRhinoArgs) {
           hub = { error: `the hub couldn't record this export: ${e instanceof Error ? e.message : String(e)}` };
         }
         return reply({ family: args.family, folder: where.parts, manifest: where.manifest, parts: parts.map((p) => ({ name: p.name, file: p.file, bytes: p.bytes })),
-          problems: partProblems(parts, args.envelope), hub });
+          problems: partProblems(parts, args.envelope, book), hub });
       }
     }
     return reply({ error: `Unknown action ${args.action}` }, true);
@@ -166,7 +171,8 @@ export async function runFmcRhino(args: FmcRhinoArgs) {
  * <staging>\_Batch\<family>_LOD400.json for fmc_recipe batch (a dry run first, as always).
  */
 async function twins(args: FmcRhinoArgs, config: GuardConfig, staging: string, where: ReturnType<typeof rhinoPaths>,
-  call: (method: string, params?: object) => Promise<Record<string, any>>): Promise<[object, boolean]> {
+  call: (method: string, params?: object) => Promise<Record<string, any>>, book: RhinoRulebook | null): Promise<[object, boolean]> {
+  if (!book) return [{ refused: true, reasons: [partProblems([], undefined, null)[0]] }, true];
   if (!args.recipe_file) return [{ refused: true, reasons: ["Name the recipe_file (a recipe, or a batch file of recipes)"] }, true];
   const file = expandEnv(args.recipe_file);
   if (!fs.existsSync(file)) return [{ refused: true, reasons: [`No recipe at ${file}`] }, true];
@@ -186,12 +192,12 @@ async function twins(args: FmcRhinoArgs, config: GuardConfig, staging: string, w
   // a part shown only when the family is Open (an open door or hatch) reaches past the closed envelope by design
   const openOnly = openOnlySolids(recipe.ops);
   const openParts = new Set(t.map.filter((m) => openOnly.has(m.solid)).map((m) => m.part));
-  const env = envelopeVerdict(recipe.ops, facts.filter((f) => !openParts.has(f.name)));
+  const env = envelopeVerdict(recipe.ops, facts.filter((f) => !openParts.has(f.name)), book.limits.envelope_error_mm);
   const offEnvelope = new Map(env.errors.map((e) => [e.part, e.by]));
   const good: PartFacts[] = [];
   for (const f of facts) {
-    const errors = partProblems([f]).filter(isError);
-    if (offEnvelope.has(f.name)) errors.push(`${offEnvelope.get(f.name)} mm outside the Coarse envelope (more than ${ENVELOPE_ERROR_MM} mm)`);
+    const errors = partProblems([f], undefined, book).filter(isError);
+    if (offEnvelope.has(f.name)) errors.push(`${offEnvelope.get(f.name)} mm outside the Coarse envelope (more than ${book.limits.envelope_error_mm} mm)`);
     if (errors.length) failed.push({ part: f.name, solid: t.map.find((m) => m.part === f.name)?.solid ?? f.name, reason: errors.join("; ") });
     else good.push(f);
   }
@@ -203,7 +209,7 @@ async function twins(args: FmcRhinoArgs, config: GuardConfig, staging: string, w
     envelope: env.box ? { box: env.box, outside_errors: env.errors.length, outside_warnings: env.warnings, family_off: env.family_off } : "no Coarse envelope in the recipe: not checked",
   };
   if (env.family_off)
-    return [{ refused: true, ...summary, reasons: [`${env.errors.length} of ${facts.length} twins sit more than ${ENVELOPE_ERROR_MM} mm outside the Coarse envelope: the recipe's body is off its envelope (F-067). Fix the recipe; nothing was written`] }, true];
+    return [{ refused: true, ...summary, reasons: [`${env.errors.length} of ${facts.length} twins sit more than ${book.limits.envelope_error_mm} mm outside the Coarse envelope: the recipe's body is off its envelope (F-067). Fix the recipe; nothing was written`] }, true];
   if (args.dry_run) return [{ dry_run: true, ...summary, would_write: [where.parts, where.model, where.render, out], next: "Run again with dry_run=false" }, false];
 
   for (const target of [where.manifest, where.model, where.render, out]) {
@@ -214,6 +220,7 @@ async function twins(args: FmcRhinoArgs, config: GuardConfig, staging: string, w
   const ex = await call("rhino_export_parts", { folder: where.parts, parts: names });
   const parts = ((ex.parts ?? []) as PartFacts[]).map((p) => ({ ...p, sha256: p.file && fs.existsSync(p.file) ? sha256(p.file) : "" }));
   const manifest = { family: args.family, exported: new Date().toISOString(), from: "rhino", to: "revit", units: "mm", level: "Fine (LOD 400)",
+    check: { ok: true, rulebook: RHINO_RULEBOOK_FILE, rulebook_version: book.version },
     note: "Smooth twins of the recipe's native solids, at the recipe's own coordinates (fmc_rhino twins)", parts };
   // a family twinned for the first time has no parts folder yet
   fs.mkdirSync(win.dirname(where.manifest), { recursive: true });

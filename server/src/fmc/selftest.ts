@@ -125,6 +125,14 @@ export function aiRulebookLine(r: { book: unknown; file: string; section: string
   };
 }
 
+/** Owner 20 Oct: the Rhino rulebook. Without it no Rhino part passes and no family made from a picture can be judged. */
+export function rhinoRulebookLine(r: { book: { version: string } | null; file: string; problems: string[] }): Line {
+  if (r.book) return { area: "Kit", check: "Rhino rulebook", state: "Pass", detail: `Read ${r.file} v${r.book.version}` };
+  return { area: "Kit", check: "Rhino rulebook", state: "Fail",
+    detail: `${r.problems.join("; ")}. No Rhino part passes and likeness can't be judged. Fix: add FMC_Rulebook_Rhino.json ` +
+      `(schema fmc-rhino/0.1; the proposal is docs/kit-proposals/FMC_Rulebook_Rhino.json) to the kit's rulebooks folder: a kit change request (rule 7).` };
+}
+
 /**
  * F-042 (issue #143): the build this process runs (read into memory at startup) against build-info.json on disk now.
  * The updater replaces the files, but the Claude app's MCP server keeps running the code it started with (old tools,

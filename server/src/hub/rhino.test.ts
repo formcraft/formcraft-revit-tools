@@ -4,7 +4,12 @@ import fs from "node:fs";
 import net from "node:net";
 import os from "node:os";
 import path from "node:path";
-import { PartFacts, RHINO_PART, WARN, familyNameProblem, isError, partProblems, readRhinoState, rhinoCall, rhinoPaths } from "./rhino.js";
+import { fileURLToPath } from "node:url";
+import { NO_RULEBOOK, PartFacts, RHINO_PART, WARN, familyNameProblem, isError, loadRhinoRulebook, parseRhinoRulebook, partProblems, readRhinoState, rhinoCall, rhinoPaths } from "./rhino.js";
+
+// the kit proposal is the rulebook under test (owner 20 Oct): its limits, not values in code
+const PROPOSALS = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..", "docs", "kit-proposals");
+const BOOK = parseRhinoRulebook(fs.readFileSync(path.join(PROPOSALS, "FMC_Rulebook_Rhino.json"), "utf8")).book!;
 
 /** A stand-in for the bridge in Rhino: one JSON line in, one JSON line out. */
 function fakeBridge(answer: (req: { id: number; method: string; params: Record<string, unknown> }) => object): Promise<{ port: number; close: () => void }> {
@@ -49,12 +54,12 @@ test("H1: the bridge's state file gives its port; a missing or broken one means 
 });
 
 test("H1: a good part passes the check", () => {
-  assert.deepEqual(partProblems([part()], [1020, 2200, 1000]), []);
+  assert.deepEqual(partProblems([part()], [1020, 2200, 1000], BOOK), []);
 });
 
 test("H1: the check stops open, non-manifold, invalid and short-edged parts, and parts without subcategory or material", () => {
   const p = partProblems([part({ name: "A", closed: false }), part({ name: "B", manifold: false }), part({ name: "C", valid: false }),
-    part({ name: "D", min_edge_mm: 0.4 }), part({ name: "E", subcategory: "", material: "" }), part({ name: "F", visibility: "coarse" })]);
+    part({ name: "D", min_edge_mm: 0.4 }), part({ name: "E", subcategory: "", material: "" }), part({ name: "F", visibility: "coarse" })], undefined, BOOK);
   assert.equal(p.filter(isError).length, 7);
   assert.match(p[0], /A: not a closed solid/);
   assert.match(p.find((x) => x.startsWith("D:"))!, /0.4 mm is under the 1 mm floor/);
@@ -63,12 +68,12 @@ test("H1: the check stops open, non-manifold, invalid and short-edged parts, and
 });
 
 test("H1: a part larger than the type's envelope is an error; a heavy family is a warning only", () => {
-  const big = partProblems([part({ bbox_min: [0, 0, 0], bbox_max: [1100, 50, 50] })], [1020, 2200, 1000]);
+  const big = partProblems([part({ bbox_min: [0, 0, 0], bbox_max: [1100, 50, 50] })], [1020, 2200, 1000], BOOK);
   assert.deepEqual(big, ["Castor_Wheel: larger than the type's envelope (X 1100 > 1020 mm)"]);
-  const heavy = partProblems([part({ mesh_faces: 200000 })]);
+  const heavy = partProblems([part({ mesh_faces: 200000 })], undefined, BOOK);
   assert.equal(heavy.length, 1);
   assert.ok(heavy[0].startsWith(WARN) && !isError(heavy[0]));
-  assert.deepEqual(partProblems([]), ["No parts: build them with action part first"]);
+  assert.deepEqual(partProblems([], undefined, BOOK), ["No parts: build them with action part first"]);
 });
 
 test("H1: parts are checked for shape before they reach Rhino; family names follow the kit", () => {
@@ -86,4 +91,19 @@ test("H1: Rhino files live in <staging>\\_Rhino, one folder of parts per family"
   assert.equal(w.manifest, "D:\\Kit\\04_Families\\_Staging\\_Rhino\\FMC_I_Bed\\parts.json");
   assert.equal(w.render, "D:\\Kit\\04_Families\\_Staging\\_Rhino\\FMC_I_Bed_3d.png");
   assert.equal(rhinoPaths("D:\\S", "FMC_I_Bed", "front").render, "D:\\S\\_Rhino\\FMC_I_Bed_3d_front.png");
+});
+
+test("owner 20 Oct: the Rhino rules come from the kit's rulebook; without it nothing passes", () => {
+  assert.ok(BOOK, "the proposal parses");
+  assert.equal(BOOK.limits.min_edge_mm, 1);
+  assert.deepEqual(partProblems([part()], undefined, null), [NO_RULEBOOK]);
+  assert.match(NO_RULEBOOK, /FMC_Rulebook_Rhino\.json/);
+  const strict = { ...BOOK, limits: { ...BOOK.limits, min_edge_mm: 10 } };
+  assert.ok(partProblems([part({ min_edge_mm: 5 })], undefined, strict).some((p) => /under the 10 mm floor/.test(p)));
+  assert.match(parseRhinoRulebook("{}").problems[0], /schema/);
+  assert.match(parseRhinoRulebook(JSON.stringify({ schema: "fmc-rhino/0.1", limits: {} })).problems[0], /lacks limits\.min_edge_mm/);
+  const missing = loadRhinoRulebook(path.join(os.tmpdir(), "no-such-kit-" + process.pid));
+  assert.equal(missing.book, null);
+  assert.match(missing.problems[0], /No FMC_Rulebook_Rhino\.json/);
+  assert.ok(loadRhinoRulebook(PROPOSALS).book);
 });

@@ -1,0 +1,57 @@
+{
+  "schema": "fmc-rhino/0.1",
+  "rulebook": "Rhino",
+  "version": "0.1",
+  "title": "Rhino: true-shape parts, proof before Revit, and families that look like their reference",
+  "note": "Proposed 20 Oct 2026 at the owner's request: a PC without this file has no rules for Rhino work, so fmc_rhino refuses to pass parts and Gate A can't judge likeness. Rules marked Proposed run as checks once the owner approves; the limits are read by the server (rule 7: kit data comes from the kit).",
+  "limits": {
+    "units": "mm",
+    "abs_tolerance_mm": 0.01,
+    "angle_tolerance_deg": 1,
+    "min_edge_mm": 1,
+    "mesh_faces_warn": 150000,
+    "family_mb_max": 8,
+    "envelope_error_mm": 150
+  },
+  "proof": {
+    "rhino_first": true,
+    "note": "A part that goes into a Revit family as import_part must first pass fmc_rhino check and export_parts: the .3dm on disk is the one the check passed (same SHA-256), checked under this rulebook's version."
+  },
+  "reference": {
+    "min_views": 3,
+    "min_sources": 2,
+    "min_verified_dimensions": 3,
+    "material_evidence": true,
+    "min_features": 5,
+    "source_kinds": ["catalogue", "datasheet", "listing", "standard", "maker", "photo"],
+    "note": "Search the product by its name: a catalogue or datasheet gives dimensions, materials and several views; a standard gives the rules of use (seat height, clearances). A view may be a generated or traced image only when it says so (kind generated) and never counts as evidence."
+  },
+  "likeness": {
+    "views": ["front", "side", "top", "iso"],
+    "min_iou": 0.8,
+    "max_aspect_diff": 0.08,
+    "all_features": true,
+    "blind_reviewer": true,
+    "max_rounds": 6,
+    "note": "Each reference view is compared with the same view of the model: Rhino first (the proof), Revit before release. The outline overlap (IoU) and the width/height ratio are measured by scripts/likeness/compare.py; a reviewer who did not build the family marks each signature feature present or missing. After max_rounds failed rounds the family goes to a person."
+  },
+  "rules": [
+    { "id": "RHN-001", "title": "Millimetres and one tolerance", "rule": "Rhino part files are in millimetres with an absolute tolerance of 0.01 mm and an angle tolerance of 1 degree.", "severity": "Must", "status": "Proposed", "check": "fmc_rhino new_doc sets them; check reads them" },
+    { "id": "RHN-002", "title": "Closed, manifold, valid", "rule": "Every part is one closed, manifold, valid solid (a Revit form is made only from a closed solid).", "severity": "Must", "status": "Proposed", "check": "fmc_rhino check" },
+    { "id": "RHN-003", "title": "No short edges", "rule": "No edge is shorter than min_edge_mm (Revit drops curves under 0.78 mm); use a larger fillet or none.", "severity": "Must", "status": "Proposed", "check": "fmc_rhino check" },
+    { "id": "RHN-004", "title": "Smooth, not faceted", "rule": "Curved parts are NURBS surfaces (revolve, loft, sweep, pipe, fillet), never polygon outlines or meshes standing in for curves.", "severity": "Must", "status": "Proposed", "check": "part vocabulary; no mesh input" },
+    { "id": "RHN-005", "title": "LOD 400 detail", "rule": "At LOD 400 a part shows what is made: true section profiles and radii, real thickness, joints (tenons, welds, dowels where visible), fixings and hardware, and the parts the maker cuts as separate solids.", "severity": "Must", "status": "Proposed", "check": "reference features all present (likeness)" },
+    { "id": "RHN-006", "title": "Rhino for fixed shapes, Revit for what flexes", "rule": "Anything a type or instance parameter changes is native Revit geometry on reference planes; Rhino parts are fixed true shapes, placed by parameters and varied by type.", "severity": "Must", "status": "Proposed", "check": "Gate A flex; import_part never on a flexing dimension" },
+    { "id": "RHN-007", "title": "Named parts carry their data", "rule": "Each part's layer is its name; it carries a subcategory, a kit FMC_ material and a visibility (fine, medium_fine or all).", "severity": "Must", "status": "Proposed", "check": "fmc_rhino check" },
+    { "id": "RHN-008", "title": "Inside the envelope", "rule": "No part is larger than the type's envelope, and no part sits more than envelope_error_mm outside the Coarse envelope.", "severity": "Must", "status": "Proposed", "check": "fmc_rhino check, twins" },
+    { "id": "RHN-009", "title": "Weight budget", "rule": "A LOD 400 family stays under family_mb_max; more than mesh_faces_warn render-mesh faces is a warning to simplify.", "severity": "Should", "status": "Proposed", "check": "fmc_rhino check; Gate A file size" },
+    { "id": "RHN-010", "title": "Rhino proof before Revit", "rule": "A recipe with Rhino parts builds in Revit only when every part passed the Rhino check and was exported under this rulebook, unchanged since (same SHA-256).", "severity": "Must", "status": "Proposed", "check": "fmc_recipe check, build and batch refuse otherwise" },
+    { "id": "RHN-011", "title": "Complex shapes are proven in Rhino", "rule": "A recipe marked rhino_required (a complex shape) has its curved parts as import_part from Rhino, not native stand-ins.", "severity": "Must", "status": "Proposed", "check": "fmc_recipe check" },
+    { "id": "RHN-020", "title": "Reference evidence", "rule": "A family made from a picture has a reference file: at least min_views views, min_sources sources (catalogue, datasheet, listing, standard or maker), min_verified_dimensions verified dimensions, evidence for each material, and a list of at least min_features signature features.", "severity": "Must", "status": "Proposed", "check": "Gate A 'Reference evidence'" },
+    { "id": "RHN-021", "title": "Generated views are not evidence", "rule": "A view generated or traced by AI is marked kind generated; it may guide modelling but never counts toward min_views or as proof of size or material.", "severity": "Must", "status": "Proposed", "check": "Gate A 'Reference evidence'" },
+    { "id": "RHN-022", "title": "Looks like the reference", "rule": "Before release, every reference view matches the same model view (IoU at least min_iou, width/height ratio within max_aspect_diff) and a blind reviewer marks every signature feature present.", "severity": "Must", "status": "Proposed", "check": "Gate A 'Looks like the reference'" },
+    { "id": "RHN-023", "title": "Rhino likeness first", "rule": "The likeness check runs on the Rhino renders before the Revit build, and again on the Revit family before release.", "severity": "Should", "status": "Proposed", "check": "likeness file from: rhino, then revit" },
+    { "id": "RHN-024", "title": "A person after the rounds", "rule": "After max_rounds failed likeness rounds the family stops and goes to a person with the renders, the scores and what is missing.", "severity": "Must", "status": "Proposed", "check": "likeness rounds" },
+    { "id": "RHN-025", "title": "No brands", "rule": "Generic library families carry no brand or model; a client-line family may carry the client's own.", "severity": "Must", "status": "Proposed", "check": "Gate A values" }
+  ]
+}
