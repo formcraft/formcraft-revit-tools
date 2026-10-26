@@ -1,7 +1,7 @@
 import { DocInfo, GuardConfig } from "./policy.js";
 import { NEVER, PLACEABLE, USER_LINE, aiVerdict, batchSize, generalState, recordBatch } from "./aiuse.js";
 import { Names, elementNames, explain, namesWanted } from "./explain.js";
-import { approvalFor, claimApproval, enqueue, loadAiConfig, loadRulebook, loadState, logBatch, saveState } from "./aiuse_io.js";
+import { approvalFor, claimApproval, enqueue, loadAiConfig, loadRulebook, loadState, logBatch, saveState, setResult, setStatus } from "./aiuse_io.js";
 
 /**
  * The live-model lock's one new case (AI-assisted modeller, Phase A). Called only after the lock has refused a
@@ -28,7 +28,9 @@ export async function aiGate(command: string, params: any, active: (DocInfo & { 
   }
   const elements = batchSize(params);
   const approval = approvalFor(command, params, active.path, env);
-  const v = aiVerdict({ command, doc: active, elements, approved: !!approval }, cfg, book, ai, loadState(env));
+  // Auto-approve (owner 26 Oct): testing mode only; the batch runs now and is still listed in Approvals.
+  const auto = !approval && ai.mode === "testing" && ai.auto_approve === true;
+  const v = aiVerdict({ command, doc: active, elements, approved: !!approval || auto }, cfg, book, ai, loadState(env));
   if (!v.ok) {
     let reason = `AI-assisted modeller: ${v.reasons[0]}.`;
     if (v.needs_approval) {
@@ -57,8 +59,11 @@ export async function aiGate(command: string, params: any, active: (DocInfo & { 
       // One run per approval: claimed before Revit runs, so a timeout never leaves it open for a replay.
       if (approval && !claimApproval(approval.id, env))
         throw new Error(`Batch ${approval.id} has already run once for its approval: check the model (fmc_job status), then queue a new batch if more is needed.`);
+      const autoItem = auto ? enqueue(command, params, active.path, active.title, v.group ?? "", elements, env, new Date(), await describe(command, params, send)) : null;
+      if (autoItem) setStatus(autoItem.id, "used", "auto-approved (testing)", env);
       try {
         const r = await exec();
+        if (autoItem) setResult(autoItem.id, "done", `${autoItem.summary} · ${JSON.stringify(r ?? {}).slice(0, 4000)}`, env);
         if (book) saveState(recordBatch(loadState(env), active.path, elements, false, book), env);
         logBatch(cfg, { ...row, result: "done", detail: v.band ?? "" });
         return r;
@@ -67,8 +72,10 @@ export async function aiGate(command: string, params: any, active: (DocInfo & { 
         if ((e as { code?: string })?.code === "FMC-JOB-RUNNING") {
           if (book) saveState(recordBatch(loadState(env), active.path, elements, false, book), env);
           logBatch(cfg, { ...row, result: "running", detail: `job ${(e as { job?: string }).job ?? ""}` });
+          if (autoItem) setResult(autoItem.id, "running", e instanceof Error ? e.message : String(e), env);
           throw e;
         }
+        if (autoItem) setResult(autoItem.id, "failed", e instanceof Error ? e.message : String(e), env);
         if (book) saveState(recordBatch(loadState(env), active.path, elements, true, book), env);
         logBatch(cfg, { ...row, result: "failed", detail: e instanceof Error ? e.message : String(e) });
         throw e;

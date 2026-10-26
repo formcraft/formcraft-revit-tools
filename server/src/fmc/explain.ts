@@ -66,6 +66,15 @@ function op(o: P, n: Names, i: number): string[] {
     case "revision_cloud": return [`${h}Revision cloud in ${o.view}${o.revision ? `, revision ${o.revision}` : ", latest revision"}`];
     case "place_annotation": return [`${h}Place ${o.type_name} in ${o.view}`];
     case "color_fill_legend": return [`${h}Colour fill legend for ${o.category ?? "Rooms"} in ${o.view}${o.scheme ? `, scheme ${o.scheme}` : ""}`];
+    case "extrusion": case "blend": case "revolve": case "sweep":
+      return [`${h}${o.solid === false ? "Void" : "Solid"} ${o.op}${o.plane ? ` on ${o.plane}` : ""}${o.end_mm != null ? `, depth ${mm(o.end_mm)}` : ""}${o.height_mm != null ? `, height ${mm(o.height_mm)}` : ""}${o.material ? `, material ${o.material}` : ""}`];
+    case "family_param": return [`${h}Family parameter ${o.name} (${o.type ?? "Length"}, ${o.instance ? "instance" : "type"})${o.formula ? ` = ${o.formula}` : o.value != null ? ` = ${o.value}` : ""}`];
+    case "family_type": return [`${h}Family type ${o.name}${o.params ? `: ${Object.entries(o.params).map(([k, v]) => `${k} ${v}`).join(", ")}` : ""}`];
+    case "family_category": return [`${h}Family category: ${o.category}`];
+    case "reference_plane": return [`${h}Reference plane ${o.name ?? ""} ${xy(o.start_mm)} → ${xy(o.end_mm)}`.replace("  ", " ")];
+    case "dimension": return [`${h}Dimension between ${(o.refs ?? []).join(", ")}${o.label ? `, labelled ${o.label}` : ""}${o.equal ? ", equal" : ""}`];
+    case "save_family": return [`${h}Save the family${o.path ? ` as ${o.path}` : ""}`];
+    case "load_into_project": return [`${h}Load the family into ${o.project ?? "the open project"}${o.overwrite === false ? "" : " (overwriting)"}`];
     case "delete": return [`${h}DELETE ${count} elements (anything hosted on them goes too):`, ...named(n, o.ids)];
     case "move": return [`${h}Move ${count} elements by ${(o.vector_mm ?? []).map((v: number) => Math.round(v)).join(", ")} mm:`, ...named(n, o.ids)];
     case "set_param": {
@@ -115,6 +124,7 @@ export function explain(command: string, params: unknown, names: Names = { types
       return cap(["New rooms:", ...data.map((d) => `${d.number ?? ""} ${d.name ?? ""} at ${xy(d.location)}`.trim())]);
     case "create_level":
       return cap(["New levels:", ...data.map((d) => `${d.name ?? "?"} at ${mm(d.elevation)}`)]);
+    case "fmc_family_new": return [`New family from ${p.template ?? "Metric Generic Model"}, saved as ${p.path}`];
     case "fmc_post_command":
       return cap([`Starts Revit's ${p.command} command, as if clicked on the ribbon` + ((p.select_ids ?? []).length ? `, with ${(p.select_ids ?? []).length} elements selected:` : ""),
         ...named(names, p.select_ids)]);

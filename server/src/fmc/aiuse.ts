@@ -57,6 +57,8 @@ export interface AiModellerConfig {
   access?: "general" | "full";
   /** Owner 26 Oct, testing: the AI may run Revit API code (send_code_to_revit), each run approved with the code shown. */
   allow_code?: boolean;
+  /** Owner 26 Oct: in testing mode, batches run without waiting; each is still listed in Approvals as auto-approved. */
+  auto_approve?: boolean;
   /** Per project code: its own General switch, and (admin, Advanced) its own switch, involvement and levels. */
   projects: Record<string, { general?: boolean; on?: boolean; involvement?: number; levels?: Record<string, Level> }>;
   /** Autonomy level per group (firm default); a group not listed is at Suggest. */
@@ -171,7 +173,7 @@ export function parseConfig(raw: unknown): AiModellerConfig | null {
   o.on = o.on === true;
   const levels: Record<string, Level> = {};
   for (const [k, v] of Object.entries((o.levels ?? {}) as Record<string, unknown>)) if (LEVELS.includes(v as Level)) levels[k] = v as Level;
-  return { on: o.on, stop: o.stop === true, general: o.general === true ? true : undefined, mode: o.mode === "testing" ? "testing" : "strict", access: o.access === "full" ? "full" : "general", allow_code: o.allow_code === true,
+  return { on: o.on, stop: o.stop === true, general: o.general === true ? true : undefined, mode: o.mode === "testing" ? "testing" : "strict", access: o.access === "full" ? "full" : "general", allow_code: o.allow_code === true, auto_approve: o.auto_approve === true,
     involvement: typeof o.involvement === "number" ? o.involvement : undefined,
     projects: o.projects && typeof o.projects === "object" ? o.projects : {}, levels };
 }

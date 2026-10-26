@@ -11,7 +11,9 @@ export const MODEL_EDIT_OPS = ["copy", "rotate", "mirror", "join", "unjoin", "sw
   "create_view", "duplicate_view", "set_view", "override", "hide", "unhide", "create_filter", "create_template", "apply_template",
   "create_sheet", "place_view", "open_view",
   "detail_line", "model_line", "filled_region", "masking_region", "text", "replace_text", "tag", "spot_elevation", "spot_coordinate",
-  "revision_cloud", "place_annotation", "color_fill_legend"] as const;
+  "revision_cloud", "place_annotation", "color_fill_legend",
+  "extrusion", "blend", "revolve", "sweep", "family_param", "family_type", "family_category", "reference_plane", "dimension",
+  "save_family", "load_into_project"] as const;
 
 export const MODIFY_MODEL_DESCRIPTION =
   "Formcraft: edit the model like a person does in Revit (owner 26 Oct), a list of ops as ONE batch: one approval, one " +
@@ -64,6 +66,17 @@ export const MODIFY_MODEL_DESCRIPTION =
   "revision_cloud {view, outline_mm, revision? (description or number; default the latest)} · " +
   "place_annotation {view, type_name (detail item, symbol or generic annotation), point_mm, rotation_deg?} · " +
   "color_fill_legend {view, category? (default Rooms), scheme?, point_mm}. " +
+  "Families (in the Family Editor; new_family makes and opens one). plane: XY (default), XZ, YZ with offset_mm, or a " +
+  "reference plane's name; profile points [u, v] in it (XY = [x, y], XZ = [x, z], YZ = [y, z]): " +
+  "extrusion {outline_mm | loops_mm, plane?, start_mm?, end_mm, solid? (false = void), material? (a name, or a family " +
+  "parameter to drive it), subcategory?} · blend {bottom_mm, top_mm, height_mm, plane?, solid?} · " +
+  "revolve {outline_mm, axis_mm [[u, v], [u, v]], plane? (default XZ), start_deg?, end_deg?, solid?} · " +
+  "sweep {path_mm (plan polyline), profile_mm [[u, v], ...] (u to the path's right, v up), solid?} · " +
+  "family_param {name, type: Length|Text|Number|Integer|YesNo|Material|Angle|Area|Volume, instance?, group?, value?, formula?} · " +
+  "family_type {name, params?: {name: value}} · family_category {category} · " +
+  "reference_plane {start_mm, end_mm, name?, view?} (families and projects) · " +
+  "dimension {view?, refs (reference plane names, grids, levels), line_mm, label? (a family parameter), equal?} · " +
+  "save_family {path? (.rfa)} · load_into_project {project? (its title), overwrite? (default true)}. " +
   "dry_run true runs it and rolls back, answering what would change: do that first for deletes. Pinned elements and " +
   "elements another user owns are refused. Use get_element_geometry first to line new work up with existing elements.";
 
@@ -105,6 +118,25 @@ export function registerModifyModelTool(server: McpServer) {
         return reply(await withRevitConnection((c) => c.sendCommand("fmc_post_command", { command: args.command, ...(args.select_ids ? { select_ids: args.select_ids } : {}) })));
       } catch (e) {
         return reply(`run_revit_command: ${e instanceof Error ? e.message : String(e)}`, true);
+      }
+    }
+  );
+
+  server.tool(
+    "new_family",
+    "Formcraft (owner 26 Oct): a new family from a Revit family template (template: e.g. Metric Generic Model, Metric " +
+      "Furniture, Metric Door; or a .rft path), saved at path (.rfa) and opened in the Family Editor. Then build it with " +
+      "modify_model's family ops, save_family, and load_into_project.",
+    {
+      template: z.string().optional().default("Metric Generic Model"),
+      path: z.string().describe("Where to save the new family, ending .rfa (a project's 01_WIP or the kit's staging)"),
+      overwrite: z.boolean().optional().default(false),
+    },
+    async (args) => {
+      try {
+        return reply(await withRevitConnection((c) => c.sendCommand("fmc_family_new", args)));
+      } catch (e) {
+        return reply(`new_family: ${e instanceof Error ? e.message : String(e)}`, true);
       }
     }
   );

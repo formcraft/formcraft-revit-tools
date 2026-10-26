@@ -103,6 +103,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_model_edit",
   // run_revit_command (owner 26 Oct): a built-in Revit command, which may act on the selection
   "fmc_post_command",
+  // new_family (owner 26 Oct): a family file made from a template and opened
+  "fmc_family_new",
   // Circuits (KISIC 4.4): devices grouped into circuits on a board, the kit's distribution system set; the dry run rolls back
   "fmc_circuits_create",
 ]);

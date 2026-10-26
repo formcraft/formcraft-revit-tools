@@ -167,7 +167,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     created.Add(lg.Id);
                     return new JObject { ["legend"] = lg.Id.Value };
                 }
-                default: return null;
+                default: return FamilyOp(doc, name, op, made, created);
             }
         }
 

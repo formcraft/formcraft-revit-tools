@@ -173,4 +173,25 @@ namespace RevitMCPCommandSet.Commands.Fmc
             }
         }
     }
+
+    /// <summary>A new family from a template, saved and opened in the Family Editor (owner 26 Oct).</summary>
+    public class FmcFamilyNewCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcFamilyNewHandler _handler => (FmcFamilyNewHandler)Handler;
+
+        public FmcFamilyNewCommand(UIApplication uiApp) : base(new FmcFamilyNewHandler(), uiApp) { }
+        public override string CommandName => "fmc_family_new";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = parameters ?? new JObject();
+                if (!RaiseAndWaitForCompletion(120000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
 }

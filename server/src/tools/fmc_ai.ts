@@ -62,7 +62,7 @@ export function policySummary(config: GuardConfig, active: any) {
   return {
     // The one setting users see (owner 26 Oct): the plain state and line for the open model's project.
     general: {
-      state: state3, project: key || null, mode: ai?.mode ?? "strict", access: ai?.access ?? "general", allow_code: ai?.allow_code ?? false, compliant: !active?.title || !!projectCode(active.title), section: ai ? "present" : "missing (the AI switch creates it)",
+      state: state3, project: key || null, mode: ai?.mode ?? "strict", access: ai?.access ?? "general", allow_code: ai?.allow_code ?? false, auto_approve: ai?.mode === "testing" && ai?.auto_approve === true, compliant: !active?.title || !!projectCode(active.title), section: ai ? "present" : "missing (the AI switch creates it)",
       rulebook_general: !!book?.general, covers: book?.general?.groups ?? [],
       line: state3 === "On" ? "AI is on for this project: every change waits for your approval." : state3 === "Stopped" ? USER_LINE.stopped
         : active?.title && !key ? USER_LINE.notCompliant : USER_LINE.off,
@@ -222,6 +222,7 @@ export async function paneAi(command: string, input: Record<string, unknown>, by
       if (typeof input.stop === "boolean") cur.stop = input.stop;
       if (input.access === "full" || input.access === "general") cur.access = input.access;
       if (typeof input.allow_code === "boolean") cur.allow_code = input.allow_code;
+      if (typeof input.auto_approve === "boolean") cur.auto_approve = input.auto_approve;
       cur.changed = { by, at: new Date().toISOString() };
       raw.ai_modeller = cur;
       fs.writeFileSync(file, JSON.stringify(raw, null, 2));
