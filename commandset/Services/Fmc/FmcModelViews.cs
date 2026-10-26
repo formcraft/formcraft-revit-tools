@@ -152,7 +152,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             ViewFamily family = kind switch
             {
                 "floor_plan" => ViewFamily.FloorPlan, "ceiling_plan" => ViewFamily.CeilingPlan, "structural_plan" => ViewFamily.StructuralPlan,
-                "section" => ViewFamily.Section, "elevation" => ViewFamily.Elevation, "3d" => ViewFamily.ThreeDimensional,
+                "section" => ViewFamily.Section, "elevation" => ViewFamily.Elevation, "3d" => ViewFamily.ThreeDimensional, "camera" => ViewFamily.ThreeDimensional,
                 "drafting" => ViewFamily.Drafting, "callout" => ViewFamily.Detail,
                 _ => throw new InvalidOperationException($"{kind} isn't a view kind"),
             };
@@ -172,6 +172,15 @@ namespace RevitMCPCommandSet.Services.Fmc
                     v = v3; break;
                 }
                 case "drafting": v = ViewDrafting.Create(doc, vft); break;
+                case "camera":
+                {
+                    // eye_mm and target_mm: a perspective view from eye towards target
+                    XYZ eye = Vec(op["eye_mm"], "camera needs eye_mm [x, y, z]"), target = Vec(op["target_mm"], "camera needs target_mm [x, y, z]");
+                    XYZ fwd = (target - eye).Normalize(), up = fwd.CrossProduct(XYZ.BasisZ).CrossProduct(fwd).Normalize();
+                    var cam = View3D.CreatePerspective(doc, vft);
+                    cam.SetOrientation(new ViewOrientation3D(eye, up.Z < 0 ? up.Negate() : up, fwd));
+                    v = cam; break;
+                }
                 case "section":
                 {
                     // line_mm: the cut line in plan, looking to its left; depth_mm how far it sees; bottom_mm / top_mm the height

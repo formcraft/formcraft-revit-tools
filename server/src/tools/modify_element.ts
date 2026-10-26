@@ -13,7 +13,8 @@ export const MODEL_EDIT_OPS = ["copy", "rotate", "mirror", "join", "unjoin", "sw
   "detail_line", "model_line", "filled_region", "masking_region", "text", "replace_text", "tag", "spot_elevation", "spot_coordinate",
   "revision_cloud", "place_annotation", "color_fill_legend",
   "extrusion", "blend", "revolve", "sweep", "family_param", "family_type", "family_category", "reference_plane", "dimension",
-  "save_family", "load_into_project"] as const;
+  "save_family", "load_into_project",
+  "column", "beam", "brace", "isolated_foundation", "wall_foundation", "foundation_slab", "structural_floor", "truss", "beam_system", "rebar", "area_reinforcement", "path_reinforcement", "fabric_area", "coping", "point_load", "line_load", "area_load", "load_case", "analytical_member", "duct", "pipe", "cable_tray", "conduit", "flex_duct", "flex_pipe", "connect", "insulation", "lining", "convert_placeholders", "wire", "space", "space_separation", "toposolid", "toposolid_subdivision", "mass_floors", "wall_by_face", "wall_sweep", "curtain_grid", "mullions", "wall_opening", "area_plan", "area", "area_boundary", "create_schedule", "revision", "radial_array", "offset", "split", "extend", "wall_join", "create_group", "place_group", "ungroup", "assembly", "parts", "displace", "paint", "remove_paint", "demolish", "path_of_travel", "energy_model", "create_material", "line_style", "line_pattern", "fill_pattern", "object_style", "project_info", "project_units", "global_param", "associate_global", "coordinates", "acquire_coordinates", "publish_coordinates", "create_workset", "set_workset", "purge", "save_selection", "copy_types", "keynote_file"] as const;
 
 export const MODIFY_MODEL_DESCRIPTION =
   "Formcraft: edit the model like a person does in Revit (owner 26 Oct), a list of ops as ONE batch: one approval, one " +
@@ -77,6 +78,36 @@ export const MODIFY_MODEL_DESCRIPTION =
   "reference_plane {start_mm, end_mm, name?, view?} (families and projects) · " +
   "dimension {view?, refs (reference plane names, grids, levels), line_mm, label? (a family parameter), equal?} · " +
   "save_family {path? (.rfa)} · load_into_project {project? (its title), overwrite? (default true)}. " +
+  "Structure: column {level, points_mm, structural? (default true), top_level?, base_offset_mm?, top_offset_mm?, rotation_deg?, type_name?} · " +
+  "beam / brace {level, start_mm, end_mm ([x, y, z], z above the level), type_name?} · isolated_foundation {level, points_mm} · " +
+  "wall_foundation {ids (walls)} · foundation_slab / structural_floor {level, outline_mm | loops_mm, offset_mm?} · truss {level, start_mm, end_mm} · " +
+  "beam_system {level, outline_mm, direction_edge?, spacing_mm?, type_name?} · rebar {host, curves_mm: [[[x, y, z], ...]], normal_mm?, bar_type?, count?, spacing_mm?} · " +
+  "area_reinforcement / fabric_area {host, outline_mm} · path_reinforcement {host, path_mm, flip?} · coping {ids [element, cutter...], remove?} · " +
+  "point_load / line_load / area_load {host? (analytical member or panel), point_mm | start_mm + end_mm | outline_mm, force_kn [fx, fy, fz], moment_knm?, load_case?} · " +
+  "load_case {name, nature?, category: dead|live} · analytical_member {start_mm, end_mm}. " +
+  "MEP (points [x, y, z], z above the level): duct / pipe {level, points_mm, system?, type_name?, width_mm, height_mm | diameter_mm, placeholder?, elbows? (default true)} · " +
+  "cable_tray / conduit {level, points_mm, type_name?, width_mm?, height_mm? | diameter_mm?} · flex_duct / flex_pipe {level, points_mm, system?} · " +
+  "connect {ids: two runs (elbow or transition) or three (tee)} · insulation / lining {ids, thickness_mm} · convert_placeholders {ids} · " +
+  "wire {view, points_mm, style?: arc|chamfer} · space {level, points_mm, name?} · space_separation {level, lines_mm}. " +
+  "Site and mass: toposolid {level, points_mm ([x, y, z] survey points) and/or outline_mm, type_name?} · toposolid_subdivision {host, outline_mm, material?} · " +
+  "mass_floors {ids (masses), levels} · wall_by_face {host (mass), point_mm (on the face), type_name?}. " +
+  "Architecture and modify: wall_sweep {ids (walls), reveal?, height_mm, side?: exterior|interior, type_name?} · " +
+  "curtain_grid {wall, vertical_mm: [distances along], horizontal_mm: [heights]} · mullions {wall, type_name?} · wall_opening {wall, start_mm, end_mm} · " +
+  "opening also takes vertical: true · create_view also takes kind camera {eye_mm, target_mm} · " +
+  "area_plan {level, scheme?, name?} · area {view, points_mm} · area_boundary {view, lines_mm} · " +
+  "create_schedule {kind?: schedule|material_takeoff|sheet_list|revision|keynote_legend|key|note_block, category?, fields: [names], sort?, itemize?, name?, family? (note_block)} · " +
+  "revision {description, date?, issued_by?, issued_to?} · radial_array {ids, count, angle_deg? (default 360), center_mm?} · " +
+  "offset {ids (line-based), distance_mm (to the left), copy? (default true)} · split {id, point_mm, gap_mm?} · extend {ids, target} (Trim/Extend) · " +
+  "wall_join {ids, allow, end?: 0|1|both} · create_group {ids, name?} · place_group {type_name, points_mm} · ungroup {ids} · assembly {ids, name?} · " +
+  "parts {ids} · displace {view, ids, vector_mm} · paint / remove_paint {id, point_mm (on the face), material} · demolish {ids, phase?} · " +
+  "path_of_travel {view, start_mm, end_mm} · energy_model {}. " +
+  "Settings: create_material {name, from?, color?, transparency?, class?} · line_style {name, weight?, color?, pattern?} · " +
+  "line_pattern {name, segments: [{kind: dash|space|dot, length_mm}]} · fill_pattern {name, kind?: drafting|model, angle_deg, spacing_mm, crosshatch?, spacing2_mm?} · " +
+  "object_style {category, subcategory?, weight?, cut_weight?, color?, pattern?, material?} · project_info {params} · " +
+  "project_units {length?: Millimeters|Meters..., length_accuracy?, area?, volume?, angle?} · global_param {name, type?, value? | formula?} · " +
+  "associate_global {ids, param, global} · coordinates {point_mm?, east_west_mm?, north_south_mm?, elevation_mm?, angle_deg? (true north)} · " +
+  "acquire_coordinates / publish_coordinates {link} · create_workset {name} · set_workset {ids, workset} · purge {categories?, passes?} · " +
+  "save_selection {name, ids} · copy_types {from (another open model), names? | categories?} (Transfer Project Standards) · keynote_file {path}. " +
   "dry_run true runs it and rolls back, answering what would change: do that first for deletes. Pinned elements and " +
   "elements another user owns are refused. Use get_element_geometry first to line new work up with existing elements.";
 
@@ -137,6 +168,34 @@ export function registerModifyModelTool(server: McpServer) {
         return reply(await withRevitConnection((c) => c.sendCommand("fmc_family_new", args)));
       } catch (e) {
         return reply(`new_family: ${e instanceof Error ? e.message : String(e)}`, true);
+      }
+    }
+  );
+
+  server.tool(
+    "revit_file",
+    "Formcraft (owner 26 Oct): what Revit does with files, outside an edit batch. action: save, save_as {path, overwrite?, " +
+      "as_central?}, open {path}, close {title, save?} (not the active model), export {format: dwg|dxf|dgn|sat|pdf|ifc|nwc|" +
+      "fbx|dwf|gbxml|image|schedule, folder, name?, views? (names, sheet numbers or ids; default the active view), combine? " +
+      "(pdf), pixels? (image)}, link_cad / import_cad {path, view?, this_view_only?}, link_image / import_image / link_pdf " +
+      "{path, view?, point_mm?, page? (pdf)}, link_revit {path, placement?: shared|origin}, load_family {path}, point_cloud " +
+      "{path}, sync {comment?, relinquish? (default true), compact?}, reload_latest, relinquish. Sync and relinquish always " +
+      "wait for a person's approval, even with auto-approve.",
+    {
+      action: z.enum(["save", "save_as", "open", "close", "export", "link_cad", "import_cad", "link_image", "import_image", "link_pdf",
+        "link_revit", "load_family", "point_cloud", "sync", "reload_latest", "relinquish"]),
+      path: z.string().optional(), title: z.string().optional(), save: z.boolean().optional(), overwrite: z.boolean().optional(),
+      as_central: z.boolean().optional(), format: z.string().optional(), folder: z.string().optional(), name: z.string().optional(),
+      views: z.array(z.union([z.string(), z.number()])).optional(), combine: z.boolean().optional(), pixels: z.number().int().optional(),
+      view: z.string().optional(), this_view_only: z.boolean().optional(), point_mm: z.array(z.number()).optional(),
+      page: z.number().int().optional(), placement: z.enum(["shared", "origin"]).optional(), comment: z.string().optional(),
+      relinquish: z.boolean().optional(), compact: z.boolean().optional(), engine: z.string().optional(),
+    },
+    async (args) => {
+      try {
+        return reply(await withRevitConnection((c) => c.sendCommand("fmc_revit_file", args)));
+      } catch (e) {
+        return reply(`revit_file: ${e instanceof Error ? e.message : String(e)}`, true);
       }
     }
   );

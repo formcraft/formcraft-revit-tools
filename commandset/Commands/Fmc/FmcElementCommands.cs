@@ -194,4 +194,25 @@ namespace RevitMCPCommandSet.Commands.Fmc
             }
         }
     }
+
+    /// <summary>What Revit does with files: save, open, export, link, import, sync (owner 26 Oct); behind the lock.</summary>
+    public class FmcRevitFileCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcRevitFileHandler _handler => (FmcRevitFileHandler)Handler;
+
+        public FmcRevitFileCommand(UIApplication uiApp) : base(new FmcRevitFileHandler(), uiApp) { }
+        public override string CommandName => "fmc_revit_file";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = parameters ?? new JObject();
+                if (!RaiseAndWaitForCompletion(1800000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
 }

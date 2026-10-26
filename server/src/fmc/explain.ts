@@ -99,7 +99,14 @@ function op(o: P, n: Names, i: number): string[] {
     case "room_separation": return [`${h}${(o.lines_mm ?? []).length} room separation lines on ${o.level}`];
     case "opening": return [`${h}Cut a ${(o.outline_mm ?? []).length}-sided hole in ${isRef(o.host) ? made(o.host) : elementName(n, o.host)}`];
     case "shaft": return [`${h}Shaft opening ${o.base_level} → ${o.top_level}: cuts every floor between`];
-    default: return [`${h}${o.op}`];
+    default: {
+      // the newer ops: their kind and the inputs a person checks
+      const keys = ["level", "type_name", "name", "view", "category", "host", "wall", "target", "path", "from", "workset", "material", "format"];
+      const bits = keys.filter((k) => o[k] != null).map((k) => `${k} ${isRef(o[k]) ? made(o[k]) : typeof o[k] === "object" ? JSON.stringify(o[k]) : o[k]}`);
+      const pts = (o.points_mm ?? o.outline_mm ?? []).length;
+      return [`${h}${String(o.op).replace(/_/g, " ")}${o.ids ? ` on ${o.ids.length} elements` : ""}${pts ? `, ${pts} points` : ""}${bits.length ? ` (${bits.join(", ")})` : ""}`,
+        ...(o.ids ? named(n, o.ids) : [])];
+    }
   }
 }
 
@@ -124,6 +131,8 @@ export function explain(command: string, params: unknown, names: Names = { types
       return cap(["New rooms:", ...data.map((d) => `${d.number ?? ""} ${d.name ?? ""} at ${xy(d.location)}`.trim())]);
     case "create_level":
       return cap(["New levels:", ...data.map((d) => `${d.name ?? "?"} at ${mm(d.elevation)}`)]);
+    case "fmc_revit_file": return [`Revit file action: ${p.action}${p.format ? ` ${p.format}` : ""}${p.path ? ` ${p.path}` : ""}${p.folder ? ` to ${p.folder}` : ""}` +
+      (["sync", "relinquish"].includes(p.action) ? " (changes the central model for everyone)" : "")];
     case "fmc_family_new": return [`New family from ${p.template ?? "Metric Generic Model"}, saved as ${p.path}`];
     case "fmc_post_command":
       return cap([`Starts Revit's ${p.command} command, as if clicked on the ribbon` + ((p.select_ids ?? []).length ? `, with ${(p.select_ids ?? []).length} elements selected:` : ""),
