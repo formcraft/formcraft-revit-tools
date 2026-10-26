@@ -9,7 +9,7 @@ import os from "node:os";
 import path from "node:path";
 
 const win = path.win32;
-export interface UsageLine { at: string; tool: string; action: string; ms: number; ok: boolean; build: string; queued?: boolean }
+export interface UsageLine { at: string; tool: string; action: string; ms: number; ok: boolean; build: string; queued?: boolean; error?: string }
 
 export const usageFile = (env: NodeJS.ProcessEnv = process.env) =>
   win.join(env.APPDATA || win.join(os.homedir(), "AppData", "Roaming"), "Formcraft", "ai_usage.jsonl");
@@ -52,4 +52,18 @@ export function summariseUsage(lines: UsageLine[], since?: string) {
       };
     }),
   };
+}
+
+/** Owner 26 Oct: every failure with its exact reason, grouped, newest first, for an AI's report (fmc_ai failures). */
+export function failures(lines: UsageLine[], since?: string) {
+  const fails = lines.filter((l) => !l.ok && !l.queued && (!since || l.at >= since));
+  const groups = new Map<string, { tool: string; action: string; error: string; times: number; last: string; build: string }>();
+  for (const l of fails) {
+    const error = (l.error ?? "").slice(0, 300);
+    const k = `${l.tool}|${l.action}|${error}`;
+    const g = groups.get(k) ?? { tool: l.tool, action: l.action, error, times: 0, last: l.at, build: l.build };
+    g.times++; if (l.at > g.last) { g.last = l.at; g.build = l.build; }
+    groups.set(k, g);
+  }
+  return { failures: fails.length, since: since ?? null, list: [...groups.values()].sort((a, b) => b.last.localeCompare(a.last)) };
 }

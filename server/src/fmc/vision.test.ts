@@ -43,3 +43,26 @@ test("Ogala report: queued calls are counted apart from failures; dry runs need 
   const g = await aiGate("fmc_model_edit", { ops: [{ op: "delete", ids: [1] }], dry_run: true }, doc, config, async () => ({}), env);
   assert.equal(g.ok, true, g.user ?? g.reason);
 });
+
+test("coded session rules (owner 26 Oct): failures with reasons; auto-save only after the interval, never workshared", async () => {
+  const { failures } = await import("./usage.js");
+  const at = "2026-10-26T12:00:00Z";
+  const f = failures([{ at, tool: "modify_model", action: "", ms: 1, ok: false, build: "b", error: "Value cannot be null." },
+    { at, tool: "modify_model", action: "", ms: 1, ok: false, build: "b", error: "Value cannot be null." },
+    { at, tool: "modify_model", action: "", ms: 1, ok: false, build: "b", queued: true }]);
+  assert.equal(f.failures, 2);
+  assert.deepEqual([f.list[0].error, f.list[0].times], ["Value cannot be null.", 2]);
+
+  const { autoSave } = await import("./aigate.js");
+  const sent: string[] = [];
+  const send = async (c: string) => { sent.push(c); return {}; };
+  const doc = { title: "M", path: "D:\\P\\01_WIP\\M.rvt", isFamily: false, isWorkshared: false, isActive: true } as any;
+  const later = Date.now() + 11 * 60_000;
+  assert.equal(await autoSave(doc, { mode: "testing" }, send, {}, Date.now()), false, "not yet");
+  const r: any = {};
+  assert.equal(await autoSave(doc, { mode: "testing" }, send, r, later), true);
+  assert.ok(r.auto_saved);
+  assert.equal(await autoSave({ ...doc, path: "D:\\P\\01_WIP\\W.rvt", isWorkshared: true }, { mode: "testing" }, send, {}, later), false, "never workshared");
+  assert.equal(await autoSave({ ...doc, path: "D:\\P\\01_WIP\\S.rvt" }, { mode: "strict" }, send, {}, later), false, "off outside testing unless set");
+  assert.deepEqual(sent, ["fmc_revit_file"]);
+});

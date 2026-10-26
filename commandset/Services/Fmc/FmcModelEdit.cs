@@ -50,6 +50,8 @@ namespace RevitMCPCommandSet.Services.Fmc
             bool dry = Parameters.Value<bool?>("dry_run") ?? false;
             var made = new List<List<ElementId>>();
             var results = new JArray();
+            // Owner 26 Oct: each batch says which Revit warnings it added, so mistakes are fixed at once (Ogala reached 98)
+            var warningsBefore = WarningKeys(doc);
             using (var g = new TransactionGroup(doc, "FMC AI edit"))
             {
                 g.Start();
@@ -86,8 +88,24 @@ namespace RevitMCPCommandSet.Services.Fmc
             }
             var done = new JObject { ["applied"] = true, ["ops"] = results, ["undo"] = "One Undo in Revit takes the whole batch back: FMC AI edit" };
             if (after.Count > 0) done["after"] = after;
+            var added = doc.GetWarnings().Where(w => !warningsBefore.Contains(Key(w))).ToList();
+            done["warnings_total"] = doc.GetWarnings().Count;
+            if (added.Count > 0)
+            {
+                done["new_warnings"] = new JArray(added.Take(20).Select(w => new JObject
+                {
+                    ["text"] = w.GetDescriptionText(),
+                    ["ids"] = new JArray(w.GetFailingElements().Concat(w.GetAdditionalElements()).Distinct().Take(10).Select(x => x.Value)),
+                }));
+                done["next"] = $"This batch added {added.Count} Revit warning(s): fix them before the next batch (see_view ids to look)";
+            }
             return done;
         }
+
+        private static string Key(FailureMessage w) =>
+            w.GetDescriptionText() + "|" + string.Join(",", w.GetFailingElements().Select(x => x.Value).OrderBy(x => x));
+
+        private static HashSet<string> WarningKeys(Document doc) => new HashSet<string>(doc.GetWarnings().Select(Key));
 
         private static JObject InTransaction(Document doc, string name, Func<JObject> body)
         {

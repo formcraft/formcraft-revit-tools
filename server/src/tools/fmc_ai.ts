@@ -7,7 +7,7 @@ import { jobMaxMs } from "../utils/SocketClient.js";
 import { GuardConfig, configPath, loadConfig } from "../fmc/policy.js";
 import { COMMAND_GROUPS, LEVELS, Level, NEVER, USER_LINE, aiVerdict, generalState, modelParts, projectCode, projectKey } from "../fmc/aiuse.js";
 import { formcraftDir, loadAiConfig, loadRulebook, loadState, readItem, readQueue, setResult, setStatus } from "../fmc/aiuse_io.js";
-import { readUsage, summariseUsage } from "../fmc/usage.js";
+import { failures, readUsage, summariseUsage } from "../fmc/usage.js";
 
 const win = path.win32;
 
@@ -56,7 +56,7 @@ export const FMC_AI_DESCRIPTION =
     "missing so it can be built.";
 
 export const FMC_AI_SHAPE = {
-  action: z.enum(["status", "queue", "stop", "usage", "wait", "inbox"]),
+  action: z.enum(["status", "queue", "stop", "usage", "wait", "inbox", "failures"]),
   id: z.string().optional().describe("wait: the batch id from the queue message; queue: one batch, in full"),
   status: z.string().optional().describe("queue: pending, approved, used, rejected, done, failed or running"),
   limit: z.number().int().min(1).max(200).optional().describe("queue: how many (default 20, newest first)"),
@@ -123,6 +123,7 @@ export async function runFmcAi(args: FmcAiArgs) {
     if (args.action === "usage") return reply(summariseUsage(readUsage(), args.since));
     if (args.action === "wait") return reply(await waitFor(String(args.id ?? ""), args.timeout_s ?? 50));
     if (args.action === "inbox") return readInbox();
+    if (args.action === "failures") return reply(failures(readUsage(), args.since));
     const doc = await activeDocument((ms) => withRevitConnection((c) => c.sendRaw("fmc_document_info", {}, ms)));
     return reply({ ...policySummary(config, doc.active), document_source: doc.source });
   } catch (error) {

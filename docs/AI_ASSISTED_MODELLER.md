@@ -202,3 +202,18 @@ it from, and logs the request in `%APPDATA%\Formcraft\recipe_requests.jsonl`.
   unhosted doors and windows, overlapping walls, free wall ends, wall tops below a roof, clashes.
 - Pane › Approvals › **Show the AI a problem**: select elements, type what's wrong, Send to AI. The AI reads it with
   `fmc_ai inbox` (status shows `inbox_unread`): the view with the selection in red, the ids and the note.
+
+## Session rules in code (owner 26 Oct)
+
+What used to be pasted into each chat is now the plugin's own:
+- **Instructions on connect:** every chat gets the working rules (start checks, typed ops first, pictures, standards,
+  warnings, wait, failures, inbox) with the server's instructions.
+- **Prompts:** Claude's "+" menu offers *work-on-project* and *test-new-build*, with the model's name filled in.
+- **Two Revits:** a change that doesn't name its Revit is refused while more than one is open, and `fmc_revit use` is
+  refused then (chats share one server).
+- **Auto-save:** after a change the model saves itself once `auto_save_minutes` have passed (testing default 10; 0
+  off); never a workshared model or one in the background.
+- **Build check:** while the Claude app runs an older server than the installed build, every answer starts with
+  "quit and reopen the Claude app".
+- **Failure log:** every failure is kept with its reason; `fmc_ai failures` lists them.
+- **New warnings:** each `modify_model` batch reports the Revit warnings it added.

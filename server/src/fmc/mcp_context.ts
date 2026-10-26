@@ -13,19 +13,26 @@ type McpServer = mcp.McpServer;
 
 /** The initialize result's instructions. Short and firm (under 400 words): the kit first, then the hard rules. */
 export const FMC_INSTRUCTIONS = [
-  "You are working inside the Formcraft plugin for Revit (Formcraft BIM Kit v2.2, Manual FMC-BIM-MAN-001). The kit is the source of truth (rule 7): its family specs, recipes, profile sets, material library, keynotes, shared parameters, rulebooks and templates already hold the answers.",
+  "You are working inside the Formcraft plugin for Revit (Formcraft BIM Kit v2.2, Manual FMC-BIM-MAN-001). The kit is the source of truth (rule 7): its specs, recipes, profile sets, materials, keynotes, shared parameters, rulebooks and templates hold the answers.",
   "",
-  "Before creating or proposing any family, material, keynote, parameter, sheet, schedule or template, call fmc_context with action \"for_task\" and the task in plain words. It returns the matching kit specs, recipes, staged families, materials, keynotes and profile rows, and the exact next tool calls. Reuse its specs, recipes and library entries: build families from the kit's recipe (fmc_recipe check, then build) or spec, use library materials and existing keynote codes, and take shared parameters only from the kit's dictionary by GUID. Never invent values the kit holds (sizes, GUIDs, keynote codes, categories, templates, prices); a missing price stays \"price needed\". A missing value is a kit change request: say so, don't guess.",
+  "Before creating a family, material, keynote, parameter, sheet, schedule or template, call fmc_context action \"for_task\" with the task in plain words, and reuse what it returns (recipes via fmc_recipe check then build; library materials; keynote codes; shared parameters by GUID). Never invent values the kit holds; a missing price stays \"price needed\". A missing value is a kit change request: say so, don't guess. fmc_context \"overview\" once at the start shows the kit, the open Revits and the project.",
   "",
-  "Call fmc_context action \"overview\" once at the start to see the kit, the open Revit documents and the project; action \"get\" returns one item in full.",
+  "How to work on a model (owner 26 Oct):",
+  "- Start: fmc_selftest, fmc_ai status (switch, mode, auto-approve, inbox_unread), then model_check.",
+  "- Two or more Revits open: pass revit (the model's name) on every Revit call; never fmc_revit use (chats share this server). Unnamed changes are refused.",
+  "- Edit with modify_model's typed ops first; send_code_to_revit only where no op fits, and name the missing op.",
+  "- Geometry batches return a picture; see_view for anything else; select_by to pick exactly what to change.",
+  "- Sizes and types no brief or recipe gives: fmc_standards (say when a value is only proposed).",
+  "- Fix the Revit warnings a batch reports before the next batch.",
+  "- A batch waiting for approval: fmc_ai wait with its id, then go on; don't end your turn while work remains.",
+  "- Your report: fmc_ai failures lists every failure with its exact reason. Models save themselves after changes (auto_save_minutes).",
+  "- fmc_ai inbox: what the person sent from the pane.",
   "",
   "Hard rules (the server enforces them; never work around them):",
-  "- Dry run first: every write shows a dry run and waits for the person's clear yes before dry_run=false.",
-  "- Live-model lock: model-changing tools run only on families, new unsaved documents and files in _Staging and _ChainTests; on a live project they are refused.",
+  "- Live-model lock: a project model changes only while its AI switch is On, and each change waits for approval unless auto-approve is on for testing. Dry run first for deletes; dry runs need no approval.",
   "- Files: writes go only to WIP and staging folders; nothing is deleted (archive moves a file to _Archive).",
-  "- Never release a family or approve a gate: release is a person's act in the Formcraft pane. Never decide for a professional (structural sizes, demand factors, signatures).",
+  "- Never release a family or approve a gate: release is a person's act in the pane. Never decide for a professional (structural sizes, demand factors, signatures).",
   "- Never save or synchronise a workshared model: the person does it in Revit.",
-  "- Prefer the fmc_ tools over send_code_to_revit: they carry the guard, the dry run and the log.",
   "- Activity is never used to rank people.",
 ].join("\n");
 
@@ -140,5 +147,22 @@ export function registerContextPrompts(server: McpServer): string[] {
       `1. Call fmc_context {"action":"for_task","task":${JSON.stringify(material + " material")}} and pick the library material it returns (with its keynote).\n` +
       "2. fmc_material assign with dry_run true; show me the dry run and wait for my yes before dry_run false.\n" +
       "If the library has no fitting material, draft fmc_material request instead; never make one up. A missing price stays \"price needed\"."));
-  return ["build-family", "assign-material"];
+  // B. the session prompts (owner 26 Oct): the instructions that used to be pasted, with the model filled in
+  s.prompt("work-on-project", "Work on a project model with the AI: checks first, typed edits, pictures, standards, saved as you go",
+    { model: z.string().describe("The model's name as Revit shows it, e.g. OGL_A_MainHouse_GF_LOD400"), task: z.string().optional().describe("What to do today; empty: carry on and fix what model_check finds") },
+    ({ model, task }: { model: string; task?: string }) => user(
+      `Work on ${model}${task ? `: ${task}` : ""}.\n` +
+      `1. Pass revit: ${JSON.stringify(model)} on every Revit tool call; never use fmc_revit use.\n` +
+      "2. fmc_selftest, fmc_ai status, then model_check; look at the top problems with see_view.\n" +
+      "3. Edit with modify_model's typed ops (code only where no op fits). Take sizes from fmc_standards. Fix the warnings each batch reports before the next.\n" +
+      "4. Keep going batch after batch while work remains; fmc_ai wait on any batch that waits for approval.\n" +
+      "5. At the end: what you changed, what's left, and fmc_ai failures as a table (tool, op, exact reason)."));
+  s.prompt("test-new-build", "Test the installed build's tools on a sandbox model, one by one, with a report",
+    { model: z.string().describe("The sandbox model's name, e.g. OGL_TEST_Sandbox (never a live project)") },
+    ({ model }: { model: string }) => user(
+      `Test the installed build on ${model} only.\n` +
+      `1. Pass revit: ${JSON.stringify(model)} on every Revit tool call; never use fmc_revit use. Change nothing in any other model.\n` +
+      "2. fmc_selftest, then try every modify_model op once on small elements (walls, floors with holes, roofs with overhang, stairs from risers, place_family on \"$n\", duplicate_type with layers, rehost, edit_sketch, wall_profile, copy, mirror, join, cut, views, sheets, tags) and see_view, model_check, select_by, fmc_standards.\n" +
+      "3. Report a table: tool, op, worked yes or no, the exact error; add fmc_ai failures."));
+  return ["build-family", "assign-material", "work-on-project", "test-new-build"];
 }
