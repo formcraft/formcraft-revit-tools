@@ -81,6 +81,20 @@ test("General AI switch: per project, Stop AI overrides it, limits still apply, 
   assert.equal(projectCode("F26001-FMC-ZZ-ZZ-M3-A-0001.rvt"), "F26001");
 });
 
+test("Full access (owner 26 Oct): every tool like a person, delete and purge included, each batch approved; code only with its switch", () => {
+  const full = ai({ on: false, access: "full", projects: { F26001: { general: true } } });
+  for (const c of ["delete_element", "fmc_material_purge", "fmc_sheet_create", "fmc_casework_place", "fmc_link_add", "create_structural_framing_system"]) {
+    const v = aiVerdict(ask(c), cfg, book, full, empty);
+    assert.equal(v.needs_approval, true, c);
+    assert.ok(aiVerdict(ask(c, { approved: true }), cfg, book, full, empty).ok, c);
+  }
+  assert.match(aiVerdict(ask("send_code_to_revit"), cfg, book, full, empty).user ?? "", /AI may run code/);
+  assert.equal(aiVerdict(ask("send_code_to_revit"), cfg, book, { ...full, allow_code: true }, empty).needs_approval, true);
+  assert.match(aiVerdict(ask("delete_element"), cfg, book, { ...full, access: "general" }, empty).user ?? "", /^Only an admin/, "general access keeps the admin list");
+  assert.equal(aiVerdict(ask("delete_element"), cfg, book, { ...full, stop: true }, empty).user, USER_LINE.stopped, "Stop AI still wins");
+  assert.match(aiVerdict(ask("delete_element", { elements: 51, approved: true }), cfg, book, full, empty).user ?? "", /Too many changes/, "limits still apply");
+});
+
 test("General AI switch: only the rulebook's general groups, and nothing without the rulebook's general block", () => {
   const g = ai({ on: false, projects: { F26001: { general: true } } });
   const narrow = { ...book, general: { level: "Fix with approval" as const, groups: ["data"] } };

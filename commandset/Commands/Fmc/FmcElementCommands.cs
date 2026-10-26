@@ -20,7 +20,7 @@ namespace RevitMCPCommandSet.Commands.Fmc
             lock (_lock)
             {
                 _handler.Parameters = parameters ?? new JObject();
-                if (!RaiseAndWaitForCompletion(30000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!RaiseAndWaitForCompletion(300000)) throw new TimeoutException($"{CommandName} timed out");
                 if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
                 return _handler.Result;
             }
@@ -62,7 +62,7 @@ namespace RevitMCPCommandSet.Commands.Fmc
             lock (_lock)
             {
                 _handler.Parameters = parameters ?? new JObject();
-                if (!RaiseAndWaitForCompletion(30000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!RaiseAndWaitForCompletion(300000)) throw new TimeoutException($"{CommandName} timed out");
                 if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
                 return _handler.Result;
             }

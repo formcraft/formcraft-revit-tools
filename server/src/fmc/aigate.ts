@@ -1,6 +1,6 @@
 import { DocInfo, GuardConfig } from "./policy.js";
 import { NEVER, PLACEABLE, USER_LINE, aiVerdict, batchSize, recordBatch } from "./aiuse.js";
-import { approvalFor, enqueue, loadAiConfig, loadRulebook, loadState, logBatch, saveState, setStatus } from "./aiuse_io.js";
+import { approvalFor, claimApproval, enqueue, loadAiConfig, loadRulebook, loadState, logBatch, saveState } from "./aiuse_io.js";
 
 /**
  * The live-model lock's one new case (AI-assisted modeller, Phase A). Called only after the lock has refused a
@@ -46,10 +46,12 @@ export async function aiGate(command: string, params: any, active: (DocInfo & { 
   return {
     ok: true, reason: "",
     run: async <T>(exec: () => Promise<T>): Promise<T> => {
+      // One run per approval: claimed before Revit runs, so a timeout never leaves it open for a replay.
+      if (approval && !claimApproval(approval.id, env))
+        throw new Error(`Batch ${approval.id} has already run once for its approval: check the model (fmc_job status), then queue a new batch if more is needed.`);
       try {
         const r = await exec();
         if (book) saveState(recordBatch(loadState(env), active.path, elements, false, book), env);
-        if (approval) setStatus(approval.id, "used", approval.by ?? "", env);
         logBatch(cfg, { ...row, result: "done", detail: v.band ?? "" });
         return r;
       } catch (e) {

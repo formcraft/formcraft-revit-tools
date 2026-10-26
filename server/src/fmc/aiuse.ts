@@ -50,6 +50,13 @@ export interface AiModellerConfig {
    * central, approvals, limits, Stop AI and the admin-only list apply in both.
    */
   mode?: "strict" | "testing";
+  /**
+   * Owner 26 Oct: "full" lets the AI use every model-changing tool like a person, delete and purge included, every batch
+   * approved; "general" (default) covers the rulebook's general groups. Sync, publish, issue and sign never reach the gate.
+   */
+  access?: "general" | "full";
+  /** Owner 26 Oct, testing: the AI may run Revit API code (send_code_to_revit), each run approved with the code shown. */
+  allow_code?: boolean;
   /** Per project code: its own General switch, and (admin, Advanced) its own switch, involvement and levels. */
   projects: Record<string, { general?: boolean; on?: boolean; involvement?: number; levels?: Record<string, Level> }>;
   /** Autonomy level per group (firm default); a group not listed is at Suggest. */
@@ -164,7 +171,7 @@ export function parseConfig(raw: unknown): AiModellerConfig | null {
   o.on = o.on === true;
   const levels: Record<string, Level> = {};
   for (const [k, v] of Object.entries((o.levels ?? {}) as Record<string, unknown>)) if (LEVELS.includes(v as Level)) levels[k] = v as Level;
-  return { on: o.on, stop: o.stop === true, general: o.general === true ? true : undefined, mode: o.mode === "testing" ? "testing" : "strict",
+  return { on: o.on, stop: o.stop === true, general: o.general === true ? true : undefined, mode: o.mode === "testing" ? "testing" : "strict", access: o.access === "full" ? "full" : "general", allow_code: o.allow_code === true,
     involvement: typeof o.involvement === "number" ? o.involvement : undefined,
     projects: o.projects && typeof o.projects === "object" ? o.projects : {}, levels };
 }
@@ -235,10 +242,14 @@ export function aiVerdict(ask: AiAsk, cfg: GuardConfig, book: AiRulebook | null,
   if (!ai) return no("AI-assisted modelling is off: fmc_guard.json has no valid ai_modeller section (the AI switch creates it)");
   if (!book) return no("AI-assisted modelling is off: the kit has no valid FMC_Rulebook_AIUse, and FMC_Rulebook_ClaudeUse has no AI-modeller section (a kit change request; fmc_selftest says which file it read)", { user: USER_LINE.kit });
   if (ai.stop) return no("Stop AI is on: every AI change is refused until it is switched off", { user: USER_LINE.stopped });
-  if (NEVER[ask.command]) return no(`AI never runs ${ask.command} on a project model: ${NEVER[ask.command]}`, { user: USER_LINE.admin(NEVER[ask.command]) });
-  const group = COMMAND_GROUPS[ask.command];
+  // Full access (owner 26 Oct): every tool like a person, each batch approved; code only with the admin's code switch.
+  const full = ai.access === "full" && generalState(ai, ask.doc.title, ask.doc.path) === "On";
+  if (full && ask.command === "send_code_to_revit" && ai.allow_code !== true)
+    return no("Running code needs the admin's 'AI may run code' switch", { user: USER_LINE.admin("running code: the admin's 'AI may run code' switch is off") });
+  if (!full && NEVER[ask.command]) return no(`AI never runs ${ask.command} on a project model: ${NEVER[ask.command]}`, { user: USER_LINE.admin(NEVER[ask.command]) });
+  const group = COMMAND_GROUPS[ask.command] ?? (full ? "full" : undefined);
   if (!group) return no(`${ask.command} isn't in any AI operation group`, { user: USER_LINE.cant });
-  if (!book.groups[group]) return no(`The kit rulebook doesn't define the group ${group}`, { group, user: USER_LINE.kit });
+  if (!full && !book.groups[group]) return no(`The kit rulebook doesn't define the group ${group}`, { group, user: USER_LINE.kit });
 
   const d = ask.doc;
   if (d.isFamily || !d.path) return no("Not a project model: the normal lock already decides families and new documents", { group, user: USER_LINE.where });
@@ -251,6 +262,7 @@ export function aiVerdict(ask: AiAsk, cfg: GuardConfig, book: AiRulebook | null,
 
   // The General AI switch: one On/Off per project. On covers the rulebook's general groups at its level (approval),
   // and skips bands and per-group levels (the admin's Advanced panel). Limits and Stop AI still apply.
+  if (full) return limitsAndApproval(ask, book, state, group, "Fix with approval", "", "general");
   if (generalState(ai, d.title, d.path) === "On") {
     if (!book.general) return no("The General AI switch is on, but the kit rulebook has no general section (a kit change request)", { group, user: USER_LINE.kit, via: "general" });
     if (!book.general.groups.includes(group)) return no(`${book.groups[group].name} isn't covered by the General AI switch: an admin decides it in Advanced`, { group, user: USER_LINE.admin(book.groups[group].name.toLowerCase()), via: "general" });
@@ -291,7 +303,7 @@ function limitsAndApproval(ask: AiAsk, book: AiRulebook, state: AiState, group: 
   if ((m?.elements ?? 0) + ask.elements > book.limits.daily_elements) return no(`${d.title} would pass today's limit of ${book.limits.daily_elements} AI-changed elements`,
     `Today's limit of ${book.limits.daily_elements} AI changes for this model is reached.`);
   if (level === "Fix with approval" && !ask.approved)
-    return no(`${book.groups[group].name} is at Fix with approval: the batch waits for the model's author to approve it in the Formcraft pane`, USER_LINE.approve, { needs_approval: true });
+    return no(`${book.groups[group]?.name ?? "This change"} is at Fix with approval: the batch waits for the model's author to approve it in the Formcraft pane`, USER_LINE.approve, { needs_approval: true });
   return { ok: true, reasons: [], group, level, band, via };
 }
 

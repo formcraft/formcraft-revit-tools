@@ -44,7 +44,7 @@ namespace RevitMCPCommandSet.Commands
                 _handler.SetParameters(useLeader, tagTypeId);
 
                 // 触发外部事件并等待完成
-                if (RaiseAndWaitForCompletion(10000))
+                if (RaiseAndWaitForCompletion(300000)) // owner 26 Oct: big batches take Revit over 10 s; wait up to 5 min
                 {
                     return _handler.TaggingResults;
                 }

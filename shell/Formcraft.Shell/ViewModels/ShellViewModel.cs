@@ -245,7 +245,7 @@ namespace Formcraft.Shell.ViewModels
             });
             _licence.Changed += (_, __) => OnLicenceChanged();
             _connection.Changed += (_, __) => { OnPropertyChanged(nameof(IsConnected)); OnPropertyChanged(nameof(ConnectionText)); OnPropertyChanged(nameof(ConnectionTip)); UpdateState(); };
-            _document.Changed += (_, __) => { OnPropertyChanged(nameof(Document)); _ = RefreshAiAsync(); };
+            _document.Changed += (_, __) => { OnPropertyChanged(nameof(Document)); OnPropertyChanged(nameof(DocumentLine)); _ = RefreshAiAsync(); };
             _connection.Changed += (_, __) => _ = RefreshAiAsync();
             _ = RefreshAiAsync();
             _settings.Changed += (_, __) => { Rebuild(); UpdateState(); };
@@ -366,8 +366,11 @@ namespace Formcraft.Shell.ViewModels
         private string _aiState = "Off";
         private string _aiTip = "AI is off. Turn it on with the AI switch.";
         /// <summary>On, Off or Stopped for the open model's project (Stop AI wins).</summary>
-        public string AiState { get => _aiState; private set { if (_aiState == value) return; _aiState = value; OnPropertyChanged(nameof(AiState)); OnPropertyChanged(nameof(AiStateText)); OnPropertyChanged(nameof(IsAiOn)); OnPropertyChanged(nameof(IsAiStopped)); } }
+        public string AiState { get => _aiState; private set { if (_aiState == value) return; _aiState = value; OnPropertyChanged(nameof(AiState)); OnPropertyChanged(nameof(AiStateText)); OnPropertyChanged(nameof(DocumentLine)); OnPropertyChanged(nameof(IsAiOn)); OnPropertyChanged(nameof(IsAiStopped)); } }
         public string AiStateText => AiState == "Stopped" ? "Stopped" : "AI " + AiState;
+        /// <summary>The document card's second line (owner 26 Oct): with AI On it says so, instead of the lock's "AI reads and reports".</summary>
+        public string DocumentLine => Document.State == DocState.Live && AiState == "On" ? "AI On: its changes wait for your approval"
+            : Document.State == DocState.Live && AiState == "Stopped" ? "Live project: AI stopped" : Document.LockText;
         public bool IsAiOn => AiState == "On";
         public bool IsAiStopped => AiState == "Stopped";
         public string AiStateTip { get => _aiTip; private set { _aiTip = value; OnPropertyChanged(nameof(AiStateTip)); } }

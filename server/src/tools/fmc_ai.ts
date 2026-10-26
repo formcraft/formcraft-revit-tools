@@ -3,6 +3,7 @@ import path from "node:path";
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
+import { jobMaxMs } from "../utils/SocketClient.js";
 import { GuardConfig, configPath, loadConfig } from "../fmc/policy.js";
 import { COMMAND_GROUPS, LEVELS, Level, NEVER, USER_LINE, aiVerdict, generalState, modelParts, projectCode, projectKey } from "../fmc/aiuse.js";
 import { formcraftDir, loadAiConfig, loadRulebook, loadState, readItem, readQueue, setResult, setStatus } from "../fmc/aiuse_io.js";
@@ -27,7 +28,10 @@ export const FMC_AI_DESCRIPTION =
     "wait (owner 26 Oct): after a batch is queued for approval, call wait with its id instead of ending your turn; it " +
     "holds until the person approves or rejects (no tokens are spent while it holds). If it says still waiting, call it " +
     "again. When it says done, go straight on with the next batch of your plan: don't end your turn while work remains " +
-    "and the switch is On.";
+    "and the switch is On. With access full (status says), every tool is yours like a person's, each batch approved: " +
+    "never tell the person to do something themselves when a tool can do it; where no tool covers it and allow_code is " +
+    "on, propose a send_code_to_revit batch (the person sees the code before approving); otherwise say which tool is " +
+    "missing so it can be built.";
 
 export const FMC_AI_SHAPE = {
   action: z.enum(["status", "queue", "stop", "usage", "wait"]),
@@ -58,7 +62,7 @@ export function policySummary(config: GuardConfig, active: any) {
   return {
     // The one setting users see (owner 26 Oct): the plain state and line for the open model's project.
     general: {
-      state: state3, project: key || null, mode: ai?.mode ?? "strict", compliant: !active?.title || !!projectCode(active.title), section: ai ? "present" : "missing (the AI switch creates it)",
+      state: state3, project: key || null, mode: ai?.mode ?? "strict", access: ai?.access ?? "general", allow_code: ai?.allow_code ?? false, compliant: !active?.title || !!projectCode(active.title), section: ai ? "present" : "missing (the AI switch creates it)",
       rulebook_general: !!book?.general, covers: book?.general?.groups ?? [],
       line: state3 === "On" ? "AI is on for this project: every change waits for your approval." : state3 === "Stopped" ? USER_LINE.stopped
         : active?.title && !key ? USER_LINE.notCompliant : USER_LINE.off,
@@ -108,6 +112,7 @@ export async function waitFor(id: string, timeoutS: number, sleep = (ms: number)
     if (item.status === "rejected") return { id, status: "rejected", waited_s, next: "The person rejected it: ask what to change, or move on to the next batch of your plan." };
     if (item.result === "done") return { id, status: "done", detail: item.detail, waited_s, next: "Done in the model: go straight on with the next batch of your plan." };
     if (item.result === "failed") return { id, status: "failed", detail: item.detail, waited_s, next: "Approved, but it didn't run: fix the cause and queue it again, or tell the person why." };
+    if (item.result === "running") return { id, status: "running", detail: item.detail, waited_s, next: "Revit is still placing it: check fmc_job status with the job id in detail, then go on." };
     if (now() >= until) return { id, status: item.status === "approved" ? "running" : "waiting", waited_s, next: "Still waiting: call wait again (no tokens are spent while it holds)." };
     await sleep(1000);
   }
@@ -140,11 +145,17 @@ export async function paneAi(command: string, input: Record<string, unknown>, by
       const item = readItem(id);
       if (!setStatus(id, "approved", by) || !item) return { error: `No batch ${id} in the queue` };
       try {
-        await withRevitConnection((c) => c.sendCommand(item.command, item.params ?? {}));
+        // The long-job route (owner 26 Oct): a batch Revit is still placing is waited for on its heartbeats, not 10 s.
+        await withRevitConnection((c) => c.sendCommand(item.command, item.params ?? {}, jobMaxMs(), { ceilingMs: jobMaxMs() }));
         setResult(id, "done", `${item.summary} · ${item.model}`);
         return { approved: true, ran: true, result: "done", message: `Approved and done: ${item.summary} (${item.elements} elements) in ${item.model}.` };
       } catch (e) {
         const msg = e instanceof Error ? e.message : String(e);
+        // Still running in Revit is not a failure: the answer lands in the late-results file (fmc_job result).
+        if ((e as any)?.code === "FMC-JOB-RUNNING") {
+          setResult(id, "running", msg);
+          return { approved: true, ran: true, result: "running", message: `Approved; Revit is still placing it: ${item.summary}. Check fmc_job status for the result.` };
+        }
         setResult(id, "failed", msg);
         return { approved: true, ran: false, result: "failed", message: `Approved, but it didn't run: ${msg}` };
       }
@@ -186,6 +197,8 @@ export async function paneAi(command: string, input: Record<string, unknown>, by
       if (input.levels && typeof input.levels === "object")
         for (const [g, l] of Object.entries(input.levels as Record<string, unknown>)) if (LEVELS.includes(l as Level)) (cur.levels ??= {})[g] = l;
       if (typeof input.stop === "boolean") cur.stop = input.stop;
+      if (input.access === "full" || input.access === "general") cur.access = input.access;
+      if (typeof input.allow_code === "boolean") cur.allow_code = input.allow_code;
       cur.changed = { by, at: new Date().toISOString() };
       raw.ai_modeller = cur;
       fs.writeFileSync(file, JSON.stringify(raw, null, 2));
