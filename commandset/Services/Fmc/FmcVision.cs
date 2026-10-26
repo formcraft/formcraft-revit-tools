@@ -170,15 +170,22 @@ namespace RevitMCPCommandSet.Services.Fmc
             bool OnLevel(Element e) => level == null || e.LevelId == level;
             var model = new FilteredElementCollector(doc).WhereElementIsNotElementType().Where(e => e.Category != null && e.Category.CategoryType == CategoryType.Model && OnLevel(e)).ToList();
             var r = new JObject();
-            if (On("revit_warnings")) r["revit_warnings"] = Warnings(doc, level);
-            if (On("duplicates")) r["duplicates"] = Duplicates(model);
-            if (On("rooms")) r["rooms"] = Rooms(doc, level);
-            if (On("unhosted")) r["unhosted"] = Unhosted(model);
-            var walls = model.OfType<Wall>().Where(w => w.Location is LocationCurve lc && lc.Curve is Line).ToList();
-            if (On("wall_overlaps")) r["wall_overlaps"] = Overlaps(walls);
-            if (On("free_wall_ends")) r["free_wall_ends"] = FreeEnds(walls);
-            if (On("wall_tops")) r["wall_tops"] = Tops(doc, walls);
-            if (On("clashes")) r["clashes"] = Clashes(doc, model);
+            // night test 26 Oct: one check meeting an odd element ("the input curve is not bound") no longer stops the report
+            void Run(string name, Func<JObject> check)
+            {
+                if (!On(name)) return;
+                try { r[name] = check(); }
+                catch (Exception e) { r[name] = new JObject { ["count"] = 0, ["check_failed"] = e.Message }; }
+            }
+            var walls = model.OfType<Wall>().Where(w => w.Location is LocationCurve lc && lc.Curve is Line l && l.IsBound).ToList();
+            Run("revit_warnings", () => Warnings(doc, level));
+            Run("duplicates", () => Duplicates(model));
+            Run("rooms", () => Rooms(doc, level));
+            Run("unhosted", () => Unhosted(model));
+            Run("wall_overlaps", () => Overlaps(walls));
+            Run("free_wall_ends", () => FreeEnds(walls));
+            Run("wall_tops", () => Tops(doc, walls));
+            Run("clashes", () => Clashes(doc, model));
             int total = r.Properties().Sum(p => p.Value.Value<int?>("count") ?? 0);
             return new JObject { ["model"] = doc.Title, ["level"] = Parameters["level"], ["problems"] = total, ["checks"] = r,
                 ["next"] = total == 0 ? "No problems found by these checks" : "Look at each with see_view ids [...]; fix with modify_model" };

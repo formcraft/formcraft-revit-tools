@@ -96,7 +96,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     int n = 0;
                     foreach (ElementId id in (op["ids"] as JArray ?? throw new InvalidOperationException("tag needs ids")).Select(t => Ref(doc, t, made)))
                     {
-                        Element e = doc.GetElement(id);
+                        Element e = doc.GetElement(id) ?? throw new InvalidOperationException($"{id?.Value} isn't in this model (deleted, or another model's id)");
                         XYZ at = Where(e) + offset;
                         Element tag;
                         if (e is Room room) tag = doc.Create.NewRoomTag(new LinkElementId(room.Id), new UV(at.X, at.Y), v.Id);
@@ -157,6 +157,13 @@ namespace RevitMCPCommandSet.Services.Fmc
                     // the view's colour scheme for the category (scheme by name, optional), and its legend at point_mm
                     View v = ViewOf(doc, op["view"], made);
                     ElementId cat = Categories(doc, new JArray(op.Value<string>("category") ?? "Rooms"))[0];
+                    // night test 26 Oct: a legend needs a scheme on the view; without one, the category's first scheme is applied
+                    if (op["scheme"] == null && v.GetColorFillSchemeId(cat) == ElementId.InvalidElementId)
+                    {
+                        ElementId any = new FilteredElementCollector(doc).OfClass(typeof(ColorFillScheme)).Cast<ColorFillScheme>().FirstOrDefault(c => c.CategoryId == cat)?.Id
+                            ?? throw new InvalidOperationException("the model has no colour scheme for that category (make one in Revit, or give scheme)");
+                        v.SetColorFillSchemeId(cat, any);
+                    }
                     if (op["scheme"] != null)
                     {
                         ElementId scheme = new FilteredElementCollector(doc).OfClass(typeof(ColorFillScheme)).Cast<ColorFillScheme>()
