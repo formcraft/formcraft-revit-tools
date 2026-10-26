@@ -15,6 +15,7 @@
  * Budget:  FMC_ASK_DAILY_TOKENS (default 200000 input+output tokens per day on this PC); refused once reached.
  * Log:     <reports_dir>\FMC_Ask_Log.csv — time, model, tools used, tokens, result. Never the question or answer text.
  */
+import { runFmcIndexText } from "../tools/fmc_index.js";
 import fs from "node:fs";
 import path from "node:path";
 import { csvLine, expandEnv, loadConfig, WRITE_COMMANDS } from "./policy.js";
@@ -32,7 +33,15 @@ export const ASK_DEFAULTS = {
 };
 
 /** The read-only tools Claude may call from the pane. `command` is the Revit command each one sends. */
-export const ASK_TOOLS: Array<{ name: string; command: string; description: string; input_schema: object; params: (a: any) => object }> = [
+/** A tool with `local` answers from the server itself (the repo index) instead of calling Revit. */
+export const ASK_TOOLS: Array<{ name: string; command: string; description: string; input_schema: object; params: (a: any) => object; local?: (a: any) => string }> = [
+  {
+    name: "find_in_app", command: "",
+    description: "Where a part of Formcraft Revit Tools is and what it links to: a pane section, tool and its actions, Revit command, finding (F-041), work item (U28), decision (D1) or PR, by key or by words. A weak or empty answer means the app has no such part.",
+    input_schema: { type: "object", properties: { q: { type: "string", description: "A key or a few words" } }, required: ["q"] },
+    params: () => ({}),
+    local: (a) => runFmcIndexText({ action: "find", q: String(a?.q ?? ""), n: 5 }),
+  },
   {
     name: "document_info", command: "fmc_document_info",
     description: "The open Revit documents: title, path, whether workshared, family or project. Call first when the question is about 'this model'.",
@@ -95,6 +104,9 @@ export const ASK_SYSTEM = [
   "library families FMC_[Role]_[CategoryToken]_[Description].rfa.",
   "Answer briefly in plain English for a busy modeller: lead with the answer, then at most a few lines of detail.",
   "Quote element ids when you refer to elements. Call as few tools as you need; ask for small results.",
+  "For any question about Formcraft Revit Tools itself (where something is in the pane, which tool or command does it,",
+  "a finding, work item or decision), call find_in_app first and use the names it returns exactly; never describe a",
+  "section, tool or button the index doesn't show.",
 ].join(" ");
 
 export interface AskArgs { question: string; history?: Array<{ role: "user" | "assistant"; text: string }> }
@@ -223,7 +235,8 @@ export async function runAsk(args: AskArgs, deps: AskDeps): Promise<{ ok: boolea
       } else {
         toolsUsed.push(tool.name);
         try {
-          text = trimResult(JSON.stringify(await deps.revit(tool.command, tool.params(call.input ?? {}))));
+          text = tool.local ? trimResult(tool.local(call.input ?? {}))
+            : trimResult(JSON.stringify(await deps.revit(tool.command, tool.params(call.input ?? {}))));
         } catch (e) {
           text = "Revit did not answer: " + (e instanceof Error ? e.message : String(e)) + ". Is the Claude service on (Formcraft tab)?";
           isError = true;
