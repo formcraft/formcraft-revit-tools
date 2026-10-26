@@ -66,6 +66,7 @@ export async function aiGate(command: string, params: any, active: (DocInfo & { 
       if (autoItem) setStatus(autoItem.id, "used", "auto-approved (testing)", env);
       try {
         const r = await exec();
+        await autoSave(active, ai, send, r);
         if (autoItem) setResult(autoItem.id, "done", `${autoItem.summary} · ${JSON.stringify(r ?? {}).slice(0, 4000)}`, env);
         if (book) saveState(recordBatch(loadState(env), active.path, elements, false, book), env);
         logBatch(cfg, { ...row, result: "done", detail: v.band ?? "" });
@@ -98,4 +99,27 @@ async function describe(command: string, params: object, send: (command: string,
     if (want.elementIds.length) names.elements = elementNames((await send("fmc_element_geometry", { ids: want.elementIds }))?.elements ?? []);
   } catch { /* ids instead */ }
   return explain(command, params, names);
+}
+
+/** When each model was last saved by the server (or the server started): auto-save counts from here. */
+const lastSaved = new Map<string, number>();
+const serverStart = Date.now();
+
+/**
+ * Owner 26 Oct: an afternoon of AI work existed only in an open Revit. After a change, the model saves itself when
+ * auto_save_minutes have passed (testing default 10; 0 off). Never a workshared model (the person syncs those), never
+ * a model in the background.
+ */
+export async function autoSave(active: DocInfo & { isActive?: boolean }, ai: { mode?: string; auto_save_minutes?: number },
+  send: (command: string, params: object) => Promise<any>, result: unknown, now = Date.now()): Promise<boolean> {
+  const minutes = ai.auto_save_minutes ?? (ai.mode === "testing" ? 10 : 0);
+  if (!(minutes > 0) || active.isWorkshared || active.isActive === false || !active.path) return false;
+  const key = active.path.toLowerCase();
+  if (now - (lastSaved.get(key) ?? serverStart) < minutes * 60_000) return false;
+  try {
+    await send("fmc_revit_file", { action: "save" });
+    lastSaved.set(key, now);
+    if (result && typeof result === "object") (result as Record<string, unknown>).auto_saved = new Date(now).toISOString();
+    return true;
+  } catch { return false; }
 }

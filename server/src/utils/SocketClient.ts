@@ -3,7 +3,8 @@ import fs from "fs";
 import path from "path";
 import { appendJobEvent, jobFiles, jobResult, lastHeartbeatMs } from "../fmc/jobs.js";
 import { WRITE_COMMANDS, liveLockVerdict, loadConfig } from "../fmc/policy.js";
-import { documentTarget } from "../fmc/target.js";
+import { documentTarget, revitTarget } from "../fmc/target.js";
+import { readInstances } from "../fmc/connect.js";
 import { aiGate } from "../fmc/aigate.js";
 import { retryWhileBusy } from "../fmc/busy.js";
 
@@ -104,6 +105,12 @@ export class RevitClientConnection {
    */
   public async sendCommand(command: string, params: any = {}, timeoutMs: number = 120000, long?: LongJobOptions): Promise<any> {
     if (WRITE_COMMANDS.has(command)) {
+      // Owner 26 Oct: two chats share this server; with two Revits open a change must name its Revit, so neither
+      // chat can edit the other's model
+      const open = readInstances();
+      if (open.length > 1 && !revitTarget.getStore())
+        throw new Error(`${open.length} Revits are open: name the Revit this change is for with revit (its model's name, e.g. ` +
+          `${JSON.stringify(open.flatMap((i: any) => i.documents ?? []).map((d: any) => d?.title ?? d).filter(Boolean)[0] ?? "the model")}) on every call.`);
       const { config } = loadConfig();
       if (config.live_model_lock) {
         let info: any;
