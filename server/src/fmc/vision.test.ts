@@ -66,3 +66,14 @@ test("coded session rules (owner 26 Oct): failures with reasons; auto-save only 
   assert.equal(await autoSave({ ...doc, path: "D:\\P\\01_WIP\\S.rvt" }, { mode: "strict" }, send, {}, later), false, "off outside testing unless set");
   assert.deepEqual(sent, ["fmc_revit_file"]);
 });
+
+test("FAM-044 (owner 26 Oct): family lines are black or dark on the rule's pens; pale colours and pen 1 parts are refused", async () => {
+  const { fixSubcategory, graphicsProblems, lightness } = await import("./familygraphics.js");
+  const white = { op: "add_subcategory" as const, name: "White", color: [242, 242, 238], line_weight_projection: 1 };
+  assert.equal(graphicsProblems(white, "op 1").length, 2, "pale colour and pen 1");
+  assert.deepEqual(fixSubcategory(white), { ...white, color: [0, 0, 0], line_weight_projection: 2, line_weight_cut: 4 });
+  assert.deepEqual(fixSubcategory({ op: "add_subcategory", name: "Coarse Envelope", color: [120, 130, 140] }).line_weight_projection, 3);
+  const zone = fixSubcategory({ op: "add_subcategory", name: "Clearance Operation", color: [255, 214, 90] });
+  assert.ok(lightness(zone.color!) <= 0.45 && zone.line_weight_projection === 1, "a clearance stays thin, its colour darkened");
+  assert.deepEqual(graphicsProblems({ ...white, keep_graphics: true }, "op 1"), [], "a deliberate exception");
+});

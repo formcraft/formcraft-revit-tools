@@ -1,1357 +1,1363 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_E_ElecFixture_AccessControl_MagLock",
- "template": "Metric Generic Model.rft",
- "about": "Mag-lock: L bracket on the head, aluminium magnet body with end caps and chrome face, status LED, armature plate with sex bolts and spacer, cable entry; underside of head at z = 0. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: access control mag lock electrical fixtures hospital; images: https://www.google.com/search?tbm=isch&q=access+control+mag+lock+electrical+fixtures+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Electrical Fixtures"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
-  },
-  {
-   "op": "add_type",
-   "name": "600lb_12-24V"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600lb_12-24V/FMC_Cost_Unit",
-   "type": "600lb_12-24V",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600lb_12-24V/FMC_Geometry_Stage",
-   "type": "600lb_12-24V",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600lb_12-24V/IfcExportAs",
-   "type": "600lb_12-24V",
-   "param": "IfcExportAs",
-   "value": "IfcActuator"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600lb_12-24V/Description",
-   "type": "600lb_12-24V",
-   "param": "Description",
-   "value": "Electromagnetic lock 600 lb (270 kg), surface mounted at the door head with L-bracket and armature plate, LED status"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600lb_12-24V/Keynote",
-   "type": "600lb_12-24V",
-   "param": "Keynote",
-   "value": "E.SEC_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600lb_12-24V/FMC_Keynote_Code",
-   "type": "600lb_12-24V",
-   "param": "FMC_Keynote_Code",
-   "value": "E.SEC_01"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Alu",
-   "color": [
-    192,
-    192,
-    192
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Alu Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Aluminium_Anodised_Silver",
-   "param": "Alu Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Chrome",
-   "color": [
-    192,
-    195,
-    199
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Chrome Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Chrome_Polished",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Red",
-   "color": [
-    229,
-    72,
-    77
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Red Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_LED_Red",
-   "param": "Red Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Rubber",
-   "color": [
-    32,
-    32,
-    32
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Rubber Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Rubber_Black",
-   "param": "Rubber Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -140,
-     -80
-    ],
-    [
-     140,
-     -80
-    ],
-    [
-     140,
-     0
-    ],
-    [
-     -140,
-     0
-    ]
-   ],
-   "start": -48,
-   "end": 40
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Head Bracket",
-   "points": [
-    [
-     -140,
-     -60
-    ],
-    [
-     140,
-     -60
-    ],
-    [
-     140,
-     0
-    ],
-    [
-     -140,
-     0
-    ]
-   ],
-   "start": -6,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Head Bracket",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Head Bracket",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Head Bracket",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bracket Upstand",
-   "points": [
-    [
-     -140,
-     -6
-    ],
-    [
-     140,
-     -6
-    ],
-    [
-     140,
-     0
-    ],
-    [
-     -140,
-     0
-    ]
-   ],
-   "start": -6,
-   "end": 40
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bracket Upstand",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bracket Upstand",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bracket Upstand",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Magnet Body",
-   "points": [
-    [
-     122.0,
-     -55.0
-    ],
-    [
-     123.15,
-     -54.77
-    ],
-    [
-     124.12,
-     -54.12
-    ],
-    [
-     124.77,
-     -53.15
-    ],
-    [
-     125.0,
-     -52.0
-    ],
-    [
-     125.0,
-     -9.0
-    ],
-    [
-     124.77,
-     -7.85
-    ],
-    [
-     124.12,
-     -6.88
-    ],
-    [
-     123.15,
-     -6.23
-    ],
-    [
-     122.0,
-     -6.0
-    ],
-    [
-     -122.0,
-     -6.0
-    ],
-    [
-     -123.15,
-     -6.23
-    ],
-    [
-     -124.12,
-     -6.88
-    ],
-    [
-     -124.77,
-     -7.85
-    ],
-    [
-     -125.0,
-     -9.0
-    ],
-    [
-     -125.0,
-     -52.0
-    ],
-    [
-     -124.77,
-     -53.15
-    ],
-    [
-     -124.12,
-     -54.12
-    ],
-    [
-     -123.15,
-     -54.77
-    ],
-    [
-     -122.0,
-     -55.0
-    ]
-   ],
-   "start": -48,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Magnet Body",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Magnet Body",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Magnet Body",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Magnet Face",
-   "points": [
-    [
-     119.0,
-     -60.0
-    ],
-    [
-     119.38,
-     -59.92
-    ],
-    [
-     119.71,
-     -59.71
-    ],
-    [
-     119.92,
-     -59.38
-    ],
-    [
-     120.0,
-     -59.0
-    ],
-    [
-     120.0,
-     -56.0
-    ],
-    [
-     119.92,
-     -55.62
-    ],
-    [
-     119.71,
-     -55.29
-    ],
-    [
-     119.38,
-     -55.08
-    ],
-    [
-     119.0,
-     -55.0
-    ],
-    [
-     -119.0,
-     -55.0
-    ],
-    [
-     -119.38,
-     -55.08
-    ],
-    [
-     -119.71,
-     -55.29
-    ],
-    [
-     -119.92,
-     -55.62
-    ],
-    [
-     -120.0,
-     -56.0
-    ],
-    [
-     -120.0,
-     -59.0
-    ],
-    [
-     -119.92,
-     -59.38
-    ],
-    [
-     -119.71,
-     -59.71
-    ],
-    [
-     -119.38,
-     -59.92
-    ],
-    [
-     -119.0,
-     -60.0
-    ]
-   ],
-   "start": -45,
-   "end": -9
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Magnet Face",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Magnet Face",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Magnet Face",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "End Cap 1",
-   "points": [
-    [
-     -131,
-     -55
-    ],
-    [
-     -125,
-     -55
-    ],
-    [
-     -125,
-     -6
-    ],
-    [
-     -131,
-     -6
-    ]
-   ],
-   "start": -48,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "End Cap 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "End Cap 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "End Cap 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "End Cap 2",
-   "points": [
-    [
-     125,
-     -55
-    ],
-    [
-     131,
-     -55
-    ],
-    [
-     131,
-     -6
-    ],
-    [
-     125,
-     -6
-    ]
-   ],
-   "start": -48,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "End Cap 2",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "End Cap 2",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "End Cap 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Status LED",
-   "points": [
-    [
-     103.0,
-     -27.0
-    ],
-    [
-     102.9,
-     -26.22
-    ],
-    [
-     102.6,
-     -25.5
-    ],
-    [
-     102.12,
-     -24.88
-    ],
-    [
-     101.5,
-     -24.4
-    ],
-    [
-     100.78,
-     -24.1
-    ],
-    [
-     100.0,
-     -24.0
-    ],
-    [
-     99.22,
-     -24.1
-    ],
-    [
-     98.5,
-     -24.4
-    ],
-    [
-     97.88,
-     -24.88
-    ],
-    [
-     97.4,
-     -25.5
-    ],
-    [
-     97.1,
-     -26.22
-    ],
-    [
-     97.0,
-     -27.0
-    ],
-    [
-     97.1,
-     -27.78
-    ],
-    [
-     97.4,
-     -28.5
-    ],
-    [
-     97.88,
-     -29.12
-    ],
-    [
-     98.5,
-     -29.6
-    ],
-    [
-     99.22,
-     -29.9
-    ],
-    [
-     100.0,
-     -30.0
-    ],
-    [
-     100.78,
-     -29.9
-    ],
-    [
-     101.5,
-     -29.6
-    ],
-    [
-     102.12,
-     -29.12
-    ],
-    [
-     102.6,
-     -28.5
-    ],
-    [
-     102.9,
-     -27.78
-    ]
-   ],
-   "start": 55,
-   "end": 61,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Status LED",
-   "subcategory": "Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Status LED",
-   "param": "Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Status LED",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Armature Plate",
-   "points": [
-    [
-     88.0,
-     -72.0
-    ],
-    [
-     88.77,
-     -71.85
-    ],
-    [
-     89.41,
-     -71.41
-    ],
-    [
-     89.85,
-     -70.77
-    ],
-    [
-     90.0,
-     -70.0
-    ],
-    [
-     90.0,
-     -62.0
-    ],
-    [
-     89.85,
-     -61.23
-    ],
-    [
-     89.41,
-     -60.59
-    ],
-    [
-     88.77,
-     -60.15
-    ],
-    [
-     88.0,
-     -60.0
-    ],
-    [
-     -88.0,
-     -60.0
-    ],
-    [
-     -88.77,
-     -60.15
-    ],
-    [
-     -89.41,
-     -60.59
-    ],
-    [
-     -89.85,
-     -61.23
-    ],
-    [
-     -90.0,
-     -62.0
-    ],
-    [
-     -90.0,
-     -70.0
-    ],
-    [
-     -89.85,
-     -70.77
-    ],
-    [
-     -89.41,
-     -71.41
-    ],
-    [
-     -88.77,
-     -71.85
-    ],
-    [
-     -88.0,
-     -72.0
-    ]
-   ],
-   "start": -45,
-   "end": -9
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Armature Plate",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Armature Plate",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Armature Plate",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Sex Bolt 1",
-   "points": [
-    [
-     -45.0,
-     -27.0
-    ],
-    [
-     -45.17,
-     -25.71
-    ],
-    [
-     -45.67,
-     -24.5
-    ],
-    [
-     -46.46,
-     -23.46
-    ],
-    [
-     -47.5,
-     -22.67
-    ],
-    [
-     -48.71,
-     -22.17
-    ],
-    [
-     -50.0,
-     -22.0
-    ],
-    [
-     -51.29,
-     -22.17
-    ],
-    [
-     -52.5,
-     -22.67
-    ],
-    [
-     -53.54,
-     -23.46
-    ],
-    [
-     -54.33,
-     -24.5
-    ],
-    [
-     -54.83,
-     -25.71
-    ],
-    [
-     -55.0,
-     -27.0
-    ],
-    [
-     -54.83,
-     -28.29
-    ],
-    [
-     -54.33,
-     -29.5
-    ],
-    [
-     -53.54,
-     -30.54
-    ],
-    [
-     -52.5,
-     -31.33
-    ],
-    [
-     -51.29,
-     -31.83
-    ],
-    [
-     -50.0,
-     -32.0
-    ],
-    [
-     -48.71,
-     -31.83
-    ],
-    [
-     -47.5,
-     -31.33
-    ],
-    [
-     -46.46,
-     -30.54
-    ],
-    [
-     -45.67,
-     -29.5
-    ],
-    [
-     -45.17,
-     -28.29
-    ]
-   ],
-   "start": 72,
-   "end": 80,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sex Bolt 1",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sex Bolt 1",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sex Bolt 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Sex Bolt 2",
-   "points": [
-    [
-     55.0,
-     -27.0
-    ],
-    [
-     54.83,
-     -25.71
-    ],
-    [
-     54.33,
-     -24.5
-    ],
-    [
-     53.54,
-     -23.46
-    ],
-    [
-     52.5,
-     -22.67
-    ],
-    [
-     51.29,
-     -22.17
-    ],
-    [
-     50.0,
-     -22.0
-    ],
-    [
-     48.71,
-     -22.17
-    ],
-    [
-     47.5,
-     -22.67
-    ],
-    [
-     46.46,
-     -23.46
-    ],
-    [
-     45.67,
-     -24.5
-    ],
-    [
-     45.17,
-     -25.71
-    ],
-    [
-     45.0,
-     -27.0
-    ],
-    [
-     45.17,
-     -28.29
-    ],
-    [
-     45.67,
-     -29.5
-    ],
-    [
-     46.46,
-     -30.54
-    ],
-    [
-     47.5,
-     -31.33
-    ],
-    [
-     48.71,
-     -31.83
-    ],
-    [
-     50.0,
-     -32.0
-    ],
-    [
-     51.29,
-     -31.83
-    ],
-    [
-     52.5,
-     -31.33
-    ],
-    [
-     53.54,
-     -30.54
-    ],
-    [
-     54.33,
-     -29.5
-    ],
-    [
-     54.83,
-     -28.29
-    ]
-   ],
-   "start": 72,
-   "end": 80,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sex Bolt 2",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sex Bolt 2",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sex Bolt 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Armature Spacer",
-   "points": [
-    [
-     7.0,
-     -27.0
-    ],
-    [
-     6.76,
-     -25.19
-    ],
-    [
-     6.06,
-     -23.5
-    ],
-    [
-     4.95,
-     -22.05
-    ],
-    [
-     3.5,
-     -20.94
-    ],
-    [
-     1.81,
-     -20.24
-    ],
-    [
-     0.0,
-     -20.0
-    ],
-    [
-     -1.81,
-     -20.24
-    ],
-    [
-     -3.5,
-     -20.94
-    ],
-    [
-     -4.95,
-     -22.05
-    ],
-    [
-     -6.06,
-     -23.5
-    ],
-    [
-     -6.76,
-     -25.19
-    ],
-    [
-     -7.0,
-     -27.0
-    ],
-    [
-     -6.76,
-     -28.81
-    ],
-    [
-     -6.06,
-     -30.5
-    ],
-    [
-     -4.95,
-     -31.95
-    ],
-    [
-     -3.5,
-     -33.06
-    ],
-    [
-     -1.81,
-     -33.76
-    ],
-    [
-     -0.0,
-     -34.0
-    ],
-    [
-     1.81,
-     -33.76
-    ],
-    [
-     3.5,
-     -33.06
-    ],
-    [
-     4.95,
-     -31.95
-    ],
-    [
-     6.06,
-     -30.5
-    ],
-    [
-     6.76,
-     -28.81
-    ]
-   ],
-   "start": 72,
-   "end": 80,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Armature Spacer",
-   "subcategory": "Rubber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Armature Spacer",
-   "param": "Rubber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Armature Spacer",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cable Entry",
-   "points": [
-    [
-     -96.0,
-     -30.0
-    ],
-    [
-     -96.14,
-     -28.96
-    ],
-    [
-     -96.54,
-     -28.0
-    ],
-    [
-     -97.17,
-     -27.17
-    ],
-    [
-     -98.0,
-     -26.54
-    ],
-    [
-     -98.96,
-     -26.14
-    ],
-    [
-     -100.0,
-     -26.0
-    ],
-    [
-     -101.04,
-     -26.14
-    ],
-    [
-     -102.0,
-     -26.54
-    ],
-    [
-     -102.83,
-     -27.17
-    ],
-    [
-     -103.46,
-     -28.0
-    ],
-    [
-     -103.86,
-     -28.96
-    ],
-    [
-     -104.0,
-     -30.0
-    ],
-    [
-     -103.86,
-     -31.04
-    ],
-    [
-     -103.46,
-     -32.0
-    ],
-    [
-     -102.83,
-     -32.83
-    ],
-    [
-     -102.0,
-     -33.46
-    ],
-    [
-     -101.04,
-     -33.86
-    ],
-    [
-     -100.0,
-     -34.0
-    ],
-    [
-     -98.96,
-     -33.86
-    ],
-    [
-     -98.0,
-     -33.46
-    ],
-    [
-     -97.17,
-     -32.83
-    ],
-    [
-     -96.54,
-     -32.0
-    ],
-    [
-     -96.14,
-     -31.04
-    ]
-   ],
-   "start": 0,
-   "end": 30
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cable Entry",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cable Entry",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cable Entry",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "Security",
-   "domain": "electrical",
-   "system": "Security",
-   "solid": "Head Bracket",
-   "side": "top"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\E\\_Images\\FMC_E_ElecFixture_AccessControl_MagLock.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_E_ElecFixture_AccessControl_MagLock",
+  "template": "Metric Generic Model.rft",
+  "about": "Mag-lock: L bracket on the head, aluminium magnet body with end caps and chrome face, status LED, armature plate with sex bolts and spacer, cable entry; underside of head at z = 0. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: access control mag lock electrical fixtures hospital; images: https://www.google.com/search?tbm=isch&q=access+control+mag+lock+electrical+fixtures+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Electrical Fixtures"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+    },
+    {
+      "op": "add_type",
+      "name": "600lb_12-24V"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600lb_12-24V/FMC_Cost_Unit",
+      "type": "600lb_12-24V",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600lb_12-24V/FMC_Geometry_Stage",
+      "type": "600lb_12-24V",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600lb_12-24V/IfcExportAs",
+      "type": "600lb_12-24V",
+      "param": "IfcExportAs",
+      "value": "IfcActuator"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600lb_12-24V/Description",
+      "type": "600lb_12-24V",
+      "param": "Description",
+      "value": "Electromagnetic lock 600 lb (270 kg), surface mounted at the door head with L-bracket and armature plate, LED status"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600lb_12-24V/Keynote",
+      "type": "600lb_12-24V",
+      "param": "Keynote",
+      "value": "E.SEC_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600lb_12-24V/FMC_Keynote_Code",
+      "type": "600lb_12-24V",
+      "param": "FMC_Keynote_Code",
+      "value": "E.SEC_01"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Alu",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Alu Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Aluminium_Anodised_Silver",
+      "param": "Alu Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Chrome",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Chrome Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Chrome_Polished",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Red",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Red Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_LED_Red",
+      "param": "Red Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Rubber",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Rubber Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Rubber_Black",
+      "param": "Rubber Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -140,
+          -80
+        ],
+        [
+          140,
+          -80
+        ],
+        [
+          140,
+          0
+        ],
+        [
+          -140,
+          0
+        ]
+      ],
+      "start": -48,
+      "end": 40
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Head Bracket",
+      "points": [
+        [
+          -140,
+          -60
+        ],
+        [
+          140,
+          -60
+        ],
+        [
+          140,
+          0
+        ],
+        [
+          -140,
+          0
+        ]
+      ],
+      "start": -6,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Head Bracket",
+      "subcategory": "Alu"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Head Bracket",
+      "param": "Alu Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Head Bracket",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bracket Upstand",
+      "points": [
+        [
+          -140,
+          -6
+        ],
+        [
+          140,
+          -6
+        ],
+        [
+          140,
+          0
+        ],
+        [
+          -140,
+          0
+        ]
+      ],
+      "start": -6,
+      "end": 40
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bracket Upstand",
+      "subcategory": "Alu"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bracket Upstand",
+      "param": "Alu Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bracket Upstand",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Magnet Body",
+      "points": [
+        [
+          122,
+          -55
+        ],
+        [
+          123.15,
+          -54.77
+        ],
+        [
+          124.12,
+          -54.12
+        ],
+        [
+          124.77,
+          -53.15
+        ],
+        [
+          125,
+          -52
+        ],
+        [
+          125,
+          -9
+        ],
+        [
+          124.77,
+          -7.85
+        ],
+        [
+          124.12,
+          -6.88
+        ],
+        [
+          123.15,
+          -6.23
+        ],
+        [
+          122,
+          -6
+        ],
+        [
+          -122,
+          -6
+        ],
+        [
+          -123.15,
+          -6.23
+        ],
+        [
+          -124.12,
+          -6.88
+        ],
+        [
+          -124.77,
+          -7.85
+        ],
+        [
+          -125,
+          -9
+        ],
+        [
+          -125,
+          -52
+        ],
+        [
+          -124.77,
+          -53.15
+        ],
+        [
+          -124.12,
+          -54.12
+        ],
+        [
+          -123.15,
+          -54.77
+        ],
+        [
+          -122,
+          -55
+        ]
+      ],
+      "start": -48,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Magnet Body",
+      "subcategory": "Alu"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Magnet Body",
+      "param": "Alu Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Magnet Body",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Magnet Face",
+      "points": [
+        [
+          119,
+          -60
+        ],
+        [
+          119.38,
+          -59.92
+        ],
+        [
+          119.71,
+          -59.71
+        ],
+        [
+          119.92,
+          -59.38
+        ],
+        [
+          120,
+          -59
+        ],
+        [
+          120,
+          -56
+        ],
+        [
+          119.92,
+          -55.62
+        ],
+        [
+          119.71,
+          -55.29
+        ],
+        [
+          119.38,
+          -55.08
+        ],
+        [
+          119,
+          -55
+        ],
+        [
+          -119,
+          -55
+        ],
+        [
+          -119.38,
+          -55.08
+        ],
+        [
+          -119.71,
+          -55.29
+        ],
+        [
+          -119.92,
+          -55.62
+        ],
+        [
+          -120,
+          -56
+        ],
+        [
+          -120,
+          -59
+        ],
+        [
+          -119.92,
+          -59.38
+        ],
+        [
+          -119.71,
+          -59.71
+        ],
+        [
+          -119.38,
+          -59.92
+        ],
+        [
+          -119,
+          -60
+        ]
+      ],
+      "start": -45,
+      "end": -9
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Magnet Face",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Magnet Face",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Magnet Face",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "End Cap 1",
+      "points": [
+        [
+          -131,
+          -55
+        ],
+        [
+          -125,
+          -55
+        ],
+        [
+          -125,
+          -6
+        ],
+        [
+          -131,
+          -6
+        ]
+      ],
+      "start": -48,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "End Cap 1",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "End Cap 1",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "End Cap 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "End Cap 2",
+      "points": [
+        [
+          125,
+          -55
+        ],
+        [
+          131,
+          -55
+        ],
+        [
+          131,
+          -6
+        ],
+        [
+          125,
+          -6
+        ]
+      ],
+      "start": -48,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "End Cap 2",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "End Cap 2",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "End Cap 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Status LED",
+      "points": [
+        [
+          103,
+          -27
+        ],
+        [
+          102.9,
+          -26.22
+        ],
+        [
+          102.6,
+          -25.5
+        ],
+        [
+          102.12,
+          -24.88
+        ],
+        [
+          101.5,
+          -24.4
+        ],
+        [
+          100.78,
+          -24.1
+        ],
+        [
+          100,
+          -24
+        ],
+        [
+          99.22,
+          -24.1
+        ],
+        [
+          98.5,
+          -24.4
+        ],
+        [
+          97.88,
+          -24.88
+        ],
+        [
+          97.4,
+          -25.5
+        ],
+        [
+          97.1,
+          -26.22
+        ],
+        [
+          97,
+          -27
+        ],
+        [
+          97.1,
+          -27.78
+        ],
+        [
+          97.4,
+          -28.5
+        ],
+        [
+          97.88,
+          -29.12
+        ],
+        [
+          98.5,
+          -29.6
+        ],
+        [
+          99.22,
+          -29.9
+        ],
+        [
+          100,
+          -30
+        ],
+        [
+          100.78,
+          -29.9
+        ],
+        [
+          101.5,
+          -29.6
+        ],
+        [
+          102.12,
+          -29.12
+        ],
+        [
+          102.6,
+          -28.5
+        ],
+        [
+          102.9,
+          -27.78
+        ]
+      ],
+      "start": 55,
+      "end": 61,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Status LED",
+      "subcategory": "Red"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Status LED",
+      "param": "Red Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Status LED",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Armature Plate",
+      "points": [
+        [
+          88,
+          -72
+        ],
+        [
+          88.77,
+          -71.85
+        ],
+        [
+          89.41,
+          -71.41
+        ],
+        [
+          89.85,
+          -70.77
+        ],
+        [
+          90,
+          -70
+        ],
+        [
+          90,
+          -62
+        ],
+        [
+          89.85,
+          -61.23
+        ],
+        [
+          89.41,
+          -60.59
+        ],
+        [
+          88.77,
+          -60.15
+        ],
+        [
+          88,
+          -60
+        ],
+        [
+          -88,
+          -60
+        ],
+        [
+          -88.77,
+          -60.15
+        ],
+        [
+          -89.41,
+          -60.59
+        ],
+        [
+          -89.85,
+          -61.23
+        ],
+        [
+          -90,
+          -62
+        ],
+        [
+          -90,
+          -70
+        ],
+        [
+          -89.85,
+          -70.77
+        ],
+        [
+          -89.41,
+          -71.41
+        ],
+        [
+          -88.77,
+          -71.85
+        ],
+        [
+          -88,
+          -72
+        ]
+      ],
+      "start": -45,
+      "end": -9
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Armature Plate",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Armature Plate",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Armature Plate",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Sex Bolt 1",
+      "points": [
+        [
+          -45,
+          -27
+        ],
+        [
+          -45.17,
+          -25.71
+        ],
+        [
+          -45.67,
+          -24.5
+        ],
+        [
+          -46.46,
+          -23.46
+        ],
+        [
+          -47.5,
+          -22.67
+        ],
+        [
+          -48.71,
+          -22.17
+        ],
+        [
+          -50,
+          -22
+        ],
+        [
+          -51.29,
+          -22.17
+        ],
+        [
+          -52.5,
+          -22.67
+        ],
+        [
+          -53.54,
+          -23.46
+        ],
+        [
+          -54.33,
+          -24.5
+        ],
+        [
+          -54.83,
+          -25.71
+        ],
+        [
+          -55,
+          -27
+        ],
+        [
+          -54.83,
+          -28.29
+        ],
+        [
+          -54.33,
+          -29.5
+        ],
+        [
+          -53.54,
+          -30.54
+        ],
+        [
+          -52.5,
+          -31.33
+        ],
+        [
+          -51.29,
+          -31.83
+        ],
+        [
+          -50,
+          -32
+        ],
+        [
+          -48.71,
+          -31.83
+        ],
+        [
+          -47.5,
+          -31.33
+        ],
+        [
+          -46.46,
+          -30.54
+        ],
+        [
+          -45.67,
+          -29.5
+        ],
+        [
+          -45.17,
+          -28.29
+        ]
+      ],
+      "start": 72,
+      "end": 80,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Sex Bolt 1",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sex Bolt 1",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Sex Bolt 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Sex Bolt 2",
+      "points": [
+        [
+          55,
+          -27
+        ],
+        [
+          54.83,
+          -25.71
+        ],
+        [
+          54.33,
+          -24.5
+        ],
+        [
+          53.54,
+          -23.46
+        ],
+        [
+          52.5,
+          -22.67
+        ],
+        [
+          51.29,
+          -22.17
+        ],
+        [
+          50,
+          -22
+        ],
+        [
+          48.71,
+          -22.17
+        ],
+        [
+          47.5,
+          -22.67
+        ],
+        [
+          46.46,
+          -23.46
+        ],
+        [
+          45.67,
+          -24.5
+        ],
+        [
+          45.17,
+          -25.71
+        ],
+        [
+          45,
+          -27
+        ],
+        [
+          45.17,
+          -28.29
+        ],
+        [
+          45.67,
+          -29.5
+        ],
+        [
+          46.46,
+          -30.54
+        ],
+        [
+          47.5,
+          -31.33
+        ],
+        [
+          48.71,
+          -31.83
+        ],
+        [
+          50,
+          -32
+        ],
+        [
+          51.29,
+          -31.83
+        ],
+        [
+          52.5,
+          -31.33
+        ],
+        [
+          53.54,
+          -30.54
+        ],
+        [
+          54.33,
+          -29.5
+        ],
+        [
+          54.83,
+          -28.29
+        ]
+      ],
+      "start": 72,
+      "end": 80,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Sex Bolt 2",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sex Bolt 2",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Sex Bolt 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Armature Spacer",
+      "points": [
+        [
+          7,
+          -27
+        ],
+        [
+          6.76,
+          -25.19
+        ],
+        [
+          6.06,
+          -23.5
+        ],
+        [
+          4.95,
+          -22.05
+        ],
+        [
+          3.5,
+          -20.94
+        ],
+        [
+          1.81,
+          -20.24
+        ],
+        [
+          0,
+          -20
+        ],
+        [
+          -1.81,
+          -20.24
+        ],
+        [
+          -3.5,
+          -20.94
+        ],
+        [
+          -4.95,
+          -22.05
+        ],
+        [
+          -6.06,
+          -23.5
+        ],
+        [
+          -6.76,
+          -25.19
+        ],
+        [
+          -7,
+          -27
+        ],
+        [
+          -6.76,
+          -28.81
+        ],
+        [
+          -6.06,
+          -30.5
+        ],
+        [
+          -4.95,
+          -31.95
+        ],
+        [
+          -3.5,
+          -33.06
+        ],
+        [
+          -1.81,
+          -33.76
+        ],
+        [
+          0,
+          -34
+        ],
+        [
+          1.81,
+          -33.76
+        ],
+        [
+          3.5,
+          -33.06
+        ],
+        [
+          4.95,
+          -31.95
+        ],
+        [
+          6.06,
+          -30.5
+        ],
+        [
+          6.76,
+          -28.81
+        ]
+      ],
+      "start": 72,
+      "end": 80,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Armature Spacer",
+      "subcategory": "Rubber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Armature Spacer",
+      "param": "Rubber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Armature Spacer",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cable Entry",
+      "points": [
+        [
+          -96,
+          -30
+        ],
+        [
+          -96.14,
+          -28.96
+        ],
+        [
+          -96.54,
+          -28
+        ],
+        [
+          -97.17,
+          -27.17
+        ],
+        [
+          -98,
+          -26.54
+        ],
+        [
+          -98.96,
+          -26.14
+        ],
+        [
+          -100,
+          -26
+        ],
+        [
+          -101.04,
+          -26.14
+        ],
+        [
+          -102,
+          -26.54
+        ],
+        [
+          -102.83,
+          -27.17
+        ],
+        [
+          -103.46,
+          -28
+        ],
+        [
+          -103.86,
+          -28.96
+        ],
+        [
+          -104,
+          -30
+        ],
+        [
+          -103.86,
+          -31.04
+        ],
+        [
+          -103.46,
+          -32
+        ],
+        [
+          -102.83,
+          -32.83
+        ],
+        [
+          -102,
+          -33.46
+        ],
+        [
+          -101.04,
+          -33.86
+        ],
+        [
+          -100,
+          -34
+        ],
+        [
+          -98.96,
+          -33.86
+        ],
+        [
+          -98,
+          -33.46
+        ],
+        [
+          -97.17,
+          -32.83
+        ],
+        [
+          -96.54,
+          -32
+        ],
+        [
+          -96.14,
+          -31.04
+        ]
+      ],
+      "start": 0,
+      "end": 30
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cable Entry",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cable Entry",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cable Entry",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "Security",
+      "domain": "electrical",
+      "system": "Security",
+      "solid": "Head Bracket",
+      "side": "top"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\E\\_Images\\FMC_E_ElecFixture_AccessControl_MagLock.png"
+    }
+  ],
+  "values": {
+    "Magnet 250 x 49 x 42 mm": {
+      "value": "250x49x42",
+      "source_status": "assumed",
+      "source": "typical 600 lb mag-lock"
+    },
+    "Holding force 600 lb, 12/24 V DC": {
+      "value": "600lb",
+      "source_status": "assumed",
+      "source": "type name"
+    },
+    "Fail-safe, released by fire alarm": {
+      "value": "fail-safe",
+      "source_status": "assumed",
+      "source": "BS 7273-4"
+    }
   }
- ],
- "values": {
-  "Magnet 250 x 49 x 42 mm": {
-   "value": "250x49x42",
-   "source_status": "assumed",
-   "source": "typical 600 lb mag-lock"
-  },
-  "Holding force 600 lb, 12/24 V DC": {
-   "value": "600lb",
-   "source_status": "assumed",
-   "source": "type name"
-  },
-  "Fail-safe, released by fire alarm": {
-   "value": "fail-safe",
-   "source_status": "assumed",
-   "source": "BS 7273-4"
-  }
- }
 }

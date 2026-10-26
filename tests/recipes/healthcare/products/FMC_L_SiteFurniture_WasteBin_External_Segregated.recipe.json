@@ -1,2060 +1,2067 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_L_SiteFurniture_WasteBin_External_Segregated",
- "template": "Metric Generic Model.rft",
- "about": "Waste station modelled as a generic product: concrete base, three posts, curved rain hood with fascia and coloured stream signs, hanging rail, two tapered stainless bins with coloured rims, domed lids with apertures, stream bands, brackets and base rings. Geometry drawn for 2-bin_Segregated; the other types share it (sizes in the values). Reference: query: site furniture waste bin external segregated site hospital; images: https://www.google.com/search?tbm=isch&q=site+furniture+waste+bin+external+segregated+site+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Site"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Compaction_Pct_MDD",
-   "guid": "3694e24c-eacc-5409-81e2-f985cc1dda60",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_CBR_Pct",
-   "guid": "8c9ca741-f469-5a4d-bdf4-12a2eaaa8901",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Layer_Thickness_mm",
-   "guid": "6e7bbdb7-2de3-5a2a-a889-5f1d9f7db58a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "2-bin_Segregated"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2-bin_Segregated/FMC_Cost_Unit",
-   "type": "2-bin_Segregated",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2-bin_Segregated/FMC_Geometry_Stage",
-   "type": "2-bin_Segregated",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2-bin_Segregated/IfcExportAs",
-   "type": "2-bin_Segregated",
-   "param": "IfcExportAs",
-   "value": "IfcFurniture"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2-bin_Segregated/Description",
-   "type": "2-bin_Segregated",
-   "param": "Description",
-   "value": "Segregated external waste station, 2-bin (general black, recycling blue) or 3-bin, 80 l stainless bins with coloured lids and bands, hung on a galvanised frame under a rain hood"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2-bin_Segregated/Keynote",
-   "type": "2-bin_Segregated",
-   "param": "Keynote",
-   "value": "L.FUR_05"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2-bin_Segregated/FMC_Keynote_Code",
-   "type": "2-bin_Segregated",
-   "param": "FMC_Keynote_Code",
-   "value": "L.FUR_05"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2-bin_Segregated/FMC_Code_Description",
-   "type": "2-bin_Segregated",
-   "param": "FMC_Code_Description",
-   "value": "WasteBin External Segregated: Segregated external bins"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2-bin_Segregated/FMC_Code_Group",
-   "type": "2-bin_Segregated",
-   "param": "FMC_Code_Group",
-   "value": "L.FUR"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2-bin_Segregated/FMC_Role_Code",
-   "type": "2-bin_Segregated",
-   "param": "FMC_Role_Code",
-   "value": "L"
-  },
-  {
-   "op": "add_type",
-   "name": "3-bin_Segregated"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3-bin_Segregated/FMC_Cost_Unit",
-   "type": "3-bin_Segregated",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3-bin_Segregated/FMC_Geometry_Stage",
-   "type": "3-bin_Segregated",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3-bin_Segregated/IfcExportAs",
-   "type": "3-bin_Segregated",
-   "param": "IfcExportAs",
-   "value": "IfcFurniture"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3-bin_Segregated/Description",
-   "type": "3-bin_Segregated",
-   "param": "Description",
-   "value": "Segregated external waste station, 2-bin (general black, recycling blue) or 3-bin, 80 l stainless bins with coloured lids and bands, hung on a galvanised frame under a rain hood"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3-bin_Segregated/Keynote",
-   "type": "3-bin_Segregated",
-   "param": "Keynote",
-   "value": "L.FUR_05"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3-bin_Segregated/FMC_Keynote_Code",
-   "type": "3-bin_Segregated",
-   "param": "FMC_Keynote_Code",
-   "value": "L.FUR_05"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3-bin_Segregated/FMC_Code_Description",
-   "type": "3-bin_Segregated",
-   "param": "FMC_Code_Description",
-   "value": "WasteBin External Segregated: Segregated external bins"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3-bin_Segregated/FMC_Code_Group",
-   "type": "3-bin_Segregated",
-   "param": "FMC_Code_Group",
-   "value": "L.FUR"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3-bin_Segregated/FMC_Role_Code",
-   "type": "3-bin_Segregated",
-   "param": "FMC_Role_Code",
-   "value": "L"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Concg",
-   "color": [
-    177,
-    175,
-    168
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Concg Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Concrete_C30",
-   "param": "Concg Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Galv",
-   "color": [
-    167,
-    172,
-    175
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Galv Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_ColdFormed_Galvanised",
-   "param": "Galv Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Alu",
-   "color": [
-    158,
-    164,
-    170
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Alu Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Aluminium_PowderCoated",
-   "param": "Alu Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Ss",
-   "color": [
-    180,
-    183,
-    186
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Ss Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_StainlessSteel_Brushed",
-   "param": "Ss Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Blue",
-   "color": [
-    47,
-    109,
-    181
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Blue Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Blue",
-   "param": "Blue Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -680,
-     -340
-    ],
-    [
-     680,
-     -340
-    ],
-    [
-     680,
-     330
-    ],
-    [
-     -680,
-     330
-    ]
-   ],
-   "start": 0,
-   "end": 1310.0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Base Slab",
-   "points": [
-    [
-     -680,
-     -330
-    ],
-    [
-     680,
-     -330
-    ],
-    [
-     680,
-     330
-    ],
-    [
-     -680,
-     330
-    ]
-   ],
-   "start": 0,
-   "end": 60
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Slab",
-   "subcategory": "Concg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Slab",
-   "param": "Concg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Slab",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Post 1",
-   "points": [
-    [
-     -600.0,
-     280.0
-    ],
-    [
-     -601.02,
-     287.76
-    ],
-    [
-     -604.02,
-     295.0
-    ],
-    [
-     -608.79,
-     301.21
-    ],
-    [
-     -615.0,
-     305.98
-    ],
-    [
-     -622.24,
-     308.98
-    ],
-    [
-     -630.0,
-     310.0
-    ],
-    [
-     -637.76,
-     308.98
-    ],
-    [
-     -645.0,
-     305.98
-    ],
-    [
-     -651.21,
-     301.21
-    ],
-    [
-     -655.98,
-     295.0
-    ],
-    [
-     -658.98,
-     287.76
-    ],
-    [
-     -660.0,
-     280.0
-    ],
-    [
-     -658.98,
-     272.24
-    ],
-    [
-     -655.98,
-     265.0
-    ],
-    [
-     -651.21,
-     258.79
-    ],
-    [
-     -645.0,
-     254.02
-    ],
-    [
-     -637.76,
-     251.02
-    ],
-    [
-     -630.0,
-     250.0
-    ],
-    [
-     -622.24,
-     251.02
-    ],
-    [
-     -615.0,
-     254.02
-    ],
-    [
-     -608.79,
-     258.79
-    ],
-    [
-     -604.02,
-     265.0
-    ],
-    [
-     -601.02,
-     272.24
-    ]
-   ],
-   "start": 60,
-   "end": 1200
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Post 1",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Post 1",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Post 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Post 2",
-   "points": [
-    [
-     30.0,
-     280.0
-    ],
-    [
-     28.98,
-     287.76
-    ],
-    [
-     25.98,
-     295.0
-    ],
-    [
-     21.21,
-     301.21
-    ],
-    [
-     15.0,
-     305.98
-    ],
-    [
-     7.76,
-     308.98
-    ],
-    [
-     0.0,
-     310.0
-    ],
-    [
-     -7.76,
-     308.98
-    ],
-    [
-     -15.0,
-     305.98
-    ],
-    [
-     -21.21,
-     301.21
-    ],
-    [
-     -25.98,
-     295.0
-    ],
-    [
-     -28.98,
-     287.76
-    ],
-    [
-     -30.0,
-     280.0
-    ],
-    [
-     -28.98,
-     272.24
-    ],
-    [
-     -25.98,
-     265.0
-    ],
-    [
-     -21.21,
-     258.79
-    ],
-    [
-     -15.0,
-     254.02
-    ],
-    [
-     -7.76,
-     251.02
-    ],
-    [
-     -0.0,
-     250.0
-    ],
-    [
-     7.76,
-     251.02
-    ],
-    [
-     15.0,
-     254.02
-    ],
-    [
-     21.21,
-     258.79
-    ],
-    [
-     25.98,
-     265.0
-    ],
-    [
-     28.98,
-     272.24
-    ]
-   ],
-   "start": 60,
-   "end": 1200
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Post 2",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Post 2",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Post 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Post 3",
-   "points": [
-    [
-     660.0,
-     280.0
-    ],
-    [
-     658.98,
-     287.76
-    ],
-    [
-     655.98,
-     295.0
-    ],
-    [
-     651.21,
-     301.21
-    ],
-    [
-     645.0,
-     305.98
-    ],
-    [
-     637.76,
-     308.98
-    ],
-    [
-     630.0,
-     310.0
-    ],
-    [
-     622.24,
-     308.98
-    ],
-    [
-     615.0,
-     305.98
-    ],
-    [
-     608.79,
-     301.21
-    ],
-    [
-     604.02,
-     295.0
-    ],
-    [
-     601.02,
-     287.76
-    ],
-    [
-     600.0,
-     280.0
-    ],
-    [
-     601.02,
-     272.24
-    ],
-    [
-     604.02,
-     265.0
-    ],
-    [
-     608.79,
-     258.79
-    ],
-    [
-     615.0,
-     254.02
-    ],
-    [
-     622.24,
-     251.02
-    ],
-    [
-     630.0,
-     250.0
-    ],
-    [
-     637.76,
-     251.02
-    ],
-    [
-     645.0,
-     254.02
-    ],
-    [
-     651.21,
-     258.79
-    ],
-    [
-     655.98,
-     265.0
-    ],
-    [
-     658.98,
-     272.24
-    ]
-   ],
-   "start": 60,
-   "end": 1200
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Post 3",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Post 3",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Post 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rain Hood",
-   "points": [
-    [
-     -330,
-     1200
-    ],
-    [
-     -330.0,
-     1200.0
-    ],
-    [
-     -304.9,
-     1242.1
-    ],
-    [
-     -233.3,
-     1277.8
-    ],
-    [
-     -126.3,
-     1301.6
-    ],
-    [
-     -0.0,
-     1310.0
-    ],
-    [
-     126.3,
-     1301.6
-    ],
-    [
-     233.3,
-     1277.8
-    ],
-    [
-     304.9,
-     1242.1
-    ],
-    [
-     330.0,
-     1200.0
-    ],
-    [
-     330,
-     1200
-    ]
-   ],
-   "start": -680,
-   "end": 680,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rain Hood",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rain Hood",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rain Hood",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hood Fascia",
-   "points": [
-    [
-     -680,
-     -336
-    ],
-    [
-     680,
-     -336
-    ],
-    [
-     680,
-     -326
-    ],
-    [
-     -680,
-     -326
-    ]
-   ],
-   "start": 1170,
-   "end": 1210
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hood Fascia",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hood Fascia",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hood Fascia",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hanging Rail",
-   "points": [
-    [
-     -660,
-     250
-    ],
-    [
-     660,
-     250
-    ],
-    [
-     660,
-     310
-    ],
-    [
-     -660,
-     310
-    ]
-   ],
-   "start": 880,
-   "end": 920
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hanging Rail",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hanging Rail",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hanging Rail",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Bin Body General",
-   "profile": [
-    [
-     0,
-     150
-    ],
-    [
-     225,
-     150
-    ],
-    [
-     250,
-     1000
-    ],
-    [
-     0,
-     1000
-    ]
-   ],
-   "axis_at": [
-    -315,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bin Body General",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bin Body General",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Bin Rim General",
-   "profile": [
-    [
-     250,
-     1000
-    ],
-    [
-     262,
-     1000
-    ],
-    [
-     262,
-     1022
-    ],
-    [
-     250,
-     1022
-    ]
-   ],
-   "axis_at": [
-    -315,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bin Rim General",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bin Rim General",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Bin Lid General",
-   "profile": [
-    [
-     0,
-     1022
-    ],
-    [
-     262,
-     1022
-    ],
-    [
-     240,
-     1062
-    ],
-    [
-     150,
-     1080
-    ],
-    [
-     0,
-     1088
-    ]
-   ],
-   "axis_at": [
-    -315,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bin Lid General",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bin Lid General",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Aperture General",
-   "points": [
-    [
-     -230.0,
-     -262.0
-    ],
-    [
-     -226.17,
-     -261.24
-    ],
-    [
-     -222.93,
-     -259.07
-    ],
-    [
-     -220.76,
-     -255.83
-    ],
-    [
-     -220.0,
-     -252.0
-    ],
-    [
-     -220.0,
-     -160.0
-    ],
-    [
-     -220.76,
-     -156.17
-    ],
-    [
-     -222.93,
-     -152.93
-    ],
-    [
-     -226.17,
-     -150.76
-    ],
-    [
-     -230.0,
-     -150.0
-    ],
-    [
-     -400.0,
-     -150.0
-    ],
-    [
-     -403.83,
-     -150.76
-    ],
-    [
-     -407.07,
-     -152.93
-    ],
-    [
-     -409.24,
-     -156.17
-    ],
-    [
-     -410.0,
-     -160.0
-    ],
-    [
-     -410.0,
-     -252.0
-    ],
-    [
-     -409.24,
-     -255.83
-    ],
-    [
-     -407.07,
-     -259.07
-    ],
-    [
-     -403.83,
-     -261.24
-    ],
-    [
-     -400.0,
-     -262.0
-    ]
-   ],
-   "start": 1024,
-   "end": 1066
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Aperture General",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Aperture General",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Aperture General",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Stream Band General",
-   "profile": [
-    [
-     244,
-     700
-    ],
-    [
-     248.5,
-     700
-    ],
-    [
-     248.5,
-     800
-    ],
-    [
-     244,
-     800
-    ]
-   ],
-   "axis_at": [
-    -315,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Stream Band General",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Stream Band General",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bin Bracket General",
-   "points": [
-    [
-     -355,
-     230
-    ],
-    [
-     -275,
-     230
-    ],
-    [
-     -275,
-     260
-    ],
-    [
-     -355,
-     260
-    ]
-   ],
-   "start": 860,
-   "end": 940
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bin Bracket General",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bin Bracket General",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bin Bracket General",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Stream Sign General",
-   "points": [
-    [
-     -168.0,
-     1172.0
-    ],
-    [
-     -166.85,
-     1172.23
-    ],
-    [
-     -165.88,
-     1172.88
-    ],
-    [
-     -165.23,
-     1173.85
-    ],
-    [
-     -165.0,
-     1175.0
-    ],
-    [
-     -165.0,
-     1205.0
-    ],
-    [
-     -165.23,
-     1206.15
-    ],
-    [
-     -165.88,
-     1207.12
-    ],
-    [
-     -166.85,
-     1207.77
-    ],
-    [
-     -168.0,
-     1208.0
-    ],
-    [
-     -462.0,
-     1208.0
-    ],
-    [
-     -463.15,
-     1207.77
-    ],
-    [
-     -464.12,
-     1207.12
-    ],
-    [
-     -464.77,
-     1206.15
-    ],
-    [
-     -465.0,
-     1205.0
-    ],
-    [
-     -465.0,
-     1175.0
-    ],
-    [
-     -464.77,
-     1173.85
-    ],
-    [
-     -464.12,
-     1172.88
-    ],
-    [
-     -463.15,
-     1172.23
-    ],
-    [
-     -462.0,
-     1172.0
-    ]
-   ],
-   "start": 336,
-   "end": 340,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Stream Sign General",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Stream Sign General",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Stream Sign General",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Base Ring General",
-   "profile": [
-    [
-     205,
-     150
-    ],
-    [
-     228,
-     150
-    ],
-    [
-     228,
-     175
-    ],
-    [
-     205,
-     175
-    ]
-   ],
-   "axis_at": [
-    -315,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Ring General",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Ring General",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Bin Body Recycling",
-   "profile": [
-    [
-     0,
-     150
-    ],
-    [
-     225,
-     150
-    ],
-    [
-     250,
-     1000
-    ],
-    [
-     0,
-     1000
-    ]
-   ],
-   "axis_at": [
-    315,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bin Body Recycling",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bin Body Recycling",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Bin Rim Recycling",
-   "profile": [
-    [
-     250,
-     1000
-    ],
-    [
-     262,
-     1000
-    ],
-    [
-     262,
-     1022
-    ],
-    [
-     250,
-     1022
-    ]
-   ],
-   "axis_at": [
-    315,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bin Rim Recycling",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bin Rim Recycling",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Bin Lid Recycling",
-   "profile": [
-    [
-     0,
-     1022
-    ],
-    [
-     262,
-     1022
-    ],
-    [
-     240,
-     1062
-    ],
-    [
-     150,
-     1080
-    ],
-    [
-     0,
-     1088
-    ]
-   ],
-   "axis_at": [
-    315,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bin Lid Recycling",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bin Lid Recycling",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Aperture Recycling",
-   "points": [
-    [
-     400.0,
-     -262.0
-    ],
-    [
-     403.83,
-     -261.24
-    ],
-    [
-     407.07,
-     -259.07
-    ],
-    [
-     409.24,
-     -255.83
-    ],
-    [
-     410.0,
-     -252.0
-    ],
-    [
-     410.0,
-     -160.0
-    ],
-    [
-     409.24,
-     -156.17
-    ],
-    [
-     407.07,
-     -152.93
-    ],
-    [
-     403.83,
-     -150.76
-    ],
-    [
-     400.0,
-     -150.0
-    ],
-    [
-     230.0,
-     -150.0
-    ],
-    [
-     226.17,
-     -150.76
-    ],
-    [
-     222.93,
-     -152.93
-    ],
-    [
-     220.76,
-     -156.17
-    ],
-    [
-     220.0,
-     -160.0
-    ],
-    [
-     220.0,
-     -252.0
-    ],
-    [
-     220.76,
-     -255.83
-    ],
-    [
-     222.93,
-     -259.07
-    ],
-    [
-     226.17,
-     -261.24
-    ],
-    [
-     230.0,
-     -262.0
-    ]
-   ],
-   "start": 1024,
-   "end": 1066
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Aperture Recycling",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Aperture Recycling",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Aperture Recycling",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Stream Band Recycling",
-   "profile": [
-    [
-     244,
-     700
-    ],
-    [
-     248.5,
-     700
-    ],
-    [
-     248.5,
-     800
-    ],
-    [
-     244,
-     800
-    ]
-   ],
-   "axis_at": [
-    315,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Stream Band Recycling",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Stream Band Recycling",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bin Bracket Recycling",
-   "points": [
-    [
-     275,
-     230
-    ],
-    [
-     355,
-     230
-    ],
-    [
-     355,
-     260
-    ],
-    [
-     275,
-     260
-    ]
-   ],
-   "start": 860,
-   "end": 940
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bin Bracket Recycling",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bin Bracket Recycling",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bin Bracket Recycling",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Stream Sign Recycling",
-   "points": [
-    [
-     462.0,
-     1172.0
-    ],
-    [
-     463.15,
-     1172.23
-    ],
-    [
-     464.12,
-     1172.88
-    ],
-    [
-     464.77,
-     1173.85
-    ],
-    [
-     465.0,
-     1175.0
-    ],
-    [
-     465.0,
-     1205.0
-    ],
-    [
-     464.77,
-     1206.15
-    ],
-    [
-     464.12,
-     1207.12
-    ],
-    [
-     463.15,
-     1207.77
-    ],
-    [
-     462.0,
-     1208.0
-    ],
-    [
-     168.0,
-     1208.0
-    ],
-    [
-     166.85,
-     1207.77
-    ],
-    [
-     165.88,
-     1207.12
-    ],
-    [
-     165.23,
-     1206.15
-    ],
-    [
-     165.0,
-     1205.0
-    ],
-    [
-     165.0,
-     1175.0
-    ],
-    [
-     165.23,
-     1173.85
-    ],
-    [
-     165.88,
-     1172.88
-    ],
-    [
-     166.85,
-     1172.23
-    ],
-    [
-     168.0,
-     1172.0
-    ]
-   ],
-   "start": 336,
-   "end": 340,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Stream Sign Recycling",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Stream Sign Recycling",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Stream Sign Recycling",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Base Ring Recycling",
-   "profile": [
-    [
-     205,
-     150
-    ],
-    [
-     228,
-     150
-    ],
-    [
-     228,
-     175
-    ],
-    [
-     205,
-     175
-    ]
-   ],
-   "axis_at": [
-    315,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Ring Recycling",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Ring Recycling",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\L\\_Images\\FMC_L_SiteFurniture_WasteBin_External_Segregated.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_L_SiteFurniture_WasteBin_External_Segregated",
+  "template": "Metric Generic Model.rft",
+  "about": "Waste station modelled as a generic product: concrete base, three posts, curved rain hood with fascia and coloured stream signs, hanging rail, two tapered stainless bins with coloured rims, domed lids with apertures, stream bands, brackets and base rings. Geometry drawn for 2-bin_Segregated; the other types share it (sizes in the values). Reference: query: site furniture waste bin external segregated site hospital; images: https://www.google.com/search?tbm=isch&q=site+furniture+waste+bin+external+segregated+site+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Site"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Compaction_Pct_MDD",
+      "guid": "3694e24c-eacc-5409-81e2-f985cc1dda60",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_CBR_Pct",
+      "guid": "8c9ca741-f469-5a4d-bdf4-12a2eaaa8901",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Layer_Thickness_mm",
+      "guid": "6e7bbdb7-2de3-5a2a-a889-5f1d9f7db58a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "2-bin_Segregated"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2-bin_Segregated/FMC_Cost_Unit",
+      "type": "2-bin_Segregated",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2-bin_Segregated/FMC_Geometry_Stage",
+      "type": "2-bin_Segregated",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2-bin_Segregated/IfcExportAs",
+      "type": "2-bin_Segregated",
+      "param": "IfcExportAs",
+      "value": "IfcFurniture"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2-bin_Segregated/Description",
+      "type": "2-bin_Segregated",
+      "param": "Description",
+      "value": "Segregated external waste station, 2-bin (general black, recycling blue) or 3-bin, 80 l stainless bins with coloured lids and bands, hung on a galvanised frame under a rain hood"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2-bin_Segregated/Keynote",
+      "type": "2-bin_Segregated",
+      "param": "Keynote",
+      "value": "L.FUR_05"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2-bin_Segregated/FMC_Keynote_Code",
+      "type": "2-bin_Segregated",
+      "param": "FMC_Keynote_Code",
+      "value": "L.FUR_05"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2-bin_Segregated/FMC_Code_Description",
+      "type": "2-bin_Segregated",
+      "param": "FMC_Code_Description",
+      "value": "WasteBin External Segregated: Segregated external bins"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2-bin_Segregated/FMC_Code_Group",
+      "type": "2-bin_Segregated",
+      "param": "FMC_Code_Group",
+      "value": "L.FUR"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2-bin_Segregated/FMC_Role_Code",
+      "type": "2-bin_Segregated",
+      "param": "FMC_Role_Code",
+      "value": "L"
+    },
+    {
+      "op": "add_type",
+      "name": "3-bin_Segregated"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3-bin_Segregated/FMC_Cost_Unit",
+      "type": "3-bin_Segregated",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3-bin_Segregated/FMC_Geometry_Stage",
+      "type": "3-bin_Segregated",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3-bin_Segregated/IfcExportAs",
+      "type": "3-bin_Segregated",
+      "param": "IfcExportAs",
+      "value": "IfcFurniture"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3-bin_Segregated/Description",
+      "type": "3-bin_Segregated",
+      "param": "Description",
+      "value": "Segregated external waste station, 2-bin (general black, recycling blue) or 3-bin, 80 l stainless bins with coloured lids and bands, hung on a galvanised frame under a rain hood"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3-bin_Segregated/Keynote",
+      "type": "3-bin_Segregated",
+      "param": "Keynote",
+      "value": "L.FUR_05"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3-bin_Segregated/FMC_Keynote_Code",
+      "type": "3-bin_Segregated",
+      "param": "FMC_Keynote_Code",
+      "value": "L.FUR_05"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3-bin_Segregated/FMC_Code_Description",
+      "type": "3-bin_Segregated",
+      "param": "FMC_Code_Description",
+      "value": "WasteBin External Segregated: Segregated external bins"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3-bin_Segregated/FMC_Code_Group",
+      "type": "3-bin_Segregated",
+      "param": "FMC_Code_Group",
+      "value": "L.FUR"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3-bin_Segregated/FMC_Role_Code",
+      "type": "3-bin_Segregated",
+      "param": "FMC_Role_Code",
+      "value": "L"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Concg",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Concg Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Concrete_C30",
+      "param": "Concg Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Galv",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Galv Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_ColdFormed_Galvanised",
+      "param": "Galv Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Alu",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Alu Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Aluminium_PowderCoated",
+      "param": "Alu Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Ss",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Ss Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_StainlessSteel_Brushed",
+      "param": "Ss Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Blue",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Blue Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Blue",
+      "param": "Blue Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -680,
+          -340
+        ],
+        [
+          680,
+          -340
+        ],
+        [
+          680,
+          330
+        ],
+        [
+          -680,
+          330
+        ]
+      ],
+      "start": 0,
+      "end": 1310
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Base Slab",
+      "points": [
+        [
+          -680,
+          -330
+        ],
+        [
+          680,
+          -330
+        ],
+        [
+          680,
+          330
+        ],
+        [
+          -680,
+          330
+        ]
+      ],
+      "start": 0,
+      "end": 60
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Base Slab",
+      "subcategory": "Concg"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Base Slab",
+      "param": "Concg Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Base Slab",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Post 1",
+      "points": [
+        [
+          -600,
+          280
+        ],
+        [
+          -601.02,
+          287.76
+        ],
+        [
+          -604.02,
+          295
+        ],
+        [
+          -608.79,
+          301.21
+        ],
+        [
+          -615,
+          305.98
+        ],
+        [
+          -622.24,
+          308.98
+        ],
+        [
+          -630,
+          310
+        ],
+        [
+          -637.76,
+          308.98
+        ],
+        [
+          -645,
+          305.98
+        ],
+        [
+          -651.21,
+          301.21
+        ],
+        [
+          -655.98,
+          295
+        ],
+        [
+          -658.98,
+          287.76
+        ],
+        [
+          -660,
+          280
+        ],
+        [
+          -658.98,
+          272.24
+        ],
+        [
+          -655.98,
+          265
+        ],
+        [
+          -651.21,
+          258.79
+        ],
+        [
+          -645,
+          254.02
+        ],
+        [
+          -637.76,
+          251.02
+        ],
+        [
+          -630,
+          250
+        ],
+        [
+          -622.24,
+          251.02
+        ],
+        [
+          -615,
+          254.02
+        ],
+        [
+          -608.79,
+          258.79
+        ],
+        [
+          -604.02,
+          265
+        ],
+        [
+          -601.02,
+          272.24
+        ]
+      ],
+      "start": 60,
+      "end": 1200
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Post 1",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Post 1",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Post 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Post 2",
+      "points": [
+        [
+          30,
+          280
+        ],
+        [
+          28.98,
+          287.76
+        ],
+        [
+          25.98,
+          295
+        ],
+        [
+          21.21,
+          301.21
+        ],
+        [
+          15,
+          305.98
+        ],
+        [
+          7.76,
+          308.98
+        ],
+        [
+          0,
+          310
+        ],
+        [
+          -7.76,
+          308.98
+        ],
+        [
+          -15,
+          305.98
+        ],
+        [
+          -21.21,
+          301.21
+        ],
+        [
+          -25.98,
+          295
+        ],
+        [
+          -28.98,
+          287.76
+        ],
+        [
+          -30,
+          280
+        ],
+        [
+          -28.98,
+          272.24
+        ],
+        [
+          -25.98,
+          265
+        ],
+        [
+          -21.21,
+          258.79
+        ],
+        [
+          -15,
+          254.02
+        ],
+        [
+          -7.76,
+          251.02
+        ],
+        [
+          0,
+          250
+        ],
+        [
+          7.76,
+          251.02
+        ],
+        [
+          15,
+          254.02
+        ],
+        [
+          21.21,
+          258.79
+        ],
+        [
+          25.98,
+          265
+        ],
+        [
+          28.98,
+          272.24
+        ]
+      ],
+      "start": 60,
+      "end": 1200
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Post 2",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Post 2",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Post 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Post 3",
+      "points": [
+        [
+          660,
+          280
+        ],
+        [
+          658.98,
+          287.76
+        ],
+        [
+          655.98,
+          295
+        ],
+        [
+          651.21,
+          301.21
+        ],
+        [
+          645,
+          305.98
+        ],
+        [
+          637.76,
+          308.98
+        ],
+        [
+          630,
+          310
+        ],
+        [
+          622.24,
+          308.98
+        ],
+        [
+          615,
+          305.98
+        ],
+        [
+          608.79,
+          301.21
+        ],
+        [
+          604.02,
+          295
+        ],
+        [
+          601.02,
+          287.76
+        ],
+        [
+          600,
+          280
+        ],
+        [
+          601.02,
+          272.24
+        ],
+        [
+          604.02,
+          265
+        ],
+        [
+          608.79,
+          258.79
+        ],
+        [
+          615,
+          254.02
+        ],
+        [
+          622.24,
+          251.02
+        ],
+        [
+          630,
+          250
+        ],
+        [
+          637.76,
+          251.02
+        ],
+        [
+          645,
+          254.02
+        ],
+        [
+          651.21,
+          258.79
+        ],
+        [
+          655.98,
+          265
+        ],
+        [
+          658.98,
+          272.24
+        ]
+      ],
+      "start": 60,
+      "end": 1200
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Post 3",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Post 3",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Post 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rain Hood",
+      "points": [
+        [
+          -330,
+          1200
+        ],
+        [
+          -330,
+          1200
+        ],
+        [
+          -304.9,
+          1242.1
+        ],
+        [
+          -233.3,
+          1277.8
+        ],
+        [
+          -126.3,
+          1301.6
+        ],
+        [
+          0,
+          1310
+        ],
+        [
+          126.3,
+          1301.6
+        ],
+        [
+          233.3,
+          1277.8
+        ],
+        [
+          304.9,
+          1242.1
+        ],
+        [
+          330,
+          1200
+        ],
+        [
+          330,
+          1200
+        ]
+      ],
+      "start": -680,
+      "end": 680,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rain Hood",
+      "subcategory": "Alu"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rain Hood",
+      "param": "Alu Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rain Hood",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hood Fascia",
+      "points": [
+        [
+          -680,
+          -336
+        ],
+        [
+          680,
+          -336
+        ],
+        [
+          680,
+          -326
+        ],
+        [
+          -680,
+          -326
+        ]
+      ],
+      "start": 1170,
+      "end": 1210
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hood Fascia",
+      "subcategory": "Alu"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hood Fascia",
+      "param": "Alu Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hood Fascia",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hanging Rail",
+      "points": [
+        [
+          -660,
+          250
+        ],
+        [
+          660,
+          250
+        ],
+        [
+          660,
+          310
+        ],
+        [
+          -660,
+          310
+        ]
+      ],
+      "start": 880,
+      "end": 920
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hanging Rail",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hanging Rail",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hanging Rail",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Bin Body General",
+      "profile": [
+        [
+          0,
+          150
+        ],
+        [
+          225,
+          150
+        ],
+        [
+          250,
+          1000
+        ],
+        [
+          0,
+          1000
+        ]
+      ],
+      "axis_at": [
+        -315,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bin Body General",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bin Body General",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Bin Rim General",
+      "profile": [
+        [
+          250,
+          1000
+        ],
+        [
+          262,
+          1000
+        ],
+        [
+          262,
+          1022
+        ],
+        [
+          250,
+          1022
+        ]
+      ],
+      "axis_at": [
+        -315,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bin Rim General",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bin Rim General",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Bin Lid General",
+      "profile": [
+        [
+          0,
+          1022
+        ],
+        [
+          262,
+          1022
+        ],
+        [
+          240,
+          1062
+        ],
+        [
+          150,
+          1080
+        ],
+        [
+          0,
+          1088
+        ]
+      ],
+      "axis_at": [
+        -315,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bin Lid General",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bin Lid General",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Aperture General",
+      "points": [
+        [
+          -230,
+          -262
+        ],
+        [
+          -226.17,
+          -261.24
+        ],
+        [
+          -222.93,
+          -259.07
+        ],
+        [
+          -220.76,
+          -255.83
+        ],
+        [
+          -220,
+          -252
+        ],
+        [
+          -220,
+          -160
+        ],
+        [
+          -220.76,
+          -156.17
+        ],
+        [
+          -222.93,
+          -152.93
+        ],
+        [
+          -226.17,
+          -150.76
+        ],
+        [
+          -230,
+          -150
+        ],
+        [
+          -400,
+          -150
+        ],
+        [
+          -403.83,
+          -150.76
+        ],
+        [
+          -407.07,
+          -152.93
+        ],
+        [
+          -409.24,
+          -156.17
+        ],
+        [
+          -410,
+          -160
+        ],
+        [
+          -410,
+          -252
+        ],
+        [
+          -409.24,
+          -255.83
+        ],
+        [
+          -407.07,
+          -259.07
+        ],
+        [
+          -403.83,
+          -261.24
+        ],
+        [
+          -400,
+          -262
+        ]
+      ],
+      "start": 1024,
+      "end": 1066
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Aperture General",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Aperture General",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Aperture General",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Stream Band General",
+      "profile": [
+        [
+          244,
+          700
+        ],
+        [
+          248.5,
+          700
+        ],
+        [
+          248.5,
+          800
+        ],
+        [
+          244,
+          800
+        ]
+      ],
+      "axis_at": [
+        -315,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Stream Band General",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Stream Band General",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bin Bracket General",
+      "points": [
+        [
+          -355,
+          230
+        ],
+        [
+          -275,
+          230
+        ],
+        [
+          -275,
+          260
+        ],
+        [
+          -355,
+          260
+        ]
+      ],
+      "start": 860,
+      "end": 940
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bin Bracket General",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bin Bracket General",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bin Bracket General",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Stream Sign General",
+      "points": [
+        [
+          -168,
+          1172
+        ],
+        [
+          -166.85,
+          1172.23
+        ],
+        [
+          -165.88,
+          1172.88
+        ],
+        [
+          -165.23,
+          1173.85
+        ],
+        [
+          -165,
+          1175
+        ],
+        [
+          -165,
+          1205
+        ],
+        [
+          -165.23,
+          1206.15
+        ],
+        [
+          -165.88,
+          1207.12
+        ],
+        [
+          -166.85,
+          1207.77
+        ],
+        [
+          -168,
+          1208
+        ],
+        [
+          -462,
+          1208
+        ],
+        [
+          -463.15,
+          1207.77
+        ],
+        [
+          -464.12,
+          1207.12
+        ],
+        [
+          -464.77,
+          1206.15
+        ],
+        [
+          -465,
+          1205
+        ],
+        [
+          -465,
+          1175
+        ],
+        [
+          -464.77,
+          1173.85
+        ],
+        [
+          -464.12,
+          1172.88
+        ],
+        [
+          -463.15,
+          1172.23
+        ],
+        [
+          -462,
+          1172
+        ]
+      ],
+      "start": 336,
+      "end": 340,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Stream Sign General",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Stream Sign General",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Stream Sign General",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Base Ring General",
+      "profile": [
+        [
+          205,
+          150
+        ],
+        [
+          228,
+          150
+        ],
+        [
+          228,
+          175
+        ],
+        [
+          205,
+          175
+        ]
+      ],
+      "axis_at": [
+        -315,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Base Ring General",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Base Ring General",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Bin Body Recycling",
+      "profile": [
+        [
+          0,
+          150
+        ],
+        [
+          225,
+          150
+        ],
+        [
+          250,
+          1000
+        ],
+        [
+          0,
+          1000
+        ]
+      ],
+      "axis_at": [
+        315,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bin Body Recycling",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bin Body Recycling",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Bin Rim Recycling",
+      "profile": [
+        [
+          250,
+          1000
+        ],
+        [
+          262,
+          1000
+        ],
+        [
+          262,
+          1022
+        ],
+        [
+          250,
+          1022
+        ]
+      ],
+      "axis_at": [
+        315,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bin Rim Recycling",
+      "param": "Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bin Rim Recycling",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Bin Lid Recycling",
+      "profile": [
+        [
+          0,
+          1022
+        ],
+        [
+          262,
+          1022
+        ],
+        [
+          240,
+          1062
+        ],
+        [
+          150,
+          1080
+        ],
+        [
+          0,
+          1088
+        ]
+      ],
+      "axis_at": [
+        315,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bin Lid Recycling",
+      "param": "Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bin Lid Recycling",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Aperture Recycling",
+      "points": [
+        [
+          400,
+          -262
+        ],
+        [
+          403.83,
+          -261.24
+        ],
+        [
+          407.07,
+          -259.07
+        ],
+        [
+          409.24,
+          -255.83
+        ],
+        [
+          410,
+          -252
+        ],
+        [
+          410,
+          -160
+        ],
+        [
+          409.24,
+          -156.17
+        ],
+        [
+          407.07,
+          -152.93
+        ],
+        [
+          403.83,
+          -150.76
+        ],
+        [
+          400,
+          -150
+        ],
+        [
+          230,
+          -150
+        ],
+        [
+          226.17,
+          -150.76
+        ],
+        [
+          222.93,
+          -152.93
+        ],
+        [
+          220.76,
+          -156.17
+        ],
+        [
+          220,
+          -160
+        ],
+        [
+          220,
+          -252
+        ],
+        [
+          220.76,
+          -255.83
+        ],
+        [
+          222.93,
+          -259.07
+        ],
+        [
+          226.17,
+          -261.24
+        ],
+        [
+          230,
+          -262
+        ]
+      ],
+      "start": 1024,
+      "end": 1066
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Aperture Recycling",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Aperture Recycling",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Aperture Recycling",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Stream Band Recycling",
+      "profile": [
+        [
+          244,
+          700
+        ],
+        [
+          248.5,
+          700
+        ],
+        [
+          248.5,
+          800
+        ],
+        [
+          244,
+          800
+        ]
+      ],
+      "axis_at": [
+        315,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Stream Band Recycling",
+      "param": "Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Stream Band Recycling",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bin Bracket Recycling",
+      "points": [
+        [
+          275,
+          230
+        ],
+        [
+          355,
+          230
+        ],
+        [
+          355,
+          260
+        ],
+        [
+          275,
+          260
+        ]
+      ],
+      "start": 860,
+      "end": 940
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bin Bracket Recycling",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bin Bracket Recycling",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bin Bracket Recycling",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Stream Sign Recycling",
+      "points": [
+        [
+          462,
+          1172
+        ],
+        [
+          463.15,
+          1172.23
+        ],
+        [
+          464.12,
+          1172.88
+        ],
+        [
+          464.77,
+          1173.85
+        ],
+        [
+          465,
+          1175
+        ],
+        [
+          465,
+          1205
+        ],
+        [
+          464.77,
+          1206.15
+        ],
+        [
+          464.12,
+          1207.12
+        ],
+        [
+          463.15,
+          1207.77
+        ],
+        [
+          462,
+          1208
+        ],
+        [
+          168,
+          1208
+        ],
+        [
+          166.85,
+          1207.77
+        ],
+        [
+          165.88,
+          1207.12
+        ],
+        [
+          165.23,
+          1206.15
+        ],
+        [
+          165,
+          1205
+        ],
+        [
+          165,
+          1175
+        ],
+        [
+          165.23,
+          1173.85
+        ],
+        [
+          165.88,
+          1172.88
+        ],
+        [
+          166.85,
+          1172.23
+        ],
+        [
+          168,
+          1172
+        ]
+      ],
+      "start": 336,
+      "end": 340,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Stream Sign Recycling",
+      "subcategory": "Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Stream Sign Recycling",
+      "param": "Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Stream Sign Recycling",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Base Ring Recycling",
+      "profile": [
+        [
+          205,
+          150
+        ],
+        [
+          228,
+          150
+        ],
+        [
+          228,
+          175
+        ],
+        [
+          205,
+          175
+        ]
+      ],
+      "axis_at": [
+        315,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Base Ring Recycling",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Base Ring Recycling",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\L\\_Images\\FMC_L_SiteFurniture_WasteBin_External_Segregated.png"
+    }
+  ],
+  "values": {
+    "2-bin: 1360 x 660 mm, 1310 mm high": {
+      "value": "1360x660x1310",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "3-bin: 1990 x 660 mm": {
+      "value": "1990x660",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Bins 80 l each, colour coded by stream": {
+      "value": "80l",
+      "source_status": "assumed",
+      "source": "estates segregation policy confirms colours"
+    }
   }
- ],
- "values": {
-  "2-bin: 1360 x 660 mm, 1310 mm high": {
-   "value": "1360x660x1310",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "3-bin: 1990 x 660 mm": {
-   "value": "1990x660",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Bins 80 l each, colour coded by stream": {
-   "value": "80l",
-   "source_status": "assumed",
-   "source": "estates segregation policy confirms colours"
-  }
- }
 }

@@ -1,2345 +1,2352 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_M_DuctAccessory_Damper_FireSmoke",
- "template": "Metric Generic Model.rft",
- "about": "Modelled as a generic product: casing, flanges and retaining angle, four aerofoil blades at 50 degrees, spindles and linkage bar, actuator on a bracket with crank port and position indicator, thermal trigger and end-switch box. Reference: query: duct accessory damper fire smoke duct accessories hospital; images: https://www.google.com/search?tbm=isch&q=duct+accessory+damper+fire+smoke+duct+accessories+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Duct Accessories"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Voltage",
-   "type": "Voltage",
-   "group": "Electrical"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Apparent Load",
-   "type": "ApparentPower",
-   "group": "ElectricalLoads"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Controller_ID",
-   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Type",
-   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Signal",
-   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Protocol",
-   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "600x400_Motorised"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x400_Motorised/FMC_Cost_Unit",
-   "type": "600x400_Motorised",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x400_Motorised/FMC_Geometry_Stage",
-   "type": "600x400_Motorised",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x400_Motorised/IfcExportAs",
-   "type": "600x400_Motorised",
-   "param": "IfcExportAs",
-   "value": "IfcDamper"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x400_Motorised/Description",
-   "type": "600x400_Motorised",
-   "param": "Description",
-   "value": "Motorised fire and smoke damper 600 x 400, multi-blade aerofoil, spring-return actuator with thermal trigger, end switches, galvanised casing and flanges"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x400_Motorised/Keynote",
-   "type": "600x400_Motorised",
-   "param": "Keynote",
-   "value": "H.DMP_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x400_Motorised/FMC_Keynote_Code",
-   "type": "600x400_Motorised",
-   "param": "FMC_Keynote_Code",
-   "value": "H.DMP_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x400_Motorised/Voltage",
-   "type": "600x400_Motorised",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x400_Motorised/Apparent Load",
-   "type": "600x400_Motorised",
-   "param": "Apparent Load",
-   "value": 10
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Galv",
-   "color": [
-    183,
-    188,
-    192
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Galv Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Duct_Galvanised",
-   "param": "Galv Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Gi",
-   "color": [
-    158,
-    163,
-    166
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Gi Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_GI_Pipe",
-   "param": "Gi Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Chrome",
-   "color": [
-    192,
-    195,
-    199
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Chrome Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Chrome_Polished",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Grey",
-   "color": [
-    154,
-    160,
-    166
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Grey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Grey",
-   "param": "Grey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Ledg",
-   "color": [
-    59,
-    209,
-    111
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Ledg Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_LED_Green",
-   "param": "Ledg Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -360,
-     -206.0
-    ],
-    [
-     426,
-     -206.0
-    ],
-    [
-     426,
-     206.0
-    ],
-    [
-     -360,
-     206.0
-    ]
-   ],
-   "start": -260,
-   "end": 260
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Casing Top",
-   "points": [
-    [
-     -300.0,
-     200.0
-    ],
-    [
-     300.0,
-     200.0
-    ],
-    [
-     300.0,
-     203.0
-    ],
-    [
-     -300.0,
-     203.0
-    ]
-   ],
-   "start": -200.0,
-   "end": 200.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Casing Top",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Casing Top",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Casing Top",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Casing Bottom",
-   "points": [
-    [
-     -300.0,
-     -203.0
-    ],
-    [
-     300.0,
-     -203.0
-    ],
-    [
-     300.0,
-     -200.0
-    ],
-    [
-     -300.0,
-     -200.0
-    ]
-   ],
-   "start": -200.0,
-   "end": 200.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Casing Bottom",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Casing Bottom",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Casing Bottom",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Casing Left",
-   "points": [
-    [
-     -303.0,
-     -203.0
-    ],
-    [
-     -300.0,
-     -203.0
-    ],
-    [
-     -300.0,
-     203.0
-    ],
-    [
-     -303.0,
-     203.0
-    ]
-   ],
-   "start": -200.0,
-   "end": 200.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Casing Left",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Casing Left",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Casing Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Casing Right",
-   "points": [
-    [
-     300.0,
-     -203.0
-    ],
-    [
-     303.0,
-     -203.0
-    ],
-    [
-     303.0,
-     203.0
-    ],
-    [
-     300.0,
-     203.0
-    ]
-   ],
-   "start": -200.0,
-   "end": 200.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Casing Right",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Casing Right",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Casing Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flange Front Top",
-   "points": [
-    [
-     -330.0,
-     200.0
-    ],
-    [
-     330.0,
-     200.0
-    ],
-    [
-     330.0,
-     230.0
-    ],
-    [
-     -330.0,
-     230.0
-    ]
-   ],
-   "start": 200.0,
-   "end": 205.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flange Front Top",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flange Front Top",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flange Front Top",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flange Front Bottom",
-   "points": [
-    [
-     -330.0,
-     -230.0
-    ],
-    [
-     330.0,
-     -230.0
-    ],
-    [
-     330.0,
-     -200.0
-    ],
-    [
-     -330.0,
-     -200.0
-    ]
-   ],
-   "start": 200.0,
-   "end": 205.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flange Front Bottom",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flange Front Bottom",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flange Front Bottom",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flange Front Left",
-   "points": [
-    [
-     -330.0,
-     -200.0
-    ],
-    [
-     -300.0,
-     -200.0
-    ],
-    [
-     -300.0,
-     200.0
-    ],
-    [
-     -330.0,
-     200.0
-    ]
-   ],
-   "start": 200.0,
-   "end": 205.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flange Front Left",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flange Front Left",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flange Front Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flange Front Right",
-   "points": [
-    [
-     300.0,
-     -200.0
-    ],
-    [
-     330.0,
-     -200.0
-    ],
-    [
-     330.0,
-     200.0
-    ],
-    [
-     300.0,
-     200.0
-    ]
-   ],
-   "start": 200.0,
-   "end": 205.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flange Front Right",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flange Front Right",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flange Front Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flange Rear Top",
-   "points": [
-    [
-     -330.0,
-     200.0
-    ],
-    [
-     330.0,
-     200.0
-    ],
-    [
-     330.0,
-     230.0
-    ],
-    [
-     -330.0,
-     230.0
-    ]
-   ],
-   "start": -205.0,
-   "end": -200.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flange Rear Top",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flange Rear Top",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flange Rear Top",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flange Rear Bottom",
-   "points": [
-    [
-     -330.0,
-     -230.0
-    ],
-    [
-     330.0,
-     -230.0
-    ],
-    [
-     330.0,
-     -200.0
-    ],
-    [
-     -330.0,
-     -200.0
-    ]
-   ],
-   "start": -205.0,
-   "end": -200.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flange Rear Bottom",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flange Rear Bottom",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flange Rear Bottom",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flange Rear Left",
-   "points": [
-    [
-     -330.0,
-     -200.0
-    ],
-    [
-     -300.0,
-     -200.0
-    ],
-    [
-     -300.0,
-     200.0
-    ],
-    [
-     -330.0,
-     200.0
-    ]
-   ],
-   "start": -205.0,
-   "end": -200.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flange Rear Left",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flange Rear Left",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flange Rear Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flange Rear Right",
-   "points": [
-    [
-     300.0,
-     -200.0
-    ],
-    [
-     330.0,
-     -200.0
-    ],
-    [
-     330.0,
-     200.0
-    ],
-    [
-     300.0,
-     200.0
-    ]
-   ],
-   "start": -205.0,
-   "end": -200.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flange Rear Right",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flange Rear Right",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flange Rear Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Duct End Front",
-   "points": [
-    [
-     -300.0,
-     -200.0
-    ],
-    [
-     300.0,
-     -200.0
-    ],
-    [
-     300.0,
-     200.0
-    ],
-    [
-     -300.0,
-     200.0
-    ]
-   ],
-   "start": 205.0,
-   "end": 206.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Duct End Front",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Duct End Front",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Duct End Front",
-   "coarse": false,
-   "medium": true,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Duct End Rear",
-   "points": [
-    [
-     -300.0,
-     -200.0
-    ],
-    [
-     300.0,
-     -200.0
-    ],
-    [
-     300.0,
-     200.0
-    ],
-    [
-     -300.0,
-     200.0
-    ]
-   ],
-   "start": -206.0,
-   "end": -205.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Duct End Rear",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Duct End Rear",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Duct End Rear",
-   "coarse": false,
-   "medium": true,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Retaining Angle Top",
-   "points": [
-    [
-     -360,
-     203
-    ],
-    [
-     360,
-     203
-    ],
-    [
-     360,
-     260
-    ],
-    [
-     -360,
-     260
-    ]
-   ],
-   "start": -2,
-   "end": 2,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Retaining Angle Top",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Retaining Angle Top",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Retaining Angle Top",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Retaining Angle Bottom",
-   "points": [
-    [
-     -360,
-     -260
-    ],
-    [
-     360,
-     -260
-    ],
-    [
-     360,
-     -203
-    ],
-    [
-     -360,
-     -203
-    ]
-   ],
-   "start": -2,
-   "end": 2,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Retaining Angle Bottom",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Retaining Angle Bottom",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Retaining Angle Bottom",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Retaining Angle Left",
-   "points": [
-    [
-     -360,
-     -203
-    ],
-    [
-     -303,
-     -203
-    ],
-    [
-     -303,
-     203
-    ],
-    [
-     -360,
-     203
-    ]
-   ],
-   "start": -2,
-   "end": 2,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Retaining Angle Left",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Retaining Angle Left",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Retaining Angle Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Retaining Angle Right",
-   "points": [
-    [
-     303,
-     -203
-    ],
-    [
-     360,
-     -203
-    ],
-    [
-     360,
-     203
-    ],
-    [
-     303,
-     203
-    ]
-   ],
-   "start": -2,
-   "end": 2,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Retaining Angle Right",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Retaining Angle Right",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Retaining Angle Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Aerofoil Blade 1",
-   "points": [
-    [
-     -35.35,
-     -192.13
-    ],
-    [
-     -25.04,
-     -172.07
-    ],
-    [
-     6.78,
-     -134.15
-    ],
-    [
-     35.35,
-     -107.87
-    ],
-    [
-     14.44,
-     -140.57
-    ],
-    [
-     -17.38,
-     -178.49
-    ]
-   ],
-   "start": -296,
-   "end": 296,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Aerofoil Blade 1",
-   "subcategory": "Gi"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Aerofoil Blade 1",
-   "param": "Gi Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Aerofoil Blade 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Aerofoil Blade 2",
-   "points": [
-    [
-     -35.35,
-     -92.13
-    ],
-    [
-     -25.04,
-     -72.07
-    ],
-    [
-     6.78,
-     -34.150000000000006
-    ],
-    [
-     35.35,
-     -7.8700000000000045
-    ],
-    [
-     14.44,
-     -40.56999999999999
-    ],
-    [
-     -17.38,
-     -78.49000000000001
-    ]
-   ],
-   "start": -296,
-   "end": 296,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Aerofoil Blade 2",
-   "subcategory": "Gi"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Aerofoil Blade 2",
-   "param": "Gi Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Aerofoil Blade 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Aerofoil Blade 3",
-   "points": [
-    [
-     -35.35,
-     7.8700000000000045
-    ],
-    [
-     -25.04,
-     27.930000000000007
-    ],
-    [
-     6.78,
-     65.85
-    ],
-    [
-     35.35,
-     92.13
-    ],
-    [
-     14.44,
-     59.43000000000001
-    ],
-    [
-     -17.38,
-     21.50999999999999
-    ]
-   ],
-   "start": -296,
-   "end": 296,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Aerofoil Blade 3",
-   "subcategory": "Gi"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Aerofoil Blade 3",
-   "param": "Gi Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Aerofoil Blade 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Aerofoil Blade 4",
-   "points": [
-    [
-     -35.35,
-     107.87
-    ],
-    [
-     -25.04,
-     127.93
-    ],
-    [
-     6.78,
-     165.85
-    ],
-    [
-     35.35,
-     192.13
-    ],
-    [
-     14.44,
-     159.43
-    ],
-    [
-     -17.38,
-     121.50999999999999
-    ]
-   ],
-   "start": -296,
-   "end": 296,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Aerofoil Blade 4",
-   "subcategory": "Gi"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Aerofoil Blade 4",
-   "param": "Gi Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Aerofoil Blade 4",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Blade Spindle 1",
-   "points": [
-    [
-     7.0,
-     -150.0
-    ],
-    [
-     6.76,
-     -148.19
-    ],
-    [
-     6.06,
-     -146.5
-    ],
-    [
-     4.95,
-     -145.05
-    ],
-    [
-     3.5,
-     -143.94
-    ],
-    [
-     1.81,
-     -143.24
-    ],
-    [
-     0.0,
-     -143.0
-    ],
-    [
-     -1.81,
-     -143.24
-    ],
-    [
-     -3.5,
-     -143.94
-    ],
-    [
-     -4.95,
-     -145.05
-    ],
-    [
-     -6.06,
-     -146.5
-    ],
-    [
-     -6.76,
-     -148.19
-    ],
-    [
-     -7.0,
-     -150.0
-    ],
-    [
-     -6.76,
-     -151.81
-    ],
-    [
-     -6.06,
-     -153.5
-    ],
-    [
-     -4.95,
-     -154.95
-    ],
-    [
-     -3.5,
-     -156.06
-    ],
-    [
-     -1.81,
-     -156.76
-    ],
-    [
-     -0.0,
-     -157.0
-    ],
-    [
-     1.81,
-     -156.76
-    ],
-    [
-     3.5,
-     -156.06
-    ],
-    [
-     4.95,
-     -154.95
-    ],
-    [
-     6.06,
-     -153.5
-    ],
-    [
-     6.76,
-     -151.81
-    ]
-   ],
-   "start": 300,
-   "end": 330,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Blade Spindle 1",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blade Spindle 1",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blade Spindle 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Blade Spindle 2",
-   "points": [
-    [
-     7.0,
-     -50.0
-    ],
-    [
-     6.76,
-     -48.19
-    ],
-    [
-     6.06,
-     -46.5
-    ],
-    [
-     4.95,
-     -45.05
-    ],
-    [
-     3.5,
-     -43.94
-    ],
-    [
-     1.81,
-     -43.24
-    ],
-    [
-     0.0,
-     -43.0
-    ],
-    [
-     -1.81,
-     -43.24
-    ],
-    [
-     -3.5,
-     -43.94
-    ],
-    [
-     -4.95,
-     -45.05
-    ],
-    [
-     -6.06,
-     -46.5
-    ],
-    [
-     -6.76,
-     -48.19
-    ],
-    [
-     -7.0,
-     -50.0
-    ],
-    [
-     -6.76,
-     -51.81
-    ],
-    [
-     -6.06,
-     -53.5
-    ],
-    [
-     -4.95,
-     -54.95
-    ],
-    [
-     -3.5,
-     -56.06
-    ],
-    [
-     -1.81,
-     -56.76
-    ],
-    [
-     -0.0,
-     -57.0
-    ],
-    [
-     1.81,
-     -56.76
-    ],
-    [
-     3.5,
-     -56.06
-    ],
-    [
-     4.95,
-     -54.95
-    ],
-    [
-     6.06,
-     -53.5
-    ],
-    [
-     6.76,
-     -51.81
-    ]
-   ],
-   "start": 300,
-   "end": 330,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Blade Spindle 2",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blade Spindle 2",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blade Spindle 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Blade Spindle 3",
-   "points": [
-    [
-     7.0,
-     50.0
-    ],
-    [
-     6.76,
-     51.81
-    ],
-    [
-     6.06,
-     53.5
-    ],
-    [
-     4.95,
-     54.95
-    ],
-    [
-     3.5,
-     56.06
-    ],
-    [
-     1.81,
-     56.76
-    ],
-    [
-     0.0,
-     57.0
-    ],
-    [
-     -1.81,
-     56.76
-    ],
-    [
-     -3.5,
-     56.06
-    ],
-    [
-     -4.95,
-     54.95
-    ],
-    [
-     -6.06,
-     53.5
-    ],
-    [
-     -6.76,
-     51.81
-    ],
-    [
-     -7.0,
-     50.0
-    ],
-    [
-     -6.76,
-     48.19
-    ],
-    [
-     -6.06,
-     46.5
-    ],
-    [
-     -4.95,
-     45.05
-    ],
-    [
-     -3.5,
-     43.94
-    ],
-    [
-     -1.81,
-     43.24
-    ],
-    [
-     -0.0,
-     43.0
-    ],
-    [
-     1.81,
-     43.24
-    ],
-    [
-     3.5,
-     43.94
-    ],
-    [
-     4.95,
-     45.05
-    ],
-    [
-     6.06,
-     46.5
-    ],
-    [
-     6.76,
-     48.19
-    ]
-   ],
-   "start": 300,
-   "end": 330,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Blade Spindle 3",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blade Spindle 3",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blade Spindle 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Blade Spindle 4",
-   "points": [
-    [
-     7.0,
-     150.0
-    ],
-    [
-     6.76,
-     151.81
-    ],
-    [
-     6.06,
-     153.5
-    ],
-    [
-     4.95,
-     154.95
-    ],
-    [
-     3.5,
-     156.06
-    ],
-    [
-     1.81,
-     156.76
-    ],
-    [
-     0.0,
-     157.0
-    ],
-    [
-     -1.81,
-     156.76
-    ],
-    [
-     -3.5,
-     156.06
-    ],
-    [
-     -4.95,
-     154.95
-    ],
-    [
-     -6.06,
-     153.5
-    ],
-    [
-     -6.76,
-     151.81
-    ],
-    [
-     -7.0,
-     150.0
-    ],
-    [
-     -6.76,
-     148.19
-    ],
-    [
-     -6.06,
-     146.5
-    ],
-    [
-     -4.95,
-     145.05
-    ],
-    [
-     -3.5,
-     143.94
-    ],
-    [
-     -1.81,
-     143.24
-    ],
-    [
-     -0.0,
-     143.0
-    ],
-    [
-     1.81,
-     143.24
-    ],
-    [
-     3.5,
-     143.94
-    ],
-    [
-     4.95,
-     145.05
-    ],
-    [
-     6.06,
-     146.5
-    ],
-    [
-     6.76,
-     148.19
-    ]
-   ],
-   "start": 300,
-   "end": 330,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Blade Spindle 4",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blade Spindle 4",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blade Spindle 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Linkage Bar",
-   "points": [
-    [
-     330,
-     -170
-    ],
-    [
-     338,
-     -170
-    ],
-    [
-     338,
-     170
-    ],
-    [
-     330,
-     170
-    ]
-   ],
-   "start": 4,
-   "end": 14,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Linkage Bar",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Linkage Bar",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Linkage Bar",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Actuator Bracket",
-   "points": [
-    [
-     303,
-     -130
-    ],
-    [
-     318,
-     -130
-    ],
-    [
-     318,
-     130
-    ],
-    [
-     303,
-     130
-    ]
-   ],
-   "start": -160,
-   "end": 160
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Actuator Bracket",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Actuator Bracket",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Actuator Bracket",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Actuator",
-   "points": [
-    [
-     410.0,
-     -95.0
-    ],
-    [
-     413.83,
-     -94.24
-    ],
-    [
-     417.07,
-     -92.07
-    ],
-    [
-     419.24,
-     -88.83
-    ],
-    [
-     420.0,
-     -85.0
-    ],
-    [
-     420.0,
-     85.0
-    ],
-    [
-     419.24,
-     88.83
-    ],
-    [
-     417.07,
-     92.07
-    ],
-    [
-     413.83,
-     94.24
-    ],
-    [
-     410.0,
-     95.0
-    ],
-    [
-     328.0,
-     95.0
-    ],
-    [
-     324.17,
-     94.24
-    ],
-    [
-     320.93,
-     92.07
-    ],
-    [
-     318.76,
-     88.83
-    ],
-    [
-     318.0,
-     85.0
-    ],
-    [
-     318.0,
-     -85.0
-    ],
-    [
-     318.76,
-     -88.83
-    ],
-    [
-     320.93,
-     -92.07
-    ],
-    [
-     324.17,
-     -94.24
-    ],
-    [
-     328.0,
-     -95.0
-    ]
-   ],
-   "start": -70,
-   "end": 70
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Actuator",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Actuator",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Actuator",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Manual Crank Port",
-   "points": [
-    [
-     70.0,
-     30.0
-    ],
-    [
-     69.66,
-     32.59
-    ],
-    [
-     68.66,
-     35.0
-    ],
-    [
-     67.07,
-     37.07
-    ],
-    [
-     65.0,
-     38.66
-    ],
-    [
-     62.59,
-     39.66
-    ],
-    [
-     60.0,
-     40.0
-    ],
-    [
-     57.41,
-     39.66
-    ],
-    [
-     55.0,
-     38.66
-    ],
-    [
-     52.93,
-     37.07
-    ],
-    [
-     51.34,
-     35.0
-    ],
-    [
-     50.34,
-     32.59
-    ],
-    [
-     50.0,
-     30.0
-    ],
-    [
-     50.34,
-     27.41
-    ],
-    [
-     51.34,
-     25.0
-    ],
-    [
-     52.93,
-     22.93
-    ],
-    [
-     55.0,
-     21.34
-    ],
-    [
-     57.41,
-     20.34
-    ],
-    [
-     60.0,
-     20.0
-    ],
-    [
-     62.59,
-     20.34
-    ],
-    [
-     65.0,
-     21.34
-    ],
-    [
-     67.07,
-     22.93
-    ],
-    [
-     68.66,
-     25.0
-    ],
-    [
-     69.66,
-     27.41
-    ]
-   ],
-   "start": 420,
-   "end": 426,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Manual Crank Port",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Manual Crank Port",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Manual Crank Port",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Position Indicator",
-   "points": [
-    [
-     -46.0,
-     30.0
-    ],
-    [
-     -46.48,
-     33.62
-    ],
-    [
-     -47.88,
-     37.0
-    ],
-    [
-     -50.1,
-     39.9
-    ],
-    [
-     -53.0,
-     42.12
-    ],
-    [
-     -56.38,
-     43.52
-    ],
-    [
-     -60.0,
-     44.0
-    ],
-    [
-     -63.62,
-     43.52
-    ],
-    [
-     -67.0,
-     42.12
-    ],
-    [
-     -69.9,
-     39.9
-    ],
-    [
-     -72.12,
-     37.0
-    ],
-    [
-     -73.52,
-     33.62
-    ],
-    [
-     -74.0,
-     30.0
-    ],
-    [
-     -73.52,
-     26.38
-    ],
-    [
-     -72.12,
-     23.0
-    ],
-    [
-     -69.9,
-     20.1
-    ],
-    [
-     -67.0,
-     17.88
-    ],
-    [
-     -63.62,
-     16.48
-    ],
-    [
-     -60.0,
-     16.0
-    ],
-    [
-     -56.38,
-     16.48
-    ],
-    [
-     -53.0,
-     17.88
-    ],
-    [
-     -50.1,
-     20.1
-    ],
-    [
-     -47.88,
-     23.0
-    ],
-    [
-     -46.48,
-     26.38
-    ]
-   ],
-   "start": 420,
-   "end": 424,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Position Indicator",
-   "subcategory": "Ledg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Position Indicator",
-   "param": "Ledg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Position Indicator",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Thermal Trigger",
-   "points": [
-    [
-     300,
-     60
-    ],
-    [
-     340,
-     60
-    ],
-    [
-     340,
-     120
-    ],
-    [
-     300,
-     120
-    ]
-   ],
-   "start": -40,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Thermal Trigger",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Thermal Trigger",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Thermal Trigger",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "End Switch Box",
-   "points": [
-    [
-     318,
-     -95
-    ],
-    [
-     380,
-     -95
-    ],
-    [
-     380,
-     -30
-    ],
-    [
-     318,
-     -30
-    ]
-   ],
-   "start": 80,
-   "end": 140
-  },
-  {
-   "op": "set_subcategory",
-   "name": "End Switch Box",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "End Switch Box",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "End Switch Box",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "Duct In",
-   "domain": "duct",
-   "system": "SupplyAir",
-   "solid": "Duct End Front",
-   "side": "front",
-   "width": 600,
-   "height": 400,
-   "flow": "In"
-  },
-  {
-   "op": "add_connector",
-   "name": "Duct Out",
-   "domain": "duct",
-   "system": "SupplyAir",
-   "solid": "Duct End Rear",
-   "side": "back",
-   "width": 600,
-   "height": 400,
-   "flow": "Out"
-  },
-  {
-   "op": "add_connector",
-   "name": "Power",
-   "domain": "electrical",
-   "system": "PowerBalanced",
-   "solid": "Actuator",
-   "side": "right"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Voltage",
-   "connector": "Power",
-   "connector_param": "Voltage",
-   "param": "Voltage"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Apparent Load",
-   "connector": "Power",
-   "connector_param": "Apparent Load",
-   "param": "Apparent Load"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_DuctAccessory_Damper_FireSmoke.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_M_DuctAccessory_Damper_FireSmoke",
+  "template": "Metric Generic Model.rft",
+  "about": "Modelled as a generic product: casing, flanges and retaining angle, four aerofoil blades at 50 degrees, spindles and linkage bar, actuator on a bracket with crank port and position indicator, thermal trigger and end-switch box. Reference: query: duct accessory damper fire smoke duct accessories hospital; images: https://www.google.com/search?tbm=isch&q=duct+accessory+damper+fire+smoke+duct+accessories+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Duct Accessories"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Voltage",
+      "type": "Voltage",
+      "group": "Electrical"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Apparent Load",
+      "type": "ApparentPower",
+      "group": "ElectricalLoads"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Controller_ID",
+      "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Type",
+      "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Signal",
+      "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Protocol",
+      "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "600x400_Motorised"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x400_Motorised/FMC_Cost_Unit",
+      "type": "600x400_Motorised",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x400_Motorised/FMC_Geometry_Stage",
+      "type": "600x400_Motorised",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x400_Motorised/IfcExportAs",
+      "type": "600x400_Motorised",
+      "param": "IfcExportAs",
+      "value": "IfcDamper"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x400_Motorised/Description",
+      "type": "600x400_Motorised",
+      "param": "Description",
+      "value": "Motorised fire and smoke damper 600 x 400, multi-blade aerofoil, spring-return actuator with thermal trigger, end switches, galvanised casing and flanges"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x400_Motorised/Keynote",
+      "type": "600x400_Motorised",
+      "param": "Keynote",
+      "value": "H.DMP_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x400_Motorised/FMC_Keynote_Code",
+      "type": "600x400_Motorised",
+      "param": "FMC_Keynote_Code",
+      "value": "H.DMP_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x400_Motorised/Voltage",
+      "type": "600x400_Motorised",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x400_Motorised/Apparent Load",
+      "type": "600x400_Motorised",
+      "param": "Apparent Load",
+      "value": 10
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Galv",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Galv Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Duct_Galvanised",
+      "param": "Galv Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Gi",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Gi Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_GI_Pipe",
+      "param": "Gi Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Chrome",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Chrome Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Chrome_Polished",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Grey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Grey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Grey",
+      "param": "Grey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Ledg",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Ledg Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_LED_Green",
+      "param": "Ledg Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -360,
+          -206
+        ],
+        [
+          426,
+          -206
+        ],
+        [
+          426,
+          206
+        ],
+        [
+          -360,
+          206
+        ]
+      ],
+      "start": -260,
+      "end": 260
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Casing Top",
+      "points": [
+        [
+          -300,
+          200
+        ],
+        [
+          300,
+          200
+        ],
+        [
+          300,
+          203
+        ],
+        [
+          -300,
+          203
+        ]
+      ],
+      "start": -200,
+      "end": 200,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Casing Top",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Casing Top",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Casing Top",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Casing Bottom",
+      "points": [
+        [
+          -300,
+          -203
+        ],
+        [
+          300,
+          -203
+        ],
+        [
+          300,
+          -200
+        ],
+        [
+          -300,
+          -200
+        ]
+      ],
+      "start": -200,
+      "end": 200,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Casing Bottom",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Casing Bottom",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Casing Bottom",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Casing Left",
+      "points": [
+        [
+          -303,
+          -203
+        ],
+        [
+          -300,
+          -203
+        ],
+        [
+          -300,
+          203
+        ],
+        [
+          -303,
+          203
+        ]
+      ],
+      "start": -200,
+      "end": 200,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Casing Left",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Casing Left",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Casing Left",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Casing Right",
+      "points": [
+        [
+          300,
+          -203
+        ],
+        [
+          303,
+          -203
+        ],
+        [
+          303,
+          203
+        ],
+        [
+          300,
+          203
+        ]
+      ],
+      "start": -200,
+      "end": 200,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Casing Right",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Casing Right",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Casing Right",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flange Front Top",
+      "points": [
+        [
+          -330,
+          200
+        ],
+        [
+          330,
+          200
+        ],
+        [
+          330,
+          230
+        ],
+        [
+          -330,
+          230
+        ]
+      ],
+      "start": 200,
+      "end": 205,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flange Front Top",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flange Front Top",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flange Front Top",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flange Front Bottom",
+      "points": [
+        [
+          -330,
+          -230
+        ],
+        [
+          330,
+          -230
+        ],
+        [
+          330,
+          -200
+        ],
+        [
+          -330,
+          -200
+        ]
+      ],
+      "start": 200,
+      "end": 205,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flange Front Bottom",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flange Front Bottom",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flange Front Bottom",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flange Front Left",
+      "points": [
+        [
+          -330,
+          -200
+        ],
+        [
+          -300,
+          -200
+        ],
+        [
+          -300,
+          200
+        ],
+        [
+          -330,
+          200
+        ]
+      ],
+      "start": 200,
+      "end": 205,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flange Front Left",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flange Front Left",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flange Front Left",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flange Front Right",
+      "points": [
+        [
+          300,
+          -200
+        ],
+        [
+          330,
+          -200
+        ],
+        [
+          330,
+          200
+        ],
+        [
+          300,
+          200
+        ]
+      ],
+      "start": 200,
+      "end": 205,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flange Front Right",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flange Front Right",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flange Front Right",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flange Rear Top",
+      "points": [
+        [
+          -330,
+          200
+        ],
+        [
+          330,
+          200
+        ],
+        [
+          330,
+          230
+        ],
+        [
+          -330,
+          230
+        ]
+      ],
+      "start": -205,
+      "end": -200,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flange Rear Top",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flange Rear Top",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flange Rear Top",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flange Rear Bottom",
+      "points": [
+        [
+          -330,
+          -230
+        ],
+        [
+          330,
+          -230
+        ],
+        [
+          330,
+          -200
+        ],
+        [
+          -330,
+          -200
+        ]
+      ],
+      "start": -205,
+      "end": -200,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flange Rear Bottom",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flange Rear Bottom",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flange Rear Bottom",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flange Rear Left",
+      "points": [
+        [
+          -330,
+          -200
+        ],
+        [
+          -300,
+          -200
+        ],
+        [
+          -300,
+          200
+        ],
+        [
+          -330,
+          200
+        ]
+      ],
+      "start": -205,
+      "end": -200,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flange Rear Left",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flange Rear Left",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flange Rear Left",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flange Rear Right",
+      "points": [
+        [
+          300,
+          -200
+        ],
+        [
+          330,
+          -200
+        ],
+        [
+          330,
+          200
+        ],
+        [
+          300,
+          200
+        ]
+      ],
+      "start": -205,
+      "end": -200,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flange Rear Right",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flange Rear Right",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flange Rear Right",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Duct End Front",
+      "points": [
+        [
+          -300,
+          -200
+        ],
+        [
+          300,
+          -200
+        ],
+        [
+          300,
+          200
+        ],
+        [
+          -300,
+          200
+        ]
+      ],
+      "start": 205,
+      "end": 206,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Duct End Front",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Duct End Front",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Duct End Front",
+      "coarse": false,
+      "medium": true,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Duct End Rear",
+      "points": [
+        [
+          -300,
+          -200
+        ],
+        [
+          300,
+          -200
+        ],
+        [
+          300,
+          200
+        ],
+        [
+          -300,
+          200
+        ]
+      ],
+      "start": -206,
+      "end": -205,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Duct End Rear",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Duct End Rear",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Duct End Rear",
+      "coarse": false,
+      "medium": true,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Retaining Angle Top",
+      "points": [
+        [
+          -360,
+          203
+        ],
+        [
+          360,
+          203
+        ],
+        [
+          360,
+          260
+        ],
+        [
+          -360,
+          260
+        ]
+      ],
+      "start": -2,
+      "end": 2,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Retaining Angle Top",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Retaining Angle Top",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Retaining Angle Top",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Retaining Angle Bottom",
+      "points": [
+        [
+          -360,
+          -260
+        ],
+        [
+          360,
+          -260
+        ],
+        [
+          360,
+          -203
+        ],
+        [
+          -360,
+          -203
+        ]
+      ],
+      "start": -2,
+      "end": 2,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Retaining Angle Bottom",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Retaining Angle Bottom",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Retaining Angle Bottom",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Retaining Angle Left",
+      "points": [
+        [
+          -360,
+          -203
+        ],
+        [
+          -303,
+          -203
+        ],
+        [
+          -303,
+          203
+        ],
+        [
+          -360,
+          203
+        ]
+      ],
+      "start": -2,
+      "end": 2,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Retaining Angle Left",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Retaining Angle Left",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Retaining Angle Left",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Retaining Angle Right",
+      "points": [
+        [
+          303,
+          -203
+        ],
+        [
+          360,
+          -203
+        ],
+        [
+          360,
+          203
+        ],
+        [
+          303,
+          203
+        ]
+      ],
+      "start": -2,
+      "end": 2,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Retaining Angle Right",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Retaining Angle Right",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Retaining Angle Right",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Aerofoil Blade 1",
+      "points": [
+        [
+          -35.35,
+          -192.13
+        ],
+        [
+          -25.04,
+          -172.07
+        ],
+        [
+          6.78,
+          -134.15
+        ],
+        [
+          35.35,
+          -107.87
+        ],
+        [
+          14.44,
+          -140.57
+        ],
+        [
+          -17.38,
+          -178.49
+        ]
+      ],
+      "start": -296,
+      "end": 296,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Aerofoil Blade 1",
+      "subcategory": "Gi"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Aerofoil Blade 1",
+      "param": "Gi Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Aerofoil Blade 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Aerofoil Blade 2",
+      "points": [
+        [
+          -35.35,
+          -92.13
+        ],
+        [
+          -25.04,
+          -72.07
+        ],
+        [
+          6.78,
+          -34.150000000000006
+        ],
+        [
+          35.35,
+          -7.8700000000000045
+        ],
+        [
+          14.44,
+          -40.56999999999999
+        ],
+        [
+          -17.38,
+          -78.49000000000001
+        ]
+      ],
+      "start": -296,
+      "end": 296,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Aerofoil Blade 2",
+      "subcategory": "Gi"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Aerofoil Blade 2",
+      "param": "Gi Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Aerofoil Blade 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Aerofoil Blade 3",
+      "points": [
+        [
+          -35.35,
+          7.8700000000000045
+        ],
+        [
+          -25.04,
+          27.930000000000007
+        ],
+        [
+          6.78,
+          65.85
+        ],
+        [
+          35.35,
+          92.13
+        ],
+        [
+          14.44,
+          59.43000000000001
+        ],
+        [
+          -17.38,
+          21.50999999999999
+        ]
+      ],
+      "start": -296,
+      "end": 296,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Aerofoil Blade 3",
+      "subcategory": "Gi"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Aerofoil Blade 3",
+      "param": "Gi Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Aerofoil Blade 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Aerofoil Blade 4",
+      "points": [
+        [
+          -35.35,
+          107.87
+        ],
+        [
+          -25.04,
+          127.93
+        ],
+        [
+          6.78,
+          165.85
+        ],
+        [
+          35.35,
+          192.13
+        ],
+        [
+          14.44,
+          159.43
+        ],
+        [
+          -17.38,
+          121.50999999999999
+        ]
+      ],
+      "start": -296,
+      "end": 296,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Aerofoil Blade 4",
+      "subcategory": "Gi"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Aerofoil Blade 4",
+      "param": "Gi Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Aerofoil Blade 4",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Blade Spindle 1",
+      "points": [
+        [
+          7,
+          -150
+        ],
+        [
+          6.76,
+          -148.19
+        ],
+        [
+          6.06,
+          -146.5
+        ],
+        [
+          4.95,
+          -145.05
+        ],
+        [
+          3.5,
+          -143.94
+        ],
+        [
+          1.81,
+          -143.24
+        ],
+        [
+          0,
+          -143
+        ],
+        [
+          -1.81,
+          -143.24
+        ],
+        [
+          -3.5,
+          -143.94
+        ],
+        [
+          -4.95,
+          -145.05
+        ],
+        [
+          -6.06,
+          -146.5
+        ],
+        [
+          -6.76,
+          -148.19
+        ],
+        [
+          -7,
+          -150
+        ],
+        [
+          -6.76,
+          -151.81
+        ],
+        [
+          -6.06,
+          -153.5
+        ],
+        [
+          -4.95,
+          -154.95
+        ],
+        [
+          -3.5,
+          -156.06
+        ],
+        [
+          -1.81,
+          -156.76
+        ],
+        [
+          0,
+          -157
+        ],
+        [
+          1.81,
+          -156.76
+        ],
+        [
+          3.5,
+          -156.06
+        ],
+        [
+          4.95,
+          -154.95
+        ],
+        [
+          6.06,
+          -153.5
+        ],
+        [
+          6.76,
+          -151.81
+        ]
+      ],
+      "start": 300,
+      "end": 330,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Blade Spindle 1",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Blade Spindle 1",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Blade Spindle 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Blade Spindle 2",
+      "points": [
+        [
+          7,
+          -50
+        ],
+        [
+          6.76,
+          -48.19
+        ],
+        [
+          6.06,
+          -46.5
+        ],
+        [
+          4.95,
+          -45.05
+        ],
+        [
+          3.5,
+          -43.94
+        ],
+        [
+          1.81,
+          -43.24
+        ],
+        [
+          0,
+          -43
+        ],
+        [
+          -1.81,
+          -43.24
+        ],
+        [
+          -3.5,
+          -43.94
+        ],
+        [
+          -4.95,
+          -45.05
+        ],
+        [
+          -6.06,
+          -46.5
+        ],
+        [
+          -6.76,
+          -48.19
+        ],
+        [
+          -7,
+          -50
+        ],
+        [
+          -6.76,
+          -51.81
+        ],
+        [
+          -6.06,
+          -53.5
+        ],
+        [
+          -4.95,
+          -54.95
+        ],
+        [
+          -3.5,
+          -56.06
+        ],
+        [
+          -1.81,
+          -56.76
+        ],
+        [
+          0,
+          -57
+        ],
+        [
+          1.81,
+          -56.76
+        ],
+        [
+          3.5,
+          -56.06
+        ],
+        [
+          4.95,
+          -54.95
+        ],
+        [
+          6.06,
+          -53.5
+        ],
+        [
+          6.76,
+          -51.81
+        ]
+      ],
+      "start": 300,
+      "end": 330,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Blade Spindle 2",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Blade Spindle 2",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Blade Spindle 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Blade Spindle 3",
+      "points": [
+        [
+          7,
+          50
+        ],
+        [
+          6.76,
+          51.81
+        ],
+        [
+          6.06,
+          53.5
+        ],
+        [
+          4.95,
+          54.95
+        ],
+        [
+          3.5,
+          56.06
+        ],
+        [
+          1.81,
+          56.76
+        ],
+        [
+          0,
+          57
+        ],
+        [
+          -1.81,
+          56.76
+        ],
+        [
+          -3.5,
+          56.06
+        ],
+        [
+          -4.95,
+          54.95
+        ],
+        [
+          -6.06,
+          53.5
+        ],
+        [
+          -6.76,
+          51.81
+        ],
+        [
+          -7,
+          50
+        ],
+        [
+          -6.76,
+          48.19
+        ],
+        [
+          -6.06,
+          46.5
+        ],
+        [
+          -4.95,
+          45.05
+        ],
+        [
+          -3.5,
+          43.94
+        ],
+        [
+          -1.81,
+          43.24
+        ],
+        [
+          0,
+          43
+        ],
+        [
+          1.81,
+          43.24
+        ],
+        [
+          3.5,
+          43.94
+        ],
+        [
+          4.95,
+          45.05
+        ],
+        [
+          6.06,
+          46.5
+        ],
+        [
+          6.76,
+          48.19
+        ]
+      ],
+      "start": 300,
+      "end": 330,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Blade Spindle 3",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Blade Spindle 3",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Blade Spindle 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Blade Spindle 4",
+      "points": [
+        [
+          7,
+          150
+        ],
+        [
+          6.76,
+          151.81
+        ],
+        [
+          6.06,
+          153.5
+        ],
+        [
+          4.95,
+          154.95
+        ],
+        [
+          3.5,
+          156.06
+        ],
+        [
+          1.81,
+          156.76
+        ],
+        [
+          0,
+          157
+        ],
+        [
+          -1.81,
+          156.76
+        ],
+        [
+          -3.5,
+          156.06
+        ],
+        [
+          -4.95,
+          154.95
+        ],
+        [
+          -6.06,
+          153.5
+        ],
+        [
+          -6.76,
+          151.81
+        ],
+        [
+          -7,
+          150
+        ],
+        [
+          -6.76,
+          148.19
+        ],
+        [
+          -6.06,
+          146.5
+        ],
+        [
+          -4.95,
+          145.05
+        ],
+        [
+          -3.5,
+          143.94
+        ],
+        [
+          -1.81,
+          143.24
+        ],
+        [
+          0,
+          143
+        ],
+        [
+          1.81,
+          143.24
+        ],
+        [
+          3.5,
+          143.94
+        ],
+        [
+          4.95,
+          145.05
+        ],
+        [
+          6.06,
+          146.5
+        ],
+        [
+          6.76,
+          148.19
+        ]
+      ],
+      "start": 300,
+      "end": 330,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Blade Spindle 4",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Blade Spindle 4",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Blade Spindle 4",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Linkage Bar",
+      "points": [
+        [
+          330,
+          -170
+        ],
+        [
+          338,
+          -170
+        ],
+        [
+          338,
+          170
+        ],
+        [
+          330,
+          170
+        ]
+      ],
+      "start": 4,
+      "end": 14,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Linkage Bar",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Linkage Bar",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Linkage Bar",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Actuator Bracket",
+      "points": [
+        [
+          303,
+          -130
+        ],
+        [
+          318,
+          -130
+        ],
+        [
+          318,
+          130
+        ],
+        [
+          303,
+          130
+        ]
+      ],
+      "start": -160,
+      "end": 160
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Actuator Bracket",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Actuator Bracket",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Actuator Bracket",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Actuator",
+      "points": [
+        [
+          410,
+          -95
+        ],
+        [
+          413.83,
+          -94.24
+        ],
+        [
+          417.07,
+          -92.07
+        ],
+        [
+          419.24,
+          -88.83
+        ],
+        [
+          420,
+          -85
+        ],
+        [
+          420,
+          85
+        ],
+        [
+          419.24,
+          88.83
+        ],
+        [
+          417.07,
+          92.07
+        ],
+        [
+          413.83,
+          94.24
+        ],
+        [
+          410,
+          95
+        ],
+        [
+          328,
+          95
+        ],
+        [
+          324.17,
+          94.24
+        ],
+        [
+          320.93,
+          92.07
+        ],
+        [
+          318.76,
+          88.83
+        ],
+        [
+          318,
+          85
+        ],
+        [
+          318,
+          -85
+        ],
+        [
+          318.76,
+          -88.83
+        ],
+        [
+          320.93,
+          -92.07
+        ],
+        [
+          324.17,
+          -94.24
+        ],
+        [
+          328,
+          -95
+        ]
+      ],
+      "start": -70,
+      "end": 70
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Actuator",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Actuator",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Actuator",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Manual Crank Port",
+      "points": [
+        [
+          70,
+          30
+        ],
+        [
+          69.66,
+          32.59
+        ],
+        [
+          68.66,
+          35
+        ],
+        [
+          67.07,
+          37.07
+        ],
+        [
+          65,
+          38.66
+        ],
+        [
+          62.59,
+          39.66
+        ],
+        [
+          60,
+          40
+        ],
+        [
+          57.41,
+          39.66
+        ],
+        [
+          55,
+          38.66
+        ],
+        [
+          52.93,
+          37.07
+        ],
+        [
+          51.34,
+          35
+        ],
+        [
+          50.34,
+          32.59
+        ],
+        [
+          50,
+          30
+        ],
+        [
+          50.34,
+          27.41
+        ],
+        [
+          51.34,
+          25
+        ],
+        [
+          52.93,
+          22.93
+        ],
+        [
+          55,
+          21.34
+        ],
+        [
+          57.41,
+          20.34
+        ],
+        [
+          60,
+          20
+        ],
+        [
+          62.59,
+          20.34
+        ],
+        [
+          65,
+          21.34
+        ],
+        [
+          67.07,
+          22.93
+        ],
+        [
+          68.66,
+          25
+        ],
+        [
+          69.66,
+          27.41
+        ]
+      ],
+      "start": 420,
+      "end": 426,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Manual Crank Port",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Manual Crank Port",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Manual Crank Port",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Position Indicator",
+      "points": [
+        [
+          -46,
+          30
+        ],
+        [
+          -46.48,
+          33.62
+        ],
+        [
+          -47.88,
+          37
+        ],
+        [
+          -50.1,
+          39.9
+        ],
+        [
+          -53,
+          42.12
+        ],
+        [
+          -56.38,
+          43.52
+        ],
+        [
+          -60,
+          44
+        ],
+        [
+          -63.62,
+          43.52
+        ],
+        [
+          -67,
+          42.12
+        ],
+        [
+          -69.9,
+          39.9
+        ],
+        [
+          -72.12,
+          37
+        ],
+        [
+          -73.52,
+          33.62
+        ],
+        [
+          -74,
+          30
+        ],
+        [
+          -73.52,
+          26.38
+        ],
+        [
+          -72.12,
+          23
+        ],
+        [
+          -69.9,
+          20.1
+        ],
+        [
+          -67,
+          17.88
+        ],
+        [
+          -63.62,
+          16.48
+        ],
+        [
+          -60,
+          16
+        ],
+        [
+          -56.38,
+          16.48
+        ],
+        [
+          -53,
+          17.88
+        ],
+        [
+          -50.1,
+          20.1
+        ],
+        [
+          -47.88,
+          23
+        ],
+        [
+          -46.48,
+          26.38
+        ]
+      ],
+      "start": 420,
+      "end": 424,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Position Indicator",
+      "subcategory": "Ledg"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Position Indicator",
+      "param": "Ledg Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Position Indicator",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Thermal Trigger",
+      "points": [
+        [
+          300,
+          60
+        ],
+        [
+          340,
+          60
+        ],
+        [
+          340,
+          120
+        ],
+        [
+          300,
+          120
+        ]
+      ],
+      "start": -40,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Thermal Trigger",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Thermal Trigger",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Thermal Trigger",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "End Switch Box",
+      "points": [
+        [
+          318,
+          -95
+        ],
+        [
+          380,
+          -95
+        ],
+        [
+          380,
+          -30
+        ],
+        [
+          318,
+          -30
+        ]
+      ],
+      "start": 80,
+      "end": 140
+    },
+    {
+      "op": "set_subcategory",
+      "name": "End Switch Box",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "End Switch Box",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "End Switch Box",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "Duct In",
+      "domain": "duct",
+      "system": "SupplyAir",
+      "solid": "Duct End Front",
+      "side": "front",
+      "width": 600,
+      "height": 400,
+      "flow": "In"
+    },
+    {
+      "op": "add_connector",
+      "name": "Duct Out",
+      "domain": "duct",
+      "system": "SupplyAir",
+      "solid": "Duct End Rear",
+      "side": "back",
+      "width": 600,
+      "height": 400,
+      "flow": "Out"
+    },
+    {
+      "op": "add_connector",
+      "name": "Power",
+      "domain": "electrical",
+      "system": "PowerBalanced",
+      "solid": "Actuator",
+      "side": "right"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Voltage",
+      "connector": "Power",
+      "connector_param": "Voltage",
+      "param": "Voltage"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Apparent Load",
+      "connector": "Power",
+      "connector_param": "Apparent Load",
+      "param": "Apparent Load"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_DuctAccessory_Damper_FireSmoke.png"
+    }
+  ],
+  "values": {
+    "Duct 600 x 400 mm, casing 400 long": {
+      "value": "600x400x400",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Rating EI60 S, smoke leakage class S": {
+      "value": "EI60S",
+      "source_status": "assumed",
+      "source": "EN 1366-2 / -10; engineer confirms"
+    },
+    "Actuator 230 V spring return, 10 VA running": {
+      "value": 10,
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Thermal trigger 72 C": {
+      "value": 72,
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   }
- ],
- "values": {
-  "Duct 600 x 400 mm, casing 400 long": {
-   "value": "600x400x400",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Rating EI60 S, smoke leakage class S": {
-   "value": "EI60S",
-   "source_status": "assumed",
-   "source": "EN 1366-2 / -10; engineer confirms"
-  },
-  "Actuator 230 V spring return, 10 VA running": {
-   "value": 10,
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Thermal trigger 72 C": {
-   "value": 72,
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- }
 }

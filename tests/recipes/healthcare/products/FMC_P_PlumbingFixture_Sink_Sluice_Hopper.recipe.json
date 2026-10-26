@@ -1,3631 +1,3637 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_P_PlumbingFixture_Sink_Sluice_Hopper",
- "template": "Metric Generic Model.rft",
- "about": "Sluice hopper modelled as a generic product: pedestal, oval china bowl (rim sectors, flushing rim, throat), bucket grating with bars, high-level cistern, lever, flush pipe and two bib taps. Reference: query: sink sluice hopper plumbing fixtures hospital; images: https://www.google.com/search?tbm=isch&q=sink+sluice+hopper+plumbing+fixtures+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Plumbing Fixtures"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Pipe_System",
-   "guid": "19b06c84-7f51-563a-ac4a-ed9b4addfabc",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Discharge_Units",
-   "guid": "7aa955c0-3c0f-5f8c-a77b-9124e8d513eb",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Asset_Tag",
-   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Serial_Number",
-   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Install_Date",
-   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Warranty_End",
-   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Maintenance_Interval_Months",
-   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_OM_Link",
-   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Mounting_Height_mm",
-   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
-   "instance": true
-  },
-  {
-   "op": "add_type",
-   "name": "600_FlushingRim"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_FlushingRim/FMC_Cost_Unit",
-   "type": "600_FlushingRim",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_FlushingRim/FMC_Geometry_Stage",
-   "type": "600_FlushingRim",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_FlushingRim/IfcExportAs",
-   "type": "600_FlushingRim",
-   "param": "IfcExportAs",
-   "value": "IfcSanitaryTerminal"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_FlushingRim/Description",
-   "type": "600_FlushingRim",
-   "param": "Description",
-   "value": "Sluice hopper, vitreous china on pedestal, flushing rim, hinged stainless bucket grating, high-level cistern with flush pipe, hot and cold bib taps"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_FlushingRim/Keynote",
-   "type": "600_FlushingRim",
-   "param": "Keynote",
-   "value": "P.SNK_03"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_FlushingRim/FMC_Keynote_Code",
-   "type": "600_FlushingRim",
-   "param": "FMC_Keynote_Code",
-   "value": "P.SNK_03"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_FlushingRim/FMC_Code_Description",
-   "type": "600_FlushingRim",
-   "param": "FMC_Code_Description",
-   "value": "Sink Sluice Hopper: Sluice hopper with flushing rim"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_FlushingRim/FMC_Code_Group",
-   "type": "600_FlushingRim",
-   "param": "FMC_Code_Group",
-   "value": "P.SNK"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_FlushingRim/FMC_Role_Code",
-   "type": "600_FlushingRim",
-   "param": "FMC_Role_Code",
-   "value": "P"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "China",
-   "color": [
-    255,
-    255,
-    255
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "China Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Ceramic_VitreousChina_White",
-   "param": "China Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Stainless",
-   "color": [
-    180,
-    183,
-    186
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Stainless Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_StainlessSteel_Brushed",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Chrome",
-   "color": [
-    192,
-    195,
-    199
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Chrome Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Chrome_Polished",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Blue",
-   "color": [
-    47,
-    109,
-    181
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Blue Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Blue",
-   "param": "Blue Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Red",
-   "color": [
-    181,
-    18,
-    27
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Red Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_FireHoseReel_Red",
-   "param": "Red Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -346.0,
-     -530.0
-    ],
-    [
-     346.0,
-     -530.0
-    ],
-    [
-     346.0,
-     0
-    ],
-    [
-     -346.0,
-     0
-    ]
-   ],
-   "start": 0,
-   "end": 2040.0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Pedestal",
-   "points": [
-    [
-     130.0,
-     -470.0
-    ],
-    [
-     152.96,
-     -465.43
-    ],
-    [
-     172.43,
-     -452.43
-    ],
-    [
-     185.43,
-     -432.96
-    ],
-    [
-     190.0,
-     -410.0
-    ],
-    [
-     190.0,
-     -140.0
-    ],
-    [
-     185.43,
-     -117.04
-    ],
-    [
-     172.43,
-     -97.57
-    ],
-    [
-     152.96,
-     -84.57
-    ],
-    [
-     130.0,
-     -80.0
-    ],
-    [
-     -130.0,
-     -80.0
-    ],
-    [
-     -152.96,
-     -84.57
-    ],
-    [
-     -172.43,
-     -97.57
-    ],
-    [
-     -185.43,
-     -117.04
-    ],
-    [
-     -190.0,
-     -140.0
-    ],
-    [
-     -190.0,
-     -410.0
-    ],
-    [
-     -185.43,
-     -432.96
-    ],
-    [
-     -172.43,
-     -452.43
-    ],
-    [
-     -152.96,
-     -465.43
-    ],
-    [
-     -130.0,
-     -470.0
-    ]
-   ],
-   "start": 0,
-   "end": 520
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pedestal",
-   "subcategory": "China"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pedestal",
-   "param": "China Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pedestal",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bowl Body",
-   "points": [
-    [
-     280.0,
-     -290.0
-    ],
-    [
-     276.0,
-     -188.3
-    ],
-    [
-     263.8,
-     -141.1
-    ],
-    [
-     243.3,
-     -106.8
-    ],
-    [
-     213.8,
-     -81.5
-    ],
-    [
-     173.8,
-     -63.9
-    ],
-    [
-     118.6,
-     -53.5
-    ],
-    [
-     0.0,
-     -50.0
-    ],
-    [
-     -118.6,
-     -53.5
-    ],
-    [
-     -173.8,
-     -63.9
-    ],
-    [
-     -213.8,
-     -81.5
-    ],
-    [
-     -243.3,
-     -106.8
-    ],
-    [
-     -263.8,
-     -141.1
-    ],
-    [
-     -276.0,
-     -188.3
-    ],
-    [
-     -280.0,
-     -290.0
-    ],
-    [
-     -276.0,
-     -391.7
-    ],
-    [
-     -263.8,
-     -438.9
-    ],
-    [
-     -243.3,
-     -473.2
-    ],
-    [
-     -213.8,
-     -498.5
-    ],
-    [
-     -173.8,
-     -516.1
-    ],
-    [
-     -118.6,
-     -526.5
-    ],
-    [
-     -0.0,
-     -530.0
-    ],
-    [
-     118.6,
-     -526.5
-    ],
-    [
-     173.8,
-     -516.1
-    ],
-    [
-     213.8,
-     -498.5
-    ],
-    [
-     243.3,
-     -473.2
-    ],
-    [
-     263.8,
-     -438.9
-    ],
-    [
-     276.0,
-     -391.7
-    ]
-   ],
-   "start": 520,
-   "end": 700
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bowl Body",
-   "subcategory": "China"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bowl Body",
-   "param": "China Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bowl Body",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bowl Rim 1",
-   "points": [
-    [
-     0.0,
-     -530.0
-    ],
-    [
-     161.7,
-     -519.4
-    ],
-    [
-     229.7,
-     -486.9
-    ],
-    [
-     176.2,
-     -439.4
-    ],
-    [
-     109.9,
-     -473.5
-    ],
-    [
-     0.0,
-     -485.0
-    ]
-   ],
-   "start": 700,
-   "end": 865
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bowl Rim 1",
-   "subcategory": "China"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bowl Rim 1",
-   "param": "China Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bowl Rim 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bowl Rim 2",
-   "points": [
-    [
-     229.7,
-     -486.9
-    ],
-    [
-     267.6,
-     -428.6
-    ],
-    [
-     280.0,
-     -290.0
-    ],
-    [
-     230.0,
-     -290.0
-    ],
-    [
-     216.4,
-     -383.1
-    ],
-    [
-     176.2,
-     -439.4
-    ]
-   ],
-   "start": 700,
-   "end": 865
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bowl Rim 2",
-   "subcategory": "China"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bowl Rim 2",
-   "param": "China Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bowl Rim 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bowl Rim 3",
-   "points": [
-    [
-     280.0,
-     -290.0
-    ],
-    [
-     267.6,
-     -151.4
-    ],
-    [
-     229.7,
-     -93.1
-    ],
-    [
-     176.2,
-     -140.6
-    ],
-    [
-     216.4,
-     -196.9
-    ],
-    [
-     230.0,
-     -290.0
-    ]
-   ],
-   "start": 700,
-   "end": 865
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bowl Rim 3",
-   "subcategory": "China"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bowl Rim 3",
-   "param": "China Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bowl Rim 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bowl Rim 4",
-   "points": [
-    [
-     229.7,
-     -93.1
-    ],
-    [
-     161.7,
-     -60.6
-    ],
-    [
-     0.0,
-     -50.0
-    ],
-    [
-     0.0,
-     -95.0
-    ],
-    [
-     109.9,
-     -106.5
-    ],
-    [
-     176.2,
-     -140.6
-    ]
-   ],
-   "start": 700,
-   "end": 865
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bowl Rim 4",
-   "subcategory": "China"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bowl Rim 4",
-   "param": "China Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bowl Rim 4",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bowl Rim 5",
-   "points": [
-    [
-     0.0,
-     -50.0
-    ],
-    [
-     -161.7,
-     -60.6
-    ],
-    [
-     -229.7,
-     -93.1
-    ],
-    [
-     -176.2,
-     -140.6
-    ],
-    [
-     -109.9,
-     -106.5
-    ],
-    [
-     0.0,
-     -95.0
-    ]
-   ],
-   "start": 700,
-   "end": 865
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bowl Rim 5",
-   "subcategory": "China"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bowl Rim 5",
-   "param": "China Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bowl Rim 5",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bowl Rim 6",
-   "points": [
-    [
-     -229.7,
-     -93.1
-    ],
-    [
-     -267.6,
-     -151.4
-    ],
-    [
-     -280.0,
-     -290.0
-    ],
-    [
-     -230.0,
-     -290.0
-    ],
-    [
-     -216.4,
-     -196.9
-    ],
-    [
-     -176.2,
-     -140.6
-    ]
-   ],
-   "start": 700,
-   "end": 865
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bowl Rim 6",
-   "subcategory": "China"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bowl Rim 6",
-   "param": "China Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bowl Rim 6",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bowl Rim 7",
-   "points": [
-    [
-     -280.0,
-     -290.0
-    ],
-    [
-     -267.6,
-     -428.6
-    ],
-    [
-     -229.7,
-     -486.9
-    ],
-    [
-     -176.2,
-     -439.4
-    ],
-    [
-     -216.4,
-     -383.1
-    ],
-    [
-     -230.0,
-     -290.0
-    ]
-   ],
-   "start": 700,
-   "end": 865
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bowl Rim 7",
-   "subcategory": "China"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bowl Rim 7",
-   "param": "China Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bowl Rim 7",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bowl Rim 8",
-   "points": [
-    [
-     -229.7,
-     -486.9
-    ],
-    [
-     -161.7,
-     -519.4
-    ],
-    [
-     -0.0,
-     -530.0
-    ],
-    [
-     -0.0,
-     -485.0
-    ],
-    [
-     -109.9,
-     -473.5
-    ],
-    [
-     -176.2,
-     -439.4
-    ]
-   ],
-   "start": 700,
-   "end": 865
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bowl Rim 8",
-   "subcategory": "China"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bowl Rim 8",
-   "param": "China Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bowl Rim 8",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flushing Rim 1",
-   "points": [
-    [
-     0.0,
-     -486.0
-    ],
-    [
-     135.5,
-     -465.5
-    ],
-    [
-     206.8,
-     -405.0
-    ],
-    [
-     191.6,
-     -395.6
-    ],
-    [
-     125.6,
-     -451.1
-    ],
-    [
-     0.0,
-     -470.0
-    ]
-   ],
-   "start": 830,
-   "end": 850
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flushing Rim 1",
-   "subcategory": "China"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flushing Rim 1",
-   "param": "China Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flushing Rim 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flushing Rim 2",
-   "points": [
-    [
-     206.8,
-     -405.0
-    ],
-    [
-     231.0,
-     -290.0
-    ],
-    [
-     206.8,
-     -175.0
-    ],
-    [
-     191.6,
-     -184.4
-    ],
-    [
-     214.0,
-     -290.0
-    ],
-    [
-     191.6,
-     -395.6
-    ]
-   ],
-   "start": 830,
-   "end": 850
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flushing Rim 2",
-   "subcategory": "China"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flushing Rim 2",
-   "param": "China Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flushing Rim 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flushing Rim 3",
-   "points": [
-    [
-     206.8,
-     -175.0
-    ],
-    [
-     135.5,
-     -114.5
-    ],
-    [
-     0.0,
-     -94.0
-    ],
-    [
-     0.0,
-     -110.0
-    ],
-    [
-     125.6,
-     -128.9
-    ],
-    [
-     191.6,
-     -184.4
-    ]
-   ],
-   "start": 830,
-   "end": 850
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flushing Rim 3",
-   "subcategory": "China"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flushing Rim 3",
-   "param": "China Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flushing Rim 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flushing Rim 4",
-   "points": [
-    [
-     0.0,
-     -94.0
-    ],
-    [
-     -135.5,
-     -114.5
-    ],
-    [
-     -206.8,
-     -175.0
-    ],
-    [
-     -191.6,
-     -184.4
-    ],
-    [
-     -125.6,
-     -128.9
-    ],
-    [
-     0.0,
-     -110.0
-    ]
-   ],
-   "start": 830,
-   "end": 850
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flushing Rim 4",
-   "subcategory": "China"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flushing Rim 4",
-   "param": "China Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flushing Rim 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flushing Rim 5",
-   "points": [
-    [
-     -206.8,
-     -175.0
-    ],
-    [
-     -231.0,
-     -290.0
-    ],
-    [
-     -206.8,
-     -405.0
-    ],
-    [
-     -191.6,
-     -395.6
-    ],
-    [
-     -214.0,
-     -290.0
-    ],
-    [
-     -191.6,
-     -184.4
-    ]
-   ],
-   "start": 830,
-   "end": 850
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flushing Rim 5",
-   "subcategory": "China"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flushing Rim 5",
-   "param": "China Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flushing Rim 5",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flushing Rim 6",
-   "points": [
-    [
-     -206.8,
-     -405.0
-    ],
-    [
-     -135.5,
-     -465.5
-    ],
-    [
-     -0.0,
-     -486.0
-    ],
-    [
-     -0.0,
-     -470.0
-    ],
-    [
-     -125.6,
-     -451.1
-    ],
-    [
-     -191.6,
-     -395.6
-    ]
-   ],
-   "start": 830,
-   "end": 850
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flushing Rim 6",
-   "subcategory": "China"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flushing Rim 6",
-   "param": "China Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flushing Rim 6",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Bowl Throat",
-   "profile": [
-    [
-     70,
-     700
-    ],
-    [
-     230,
-     700
-    ],
-    [
-     230,
-     720
-    ],
-    [
-     70,
-     704
-    ]
-   ],
-   "axis_at": [
-    0,
-    -290
-   ],
-   "axis": "z",
-   "subcategory": "China"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bowl Throat",
-   "param": "China Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bowl Throat",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Frame Front",
-   "points": [
-    [
-     -200,
-     -500
-    ],
-    [
-     200,
-     -500
-    ],
-    [
-     200,
-     -488
-    ],
-    [
-     -200,
-     -488
-    ]
-   ],
-   "start": 866,
-   "end": 878
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Frame Front",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Frame Front",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Frame Front",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Frame Back",
-   "points": [
-    [
-     -200,
-     -262
-    ],
-    [
-     200,
-     -262
-    ],
-    [
-     200,
-     -250
-    ],
-    [
-     -200,
-     -250
-    ]
-   ],
-   "start": 866,
-   "end": 878
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Frame Back",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Frame Back",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Frame Back",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 1",
-   "points": [
-    [
-     -182,
-     -488
-    ],
-    [
-     -174,
-     -488
-    ],
-    [
-     -174,
-     -262
-    ],
-    [
-     -182,
-     -262
-    ]
-   ],
-   "start": 868,
-   "end": 876
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 2",
-   "points": [
-    [
-     -124,
-     -488
-    ],
-    [
-     -116,
-     -488
-    ],
-    [
-     -116,
-     -262
-    ],
-    [
-     -124,
-     -262
-    ]
-   ],
-   "start": 868,
-   "end": 876
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 2",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 2",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 3",
-   "points": [
-    [
-     -66,
-     -488
-    ],
-    [
-     -58,
-     -488
-    ],
-    [
-     -58,
-     -262
-    ],
-    [
-     -66,
-     -262
-    ]
-   ],
-   "start": 868,
-   "end": 876
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 3",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 3",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 4",
-   "points": [
-    [
-     -8,
-     -488
-    ],
-    [
-     0,
-     -488
-    ],
-    [
-     0,
-     -262
-    ],
-    [
-     -8,
-     -262
-    ]
-   ],
-   "start": 868,
-   "end": 876
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 4",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 4",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 5",
-   "points": [
-    [
-     50,
-     -488
-    ],
-    [
-     58,
-     -488
-    ],
-    [
-     58,
-     -262
-    ],
-    [
-     50,
-     -262
-    ]
-   ],
-   "start": 868,
-   "end": 876
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 5",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 5",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 5",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 6",
-   "points": [
-    [
-     108,
-     -488
-    ],
-    [
-     116,
-     -488
-    ],
-    [
-     116,
-     -262
-    ],
-    [
-     108,
-     -262
-    ]
-   ],
-   "start": 868,
-   "end": 876
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 6",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 6",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 6",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 7",
-   "points": [
-    [
-     166,
-     -488
-    ],
-    [
-     174,
-     -488
-    ],
-    [
-     174,
-     -262
-    ],
-    [
-     166,
-     -262
-    ]
-   ],
-   "start": 868,
-   "end": 876
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 7",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 7",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 7",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Back Outlet",
-   "points": [
-    [
-     -60,
-     -90
-    ],
-    [
-     60,
-     -90
-    ],
-    [
-     60,
-     0
-    ],
-    [
-     -60,
-     0
-    ]
-   ],
-   "start": 140,
-   "end": 260
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Back Outlet",
-   "subcategory": "China"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Back Outlet",
-   "param": "China Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Back Outlet",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cistern",
-   "points": [
-    [
-     240.0,
-     1750.0
-    ],
-    [
-     247.65,
-     1751.52
-    ],
-    [
-     254.14,
-     1755.86
-    ],
-    [
-     258.48,
-     1762.35
-    ],
-    [
-     260.0,
-     1770.0
-    ],
-    [
-     260.0,
-     2000.0
-    ],
-    [
-     258.48,
-     2007.65
-    ],
-    [
-     254.14,
-     2014.14
-    ],
-    [
-     247.65,
-     2018.48
-    ],
-    [
-     240.0,
-     2020.0
-    ],
-    [
-     -240.0,
-     2020.0
-    ],
-    [
-     -247.65,
-     2018.48
-    ],
-    [
-     -254.14,
-     2014.14
-    ],
-    [
-     -258.48,
-     2007.65
-    ],
-    [
-     -260.0,
-     2000.0
-    ],
-    [
-     -260.0,
-     1770.0
-    ],
-    [
-     -258.48,
-     1762.35
-    ],
-    [
-     -254.14,
-     1755.86
-    ],
-    [
-     -247.65,
-     1751.52
-    ],
-    [
-     -240.0,
-     1750.0
-    ]
-   ],
-   "start": 0,
-   "end": 190,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cistern",
-   "subcategory": "China"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cistern",
-   "param": "China Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cistern",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cistern Lid",
-   "points": [
-    [
-     264.0,
-     2020.0
-    ],
-    [
-     266.3,
-     2020.46
-    ],
-    [
-     268.24,
-     2021.76
-    ],
-    [
-     269.54,
-     2023.7
-    ],
-    [
-     270.0,
-     2026.0
-    ],
-    [
-     270.0,
-     2034.0
-    ],
-    [
-     269.54,
-     2036.3
-    ],
-    [
-     268.24,
-     2038.24
-    ],
-    [
-     266.3,
-     2039.54
-    ],
-    [
-     264.0,
-     2040.0
-    ],
-    [
-     -264.0,
-     2040.0
-    ],
-    [
-     -266.3,
-     2039.54
-    ],
-    [
-     -268.24,
-     2038.24
-    ],
-    [
-     -269.54,
-     2036.3
-    ],
-    [
-     -270.0,
-     2034.0
-    ],
-    [
-     -270.0,
-     2026.0
-    ],
-    [
-     -269.54,
-     2023.7
-    ],
-    [
-     -268.24,
-     2021.76
-    ],
-    [
-     -266.3,
-     2020.46
-    ],
-    [
-     -264.0,
-     2020.0
-    ]
-   ],
-   "start": 0,
-   "end": 200,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cistern Lid",
-   "subcategory": "China"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cistern Lid",
-   "param": "China Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cistern Lid",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flush Lever",
-   "points": [
-    [
-     180,
-     -240
-    ],
-    [
-     200,
-     -240
-    ],
-    [
-     200,
-     -190
-    ],
-    [
-     180,
-     -190
-    ]
-   ],
-   "start": 1980,
-   "end": 1995
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flush Lever",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flush Lever",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flush Lever",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flush Pipe",
-   "points": [
-    [
-     16.0,
-     -50.0
-    ],
-    [
-     15.45,
-     -45.86
-    ],
-    [
-     13.86,
-     -42.0
-    ],
-    [
-     11.31,
-     -38.69
-    ],
-    [
-     8.0,
-     -36.14
-    ],
-    [
-     4.14,
-     -34.55
-    ],
-    [
-     0.0,
-     -34.0
-    ],
-    [
-     -4.14,
-     -34.55
-    ],
-    [
-     -8.0,
-     -36.14
-    ],
-    [
-     -11.31,
-     -38.69
-    ],
-    [
-     -13.86,
-     -42.0
-    ],
-    [
-     -15.45,
-     -45.86
-    ],
-    [
-     -16.0,
-     -50.0
-    ],
-    [
-     -15.45,
-     -54.14
-    ],
-    [
-     -13.86,
-     -58.0
-    ],
-    [
-     -11.31,
-     -61.31
-    ],
-    [
-     -8.0,
-     -63.86
-    ],
-    [
-     -4.14,
-     -65.45
-    ],
-    [
-     -0.0,
-     -66.0
-    ],
-    [
-     4.14,
-     -65.45
-    ],
-    [
-     8.0,
-     -63.86
-    ],
-    [
-     11.31,
-     -61.31
-    ],
-    [
-     13.86,
-     -58.0
-    ],
-    [
-     15.45,
-     -54.14
-    ]
-   ],
-   "start": 858,
-   "end": 1750
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flush Pipe",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flush Pipe",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flush Pipe",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flush Inlet",
-   "points": [
-    [
-     20.0,
-     858.0
-    ],
-    [
-     19.32,
-     863.18
-    ],
-    [
-     17.32,
-     868.0
-    ],
-    [
-     14.14,
-     872.14
-    ],
-    [
-     10.0,
-     875.32
-    ],
-    [
-     5.18,
-     877.32
-    ],
-    [
-     0.0,
-     878.0
-    ],
-    [
-     -5.18,
-     877.32
-    ],
-    [
-     -10.0,
-     875.32
-    ],
-    [
-     -14.14,
-     872.14
-    ],
-    [
-     -17.32,
-     868.0
-    ],
-    [
-     -19.32,
-     863.18
-    ],
-    [
-     -20.0,
-     858.0
-    ],
-    [
-     -19.32,
-     852.82
-    ],
-    [
-     -17.32,
-     848.0
-    ],
-    [
-     -14.14,
-     843.86
-    ],
-    [
-     -10.0,
-     840.68
-    ],
-    [
-     -5.18,
-     838.68
-    ],
-    [
-     -0.0,
-     838.0
-    ],
-    [
-     5.18,
-     838.68
-    ],
-    [
-     10.0,
-     840.68
-    ],
-    [
-     14.14,
-     843.86
-    ],
-    [
-     17.32,
-     848.0
-    ],
-    [
-     19.32,
-     852.82
-    ]
-   ],
-   "start": 50,
-   "end": 100,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flush Inlet",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flush Inlet",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flush Inlet",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cold Tap Flange",
-   "points": [
-    [
-     -294.0,
-     1100.0
-    ],
-    [
-     -294.89,
-     1106.73
-    ],
-    [
-     -297.48,
-     1113.0
-    ],
-    [
-     -301.62,
-     1118.38
-    ],
-    [
-     -307.0,
-     1122.52
-    ],
-    [
-     -313.27,
-     1125.11
-    ],
-    [
-     -320.0,
-     1126.0
-    ],
-    [
-     -326.73,
-     1125.11
-    ],
-    [
-     -333.0,
-     1122.52
-    ],
-    [
-     -338.38,
-     1118.38
-    ],
-    [
-     -342.52,
-     1113.0
-    ],
-    [
-     -345.11,
-     1106.73
-    ],
-    [
-     -346.0,
-     1100.0
-    ],
-    [
-     -345.11,
-     1093.27
-    ],
-    [
-     -342.52,
-     1087.0
-    ],
-    [
-     -338.38,
-     1081.62
-    ],
-    [
-     -333.0,
-     1077.48
-    ],
-    [
-     -326.73,
-     1074.89
-    ],
-    [
-     -320.0,
-     1074.0
-    ],
-    [
-     -313.27,
-     1074.89
-    ],
-    [
-     -307.0,
-     1077.48
-    ],
-    [
-     -301.62,
-     1081.62
-    ],
-    [
-     -297.48,
-     1087.0
-    ],
-    [
-     -294.89,
-     1093.27
-    ]
-   ],
-   "start": 0,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cold Tap Flange",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cold Tap Flange",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cold Tap Flange",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cold Tap Body",
-   "points": [
-    [
-     -305.0,
-     1100.0
-    ],
-    [
-     -305.51,
-     1103.88
-    ],
-    [
-     -307.01,
-     1107.5
-    ],
-    [
-     -309.39,
-     1110.61
-    ],
-    [
-     -312.5,
-     1112.99
-    ],
-    [
-     -316.12,
-     1114.49
-    ],
-    [
-     -320.0,
-     1115.0
-    ],
-    [
-     -323.88,
-     1114.49
-    ],
-    [
-     -327.5,
-     1112.99
-    ],
-    [
-     -330.61,
-     1110.61
-    ],
-    [
-     -332.99,
-     1107.5
-    ],
-    [
-     -334.49,
-     1103.88
-    ],
-    [
-     -335.0,
-     1100.0
-    ],
-    [
-     -334.49,
-     1096.12
-    ],
-    [
-     -332.99,
-     1092.5
-    ],
-    [
-     -330.61,
-     1089.39
-    ],
-    [
-     -327.5,
-     1087.01
-    ],
-    [
-     -323.88,
-     1085.51
-    ],
-    [
-     -320.0,
-     1085.0
-    ],
-    [
-     -316.12,
-     1085.51
-    ],
-    [
-     -312.5,
-     1087.01
-    ],
-    [
-     -309.39,
-     1089.39
-    ],
-    [
-     -307.01,
-     1092.5
-    ],
-    [
-     -305.51,
-     1096.12
-    ]
-   ],
-   "start": 6,
-   "end": 70,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cold Tap Body",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cold Tap Body",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cold Tap Body",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cold Tap Nose",
-   "points": [
-    [
-     -310.0,
-     -62.0
-    ],
-    [
-     -310.34,
-     -59.41
-    ],
-    [
-     -311.34,
-     -57.0
-    ],
-    [
-     -312.93,
-     -54.93
-    ],
-    [
-     -315.0,
-     -53.34
-    ],
-    [
-     -317.41,
-     -52.34
-    ],
-    [
-     -320.0,
-     -52.0
-    ],
-    [
-     -322.59,
-     -52.34
-    ],
-    [
-     -325.0,
-     -53.34
-    ],
-    [
-     -327.07,
-     -54.93
-    ],
-    [
-     -328.66,
-     -57.0
-    ],
-    [
-     -329.66,
-     -59.41
-    ],
-    [
-     -330.0,
-     -62.0
-    ],
-    [
-     -329.66,
-     -64.59
-    ],
-    [
-     -328.66,
-     -67.0
-    ],
-    [
-     -327.07,
-     -69.07
-    ],
-    [
-     -325.0,
-     -70.66
-    ],
-    [
-     -322.59,
-     -71.66
-    ],
-    [
-     -320.0,
-     -72.0
-    ],
-    [
-     -317.41,
-     -71.66
-    ],
-    [
-     -315.0,
-     -70.66
-    ],
-    [
-     -312.93,
-     -69.07
-    ],
-    [
-     -311.34,
-     -67.0
-    ],
-    [
-     -310.34,
-     -64.59
-    ]
-   ],
-   "start": 1045,
-   "end": 1100
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cold Tap Nose",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cold Tap Nose",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cold Tap Nose",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cold Tap Headwork",
-   "points": [
-    [
-     -306.0,
-     -45.0
-    ],
-    [
-     -306.48,
-     -41.38
-    ],
-    [
-     -307.88,
-     -38.0
-    ],
-    [
-     -310.1,
-     -35.1
-    ],
-    [
-     -313.0,
-     -32.88
-    ],
-    [
-     -316.38,
-     -31.48
-    ],
-    [
-     -320.0,
-     -31.0
-    ],
-    [
-     -323.62,
-     -31.48
-    ],
-    [
-     -327.0,
-     -32.88
-    ],
-    [
-     -329.9,
-     -35.1
-    ],
-    [
-     -332.12,
-     -38.0
-    ],
-    [
-     -333.52,
-     -41.38
-    ],
-    [
-     -334.0,
-     -45.0
-    ],
-    [
-     -333.52,
-     -48.62
-    ],
-    [
-     -332.12,
-     -52.0
-    ],
-    [
-     -329.9,
-     -54.9
-    ],
-    [
-     -327.0,
-     -57.12
-    ],
-    [
-     -323.62,
-     -58.52
-    ],
-    [
-     -320.0,
-     -59.0
-    ],
-    [
-     -316.38,
-     -58.52
-    ],
-    [
-     -313.0,
-     -57.12
-    ],
-    [
-     -310.1,
-     -54.9
-    ],
-    [
-     -307.88,
-     -52.0
-    ],
-    [
-     -306.48,
-     -48.62
-    ]
-   ],
-   "start": 1100,
-   "end": 1130
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cold Tap Headwork",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cold Tap Headwork",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cold Tap Headwork",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cold Tap Lever",
-   "points": [
-    [
-     -317.0,
-     -110.0
-    ],
-    [
-     -315.85,
-     -109.77
-    ],
-    [
-     -314.88,
-     -109.12
-    ],
-    [
-     -314.23,
-     -108.15
-    ],
-    [
-     -314.0,
-     -107.0
-    ],
-    [
-     -314.0,
-     -43.0
-    ],
-    [
-     -314.23,
-     -41.85
-    ],
-    [
-     -314.88,
-     -40.88
-    ],
-    [
-     -315.85,
-     -40.23
-    ],
-    [
-     -317.0,
-     -40.0
-    ],
-    [
-     -323.0,
-     -40.0
-    ],
-    [
-     -324.15,
-     -40.23
-    ],
-    [
-     -325.12,
-     -40.88
-    ],
-    [
-     -325.77,
-     -41.85
-    ],
-    [
-     -326.0,
-     -43.0
-    ],
-    [
-     -326.0,
-     -107.0
-    ],
-    [
-     -325.77,
-     -108.15
-    ],
-    [
-     -325.12,
-     -109.12
-    ],
-    [
-     -324.15,
-     -109.77
-    ],
-    [
-     -323.0,
-     -110.0
-    ]
-   ],
-   "start": 1130,
-   "end": 1140
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cold Tap Lever",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cold Tap Lever",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cold Tap Lever",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hot Tap Flange",
-   "points": [
-    [
-     346.0,
-     1100.0
-    ],
-    [
-     345.11,
-     1106.73
-    ],
-    [
-     342.52,
-     1113.0
-    ],
-    [
-     338.38,
-     1118.38
-    ],
-    [
-     333.0,
-     1122.52
-    ],
-    [
-     326.73,
-     1125.11
-    ],
-    [
-     320.0,
-     1126.0
-    ],
-    [
-     313.27,
-     1125.11
-    ],
-    [
-     307.0,
-     1122.52
-    ],
-    [
-     301.62,
-     1118.38
-    ],
-    [
-     297.48,
-     1113.0
-    ],
-    [
-     294.89,
-     1106.73
-    ],
-    [
-     294.0,
-     1100.0
-    ],
-    [
-     294.89,
-     1093.27
-    ],
-    [
-     297.48,
-     1087.0
-    ],
-    [
-     301.62,
-     1081.62
-    ],
-    [
-     307.0,
-     1077.48
-    ],
-    [
-     313.27,
-     1074.89
-    ],
-    [
-     320.0,
-     1074.0
-    ],
-    [
-     326.73,
-     1074.89
-    ],
-    [
-     333.0,
-     1077.48
-    ],
-    [
-     338.38,
-     1081.62
-    ],
-    [
-     342.52,
-     1087.0
-    ],
-    [
-     345.11,
-     1093.27
-    ]
-   ],
-   "start": 0,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hot Tap Flange",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hot Tap Flange",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hot Tap Flange",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hot Tap Body",
-   "points": [
-    [
-     335.0,
-     1100.0
-    ],
-    [
-     334.49,
-     1103.88
-    ],
-    [
-     332.99,
-     1107.5
-    ],
-    [
-     330.61,
-     1110.61
-    ],
-    [
-     327.5,
-     1112.99
-    ],
-    [
-     323.88,
-     1114.49
-    ],
-    [
-     320.0,
-     1115.0
-    ],
-    [
-     316.12,
-     1114.49
-    ],
-    [
-     312.5,
-     1112.99
-    ],
-    [
-     309.39,
-     1110.61
-    ],
-    [
-     307.01,
-     1107.5
-    ],
-    [
-     305.51,
-     1103.88
-    ],
-    [
-     305.0,
-     1100.0
-    ],
-    [
-     305.51,
-     1096.12
-    ],
-    [
-     307.01,
-     1092.5
-    ],
-    [
-     309.39,
-     1089.39
-    ],
-    [
-     312.5,
-     1087.01
-    ],
-    [
-     316.12,
-     1085.51
-    ],
-    [
-     320.0,
-     1085.0
-    ],
-    [
-     323.88,
-     1085.51
-    ],
-    [
-     327.5,
-     1087.01
-    ],
-    [
-     330.61,
-     1089.39
-    ],
-    [
-     332.99,
-     1092.5
-    ],
-    [
-     334.49,
-     1096.12
-    ]
-   ],
-   "start": 6,
-   "end": 70,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hot Tap Body",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hot Tap Body",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hot Tap Body",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hot Tap Nose",
-   "points": [
-    [
-     330.0,
-     -62.0
-    ],
-    [
-     329.66,
-     -59.41
-    ],
-    [
-     328.66,
-     -57.0
-    ],
-    [
-     327.07,
-     -54.93
-    ],
-    [
-     325.0,
-     -53.34
-    ],
-    [
-     322.59,
-     -52.34
-    ],
-    [
-     320.0,
-     -52.0
-    ],
-    [
-     317.41,
-     -52.34
-    ],
-    [
-     315.0,
-     -53.34
-    ],
-    [
-     312.93,
-     -54.93
-    ],
-    [
-     311.34,
-     -57.0
-    ],
-    [
-     310.34,
-     -59.41
-    ],
-    [
-     310.0,
-     -62.0
-    ],
-    [
-     310.34,
-     -64.59
-    ],
-    [
-     311.34,
-     -67.0
-    ],
-    [
-     312.93,
-     -69.07
-    ],
-    [
-     315.0,
-     -70.66
-    ],
-    [
-     317.41,
-     -71.66
-    ],
-    [
-     320.0,
-     -72.0
-    ],
-    [
-     322.59,
-     -71.66
-    ],
-    [
-     325.0,
-     -70.66
-    ],
-    [
-     327.07,
-     -69.07
-    ],
-    [
-     328.66,
-     -67.0
-    ],
-    [
-     329.66,
-     -64.59
-    ]
-   ],
-   "start": 1045,
-   "end": 1100
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hot Tap Nose",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hot Tap Nose",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hot Tap Nose",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hot Tap Headwork",
-   "points": [
-    [
-     334.0,
-     -45.0
-    ],
-    [
-     333.52,
-     -41.38
-    ],
-    [
-     332.12,
-     -38.0
-    ],
-    [
-     329.9,
-     -35.1
-    ],
-    [
-     327.0,
-     -32.88
-    ],
-    [
-     323.62,
-     -31.48
-    ],
-    [
-     320.0,
-     -31.0
-    ],
-    [
-     316.38,
-     -31.48
-    ],
-    [
-     313.0,
-     -32.88
-    ],
-    [
-     310.1,
-     -35.1
-    ],
-    [
-     307.88,
-     -38.0
-    ],
-    [
-     306.48,
-     -41.38
-    ],
-    [
-     306.0,
-     -45.0
-    ],
-    [
-     306.48,
-     -48.62
-    ],
-    [
-     307.88,
-     -52.0
-    ],
-    [
-     310.1,
-     -54.9
-    ],
-    [
-     313.0,
-     -57.12
-    ],
-    [
-     316.38,
-     -58.52
-    ],
-    [
-     320.0,
-     -59.0
-    ],
-    [
-     323.62,
-     -58.52
-    ],
-    [
-     327.0,
-     -57.12
-    ],
-    [
-     329.9,
-     -54.9
-    ],
-    [
-     332.12,
-     -52.0
-    ],
-    [
-     333.52,
-     -48.62
-    ]
-   ],
-   "start": 1100,
-   "end": 1130
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hot Tap Headwork",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hot Tap Headwork",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hot Tap Headwork",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hot Tap Lever",
-   "points": [
-    [
-     323.0,
-     -110.0
-    ],
-    [
-     324.15,
-     -109.77
-    ],
-    [
-     325.12,
-     -109.12
-    ],
-    [
-     325.77,
-     -108.15
-    ],
-    [
-     326.0,
-     -107.0
-    ],
-    [
-     326.0,
-     -43.0
-    ],
-    [
-     325.77,
-     -41.85
-    ],
-    [
-     325.12,
-     -40.88
-    ],
-    [
-     324.15,
-     -40.23
-    ],
-    [
-     323.0,
-     -40.0
-    ],
-    [
-     317.0,
-     -40.0
-    ],
-    [
-     315.85,
-     -40.23
-    ],
-    [
-     314.88,
-     -40.88
-    ],
-    [
-     314.23,
-     -41.85
-    ],
-    [
-     314.0,
-     -43.0
-    ],
-    [
-     314.0,
-     -107.0
-    ],
-    [
-     314.23,
-     -108.15
-    ],
-    [
-     314.88,
-     -109.12
-    ],
-    [
-     315.85,
-     -109.77
-    ],
-    [
-     317.0,
-     -110.0
-    ]
-   ],
-   "start": 1130,
-   "end": 1140
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hot Tap Lever",
-   "subcategory": "Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hot Tap Lever",
-   "param": "Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hot Tap Lever",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "CW",
-   "domain": "pipe",
-   "system": "DomesticColdWater",
-   "solid": "Cistern",
-   "side": "back",
-   "diameter": 15,
-   "flow": "In"
-  },
-  {
-   "op": "add_connector",
-   "name": "HW",
-   "domain": "pipe",
-   "system": "DomesticHotWater",
-   "solid": "Hot Tap Body",
-   "side": "back",
-   "diameter": 15,
-   "flow": "In"
-  },
-  {
-   "op": "add_connector",
-   "name": "Waste",
-   "domain": "pipe",
-   "system": "Sanitary",
-   "solid": "Back Outlet",
-   "side": "back",
-   "diameter": 100,
-   "flow": "Out"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_PlumbingFixture_Sink_Sluice_Hopper.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_P_PlumbingFixture_Sink_Sluice_Hopper",
+  "template": "Metric Generic Model.rft",
+  "about": "Sluice hopper modelled as a generic product: pedestal, oval china bowl (rim sectors, flushing rim, throat), bucket grating with bars, high-level cistern, lever, flush pipe and two bib taps. Reference: query: sink sluice hopper plumbing fixtures hospital; images: https://www.google.com/search?tbm=isch&q=sink+sluice+hopper+plumbing+fixtures+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Plumbing Fixtures"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Pipe_System",
+      "guid": "19b06c84-7f51-563a-ac4a-ed9b4addfabc",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Discharge_Units",
+      "guid": "7aa955c0-3c0f-5f8c-a77b-9124e8d513eb",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Asset_Tag",
+      "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Serial_Number",
+      "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Install_Date",
+      "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Warranty_End",
+      "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Maintenance_Interval_Months",
+      "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_OM_Link",
+      "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Mounting_Height_mm",
+      "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+      "instance": true
+    },
+    {
+      "op": "add_type",
+      "name": "600_FlushingRim"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_FlushingRim/FMC_Cost_Unit",
+      "type": "600_FlushingRim",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_FlushingRim/FMC_Geometry_Stage",
+      "type": "600_FlushingRim",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_FlushingRim/IfcExportAs",
+      "type": "600_FlushingRim",
+      "param": "IfcExportAs",
+      "value": "IfcSanitaryTerminal"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_FlushingRim/Description",
+      "type": "600_FlushingRim",
+      "param": "Description",
+      "value": "Sluice hopper, vitreous china on pedestal, flushing rim, hinged stainless bucket grating, high-level cistern with flush pipe, hot and cold bib taps"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_FlushingRim/Keynote",
+      "type": "600_FlushingRim",
+      "param": "Keynote",
+      "value": "P.SNK_03"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_FlushingRim/FMC_Keynote_Code",
+      "type": "600_FlushingRim",
+      "param": "FMC_Keynote_Code",
+      "value": "P.SNK_03"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_FlushingRim/FMC_Code_Description",
+      "type": "600_FlushingRim",
+      "param": "FMC_Code_Description",
+      "value": "Sink Sluice Hopper: Sluice hopper with flushing rim"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_FlushingRim/FMC_Code_Group",
+      "type": "600_FlushingRim",
+      "param": "FMC_Code_Group",
+      "value": "P.SNK"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_FlushingRim/FMC_Role_Code",
+      "type": "600_FlushingRim",
+      "param": "FMC_Role_Code",
+      "value": "P"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "China",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "China Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Ceramic_VitreousChina_White",
+      "param": "China Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Stainless",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Stainless Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_StainlessSteel_Brushed",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Chrome",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Chrome Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Chrome_Polished",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Blue",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Blue Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Blue",
+      "param": "Blue Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Red",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Red Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_FireHoseReel_Red",
+      "param": "Red Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -346,
+          -530
+        ],
+        [
+          346,
+          -530
+        ],
+        [
+          346,
+          0
+        ],
+        [
+          -346,
+          0
+        ]
+      ],
+      "start": 0,
+      "end": 2040
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Pedestal",
+      "points": [
+        [
+          130,
+          -470
+        ],
+        [
+          152.96,
+          -465.43
+        ],
+        [
+          172.43,
+          -452.43
+        ],
+        [
+          185.43,
+          -432.96
+        ],
+        [
+          190,
+          -410
+        ],
+        [
+          190,
+          -140
+        ],
+        [
+          185.43,
+          -117.04
+        ],
+        [
+          172.43,
+          -97.57
+        ],
+        [
+          152.96,
+          -84.57
+        ],
+        [
+          130,
+          -80
+        ],
+        [
+          -130,
+          -80
+        ],
+        [
+          -152.96,
+          -84.57
+        ],
+        [
+          -172.43,
+          -97.57
+        ],
+        [
+          -185.43,
+          -117.04
+        ],
+        [
+          -190,
+          -140
+        ],
+        [
+          -190,
+          -410
+        ],
+        [
+          -185.43,
+          -432.96
+        ],
+        [
+          -172.43,
+          -452.43
+        ],
+        [
+          -152.96,
+          -465.43
+        ],
+        [
+          -130,
+          -470
+        ]
+      ],
+      "start": 0,
+      "end": 520
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pedestal",
+      "subcategory": "China"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pedestal",
+      "param": "China Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pedestal",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bowl Body",
+      "points": [
+        [
+          280,
+          -290
+        ],
+        [
+          276,
+          -188.3
+        ],
+        [
+          263.8,
+          -141.1
+        ],
+        [
+          243.3,
+          -106.8
+        ],
+        [
+          213.8,
+          -81.5
+        ],
+        [
+          173.8,
+          -63.9
+        ],
+        [
+          118.6,
+          -53.5
+        ],
+        [
+          0,
+          -50
+        ],
+        [
+          -118.6,
+          -53.5
+        ],
+        [
+          -173.8,
+          -63.9
+        ],
+        [
+          -213.8,
+          -81.5
+        ],
+        [
+          -243.3,
+          -106.8
+        ],
+        [
+          -263.8,
+          -141.1
+        ],
+        [
+          -276,
+          -188.3
+        ],
+        [
+          -280,
+          -290
+        ],
+        [
+          -276,
+          -391.7
+        ],
+        [
+          -263.8,
+          -438.9
+        ],
+        [
+          -243.3,
+          -473.2
+        ],
+        [
+          -213.8,
+          -498.5
+        ],
+        [
+          -173.8,
+          -516.1
+        ],
+        [
+          -118.6,
+          -526.5
+        ],
+        [
+          0,
+          -530
+        ],
+        [
+          118.6,
+          -526.5
+        ],
+        [
+          173.8,
+          -516.1
+        ],
+        [
+          213.8,
+          -498.5
+        ],
+        [
+          243.3,
+          -473.2
+        ],
+        [
+          263.8,
+          -438.9
+        ],
+        [
+          276,
+          -391.7
+        ]
+      ],
+      "start": 520,
+      "end": 700
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bowl Body",
+      "subcategory": "China"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bowl Body",
+      "param": "China Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bowl Body",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bowl Rim 1",
+      "points": [
+        [
+          0,
+          -530
+        ],
+        [
+          161.7,
+          -519.4
+        ],
+        [
+          229.7,
+          -486.9
+        ],
+        [
+          176.2,
+          -439.4
+        ],
+        [
+          109.9,
+          -473.5
+        ],
+        [
+          0,
+          -485
+        ]
+      ],
+      "start": 700,
+      "end": 865
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bowl Rim 1",
+      "subcategory": "China"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bowl Rim 1",
+      "param": "China Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bowl Rim 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bowl Rim 2",
+      "points": [
+        [
+          229.7,
+          -486.9
+        ],
+        [
+          267.6,
+          -428.6
+        ],
+        [
+          280,
+          -290
+        ],
+        [
+          230,
+          -290
+        ],
+        [
+          216.4,
+          -383.1
+        ],
+        [
+          176.2,
+          -439.4
+        ]
+      ],
+      "start": 700,
+      "end": 865
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bowl Rim 2",
+      "subcategory": "China"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bowl Rim 2",
+      "param": "China Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bowl Rim 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bowl Rim 3",
+      "points": [
+        [
+          280,
+          -290
+        ],
+        [
+          267.6,
+          -151.4
+        ],
+        [
+          229.7,
+          -93.1
+        ],
+        [
+          176.2,
+          -140.6
+        ],
+        [
+          216.4,
+          -196.9
+        ],
+        [
+          230,
+          -290
+        ]
+      ],
+      "start": 700,
+      "end": 865
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bowl Rim 3",
+      "subcategory": "China"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bowl Rim 3",
+      "param": "China Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bowl Rim 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bowl Rim 4",
+      "points": [
+        [
+          229.7,
+          -93.1
+        ],
+        [
+          161.7,
+          -60.6
+        ],
+        [
+          0,
+          -50
+        ],
+        [
+          0,
+          -95
+        ],
+        [
+          109.9,
+          -106.5
+        ],
+        [
+          176.2,
+          -140.6
+        ]
+      ],
+      "start": 700,
+      "end": 865
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bowl Rim 4",
+      "subcategory": "China"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bowl Rim 4",
+      "param": "China Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bowl Rim 4",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bowl Rim 5",
+      "points": [
+        [
+          0,
+          -50
+        ],
+        [
+          -161.7,
+          -60.6
+        ],
+        [
+          -229.7,
+          -93.1
+        ],
+        [
+          -176.2,
+          -140.6
+        ],
+        [
+          -109.9,
+          -106.5
+        ],
+        [
+          0,
+          -95
+        ]
+      ],
+      "start": 700,
+      "end": 865
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bowl Rim 5",
+      "subcategory": "China"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bowl Rim 5",
+      "param": "China Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bowl Rim 5",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bowl Rim 6",
+      "points": [
+        [
+          -229.7,
+          -93.1
+        ],
+        [
+          -267.6,
+          -151.4
+        ],
+        [
+          -280,
+          -290
+        ],
+        [
+          -230,
+          -290
+        ],
+        [
+          -216.4,
+          -196.9
+        ],
+        [
+          -176.2,
+          -140.6
+        ]
+      ],
+      "start": 700,
+      "end": 865
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bowl Rim 6",
+      "subcategory": "China"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bowl Rim 6",
+      "param": "China Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bowl Rim 6",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bowl Rim 7",
+      "points": [
+        [
+          -280,
+          -290
+        ],
+        [
+          -267.6,
+          -428.6
+        ],
+        [
+          -229.7,
+          -486.9
+        ],
+        [
+          -176.2,
+          -439.4
+        ],
+        [
+          -216.4,
+          -383.1
+        ],
+        [
+          -230,
+          -290
+        ]
+      ],
+      "start": 700,
+      "end": 865
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bowl Rim 7",
+      "subcategory": "China"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bowl Rim 7",
+      "param": "China Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bowl Rim 7",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bowl Rim 8",
+      "points": [
+        [
+          -229.7,
+          -486.9
+        ],
+        [
+          -161.7,
+          -519.4
+        ],
+        [
+          0,
+          -530
+        ],
+        [
+          0,
+          -485
+        ],
+        [
+          -109.9,
+          -473.5
+        ],
+        [
+          -176.2,
+          -439.4
+        ]
+      ],
+      "start": 700,
+      "end": 865
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bowl Rim 8",
+      "subcategory": "China"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bowl Rim 8",
+      "param": "China Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bowl Rim 8",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flushing Rim 1",
+      "points": [
+        [
+          0,
+          -486
+        ],
+        [
+          135.5,
+          -465.5
+        ],
+        [
+          206.8,
+          -405
+        ],
+        [
+          191.6,
+          -395.6
+        ],
+        [
+          125.6,
+          -451.1
+        ],
+        [
+          0,
+          -470
+        ]
+      ],
+      "start": 830,
+      "end": 850
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flushing Rim 1",
+      "subcategory": "China"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flushing Rim 1",
+      "param": "China Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flushing Rim 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flushing Rim 2",
+      "points": [
+        [
+          206.8,
+          -405
+        ],
+        [
+          231,
+          -290
+        ],
+        [
+          206.8,
+          -175
+        ],
+        [
+          191.6,
+          -184.4
+        ],
+        [
+          214,
+          -290
+        ],
+        [
+          191.6,
+          -395.6
+        ]
+      ],
+      "start": 830,
+      "end": 850
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flushing Rim 2",
+      "subcategory": "China"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flushing Rim 2",
+      "param": "China Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flushing Rim 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flushing Rim 3",
+      "points": [
+        [
+          206.8,
+          -175
+        ],
+        [
+          135.5,
+          -114.5
+        ],
+        [
+          0,
+          -94
+        ],
+        [
+          0,
+          -110
+        ],
+        [
+          125.6,
+          -128.9
+        ],
+        [
+          191.6,
+          -184.4
+        ]
+      ],
+      "start": 830,
+      "end": 850
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flushing Rim 3",
+      "subcategory": "China"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flushing Rim 3",
+      "param": "China Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flushing Rim 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flushing Rim 4",
+      "points": [
+        [
+          0,
+          -94
+        ],
+        [
+          -135.5,
+          -114.5
+        ],
+        [
+          -206.8,
+          -175
+        ],
+        [
+          -191.6,
+          -184.4
+        ],
+        [
+          -125.6,
+          -128.9
+        ],
+        [
+          0,
+          -110
+        ]
+      ],
+      "start": 830,
+      "end": 850
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flushing Rim 4",
+      "subcategory": "China"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flushing Rim 4",
+      "param": "China Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flushing Rim 4",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flushing Rim 5",
+      "points": [
+        [
+          -206.8,
+          -175
+        ],
+        [
+          -231,
+          -290
+        ],
+        [
+          -206.8,
+          -405
+        ],
+        [
+          -191.6,
+          -395.6
+        ],
+        [
+          -214,
+          -290
+        ],
+        [
+          -191.6,
+          -184.4
+        ]
+      ],
+      "start": 830,
+      "end": 850
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flushing Rim 5",
+      "subcategory": "China"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flushing Rim 5",
+      "param": "China Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flushing Rim 5",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flushing Rim 6",
+      "points": [
+        [
+          -206.8,
+          -405
+        ],
+        [
+          -135.5,
+          -465.5
+        ],
+        [
+          0,
+          -486
+        ],
+        [
+          0,
+          -470
+        ],
+        [
+          -125.6,
+          -451.1
+        ],
+        [
+          -191.6,
+          -395.6
+        ]
+      ],
+      "start": 830,
+      "end": 850
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flushing Rim 6",
+      "subcategory": "China"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flushing Rim 6",
+      "param": "China Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flushing Rim 6",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Bowl Throat",
+      "profile": [
+        [
+          70,
+          700
+        ],
+        [
+          230,
+          700
+        ],
+        [
+          230,
+          720
+        ],
+        [
+          70,
+          704
+        ]
+      ],
+      "axis_at": [
+        0,
+        -290
+      ],
+      "axis": "z",
+      "subcategory": "China"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bowl Throat",
+      "param": "China Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bowl Throat",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Frame Front",
+      "points": [
+        [
+          -200,
+          -500
+        ],
+        [
+          200,
+          -500
+        ],
+        [
+          200,
+          -488
+        ],
+        [
+          -200,
+          -488
+        ]
+      ],
+      "start": 866,
+      "end": 878
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Frame Front",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Frame Front",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Frame Front",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Frame Back",
+      "points": [
+        [
+          -200,
+          -262
+        ],
+        [
+          200,
+          -262
+        ],
+        [
+          200,
+          -250
+        ],
+        [
+          -200,
+          -250
+        ]
+      ],
+      "start": 866,
+      "end": 878
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Frame Back",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Frame Back",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Frame Back",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 1",
+      "points": [
+        [
+          -182,
+          -488
+        ],
+        [
+          -174,
+          -488
+        ],
+        [
+          -174,
+          -262
+        ],
+        [
+          -182,
+          -262
+        ]
+      ],
+      "start": 868,
+      "end": 876
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 1",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 1",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 2",
+      "points": [
+        [
+          -124,
+          -488
+        ],
+        [
+          -116,
+          -488
+        ],
+        [
+          -116,
+          -262
+        ],
+        [
+          -124,
+          -262
+        ]
+      ],
+      "start": 868,
+      "end": 876
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 2",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 2",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 3",
+      "points": [
+        [
+          -66,
+          -488
+        ],
+        [
+          -58,
+          -488
+        ],
+        [
+          -58,
+          -262
+        ],
+        [
+          -66,
+          -262
+        ]
+      ],
+      "start": 868,
+      "end": 876
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 3",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 3",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 4",
+      "points": [
+        [
+          -8,
+          -488
+        ],
+        [
+          0,
+          -488
+        ],
+        [
+          0,
+          -262
+        ],
+        [
+          -8,
+          -262
+        ]
+      ],
+      "start": 868,
+      "end": 876
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 4",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 4",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 4",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 5",
+      "points": [
+        [
+          50,
+          -488
+        ],
+        [
+          58,
+          -488
+        ],
+        [
+          58,
+          -262
+        ],
+        [
+          50,
+          -262
+        ]
+      ],
+      "start": 868,
+      "end": 876
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 5",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 5",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 5",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 6",
+      "points": [
+        [
+          108,
+          -488
+        ],
+        [
+          116,
+          -488
+        ],
+        [
+          116,
+          -262
+        ],
+        [
+          108,
+          -262
+        ]
+      ],
+      "start": 868,
+      "end": 876
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 6",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 6",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 6",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 7",
+      "points": [
+        [
+          166,
+          -488
+        ],
+        [
+          174,
+          -488
+        ],
+        [
+          174,
+          -262
+        ],
+        [
+          166,
+          -262
+        ]
+      ],
+      "start": 868,
+      "end": 876
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 7",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 7",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 7",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Back Outlet",
+      "points": [
+        [
+          -60,
+          -90
+        ],
+        [
+          60,
+          -90
+        ],
+        [
+          60,
+          0
+        ],
+        [
+          -60,
+          0
+        ]
+      ],
+      "start": 140,
+      "end": 260
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Back Outlet",
+      "subcategory": "China"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Back Outlet",
+      "param": "China Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Back Outlet",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cistern",
+      "points": [
+        [
+          240,
+          1750
+        ],
+        [
+          247.65,
+          1751.52
+        ],
+        [
+          254.14,
+          1755.86
+        ],
+        [
+          258.48,
+          1762.35
+        ],
+        [
+          260,
+          1770
+        ],
+        [
+          260,
+          2000
+        ],
+        [
+          258.48,
+          2007.65
+        ],
+        [
+          254.14,
+          2014.14
+        ],
+        [
+          247.65,
+          2018.48
+        ],
+        [
+          240,
+          2020
+        ],
+        [
+          -240,
+          2020
+        ],
+        [
+          -247.65,
+          2018.48
+        ],
+        [
+          -254.14,
+          2014.14
+        ],
+        [
+          -258.48,
+          2007.65
+        ],
+        [
+          -260,
+          2000
+        ],
+        [
+          -260,
+          1770
+        ],
+        [
+          -258.48,
+          1762.35
+        ],
+        [
+          -254.14,
+          1755.86
+        ],
+        [
+          -247.65,
+          1751.52
+        ],
+        [
+          -240,
+          1750
+        ]
+      ],
+      "start": 0,
+      "end": 190,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cistern",
+      "subcategory": "China"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cistern",
+      "param": "China Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cistern",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cistern Lid",
+      "points": [
+        [
+          264,
+          2020
+        ],
+        [
+          266.3,
+          2020.46
+        ],
+        [
+          268.24,
+          2021.76
+        ],
+        [
+          269.54,
+          2023.7
+        ],
+        [
+          270,
+          2026
+        ],
+        [
+          270,
+          2034
+        ],
+        [
+          269.54,
+          2036.3
+        ],
+        [
+          268.24,
+          2038.24
+        ],
+        [
+          266.3,
+          2039.54
+        ],
+        [
+          264,
+          2040
+        ],
+        [
+          -264,
+          2040
+        ],
+        [
+          -266.3,
+          2039.54
+        ],
+        [
+          -268.24,
+          2038.24
+        ],
+        [
+          -269.54,
+          2036.3
+        ],
+        [
+          -270,
+          2034
+        ],
+        [
+          -270,
+          2026
+        ],
+        [
+          -269.54,
+          2023.7
+        ],
+        [
+          -268.24,
+          2021.76
+        ],
+        [
+          -266.3,
+          2020.46
+        ],
+        [
+          -264,
+          2020
+        ]
+      ],
+      "start": 0,
+      "end": 200,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cistern Lid",
+      "subcategory": "China"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cistern Lid",
+      "param": "China Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cistern Lid",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flush Lever",
+      "points": [
+        [
+          180,
+          -240
+        ],
+        [
+          200,
+          -240
+        ],
+        [
+          200,
+          -190
+        ],
+        [
+          180,
+          -190
+        ]
+      ],
+      "start": 1980,
+      "end": 1995
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flush Lever",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flush Lever",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flush Lever",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flush Pipe",
+      "points": [
+        [
+          16,
+          -50
+        ],
+        [
+          15.45,
+          -45.86
+        ],
+        [
+          13.86,
+          -42
+        ],
+        [
+          11.31,
+          -38.69
+        ],
+        [
+          8,
+          -36.14
+        ],
+        [
+          4.14,
+          -34.55
+        ],
+        [
+          0,
+          -34
+        ],
+        [
+          -4.14,
+          -34.55
+        ],
+        [
+          -8,
+          -36.14
+        ],
+        [
+          -11.31,
+          -38.69
+        ],
+        [
+          -13.86,
+          -42
+        ],
+        [
+          -15.45,
+          -45.86
+        ],
+        [
+          -16,
+          -50
+        ],
+        [
+          -15.45,
+          -54.14
+        ],
+        [
+          -13.86,
+          -58
+        ],
+        [
+          -11.31,
+          -61.31
+        ],
+        [
+          -8,
+          -63.86
+        ],
+        [
+          -4.14,
+          -65.45
+        ],
+        [
+          0,
+          -66
+        ],
+        [
+          4.14,
+          -65.45
+        ],
+        [
+          8,
+          -63.86
+        ],
+        [
+          11.31,
+          -61.31
+        ],
+        [
+          13.86,
+          -58
+        ],
+        [
+          15.45,
+          -54.14
+        ]
+      ],
+      "start": 858,
+      "end": 1750
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flush Pipe",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flush Pipe",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flush Pipe",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flush Inlet",
+      "points": [
+        [
+          20,
+          858
+        ],
+        [
+          19.32,
+          863.18
+        ],
+        [
+          17.32,
+          868
+        ],
+        [
+          14.14,
+          872.14
+        ],
+        [
+          10,
+          875.32
+        ],
+        [
+          5.18,
+          877.32
+        ],
+        [
+          0,
+          878
+        ],
+        [
+          -5.18,
+          877.32
+        ],
+        [
+          -10,
+          875.32
+        ],
+        [
+          -14.14,
+          872.14
+        ],
+        [
+          -17.32,
+          868
+        ],
+        [
+          -19.32,
+          863.18
+        ],
+        [
+          -20,
+          858
+        ],
+        [
+          -19.32,
+          852.82
+        ],
+        [
+          -17.32,
+          848
+        ],
+        [
+          -14.14,
+          843.86
+        ],
+        [
+          -10,
+          840.68
+        ],
+        [
+          -5.18,
+          838.68
+        ],
+        [
+          0,
+          838
+        ],
+        [
+          5.18,
+          838.68
+        ],
+        [
+          10,
+          840.68
+        ],
+        [
+          14.14,
+          843.86
+        ],
+        [
+          17.32,
+          848
+        ],
+        [
+          19.32,
+          852.82
+        ]
+      ],
+      "start": 50,
+      "end": 100,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flush Inlet",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flush Inlet",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flush Inlet",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cold Tap Flange",
+      "points": [
+        [
+          -294,
+          1100
+        ],
+        [
+          -294.89,
+          1106.73
+        ],
+        [
+          -297.48,
+          1113
+        ],
+        [
+          -301.62,
+          1118.38
+        ],
+        [
+          -307,
+          1122.52
+        ],
+        [
+          -313.27,
+          1125.11
+        ],
+        [
+          -320,
+          1126
+        ],
+        [
+          -326.73,
+          1125.11
+        ],
+        [
+          -333,
+          1122.52
+        ],
+        [
+          -338.38,
+          1118.38
+        ],
+        [
+          -342.52,
+          1113
+        ],
+        [
+          -345.11,
+          1106.73
+        ],
+        [
+          -346,
+          1100
+        ],
+        [
+          -345.11,
+          1093.27
+        ],
+        [
+          -342.52,
+          1087
+        ],
+        [
+          -338.38,
+          1081.62
+        ],
+        [
+          -333,
+          1077.48
+        ],
+        [
+          -326.73,
+          1074.89
+        ],
+        [
+          -320,
+          1074
+        ],
+        [
+          -313.27,
+          1074.89
+        ],
+        [
+          -307,
+          1077.48
+        ],
+        [
+          -301.62,
+          1081.62
+        ],
+        [
+          -297.48,
+          1087
+        ],
+        [
+          -294.89,
+          1093.27
+        ]
+      ],
+      "start": 0,
+      "end": 6,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cold Tap Flange",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cold Tap Flange",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cold Tap Flange",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cold Tap Body",
+      "points": [
+        [
+          -305,
+          1100
+        ],
+        [
+          -305.51,
+          1103.88
+        ],
+        [
+          -307.01,
+          1107.5
+        ],
+        [
+          -309.39,
+          1110.61
+        ],
+        [
+          -312.5,
+          1112.99
+        ],
+        [
+          -316.12,
+          1114.49
+        ],
+        [
+          -320,
+          1115
+        ],
+        [
+          -323.88,
+          1114.49
+        ],
+        [
+          -327.5,
+          1112.99
+        ],
+        [
+          -330.61,
+          1110.61
+        ],
+        [
+          -332.99,
+          1107.5
+        ],
+        [
+          -334.49,
+          1103.88
+        ],
+        [
+          -335,
+          1100
+        ],
+        [
+          -334.49,
+          1096.12
+        ],
+        [
+          -332.99,
+          1092.5
+        ],
+        [
+          -330.61,
+          1089.39
+        ],
+        [
+          -327.5,
+          1087.01
+        ],
+        [
+          -323.88,
+          1085.51
+        ],
+        [
+          -320,
+          1085
+        ],
+        [
+          -316.12,
+          1085.51
+        ],
+        [
+          -312.5,
+          1087.01
+        ],
+        [
+          -309.39,
+          1089.39
+        ],
+        [
+          -307.01,
+          1092.5
+        ],
+        [
+          -305.51,
+          1096.12
+        ]
+      ],
+      "start": 6,
+      "end": 70,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cold Tap Body",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cold Tap Body",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cold Tap Body",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cold Tap Nose",
+      "points": [
+        [
+          -310,
+          -62
+        ],
+        [
+          -310.34,
+          -59.41
+        ],
+        [
+          -311.34,
+          -57
+        ],
+        [
+          -312.93,
+          -54.93
+        ],
+        [
+          -315,
+          -53.34
+        ],
+        [
+          -317.41,
+          -52.34
+        ],
+        [
+          -320,
+          -52
+        ],
+        [
+          -322.59,
+          -52.34
+        ],
+        [
+          -325,
+          -53.34
+        ],
+        [
+          -327.07,
+          -54.93
+        ],
+        [
+          -328.66,
+          -57
+        ],
+        [
+          -329.66,
+          -59.41
+        ],
+        [
+          -330,
+          -62
+        ],
+        [
+          -329.66,
+          -64.59
+        ],
+        [
+          -328.66,
+          -67
+        ],
+        [
+          -327.07,
+          -69.07
+        ],
+        [
+          -325,
+          -70.66
+        ],
+        [
+          -322.59,
+          -71.66
+        ],
+        [
+          -320,
+          -72
+        ],
+        [
+          -317.41,
+          -71.66
+        ],
+        [
+          -315,
+          -70.66
+        ],
+        [
+          -312.93,
+          -69.07
+        ],
+        [
+          -311.34,
+          -67
+        ],
+        [
+          -310.34,
+          -64.59
+        ]
+      ],
+      "start": 1045,
+      "end": 1100
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cold Tap Nose",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cold Tap Nose",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cold Tap Nose",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cold Tap Headwork",
+      "points": [
+        [
+          -306,
+          -45
+        ],
+        [
+          -306.48,
+          -41.38
+        ],
+        [
+          -307.88,
+          -38
+        ],
+        [
+          -310.1,
+          -35.1
+        ],
+        [
+          -313,
+          -32.88
+        ],
+        [
+          -316.38,
+          -31.48
+        ],
+        [
+          -320,
+          -31
+        ],
+        [
+          -323.62,
+          -31.48
+        ],
+        [
+          -327,
+          -32.88
+        ],
+        [
+          -329.9,
+          -35.1
+        ],
+        [
+          -332.12,
+          -38
+        ],
+        [
+          -333.52,
+          -41.38
+        ],
+        [
+          -334,
+          -45
+        ],
+        [
+          -333.52,
+          -48.62
+        ],
+        [
+          -332.12,
+          -52
+        ],
+        [
+          -329.9,
+          -54.9
+        ],
+        [
+          -327,
+          -57.12
+        ],
+        [
+          -323.62,
+          -58.52
+        ],
+        [
+          -320,
+          -59
+        ],
+        [
+          -316.38,
+          -58.52
+        ],
+        [
+          -313,
+          -57.12
+        ],
+        [
+          -310.1,
+          -54.9
+        ],
+        [
+          -307.88,
+          -52
+        ],
+        [
+          -306.48,
+          -48.62
+        ]
+      ],
+      "start": 1100,
+      "end": 1130
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cold Tap Headwork",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cold Tap Headwork",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cold Tap Headwork",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cold Tap Lever",
+      "points": [
+        [
+          -317,
+          -110
+        ],
+        [
+          -315.85,
+          -109.77
+        ],
+        [
+          -314.88,
+          -109.12
+        ],
+        [
+          -314.23,
+          -108.15
+        ],
+        [
+          -314,
+          -107
+        ],
+        [
+          -314,
+          -43
+        ],
+        [
+          -314.23,
+          -41.85
+        ],
+        [
+          -314.88,
+          -40.88
+        ],
+        [
+          -315.85,
+          -40.23
+        ],
+        [
+          -317,
+          -40
+        ],
+        [
+          -323,
+          -40
+        ],
+        [
+          -324.15,
+          -40.23
+        ],
+        [
+          -325.12,
+          -40.88
+        ],
+        [
+          -325.77,
+          -41.85
+        ],
+        [
+          -326,
+          -43
+        ],
+        [
+          -326,
+          -107
+        ],
+        [
+          -325.77,
+          -108.15
+        ],
+        [
+          -325.12,
+          -109.12
+        ],
+        [
+          -324.15,
+          -109.77
+        ],
+        [
+          -323,
+          -110
+        ]
+      ],
+      "start": 1130,
+      "end": 1140
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cold Tap Lever",
+      "subcategory": "Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cold Tap Lever",
+      "param": "Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cold Tap Lever",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hot Tap Flange",
+      "points": [
+        [
+          346,
+          1100
+        ],
+        [
+          345.11,
+          1106.73
+        ],
+        [
+          342.52,
+          1113
+        ],
+        [
+          338.38,
+          1118.38
+        ],
+        [
+          333,
+          1122.52
+        ],
+        [
+          326.73,
+          1125.11
+        ],
+        [
+          320,
+          1126
+        ],
+        [
+          313.27,
+          1125.11
+        ],
+        [
+          307,
+          1122.52
+        ],
+        [
+          301.62,
+          1118.38
+        ],
+        [
+          297.48,
+          1113
+        ],
+        [
+          294.89,
+          1106.73
+        ],
+        [
+          294,
+          1100
+        ],
+        [
+          294.89,
+          1093.27
+        ],
+        [
+          297.48,
+          1087
+        ],
+        [
+          301.62,
+          1081.62
+        ],
+        [
+          307,
+          1077.48
+        ],
+        [
+          313.27,
+          1074.89
+        ],
+        [
+          320,
+          1074
+        ],
+        [
+          326.73,
+          1074.89
+        ],
+        [
+          333,
+          1077.48
+        ],
+        [
+          338.38,
+          1081.62
+        ],
+        [
+          342.52,
+          1087
+        ],
+        [
+          345.11,
+          1093.27
+        ]
+      ],
+      "start": 0,
+      "end": 6,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hot Tap Flange",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hot Tap Flange",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hot Tap Flange",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hot Tap Body",
+      "points": [
+        [
+          335,
+          1100
+        ],
+        [
+          334.49,
+          1103.88
+        ],
+        [
+          332.99,
+          1107.5
+        ],
+        [
+          330.61,
+          1110.61
+        ],
+        [
+          327.5,
+          1112.99
+        ],
+        [
+          323.88,
+          1114.49
+        ],
+        [
+          320,
+          1115
+        ],
+        [
+          316.12,
+          1114.49
+        ],
+        [
+          312.5,
+          1112.99
+        ],
+        [
+          309.39,
+          1110.61
+        ],
+        [
+          307.01,
+          1107.5
+        ],
+        [
+          305.51,
+          1103.88
+        ],
+        [
+          305,
+          1100
+        ],
+        [
+          305.51,
+          1096.12
+        ],
+        [
+          307.01,
+          1092.5
+        ],
+        [
+          309.39,
+          1089.39
+        ],
+        [
+          312.5,
+          1087.01
+        ],
+        [
+          316.12,
+          1085.51
+        ],
+        [
+          320,
+          1085
+        ],
+        [
+          323.88,
+          1085.51
+        ],
+        [
+          327.5,
+          1087.01
+        ],
+        [
+          330.61,
+          1089.39
+        ],
+        [
+          332.99,
+          1092.5
+        ],
+        [
+          334.49,
+          1096.12
+        ]
+      ],
+      "start": 6,
+      "end": 70,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hot Tap Body",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hot Tap Body",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hot Tap Body",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hot Tap Nose",
+      "points": [
+        [
+          330,
+          -62
+        ],
+        [
+          329.66,
+          -59.41
+        ],
+        [
+          328.66,
+          -57
+        ],
+        [
+          327.07,
+          -54.93
+        ],
+        [
+          325,
+          -53.34
+        ],
+        [
+          322.59,
+          -52.34
+        ],
+        [
+          320,
+          -52
+        ],
+        [
+          317.41,
+          -52.34
+        ],
+        [
+          315,
+          -53.34
+        ],
+        [
+          312.93,
+          -54.93
+        ],
+        [
+          311.34,
+          -57
+        ],
+        [
+          310.34,
+          -59.41
+        ],
+        [
+          310,
+          -62
+        ],
+        [
+          310.34,
+          -64.59
+        ],
+        [
+          311.34,
+          -67
+        ],
+        [
+          312.93,
+          -69.07
+        ],
+        [
+          315,
+          -70.66
+        ],
+        [
+          317.41,
+          -71.66
+        ],
+        [
+          320,
+          -72
+        ],
+        [
+          322.59,
+          -71.66
+        ],
+        [
+          325,
+          -70.66
+        ],
+        [
+          327.07,
+          -69.07
+        ],
+        [
+          328.66,
+          -67
+        ],
+        [
+          329.66,
+          -64.59
+        ]
+      ],
+      "start": 1045,
+      "end": 1100
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hot Tap Nose",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hot Tap Nose",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hot Tap Nose",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hot Tap Headwork",
+      "points": [
+        [
+          334,
+          -45
+        ],
+        [
+          333.52,
+          -41.38
+        ],
+        [
+          332.12,
+          -38
+        ],
+        [
+          329.9,
+          -35.1
+        ],
+        [
+          327,
+          -32.88
+        ],
+        [
+          323.62,
+          -31.48
+        ],
+        [
+          320,
+          -31
+        ],
+        [
+          316.38,
+          -31.48
+        ],
+        [
+          313,
+          -32.88
+        ],
+        [
+          310.1,
+          -35.1
+        ],
+        [
+          307.88,
+          -38
+        ],
+        [
+          306.48,
+          -41.38
+        ],
+        [
+          306,
+          -45
+        ],
+        [
+          306.48,
+          -48.62
+        ],
+        [
+          307.88,
+          -52
+        ],
+        [
+          310.1,
+          -54.9
+        ],
+        [
+          313,
+          -57.12
+        ],
+        [
+          316.38,
+          -58.52
+        ],
+        [
+          320,
+          -59
+        ],
+        [
+          323.62,
+          -58.52
+        ],
+        [
+          327,
+          -57.12
+        ],
+        [
+          329.9,
+          -54.9
+        ],
+        [
+          332.12,
+          -52
+        ],
+        [
+          333.52,
+          -48.62
+        ]
+      ],
+      "start": 1100,
+      "end": 1130
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hot Tap Headwork",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hot Tap Headwork",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hot Tap Headwork",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hot Tap Lever",
+      "points": [
+        [
+          323,
+          -110
+        ],
+        [
+          324.15,
+          -109.77
+        ],
+        [
+          325.12,
+          -109.12
+        ],
+        [
+          325.77,
+          -108.15
+        ],
+        [
+          326,
+          -107
+        ],
+        [
+          326,
+          -43
+        ],
+        [
+          325.77,
+          -41.85
+        ],
+        [
+          325.12,
+          -40.88
+        ],
+        [
+          324.15,
+          -40.23
+        ],
+        [
+          323,
+          -40
+        ],
+        [
+          317,
+          -40
+        ],
+        [
+          315.85,
+          -40.23
+        ],
+        [
+          314.88,
+          -40.88
+        ],
+        [
+          314.23,
+          -41.85
+        ],
+        [
+          314,
+          -43
+        ],
+        [
+          314,
+          -107
+        ],
+        [
+          314.23,
+          -108.15
+        ],
+        [
+          314.88,
+          -109.12
+        ],
+        [
+          315.85,
+          -109.77
+        ],
+        [
+          317,
+          -110
+        ]
+      ],
+      "start": 1130,
+      "end": 1140
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hot Tap Lever",
+      "subcategory": "Red"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hot Tap Lever",
+      "param": "Red Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hot Tap Lever",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "CW",
+      "domain": "pipe",
+      "system": "DomesticColdWater",
+      "solid": "Cistern",
+      "side": "back",
+      "diameter": 15,
+      "flow": "In"
+    },
+    {
+      "op": "add_connector",
+      "name": "HW",
+      "domain": "pipe",
+      "system": "DomesticHotWater",
+      "solid": "Hot Tap Body",
+      "side": "back",
+      "diameter": 15,
+      "flow": "In"
+    },
+    {
+      "op": "add_connector",
+      "name": "Waste",
+      "domain": "pipe",
+      "system": "Sanitary",
+      "solid": "Back Outlet",
+      "side": "back",
+      "diameter": 100,
+      "flow": "Out"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_PlumbingFixture_Sink_Sluice_Hopper.png"
+    }
+  ],
+  "values": {
+    "Bowl 560 x 480 mm": {
+      "value": "560x480",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Rim height 865 mm": {
+      "value": 865,
+      "source_status": "assumed",
+      "source": "HBN 00-09 / sluice practice"
+    },
+    "Outlet 100 mm": {
+      "value": 100,
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Cistern 9 l high level": {
+      "value": 9,
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   }
- ],
- "values": {
-  "Bowl 560 x 480 mm": {
-   "value": "560x480",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Rim height 865 mm": {
-   "value": 865,
-   "source_status": "assumed",
-   "source": "HBN 00-09 / sluice practice"
-  },
-  "Outlet 100 mm": {
-   "value": 100,
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Cistern 9 l high level": {
-   "value": 9,
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- }
 }

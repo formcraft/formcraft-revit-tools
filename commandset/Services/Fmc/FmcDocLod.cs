@@ -75,6 +75,9 @@ namespace RevitMCPCommandSet.Services.Fmc
             string result = "skip";
             if (sub == null) { sub = doc.Settings.Categories.NewSubcategory(parent, name); result = "create"; }
             var changed = new List<string>();
+            // Owner 26 Oct, FAM-044: families drew in near-white lines on pen 1 (half-toned in plans and legends). Black or
+            // dark grey lines on the rule's pens, unless the recipe marks a deliberate exception (keep_graphics)
+            if (op.Value<bool?>("keep_graphics") != true) op = FmcFamilyGraphics.Apply(name, op);
             int? proj = op.Value<int?>("line_weight_projection"), cut = op.Value<int?>("line_weight_cut");
             if (proj.HasValue && sub.GetLineWeight(GraphicsStyleType.Projection) != proj.Value) { sub.SetLineWeight(proj.Value, GraphicsStyleType.Projection); changed.Add("projection " + proj); }
             if (cut.HasValue)

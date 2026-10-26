@@ -1,644 +1,650 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_E_Comms_WiFi_AccessPoint",
- "template": "Metric Generic Model.rft",
- "about": "Access point: mounting plate and T-bar clip above, domed white body, blue status ring, centre badge, security slot and lock tab; hangs below the ceiling (z = 0). Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: comms wi fi access point communication devices hospital; images: https://www.google.com/search?tbm=isch&q=comms+wi+fi+access+point+communication+devices+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Communication Devices"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
-  },
-  {
-   "op": "add_type",
-   "name": "220_Ceiling"
-  },
-  {
-   "op": "set_type_value",
-   "name": "220_Ceiling/FMC_Cost_Unit",
-   "type": "220_Ceiling",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "220_Ceiling/FMC_Geometry_Stage",
-   "type": "220_Ceiling",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "220_Ceiling/IfcExportAs",
-   "type": "220_Ceiling",
-   "param": "IfcExportAs",
-   "value": "IfcCommunicationsAppliance"
-  },
-  {
-   "op": "set_type_value",
-   "name": "220_Ceiling/Description",
-   "type": "220_Ceiling",
-   "param": "Description",
-   "value": "Wi-Fi 6 access point, ceiling mounted, 220 mm disc with status ring"
-  },
-  {
-   "op": "set_type_value",
-   "name": "220_Ceiling/Keynote",
-   "type": "220_Ceiling",
-   "param": "Keynote",
-   "value": "E.ICT_02"
-  },
-  {
-   "op": "set_type_value",
-   "name": "220_Ceiling/FMC_Keynote_Code",
-   "type": "220_Ceiling",
-   "param": "FMC_Keynote_Code",
-   "value": "E.ICT_02"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Grey",
-   "color": [
-    154,
-    160,
-    166
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Grey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Grey",
-   "param": "Grey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "White",
-   "color": [
-    242,
-    242,
-    238
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "White Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_White",
-   "param": "White Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Ledblue",
-   "color": [
-    58,
-    141,
-    255
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Ledblue Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_LED_Blue",
-   "param": "Ledblue Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Galv",
-   "color": [
-    167,
-    172,
-    175
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Galv Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_ColdFormed_Galvanised",
-   "param": "Galv Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -110,
-     -110
-    ],
-    [
-     112,
-     -110
-    ],
-    [
-     112,
-     110
-    ],
-    [
-     -110,
-     110
-    ]
-   ],
-   "start": -43,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "revolution",
-   "name": "Mount Plate",
-   "profile": [
-    [
-     0,
-     -8
-    ],
-    [
-     70,
-     -8
-    ],
-    [
-     70,
-     0
-    ],
-    [
-     0,
-     0
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mount Plate",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mount Plate",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "AP Body",
-   "profile": [
-    [
-     0,
-     -42
-    ],
-    [
-     95,
-     -42
-    ],
-    [
-     108,
-     -36
-    ],
-    [
-     110,
-     -24
-    ],
-    [
-     108,
-     -12
-    ],
-    [
-     100,
-     -8
-    ],
-    [
-     0,
-     -8
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "AP Body",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "AP Body",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Status Ring",
-   "profile": [
-    [
-     18,
-     -43
-    ],
-    [
-     22,
-     -43
-    ],
-    [
-     22,
-     -42
-    ],
-    [
-     18,
-     -42
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Ledblue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Status Ring",
-   "param": "Ledblue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Status Ring",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Centre Badge",
-   "profile": [
-    [
-     0,
-     -43
-    ],
-    [
-     10,
-     -43
-    ],
-    [
-     10,
-     -42
-    ],
-    [
-     0,
-     -42
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Centre Badge",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Centre Badge",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "T-Bar Clip",
-   "points": [
-    [
-     -90,
-     -12
-    ],
-    [
-     90,
-     -12
-    ],
-    [
-     90,
-     12
-    ],
-    [
-     -90,
-     12
-    ]
-   ],
-   "start": -4,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "T-Bar Clip",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "T-Bar Clip",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "T-Bar Clip",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Security Slot",
-   "points": [
-    [
-     84.0,
-     0.0
-    ],
-    [
-     83.86,
-     1.04
-    ],
-    [
-     83.46,
-     2.0
-    ],
-    [
-     82.83,
-     2.83
-    ],
-    [
-     82.0,
-     3.46
-    ],
-    [
-     81.04,
-     3.86
-    ],
-    [
-     80.0,
-     4.0
-    ],
-    [
-     78.96,
-     3.86
-    ],
-    [
-     78.0,
-     3.46
-    ],
-    [
-     77.17,
-     2.83
-    ],
-    [
-     76.54,
-     2.0
-    ],
-    [
-     76.14,
-     1.04
-    ],
-    [
-     76.0,
-     0.0
-    ],
-    [
-     76.14,
-     -1.04
-    ],
-    [
-     76.54,
-     -2.0
-    ],
-    [
-     77.17,
-     -2.83
-    ],
-    [
-     78.0,
-     -3.46
-    ],
-    [
-     78.96,
-     -3.86
-    ],
-    [
-     80.0,
-     -4.0
-    ],
-    [
-     81.04,
-     -3.86
-    ],
-    [
-     82.0,
-     -3.46
-    ],
-    [
-     82.83,
-     -2.83
-    ],
-    [
-     83.46,
-     -2.0
-    ],
-    [
-     83.86,
-     -1.04
-    ]
-   ],
-   "start": -38,
-   "end": -30
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Security Slot",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Security Slot",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Security Slot",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Kensington Tab",
-   "points": [
-    [
-     104,
-     -6
-    ],
-    [
-     112,
-     -6
-    ],
-    [
-     112,
-     6
-    ],
-    [
-     104,
-     6
-    ]
-   ],
-   "start": -30,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Kensington Tab",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Kensington Tab",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Kensington Tab",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "Data",
-   "domain": "electrical",
-   "system": "Data",
-   "solid": "Mount Plate",
-   "side": "top"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\E\\_Images\\FMC_E_Comms_WiFi_AccessPoint.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_E_Comms_WiFi_AccessPoint",
+  "template": "Metric Generic Model.rft",
+  "about": "Access point: mounting plate and T-bar clip above, domed white body, blue status ring, centre badge, security slot and lock tab; hangs below the ceiling (z = 0). Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: comms wi fi access point communication devices hospital; images: https://www.google.com/search?tbm=isch&q=comms+wi+fi+access+point+communication+devices+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Communication Devices"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+    },
+    {
+      "op": "add_type",
+      "name": "220_Ceiling"
+    },
+    {
+      "op": "set_type_value",
+      "name": "220_Ceiling/FMC_Cost_Unit",
+      "type": "220_Ceiling",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "220_Ceiling/FMC_Geometry_Stage",
+      "type": "220_Ceiling",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "220_Ceiling/IfcExportAs",
+      "type": "220_Ceiling",
+      "param": "IfcExportAs",
+      "value": "IfcCommunicationsAppliance"
+    },
+    {
+      "op": "set_type_value",
+      "name": "220_Ceiling/Description",
+      "type": "220_Ceiling",
+      "param": "Description",
+      "value": "Wi-Fi 6 access point, ceiling mounted, 220 mm disc with status ring"
+    },
+    {
+      "op": "set_type_value",
+      "name": "220_Ceiling/Keynote",
+      "type": "220_Ceiling",
+      "param": "Keynote",
+      "value": "E.ICT_02"
+    },
+    {
+      "op": "set_type_value",
+      "name": "220_Ceiling/FMC_Keynote_Code",
+      "type": "220_Ceiling",
+      "param": "FMC_Keynote_Code",
+      "value": "E.ICT_02"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Grey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Grey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Grey",
+      "param": "Grey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "White",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "White Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_White",
+      "param": "White Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Ledblue",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Ledblue Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_LED_Blue",
+      "param": "Ledblue Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Galv",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Galv Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_ColdFormed_Galvanised",
+      "param": "Galv Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -110,
+          -110
+        ],
+        [
+          112,
+          -110
+        ],
+        [
+          112,
+          110
+        ],
+        [
+          -110,
+          110
+        ]
+      ],
+      "start": -43,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "revolution",
+      "name": "Mount Plate",
+      "profile": [
+        [
+          0,
+          -8
+        ],
+        [
+          70,
+          -8
+        ],
+        [
+          70,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Mount Plate",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Mount Plate",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "AP Body",
+      "profile": [
+        [
+          0,
+          -42
+        ],
+        [
+          95,
+          -42
+        ],
+        [
+          108,
+          -36
+        ],
+        [
+          110,
+          -24
+        ],
+        [
+          108,
+          -12
+        ],
+        [
+          100,
+          -8
+        ],
+        [
+          0,
+          -8
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "AP Body",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "AP Body",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Status Ring",
+      "profile": [
+        [
+          18,
+          -43
+        ],
+        [
+          22,
+          -43
+        ],
+        [
+          22,
+          -42
+        ],
+        [
+          18,
+          -42
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Ledblue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Status Ring",
+      "param": "Ledblue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Status Ring",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Centre Badge",
+      "profile": [
+        [
+          0,
+          -43
+        ],
+        [
+          10,
+          -43
+        ],
+        [
+          10,
+          -42
+        ],
+        [
+          0,
+          -42
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Centre Badge",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Centre Badge",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "T-Bar Clip",
+      "points": [
+        [
+          -90,
+          -12
+        ],
+        [
+          90,
+          -12
+        ],
+        [
+          90,
+          12
+        ],
+        [
+          -90,
+          12
+        ]
+      ],
+      "start": -4,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "T-Bar Clip",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "T-Bar Clip",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "T-Bar Clip",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Security Slot",
+      "points": [
+        [
+          84,
+          0
+        ],
+        [
+          83.86,
+          1.04
+        ],
+        [
+          83.46,
+          2
+        ],
+        [
+          82.83,
+          2.83
+        ],
+        [
+          82,
+          3.46
+        ],
+        [
+          81.04,
+          3.86
+        ],
+        [
+          80,
+          4
+        ],
+        [
+          78.96,
+          3.86
+        ],
+        [
+          78,
+          3.46
+        ],
+        [
+          77.17,
+          2.83
+        ],
+        [
+          76.54,
+          2
+        ],
+        [
+          76.14,
+          1.04
+        ],
+        [
+          76,
+          0
+        ],
+        [
+          76.14,
+          -1.04
+        ],
+        [
+          76.54,
+          -2
+        ],
+        [
+          77.17,
+          -2.83
+        ],
+        [
+          78,
+          -3.46
+        ],
+        [
+          78.96,
+          -3.86
+        ],
+        [
+          80,
+          -4
+        ],
+        [
+          81.04,
+          -3.86
+        ],
+        [
+          82,
+          -3.46
+        ],
+        [
+          82.83,
+          -2.83
+        ],
+        [
+          83.46,
+          -2
+        ],
+        [
+          83.86,
+          -1.04
+        ]
+      ],
+      "start": -38,
+      "end": -30
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Security Slot",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Security Slot",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Security Slot",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Kensington Tab",
+      "points": [
+        [
+          104,
+          -6
+        ],
+        [
+          112,
+          -6
+        ],
+        [
+          112,
+          6
+        ],
+        [
+          104,
+          6
+        ]
+      ],
+      "start": -30,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Kensington Tab",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Kensington Tab",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Kensington Tab",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "Data",
+      "domain": "electrical",
+      "system": "Data",
+      "solid": "Mount Plate",
+      "side": "top"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\E\\_Images\\FMC_E_Comms_WiFi_AccessPoint.png"
+    }
+  ],
+  "values": {
+    "Disc 220 x 42 mm": {
+      "value": "220x42",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Wi-Fi 6, PoE+": {
+      "value": "802.11ax PoE+",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "One per 2-4 bays, survey confirms": {
+      "value": "survey",
+      "source_status": "assumed",
+      "source": "wireless survey"
+    }
   }
- ],
- "values": {
-  "Disc 220 x 42 mm": {
-   "value": "220x42",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Wi-Fi 6, PoE+": {
-   "value": "802.11ax PoE+",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "One per 2-4 bays, survey confirms": {
-   "value": "survey",
-   "source_status": "assumed",
-   "source": "wireless survey"
-  }
- }
 }

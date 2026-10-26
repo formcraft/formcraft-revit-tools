@@ -109,7 +109,7 @@ test("LOD 400 pack: bad input is refused", () => {
 
 test("profile_lines: a closed loop of lines and one arc passes; open, zero-length, in-line arcs and crossings are refused", () => {
   const good = OPS.parse([
-    { op: "add_subcategory", name: "Profile" },
+    { op: "add_subcategory", name: "Profile", line_weight_projection: 2 },
     { op: "profile_lines", name: "Architrave", start: [0, 0], subcategory: "Profile",
       segments: [{ to: [70, 0] }, { to: [70, 15] }, { to: [50, 20], through: [62, 19] }, { to: [0, 20] }, { to: [0, 0] }] },
   ]);

@@ -1,2949 +1,2955 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_M_MechEq_Evaporator_ColdRoom",
- "template": "Metric Mechanical Equipment.rft",
- "about": "Modelled as a generic product: white casing on two ceiling rails (z = 0), two front fans (bezel, blades, hub, guard), rear finned coil with bars, drip tray and drain, end covers, terminal box with defrost gland. Reference: query: evaporator cold room mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=evaporator+cold+room+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Mechanical Equipment"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Voltage",
-   "type": "Voltage",
-   "group": "Electrical"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Apparent Load",
-   "type": "ApparentPower",
-   "group": "ElectricalLoads"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cooling_Capacity_kW",
-   "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cooling_Capacity_BTUh",
-   "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Airflow_Ls",
-   "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Refrigerant",
-   "guid": "a46c59d0-d719-583b-99c0-074994d01603",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Asset_Tag",
-   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Serial_Number",
-   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Install_Date",
-   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Warranty_End",
-   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Maintenance_Interval_Months",
-   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_OM_Link",
-   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lift_Weight_kg",
-   "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Mounting_Height_mm",
-   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Power_W",
-   "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Power_W_2",
-   "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Controller_ID",
-   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Type",
-   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Signal",
-   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Protocol",
-   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Tank_Capacity_L",
-   "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "2kW_UnitCooler"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2kW_UnitCooler/FMC_Cost_Unit",
-   "type": "2kW_UnitCooler",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2kW_UnitCooler/FMC_Geometry_Stage",
-   "type": "2kW_UnitCooler",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2kW_UnitCooler/IfcExportAs",
-   "type": "2kW_UnitCooler",
-   "param": "IfcExportAs",
-   "value": "IfcEvaporator"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2kW_UnitCooler/Description",
-   "type": "2kW_UnitCooler",
-   "param": "Description",
-   "value": "Cold room evaporator (unit cooler) 2 to 5 kW, low-profile ceiling hung, two front fans with guards, rear finned coil, drip tray with drain, electric defrost"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2kW_UnitCooler/Keynote",
-   "type": "2kW_UnitCooler",
-   "param": "Keynote",
-   "value": "H.CLD_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2kW_UnitCooler/FMC_Keynote_Code",
-   "type": "2kW_UnitCooler",
-   "param": "FMC_Keynote_Code",
-   "value": "H.CLD_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2kW_UnitCooler/FMC_Code_Description",
-   "type": "2kW_UnitCooler",
-   "param": "FMC_Code_Description",
-   "value": "Evaporator ColdRoom: Cold-room evaporator"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2kW_UnitCooler/FMC_Code_Group",
-   "type": "2kW_UnitCooler",
-   "param": "FMC_Code_Group",
-   "value": "H.CLD"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2kW_UnitCooler/FMC_Role_Code",
-   "type": "2kW_UnitCooler",
-   "param": "FMC_Role_Code",
-   "value": "M"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2kW_UnitCooler/Voltage",
-   "type": "2kW_UnitCooler",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "2kW_UnitCooler/Apparent Load",
-   "type": "2kW_UnitCooler",
-   "param": "Apparent Load",
-   "value": 800
-  },
-  {
-   "op": "set_type_value",
-   "name": "2kW_UnitCooler/Default Elevation",
-   "type": "2kW_UnitCooler",
-   "param": "Default Elevation",
-   "value": 2700
-  },
-  {
-   "op": "add_type",
-   "name": "5kW_UnitCooler"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5kW_UnitCooler/FMC_Cost_Unit",
-   "type": "5kW_UnitCooler",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5kW_UnitCooler/FMC_Geometry_Stage",
-   "type": "5kW_UnitCooler",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5kW_UnitCooler/IfcExportAs",
-   "type": "5kW_UnitCooler",
-   "param": "IfcExportAs",
-   "value": "IfcEvaporator"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5kW_UnitCooler/Description",
-   "type": "5kW_UnitCooler",
-   "param": "Description",
-   "value": "Cold room evaporator (unit cooler) 2 to 5 kW, low-profile ceiling hung, two front fans with guards, rear finned coil, drip tray with drain, electric defrost"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5kW_UnitCooler/Keynote",
-   "type": "5kW_UnitCooler",
-   "param": "Keynote",
-   "value": "H.CLD_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5kW_UnitCooler/FMC_Keynote_Code",
-   "type": "5kW_UnitCooler",
-   "param": "FMC_Keynote_Code",
-   "value": "H.CLD_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5kW_UnitCooler/FMC_Code_Description",
-   "type": "5kW_UnitCooler",
-   "param": "FMC_Code_Description",
-   "value": "Evaporator ColdRoom: Cold-room evaporator"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5kW_UnitCooler/FMC_Code_Group",
-   "type": "5kW_UnitCooler",
-   "param": "FMC_Code_Group",
-   "value": "H.CLD"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5kW_UnitCooler/FMC_Role_Code",
-   "type": "5kW_UnitCooler",
-   "param": "FMC_Role_Code",
-   "value": "M"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5kW_UnitCooler/Voltage",
-   "type": "5kW_UnitCooler",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "5kW_UnitCooler/Apparent Load",
-   "type": "5kW_UnitCooler",
-   "param": "Apparent Load",
-   "value": 1500
-  },
-  {
-   "op": "set_type_value",
-   "name": "5kW_UnitCooler/Default Elevation",
-   "type": "5kW_UnitCooler",
-   "param": "Default Elevation",
-   "value": 2700
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Epw",
-   "color": [
-    237,
-    237,
-    232
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Epw Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Steel_EpoxyCoated_White",
-   "param": "Epw Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Alu",
-   "color": [
-    192,
-    192,
-    192
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Alu Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Aluminium_Anodised_Silver",
-   "param": "Alu Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Dark",
-   "color": [
-    61,
-    70,
-    80
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Dark Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_SteelLTZ_Painted",
-   "param": "Dark Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Grey",
-   "color": [
-    154,
-    160,
-    166
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Grey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Grey",
-   "param": "Grey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -620,
-     -268
-    ],
-    [
-     690,
-     -268
-    ],
-    [
-     690,
-     270
-    ],
-    [
-     -620,
-     270
-    ]
-   ],
-   "start": -440,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Casing",
-   "points": [
-    [
-     594.0,
-     -250.0
-    ],
-    [
-     596.3,
-     -249.54
-    ],
-    [
-     598.24,
-     -248.24
-    ],
-    [
-     599.54,
-     -246.3
-    ],
-    [
-     600.0,
-     -244.0
-    ],
-    [
-     600.0,
-     244.0
-    ],
-    [
-     599.54,
-     246.3
-    ],
-    [
-     598.24,
-     248.24
-    ],
-    [
-     596.3,
-     249.54
-    ],
-    [
-     594.0,
-     250.0
-    ],
-    [
-     -594.0,
-     250.0
-    ],
-    [
-     -596.3,
-     249.54
-    ],
-    [
-     -598.24,
-     248.24
-    ],
-    [
-     -599.54,
-     246.3
-    ],
-    [
-     -600.0,
-     244.0
-    ],
-    [
-     -600.0,
-     -244.0
-    ],
-    [
-     -599.54,
-     -246.3
-    ],
-    [
-     -598.24,
-     -248.24
-    ],
-    [
-     -596.3,
-     -249.54
-    ],
-    [
-     -594.0,
-     -250.0
-    ]
-   ],
-   "start": -350,
-   "end": -50
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Casing",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Casing",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Casing",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mounting Rail 1",
-   "points": [
-    [
-     -620,
-     -200
-    ],
-    [
-     620,
-     -200
-    ],
-    [
-     620,
-     -150
-    ],
-    [
-     -620,
-     -150
-    ]
-   ],
-   "start": -50,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mounting Rail 1",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mounting Rail 1",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mounting Rail 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mounting Rail 2",
-   "points": [
-    [
-     -620,
-     150
-    ],
-    [
-     620,
-     150
-    ],
-    [
-     620,
-     200
-    ],
-    [
-     -620,
-     200
-    ]
-   ],
-   "start": -50,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mounting Rail 2",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mounting Rail 2",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mounting Rail 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Coil Face",
-   "points": [
-    [
-     -560,
-     250
-    ],
-    [
-     560,
-     250
-    ],
-    [
-     560,
-     256
-    ],
-    [
-     -560,
-     256
-    ]
-   ],
-   "start": -330,
-   "end": -70
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coil Face",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Coil Face",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coil Face",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Coil Guard Bar 1",
-   "points": [
-    [
-     -560,
-     256
-    ],
-    [
-     560,
-     256
-    ],
-    [
-     560,
-     260
-    ],
-    [
-     -560,
-     260
-    ]
-   ],
-   "start": -300,
-   "end": -294
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coil Guard Bar 1",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Coil Guard Bar 1",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coil Guard Bar 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Coil Guard Bar 2",
-   "points": [
-    [
-     -560,
-     256
-    ],
-    [
-     560,
-     256
-    ],
-    [
-     560,
-     260
-    ],
-    [
-     -560,
-     260
-    ]
-   ],
-   "start": -240,
-   "end": -234
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coil Guard Bar 2",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Coil Guard Bar 2",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coil Guard Bar 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Coil Guard Bar 3",
-   "points": [
-    [
-     -560,
-     256
-    ],
-    [
-     560,
-     256
-    ],
-    [
-     560,
-     260
-    ],
-    [
-     -560,
-     260
-    ]
-   ],
-   "start": -180,
-   "end": -174
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coil Guard Bar 3",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Coil Guard Bar 3",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coil Guard Bar 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Coil Guard Bar 4",
-   "points": [
-    [
-     -560,
-     256
-    ],
-    [
-     560,
-     256
-    ],
-    [
-     560,
-     260
-    ],
-    [
-     -560,
-     260
-    ]
-   ],
-   "start": -120,
-   "end": -114
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coil Guard Bar 4",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Coil Guard Bar 4",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coil Guard Bar 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drip Tray",
-   "points": [
-    [
-     -620,
-     -265
-    ],
-    [
-     620,
-     -265
-    ],
-    [
-     620,
-     270
-    ],
-    [
-     -620,
-     270
-    ]
-   ],
-   "start": -385,
-   "end": -350
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drip Tray",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drip Tray",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drip Tray",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drain Stub",
-   "points": [
-    [
-     576.0,
-     0.0
-    ],
-    [
-     575.45,
-     4.14
-    ],
-    [
-     573.86,
-     8.0
-    ],
-    [
-     571.31,
-     11.31
-    ],
-    [
-     568.0,
-     13.86
-    ],
-    [
-     564.14,
-     15.45
-    ],
-    [
-     560.0,
-     16.0
-    ],
-    [
-     555.86,
-     15.45
-    ],
-    [
-     552.0,
-     13.86
-    ],
-    [
-     548.69,
-     11.31
-    ],
-    [
-     546.14,
-     8.0
-    ],
-    [
-     544.55,
-     4.14
-    ],
-    [
-     544.0,
-     0.0
-    ],
-    [
-     544.55,
-     -4.14
-    ],
-    [
-     546.14,
-     -8.0
-    ],
-    [
-     548.69,
-     -11.31
-    ],
-    [
-     552.0,
-     -13.86
-    ],
-    [
-     555.86,
-     -15.45
-    ],
-    [
-     560.0,
-     -16.0
-    ],
-    [
-     564.14,
-     -15.45
-    ],
-    [
-     568.0,
-     -13.86
-    ],
-    [
-     571.31,
-     -11.31
-    ],
-    [
-     573.86,
-     -8.0
-    ],
-    [
-     575.45,
-     -4.14
-    ]
-   ],
-   "start": -440,
-   "end": -385
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drain Stub",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drain Stub",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drain Stub",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "End Cover Left",
-   "points": [
-    [
-     -620,
-     -260
-    ],
-    [
-     -600,
-     -260
-    ],
-    [
-     -600,
-     260
-    ],
-    [
-     -620,
-     260
-    ]
-   ],
-   "start": -360,
-   "end": -40
-  },
-  {
-   "op": "set_subcategory",
-   "name": "End Cover Left",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "End Cover Left",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "End Cover Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "End Cover Right",
-   "points": [
-    [
-     600,
-     -260
-    ],
-    [
-     620,
-     -260
-    ],
-    [
-     620,
-     260
-    ],
-    [
-     600,
-     260
-    ]
-   ],
-   "start": -360,
-   "end": -40
-  },
-  {
-   "op": "set_subcategory",
-   "name": "End Cover Right",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "End Cover Right",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "End Cover Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Terminal Box",
-   "points": [
-    [
-     666.0,
-     -150.0
-    ],
-    [
-     667.53,
-     -149.7
-    ],
-    [
-     668.83,
-     -148.83
-    ],
-    [
-     669.7,
-     -147.53
-    ],
-    [
-     670.0,
-     -146.0
-    ],
-    [
-     670.0,
-     -4.0
-    ],
-    [
-     669.7,
-     -2.47
-    ],
-    [
-     668.83,
-     -1.17
-    ],
-    [
-     667.53,
-     -0.3
-    ],
-    [
-     666.0,
-     0.0
-    ],
-    [
-     624.0,
-     0.0
-    ],
-    [
-     622.47,
-     -0.3
-    ],
-    [
-     621.17,
-     -1.17
-    ],
-    [
-     620.3,
-     -2.47
-    ],
-    [
-     620.0,
-     -4.0
-    ],
-    [
-     620.0,
-     -146.0
-    ],
-    [
-     620.3,
-     -147.53
-    ],
-    [
-     621.17,
-     -148.83
-    ],
-    [
-     622.47,
-     -149.7
-    ],
-    [
-     624.0,
-     -150.0
-    ]
-   ],
-   "start": -300,
-   "end": -160
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Terminal Box",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Terminal Box",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Terminal Box",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Defrost Heater Gland",
-   "points": [
-    [
-     -67.0,
-     -230.0
-    ],
-    [
-     -67.27,
-     -227.93
-    ],
-    [
-     -68.07,
-     -226.0
-    ],
-    [
-     -69.34,
-     -224.34
-    ],
-    [
-     -71.0,
-     -223.07
-    ],
-    [
-     -72.93,
-     -222.27
-    ],
-    [
-     -75.0,
-     -222.0
-    ],
-    [
-     -77.07,
-     -222.27
-    ],
-    [
-     -79.0,
-     -223.07
-    ],
-    [
-     -80.66,
-     -224.34
-    ],
-    [
-     -81.93,
-     -226.0
-    ],
-    [
-     -82.73,
-     -227.93
-    ],
-    [
-     -83.0,
-     -230.0
-    ],
-    [
-     -82.73,
-     -232.07
-    ],
-    [
-     -81.93,
-     -234.0
-    ],
-    [
-     -80.66,
-     -235.66
-    ],
-    [
-     -79.0,
-     -236.93
-    ],
-    [
-     -77.07,
-     -237.73
-    ],
-    [
-     -75.0,
-     -238.0
-    ],
-    [
-     -72.93,
-     -237.73
-    ],
-    [
-     -71.0,
-     -236.93
-    ],
-    [
-     -69.34,
-     -235.66
-    ],
-    [
-     -68.07,
-     -234.0
-    ],
-    [
-     -67.27,
-     -232.07
-    ]
-   ],
-   "start": 670,
-   "end": 690,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Defrost Heater Gland",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Defrost Heater Gland",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Defrost Heater Gland",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fan Left Opening",
-   "points": [
-    [
-     -165.0,
-     -200.0
-    ],
-    [
-     -169.6,
-     -165.06
-    ],
-    [
-     -183.09,
-     -132.5
-    ],
-    [
-     -204.54,
-     -104.54
-    ],
-    [
-     -232.5,
-     -83.09
-    ],
-    [
-     -265.06,
-     -69.6
-    ],
-    [
-     -300.0,
-     -65.0
-    ],
-    [
-     -334.94,
-     -69.6
-    ],
-    [
-     -367.5,
-     -83.09
-    ],
-    [
-     -395.46,
-     -104.54
-    ],
-    [
-     -416.91,
-     -132.5
-    ],
-    [
-     -430.4,
-     -165.06
-    ],
-    [
-     -435.0,
-     -200.0
-    ],
-    [
-     -430.4,
-     -234.94
-    ],
-    [
-     -416.91,
-     -267.5
-    ],
-    [
-     -395.46,
-     -295.46
-    ],
-    [
-     -367.5,
-     -316.91
-    ],
-    [
-     -334.94,
-     -330.4
-    ],
-    [
-     -300.0,
-     -335.0
-    ],
-    [
-     -265.06,
-     -330.4
-    ],
-    [
-     -232.5,
-     -316.91
-    ],
-    [
-     -204.54,
-     -295.46
-    ],
-    [
-     -183.09,
-     -267.5
-    ],
-    [
-     -169.6,
-     -234.94
-    ]
-   ],
-   "start": 250,
-   "end": 251.5,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fan Left Opening",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fan Left Opening",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fan Left Opening",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Fan Left Bezel",
-   "profile": [
-    [
-     135,
-     258
-    ],
-    [
-     153,
-     258
-    ],
-    [
-     153,
-     250
-    ],
-    [
-     135,
-     250
-    ]
-   ],
-   "axis_at": [
-    -300,
-    -200
-   ],
-   "axis": "y",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fan Left Bezel",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fan Left Bezel",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fan Left Hub",
-   "points": [
-    [
-     -275.7,
-     -200.0
-    ],
-    [
-     -276.53,
-     -193.71
-    ],
-    [
-     -278.96,
-     -187.85
-    ],
-    [
-     -282.82,
-     -182.82
-    ],
-    [
-     -287.85,
-     -178.96
-    ],
-    [
-     -293.71,
-     -176.53
-    ],
-    [
-     -300.0,
-     -175.7
-    ],
-    [
-     -306.29,
-     -176.53
-    ],
-    [
-     -312.15,
-     -178.96
-    ],
-    [
-     -317.18,
-     -182.82
-    ],
-    [
-     -321.04,
-     -187.85
-    ],
-    [
-     -323.47,
-     -193.71
-    ],
-    [
-     -324.3,
-     -200.0
-    ],
-    [
-     -323.47,
-     -206.29
-    ],
-    [
-     -321.04,
-     -212.15
-    ],
-    [
-     -317.18,
-     -217.18
-    ],
-    [
-     -312.15,
-     -221.04
-    ],
-    [
-     -306.29,
-     -223.47
-    ],
-    [
-     -300.0,
-     -224.3
-    ],
-    [
-     -293.71,
-     -223.47
-    ],
-    [
-     -287.85,
-     -221.04
-    ],
-    [
-     -282.82,
-     -217.18
-    ],
-    [
-     -278.96,
-     -212.15
-    ],
-    [
-     -276.53,
-     -206.29
-    ]
-   ],
-   "start": 251.5,
-   "end": 268,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fan Left Hub",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fan Left Hub",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fan Left Hub",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fan Left Blade 1",
-   "points": [
-    [
-     -247.51,
-     -87.44
-    ],
-    [
-     -273.12,
-     -78.74
-    ],
-    [
-     -300.0,
-     -75.8
-    ],
-    [
-     -326.88,
-     -78.74
-    ],
-    [
-     -352.49,
-     -87.44
-    ],
-    [
-     -309.64,
-     -180.67
-    ],
-    [
-     -300.57,
-     -178.41
-    ]
-   ],
-   "start": 254,
-   "end": 257,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fan Left Blade 1",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fan Left Blade 1",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fan Left Blade 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fan Left Blade 2",
-   "points": [
-    [
-     -412.56,
-     -147.51
-    ],
-    [
-     -421.26,
-     -173.12
-    ],
-    [
-     -424.2,
-     -200.0
-    ],
-    [
-     -421.26,
-     -226.88
-    ],
-    [
-     -412.56,
-     -252.49
-    ],
-    [
-     -319.33,
-     -209.64
-    ],
-    [
-     -321.59,
-     -200.57
-    ]
-   ],
-   "start": 254,
-   "end": 257,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fan Left Blade 2",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fan Left Blade 2",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fan Left Blade 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fan Left Blade 3",
-   "points": [
-    [
-     -352.49,
-     -312.56
-    ],
-    [
-     -326.88,
-     -321.26
-    ],
-    [
-     -300.0,
-     -324.2
-    ],
-    [
-     -273.12,
-     -321.26
-    ],
-    [
-     -247.51,
-     -312.56
-    ],
-    [
-     -290.36,
-     -219.33
-    ],
-    [
-     -299.43,
-     -221.59
-    ]
-   ],
-   "start": 254,
-   "end": 257,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fan Left Blade 3",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fan Left Blade 3",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fan Left Blade 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fan Left Blade 4",
-   "points": [
-    [
-     -187.44,
-     -252.49
-    ],
-    [
-     -178.74,
-     -226.88
-    ],
-    [
-     -175.8,
-     -200.0
-    ],
-    [
-     -178.74,
-     -173.12
-    ],
-    [
-     -187.44,
-     -147.51
-    ],
-    [
-     -280.67,
-     -190.36
-    ],
-    [
-     -278.41,
-     -199.43
-    ]
-   ],
-   "start": 254,
-   "end": 257,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fan Left Blade 4",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fan Left Blade 4",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fan Left Blade 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Fan Left Guard Outer",
-   "profile": [
-    [
-     129,
-     266
-    ],
-    [
-     137,
-     266
-    ],
-    [
-     137,
-     262
-    ],
-    [
-     129,
-     262
-    ]
-   ],
-   "axis_at": [
-    -300,
-    -200
-   ],
-   "axis": "y",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fan Left Guard Outer",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fan Left Guard Outer",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Fan Left Guard Inner",
-   "profile": [
-    [
-     37.5,
-     266
-    ],
-    [
-     43.5,
-     266
-    ],
-    [
-     43.5,
-     262
-    ],
-    [
-     37.5,
-     262
-    ]
-   ],
-   "axis_at": [
-    -300,
-    -200
-   ],
-   "axis": "y",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fan Left Guard Inner",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fan Left Guard Inner",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fan Left Guard Bar H",
-   "points": [
-    [
-     -435,
-     -203
-    ],
-    [
-     -165,
-     -203
-    ],
-    [
-     -165,
-     -197
-    ],
-    [
-     -435,
-     -197
-    ]
-   ],
-   "start": 262,
-   "end": 265,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fan Left Guard Bar H",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fan Left Guard Bar H",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fan Left Guard Bar H",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fan Left Guard Bar V",
-   "points": [
-    [
-     -303,
-     -335
-    ],
-    [
-     -297,
-     -335
-    ],
-    [
-     -297,
-     -65
-    ],
-    [
-     -303,
-     -65
-    ]
-   ],
-   "start": 262,
-   "end": 265,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fan Left Guard Bar V",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fan Left Guard Bar V",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fan Left Guard Bar V",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fan Right Opening",
-   "points": [
-    [
-     435.0,
-     -200.0
-    ],
-    [
-     430.4,
-     -165.06
-    ],
-    [
-     416.91,
-     -132.5
-    ],
-    [
-     395.46,
-     -104.54
-    ],
-    [
-     367.5,
-     -83.09
-    ],
-    [
-     334.94,
-     -69.6
-    ],
-    [
-     300.0,
-     -65.0
-    ],
-    [
-     265.06,
-     -69.6
-    ],
-    [
-     232.5,
-     -83.09
-    ],
-    [
-     204.54,
-     -104.54
-    ],
-    [
-     183.09,
-     -132.5
-    ],
-    [
-     169.6,
-     -165.06
-    ],
-    [
-     165.0,
-     -200.0
-    ],
-    [
-     169.6,
-     -234.94
-    ],
-    [
-     183.09,
-     -267.5
-    ],
-    [
-     204.54,
-     -295.46
-    ],
-    [
-     232.5,
-     -316.91
-    ],
-    [
-     265.06,
-     -330.4
-    ],
-    [
-     300.0,
-     -335.0
-    ],
-    [
-     334.94,
-     -330.4
-    ],
-    [
-     367.5,
-     -316.91
-    ],
-    [
-     395.46,
-     -295.46
-    ],
-    [
-     416.91,
-     -267.5
-    ],
-    [
-     430.4,
-     -234.94
-    ]
-   ],
-   "start": 250,
-   "end": 251.5,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fan Right Opening",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fan Right Opening",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fan Right Opening",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Fan Right Bezel",
-   "profile": [
-    [
-     135,
-     258
-    ],
-    [
-     153,
-     258
-    ],
-    [
-     153,
-     250
-    ],
-    [
-     135,
-     250
-    ]
-   ],
-   "axis_at": [
-    300,
-    -200
-   ],
-   "axis": "y",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fan Right Bezel",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fan Right Bezel",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fan Right Hub",
-   "points": [
-    [
-     324.3,
-     -200.0
-    ],
-    [
-     323.47,
-     -193.71
-    ],
-    [
-     321.04,
-     -187.85
-    ],
-    [
-     317.18,
-     -182.82
-    ],
-    [
-     312.15,
-     -178.96
-    ],
-    [
-     306.29,
-     -176.53
-    ],
-    [
-     300.0,
-     -175.7
-    ],
-    [
-     293.71,
-     -176.53
-    ],
-    [
-     287.85,
-     -178.96
-    ],
-    [
-     282.82,
-     -182.82
-    ],
-    [
-     278.96,
-     -187.85
-    ],
-    [
-     276.53,
-     -193.71
-    ],
-    [
-     275.7,
-     -200.0
-    ],
-    [
-     276.53,
-     -206.29
-    ],
-    [
-     278.96,
-     -212.15
-    ],
-    [
-     282.82,
-     -217.18
-    ],
-    [
-     287.85,
-     -221.04
-    ],
-    [
-     293.71,
-     -223.47
-    ],
-    [
-     300.0,
-     -224.3
-    ],
-    [
-     306.29,
-     -223.47
-    ],
-    [
-     312.15,
-     -221.04
-    ],
-    [
-     317.18,
-     -217.18
-    ],
-    [
-     321.04,
-     -212.15
-    ],
-    [
-     323.47,
-     -206.29
-    ]
-   ],
-   "start": 251.5,
-   "end": 268,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fan Right Hub",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fan Right Hub",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fan Right Hub",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fan Right Blade 1",
-   "points": [
-    [
-     352.49,
-     -87.44
-    ],
-    [
-     326.88,
-     -78.74
-    ],
-    [
-     300.0,
-     -75.8
-    ],
-    [
-     273.12,
-     -78.74
-    ],
-    [
-     247.51,
-     -87.44
-    ],
-    [
-     290.36,
-     -180.67
-    ],
-    [
-     299.43,
-     -178.41
-    ]
-   ],
-   "start": 254,
-   "end": 257,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fan Right Blade 1",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fan Right Blade 1",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fan Right Blade 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fan Right Blade 2",
-   "points": [
-    [
-     187.44,
-     -147.51
-    ],
-    [
-     178.74,
-     -173.12
-    ],
-    [
-     175.8,
-     -200.0
-    ],
-    [
-     178.74,
-     -226.88
-    ],
-    [
-     187.44,
-     -252.49
-    ],
-    [
-     280.67,
-     -209.64
-    ],
-    [
-     278.41,
-     -200.57
-    ]
-   ],
-   "start": 254,
-   "end": 257,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fan Right Blade 2",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fan Right Blade 2",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fan Right Blade 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fan Right Blade 3",
-   "points": [
-    [
-     247.51,
-     -312.56
-    ],
-    [
-     273.12,
-     -321.26
-    ],
-    [
-     300.0,
-     -324.2
-    ],
-    [
-     326.88,
-     -321.26
-    ],
-    [
-     352.49,
-     -312.56
-    ],
-    [
-     309.64,
-     -219.33
-    ],
-    [
-     300.57,
-     -221.59
-    ]
-   ],
-   "start": 254,
-   "end": 257,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fan Right Blade 3",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fan Right Blade 3",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fan Right Blade 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fan Right Blade 4",
-   "points": [
-    [
-     412.56,
-     -252.49
-    ],
-    [
-     421.26,
-     -226.88
-    ],
-    [
-     424.2,
-     -200.0
-    ],
-    [
-     421.26,
-     -173.12
-    ],
-    [
-     412.56,
-     -147.51
-    ],
-    [
-     319.33,
-     -190.36
-    ],
-    [
-     321.59,
-     -199.43
-    ]
-   ],
-   "start": 254,
-   "end": 257,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fan Right Blade 4",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fan Right Blade 4",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fan Right Blade 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Fan Right Guard Outer",
-   "profile": [
-    [
-     129,
-     266
-    ],
-    [
-     137,
-     266
-    ],
-    [
-     137,
-     262
-    ],
-    [
-     129,
-     262
-    ]
-   ],
-   "axis_at": [
-    300,
-    -200
-   ],
-   "axis": "y",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fan Right Guard Outer",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fan Right Guard Outer",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Fan Right Guard Inner",
-   "profile": [
-    [
-     37.5,
-     266
-    ],
-    [
-     43.5,
-     266
-    ],
-    [
-     43.5,
-     262
-    ],
-    [
-     37.5,
-     262
-    ]
-   ],
-   "axis_at": [
-    300,
-    -200
-   ],
-   "axis": "y",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fan Right Guard Inner",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fan Right Guard Inner",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fan Right Guard Bar H",
-   "points": [
-    [
-     165,
-     -203
-    ],
-    [
-     435,
-     -203
-    ],
-    [
-     435,
-     -197
-    ],
-    [
-     165,
-     -197
-    ]
-   ],
-   "start": 262,
-   "end": 265,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fan Right Guard Bar H",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fan Right Guard Bar H",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fan Right Guard Bar H",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fan Right Guard Bar V",
-   "points": [
-    [
-     297,
-     -335
-    ],
-    [
-     303,
-     -335
-    ],
-    [
-     303,
-     -65
-    ],
-    [
-     297,
-     -65
-    ]
-   ],
-   "start": 262,
-   "end": 265,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fan Right Guard Bar V",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fan Right Guard Bar V",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fan Right Guard Bar V",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "Power",
-   "domain": "electrical",
-   "system": "PowerBalanced",
-   "solid": "Terminal Box",
-   "side": "right"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Voltage",
-   "connector": "Power",
-   "connector_param": "Voltage",
-   "param": "Voltage"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Apparent Load",
-   "connector": "Power",
-   "connector_param": "Apparent Load",
-   "param": "Apparent Load"
-  },
-  {
-   "op": "add_connector",
-   "name": "Condensate",
-   "domain": "pipe",
-   "system": "Sanitary",
-   "solid": "Drain Stub",
-   "side": "bottom",
-   "diameter": 40,
-   "flow": "Out"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_MechEq_Evaporator_ColdRoom.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_M_MechEq_Evaporator_ColdRoom",
+  "template": "Metric Mechanical Equipment.rft",
+  "about": "Modelled as a generic product: white casing on two ceiling rails (z = 0), two front fans (bezel, blades, hub, guard), rear finned coil with bars, drip tray and drain, end covers, terminal box with defrost gland. Reference: query: evaporator cold room mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=evaporator+cold+room+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Mechanical Equipment"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Voltage",
+      "type": "Voltage",
+      "group": "Electrical"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Apparent Load",
+      "type": "ApparentPower",
+      "group": "ElectricalLoads"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cooling_Capacity_kW",
+      "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cooling_Capacity_BTUh",
+      "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Airflow_Ls",
+      "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Refrigerant",
+      "guid": "a46c59d0-d719-583b-99c0-074994d01603",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Asset_Tag",
+      "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Serial_Number",
+      "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Install_Date",
+      "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Warranty_End",
+      "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Maintenance_Interval_Months",
+      "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_OM_Link",
+      "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lift_Weight_kg",
+      "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Mounting_Height_mm",
+      "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Power_W",
+      "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Power_W_2",
+      "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Controller_ID",
+      "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Type",
+      "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Signal",
+      "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Protocol",
+      "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Tank_Capacity_L",
+      "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "2kW_UnitCooler"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2kW_UnitCooler/FMC_Cost_Unit",
+      "type": "2kW_UnitCooler",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2kW_UnitCooler/FMC_Geometry_Stage",
+      "type": "2kW_UnitCooler",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2kW_UnitCooler/IfcExportAs",
+      "type": "2kW_UnitCooler",
+      "param": "IfcExportAs",
+      "value": "IfcEvaporator"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2kW_UnitCooler/Description",
+      "type": "2kW_UnitCooler",
+      "param": "Description",
+      "value": "Cold room evaporator (unit cooler) 2 to 5 kW, low-profile ceiling hung, two front fans with guards, rear finned coil, drip tray with drain, electric defrost"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2kW_UnitCooler/Keynote",
+      "type": "2kW_UnitCooler",
+      "param": "Keynote",
+      "value": "H.CLD_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2kW_UnitCooler/FMC_Keynote_Code",
+      "type": "2kW_UnitCooler",
+      "param": "FMC_Keynote_Code",
+      "value": "H.CLD_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2kW_UnitCooler/FMC_Code_Description",
+      "type": "2kW_UnitCooler",
+      "param": "FMC_Code_Description",
+      "value": "Evaporator ColdRoom: Cold-room evaporator"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2kW_UnitCooler/FMC_Code_Group",
+      "type": "2kW_UnitCooler",
+      "param": "FMC_Code_Group",
+      "value": "H.CLD"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2kW_UnitCooler/FMC_Role_Code",
+      "type": "2kW_UnitCooler",
+      "param": "FMC_Role_Code",
+      "value": "M"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2kW_UnitCooler/Voltage",
+      "type": "2kW_UnitCooler",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "2kW_UnitCooler/Apparent Load",
+      "type": "2kW_UnitCooler",
+      "param": "Apparent Load",
+      "value": 800
+    },
+    {
+      "op": "set_type_value",
+      "name": "2kW_UnitCooler/Default Elevation",
+      "type": "2kW_UnitCooler",
+      "param": "Default Elevation",
+      "value": 2700
+    },
+    {
+      "op": "add_type",
+      "name": "5kW_UnitCooler"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5kW_UnitCooler/FMC_Cost_Unit",
+      "type": "5kW_UnitCooler",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5kW_UnitCooler/FMC_Geometry_Stage",
+      "type": "5kW_UnitCooler",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5kW_UnitCooler/IfcExportAs",
+      "type": "5kW_UnitCooler",
+      "param": "IfcExportAs",
+      "value": "IfcEvaporator"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5kW_UnitCooler/Description",
+      "type": "5kW_UnitCooler",
+      "param": "Description",
+      "value": "Cold room evaporator (unit cooler) 2 to 5 kW, low-profile ceiling hung, two front fans with guards, rear finned coil, drip tray with drain, electric defrost"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5kW_UnitCooler/Keynote",
+      "type": "5kW_UnitCooler",
+      "param": "Keynote",
+      "value": "H.CLD_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5kW_UnitCooler/FMC_Keynote_Code",
+      "type": "5kW_UnitCooler",
+      "param": "FMC_Keynote_Code",
+      "value": "H.CLD_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5kW_UnitCooler/FMC_Code_Description",
+      "type": "5kW_UnitCooler",
+      "param": "FMC_Code_Description",
+      "value": "Evaporator ColdRoom: Cold-room evaporator"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5kW_UnitCooler/FMC_Code_Group",
+      "type": "5kW_UnitCooler",
+      "param": "FMC_Code_Group",
+      "value": "H.CLD"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5kW_UnitCooler/FMC_Role_Code",
+      "type": "5kW_UnitCooler",
+      "param": "FMC_Role_Code",
+      "value": "M"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5kW_UnitCooler/Voltage",
+      "type": "5kW_UnitCooler",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "5kW_UnitCooler/Apparent Load",
+      "type": "5kW_UnitCooler",
+      "param": "Apparent Load",
+      "value": 1500
+    },
+    {
+      "op": "set_type_value",
+      "name": "5kW_UnitCooler/Default Elevation",
+      "type": "5kW_UnitCooler",
+      "param": "Default Elevation",
+      "value": 2700
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Epw",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Epw Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Steel_EpoxyCoated_White",
+      "param": "Epw Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Alu",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Alu Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Aluminium_Anodised_Silver",
+      "param": "Alu Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Dark",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Dark Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_SteelLTZ_Painted",
+      "param": "Dark Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Grey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Grey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Grey",
+      "param": "Grey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -620,
+          -268
+        ],
+        [
+          690,
+          -268
+        ],
+        [
+          690,
+          270
+        ],
+        [
+          -620,
+          270
+        ]
+      ],
+      "start": -440,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Casing",
+      "points": [
+        [
+          594,
+          -250
+        ],
+        [
+          596.3,
+          -249.54
+        ],
+        [
+          598.24,
+          -248.24
+        ],
+        [
+          599.54,
+          -246.3
+        ],
+        [
+          600,
+          -244
+        ],
+        [
+          600,
+          244
+        ],
+        [
+          599.54,
+          246.3
+        ],
+        [
+          598.24,
+          248.24
+        ],
+        [
+          596.3,
+          249.54
+        ],
+        [
+          594,
+          250
+        ],
+        [
+          -594,
+          250
+        ],
+        [
+          -596.3,
+          249.54
+        ],
+        [
+          -598.24,
+          248.24
+        ],
+        [
+          -599.54,
+          246.3
+        ],
+        [
+          -600,
+          244
+        ],
+        [
+          -600,
+          -244
+        ],
+        [
+          -599.54,
+          -246.3
+        ],
+        [
+          -598.24,
+          -248.24
+        ],
+        [
+          -596.3,
+          -249.54
+        ],
+        [
+          -594,
+          -250
+        ]
+      ],
+      "start": -350,
+      "end": -50
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Casing",
+      "subcategory": "Epw"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Casing",
+      "param": "Epw Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Casing",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Mounting Rail 1",
+      "points": [
+        [
+          -620,
+          -200
+        ],
+        [
+          620,
+          -200
+        ],
+        [
+          620,
+          -150
+        ],
+        [
+          -620,
+          -150
+        ]
+      ],
+      "start": -50,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Mounting Rail 1",
+      "subcategory": "Epw"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Mounting Rail 1",
+      "param": "Epw Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Mounting Rail 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Mounting Rail 2",
+      "points": [
+        [
+          -620,
+          150
+        ],
+        [
+          620,
+          150
+        ],
+        [
+          620,
+          200
+        ],
+        [
+          -620,
+          200
+        ]
+      ],
+      "start": -50,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Mounting Rail 2",
+      "subcategory": "Epw"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Mounting Rail 2",
+      "param": "Epw Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Mounting Rail 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Coil Face",
+      "points": [
+        [
+          -560,
+          250
+        ],
+        [
+          560,
+          250
+        ],
+        [
+          560,
+          256
+        ],
+        [
+          -560,
+          256
+        ]
+      ],
+      "start": -330,
+      "end": -70
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coil Face",
+      "subcategory": "Alu"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Coil Face",
+      "param": "Alu Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coil Face",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Coil Guard Bar 1",
+      "points": [
+        [
+          -560,
+          256
+        ],
+        [
+          560,
+          256
+        ],
+        [
+          560,
+          260
+        ],
+        [
+          -560,
+          260
+        ]
+      ],
+      "start": -300,
+      "end": -294
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coil Guard Bar 1",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Coil Guard Bar 1",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coil Guard Bar 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Coil Guard Bar 2",
+      "points": [
+        [
+          -560,
+          256
+        ],
+        [
+          560,
+          256
+        ],
+        [
+          560,
+          260
+        ],
+        [
+          -560,
+          260
+        ]
+      ],
+      "start": -240,
+      "end": -234
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coil Guard Bar 2",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Coil Guard Bar 2",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coil Guard Bar 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Coil Guard Bar 3",
+      "points": [
+        [
+          -560,
+          256
+        ],
+        [
+          560,
+          256
+        ],
+        [
+          560,
+          260
+        ],
+        [
+          -560,
+          260
+        ]
+      ],
+      "start": -180,
+      "end": -174
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coil Guard Bar 3",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Coil Guard Bar 3",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coil Guard Bar 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Coil Guard Bar 4",
+      "points": [
+        [
+          -560,
+          256
+        ],
+        [
+          560,
+          256
+        ],
+        [
+          560,
+          260
+        ],
+        [
+          -560,
+          260
+        ]
+      ],
+      "start": -120,
+      "end": -114
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coil Guard Bar 4",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Coil Guard Bar 4",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coil Guard Bar 4",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Drip Tray",
+      "points": [
+        [
+          -620,
+          -265
+        ],
+        [
+          620,
+          -265
+        ],
+        [
+          620,
+          270
+        ],
+        [
+          -620,
+          270
+        ]
+      ],
+      "start": -385,
+      "end": -350
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Drip Tray",
+      "subcategory": "Epw"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Drip Tray",
+      "param": "Epw Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Drip Tray",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Drain Stub",
+      "points": [
+        [
+          576,
+          0
+        ],
+        [
+          575.45,
+          4.14
+        ],
+        [
+          573.86,
+          8
+        ],
+        [
+          571.31,
+          11.31
+        ],
+        [
+          568,
+          13.86
+        ],
+        [
+          564.14,
+          15.45
+        ],
+        [
+          560,
+          16
+        ],
+        [
+          555.86,
+          15.45
+        ],
+        [
+          552,
+          13.86
+        ],
+        [
+          548.69,
+          11.31
+        ],
+        [
+          546.14,
+          8
+        ],
+        [
+          544.55,
+          4.14
+        ],
+        [
+          544,
+          0
+        ],
+        [
+          544.55,
+          -4.14
+        ],
+        [
+          546.14,
+          -8
+        ],
+        [
+          548.69,
+          -11.31
+        ],
+        [
+          552,
+          -13.86
+        ],
+        [
+          555.86,
+          -15.45
+        ],
+        [
+          560,
+          -16
+        ],
+        [
+          564.14,
+          -15.45
+        ],
+        [
+          568,
+          -13.86
+        ],
+        [
+          571.31,
+          -11.31
+        ],
+        [
+          573.86,
+          -8
+        ],
+        [
+          575.45,
+          -4.14
+        ]
+      ],
+      "start": -440,
+      "end": -385
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Drain Stub",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Drain Stub",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Drain Stub",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "End Cover Left",
+      "points": [
+        [
+          -620,
+          -260
+        ],
+        [
+          -600,
+          -260
+        ],
+        [
+          -600,
+          260
+        ],
+        [
+          -620,
+          260
+        ]
+      ],
+      "start": -360,
+      "end": -40
+    },
+    {
+      "op": "set_subcategory",
+      "name": "End Cover Left",
+      "subcategory": "Epw"
+    },
+    {
+      "op": "set_material_param",
+      "name": "End Cover Left",
+      "param": "Epw Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "End Cover Left",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "End Cover Right",
+      "points": [
+        [
+          600,
+          -260
+        ],
+        [
+          620,
+          -260
+        ],
+        [
+          620,
+          260
+        ],
+        [
+          600,
+          260
+        ]
+      ],
+      "start": -360,
+      "end": -40
+    },
+    {
+      "op": "set_subcategory",
+      "name": "End Cover Right",
+      "subcategory": "Epw"
+    },
+    {
+      "op": "set_material_param",
+      "name": "End Cover Right",
+      "param": "Epw Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "End Cover Right",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Terminal Box",
+      "points": [
+        [
+          666,
+          -150
+        ],
+        [
+          667.53,
+          -149.7
+        ],
+        [
+          668.83,
+          -148.83
+        ],
+        [
+          669.7,
+          -147.53
+        ],
+        [
+          670,
+          -146
+        ],
+        [
+          670,
+          -4
+        ],
+        [
+          669.7,
+          -2.47
+        ],
+        [
+          668.83,
+          -1.17
+        ],
+        [
+          667.53,
+          -0.3
+        ],
+        [
+          666,
+          0
+        ],
+        [
+          624,
+          0
+        ],
+        [
+          622.47,
+          -0.3
+        ],
+        [
+          621.17,
+          -1.17
+        ],
+        [
+          620.3,
+          -2.47
+        ],
+        [
+          620,
+          -4
+        ],
+        [
+          620,
+          -146
+        ],
+        [
+          620.3,
+          -147.53
+        ],
+        [
+          621.17,
+          -148.83
+        ],
+        [
+          622.47,
+          -149.7
+        ],
+        [
+          624,
+          -150
+        ]
+      ],
+      "start": -300,
+      "end": -160
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Terminal Box",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Terminal Box",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Terminal Box",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Defrost Heater Gland",
+      "points": [
+        [
+          -67,
+          -230
+        ],
+        [
+          -67.27,
+          -227.93
+        ],
+        [
+          -68.07,
+          -226
+        ],
+        [
+          -69.34,
+          -224.34
+        ],
+        [
+          -71,
+          -223.07
+        ],
+        [
+          -72.93,
+          -222.27
+        ],
+        [
+          -75,
+          -222
+        ],
+        [
+          -77.07,
+          -222.27
+        ],
+        [
+          -79,
+          -223.07
+        ],
+        [
+          -80.66,
+          -224.34
+        ],
+        [
+          -81.93,
+          -226
+        ],
+        [
+          -82.73,
+          -227.93
+        ],
+        [
+          -83,
+          -230
+        ],
+        [
+          -82.73,
+          -232.07
+        ],
+        [
+          -81.93,
+          -234
+        ],
+        [
+          -80.66,
+          -235.66
+        ],
+        [
+          -79,
+          -236.93
+        ],
+        [
+          -77.07,
+          -237.73
+        ],
+        [
+          -75,
+          -238
+        ],
+        [
+          -72.93,
+          -237.73
+        ],
+        [
+          -71,
+          -236.93
+        ],
+        [
+          -69.34,
+          -235.66
+        ],
+        [
+          -68.07,
+          -234
+        ],
+        [
+          -67.27,
+          -232.07
+        ]
+      ],
+      "start": 670,
+      "end": 690,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Defrost Heater Gland",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Defrost Heater Gland",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Defrost Heater Gland",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fan Left Opening",
+      "points": [
+        [
+          -165,
+          -200
+        ],
+        [
+          -169.6,
+          -165.06
+        ],
+        [
+          -183.09,
+          -132.5
+        ],
+        [
+          -204.54,
+          -104.54
+        ],
+        [
+          -232.5,
+          -83.09
+        ],
+        [
+          -265.06,
+          -69.6
+        ],
+        [
+          -300,
+          -65
+        ],
+        [
+          -334.94,
+          -69.6
+        ],
+        [
+          -367.5,
+          -83.09
+        ],
+        [
+          -395.46,
+          -104.54
+        ],
+        [
+          -416.91,
+          -132.5
+        ],
+        [
+          -430.4,
+          -165.06
+        ],
+        [
+          -435,
+          -200
+        ],
+        [
+          -430.4,
+          -234.94
+        ],
+        [
+          -416.91,
+          -267.5
+        ],
+        [
+          -395.46,
+          -295.46
+        ],
+        [
+          -367.5,
+          -316.91
+        ],
+        [
+          -334.94,
+          -330.4
+        ],
+        [
+          -300,
+          -335
+        ],
+        [
+          -265.06,
+          -330.4
+        ],
+        [
+          -232.5,
+          -316.91
+        ],
+        [
+          -204.54,
+          -295.46
+        ],
+        [
+          -183.09,
+          -267.5
+        ],
+        [
+          -169.6,
+          -234.94
+        ]
+      ],
+      "start": 250,
+      "end": 251.5,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fan Left Opening",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fan Left Opening",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fan Left Opening",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Fan Left Bezel",
+      "profile": [
+        [
+          135,
+          258
+        ],
+        [
+          153,
+          258
+        ],
+        [
+          153,
+          250
+        ],
+        [
+          135,
+          250
+        ]
+      ],
+      "axis_at": [
+        -300,
+        -200
+      ],
+      "axis": "y",
+      "subcategory": "Epw"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fan Left Bezel",
+      "param": "Epw Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fan Left Bezel",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fan Left Hub",
+      "points": [
+        [
+          -275.7,
+          -200
+        ],
+        [
+          -276.53,
+          -193.71
+        ],
+        [
+          -278.96,
+          -187.85
+        ],
+        [
+          -282.82,
+          -182.82
+        ],
+        [
+          -287.85,
+          -178.96
+        ],
+        [
+          -293.71,
+          -176.53
+        ],
+        [
+          -300,
+          -175.7
+        ],
+        [
+          -306.29,
+          -176.53
+        ],
+        [
+          -312.15,
+          -178.96
+        ],
+        [
+          -317.18,
+          -182.82
+        ],
+        [
+          -321.04,
+          -187.85
+        ],
+        [
+          -323.47,
+          -193.71
+        ],
+        [
+          -324.3,
+          -200
+        ],
+        [
+          -323.47,
+          -206.29
+        ],
+        [
+          -321.04,
+          -212.15
+        ],
+        [
+          -317.18,
+          -217.18
+        ],
+        [
+          -312.15,
+          -221.04
+        ],
+        [
+          -306.29,
+          -223.47
+        ],
+        [
+          -300,
+          -224.3
+        ],
+        [
+          -293.71,
+          -223.47
+        ],
+        [
+          -287.85,
+          -221.04
+        ],
+        [
+          -282.82,
+          -217.18
+        ],
+        [
+          -278.96,
+          -212.15
+        ],
+        [
+          -276.53,
+          -206.29
+        ]
+      ],
+      "start": 251.5,
+      "end": 268,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fan Left Hub",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fan Left Hub",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fan Left Hub",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fan Left Blade 1",
+      "points": [
+        [
+          -247.51,
+          -87.44
+        ],
+        [
+          -273.12,
+          -78.74
+        ],
+        [
+          -300,
+          -75.8
+        ],
+        [
+          -326.88,
+          -78.74
+        ],
+        [
+          -352.49,
+          -87.44
+        ],
+        [
+          -309.64,
+          -180.67
+        ],
+        [
+          -300.57,
+          -178.41
+        ]
+      ],
+      "start": 254,
+      "end": 257,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fan Left Blade 1",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fan Left Blade 1",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fan Left Blade 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fan Left Blade 2",
+      "points": [
+        [
+          -412.56,
+          -147.51
+        ],
+        [
+          -421.26,
+          -173.12
+        ],
+        [
+          -424.2,
+          -200
+        ],
+        [
+          -421.26,
+          -226.88
+        ],
+        [
+          -412.56,
+          -252.49
+        ],
+        [
+          -319.33,
+          -209.64
+        ],
+        [
+          -321.59,
+          -200.57
+        ]
+      ],
+      "start": 254,
+      "end": 257,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fan Left Blade 2",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fan Left Blade 2",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fan Left Blade 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fan Left Blade 3",
+      "points": [
+        [
+          -352.49,
+          -312.56
+        ],
+        [
+          -326.88,
+          -321.26
+        ],
+        [
+          -300,
+          -324.2
+        ],
+        [
+          -273.12,
+          -321.26
+        ],
+        [
+          -247.51,
+          -312.56
+        ],
+        [
+          -290.36,
+          -219.33
+        ],
+        [
+          -299.43,
+          -221.59
+        ]
+      ],
+      "start": 254,
+      "end": 257,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fan Left Blade 3",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fan Left Blade 3",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fan Left Blade 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fan Left Blade 4",
+      "points": [
+        [
+          -187.44,
+          -252.49
+        ],
+        [
+          -178.74,
+          -226.88
+        ],
+        [
+          -175.8,
+          -200
+        ],
+        [
+          -178.74,
+          -173.12
+        ],
+        [
+          -187.44,
+          -147.51
+        ],
+        [
+          -280.67,
+          -190.36
+        ],
+        [
+          -278.41,
+          -199.43
+        ]
+      ],
+      "start": 254,
+      "end": 257,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fan Left Blade 4",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fan Left Blade 4",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fan Left Blade 4",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Fan Left Guard Outer",
+      "profile": [
+        [
+          129,
+          266
+        ],
+        [
+          137,
+          266
+        ],
+        [
+          137,
+          262
+        ],
+        [
+          129,
+          262
+        ]
+      ],
+      "axis_at": [
+        -300,
+        -200
+      ],
+      "axis": "y",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fan Left Guard Outer",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fan Left Guard Outer",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Fan Left Guard Inner",
+      "profile": [
+        [
+          37.5,
+          266
+        ],
+        [
+          43.5,
+          266
+        ],
+        [
+          43.5,
+          262
+        ],
+        [
+          37.5,
+          262
+        ]
+      ],
+      "axis_at": [
+        -300,
+        -200
+      ],
+      "axis": "y",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fan Left Guard Inner",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fan Left Guard Inner",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fan Left Guard Bar H",
+      "points": [
+        [
+          -435,
+          -203
+        ],
+        [
+          -165,
+          -203
+        ],
+        [
+          -165,
+          -197
+        ],
+        [
+          -435,
+          -197
+        ]
+      ],
+      "start": 262,
+      "end": 265,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fan Left Guard Bar H",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fan Left Guard Bar H",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fan Left Guard Bar H",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fan Left Guard Bar V",
+      "points": [
+        [
+          -303,
+          -335
+        ],
+        [
+          -297,
+          -335
+        ],
+        [
+          -297,
+          -65
+        ],
+        [
+          -303,
+          -65
+        ]
+      ],
+      "start": 262,
+      "end": 265,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fan Left Guard Bar V",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fan Left Guard Bar V",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fan Left Guard Bar V",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fan Right Opening",
+      "points": [
+        [
+          435,
+          -200
+        ],
+        [
+          430.4,
+          -165.06
+        ],
+        [
+          416.91,
+          -132.5
+        ],
+        [
+          395.46,
+          -104.54
+        ],
+        [
+          367.5,
+          -83.09
+        ],
+        [
+          334.94,
+          -69.6
+        ],
+        [
+          300,
+          -65
+        ],
+        [
+          265.06,
+          -69.6
+        ],
+        [
+          232.5,
+          -83.09
+        ],
+        [
+          204.54,
+          -104.54
+        ],
+        [
+          183.09,
+          -132.5
+        ],
+        [
+          169.6,
+          -165.06
+        ],
+        [
+          165,
+          -200
+        ],
+        [
+          169.6,
+          -234.94
+        ],
+        [
+          183.09,
+          -267.5
+        ],
+        [
+          204.54,
+          -295.46
+        ],
+        [
+          232.5,
+          -316.91
+        ],
+        [
+          265.06,
+          -330.4
+        ],
+        [
+          300,
+          -335
+        ],
+        [
+          334.94,
+          -330.4
+        ],
+        [
+          367.5,
+          -316.91
+        ],
+        [
+          395.46,
+          -295.46
+        ],
+        [
+          416.91,
+          -267.5
+        ],
+        [
+          430.4,
+          -234.94
+        ]
+      ],
+      "start": 250,
+      "end": 251.5,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fan Right Opening",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fan Right Opening",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fan Right Opening",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Fan Right Bezel",
+      "profile": [
+        [
+          135,
+          258
+        ],
+        [
+          153,
+          258
+        ],
+        [
+          153,
+          250
+        ],
+        [
+          135,
+          250
+        ]
+      ],
+      "axis_at": [
+        300,
+        -200
+      ],
+      "axis": "y",
+      "subcategory": "Epw"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fan Right Bezel",
+      "param": "Epw Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fan Right Bezel",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fan Right Hub",
+      "points": [
+        [
+          324.3,
+          -200
+        ],
+        [
+          323.47,
+          -193.71
+        ],
+        [
+          321.04,
+          -187.85
+        ],
+        [
+          317.18,
+          -182.82
+        ],
+        [
+          312.15,
+          -178.96
+        ],
+        [
+          306.29,
+          -176.53
+        ],
+        [
+          300,
+          -175.7
+        ],
+        [
+          293.71,
+          -176.53
+        ],
+        [
+          287.85,
+          -178.96
+        ],
+        [
+          282.82,
+          -182.82
+        ],
+        [
+          278.96,
+          -187.85
+        ],
+        [
+          276.53,
+          -193.71
+        ],
+        [
+          275.7,
+          -200
+        ],
+        [
+          276.53,
+          -206.29
+        ],
+        [
+          278.96,
+          -212.15
+        ],
+        [
+          282.82,
+          -217.18
+        ],
+        [
+          287.85,
+          -221.04
+        ],
+        [
+          293.71,
+          -223.47
+        ],
+        [
+          300,
+          -224.3
+        ],
+        [
+          306.29,
+          -223.47
+        ],
+        [
+          312.15,
+          -221.04
+        ],
+        [
+          317.18,
+          -217.18
+        ],
+        [
+          321.04,
+          -212.15
+        ],
+        [
+          323.47,
+          -206.29
+        ]
+      ],
+      "start": 251.5,
+      "end": 268,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fan Right Hub",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fan Right Hub",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fan Right Hub",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fan Right Blade 1",
+      "points": [
+        [
+          352.49,
+          -87.44
+        ],
+        [
+          326.88,
+          -78.74
+        ],
+        [
+          300,
+          -75.8
+        ],
+        [
+          273.12,
+          -78.74
+        ],
+        [
+          247.51,
+          -87.44
+        ],
+        [
+          290.36,
+          -180.67
+        ],
+        [
+          299.43,
+          -178.41
+        ]
+      ],
+      "start": 254,
+      "end": 257,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fan Right Blade 1",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fan Right Blade 1",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fan Right Blade 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fan Right Blade 2",
+      "points": [
+        [
+          187.44,
+          -147.51
+        ],
+        [
+          178.74,
+          -173.12
+        ],
+        [
+          175.8,
+          -200
+        ],
+        [
+          178.74,
+          -226.88
+        ],
+        [
+          187.44,
+          -252.49
+        ],
+        [
+          280.67,
+          -209.64
+        ],
+        [
+          278.41,
+          -200.57
+        ]
+      ],
+      "start": 254,
+      "end": 257,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fan Right Blade 2",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fan Right Blade 2",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fan Right Blade 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fan Right Blade 3",
+      "points": [
+        [
+          247.51,
+          -312.56
+        ],
+        [
+          273.12,
+          -321.26
+        ],
+        [
+          300,
+          -324.2
+        ],
+        [
+          326.88,
+          -321.26
+        ],
+        [
+          352.49,
+          -312.56
+        ],
+        [
+          309.64,
+          -219.33
+        ],
+        [
+          300.57,
+          -221.59
+        ]
+      ],
+      "start": 254,
+      "end": 257,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fan Right Blade 3",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fan Right Blade 3",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fan Right Blade 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fan Right Blade 4",
+      "points": [
+        [
+          412.56,
+          -252.49
+        ],
+        [
+          421.26,
+          -226.88
+        ],
+        [
+          424.2,
+          -200
+        ],
+        [
+          421.26,
+          -173.12
+        ],
+        [
+          412.56,
+          -147.51
+        ],
+        [
+          319.33,
+          -190.36
+        ],
+        [
+          321.59,
+          -199.43
+        ]
+      ],
+      "start": 254,
+      "end": 257,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fan Right Blade 4",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fan Right Blade 4",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fan Right Blade 4",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Fan Right Guard Outer",
+      "profile": [
+        [
+          129,
+          266
+        ],
+        [
+          137,
+          266
+        ],
+        [
+          137,
+          262
+        ],
+        [
+          129,
+          262
+        ]
+      ],
+      "axis_at": [
+        300,
+        -200
+      ],
+      "axis": "y",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fan Right Guard Outer",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fan Right Guard Outer",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Fan Right Guard Inner",
+      "profile": [
+        [
+          37.5,
+          266
+        ],
+        [
+          43.5,
+          266
+        ],
+        [
+          43.5,
+          262
+        ],
+        [
+          37.5,
+          262
+        ]
+      ],
+      "axis_at": [
+        300,
+        -200
+      ],
+      "axis": "y",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fan Right Guard Inner",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fan Right Guard Inner",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fan Right Guard Bar H",
+      "points": [
+        [
+          165,
+          -203
+        ],
+        [
+          435,
+          -203
+        ],
+        [
+          435,
+          -197
+        ],
+        [
+          165,
+          -197
+        ]
+      ],
+      "start": 262,
+      "end": 265,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fan Right Guard Bar H",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fan Right Guard Bar H",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fan Right Guard Bar H",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fan Right Guard Bar V",
+      "points": [
+        [
+          297,
+          -335
+        ],
+        [
+          303,
+          -335
+        ],
+        [
+          303,
+          -65
+        ],
+        [
+          297,
+          -65
+        ]
+      ],
+      "start": 262,
+      "end": 265,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fan Right Guard Bar V",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fan Right Guard Bar V",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fan Right Guard Bar V",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "Power",
+      "domain": "electrical",
+      "system": "PowerBalanced",
+      "solid": "Terminal Box",
+      "side": "right"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Voltage",
+      "connector": "Power",
+      "connector_param": "Voltage",
+      "param": "Voltage"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Apparent Load",
+      "connector": "Power",
+      "connector_param": "Apparent Load",
+      "param": "Apparent Load"
+    },
+    {
+      "op": "add_connector",
+      "name": "Condensate",
+      "domain": "pipe",
+      "system": "Sanitary",
+      "solid": "Drain Stub",
+      "side": "bottom",
+      "diameter": 40,
+      "flow": "Out"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_MechEq_Evaporator_ColdRoom.png"
+    }
+  ],
+  "values": {
+    "Unit 1240 x 535 x 385 mm": {
+      "value": "1240x535x385",
+      "source_status": "assumed",
+      "source": "typical 2-5 kW unit cooler"
+    },
+    "Fans 2 x 270 mm": {
+      "value": "2x270",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Load 0.8 / 1.5 kVA with defrost": {
+      "value": "0.8/1.5kVA",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Coil inlet clearance 300 mm": {
+      "value": 300,
+      "source_status": "assumed",
+      "source": "manufacturer practice"
+    }
   }
- ],
- "values": {
-  "Unit 1240 x 535 x 385 mm": {
-   "value": "1240x535x385",
-   "source_status": "assumed",
-   "source": "typical 2-5 kW unit cooler"
-  },
-  "Fans 2 x 270 mm": {
-   "value": "2x270",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Load 0.8 / 1.5 kVA with defrost": {
-   "value": "0.8/1.5kVA",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Coil inlet clearance 300 mm": {
-   "value": 300,
-   "source_status": "assumed",
-   "source": "manufacturer practice"
-  }
- }
 }
