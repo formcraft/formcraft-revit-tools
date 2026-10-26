@@ -579,8 +579,8 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (doc.IsWorkshared)
             {
                 // Show History: who made it, who changed it last, who owns it now
-                WorksharingTooltipInfo w = WorksharingUtils.GetWorksharingTooltipInfo(doc, e.Id);
-                o["created_by"] = w.Creator; o["last_changed_by"] = w.LastChangedBy; o["owner"] = w.Owner;
+                WorksharingTooltipInfo wt = WorksharingUtils.GetWorksharingTooltipInfo(doc, e.Id);
+                o["created_by"] = wt.Creator; o["last_changed_by"] = wt.LastChangedBy; o["owner"] = wt.Owner;
             }
             var loops = new JArray();
             try
