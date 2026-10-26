@@ -120,8 +120,12 @@ namespace RevitMCPCommandSet.Services.Fmc
                 case "load_family":
                     return InTx(doc, () =>
                     {
-                        if (!doc.LoadFamily(path ?? throw new InvalidOperationException("load_family needs path"), out Family f)) throw new InvalidOperationException($"{path} didn't load (already loaded and unchanged?)");
-                        return new JObject { ["family"] = f.Name };
+                        // Ogala night report: an existing family is overwritten (parameters too) unless overwrite is false
+                        bool overwrite = Parameters.Value<bool?>("overwrite") ?? true;
+                        bool loaded = doc.LoadFamily(path ?? throw new InvalidOperationException("load_family needs path"), new OverwriteFamily(overwrite), out Family f);
+                        string fname = System.IO.Path.GetFileNameWithoutExtension(path);
+                        if (!loaded) return new JObject { ["family"] = fname, ["unchanged"] = true, ["note"] = overwrite ? "Revit found nothing to change" : "already loaded (overwrite false)" };
+                        return new JObject { ["family"] = f?.Name ?? fname, ["overwritten"] = overwrite };
                     });
                 case "point_cloud":
                     return InTx(doc, () =>
@@ -205,6 +209,15 @@ namespace RevitMCPCommandSet.Services.Fmc
             (long.TryParse(s, out long id) ? doc.GetElement(new ElementId(id)) as View : null)
             ?? new FilteredElementCollector(doc).OfClass(typeof(View)).Cast<View>().FirstOrDefault(v => !v.IsTemplate && (string.Equals(v.Name, s, StringComparison.OrdinalIgnoreCase) || (v is ViewSheet sh && sh.SheetNumber == s)))
             ?? throw new InvalidOperationException($"no view or sheet {s}");
+
+        private sealed class OverwriteFamily : IFamilyLoadOptions
+        {
+            private readonly bool _overwrite;
+            public OverwriteFamily(bool overwrite) { _overwrite = overwrite; }
+            public bool OnFamilyFound(bool familyInUse, out bool overwriteParameterValues) { overwriteParameterValues = _overwrite; return _overwrite; }
+            public bool OnSharedFamilyFound(Family sharedFamily, bool familyInUse, out FamilySource source, out bool overwriteParameterValues)
+            { source = FamilySource.Family; overwriteParameterValues = _overwrite; return _overwrite; }
+        }
 
         private static JObject InTx(Document doc, Func<JObject> body)
         {

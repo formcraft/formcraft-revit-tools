@@ -36,7 +36,8 @@ namespace RevitMCPCommandSet.Commands.Fmc
         public FmcDocumentInfoCommand(UIApplication uiApp) : base(uiApp) { }
         public override string CommandName => "fmc_document_info";
         protected override string Action => "info";
-        protected override int TimeoutMs => 15000;
+        // Ogala night report: an autosave holds Revit 40-60 s; the document check waits it out instead of timing out at 15 s
+        protected override int TimeoutMs => 120000;
     }
 
     /// <summary>New family, project or template from a template file, saved to a path the server has checked.</summary>

@@ -10,3 +10,11 @@ For the BIM Manager. Each item came from a real fault on THE OGALA RESIDENCE; no
 | 4 | Steel and monolithic stair types in the template, with and without their own railings | create_stair failed on a type that adds its own railings; the BQ steel stair was made in code |
 | 5 | Clay-tile roof type in the template | Roofs started as Generic 225 and were all changed to clay tile |
 | 6 | Review the proposed values in FMC_Standards_Building.json and mark approved ones | Every value is "proposed" until you sign it off; the AI says so when it relies on one |
+
+## Added 27 Oct 2026, from the Ogala night report (Loops 7-10)
+
+| # | Change | Why |
+|---|---|---|
+| 7 | Downlight families: emitter size set to the real fitting, and the clearance box on a light-role subcategory that is off in plan and 3D by default | The emitter and the clearance box showed as solid blocks in renders and close-up pictures |
+| 8 | Door architraves on reference planes driven by the frame depth, not fixed planes at ±115 mm | Architraves floated off thin walls and sank into thick ones |
+| 9 | FlushSingleLeaf: make the "Leaf Top" reference plane horizontal | The plane is slightly tilted, so the leaf height flexes wrongly |

@@ -85,10 +85,10 @@ export function registerSeeViewTool(server: McpServer) {
       "revit_warnings (Revit's own, grouped), duplicates (same category and type in the same place; keep says which to " +
       "keep), rooms (not placed, not enclosed, numbers used twice), unhosted (doors and windows without a wall), " +
       "wall_overlaps, free_wall_ends, wall_tops (walls stopping below a roof, not attached), clashes (structure, MEP, " +
-      "furniture, stairs against the rest). level limits it to one level; limit the items per check (default 50). Then " +
+      "furniture, stairs against the rest), blind_openings (doors and windows that don't cut their wall). level limits it to one level; limit the items per check (default 50). Then " +
       "look at a problem with see_view ids [...] and fix it with modify_model.",
     {
-      checks: z.array(z.enum(["revit_warnings", "duplicates", "rooms", "unhosted", "wall_overlaps", "free_wall_ends", "wall_tops", "clashes"])).optional(),
+      checks: z.array(z.enum(["revit_warnings", "duplicates", "rooms", "unhosted", "wall_overlaps", "free_wall_ends", "wall_tops", "clashes", "blind_openings"])).optional(),
       level: z.string().optional(),
       limit: z.number().int().min(1).max(500).optional(),
     },

@@ -73,9 +73,17 @@ export function formatCodeResult(response: any): { text: string; isError: boolea
     documentBlocked: response.documentBlocked || undefined,
     note: response.note,
     created_ids: response.createdIds?.length ? response.createdIds : undefined,
+    // Ogala night report: compile times grew to 74-133 s before an OutOfMemoryException; and a script that touched far
+    // more than it named
+    advice: [
+      (response.compileMs ?? 0) > 30000 ? "Compiling took over 30 s: Revit is short of memory. Save (revit_file save) and ask the person to restart Revit before more scripts." : "",
+      (response.modifiedCount ?? 0) > 300 || (response.deletedIds?.length ?? 0) > 50 ? `This script changed ${response.modifiedCount ?? 0} and deleted ${response.deletedIds?.length ?? 0} elements: check that was meant (see_view, model_check).` : "",
+      /open transaction/i.test(String(response.errorMessage ?? "")) && /save/i.test(String(response.errorMessage ?? "") + String(response.error ?? "")) ? "Scripts can't save the model: use revit_file save." : "",
+    ].filter(Boolean),
     deleted_ids: response.deletedIds?.length ? response.deletedIds : undefined,
     modified: response.modifiedCount || undefined,
   };
+  if (!extra.advice.length) delete (extra as { advice?: string[] }).advice;
   if (response.success === false) {
     return {
       isError: true,

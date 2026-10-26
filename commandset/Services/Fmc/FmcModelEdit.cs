@@ -290,8 +290,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                     {
                         int edge = NearestEdge(drawn, mc.GeometryCurve);
                         double? deg = slopes != null && edge < slopes.Count ? slopes[edge].Value<double?>() : all;
-                        roof.set_DefinesSlope(mc, deg.HasValue);
-                        if (deg.HasValue) roof.set_SlopeAngle(mc, Math.Tan(deg.Value * Math.PI / 180));
+                        // Ogala night report: slopes_deg 0 means a flat edge (Revit refuses a defining slope of 0)
+                        bool sloped = deg.HasValue && deg.Value > 1e-6;
+                        roof.set_DefinesSlope(mc, sloped);
+                        if (sloped) roof.set_SlopeAngle(mc, Math.Tan(deg.Value * Math.PI / 180));
                     }
                     double baseOffset = Ft(op.Value<double?>("offset_mm") ?? 0) - Ft(over) * Math.Tan(maxSlope * Math.PI / 180);
                     if (op["offset_mm"] != null || over > 0) roof.get_Parameter(BuiltInParameter.ROOF_LEVEL_OFFSET_PARAM)?.Set(baseOffset);
