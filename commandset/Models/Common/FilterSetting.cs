@@ -64,6 +64,9 @@ namespace RevitMCPCommandSet.Models.Common
         /// </summary>
         [JsonProperty("maxElements")]
         public int MaxElements { get; set; } = 50; 
+        /// <summary>Paging (owner 26 Oct): how many matching elements to skip, for the next page.</summary>
+        [JsonProperty("skip")]
+        public int Skip { get; set; } = 0;
         /// <summary>
         /// 验证过滤器设置的有效性，检查潜在的冲突
         /// </summary>

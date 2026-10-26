@@ -62,6 +62,12 @@ export function registerAIElementFilterTool(server: McpServer) {
           })
           .optional()
           .describe("The maximum point coordinates (in mm) for spatial bounding box filtering. When set along with boundingBoxMin, only elements that intersect with this bounding box will be returned. Set to null to disable this filter."),
+          skip: z
+            .number()
+            .int()
+            .min(0)
+            .optional()
+            .describe("Paging: how many matching elements to skip. The answer gives the total and the skip for the next page."),
           maxElements: z
           .number()
           .optional()

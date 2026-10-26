@@ -40,6 +40,8 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
     {
         public const string TransactionModeAuto = "auto";
         public const string TransactionModeNone = "none";
+        /// <summary>Owner 26 Oct: reads only. The script runs in a transaction that is always rolled back, so the model can't change.</summary>
+        public const string TransactionModeReadOnly = "read_only";
         private const string ScriptPath = FmcScriptSource.ScriptPath;
 
         /// <summary>Always there: the old template's namespaces, rooms and structure, and the Formcraft helpers.</summary>
@@ -67,7 +69,7 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
         {
             _code = code;
             _executionParameters = parameters ?? Array.Empty<object>();
-            _transactionMode = transactionMode == TransactionModeNone ? TransactionModeNone : TransactionModeAuto;
+            _transactionMode = transactionMode == TransactionModeNone ? TransactionModeNone : transactionMode == TransactionModeReadOnly ? TransactionModeReadOnly : TransactionModeAuto;
             _usings = usings ?? Array.Empty<string>();
             _parameters = allParameters ?? new JObject();
             Job = job ?? "";
@@ -156,12 +158,20 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
                                     transaction.RollBack();
                                     throw new ScriptFailure("FMC-CODE-CANCELLED", $"Job {job} was cancelled while the script ran; its transaction was rolled back, nothing was changed.");
                                 }
-                                TransactionStatus status = transaction.Commit();
-                                info.Transaction = status.ToString();
-                                if (status != TransactionStatus.Committed)
-                                    throw new ScriptFailure("FMC-CODE-ROLLED-BACK",
-                                        "Revit rolled the script's transaction back, so nothing was changed: " +
-                                        (FmcAiJob.Failures.Errors.Count > 0 ? string.Join(" | ", FmcAiJob.Failures.Errors) : $"status {status}."));
+                                if (_transactionMode == TransactionModeReadOnly)
+                                {
+                                    transaction.RollBack();
+                                    info.Transaction = "RolledBack (read-only: nothing changed)";
+                                }
+                                else
+                                {
+                                    TransactionStatus status = transaction.Commit();
+                                    info.Transaction = status.ToString();
+                                    if (status != TransactionStatus.Committed)
+                                        throw new ScriptFailure("FMC-CODE-ROLLED-BACK",
+                                            "Revit rolled the script's transaction back, so nothing was changed: " +
+                                            (FmcAiJob.Failures.Errors.Count > 0 ? string.Join(" | ", FmcAiJob.Failures.Errors) : $"status {status}."));
+                                }
                             }
                         }
                     }

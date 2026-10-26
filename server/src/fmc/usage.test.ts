@@ -54,3 +54,16 @@ test("Replay fix (owner 26 Oct): an approval runs once, even when the first run 
   assert.equal(approvalFor("create_room", { data: [1, 2] }, doc, env), null);
   assert.match(enqueue("create_room", { data: [1, 2] }, doc, "M", "architecture", 2, env).summary, /^AGAIN/);
 });
+
+test("status's document (owner 26 Oct): a short ask, a few tries while Revit opens, then the last document seen", async () => {
+  const { activeDocument } = await import("../tools/fmc_ai.js");
+  const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), "fmc-doc-")), "last_document.json");
+  const nap = async () => {};
+  const live = await activeDocument(async (ms) => { assert.ok(ms <= 6000); return { active: { title: "OGALA" } }; }, 4, nap, file);
+  assert.deepEqual(live, { active: { title: "OGALA" }, source: "revit" });
+  let asks = 0;
+  const later = await activeDocument(async () => { asks++; return { active: null }; }, 3, nap, file);
+  assert.equal(asks, 3);
+  assert.equal(later.active.title, "OGALA");
+  assert.match(later.source, /^last seen .*Revit didn't answer/);
+});

@@ -9,12 +9,13 @@ export const MAX_CODE_CHARS = 1_000_000;
 const USING = /^(using\s+)?(static\s+)?([A-Za-z_]\w*\s*=\s*)?[A-Za-z_]\w*(\.[A-Za-z_]\w*)*\s*;?$/;
 
 const transactionModeSchema = z
-  .enum(["auto", "none"])
+  .enum(["auto", "none", "read_only"])
   .default("auto")
   .describe(
     "'auto' (default) wraps the script in one transaction with the default failures handling: Revit warnings are " +
       "deleted and listed in the result, an error rolls everything back and is reported. 'none' when the script opens " +
-      "its own transactions (use FmcScript.Run(document, name, () => {...}) for the same handling)."
+      "its own transactions (use FmcScript.Run(document, name, () => {...}) for the same handling). 'read_only' (owner 26 Oct) " +
+      "runs it in a transaction that is always rolled back: the model can't change, so it needs no approval; use it to read."
   );
 
 export const SEND_CODE_DESCRIPTION =
@@ -57,7 +58,7 @@ export const SEND_CODE_SHAPE = {
       "ledger (never the code) so repeated scripts can be moved into a plugin tool (fmc_balance backlog)."),
 };
 
-type SendCodeArgs = { code: string; parameters?: string[]; usings?: string[]; transactionMode?: "auto" | "none"; purpose?: string };
+type SendCodeArgs = { code: string; parameters?: string[]; usings?: string[]; transactionMode?: "auto" | "none" | "read_only"; purpose?: string };
 
 /** The add-in's answer as text: the result, or the error with its code, and the times. */
 export function formatCodeResult(response: any): { text: string; isError: boolean } {

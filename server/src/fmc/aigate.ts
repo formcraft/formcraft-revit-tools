@@ -1,5 +1,5 @@
 import { DocInfo, GuardConfig } from "./policy.js";
-import { NEVER, PLACEABLE, USER_LINE, aiVerdict, batchSize, recordBatch } from "./aiuse.js";
+import { NEVER, PLACEABLE, USER_LINE, aiVerdict, batchSize, generalState, recordBatch } from "./aiuse.js";
 import { Names, elementNames, explain, namesWanted } from "./explain.js";
 import { approvalFor, claimApproval, enqueue, loadAiConfig, loadRulebook, loadState, logBatch, saveState } from "./aiuse_io.js";
 
@@ -19,6 +19,13 @@ export async function aiGate(command: string, params: any, active: (DocInfo & { 
   const ai = loadAiConfig(cfg, env);
   // Not set up yet (no ai_modeller section): the person sees the plain line, never the lock's wording.
   if (!ai) return { ok: false, reason: "", user: NEVER[command] ? USER_LINE.admin(NEVER[command]) : USER_LINE.off };
+  // Read-only code (owner 26 Oct): its transaction is always rolled back, so it needs no approval, only the code switch.
+  if (command === "send_code_to_revit" && params?.transactionMode === "read_only") {
+    if (ai.stop) return { ok: false, reason: "", user: USER_LINE.stopped };
+    if (ai.allow_code !== true) return { ok: false, reason: "", user: USER_LINE.admin("running code: the admin's 'AI may run code' switch is off") };
+    if (generalState(ai, active.title, active.path) !== "On") return { ok: false, reason: "", user: USER_LINE.off };
+    return { ok: true, reason: "", run: <T>(exec: () => Promise<T>) => exec() };
+  }
   const elements = batchSize(params);
   const approval = approvalFor(command, params, active.path, env);
   const v = aiVerdict({ command, doc: active, elements, approved: !!approval }, cfg, book, ai, loadState(env));

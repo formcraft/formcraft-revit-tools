@@ -59,15 +59,15 @@ namespace RevitMCPCommandSet.Services
                 if (elementList == null || !elementList.Any())
                     throw new Exception("No elements match the filter: check the filter settings");
                 // 过滤器最大个数限制
+                // Paging (owner 26 Oct): the total, this page, and the skip for the next page
                 string message = "";
-                if (FilterSetting.MaxElements > 0)
-                {
-                    if (elementList.Count > FilterSetting.MaxElements)
-                    {
-                        elementList = elementList.Take(FilterSetting.MaxElements).ToList();
-                        message = $". {elementList.Count} elements match; only the first {FilterSetting.MaxElements} are returned";
-                    }
-                }
+                int total = elementList.Count, skip = Math.Max(0, FilterSetting.Skip);
+                if (skip > 0) elementList = elementList.Skip(skip).ToList();
+                if (FilterSetting.MaxElements > 0 && elementList.Count > FilterSetting.MaxElements)
+                    elementList = elementList.Take(FilterSetting.MaxElements).ToList();
+                if (skip > 0 || skip + elementList.Count < total)
+                    message = $". {total} elements match; this page is {skip + 1}-{skip + elementList.Count}" +
+                        (skip + elementList.Count < total ? $"; the next page is skip {skip + elementList.Count}" : " (the last page)");
 
                 // 获取指定Id元素的信息
                 elementInfoList = GetElementFullInfo(doc, elementList);
@@ -240,7 +240,13 @@ namespace RevitMCPCommandSet.Services
                 ElementId symbolId = new ElementId(settings.FilterFamilySymbolId);
                 // 检查元素是否存在且是族类型
                 Element symbolElement = doc.GetElement(symbolId);
-                if (symbolElement != null && symbolElement is FamilySymbol)
+                if (symbolElement is ElementType && !(symbolElement is FamilySymbol))
+                {
+                    // Owner 26 Oct: wall, floor, roof and ceiling types aren't FamilySymbols; the type filter was dropped for them
+                    filters.Add(new ElementParameterFilter(ParameterFilterRuleFactory.CreateEqualsRule(new ElementId(BuiltInParameter.ELEM_TYPE_PARAM), symbolId)));
+                    appliedFilters.Add($"type: {symbolElement.Name} (ID: {settings.FilterFamilySymbolId})");
+                }
+                else if (symbolElement != null && symbolElement is FamilySymbol)
                 {
                     FamilyInstanceFilter familyFilter = new FamilyInstanceFilter(doc, symbolId);
                     filters.Add(familyFilter);
@@ -253,7 +259,8 @@ namespace RevitMCPCommandSet.Services
                 else
                 {
                     string elementType = symbolElement != null ? symbolElement.GetType().Name : "不存在";
-                    System.Diagnostics.Trace.WriteLine($"警告：ID为 {settings.FilterFamilySymbolId} 的元素{(symbolElement == null ? "不存在" : "不是有效的FamilySymbol")} (实际类型: {elementType})");
+                    // Owner 26 Oct: never drop a filter silently: a wrong type id is an error, not every element
+                    throw new Exception($"filterFamilySymbolId {settings.FilterFamilySymbolId} isn't a type in this model ({elementType})");
                 }
             }
             // 4. 空间范围过滤器
