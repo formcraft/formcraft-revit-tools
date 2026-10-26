@@ -57,6 +57,15 @@ function op(o: P, n: Names, i: number): string[] {
     case "create_sheet": return [`${h}New sheet ${o.number ?? ""} ${o.name ?? ""}${o.title_block ? `, title block ${o.title_block}` : ""}`.replace(/\s+/g, " ")];
     case "place_view": return [`${h}Place ${o.view} on sheet ${o.sheet}`];
     case "open_view": return [`${h}Open ${o.view} when done`];
+    case "detail_line": case "model_line": return [`${h}${o.op === "detail_line" ? `Detail lines in ${o.view}` : "Model lines"}: ${Math.max(0, (o.points_mm ?? []).length - (o.closed ? 0 : 1))} segments${o.line_style ? `, ${o.line_style}` : ""}`];
+    case "filled_region": case "masking_region": return [`${h}${o.op === "filled_region" ? `Filled region ${o.type_name ?? ""}` : "Masking region"} in ${o.view}`.replace("  ", " ")];
+    case "text": return [`${h}Text in ${o.view}: "${String(o.text ?? "").slice(0, 60)}"`];
+    case "replace_text": return [`${h}Replace "${o.find}" with "${o.replace ?? ""}" in text notes${o.views ? ` in ${o.views.length} views` : " in every view"}`];
+    case "tag": return [`${h}Tag ${count} elements in ${o.view}${o.tag_type ? ` with ${o.tag_type}` : ""}:`, ...named(n, o.ids)];
+    case "spot_elevation": case "spot_coordinate": return [`${h}${o.op === "spot_elevation" ? "Spot elevation" : "Spot coordinate"} on ${isRef(o.id) ? made(o.id) : elementName(n, o.id)} in ${o.view}`];
+    case "revision_cloud": return [`${h}Revision cloud in ${o.view}${o.revision ? `, revision ${o.revision}` : ", latest revision"}`];
+    case "place_annotation": return [`${h}Place ${o.type_name} in ${o.view}`];
+    case "color_fill_legend": return [`${h}Colour fill legend for ${o.category ?? "Rooms"} in ${o.view}${o.scheme ? `, scheme ${o.scheme}` : ""}`];
     case "delete": return [`${h}DELETE ${count} elements (anything hosted on them goes too):`, ...named(n, o.ids)];
     case "move": return [`${h}Move ${count} elements by ${(o.vector_mm ?? []).map((v: number) => Math.round(v)).join(", ")} mm:`, ...named(n, o.ids)];
     case "set_param": {
@@ -132,7 +141,7 @@ export function namesWanted(params: unknown): { typeIds: number[]; elementIds: s
   for (const d of Array.isArray(p.data) ? p.data : []) if (typeof d?.typeId === "number") typeIds.add(d.typeId);
   for (const o of Array.isArray(p.ops) ? p.ops : []) {
     for (const x of Array.isArray(o?.ids) ? o.ids : []) if (!isRef(x)) elementIds.add(String(x));
-    for (const k of ["target", "host"]) if (o?.[k] != null && !isRef(o[k])) elementIds.add(String(o[k]));
+    for (const k of ["target", "host", "id"]) if (o?.[k] != null && !isRef(o[k])) elementIds.add(String(o[k]));
     if (typeof o?.type_id === "number") typeIds.add(o.type_id);
     if (o?.op === "duplicate_type" && o.type != null) typeIds.add(Number(o.type));
   }
