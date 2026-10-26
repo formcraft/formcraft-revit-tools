@@ -45,6 +45,18 @@ function op(o: P, n: Names, i: number): string[] {
     case "join": case "unjoin": case "switch_join": case "cut": case "uncut":
       return [`${h}${o.op.replace("_", " ")} geometry: ${count} elements:`, ...named(n, o.ids)];
     case "pin": case "unpin": return [`${h}${o.op === "pin" ? "Pin" : "Unpin"} ${count} elements:`, ...named(n, o.ids)];
+    case "create_view": return [`${h}New ${String(o.kind ?? "view").replace("_", " ")}${o.name ? ` "${o.name}"` : ""}${o.level ? ` on ${o.level}` : ""}${o.template ? `, template ${o.template}` : ""}${o.scale ? `, 1:${o.scale}` : ""}`];
+    case "duplicate_view": return [`${h}Duplicate view ${o.view} (${o.mode ?? "duplicate"})${o.name ? ` as "${o.name}"` : ""}`];
+    case "set_view": return [`${h}Change view ${o.view}: ${Object.keys(o).filter((k) => !["op", "view"].includes(k)).join(", ")}`];
+    case "override": return [`${h}Override graphics in ${o.view}${o.color ? ` to rgb(${o.color.join(", ")})` : ""} for ` +
+      [o.ids ? `${o.ids.length} elements` : "", o.categories ? (o.categories as string[]).join(", ") : "", o.filter ? `filter ${o.filter}` : ""].filter(Boolean).join(", ")];
+    case "hide": case "unhide": return [`${h}${o.op === "hide" ? "Hide" : "Unhide"} in ${o.view}: ${[o.ids ? `${o.ids.length} elements` : "", ...((o.categories ?? []) as string[])].filter(Boolean).join(", ")}`];
+    case "create_filter": return [`${h}New view filter "${o.name}" on ${((o.categories ?? []) as string[]).join(", ")}${(o.rules ?? []).length ? `: ${(o.rules as P[]).map((r) => `${r.param} ${r.op ?? "equals"} ${r.value ?? mm(r.value_mm)}`).join(" and ")}` : ""}`];
+    case "create_template": return [`${h}New view template "${o.name}" from ${o.view}`];
+    case "apply_template": return [`${h}Apply template ${o.template} to ${(o.views ?? []).length} views${o.once ? " (once, not linked)" : ""}`];
+    case "create_sheet": return [`${h}New sheet ${o.number ?? ""} ${o.name ?? ""}${o.title_block ? `, title block ${o.title_block}` : ""}`.replace(/\s+/g, " ")];
+    case "place_view": return [`${h}Place ${o.view} on sheet ${o.sheet}`];
+    case "open_view": return [`${h}Open ${o.view} when done`];
     case "delete": return [`${h}DELETE ${count} elements (anything hosted on them goes too):`, ...named(n, o.ids)];
     case "move": return [`${h}Move ${count} elements by ${(o.vector_mm ?? []).map((v: number) => Math.round(v)).join(", ")} mm:`, ...named(n, o.ids)];
     case "set_param": {

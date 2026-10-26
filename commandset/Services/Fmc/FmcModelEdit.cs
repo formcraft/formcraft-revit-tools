@@ -20,7 +20,7 @@ namespace RevitMCPCommandSet.Services.Fmc
     /// of this batch, so a roof and the walls attached to it go in one batch. Pinned elements and elements another user
     /// owns are refused. Warnings are dismissed; errors fail the op.
     /// </summary>
-    public class FmcModelEditHandler : IExternalEventHandler, IWaitableExternalEventHandler
+    public partial class FmcModelEditHandler : IExternalEventHandler, IWaitableExternalEventHandler
     {
         private readonly ManualResetEvent _done = new ManualResetEvent(false);
         public JObject Parameters { get; set; } = new JObject();
@@ -35,7 +35,8 @@ namespace RevitMCPCommandSet.Services.Fmc
         public void Execute(UIApplication app)
         {
             Result = new JObject(); Error = "";
-            try { Result = Run(app.ActiveUIDocument?.Document ?? throw new InvalidOperationException("No model is open")); }
+            _uidoc = app.ActiveUIDocument; _openView = null;
+            try { Result = Run(app.ActiveUIDocument?.Document ?? throw new InvalidOperationException("No model is open")); if (_openView != null && !(Result.Value<bool?>("dry_run") ?? false)) _uidoc.RequestViewChange(_openView); }
             catch (Exception e) { Error = e.Message; }
             finally { _done.Set(); }
         }
@@ -310,7 +311,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     created.Add(o.Id);
                     return new JObject { ["shaft"] = o.Id.Value };
                 }
-                default: throw new InvalidOperationException($"{name} isn't an op (copy, rotate, mirror, join, unjoin, switch_join, cut, uncut, pin, unpin, delete, move, set_param, change_type, attach, duplicate_type, create_roof, create_railing, create_stair, room_separation, opening, shaft)");
+                default: return ViewOp(doc, name, op, made, created) ?? throw new InvalidOperationException($"{name} isn't an op (create_view, duplicate_view, set_view, override, hide, unhide, create_filter, create_template, apply_template, create_sheet, place_view, open_view, copy, rotate, mirror, join, unjoin, switch_join, cut, uncut, pin, unpin, delete, move, set_param, change_type, attach, duplicate_type, create_roof, create_railing, create_stair, room_separation, opening, shaft)");
             }
         }
 
