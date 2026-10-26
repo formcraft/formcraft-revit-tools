@@ -230,7 +230,8 @@ export function registerModifyModelTool(server: McpServer) {
       "as_central?}, open {path}, close {title, save?} (not the active model), export {format: dwg|dxf|dgn|sat|pdf|ifc|nwc|" +
       "fbx|dwf|gbxml|image|schedule, folder, name?, views? (names, sheet numbers or ids; default the active view), combine? " +
       "(pdf), pixels? (image)}, link_cad / import_cad {path, view?, this_view_only?}, link_image / import_image / link_pdf " +
-      "{path, view?, point_mm?, page? (pdf)}, link_revit {path, placement?: shared|origin}, load_family {path}, point_cloud " +
+      "{path, view?, point_mm?, page? (pdf)}, link_revit {path, placement?: shared|origin}, load_family {path, overwrite? (default " +
+      "true: replaces a loaded family, its parameters too)}, point_cloud " +
       "{path}, sync {comment?, relinquish? (default true), compact?}, reload_latest, relinquish, open_ifc {path}, export_family " +
       "{family, path (.rfa), overwrite?} (Save As Library Family). Sync and relinquish always " +
       "wait for a person's approval, even with auto-approve.",

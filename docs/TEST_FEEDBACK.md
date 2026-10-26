@@ -380,3 +380,22 @@ create_ceiling with holes, create_room, place_family (hosted on "$n"), rehost, e
 Already in later builds when the report was written: join and cut, see_view, model_check, auto-approve, no limits in
 testing. Open: the Claude app must restart after every install (server reload), attach on profile-edited walls (a Revit
 limit), design options can't be created (a Revit API limit). Kit items: docs/kit-proposals/KIT_CHANGE_REQUEST_2026-10-26_Ogala.md.
+
+## 27 Oct 2026: Ogala night report (Loops 7-10, build 402ff2e), and what was fixed
+
+Fixed in `fix/ogala-night-report`:
+- `create_roof`: an edge at 0° slope is now a flat edge. Before, Revit refused it.
+- `see_view` close-ups hide levels, grids, scope boxes, section boxes, cameras and similar markers, so the subject fills the picture.
+- `model_check` has a new `blind_openings` check: it finds doors and windows that don't cut their wall.
+- The document check waits 120 s instead of 15 s, so it survives an autosave.
+- `revit_file load_family` overwrites an already-loaded family by default (`overwrite: false` keeps the loaded one) and reports `unchanged` instead of failing.
+- `FMC_Profile_*` families are recognised as the kit's `_Profiles` class.
+- `send_code_to_revit` results now carry `advice` for slow compiles (Revit low on memory), scripts that change far more than expected, and scripts trying to save.
+
+Still open:
+- No undo of the last AI batch other than `run_revit_command` Undo.
+- No typed op for a site floor on a toposolid; no perspective export with a section box.
+- Calls aren't queued during an autosave (the longer timeout softens this).
+- A cancelled script still runs to the end.
+- Mirroring a wall-hosted element can put it on the wrong side.
+- Kit items 7-9 in KIT_CHANGE_REQUEST_2026-10-26_Ogala.md.

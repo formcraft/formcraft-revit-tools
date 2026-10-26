@@ -64,6 +64,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                         double pad = (Parameters.Value<double?>("margin_mm") ?? 1500) / 304.8;
                         v3.SetSectionBox(new BoundingBoxXYZ { Min = box.Min - new XYZ(pad, pad, pad / 3), Max = box.Max + new XYZ(pad, pad, pad / 3) });
                         v3.SetOrientation(Orientation(Parameters.Value<string>("from") ?? "iso", (box.Min + box.Max) / 2));
+                        // Ogala night report: datums and markers reach across the site, so the close-up came out a speck
+                        foreach (var bic in new[] { BuiltInCategory.OST_Levels, BuiltInCategory.OST_Grids, BuiltInCategory.OST_VolumeOfInterest, BuiltInCategory.OST_SectionBox,
+                            BuiltInCategory.OST_Cameras, BuiltInCategory.OST_CLines, BuiltInCategory.OST_ReferencePoints, BuiltInCategory.OST_LightingFixtureSource })
+                            try { v3.SetCategoryHidden(new ElementId(bic), true); } catch (Exception) { /* not in this model */ }
                         v = v3;
                     }
                     else v = ViewOf(doc, Parameters.Value<string>("view")) ?? uidoc.ActiveView;
@@ -186,6 +190,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             Run("free_wall_ends", () => FreeEnds(walls));
             Run("wall_tops", () => Tops(doc, walls));
             Run("clashes", () => Clashes(doc, model));
+            Run("blind_openings", () => Blind(doc, model));
             int total = r.Properties().Sum(p => p.Value.Value<int?>("count") ?? 0);
             return new JObject { ["model"] = doc.Title, ["level"] = Parameters["level"], ["problems"] = total, ["checks"] = r,
                 ["next"] = total == 0 ? "No problems found by these checks" : "Look at each with see_view ids [...]; fix with modify_model" };
@@ -276,6 +281,42 @@ namespace RevitMCPCommandSet.Services.Fmc
             return List(walls.Where(w => w.get_Parameter(BuiltInParameter.WALL_TOP_IS_ATTACHED)?.AsInteger() != 1).Select(w => (w, b: w.get_BoundingBox(null))).Where(x => x.b != null)
                 .Where(x => roofs.Any(r => r.Min.X < x.b.Max.X && r.Max.X > x.b.Min.X && r.Min.Y < x.b.Max.Y && r.Max.Y > x.b.Min.Y && r.Max.Z > x.b.Max.Z + Tol && r.Min.Z < x.b.Max.Z + 2000 / 304.8))
                 .Select(x => new JObject { ["sentence"] = $"wall {x.w.Name} stops below the roof over it (top not attached)", ["ids"] = new JArray(x.w.Id.Value), ["top_mm"] = Math.Round(x.b.Max.Z * 304.8) }));
+        }
+
+        /// <summary>
+        /// Ogala night report: doors and windows placed in the same batch as a wall merge didn't cut the wall, with no
+        /// warning. A line across the wall through the middle of the opening still meeting the wall's solid means a blind one.
+        /// </summary>
+        private JObject Blind(Document doc, List<Element> model)
+        {
+            var items = new List<JObject>();
+            var opt = new Options { ComputeReferences = false, DetailLevel = ViewDetailLevel.Fine };
+            foreach (var fi in model.OfType<FamilyInstance>().Where(f => f.Host is Wall && (f.Category.Id.Value == (long)BuiltInCategory.OST_Doors || f.Category.Id.Value == (long)BuiltInCategory.OST_Windows)))
+            {
+                if (items.Count >= _limit) break;
+                try
+                {
+                    var wall = (Wall)fi.Host;
+                    if (!(fi.Location is LocationPoint lp)) continue;
+                    var type = doc.GetElement(fi.GetTypeId());
+                    double h = (fi.get_Parameter(BuiltInParameter.FAMILY_HEIGHT_PARAM) ?? type?.get_Parameter(BuiltInParameter.FAMILY_HEIGHT_PARAM)
+                        ?? type?.get_Parameter(BuiltInParameter.DOOR_HEIGHT) ?? type?.get_Parameter(BuiltInParameter.WINDOW_HEIGHT))?.AsDouble() ?? 3.0;
+                    XYZ mid = lp.Point + XYZ.BasisZ * (h / 2);
+                    XYZ n = wall.Orientation.Normalize();
+                    var across = Line.CreateBound(mid - n * wall.Width, mid + n * wall.Width);
+                    double inWall = 0;
+                    foreach (GeometryObject g in wall.get_Geometry(opt))
+                        if (g is Solid s && s.Volume > 0)
+                        {
+                            var hit = s.IntersectWithCurve(across, new SolidCurveIntersectionOptions());
+                            for (int i = 0; i < hit.SegmentCount; i++) inWall += hit.GetCurveSegment(i).Length;
+                        }
+                    if (inWall > wall.Width * 0.5)
+                        items.Add(new JObject { ["sentence"] = $"{fi.Category.Name} {fi.Name} doesn't cut its wall (blind opening): delete and place it again", ["ids"] = new JArray(fi.Id.Value, wall.Id.Value), ["at_mm"] = Mm(mid) });
+                }
+                catch (Exception) { /* an unusual family: skipped */ }
+            }
+            return List(items);
         }
 
         private JObject Clashes(Document doc, List<Element> model)
