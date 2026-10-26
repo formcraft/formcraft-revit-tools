@@ -3,6 +3,7 @@ import path from "node:path";
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
+import { revitTarget } from "../fmc/target.js";
 import { jobMaxMs } from "../utils/SocketClient.js";
 import { GuardConfig, configPath, loadConfig } from "../fmc/policy.js";
 import { COMMAND_GROUPS, LEVELS, Level, NEVER, USER_LINE, aiVerdict, generalState, modelParts, projectCode, projectKey } from "../fmc/aiuse.js";
@@ -203,7 +204,9 @@ export async function paneAi(command: string, input: Record<string, unknown>, by
       if (!setStatus(id, "approved", by) || !item) return { error: `No batch ${id} in the queue` };
       try {
         // The long-job route (owner 26 Oct): a batch Revit is still placing is waited for on its heartbeats, not 10 s.
-        const answer = await withRevitConnection((c) => c.sendCommand(item.command, item.params ?? {}, jobMaxMs(), { ceilingMs: jobMaxMs() }));
+        // Owner 26 Oct: with two Revits open the batch runs in the Revit that has its model (the pane names none)
+        const answer = await revitTarget.run(item.model || undefined, () =>
+          withRevitConnection((c) => c.sendCommand(item.command, item.params ?? {}, jobMaxMs(), { ceilingMs: jobMaxMs() })));
         // The AI asked for the new element ids from wait (owner 26 Oct): Revit's answer, kept short.
         setResult(id, "done", `${item.summary} · ${item.model} · ${JSON.stringify(answer ?? {}).slice(0, 4000)}`);
         return { approved: true, ran: true, result: "done", message: `Approved and done: ${item.summary} (${item.elements} elements) in ${item.model}.` };
@@ -221,7 +224,9 @@ export async function paneAi(command: string, input: Record<string, unknown>, by
     case "ai_reject": return setStatus(id, "rejected", by) ?? { error: `No batch ${id} in the queue` };
     case "ai_send": {
       // Owner 26 Oct: the person shows the AI a problem: the active view with their selection in red, the ids and a note
-      const facts = await withRevitConnection((c) => c.sendCommand("fmc_view_image", { selection: true, mode: "view", size: 1400 }));
+      // the Revit the person pressed Send in (the pane passes its process id)
+      const facts = await revitTarget.run(input.revit ? String(input.revit) : undefined, () =>
+        withRevitConnection((c) => c.sendCommand("fmc_view_image", { selection: true, mode: "view", size: 1400 })));
       const item = { id: Date.now().toString(36), at: new Date().toISOString(), by, note: String(input.note ?? ""), view: facts?.view ?? "", ids: facts?.ids ?? [], read: false };
       fs.mkdirSync(inboxDir(), { recursive: true });
       if (facts?.file && fs.existsSync(facts.file)) fs.copyFileSync(facts.file, win.join(inboxDir(), item.id + ".png"));
