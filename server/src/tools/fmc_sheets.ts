@@ -65,6 +65,7 @@ export const FMC_SHEETS_SHAPE = {
     .describe("The issue set; a sheet is in it when it is one of the sheet's sets (the register's PERMIT+TENDER+CONSTRUCTION is in PERMIT). Several (PERMIT+TENDER) take a sheet in any of them"),
   roles: z.array(z.string()).optional().default([]),
   fields: z.array(z.string()).optional().describe("compare: sheet parameters to count as title block fields"),
+  full: z.boolean().optional().describe("compare: completeness for every planned sheet, missing ones too (default: only the sheets in the model)"),
   title_block: z.string().optional().describe("create: title block type name (default: the first loaded)"),
   dry_run: z.boolean().optional().default(true),
 };
@@ -85,9 +86,16 @@ export async function runFmcSheets(args: FmcSheetsArgs) {
     const model = (facts?.sheets ?? []) as ModelSheet[];
     const diffs = compare(plan, model, args.roles);
 
-    if (args.action === "compare")
+    if (args.action === "compare") {
+      // Night test 26 Oct: a missing sheet was listed twice (as a difference and as a row of zeros); the short answer
+      // gives completeness for the sheets that exist and counts by status (full true: every row)
+      const all = completeness(plan, model);
+      const inModel = new Set(model.map((m) => m.number));
+      const byStatus = all.reduce((a, c) => ({ ...a, [c.status]: (a[c.status] ?? 0) + 1 }), {} as Record<string, number>);
       return reply({ model: facts?.model, register: args.register, planned: plan.length, in_model: model.length, differences: diffs,
-        completeness: completeness(plan, model), title_blocks: facts?.title_blocks ?? [], problems: [...reg.problems, ...bad] });
+        completeness: args.full ? all : all.filter((c) => inModel.has(c.number)), status_counts: byStatus,
+        title_blocks: facts?.title_blocks ?? [], problems: [...reg.problems, ...bad] });
+    }
 
     const items = args.action === "create"
       ? diffs.filter((d) => d.difference === "Missing" && numberOk(d.number)).map((d) => ({ number: d.number, name: d.register_name }))

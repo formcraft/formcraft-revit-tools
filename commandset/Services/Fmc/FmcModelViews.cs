@@ -203,7 +203,11 @@ namespace RevitMCPCommandSet.Services.Fmc
                     XYZ at = Vec(op["point_mm"], "elevation needs point_mm [x, y] in the plan");
                     ElevationMarker m = ElevationMarker.CreateElevationMarker(doc, vft, at, op.Value<int?>("scale") ?? 100);
                     created.Add(m.Id);
-                    v = m.CreateElevation(doc, plan.Id, op.Value<int?>("face") ?? 0); break;
+                    doc.Regenerate();
+                    // night test 26 Oct: "index is occupied": take the face asked for if free, else the first free one
+                    int face = op.Value<int?>("face") ?? 0;
+                    if (!m.IsAvailableIndex(face)) face = Enumerable.Range(0, m.MaximumViewCount).FirstOrDefault(m.IsAvailableIndex);
+                    v = m.CreateElevation(doc, plan.Id, face); break;
                 }
                 default: // callout
                 {

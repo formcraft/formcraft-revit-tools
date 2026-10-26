@@ -180,7 +180,12 @@ namespace RevitMCPCommandSet.Services.Fmc
                     }
                     t.Commit();
                 }
-                scope.Commit(new Quiet());
+                try { scope.Commit(new Quiet()); }
+                catch (Exception ex)
+                {
+                    throw new InvalidOperationException($"Revit refused the {(name == "wall_profile" ? "profile" : "sketch")} ({ex.Message}): each loop must be closed and not cross " +
+                        "itself or another loop; an opening inside a wall profile must not touch the outline (an opening at the base is part of the outline)");
+                }
             }
             return new JObject { [name] = e.Id.Value, ["curves"] = curves };
         }

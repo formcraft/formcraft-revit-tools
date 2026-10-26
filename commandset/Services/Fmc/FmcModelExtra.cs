@@ -66,7 +66,9 @@ namespace RevitMCPCommandSet.Services.Fmc
                 {
                     Level level = LevelOf(doc, op["level"]);
                     var types = new FilteredElementCollector(doc).OfClass(typeof(BuildingPadType)).ToElementIds();
-                    var bp = BuildingPad.Create(doc, TypeFor(doc, op, types, types.FirstOrDefault() ?? throw new InvalidOperationException("the model has no building pad type")), level.Id,
+                    // night test 26 Oct: a model with no pad type gets Revit's default one
+                    if (types.Count == 0) types = new List<ElementId> { BuildingPadType.CreateDefault(doc).Id };
+                    var bp = BuildingPad.Create(doc, TypeFor(doc, op, types, types.First()), level.Id,
                         Loops(op).Select(l => CurveLoop.CreateViaTransform(l, Transform.CreateTranslation(new XYZ(0, 0, level.Elevation)))).ToList());
                     created.Add(bp.Id);
                     return new JObject { ["pad"] = bp.Id.Value };
