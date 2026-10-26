@@ -42,6 +42,7 @@ too much for users. Now there is one switch, **AI On / AI Off / Stopped**, at th
 
 - **Any user** switches it, **per project** (the project code in the model's name; a name without one stays Off). The
   first use creates the `ai_modeller` section in fmc_guard.json with safe defaults (everything off). Stop AI overrides it.
+- **Mode** (`ai_modeller.mode` in fmc_guard.json): **testing** (the pilot, owner 26 Oct) lets AI work in any file, keyed by the FMC project code, else the project folder, else the file name; **strict** (the default, for distribution) needs an FMC-compliant model in a project's 01_WIP. Never central, approvals, limits, Stop AI and the admin-only list apply in both.
 - **On:** AI may model in the active WIP model (a person's local copy, never central), every batch waits for one-click
   approve or reject in the pane, and the limits apply (50 per batch, 500 per model a day, off after 3 failed batches).
   Covered, from the kit rulebook's `general` block: data, views, placing elements and fixtures, walls, floors, ceilings

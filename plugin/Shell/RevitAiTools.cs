@@ -70,7 +70,9 @@ namespace revit_mcp_plugin.Shell
         {
             AiPolicy p = await StatusAsync();
             if (p.Model.Length == 0) return ToolResult.Refused("Open the project model first: the AI switch is set per project.");
-            CliResult r = await ServerCli.RunAsync("ai_general", new JObject { ["on"] = on, ["document"] = p.Model });
+            // No project key: strict mode and a non-compliant model (testing mode keys every file).
+            if (p.Project.Length == 0) return ToolResult.Refused(p.GeneralLine);
+            CliResult r = await ServerCli.RunAsync("ai_general", new JObject { ["on"] = on, ["project"] = p.Project });
             if (!r.Ok) return ToolResult.Refused(string.Join(" ", r.Reasons()));
             var result = new ToolResult { Ok = true };
             result.Messages.Add(new ToolMessage(on ? ChipKind.Good : ChipKind.Info, r.Body.Value<string>("line") ?? (on ? "AI is on." : "AI is off.")));

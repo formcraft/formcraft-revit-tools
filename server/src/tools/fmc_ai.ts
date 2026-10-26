@@ -4,7 +4,7 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, configPath, loadConfig } from "../fmc/policy.js";
-import { COMMAND_GROUPS, LEVELS, Level, NEVER, USER_LINE, aiVerdict, generalState, modelParts, projectCode } from "../fmc/aiuse.js";
+import { COMMAND_GROUPS, LEVELS, Level, NEVER, USER_LINE, aiVerdict, generalState, modelParts, projectCode, projectKey } from "../fmc/aiuse.js";
 import { formcraftDir, loadAiConfig, loadRulebook, loadState, readQueue, setStatus } from "../fmc/aiuse_io.js";
 
 const win = path.win32;
@@ -41,14 +41,16 @@ export function policySummary(config: GuardConfig, active: any) {
   }) : [];
   const { project, role } = active?.title ? modelParts(active.title) : { project: "", role: "" };
   const p = ai?.projects?.[project] ?? {};
-  const state3 = active?.title ? generalState(ai, active.title) : ai?.stop ? "Stopped" : "Off";
+  const state3 = active?.title ? generalState(ai, active.title, active.path ?? "") : ai?.stop ? "Stopped" : "Off";
+  // Testing mode keys a non-compliant model by its project folder or file name; strict mode needs the FMC project code.
+  const key = active?.title ? projectKey(active.title, active.path ?? "", ai?.mode) : "";
   return {
     // The one setting users see (owner 26 Oct): the plain state and line for the open model's project.
     general: {
-      state: state3, project: project || null, section: ai ? "present" : "missing (the AI switch creates it)",
+      state: state3, project: key || null, mode: ai?.mode ?? "strict", compliant: !active?.title || !!projectCode(active.title), section: ai ? "present" : "missing (the AI switch creates it)",
       rulebook_general: !!book?.general, covers: book?.general?.groups ?? [],
       line: state3 === "On" ? "AI is on for this project: every change waits for your approval." : state3 === "Stopped" ? USER_LINE.stopped
-        : active?.title && !projectCode(active.title) ? "This model's name has no FMC project code, so AI stays off for it." : USER_LINE.off,
+        : active?.title && !key ? USER_LINE.notCompliant : USER_LINE.off,
     },
     on: !!ai && !!book && !ai.stop && (p.on ?? ai.on), stop: ai?.stop ?? false,
     rulebook: book ? file : null, rulebook_read: file ? `${win.basename(file)}${section ? ` (${section})` : " (no AI-modeller section)"}` : null,
@@ -101,7 +103,7 @@ export function paneAi(command: string, input: Record<string, unknown>, by: stri
       if (typeof input.on !== "boolean") return { error: "Give on: true or false" };
       const project = typeof input.project === "string" && input.project ? input.project
         : typeof input.document === "string" ? projectCode(input.document) : "";
-      if (!project) return { error: "This model's name has no FMC project code ([Project]-[Originator]-…), so AI stays off for it." };
+      if (!project) return { error: USER_LINE.notCompliant };
       const file = configPath();
       let raw: any = {};
       try { raw = JSON.parse(fs.readFileSync(file, "utf8").replace(/^\uFEFF/, "")); } catch { return { error: `Can't read ${file}: the AI switch needs the guard file` }; }

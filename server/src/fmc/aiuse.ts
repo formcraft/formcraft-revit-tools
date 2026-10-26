@@ -44,6 +44,12 @@ export interface AiModellerConfig {
   involvement?: number;
   /** The General AI switch, firm default (per project below wins). Off unless set. */
   general?: boolean;
+  /**
+   * "strict" (default, for distribution): FMC-compliant models in a project's 01_WIP only. "testing" (owner 26 Oct, the
+   * pilot): any file; the switch is keyed by the FMC project code, else the project folder, else the file name. Never
+   * central, approvals, limits, Stop AI and the admin-only list apply in both.
+   */
+  mode?: "strict" | "testing";
   /** Per project code: its own General switch, and (admin, Advanced) its own switch, involvement and levels. */
   projects: Record<string, { general?: boolean; on?: boolean; involvement?: number; levels?: Record<string, Level> }>;
   /** Autonomy level per group (firm default); a group not listed is at Suggest. */
@@ -77,6 +83,8 @@ export const USER_LINE = {
   admin: (what: string) => `Only an admin can do this (${what}).`,
   cant: "AI can't do this.",
   where: "AI works only in your local WIP copy of a project model.",
+  // Owner 26 Oct: a non-compliant project is made compliant or AI stays off.
+  notCompliant: "Not activated: this model isn't FMC-compliant (name [Project]-[Originator]-[Volume]-[Level]-[Type]-[Role]-[Number].rvt in a project's 01_WIP). Make it compliant to use AI: Save as with an FMC name (Files › Save as), or Project start for a new project.",
   approve: "Waiting for your approval: approve or reject the batch in the pane.",
 };
 
@@ -156,7 +164,7 @@ export function parseConfig(raw: unknown): AiModellerConfig | null {
   o.on = o.on === true;
   const levels: Record<string, Level> = {};
   for (const [k, v] of Object.entries((o.levels ?? {}) as Record<string, unknown>)) if (LEVELS.includes(v as Level)) levels[k] = v as Level;
-  return { on: o.on, stop: o.stop === true, general: o.general === true ? true : undefined,
+  return { on: o.on, stop: o.stop === true, general: o.general === true ? true : undefined, mode: o.mode === "testing" ? "testing" : "strict",
     involvement: typeof o.involvement === "number" ? o.involvement : undefined,
     projects: o.projects && typeof o.projects === "object" ? o.projects : {}, levels };
 }
@@ -204,11 +212,19 @@ export function projectCode(title: string): string {
   return parts.length >= 7 && /^[A-Z0-9]{2,6}$/.test(parts[0]) ? parts[0] : "";
 }
 
-/** The General AI switch for a model: On, Off or Stopped (Stop AI wins). A model without a project code is Off. */
-export function generalState(ai: AiModellerConfig | null, title: string): "On" | "Off" | "Stopped" {
+/** What the switch is remembered by: the FMC project code; in testing mode also the project folder, else the file name. */
+export function projectKey(title: string, docPath: string, mode: "strict" | "testing" = "strict"): string {
+  const code = projectCode(title);
+  if (code || mode !== "testing") return code;
+  const folder = projectFolderOf(docPath);
+  return folder ? win.basename(folder) : title.replace(/\.(rvt|rfa|rte)$/i, "");
+}
+
+/** The General AI switch for a model: On, Off or Stopped (Stop AI wins). No key (strict mode, not compliant): Off. */
+export function generalState(ai: AiModellerConfig | null, title: string, docPath = ""): "On" | "Off" | "Stopped" {
   if (!ai) return "Off";
   if (ai.stop) return "Stopped";
-  const project = projectCode(title);
+  const project = projectKey(title, docPath, ai.mode);
   if (!project) return "Off";
   return (ai.projects[project]?.general ?? ai.general) === true ? "On" : "Off";
 }
@@ -227,15 +243,15 @@ export function aiVerdict(ask: AiAsk, cfg: GuardConfig, book: AiRulebook | null,
   const d = ask.doc;
   if (d.isFamily || !d.path) return no("Not a project model: the normal lock already decides families and new documents", { group, user: USER_LINE.where });
   if (d.isWorkshared && d.isLocal !== true) return no(`${d.title} is a central model (or its local status is unknown): AI works only in a person's local WIP copy`, { group, user: USER_LINE.where });
-  const where = checkWritePath(d.path, cfg, { checkName: false });
-  if (!where.ok || !/\\01_WIP\\/i.test(win.normalize(d.path))) return no(`${d.title} isn't in a WIP folder: AI works only in WIP (${where.reasons[0] ?? "outside 01_WIP"})`, { group, user: USER_LINE.where });
+  const where = ai.mode === "testing" ? { ok: true, reasons: [] as string[] } : checkWritePath(d.path, cfg, { checkName: false });
+  if (ai.mode !== "testing" && (!where.ok || !/\\01_WIP\\/i.test(win.normalize(d.path)))) return no(`${d.title} isn't in a WIP folder: AI works only in WIP (${where.reasons[0] ?? "outside 01_WIP"})`, { group, user: USER_LINE.where });
 
   const { project, role } = modelParts(d.title);
   const p = ai.projects[project] ?? {};
 
   // The General AI switch: one On/Off per project. On covers the rulebook's general groups at its level (approval),
   // and skips bands and per-group levels (the admin's Advanced panel). Limits and Stop AI still apply.
-  if (generalState(ai, d.title) === "On") {
+  if (generalState(ai, d.title, d.path) === "On") {
     if (!book.general) return no("The General AI switch is on, but the kit rulebook has no general section (a kit change request)", { group, user: USER_LINE.kit, via: "general" });
     if (!book.general.groups.includes(group)) return no(`${book.groups[group].name} isn't covered by the General AI switch: an admin decides it in Advanced`, { group, user: USER_LINE.admin(book.groups[group].name.toLowerCase()), via: "general" });
     const glevel = book.general.level;

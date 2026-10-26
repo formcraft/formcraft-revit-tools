@@ -5,7 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { DEFAULT_CONFIG, GuardConfig } from "./policy.js";
-import { AiModellerConfig, aiVerdict, batchKey, batchSize, parseConfig, parseRulebook, recordBatch, today, USER_LINE, generalState, projectCode } from "./aiuse.js";
+import { AiModellerConfig, aiVerdict, batchKey, batchSize, parseConfig, parseRulebook, recordBatch, today, USER_LINE, generalState, projectCode, projectKey } from "./aiuse.js";
 
 // The proposed kit rulebook is the fixture, so the tests follow what the kit would hold.
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -64,6 +64,20 @@ test("General AI switch: per project, Stop AI overrides it, limits still apply, 
   assert.equal(generalState({ ...g, stop: true }, "F26001-FMC-ZZ-ZZ-M3-A-0001"), "Stopped");
   assert.equal(generalState(ai({ general: true }), "Project1"), "Off", "no FMC project code: Off even when the firm default is On");
   assert.equal(projectCode("Project1"), "");
+  // Owner 26 Oct: a non-compliant model stays off, whatever its folder, until it is made compliant.
+  assert.equal(projectCode("OGL_A_MainHouse_GF_LOD400"), "");
+  assert.equal(generalState(ai({ general: true, projects: { OGL_A_MainHouse_GF_LOD400: { general: true } } }), "OGL_A_MainHouse_GF_LOD400"), "Off");
+  assert.match(USER_LINE.notCompliant, /^Not activated: this model isn't FMC-compliant/);
+  // Testing mode (owner 26 Oct): any file; keyed by project folder, else file name. Strict (distribution): compliant only.
+  const ogala = "D:\\Fomcraft\\FMC_PROJECTS_27\\THE OGALA RESIDENCE\\01_WIP\\OGL_A_MainHouse_GF_LOD400.rvt";
+  assert.equal(projectKey("OGL_A_MainHouse_GF_LOD400", ogala, "testing"), "THE OGALA RESIDENCE");
+  assert.equal(projectKey("Sketch", "C:\\Temp\\Sketch.rvt", "testing"), "Sketch");
+  assert.equal(projectKey("OGL_A_MainHouse_GF_LOD400", ogala, "strict"), "");
+  const t = ai({ on: false, mode: "testing", projects: { Sketch: { general: true } } });
+  const sketch = { title: "Sketch", path: "C:\\Temp\\Sketch.rvt", isFamily: false, isWorkshared: false };
+  assert.equal(aiVerdict(ask("create_level", { doc: sketch }), cfg, book, t, empty).needs_approval, true, "testing: any file, still approved");
+  assert.equal(aiVerdict(ask("create_level", { doc: sketch }), cfg, book, { ...t, mode: "strict" }, empty).user, USER_LINE.where, "strict: outside a project WIP stays off");
+  assert.equal(aiVerdict(ask("tag_rooms", { doc: { ...sketch, isWorkshared: true, isLocal: false } }), cfg, book, t, empty).user, USER_LINE.where, "never central, even in testing");
   assert.equal(projectCode("F26001-FMC-ZZ-ZZ-M3-A-0001.rvt"), "F26001");
 });
 
