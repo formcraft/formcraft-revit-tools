@@ -41,6 +41,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                         Line ln = Line.CreateBound(pts[i], pts[(i + 1) % pts.Count]);
                         CurveElement c = name == "detail_line" ? (CurveElement)doc.Create.NewDetailCurve(v, ln) : doc.Create.NewModelCurve(ln, sp);
                         if (style != null) c.LineStyle = style;
+                        if (name == "model_line" && op.Value<bool?>("reference_line") == true && c is ModelCurve mc) mc.ChangeToReferenceLine();
                         created.Add(c.Id);
                     }
                     return new JObject { ["lines"] = n };

@@ -145,7 +145,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     });
                     return new JObject { ["load"] = title ?? "the open project" };
                 }
-                default: return null;
+                default: return StructureOp(doc, name, op, made, created) ?? MepOp(doc, name, op, made, created) ?? MoreOp(doc, name, op, made, created) ?? ManageOp(doc, name, op, made, created) ?? ExtraOp(doc, name, op, made, created);
             }
         }
 

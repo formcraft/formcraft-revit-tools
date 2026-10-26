@@ -41,6 +41,9 @@ test("Approval details (owner 26 Oct): a person sees what approving lets AI do, 
   const fam = explain("fmc_model_edit", { ops: [{ op: "family_param", name: "Width", type: "Length", value: 900 }, { op: "extrusion", end_mm: 600, solid: false }] });
   assert.deepEqual(fam.slice(0, 2), ["1. Family parameter Width (Length, type) = 900", "2. Void extrusion, depth 600 mm"]);
 
+  assert.deepEqual(explain("fmc_model_edit", { ops: [{ op: "isolated_foundation", level: "GF", points_mm: [[0, 0], [3000, 0]] }] })[0], "1. isolated foundation, 2 points (level GF)");
+  assert.match(explain("fmc_revit_file", { action: "sync" })[0], /central model for everyone/);
+
   const code = explain("send_code_to_revit", { code: "var w = doc.GetElement(id);\n\nw.Pinned = false;" });
   assert.deepEqual(code, ["Runs Revit API code (2 lines, in one transaction):", "   var w = doc.GetElement(id);", "   w.Pinned = false;"]);
   assert.ok(explain("delete_element", { elementIds: Array.from({ length: 40 }, (_, i) => i) }).length <= 14, "long lists are capped");

@@ -29,7 +29,9 @@ export async function aiGate(command: string, params: any, active: (DocInfo & { 
   const elements = batchSize(params);
   const approval = approvalFor(command, params, active.path, env);
   // Auto-approve (owner 26 Oct): testing mode only; the batch runs now and is still listed in Approvals.
-  const auto = !approval && ai.mode === "testing" && ai.auto_approve === true;
+  // Sync and relinquish change the central model for everyone: a person approves those even with auto-approve.
+  const shared = command === "fmc_revit_file" && ["sync", "relinquish"].includes(String(params?.action));
+  const auto = !approval && !shared && ai.mode === "testing" && ai.auto_approve === true;
   const v = aiVerdict({ command, doc: active, elements, approved: !!approval || auto }, cfg, book, ai, loadState(env));
   if (!v.ok) {
     let reason = `AI-assisted modeller: ${v.reasons[0]}.`;

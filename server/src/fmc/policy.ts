@@ -105,6 +105,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_post_command",
   // new_family (owner 26 Oct): a family file made from a template and opened
   "fmc_family_new",
+  // revit_file (owner 26 Oct): save, export, link, import, sync
+  "fmc_revit_file",
   // Circuits (KISIC 4.4): devices grouped into circuits on a board, the kit's distribution system set; the dry run rolls back
   "fmc_circuits_create",
 ]);

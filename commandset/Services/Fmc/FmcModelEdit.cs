@@ -307,7 +307,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     var pts = Points(op["outline_mm"], "opening needs outline_mm, a closed loop of [x, y]");
                     var loop = new CurveArray();
                     for (int i = 0; i < pts.Count; i++) loop.Append(Line.CreateBound(pts[i], pts[(i + 1) % pts.Count]));
-                    Opening o = doc.Create.NewOpening(doc.GetElement(host), loop, true);
+                    Opening o = doc.Create.NewOpening(doc.GetElement(host), loop, !(op.Value<bool?>("vertical") ?? false));
                     created.Add(o.Id);
                     return new JObject { ["opening"] = o.Id.Value };
                 }
