@@ -52,6 +52,8 @@ export interface QueueItem {
   created: string; status: "pending" | "approved" | "rejected" | "used"; by?: string; at?: string;
   /** Owner 26 Oct: an approved batch runs from the pane; its outcome, for the person and the AI. */
   result?: "done" | "failed" | "running"; detail?: string; ran_at?: string;
+  /** Owner 26 Oct: what approving lets AI do, in plain lines (fmc/explain.ts). */
+  details?: string[];
 }
 
 /** One queue item with its parameters (what the batch sends to Revit). */
@@ -81,14 +83,14 @@ export function readQueue(env: NodeJS.ProcessEnv = process.env): QueueItem[] {
 
 /** Queues a batch for approval (once: the same batch keeps its id). */
 export function enqueue(command: string, params: unknown, docPath: string, model: string, group: string, elements: number,
-  env: NodeJS.ProcessEnv = process.env, now = new Date()): QueueItem {
+  env: NodeJS.ProcessEnv = process.env, now = new Date(), details?: string[]): QueueItem {
   const id = batchKey(command, params, docPath);
   const file = queueFile(id, env);
   let again = false;
   try { const old = JSON.parse(fs.readFileSync(file, "utf8")) as QueueItem; if (old.status === "pending" || old.status === "approved") return old; again = old.status === "used"; } catch { /* new */ }
   // The same batch after it already ran: the person sees it would place everything a second time.
   const summary = (again ? "AGAIN, this exact batch already ran once: " : "") + summarise(command, params);
-  const item: QueueItem = { id, command, model, path: docPath, group, elements, summary, created: now.toISOString(), status: "pending" };
+  const item: QueueItem = { id, command, model, path: docPath, group, elements, summary, created: now.toISOString(), status: "pending", ...(details ? { details } : {}) };
   fs.mkdirSync(queueDir(env), { recursive: true });
   fs.writeFileSync(file, JSON.stringify({ ...item, params }, null, 2));
   return item;

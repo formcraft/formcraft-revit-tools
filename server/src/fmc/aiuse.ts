@@ -311,6 +311,9 @@ export const today = (now: Date = new Date()) => now.toISOString().slice(0, 10);
 
 /** How many elements a batch touches: the longest list in its parameters (at least 1). */
 export function batchSize(params: unknown): number {
+  // modify_model: every element an op names counts (98 rooms to delete are 98, not one op)
+  const ops = (params as { ops?: Array<{ ids?: unknown[] }> })?.ops;
+  if (Array.isArray(ops)) return Math.max(1, ops.reduce((n, o) => n + (Array.isArray(o?.ids) ? o.ids.length : 1), 0));
   let n = 0;
   const walk = (v: unknown, depth: number) => {
     if (Array.isArray(v)) { n = Math.max(n, v.length); if (depth < 2) v.forEach((x) => walk(x, depth + 1)); }

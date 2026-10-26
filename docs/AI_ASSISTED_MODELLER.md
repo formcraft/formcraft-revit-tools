@@ -170,3 +170,15 @@ A short briefing for modellers and Discipline Leads:
 - how to review a batch
 - how to stop it
 - that AI changes are their work once accepted
+
+## Editing like a person: modify_model (owner 26 Oct)
+
+With full access, `modify_model` runs a list of ops as one batch: one approval, one Undo, all or nothing. Ops: delete,
+move, set_param, change_type, attach (wall top/base to a roof, floor or ceiling), duplicate_type (with layers),
+create_roof (footprint, slope per edge), create_railing, create_stair (runs, landings, railings), room_separation,
+opening, shaft. `"$n"` names the first element op n made, so a roof and the walls attached to it go in one batch.
+`dry_run` rolls back and lists what would change. `get_element_geometry` reads exact locations and outlines (read-only).
+
+Every approval now says what it does, by name (`server/src/fmc/explain.ts`): the types and levels, how many of each,
+the elements a delete removes, a type change that affects every element of the type, and the first lines of any code.
+Deletes, type-wide changes and code show in amber. An approval runs once: it is used up before Revit starts.

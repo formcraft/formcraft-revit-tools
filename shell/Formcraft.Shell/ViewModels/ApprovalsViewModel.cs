@@ -46,11 +46,15 @@ namespace Formcraft.Shell.ViewModels
             if (_running.Length > 0) waiting.Add(new NoteSetting("Running " + _running + "… The page updates when it's done.", ChipKind.Info));
             if (pending.Count == 0) waiting.Add(new NoteSetting("Nothing is waiting. When AI prepares a change, it waits here for your approval.", ChipKind.Grey));
             foreach (var q in pending.Take(20))
+            {
+                // What approving lets AI do (owner 26 Oct): types, levels, counts, the elements a delete removes, the code.
+                if (q.Details.Count > 0) waiting.Add(new NoteSetting(string.Join(Environment.NewLine, q.Details), q.Details.Any(d => d.Contains("DELETE") || d.Contains("ON THEIR TYPE") || d.StartsWith("Runs Revit API code")) ? ChipKind.Warn : ChipKind.Info));
                 waiting.Add(new ButtonsSetting(q.Summary + " · " + q.Model, new[]
                 {
                     new SettingButton("Approve", new AsyncCommand(() => Decide(q, true), _status), primary: true),
                     new SettingButton("Reject", new AsyncCommand(() => Decide(q, false), _status)),
                 }, hint: q.Id + " · " + q.Elements + " elements" + (q.EstimateS > 0 ? " · about " + q.EstimateS + " s" : "") + " · approving runs it now"));
+            }
             waiting.Add(_messages);
             groups.Add(new SettingsGroup("Waiting for your approval", waiting.ToArray()));
 
@@ -58,7 +62,7 @@ namespace Formcraft.Shell.ViewModels
             if (done.Count > 0)
                 groups.Add(new SettingsGroup("Recent",
                     new TableSetting("", new[] { "Batch", "What", "Status", "Result" },
-                        done.Select(q => new TableRow(q, q.Id, q.Summary, q.Status, q.Result.Length > 0 ? q.Result + (q.Detail.Length > 0 ? ": " + q.Detail : "") : "")))));
+                        done.Select(q => new TableRow(q, q.Id, q.Summary, q.Status, q.Result.Length > 0 ? q.Result + (q.Detail.Length > 0 ? ": " + (q.Detail.Length > 160 ? q.Detail.Substring(0, 160) + "…" : q.Detail) : "") : "")))));
             groups.Add(new SettingsGroup("",
                 new ButtonsSetting("", new[] { new SettingButton("Refresh", new AsyncCommand(RefreshAsync, _status)) })));
             Groups = groups;

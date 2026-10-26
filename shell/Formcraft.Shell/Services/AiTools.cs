@@ -30,6 +30,8 @@ namespace Formcraft.Shell.Services
         public string Detail { get; set; } = "";
         /// <summary>Estimated seconds, from past runs of the same command (0 when unknown).</summary>
         public int EstimateS { get; set; }
+        /// <summary>What approving lets AI do, in plain lines (owner 26 Oct), from the server's explainer.</summary>
+        public System.Collections.Generic.List<string> Details { get; set; } = new System.Collections.Generic.List<string>();
     }
 
     /// <summary>The policy as the server applies it (fmc_ai status), with the reasons it is Off when it is.</summary>
