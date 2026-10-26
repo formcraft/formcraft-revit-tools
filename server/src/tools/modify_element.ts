@@ -7,7 +7,9 @@ function reply(body: unknown, isError = false) {
 }
 
 export const MODEL_EDIT_OPS = ["copy", "rotate", "mirror", "join", "unjoin", "switch_join", "cut", "uncut", "pin", "unpin", "delete", "move", "set_param", "change_type", "attach", "duplicate_type", "create_roof",
-  "create_railing", "create_stair", "room_separation", "opening", "shaft"] as const;
+  "create_railing", "create_stair", "room_separation", "opening", "shaft",
+  "create_view", "duplicate_view", "set_view", "override", "hide", "unhide", "create_filter", "create_template", "apply_template",
+  "create_sheet", "place_view", "open_view"] as const;
 
 export const MODIFY_MODEL_DESCRIPTION =
   "Formcraft: edit the model like a person does in Revit (owner 26 Oct), a list of ops as ONE batch: one approval, one " +
@@ -34,6 +36,21 @@ export const MODIFY_MODEL_DESCRIPTION =
   "room_separation {level, lines_mm: [[[x, y], [x, y]], ...]} · " +
   "opening {host (floor, ceiling or roof id), outline_mm} · " +
   "shaft {base_level, top_level, outline_mm}. " +
+  "Views and sheets (a view is its id, name, sheet number or \"$n\"): " +
+  "create_view {kind: floor_plan|ceiling_plan|structural_plan|section|elevation|3d|drafting|callout, name?, type_name?, " +
+  "level (plans), line_mm + depth_mm? + bottom_mm? + top_mm? (section: cut line in plan, it looks to the line's left), " +
+  "point_mm + face 0-3 + plan? (elevation; the answer gives the direction), parent + box_mm (callout), section_box_mm? (3d), " +
+  "and any set_view field} · " +
+  "duplicate_view {view, mode: duplicate|with_detailing|as_dependent, name?} · " +
+  "set_view {view, rename?, scale?, detail_level: Coarse|Medium|Fine, discipline?, template (name or none), crop_mm " +
+  "[[x, y], [x, y]], crop_visible?, view_range_mm {top, cut, bottom, depth} (offsets from the level), section_box_mm?, params?} · " +
+  "override {view, ids | categories (Walls or OST_Walls) | filter, color [r, g, b], fill? (default true), line_weight?, " +
+  "transparency?, halftone?, visible? (filters)} · " +
+  "hide / unhide {view, ids?, categories?} · " +
+  "create_filter {name, categories, rules?: [{param, op: equals|not_equals|contains|begins_with|greater|less, value | value_mm}]} · " +
+  "create_template {view, name} · apply_template {template, views, once? (apply its settings without linking)} · " +
+  "create_sheet {number, name, title_block?} · place_view {sheet, view, point_mm? (on the sheet; default its centre)} · " +
+  "open_view {view} (shown when the batch is done). " +
   "dry_run true runs it and rolls back, answering what would change: do that first for deletes. Pinned elements and " +
   "elements another user owns are refused. Use get_element_geometry first to line new work up with existing elements.";
 

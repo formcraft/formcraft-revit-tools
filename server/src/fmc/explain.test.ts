@@ -31,6 +31,10 @@ test("Approval details (owner 26 Oct): a person sees what approving lets AI do, 
   assert.match(more[2], /^2\. Copy 1 elements 4 times, by 3000, 0, 0 mm/);
   assert.deepEqual(explain("fmc_post_command", { command: "RoofByExtrusion" }), ["Starts Revit's RoofByExtrusion command, as if clicked on the ribbon"]);
 
+  const views = explain("fmc_model_edit", { ops: [{ op: "create_view", kind: "floor_plan", name: "FF Plan", level: "FF +3.40", scale: 50 },
+    { op: "create_sheet", number: "A-101", name: "First floor" }, { op: "place_view", sheet: "$2", view: "$1" }] });
+  assert.deepEqual(views.slice(0, 3), ['1. New floor plan "FF Plan" on FF +3.40, 1:50', "2. New sheet A-101 First floor", "3. Place $1 on sheet $2"]);
+
   const code = explain("send_code_to_revit", { code: "var w = doc.GetElement(id);\n\nw.Pinned = false;" });
   assert.deepEqual(code, ["Runs Revit API code (2 lines, in one transaction):", "   var w = doc.GetElement(id);", "   w.Pinned = false;"]);
   assert.ok(explain("delete_element", { elementIds: Array.from({ length: 40 }, (_, i) => i) }).length <= 14, "long lists are capped");
