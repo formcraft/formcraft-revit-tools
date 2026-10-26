@@ -1,3 +1,5 @@
+import { newBook } from "../fmc/projectbook.js";
+import { bookPaths, projectFolderFrom, saveBook } from "../fmc/projectbook_io.js";
 import fs from "node:fs";
 import path from "node:path";
 import { z } from "zod";
@@ -78,6 +80,11 @@ export async function runFmcProject(args: FmcProjectArgs) {
     steps.push({ step: "Folder tree", ok: true, detail: `${plan.folders.length} folders` });
     fs.writeFileSync(plan.manifest_path, JSON.stringify(plan.manifest, null, 2));
     steps.push({ step: "Project manifest", ok: true, detail: plan.manifest_path });
+    // The project book (docs/PROJECT_BOOK.md): team, decisions, progress and checklists, from the first day.
+    const folder = projectFolderFrom(plan.manifest_path);
+    const made = saveBook(config, folder, newBook(plan.manifest as { project: string; stage?: string }, plan.manifest_path, process.env.USERNAME || "unknown"),
+      { at: new Date().toISOString(), by: process.env.USERNAME || "unknown", kind: "person", action: "create" });
+    steps.push({ step: "Project book", ok: made.ok, detail: made.ok ? bookPaths(folder).book : made.reason ?? "" });
     log(config, "project_start", false, plan.manifest_path, "done", `${plan.folders.length} folders and the manifest`);
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);

@@ -1,0 +1,41 @@
+{
+  "schema": "fmc-roles/0.1",
+  "about": "PROPOSED for the kit (03_Master_Data\\FMC_Roles.json, beside the FMC_Rulebook folder), owner 26 Oct 2026. Role playbooks: what each role does, who reviews it, and the checklist per stage. People and AI agents use the same playbooks; an agent never takes a role ranked above the person it assists. Checklist items point at rule IDs in the kit's rulebooks (written once, used by every role); an item whose rules are script-checked passes from the latest QA run, the others need a person's tick. Only the Modeller design-stage list is filled in (pilot); the BIM Manager approves the rest through the kit change process.",
+  "roles": {
+    "Modeller": {
+      "rank": 1,
+      "reviewer": "BIM Coordinator",
+      "duties": "Models to the brief and the kit: kit families and types, named views and levels, clean warnings, nothing imported or in-place without a reason.",
+      "checklists": {
+        "design": [
+          { "id": "MOD-D-01", "title": "Model file named to the standard", "rules": ["NAM-001", "NAM-002", "NAM-007"] },
+          { "id": "MOD-D-02", "title": "Levels and views named to the standard", "rules": ["NAM-021", "NAM-023"] },
+          { "id": "MOD-D-03", "title": "No default or uncoded type names", "rules": ["NAM-037", "QA-003", "QA-010"] },
+          { "id": "MOD-D-04", "title": "Warnings under the project threshold", "rules": ["QA-002"] },
+          { "id": "MOD-D-05", "title": "No CAD imports or in-place families without a reason", "rules": ["QA-006", "QA-007"] },
+          { "id": "MOD-D-06", "title": "Rooms placed and bounded", "rules": ["QA-005"] },
+          { "id": "MOD-D-07", "title": "Model checked against the brief (spaces, areas, client requirements)", "rules": [] },
+          { "id": "MOD-D-08", "title": "WIP to Shared checklist done before sharing", "rules": ["QA-017"] }
+        ]
+      }
+    },
+    "QS": {
+      "rank": 2,
+      "reviewer": "BIM Manager",
+      "duties": "Quantities and costs from the model and the kit's master data; flags uncoded or unmeasurable elements.",
+      "checklists": {}
+    },
+    "BIM Coordinator": {
+      "rank": 3,
+      "reviewer": "BIM Manager",
+      "duties": "Reviews modellers' work, coordinates links, runs QA, prepares sharing.",
+      "checklists": {}
+    },
+    "BIM Manager": {
+      "rank": 4,
+      "reviewer": "BIM Manager",
+      "duties": "Owns standards, the kit, roles and permissions; approves gates.",
+      "checklists": {}
+    }
+  }
+}

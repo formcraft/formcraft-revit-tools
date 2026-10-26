@@ -38,6 +38,11 @@ first: the recipe tree (`PLAN_RECIPE_TREE.md`), Mark & Review (`PLAN_MARK_REVIEW
 - **A morning card:** what the AI and the night runs did, what waits for whom, which gates failed; made offline.
 - **BCF everywhere:** consultants on other software exchange tickets without the plugin.
 
+- **Master and worker windows (owner, 26 Oct):** several Revit windows (people or AI threads) each produce their change
+  set as a recipe; the master window replays it in one transaction after review, so work merges without worksharing.
+  AI work is already tool calls (recipes), so an AI worker never touches the master file. Hard part: turning a person's
+  manual edits into a recipe. Builds on the recipe tree, the hub's identity map and the approval queue.
+
 ## The hub
 - **Power BI:** live dashboards of quantities, cost, tickets and gates (H2).
 - **4D from the tree:** the recipe tree's build order becomes a Navisworks timeline.

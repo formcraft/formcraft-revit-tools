@@ -16,6 +16,7 @@ import { parseSharedParameters, SpParam } from "./specs.js";
 import { Keynote, parseKeynotes } from "./library.js";
 import { parseRulebook as parseQaRulebook } from "./rules.js";
 import { parseConfig as parseAiConfig } from "./aiuse.js";
+import { parseBook, summary as bookSummary } from "./projectbook.js";
 import type { RevitInstance } from "./connect.js";
 
 // ---------- paths: Windows paths on the PC, POSIX paths in tests ----------
@@ -470,7 +471,10 @@ export function overview(deps: ContextDeps) {
   let project: unknown = null;
   if (proj) {
     const m = cached(proj.manifest, (raw) => JSON.parse(raw), "project");
-    project = m ? { code: m.project, stage: m.stage, issue_set: m.issue_set, roles: m.roles, standard: m.standard, models: (m.models ?? []).length, manifest: proj.manifest }
+    const bookFile = proj.manifest.replace(/FMC_Project\.json$/i, "FMC_Project_Book.json");
+    const pb = cached(bookFile, (raw) => parseBook(raw).book, "project book");
+    const book = pb ? bookSummary(pb) : "none yet: read and keep it with fmc_projectbook (create, dry run first)";
+    project = m ? { code: m.project, stage: m.stage, issue_set: m.issue_set, roles: m.roles, standard: m.standard, models: (m.models ?? []).length, manifest: proj.manifest, book }
       : { folder: proj.folder, manifest: "none yet (fmc_project plan writes 01_WIP\\FMC_Project.json)" };
   }
 
