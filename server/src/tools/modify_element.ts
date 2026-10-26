@@ -14,7 +14,8 @@ export const MODEL_EDIT_OPS = ["copy", "rotate", "mirror", "join", "unjoin", "sw
   "revision_cloud", "place_annotation", "color_fill_legend",
   "extrusion", "blend", "revolve", "sweep", "family_param", "family_type", "family_category", "reference_plane", "dimension",
   "save_family", "load_into_project",
-  "column", "beam", "brace", "isolated_foundation", "wall_foundation", "foundation_slab", "structural_floor", "truss", "beam_system", "rebar", "area_reinforcement", "path_reinforcement", "fabric_area", "coping", "point_load", "line_load", "area_load", "load_case", "analytical_member", "duct", "pipe", "cable_tray", "conduit", "flex_duct", "flex_pipe", "connect", "insulation", "lining", "convert_placeholders", "wire", "space", "space_separation", "toposolid", "toposolid_subdivision", "mass_floors", "wall_by_face", "wall_sweep", "curtain_grid", "mullions", "wall_opening", "area_plan", "area", "area_boundary", "create_schedule", "revision", "radial_array", "offset", "split", "extend", "wall_join", "create_group", "place_group", "ungroup", "assembly", "parts", "displace", "paint", "remove_paint", "demolish", "path_of_travel", "energy_model", "create_material", "line_style", "line_pattern", "fill_pattern", "object_style", "project_info", "project_units", "global_param", "associate_global", "coordinates", "acquire_coordinates", "publish_coordinates", "create_workset", "set_workset", "purge", "save_selection", "copy_types", "keynote_file"] as const;
+  "column", "beam", "brace", "isolated_foundation", "wall_foundation", "foundation_slab", "structural_floor", "truss", "beam_system", "rebar", "area_reinforcement", "path_reinforcement", "fabric_area", "coping", "point_load", "line_load", "area_load", "load_case", "analytical_member", "duct", "pipe", "cable_tray", "conduit", "flex_duct", "flex_pipe", "connect", "insulation", "lining", "convert_placeholders", "wire", "space", "space_separation", "toposolid", "toposolid_subdivision", "mass_floors", "wall_by_face", "wall_sweep", "curtain_grid", "mullions", "wall_opening", "area_plan", "area", "area_boundary", "create_schedule", "revision", "radial_array", "offset", "split", "extend", "wall_join", "create_group", "place_group", "ungroup", "assembly", "parts", "displace", "paint", "remove_paint", "demolish", "path_of_travel", "energy_model", "create_material", "line_style", "line_pattern", "fill_pattern", "object_style", "project_info", "project_units", "global_param", "associate_global", "coordinates", "acquire_coordinates", "publish_coordinates", "create_workset", "set_workset", "purge", "save_selection", "copy_types", "keynote_file",
+  "roof_extrusion", "fascia", "gutter", "slab_edge", "curtain_system_by_face", "building_pad", "swept_blend", "model_text", "copy_to_views", "copy_to_levels", "starting_view", "work_plane", "zone", "panel_schedule", "view_list", "reveal_hidden"] as const;
 
 export const MODIFY_MODEL_DESCRIPTION =
   "Formcraft: edit the model like a person does in Revit (owner 26 Oct), a list of ops as ONE batch: one approval, one " +
@@ -108,6 +109,13 @@ export const MODIFY_MODEL_DESCRIPTION =
   "associate_global {ids, param, global} · coordinates {point_mm?, east_west_mm?, north_south_mm?, elevation_mm?, angle_deg? (true north)} · " +
   "acquire_coordinates / publish_coordinates {link} · create_workset {name} · set_workset {ids, workset} · purge {categories?, passes?} · " +
   "save_selection {name, ids} · copy_types {from (another open model), names? | categories?} (Transfer Project Standards) · keynote_file {path}. " +
+  "More: roof_extrusion {plane (a named vertical reference plane), profile_mm [[u, z], ...] (open line), level, start_mm?, end_mm?, type_name?} · " +
+  "fascia / gutter {host (roof; its eave edges)} · slab_edge {host (floor; its top edges)} · curtain_system_by_face {host (mass), points_mm (one per face)} · " +
+  "building_pad {level, outline_mm} · swept_blend {path_mm (two points), bottom_mm, top_mm (profiles [u, v]), solid?} (families) · " +
+  "model_text {text, plane?, point_mm?, depth_mm?, type_name?} (families) · model_line also takes reference_line: true · " +
+  "copy_to_views {ids, from_view, views} (Paste Aligned to views) · copy_to_levels {ids, levels, from_level?} (Paste Aligned to levels) · " +
+  "starting_view {view} · work_plane {view, level? | plane?, show?} · zone {level, name?, spaces?} · panel_schedule {ids (panels)} · " +
+  "view_list {name?} · reveal_hidden {view, on?}. " +
   "dry_run true runs it and rolls back, answering what would change: do that first for deletes. Pinned elements and " +
   "elements another user owns are refused. Use get_element_geometry first to line new work up with existing elements.";
 
@@ -179,11 +187,13 @@ export function registerModifyModelTool(server: McpServer) {
       "fbx|dwf|gbxml|image|schedule, folder, name?, views? (names, sheet numbers or ids; default the active view), combine? " +
       "(pdf), pixels? (image)}, link_cad / import_cad {path, view?, this_view_only?}, link_image / import_image / link_pdf " +
       "{path, view?, point_mm?, page? (pdf)}, link_revit {path, placement?: shared|origin}, load_family {path}, point_cloud " +
-      "{path}, sync {comment?, relinquish? (default true), compact?}, reload_latest, relinquish. Sync and relinquish always " +
+      "{path}, sync {comment?, relinquish? (default true), compact?}, reload_latest, relinquish, open_ifc {path}, export_family " +
+      "{family, path (.rfa), overwrite?} (Save As Library Family). Sync and relinquish always " +
       "wait for a person's approval, even with auto-approve.",
     {
       action: z.enum(["save", "save_as", "open", "close", "export", "link_cad", "import_cad", "link_image", "import_image", "link_pdf",
-        "link_revit", "load_family", "point_cloud", "sync", "reload_latest", "relinquish"]),
+        "link_revit", "load_family", "point_cloud", "sync", "reload_latest", "relinquish", "open_ifc", "export_family"]),
+      family: z.string().optional().describe("export_family: the family to save out of the project"),
       path: z.string().optional(), title: z.string().optional(), save: z.boolean().optional(), overwrite: z.boolean().optional(),
       as_central: z.boolean().optional(), format: z.string().optional(), folder: z.string().optional(), name: z.string().optional(),
       views: z.array(z.union([z.string(), z.number()])).optional(), combine: z.boolean().optional(), pixels: z.number().int().optional(),

@@ -44,6 +44,11 @@ namespace RevitMCPCommandSet.Services.Fmc
                 case "open":
                     app.OpenAndActivateDocument(path ?? throw new InvalidOperationException("open needs path"));
                     return new JObject { ["opened"] = path };
+                case "open_ifc":
+                {
+                    Document ifc = app.Application.OpenIFCDocument(path ?? throw new InvalidOperationException("open_ifc needs path"));
+                    return new JObject { ["opened"] = ifc.Title, ["note"] = "opened in the background; save_as it as a .rvt, then open that" };
+                }
                 case "close":
                 {
                     string title = Parameters.Value<string>("title") ?? throw new InvalidOperationException("close needs title (a model that isn't the active one)");
@@ -65,6 +70,17 @@ namespace RevitMCPCommandSet.Services.Fmc
                     return new JObject { ["saved_as"] = path };
                 }
                 case "export": return Export(doc);
+                case "export_family":
+                {
+                    // Save a family out of the project (Save As Library Family)
+                    string fname = Parameters.Value<string>("family") ?? throw new InvalidOperationException("export_family needs family");
+                    Family f = new FilteredElementCollector(doc).OfClass(typeof(Family)).Cast<Family>().FirstOrDefault(x => string.Equals(x.Name, fname, StringComparison.OrdinalIgnoreCase)) ?? throw new InvalidOperationException($"no family {fname}");
+                    Document fd = doc.EditFamily(f);
+                    string to = path ?? throw new InvalidOperationException("export_family needs path (.rfa)");
+                    fd.SaveAs(to, new SaveAsOptions { OverwriteExistingFile = Parameters.Value<bool?>("overwrite") ?? false, MaximumBackups = 1 });
+                    fd.Close(false);
+                    return new JObject { ["family"] = fname, ["saved"] = to };
+                }
                 case "link_cad":
                 case "import_cad":
                 {
