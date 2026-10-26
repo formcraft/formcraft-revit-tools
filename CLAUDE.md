@@ -1,8 +1,11 @@
 # Formcraft Revit Tools: rules for Claude
 
 This repo builds Formcraft's Revit plugin bundle (Core, Manage, Flow, Model, Build). It serves Master Manual
-FMC-BIM-MAN-001 v2.2 and the Revit standard FMC-BIM-STD-002 v2.2. The kit lives in `Z:\00_Standards\` and in the
-claude.ai Project "REVIT MCP".
+FMC-BIM-MAN-001 v2.2 and the Revit standard FMC-BIM-STD-002 v2.2. The kit lives in `Z:\00_Standards\`, in the
+claude.ai Project "REVIT MCP" and in the private repo `formcraft/formcraft-kit` (Revit/Rhino files on its Releases).
+
+**Every session follows `docs/DEV_RULEBOOK.md`** (ambitions, rules DEV-001 to DEV-012): plan then yes, tests with the
+change, errors handed over as `dev-handover` issues, and a report in `results/ai_reports/` that leaves a faster way.
 
 ## Hard rules (enforced by the server; never work around them)
 1. **Live-model lock.** Model-changing tools run only on families, new unsaved documents and files in `_Staging`
