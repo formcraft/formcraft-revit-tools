@@ -174,6 +174,27 @@ test("an approval matches only the same batch: same command, model and parameter
   assert.equal(batchSize({}), 1);
 });
 
+test("auto-approve (owner 26 Oct): testing mode runs the batch at once and lists it as auto-approved and done", async () => {
+  const { aiGate } = await import("./aigate.js");
+  const { readQueue } = await import("./aiuse_io.js");
+  const appdata = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-auto-"));
+  const kit = path.join(appdata, "kit");
+  fs.mkdirSync(kit);
+  fs.writeFileSync(path.join(kit, "FMC_Rulebook_AIUse.json"), proposal);
+  const env = { ...process.env, APPDATA: appdata };
+  const config = { ...cfg, rulebooks_dir: kit, reports_dir: path.join(appdata, "reports"),
+    ai_modeller: { on: true, mode: "testing", auto_approve: true, levels: { create_from_brief: "Fix with approval" } } } as unknown as GuardConfig;
+  const send = async () => ({ types: [{ id: 7, found: true, category: "OST_Doors", name: "Door: 900" }] });
+  const g = await aiGate("create_point_based_element", { data: [{ typeId: 7 }] }, wip(), config, send, env);
+  assert.equal(g.ok, true);
+  assert.deepEqual(await g.run!(async () => ({ ids: [101] })), { ids: [101] });
+  const q = readQueue(env)[0];
+  assert.equal(q.status, "used");
+  assert.equal(q.by, "auto-approved (testing)");
+  assert.equal(q.result, "done");
+  assert.deepEqual(q.details, ["New doors / windows / components:", "Door: 900"]);
+});
+
 test("the gate: queues a Fix-with-approval batch, runs it once approved, refuses structure when placing", async () => {
   const { aiGate } = await import("./aigate.js");
   const { setStatus, readQueue } = await import("./aiuse_io.js");

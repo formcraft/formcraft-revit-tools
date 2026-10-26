@@ -43,7 +43,8 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         private JObject Run(Document doc)
         {
-            if (doc.IsFamilyDocument) throw new InvalidOperationException("fmc_model_edit works in a project model");
+            // Owner 26 Oct: the Family Editor too (family ops); project ops in a family fail with Revit's own reason
+            _after.Clear();
             var ops = (Parameters["ops"] as JArray ?? new JArray()).OfType<JObject>().ToList();
             if (ops.Count == 0) throw new InvalidOperationException("No ops to run");
             bool dry = Parameters.Value<bool?>("dry_run") ?? false;
@@ -74,7 +75,16 @@ namespace RevitMCPCommandSet.Services.Fmc
                 if (dry) { g.RollBack(); return new JObject { ["applied"] = false, ["dry_run"] = true, ["ops"] = results, ["note"] = "Dry run: rolled back, nothing changed" }; }
                 g.Assimilate();
             }
-            return new JObject { ["applied"] = true, ["ops"] = results, ["undo"] = "One Undo in Revit takes the whole batch back: FMC AI edit" };
+            // Saving and loading families can't run inside a transaction: they run once the batch is in
+            var after = new JArray();
+            foreach (var a in _after)
+            {
+                try { after.Add(a()); }
+                catch (Exception ex) { after.Add(new JObject { ["failed"] = ex.Message }); }
+            }
+            var done = new JObject { ["applied"] = true, ["ops"] = results, ["undo"] = "One Undo in Revit takes the whole batch back: FMC AI edit" };
+            if (after.Count > 0) done["after"] = after;
+            return done;
         }
 
         private static JObject InTransaction(Document doc, string name, Func<JObject> body)
@@ -311,7 +321,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     created.Add(o.Id);
                     return new JObject { ["shaft"] = o.Id.Value };
                 }
-                default: return ViewOp(doc, name, op, made, created) ?? throw new InvalidOperationException($"{name} isn't an op (detail_line, model_line, filled_region, masking_region, text, replace_text, tag, spot_elevation, spot_coordinate, revision_cloud, place_annotation, color_fill_legend, create_view, duplicate_view, set_view, override, hide, unhide, create_filter, create_template, apply_template, create_sheet, place_view, open_view, copy, rotate, mirror, join, unjoin, switch_join, cut, uncut, pin, unpin, delete, move, set_param, change_type, attach, duplicate_type, create_roof, create_railing, create_stair, room_separation, opening, shaft)");
+                default: return ViewOp(doc, name, op, made, created) ?? throw new InvalidOperationException($"{name} isn't an op (extrusion, blend, revolve, sweep, family_param, family_type, family_category, reference_plane, dimension, save_family, load_into_project, detail_line, model_line, filled_region, masking_region, text, replace_text, tag, spot_elevation, spot_coordinate, revision_cloud, place_annotation, color_fill_legend, create_view, duplicate_view, set_view, override, hide, unhide, create_filter, create_template, apply_template, create_sheet, place_view, open_view, copy, rotate, mirror, join, unjoin, switch_join, cut, uncut, pin, unpin, delete, move, set_param, change_type, attach, duplicate_type, create_roof, create_railing, create_stair, room_separation, opening, shaft)");
             }
         }
 
