@@ -1,6 +1,6 @@
 import { DocInfo, GuardConfig } from "./policy.js";
-import { PLACEABLE, aiVerdict, batchSize, recordBatch } from "./aiuse.js";
-import { approvalFor, enqueue, loadAiConfig, loadRulebook, loadState, logBatch, saveState, setStatus } from "./aiuse_io.js";
+import { NEVER, PLACEABLE, USER_LINE, aiVerdict, batchSize, recordBatch } from "./aiuse.js";
+import { approvalFor, claimApproval, enqueue, loadAiConfig, loadRulebook, loadState, logBatch, saveState } from "./aiuse_io.js";
 
 /**
  * The live-model lock's one new case (AI-assisted modeller, Phase A). Called only after the lock has refused a
@@ -8,14 +8,16 @@ import { approvalFor, enqueue, loadAiConfig, loadRulebook, loadState, logBatch, 
  * logged; otherwise the lock's refusal stands, with the AI gate's reason added. A batch at "Fix with approval" goes to
  * the approval queue and runs only after the model's author approves it in the pane.
  */
-export interface Gate { ok: boolean; reason: string; run?: <T>(exec: () => Promise<T>) => Promise<T> }
+/** `user` is the plain line a person sees instead of the lock's wording (owner 26 Oct); `reason` is the detail. */
+export interface Gate { ok: boolean; reason: string; user?: string; run?: <T>(exec: () => Promise<T>) => Promise<T> }
 
 export async function aiGate(command: string, params: any, active: (DocInfo & { isLocal?: boolean }) | null | undefined, cfg: GuardConfig,
   send: (command: string, params: object) => Promise<any>, env: NodeJS.ProcessEnv = process.env): Promise<Gate> {
   if (!active) return { ok: false, reason: "" };
   const { book } = loadRulebook(cfg);
   const ai = loadAiConfig(cfg, env);
-  if (!ai) return { ok: false, reason: "" }; // AI modelling isn't set up: the lock's refusal is the whole story
+  // Not set up yet (no ai_modeller section): the person sees the plain line, never the lock's wording.
+  if (!ai) return { ok: false, reason: "", user: NEVER[command] ? USER_LINE.admin(NEVER[command]) : USER_LINE.off };
   const elements = batchSize(params);
   const approval = approvalFor(command, params, active.path, env);
   const v = aiVerdict({ command, doc: active, elements, approved: !!approval }, cfg, book, ai, loadState(env));
@@ -23,9 +25,11 @@ export async function aiGate(command: string, params: any, active: (DocInfo & { 
     let reason = `AI-assisted modeller: ${v.reasons[0]}.`;
     if (v.needs_approval) {
       const item = enqueue(command, params, active.path, active.title, v.group ?? "", elements, env);
-      reason += ` It is waiting in the approval queue as ${item.id}: once the author approves it, send the same batch again.`;
+      reason += ` It is waiting in the approval queue as ${item.id}: call fmc_ai wait with id ${item.id} (don't end your turn); ` +
+        "approving runs it, then go on with your next batch.";
+      return { ok: false, reason, user: `${USER_LINE.approve} (batch ${item.id}; AI: call fmc_ai wait with id ${item.id}, then go on with your next batch)` };
     }
-    return { ok: false, reason };
+    return { ok: false, reason, user: v.user };
   }
 
   // Placing elements: Revit says each type's category first, so AI never places structure or anything outside the list.
@@ -42,10 +46,12 @@ export async function aiGate(command: string, params: any, active: (DocInfo & { 
   return {
     ok: true, reason: "",
     run: async <T>(exec: () => Promise<T>): Promise<T> => {
+      // One run per approval: claimed before Revit runs, so a timeout never leaves it open for a replay.
+      if (approval && !claimApproval(approval.id, env))
+        throw new Error(`Batch ${approval.id} has already run once for its approval: check the model (fmc_job status), then queue a new batch if more is needed.`);
       try {
         const r = await exec();
         if (book) saveState(recordBatch(loadState(env), active.path, elements, false, book), env);
-        if (approval) setStatus(approval.id, "used", approval.by ?? "", env);
         logBatch(cfg, { ...row, result: "done", detail: v.band ?? "" });
         return r;
       } catch (e) {

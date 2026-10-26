@@ -1,9 +1,12 @@
+import { RUNNING_BUILD } from "../fmc/buildinfo.js";
+import { recordUsage } from "../fmc/usage.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { z } from "zod";
-import { documentTarget, revitTarget } from "../fmc/target.js";
+import { documentTarget, revitTarget } from "../fmc/target.js";
+
 import { appStatuses, realProbe, toolsOff } from "../hub/apps.js";
 import { annotateInvalidOp, annotateToolResult, isInvalidOpMessage } from "../fmc/buildinfo.js";
 import { startedByFrom, withLedger } from "../fmc/ledger.js";
@@ -28,8 +31,13 @@ export function withRevitTarget(server: McpServer) {
           const { revit, ...rest } = args ?? {};
           const document = typeof rest.document === "string" && rest.document.trim() ? rest.document.trim() : undefined;
           if (!own) delete rest.document;
-          return revitTarget.run(typeof revit === "string" ? revit : undefined,
-            () => documentTarget.run(document, () => handler(rest, extra)));
+          // Owner 26 Oct: every call is timed by the server (fmc/usage.ts), so an AI's own report can compare builds.
+          const started = Date.now();
+          const done = (ok: boolean) => recordUsage({ at: new Date(started).toISOString(), tool: String(a[0]), action: typeof rest.action === "string" ? rest.action : "",
+            ms: Date.now() - started, ok, build: RUNNING_BUILD.commit });
+          return Promise.resolve(revitTarget.run(typeof revit === "string" ? revit : undefined,
+            () => documentTarget.run(document, () => handler(rest, extra))))
+            .then((r) => { done(!(r as { isError?: boolean } | undefined)?.isError); return r; }, (e) => { done(false); throw e; });
         });
     }
     return original(...a);

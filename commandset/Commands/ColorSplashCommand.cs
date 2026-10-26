@@ -64,7 +64,7 @@ namespace RevitMCPCommandSet.Commands
                 _handler.SetParameters(categoryName, parameterName, useGradient, customColors);
 
                 // Trigger external event and wait for completion
-                if (RaiseAndWaitForCompletion(20000)) // 20 second timeout
+                if (RaiseAndWaitForCompletion(300000)) // owner 26 Oct: big batches take Revit over 10 s; wait up to 5 min
                 {
                     return _handler.ColoringResults;
                 }

@@ -34,6 +34,24 @@ always syncs.
 - **Activity is never used to rank people (Manual 14.5).** The AI log counts operations per model and per kind, never
   per person.
 
+## The General AI switch (owner, 26 Oct 2026)
+
+Users were blocked: `fmc_ai status` said "fmc_guard.json has no valid ai_modeller section", and per-group levels were
+too much for users. Now there is one switch, **AI On / AI Off / Stopped**, at the top of the Formcraft pane and as
+**AI switch** beside Connect AI on the ribbon.
+
+- **Any user** switches it, **per project** (the project code in the model's name; a name without one stays Off). The
+  first use creates the `ai_modeller` section in fmc_guard.json with safe defaults (everything off). Stop AI overrides it.
+- **Mode** (`ai_modeller.mode` in fmc_guard.json): **testing** (the pilot, owner 26 Oct) lets AI work in any file, keyed by the FMC project code, else the project folder, else the file name; **strict** (the default, for distribution) needs an FMC-compliant model in a project's 01_WIP. Never central, approvals, limits, Stop AI and the admin-only list apply in both.
+- **On:** AI may model in the active WIP model (a person's local copy, never central), every batch waits for one-click
+  approve or reject in the pane, and the limits apply (50 per batch, 500 per model a day, off after 3 failed batches).
+  Covered, from the kit rulebook's `general` block: data, views, placing elements and fixtures, walls, floors, ceilings
+  and roofs (architecture), levels and grids.
+- **Admins only, always:** deleting, purging, running arbitrary code, links, workset setup and structural framing.
+- **Advanced (admins):** the involvement bands and per-group levels below, in Admin › AI involvement.
+- People never see lock errors: one plain line instead ("AI is off. Turn it on with the AI switch.").
+- `fmc_selftest` shows "General AI switch: section present / state".
+
 ## Who may switch it on
 
 | Decision | Who | Where |

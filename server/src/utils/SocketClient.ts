@@ -102,7 +102,7 @@ export class RevitClientConnection {
    * (server/src/fmc/policy.ts): they are refused when the active document is a live project model.
    * The lock fails closed: if the active document cannot be read, the command is not sent.
    */
-  public async sendCommand(command: string, params: any = {}, timeoutMs: number = 120000): Promise<any> {
+  public async sendCommand(command: string, params: any = {}, timeoutMs: number = 120000, long?: LongJobOptions): Promise<any> {
     if (WRITE_COMMANDS.has(command)) {
       const { config } = loadConfig();
       if (config.live_model_lock) {
@@ -120,12 +120,13 @@ export class RevitClientConnection {
         if (!verdict.ok) {
           // The lock's one new case: the AI-assisted modeller, Off unless the kit rulebook and the BIM Manager allow it.
           const gate = await aiGate(command, params, info?.active, config, (c, p) => this.sendRaw(c, p, 60000));
-          if (!gate.ok || !gate.run) throw new Error([...verdict.reasons, gate.reason].filter(Boolean).join(" "));
-          return gate.run(() => this.sendRaw(command, params, timeoutMs));
+          // A person sees one plain line (USER_LINE), never the lock's wording; fmc_ai status has the detail.
+          if (!gate.ok || !gate.run) throw new Error(gate.user ?? [...verdict.reasons, gate.reason].filter(Boolean).join(" "));
+          return gate.run(() => this.sendRaw(command, params, timeoutMs, long));
         }
       }
     }
-    return this.sendRaw(command, params, timeoutMs);
+    return this.sendRaw(command, params, timeoutMs, long);
   }
 
   /**

@@ -53,7 +53,7 @@ namespace RevitMCPCommandSet.Commands
                 _handler.SetParameters(useLeader, tagTypeId, roomIds);
 
                 // Trigger external event and wait for completion
-                if (RaiseAndWaitForCompletion(15000)) // 15 second timeout
+                if (RaiseAndWaitForCompletion(300000)) // owner 26 Oct: big batches take Revit over 10 s; wait up to 5 min
                 {
                     return _handler.TaggingResults;
                 }
