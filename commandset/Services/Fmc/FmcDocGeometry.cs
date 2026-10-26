@@ -95,18 +95,17 @@ namespace RevitMCPCommandSet.Services.Fmc
             // [y, z] with depth along +x; "plan" (default) draws [x, y] with depth up (z). Before, every extrusion was in plan.
             string sk = (op.Value<string>("sketch") ?? "plan").ToLowerInvariant();
             if (rect != null && sk != "plan") throw new InvalidOperationException("rect (four planes) works with sketch plan only");
-            else if (rect == null)
-            {
-                var pts = (op["points"] as JArray ?? new JArray()).Select(p => sk == "front" ? new XYZ(Mm(p[0].Value<double>()), 0, Mm(p[1].Value<double>()))
-                    : sk == "right" ? new XYZ(0, Mm(p[0].Value<double>()), Mm(p[1].Value<double>())) : new XYZ(Mm(p[0].Value<double>()), Mm(p[1].Value<double>()), 0)).ToList();
-                if (pts.Count < 3) throw new InvalidOperationException("an extrusion needs rect (four planes) or at least three points");
-                for (int k = 0; k < pts.Count; k++) loop.Append(Line.CreateBound(pts[k], pts[(k + 1) % pts.Count]));
-            }
-            var profile = new CurveArrArray();
-            profile.Append(loop);
+            // Owner 26 Oct: an outline may hold arcs and splines (FmcCurves); a refused spline is built again as short lines
+            Func<double[], XYZ> map = p => sk == "front" ? new XYZ(Mm(p[0]), 0, Mm(p[1])) : sk == "right" ? new XYZ(0, Mm(p[0]), Mm(p[1])) : new XYZ(Mm(p[0]), Mm(p[1]), 0);
+            if (rect == null && FmcCurves.Count(op["points"]) < 2) throw new InvalidOperationException("an extrusion needs rect (four planes) or an outline in points");
             XYZ normal = sk == "front" ? XYZ.BasisY.Negate() : sk == "right" ? XYZ.BasisX : XYZ.BasisZ;
             SketchPlane sketch = SketchPlane.Create(doc, Autodesk.Revit.DB.Plane.CreateByNormalAndOrigin(normal, XYZ.Zero));
-            Extrusion made = doc.FamilyCreate.NewExtrusion(!isVoid, profile, sketch, end - start);
+            Extrusion made = FmcCurves.WithFallback(splines =>
+            {
+                var profile = new CurveArrArray();
+                profile.Append(rect != null ? loop : FmcCurves.Loop(doc, op["points"], map, true, splines));
+                return doc.FamilyCreate.NewExtrusion(!isVoid, profile, sketch, end - start);
+            }, rect == null && FmcCurves.HasSplines(op["points"]));
             made.StartOffset = start; made.EndOffset = end;
             Name(made, name);
 
