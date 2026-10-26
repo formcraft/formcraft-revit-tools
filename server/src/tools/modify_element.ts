@@ -130,7 +130,8 @@ export const MODIFY_MODEL_DESCRIPTION =
   "standard?, site?: shop|site} · weld {ids, point_mm | points_mm, thickness_mm?} · shorten {ids [beam], end: start|end, length_mm} · " +
   "notch {ids [beam], end, side?: top|bottom, length_mm, depth_mm} · corner_fillet {ids [plate], vertex, radius_mm}. " +
   "dry_run true runs it and rolls back, answering what would change: do that first for deletes. Pinned elements and " +
-  "elements another user owns are refused. Use get_element_geometry first to line new work up with existing elements.";
+  "elements another user owns are refused. Use get_element_geometry first to line new work up with existing elements, " +
+  "and fmc_standards for any size, height or type no brief or recipe gives (it also finds the recipe to use).";
 
 export function registerModifyModelTool(server: McpServer) {
   server.tool(

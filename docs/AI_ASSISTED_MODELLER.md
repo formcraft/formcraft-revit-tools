@@ -182,3 +182,13 @@ opening, shaft. `"$n"` names the first element op n made, so a roof and the wall
 Every approval now says what it does, by name (`server/src/fmc/explain.ts`): the types and levels, how many of each,
 the elements a delete removes, a type change that affects every element of the type, and the first lines of any code.
 Deletes, type-wide changes and code show in amber. An approval runs once: it is used up before Revit starts.
+
+## Standards when there's no recipe: fmc_standards (owner 26 Oct)
+
+The kit's `03_Master_Data\FMC_Standards_Building.json` holds typical design values for a standard building (levels,
+ceilings, walls with their kit codes, slabs, doors, windows, stairs, guards, roofs, rooms, accessibility, structure,
+services, site), by use (residential, office, retail, education, healthcare, industrial). Every value is *proposed*
+until the BIM Manager approves it; the AI says so when a design depends on one. A project's
+`01_WIP\FMC_Project_Standards.json` overrides the kit key by key (`fmc_standards set`). `fmc_standards recipe` finds
+the kit recipe that fits; when none does, it names the recipe to write (Naming rulebook), gives the standards to build
+it from, and logs the request in `%APPDATA%\Formcraft\recipe_requests.jsonl`.
