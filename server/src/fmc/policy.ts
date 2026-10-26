@@ -99,6 +99,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_schedules_apply",
   // The recipe tree's room builds (T1) and Mark & Review's applied fixes (R6)
   "fmc_room_build", "fmc_element_apply",
+  // modify_model (owner 26 Oct): the AI edits like a person, every batch approved
+  "fmc_model_edit",
   // Circuits (KISIC 4.4): devices grouped into circuits on a board, the kit's distribution system set; the dry run rolls back
   "fmc_circuits_create",
 ]);
@@ -109,7 +111,7 @@ export const WRITE_COMMANDS = new Set<string>([
  */
 export const READ_VIA_SEND_COMMAND = new Set<string>([
   "ai_element_filter", "analyze_model_statistics", "export_room_data", "get_available_family_types", "get_current_view_elements", "fmc_diagram_scan", "get_current_view_info", "get_material_quantities",
-  "get_selected_elements", "say_hello", "fmc_mep_facts",
+  "get_selected_elements", "say_hello", "fmc_mep_facts", "fmc_element_geometry",
   // LD5 Gate D: the drafting views holding items fmc_diagram drew, with their source keys (read-only)
   "fmc_diagram_drawn",
 ]);

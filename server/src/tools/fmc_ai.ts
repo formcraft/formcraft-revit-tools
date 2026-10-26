@@ -146,8 +146,9 @@ export async function paneAi(command: string, input: Record<string, unknown>, by
       if (!setStatus(id, "approved", by) || !item) return { error: `No batch ${id} in the queue` };
       try {
         // The long-job route (owner 26 Oct): a batch Revit is still placing is waited for on its heartbeats, not 10 s.
-        await withRevitConnection((c) => c.sendCommand(item.command, item.params ?? {}, jobMaxMs(), { ceilingMs: jobMaxMs() }));
-        setResult(id, "done", `${item.summary} · ${item.model}`);
+        const answer = await withRevitConnection((c) => c.sendCommand(item.command, item.params ?? {}, jobMaxMs(), { ceilingMs: jobMaxMs() }));
+        // The AI asked for the new element ids from wait (owner 26 Oct): Revit's answer, kept short.
+        setResult(id, "done", `${item.summary} · ${item.model} · ${JSON.stringify(answer ?? {}).slice(0, 4000)}`);
         return { approved: true, ran: true, result: "done", message: `Approved and done: ${item.summary} (${item.elements} elements) in ${item.model}.` };
       } catch (e) {
         const msg = e instanceof Error ? e.message : String(e);

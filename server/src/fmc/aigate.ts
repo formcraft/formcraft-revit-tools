@@ -1,5 +1,6 @@
 import { DocInfo, GuardConfig } from "./policy.js";
 import { NEVER, PLACEABLE, USER_LINE, aiVerdict, batchSize, recordBatch } from "./aiuse.js";
+import { Names, elementNames, explain, namesWanted } from "./explain.js";
 import { approvalFor, claimApproval, enqueue, loadAiConfig, loadRulebook, loadState, logBatch, saveState } from "./aiuse_io.js";
 
 /**
@@ -24,7 +25,7 @@ export async function aiGate(command: string, params: any, active: (DocInfo & { 
   if (!v.ok) {
     let reason = `AI-assisted modeller: ${v.reasons[0]}.`;
     if (v.needs_approval) {
-      const item = enqueue(command, params, active.path, active.title, v.group ?? "", elements, env);
+      const item = enqueue(command, params, active.path, active.title, v.group ?? "", elements, env, new Date(), await describe(command, params, send));
       reason += ` It is waiting in the approval queue as ${item.id}: call fmc_ai wait with id ${item.id} (don't end your turn); ` +
         "approving runs it, then go on with your next batch.";
       return { ok: false, reason, user: `${USER_LINE.approve} (batch ${item.id}; AI: call fmc_ai wait with id ${item.id}, then go on with your next batch)` };
@@ -67,4 +68,17 @@ export async function aiGate(command: string, params: any, active: (DocInfo & { 
       }
     },
   };
+}
+
+/** The approval's plain lines, with type and element names from Revit (best effort: ids when Revit can't say). */
+async function describe(command: string, params: object, send: (command: string, params: object) => Promise<any>): Promise<string[]> {
+  const want = namesWanted(params);
+  const names: Names = { types: {}, elements: {} };
+  try {
+    if (want.typeIds.length) for (const t of (await send("fmc_type_facts", { ids: want.typeIds }))?.types ?? []) if (t?.name) names.types[String(t.id)] = t.name;
+  } catch { /* ids instead */ }
+  try {
+    if (want.elementIds.length) names.elements = elementNames((await send("fmc_element_geometry", { ids: want.elementIds }))?.elements ?? []);
+  } catch { /* ids instead */ }
+  return explain(command, params, names);
 }

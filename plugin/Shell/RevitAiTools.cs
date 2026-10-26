@@ -53,6 +53,7 @@ namespace revit_mcp_plugin.Shell
                 Summary = q.Value<string>("summary") ?? "", Elements = q.Value<int?>("elements") ?? 0, Status = q.Value<string>("status") ?? "",
                 Created = q.Value<string>("created") ?? "",
                 Result = q.Value<string>("result") ?? "", Detail = q.Value<string>("detail") ?? "", EstimateS = q.Value<int?>("estimate_s") ?? 0,
+                Details = (q["details"] as JArray ?? new JArray()).Select(x => x.ToString()).ToList(),
             }).ToList();
         }
 

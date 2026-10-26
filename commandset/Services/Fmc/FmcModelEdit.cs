@@ -1,0 +1,505 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using Autodesk.Revit.DB;
+using Autodesk.Revit.DB.Architecture;
+using Autodesk.Revit.UI;
+using Newtonsoft.Json.Linq;
+using RevitMCPSDK.API.Interfaces;
+
+namespace RevitMCPCommandSet.Services.Fmc
+{
+    /// <summary>
+    /// fmc_model_edit (owner 26 Oct, "the AI does what a human modeller does"): a list of edits run as one batch, one
+    /// approval and one Undo. Ops: delete, move, set_param, change_type, attach, duplicate_type, create_roof,
+    /// create_railing, create_stair, room_separation, opening, shaft. Each op runs in its own transaction inside one
+    /// group: if any op fails the whole batch is rolled back and the answer says which op and why. dry_run runs it all
+    /// and rolls back, listing what would change (deletes list every element Revit would remove with them).
+    /// Lengths in mm, angles in degrees. Ids are element ids or unique ids; "$n" is the first element made by op n (1-based)
+    /// of this batch, so a roof and the walls attached to it go in one batch. Pinned elements and elements another user
+    /// owns are refused. Warnings are dismissed; errors fail the op.
+    /// </summary>
+    public class FmcModelEditHandler : IExternalEventHandler, IWaitableExternalEventHandler
+    {
+        private readonly ManualResetEvent _done = new ManualResetEvent(false);
+        public JObject Parameters { get; set; } = new JObject();
+        public JObject Result { get; private set; } = new JObject();
+        public string Error { get; private set; } = "";
+        public bool WaitForCompletion(int timeoutMilliseconds = 10000) { _done.Reset(); return _done.WaitOne(timeoutMilliseconds); }
+        public string GetName() => "Formcraft model edit";
+
+        private static double Ft(double mm) => mm / 304.8;
+        private static double Mm(double ft) => Math.Round(ft * 304.8, 1);
+
+        public void Execute(UIApplication app)
+        {
+            Result = new JObject(); Error = "";
+            try { Result = Run(app.ActiveUIDocument?.Document ?? throw new InvalidOperationException("No model is open")); }
+            catch (Exception e) { Error = e.Message; }
+            finally { _done.Set(); }
+        }
+
+        private JObject Run(Document doc)
+        {
+            if (doc.IsFamilyDocument) throw new InvalidOperationException("fmc_model_edit works in a project model");
+            var ops = (Parameters["ops"] as JArray ?? new JArray()).OfType<JObject>().ToList();
+            if (ops.Count == 0) throw new InvalidOperationException("No ops to run");
+            bool dry = Parameters.Value<bool?>("dry_run") ?? false;
+            var made = new List<List<ElementId>>();
+            var results = new JArray();
+            using (var g = new TransactionGroup(doc, "FMC AI edit"))
+            {
+                g.Start();
+                for (int i = 0; i < ops.Count; i++)
+                {
+                    JObject op = ops[i];
+                    string name = op.Value<string>("op") ?? "";
+                    var created = new List<ElementId>();
+                    try
+                    {
+                        JObject r = name == "create_stair" ? Stair(doc, op, made, created) : InTransaction(doc, name, () => Op(doc, name, op, made, created));
+                        r["op"] = i + 1; r["kind"] = name;
+                        if (created.Count > 0) r["created_ids"] = new JArray(created.Select(x => x.Value));
+                        results.Add(r);
+                        made.Add(created);
+                    }
+                    catch (Exception ex)
+                    {
+                        g.RollBack();
+                        return new JObject { ["applied"] = false, ["failed_op"] = i + 1, ["kind"] = name, ["reason"] = ex.Message, ["note"] = "Nothing was changed: the whole batch is one step, or none" };
+                    }
+                }
+                if (dry) { g.RollBack(); return new JObject { ["applied"] = false, ["dry_run"] = true, ["ops"] = results, ["note"] = "Dry run: rolled back, nothing changed" }; }
+                g.Assimilate();
+            }
+            return new JObject { ["applied"] = true, ["ops"] = results, ["undo"] = "One Undo in Revit takes the whole batch back: FMC AI edit" };
+        }
+
+        private static JObject InTransaction(Document doc, string name, Func<JObject> body)
+        {
+            using (var t = new Transaction(doc, "FMC " + name))
+            {
+                t.Start();
+                var fo = t.GetFailureHandlingOptions();
+                fo.SetFailuresPreprocessor(new Quiet()); fo.SetClearAfterRollback(true);
+                t.SetFailureHandlingOptions(fo);
+                JObject r = body();
+                if (t.Commit() != TransactionStatus.Committed) throw new InvalidOperationException("Revit refused the change (an error, not a warning)");
+                return r;
+            }
+        }
+
+        private JObject Op(Document doc, string name, JObject op, List<List<ElementId>> made, List<ElementId> created)
+        {
+            switch (name)
+            {
+                case "delete":
+                {
+                    var ids = Targets(doc, op, made);
+                    var deleted = doc.Delete(ids);
+                    return new JObject { ["asked"] = ids.Count, ["removed"] = deleted.Count, ["removed_ids"] = new JArray(deleted.Select(x => x.Value)) };
+                }
+                case "move":
+                {
+                    var v = Vec(op["vector_mm"], "move needs vector_mm [x, y, z]");
+                    var ids = Targets(doc, op, made);
+                    ElementTransformUtils.MoveElements(doc, ids, v);
+                    return new JObject { ["moved"] = ids.Count };
+                }
+                case "set_param":
+                {
+                    var ids = Targets(doc, op, made);
+                    string pname = op.Value<string>("param") ?? throw new InvalidOperationException("set_param needs param");
+                    foreach (ElementId id in ids) SetParam(doc, doc.GetElement(id), pname, op, op.Value<bool?>("on_type") ?? false);
+                    return new JObject { ["set"] = ids.Count, ["param"] = pname };
+                }
+                case "change_type":
+                {
+                    var ids = Targets(doc, op, made);
+                    foreach (ElementId id in ids)
+                    {
+                        Element e = doc.GetElement(id);
+                        ElementId t = TypeFor(doc, op, e.GetValidTypes());
+                        e.ChangeTypeId(t);
+                    }
+                    return new JObject { ["changed"] = ids.Count };
+                }
+                case "attach":
+                {
+                    // Wall Attach Top/Base to a roof, floor or ceiling
+                    ElementId target = Ref(doc, op["target"], made) ?? throw new InvalidOperationException("attach needs target (a roof, floor or ceiling)");
+                    var where = (op.Value<string>("side") ?? "top") == "base" ? AttachmentLocation.Base : AttachmentLocation.Top;
+                    int n = 0;
+                    foreach (ElementId id in Targets(doc, op, made))
+                    {
+                        if (!(doc.GetElement(id) is Wall w)) throw new InvalidOperationException($"{id.Value} isn't a wall");
+                        w.AddAttachment(target, where); n++;
+                    }
+                    return new JObject { ["attached"] = n, ["side"] = where.ToString() };
+                }
+                case "duplicate_type":
+                {
+                    ElementId src = Ref(doc, op["type"], made) ?? throw new InvalidOperationException("duplicate_type needs type (the source type's id)");
+                    ElementType source = doc.GetElement(src) as ElementType ?? throw new InvalidOperationException($"{src.Value} isn't a type");
+                    string newName = op.Value<string>("new_name") ?? throw new InvalidOperationException("duplicate_type needs new_name");
+                    ElementType t = source.Duplicate(newName);
+                    created.Add(t.Id);
+                    if (op["layers"] is JArray layers && t is HostObjAttributes host)
+                    {
+                        var list = layers.OfType<JObject>().Select(l => new CompoundStructureLayer(Ft(l.Value<double>("width_mm")),
+                            (MaterialFunctionAssignment)Enum.Parse(typeof(MaterialFunctionAssignment), l.Value<string>("function") ?? "Structure", true),
+                            MaterialId(doc, l.Value<string>("material")))).ToList();
+                        var cs = CompoundStructure.CreateSimpleCompoundStructure(list);
+                        if (t is WallType) cs.SetNumberOfShellLayers(ShellLayerType.Exterior, 0);
+                        host.SetCompoundStructure(cs);
+                    }
+                    if (op["params"] is JObject ps)
+                        foreach (var kv in ps) SetParam(doc, t, kv.Key, ValueOp(kv.Value), true);
+                    return new JObject { ["type"] = newName };
+                }
+                case "create_roof":
+                {
+                    var pts = Points(op["outline_mm"], "create_roof needs outline_mm, a closed loop of [x, y]");
+                    Level level = LevelOf(doc, op["level"]);
+                    RoofType rt = (RoofType)doc.GetElement(TypeOf<RoofType>(doc, op));
+                    var loop = new CurveArray();
+                    for (int i = 0; i < pts.Count; i++) loop.Append(Line.CreateBound(pts[i], pts[(i + 1) % pts.Count]));
+                    FootPrintRoof roof = doc.Create.NewFootPrintRoof(loop, level, rt, out ModelCurveArray curves);
+                    var slopes = op["slopes_deg"] as JArray;
+                    double? all = op.Value<double?>("slope_deg");
+                    double over = op.Value<double?>("overhang_mm") ?? 0;
+                    foreach (ModelCurve mc in curves)
+                    {
+                        int edge = NearestEdge(pts, mc.GeometryCurve);
+                        double? deg = slopes != null && edge < slopes.Count ? slopes[edge].Value<double?>() : all;
+                        roof.set_DefinesSlope(mc, deg.HasValue);
+                        if (deg.HasValue) roof.set_SlopeAngle(mc, Math.Tan(deg.Value * Math.PI / 180));
+                        if (over != 0) roof.set_Overhang(mc, Ft(over));
+                    }
+                    if (op["offset_mm"] != null) roof.get_Parameter(BuiltInParameter.ROOF_LEVEL_OFFSET_PARAM)?.Set(Ft(op.Value<double>("offset_mm")));
+                    created.Add(roof.Id);
+                    return new JObject { ["roof"] = roof.Id.Value, ["edges"] = pts.Count };
+                }
+                case "create_railing":
+                {
+                    Level level = LevelOf(doc, op["level"]);
+                    ElementId rt = TypeOf<RailingType>(doc, op);
+                    Railing r;
+                    ElementId host = Ref(doc, op["host"], made);
+                    if (host != null && doc.GetElement(host) is Stairs)
+                        r = (Railing)doc.GetElement(Railing.Create(doc, host, rt, RailingPlacementPosition.Treads).First());
+                    else
+                    {
+                        var pts = Points(op["path_mm"], "create_railing needs path_mm, [x, y] points along the rail");
+                        var path = new CurveLoop();
+                        for (int i = 0; i + 1 < pts.Count; i++) path.Append(Line.CreateBound(pts[i], pts[i + 1]));
+                        r = Railing.Create(doc, path, rt, level.Id);
+                        if (host != null) r.HostId = host;
+                    }
+                    if (op["offset_mm"] != null) r.get_Parameter(BuiltInParameter.STAIRS_RAILING_HEIGHT_OFFSET)?.Set(Ft(op.Value<double>("offset_mm")));
+                    created.Add(r.Id);
+                    return new JObject { ["railing"] = r.Id.Value };
+                }
+                case "room_separation":
+                {
+                    Level level = LevelOf(doc, op["level"]);
+                    ViewPlan plan = new FilteredElementCollector(doc).OfClass(typeof(ViewPlan)).Cast<ViewPlan>()
+                        .FirstOrDefault(v => !v.IsTemplate && v.GenLevel?.Id == level.Id && v.ViewType == ViewType.FloorPlan)
+                        ?? throw new InvalidOperationException($"{level.Name} has no floor plan to draw room separation lines in");
+                    var lines = new CurveArray();
+                    foreach (JArray seg in (op["lines_mm"] as JArray ?? throw new InvalidOperationException("room_separation needs lines_mm: [[[x, y], [x, y]], ...]")).OfType<JArray>())
+                    {
+                        var p = Points(seg, "each line is [[x, y], [x, y]]");
+                        lines.Append(Line.CreateBound(new XYZ(p[0].X, p[0].Y, level.Elevation), new XYZ(p[1].X, p[1].Y, level.Elevation)));
+                    }
+                    SketchPlane sp = SketchPlane.Create(doc, level.Id);
+                    ModelCurveArray made2 = doc.Create.NewRoomBoundaryLines(sp, lines, plan);
+                    foreach (ModelCurve c in made2) created.Add(c.Id);
+                    return new JObject { ["lines"] = made2.Size };
+                }
+                case "opening":
+                {
+                    // a hole cut in a floor, ceiling or roof by an outline
+                    ElementId host = Ref(doc, op["host"], made) ?? throw new InvalidOperationException("opening needs host (a floor, ceiling or roof id)");
+                    var pts = Points(op["outline_mm"], "opening needs outline_mm, a closed loop of [x, y]");
+                    var loop = new CurveArray();
+                    for (int i = 0; i < pts.Count; i++) loop.Append(Line.CreateBound(pts[i], pts[(i + 1) % pts.Count]));
+                    Opening o = doc.Create.NewOpening(doc.GetElement(host), loop, true);
+                    created.Add(o.Id);
+                    return new JObject { ["opening"] = o.Id.Value };
+                }
+                case "shaft":
+                {
+                    Level bottom = LevelOf(doc, op["base_level"]), top = LevelOf(doc, op["top_level"]);
+                    var pts = Points(op["outline_mm"], "shaft needs outline_mm, a closed loop of [x, y]");
+                    var loop = new CurveArray();
+                    for (int i = 0; i < pts.Count; i++) loop.Append(Line.CreateBound(pts[i], pts[(i + 1) % pts.Count]));
+                    Opening o = doc.Create.NewOpening(bottom, top, loop);
+                    created.Add(o.Id);
+                    return new JObject { ["shaft"] = o.Id.Value };
+                }
+                default: throw new InvalidOperationException($"{name} isn't an op (delete, move, set_param, change_type, attach, duplicate_type, create_roof, create_railing, create_stair, room_separation, opening, shaft)");
+            }
+        }
+
+        /// <summary>Stairs by component: straight runs one after another, landings between them, optional railings.</summary>
+        private JObject Stair(Document doc, JObject op, List<List<ElementId>> made, List<ElementId> created)
+        {
+            Level bottom = LevelOf(doc, op["base_level"]), top = LevelOf(doc, op["top_level"]);
+            var runs = (op["runs"] as JArray ?? throw new InvalidOperationException("create_stair needs runs: [{start_mm: [x, y], end_mm: [x, y], width_mm}]")).OfType<JObject>().ToList();
+            ElementId stairsId;
+            using (var scope = new StairsEditScope(doc, "FMC stair"))
+            {
+                stairsId = scope.Start(bottom.Id, top.Id);
+                using (var t = new Transaction(doc, "FMC stair runs"))
+                {
+                    t.Start();
+                    var fo = t.GetFailureHandlingOptions(); fo.SetFailuresPreprocessor(new Quiet()); t.SetFailureHandlingOptions(fo);
+                    Stairs st = (Stairs)doc.GetElement(stairsId);
+                    if (op["risers"] != null) st.DesiredRisersNumber = op.Value<int>("risers");
+                    double riser = st.ActualRiserHeight, z = 0;
+                    var runIds = new List<ElementId>();
+                    for (int i = 0; i < runs.Count; i++)
+                    {
+                        var p = Points(new JArray(runs[i]["start_mm"], runs[i]["end_mm"]), "each run needs start_mm and end_mm");
+                        Line path = Line.CreateBound(new XYZ(p[0].X, p[0].Y, z), new XYZ(p[1].X, p[1].Y, z));
+                        StairsRun run = StairsRun.CreateStraightRun(doc, stairsId, path, StairsRunJustification.Center);
+                        if (runs[i]["width_mm"] != null) run.ActualRunWidth = Ft(runs[i].Value<double>("width_mm"));
+                        if (runs[i]["risers"] != null) { run.TopElevation = run.BaseElevation + runs[i].Value<int>("risers") * riser; }
+                        z = run.TopElevation;
+                        runIds.Add(run.Id);
+                    }
+                    for (int i = 0; i + 1 < runIds.Count; i++) StairsLanding.CreateAutomaticLanding(doc, runIds[i], runIds[i + 1]);
+                    t.Commit();
+                }
+                scope.Commit(new Quiet());
+            }
+            created.Add(stairsId);
+            var r = new JObject { ["stairs"] = stairsId.Value, ["runs"] = runs.Count };
+            if (op.Value<bool?>("railings") ?? true)
+                InTransaction(doc, "stair railings", () =>
+                {
+                    ElementId rt = TypeOf<RailingType>(doc, new JObject { ["type_name"] = op["railing_type"] });
+                    foreach (ElementId x in Railing.Create(doc, stairsId, rt, RailingPlacementPosition.Treads)) created.Add(x);
+                    return new JObject();
+                });
+            return r;
+        }
+
+        // ---- inputs ----
+
+        private static ICollection<ElementId> Targets(Document doc, JObject op, List<List<ElementId>> made)
+        {
+            var ids = (op["ids"] as JArray ?? throw new InvalidOperationException("the op needs ids")).Select(x => Ref(doc, x, made)).ToList();
+            if (ids.Count == 0) throw new InvalidOperationException("the op needs ids");
+            foreach (ElementId id in ids)
+            {
+                Element e = doc.GetElement(id) ?? throw new InvalidOperationException($"{id?.Value} isn't in this model");
+                if (e.Pinned) throw new InvalidOperationException($"{id.Value} ({e.Category?.Name}) is pinned: a person unpins it first");
+                if (doc.IsWorkshared && WorksharingUtils.GetCheckoutStatus(doc, id) == CheckoutStatus.OwnedByOtherUser)
+                    throw new InvalidOperationException($"{id.Value} is owned by another user (worksharing)");
+            }
+            return ids;
+        }
+
+        /// <summary>An element id, a unique id, or "$n" (the first element made by op n of this batch).</summary>
+        private static ElementId Ref(Document doc, JToken t, List<List<ElementId>> made)
+        {
+            if (t == null || t.Type == JTokenType.Null) return null;
+            string s = t.ToString().Trim();
+            if (s.StartsWith("$"))
+            {
+                int n = int.Parse(s.Substring(1));
+                if (n < 1 || n > made.Count || made[n - 1].Count == 0) throw new InvalidOperationException($"{s}: op {n} made nothing before this op");
+                return made[n - 1][0];
+            }
+            if (long.TryParse(s, out long v)) return new ElementId(v);
+            return doc.GetElement(s)?.Id ?? throw new InvalidOperationException($"{s} isn't in this model");
+        }
+
+        private static Level LevelOf(Document doc, JToken t)
+        {
+            if (t == null) throw new InvalidOperationException("the op needs a level (name or id)");
+            string s = t.ToString();
+            var levels = new FilteredElementCollector(doc).OfClass(typeof(Level)).Cast<Level>().ToList();
+            return levels.FirstOrDefault(l => string.Equals(l.Name, s, StringComparison.OrdinalIgnoreCase))
+                ?? (long.TryParse(s, out long v) ? levels.FirstOrDefault(l => l.Id.Value == v) : null)
+                ?? throw new InvalidOperationException($"no level {s} (levels: {string.Join(", ", levels.Select(l => l.Name))})");
+        }
+
+        private static ElementId TypeOf<T>(Document doc, JObject op) where T : ElementType
+        {
+            var all = new FilteredElementCollector(doc).OfClass(typeof(T)).Cast<T>().ToList();
+            if (all.Count == 0) throw new InvalidOperationException($"the model has no {typeof(T).Name}");
+            return TypeFor(doc, op, all.Select(x => x.Id).ToList(), all[0].Id);
+        }
+
+        private static ElementId TypeFor(Document doc, JObject op, ICollection<ElementId> valid, ElementId fallback = null)
+        {
+            if (op["type_id"] != null) { var id = new ElementId(op.Value<long>("type_id")); if (valid.Contains(id)) return id; throw new InvalidOperationException($"type {id.Value} doesn't fit here"); }
+            string name = op.Value<string>("type_name");
+            if (string.IsNullOrEmpty(name)) return fallback ?? throw new InvalidOperationException("the op needs type_name or type_id");
+            return valid.FirstOrDefault(x => string.Equals(doc.GetElement(x)?.Name, name, StringComparison.OrdinalIgnoreCase))
+                ?? throw new InvalidOperationException($"{name} isn't a type that fits here (types: {string.Join(", ", valid.Take(25).Select(x => doc.GetElement(x)?.Name))})");
+        }
+
+        private static ElementId MaterialId(Document doc, string name)
+        {
+            if (string.IsNullOrEmpty(name)) return ElementId.InvalidElementId;
+            return new FilteredElementCollector(doc).OfClass(typeof(Material)).FirstOrDefault(m => string.Equals(m.Name, name, StringComparison.OrdinalIgnoreCase))?.Id
+                ?? throw new InvalidOperationException($"the material {name} isn't in this model (load it from the kit)");
+        }
+
+        private static JObject ValueOp(JToken v) =>
+            v.Type == JTokenType.Integer || v.Type == JTokenType.Float ? new JObject { ["value_mm"] = v } : new JObject { ["value_text"] = v };
+
+        /// <summary>value_mm (lengths), by_mm (add to a length), value_text (text, yes/no, numbers, or an element's name: a level, type or material), value (raw number).</summary>
+        private static void SetParam(Document doc, Element e, string name, JObject s, bool onType)
+        {
+            Element target = onType && !(e is ElementType) ? doc.GetElement(e.GetTypeId()) : e;
+            Parameter p = target.LookupParameter(name);
+            if (p == null && !onType && doc.GetElement(e.GetTypeId())?.LookupParameter(name) != null)
+                throw new InvalidOperationException($"{name} belongs to the type: set on_type true (changes every element of that type), or change the type");
+            if (p == null) throw new InvalidOperationException($"{e.Id.Value} has no parameter {name}");
+            if (p.IsReadOnly) throw new InvalidOperationException($"{name} is read-only (Revit works it out)");
+            bool ok;
+            if (s["value_mm"] != null || s["by_mm"] != null)
+            {
+                double mm = s["value_mm"] != null ? s.Value<double>("value_mm") : Mm(p.AsDouble()) + s.Value<double>("by_mm");
+                ok = p.Set(Ft(mm));
+            }
+            else if (s["value"] != null && p.StorageType == StorageType.Double) ok = p.Set(s.Value<double>("value"));
+            else
+            {
+                string text = s.Value<string>("value_text") ?? s.Value<string>("value") ?? "";
+                switch (p.StorageType)
+                {
+                    case StorageType.String: ok = p.Set(text); break;
+                    case StorageType.Integer:
+                        string t = text.Trim().ToLowerInvariant();
+                        ok = p.Set(t == "yes" || t == "on" || t == "true" ? 1 : t == "no" || t == "off" || t == "false" ? 0 : int.Parse(t)); break;
+                    case StorageType.ElementId:
+                        ElementId id = long.TryParse(text, out long v) ? new ElementId(v)
+                            : new FilteredElementCollector(doc).WhereElementIsNotElementType().OfClass(typeof(Level)).FirstOrDefault(x => string.Equals(x.Name, text, StringComparison.OrdinalIgnoreCase))?.Id
+                              ?? new FilteredElementCollector(doc).OfClass(typeof(Material)).FirstOrDefault(x => string.Equals(x.Name, text, StringComparison.OrdinalIgnoreCase))?.Id
+                              ?? (text.Equals("none", StringComparison.OrdinalIgnoreCase) || text.Equals("unconnected", StringComparison.OrdinalIgnoreCase) ? ElementId.InvalidElementId : null)
+                              ?? throw new InvalidOperationException($"no level or material named {text} for {name}");
+                        ok = p.Set(id); break;
+                    default: ok = p.SetValueString(text); break;
+                }
+            }
+            if (!ok) throw new InvalidOperationException($"Revit refused the value for {name} on {e.Id.Value}");
+        }
+
+        private static XYZ Vec(JToken t, string why)
+        {
+            var a = t as JArray ?? throw new InvalidOperationException(why);
+            return new XYZ(Ft(a[0].Value<double>()), Ft(a[1].Value<double>()), a.Count > 2 ? Ft(a[2].Value<double>()) : 0);
+        }
+
+        private static List<XYZ> Points(JToken t, string why)
+        {
+            var a = t as JArray ?? throw new InvalidOperationException(why);
+            var pts = a.OfType<JArray>().Select(p => Vec(p, why)).ToList();
+            if (pts.Count < 2) throw new InvalidOperationException(why);
+            return pts;
+        }
+
+        private static int NearestEdge(List<XYZ> pts, Curve c)
+        {
+            XYZ mid = c.Evaluate(0.5, true);
+            int best = 0; double d = double.MaxValue;
+            for (int i = 0; i < pts.Count; i++)
+            {
+                XYZ m = (pts[i] + pts[(i + 1) % pts.Count]) / 2;
+                double x = new XYZ(m.X - mid.X, m.Y - mid.Y, 0).GetLength();
+                if (x < d) { d = x; best = i; }
+            }
+            return best;
+        }
+
+        /// <summary>Warnings are dismissed so no dialog stops the batch; errors still fail it.</summary>
+        private sealed class Quiet : IFailuresPreprocessor
+        {
+            public FailureProcessingResult PreprocessFailures(FailuresAccessor a)
+            {
+                foreach (FailureMessageAccessor f in a.GetFailureMessages())
+                    if (f.GetSeverity() == FailureSeverity.Warning) a.DeleteWarning(f);
+                return FailureProcessingResult.Continue;
+            }
+        }
+    }
+
+    /// <summary>
+    /// fmc_element_geometry (owner 26 Oct): where elements are, exactly, read-only: location line or point, level, bounding
+    /// box, and the sketch outline of floors, roofs and ceilings or a room's boundary, all in mm.
+    /// </summary>
+    public class FmcElementGeometryHandler : IExternalEventHandler, IWaitableExternalEventHandler
+    {
+        private readonly ManualResetEvent _done = new ManualResetEvent(false);
+        public JObject Parameters { get; set; } = new JObject();
+        public JObject Result { get; private set; } = new JObject();
+        public string Error { get; private set; } = "";
+        public bool WaitForCompletion(int timeoutMilliseconds = 10000) { _done.Reset(); return _done.WaitOne(timeoutMilliseconds); }
+        public string GetName() => "Formcraft element geometry";
+
+        private static JArray P(XYZ p) => new JArray(Math.Round(p.X * 304.8, 1), Math.Round(p.Y * 304.8, 1), Math.Round(p.Z * 304.8, 1));
+
+        public void Execute(UIApplication app)
+        {
+            Result = new JObject(); Error = "";
+            try
+            {
+                Document doc = app.ActiveUIDocument?.Document ?? throw new InvalidOperationException("No model is open");
+                var list = new JArray(); var missing = new JArray();
+                foreach (JToken t in Parameters["ids"] as JArray ?? new JArray())
+                {
+                    string s = t.ToString();
+                    Element e = long.TryParse(s, out long v) ? doc.GetElement(new ElementId(v)) : doc.GetElement(s);
+                    if (e == null) { missing.Add(s); continue; }
+                    list.Add(Geometry(doc, e));
+                }
+                Result = new JObject { ["model"] = doc.Title, ["elements"] = list, ["missing"] = missing };
+            }
+            catch (Exception e) { Error = e.Message; }
+            finally { _done.Set(); }
+        }
+
+        private static JObject Geometry(Document doc, Element e)
+        {
+            var o = new JObject
+            {
+                ["id"] = e.Id.Value, ["category"] = e.Category?.Name ?? "", ["type"] = doc.GetElement(e.GetTypeId())?.Name ?? "",
+                ["name"] = e is Room rm ? (rm.Number + " " + (rm.get_Parameter(BuiltInParameter.ROOM_NAME)?.AsString() ?? "")).Trim() : "",
+                ["level"] = doc.GetElement(e.LevelId)?.Name ?? "", ["pinned"] = e.Pinned,
+            };
+            if (e.Location is LocationPoint lp) o["point_mm"] = P(lp.Point);
+            else if (e.Location is LocationCurve lc) { o["start_mm"] = P(lc.Curve.GetEndPoint(0)); o["end_mm"] = P(lc.Curve.GetEndPoint(1)); }
+            BoundingBoxXYZ bb = e.get_BoundingBox(null);
+            if (bb != null) { o["bbox_min_mm"] = P(bb.Min); o["bbox_max_mm"] = P(bb.Max); }
+            if (e is Wall w)
+            {
+                o["width_mm"] = Math.Round(w.Width * 304.8, 1);
+                o["height_mm"] = Math.Round((w.get_Parameter(BuiltInParameter.WALL_USER_HEIGHT_PARAM)?.AsDouble() ?? 0) * 304.8, 1);
+                o["top"] = doc.GetElement(w.get_Parameter(BuiltInParameter.WALL_HEIGHT_TYPE)?.AsElementId() ?? ElementId.InvalidElementId)?.Name ?? "unconnected";
+            }
+            if (e is FamilyInstance fi && fi.Host != null) o["host"] = fi.Host.Id.Value;
+            var loops = new JArray();
+            try
+            {
+                ElementId sketchId = (e as Floor)?.SketchId ?? (e as Ceiling)?.SketchId ?? ElementId.InvalidElementId;
+                if (sketchId == ElementId.InvalidElementId && e is FootPrintRoof)
+                    sketchId = new FilteredElementCollector(doc).OfClass(typeof(Sketch)).Cast<Sketch>().FirstOrDefault(s => s.OwnerId == e.Id)?.Id ?? ElementId.InvalidElementId;
+                if (doc.GetElement(sketchId) is Sketch sk)
+                    foreach (CurveArray ca in sk.Profile) loops.Add(new JArray(ca.Cast<Curve>().Select(c => P(c.GetEndPoint(0)))));
+                if (e is Room room)
+                    foreach (var seg in room.GetBoundarySegments(new SpatialElementBoundaryOptions()))
+                        loops.Add(new JArray(seg.Select(s => P(s.GetCurve().GetEndPoint(0)))));
+            }
+            catch (Exception) { /* no outline for this element */ }
+            if (loops.Count > 0) o["outline_loops_mm"] = loops;
+            return o;
+        }
+    }
+}
