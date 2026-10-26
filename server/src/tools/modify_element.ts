@@ -15,7 +15,8 @@ export const MODEL_EDIT_OPS = ["copy", "rotate", "mirror", "join", "unjoin", "sw
   "extrusion", "blend", "revolve", "sweep", "family_param", "family_type", "family_category", "reference_plane", "dimension",
   "save_family", "load_into_project",
   "column", "beam", "brace", "isolated_foundation", "wall_foundation", "foundation_slab", "structural_floor", "truss", "beam_system", "rebar", "area_reinforcement", "path_reinforcement", "fabric_area", "coping", "point_load", "line_load", "area_load", "load_case", "analytical_member", "duct", "pipe", "cable_tray", "conduit", "flex_duct", "flex_pipe", "connect", "insulation", "lining", "convert_placeholders", "wire", "space", "space_separation", "toposolid", "toposolid_subdivision", "mass_floors", "wall_by_face", "wall_sweep", "curtain_grid", "mullions", "wall_opening", "area_plan", "area", "area_boundary", "create_schedule", "revision", "radial_array", "offset", "split", "extend", "wall_join", "create_group", "place_group", "ungroup", "assembly", "parts", "displace", "paint", "remove_paint", "demolish", "path_of_travel", "energy_model", "create_material", "line_style", "line_pattern", "fill_pattern", "object_style", "project_info", "project_units", "global_param", "associate_global", "coordinates", "acquire_coordinates", "publish_coordinates", "create_workset", "set_workset", "purge", "save_selection", "copy_types", "keynote_file",
-  "roof_extrusion", "fascia", "gutter", "slab_edge", "curtain_system_by_face", "building_pad", "swept_blend", "model_text", "copy_to_views", "copy_to_levels", "starting_view", "work_plane", "zone", "panel_schedule", "view_list", "reveal_hidden"] as const;
+  "roof_extrusion", "fascia", "gutter", "slab_edge", "curtain_system_by_face", "building_pad", "swept_blend", "model_text", "copy_to_views", "copy_to_levels", "starting_view", "work_plane", "zone", "panel_schedule", "view_list", "reveal_hidden",
+  "structural_connection", "boundary_condition", "analytical_panel", "load_combination", "multi_rebar_annotation", "rebar_coupler", "rebar_shape_bar", "rebar_cover_type", "fabric_sheet", "truss_chord", "mep_connector", "load_classification", "demand_factor", "mep_settings", "check_systems", "radial_dimension", "diameter_dimension", "align", "steel_plate", "bolts", "anchors", "weld", "shorten", "notch", "corner_fillet"] as const;
 
 export const MODIFY_MODEL_DESCRIPTION =
   "Formcraft: edit the model like a person does in Revit (owner 26 Oct), a list of ops as ONE batch: one approval, one " +
@@ -116,6 +117,18 @@ export const MODIFY_MODEL_DESCRIPTION =
   "copy_to_views {ids, from_view, views} (Paste Aligned to views) · copy_to_levels {ids, levels, from_level?} (Paste Aligned to levels) · " +
   "starting_view {view} · work_plane {view, level? | plane?, show?} · zone {level, name?, spaces?} · panel_schedule {ids (panels)} · " +
   "view_list {name?} · reveal_hidden {view, on?}. " +
+  "Specialist: structural_connection {ids (members it joins), type_name?} · boundary_condition {host (analytical member or panel), " +
+  "fixity: fixed|pinned|roller, kind?: point|line|area, end?: start|end} · analytical_panel {outline_mm} · load_combination {name, cases: " +
+  "[{case, factor}]} · multi_rebar_annotation {view, ids (rebar), point_mm, direction_mm?, type_name?} · rebar_coupler {id (rebar), end?: 0|1, " +
+  "type_name?} · rebar_shape_bar {host, shape, bar_type?, origin_mm, x_dir?, y_dir?} · rebar_cover_type {name, cover_mm} · fabric_sheet " +
+  "{host, type_name?} · truss_chord {truss, target (roof or floor), chord?: top|bottom} · mep_connector {host (a form), point_mm, kind: " +
+  "duct|pipe|electrical|cable_tray|conduit, system?, shape?} (families) · load_classification {name} · demand_factor {name, settings?} · " +
+  "mep_settings {duct?, pipe?, electrical?, reinforcement?: {ApiPropertyName: value}} · check_systems {} (open connectors, circuits with " +
+  "no panel; changes nothing) · radial_dimension / diameter_dimension {host, point_mm, view?, label?} (families) · align {refs [a, b], view?}. " +
+  "Steel fabrication (needs Revit's Steel Connections add-in; mm in model coordinates): steel_plate {points_mm, normal_mm?, thickness_mm} · " +
+  "bolts / anchors {ids (what they connect), corner1_mm, corner2_mm, x_dir?, y_dir?, spacing_x_mm?, spacing_y_mm?, diameter_mm?, grade?, " +
+  "standard?, site?: shop|site} · weld {ids, point_mm | points_mm, thickness_mm?} · shorten {ids [beam], end: start|end, length_mm} · " +
+  "notch {ids [beam], end, side?: top|bottom, length_mm, depth_mm} · corner_fillet {ids [plate], vertex, radius_mm}. " +
   "dry_run true runs it and rolls back, answering what would change: do that first for deletes. Pinned elements and " +
   "elements another user owns are refused. Use get_element_geometry first to line new work up with existing elements.";
 

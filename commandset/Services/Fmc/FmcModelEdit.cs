@@ -576,6 +576,12 @@ namespace RevitMCPCommandSet.Services.Fmc
                 o["top"] = doc.GetElement(w.get_Parameter(BuiltInParameter.WALL_HEIGHT_TYPE)?.AsElementId() ?? ElementId.InvalidElementId)?.Name ?? "unconnected";
             }
             if (e is FamilyInstance fi && fi.Host != null) o["host"] = fi.Host.Id.Value;
+            if (doc.IsWorkshared)
+            {
+                // Show History: who made it, who changed it last, who owns it now
+                WorksharingTooltipInfo w = WorksharingUtils.GetWorksharingTooltipInfo(doc, e.Id);
+                o["created_by"] = w.Creator; o["last_changed_by"] = w.LastChangedBy; o["owner"] = w.Owner;
+            }
             var loops = new JArray();
             try
             {
