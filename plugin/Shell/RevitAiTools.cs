@@ -26,6 +26,12 @@ namespace revit_mcp_plugin.Shell
             p.RulebookProblems.AddRange(RevitFamilyTools.Strings(b["rulebook_problems"]));
             p.Involvement = b.Value<int?>("involvement") ?? 0;
             p.Model = b.Value<string>("model") ?? "";
+            if (b["general"] is JObject gs)
+            {
+                p.General = gs.Value<string>("state") ?? "Off";
+                p.GeneralLine = gs.Value<string>("line") ?? p.GeneralLine;
+                p.Project = gs.Value<string>("project") ?? "";
+            }
             if (b["limits"] is JObject l)
                 p.Limits = $"{l.Value<int?>("batch_elements")} per batch, {l.Value<int?>("daily_elements")} per model a day, off after {l.Value<int?>("failed_batches_per_day")} failed batches";
             foreach (JObject g in ((JArray)b["groups"]).OfType<JObject>())
@@ -58,6 +64,18 @@ namespace revit_mcp_plugin.Shell
 
         public Task<ToolResult> SaveAsync(bool on, int involvement, IReadOnlyDictionary<string, string> levels) =>
             Run("ai_config", new JObject { ["on"] = on, ["involvement"] = involvement, ["levels"] = JObject.FromObject(levels) }, "AI policy saved to fmc_guard.json.");
+
+        /// <summary>The General AI switch for the open model (pane-only command ai_general, as the Windows user running Revit).</summary>
+        public async Task<ToolResult> SetGeneralAsync(bool on)
+        {
+            AiPolicy p = await StatusAsync();
+            if (p.Model.Length == 0) return ToolResult.Refused("Open the project model first: the AI switch is set per project.");
+            CliResult r = await ServerCli.RunAsync("ai_general", new JObject { ["on"] = on, ["document"] = p.Model });
+            if (!r.Ok) return ToolResult.Refused(string.Join(" ", r.Reasons()));
+            var result = new ToolResult { Ok = true };
+            result.Messages.Add(new ToolMessage(on ? ChipKind.Good : ChipKind.Info, r.Body.Value<string>("line") ?? (on ? "AI is on." : "AI is off.")));
+            return result;
+        }
 
         private static async Task<ToolResult> Run(string command, JObject args, string done)
         {

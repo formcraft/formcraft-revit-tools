@@ -34,6 +34,30 @@
         </StackPanel>
       </c:FmcStateButton>
 
+      <!-- The General AI switch (owner 26 Oct): AI On / AI Off / Stopped for the open model's project; a click switches it. -->
+      <c:FmcStateButton Style="{DynamicResource FmcStatusChip}" Margin="6,0,0,0" VerticalAlignment="Center"
+                        Command="{Binding ToggleAiCommand}" IsChecked="{Binding IsAiOn, Mode=OneWay}"
+                        AutomationProperties.Name="{Binding AiStateText}" ToolTip="{Binding AiStateTip}">
+        <StackPanel Orientation="Horizontal">
+          <Ellipse Width="7" Height="7" VerticalAlignment="Center">
+            <Ellipse.Style>
+              <Style TargetType="Ellipse">
+                <Setter Property="Fill" Value="{DynamicResource Fmc.MutedBrush}"/>
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding IsAiOn}" Value="True">
+                    <Setter Property="Fill" Value="{DynamicResource Fmc.GoodBrush}"/>
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding IsAiStopped}" Value="True">
+                    <Setter Property="Fill" Value="{DynamicResource Fmc.CriticalBrush}"/>
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </Ellipse.Style>
+          </Ellipse>
+          <TextBlock Text="{Binding AiStateText}" Margin="5,0,0,0"/>
+        </StackPanel>
+      </c:FmcStateButton>
+
       <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
         <StackPanel Orientation="Horizontal" Visibility="{Binding IsMain, Converter={StaticResource Vis}}">
           <c:FmcStateButton Style="{DynamicResource FmcToggleButton}" Command="{Binding OpenSettingsCommand}" IsChecked="{Binding SettingsOpen, Mode=OneWay}"

@@ -138,6 +138,7 @@ namespace revit_mcp_plugin.Shell
             }
             Connection.Update(SocketService.Instance.IsRunning);
             RibbonBuilder.ShowConnection(SocketService.Instance.IsRunning);
+            RibbonBuilder.ShowAiSwitch(Pane?.AiState ?? "Off");
             ConnectInfo.Poll();
             Document.Update(app.ActiveUIDocument?.Document);
             LiveData?.Update(app.ActiveUIDocument?.Document);

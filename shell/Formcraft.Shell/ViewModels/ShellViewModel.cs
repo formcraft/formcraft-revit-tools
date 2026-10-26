@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -206,7 +207,9 @@ namespace Formcraft.Shell.ViewModels
             _hostSections["Project"] = Project;
             _hostSections["Families"] = Families;
             _hostSections["Templates"] = Templates;
-            Admin = new AdminViewModel(admin ?? new MockAdminService(), licence, s => Status = s, ShowDialog, ai);
+            _ai = ai ?? new MockAiTools();
+            ToggleAiCommand = new AsyncCommand(ToggleAiAsync, s => Status = s);
+            Admin = new AdminViewModel(admin ?? new MockAdminService(), licence, s => Status = s, ShowDialog, _ai);
             OpenTeamFileCommand = new RelayCommand(() => Status = @"Open team file: <project>\FMC_Team.json beside the central model (with the team file, U12).");
             SaveAdminCommand = new RelayCommand(() => Status = "Saved. Admin changes are logged in the audit log as you make them.");
             SaveSettingsCommand = new RelayCommand(() => Status = "Saved. Settings are saved for you as you change them.");
@@ -235,7 +238,9 @@ namespace Formcraft.Shell.ViewModels
             });
             _licence.Changed += (_, __) => OnLicenceChanged();
             _connection.Changed += (_, __) => { OnPropertyChanged(nameof(IsConnected)); OnPropertyChanged(nameof(ConnectionText)); OnPropertyChanged(nameof(ConnectionTip)); UpdateState(); };
-            _document.Changed += (_, __) => OnPropertyChanged(nameof(Document));
+            _document.Changed += (_, __) => { OnPropertyChanged(nameof(Document)); _ = RefreshAiAsync(); };
+            _connection.Changed += (_, __) => _ = RefreshAiAsync();
+            _ = RefreshAiAsync();
             _settings.Changed += (_, __) => { Rebuild(); UpdateState(); };
             Rebuild();
             UpdateState();
@@ -349,6 +354,38 @@ namespace Formcraft.Shell.ViewModels
         public bool IsMain => Screen == ShellScreen.Main;
 
         // Header: the Connected chip is the Revit/Claude service; licence problems show in the state banners (U08).
+        // ---- The General AI switch (owner 26 Oct): top of the pane and beside Connect on the ribbon; always shows its state.
+        private readonly IAiTools _ai;
+        private string _aiState = "Off";
+        private string _aiTip = "AI is off. Turn it on with the AI switch.";
+        /// <summary>On, Off or Stopped for the open model's project (Stop AI wins).</summary>
+        public string AiState { get => _aiState; private set { if (_aiState == value) return; _aiState = value; OnPropertyChanged(nameof(AiState)); OnPropertyChanged(nameof(AiStateText)); OnPropertyChanged(nameof(IsAiOn)); OnPropertyChanged(nameof(IsAiStopped)); } }
+        public string AiStateText => AiState == "Stopped" ? "Stopped" : "AI " + AiState;
+        public bool IsAiOn => AiState == "On";
+        public bool IsAiStopped => AiState == "Stopped";
+        public string AiStateTip { get => _aiTip; private set { _aiTip = value; OnPropertyChanged(nameof(AiStateTip)); } }
+        public ICommand ToggleAiCommand { get; }
+
+        public async Task RefreshAiAsync()
+        {
+            try
+            {
+                AiPolicy p = await _ai.StatusAsync();
+                AiState = p.General;
+                AiStateTip = p.GeneralLine + (p.Project.Length > 0 ? " Project " + p.Project + "." : "") + " Click to switch.";
+            }
+            catch { /* the switch keeps its last known state; Connect shows why the server can't be reached */ }
+        }
+
+        public async Task ToggleAiAsync()
+        {
+            await RefreshAiAsync();
+            if (IsAiStopped) { Status = "AI is stopped. Resume it in Admin › AI involvement (Stop AI overrides the switch)."; return; }
+            ToolResult r = await _ai.SetGeneralAsync(!IsAiOn);
+            Status = r.Messages.Count > 0 ? r.Messages[0].Text : r.Ok ? "Saved." : "Refused.";
+            await RefreshAiAsync();
+        }
+
         public bool IsConnected => _connection.State != ConnectionState.NotConnected;
         public string ConnectionText => IsConnected ? "Connected" : "Not connected";
         /// <summary>The chip by the pane title is where the AI connection shows; clicking it opens Connect.</summary>

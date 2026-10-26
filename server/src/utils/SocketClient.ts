@@ -120,7 +120,8 @@ export class RevitClientConnection {
         if (!verdict.ok) {
           // The lock's one new case: the AI-assisted modeller, Off unless the kit rulebook and the BIM Manager allow it.
           const gate = await aiGate(command, params, info?.active, config, (c, p) => this.sendRaw(c, p, 60000));
-          if (!gate.ok || !gate.run) throw new Error([...verdict.reasons, gate.reason].filter(Boolean).join(" "));
+          // A person sees one plain line (USER_LINE), never the lock's wording; fmc_ai status has the detail.
+          if (!gate.ok || !gate.run) throw new Error(gate.user ?? [...verdict.reasons, gate.reason].filter(Boolean).join(" "));
           return gate.run(() => this.sendRaw(command, params, timeoutMs));
         }
       }

@@ -80,6 +80,12 @@ States: `Open` → `Fixed – retest` → `Closed` (or back to `Open`), or `Answ
 
 ## Test runs
 
+### Owner report · 2026-10-26 · AI switch
+
+| Finding | What | State |
+|---|---|---|
+| (owner) | Users can't turn AI modelling on: `fmc_ai status` says "fmc_guard.json has no valid ai_modeller section", and per-group levels are too complex. | **Fixed – retest** (PR `feat/general-ai-switch`): the General AI switch, pane and ribbon. Retest: `fmc_selftest` (General AI switch line), switch On in a WIP model, one batch approved in the pane, then Stop AI. |
+
 ### Run 11 · 2026-10-18 · pilot PC · Revit 2025.4 · build `ea13407` · four detailed true-shape families
 
 Batch build of `_Staging\_Batch\batch_DET.json` (ICU bed, ceiling operating light, anaesthesia machine, neonatal

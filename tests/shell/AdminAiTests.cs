@@ -23,17 +23,45 @@ namespace Formcraft.Shell.Tests
         }
 
         [Test]
+        public async Task The_general_AI_switch_goes_off_on_off_from_the_header_and_Stop_AI_overrides_it()
+        {
+            var (states, stoppedState, status) = Sta.Run(() =>
+            {
+                var (_, ai, vm) = Pane();
+                var seen = new System.Collections.Generic.List<string>();
+                vm.RefreshAiAsync().GetAwaiter().GetResult(); seen.Add(vm.AiStateText);
+                vm.ToggleAiAsync().GetAwaiter().GetResult(); seen.Add(vm.AiStateText);
+                vm.ToggleAiAsync().GetAwaiter().GetResult(); seen.Add(vm.AiStateText);
+                ai.Stopped = true;
+                vm.ToggleAiAsync().GetAwaiter().GetResult();
+                return (seen, vm.AiStateText, vm.Status);
+            });
+            await Assert.That(string.Join(",", states)).IsEqualTo("AI Off,AI On,AI Off");
+            await Assert.That(stoppedState).IsEqualTo("Stopped");
+            await Assert.That(status).Contains("Stop AI overrides the switch");
+        }
+
+        [Test]
+        public async Task Admin_shows_the_general_switch_first_and_involvement_and_levels_under_Advanced()
+        {
+            var titles = Sta.Run(() => Pane().Admin.Groups.Select(g => g.Title).ToList());
+            await Assert.That(titles[0]).IsEqualTo("General AI switch");
+            await Assert.That(titles).Contains("Advanced · involvement (admins)");
+            await Assert.That(titles).Contains("Advanced · operation groups, level each (admins)");
+        }
+
+        [Test]
         public async Task The_section_shows_each_group_with_its_level_and_why()
         {
             var (groups, hints) = Sta.Run(() =>
             {
                 var (admin, _, _) = Pane();
-                var levels = admin.Groups.Single(g => g.Title.StartsWith("Operation groups")).Items.OfType<ChoiceSetting>().ToList();
+                var levels = admin.Groups.Single(g => g.Title.StartsWith("Advanced · operation groups")).Items.OfType<ChoiceSetting>().ToList();
                 return (admin.Groups.Select(g => g.Title).ToList(), levels.Select(l => l.Label + "=" + l.Selected + "|" + l.Hint).ToList());
             });
 
             await Assert.That(groups).Contains("Waiting for approval");
-            await Assert.That(groups).Contains("Never, at any level");
+            await Assert.That(groups).Contains("Admins only, always");
             await Assert.That(hints[1]).StartsWith("Views and annotation=Auto in WIP|Allowed now");
             await Assert.That(hints[3]).Contains("Unlocks at 21%");
         }
@@ -44,7 +72,7 @@ namespace Formcraft.Shell.Tests
             var (views, brief) = Sta.Run(() =>
             {
                 var (admin, _, _) = Pane();
-                var levels = admin.Groups.Single(g => g.Title.StartsWith("Operation groups")).Items.OfType<ChoiceSetting>().ToList();
+                var levels = admin.Groups.Single(g => g.Title.StartsWith("Advanced · operation groups")).Items.OfType<ChoiceSetting>().ToList();
                 return (levels.Single(l => l.Label == "Views and annotation").Options.Count, levels.Single(l => l.Label == "Create from brief").Options.Count);
             });
 
@@ -73,8 +101,8 @@ namespace Formcraft.Shell.Tests
             var (title, changes, saved) = Sta.Run(() =>
             {
                 var (admin, ai, vm) = Pane();
-                admin.Groups.Single(g => g.Title == "AI modelling").Items.OfType<TextSetting>().Single().Value = "35";
-                admin.Groups.Single(g => g.Title.StartsWith("Operation groups")).Items.OfType<ButtonsSetting>().Single()
+                admin.Groups.Single(g => g.Title == "Advanced · involvement (admins)").Items.OfType<TextSetting>().Single().Value = "35";
+                admin.Groups.Single(g => g.Title.StartsWith("Advanced · operation groups")).Items.OfType<ButtonsSetting>().Single()
                     .Buttons.Single(b => b.Label == "Save policy").Command.Execute(null);
                 var t = vm.Dialog!.Title;
                 var c = vm.Dialog.Items!.OfType<ReadOnlySetting>().Single().Value;

@@ -4,7 +4,7 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, configPath, loadConfig } from "../fmc/policy.js";
-import { COMMAND_GROUPS, LEVELS, Level, NEVER, aiVerdict, modelParts } from "../fmc/aiuse.js";
+import { COMMAND_GROUPS, LEVELS, Level, NEVER, USER_LINE, aiVerdict, generalState, modelParts, projectCode } from "../fmc/aiuse.js";
 import { formcraftDir, loadAiConfig, loadRulebook, loadState, readQueue, setStatus } from "../fmc/aiuse_io.js";
 
 const win = path.win32;
@@ -18,7 +18,8 @@ export const FMC_AI_DESCRIPTION =
     "change the model, and why: the firm and project switch, the involvement band, each operation group's level " +
     "(Off, Suggest, Fix with approval, Auto in WIP), the limits and today's use. queue: batches waiting for the " +
     "author's approval. stop: Stop AI, refusing every AI change until a person resumes it in the pane. Approving a " +
-    "batch, resuming and changing the settings are done by a person in the pane, never through this tool.";
+    "batch, resuming and changing the settings are done by a person in the pane, never through this tool. The General " +
+    "AI switch (On, Off, Stopped) is the one setting users see: status says its state for the open model's project.";
 
 export const FMC_AI_SHAPE = {
   action: z.enum(["status", "queue", "stop"]),
@@ -40,7 +41,15 @@ export function policySummary(config: GuardConfig, active: any) {
   }) : [];
   const { project, role } = active?.title ? modelParts(active.title) : { project: "", role: "" };
   const p = ai?.projects?.[project] ?? {};
+  const state3 = active?.title ? generalState(ai, active.title) : ai?.stop ? "Stopped" : "Off";
   return {
+    // The one setting users see (owner 26 Oct): the plain state and line for the open model's project.
+    general: {
+      state: state3, project: project || null, section: ai ? "present" : "missing (the AI switch creates it)",
+      rulebook_general: !!book?.general, covers: book?.general?.groups ?? [],
+      line: state3 === "On" ? "AI is on for this project: every change waits for your approval." : state3 === "Stopped" ? USER_LINE.stopped
+        : active?.title && !projectCode(active.title) ? "This model's name has no FMC project code, so AI stays off for it." : USER_LINE.off,
+    },
     on: !!ai && !!book && !ai.stop && (p.on ?? ai.on), stop: ai?.stop ?? false,
     rulebook: book ? file : null, rulebook_read: file ? `${win.basename(file)}${section ? ` (${section})` : " (no AI-modeller section)"}` : null,
     rulebook_problems: problems,
@@ -85,6 +94,27 @@ export function paneAi(command: string, input: Record<string, unknown>, by: stri
     case "ai_resume": {
       try { fs.unlinkSync(win.join(formcraftDir(), "ai_stop")); } catch { /* wasn't stopped */ }
       return { resumed: true, by };
+    }
+    case "ai_general": {
+      // The General AI switch (owner 26 Oct): any user, per project. Creates the ai_modeller section with safe defaults
+      // (everything off) the first time it is used. Stop AI still overrides it; admins keep Advanced (ai_config).
+      if (typeof input.on !== "boolean") return { error: "Give on: true or false" };
+      const project = typeof input.project === "string" && input.project ? input.project
+        : typeof input.document === "string" ? projectCode(input.document) : "";
+      if (!project) return { error: "This model's name has no FMC project code ([Project]-[Originator]-…), so AI stays off for it." };
+      const file = configPath();
+      let raw: any = {};
+      try { raw = JSON.parse(fs.readFileSync(file, "utf8").replace(/^\uFEFF/, "")); } catch { return { error: `Can't read ${file}: the AI switch needs the guard file` }; }
+      const created = !(raw.ai_modeller && typeof raw.ai_modeller === "object");
+      const cur = created ? { on: false, stop: false, levels: {}, projects: {} } : raw.ai_modeller;
+      cur.projects ??= {};
+      cur.projects[project] = { ...(cur.projects[project] ?? {}), general: input.on };
+      cur.changed = { by, at: new Date().toISOString(), what: `General AI switch ${input.on ? "On" : "Off"} for ${project}` };
+      raw.ai_modeller = cur;
+      fs.writeFileSync(file, JSON.stringify(raw, null, 2));
+      const stopped = fs.existsSync(win.join(formcraftDir(), "ai_stop")) || cur.stop === true;
+      return { saved: true, created_section: created, project, state: stopped ? "Stopped" : input.on ? "On" : "Off",
+        line: stopped ? USER_LINE.stopped : input.on ? "AI is on for this project: every change waits for your approval." : USER_LINE.off };
     }
     case "ai_config": {
       // The BIM Manager's settings into fmc_guard.json's ai_modeller section; everything else in the file is kept.

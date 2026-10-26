@@ -259,7 +259,7 @@ async function main() {
         return print(r, "error" in r);
       }
       // The pane's AI commands: a person approves, rejects, resumes or sets the policy. Never MCP tools.
-      case "ai_approve": case "ai_reject": case "ai_resume": case "ai_config": {
+      case "ai_approve": case "ai_reject": case "ai_resume": case "ai_config": case "ai_general": {
         const r = paneAi(command, input as Record<string, unknown>, process.env.USERNAME || "unknown");
         return print(r, "error" in r);
       }

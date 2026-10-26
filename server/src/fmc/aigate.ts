@@ -1,5 +1,5 @@
 import { DocInfo, GuardConfig } from "./policy.js";
-import { PLACEABLE, aiVerdict, batchSize, recordBatch } from "./aiuse.js";
+import { NEVER, PLACEABLE, USER_LINE, aiVerdict, batchSize, recordBatch } from "./aiuse.js";
 import { approvalFor, enqueue, loadAiConfig, loadRulebook, loadState, logBatch, saveState, setStatus } from "./aiuse_io.js";
 
 /**
@@ -8,14 +8,16 @@ import { approvalFor, enqueue, loadAiConfig, loadRulebook, loadState, logBatch, 
  * logged; otherwise the lock's refusal stands, with the AI gate's reason added. A batch at "Fix with approval" goes to
  * the approval queue and runs only after the model's author approves it in the pane.
  */
-export interface Gate { ok: boolean; reason: string; run?: <T>(exec: () => Promise<T>) => Promise<T> }
+/** `user` is the plain line a person sees instead of the lock's wording (owner 26 Oct); `reason` is the detail. */
+export interface Gate { ok: boolean; reason: string; user?: string; run?: <T>(exec: () => Promise<T>) => Promise<T> }
 
 export async function aiGate(command: string, params: any, active: (DocInfo & { isLocal?: boolean }) | null | undefined, cfg: GuardConfig,
   send: (command: string, params: object) => Promise<any>, env: NodeJS.ProcessEnv = process.env): Promise<Gate> {
   if (!active) return { ok: false, reason: "" };
   const { book } = loadRulebook(cfg);
   const ai = loadAiConfig(cfg, env);
-  if (!ai) return { ok: false, reason: "" }; // AI modelling isn't set up: the lock's refusal is the whole story
+  // Not set up yet (no ai_modeller section): the person sees the plain line, never the lock's wording.
+  if (!ai) return { ok: false, reason: "", user: NEVER[command] ? USER_LINE.admin(NEVER[command]) : USER_LINE.off };
   const elements = batchSize(params);
   const approval = approvalFor(command, params, active.path, env);
   const v = aiVerdict({ command, doc: active, elements, approved: !!approval }, cfg, book, ai, loadState(env));
@@ -24,8 +26,9 @@ export async function aiGate(command: string, params: any, active: (DocInfo & { 
     if (v.needs_approval) {
       const item = enqueue(command, params, active.path, active.title, v.group ?? "", elements, env);
       reason += ` It is waiting in the approval queue as ${item.id}: once the author approves it, send the same batch again.`;
+      return { ok: false, reason, user: `${USER_LINE.approve} (batch ${item.id})` };
     }
-    return { ok: false, reason };
+    return { ok: false, reason, user: v.user };
   }
 
   // Placing elements: Revit says each type's category first, so AI never places structure or anything outside the list.

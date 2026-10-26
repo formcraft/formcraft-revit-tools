@@ -5,7 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { DEFAULT_CONFIG, GuardConfig } from "./policy.js";
-import { AiModellerConfig, aiVerdict, batchKey, batchSize, parseConfig, parseRulebook, recordBatch, today } from "./aiuse.js";
+import { AiModellerConfig, aiVerdict, batchKey, batchSize, parseConfig, parseRulebook, recordBatch, today, USER_LINE, generalState, projectCode } from "./aiuse.js";
 
 // The proposed kit rulebook is the fixture, so the tests follow what the kit would hold.
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -33,10 +33,57 @@ test("Off unless the guard section and the kit rulebook both exist; Stop AI refu
   assert.equal(parseConfig({ on: "yes" }), null);
 });
 
-test("never: structure, levels, grids, deleting, arbitrary code and links, at any level", () => {
-  const all = ai({ involvement: 100, levels: { views: "Auto in WIP" } });
-  for (const c of ["create_level", "create_grid", "create_structural_framing_system", "delete_element", "send_code_to_revit", "fmc_link_add", "create_line_based_element"])
-    assert.match(aiVerdict(ask(c), cfg, book, all, empty).reasons[0], /AI never runs/, c);
+test("never (admins only): structure, deleting, purging, arbitrary code, links and worksets, at any level or switch", () => {
+  const all = ai({ involvement: 100, levels: { views: "Auto in WIP" }, projects: { F26001: { general: true } } });
+  for (const c of ["create_structural_framing_system", "delete_element", "operate_element", "send_code_to_revit", "fmc_link_add", "fmc_link_pin", "fmc_workset_create", "fmc_material_purge"]) {
+    const v = aiVerdict(ask(c), cfg, book, all, empty);
+    assert.match(v.reasons[0], /AI never runs/, c);
+    assert.match(v.user ?? "", /^Only an admin can do this/, c);
+  }
+});
+
+test("General AI switch: On for the project covers walls, floors, roofs, levels, grids and placing, every batch approved", () => {
+  const g = ai({ on: false, projects: { F26001: { general: true } } }); // the admin's Advanced switch stays off
+  for (const c of ["tag_rooms", "create_level", "create_grid", "create_line_based_element", "create_surface_based_element", "create_point_based_element", "fmc_material_assign"]) {
+    const v = aiVerdict(ask(c), cfg, book, g, empty);
+    assert.equal(v.needs_approval, true, c);
+    assert.equal(v.via, "general", c);
+    assert.equal(v.user, USER_LINE.approve, c);
+    assert.ok(aiVerdict(ask(c, { approved: true }), cfg, book, g, empty).ok, c);
+  }
+});
+
+test("General AI switch: per project, Stop AI overrides it, limits still apply, a name without a project code is Off", () => {
+  const g = ai({ on: false, projects: { F26001: { general: true } } });
+  const other = aiVerdict(ask("tag_rooms", { doc: wip("F26002-FMC-ZZ-ZZ-M3-A-0001") }), cfg, book, g, empty);
+  assert.equal(other.ok, false);
+  assert.equal(other.user, USER_LINE.off);
+  assert.equal(aiVerdict(ask("tag_rooms"), cfg, book, { ...g, stop: true }, empty).user, USER_LINE.stopped);
+  assert.match(aiVerdict(ask("tag_rooms", { elements: 51, approved: true }), cfg, book, g, empty).user ?? "", /Too many changes at once/);
+  assert.equal(generalState(g, "F26001-FMC-ZZ-ZZ-M3-A-0001"), "On");
+  assert.equal(generalState({ ...g, stop: true }, "F26001-FMC-ZZ-ZZ-M3-A-0001"), "Stopped");
+  assert.equal(generalState(ai({ general: true }), "Project1"), "Off", "no FMC project code: Off even when the firm default is On");
+  assert.equal(projectCode("Project1"), "");
+  assert.equal(projectCode("F26001-FMC-ZZ-ZZ-M3-A-0001.rvt"), "F26001");
+});
+
+test("General AI switch: only the rulebook's general groups, and nothing without the rulebook's general block", () => {
+  const g = ai({ on: false, projects: { F26001: { general: true } } });
+  const narrow = { ...book, general: { level: "Fix with approval" as const, groups: ["data"] } };
+  const v = aiVerdict(ask("tag_rooms"), cfg, narrow, g, empty);
+  assert.match(v.reasons[0], /isn't covered by the General AI switch/);
+  assert.match(v.user ?? "", /^Only an admin can do this/);
+  const { general: _none, ...noGeneral } = book;
+  assert.equal(aiVerdict(ask("tag_rooms"), cfg, noGeneral, g, empty).user, USER_LINE.kit);
+  assert.match(parseRulebook(JSON.stringify({ ...JSON.parse(proposal), general: { level: "Auto in WIP", groups: ["views"] } })).problems.join(" "), /general.level must be/);
+  assert.match(parseRulebook(JSON.stringify({ ...JSON.parse(proposal), general: { groups: ["nope"] } })).problems.join(" "), /general names a group/);
+});
+
+test("the switch can create the section: only { projects } or { general } is a valid section, everything else stays off", () => {
+  const c = parseConfig({ projects: { F26001: { general: true } } })!;
+  assert.equal(c.on, false);
+  assert.equal(c.stop, false);
+  assert.equal(generalState(c, "F26001-FMC-ZZ-ZZ-M3-A-0001"), "On");
 });
 
 test("only a person's local WIP copy: never a central model, never outside WIP", () => {
@@ -122,5 +169,6 @@ test("the gate: queues a Fix-with-approval batch, runs it once approved, refuses
   assert.match(refused.reason, /type 8 isn't a door, window/);
 
   // No ai_modeller section at all: the gate adds nothing, the lock's refusal stands as it always did.
-  assert.deepEqual(await aiGate("tag_rooms", {}, wip(), cfg, send, env), { ok: false, reason: "" });
+  // No ai_modeller section yet: the person sees the plain line, never the lock's wording.
+  assert.deepEqual(await aiGate("tag_rooms", {}, wip(), cfg, send, env), { ok: false, reason: "", user: USER_LINE.off });
 });

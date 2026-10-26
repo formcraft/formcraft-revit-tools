@@ -33,6 +33,11 @@ namespace Formcraft.Shell.Services
         public string Message { get; set; } = "";
         public bool On { get; set; }
         public bool Stop { get; set; }
+        /// <summary>The General AI switch for the open model's project: On, Off or Stopped (owner 26 Oct).</summary>
+        public string General { get; set; } = "Off";
+        /// <summary>The plain line a person sees for it, never the lock's wording.</summary>
+        public string GeneralLine { get; set; } = "AI is off. Turn it on with the AI switch.";
+        public string Project { get; set; } = "";
         public bool GuardSection { get; set; }
         public string Rulebook { get; set; } = "";
         public List<string> RulebookProblems { get; } = new List<string>();
@@ -55,6 +60,8 @@ namespace Formcraft.Shell.Services
         Task<ToolResult> DecideAsync(string id, bool approve);
         Task<ToolResult> StopAsync(bool stop);
         Task<ToolResult> SaveAsync(bool on, int involvement, IReadOnlyDictionary<string, string> levels);
+        /// <summary>The General AI switch for the open model's project (any user; Stop AI still overrides it).</summary>
+        Task<ToolResult> SetGeneralAsync(bool on);
     }
 
     /// <summary>Sample values from board core/PaneAdminAI.</summary>
@@ -62,6 +69,7 @@ namespace Formcraft.Shell.Services
     {
         public bool On { get; set; } = true;
         public bool Stopped { get; set; }
+        public bool GeneralOn { get; set; }
         public int Involvement { get; set; } = 20;
         public Dictionary<string, string> Levels { get; } = new Dictionary<string, string> { ["views"] = "Auto in WIP", ["create_from_brief"] = "Fix with approval" };
         public List<AiQueueLine> Queue { get; } = new List<AiQueueLine>
@@ -81,12 +89,24 @@ namespace Formcraft.Shell.Services
                     AllowedNow = p.On && unlocked && (level == "Auto in WIP" || level == "Fix with approval"),
                     Why = !p.On ? "AI modelling is off" : !unlocked ? "Unlocks at 21% (Co-model)" : level == "Suggest" ? "At Suggest: a person does the work" : "allowed" });
             }
-            p.Never.Add(("create_grid", "grids"));
             p.Never.Add(("create_structural_framing_system", "structure"));
+            p.Never.Add(("delete_element", "deleting"));
+            p.General = Stopped ? "Stopped" : GeneralOn ? "On" : "Off";
+            p.GeneralLine = p.General == "On" ? "AI is on for this project: every change waits for your approval."
+                : p.General == "Stopped" ? "AI is stopped. Resume it with the AI switch." : "AI is off. Turn it on with the AI switch.";
+            p.Project = "F26001";
             return Task.FromResult(p);
         }
 
         public Task<List<AiQueueLine>> QueueAsync() => Task.FromResult(Queue.ToList());
+
+        public Task<ToolResult> SetGeneralAsync(bool on)
+        {
+            GeneralOn = on;
+            var r = new ToolResult { Ok = true };
+            r.Messages.Add(new ToolMessage(on ? ChipKind.Good : ChipKind.Info, on ? "AI is on for this project: every change waits for your approval." : "AI is off. Turn it on with the AI switch."));
+            return Task.FromResult(r);
+        }
 
         public Task<ToolResult> DecideAsync(string id, bool approve)
         {
