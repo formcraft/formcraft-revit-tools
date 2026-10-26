@@ -39,6 +39,12 @@ function op(o: P, n: Names, i: number): string[] {
   const h = `${i}. `;
   const count = (o.ids ?? []).length;
   switch (o.op) {
+    case "copy": return [`${h}Copy ${count} elements ${(o.count ?? 1) > 1 ? `${o.count} times, ` : ""}by ${(o.vector_mm ?? []).map((v: number) => Math.round(v)).join(", ")} mm:`, ...named(n, o.ids)];
+    case "rotate": return [`${h}Rotate ${count} elements ${o.angle_deg}°${o.copy ? " (as copies)" : ""}:`, ...named(n, o.ids)];
+    case "mirror": return [`${h}Mirror ${count} elements about ${xy(o.line_mm?.[0])} → ${xy(o.line_mm?.[1])}${o.copy === false ? " (moving the originals)" : " (as copies)"}:`, ...named(n, o.ids)];
+    case "join": case "unjoin": case "switch_join": case "cut": case "uncut":
+      return [`${h}${o.op.replace("_", " ")} geometry: ${count} elements:`, ...named(n, o.ids)];
+    case "pin": case "unpin": return [`${h}${o.op === "pin" ? "Pin" : "Unpin"} ${count} elements:`, ...named(n, o.ids)];
     case "delete": return [`${h}DELETE ${count} elements (anything hosted on them goes too):`, ...named(n, o.ids)];
     case "move": return [`${h}Move ${count} elements by ${(o.vector_mm ?? []).map((v: number) => Math.round(v)).join(", ")} mm:`, ...named(n, o.ids)];
     case "set_param": {
@@ -88,6 +94,9 @@ export function explain(command: string, params: unknown, names: Names = { types
       return cap(["New rooms:", ...data.map((d) => `${d.number ?? ""} ${d.name ?? ""} at ${xy(d.location)}`.trim())]);
     case "create_level":
       return cap(["New levels:", ...data.map((d) => `${d.name ?? "?"} at ${mm(d.elevation)}`)]);
+    case "fmc_post_command":
+      return cap([`Starts Revit's ${p.command} command, as if clicked on the ribbon` + ((p.select_ids ?? []).length ? `, with ${(p.select_ids ?? []).length} elements selected:` : ""),
+        ...named(names, p.select_ids)]);
     case "delete_element":
       return cap([`DELETE ${(p.elementIds ?? []).length} elements:`, ...named(names, p.elementIds)]);
     case "operate_element":
@@ -115,7 +124,7 @@ export function namesWanted(params: unknown): { typeIds: number[]; elementIds: s
     if (typeof o?.type_id === "number") typeIds.add(o.type_id);
     if (o?.op === "duplicate_type" && o.type != null) typeIds.add(Number(o.type));
   }
-  for (const x of p.elementIds ?? p.data?.elementIds ?? []) elementIds.add(String(x));
+  for (const x of p.elementIds ?? p.data?.elementIds ?? p.select_ids ?? []) elementIds.add(String(x));
   return { typeIds: [...typeIds].slice(0, 100), elementIds: [...elementIds].slice(0, 200) };
 }
 
