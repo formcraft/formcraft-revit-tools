@@ -262,13 +262,13 @@ export function aiVerdict(ask: AiAsk, cfg: GuardConfig, book: AiRulebook | null,
 
   // The General AI switch: one On/Off per project. On covers the rulebook's general groups at its level (approval),
   // and skips bands and per-group levels (the admin's Advanced panel). Limits and Stop AI still apply.
-  if (full) return limitsAndApproval(ask, book, state, group, "Fix with approval", "", "general");
+  if (full) return limitsAndApproval(ask, book, state, group, "Fix with approval", "", "general", ai.mode !== "testing");
   if (generalState(ai, d.title, d.path) === "On") {
     if (!book.general) return no("The General AI switch is on, but the kit rulebook has no general section (a kit change request)", { group, user: USER_LINE.kit, via: "general" });
     if (!book.general.groups.includes(group)) return no(`${book.groups[group].name} isn't covered by the General AI switch: an admin decides it in Advanced`, { group, user: USER_LINE.admin(book.groups[group].name.toLowerCase()), via: "general" });
     const glevel = book.general.level;
     if (glevel === "Suggest") return no(`${book.groups[group].name} is at Suggest under the General AI switch`, { group, level: glevel, user: USER_LINE.cant, via: "general" });
-    return limitsAndApproval(ask, book, state, group, glevel, "", "general");
+    return limitsAndApproval(ask, book, state, group, glevel, "", "general", ai.mode !== "testing");
   }
   if (!(p.on ?? ai.on)) return no(`AI-assisted modelling is off for ${project || "this project"} (the General AI switch is off, and so is the admin's Advanced switch)`, { group });
   // A discipline's ceiling (S: 5%) applies before the bands, so it can only narrow what the project allows.
@@ -287,12 +287,21 @@ export function aiVerdict(ask: AiAsk, cfg: GuardConfig, book: AiRulebook | null,
   if (level === "Suggest") return no(`${book.groups[group].name} is at Suggest: AI shows the change and a person does it`, { group, level, band });
   if (level === "Auto in WIP" && !book.groups[group].auto_allowed) return no(`${book.groups[group].name} may not run as Auto in WIP (the rulebook)`, { group, level, band });
 
-  return limitsAndApproval(ask, book, state, group, level, band, "advanced");
+  return limitsAndApproval(ask, book, state, group, level, band, "advanced", ai.mode !== "testing");
 }
 
 /** The gates both paths share: today's failures, the batch and daily limits, then the approval. */
-function limitsAndApproval(ask: AiAsk, book: AiRulebook, state: AiState, group: string, level: Level, band: string, via: "general" | "advanced"): AiVerdict {
+/**
+ * The rulebook's limits (batch size, the day's total, three failed batches) and the approval step. Owner 26 Oct: no
+ * limits while testing; they come back for distribution (strict mode). Approval stays in both.
+ */
+function limitsAndApproval(ask: AiAsk, book: AiRulebook, state: AiState, group: string, level: Level, band: string, via: "general" | "advanced", limits = true): AiVerdict {
   const d = ask.doc;
+  if (!limits) {
+    if (level === "Fix with approval" && !ask.approved)
+      return { ok: false, reasons: [`${book.groups[group]?.name ?? "This change"} is at Fix with approval: the batch waits for the model's author to approve it in the Formcraft pane`], group, level, band, via, user: USER_LINE.approve, needs_approval: true };
+    return { ok: true, reasons: [], group, level, band, via };
+  }
   const no = (r: string, user: string, extra: Partial<AiVerdict> = {}): AiVerdict => ({ ok: false, reasons: [r], group, level, band, via, user, ...extra });
   const key = d.path.toLowerCase();
   const m = state.day === today() ? state.models[key] : undefined;

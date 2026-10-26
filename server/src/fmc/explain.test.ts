@@ -35,6 +35,9 @@ test("Approval details (owner 26 Oct): a person sees what approving lets AI do, 
     { op: "create_sheet", number: "A-101", name: "First floor" }, { op: "place_view", sheet: "$2", view: "$1" }] });
   assert.deepEqual(views.slice(0, 3), ['1. New floor plan "FF Plan" on FF +3.40, 1:50', "2. New sheet A-101 First floor", "3. Place $1 on sheet $2"]);
 
+  const notes = explain("fmc_model_edit", { ops: [{ op: "tag", view: "FF Plan", ids: [15], tag_type: "Keynote Tag" }, { op: "text", view: "FF Plan", point_mm: [0, 0], text: "Void over" }] }, names);
+  assert.deepEqual(notes.slice(0, 3), ["1. Tag 1 elements in FF Plan with Keynote Tag:", "   Rooms: F15 Bedroom (Level 1)", '2. Text in FF Plan: "Void over"']);
+
   const code = explain("send_code_to_revit", { code: "var w = doc.GetElement(id);\n\nw.Pinned = false;" });
   assert.deepEqual(code, ["Runs Revit API code (2 lines, in one transaction):", "   var w = doc.GetElement(id);", "   w.Pinned = false;"]);
   assert.ok(explain("delete_element", { elementIds: Array.from({ length: 40 }, (_, i) => i) }).length <= 14, "long lists are capped");

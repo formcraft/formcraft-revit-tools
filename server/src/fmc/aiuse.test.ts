@@ -95,6 +95,13 @@ test("Full access (owner 26 Oct): every tool like a person, delete and purge inc
   assert.match(aiVerdict(ask("delete_element", { elements: 51, approved: true }), cfg, book, full, empty).user ?? "", /Too many changes/, "limits still apply");
 });
 
+test("Testing mode (owner 26 Oct): no batch, daily or failure limits; approval stays", () => {
+  const t = ai({ on: false, access: "full", mode: "testing", projects: { F26001: { general: true } } });
+  const busy = { day: today(), models: { [ask("x").doc.path.toLowerCase()]: { elements: 9999, failed: 9, off: true } } };
+  assert.equal(aiVerdict(ask("delete_element", { elements: 5000 }), cfg, book, t, busy).needs_approval, true);
+  assert.ok(aiVerdict(ask("delete_element", { elements: 5000, approved: true }), cfg, book, t, busy).ok);
+});
+
 test("General AI switch: only the rulebook's general groups, and nothing without the rulebook's general block", () => {
   const g = ai({ on: false, projects: { F26001: { general: true } } });
   const narrow = { ...book, general: { level: "Fix with approval" as const, groups: ["data"] } };

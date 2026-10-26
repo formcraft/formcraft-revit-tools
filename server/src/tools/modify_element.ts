@@ -9,7 +9,9 @@ function reply(body: unknown, isError = false) {
 export const MODEL_EDIT_OPS = ["copy", "rotate", "mirror", "join", "unjoin", "switch_join", "cut", "uncut", "pin", "unpin", "delete", "move", "set_param", "change_type", "attach", "duplicate_type", "create_roof",
   "create_railing", "create_stair", "room_separation", "opening", "shaft",
   "create_view", "duplicate_view", "set_view", "override", "hide", "unhide", "create_filter", "create_template", "apply_template",
-  "create_sheet", "place_view", "open_view"] as const;
+  "create_sheet", "place_view", "open_view",
+  "detail_line", "model_line", "filled_region", "masking_region", "text", "replace_text", "tag", "spot_elevation", "spot_coordinate",
+  "revision_cloud", "place_annotation", "color_fill_legend"] as const;
 
 export const MODIFY_MODEL_DESCRIPTION =
   "Formcraft: edit the model like a person does in Revit (owner 26 Oct), a list of ops as ONE batch: one approval, one " +
@@ -51,6 +53,17 @@ export const MODIFY_MODEL_DESCRIPTION =
   "create_template {view, name} · apply_template {template, views, once? (apply its settings without linking)} · " +
   "create_sheet {number, name, title_block?} · place_view {sheet, view, point_mm? (on the sheet; default its centre)} · " +
   "open_view {view} (shown when the batch is done). " +
+  "Annotation (points in model mm; on a sheet or drafting view, in its own): " +
+  "detail_line {view, points_mm (a polyline), closed?, line_style?} · model_line {points_mm, level?, line_style?} · " +
+  "filled_region {view, outline_mm | loops_mm (first outside, rest holes), type_name?} · masking_region {view, outline_mm} · " +
+  "text {view, point_mm, text, type_name?, width_mm? (on paper), align?: Left|Center|Right} · " +
+  "replace_text {find, replace, views?} · " +
+  "tag {view, ids, tag_type? (a keynote, material or any tag type name), mode?: category|multi|material, leader?, " +
+  "offset_mm?, orientation?} (rooms, spaces and areas get their own tags) · " +
+  "spot_elevation / spot_coordinate {view, id (floor, roof, toposolid...), point_mm, leader?} · " +
+  "revision_cloud {view, outline_mm, revision? (description or number; default the latest)} · " +
+  "place_annotation {view, type_name (detail item, symbol or generic annotation), point_mm, rotation_deg?} · " +
+  "color_fill_legend {view, category? (default Rooms), scheme?, point_mm}. " +
   "dry_run true runs it and rolls back, answering what would change: do that first for deletes. Pinned elements and " +
   "elements another user owns are refused. Use get_element_geometry first to line new work up with existing elements.";
 

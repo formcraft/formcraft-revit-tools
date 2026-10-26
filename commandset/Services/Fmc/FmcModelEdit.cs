@@ -311,7 +311,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     created.Add(o.Id);
                     return new JObject { ["shaft"] = o.Id.Value };
                 }
-                default: return ViewOp(doc, name, op, made, created) ?? throw new InvalidOperationException($"{name} isn't an op (create_view, duplicate_view, set_view, override, hide, unhide, create_filter, create_template, apply_template, create_sheet, place_view, open_view, copy, rotate, mirror, join, unjoin, switch_join, cut, uncut, pin, unpin, delete, move, set_param, change_type, attach, duplicate_type, create_roof, create_railing, create_stair, room_separation, opening, shaft)");
+                default: return ViewOp(doc, name, op, made, created) ?? throw new InvalidOperationException($"{name} isn't an op (detail_line, model_line, filled_region, masking_region, text, replace_text, tag, spot_elevation, spot_coordinate, revision_cloud, place_annotation, color_fill_legend, create_view, duplicate_view, set_view, override, hide, unhide, create_filter, create_template, apply_template, create_sheet, place_view, open_view, copy, rotate, mirror, join, unjoin, switch_join, cut, uncut, pin, unpin, delete, move, set_param, change_type, attach, duplicate_type, create_roof, create_railing, create_stair, room_separation, opening, shaft)");
             }
         }
 

@@ -142,7 +142,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     _openView = ViewOf(doc, op["view"], made);
                     return new JObject { ["open"] = _openView.Name };
                 }
-                default: return null;
+                default: return AnnotationOp(doc, name, op, made, created);
             }
         }
 
