@@ -52,6 +52,21 @@ export function registerModifyModelTool(server: McpServer) {
   );
 
   server.tool(
+    "get_design_options",
+    "Formcraft, read-only (owner 26 Oct): the model's design option sets, their options, which is primary and which is " +
+      "active. Revit's API can't create options or move elements into one; a person does that in Revit (Manage › Design " +
+      "Options). Elements AI makes go into the option active in Revit, so ask the person to make the right one active first.",
+    {},
+    async () => {
+      try {
+        return reply(await withRevitConnection((c) => c.sendCommand("fmc_design_options", {})));
+      } catch (e) {
+        return reply(`get_design_options: ${e instanceof Error ? e.message : String(e)}`, true);
+      }
+    }
+  );
+
+  server.tool(
     "get_element_geometry",
     "Formcraft, read-only: elements' exact geometry in mm (owner 26 Oct): location line or point, level, bounding box, wall " +
       "width, height and top constraint, host, and the outline loops of floors, ceilings, roofs and rooms. Use it before " +

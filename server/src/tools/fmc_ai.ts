@@ -89,12 +89,34 @@ export async function runFmcAi(args: FmcAiArgs) {
     if (args.action === "queue") return reply({ queue: withEstimates(readQueue().slice(0, 50)) });
     if (args.action === "usage") return reply(summariseUsage(readUsage(), args.since));
     if (args.action === "wait") return reply(await waitFor(String(args.id ?? ""), args.timeout_s ?? 50));
-    let active: any = null;
-    try { active = (await withRevitConnection((c) => c.sendRaw("fmc_document_info", {})))?.active ?? null; } catch { /* the policy still reads */ }
-    return reply(policySummary(config, active));
+    const doc = await activeDocument((ms) => withRevitConnection((c) => c.sendRaw("fmc_document_info", {}, ms)));
+    return reply({ ...policySummary(config, doc.active), document_source: doc.source });
   } catch (error) {
     return reply({ error: error instanceof Error ? error.message : String(error) }, true);
   }
+}
+
+/**
+ * The open document for status (owner 26 Oct: status took 30 s, and after a restart said "no document" and Off). A short
+ * ask, a few tries while Revit is still opening the model, then the last document seen (kept on every good answer).
+ */
+export async function activeDocument(ask: (timeoutMs: number) => Promise<any>, tries = 4, sleep = (ms: number) => new Promise((r) => setTimeout(r, ms)),
+  file = win.join(formcraftDir(), "last_document.json")): Promise<{ active: any; source: string }> {
+  for (let i = 0; i < tries; i++) {
+    try {
+      const active = (await ask(6000))?.active ?? null;
+      if (active?.title) {
+        try { fs.writeFileSync(file, JSON.stringify({ active, at: new Date().toISOString() })); } catch { /* status still answers */ }
+        return { active, source: "revit" };
+      }
+    } catch { /* Revit busy or starting */ }
+    if (i + 1 < tries) await sleep(2000);
+  }
+  try {
+    const last = JSON.parse(fs.readFileSync(file, "utf8"));
+    if (last?.active?.title) return { active: last.active, source: `last seen ${last.at}: Revit didn't answer now (busy or still opening the model)` };
+  } catch { /* none kept */ }
+  return { active: null, source: "none: no model is open in Revit, or Revit didn't answer" };
 }
 
 /**
