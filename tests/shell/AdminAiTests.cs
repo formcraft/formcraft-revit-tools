@@ -23,6 +23,29 @@ namespace Formcraft.Shell.Tests
         }
 
         [Test]
+        public async Task Approvals_have_their_own_page_for_everyone_with_a_live_badge_and_Approve_runs_the_batch()
+        {
+            var (badge, open, titles, afterBadge, afterStatus, afterResult) = Sta.Run(() =>
+            {
+                var (_, ai, vm) = Pane();
+                ai.Queue.Clear();
+                vm.Approvals.RefreshAsync().GetAwaiter().GetResult();
+                ai.Add(new AiQueueLine { Id = "21249e26", Model = "OGL", Summary = "create_point_based_element: 22 data", Elements = 22, Status = "pending", EstimateS = 40 });
+                var b = vm.HasAiWaiting + "|" + vm.AiWaitingText;
+                vm.OpenApprovalsCommand.Execute(null);
+                var t = vm.Approvals.Groups.Select(g => g.Title).ToList();
+                vm.Approvals.Groups[0].Items.OfType<ButtonsSetting>().First().Buttons[0].Command.Execute(null);
+                return (b, vm.IsApprovalsOpen, t, vm.HasAiWaiting, ai.Queue[0].Status, ai.Queue[0].Result);
+            });
+            await Assert.That(badge).IsEqualTo("True|AI: 1 waiting");
+            await Assert.That(open).IsTrue();
+            await Assert.That(titles[0]).IsEqualTo("Waiting for your approval");
+            await Assert.That(afterBadge).IsFalse();
+            await Assert.That(afterStatus).IsEqualTo("used");
+            await Assert.That(afterResult).IsEqualTo("done");
+        }
+
+        [Test]
         public async Task The_general_AI_switch_goes_off_on_off_from_the_header_and_Stop_AI_overrides_it()
         {
             var (states, stoppedState, status) = Sta.Run(() =>
@@ -92,7 +115,7 @@ namespace Formcraft.Shell.Tests
                 return ai.Queue[0].Status;
             });
 
-            await Assert.That(status).IsEqualTo("approved");
+            await Assert.That(status).IsEqualTo("used"); // owner 26 Oct: Approve runs the batch
         }
 
         [Test]

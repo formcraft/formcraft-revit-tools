@@ -11,7 +11,7 @@ namespace Formcraft.Shell.ViewModels
     public enum ShellScreen { SignIn, Welcome, Main }
 
     /// <summary>What the pane body shows: a section, or a page opened from the header.</summary>
-    public enum ShellPage { Section, Connect, Settings, Admin }
+    public enum ShellPage { Section, Connect, Settings, Admin, Approvals }
 
     /// <summary>One section button in the pane (e.g. Setup › Project).</summary>
     public sealed class SectionItem : ObservableObject
@@ -209,6 +209,13 @@ namespace Formcraft.Shell.ViewModels
             _hostSections["Templates"] = Templates;
             _ai = ai ?? new MockAiTools();
             ToggleAiCommand = new AsyncCommand(ToggleAiAsync, s => Status = s);
+            // AI approvals: their own page for everyone (owner 26 Oct), refreshed whenever the queue changes.
+            _ui = System.Threading.SynchronizationContext.Current;
+            Approvals = new ApprovalsViewModel(_ai, s => Status = s);
+            Approvals.PropertyChanged += (_, e) => { if (e.PropertyName == nameof(ApprovalsViewModel.Waiting)) { OnPropertyChanged(nameof(AiWaitingText)); OnPropertyChanged(nameof(HasAiWaiting)); } };
+            OpenApprovalsCommand = new RelayCommand(() => { Open(ShellPage.Approvals); _ = Approvals.RefreshAsync(); });
+            _ai.QueueChanged += (_, __) => OnUi(() => _ = Approvals.RefreshAsync());
+            _ = Approvals.RefreshAsync();
             Admin = new AdminViewModel(admin ?? new MockAdminService(), licence, s => Status = s, ShowDialog, _ai);
             OpenTeamFileCommand = new RelayCommand(() => Status = @"Open team file: <project>\FMC_Team.json beside the central model (with the team file, U12).");
             SaveAdminCommand = new RelayCommand(() => Status = "Saved. Admin changes are logged in the audit log as you make them.");
@@ -436,6 +443,7 @@ namespace Formcraft.Shell.ViewModels
                 OnPropertyChanged(nameof(IsConnectOpen));
                 OnPropertyChanged(nameof(SettingsOpen));
                 OnPropertyChanged(nameof(IsAdminOpen));
+                OnPropertyChanged(nameof(IsApprovalsOpen));
                 OnPropertyChanged(nameof(ShowNoParts));
                 OnHostChanged();
                 UpdateFooter();
@@ -445,6 +453,13 @@ namespace Formcraft.Shell.ViewModels
         public bool IsConnectOpen => Page == ShellPage.Connect;
         public bool SettingsOpen => Page == ShellPage.Settings;
         public bool IsAdminOpen => Page == ShellPage.Admin;
+        public bool IsApprovalsOpen => Page == ShellPage.Approvals;
+        public ApprovalsViewModel Approvals { get; }
+        public RelayCommand OpenApprovalsCommand { get; }
+        public bool HasAiWaiting => Approvals.Waiting > 0;
+        public string AiWaitingText => "AI: " + Approvals.Waiting + " waiting";
+        private readonly System.Threading.SynchronizationContext? _ui;
+        private void OnUi(Action a) { if (_ui == null) a(); else _ui.Post(_ => a(), null); }
         /// <summary>A section's placeholder or locked state; hidden while the host supplies the section (<see cref="HostContent"/>).</summary>
         public bool ShowSection => Page == ShellPage.Section && HostContent == null;
 

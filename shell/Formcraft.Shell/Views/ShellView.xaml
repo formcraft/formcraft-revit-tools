@@ -108,6 +108,10 @@
           <local:AdminView DataContext="{Binding Admin}"
                            Visibility="{Binding DataContext.IsAdminOpen, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource Vis}}"/>
 
+          <!-- AI approvals (owner 26 Oct): everyone, from the header's "AI: N waiting" badge -->
+          <local:ApprovalsView DataContext="{Binding Approvals}"
+                               Visibility="{Binding DataContext.IsApprovalsOpen, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource Vis}}"/>
+
           <!-- Search results, in place of the body while there is a query (board core/UI_Palette) -->
           <parts:SearchView DataContext="{Binding Search}" Visibility="{Binding IsOpen, Converter={StaticResource Vis}}"/>
         </Grid>

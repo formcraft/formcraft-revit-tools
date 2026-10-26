@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,6 +25,11 @@ namespace Formcraft.Shell.Services
         public int Elements { get; set; }
         public string Status { get; set; } = "";
         public string Created { get; set; } = "";
+        /// <summary>How an approved batch went when it ran (done, failed) and why.</summary>
+        public string Result { get; set; } = "";
+        public string Detail { get; set; } = "";
+        /// <summary>Estimated seconds, from past runs of the same command (0 when unknown).</summary>
+        public int EstimateS { get; set; }
     }
 
     /// <summary>The policy as the server applies it (fmc_ai status), with the reasons it is Off when it is.</summary>
@@ -62,6 +68,8 @@ namespace Formcraft.Shell.Services
         Task<ToolResult> SaveAsync(bool on, int involvement, IReadOnlyDictionary<string, string> levels);
         /// <summary>The General AI switch for the open model's project (any user; Stop AI still overrides it).</summary>
         Task<ToolResult> SetGeneralAsync(bool on);
+        /// <summary>Raised when the approval queue changes (a new batch, a decision, a result), so pages refresh themselves.</summary>
+        event EventHandler? QueueChanged;
     }
 
     /// <summary>Sample values from board core/PaneAdminAI.</summary>
@@ -70,6 +78,9 @@ namespace Formcraft.Shell.Services
         public bool On { get; set; } = true;
         public bool Stopped { get; set; }
         public bool GeneralOn { get; set; }
+        public event EventHandler? QueueChanged;
+        /// <summary>Tests: a new batch arrives.</summary>
+        public void Add(AiQueueLine q) { Queue.Insert(0, q); QueueChanged?.Invoke(this, EventArgs.Empty); }
         public int Involvement { get; set; } = 20;
         public Dictionary<string, string> Levels { get; } = new Dictionary<string, string> { ["views"] = "Auto in WIP", ["create_from_brief"] = "Fix with approval" };
         public List<AiQueueLine> Queue { get; } = new List<AiQueueLine>
@@ -112,7 +123,9 @@ namespace Formcraft.Shell.Services
         {
             var q = Queue.FirstOrDefault(x => x.Id == id);
             if (q == null) return Task.FromResult(ToolResult.Refused("No batch " + id + " in the queue."));
-            q.Status = approve ? "approved" : "rejected";
+            q.Status = approve ? "used" : "rejected";
+            if (approve) q.Result = "done";
+            QueueChanged?.Invoke(this, EventArgs.Empty);
             var r = new ToolResult { Ok = true };
             r.Messages.Add(new ToolMessage(ChipKind.Good, (approve ? "Approved " : "Rejected ") + id + "."));
             return Task.FromResult(r);

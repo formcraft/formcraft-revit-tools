@@ -52,11 +52,43 @@ namespace revit_mcp_plugin.Shell
                 Id = q.Value<string>("id") ?? "", Model = q.Value<string>("model") ?? "", Group = q.Value<string>("group") ?? "",
                 Summary = q.Value<string>("summary") ?? "", Elements = q.Value<int?>("elements") ?? 0, Status = q.Value<string>("status") ?? "",
                 Created = q.Value<string>("created") ?? "",
+                Result = q.Value<string>("result") ?? "", Detail = q.Value<string>("detail") ?? "", EstimateS = q.Value<int?>("estimate_s") ?? 0,
             }).ToList();
         }
 
-        public Task<ToolResult> DecideAsync(string id, bool approve) =>
-            Run(approve ? "ai_approve" : "ai_reject", new JObject { ["id"] = id }, (approve ? "Approved " : "Rejected ") + id + ". Logged when the batch runs.");
+        /// <summary>Approve runs the batch now (owner 26 Oct); the server says how it went.</summary>
+        public async Task<ToolResult> DecideAsync(string id, bool approve)
+        {
+            CliResult r = await ServerCli.RunAsync(approve ? "ai_approve" : "ai_reject", new JObject { ["id"] = id });
+            if (!r.Ok && r.Body?["message"] == null) return ToolResult.Refused(string.Join(" ", r.Reasons()));
+            var result = new ToolResult { Ok = r.Ok && (r.Body.Value<string>("result") ?? "done") != "failed" };
+            result.Messages.Add(new ToolMessage(result.Ok ? ChipKind.Good : ChipKind.Bad, r.Body.Value<string>("message") ?? ((approve ? "Approved " : "Rejected ") + id + ".")));
+            return result;
+        }
+
+        // The queue lives in %APPDATA%\Formcraft\ai_queue: watching the folder refreshes the pane with no AI and no polling.
+        private System.IO.FileSystemWatcher _watcher;
+        private event System.EventHandler _queueChanged;
+        public event System.EventHandler QueueChanged
+        {
+            add { EnsureWatcher(); _queueChanged += value; }
+            remove { _queueChanged -= value; }
+        }
+
+        private void EnsureWatcher()
+        {
+            if (_watcher != null) return;
+            try
+            {
+                string dir = System.IO.Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "Formcraft", "ai_queue");
+                System.IO.Directory.CreateDirectory(dir);
+                _watcher = new System.IO.FileSystemWatcher(dir, "*.json") { NotifyFilter = System.IO.NotifyFilters.FileName | System.IO.NotifyFilters.LastWrite };
+                System.IO.FileSystemEventHandler raise = (s, e) => _queueChanged?.Invoke(this, System.EventArgs.Empty);
+                _watcher.Created += raise; _watcher.Changed += raise; _watcher.Deleted += raise;
+                _watcher.EnableRaisingEvents = true;
+            }
+            catch { /* the Refresh button still works */ }
+        }
 
         public Task<ToolResult> StopAsync(bool stop) => stop
             ? Run("fmc_ai", new JObject { ["action"] = "stop" }, "Stop AI is on: every AI change is refused.")

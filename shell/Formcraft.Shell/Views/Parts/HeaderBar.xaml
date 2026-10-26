@@ -58,6 +58,14 @@
         </StackPanel>
       </c:FmcStateButton>
 
+      <!-- AI approvals waiting (owner 26 Oct): visible while something waits; opens the Approvals page -->
+      <c:FmcStateButton Style="{DynamicResource FmcStatusChip}" Margin="6,0,0,0" VerticalAlignment="Center"
+                        Command="{Binding OpenApprovalsCommand}" IsChecked="{Binding IsApprovalsOpen, Mode=OneWay}"
+                        Visibility="{Binding HasAiWaiting, Converter={StaticResource Vis}}"
+                        AutomationProperties.Name="{Binding AiWaitingText}" ToolTip="Changes AI prepared, waiting for your approval">
+        <TextBlock Text="{Binding AiWaitingText}" Foreground="{DynamicResource Fmc.CriticalBrush}"/>
+      </c:FmcStateButton>
+
       <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
         <StackPanel Orientation="Horizontal" Visibility="{Binding IsMain, Converter={StaticResource Vis}}">
           <c:FmcStateButton Style="{DynamicResource FmcToggleButton}" Command="{Binding OpenSettingsCommand}" IsChecked="{Binding SettingsOpen, Mode=OneWay}"

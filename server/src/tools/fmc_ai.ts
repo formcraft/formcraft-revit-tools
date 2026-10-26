@@ -5,7 +5,8 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, configPath, loadConfig } from "../fmc/policy.js";
 import { COMMAND_GROUPS, LEVELS, Level, NEVER, USER_LINE, aiVerdict, generalState, modelParts, projectCode, projectKey } from "../fmc/aiuse.js";
-import { formcraftDir, loadAiConfig, loadRulebook, loadState, readQueue, setStatus } from "../fmc/aiuse_io.js";
+import { formcraftDir, loadAiConfig, loadRulebook, loadState, readItem, readQueue, setResult, setStatus } from "../fmc/aiuse_io.js";
+import { readUsage, summariseUsage } from "../fmc/usage.js";
 
 const win = path.win32;
 
@@ -19,10 +20,14 @@ export const FMC_AI_DESCRIPTION =
     "(Off, Suggest, Fix with approval, Auto in WIP), the limits and today's use. queue: batches waiting for the " +
     "author's approval. stop: Stop AI, refusing every AI change until a person resumes it in the pane. Approving a " +
     "batch, resuming and changing the settings are done by a person in the pane, never through this tool. The General " +
-    "AI switch (On, Off, Stopped) is the one setting users see: status says its state for the open model's project.";
+    "AI switch (On, Off, Stopped) is the one setting users see: status says its state for the open model's project. " +
+    "An approved batch runs from the pane when the person approves it: check queue (status, result) before sending a " +
+    "batch again. usage: facts about every tool call by build (calls, median time, failures), for your own experience " +
+    "report; write that report yourself, from what you experienced: this tool gives facts, not the report.";
 
 export const FMC_AI_SHAPE = {
-  action: z.enum(["status", "queue", "stop"]),
+  action: z.enum(["status", "queue", "stop", "usage"]),
+  since: z.string().optional().describe("usage: from this time (ISO); default: everything recorded"),
 };
 
 export type FmcAiArgs = z.infer<z.ZodObject<typeof FMC_AI_SHAPE>>;
@@ -71,13 +76,25 @@ export async function runFmcAi(args: FmcAiArgs) {
       fs.writeFileSync(win.join(formcraftDir(), "ai_stop"), new Date().toISOString());
       return reply({ stopped: true, next: "Every AI change is refused until a person resumes it in the pane (Admin › AI involvement)" });
     }
-    if (args.action === "queue") return reply({ queue: readQueue().slice(0, 50) });
+    if (args.action === "queue") return reply({ queue: withEstimates(readQueue().slice(0, 50)) });
+    if (args.action === "usage") return reply(summariseUsage(readUsage(), args.since));
     let active: any = null;
     try { active = (await withRevitConnection((c) => c.sendRaw("fmc_document_info", {})))?.active ?? null; } catch { /* the policy still reads */ }
     return reply(policySummary(config, active));
   } catch (error) {
     return reply({ error: error instanceof Error ? error.message : String(error) }, true);
   }
+}
+
+/** Owner 26 Oct: each waiting batch gets an estimate from past runs of the same command (median time per element). */
+export function withEstimates<T extends { command: string; elements: number }>(items: T[]): Array<T & { estimate_s?: number }> {
+  const lines = readUsage().filter((l) => l.ok);
+  return items.map((it) => {
+    const past = lines.filter((l) => l.tool === it.command || l.action === it.command).map((l) => l.ms);
+    if (!past.length) return it;
+    const s = [...past].sort((a, b) => a - b)[Math.floor(past.length / 2)];
+    return { ...it, estimate_s: Math.max(1, Math.round((s / 1000) * Math.max(1, it.elements / 10))) };
+  });
 }
 
 export function registerFmcAiTool(server: McpServer) {
@@ -88,10 +105,23 @@ export function registerFmcAiTool(server: McpServer) {
  * The pane's own commands (CLI only, never MCP tools): a person approves or rejects a batch, resumes after Stop AI,
  * and the BIM Manager sets the switch, involvement and levels. `by` is the Windows user the pane runs as.
  */
-export function paneAi(command: string, input: Record<string, unknown>, by: string) {
+export async function paneAi(command: string, input: Record<string, unknown>, by: string) {
   const id = String(input.id ?? "");
   switch (command) {
-    case "ai_approve": return setStatus(id, "approved", by) ?? { error: `No batch ${id} in the queue` };
+    case "ai_approve": {
+      // Owner 26 Oct: Approve runs the batch now, through the same gate (approval, limits, Stop AI); no AI needed.
+      const item = readItem(id);
+      if (!setStatus(id, "approved", by) || !item) return { error: `No batch ${id} in the queue` };
+      try {
+        await withRevitConnection((c) => c.sendCommand(item.command, item.params ?? {}));
+        setResult(id, "done", `${item.summary} · ${item.model}`);
+        return { approved: true, ran: true, result: "done", message: `Approved and done: ${item.summary} (${item.elements} elements) in ${item.model}.` };
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : String(e);
+        setResult(id, "failed", msg);
+        return { approved: true, ran: false, result: "failed", message: `Approved, but it didn't run: ${msg}` };
+      }
+    }
     case "ai_reject": return setStatus(id, "rejected", by) ?? { error: `No batch ${id} in the queue` };
     case "ai_resume": {
       try { fs.unlinkSync(win.join(formcraftDir(), "ai_stop")); } catch { /* wasn't stopped */ }
