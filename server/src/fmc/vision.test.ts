@@ -24,3 +24,22 @@ test("Send to AI inbox: unread items come with their picture once, then they're 
   const again = JSON.parse((readInbox(dir).content[0] as { text: string }).text);
   assert.equal(again.unread, 0);
 });
+
+test("Ogala report: queued calls are counted apart from failures; dry runs need no approval", async () => {
+  const { summariseUsage } = await import("./usage.js");
+  const at = "2026-10-26T12:00:00Z";
+  const s = summariseUsage([{ at, tool: "modify_model", action: "", ms: 100, ok: false, build: "b1", queued: true },
+    { at, tool: "modify_model", action: "", ms: 100, ok: false, build: "b1" }, { at, tool: "modify_model", action: "", ms: 100, ok: true, build: "b1" }]) as any;
+  const b = s.by_build[0];
+  assert.equal(b.failures, 1);
+  assert.equal(b.queued, 1);
+
+  const { aiGate } = await import("./aigate.js");
+  const appdata = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-dry-"));
+  const env = { ...process.env, APPDATA: appdata };
+  const config = { live_model_lock: true, write_roots: [], library_roots: [], reports_dir: path.join(appdata, "r"), rulebooks_dir: path.join(appdata, "k"),
+    ai_modeller: { on: true, mode: "testing", access: "full", projects: { "THE OGALA RESIDENCE": { general: true } } } } as any;
+  const doc = { title: "OGL_A_MainHouse", path: path.win32.join("D:", "P", "THE OGALA RESIDENCE", "01_WIP", "OGL_A_MainHouse.rvt"), isFamily: false, isWorkshared: false } as any;
+  const g = await aiGate("fmc_model_edit", { ops: [{ op: "delete", ids: [1] }], dry_run: true }, doc, config, async () => ({}), env);
+  assert.equal(g.ok, true, g.user ?? g.reason);
+});

@@ -9,7 +9,7 @@ import os from "node:os";
 import path from "node:path";
 
 const win = path.win32;
-export interface UsageLine { at: string; tool: string; action: string; ms: number; ok: boolean; build: string }
+export interface UsageLine { at: string; tool: string; action: string; ms: number; ok: boolean; build: string; queued?: boolean }
 
 export const usageFile = (env: NodeJS.ProcessEnv = process.env) =>
   win.join(env.APPDATA || win.join(os.homedir(), "AppData", "Roaming"), "Formcraft", "ai_usage.jsonl");
@@ -44,10 +44,10 @@ export function summariseUsage(lines: UsageLine[], since?: string) {
       const mine = rows.filter((l) => l.build === b);
       const keys = [...new Set(mine.map((l) => `${l.tool}${l.action ? " " + l.action : ""}`))];
       return {
-        build: b, calls: mine.length, failures: mine.filter((l) => !l.ok).length, first: mine[0]?.at, last: lastSeen(b),
+        build: b, calls: mine.length, failures: mine.filter((l) => !l.ok && !l.queued).length, queued: mine.filter((l) => l.queued).length, first: mine[0]?.at, last: lastSeen(b),
         tools: keys.map((k) => {
           const x = mine.filter((l) => `${l.tool}${l.action ? " " + l.action : ""}` === k);
-          return { tool: k, calls: x.length, median_ms: median(x.map((l) => l.ms)), failures: x.filter((l) => !l.ok).length };
+          return { tool: k, calls: x.length, median_ms: median(x.map((l) => l.ms)), failures: x.filter((l) => !l.ok && !l.queued).length, queued: x.filter((l) => l.queued).length };
         }).sort((a, b) => b.calls - a.calls),
       };
     }),

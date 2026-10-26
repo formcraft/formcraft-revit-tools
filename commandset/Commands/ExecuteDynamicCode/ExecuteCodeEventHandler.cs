@@ -118,20 +118,38 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
 
                     FmcTxGuard.Begin(app);
                     var run = Stopwatch.StartNew();
-                    object result;
+                    object result = null;
+                    // Ogala report: the elements a script made, removed and changed come back with its answer
+                    var added = new HashSet<long>(); var deleted = new HashSet<long>(); var modified = new HashSet<long>();
+                    EventHandler<Autodesk.Revit.DB.Events.DocumentChangedEventArgs> changed = (s, e) =>
+                    {
+                        if (!e.GetDocument().Equals(doc)) return;
+                        foreach (var id in e.GetAddedElementIds()) added.Add(id.Value);
+                        foreach (var id in e.GetDeletedElementIds()) { deleted.Add(id.Value); added.Remove(id.Value); }
+                        foreach (var id in e.GetModifiedElementIds()) modified.Add(id.Value);
+                    };
+                    app.Application.DocumentChanged += changed;
                     try
                     {
                         if (_transactionMode == TransactionModeNone)
                         {
-                            try
+                            // Ogala report (66e346e2): all or nothing even when the script runs its own transactions
+                            using (var group = new TransactionGroup(doc, "FMC: AI script"))
                             {
-                                result = script.Invoke(doc, _executionParameters);
+                                group.Start();
+                                bool whole = false;
+                                try
+                                {
+                                    try { result = script.Invoke(doc, _executionParameters); }
+                                    finally { CloseLeaks(info); }
+                                    whole = info.TxLeak == null && !FmcAiJob.CancelRequested(job);
+                                }
+                                finally
+                                {
+                                    if (group.HasStarted()) { if (whole) group.Assimilate(); else group.RollBack(); }
+                                }
                             }
-                            finally
-                            {
-                                CloseLeaks(info);
-                            }
-                            info.Transaction = "none (the script manages its own)";
+                            info.Transaction = "none (the script manages its own; all or nothing: a failure rolls every step back)";
                             if (info.TxLeak != null) throw LeakFailure(info, result);
                         }
                         else
@@ -177,8 +195,13 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
                     }
                     finally
                     {
+                        app.Application.DocumentChanged -= changed;
                         info.RunMs = run.ElapsedMilliseconds;
                         CheckStillOpen(doc, info);
+                    }
+                    if (info.Transaction == null || !info.Transaction.StartsWith("RolledBack"))
+                    {
+                        info.CreatedIds = added.Take(1000).ToList(); info.DeletedIds = deleted.Take(1000).ToList(); info.ModifiedCount = modified.Count;
                     }
                     if (info.DocumentBlocked)
                         throw new ScriptFailure("FMC-CODE-TX-LEAK", NeedsAPerson(doc), new JObject { ["result"] = Serialize(result, info) });
@@ -506,6 +529,16 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
 
         [JsonProperty("job")]
         public string Job { get; set; } = string.Empty;
+
+        /// <summary>What the script changed in the model (Ogala report): made, removed, and how many changed.</summary>
+        [JsonProperty("createdIds", NullValueHandling = NullValueHandling.Ignore)]
+        public List<long> CreatedIds { get; set; }
+
+        [JsonProperty("deletedIds", NullValueHandling = NullValueHandling.Ignore)]
+        public List<long> DeletedIds { get; set; }
+
+        [JsonProperty("modifiedCount", NullValueHandling = NullValueHandling.Ignore)]
+        public int? ModifiedCount { get; set; }
 
         [JsonProperty("document", NullValueHandling = NullValueHandling.Ignore)]
         public string Document { get; set; }

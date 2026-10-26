@@ -257,4 +257,25 @@ namespace RevitMCPCommandSet.Commands.Fmc
             }
         }
     }
+
+    /// <summary>Elements by category, level, type, comment, mark, workset, phase, box or view (Ogala report); read-only.</summary>
+    public class FmcSelectByCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcSelectByHandler _handler => (FmcSelectByHandler)Handler;
+
+        public FmcSelectByCommand(UIApplication uiApp) : base(new FmcSelectByHandler(), uiApp) { }
+        public override string CommandName => "fmc_select_by";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = parameters ?? new JObject();
+                if (!RaiseAndWaitForCompletion(120000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
 }

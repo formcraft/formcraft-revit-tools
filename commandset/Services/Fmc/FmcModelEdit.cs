@@ -60,7 +60,9 @@ namespace RevitMCPCommandSet.Services.Fmc
                     var created = new List<ElementId>();
                     try
                     {
-                        JObject r = name == "create_stair" ? Stair(doc, op, made, created) : InTransaction(doc, name, () => Op(doc, name, op, made, created));
+                        JObject r = name == "create_stair" ? Stair(doc, op, made, created)
+                            : name == "edit_sketch" || name == "wall_profile" ? SketchOp(doc, name, op, made, created)
+                            : InTransaction(doc, name, () => Op(doc, name, op, made, created));
                         r["op"] = i + 1; r["kind"] = name;
                         if (created.Count > 0) r["created_ids"] = new JArray(created.Select(x => x.Value));
                         results.Add(r);
@@ -96,6 +98,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 fo.SetFailuresPreprocessor(new Quiet()); fo.SetClearAfterRollback(true);
                 t.SetFailureHandlingOptions(fo);
                 JObject r = body();
+                doc.Regenerate();
                 if (t.Commit() != TransactionStatus.Committed) throw new InvalidOperationException("Revit refused the change (an error, not a warning)");
                 return r;
             }
@@ -186,8 +189,14 @@ namespace RevitMCPCommandSet.Services.Fmc
                 {
                     var v = Vec(op["vector_mm"], "move needs vector_mm [x, y, z]");
                     var ids = Targets(doc, op, made);
+                    var z0 = ids.ToDictionary(id => id, id => doc.GetElement(id).get_BoundingBox(null)?.Min.Z);
                     ElementTransformUtils.MoveElements(doc, ids, v);
-                    return new JObject { ["moved"] = ids.Count };
+                    doc.Regenerate();
+                    // Ogala report: level-hosted walls and stairs keep their height; say which, so rehost can follow
+                    var stuck = Math.Abs(v.Z) < 1e-6 ? new List<ElementId>() : ids.Where(id => z0[id].HasValue && Math.Abs((doc.GetElement(id).get_BoundingBox(null)?.Min.Z ?? 0) - z0[id].Value - v.Z) > Ft(1)).ToList();
+                    var mv = new JObject { ["moved"] = ids.Count };
+                    if (stuck.Count > 0) { mv["not_moved_in_z"] = new JArray(stuck.Select(x => x.Value)); mv["hint"] = "these are hosted on their level: use rehost {ids, level} or set their base offsets"; }
+                    return mv;
                 }
                 case "set_param":
                 {
@@ -232,8 +241,11 @@ namespace RevitMCPCommandSet.Services.Fmc
                         var list = layers.OfType<JObject>().Select(l => new CompoundStructureLayer(Ft(l.Value<double>("width_mm")),
                             (MaterialFunctionAssignment)Enum.Parse(typeof(MaterialFunctionAssignment), l.Value<string>("function") ?? "Structure", true),
                             MaterialId(doc, l.Value<string>("material")))).ToList();
-                        var cs = CompoundStructure.CreateSimpleCompoundStructure(list);
-                        if (t is WallType) cs.SetNumberOfShellLayers(ShellLayerType.Exterior, 0);
+                        // Ogala report: a fresh structure has the wrong end caps for floors; edit the duplicate's own
+                        CompoundStructure cs = host.GetCompoundStructure() ?? CompoundStructure.CreateSimpleCompoundStructure(list);
+                        cs.SetLayers(list);
+                        int structural = list.FindIndex(l => l.Function == MaterialFunctionAssignment.Structure);
+                        if (structural >= 0) { try { cs.StructuralMaterialIndex = structural; } catch (Exception) { } }
                         host.SetCompoundStructure(cs);
                     }
                     if (op["params"] is JObject ps)
@@ -245,21 +257,26 @@ namespace RevitMCPCommandSet.Services.Fmc
                     var pts = Points(op["outline_mm"], "create_roof needs outline_mm, a closed loop of [x, y]");
                     Level level = LevelOf(doc, op["level"]);
                     RoofType rt = (RoofType)doc.GetElement(TypeOf<RoofType>(doc, op));
-                    var loop = new CurveArray();
-                    for (int i = 0; i < pts.Count; i++) loop.Append(Line.CreateBound(pts[i], pts[(i + 1) % pts.Count]));
-                    FootPrintRoof roof = doc.Create.NewFootPrintRoof(loop, level, rt, out ModelCurveArray curves);
                     var slopes = op["slopes_deg"] as JArray;
                     double? all = op.Value<double?>("slope_deg");
                     double over = op.Value<double?>("overhang_mm") ?? 0;
+                    // Ogala report: overhang works only on pick-walls roofs; offset the outline instead, and drop the base
+                    // so the roof still meets the walls at the level (eave lower by overhang × tan slope)
+                    var drawn = over > 0 ? Outward(pts, Ft(over)) : pts;
+                    var loop = new CurveArray();
+                    for (int i = 0; i < drawn.Count; i++) loop.Append(Line.CreateBound(drawn[i], drawn[(i + 1) % drawn.Count]));
+                    var curves = new ModelCurveArray();
+                    FootPrintRoof roof = doc.Create.NewFootPrintRoof(loop, level, rt, out curves);
+                    double maxSlope = Math.Max(all ?? 0, slopes?.Select(x => x.Value<double?>() ?? 0).DefaultIfEmpty(0).Max() ?? 0);
                     foreach (ModelCurve mc in curves)
                     {
-                        int edge = NearestEdge(pts, mc.GeometryCurve);
+                        int edge = NearestEdge(drawn, mc.GeometryCurve);
                         double? deg = slopes != null && edge < slopes.Count ? slopes[edge].Value<double?>() : all;
                         roof.set_DefinesSlope(mc, deg.HasValue);
                         if (deg.HasValue) roof.set_SlopeAngle(mc, Math.Tan(deg.Value * Math.PI / 180));
-                        if (over != 0) roof.set_Overhang(mc, Ft(over));
                     }
-                    if (op["offset_mm"] != null) roof.get_Parameter(BuiltInParameter.ROOF_LEVEL_OFFSET_PARAM)?.Set(Ft(op.Value<double>("offset_mm")));
+                    double baseOffset = Ft(op.Value<double?>("offset_mm") ?? 0) - Ft(over) * Math.Tan(maxSlope * Math.PI / 180);
+                    if (op["offset_mm"] != null || over > 0) roof.get_Parameter(BuiltInParameter.ROOF_LEVEL_OFFSET_PARAM)?.Set(baseOffset);
                     created.Add(roof.Id);
                     return new JObject { ["roof"] = roof.Id.Value, ["edges"] = pts.Count };
                 }
@@ -339,17 +356,32 @@ namespace RevitMCPCommandSet.Services.Fmc
                     t.Start();
                     var fo = t.GetFailureHandlingOptions(); fo.SetFailuresPreprocessor(new Quiet()); t.SetFailureHandlingOptions(fo);
                     Stairs st = (Stairs)doc.GetElement(stairsId);
-                    if (op["risers"] != null) st.DesiredRisersNumber = op.Value<int>("risers");
-                    double riser = st.ActualRiserHeight, z = 0;
+                    // Ogala report: the stair works its runs out itself. Total risers: given, or the height at 175 mm max;
+                    // each run's path is (risers - 1) × the type's tread long, at the base level's real height
+                    double height = top.Elevation - bottom.Elevation;
+                    int total = op.Value<int?>("risers") ?? (int)Math.Ceiling(height / Ft(op.Value<double?>("riser_max_mm") ?? 175));
+                    st.DesiredRisersNumber = total;
+                    doc.Regenerate();
+                    double tread = st.ActualTreadDepth;
+                    var given = runs.Select(x => x.Value<int?>("risers")).ToList();
+                    int left = total - given.Where(x => x.HasValue).Sum(x => x.Value), open = given.Count(x => !x.HasValue);
+                    double z = bottom.Elevation;
                     var runIds = new List<ElementId>();
                     for (int i = 0; i < runs.Count; i++)
                     {
-                        var p = Points(new JArray(runs[i]["start_mm"], runs[i]["end_mm"]), "each run needs start_mm and end_mm");
-                        Line path = Line.CreateBound(new XYZ(p[0].X, p[0].Y, z), new XYZ(p[1].X, p[1].Y, z));
+                        int n = given[i] ?? (open > 0 ? (int)Math.Ceiling(left / (double)open) : 0);
+                        if (!given[i].HasValue) { left -= n; open--; }
+                        if (n < 2) throw new InvalidOperationException($"run {i + 1} would have {n} risers");
+                        XYZ start = Vec(runs[i]["start_mm"], "each run needs start_mm");
+                        XYZ dir = runs[i]["end_mm"] != null ? Flat(Vec(runs[i]["end_mm"], "end_mm is [x, y]") - start).Normalize()
+                            : runs[i]["direction_deg"] != null ? new XYZ(Math.Cos(runs[i].Value<double>("direction_deg") * Math.PI / 180), Math.Sin(runs[i].Value<double>("direction_deg") * Math.PI / 180), 0)
+                            : throw new InvalidOperationException("each run needs end_mm (its direction) or direction_deg");
+                        var a = new XYZ(start.X, start.Y, z);
+                        Line path = Line.CreateBound(a, a + dir * (tread * (n - 1)));
                         StairsRun run = StairsRun.CreateStraightRun(doc, stairsId, path, StairsRunJustification.Center);
                         if (runs[i]["width_mm"] != null) run.ActualRunWidth = Ft(runs[i].Value<double>("width_mm"));
-                        if (runs[i]["risers"] != null) { run.TopElevation = run.BaseElevation + runs[i].Value<int>("risers") * riser; }
-                        z = run.TopElevation;
+                        doc.Regenerate();
+                        z = bottom.Elevation + run.TopElevation;
                         runIds.Add(run.Id);
                     }
                     for (int i = 0; i + 1 < runIds.Count; i++) StairsLanding.CreateAutomaticLanding(doc, runIds[i], runIds[i + 1]);
@@ -358,8 +390,11 @@ namespace RevitMCPCommandSet.Services.Fmc
                 scope.Commit(new Quiet());
             }
             created.Add(stairsId);
-            var r = new JObject { ["stairs"] = stairsId.Value, ["runs"] = runs.Count };
-            if (op.Value<bool?>("railings") ?? true)
+            var stairs = (Stairs)doc.GetElement(stairsId);
+            var r = new JObject { ["stairs"] = stairsId.Value, ["runs"] = runs.Count, ["risers"] = stairs.ActualRisersNumber, ["riser_mm"] = Math.Round(stairs.ActualRiserHeight * 304.8, 1) };
+            // the stair type may already make its railings: then none are added (Ogala report 13)
+            if (stairs.GetAssociatedRailings().Count > 0) r["railings"] = "made by the stair type";
+            else if (op.Value<bool?>("railings") ?? true)
                 InTransaction(doc, "stair railings", () =>
                 {
                     ElementId rt = TypeOf<RailingType>(doc, new JObject { ["type_name"] = op["railing_type"] });
@@ -370,6 +405,17 @@ namespace RevitMCPCommandSet.Services.Fmc
         }
 
         // ---- inputs ----
+
+        /// <summary>A closed outline pushed outwards by d (whichever way grows it).</summary>
+        private static List<XYZ> Outward(List<XYZ> pts, double d)
+        {
+            var loop = new CurveLoop();
+            for (int i = 0; i < pts.Count; i++) loop.Append(Line.CreateBound(pts[i], pts[(i + 1) % pts.Count]));
+            double Area(IEnumerable<XYZ> p) { var a = p.ToList(); double s = 0; for (int i = 0; i < a.Count; i++) s += a[i].X * a[(i + 1) % a.Count].Y - a[(i + 1) % a.Count].X * a[i].Y; return Math.Abs(s) / 2; }
+            List<XYZ> Pts(CurveLoop l) => l.Select(c => c.GetEndPoint(0)).ToList();
+            var plus = Pts(CurveLoop.CreateViaOffset(loop, d, XYZ.BasisZ));
+            return Area(plus) > Area(pts) ? plus : Pts(CurveLoop.CreateViaOffset(loop, -d, XYZ.BasisZ));
+        }
 
         private static XYZ Centre(Document doc, ICollection<ElementId> ids)
         {

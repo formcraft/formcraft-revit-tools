@@ -57,7 +57,9 @@ export const FMC_AI_DESCRIPTION =
 
 export const FMC_AI_SHAPE = {
   action: z.enum(["status", "queue", "stop", "usage", "wait", "inbox"]),
-  id: z.string().optional().describe("wait: the batch id from the queue message"),
+  id: z.string().optional().describe("wait: the batch id from the queue message; queue: one batch, in full"),
+  status: z.string().optional().describe("queue: pending, approved, used, rejected, done, failed or running"),
+  limit: z.number().int().min(1).max(200).optional().describe("queue: how many (default 20, newest first)"),
   timeout_s: z.number().int().min(1).max(55).optional().default(50).describe("wait: how long to hold, at most 55 s; call again while it says waiting"),
   since: z.string().optional().describe("usage: from this time (ISO); default: everything recorded"),
 };
@@ -108,7 +110,16 @@ export async function runFmcAi(args: FmcAiArgs) {
       fs.writeFileSync(win.join(formcraftDir(), "ai_stop"), new Date().toISOString());
       return reply({ stopped: true, next: "Every AI change is refused until a person resumes it in the pane (Admin › AI involvement)" });
     }
-    if (args.action === "queue") return reply({ queue: withEstimates(readQueue().slice(0, 50)) });
+    if (args.action === "queue") {
+      // Ogala report: 160,000 characters; now filtered and slim (params only for one id)
+      const all = readQueue().filter((q) => (!args.id || q.id === args.id) && (!args.status || q.status === args.status || q.result === args.status));
+      const items = withEstimates(all.slice(0, args.limit ?? 20)).map((q: any) => {
+        if (args.id) return q;
+        const { params, ...rest } = q;
+        return { ...rest, detail: typeof rest.detail === "string" && rest.detail.length > 400 ? rest.detail.slice(0, 400) + "…" : rest.detail };
+      });
+      return reply({ total: all.length, shown: items.length, queue: items });
+    }
     if (args.action === "usage") return reply(summariseUsage(readUsage(), args.since));
     if (args.action === "wait") return reply(await waitFor(String(args.id ?? ""), args.timeout_s ?? 50));
     if (args.action === "inbox") return readInbox();

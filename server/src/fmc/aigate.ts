@@ -20,9 +20,10 @@ export async function aiGate(command: string, params: any, active: (DocInfo & { 
   // Not set up yet (no ai_modeller section): the person sees the plain line, never the lock's wording.
   if (!ai) return { ok: false, reason: "", user: NEVER[command] ? USER_LINE.admin(NEVER[command]) : USER_LINE.off };
   // Read-only code (owner 26 Oct): its transaction is always rolled back, so it needs no approval, only the code switch.
-  if (command === "send_code_to_revit" && params?.transactionMode === "read_only") {
+  const dryRun = command === "fmc_model_edit" && params?.dry_run === true;
+  if ((command === "send_code_to_revit" && params?.transactionMode === "read_only") || dryRun) {
     if (ai.stop) return { ok: false, reason: "", user: USER_LINE.stopped };
-    if (ai.allow_code !== true) return { ok: false, reason: "", user: USER_LINE.admin("running code: the admin's 'AI may run code' switch is off") };
+    if (!dryRun && ai.allow_code !== true) return { ok: false, reason: "", user: USER_LINE.admin("running code: the admin's 'AI may run code' switch is off") };
     if (generalState(ai, active.title, active.path) !== "On") return { ok: false, reason: "", user: USER_LINE.off };
     return { ok: true, reason: "", run: <T>(exec: () => Promise<T>) => exec() };
   }

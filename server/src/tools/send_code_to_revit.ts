@@ -72,6 +72,9 @@ export function formatCodeResult(response: any): { text: string; isError: boolea
     txLeak: response.txLeak?.length ? response.txLeak : undefined,
     documentBlocked: response.documentBlocked || undefined,
     note: response.note,
+    created_ids: response.createdIds?.length ? response.createdIds : undefined,
+    deleted_ids: response.deletedIds?.length ? response.deletedIds : undefined,
+    modified: response.modifiedCount || undefined,
   };
   if (response.success === false) {
     return {

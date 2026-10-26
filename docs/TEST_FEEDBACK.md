@@ -367,3 +367,16 @@ once F-003 (kit folder) and F-008 (ribbon tab) are cleared.
 Write tools (Start, New file, Create missing, Apply look), Settings and Admin pages, Flow (Touch, Section Box, Tag
 Tidy), Model panel buttons, Engineer › Systems and Structural, Setup › Families and Materials, Drawings › Annotate and
 Issue. These are first on the next run once F-001 to F-003 are cleared.
+
+## 26 Oct 2026: Ogala Residence AI report (build 9adf876), and what was fixed
+
+52 batches, 0 Revit warnings at the end. Fixed after the report (this branch): create_roof (uninitialised curve array;
+overhang by offsetting the outline and dropping the base), duplicate_type layers (edits the duplicate's own structure),
+create_stair (run paths from risers × tread at the base level's height; the type's own railings), move reports
+not_moved_in_z, regenerate after every op, code batches all or nothing in every transaction mode and they return
+created / deleted ids, dry runs need no approval, fmc_ai queue filters, usage counts queued calls apart from failures,
+the self-test waits for Revit after a restart, "why" up to 1000 characters. New ops: create_wall, create_floor and
+create_ceiling with holes, create_room, place_family (hosted on "$n"), rehost, edit_sketch, wall_profile; select_by.
+Already in later builds when the report was written: join and cut, see_view, model_check, auto-approve, no limits in
+testing. Open: the Claude app must restart after every install (server reload), attach on profile-edited walls (a Revit
+limit), design options can't be created (a Revit API limit). Kit items: docs/kit-proposals/KIT_CHANGE_REQUEST_2026-10-26_Ogala.md.
