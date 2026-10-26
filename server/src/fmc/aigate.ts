@@ -25,8 +25,9 @@ export async function aiGate(command: string, params: any, active: (DocInfo & { 
     let reason = `AI-assisted modeller: ${v.reasons[0]}.`;
     if (v.needs_approval) {
       const item = enqueue(command, params, active.path, active.title, v.group ?? "", elements, env);
-      reason += ` It is waiting in the approval queue as ${item.id}: once the author approves it, send the same batch again.`;
-      return { ok: false, reason, user: `${USER_LINE.approve} (batch ${item.id})` };
+      reason += ` It is waiting in the approval queue as ${item.id}: call fmc_ai wait with id ${item.id} (don't end your turn); ` +
+        "approving runs it, then go on with your next batch.";
+      return { ok: false, reason, user: `${USER_LINE.approve} (batch ${item.id}; AI: call fmc_ai wait with id ${item.id}, then go on with your next batch)` };
     }
     return { ok: false, reason, user: v.user };
   }

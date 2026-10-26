@@ -21,3 +21,23 @@ test("tool calls are recorded and summarised per build, newest build first, for 
   assert.equal(summariseUsage(readUsage(env), at(5)).calls, 2, "since");
   assert.deepEqual(readUsage({ APPDATA: path.join(env.APPDATA, "none") }), [], "nothing recorded yet");
 });
+
+test("wait: holds until a batch is decided, then tells the AI to go on (no turn ends while work remains)", async () => {
+  const { waitFor } = await import("../tools/fmc_ai.js");
+  const { enqueue, setResult, setStatus } = await import("./aiuse_io.js");
+  const env = { ...process.env, APPDATA: fs.mkdtempSync(path.join(os.tmpdir(), "fmc-wait-")) };
+  const saved = process.env.APPDATA;
+  process.env.APPDATA = env.APPDATA;
+  try {
+    const item = enqueue("create_level", { elevations: [3400] }, path.win32.join("D:", "P", "01_WIP", "M.rvt"), "M", "levels_grids", 1);
+    let t = 0;
+    const clock = { sleep: async () => { t += 1000; }, now: () => t };
+    const pending = await waitFor(item.id, 3, clock.sleep, clock.now);
+    assert.equal(pending.status, "waiting");
+    setStatus(item.id, "approved", "ama"); setResult(item.id, "done", "1 level");
+    const done = await waitFor(item.id, 3, clock.sleep, clock.now);
+    assert.equal(done.status, "done");
+    assert.match(String(done.next), /next batch/);
+    assert.match(String((await waitFor("ffffffff", 1, clock.sleep, clock.now)).error), /No batch/);
+  } finally { process.env.APPDATA = saved; }
+});

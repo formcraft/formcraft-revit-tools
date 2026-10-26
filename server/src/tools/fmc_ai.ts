@@ -23,10 +23,16 @@ export const FMC_AI_DESCRIPTION =
     "AI switch (On, Off, Stopped) is the one setting users see: status says its state for the open model's project. " +
     "An approved batch runs from the pane when the person approves it: check queue (status, result) before sending a " +
     "batch again. usage: facts about every tool call by build (calls, median time, failures), for your own experience " +
-    "report; write that report yourself, from what you experienced: this tool gives facts, not the report.";
+    "report; write that report yourself, from what you experienced: this tool gives facts, not the report. " +
+    "wait (owner 26 Oct): after a batch is queued for approval, call wait with its id instead of ending your turn; it " +
+    "holds until the person approves or rejects (no tokens are spent while it holds). If it says still waiting, call it " +
+    "again. When it says done, go straight on with the next batch of your plan: don't end your turn while work remains " +
+    "and the switch is On.";
 
 export const FMC_AI_SHAPE = {
-  action: z.enum(["status", "queue", "stop", "usage"]),
+  action: z.enum(["status", "queue", "stop", "usage", "wait"]),
+  id: z.string().optional().describe("wait: the batch id from the queue message"),
+  timeout_s: z.number().int().min(1).max(55).optional().default(50).describe("wait: how long to hold, at most 55 s; call again while it says waiting"),
   since: z.string().optional().describe("usage: from this time (ISO); default: everything recorded"),
 };
 
@@ -78,11 +84,32 @@ export async function runFmcAi(args: FmcAiArgs) {
     }
     if (args.action === "queue") return reply({ queue: withEstimates(readQueue().slice(0, 50)) });
     if (args.action === "usage") return reply(summariseUsage(readUsage(), args.since));
+    if (args.action === "wait") return reply(await waitFor(String(args.id ?? ""), args.timeout_s ?? 50));
     let active: any = null;
     try { active = (await withRevitConnection((c) => c.sendRaw("fmc_document_info", {})))?.active ?? null; } catch { /* the policy still reads */ }
     return reply(policySummary(config, active));
   } catch (error) {
     return reply({ error: error instanceof Error ? error.message : String(error) }, true);
+  }
+}
+
+/**
+ * Holds until a queued batch is decided (owner 26 Oct: the AI stayed idle after approvals). Approve runs the batch from
+ * the pane, so "done" means the change is in the model and the AI should continue with its plan.
+ */
+export async function waitFor(id: string, timeoutS: number, sleep = (ms: number) => new Promise((r) => setTimeout(r, ms)), now = () => Date.now()) {
+  if (!id) return { error: "Give the batch id (from the queue message)" };
+  const until = now() + Math.max(1, Math.min(55, timeoutS)) * 1000;
+  const started = now();
+  for (;;) {
+    const item = readItem(id);
+    if (!item) return { error: `No batch ${id} in the queue` };
+    const waited_s = Math.round((now() - started) / 1000);
+    if (item.status === "rejected") return { id, status: "rejected", waited_s, next: "The person rejected it: ask what to change, or move on to the next batch of your plan." };
+    if (item.result === "done") return { id, status: "done", detail: item.detail, waited_s, next: "Done in the model: go straight on with the next batch of your plan." };
+    if (item.result === "failed") return { id, status: "failed", detail: item.detail, waited_s, next: "Approved, but it didn't run: fix the cause and queue it again, or tell the person why." };
+    if (now() >= until) return { id, status: item.status === "approved" ? "running" : "waiting", waited_s, next: "Still waiting: call wait again (no tokens are spent while it holds)." };
+    await sleep(1000);
   }
 }
 
