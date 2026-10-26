@@ -15,6 +15,26 @@ function reply(body: object, isError = false) {
   return { content: [{ type: "text" as const, text: JSON.stringify(body, null, 2) }], isError };
 }
 
+const inboxDir = () => win.join(formcraftDir(), "ai_inbox");
+const inboxUnread = () => { try { return fs.readdirSync(inboxDir()).filter((f) => f.endsWith(".json")).filter((f) => !JSON.parse(fs.readFileSync(win.join(inboxDir(), f), "utf8")).read).length; } catch { return 0; } };
+
+/** What people sent the AI from the pane (Send to AI): their note, the elements and the picture; unread first, then marked read. */
+export function readInbox(dir = inboxDir()) {
+  let items: Array<Record<string, any>> = [];
+  try { items = fs.readdirSync(dir).filter((f) => f.endsWith(".json")).map((f) => JSON.parse(fs.readFileSync(win.join(dir, f), "utf8"))); } catch { /* empty */ }
+  const unread = items.filter((i) => !i.read).sort((a, b) => String(a.at).localeCompare(String(b.at)));
+  const content: Array<{ type: "text"; text: string } | { type: "image"; data: string; mimeType: string }> = [];
+  for (const i of unread.slice(0, 3)) {
+    const png = win.join(dir, i.id + ".png");
+    if (fs.existsSync(png)) content.push({ type: "image", data: fs.readFileSync(png).toString("base64"), mimeType: "image/png" });
+    i.read = true;
+    try { fs.writeFileSync(win.join(dir, i.id + ".json"), JSON.stringify(i, null, 2)); } catch { /* still shown */ }
+  }
+  content.unshift({ type: "text", text: JSON.stringify({ unread: unread.length, shown: unread.slice(0, 3).map(({ read, ...x }) => x),
+    next: unread.length ? "The person's note says what's wrong; the ids are the elements they selected (red in the picture). Look closer with see_view ids, fix with modify_model, then say what you changed." : "Nothing new from the pane" }, null, 2) });
+  return { content, isError: false };
+}
+
 export const FMC_AI_DESCRIPTION =
   "The AI-assisted modeller (Manual Part 18 change request, docs/AI_ASSISTED_MODELLER.md). status: whether AI may " +
     "change the model, and why: the firm and project switch, the involvement band, each operation group's level " +
@@ -25,6 +45,8 @@ export const FMC_AI_DESCRIPTION =
     "An approved batch runs from the pane when the person approves it: check queue (status, result) before sending a " +
     "batch again. usage: facts about every tool call by build (calls, median time, failures), for your own experience " +
     "report; write that report yourself, from what you experienced: this tool gives facts, not the report. " +
+    "inbox (owner 26 Oct): what the person sent you from the pane (Send to AI): a picture of their view with the " +
+    "elements they selected in red, the ids and their note; status says inbox_unread. " +
     "wait (owner 26 Oct): after a batch is queued for approval, call wait with its id instead of ending your turn; it " +
     "holds until the person approves or rejects (no tokens are spent while it holds). If it says still waiting, call it " +
     "again. When it says done, go straight on with the next batch of your plan: don't end your turn while work remains " +
@@ -34,7 +56,7 @@ export const FMC_AI_DESCRIPTION =
     "missing so it can be built.";
 
 export const FMC_AI_SHAPE = {
-  action: z.enum(["status", "queue", "stop", "usage", "wait"]),
+  action: z.enum(["status", "queue", "stop", "usage", "wait", "inbox"]),
   id: z.string().optional().describe("wait: the batch id from the queue message"),
   timeout_s: z.number().int().min(1).max(55).optional().default(50).describe("wait: how long to hold, at most 55 s; call again while it says waiting"),
   since: z.string().optional().describe("usage: from this time (ISO); default: everything recorded"),
@@ -62,7 +84,7 @@ export function policySummary(config: GuardConfig, active: any) {
   return {
     // The one setting users see (owner 26 Oct): the plain state and line for the open model's project.
     general: {
-      state: state3, project: key || null, mode: ai?.mode ?? "strict", access: ai?.access ?? "general", allow_code: ai?.allow_code ?? false, auto_approve: ai?.mode === "testing" && ai?.auto_approve === true, compliant: !active?.title || !!projectCode(active.title), section: ai ? "present" : "missing (the AI switch creates it)",
+      state: state3, project: key || null, mode: ai?.mode ?? "strict", access: ai?.access ?? "general", allow_code: ai?.allow_code ?? false, inbox_unread: inboxUnread(), auto_approve: ai?.mode === "testing" && ai?.auto_approve === true, compliant: !active?.title || !!projectCode(active.title), section: ai ? "present" : "missing (the AI switch creates it)",
       rulebook_general: !!book?.general, covers: book?.general?.groups ?? [],
       line: state3 === "On" ? "AI is on for this project: every change waits for your approval." : state3 === "Stopped" ? USER_LINE.stopped
         : active?.title && !key ? USER_LINE.notCompliant : USER_LINE.off,
@@ -89,6 +111,7 @@ export async function runFmcAi(args: FmcAiArgs) {
     if (args.action === "queue") return reply({ queue: withEstimates(readQueue().slice(0, 50)) });
     if (args.action === "usage") return reply(summariseUsage(readUsage(), args.since));
     if (args.action === "wait") return reply(await waitFor(String(args.id ?? ""), args.timeout_s ?? 50));
+    if (args.action === "inbox") return readInbox();
     const doc = await activeDocument((ms) => withRevitConnection((c) => c.sendRaw("fmc_document_info", {}, ms)));
     return reply({ ...policySummary(config, doc.active), document_source: doc.source });
   } catch (error) {
@@ -184,6 +207,15 @@ export async function paneAi(command: string, input: Record<string, unknown>, by
       }
     }
     case "ai_reject": return setStatus(id, "rejected", by) ?? { error: `No batch ${id} in the queue` };
+    case "ai_send": {
+      // Owner 26 Oct: the person shows the AI a problem: the active view with their selection in red, the ids and a note
+      const facts = await withRevitConnection((c) => c.sendCommand("fmc_view_image", { selection: true, mode: "view", size: 1400 }));
+      const item = { id: Date.now().toString(36), at: new Date().toISOString(), by, note: String(input.note ?? ""), view: facts?.view ?? "", ids: facts?.ids ?? [], read: false };
+      fs.mkdirSync(inboxDir(), { recursive: true });
+      if (facts?.file && fs.existsSync(facts.file)) fs.copyFileSync(facts.file, win.join(inboxDir(), item.id + ".png"));
+      fs.writeFileSync(win.join(inboxDir(), item.id + ".json"), JSON.stringify(item, null, 2));
+      return { sent: item.id, ids: item.ids.length, message: `Sent to AI: ${item.view}${item.ids.length ? `, ${item.ids.length} selected elements` : ""}. In the Claude chat, ask it to check its inbox (fmc_ai inbox).` };
+    }
     case "ai_resume": {
       try { fs.unlinkSync(win.join(formcraftDir(), "ai_stop")); } catch { /* wasn't stopped */ }
       return { resumed: true, by };

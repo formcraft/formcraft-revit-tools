@@ -70,6 +70,8 @@ namespace Formcraft.Shell.Services
         Task<ToolResult> SaveAsync(bool on, int involvement, IReadOnlyDictionary<string, string> levels);
         /// <summary>The General AI switch for the open model's project (any user; Stop AI still overrides it).</summary>
         Task<ToolResult> SetGeneralAsync(bool on);
+        /// <summary>Send to AI (owner 26 Oct): the active view with the selection in red, the ids and a note, into the AI's inbox.</summary>
+        Task<ToolResult> SendToAiAsync(string note);
         /// <summary>Raised when the approval queue changes (a new batch, a decision, a result), so pages refresh themselves.</summary>
         event EventHandler? QueueChanged;
     }
@@ -112,6 +114,15 @@ namespace Formcraft.Shell.Services
         }
 
         public Task<List<AiQueueLine>> QueueAsync() => Task.FromResult(Queue.ToList());
+
+        public List<string> Sent { get; } = new List<string>();
+        public Task<ToolResult> SendToAiAsync(string note)
+        {
+            Sent.Add(note);
+            var r = new ToolResult { Ok = true };
+            r.Messages.Add(new ToolMessage(ChipKind.Good, "Sent to AI. In the Claude chat, ask it to check its inbox."));
+            return Task.FromResult(r);
+        }
 
         public Task<ToolResult> SetGeneralAsync(bool on)
         {

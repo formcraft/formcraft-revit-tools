@@ -112,6 +112,16 @@ namespace revit_mcp_plugin.Shell
             return result;
         }
 
+        /// <summary>Send to AI: the server asks Revit for the picture and keeps it with the note (pane-only command ai_send).</summary>
+        public async Task<ToolResult> SendToAiAsync(string note)
+        {
+            CliResult r = await ServerCli.RunAsync("ai_send", new JObject { ["note"] = note ?? "" });
+            if (!r.Ok) return ToolResult.Refused(string.Join(" ", r.Reasons()));
+            var result = new ToolResult { Ok = true };
+            result.Messages.Add(new ToolMessage(ChipKind.Good, r.Body.Value<string>("message") ?? "Sent to AI."));
+            return result;
+        }
+
         private static async Task<ToolResult> Run(string command, JObject args, string done)
         {
             CliResult r = await ServerCli.RunAsync(command, args);

@@ -215,4 +215,46 @@ namespace RevitMCPCommandSet.Commands.Fmc
             }
         }
     }
+
+    /// <summary>A picture of a view or of elements, highlighted, for the AI to see (owner 26 Oct); read-only, rolled back.</summary>
+    public class FmcViewImageCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcViewImageHandler _handler => (FmcViewImageHandler)Handler;
+
+        public FmcViewImageCommand(UIApplication uiApp) : base(new FmcViewImageHandler(), uiApp) { }
+        public override string CommandName => "fmc_view_image";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = parameters ?? new JObject();
+                if (!RaiseAndWaitForCompletion(300000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
+
+    /// <summary>Read-only model checks with ids, places and a sentence each (owner 26 Oct).</summary>
+    public class FmcModelCheckCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcModelCheckHandler _handler => (FmcModelCheckHandler)Handler;
+
+        public FmcModelCheckCommand(UIApplication uiApp) : base(new FmcModelCheckHandler(), uiApp) { }
+        public override string CommandName => "fmc_model_check";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = parameters ?? new JObject();
+                if (!RaiseAndWaitForCompletion(300000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
 }

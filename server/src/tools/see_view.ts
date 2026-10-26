@@ -1,0 +1,82 @@
+import fs from "node:fs";
+import { z } from "zod";
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { withRevitConnection } from "../utils/ConnectionManager.js";
+
+type Content = { type: "text"; text: string } | { type: "image"; data: string; mimeType: string };
+
+/** A view or a close-up of elements as an image the AI sees (owner 26 Oct: "the MCP tool has to take images"). */
+export async function viewImage(params: Record<string, unknown>): Promise<{ image?: Content; facts: any }> {
+  const facts = await withRevitConnection((c) => c.sendCommand("fmc_view_image", params));
+  const file = String(facts?.file ?? "");
+  if (!file || !fs.existsSync(file)) return { facts };
+  const data = fs.readFileSync(file).toString("base64");
+  try { fs.unlinkSync(file); } catch { /* temp folder is cleaned anyway */ }
+  return { image: { type: "image", data, mimeType: "image/png" }, facts: { ...facts, file: undefined } };
+}
+
+/** The ids a modify_model answer made or touched, for its after-picture. */
+export function touchedIds(ops: Array<Record<string, any>>, answer: any): number[] {
+  const ids = new Set<number>();
+  for (const r of answer?.ops ?? []) for (const id of r?.created_ids ?? []) ids.add(Number(id));
+  for (const o of ops) for (const id of o?.ids ?? []) if (/^\d+$/.test(String(id))) ids.add(Number(id));
+  for (const o of ops) for (const k of ["host", "target", "wall", "id"]) if (/^\d+$/.test(String(o?.[k] ?? ""))) ids.add(Number(o[k]));
+  return [...ids].slice(0, 200);
+}
+
+export const SEE_VIEW_DESCRIPTION =
+  "Formcraft (owner 26 Oct): look at the model. Returns a picture you can see. ids: a 3D close-up around those elements " +
+  "with them in red (from: iso, iso_nw, iso_ne, iso_sw, front, back, left, right, top; margin_mm; ghost true greys the " +
+  "rest). view: a plan, section, 3D view or sheet by name or id (with ids, those are highlighted in it). selection true: " +
+  "what the person has selected in Revit. size: pixels (default 1024; each picture costs tokens, so look when it " +
+  "matters: after geometry changes, and at problems model_check finds). Nothing in the model changes.";
+
+export function registerSeeViewTool(server: McpServer) {
+  server.tool(
+    "see_view",
+    SEE_VIEW_DESCRIPTION,
+    {
+      ids: z.array(z.union([z.number(), z.string()])).max(500).optional(),
+      view: z.string().optional(),
+      selection: z.boolean().optional(),
+      from: z.enum(["iso", "iso_nw", "iso_ne", "iso_sw", "front", "back", "left", "right", "top"]).optional(),
+      margin_mm: z.number().optional(),
+      ghost: z.boolean().optional(),
+      style: z.enum(["shaded", "hidden"]).optional(),
+      size: z.number().int().min(400).max(2400).optional(),
+    },
+    async (args) => {
+      try {
+        const { image, facts } = await viewImage(args);
+        const content: Content[] = [{ type: "text", text: JSON.stringify(facts, null, 2) }];
+        if (image) content.unshift(image);
+        return { content };
+      } catch (e) {
+        return { content: [{ type: "text" as const, text: `see_view: ${e instanceof Error ? e.message : String(e)}` }], isError: true };
+      }
+    }
+  );
+
+  server.tool(
+    "model_check",
+    "Formcraft (owner 26 Oct): what is wrong in the model, in words and ids, read-only. checks (default all): " +
+      "revit_warnings (Revit's own, grouped), duplicates (same category and type in the same place; keep says which to " +
+      "keep), rooms (not placed, not enclosed, numbers used twice), unhosted (doors and windows without a wall), " +
+      "wall_overlaps, free_wall_ends, wall_tops (walls stopping below a roof, not attached), clashes (structure, MEP, " +
+      "furniture, stairs against the rest). level limits it to one level; limit the items per check (default 50). Then " +
+      "look at a problem with see_view ids [...] and fix it with modify_model.",
+    {
+      checks: z.array(z.enum(["revit_warnings", "duplicates", "rooms", "unhosted", "wall_overlaps", "free_wall_ends", "wall_tops", "clashes"])).optional(),
+      level: z.string().optional(),
+      limit: z.number().int().min(1).max(500).optional(),
+    },
+    async (args) => {
+      try {
+        const r = await withRevitConnection((c) => c.sendCommand("fmc_model_check", args));
+        return { content: [{ type: "text" as const, text: JSON.stringify(r, null, 2) }] };
+      } catch (e) {
+        return { content: [{ type: "text" as const, text: `model_check: ${e instanceof Error ? e.message : String(e)}` }], isError: true };
+      }
+    }
+  );
+}
