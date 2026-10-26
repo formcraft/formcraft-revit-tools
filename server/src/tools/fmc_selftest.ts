@@ -44,7 +44,14 @@ export async function runFmcSelftest(args: FmcSelftestArgs) {
   const onDisk = diskBuild();
   let facts: AddinFacts | null = null;
   let failure = notListening(revitPort());
-  try { facts = (await withRevitConnection((c) => c.sendRaw("fmc_selftest_facts", {}, 15000))) as AddinFacts; }
+  // Ogala report: right after a restart Revit isn't listening yet; wait for it (up to about 30 s) before saying so
+  const ask = () => withRevitConnection((c) => c.sendRaw("fmc_selftest_facts", {}, 15000)) as Promise<AddinFacts>;
+  try {
+    for (let i = 0; ; i++) {
+      try { facts = await ask(); break; }
+      catch (e) { if (i >= 5 || !String(e instanceof Error ? e.message : e).includes("nothing in Revit is listening")) throw e; await new Promise((r) => setTimeout(r, 5000)); }
+    }
+  }
   catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
     // Revit answered but doesn't know the command: the add-in is older than the self-test.

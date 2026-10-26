@@ -33,11 +33,11 @@ export function withRevitTarget(server: McpServer) {
           if (!own) delete rest.document;
           // Owner 26 Oct: every call is timed by the server (fmc/usage.ts), so an AI's own report can compare builds.
           const started = Date.now();
-          const done = (ok: boolean) => recordUsage({ at: new Date(started).toISOString(), tool: String(a[0]), action: typeof rest.action === "string" ? rest.action : "",
-            ms: Date.now() - started, ok, build: RUNNING_BUILD.commit });
+          const done = (ok: boolean, r?: unknown) => recordUsage({ at: new Date(started).toISOString(), tool: String(a[0]), action: typeof rest.action === "string" ? rest.action : "",
+            ms: Date.now() - started, ok, build: RUNNING_BUILD.commit, ...(!ok && queuedReply(r) ? { queued: true } : {}) });
           return Promise.resolve(revitTarget.run(typeof revit === "string" ? revit : undefined,
             () => documentTarget.run(document, () => handler(rest, extra))))
-            .then((r) => { done(!(r as { isError?: boolean } | undefined)?.isError); return r; }, (e) => { done(false); throw e; });
+            .then((r) => { done(!(r as { isError?: boolean } | undefined)?.isError, r); return r; }, (e) => { done(false); throw e; });
         });
     }
     return original(...a);
@@ -138,4 +138,10 @@ export async function registerTools(server: McpServer) {
       console.error(`注册工具 ${file} 时出错:`, error);
     }
   }
+}
+
+/** A reply that says the batch waits in the approval queue (Ogala report: those were counted as failures). */
+function queuedReply(r: unknown): boolean {
+  const text = ((r as { content?: Array<{ text?: string }> })?.content ?? []).map((c) => c.text ?? "").join(" ");
+  return /approval queue|waits for (your|the person's) approval|fmc_ai wait with id/i.test(text);
 }

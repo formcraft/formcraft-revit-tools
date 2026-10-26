@@ -58,6 +58,28 @@ export function registerSeeViewTool(server: McpServer) {
   );
 
   server.tool(
+    "select_by",
+    "Formcraft (Ogala report), read-only: find elements by category (Walls or OST_Walls), level, type_name and family " +
+      "(part of the name), comment (contains), mark, workset, phase (created), box_mm [[x, y, z?], [x, y, z?]] (anything " +
+      "touching it), or view (visible in it); combine them. Gives the count by category, the ids (up to limit, default 500) " +
+      "and the first 100 with type and level. Use it to pick exactly what to edit or delete.",
+    {
+      category: z.string().optional(), level: z.string().optional(), type_name: z.string().optional(), family: z.string().optional(),
+      comment: z.string().optional(), mark: z.string().optional(), workset: z.string().optional(), phase: z.string().optional(),
+      box_mm: z.array(z.array(z.number()).min(2).max(3)).length(2).optional(), view: z.string().optional(),
+      limit: z.number().int().min(1).max(5000).optional(),
+    },
+    async (args) => {
+      try {
+        const r = await withRevitConnection((c) => c.sendCommand("fmc_select_by", args));
+        return { content: [{ type: "text" as const, text: JSON.stringify(r, null, 2) }] };
+      } catch (e) {
+        return { content: [{ type: "text" as const, text: `select_by: ${e instanceof Error ? e.message : String(e)}` }], isError: true };
+      }
+    }
+  );
+
+  server.tool(
     "model_check",
     "Formcraft (owner 26 Oct): what is wrong in the model, in words and ids, read-only. checks (default all): " +
       "revit_warnings (Revit's own, grouped), duplicates (same category and type in the same place; keep says which to " +

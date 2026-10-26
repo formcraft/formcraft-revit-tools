@@ -17,7 +17,8 @@ export const MODEL_EDIT_OPS = ["copy", "rotate", "mirror", "join", "unjoin", "sw
   "save_family", "load_into_project",
   "column", "beam", "brace", "isolated_foundation", "wall_foundation", "foundation_slab", "structural_floor", "truss", "beam_system", "rebar", "area_reinforcement", "path_reinforcement", "fabric_area", "coping", "point_load", "line_load", "area_load", "load_case", "analytical_member", "duct", "pipe", "cable_tray", "conduit", "flex_duct", "flex_pipe", "connect", "insulation", "lining", "convert_placeholders", "wire", "space", "space_separation", "toposolid", "toposolid_subdivision", "mass_floors", "wall_by_face", "wall_sweep", "curtain_grid", "mullions", "wall_opening", "area_plan", "area", "area_boundary", "create_schedule", "revision", "radial_array", "offset", "split", "extend", "wall_join", "create_group", "place_group", "ungroup", "assembly", "parts", "displace", "paint", "remove_paint", "demolish", "path_of_travel", "energy_model", "create_material", "line_style", "line_pattern", "fill_pattern", "object_style", "project_info", "project_units", "global_param", "associate_global", "coordinates", "acquire_coordinates", "publish_coordinates", "create_workset", "set_workset", "purge", "save_selection", "copy_types", "keynote_file",
   "roof_extrusion", "fascia", "gutter", "slab_edge", "curtain_system_by_face", "building_pad", "swept_blend", "model_text", "copy_to_views", "copy_to_levels", "starting_view", "work_plane", "zone", "panel_schedule", "view_list", "reveal_hidden",
-  "structural_connection", "boundary_condition", "analytical_panel", "load_combination", "multi_rebar_annotation", "rebar_coupler", "rebar_shape_bar", "rebar_cover_type", "fabric_sheet", "truss_chord", "mep_connector", "load_classification", "demand_factor", "mep_settings", "check_systems", "radial_dimension", "diameter_dimension", "align", "steel_plate", "bolts", "anchors", "weld", "shorten", "notch", "corner_fillet"] as const;
+  "structural_connection", "boundary_condition", "analytical_panel", "load_combination", "multi_rebar_annotation", "rebar_coupler", "rebar_shape_bar", "rebar_cover_type", "fabric_sheet", "truss_chord", "mep_connector", "load_classification", "demand_factor", "mep_settings", "check_systems", "radial_dimension", "diameter_dimension", "align", "steel_plate", "bolts", "anchors", "weld", "shorten", "notch", "corner_fillet",
+  "create_wall", "create_floor", "create_ceiling", "create_room", "place_family", "rehost", "edit_sketch", "wall_profile"] as const;
 
 export const MODIFY_MODEL_DESCRIPTION =
   "Formcraft: edit the model like a person does in Revit (owner 26 Oct), a list of ops as ONE batch: one approval, one " +
@@ -40,7 +41,9 @@ export const MODIFY_MODEL_DESCRIPTION =
   "create_roof {outline_mm (closed loop), level, type_name?, slope_deg? (every edge) or slopes_deg: [deg or null per edge, " +
   "edge i runs from point i to i+1], overhang_mm?, offset_mm?} (gable: slope on the long edges, null on the gable ends; hip: every edge) · " +
   "create_railing {path_mm, level, type_name?, host? (floor id, or a stair id to rail its treads)} · " +
-  "create_stair {base_level, top_level, runs: [{start_mm, end_mm, width_mm?, risers?}], risers?, railings? (default true), railing_type?} · " +
+  "create_stair {base_level, top_level, runs: [{start_mm, end_mm (its direction) | direction_deg, width_mm?, risers?}], risers? (default the " +
+  "height at 175 mm max), riser_max_mm?, railings? (default true; skipped when the stair type makes its own), railing_type?} (each run's " +
+  "length is worked out from its risers and the type's tread) · " +
   "room_separation {level, lines_mm: [[[x, y], [x, y]], ...]} · " +
   "opening {host (floor, ceiling or roof id), outline_mm} · " +
   "shaft {base_level, top_level, outline_mm}. " +
@@ -118,6 +121,14 @@ export const MODIFY_MODEL_DESCRIPTION =
   "copy_to_views {ids, from_view, views} (Paste Aligned to views) · copy_to_levels {ids, levels, from_level?} (Paste Aligned to levels) · " +
   "starting_view {view} · work_plane {view, level? | plane?, show?} · zone {level, name?, spaces?} · panel_schedule {ids (panels)} · " +
   "view_list {name?} · reveal_hidden {view, on?}. " +
+  "Core: create_wall {level, start_mm + end_mm | points_mm, type_name?, height_mm? | top_level?, base_offset_mm?, top_offset_mm?, structural?, flip?} · " +
+  "create_floor / create_ceiling {level, outline_mm | loops_mm (first the outside, then holes), type_name?, offset_mm?, structural?} · " +
+  "create_room {level, points_mm, name?, number?} · place_family {type_name | type_id, points_mm, level?, host? (wall id or \"$n\" from this batch), " +
+  "sill_mm?, offset_mm?, rotation_deg?, flip_facing?, flip_hand?} · rehost {ids, level} (keeps each in place: its offset changes) · " +
+  "edit_sketch {id (floor, ceiling or roof), outline_mm | loops_mm} (Edit Boundary) · wall_profile {id (wall), profile_mm | loops_mm: [[u, v]] " +
+  "(u along the wall from its start, v up from its base: an arch, a gable top)} (Edit Profile). move reports not_moved_in_z for " +
+  "level-hosted elements. create_roof overhang_mm offsets the outline and drops the base so the roof still meets the walls. " +
+  "dry_run needs no approval. " +
   "Specialist: structural_connection {ids (members it joins), type_name?} · boundary_condition {host (analytical member or panel), " +
   "fixity: fixed|pinned|roller, kind?: point|line|area, end?: start|end} · analytical_panel {outline_mm} · load_combination {name, cases: " +
   "[{case, factor}]} · multi_rebar_annotation {view, ids (rebar), point_mm, direction_mm?, type_name?} · rebar_coupler {id (rebar), end?: 0|1, " +
@@ -150,7 +161,7 @@ export function registerModifyModelTool(server: McpServer) {
     {
       ops: z.array(z.object({ op: z.enum(MODEL_EDIT_OPS) }).passthrough()).min(1).describe("The edits, run in order"),
       dry_run: z.boolean().optional().default(false).describe("Run and roll back: what would change, nothing changed"),
-      why: z.string().max(300).optional().describe("One sentence for the person approving: what this batch is for"),
+      why: z.string().max(1000).optional().describe("A sentence or two (up to 1000 characters) for the person approving: what this batch is for"),
       snapshot: z.boolean().optional().describe("A picture of what the batch made or changed comes back with the answer (default: for geometry batches); false skips it"),
     },
     async (args) => {

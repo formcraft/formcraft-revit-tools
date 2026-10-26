@@ -209,7 +209,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     created.Add(d.Id);
                     return new JObject { ["alignment"] = d.Id.Value };
                 }
-                default: return SteelOp(doc, name, op, made, created);
+                default: return SteelOp(doc, name, op, made, created) ?? CoreOp(doc, name, op, made, created);
             }
         }
 
