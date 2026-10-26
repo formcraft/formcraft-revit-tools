@@ -34,7 +34,7 @@ export const CLI_TOOLS = [
   "fmc_file", "fmc_family", "fmc_project", "fmc_template", "fmc_library", "fmc_qa", "fmc_material", "fmc_sheets", "fmc_annotate",
   "fmc_issue", "fmc_links", "fmc_selftest", "fmc_workshare", "fmc_review", "fmc_report", "fmc_doc", "fmc_revit", "fmc_brief",
   "fmc_scripts", "fmc_systems", "fmc_build", "fmc_ai", "fmc_recipe", "fmc_robot", "fmc_navis", "fmc_rhino", "fmc_legend", "fmc_apps",
-  "fmc_flow", "fmc_select", "fmc_find", "fmc_tree", "fmc_room", "fmc_casework", "fmc_ceiling", "fmc_schedules", "fmc_changes", "fmc_balance", "fmc_powerbi", "fmc_tables", "fmc_calc", "fmc_diagram"];
+  "fmc_flow", "fmc_select", "fmc_find", "fmc_projectbook", "fmc_tree", "fmc_room", "fmc_casework", "fmc_ceiling", "fmc_schedules", "fmc_changes", "fmc_balance", "fmc_powerbi", "fmc_tables", "fmc_calc", "fmc_diagram"];
 
 /** A step that fails is run once more from its scenario's setup; an interruption (sleep, shutdown) doesn't count. */
 export const MAX_TRIES = 2;

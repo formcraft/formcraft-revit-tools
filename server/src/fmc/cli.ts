@@ -35,6 +35,7 @@ import { FMC_ANNOTATE_SHAPE, runFmcAnnotate } from "../tools/fmc_annotate.js";
 import { FMC_ISSUE_SHAPE, runFmcIssue } from "../tools/fmc_issue.js";
 import { FMC_LINKS_SHAPE, runFmcLinks } from "../tools/fmc_links.js";
 import { FMC_SELFTEST_SHAPE, runFmcSelftest } from "../tools/fmc_selftest.js";
+import { FMC_PROJECTBOOK_SHAPE, runFmcProjectBook, runProjectBook } from "../tools/fmc_projectbook.js";
 import { FMC_WORKSHARE_SHAPE, runFmcWorkshare } from "../tools/fmc_workshare.js";
 import { FMC_REVIEW_SHAPE, runFmcReview } from "../tools/fmc_review.js";
 import { FMC_REPORT_SHAPE, runFmcReport } from "../tools/fmc_report.js";
@@ -259,6 +260,13 @@ async function main() {
         return print(r, "error" in r);
       }
       // The pane's AI commands: a person approves, rejects, resumes or sets the policy. Never MCP tools.
+      case "fmc_projectbook":
+        return printReply(await runFmcProjectBook(z.object(FMC_PROJECTBOOK_SHAPE).parse(input)));
+      // The pane's project book commands, as the Windows user (a person): team, roles, decisions, ticks, reviews. Never MCP.
+      case "projectbook_admin": {
+        const r = await runProjectBook(input as Record<string, unknown>, { name: process.env.USERNAME || "unknown", kind: "person" });
+        return print(r, "error" in r || "refused" in r);
+      }
       case "ai_approve": case "ai_reject": case "ai_resume": case "ai_config": {
         const r = paneAi(command, input as Record<string, unknown>, process.env.USERNAME || "unknown");
         return print(r, "error" in r);
