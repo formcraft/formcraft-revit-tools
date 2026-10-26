@@ -1,248 +1,249 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_A_GenericModel_Clearance_BedSpace",
- "template": "Metric Generic Model.rft",
- "about": "U-shaped zone (three boxes) around the bed footprint (left open), bedhead wall at y = 0, 10 mm high, on Clearance Accessibility. Reference: query: clearance bed space generic models hospital; images: https://www.google.com/search?tbm=isch&q=clearance+bed+space+generic+models+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Generic Models"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_A_GenericModel_Clearance_BedSpace",
+  "template": "Metric Generic Model.rft",
+  "about": "U-shaped zone (three boxes) around the bed footprint (left open), bedhead wall at y = 0, 10 mm high, on Clearance Accessibility. Reference: query: clearance bed space generic models hospital; images: https://www.google.com/search?tbm=isch&q=clearance+bed+space+generic+models+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Generic Models"
+    },
+    {
+      "op": "set_family_params",
+      "name": "family",
+      "shared": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+    },
+    {
+      "op": "add_type",
+      "name": "1200_Perimeter"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200_Perimeter/FMC_Cost_Unit",
+      "type": "1200_Perimeter",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200_Perimeter/FMC_Geometry_Stage",
+      "type": "1200_Perimeter",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200_Perimeter/IfcExportAs",
+      "type": "1200_Perimeter",
+      "param": "IfcExportAs",
+      "value": "IfcBuildingElementProxy"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200_Perimeter/Description",
+      "type": "1200_Perimeter",
+      "param": "Description",
+      "value": "Bed clear zone 1200 mm on both sides and the foot of a 2200 x 1000 bed"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Clearance Accessibility",
+      "color": [
+        104,
+        118,
+        125
+      ],
+      "line_weight_projection": 1,
+      "line_weight_cut": 1
+    },
+    {
+      "op": "add_family_param",
+      "name": "Clearance Accessibility Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Glass_Clear",
+      "param": "Clearance Accessibility Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Clear Zone Left",
+      "points": [
+        [
+          -1700,
+          -2200
+        ],
+        [
+          -500,
+          -2200
+        ],
+        [
+          -500,
+          0
+        ],
+        [
+          -1700,
+          0
+        ]
+      ],
+      "start": 0,
+      "end": 10
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Clear Zone Left",
+      "subcategory": "Clearance Accessibility"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Clear Zone Left",
+      "param": "Clearance Accessibility Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Clear Zone Left",
+      "coarse": true,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Clear Zone Right",
+      "points": [
+        [
+          500,
+          -2200
+        ],
+        [
+          1700,
+          -2200
+        ],
+        [
+          1700,
+          0
+        ],
+        [
+          500,
+          0
+        ]
+      ],
+      "start": 0,
+      "end": 10
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Clear Zone Right",
+      "subcategory": "Clearance Accessibility"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Clear Zone Right",
+      "param": "Clearance Accessibility Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Clear Zone Right",
+      "coarse": true,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Clear Zone Foot",
+      "points": [
+        [
+          -1700,
+          -3400
+        ],
+        [
+          1700,
+          -3400
+        ],
+        [
+          1700,
+          -2200
+        ],
+        [
+          -1700,
+          -2200
+        ]
+      ],
+      "start": 0,
+      "end": 10
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Clear Zone Foot",
+      "subcategory": "Clearance Accessibility"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Clear Zone Foot",
+      "param": "Clearance Accessibility Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Clear Zone Foot",
+      "coarse": true,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\A\\_Images\\FMC_A_GenericModel_Clearance_BedSpace.png"
+    }
+  ],
+  "values": {
+    "Perimeter 1200 mm sides and foot": {
+      "value": 1200,
+      "source_status": "assumed",
+      "source": "record type; HBN 04-01 bed-space clear zones"
+    },
+    "Bed footprint 2200 x 1000 mm": {
+      "value": "2200x1000",
+      "source_status": "assumed",
+      "source": "acute/ICU bed class"
+    },
+    "Zone 3400 x 3400 mm overall": {
+      "value": "3400x3400",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   },
-  {
-   "op": "set_family_params",
-   "name": "family",
-   "shared": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
-  },
-  {
-   "op": "add_type",
-   "name": "1200_Perimeter"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200_Perimeter/FMC_Cost_Unit",
-   "type": "1200_Perimeter",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200_Perimeter/FMC_Geometry_Stage",
-   "type": "1200_Perimeter",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200_Perimeter/IfcExportAs",
-   "type": "1200_Perimeter",
-   "param": "IfcExportAs",
-   "value": "IfcBuildingElementProxy"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200_Perimeter/Description",
-   "type": "1200_Perimeter",
-   "param": "Description",
-   "value": "Bed clear zone 1200 mm on both sides and the foot of a 2200 x 1000 bed"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Clearance Accessibility",
-   "color": [
-    191,
-    217,
-    230
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Clearance Accessibility Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Glass_Clear",
-   "param": "Clearance Accessibility Material"
-  },
-  {
-   "op": "extrusion",
-   "name": "Clear Zone Left",
-   "points": [
-    [
-     -1700,
-     -2200
-    ],
-    [
-     -500,
-     -2200
-    ],
-    [
-     -500,
-     0
-    ],
-    [
-     -1700,
-     0
-    ]
-   ],
-   "start": 0,
-   "end": 10
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Clear Zone Left",
-   "subcategory": "Clearance Accessibility"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Clear Zone Left",
-   "param": "Clearance Accessibility Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Clear Zone Left",
-   "coarse": true,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Clear Zone Right",
-   "points": [
-    [
-     500,
-     -2200
-    ],
-    [
-     1700,
-     -2200
-    ],
-    [
-     1700,
-     0
-    ],
-    [
-     500,
-     0
-    ]
-   ],
-   "start": 0,
-   "end": 10
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Clear Zone Right",
-   "subcategory": "Clearance Accessibility"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Clear Zone Right",
-   "param": "Clearance Accessibility Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Clear Zone Right",
-   "coarse": true,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Clear Zone Foot",
-   "points": [
-    [
-     -1700,
-     -3400
-    ],
-    [
-     1700,
-     -3400
-    ],
-    [
-     1700,
-     -2200
-    ],
-    [
-     -1700,
-     -2200
-    ]
-   ],
-   "start": 0,
-   "end": 10
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Clear Zone Foot",
-   "subcategory": "Clearance Accessibility"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Clear Zone Foot",
-   "param": "Clearance Accessibility Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Clear Zone Foot",
-   "coarse": true,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\A\\_Images\\FMC_A_GenericModel_Clearance_BedSpace.png"
+  "checks": {
+    "keynote_exempt": "nested-only clearance helper; not scheduled or costed"
   }
- ],
- "values": {
-  "Perimeter 1200 mm sides and foot": {
-   "value": 1200,
-   "source_status": "assumed",
-   "source": "record type; HBN 04-01 bed-space clear zones"
-  },
-  "Bed footprint 2200 x 1000 mm": {
-   "value": "2200x1000",
-   "source_status": "assumed",
-   "source": "acute/ICU bed class"
-  },
-  "Zone 3400 x 3400 mm overall": {
-   "value": "3400x3400",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- },
- "checks": {
-  "keynote_exempt": "nested-only clearance helper; not scheduled or costed"
- }
 }

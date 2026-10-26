@@ -1,1664 +1,1669 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_FP_FireProt_FireBlanket",
- "template": "Metric Generic Model.rft",
- "about": "Fire blanket modelled as a generic product: red container with lid flap, white label panel with flame symbol and text lines, two black pull tapes and tabs, fixing screws. Reference: query: fire prot fire blanket fire protection hospital; images: https://www.google.com/search?tbm=isch&q=fire+prot+fire+blanket+fire+protection+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Specialty Equipment"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Earth_Resistance_Ohm",
-   "guid": "0fe20834-bce9-5c3f-a498-96c0b6c61998",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_LPS_Class",
-   "guid": "aa1c5aad-32f5-5ba3-8139-a49a5faba0dd",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Asset_Tag",
-   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Serial_Number",
-   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Install_Date",
-   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Warranty_End",
-   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Maintenance_Interval_Months",
-   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_OM_Link",
-   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Controller_ID",
-   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Type",
-   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Signal",
-   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Protocol",
-   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_LP_Part",
-   "guid": "7358e31e-0924-5ef8-9e82-c11bf9ad7160",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Extinguisher_Rating",
-   "guid": "59ff9559-a353-5172-9793-e70bce8154c9",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Hose_Length_m",
-   "guid": "38ed9a83-2f51-56d9-930f-4fab315adbb5",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Sign_Code",
-   "guid": "308bad99-638f-5312-920b-abcd5888e7f3",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Design_Movement",
-   "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
-   "instance": true
-  },
-  {
-   "op": "add_type",
-   "name": "1200x1200_Blanket"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1200_Blanket/FMC_Cost_Unit",
-   "type": "1200x1200_Blanket",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1200_Blanket/FMC_Geometry_Stage",
-   "type": "1200x1200_Blanket",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1200_Blanket/IfcExportAs",
-   "type": "1200x1200_Blanket",
-   "param": "IfcExportAs",
-   "value": "IfcFireSuppressionTerminal"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1200_Blanket/Description",
-   "type": "1200x1200_Blanket",
-   "param": "Description",
-   "value": "Fire blanket 1.2 x 1.2 m in a rigid red wall container with quick-release pull tapes"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1200_Blanket/Keynote",
-   "type": "1200x1200_Blanket",
-   "param": "Keynote",
-   "value": "V.EXT_07"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1200_Blanket/FMC_Keynote_Code",
-   "type": "1200x1200_Blanket",
-   "param": "FMC_Keynote_Code",
-   "value": "V.EXT_07"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1200_Blanket/FMC_Code_Description",
-   "type": "1200x1200_Blanket",
-   "param": "FMC_Code_Description",
-   "value": "FireBlanket: Fire blanket"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1200_Blanket/FMC_Code_Group",
-   "type": "1200x1200_Blanket",
-   "param": "FMC_Code_Group",
-   "value": "V.EXT"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1200_Blanket/FMC_Role_Code",
-   "type": "1200x1200_Blanket",
-   "param": "FMC_Role_Code",
-   "value": "FP"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1200_Blanket/Default Elevation",
-   "type": "1200x1200_Blanket",
-   "param": "Default Elevation",
-   "value": 1200
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Red",
-   "color": [
-    200,
-    16,
-    46
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Red Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_SprinklerPipe_RedPainted",
-   "param": "Red Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "White",
-   "color": [
-    242,
-    242,
-    238
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "White Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_White",
-   "param": "White Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Chrome",
-   "color": [
-    192,
-    195,
-    199
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Chrome Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Chrome_Polished",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -145.0,
-     -68
-    ],
-    [
-     145.0,
-     -68
-    ],
-    [
-     145.0,
-     0
-    ],
-    [
-     -145.0,
-     0
-    ]
-   ],
-   "start": -58.0,
-   "end": 305.0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Container",
-   "points": [
-    [
-     122.0,
-     0.0
-    ],
-    [
-     128.89,
-     1.37
-    ],
-    [
-     134.73,
-     5.27
-    ],
-    [
-     138.63,
-     11.11
-    ],
-    [
-     140.0,
-     18.0
-    ],
-    [
-     140.0,
-     282.0
-    ],
-    [
-     138.63,
-     288.89
-    ],
-    [
-     134.73,
-     294.73
-    ],
-    [
-     128.89,
-     298.63
-    ],
-    [
-     122.0,
-     300.0
-    ],
-    [
-     -122.0,
-     300.0
-    ],
-    [
-     -128.89,
-     298.63
-    ],
-    [
-     -134.73,
-     294.73
-    ],
-    [
-     -138.63,
-     288.89
-    ],
-    [
-     -140.0,
-     282.0
-    ],
-    [
-     -140.0,
-     18.0
-    ],
-    [
-     -138.63,
-     11.11
-    ],
-    [
-     -134.73,
-     5.27
-    ],
-    [
-     -128.89,
-     1.37
-    ],
-    [
-     -122.0,
-     0.0
-    ]
-   ],
-   "start": 0,
-   "end": 60,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Container",
-   "subcategory": "Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Container",
-   "param": "Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Container",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lid Flap",
-   "points": [
-    [
-     127.0,
-     225.0
-    ],
-    [
-     133.89,
-     226.37
-    ],
-    [
-     139.73,
-     230.27
-    ],
-    [
-     143.63,
-     236.11
-    ],
-    [
-     145.0,
-     243.0
-    ],
-    [
-     145.0,
-     287.0
-    ],
-    [
-     143.63,
-     293.89
-    ],
-    [
-     139.73,
-     299.73
-    ],
-    [
-     133.89,
-     303.63
-    ],
-    [
-     127.0,
-     305.0
-    ],
-    [
-     -127.0,
-     305.0
-    ],
-    [
-     -133.89,
-     303.63
-    ],
-    [
-     -139.73,
-     299.73
-    ],
-    [
-     -143.63,
-     293.89
-    ],
-    [
-     -145.0,
-     287.0
-    ],
-    [
-     -145.0,
-     243.0
-    ],
-    [
-     -143.63,
-     236.11
-    ],
-    [
-     -139.73,
-     230.27
-    ],
-    [
-     -133.89,
-     226.37
-    ],
-    [
-     -127.0,
-     225.0
-    ]
-   ],
-   "start": 56,
-   "end": 68,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lid Flap",
-   "subcategory": "Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lid Flap",
-   "param": "Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lid Flap",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Label Panel",
-   "points": [
-    [
-     104.0,
-     40.0
-    ],
-    [
-     106.3,
-     40.46
-    ],
-    [
-     108.24,
-     41.76
-    ],
-    [
-     109.54,
-     43.7
-    ],
-    [
-     110.0,
-     46.0
-    ],
-    [
-     110.0,
-     199.0
-    ],
-    [
-     109.54,
-     201.3
-    ],
-    [
-     108.24,
-     203.24
-    ],
-    [
-     106.3,
-     204.54
-    ],
-    [
-     104.0,
-     205.0
-    ],
-    [
-     -104.0,
-     205.0
-    ],
-    [
-     -106.3,
-     204.54
-    ],
-    [
-     -108.24,
-     203.24
-    ],
-    [
-     -109.54,
-     201.3
-    ],
-    [
-     -110.0,
-     199.0
-    ],
-    [
-     -110.0,
-     46.0
-    ],
-    [
-     -109.54,
-     43.7
-    ],
-    [
-     -108.24,
-     41.76
-    ],
-    [
-     -106.3,
-     40.46
-    ],
-    [
-     -104.0,
-     40.0
-    ]
-   ],
-   "start": 60,
-   "end": 62,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Label Panel",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Label Panel",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Label Panel",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flame Symbol",
-   "points": [
-    [
-     26.0,
-     125.0
-    ],
-    [
-     27.53,
-     125.3
-    ],
-    [
-     28.83,
-     126.17
-    ],
-    [
-     29.7,
-     127.47
-    ],
-    [
-     30.0,
-     129.0
-    ],
-    [
-     30.0,
-     186.0
-    ],
-    [
-     29.7,
-     187.53
-    ],
-    [
-     28.83,
-     188.83
-    ],
-    [
-     27.53,
-     189.7
-    ],
-    [
-     26.0,
-     190.0
-    ],
-    [
-     -26.0,
-     190.0
-    ],
-    [
-     -27.53,
-     189.7
-    ],
-    [
-     -28.83,
-     188.83
-    ],
-    [
-     -29.7,
-     187.53
-    ],
-    [
-     -30.0,
-     186.0
-    ],
-    [
-     -30.0,
-     129.0
-    ],
-    [
-     -29.7,
-     127.47
-    ],
-    [
-     -28.83,
-     126.17
-    ],
-    [
-     -27.53,
-     125.3
-    ],
-    [
-     -26.0,
-     125.0
-    ]
-   ],
-   "start": 62,
-   "end": 63,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flame Symbol",
-   "subcategory": "Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flame Symbol",
-   "param": "Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flame Symbol",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Label Text Line 1",
-   "points": [
-    [
-     -80,
-     60
-    ],
-    [
-     80,
-     60
-    ],
-    [
-     80,
-     68
-    ],
-    [
-     -80,
-     68
-    ]
-   ],
-   "start": 62,
-   "end": 63,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Label Text Line 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Label Text Line 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Label Text Line 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Label Text Line 2",
-   "points": [
-    [
-     -80,
-     78
-    ],
-    [
-     80,
-     78
-    ],
-    [
-     80,
-     86
-    ],
-    [
-     -80,
-     86
-    ]
-   ],
-   "start": 62,
-   "end": 63,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Label Text Line 2",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Label Text Line 2",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Label Text Line 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Label Text Line 3",
-   "points": [
-    [
-     -80,
-     96
-    ],
-    [
-     80,
-     96
-    ],
-    [
-     80,
-     104
-    ],
-    [
-     -80,
-     104
-    ]
-   ],
-   "start": 62,
-   "end": 63,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Label Text Line 3",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Label Text Line 3",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Label Text Line 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pull Tape 1",
-   "points": [
-    [
-     -78,
-     -28
-    ],
-    [
-     -64,
-     -28
-    ],
-    [
-     -64,
-     4
-    ],
-    [
-     -78,
-     4
-    ]
-   ],
-   "start": 40,
-   "end": 44,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pull Tape 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pull Tape 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pull Tape 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pull Tape 2",
-   "points": [
-    [
-     64,
-     -28
-    ],
-    [
-     78,
-     -28
-    ],
-    [
-     78,
-     4
-    ],
-    [
-     64,
-     4
-    ]
-   ],
-   "start": 40,
-   "end": 44,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pull Tape 2",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pull Tape 2",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pull Tape 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pull Tab 1",
-   "points": [
-    [
-     -60.0,
-     -58.0
-    ],
-    [
-     -57.7,
-     -57.54
-    ],
-    [
-     -55.76,
-     -56.24
-    ],
-    [
-     -54.46,
-     -54.3
-    ],
-    [
-     -54.0,
-     -52.0
-    ],
-    [
-     -54.0,
-     -34.0
-    ],
-    [
-     -54.46,
-     -31.7
-    ],
-    [
-     -55.76,
-     -29.76
-    ],
-    [
-     -57.7,
-     -28.46
-    ],
-    [
-     -60.0,
-     -28.0
-    ],
-    [
-     -82.0,
-     -28.0
-    ],
-    [
-     -84.3,
-     -28.46
-    ],
-    [
-     -86.24,
-     -29.76
-    ],
-    [
-     -87.54,
-     -31.7
-    ],
-    [
-     -88.0,
-     -34.0
-    ],
-    [
-     -88.0,
-     -52.0
-    ],
-    [
-     -87.54,
-     -54.3
-    ],
-    [
-     -86.24,
-     -56.24
-    ],
-    [
-     -84.3,
-     -57.54
-    ],
-    [
-     -82.0,
-     -58.0
-    ]
-   ],
-   "start": 36,
-   "end": 48,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pull Tab 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pull Tab 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pull Tab 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pull Tab 2",
-   "points": [
-    [
-     82.0,
-     -58.0
-    ],
-    [
-     84.3,
-     -57.54
-    ],
-    [
-     86.24,
-     -56.24
-    ],
-    [
-     87.54,
-     -54.3
-    ],
-    [
-     88.0,
-     -52.0
-    ],
-    [
-     88.0,
-     -34.0
-    ],
-    [
-     87.54,
-     -31.7
-    ],
-    [
-     86.24,
-     -29.76
-    ],
-    [
-     84.3,
-     -28.46
-    ],
-    [
-     82.0,
-     -28.0
-    ],
-    [
-     60.0,
-     -28.0
-    ],
-    [
-     57.7,
-     -28.46
-    ],
-    [
-     55.76,
-     -29.76
-    ],
-    [
-     54.46,
-     -31.7
-    ],
-    [
-     54.0,
-     -34.0
-    ],
-    [
-     54.0,
-     -52.0
-    ],
-    [
-     54.46,
-     -54.3
-    ],
-    [
-     55.76,
-     -56.24
-    ],
-    [
-     57.7,
-     -57.54
-    ],
-    [
-     60.0,
-     -58.0
-    ]
-   ],
-   "start": 36,
-   "end": 48,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pull Tab 2",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pull Tab 2",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pull Tab 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fixing Screw 1",
-   "points": [
-    [
-     -116.0,
-     270.0
-    ],
-    [
-     -116.14,
-     271.04
-    ],
-    [
-     -116.54,
-     272.0
-    ],
-    [
-     -117.17,
-     272.83
-    ],
-    [
-     -118.0,
-     273.46
-    ],
-    [
-     -118.96,
-     273.86
-    ],
-    [
-     -120.0,
-     274.0
-    ],
-    [
-     -121.04,
-     273.86
-    ],
-    [
-     -122.0,
-     273.46
-    ],
-    [
-     -122.83,
-     272.83
-    ],
-    [
-     -123.46,
-     272.0
-    ],
-    [
-     -123.86,
-     271.04
-    ],
-    [
-     -124.0,
-     270.0
-    ],
-    [
-     -123.86,
-     268.96
-    ],
-    [
-     -123.46,
-     268.0
-    ],
-    [
-     -122.83,
-     267.17
-    ],
-    [
-     -122.0,
-     266.54
-    ],
-    [
-     -121.04,
-     266.14
-    ],
-    [
-     -120.0,
-     266.0
-    ],
-    [
-     -118.96,
-     266.14
-    ],
-    [
-     -118.0,
-     266.54
-    ],
-    [
-     -117.17,
-     267.17
-    ],
-    [
-     -116.54,
-     268.0
-    ],
-    [
-     -116.14,
-     268.96
-    ]
-   ],
-   "start": 58,
-   "end": 62,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fixing Screw 1",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fixing Screw 1",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fixing Screw 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fixing Screw 2",
-   "points": [
-    [
-     124.0,
-     270.0
-    ],
-    [
-     123.86,
-     271.04
-    ],
-    [
-     123.46,
-     272.0
-    ],
-    [
-     122.83,
-     272.83
-    ],
-    [
-     122.0,
-     273.46
-    ],
-    [
-     121.04,
-     273.86
-    ],
-    [
-     120.0,
-     274.0
-    ],
-    [
-     118.96,
-     273.86
-    ],
-    [
-     118.0,
-     273.46
-    ],
-    [
-     117.17,
-     272.83
-    ],
-    [
-     116.54,
-     272.0
-    ],
-    [
-     116.14,
-     271.04
-    ],
-    [
-     116.0,
-     270.0
-    ],
-    [
-     116.14,
-     268.96
-    ],
-    [
-     116.54,
-     268.0
-    ],
-    [
-     117.17,
-     267.17
-    ],
-    [
-     118.0,
-     266.54
-    ],
-    [
-     118.96,
-     266.14
-    ],
-    [
-     120.0,
-     266.0
-    ],
-    [
-     121.04,
-     266.14
-    ],
-    [
-     122.0,
-     266.54
-    ],
-    [
-     122.83,
-     267.17
-    ],
-    [
-     123.46,
-     268.0
-    ],
-    [
-     123.86,
-     268.96
-    ]
-   ],
-   "start": 58,
-   "end": 62,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fixing Screw 2",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fixing Screw 2",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fixing Screw 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\FP\\_Images\\FMC_FP_FireProt_FireBlanket.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_FP_FireProt_FireBlanket",
+  "template": "Metric Generic Model.rft",
+  "about": "Fire blanket modelled as a generic product: red container with lid flap, white label panel with flame symbol and text lines, two black pull tapes and tabs, fixing screws. Reference: query: fire prot fire blanket fire protection hospital; images: https://www.google.com/search?tbm=isch&q=fire+prot+fire+blanket+fire+protection+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Specialty Equipment"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Earth_Resistance_Ohm",
+      "guid": "0fe20834-bce9-5c3f-a498-96c0b6c61998",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_LPS_Class",
+      "guid": "aa1c5aad-32f5-5ba3-8139-a49a5faba0dd",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Asset_Tag",
+      "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Serial_Number",
+      "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Install_Date",
+      "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Warranty_End",
+      "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Maintenance_Interval_Months",
+      "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_OM_Link",
+      "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Controller_ID",
+      "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Type",
+      "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Signal",
+      "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Protocol",
+      "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_LP_Part",
+      "guid": "7358e31e-0924-5ef8-9e82-c11bf9ad7160",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Extinguisher_Rating",
+      "guid": "59ff9559-a353-5172-9793-e70bce8154c9",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Hose_Length_m",
+      "guid": "38ed9a83-2f51-56d9-930f-4fab315adbb5",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Sign_Code",
+      "guid": "308bad99-638f-5312-920b-abcd5888e7f3",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Design_Movement",
+      "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
+      "instance": true
+    },
+    {
+      "op": "add_type",
+      "name": "1200x1200_Blanket"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1200_Blanket/FMC_Cost_Unit",
+      "type": "1200x1200_Blanket",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1200_Blanket/FMC_Geometry_Stage",
+      "type": "1200x1200_Blanket",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1200_Blanket/IfcExportAs",
+      "type": "1200x1200_Blanket",
+      "param": "IfcExportAs",
+      "value": "IfcFireSuppressionTerminal"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1200_Blanket/Description",
+      "type": "1200x1200_Blanket",
+      "param": "Description",
+      "value": "Fire blanket 1.2 x 1.2 m in a rigid red wall container with quick-release pull tapes"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1200_Blanket/Keynote",
+      "type": "1200x1200_Blanket",
+      "param": "Keynote",
+      "value": "V.EXT_07"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1200_Blanket/FMC_Keynote_Code",
+      "type": "1200x1200_Blanket",
+      "param": "FMC_Keynote_Code",
+      "value": "V.EXT_07"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1200_Blanket/FMC_Code_Description",
+      "type": "1200x1200_Blanket",
+      "param": "FMC_Code_Description",
+      "value": "FireBlanket: Fire blanket"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1200_Blanket/FMC_Code_Group",
+      "type": "1200x1200_Blanket",
+      "param": "FMC_Code_Group",
+      "value": "V.EXT"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1200_Blanket/FMC_Role_Code",
+      "type": "1200x1200_Blanket",
+      "param": "FMC_Role_Code",
+      "value": "FP"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1200_Blanket/Default Elevation",
+      "type": "1200x1200_Blanket",
+      "param": "Default Elevation",
+      "value": 1200
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Red",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Red Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_SprinklerPipe_RedPainted",
+      "param": "Red Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "White",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "White Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_White",
+      "param": "White Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Chrome",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Chrome Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Chrome_Polished",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -145,
+          -68
+        ],
+        [
+          145,
+          -68
+        ],
+        [
+          145,
+          0
+        ],
+        [
+          -145,
+          0
+        ]
+      ],
+      "start": -58,
+      "end": 305
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Container",
+      "points": [
+        [
+          122,
+          0
+        ],
+        [
+          128.89,
+          1.37
+        ],
+        [
+          134.73,
+          5.27
+        ],
+        [
+          138.63,
+          11.11
+        ],
+        [
+          140,
+          18
+        ],
+        [
+          140,
+          282
+        ],
+        [
+          138.63,
+          288.89
+        ],
+        [
+          134.73,
+          294.73
+        ],
+        [
+          128.89,
+          298.63
+        ],
+        [
+          122,
+          300
+        ],
+        [
+          -122,
+          300
+        ],
+        [
+          -128.89,
+          298.63
+        ],
+        [
+          -134.73,
+          294.73
+        ],
+        [
+          -138.63,
+          288.89
+        ],
+        [
+          -140,
+          282
+        ],
+        [
+          -140,
+          18
+        ],
+        [
+          -138.63,
+          11.11
+        ],
+        [
+          -134.73,
+          5.27
+        ],
+        [
+          -128.89,
+          1.37
+        ],
+        [
+          -122,
+          0
+        ]
+      ],
+      "start": 0,
+      "end": 60,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Container",
+      "subcategory": "Red"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Container",
+      "param": "Red Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Container",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Lid Flap",
+      "points": [
+        [
+          127,
+          225
+        ],
+        [
+          133.89,
+          226.37
+        ],
+        [
+          139.73,
+          230.27
+        ],
+        [
+          143.63,
+          236.11
+        ],
+        [
+          145,
+          243
+        ],
+        [
+          145,
+          287
+        ],
+        [
+          143.63,
+          293.89
+        ],
+        [
+          139.73,
+          299.73
+        ],
+        [
+          133.89,
+          303.63
+        ],
+        [
+          127,
+          305
+        ],
+        [
+          -127,
+          305
+        ],
+        [
+          -133.89,
+          303.63
+        ],
+        [
+          -139.73,
+          299.73
+        ],
+        [
+          -143.63,
+          293.89
+        ],
+        [
+          -145,
+          287
+        ],
+        [
+          -145,
+          243
+        ],
+        [
+          -143.63,
+          236.11
+        ],
+        [
+          -139.73,
+          230.27
+        ],
+        [
+          -133.89,
+          226.37
+        ],
+        [
+          -127,
+          225
+        ]
+      ],
+      "start": 56,
+      "end": 68,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Lid Flap",
+      "subcategory": "Red"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lid Flap",
+      "param": "Red Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Lid Flap",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Label Panel",
+      "points": [
+        [
+          104,
+          40
+        ],
+        [
+          106.3,
+          40.46
+        ],
+        [
+          108.24,
+          41.76
+        ],
+        [
+          109.54,
+          43.7
+        ],
+        [
+          110,
+          46
+        ],
+        [
+          110,
+          199
+        ],
+        [
+          109.54,
+          201.3
+        ],
+        [
+          108.24,
+          203.24
+        ],
+        [
+          106.3,
+          204.54
+        ],
+        [
+          104,
+          205
+        ],
+        [
+          -104,
+          205
+        ],
+        [
+          -106.3,
+          204.54
+        ],
+        [
+          -108.24,
+          203.24
+        ],
+        [
+          -109.54,
+          201.3
+        ],
+        [
+          -110,
+          199
+        ],
+        [
+          -110,
+          46
+        ],
+        [
+          -109.54,
+          43.7
+        ],
+        [
+          -108.24,
+          41.76
+        ],
+        [
+          -106.3,
+          40.46
+        ],
+        [
+          -104,
+          40
+        ]
+      ],
+      "start": 60,
+      "end": 62,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Label Panel",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Label Panel",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Label Panel",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flame Symbol",
+      "points": [
+        [
+          26,
+          125
+        ],
+        [
+          27.53,
+          125.3
+        ],
+        [
+          28.83,
+          126.17
+        ],
+        [
+          29.7,
+          127.47
+        ],
+        [
+          30,
+          129
+        ],
+        [
+          30,
+          186
+        ],
+        [
+          29.7,
+          187.53
+        ],
+        [
+          28.83,
+          188.83
+        ],
+        [
+          27.53,
+          189.7
+        ],
+        [
+          26,
+          190
+        ],
+        [
+          -26,
+          190
+        ],
+        [
+          -27.53,
+          189.7
+        ],
+        [
+          -28.83,
+          188.83
+        ],
+        [
+          -29.7,
+          187.53
+        ],
+        [
+          -30,
+          186
+        ],
+        [
+          -30,
+          129
+        ],
+        [
+          -29.7,
+          127.47
+        ],
+        [
+          -28.83,
+          126.17
+        ],
+        [
+          -27.53,
+          125.3
+        ],
+        [
+          -26,
+          125
+        ]
+      ],
+      "start": 62,
+      "end": 63,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flame Symbol",
+      "subcategory": "Red"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flame Symbol",
+      "param": "Red Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flame Symbol",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Label Text Line 1",
+      "points": [
+        [
+          -80,
+          60
+        ],
+        [
+          80,
+          60
+        ],
+        [
+          80,
+          68
+        ],
+        [
+          -80,
+          68
+        ]
+      ],
+      "start": 62,
+      "end": 63,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Label Text Line 1",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Label Text Line 1",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Label Text Line 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Label Text Line 2",
+      "points": [
+        [
+          -80,
+          78
+        ],
+        [
+          80,
+          78
+        ],
+        [
+          80,
+          86
+        ],
+        [
+          -80,
+          86
+        ]
+      ],
+      "start": 62,
+      "end": 63,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Label Text Line 2",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Label Text Line 2",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Label Text Line 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Label Text Line 3",
+      "points": [
+        [
+          -80,
+          96
+        ],
+        [
+          80,
+          96
+        ],
+        [
+          80,
+          104
+        ],
+        [
+          -80,
+          104
+        ]
+      ],
+      "start": 62,
+      "end": 63,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Label Text Line 3",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Label Text Line 3",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Label Text Line 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pull Tape 1",
+      "points": [
+        [
+          -78,
+          -28
+        ],
+        [
+          -64,
+          -28
+        ],
+        [
+          -64,
+          4
+        ],
+        [
+          -78,
+          4
+        ]
+      ],
+      "start": 40,
+      "end": 44,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pull Tape 1",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pull Tape 1",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pull Tape 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pull Tape 2",
+      "points": [
+        [
+          64,
+          -28
+        ],
+        [
+          78,
+          -28
+        ],
+        [
+          78,
+          4
+        ],
+        [
+          64,
+          4
+        ]
+      ],
+      "start": 40,
+      "end": 44,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pull Tape 2",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pull Tape 2",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pull Tape 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pull Tab 1",
+      "points": [
+        [
+          -60,
+          -58
+        ],
+        [
+          -57.7,
+          -57.54
+        ],
+        [
+          -55.76,
+          -56.24
+        ],
+        [
+          -54.46,
+          -54.3
+        ],
+        [
+          -54,
+          -52
+        ],
+        [
+          -54,
+          -34
+        ],
+        [
+          -54.46,
+          -31.7
+        ],
+        [
+          -55.76,
+          -29.76
+        ],
+        [
+          -57.7,
+          -28.46
+        ],
+        [
+          -60,
+          -28
+        ],
+        [
+          -82,
+          -28
+        ],
+        [
+          -84.3,
+          -28.46
+        ],
+        [
+          -86.24,
+          -29.76
+        ],
+        [
+          -87.54,
+          -31.7
+        ],
+        [
+          -88,
+          -34
+        ],
+        [
+          -88,
+          -52
+        ],
+        [
+          -87.54,
+          -54.3
+        ],
+        [
+          -86.24,
+          -56.24
+        ],
+        [
+          -84.3,
+          -57.54
+        ],
+        [
+          -82,
+          -58
+        ]
+      ],
+      "start": 36,
+      "end": 48,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pull Tab 1",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pull Tab 1",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pull Tab 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pull Tab 2",
+      "points": [
+        [
+          82,
+          -58
+        ],
+        [
+          84.3,
+          -57.54
+        ],
+        [
+          86.24,
+          -56.24
+        ],
+        [
+          87.54,
+          -54.3
+        ],
+        [
+          88,
+          -52
+        ],
+        [
+          88,
+          -34
+        ],
+        [
+          87.54,
+          -31.7
+        ],
+        [
+          86.24,
+          -29.76
+        ],
+        [
+          84.3,
+          -28.46
+        ],
+        [
+          82,
+          -28
+        ],
+        [
+          60,
+          -28
+        ],
+        [
+          57.7,
+          -28.46
+        ],
+        [
+          55.76,
+          -29.76
+        ],
+        [
+          54.46,
+          -31.7
+        ],
+        [
+          54,
+          -34
+        ],
+        [
+          54,
+          -52
+        ],
+        [
+          54.46,
+          -54.3
+        ],
+        [
+          55.76,
+          -56.24
+        ],
+        [
+          57.7,
+          -57.54
+        ],
+        [
+          60,
+          -58
+        ]
+      ],
+      "start": 36,
+      "end": 48,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pull Tab 2",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pull Tab 2",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pull Tab 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fixing Screw 1",
+      "points": [
+        [
+          -116,
+          270
+        ],
+        [
+          -116.14,
+          271.04
+        ],
+        [
+          -116.54,
+          272
+        ],
+        [
+          -117.17,
+          272.83
+        ],
+        [
+          -118,
+          273.46
+        ],
+        [
+          -118.96,
+          273.86
+        ],
+        [
+          -120,
+          274
+        ],
+        [
+          -121.04,
+          273.86
+        ],
+        [
+          -122,
+          273.46
+        ],
+        [
+          -122.83,
+          272.83
+        ],
+        [
+          -123.46,
+          272
+        ],
+        [
+          -123.86,
+          271.04
+        ],
+        [
+          -124,
+          270
+        ],
+        [
+          -123.86,
+          268.96
+        ],
+        [
+          -123.46,
+          268
+        ],
+        [
+          -122.83,
+          267.17
+        ],
+        [
+          -122,
+          266.54
+        ],
+        [
+          -121.04,
+          266.14
+        ],
+        [
+          -120,
+          266
+        ],
+        [
+          -118.96,
+          266.14
+        ],
+        [
+          -118,
+          266.54
+        ],
+        [
+          -117.17,
+          267.17
+        ],
+        [
+          -116.54,
+          268
+        ],
+        [
+          -116.14,
+          268.96
+        ]
+      ],
+      "start": 58,
+      "end": 62,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fixing Screw 1",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fixing Screw 1",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fixing Screw 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fixing Screw 2",
+      "points": [
+        [
+          124,
+          270
+        ],
+        [
+          123.86,
+          271.04
+        ],
+        [
+          123.46,
+          272
+        ],
+        [
+          122.83,
+          272.83
+        ],
+        [
+          122,
+          273.46
+        ],
+        [
+          121.04,
+          273.86
+        ],
+        [
+          120,
+          274
+        ],
+        [
+          118.96,
+          273.86
+        ],
+        [
+          118,
+          273.46
+        ],
+        [
+          117.17,
+          272.83
+        ],
+        [
+          116.54,
+          272
+        ],
+        [
+          116.14,
+          271.04
+        ],
+        [
+          116,
+          270
+        ],
+        [
+          116.14,
+          268.96
+        ],
+        [
+          116.54,
+          268
+        ],
+        [
+          117.17,
+          267.17
+        ],
+        [
+          118,
+          266.54
+        ],
+        [
+          118.96,
+          266.14
+        ],
+        [
+          120,
+          266
+        ],
+        [
+          121.04,
+          266.14
+        ],
+        [
+          122,
+          266.54
+        ],
+        [
+          122.83,
+          267.17
+        ],
+        [
+          123.46,
+          268
+        ],
+        [
+          123.86,
+          268.96
+        ]
+      ],
+      "start": 58,
+      "end": 62,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fixing Screw 2",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fixing Screw 2",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fixing Screw 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\FP\\_Images\\FMC_FP_FireProt_FireBlanket.png"
+    }
+  ],
+  "values": {
+    "Blanket 1200 x 1200 mm": {
+      "value": "1200x1200",
+      "source_status": "assumed",
+      "source": "type name; BS EN 1869"
+    },
+    "Container 280 x 300 x 60 mm": {
+      "value": "280x300x60",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Top at 1500 mm": {
+      "value": 1500,
+      "source_status": "assumed",
+      "source": "kitchen siting practice"
+    }
   }
- ],
- "values": {
-  "Blanket 1200 x 1200 mm": {
-   "value": "1200x1200",
-   "source_status": "assumed",
-   "source": "type name; BS EN 1869"
-  },
-  "Container 280 x 300 x 60 mm": {
-   "value": "280x300x60",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Top at 1500 mm": {
-   "value": 1500,
-   "source_status": "assumed",
-   "source": "kitchen siting practice"
-  }
- }
 }

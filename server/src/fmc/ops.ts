@@ -11,6 +11,7 @@ import { z } from "zod";
 import { isInside } from "./policy.js";
 import { SpParam } from "./specs.js";
 import { MaterialDb } from "./materials.js";
+import { graphicsProblems } from "./familygraphics.js";
 
 const mm = z.number().finite();
 // Fixed-length arrays, not z.tuple: a tuple becomes JSON Schema "items": [a, b], which the Claude API rejects
@@ -118,8 +119,9 @@ export const OP = z.discriminatedUnion("op", [
   // face locks, equal dimensions, nested families.
   z.object({ op: z.literal("add_subcategory"), name: z.string().min(1).describe("e.g. Frame, Panel, Glass, Plan Swing, Elevation Swing, Clearance"),
     line_weight_projection: z.number().int().min(1).max(16).optional(), line_weight_cut: z.number().int().min(1).max(16).optional(),
-    color: z.array(z.number().int().min(0).max(255)).length(3).optional().describe("[r, g, b]"),
-    material: z.string().optional().describe("an FMC_ material already in the family") }),
+    color: z.array(z.number().int().min(0).max(255)).length(3).optional().describe("[r, g, b] line colour: black or dark grey (FAM-044); the finish colour goes on the material"),
+    material: z.string().optional().describe("an FMC_ material already in the family"),
+    keep_graphics: z.boolean().optional().describe("a deliberate exception to FAM-044's line colours and pens") }),
   z.object({ op: z.literal("set_subcategory"), name: z.string().min(1).describe("the solid or line set, by op name"),
     subcategory: z.string().min(1) }),
   z.object({ op: z.literal("sweep"), ...sweepShape }),
@@ -560,7 +562,7 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
           else if (!TEMPLATE_SIZE_PARAMS.has(o.param)) p.push(`${at}: ${mayExist("parameter", o.param)}`);
         }
         break;
-      case "add_subcategory": subcats.add(o.name); break;
+      case "add_subcategory": subcats.add(o.name); p.push(...graphicsProblems(o as any, at)); break;
       case "sweep":
       case "void_sweep":
         if (!o.path && !o.path_planes) p.push(`${at}: give path_planes (corners on named planes) or path (fixed points)`);

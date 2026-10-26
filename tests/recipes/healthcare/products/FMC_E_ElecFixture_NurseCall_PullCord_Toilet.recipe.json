@@ -1,917 +1,922 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_E_ElecFixture_NurseCall_PullCord_Toilet",
- "template": "Metric Generic Model.rft",
- "about": "Pull cord: ceiling unit and cover, red reset button, reassurance LED, cord gland, red cord, two bangles and end toggle hanging below the ceiling (z = 0). Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: nurse call pull cord toilet electrical fixtures hospital; images: https://www.google.com/search?tbm=isch&q=nurse+call+pull+cord+toilet+electrical+fixtures+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Electrical Fixtures"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
-  },
-  {
-   "op": "add_type",
-   "name": "86_CeilingPull"
-  },
-  {
-   "op": "set_type_value",
-   "name": "86_CeilingPull/FMC_Cost_Unit",
-   "type": "86_CeilingPull",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "86_CeilingPull/FMC_Geometry_Stage",
-   "type": "86_CeilingPull",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "86_CeilingPull/IfcExportAs",
-   "type": "86_CeilingPull",
-   "param": "IfcExportAs",
-   "value": "IfcAlarm"
-  },
-  {
-   "op": "set_type_value",
-   "name": "86_CeilingPull/Description",
-   "type": "86_CeilingPull",
-   "param": "Description",
-   "value": "Assisted-toilet emergency pull cord, ceiling unit with reset button and reassurance LED, red cord with two bangles to 100 mm above floor"
-  },
-  {
-   "op": "set_type_value",
-   "name": "86_CeilingPull/Keynote",
-   "type": "86_CeilingPull",
-   "param": "Keynote",
-   "value": "E.NCS_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "86_CeilingPull/FMC_Keynote_Code",
-   "type": "86_CeilingPull",
-   "param": "FMC_Keynote_Code",
-   "value": "E.NCS_01"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "White",
-   "color": [
-    242,
-    242,
-    238
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "White Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_White",
-   "param": "White Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Redabs",
-   "color": [
-    181,
-    18,
-    27
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Redabs Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_FireHoseReel_Red",
-   "param": "Redabs Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Yellow",
-   "color": [
-    242,
-    194,
-    48
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Yellow Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Yellow",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Orange",
-   "color": [
-    242,
-    194,
-    48
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Orange Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Yellow",
-   "param": "Orange Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -43.0,
-     -43.0
-    ],
-    [
-     43.0,
-     -43.0
-    ],
-    [
-     43.0,
-     43.0
-    ],
-    [
-     -43.0,
-     43.0
-    ]
-   ],
-   "start": -1715,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Ceiling Unit",
-   "points": [
-    [
-     37.0,
-     -43.0
-    ],
-    [
-     39.3,
-     -42.54
-    ],
-    [
-     41.24,
-     -41.24
-    ],
-    [
-     42.54,
-     -39.3
-    ],
-    [
-     43.0,
-     -37.0
-    ],
-    [
-     43.0,
-     37.0
-    ],
-    [
-     42.54,
-     39.3
-    ],
-    [
-     41.24,
-     41.24
-    ],
-    [
-     39.3,
-     42.54
-    ],
-    [
-     37.0,
-     43.0
-    ],
-    [
-     -37.0,
-     43.0
-    ],
-    [
-     -39.3,
-     42.54
-    ],
-    [
-     -41.24,
-     41.24
-    ],
-    [
-     -42.54,
-     39.3
-    ],
-    [
-     -43.0,
-     37.0
-    ],
-    [
-     -43.0,
-     -37.0
-    ],
-    [
-     -42.54,
-     -39.3
-    ],
-    [
-     -41.24,
-     -41.24
-    ],
-    [
-     -39.3,
-     -42.54
-    ],
-    [
-     -37.0,
-     -43.0
-    ]
-   ],
-   "start": -40,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Ceiling Unit",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Ceiling Unit",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Ceiling Unit",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Unit Cover",
-   "points": [
-    [
-     30.0,
-     -40.0
-    ],
-    [
-     33.83,
-     -39.24
-    ],
-    [
-     37.07,
-     -37.07
-    ],
-    [
-     39.24,
-     -33.83
-    ],
-    [
-     40.0,
-     -30.0
-    ],
-    [
-     40.0,
-     30.0
-    ],
-    [
-     39.24,
-     33.83
-    ],
-    [
-     37.07,
-     37.07
-    ],
-    [
-     33.83,
-     39.24
-    ],
-    [
-     30.0,
-     40.0
-    ],
-    [
-     -30.0,
-     40.0
-    ],
-    [
-     -33.83,
-     39.24
-    ],
-    [
-     -37.07,
-     37.07
-    ],
-    [
-     -39.24,
-     33.83
-    ],
-    [
-     -40.0,
-     30.0
-    ],
-    [
-     -40.0,
-     -30.0
-    ],
-    [
-     -39.24,
-     -33.83
-    ],
-    [
-     -37.07,
-     -37.07
-    ],
-    [
-     -33.83,
-     -39.24
-    ],
-    [
-     -30.0,
-     -40.0
-    ]
-   ],
-   "start": -46,
-   "end": -40
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Unit Cover",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Unit Cover",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Unit Cover",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Reset Button",
-   "points": [
-    [
-     -10.0,
-     0.0
-    ],
-    [
-     -10.27,
-     2.07
-    ],
-    [
-     -11.07,
-     4.0
-    ],
-    [
-     -12.34,
-     5.66
-    ],
-    [
-     -14.0,
-     6.93
-    ],
-    [
-     -15.93,
-     7.73
-    ],
-    [
-     -18.0,
-     8.0
-    ],
-    [
-     -20.07,
-     7.73
-    ],
-    [
-     -22.0,
-     6.93
-    ],
-    [
-     -23.66,
-     5.66
-    ],
-    [
-     -24.93,
-     4.0
-    ],
-    [
-     -25.73,
-     2.07
-    ],
-    [
-     -26.0,
-     0.0
-    ],
-    [
-     -25.73,
-     -2.07
-    ],
-    [
-     -24.93,
-     -4.0
-    ],
-    [
-     -23.66,
-     -5.66
-    ],
-    [
-     -22.0,
-     -6.93
-    ],
-    [
-     -20.07,
-     -7.73
-    ],
-    [
-     -18.0,
-     -8.0
-    ],
-    [
-     -15.93,
-     -7.73
-    ],
-    [
-     -14.0,
-     -6.93
-    ],
-    [
-     -12.34,
-     -5.66
-    ],
-    [
-     -11.07,
-     -4.0
-    ],
-    [
-     -10.27,
-     -2.07
-    ]
-   ],
-   "start": -50,
-   "end": -46
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Reset Button",
-   "subcategory": "Redabs"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Reset Button",
-   "param": "Redabs Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Reset Button",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Reassurance LED",
-   "points": [
-    [
-     22.0,
-     0.0
-    ],
-    [
-     21.86,
-     1.04
-    ],
-    [
-     21.46,
-     2.0
-    ],
-    [
-     20.83,
-     2.83
-    ],
-    [
-     20.0,
-     3.46
-    ],
-    [
-     19.04,
-     3.86
-    ],
-    [
-     18.0,
-     4.0
-    ],
-    [
-     16.96,
-     3.86
-    ],
-    [
-     16.0,
-     3.46
-    ],
-    [
-     15.17,
-     2.83
-    ],
-    [
-     14.54,
-     2.0
-    ],
-    [
-     14.14,
-     1.04
-    ],
-    [
-     14.0,
-     0.0
-    ],
-    [
-     14.14,
-     -1.04
-    ],
-    [
-     14.54,
-     -2.0
-    ],
-    [
-     15.17,
-     -2.83
-    ],
-    [
-     16.0,
-     -3.46
-    ],
-    [
-     16.96,
-     -3.86
-    ],
-    [
-     18.0,
-     -4.0
-    ],
-    [
-     19.04,
-     -3.86
-    ],
-    [
-     20.0,
-     -3.46
-    ],
-    [
-     20.83,
-     -2.83
-    ],
-    [
-     21.46,
-     -2.0
-    ],
-    [
-     21.86,
-     -1.04
-    ]
-   ],
-   "start": -48,
-   "end": -46
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Reassurance LED",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Reassurance LED",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Reassurance LED",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Cord Gland",
-   "profile": [
-    [
-     0,
-     -46
-    ],
-    [
-     6,
-     -46
-    ],
-    [
-     4,
-     -58
-    ],
-    [
-     0,
-     -58
-    ]
-   ],
-   "axis_at": [
-    0,
-    18
-   ],
-   "axis": "z",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cord Gland",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cord Gland",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pull Cord",
-   "points": [
-    [
-     1.5,
-     18.0
-    ],
-    [
-     1.06,
-     19.06
-    ],
-    [
-     0.0,
-     19.5
-    ],
-    [
-     -1.06,
-     19.06
-    ],
-    [
-     -1.5,
-     18.0
-    ],
-    [
-     -1.06,
-     16.94
-    ],
-    [
-     -0.0,
-     16.5
-    ],
-    [
-     1.06,
-     16.94
-    ]
-   ],
-   "start": -1700,
-   "end": -58
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pull Cord",
-   "subcategory": "Redabs"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pull Cord",
-   "param": "Redabs Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pull Cord",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Bangle Upper",
-   "profile": [
-    [
-     17,
-     -1012
-    ],
-    [
-     25,
-     -1012
-    ],
-    [
-     25,
-     -988
-    ],
-    [
-     17,
-     -988
-    ]
-   ],
-   "axis_at": [
-    0,
-    18
-   ],
-   "axis": "z",
-   "subcategory": "Orange"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bangle Upper",
-   "param": "Orange Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bangle Upper",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Bangle Lower",
-   "profile": [
-    [
-     17,
-     -1712
-    ],
-    [
-     25,
-     -1712
-    ],
-    [
-     25,
-     -1688
-    ],
-    [
-     17,
-     -1688
-    ]
-   ],
-   "axis_at": [
-    0,
-    18
-   ],
-   "axis": "z",
-   "subcategory": "Orange"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bangle Lower",
-   "param": "Orange Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bangle Lower",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Cord Toggle",
-   "profile": [
-    [
-     0,
-     -1715
-    ],
-    [
-     6,
-     -1712
-    ],
-    [
-     6,
-     -1688
-    ],
-    [
-     0,
-     -1685
-    ]
-   ],
-   "axis_at": [
-    0,
-    18
-   ],
-   "axis": "z",
-   "subcategory": "Redabs"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cord Toggle",
-   "param": "Redabs Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cord Toggle",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "NurseCall",
-   "domain": "electrical",
-   "system": "NurseCall",
-   "solid": "Ceiling Unit",
-   "side": "top"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\E\\_Images\\FMC_E_ElecFixture_NurseCall_PullCord_Toilet.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_E_ElecFixture_NurseCall_PullCord_Toilet",
+  "template": "Metric Generic Model.rft",
+  "about": "Pull cord: ceiling unit and cover, red reset button, reassurance LED, cord gland, red cord, two bangles and end toggle hanging below the ceiling (z = 0). Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: nurse call pull cord toilet electrical fixtures hospital; images: https://www.google.com/search?tbm=isch&q=nurse+call+pull+cord+toilet+electrical+fixtures+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Electrical Fixtures"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+    },
+    {
+      "op": "add_type",
+      "name": "86_CeilingPull"
+    },
+    {
+      "op": "set_type_value",
+      "name": "86_CeilingPull/FMC_Cost_Unit",
+      "type": "86_CeilingPull",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "86_CeilingPull/FMC_Geometry_Stage",
+      "type": "86_CeilingPull",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "86_CeilingPull/IfcExportAs",
+      "type": "86_CeilingPull",
+      "param": "IfcExportAs",
+      "value": "IfcAlarm"
+    },
+    {
+      "op": "set_type_value",
+      "name": "86_CeilingPull/Description",
+      "type": "86_CeilingPull",
+      "param": "Description",
+      "value": "Assisted-toilet emergency pull cord, ceiling unit with reset button and reassurance LED, red cord with two bangles to 100 mm above floor"
+    },
+    {
+      "op": "set_type_value",
+      "name": "86_CeilingPull/Keynote",
+      "type": "86_CeilingPull",
+      "param": "Keynote",
+      "value": "E.NCS_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "86_CeilingPull/FMC_Keynote_Code",
+      "type": "86_CeilingPull",
+      "param": "FMC_Keynote_Code",
+      "value": "E.NCS_01"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "White",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "White Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_White",
+      "param": "White Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Redabs",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Redabs Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_FireHoseReel_Red",
+      "param": "Redabs Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Yellow",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Yellow Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Yellow",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Orange",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Orange Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Yellow",
+      "param": "Orange Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -43,
+          -43
+        ],
+        [
+          43,
+          -43
+        ],
+        [
+          43,
+          43
+        ],
+        [
+          -43,
+          43
+        ]
+      ],
+      "start": -1715,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Ceiling Unit",
+      "points": [
+        [
+          37,
+          -43
+        ],
+        [
+          39.3,
+          -42.54
+        ],
+        [
+          41.24,
+          -41.24
+        ],
+        [
+          42.54,
+          -39.3
+        ],
+        [
+          43,
+          -37
+        ],
+        [
+          43,
+          37
+        ],
+        [
+          42.54,
+          39.3
+        ],
+        [
+          41.24,
+          41.24
+        ],
+        [
+          39.3,
+          42.54
+        ],
+        [
+          37,
+          43
+        ],
+        [
+          -37,
+          43
+        ],
+        [
+          -39.3,
+          42.54
+        ],
+        [
+          -41.24,
+          41.24
+        ],
+        [
+          -42.54,
+          39.3
+        ],
+        [
+          -43,
+          37
+        ],
+        [
+          -43,
+          -37
+        ],
+        [
+          -42.54,
+          -39.3
+        ],
+        [
+          -41.24,
+          -41.24
+        ],
+        [
+          -39.3,
+          -42.54
+        ],
+        [
+          -37,
+          -43
+        ]
+      ],
+      "start": -40,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Ceiling Unit",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Ceiling Unit",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Ceiling Unit",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Unit Cover",
+      "points": [
+        [
+          30,
+          -40
+        ],
+        [
+          33.83,
+          -39.24
+        ],
+        [
+          37.07,
+          -37.07
+        ],
+        [
+          39.24,
+          -33.83
+        ],
+        [
+          40,
+          -30
+        ],
+        [
+          40,
+          30
+        ],
+        [
+          39.24,
+          33.83
+        ],
+        [
+          37.07,
+          37.07
+        ],
+        [
+          33.83,
+          39.24
+        ],
+        [
+          30,
+          40
+        ],
+        [
+          -30,
+          40
+        ],
+        [
+          -33.83,
+          39.24
+        ],
+        [
+          -37.07,
+          37.07
+        ],
+        [
+          -39.24,
+          33.83
+        ],
+        [
+          -40,
+          30
+        ],
+        [
+          -40,
+          -30
+        ],
+        [
+          -39.24,
+          -33.83
+        ],
+        [
+          -37.07,
+          -37.07
+        ],
+        [
+          -33.83,
+          -39.24
+        ],
+        [
+          -30,
+          -40
+        ]
+      ],
+      "start": -46,
+      "end": -40
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Unit Cover",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Unit Cover",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Unit Cover",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Reset Button",
+      "points": [
+        [
+          -10,
+          0
+        ],
+        [
+          -10.27,
+          2.07
+        ],
+        [
+          -11.07,
+          4
+        ],
+        [
+          -12.34,
+          5.66
+        ],
+        [
+          -14,
+          6.93
+        ],
+        [
+          -15.93,
+          7.73
+        ],
+        [
+          -18,
+          8
+        ],
+        [
+          -20.07,
+          7.73
+        ],
+        [
+          -22,
+          6.93
+        ],
+        [
+          -23.66,
+          5.66
+        ],
+        [
+          -24.93,
+          4
+        ],
+        [
+          -25.73,
+          2.07
+        ],
+        [
+          -26,
+          0
+        ],
+        [
+          -25.73,
+          -2.07
+        ],
+        [
+          -24.93,
+          -4
+        ],
+        [
+          -23.66,
+          -5.66
+        ],
+        [
+          -22,
+          -6.93
+        ],
+        [
+          -20.07,
+          -7.73
+        ],
+        [
+          -18,
+          -8
+        ],
+        [
+          -15.93,
+          -7.73
+        ],
+        [
+          -14,
+          -6.93
+        ],
+        [
+          -12.34,
+          -5.66
+        ],
+        [
+          -11.07,
+          -4
+        ],
+        [
+          -10.27,
+          -2.07
+        ]
+      ],
+      "start": -50,
+      "end": -46
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Reset Button",
+      "subcategory": "Redabs"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Reset Button",
+      "param": "Redabs Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Reset Button",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Reassurance LED",
+      "points": [
+        [
+          22,
+          0
+        ],
+        [
+          21.86,
+          1.04
+        ],
+        [
+          21.46,
+          2
+        ],
+        [
+          20.83,
+          2.83
+        ],
+        [
+          20,
+          3.46
+        ],
+        [
+          19.04,
+          3.86
+        ],
+        [
+          18,
+          4
+        ],
+        [
+          16.96,
+          3.86
+        ],
+        [
+          16,
+          3.46
+        ],
+        [
+          15.17,
+          2.83
+        ],
+        [
+          14.54,
+          2
+        ],
+        [
+          14.14,
+          1.04
+        ],
+        [
+          14,
+          0
+        ],
+        [
+          14.14,
+          -1.04
+        ],
+        [
+          14.54,
+          -2
+        ],
+        [
+          15.17,
+          -2.83
+        ],
+        [
+          16,
+          -3.46
+        ],
+        [
+          16.96,
+          -3.86
+        ],
+        [
+          18,
+          -4
+        ],
+        [
+          19.04,
+          -3.86
+        ],
+        [
+          20,
+          -3.46
+        ],
+        [
+          20.83,
+          -2.83
+        ],
+        [
+          21.46,
+          -2
+        ],
+        [
+          21.86,
+          -1.04
+        ]
+      ],
+      "start": -48,
+      "end": -46
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Reassurance LED",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Reassurance LED",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Reassurance LED",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Cord Gland",
+      "profile": [
+        [
+          0,
+          -46
+        ],
+        [
+          6,
+          -46
+        ],
+        [
+          4,
+          -58
+        ],
+        [
+          0,
+          -58
+        ]
+      ],
+      "axis_at": [
+        0,
+        18
+      ],
+      "axis": "z",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cord Gland",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cord Gland",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pull Cord",
+      "points": [
+        [
+          1.5,
+          18
+        ],
+        [
+          1.06,
+          19.06
+        ],
+        [
+          0,
+          19.5
+        ],
+        [
+          -1.06,
+          19.06
+        ],
+        [
+          -1.5,
+          18
+        ],
+        [
+          -1.06,
+          16.94
+        ],
+        [
+          0,
+          16.5
+        ],
+        [
+          1.06,
+          16.94
+        ]
+      ],
+      "start": -1700,
+      "end": -58
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pull Cord",
+      "subcategory": "Redabs"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pull Cord",
+      "param": "Redabs Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pull Cord",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Bangle Upper",
+      "profile": [
+        [
+          17,
+          -1012
+        ],
+        [
+          25,
+          -1012
+        ],
+        [
+          25,
+          -988
+        ],
+        [
+          17,
+          -988
+        ]
+      ],
+      "axis_at": [
+        0,
+        18
+      ],
+      "axis": "z",
+      "subcategory": "Orange"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bangle Upper",
+      "param": "Orange Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bangle Upper",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Bangle Lower",
+      "profile": [
+        [
+          17,
+          -1712
+        ],
+        [
+          25,
+          -1712
+        ],
+        [
+          25,
+          -1688
+        ],
+        [
+          17,
+          -1688
+        ]
+      ],
+      "axis_at": [
+        0,
+        18
+      ],
+      "axis": "z",
+      "subcategory": "Orange"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bangle Lower",
+      "param": "Orange Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bangle Lower",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Cord Toggle",
+      "profile": [
+        [
+          0,
+          -1715
+        ],
+        [
+          6,
+          -1712
+        ],
+        [
+          6,
+          -1688
+        ],
+        [
+          0,
+          -1685
+        ]
+      ],
+      "axis_at": [
+        0,
+        18
+      ],
+      "axis": "z",
+      "subcategory": "Redabs"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cord Toggle",
+      "param": "Redabs Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cord Toggle",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "NurseCall",
+      "domain": "electrical",
+      "system": "NurseCall",
+      "solid": "Ceiling Unit",
+      "side": "top"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\E\\_Images\\FMC_E_ElecFixture_NurseCall_PullCord_Toilet.png"
+    }
+  ],
+  "values": {
+    "Ceiling unit 86 x 86 mm": {
+      "value": "86x86",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Bangles at 800-1000 mm and 100 mm above floor": {
+      "value": "bangles",
+      "source_status": "assumed",
+      "source": "Approved Document M / BS 8300"
+    },
+    "Cord length 1700 mm (2400 ceiling)": {
+      "value": 1700,
+      "source_status": "assumed",
+      "source": "set on site to ceiling height"
+    }
   }
- ],
- "values": {
-  "Ceiling unit 86 x 86 mm": {
-   "value": "86x86",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Bangles at 800-1000 mm and 100 mm above floor": {
-   "value": "bangles",
-   "source_status": "assumed",
-   "source": "Approved Document M / BS 8300"
-  },
-  "Cord length 1700 mm (2400 ceiling)": {
-   "value": 1700,
-   "source_status": "assumed",
-   "source": "set on site to ceiling height"
-  }
- }
 }

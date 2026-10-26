@@ -34,7 +34,7 @@ export function lightPathOps(ops: Op[], lp: LightPath): { ops: Op[]; values: Rec
   const glass = ops.find((o) => o.op === "add_material" && /Glass_Clear|Polycarbonate_Clear/.test(String(o.name)));
   const matParam = glass?.param ?? "Light Path Material";
   out.push(
-    { op: "add_subcategory", name: "Light Path", line_weight_projection: 1, color: [255, 214, 90] },
+    { op: "add_subcategory", name: "Light Path", line_weight_projection: 1, line_weight_cut: 1, color: [150, 110, 0] },
     { op: "add_family_param", name: "Show Light Path", type: "YesNo", group: "Constraints", instance: true },
     ...types.map((t) => ({ op: "set_type_value", name: `${t}/Show Light Path`, type: t, param: "Show Light Path", value: true })),
     ...(glass ? [] : [{ op: "add_family_param", name: matParam, type: "Material", group: "Materials" }, { op: "add_material", name: "FMC_Glass_Clear", param: matParam }]),

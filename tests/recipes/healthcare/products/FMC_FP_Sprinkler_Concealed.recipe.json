@@ -1,992 +1,996 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_FP_Sprinkler_Concealed",
- "template": "Metric Generic Model.rft",
- "about": "Concealed sprinkler modelled as a generic product: flat white cover plate with retainer flange flush to the ceiling (z = 0), threaded support cup, wrench boss, brass body and thread. Reference: query: sprinkler concealed sprinklers hospital; images: https://www.google.com/search?tbm=isch&q=sprinkler+concealed+sprinklers+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Sprinklers"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Sprinkler_K_Factor",
-   "guid": "12304c4b-43dc-54f3-a437-6e06dcc81ce7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Sprinkler_Temp_C",
-   "guid": "6cc5dfb1-71df-5704-a576-fe68be384267",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Asset_Tag",
-   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "K80_Concealed"
-  },
-  {
-   "op": "set_type_value",
-   "name": "K80_Concealed/FMC_Cost_Unit",
-   "type": "K80_Concealed",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "K80_Concealed/FMC_Geometry_Stage",
-   "type": "K80_Concealed",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "K80_Concealed/IfcExportAs",
-   "type": "K80_Concealed",
-   "param": "IfcExportAs",
-   "value": "IfcFireSuppressionTerminal"
-  },
-  {
-   "op": "set_type_value",
-   "name": "K80_Concealed/Description",
-   "type": "K80_Concealed",
-   "param": "Description",
-   "value": "Concealed pendent sprinkler K80 (5.6K), 68 C, push-on white cover plate 83 mm, threaded support cup"
-  },
-  {
-   "op": "set_type_value",
-   "name": "K80_Concealed/Keynote",
-   "type": "K80_Concealed",
-   "param": "Keynote",
-   "value": "V.SPR_06"
-  },
-  {
-   "op": "set_type_value",
-   "name": "K80_Concealed/FMC_Keynote_Code",
-   "type": "K80_Concealed",
-   "param": "FMC_Keynote_Code",
-   "value": "V.SPR_06"
-  },
-  {
-   "op": "set_type_value",
-   "name": "K80_Concealed/FMC_Code_Description",
-   "type": "K80_Concealed",
-   "param": "FMC_Code_Description",
-   "value": "Concealed: Concealed cover-plate sprinkler"
-  },
-  {
-   "op": "set_type_value",
-   "name": "K80_Concealed/FMC_Code_Group",
-   "type": "K80_Concealed",
-   "param": "FMC_Code_Group",
-   "value": "V.SPR"
-  },
-  {
-   "op": "set_type_value",
-   "name": "K80_Concealed/FMC_Role_Code",
-   "type": "K80_Concealed",
-   "param": "FMC_Role_Code",
-   "value": "FP"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Epw",
-   "color": [
-    237,
-    237,
-    232
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Epw Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Steel_EpoxyCoated_White",
-   "param": "Epw Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Brass",
-   "color": [
-    200,
-    164,
-    74
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Brass Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Brass_Polished",
-   "param": "Brass Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Chrome",
-   "color": [
-    192,
-    195,
-    199
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Chrome Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Chrome_Polished",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -41.5,
-     -43
-    ],
-    [
-     41.5,
-     -43
-    ],
-    [
-     41.5,
-     43
-    ],
-    [
-     -41.5,
-     43
-    ]
-   ],
-   "start": -6,
-   "end": 86
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "revolution",
-   "name": "Cover Plate",
-   "profile": [
-    [
-     0,
-     -6
-    ],
-    [
-     40,
-     -6
-    ],
-    [
-     41.5,
-     -4.5
-    ],
-    [
-     41.5,
-     -3
-    ],
-    [
-     0,
-     -3
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover Plate",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover Plate",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Retainer Flange",
-   "profile": [
-    [
-     30,
-     -3
-    ],
-    [
-     37,
-     -3
-    ],
-    [
-     37,
-     0
-    ],
-    [
-     30,
-     0
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Retainer Flange",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Retainer Flange",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Support Cup",
-   "profile": [
-    [
-     0,
-     0
-    ],
-    [
-     33,
-     0
-    ],
-    [
-     33,
-     46
-    ],
-    [
-     28,
-     50
-    ],
-    [
-     0,
-     50
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Brass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Support Cup",
-   "param": "Brass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Support Cup",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Cup Thread Rib 1",
-   "profile": [
-    [
-     33,
-     8
-    ],
-    [
-     34.5,
-     8
-    ],
-    [
-     34.5,
-     12
-    ],
-    [
-     33,
-     12
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Brass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cup Thread Rib 1",
-   "param": "Brass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cup Thread Rib 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Cup Thread Rib 2",
-   "profile": [
-    [
-     33,
-     20
-    ],
-    [
-     34.5,
-     20
-    ],
-    [
-     34.5,
-     24
-    ],
-    [
-     33,
-     24
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Brass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cup Thread Rib 2",
-   "param": "Brass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cup Thread Rib 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Cup Thread Rib 3",
-   "profile": [
-    [
-     33,
-     32
-    ],
-    [
-     34.5,
-     32
-    ],
-    [
-     34.5,
-     36
-    ],
-    [
-     33,
-     36
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Brass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cup Thread Rib 3",
-   "param": "Brass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cup Thread Rib 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Wrench Boss",
-   "points": [
-    [
-     13.0,
-     -9.0
-    ],
-    [
-     13.77,
-     -8.85
-    ],
-    [
-     14.41,
-     -8.41
-    ],
-    [
-     14.85,
-     -7.77
-    ],
-    [
-     15.0,
-     -7.0
-    ],
-    [
-     15.0,
-     7.0
-    ],
-    [
-     14.85,
-     7.77
-    ],
-    [
-     14.41,
-     8.41
-    ],
-    [
-     13.77,
-     8.85
-    ],
-    [
-     13.0,
-     9.0
-    ],
-    [
-     -13.0,
-     9.0
-    ],
-    [
-     -13.77,
-     8.85
-    ],
-    [
-     -14.41,
-     8.41
-    ],
-    [
-     -14.85,
-     7.77
-    ],
-    [
-     -15.0,
-     7.0
-    ],
-    [
-     -15.0,
-     -7.0
-    ],
-    [
-     -14.85,
-     -7.77
-    ],
-    [
-     -14.41,
-     -8.41
-    ],
-    [
-     -13.77,
-     -8.85
-    ],
-    [
-     -13.0,
-     -9.0
-    ]
-   ],
-   "start": 50,
-   "end": 58
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Wrench Boss",
-   "subcategory": "Brass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Wrench Boss",
-   "param": "Brass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Wrench Boss",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Body",
-   "profile": [
-    [
-     0,
-     58
-    ],
-    [
-     12,
-     58
-    ],
-    [
-     12,
-     72
-    ],
-    [
-     0,
-     72
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Brass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Body",
-   "param": "Brass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Body",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Thread Inlet",
-   "profile": [
-    [
-     0,
-     72
-    ],
-    [
-     10,
-     72
-    ],
-    [
-     10,
-     86
-    ],
-    [
-     0,
-     86
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Brass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Thread Inlet",
-   "param": "Brass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Thread Inlet",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Solder Tab 1",
-   "points": [
-    [
-     -2,
-     -43
-    ],
-    [
-     2,
-     -43
-    ],
-    [
-     2,
-     -40
-    ],
-    [
-     -2,
-     -40
-    ]
-   ],
-   "start": -5,
-   "end": -3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Solder Tab 1",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Solder Tab 1",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Solder Tab 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Solder Tab 2",
-   "points": [
-    [
-     -2,
-     40
-    ],
-    [
-     2,
-     40
-    ],
-    [
-     2,
-     43
-    ],
-    [
-     -2,
-     43
-    ]
-   ],
-   "start": -5,
-   "end": -3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Solder Tab 2",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Solder Tab 2",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Solder Tab 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "Inlet",
-   "domain": "pipe",
-   "system": "FireProtectWet",
-   "solid": "Thread Inlet",
-   "side": "top",
-   "diameter": 15,
-   "flow": "In"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\FP\\_Images\\FMC_FP_Sprinkler_Concealed.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_FP_Sprinkler_Concealed",
+  "template": "Metric Generic Model.rft",
+  "about": "Concealed sprinkler modelled as a generic product: flat white cover plate with retainer flange flush to the ceiling (z = 0), threaded support cup, wrench boss, brass body and thread. Reference: query: sprinkler concealed sprinklers hospital; images: https://www.google.com/search?tbm=isch&q=sprinkler+concealed+sprinklers+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Sprinklers"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Sprinkler_K_Factor",
+      "guid": "12304c4b-43dc-54f3-a437-6e06dcc81ce7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Sprinkler_Temp_C",
+      "guid": "6cc5dfb1-71df-5704-a576-fe68be384267",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Asset_Tag",
+      "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "K80_Concealed"
+    },
+    {
+      "op": "set_type_value",
+      "name": "K80_Concealed/FMC_Cost_Unit",
+      "type": "K80_Concealed",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "K80_Concealed/FMC_Geometry_Stage",
+      "type": "K80_Concealed",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "K80_Concealed/IfcExportAs",
+      "type": "K80_Concealed",
+      "param": "IfcExportAs",
+      "value": "IfcFireSuppressionTerminal"
+    },
+    {
+      "op": "set_type_value",
+      "name": "K80_Concealed/Description",
+      "type": "K80_Concealed",
+      "param": "Description",
+      "value": "Concealed pendent sprinkler K80 (5.6K), 68 C, push-on white cover plate 83 mm, threaded support cup"
+    },
+    {
+      "op": "set_type_value",
+      "name": "K80_Concealed/Keynote",
+      "type": "K80_Concealed",
+      "param": "Keynote",
+      "value": "V.SPR_06"
+    },
+    {
+      "op": "set_type_value",
+      "name": "K80_Concealed/FMC_Keynote_Code",
+      "type": "K80_Concealed",
+      "param": "FMC_Keynote_Code",
+      "value": "V.SPR_06"
+    },
+    {
+      "op": "set_type_value",
+      "name": "K80_Concealed/FMC_Code_Description",
+      "type": "K80_Concealed",
+      "param": "FMC_Code_Description",
+      "value": "Concealed: Concealed cover-plate sprinkler"
+    },
+    {
+      "op": "set_type_value",
+      "name": "K80_Concealed/FMC_Code_Group",
+      "type": "K80_Concealed",
+      "param": "FMC_Code_Group",
+      "value": "V.SPR"
+    },
+    {
+      "op": "set_type_value",
+      "name": "K80_Concealed/FMC_Role_Code",
+      "type": "K80_Concealed",
+      "param": "FMC_Role_Code",
+      "value": "FP"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Epw",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Epw Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Steel_EpoxyCoated_White",
+      "param": "Epw Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Brass",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Brass Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Brass_Polished",
+      "param": "Brass Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Chrome",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Chrome Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Chrome_Polished",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -41.5,
+          -43
+        ],
+        [
+          41.5,
+          -43
+        ],
+        [
+          41.5,
+          43
+        ],
+        [
+          -41.5,
+          43
+        ]
+      ],
+      "start": -6,
+      "end": 86
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "revolution",
+      "name": "Cover Plate",
+      "profile": [
+        [
+          0,
+          -6
+        ],
+        [
+          40,
+          -6
+        ],
+        [
+          41.5,
+          -4.5
+        ],
+        [
+          41.5,
+          -3
+        ],
+        [
+          0,
+          -3
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Epw"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover Plate",
+      "param": "Epw Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover Plate",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Retainer Flange",
+      "profile": [
+        [
+          30,
+          -3
+        ],
+        [
+          37,
+          -3
+        ],
+        [
+          37,
+          0
+        ],
+        [
+          30,
+          0
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Epw"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Retainer Flange",
+      "param": "Epw Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Retainer Flange",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Support Cup",
+      "profile": [
+        [
+          0,
+          0
+        ],
+        [
+          33,
+          0
+        ],
+        [
+          33,
+          46
+        ],
+        [
+          28,
+          50
+        ],
+        [
+          0,
+          50
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Brass"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Support Cup",
+      "param": "Brass Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Support Cup",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Cup Thread Rib 1",
+      "profile": [
+        [
+          33,
+          8
+        ],
+        [
+          34.5,
+          8
+        ],
+        [
+          34.5,
+          12
+        ],
+        [
+          33,
+          12
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Brass"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cup Thread Rib 1",
+      "param": "Brass Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cup Thread Rib 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Cup Thread Rib 2",
+      "profile": [
+        [
+          33,
+          20
+        ],
+        [
+          34.5,
+          20
+        ],
+        [
+          34.5,
+          24
+        ],
+        [
+          33,
+          24
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Brass"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cup Thread Rib 2",
+      "param": "Brass Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cup Thread Rib 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Cup Thread Rib 3",
+      "profile": [
+        [
+          33,
+          32
+        ],
+        [
+          34.5,
+          32
+        ],
+        [
+          34.5,
+          36
+        ],
+        [
+          33,
+          36
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Brass"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cup Thread Rib 3",
+      "param": "Brass Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cup Thread Rib 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Wrench Boss",
+      "points": [
+        [
+          13,
+          -9
+        ],
+        [
+          13.77,
+          -8.85
+        ],
+        [
+          14.41,
+          -8.41
+        ],
+        [
+          14.85,
+          -7.77
+        ],
+        [
+          15,
+          -7
+        ],
+        [
+          15,
+          7
+        ],
+        [
+          14.85,
+          7.77
+        ],
+        [
+          14.41,
+          8.41
+        ],
+        [
+          13.77,
+          8.85
+        ],
+        [
+          13,
+          9
+        ],
+        [
+          -13,
+          9
+        ],
+        [
+          -13.77,
+          8.85
+        ],
+        [
+          -14.41,
+          8.41
+        ],
+        [
+          -14.85,
+          7.77
+        ],
+        [
+          -15,
+          7
+        ],
+        [
+          -15,
+          -7
+        ],
+        [
+          -14.85,
+          -7.77
+        ],
+        [
+          -14.41,
+          -8.41
+        ],
+        [
+          -13.77,
+          -8.85
+        ],
+        [
+          -13,
+          -9
+        ]
+      ],
+      "start": 50,
+      "end": 58
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Wrench Boss",
+      "subcategory": "Brass"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Wrench Boss",
+      "param": "Brass Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Wrench Boss",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Body",
+      "profile": [
+        [
+          0,
+          58
+        ],
+        [
+          12,
+          58
+        ],
+        [
+          12,
+          72
+        ],
+        [
+          0,
+          72
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Brass"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Body",
+      "param": "Brass Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Body",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Thread Inlet",
+      "profile": [
+        [
+          0,
+          72
+        ],
+        [
+          10,
+          72
+        ],
+        [
+          10,
+          86
+        ],
+        [
+          0,
+          86
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Brass"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Thread Inlet",
+      "param": "Brass Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Thread Inlet",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Solder Tab 1",
+      "points": [
+        [
+          -2,
+          -43
+        ],
+        [
+          2,
+          -43
+        ],
+        [
+          2,
+          -40
+        ],
+        [
+          -2,
+          -40
+        ]
+      ],
+      "start": -5,
+      "end": -3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Solder Tab 1",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Solder Tab 1",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Solder Tab 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Solder Tab 2",
+      "points": [
+        [
+          -2,
+          40
+        ],
+        [
+          2,
+          40
+        ],
+        [
+          2,
+          43
+        ],
+        [
+          -2,
+          43
+        ]
+      ],
+      "start": -5,
+      "end": -3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Solder Tab 2",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Solder Tab 2",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Solder Tab 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "Inlet",
+      "domain": "pipe",
+      "system": "FireProtectWet",
+      "solid": "Thread Inlet",
+      "side": "top",
+      "diameter": 15,
+      "flow": "In"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\FP\\_Images\\FMC_FP_Sprinkler_Concealed.png"
+    }
+  ],
+  "values": {
+    "K-factor 5.6 (K80)": {
+      "value": "K80",
+      "source_status": "assumed",
+      "source": "type name"
+    },
+    "Cover plate 83 mm": {
+      "value": 83,
+      "source_status": "assumed",
+      "source": "typical concealed cover plate"
+    },
+    "Plate release 57 C, bulb 68 C": {
+      "value": "57C/68C",
+      "source_status": "assumed",
+      "source": "typical concealed pendent pairing"
+    },
+    "Cup depth 50 mm above ceiling": {
+      "value": 50,
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   }
- ],
- "values": {
-  "K-factor 5.6 (K80)": {
-   "value": "K80",
-   "source_status": "assumed",
-   "source": "type name"
-  },
-  "Cover plate 83 mm": {
-   "value": 83,
-   "source_status": "assumed",
-   "source": "typical concealed cover plate"
-  },
-  "Plate release 57 C, bulb 68 C": {
-   "value": "57C/68C",
-   "source_status": "assumed",
-   "source": "typical concealed pendent pairing"
-  },
-  "Cup depth 50 mm above ceiling": {
-   "value": 50,
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- }
 }

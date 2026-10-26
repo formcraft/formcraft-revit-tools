@@ -1,2068 +1,2076 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_M_MechEq_ExtractFan_Inline",
- "template": "Metric Mechanical Equipment.rft",
- "about": "Modelled as a generic product: round ribbed casing with inlet and outlet spigots and rubber seals, two straps with lugs and rods to the slab (z = 0), terminal box with gland, airflow arrow. Reference: query: extract fan inline mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=extract+fan+inline+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Mechanical Equipment"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Voltage",
-   "type": "Voltage",
-   "group": "Electrical"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Apparent Load",
-   "type": "ApparentPower",
-   "group": "ElectricalLoads"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cooling_Capacity_kW",
-   "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cooling_Capacity_BTUh",
-   "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Airflow_Ls",
-   "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Refrigerant",
-   "guid": "a46c59d0-d719-583b-99c0-074994d01603",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Asset_Tag",
-   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Serial_Number",
-   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Install_Date",
-   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Warranty_End",
-   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Maintenance_Interval_Months",
-   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_OM_Link",
-   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lift_Weight_kg",
-   "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Mounting_Height_mm",
-   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Power_W",
-   "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Power_W_2",
-   "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Controller_ID",
-   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Type",
-   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Signal",
-   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Protocol",
-   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Tank_Capacity_L",
-   "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "100_Inline"
-  },
-  {
-   "op": "set_type_value",
-   "name": "100_Inline/FMC_Cost_Unit",
-   "type": "100_Inline",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "100_Inline/FMC_Geometry_Stage",
-   "type": "100_Inline",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "100_Inline/IfcExportAs",
-   "type": "100_Inline",
-   "param": "IfcExportAs",
-   "value": "IfcFan"
-  },
-  {
-   "op": "set_type_value",
-   "name": "100_Inline/Description",
-   "type": "100_Inline",
-   "param": "Description",
-   "value": "In-line mixed-flow extract fan 100 to 200 mm, round galvanised casing with ribs, spigots and seals, mounting straps, terminal box"
-  },
-  {
-   "op": "set_type_value",
-   "name": "100_Inline/Keynote",
-   "type": "100_Inline",
-   "param": "Keynote",
-   "value": "H.FAN_04"
-  },
-  {
-   "op": "set_type_value",
-   "name": "100_Inline/FMC_Keynote_Code",
-   "type": "100_Inline",
-   "param": "FMC_Keynote_Code",
-   "value": "H.FAN_04"
-  },
-  {
-   "op": "set_type_value",
-   "name": "100_Inline/FMC_Code_Description",
-   "type": "100_Inline",
-   "param": "FMC_Code_Description",
-   "value": "ExtractFan Inline: Inline extract fan"
-  },
-  {
-   "op": "set_type_value",
-   "name": "100_Inline/FMC_Code_Group",
-   "type": "100_Inline",
-   "param": "FMC_Code_Group",
-   "value": "H.FAN"
-  },
-  {
-   "op": "set_type_value",
-   "name": "100_Inline/FMC_Role_Code",
-   "type": "100_Inline",
-   "param": "FMC_Role_Code",
-   "value": "M"
-  },
-  {
-   "op": "set_type_value",
-   "name": "100_Inline/Voltage",
-   "type": "100_Inline",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "100_Inline/Apparent Load",
-   "type": "100_Inline",
-   "param": "Apparent Load",
-   "value": 25
-  },
-  {
-   "op": "set_type_value",
-   "name": "100_Inline/Default Elevation",
-   "type": "100_Inline",
-   "param": "Default Elevation",
-   "value": 3000
-  },
-  {
-   "op": "add_type",
-   "name": "150_Inline"
-  },
-  {
-   "op": "set_type_value",
-   "name": "150_Inline/FMC_Cost_Unit",
-   "type": "150_Inline",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "150_Inline/FMC_Geometry_Stage",
-   "type": "150_Inline",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "150_Inline/IfcExportAs",
-   "type": "150_Inline",
-   "param": "IfcExportAs",
-   "value": "IfcFan"
-  },
-  {
-   "op": "set_type_value",
-   "name": "150_Inline/Description",
-   "type": "150_Inline",
-   "param": "Description",
-   "value": "In-line mixed-flow extract fan 100 to 200 mm, round galvanised casing with ribs, spigots and seals, mounting straps, terminal box"
-  },
-  {
-   "op": "set_type_value",
-   "name": "150_Inline/Keynote",
-   "type": "150_Inline",
-   "param": "Keynote",
-   "value": "H.FAN_04"
-  },
-  {
-   "op": "set_type_value",
-   "name": "150_Inline/FMC_Keynote_Code",
-   "type": "150_Inline",
-   "param": "FMC_Keynote_Code",
-   "value": "H.FAN_04"
-  },
-  {
-   "op": "set_type_value",
-   "name": "150_Inline/FMC_Code_Description",
-   "type": "150_Inline",
-   "param": "FMC_Code_Description",
-   "value": "ExtractFan Inline: Inline extract fan"
-  },
-  {
-   "op": "set_type_value",
-   "name": "150_Inline/FMC_Code_Group",
-   "type": "150_Inline",
-   "param": "FMC_Code_Group",
-   "value": "H.FAN"
-  },
-  {
-   "op": "set_type_value",
-   "name": "150_Inline/FMC_Role_Code",
-   "type": "150_Inline",
-   "param": "FMC_Role_Code",
-   "value": "M"
-  },
-  {
-   "op": "set_type_value",
-   "name": "150_Inline/Voltage",
-   "type": "150_Inline",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "150_Inline/Apparent Load",
-   "type": "150_Inline",
-   "param": "Apparent Load",
-   "value": 60
-  },
-  {
-   "op": "set_type_value",
-   "name": "150_Inline/Default Elevation",
-   "type": "150_Inline",
-   "param": "Default Elevation",
-   "value": 3000
-  },
-  {
-   "op": "add_type",
-   "name": "200_Inline"
-  },
-  {
-   "op": "set_type_value",
-   "name": "200_Inline/FMC_Cost_Unit",
-   "type": "200_Inline",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "200_Inline/FMC_Geometry_Stage",
-   "type": "200_Inline",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "200_Inline/IfcExportAs",
-   "type": "200_Inline",
-   "param": "IfcExportAs",
-   "value": "IfcFan"
-  },
-  {
-   "op": "set_type_value",
-   "name": "200_Inline/Description",
-   "type": "200_Inline",
-   "param": "Description",
-   "value": "In-line mixed-flow extract fan 100 to 200 mm, round galvanised casing with ribs, spigots and seals, mounting straps, terminal box"
-  },
-  {
-   "op": "set_type_value",
-   "name": "200_Inline/Keynote",
-   "type": "200_Inline",
-   "param": "Keynote",
-   "value": "H.FAN_04"
-  },
-  {
-   "op": "set_type_value",
-   "name": "200_Inline/FMC_Keynote_Code",
-   "type": "200_Inline",
-   "param": "FMC_Keynote_Code",
-   "value": "H.FAN_04"
-  },
-  {
-   "op": "set_type_value",
-   "name": "200_Inline/FMC_Code_Description",
-   "type": "200_Inline",
-   "param": "FMC_Code_Description",
-   "value": "ExtractFan Inline: Inline extract fan"
-  },
-  {
-   "op": "set_type_value",
-   "name": "200_Inline/FMC_Code_Group",
-   "type": "200_Inline",
-   "param": "FMC_Code_Group",
-   "value": "H.FAN"
-  },
-  {
-   "op": "set_type_value",
-   "name": "200_Inline/FMC_Role_Code",
-   "type": "200_Inline",
-   "param": "FMC_Role_Code",
-   "value": "M"
-  },
-  {
-   "op": "set_type_value",
-   "name": "200_Inline/Voltage",
-   "type": "200_Inline",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "200_Inline/Apparent Load",
-   "type": "200_Inline",
-   "param": "Apparent Load",
-   "value": 120
-  },
-  {
-   "op": "set_type_value",
-   "name": "200_Inline/Default Elevation",
-   "type": "200_Inline",
-   "param": "Default Elevation",
-   "value": 3000
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Galv",
-   "color": [
-    183,
-    188,
-    192
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Galv Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Duct_Galvanised",
-   "param": "Galv Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Rubber",
-   "color": [
-    32,
-    32,
-    32
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Rubber Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Rubber_Black",
-   "param": "Rubber Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Dark",
-   "color": [
-    61,
-    70,
-    80
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Dark Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_SteelLTZ_Painted",
-   "param": "Dark Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Gi",
-   "color": [
-    158,
-    163,
-    166
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Gi Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_GI_Pipe",
-   "param": "Gi Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Grey",
-   "color": [
-    154,
-    160,
-    166
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Grey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Grey",
-   "param": "Grey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Yellow",
-   "color": [
-    242,
-    194,
-    48
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Yellow Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Yellow",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -235,
-     -205.0
-    ],
-    [
-     235,
-     -205.0
-    ],
-    [
-     235,
-     167
-    ],
-    [
-     -235,
-     167
-    ]
-   ],
-   "start": -367,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "revolution",
-   "name": "Casing",
-   "profile": [
-    [
-     0,
-     -150
-    ],
-    [
-     150,
-     -150
-    ],
-    [
-     160,
-     -135
-    ],
-    [
-     160,
-     135
-    ],
-    [
-     150,
-     150
-    ],
-    [
-     0,
-     150
-    ]
-   ],
-   "axis_at": [
-    0,
-    -200
-   ],
-   "axis": "x",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Casing",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Casing",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Spigot In",
-   "points": [
-    [
-     100.0,
-     -200.0
-    ],
-    [
-     96.59,
-     -174.12
-    ],
-    [
-     86.6,
-     -150.0
-    ],
-    [
-     70.71,
-     -129.29
-    ],
-    [
-     50.0,
-     -113.4
-    ],
-    [
-     25.88,
-     -103.41
-    ],
-    [
-     0.0,
-     -100.0
-    ],
-    [
-     -25.88,
-     -103.41
-    ],
-    [
-     -50.0,
-     -113.4
-    ],
-    [
-     -70.71,
-     -129.29
-    ],
-    [
-     -86.6,
-     -150.0
-    ],
-    [
-     -96.59,
-     -174.12
-    ],
-    [
-     -100.0,
-     -200.0
-    ],
-    [
-     -96.59,
-     -225.88
-    ],
-    [
-     -86.6,
-     -250.0
-    ],
-    [
-     -70.71,
-     -270.71
-    ],
-    [
-     -50.0,
-     -286.6
-    ],
-    [
-     -25.88,
-     -296.59
-    ],
-    [
-     -0.0,
-     -300.0
-    ],
-    [
-     25.88,
-     -296.59
-    ],
-    [
-     50.0,
-     -286.6
-    ],
-    [
-     70.71,
-     -270.71
-    ],
-    [
-     86.6,
-     -250.0
-    ],
-    [
-     96.59,
-     -225.88
-    ]
-   ],
-   "start": -235,
-   "end": -150,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Spigot In",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Spigot In",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Spigot In",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Spigot Out",
-   "points": [
-    [
-     100.0,
-     -200.0
-    ],
-    [
-     96.59,
-     -174.12
-    ],
-    [
-     86.6,
-     -150.0
-    ],
-    [
-     70.71,
-     -129.29
-    ],
-    [
-     50.0,
-     -113.4
-    ],
-    [
-     25.88,
-     -103.41
-    ],
-    [
-     0.0,
-     -100.0
-    ],
-    [
-     -25.88,
-     -103.41
-    ],
-    [
-     -50.0,
-     -113.4
-    ],
-    [
-     -70.71,
-     -129.29
-    ],
-    [
-     -86.6,
-     -150.0
-    ],
-    [
-     -96.59,
-     -174.12
-    ],
-    [
-     -100.0,
-     -200.0
-    ],
-    [
-     -96.59,
-     -225.88
-    ],
-    [
-     -86.6,
-     -250.0
-    ],
-    [
-     -70.71,
-     -270.71
-    ],
-    [
-     -50.0,
-     -286.6
-    ],
-    [
-     -25.88,
-     -296.59
-    ],
-    [
-     -0.0,
-     -300.0
-    ],
-    [
-     25.88,
-     -296.59
-    ],
-    [
-     50.0,
-     -286.6
-    ],
-    [
-     70.71,
-     -270.71
-    ],
-    [
-     86.6,
-     -250.0
-    ],
-    [
-     96.59,
-     -225.88
-    ]
-   ],
-   "start": 150,
-   "end": 235,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Spigot Out",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Spigot Out",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Spigot Out",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Seal In",
-   "profile": [
-    [
-     99,
-     -235
-    ],
-    [
-     104,
-     -235
-    ],
-    [
-     104,
-     -225
-    ],
-    [
-     99,
-     -225
-    ]
-   ],
-   "axis_at": [
-    0,
-    -200
-   ],
-   "axis": "x",
-   "subcategory": "Rubber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Seal In",
-   "param": "Rubber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Seal In",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Seal Out",
-   "profile": [
-    [
-     99,
-     225
-    ],
-    [
-     104,
-     225
-    ],
-    [
-     104,
-     235
-    ],
-    [
-     99,
-     235
-    ]
-   ],
-   "axis_at": [
-    0,
-    -200
-   ],
-   "axis": "x",
-   "subcategory": "Rubber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Seal Out",
-   "param": "Rubber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Seal Out",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Casing Rib 1",
-   "profile": [
-    [
-     158,
-     -95
-    ],
-    [
-     166,
-     -95
-    ],
-    [
-     166,
-     -85
-    ],
-    [
-     158,
-     -85
-    ]
-   ],
-   "axis_at": [
-    0,
-    -200
-   ],
-   "axis": "x",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Casing Rib 1",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Casing Rib 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Casing Rib 2",
-   "profile": [
-    [
-     158,
-     -5
-    ],
-    [
-     166,
-     -5
-    ],
-    [
-     166,
-     5
-    ],
-    [
-     158,
-     5
-    ]
-   ],
-   "axis_at": [
-    0,
-    -200
-   ],
-   "axis": "x",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Casing Rib 2",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Casing Rib 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Casing Rib 3",
-   "profile": [
-    [
-     158,
-     85
-    ],
-    [
-     166,
-     85
-    ],
-    [
-     166,
-     95
-    ],
-    [
-     158,
-     95
-    ]
-   ],
-   "axis_at": [
-    0,
-    -200
-   ],
-   "axis": "x",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Casing Rib 3",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Casing Rib 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Mounting Strap Left",
-   "profile": [
-    [
-     160,
-     -125
-    ],
-    [
-     167,
-     -125
-    ],
-    [
-     167,
-     -110
-    ],
-    [
-     160,
-     -110
-    ]
-   ],
-   "axis_at": [
-    0,
-    -200
-   ],
-   "axis": "x",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mounting Strap Left",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mounting Strap Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Mounting Strap Right",
-   "profile": [
-    [
-     160,
-     110
-    ],
-    [
-     167,
-     110
-    ],
-    [
-     167,
-     125
-    ],
-    [
-     160,
-     125
-    ]
-   ],
-   "axis_at": [
-    0,
-    -200
-   ],
-   "axis": "x",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mounting Strap Right",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mounting Strap Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Strap Lug Left",
-   "points": [
-    [
-     -125,
-     -20
-    ],
-    [
-     -110,
-     -20
-    ],
-    [
-     -110,
-     20
-    ],
-    [
-     -125,
-     20
-    ]
-   ],
-   "start": -40,
-   "end": -30
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Strap Lug Left",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Strap Lug Left",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Strap Lug Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Strap Lug Right",
-   "points": [
-    [
-     110,
-     -20
-    ],
-    [
-     125,
-     -20
-    ],
-    [
-     125,
-     20
-    ],
-    [
-     110,
-     20
-    ]
-   ],
-   "start": -40,
-   "end": -30
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Strap Lug Right",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Strap Lug Right",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Strap Lug Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hanger Rod Left",
-   "points": [
-    [
-     -112.0,
-     0.0
-    ],
-    [
-     -112.17,
-     1.29
-    ],
-    [
-     -112.67,
-     2.5
-    ],
-    [
-     -113.46,
-     3.54
-    ],
-    [
-     -114.5,
-     4.33
-    ],
-    [
-     -115.71,
-     4.83
-    ],
-    [
-     -117.0,
-     5.0
-    ],
-    [
-     -118.29,
-     4.83
-    ],
-    [
-     -119.5,
-     4.33
-    ],
-    [
-     -120.54,
-     3.54
-    ],
-    [
-     -121.33,
-     2.5
-    ],
-    [
-     -121.83,
-     1.29
-    ],
-    [
-     -122.0,
-     0.0
-    ],
-    [
-     -121.83,
-     -1.29
-    ],
-    [
-     -121.33,
-     -2.5
-    ],
-    [
-     -120.54,
-     -3.54
-    ],
-    [
-     -119.5,
-     -4.33
-    ],
-    [
-     -118.29,
-     -4.83
-    ],
-    [
-     -117.0,
-     -5.0
-    ],
-    [
-     -115.71,
-     -4.83
-    ],
-    [
-     -114.5,
-     -4.33
-    ],
-    [
-     -113.46,
-     -3.54
-    ],
-    [
-     -112.67,
-     -2.5
-    ],
-    [
-     -112.17,
-     -1.29
-    ]
-   ],
-   "start": -30,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hanger Rod Left",
-   "subcategory": "Gi"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hanger Rod Left",
-   "param": "Gi Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hanger Rod Left",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hanger Rod Right",
-   "points": [
-    [
-     122.0,
-     0.0
-    ],
-    [
-     121.83,
-     1.29
-    ],
-    [
-     121.33,
-     2.5
-    ],
-    [
-     120.54,
-     3.54
-    ],
-    [
-     119.5,
-     4.33
-    ],
-    [
-     118.29,
-     4.83
-    ],
-    [
-     117.0,
-     5.0
-    ],
-    [
-     115.71,
-     4.83
-    ],
-    [
-     114.5,
-     4.33
-    ],
-    [
-     113.46,
-     3.54
-    ],
-    [
-     112.67,
-     2.5
-    ],
-    [
-     112.17,
-     1.29
-    ],
-    [
-     112.0,
-     0.0
-    ],
-    [
-     112.17,
-     -1.29
-    ],
-    [
-     112.67,
-     -2.5
-    ],
-    [
-     113.46,
-     -3.54
-    ],
-    [
-     114.5,
-     -4.33
-    ],
-    [
-     115.71,
-     -4.83
-    ],
-    [
-     117.0,
-     -5.0
-    ],
-    [
-     118.29,
-     -4.83
-    ],
-    [
-     119.5,
-     -4.33
-    ],
-    [
-     120.54,
-     -3.54
-    ],
-    [
-     121.33,
-     -2.5
-    ],
-    [
-     121.83,
-     -1.29
-    ]
-   ],
-   "start": -30,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hanger Rod Right",
-   "subcategory": "Gi"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hanger Rod Right",
-   "param": "Gi Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hanger Rod Right",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Terminal Box",
-   "points": [
-    [
-     49.0,
-     -205.0
-    ],
-    [
-     51.3,
-     -204.54
-    ],
-    [
-     53.24,
-     -203.24
-    ],
-    [
-     54.54,
-     -201.3
-    ],
-    [
-     55.0,
-     -199.0
-    ],
-    [
-     55.0,
-     -164.0
-    ],
-    [
-     54.54,
-     -161.7
-    ],
-    [
-     53.24,
-     -159.76
-    ],
-    [
-     51.3,
-     -158.46
-    ],
-    [
-     49.0,
-     -158.0
-    ],
-    [
-     -49.0,
-     -158.0
-    ],
-    [
-     -51.3,
-     -158.46
-    ],
-    [
-     -53.24,
-     -159.76
-    ],
-    [
-     -54.54,
-     -161.7
-    ],
-    [
-     -55.0,
-     -164.0
-    ],
-    [
-     -55.0,
-     -199.0
-    ],
-    [
-     -54.54,
-     -201.3
-    ],
-    [
-     -53.24,
-     -203.24
-    ],
-    [
-     -51.3,
-     -204.54
-    ],
-    [
-     -49.0,
-     -205.0
-    ]
-   ],
-   "start": -250,
-   "end": -150
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Terminal Box",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Terminal Box",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Terminal Box",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cable Gland",
-   "points": [
-    [
-     9.0,
-     -182.0
-    ],
-    [
-     8.69,
-     -179.67
-    ],
-    [
-     7.79,
-     -177.5
-    ],
-    [
-     6.36,
-     -175.64
-    ],
-    [
-     4.5,
-     -174.21
-    ],
-    [
-     2.33,
-     -173.31
-    ],
-    [
-     0.0,
-     -173.0
-    ],
-    [
-     -2.33,
-     -173.31
-    ],
-    [
-     -4.5,
-     -174.21
-    ],
-    [
-     -6.36,
-     -175.64
-    ],
-    [
-     -7.79,
-     -177.5
-    ],
-    [
-     -8.69,
-     -179.67
-    ],
-    [
-     -9.0,
-     -182.0
-    ],
-    [
-     -8.69,
-     -184.33
-    ],
-    [
-     -7.79,
-     -186.5
-    ],
-    [
-     -6.36,
-     -188.36
-    ],
-    [
-     -4.5,
-     -189.79
-    ],
-    [
-     -2.33,
-     -190.69
-    ],
-    [
-     -0.0,
-     -191.0
-    ],
-    [
-     2.33,
-     -190.69
-    ],
-    [
-     4.5,
-     -189.79
-    ],
-    [
-     6.36,
-     -188.36
-    ],
-    [
-     7.79,
-     -186.5
-    ],
-    [
-     8.69,
-     -184.33
-    ]
-   ],
-   "start": -270,
-   "end": -250
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cable Gland",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cable Gland",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cable Gland",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Airflow Arrow",
-   "points": [
-    [
-     -60,
-     -10
-    ],
-    [
-     30,
-     -10
-    ],
-    [
-     30,
-     -25
-    ],
-    [
-     60,
-     0
-    ],
-    [
-     30,
-     25
-    ],
-    [
-     30,
-     10
-    ],
-    [
-     -60,
-     10
-    ]
-   ],
-   "start": -42,
-   "end": -36
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Airflow Arrow",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Airflow Arrow",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Airflow Arrow",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "Power",
-   "domain": "electrical",
-   "system": "PowerBalanced",
-   "solid": "Terminal Box",
-   "side": "front"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Voltage",
-   "connector": "Power",
-   "connector_param": "Voltage",
-   "param": "Voltage"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Apparent Load",
-   "connector": "Power",
-   "connector_param": "Apparent Load",
-   "param": "Apparent Load"
-  },
-  {
-   "op": "add_connector",
-   "name": "Duct In",
-   "domain": "duct",
-   "system": "ExhaustAir",
-   "solid": "Spigot In",
-   "side": "left",
-   "diameter": 200,
-   "flow": "In"
-  },
-  {
-   "op": "add_connector",
-   "name": "Duct Out",
-   "domain": "duct",
-   "system": "ExhaustAir",
-   "solid": "Spigot Out",
-   "side": "right",
-   "diameter": 200,
-   "flow": "Out"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_MechEq_ExtractFan_Inline.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_M_MechEq_ExtractFan_Inline",
+  "template": "Metric Mechanical Equipment.rft",
+  "about": "Modelled as a generic product: round ribbed casing with inlet and outlet spigots and rubber seals, two straps with lugs and rods to the slab (z = 0), terminal box with gland, airflow arrow. Reference: query: extract fan inline mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=extract+fan+inline+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Mechanical Equipment"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Voltage",
+      "type": "Voltage",
+      "group": "Electrical"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Apparent Load",
+      "type": "ApparentPower",
+      "group": "ElectricalLoads"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cooling_Capacity_kW",
+      "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cooling_Capacity_BTUh",
+      "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Airflow_Ls",
+      "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Refrigerant",
+      "guid": "a46c59d0-d719-583b-99c0-074994d01603",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Asset_Tag",
+      "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Serial_Number",
+      "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Install_Date",
+      "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Warranty_End",
+      "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Maintenance_Interval_Months",
+      "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_OM_Link",
+      "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lift_Weight_kg",
+      "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Mounting_Height_mm",
+      "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Power_W",
+      "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Power_W_2",
+      "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Controller_ID",
+      "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Type",
+      "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Signal",
+      "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Protocol",
+      "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Tank_Capacity_L",
+      "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "100_Inline"
+    },
+    {
+      "op": "set_type_value",
+      "name": "100_Inline/FMC_Cost_Unit",
+      "type": "100_Inline",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "100_Inline/FMC_Geometry_Stage",
+      "type": "100_Inline",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "100_Inline/IfcExportAs",
+      "type": "100_Inline",
+      "param": "IfcExportAs",
+      "value": "IfcFan"
+    },
+    {
+      "op": "set_type_value",
+      "name": "100_Inline/Description",
+      "type": "100_Inline",
+      "param": "Description",
+      "value": "In-line mixed-flow extract fan 100 to 200 mm, round galvanised casing with ribs, spigots and seals, mounting straps, terminal box"
+    },
+    {
+      "op": "set_type_value",
+      "name": "100_Inline/Keynote",
+      "type": "100_Inline",
+      "param": "Keynote",
+      "value": "H.FAN_04"
+    },
+    {
+      "op": "set_type_value",
+      "name": "100_Inline/FMC_Keynote_Code",
+      "type": "100_Inline",
+      "param": "FMC_Keynote_Code",
+      "value": "H.FAN_04"
+    },
+    {
+      "op": "set_type_value",
+      "name": "100_Inline/FMC_Code_Description",
+      "type": "100_Inline",
+      "param": "FMC_Code_Description",
+      "value": "ExtractFan Inline: Inline extract fan"
+    },
+    {
+      "op": "set_type_value",
+      "name": "100_Inline/FMC_Code_Group",
+      "type": "100_Inline",
+      "param": "FMC_Code_Group",
+      "value": "H.FAN"
+    },
+    {
+      "op": "set_type_value",
+      "name": "100_Inline/FMC_Role_Code",
+      "type": "100_Inline",
+      "param": "FMC_Role_Code",
+      "value": "M"
+    },
+    {
+      "op": "set_type_value",
+      "name": "100_Inline/Voltage",
+      "type": "100_Inline",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "100_Inline/Apparent Load",
+      "type": "100_Inline",
+      "param": "Apparent Load",
+      "value": 25
+    },
+    {
+      "op": "set_type_value",
+      "name": "100_Inline/Default Elevation",
+      "type": "100_Inline",
+      "param": "Default Elevation",
+      "value": 3000
+    },
+    {
+      "op": "add_type",
+      "name": "150_Inline"
+    },
+    {
+      "op": "set_type_value",
+      "name": "150_Inline/FMC_Cost_Unit",
+      "type": "150_Inline",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "150_Inline/FMC_Geometry_Stage",
+      "type": "150_Inline",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "150_Inline/IfcExportAs",
+      "type": "150_Inline",
+      "param": "IfcExportAs",
+      "value": "IfcFan"
+    },
+    {
+      "op": "set_type_value",
+      "name": "150_Inline/Description",
+      "type": "150_Inline",
+      "param": "Description",
+      "value": "In-line mixed-flow extract fan 100 to 200 mm, round galvanised casing with ribs, spigots and seals, mounting straps, terminal box"
+    },
+    {
+      "op": "set_type_value",
+      "name": "150_Inline/Keynote",
+      "type": "150_Inline",
+      "param": "Keynote",
+      "value": "H.FAN_04"
+    },
+    {
+      "op": "set_type_value",
+      "name": "150_Inline/FMC_Keynote_Code",
+      "type": "150_Inline",
+      "param": "FMC_Keynote_Code",
+      "value": "H.FAN_04"
+    },
+    {
+      "op": "set_type_value",
+      "name": "150_Inline/FMC_Code_Description",
+      "type": "150_Inline",
+      "param": "FMC_Code_Description",
+      "value": "ExtractFan Inline: Inline extract fan"
+    },
+    {
+      "op": "set_type_value",
+      "name": "150_Inline/FMC_Code_Group",
+      "type": "150_Inline",
+      "param": "FMC_Code_Group",
+      "value": "H.FAN"
+    },
+    {
+      "op": "set_type_value",
+      "name": "150_Inline/FMC_Role_Code",
+      "type": "150_Inline",
+      "param": "FMC_Role_Code",
+      "value": "M"
+    },
+    {
+      "op": "set_type_value",
+      "name": "150_Inline/Voltage",
+      "type": "150_Inline",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "150_Inline/Apparent Load",
+      "type": "150_Inline",
+      "param": "Apparent Load",
+      "value": 60
+    },
+    {
+      "op": "set_type_value",
+      "name": "150_Inline/Default Elevation",
+      "type": "150_Inline",
+      "param": "Default Elevation",
+      "value": 3000
+    },
+    {
+      "op": "add_type",
+      "name": "200_Inline"
+    },
+    {
+      "op": "set_type_value",
+      "name": "200_Inline/FMC_Cost_Unit",
+      "type": "200_Inline",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "200_Inline/FMC_Geometry_Stage",
+      "type": "200_Inline",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "200_Inline/IfcExportAs",
+      "type": "200_Inline",
+      "param": "IfcExportAs",
+      "value": "IfcFan"
+    },
+    {
+      "op": "set_type_value",
+      "name": "200_Inline/Description",
+      "type": "200_Inline",
+      "param": "Description",
+      "value": "In-line mixed-flow extract fan 100 to 200 mm, round galvanised casing with ribs, spigots and seals, mounting straps, terminal box"
+    },
+    {
+      "op": "set_type_value",
+      "name": "200_Inline/Keynote",
+      "type": "200_Inline",
+      "param": "Keynote",
+      "value": "H.FAN_04"
+    },
+    {
+      "op": "set_type_value",
+      "name": "200_Inline/FMC_Keynote_Code",
+      "type": "200_Inline",
+      "param": "FMC_Keynote_Code",
+      "value": "H.FAN_04"
+    },
+    {
+      "op": "set_type_value",
+      "name": "200_Inline/FMC_Code_Description",
+      "type": "200_Inline",
+      "param": "FMC_Code_Description",
+      "value": "ExtractFan Inline: Inline extract fan"
+    },
+    {
+      "op": "set_type_value",
+      "name": "200_Inline/FMC_Code_Group",
+      "type": "200_Inline",
+      "param": "FMC_Code_Group",
+      "value": "H.FAN"
+    },
+    {
+      "op": "set_type_value",
+      "name": "200_Inline/FMC_Role_Code",
+      "type": "200_Inline",
+      "param": "FMC_Role_Code",
+      "value": "M"
+    },
+    {
+      "op": "set_type_value",
+      "name": "200_Inline/Voltage",
+      "type": "200_Inline",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "200_Inline/Apparent Load",
+      "type": "200_Inline",
+      "param": "Apparent Load",
+      "value": 120
+    },
+    {
+      "op": "set_type_value",
+      "name": "200_Inline/Default Elevation",
+      "type": "200_Inline",
+      "param": "Default Elevation",
+      "value": 3000
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Galv",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Galv Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Duct_Galvanised",
+      "param": "Galv Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Rubber",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Rubber Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Rubber_Black",
+      "param": "Rubber Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Dark",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Dark Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_SteelLTZ_Painted",
+      "param": "Dark Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Gi",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Gi Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_GI_Pipe",
+      "param": "Gi Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Grey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Grey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Grey",
+      "param": "Grey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Yellow",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Yellow Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Yellow",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -235,
+          -205
+        ],
+        [
+          235,
+          -205
+        ],
+        [
+          235,
+          167
+        ],
+        [
+          -235,
+          167
+        ]
+      ],
+      "start": -367,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "revolution",
+      "name": "Casing",
+      "profile": [
+        [
+          0,
+          -150
+        ],
+        [
+          150,
+          -150
+        ],
+        [
+          160,
+          -135
+        ],
+        [
+          160,
+          135
+        ],
+        [
+          150,
+          150
+        ],
+        [
+          0,
+          150
+        ]
+      ],
+      "axis_at": [
+        0,
+        -200
+      ],
+      "axis": "x",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Casing",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Casing",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Spigot In",
+      "points": [
+        [
+          100,
+          -200
+        ],
+        [
+          96.59,
+          -174.12
+        ],
+        [
+          86.6,
+          -150
+        ],
+        [
+          70.71,
+          -129.29
+        ],
+        [
+          50,
+          -113.4
+        ],
+        [
+          25.88,
+          -103.41
+        ],
+        [
+          0,
+          -100
+        ],
+        [
+          -25.88,
+          -103.41
+        ],
+        [
+          -50,
+          -113.4
+        ],
+        [
+          -70.71,
+          -129.29
+        ],
+        [
+          -86.6,
+          -150
+        ],
+        [
+          -96.59,
+          -174.12
+        ],
+        [
+          -100,
+          -200
+        ],
+        [
+          -96.59,
+          -225.88
+        ],
+        [
+          -86.6,
+          -250
+        ],
+        [
+          -70.71,
+          -270.71
+        ],
+        [
+          -50,
+          -286.6
+        ],
+        [
+          -25.88,
+          -296.59
+        ],
+        [
+          0,
+          -300
+        ],
+        [
+          25.88,
+          -296.59
+        ],
+        [
+          50,
+          -286.6
+        ],
+        [
+          70.71,
+          -270.71
+        ],
+        [
+          86.6,
+          -250
+        ],
+        [
+          96.59,
+          -225.88
+        ]
+      ],
+      "start": -235,
+      "end": -150,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Spigot In",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Spigot In",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Spigot In",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Spigot Out",
+      "points": [
+        [
+          100,
+          -200
+        ],
+        [
+          96.59,
+          -174.12
+        ],
+        [
+          86.6,
+          -150
+        ],
+        [
+          70.71,
+          -129.29
+        ],
+        [
+          50,
+          -113.4
+        ],
+        [
+          25.88,
+          -103.41
+        ],
+        [
+          0,
+          -100
+        ],
+        [
+          -25.88,
+          -103.41
+        ],
+        [
+          -50,
+          -113.4
+        ],
+        [
+          -70.71,
+          -129.29
+        ],
+        [
+          -86.6,
+          -150
+        ],
+        [
+          -96.59,
+          -174.12
+        ],
+        [
+          -100,
+          -200
+        ],
+        [
+          -96.59,
+          -225.88
+        ],
+        [
+          -86.6,
+          -250
+        ],
+        [
+          -70.71,
+          -270.71
+        ],
+        [
+          -50,
+          -286.6
+        ],
+        [
+          -25.88,
+          -296.59
+        ],
+        [
+          0,
+          -300
+        ],
+        [
+          25.88,
+          -296.59
+        ],
+        [
+          50,
+          -286.6
+        ],
+        [
+          70.71,
+          -270.71
+        ],
+        [
+          86.6,
+          -250
+        ],
+        [
+          96.59,
+          -225.88
+        ]
+      ],
+      "start": 150,
+      "end": 235,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Spigot Out",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Spigot Out",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Spigot Out",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Seal In",
+      "profile": [
+        [
+          99,
+          -235
+        ],
+        [
+          104,
+          -235
+        ],
+        [
+          104,
+          -225
+        ],
+        [
+          99,
+          -225
+        ]
+      ],
+      "axis_at": [
+        0,
+        -200
+      ],
+      "axis": "x",
+      "subcategory": "Rubber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Seal In",
+      "param": "Rubber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Seal In",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Seal Out",
+      "profile": [
+        [
+          99,
+          225
+        ],
+        [
+          104,
+          225
+        ],
+        [
+          104,
+          235
+        ],
+        [
+          99,
+          235
+        ]
+      ],
+      "axis_at": [
+        0,
+        -200
+      ],
+      "axis": "x",
+      "subcategory": "Rubber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Seal Out",
+      "param": "Rubber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Seal Out",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Casing Rib 1",
+      "profile": [
+        [
+          158,
+          -95
+        ],
+        [
+          166,
+          -95
+        ],
+        [
+          166,
+          -85
+        ],
+        [
+          158,
+          -85
+        ]
+      ],
+      "axis_at": [
+        0,
+        -200
+      ],
+      "axis": "x",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Casing Rib 1",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Casing Rib 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Casing Rib 2",
+      "profile": [
+        [
+          158,
+          -5
+        ],
+        [
+          166,
+          -5
+        ],
+        [
+          166,
+          5
+        ],
+        [
+          158,
+          5
+        ]
+      ],
+      "axis_at": [
+        0,
+        -200
+      ],
+      "axis": "x",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Casing Rib 2",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Casing Rib 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Casing Rib 3",
+      "profile": [
+        [
+          158,
+          85
+        ],
+        [
+          166,
+          85
+        ],
+        [
+          166,
+          95
+        ],
+        [
+          158,
+          95
+        ]
+      ],
+      "axis_at": [
+        0,
+        -200
+      ],
+      "axis": "x",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Casing Rib 3",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Casing Rib 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Mounting Strap Left",
+      "profile": [
+        [
+          160,
+          -125
+        ],
+        [
+          167,
+          -125
+        ],
+        [
+          167,
+          -110
+        ],
+        [
+          160,
+          -110
+        ]
+      ],
+      "axis_at": [
+        0,
+        -200
+      ],
+      "axis": "x",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Mounting Strap Left",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Mounting Strap Left",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Mounting Strap Right",
+      "profile": [
+        [
+          160,
+          110
+        ],
+        [
+          167,
+          110
+        ],
+        [
+          167,
+          125
+        ],
+        [
+          160,
+          125
+        ]
+      ],
+      "axis_at": [
+        0,
+        -200
+      ],
+      "axis": "x",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Mounting Strap Right",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Mounting Strap Right",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Strap Lug Left",
+      "points": [
+        [
+          -125,
+          -20
+        ],
+        [
+          -110,
+          -20
+        ],
+        [
+          -110,
+          20
+        ],
+        [
+          -125,
+          20
+        ]
+      ],
+      "start": -40,
+      "end": -30
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Strap Lug Left",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Strap Lug Left",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Strap Lug Left",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Strap Lug Right",
+      "points": [
+        [
+          110,
+          -20
+        ],
+        [
+          125,
+          -20
+        ],
+        [
+          125,
+          20
+        ],
+        [
+          110,
+          20
+        ]
+      ],
+      "start": -40,
+      "end": -30
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Strap Lug Right",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Strap Lug Right",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Strap Lug Right",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hanger Rod Left",
+      "points": [
+        [
+          -112,
+          0
+        ],
+        [
+          -112.17,
+          1.29
+        ],
+        [
+          -112.67,
+          2.5
+        ],
+        [
+          -113.46,
+          3.54
+        ],
+        [
+          -114.5,
+          4.33
+        ],
+        [
+          -115.71,
+          4.83
+        ],
+        [
+          -117,
+          5
+        ],
+        [
+          -118.29,
+          4.83
+        ],
+        [
+          -119.5,
+          4.33
+        ],
+        [
+          -120.54,
+          3.54
+        ],
+        [
+          -121.33,
+          2.5
+        ],
+        [
+          -121.83,
+          1.29
+        ],
+        [
+          -122,
+          0
+        ],
+        [
+          -121.83,
+          -1.29
+        ],
+        [
+          -121.33,
+          -2.5
+        ],
+        [
+          -120.54,
+          -3.54
+        ],
+        [
+          -119.5,
+          -4.33
+        ],
+        [
+          -118.29,
+          -4.83
+        ],
+        [
+          -117,
+          -5
+        ],
+        [
+          -115.71,
+          -4.83
+        ],
+        [
+          -114.5,
+          -4.33
+        ],
+        [
+          -113.46,
+          -3.54
+        ],
+        [
+          -112.67,
+          -2.5
+        ],
+        [
+          -112.17,
+          -1.29
+        ]
+      ],
+      "start": -30,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hanger Rod Left",
+      "subcategory": "Gi"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hanger Rod Left",
+      "param": "Gi Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hanger Rod Left",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hanger Rod Right",
+      "points": [
+        [
+          122,
+          0
+        ],
+        [
+          121.83,
+          1.29
+        ],
+        [
+          121.33,
+          2.5
+        ],
+        [
+          120.54,
+          3.54
+        ],
+        [
+          119.5,
+          4.33
+        ],
+        [
+          118.29,
+          4.83
+        ],
+        [
+          117,
+          5
+        ],
+        [
+          115.71,
+          4.83
+        ],
+        [
+          114.5,
+          4.33
+        ],
+        [
+          113.46,
+          3.54
+        ],
+        [
+          112.67,
+          2.5
+        ],
+        [
+          112.17,
+          1.29
+        ],
+        [
+          112,
+          0
+        ],
+        [
+          112.17,
+          -1.29
+        ],
+        [
+          112.67,
+          -2.5
+        ],
+        [
+          113.46,
+          -3.54
+        ],
+        [
+          114.5,
+          -4.33
+        ],
+        [
+          115.71,
+          -4.83
+        ],
+        [
+          117,
+          -5
+        ],
+        [
+          118.29,
+          -4.83
+        ],
+        [
+          119.5,
+          -4.33
+        ],
+        [
+          120.54,
+          -3.54
+        ],
+        [
+          121.33,
+          -2.5
+        ],
+        [
+          121.83,
+          -1.29
+        ]
+      ],
+      "start": -30,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hanger Rod Right",
+      "subcategory": "Gi"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hanger Rod Right",
+      "param": "Gi Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hanger Rod Right",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Terminal Box",
+      "points": [
+        [
+          49,
+          -205
+        ],
+        [
+          51.3,
+          -204.54
+        ],
+        [
+          53.24,
+          -203.24
+        ],
+        [
+          54.54,
+          -201.3
+        ],
+        [
+          55,
+          -199
+        ],
+        [
+          55,
+          -164
+        ],
+        [
+          54.54,
+          -161.7
+        ],
+        [
+          53.24,
+          -159.76
+        ],
+        [
+          51.3,
+          -158.46
+        ],
+        [
+          49,
+          -158
+        ],
+        [
+          -49,
+          -158
+        ],
+        [
+          -51.3,
+          -158.46
+        ],
+        [
+          -53.24,
+          -159.76
+        ],
+        [
+          -54.54,
+          -161.7
+        ],
+        [
+          -55,
+          -164
+        ],
+        [
+          -55,
+          -199
+        ],
+        [
+          -54.54,
+          -201.3
+        ],
+        [
+          -53.24,
+          -203.24
+        ],
+        [
+          -51.3,
+          -204.54
+        ],
+        [
+          -49,
+          -205
+        ]
+      ],
+      "start": -250,
+      "end": -150
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Terminal Box",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Terminal Box",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Terminal Box",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cable Gland",
+      "points": [
+        [
+          9,
+          -182
+        ],
+        [
+          8.69,
+          -179.67
+        ],
+        [
+          7.79,
+          -177.5
+        ],
+        [
+          6.36,
+          -175.64
+        ],
+        [
+          4.5,
+          -174.21
+        ],
+        [
+          2.33,
+          -173.31
+        ],
+        [
+          0,
+          -173
+        ],
+        [
+          -2.33,
+          -173.31
+        ],
+        [
+          -4.5,
+          -174.21
+        ],
+        [
+          -6.36,
+          -175.64
+        ],
+        [
+          -7.79,
+          -177.5
+        ],
+        [
+          -8.69,
+          -179.67
+        ],
+        [
+          -9,
+          -182
+        ],
+        [
+          -8.69,
+          -184.33
+        ],
+        [
+          -7.79,
+          -186.5
+        ],
+        [
+          -6.36,
+          -188.36
+        ],
+        [
+          -4.5,
+          -189.79
+        ],
+        [
+          -2.33,
+          -190.69
+        ],
+        [
+          0,
+          -191
+        ],
+        [
+          2.33,
+          -190.69
+        ],
+        [
+          4.5,
+          -189.79
+        ],
+        [
+          6.36,
+          -188.36
+        ],
+        [
+          7.79,
+          -186.5
+        ],
+        [
+          8.69,
+          -184.33
+        ]
+      ],
+      "start": -270,
+      "end": -250
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cable Gland",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cable Gland",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cable Gland",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Airflow Arrow",
+      "points": [
+        [
+          -60,
+          -10
+        ],
+        [
+          30,
+          -10
+        ],
+        [
+          30,
+          -25
+        ],
+        [
+          60,
+          0
+        ],
+        [
+          30,
+          25
+        ],
+        [
+          30,
+          10
+        ],
+        [
+          -60,
+          10
+        ]
+      ],
+      "start": -42,
+      "end": -36
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Airflow Arrow",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Airflow Arrow",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Airflow Arrow",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "Power",
+      "domain": "electrical",
+      "system": "PowerBalanced",
+      "solid": "Terminal Box",
+      "side": "front"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Voltage",
+      "connector": "Power",
+      "connector_param": "Voltage",
+      "param": "Voltage"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Apparent Load",
+      "connector": "Power",
+      "connector_param": "Apparent Load",
+      "param": "Apparent Load"
+    },
+    {
+      "op": "add_connector",
+      "name": "Duct In",
+      "domain": "duct",
+      "system": "ExhaustAir",
+      "solid": "Spigot In",
+      "side": "left",
+      "diameter": 200,
+      "flow": "In"
+    },
+    {
+      "op": "add_connector",
+      "name": "Duct Out",
+      "domain": "duct",
+      "system": "ExhaustAir",
+      "solid": "Spigot Out",
+      "side": "right",
+      "diameter": 200,
+      "flow": "Out"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_MechEq_ExtractFan_Inline.png"
+    }
+  ],
+  "values": {
+    "Spigot 100 / 150 / 200 mm": {
+      "value": "100/150/200",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Casing 320 dia x 470 mm (200)": {
+      "value": "320x470",
+      "source_status": "assumed",
+      "source": "typical mixed-flow in-line fan"
+    },
+    "Load 25 / 60 / 120 VA": {
+      "value": "25/60/120",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   }
- ],
- "values": {
-  "Spigot 100 / 150 / 200 mm": {
-   "value": "100/150/200",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Casing 320 dia x 470 mm (200)": {
-   "value": "320x470",
-   "source_status": "assumed",
-   "source": "typical mixed-flow in-line fan"
-  },
-  "Load 25 / 60 / 120 VA": {
-   "value": "25/60/120",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- }
 }

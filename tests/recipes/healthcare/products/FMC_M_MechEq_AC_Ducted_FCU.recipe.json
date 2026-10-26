@@ -1,2988 +1,2997 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_M_MechEq_AC_Ducted_FCU",
- "template": "Metric Mechanical Equipment.rft",
- "about": "Modelled as a generic product: galvanised casing hung on four brackets and rods below the slab (z = 0), supply spigot with flange, rear filter frame with mesh and pulls, underside access panel with screws, control box, drain and refrigerant tails. Reference: query: ac ducted fcu mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=ac+ducted+fcu+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Mechanical Equipment"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Voltage",
-   "type": "Voltage",
-   "group": "Electrical"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Apparent Load",
-   "type": "ApparentPower",
-   "group": "ElectricalLoads"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cooling_Capacity_kW",
-   "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cooling_Capacity_BTUh",
-   "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Airflow_Ls",
-   "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Refrigerant",
-   "guid": "a46c59d0-d719-583b-99c0-074994d01603",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Asset_Tag",
-   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Serial_Number",
-   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Install_Date",
-   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Warranty_End",
-   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Maintenance_Interval_Months",
-   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_OM_Link",
-   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lift_Weight_kg",
-   "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Mounting_Height_mm",
-   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Power_W",
-   "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Power_W_2",
-   "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Controller_ID",
-   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Type",
-   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Signal",
-   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Protocol",
-   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Tank_Capacity_L",
-   "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "5kW_Ducted"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5kW_Ducted/FMC_Cost_Unit",
-   "type": "5kW_Ducted",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5kW_Ducted/FMC_Geometry_Stage",
-   "type": "5kW_Ducted",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5kW_Ducted/IfcExportAs",
-   "type": "5kW_Ducted",
-   "param": "IfcExportAs",
-   "value": "IfcUnitaryEquipment"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5kW_Ducted/Description",
-   "type": "5kW_Ducted",
-   "param": "Description",
-   "value": "Ducted fan coil / ducted split indoor unit 5 to 10 kW, ceiling-void mounted, rectangular supply spigot, rear filter return, side drain"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5kW_Ducted/Keynote",
-   "type": "5kW_Ducted",
-   "param": "Keynote",
-   "value": "H.SPL_08"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5kW_Ducted/FMC_Keynote_Code",
-   "type": "5kW_Ducted",
-   "param": "FMC_Keynote_Code",
-   "value": "H.SPL_08"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5kW_Ducted/FMC_Code_Description",
-   "type": "5kW_Ducted",
-   "param": "FMC_Code_Description",
-   "value": "AC Ducted FCU: Ducted fan coil"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5kW_Ducted/FMC_Code_Group",
-   "type": "5kW_Ducted",
-   "param": "FMC_Code_Group",
-   "value": "H.SPL"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5kW_Ducted/FMC_Role_Code",
-   "type": "5kW_Ducted",
-   "param": "FMC_Role_Code",
-   "value": "M"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5kW_Ducted/Voltage",
-   "type": "5kW_Ducted",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "5kW_Ducted/Apparent Load",
-   "type": "5kW_Ducted",
-   "param": "Apparent Load",
-   "value": 250
-  },
-  {
-   "op": "set_type_value",
-   "name": "5kW_Ducted/Default Elevation",
-   "type": "5kW_Ducted",
-   "param": "Default Elevation",
-   "value": 3000
-  },
-  {
-   "op": "add_type",
-   "name": "10kW_Ducted"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kW_Ducted/FMC_Cost_Unit",
-   "type": "10kW_Ducted",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kW_Ducted/FMC_Geometry_Stage",
-   "type": "10kW_Ducted",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kW_Ducted/IfcExportAs",
-   "type": "10kW_Ducted",
-   "param": "IfcExportAs",
-   "value": "IfcUnitaryEquipment"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kW_Ducted/Description",
-   "type": "10kW_Ducted",
-   "param": "Description",
-   "value": "Ducted fan coil / ducted split indoor unit 5 to 10 kW, ceiling-void mounted, rectangular supply spigot, rear filter return, side drain"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kW_Ducted/Keynote",
-   "type": "10kW_Ducted",
-   "param": "Keynote",
-   "value": "H.SPL_08"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kW_Ducted/FMC_Keynote_Code",
-   "type": "10kW_Ducted",
-   "param": "FMC_Keynote_Code",
-   "value": "H.SPL_08"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kW_Ducted/FMC_Code_Description",
-   "type": "10kW_Ducted",
-   "param": "FMC_Code_Description",
-   "value": "AC Ducted FCU: Ducted fan coil"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kW_Ducted/FMC_Code_Group",
-   "type": "10kW_Ducted",
-   "param": "FMC_Code_Group",
-   "value": "H.SPL"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kW_Ducted/FMC_Role_Code",
-   "type": "10kW_Ducted",
-   "param": "FMC_Role_Code",
-   "value": "M"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kW_Ducted/Voltage",
-   "type": "10kW_Ducted",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kW_Ducted/Apparent Load",
-   "type": "10kW_Ducted",
-   "param": "Apparent Load",
-   "value": 450
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kW_Ducted/Default Elevation",
-   "type": "10kW_Ducted",
-   "param": "Default Elevation",
-   "value": 3000
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Galv",
-   "color": [
-    183,
-    188,
-    192
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Galv Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Duct_Galvanised",
-   "param": "Galv Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Dark",
-   "color": [
-    61,
-    70,
-    80
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Dark Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_SteelLTZ_Painted",
-   "param": "Dark Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Mesh",
-   "color": [
-    94,
-    106,
-    115
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Mesh Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_InsectMesh_Fibreglass",
-   "param": "Mesh Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Chrome",
-   "color": [
-    192,
-    195,
-    199
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Chrome Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Chrome_Polished",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Grey",
-   "color": [
-    154,
-    160,
-    166
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Grey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Grey",
-   "param": "Grey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Copper",
-   "color": [
-    184,
-    115,
-    51
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Copper Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Copper_Pipe",
-   "param": "Copper Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Gi",
-   "color": [
-    158,
-    163,
-    166
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Gi Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_GI_Pipe",
-   "param": "Gi Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -560,
-     -388
-    ],
-    [
-     560,
-     -388
-    ],
-    [
-     560,
-     395
-    ],
-    [
-     -560,
-     395
-    ]
-   ],
-   "start": -287,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Casing",
-   "points": [
-    [
-     -500,
-     -330
-    ],
-    [
-     500,
-     -330
-    ],
-    [
-     500,
-     350
-    ],
-    [
-     -500,
-     350
-    ]
-   ],
-   "start": -280,
-   "end": -20
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Casing",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Casing",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Casing",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Supply Spigot",
-   "points": [
-    [
-     -420,
-     -380
-    ],
-    [
-     420,
-     -380
-    ],
-    [
-     420,
-     -330
-    ],
-    [
-     -420,
-     -330
-    ]
-   ],
-   "start": -250,
-   "end": -50
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Supply Spigot",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Supply Spigot",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Supply Spigot",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Supply Flange",
-   "points": [
-    [
-     -440,
-     -270
-    ],
-    [
-     440,
-     -270
-    ],
-    [
-     440,
-     -30
-    ],
-    [
-     -440,
-     -30
-    ]
-   ],
-   "start": 380,
-   "end": 386,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Supply Flange",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Supply Flange",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Supply Flange",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Supply Opening",
-   "points": [
-    [
-     -410,
-     -245
-    ],
-    [
-     410,
-     -245
-    ],
-    [
-     410,
-     -55
-    ],
-    [
-     -410,
-     -55
-    ]
-   ],
-   "start": 386,
-   "end": 388,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Supply Opening",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Supply Opening",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Supply Opening",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Filter Frame",
-   "points": [
-    [
-     -470,
-     -270
-    ],
-    [
-     470,
-     -270
-    ],
-    [
-     470,
-     -30
-    ],
-    [
-     -470,
-     -30
-    ]
-   ],
-   "start": -380,
-   "end": -350,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Filter Frame",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Filter Frame",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Filter Frame",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Filter Media",
-   "points": [
-    [
-     -450,
-     -255
-    ],
-    [
-     450,
-     -255
-    ],
-    [
-     450,
-     -45
-    ],
-    [
-     -450,
-     -45
-    ]
-   ],
-   "start": -384,
-   "end": -380,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Filter Media",
-   "subcategory": "Mesh"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Filter Media",
-   "param": "Mesh Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Filter Media",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Filter Pull 1",
-   "points": [
-    [
-     -330,
-     -160
-    ],
-    [
-     -290,
-     -160
-    ],
-    [
-     -290,
-     -140
-    ],
-    [
-     -330,
-     -140
-    ]
-   ],
-   "start": -395,
-   "end": -384,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Filter Pull 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Filter Pull 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Filter Pull 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Filter Pull 2",
-   "points": [
-    [
-     290,
-     -160
-    ],
-    [
-     330,
-     -160
-    ],
-    [
-     330,
-     -140
-    ],
-    [
-     290,
-     -140
-    ]
-   ],
-   "start": -395,
-   "end": -384,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Filter Pull 2",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Filter Pull 2",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Filter Pull 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Access Panel",
-   "points": [
-    [
-     -450,
-     -300
-    ],
-    [
-     450,
-     -300
-    ],
-    [
-     450,
-     320
-    ],
-    [
-     -450,
-     320
-    ]
-   ],
-   "start": -285,
-   "end": -280
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Access Panel",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Access Panel",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Access Panel",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Panel Screw 1",
-   "points": [
-    [
-     -425.0,
-     -280.0
-    ],
-    [
-     -425.17,
-     -278.71
-    ],
-    [
-     -425.67,
-     -277.5
-    ],
-    [
-     -426.46,
-     -276.46
-    ],
-    [
-     -427.5,
-     -275.67
-    ],
-    [
-     -428.71,
-     -275.17
-    ],
-    [
-     -430.0,
-     -275.0
-    ],
-    [
-     -431.29,
-     -275.17
-    ],
-    [
-     -432.5,
-     -275.67
-    ],
-    [
-     -433.54,
-     -276.46
-    ],
-    [
-     -434.33,
-     -277.5
-    ],
-    [
-     -434.83,
-     -278.71
-    ],
-    [
-     -435.0,
-     -280.0
-    ],
-    [
-     -434.83,
-     -281.29
-    ],
-    [
-     -434.33,
-     -282.5
-    ],
-    [
-     -433.54,
-     -283.54
-    ],
-    [
-     -432.5,
-     -284.33
-    ],
-    [
-     -431.29,
-     -284.83
-    ],
-    [
-     -430.0,
-     -285.0
-    ],
-    [
-     -428.71,
-     -284.83
-    ],
-    [
-     -427.5,
-     -284.33
-    ],
-    [
-     -426.46,
-     -283.54
-    ],
-    [
-     -425.67,
-     -282.5
-    ],
-    [
-     -425.17,
-     -281.29
-    ]
-   ],
-   "start": -287,
-   "end": -285
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Panel Screw 1",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Panel Screw 1",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Panel Screw 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Panel Screw 2",
-   "points": [
-    [
-     5.0,
-     -280.0
-    ],
-    [
-     4.83,
-     -278.71
-    ],
-    [
-     4.33,
-     -277.5
-    ],
-    [
-     3.54,
-     -276.46
-    ],
-    [
-     2.5,
-     -275.67
-    ],
-    [
-     1.29,
-     -275.17
-    ],
-    [
-     0.0,
-     -275.0
-    ],
-    [
-     -1.29,
-     -275.17
-    ],
-    [
-     -2.5,
-     -275.67
-    ],
-    [
-     -3.54,
-     -276.46
-    ],
-    [
-     -4.33,
-     -277.5
-    ],
-    [
-     -4.83,
-     -278.71
-    ],
-    [
-     -5.0,
-     -280.0
-    ],
-    [
-     -4.83,
-     -281.29
-    ],
-    [
-     -4.33,
-     -282.5
-    ],
-    [
-     -3.54,
-     -283.54
-    ],
-    [
-     -2.5,
-     -284.33
-    ],
-    [
-     -1.29,
-     -284.83
-    ],
-    [
-     -0.0,
-     -285.0
-    ],
-    [
-     1.29,
-     -284.83
-    ],
-    [
-     2.5,
-     -284.33
-    ],
-    [
-     3.54,
-     -283.54
-    ],
-    [
-     4.33,
-     -282.5
-    ],
-    [
-     4.83,
-     -281.29
-    ]
-   ],
-   "start": -287,
-   "end": -285
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Panel Screw 2",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Panel Screw 2",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Panel Screw 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Panel Screw 3",
-   "points": [
-    [
-     435.0,
-     -280.0
-    ],
-    [
-     434.83,
-     -278.71
-    ],
-    [
-     434.33,
-     -277.5
-    ],
-    [
-     433.54,
-     -276.46
-    ],
-    [
-     432.5,
-     -275.67
-    ],
-    [
-     431.29,
-     -275.17
-    ],
-    [
-     430.0,
-     -275.0
-    ],
-    [
-     428.71,
-     -275.17
-    ],
-    [
-     427.5,
-     -275.67
-    ],
-    [
-     426.46,
-     -276.46
-    ],
-    [
-     425.67,
-     -277.5
-    ],
-    [
-     425.17,
-     -278.71
-    ],
-    [
-     425.0,
-     -280.0
-    ],
-    [
-     425.17,
-     -281.29
-    ],
-    [
-     425.67,
-     -282.5
-    ],
-    [
-     426.46,
-     -283.54
-    ],
-    [
-     427.5,
-     -284.33
-    ],
-    [
-     428.71,
-     -284.83
-    ],
-    [
-     430.0,
-     -285.0
-    ],
-    [
-     431.29,
-     -284.83
-    ],
-    [
-     432.5,
-     -284.33
-    ],
-    [
-     433.54,
-     -283.54
-    ],
-    [
-     434.33,
-     -282.5
-    ],
-    [
-     434.83,
-     -281.29
-    ]
-   ],
-   "start": -287,
-   "end": -285
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Panel Screw 3",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Panel Screw 3",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Panel Screw 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Panel Screw Rear 1",
-   "points": [
-    [
-     -425.0,
-     300.0
-    ],
-    [
-     -425.17,
-     301.29
-    ],
-    [
-     -425.67,
-     302.5
-    ],
-    [
-     -426.46,
-     303.54
-    ],
-    [
-     -427.5,
-     304.33
-    ],
-    [
-     -428.71,
-     304.83
-    ],
-    [
-     -430.0,
-     305.0
-    ],
-    [
-     -431.29,
-     304.83
-    ],
-    [
-     -432.5,
-     304.33
-    ],
-    [
-     -433.54,
-     303.54
-    ],
-    [
-     -434.33,
-     302.5
-    ],
-    [
-     -434.83,
-     301.29
-    ],
-    [
-     -435.0,
-     300.0
-    ],
-    [
-     -434.83,
-     298.71
-    ],
-    [
-     -434.33,
-     297.5
-    ],
-    [
-     -433.54,
-     296.46
-    ],
-    [
-     -432.5,
-     295.67
-    ],
-    [
-     -431.29,
-     295.17
-    ],
-    [
-     -430.0,
-     295.0
-    ],
-    [
-     -428.71,
-     295.17
-    ],
-    [
-     -427.5,
-     295.67
-    ],
-    [
-     -426.46,
-     296.46
-    ],
-    [
-     -425.67,
-     297.5
-    ],
-    [
-     -425.17,
-     298.71
-    ]
-   ],
-   "start": -287,
-   "end": -285
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Panel Screw Rear 1",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Panel Screw Rear 1",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Panel Screw Rear 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Panel Screw Rear 2",
-   "points": [
-    [
-     5.0,
-     300.0
-    ],
-    [
-     4.83,
-     301.29
-    ],
-    [
-     4.33,
-     302.5
-    ],
-    [
-     3.54,
-     303.54
-    ],
-    [
-     2.5,
-     304.33
-    ],
-    [
-     1.29,
-     304.83
-    ],
-    [
-     0.0,
-     305.0
-    ],
-    [
-     -1.29,
-     304.83
-    ],
-    [
-     -2.5,
-     304.33
-    ],
-    [
-     -3.54,
-     303.54
-    ],
-    [
-     -4.33,
-     302.5
-    ],
-    [
-     -4.83,
-     301.29
-    ],
-    [
-     -5.0,
-     300.0
-    ],
-    [
-     -4.83,
-     298.71
-    ],
-    [
-     -4.33,
-     297.5
-    ],
-    [
-     -3.54,
-     296.46
-    ],
-    [
-     -2.5,
-     295.67
-    ],
-    [
-     -1.29,
-     295.17
-    ],
-    [
-     -0.0,
-     295.0
-    ],
-    [
-     1.29,
-     295.17
-    ],
-    [
-     2.5,
-     295.67
-    ],
-    [
-     3.54,
-     296.46
-    ],
-    [
-     4.33,
-     297.5
-    ],
-    [
-     4.83,
-     298.71
-    ]
-   ],
-   "start": -287,
-   "end": -285
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Panel Screw Rear 2",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Panel Screw Rear 2",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Panel Screw Rear 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Panel Screw Rear 3",
-   "points": [
-    [
-     435.0,
-     300.0
-    ],
-    [
-     434.83,
-     301.29
-    ],
-    [
-     434.33,
-     302.5
-    ],
-    [
-     433.54,
-     303.54
-    ],
-    [
-     432.5,
-     304.33
-    ],
-    [
-     431.29,
-     304.83
-    ],
-    [
-     430.0,
-     305.0
-    ],
-    [
-     428.71,
-     304.83
-    ],
-    [
-     427.5,
-     304.33
-    ],
-    [
-     426.46,
-     303.54
-    ],
-    [
-     425.67,
-     302.5
-    ],
-    [
-     425.17,
-     301.29
-    ],
-    [
-     425.0,
-     300.0
-    ],
-    [
-     425.17,
-     298.71
-    ],
-    [
-     425.67,
-     297.5
-    ],
-    [
-     426.46,
-     296.46
-    ],
-    [
-     427.5,
-     295.67
-    ],
-    [
-     428.71,
-     295.17
-    ],
-    [
-     430.0,
-     295.0
-    ],
-    [
-     431.29,
-     295.17
-    ],
-    [
-     432.5,
-     295.67
-    ],
-    [
-     433.54,
-     296.46
-    ],
-    [
-     434.33,
-     297.5
-    ],
-    [
-     434.83,
-     298.71
-    ]
-   ],
-   "start": -287,
-   "end": -285
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Panel Screw Rear 3",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Panel Screw Rear 3",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Panel Screw Rear 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Control Box",
-   "points": [
-    [
-     500,
-     -180
-    ],
-    [
-     560,
-     -180
-    ],
-    [
-     560,
-     120
-    ],
-    [
-     500,
-     120
-    ]
-   ],
-   "start": -250,
-   "end": -60
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Control Box",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Control Box",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Control Box",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drain Spigot",
-   "points": [
-    [
-     216.0,
-     -262.0
-    ],
-    [
-     215.45,
-     -257.86
-    ],
-    [
-     213.86,
-     -254.0
-    ],
-    [
-     211.31,
-     -250.69
-    ],
-    [
-     208.0,
-     -248.14
-    ],
-    [
-     204.14,
-     -246.55
-    ],
-    [
-     200.0,
-     -246.0
-    ],
-    [
-     195.86,
-     -246.55
-    ],
-    [
-     192.0,
-     -248.14
-    ],
-    [
-     188.69,
-     -250.69
-    ],
-    [
-     186.14,
-     -254.0
-    ],
-    [
-     184.55,
-     -257.86
-    ],
-    [
-     184.0,
-     -262.0
-    ],
-    [
-     184.55,
-     -266.14
-    ],
-    [
-     186.14,
-     -270.0
-    ],
-    [
-     188.69,
-     -273.31
-    ],
-    [
-     192.0,
-     -275.86
-    ],
-    [
-     195.86,
-     -277.45
-    ],
-    [
-     200.0,
-     -278.0
-    ],
-    [
-     204.14,
-     -277.45
-    ],
-    [
-     208.0,
-     -275.86
-    ],
-    [
-     211.31,
-     -273.31
-    ],
-    [
-     213.86,
-     -270.0
-    ],
-    [
-     215.45,
-     -266.14
-    ]
-   ],
-   "start": -560,
-   "end": -500,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drain Spigot",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drain Spigot",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drain Spigot",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Liquid Line",
-   "points": [
-    [
-     86.0,
-     -200.0
-    ],
-    [
-     85.8,
-     -198.45
-    ],
-    [
-     85.2,
-     -197.0
-    ],
-    [
-     84.24,
-     -195.76
-    ],
-    [
-     83.0,
-     -194.8
-    ],
-    [
-     81.55,
-     -194.2
-    ],
-    [
-     80.0,
-     -194.0
-    ],
-    [
-     78.45,
-     -194.2
-    ],
-    [
-     77.0,
-     -194.8
-    ],
-    [
-     75.76,
-     -195.76
-    ],
-    [
-     74.8,
-     -197.0
-    ],
-    [
-     74.2,
-     -198.45
-    ],
-    [
-     74.0,
-     -200.0
-    ],
-    [
-     74.2,
-     -201.55
-    ],
-    [
-     74.8,
-     -203.0
-    ],
-    [
-     75.76,
-     -204.24
-    ],
-    [
-     77.0,
-     -205.2
-    ],
-    [
-     78.45,
-     -205.8
-    ],
-    [
-     80.0,
-     -206.0
-    ],
-    [
-     81.55,
-     -205.8
-    ],
-    [
-     83.0,
-     -205.2
-    ],
-    [
-     84.24,
-     -204.24
-    ],
-    [
-     85.2,
-     -203.0
-    ],
-    [
-     85.8,
-     -201.55
-    ]
-   ],
-   "start": -560,
-   "end": -500,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Liquid Line",
-   "subcategory": "Copper"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Liquid Line",
-   "param": "Copper Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Liquid Line",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Gas Line",
-   "points": [
-    [
-     139.5,
-     -200.0
-    ],
-    [
-     139.18,
-     -197.54
-    ],
-    [
-     138.23,
-     -195.25
-    ],
-    [
-     136.72,
-     -193.28
-    ],
-    [
-     134.75,
-     -191.77
-    ],
-    [
-     132.46,
-     -190.82
-    ],
-    [
-     130.0,
-     -190.5
-    ],
-    [
-     127.54,
-     -190.82
-    ],
-    [
-     125.25,
-     -191.77
-    ],
-    [
-     123.28,
-     -193.28
-    ],
-    [
-     121.77,
-     -195.25
-    ],
-    [
-     120.82,
-     -197.54
-    ],
-    [
-     120.5,
-     -200.0
-    ],
-    [
-     120.82,
-     -202.46
-    ],
-    [
-     121.77,
-     -204.75
-    ],
-    [
-     123.28,
-     -206.72
-    ],
-    [
-     125.25,
-     -208.23
-    ],
-    [
-     127.54,
-     -209.18
-    ],
-    [
-     130.0,
-     -209.5
-    ],
-    [
-     132.46,
-     -209.18
-    ],
-    [
-     134.75,
-     -208.23
-    ],
-    [
-     136.72,
-     -206.72
-    ],
-    [
-     138.23,
-     -204.75
-    ],
-    [
-     139.18,
-     -202.46
-    ]
-   ],
-   "start": -560,
-   "end": -500,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Gas Line",
-   "subcategory": "Copper"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Gas Line",
-   "param": "Copper Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Gas Line",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hanger Bracket Left 1",
-   "points": [
-    [
-     -530,
-     -320
-    ],
-    [
-     -500,
-     -320
-    ],
-    [
-     -500,
-     -280
-    ],
-    [
-     -530,
-     -280
-    ]
-   ],
-   "start": -110,
-   "end": -60
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hanger Bracket Left 1",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hanger Bracket Left 1",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hanger Bracket Left 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hanger Bracket Left 2",
-   "points": [
-    [
-     -530,
-     300
-    ],
-    [
-     -500,
-     300
-    ],
-    [
-     -500,
-     340
-    ],
-    [
-     -530,
-     340
-    ]
-   ],
-   "start": -110,
-   "end": -60
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hanger Bracket Left 2",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hanger Bracket Left 2",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hanger Bracket Left 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hanger Bracket Right 1",
-   "points": [
-    [
-     500,
-     -320
-    ],
-    [
-     530,
-     -320
-    ],
-    [
-     530,
-     -280
-    ],
-    [
-     500,
-     -280
-    ]
-   ],
-   "start": -110,
-   "end": -60
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hanger Bracket Right 1",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hanger Bracket Right 1",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hanger Bracket Right 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hanger Bracket Right 2",
-   "points": [
-    [
-     500,
-     300
-    ],
-    [
-     530,
-     300
-    ],
-    [
-     530,
-     340
-    ],
-    [
-     500,
-     340
-    ]
-   ],
-   "start": -110,
-   "end": -60
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hanger Bracket Right 2",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hanger Bracket Right 2",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hanger Bracket Right 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hanger Rod Left 1",
-   "points": [
-    [
-     -510.0,
-     -300.0
-    ],
-    [
-     -510.17,
-     -298.71
-    ],
-    [
-     -510.67,
-     -297.5
-    ],
-    [
-     -511.46,
-     -296.46
-    ],
-    [
-     -512.5,
-     -295.67
-    ],
-    [
-     -513.71,
-     -295.17
-    ],
-    [
-     -515.0,
-     -295.0
-    ],
-    [
-     -516.29,
-     -295.17
-    ],
-    [
-     -517.5,
-     -295.67
-    ],
-    [
-     -518.54,
-     -296.46
-    ],
-    [
-     -519.33,
-     -297.5
-    ],
-    [
-     -519.83,
-     -298.71
-    ],
-    [
-     -520.0,
-     -300.0
-    ],
-    [
-     -519.83,
-     -301.29
-    ],
-    [
-     -519.33,
-     -302.5
-    ],
-    [
-     -518.54,
-     -303.54
-    ],
-    [
-     -517.5,
-     -304.33
-    ],
-    [
-     -516.29,
-     -304.83
-    ],
-    [
-     -515.0,
-     -305.0
-    ],
-    [
-     -513.71,
-     -304.83
-    ],
-    [
-     -512.5,
-     -304.33
-    ],
-    [
-     -511.46,
-     -303.54
-    ],
-    [
-     -510.67,
-     -302.5
-    ],
-    [
-     -510.17,
-     -301.29
-    ]
-   ],
-   "start": -60,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hanger Rod Left 1",
-   "subcategory": "Gi"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hanger Rod Left 1",
-   "param": "Gi Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hanger Rod Left 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hanger Rod Left 2",
-   "points": [
-    [
-     -510.0,
-     320.0
-    ],
-    [
-     -510.17,
-     321.29
-    ],
-    [
-     -510.67,
-     322.5
-    ],
-    [
-     -511.46,
-     323.54
-    ],
-    [
-     -512.5,
-     324.33
-    ],
-    [
-     -513.71,
-     324.83
-    ],
-    [
-     -515.0,
-     325.0
-    ],
-    [
-     -516.29,
-     324.83
-    ],
-    [
-     -517.5,
-     324.33
-    ],
-    [
-     -518.54,
-     323.54
-    ],
-    [
-     -519.33,
-     322.5
-    ],
-    [
-     -519.83,
-     321.29
-    ],
-    [
-     -520.0,
-     320.0
-    ],
-    [
-     -519.83,
-     318.71
-    ],
-    [
-     -519.33,
-     317.5
-    ],
-    [
-     -518.54,
-     316.46
-    ],
-    [
-     -517.5,
-     315.67
-    ],
-    [
-     -516.29,
-     315.17
-    ],
-    [
-     -515.0,
-     315.0
-    ],
-    [
-     -513.71,
-     315.17
-    ],
-    [
-     -512.5,
-     315.67
-    ],
-    [
-     -511.46,
-     316.46
-    ],
-    [
-     -510.67,
-     317.5
-    ],
-    [
-     -510.17,
-     318.71
-    ]
-   ],
-   "start": -60,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hanger Rod Left 2",
-   "subcategory": "Gi"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hanger Rod Left 2",
-   "param": "Gi Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hanger Rod Left 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hanger Rod Right 1",
-   "points": [
-    [
-     520.0,
-     -300.0
-    ],
-    [
-     519.83,
-     -298.71
-    ],
-    [
-     519.33,
-     -297.5
-    ],
-    [
-     518.54,
-     -296.46
-    ],
-    [
-     517.5,
-     -295.67
-    ],
-    [
-     516.29,
-     -295.17
-    ],
-    [
-     515.0,
-     -295.0
-    ],
-    [
-     513.71,
-     -295.17
-    ],
-    [
-     512.5,
-     -295.67
-    ],
-    [
-     511.46,
-     -296.46
-    ],
-    [
-     510.67,
-     -297.5
-    ],
-    [
-     510.17,
-     -298.71
-    ],
-    [
-     510.0,
-     -300.0
-    ],
-    [
-     510.17,
-     -301.29
-    ],
-    [
-     510.67,
-     -302.5
-    ],
-    [
-     511.46,
-     -303.54
-    ],
-    [
-     512.5,
-     -304.33
-    ],
-    [
-     513.71,
-     -304.83
-    ],
-    [
-     515.0,
-     -305.0
-    ],
-    [
-     516.29,
-     -304.83
-    ],
-    [
-     517.5,
-     -304.33
-    ],
-    [
-     518.54,
-     -303.54
-    ],
-    [
-     519.33,
-     -302.5
-    ],
-    [
-     519.83,
-     -301.29
-    ]
-   ],
-   "start": -60,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hanger Rod Right 1",
-   "subcategory": "Gi"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hanger Rod Right 1",
-   "param": "Gi Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hanger Rod Right 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hanger Rod Right 2",
-   "points": [
-    [
-     520.0,
-     320.0
-    ],
-    [
-     519.83,
-     321.29
-    ],
-    [
-     519.33,
-     322.5
-    ],
-    [
-     518.54,
-     323.54
-    ],
-    [
-     517.5,
-     324.33
-    ],
-    [
-     516.29,
-     324.83
-    ],
-    [
-     515.0,
-     325.0
-    ],
-    [
-     513.71,
-     324.83
-    ],
-    [
-     512.5,
-     324.33
-    ],
-    [
-     511.46,
-     323.54
-    ],
-    [
-     510.67,
-     322.5
-    ],
-    [
-     510.17,
-     321.29
-    ],
-    [
-     510.0,
-     320.0
-    ],
-    [
-     510.17,
-     318.71
-    ],
-    [
-     510.67,
-     317.5
-    ],
-    [
-     511.46,
-     316.46
-    ],
-    [
-     512.5,
-     315.67
-    ],
-    [
-     513.71,
-     315.17
-    ],
-    [
-     515.0,
-     315.0
-    ],
-    [
-     516.29,
-     315.17
-    ],
-    [
-     517.5,
-     315.67
-    ],
-    [
-     518.54,
-     316.46
-    ],
-    [
-     519.33,
-     317.5
-    ],
-    [
-     519.83,
-     318.71
-    ]
-   ],
-   "start": -60,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hanger Rod Right 2",
-   "subcategory": "Gi"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hanger Rod Right 2",
-   "param": "Gi Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hanger Rod Right 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "Power",
-   "domain": "electrical",
-   "system": "PowerBalanced",
-   "solid": "Control Box",
-   "side": "right"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Voltage",
-   "connector": "Power",
-   "connector_param": "Voltage",
-   "param": "Voltage"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Apparent Load",
-   "connector": "Power",
-   "connector_param": "Apparent Load",
-   "param": "Apparent Load"
-  },
-  {
-   "op": "add_connector",
-   "name": "Supply",
-   "domain": "duct",
-   "system": "SupplyAir",
-   "solid": "Supply Opening",
-   "side": "front",
-   "width": 820,
-   "height": 190,
-   "flow": "Out"
-  },
-  {
-   "op": "add_connector",
-   "name": "Condensate",
-   "domain": "pipe",
-   "system": "Sanitary",
-   "solid": "Drain Spigot",
-   "side": "left",
-   "diameter": 40,
-   "flow": "Out"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_MechEq_AC_Ducted_FCU.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_M_MechEq_AC_Ducted_FCU",
+  "template": "Metric Mechanical Equipment.rft",
+  "about": "Modelled as a generic product: galvanised casing hung on four brackets and rods below the slab (z = 0), supply spigot with flange, rear filter frame with mesh and pulls, underside access panel with screws, control box, drain and refrigerant tails. Reference: query: ac ducted fcu mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=ac+ducted+fcu+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Mechanical Equipment"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Voltage",
+      "type": "Voltage",
+      "group": "Electrical"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Apparent Load",
+      "type": "ApparentPower",
+      "group": "ElectricalLoads"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cooling_Capacity_kW",
+      "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cooling_Capacity_BTUh",
+      "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Airflow_Ls",
+      "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Refrigerant",
+      "guid": "a46c59d0-d719-583b-99c0-074994d01603",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Asset_Tag",
+      "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Serial_Number",
+      "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Install_Date",
+      "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Warranty_End",
+      "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Maintenance_Interval_Months",
+      "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_OM_Link",
+      "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lift_Weight_kg",
+      "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Mounting_Height_mm",
+      "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Power_W",
+      "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Power_W_2",
+      "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Controller_ID",
+      "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Type",
+      "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Signal",
+      "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Protocol",
+      "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Tank_Capacity_L",
+      "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "5kW_Ducted"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5kW_Ducted/FMC_Cost_Unit",
+      "type": "5kW_Ducted",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5kW_Ducted/FMC_Geometry_Stage",
+      "type": "5kW_Ducted",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5kW_Ducted/IfcExportAs",
+      "type": "5kW_Ducted",
+      "param": "IfcExportAs",
+      "value": "IfcUnitaryEquipment"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5kW_Ducted/Description",
+      "type": "5kW_Ducted",
+      "param": "Description",
+      "value": "Ducted fan coil / ducted split indoor unit 5 to 10 kW, ceiling-void mounted, rectangular supply spigot, rear filter return, side drain"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5kW_Ducted/Keynote",
+      "type": "5kW_Ducted",
+      "param": "Keynote",
+      "value": "H.SPL_08"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5kW_Ducted/FMC_Keynote_Code",
+      "type": "5kW_Ducted",
+      "param": "FMC_Keynote_Code",
+      "value": "H.SPL_08"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5kW_Ducted/FMC_Code_Description",
+      "type": "5kW_Ducted",
+      "param": "FMC_Code_Description",
+      "value": "AC Ducted FCU: Ducted fan coil"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5kW_Ducted/FMC_Code_Group",
+      "type": "5kW_Ducted",
+      "param": "FMC_Code_Group",
+      "value": "H.SPL"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5kW_Ducted/FMC_Role_Code",
+      "type": "5kW_Ducted",
+      "param": "FMC_Role_Code",
+      "value": "M"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5kW_Ducted/Voltage",
+      "type": "5kW_Ducted",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "5kW_Ducted/Apparent Load",
+      "type": "5kW_Ducted",
+      "param": "Apparent Load",
+      "value": 250
+    },
+    {
+      "op": "set_type_value",
+      "name": "5kW_Ducted/Default Elevation",
+      "type": "5kW_Ducted",
+      "param": "Default Elevation",
+      "value": 3000
+    },
+    {
+      "op": "add_type",
+      "name": "10kW_Ducted"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kW_Ducted/FMC_Cost_Unit",
+      "type": "10kW_Ducted",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kW_Ducted/FMC_Geometry_Stage",
+      "type": "10kW_Ducted",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kW_Ducted/IfcExportAs",
+      "type": "10kW_Ducted",
+      "param": "IfcExportAs",
+      "value": "IfcUnitaryEquipment"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kW_Ducted/Description",
+      "type": "10kW_Ducted",
+      "param": "Description",
+      "value": "Ducted fan coil / ducted split indoor unit 5 to 10 kW, ceiling-void mounted, rectangular supply spigot, rear filter return, side drain"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kW_Ducted/Keynote",
+      "type": "10kW_Ducted",
+      "param": "Keynote",
+      "value": "H.SPL_08"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kW_Ducted/FMC_Keynote_Code",
+      "type": "10kW_Ducted",
+      "param": "FMC_Keynote_Code",
+      "value": "H.SPL_08"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kW_Ducted/FMC_Code_Description",
+      "type": "10kW_Ducted",
+      "param": "FMC_Code_Description",
+      "value": "AC Ducted FCU: Ducted fan coil"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kW_Ducted/FMC_Code_Group",
+      "type": "10kW_Ducted",
+      "param": "FMC_Code_Group",
+      "value": "H.SPL"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kW_Ducted/FMC_Role_Code",
+      "type": "10kW_Ducted",
+      "param": "FMC_Role_Code",
+      "value": "M"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kW_Ducted/Voltage",
+      "type": "10kW_Ducted",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kW_Ducted/Apparent Load",
+      "type": "10kW_Ducted",
+      "param": "Apparent Load",
+      "value": 450
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kW_Ducted/Default Elevation",
+      "type": "10kW_Ducted",
+      "param": "Default Elevation",
+      "value": 3000
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Galv",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Galv Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Duct_Galvanised",
+      "param": "Galv Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Dark",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Dark Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_SteelLTZ_Painted",
+      "param": "Dark Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Mesh",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Mesh Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_InsectMesh_Fibreglass",
+      "param": "Mesh Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Chrome",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Chrome Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Chrome_Polished",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Grey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Grey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Grey",
+      "param": "Grey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Copper",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Copper Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Copper_Pipe",
+      "param": "Copper Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Gi",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Gi Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_GI_Pipe",
+      "param": "Gi Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -560,
+          -388
+        ],
+        [
+          560,
+          -388
+        ],
+        [
+          560,
+          395
+        ],
+        [
+          -560,
+          395
+        ]
+      ],
+      "start": -287,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Casing",
+      "points": [
+        [
+          -500,
+          -330
+        ],
+        [
+          500,
+          -330
+        ],
+        [
+          500,
+          350
+        ],
+        [
+          -500,
+          350
+        ]
+      ],
+      "start": -280,
+      "end": -20
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Casing",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Casing",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Casing",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Supply Spigot",
+      "points": [
+        [
+          -420,
+          -380
+        ],
+        [
+          420,
+          -380
+        ],
+        [
+          420,
+          -330
+        ],
+        [
+          -420,
+          -330
+        ]
+      ],
+      "start": -250,
+      "end": -50
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Supply Spigot",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Supply Spigot",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Supply Spigot",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Supply Flange",
+      "points": [
+        [
+          -440,
+          -270
+        ],
+        [
+          440,
+          -270
+        ],
+        [
+          440,
+          -30
+        ],
+        [
+          -440,
+          -30
+        ]
+      ],
+      "start": 380,
+      "end": 386,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Supply Flange",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Supply Flange",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Supply Flange",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Supply Opening",
+      "points": [
+        [
+          -410,
+          -245
+        ],
+        [
+          410,
+          -245
+        ],
+        [
+          410,
+          -55
+        ],
+        [
+          -410,
+          -55
+        ]
+      ],
+      "start": 386,
+      "end": 388,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Supply Opening",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Supply Opening",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Supply Opening",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Filter Frame",
+      "points": [
+        [
+          -470,
+          -270
+        ],
+        [
+          470,
+          -270
+        ],
+        [
+          470,
+          -30
+        ],
+        [
+          -470,
+          -30
+        ]
+      ],
+      "start": -380,
+      "end": -350,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Filter Frame",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Filter Frame",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Filter Frame",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Filter Media",
+      "points": [
+        [
+          -450,
+          -255
+        ],
+        [
+          450,
+          -255
+        ],
+        [
+          450,
+          -45
+        ],
+        [
+          -450,
+          -45
+        ]
+      ],
+      "start": -384,
+      "end": -380,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Filter Media",
+      "subcategory": "Mesh"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Filter Media",
+      "param": "Mesh Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Filter Media",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Filter Pull 1",
+      "points": [
+        [
+          -330,
+          -160
+        ],
+        [
+          -290,
+          -160
+        ],
+        [
+          -290,
+          -140
+        ],
+        [
+          -330,
+          -140
+        ]
+      ],
+      "start": -395,
+      "end": -384,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Filter Pull 1",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Filter Pull 1",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Filter Pull 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Filter Pull 2",
+      "points": [
+        [
+          290,
+          -160
+        ],
+        [
+          330,
+          -160
+        ],
+        [
+          330,
+          -140
+        ],
+        [
+          290,
+          -140
+        ]
+      ],
+      "start": -395,
+      "end": -384,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Filter Pull 2",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Filter Pull 2",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Filter Pull 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Access Panel",
+      "points": [
+        [
+          -450,
+          -300
+        ],
+        [
+          450,
+          -300
+        ],
+        [
+          450,
+          320
+        ],
+        [
+          -450,
+          320
+        ]
+      ],
+      "start": -285,
+      "end": -280
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Access Panel",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Access Panel",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Access Panel",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Panel Screw 1",
+      "points": [
+        [
+          -425,
+          -280
+        ],
+        [
+          -425.17,
+          -278.71
+        ],
+        [
+          -425.67,
+          -277.5
+        ],
+        [
+          -426.46,
+          -276.46
+        ],
+        [
+          -427.5,
+          -275.67
+        ],
+        [
+          -428.71,
+          -275.17
+        ],
+        [
+          -430,
+          -275
+        ],
+        [
+          -431.29,
+          -275.17
+        ],
+        [
+          -432.5,
+          -275.67
+        ],
+        [
+          -433.54,
+          -276.46
+        ],
+        [
+          -434.33,
+          -277.5
+        ],
+        [
+          -434.83,
+          -278.71
+        ],
+        [
+          -435,
+          -280
+        ],
+        [
+          -434.83,
+          -281.29
+        ],
+        [
+          -434.33,
+          -282.5
+        ],
+        [
+          -433.54,
+          -283.54
+        ],
+        [
+          -432.5,
+          -284.33
+        ],
+        [
+          -431.29,
+          -284.83
+        ],
+        [
+          -430,
+          -285
+        ],
+        [
+          -428.71,
+          -284.83
+        ],
+        [
+          -427.5,
+          -284.33
+        ],
+        [
+          -426.46,
+          -283.54
+        ],
+        [
+          -425.67,
+          -282.5
+        ],
+        [
+          -425.17,
+          -281.29
+        ]
+      ],
+      "start": -287,
+      "end": -285
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Panel Screw 1",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Panel Screw 1",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Panel Screw 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Panel Screw 2",
+      "points": [
+        [
+          5,
+          -280
+        ],
+        [
+          4.83,
+          -278.71
+        ],
+        [
+          4.33,
+          -277.5
+        ],
+        [
+          3.54,
+          -276.46
+        ],
+        [
+          2.5,
+          -275.67
+        ],
+        [
+          1.29,
+          -275.17
+        ],
+        [
+          0,
+          -275
+        ],
+        [
+          -1.29,
+          -275.17
+        ],
+        [
+          -2.5,
+          -275.67
+        ],
+        [
+          -3.54,
+          -276.46
+        ],
+        [
+          -4.33,
+          -277.5
+        ],
+        [
+          -4.83,
+          -278.71
+        ],
+        [
+          -5,
+          -280
+        ],
+        [
+          -4.83,
+          -281.29
+        ],
+        [
+          -4.33,
+          -282.5
+        ],
+        [
+          -3.54,
+          -283.54
+        ],
+        [
+          -2.5,
+          -284.33
+        ],
+        [
+          -1.29,
+          -284.83
+        ],
+        [
+          0,
+          -285
+        ],
+        [
+          1.29,
+          -284.83
+        ],
+        [
+          2.5,
+          -284.33
+        ],
+        [
+          3.54,
+          -283.54
+        ],
+        [
+          4.33,
+          -282.5
+        ],
+        [
+          4.83,
+          -281.29
+        ]
+      ],
+      "start": -287,
+      "end": -285
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Panel Screw 2",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Panel Screw 2",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Panel Screw 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Panel Screw 3",
+      "points": [
+        [
+          435,
+          -280
+        ],
+        [
+          434.83,
+          -278.71
+        ],
+        [
+          434.33,
+          -277.5
+        ],
+        [
+          433.54,
+          -276.46
+        ],
+        [
+          432.5,
+          -275.67
+        ],
+        [
+          431.29,
+          -275.17
+        ],
+        [
+          430,
+          -275
+        ],
+        [
+          428.71,
+          -275.17
+        ],
+        [
+          427.5,
+          -275.67
+        ],
+        [
+          426.46,
+          -276.46
+        ],
+        [
+          425.67,
+          -277.5
+        ],
+        [
+          425.17,
+          -278.71
+        ],
+        [
+          425,
+          -280
+        ],
+        [
+          425.17,
+          -281.29
+        ],
+        [
+          425.67,
+          -282.5
+        ],
+        [
+          426.46,
+          -283.54
+        ],
+        [
+          427.5,
+          -284.33
+        ],
+        [
+          428.71,
+          -284.83
+        ],
+        [
+          430,
+          -285
+        ],
+        [
+          431.29,
+          -284.83
+        ],
+        [
+          432.5,
+          -284.33
+        ],
+        [
+          433.54,
+          -283.54
+        ],
+        [
+          434.33,
+          -282.5
+        ],
+        [
+          434.83,
+          -281.29
+        ]
+      ],
+      "start": -287,
+      "end": -285
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Panel Screw 3",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Panel Screw 3",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Panel Screw 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Panel Screw Rear 1",
+      "points": [
+        [
+          -425,
+          300
+        ],
+        [
+          -425.17,
+          301.29
+        ],
+        [
+          -425.67,
+          302.5
+        ],
+        [
+          -426.46,
+          303.54
+        ],
+        [
+          -427.5,
+          304.33
+        ],
+        [
+          -428.71,
+          304.83
+        ],
+        [
+          -430,
+          305
+        ],
+        [
+          -431.29,
+          304.83
+        ],
+        [
+          -432.5,
+          304.33
+        ],
+        [
+          -433.54,
+          303.54
+        ],
+        [
+          -434.33,
+          302.5
+        ],
+        [
+          -434.83,
+          301.29
+        ],
+        [
+          -435,
+          300
+        ],
+        [
+          -434.83,
+          298.71
+        ],
+        [
+          -434.33,
+          297.5
+        ],
+        [
+          -433.54,
+          296.46
+        ],
+        [
+          -432.5,
+          295.67
+        ],
+        [
+          -431.29,
+          295.17
+        ],
+        [
+          -430,
+          295
+        ],
+        [
+          -428.71,
+          295.17
+        ],
+        [
+          -427.5,
+          295.67
+        ],
+        [
+          -426.46,
+          296.46
+        ],
+        [
+          -425.67,
+          297.5
+        ],
+        [
+          -425.17,
+          298.71
+        ]
+      ],
+      "start": -287,
+      "end": -285
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Panel Screw Rear 1",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Panel Screw Rear 1",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Panel Screw Rear 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Panel Screw Rear 2",
+      "points": [
+        [
+          5,
+          300
+        ],
+        [
+          4.83,
+          301.29
+        ],
+        [
+          4.33,
+          302.5
+        ],
+        [
+          3.54,
+          303.54
+        ],
+        [
+          2.5,
+          304.33
+        ],
+        [
+          1.29,
+          304.83
+        ],
+        [
+          0,
+          305
+        ],
+        [
+          -1.29,
+          304.83
+        ],
+        [
+          -2.5,
+          304.33
+        ],
+        [
+          -3.54,
+          303.54
+        ],
+        [
+          -4.33,
+          302.5
+        ],
+        [
+          -4.83,
+          301.29
+        ],
+        [
+          -5,
+          300
+        ],
+        [
+          -4.83,
+          298.71
+        ],
+        [
+          -4.33,
+          297.5
+        ],
+        [
+          -3.54,
+          296.46
+        ],
+        [
+          -2.5,
+          295.67
+        ],
+        [
+          -1.29,
+          295.17
+        ],
+        [
+          0,
+          295
+        ],
+        [
+          1.29,
+          295.17
+        ],
+        [
+          2.5,
+          295.67
+        ],
+        [
+          3.54,
+          296.46
+        ],
+        [
+          4.33,
+          297.5
+        ],
+        [
+          4.83,
+          298.71
+        ]
+      ],
+      "start": -287,
+      "end": -285
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Panel Screw Rear 2",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Panel Screw Rear 2",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Panel Screw Rear 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Panel Screw Rear 3",
+      "points": [
+        [
+          435,
+          300
+        ],
+        [
+          434.83,
+          301.29
+        ],
+        [
+          434.33,
+          302.5
+        ],
+        [
+          433.54,
+          303.54
+        ],
+        [
+          432.5,
+          304.33
+        ],
+        [
+          431.29,
+          304.83
+        ],
+        [
+          430,
+          305
+        ],
+        [
+          428.71,
+          304.83
+        ],
+        [
+          427.5,
+          304.33
+        ],
+        [
+          426.46,
+          303.54
+        ],
+        [
+          425.67,
+          302.5
+        ],
+        [
+          425.17,
+          301.29
+        ],
+        [
+          425,
+          300
+        ],
+        [
+          425.17,
+          298.71
+        ],
+        [
+          425.67,
+          297.5
+        ],
+        [
+          426.46,
+          296.46
+        ],
+        [
+          427.5,
+          295.67
+        ],
+        [
+          428.71,
+          295.17
+        ],
+        [
+          430,
+          295
+        ],
+        [
+          431.29,
+          295.17
+        ],
+        [
+          432.5,
+          295.67
+        ],
+        [
+          433.54,
+          296.46
+        ],
+        [
+          434.33,
+          297.5
+        ],
+        [
+          434.83,
+          298.71
+        ]
+      ],
+      "start": -287,
+      "end": -285
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Panel Screw Rear 3",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Panel Screw Rear 3",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Panel Screw Rear 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Control Box",
+      "points": [
+        [
+          500,
+          -180
+        ],
+        [
+          560,
+          -180
+        ],
+        [
+          560,
+          120
+        ],
+        [
+          500,
+          120
+        ]
+      ],
+      "start": -250,
+      "end": -60
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Control Box",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Control Box",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Control Box",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Drain Spigot",
+      "points": [
+        [
+          216,
+          -262
+        ],
+        [
+          215.45,
+          -257.86
+        ],
+        [
+          213.86,
+          -254
+        ],
+        [
+          211.31,
+          -250.69
+        ],
+        [
+          208,
+          -248.14
+        ],
+        [
+          204.14,
+          -246.55
+        ],
+        [
+          200,
+          -246
+        ],
+        [
+          195.86,
+          -246.55
+        ],
+        [
+          192,
+          -248.14
+        ],
+        [
+          188.69,
+          -250.69
+        ],
+        [
+          186.14,
+          -254
+        ],
+        [
+          184.55,
+          -257.86
+        ],
+        [
+          184,
+          -262
+        ],
+        [
+          184.55,
+          -266.14
+        ],
+        [
+          186.14,
+          -270
+        ],
+        [
+          188.69,
+          -273.31
+        ],
+        [
+          192,
+          -275.86
+        ],
+        [
+          195.86,
+          -277.45
+        ],
+        [
+          200,
+          -278
+        ],
+        [
+          204.14,
+          -277.45
+        ],
+        [
+          208,
+          -275.86
+        ],
+        [
+          211.31,
+          -273.31
+        ],
+        [
+          213.86,
+          -270
+        ],
+        [
+          215.45,
+          -266.14
+        ]
+      ],
+      "start": -560,
+      "end": -500,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Drain Spigot",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Drain Spigot",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Drain Spigot",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Liquid Line",
+      "points": [
+        [
+          86,
+          -200
+        ],
+        [
+          85.8,
+          -198.45
+        ],
+        [
+          85.2,
+          -197
+        ],
+        [
+          84.24,
+          -195.76
+        ],
+        [
+          83,
+          -194.8
+        ],
+        [
+          81.55,
+          -194.2
+        ],
+        [
+          80,
+          -194
+        ],
+        [
+          78.45,
+          -194.2
+        ],
+        [
+          77,
+          -194.8
+        ],
+        [
+          75.76,
+          -195.76
+        ],
+        [
+          74.8,
+          -197
+        ],
+        [
+          74.2,
+          -198.45
+        ],
+        [
+          74,
+          -200
+        ],
+        [
+          74.2,
+          -201.55
+        ],
+        [
+          74.8,
+          -203
+        ],
+        [
+          75.76,
+          -204.24
+        ],
+        [
+          77,
+          -205.2
+        ],
+        [
+          78.45,
+          -205.8
+        ],
+        [
+          80,
+          -206
+        ],
+        [
+          81.55,
+          -205.8
+        ],
+        [
+          83,
+          -205.2
+        ],
+        [
+          84.24,
+          -204.24
+        ],
+        [
+          85.2,
+          -203
+        ],
+        [
+          85.8,
+          -201.55
+        ]
+      ],
+      "start": -560,
+      "end": -500,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Liquid Line",
+      "subcategory": "Copper"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Liquid Line",
+      "param": "Copper Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Liquid Line",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Gas Line",
+      "points": [
+        [
+          139.5,
+          -200
+        ],
+        [
+          139.18,
+          -197.54
+        ],
+        [
+          138.23,
+          -195.25
+        ],
+        [
+          136.72,
+          -193.28
+        ],
+        [
+          134.75,
+          -191.77
+        ],
+        [
+          132.46,
+          -190.82
+        ],
+        [
+          130,
+          -190.5
+        ],
+        [
+          127.54,
+          -190.82
+        ],
+        [
+          125.25,
+          -191.77
+        ],
+        [
+          123.28,
+          -193.28
+        ],
+        [
+          121.77,
+          -195.25
+        ],
+        [
+          120.82,
+          -197.54
+        ],
+        [
+          120.5,
+          -200
+        ],
+        [
+          120.82,
+          -202.46
+        ],
+        [
+          121.77,
+          -204.75
+        ],
+        [
+          123.28,
+          -206.72
+        ],
+        [
+          125.25,
+          -208.23
+        ],
+        [
+          127.54,
+          -209.18
+        ],
+        [
+          130,
+          -209.5
+        ],
+        [
+          132.46,
+          -209.18
+        ],
+        [
+          134.75,
+          -208.23
+        ],
+        [
+          136.72,
+          -206.72
+        ],
+        [
+          138.23,
+          -204.75
+        ],
+        [
+          139.18,
+          -202.46
+        ]
+      ],
+      "start": -560,
+      "end": -500,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Gas Line",
+      "subcategory": "Copper"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Gas Line",
+      "param": "Copper Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Gas Line",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hanger Bracket Left 1",
+      "points": [
+        [
+          -530,
+          -320
+        ],
+        [
+          -500,
+          -320
+        ],
+        [
+          -500,
+          -280
+        ],
+        [
+          -530,
+          -280
+        ]
+      ],
+      "start": -110,
+      "end": -60
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hanger Bracket Left 1",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hanger Bracket Left 1",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hanger Bracket Left 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hanger Bracket Left 2",
+      "points": [
+        [
+          -530,
+          300
+        ],
+        [
+          -500,
+          300
+        ],
+        [
+          -500,
+          340
+        ],
+        [
+          -530,
+          340
+        ]
+      ],
+      "start": -110,
+      "end": -60
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hanger Bracket Left 2",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hanger Bracket Left 2",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hanger Bracket Left 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hanger Bracket Right 1",
+      "points": [
+        [
+          500,
+          -320
+        ],
+        [
+          530,
+          -320
+        ],
+        [
+          530,
+          -280
+        ],
+        [
+          500,
+          -280
+        ]
+      ],
+      "start": -110,
+      "end": -60
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hanger Bracket Right 1",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hanger Bracket Right 1",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hanger Bracket Right 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hanger Bracket Right 2",
+      "points": [
+        [
+          500,
+          300
+        ],
+        [
+          530,
+          300
+        ],
+        [
+          530,
+          340
+        ],
+        [
+          500,
+          340
+        ]
+      ],
+      "start": -110,
+      "end": -60
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hanger Bracket Right 2",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hanger Bracket Right 2",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hanger Bracket Right 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hanger Rod Left 1",
+      "points": [
+        [
+          -510,
+          -300
+        ],
+        [
+          -510.17,
+          -298.71
+        ],
+        [
+          -510.67,
+          -297.5
+        ],
+        [
+          -511.46,
+          -296.46
+        ],
+        [
+          -512.5,
+          -295.67
+        ],
+        [
+          -513.71,
+          -295.17
+        ],
+        [
+          -515,
+          -295
+        ],
+        [
+          -516.29,
+          -295.17
+        ],
+        [
+          -517.5,
+          -295.67
+        ],
+        [
+          -518.54,
+          -296.46
+        ],
+        [
+          -519.33,
+          -297.5
+        ],
+        [
+          -519.83,
+          -298.71
+        ],
+        [
+          -520,
+          -300
+        ],
+        [
+          -519.83,
+          -301.29
+        ],
+        [
+          -519.33,
+          -302.5
+        ],
+        [
+          -518.54,
+          -303.54
+        ],
+        [
+          -517.5,
+          -304.33
+        ],
+        [
+          -516.29,
+          -304.83
+        ],
+        [
+          -515,
+          -305
+        ],
+        [
+          -513.71,
+          -304.83
+        ],
+        [
+          -512.5,
+          -304.33
+        ],
+        [
+          -511.46,
+          -303.54
+        ],
+        [
+          -510.67,
+          -302.5
+        ],
+        [
+          -510.17,
+          -301.29
+        ]
+      ],
+      "start": -60,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hanger Rod Left 1",
+      "subcategory": "Gi"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hanger Rod Left 1",
+      "param": "Gi Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hanger Rod Left 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hanger Rod Left 2",
+      "points": [
+        [
+          -510,
+          320
+        ],
+        [
+          -510.17,
+          321.29
+        ],
+        [
+          -510.67,
+          322.5
+        ],
+        [
+          -511.46,
+          323.54
+        ],
+        [
+          -512.5,
+          324.33
+        ],
+        [
+          -513.71,
+          324.83
+        ],
+        [
+          -515,
+          325
+        ],
+        [
+          -516.29,
+          324.83
+        ],
+        [
+          -517.5,
+          324.33
+        ],
+        [
+          -518.54,
+          323.54
+        ],
+        [
+          -519.33,
+          322.5
+        ],
+        [
+          -519.83,
+          321.29
+        ],
+        [
+          -520,
+          320
+        ],
+        [
+          -519.83,
+          318.71
+        ],
+        [
+          -519.33,
+          317.5
+        ],
+        [
+          -518.54,
+          316.46
+        ],
+        [
+          -517.5,
+          315.67
+        ],
+        [
+          -516.29,
+          315.17
+        ],
+        [
+          -515,
+          315
+        ],
+        [
+          -513.71,
+          315.17
+        ],
+        [
+          -512.5,
+          315.67
+        ],
+        [
+          -511.46,
+          316.46
+        ],
+        [
+          -510.67,
+          317.5
+        ],
+        [
+          -510.17,
+          318.71
+        ]
+      ],
+      "start": -60,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hanger Rod Left 2",
+      "subcategory": "Gi"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hanger Rod Left 2",
+      "param": "Gi Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hanger Rod Left 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hanger Rod Right 1",
+      "points": [
+        [
+          520,
+          -300
+        ],
+        [
+          519.83,
+          -298.71
+        ],
+        [
+          519.33,
+          -297.5
+        ],
+        [
+          518.54,
+          -296.46
+        ],
+        [
+          517.5,
+          -295.67
+        ],
+        [
+          516.29,
+          -295.17
+        ],
+        [
+          515,
+          -295
+        ],
+        [
+          513.71,
+          -295.17
+        ],
+        [
+          512.5,
+          -295.67
+        ],
+        [
+          511.46,
+          -296.46
+        ],
+        [
+          510.67,
+          -297.5
+        ],
+        [
+          510.17,
+          -298.71
+        ],
+        [
+          510,
+          -300
+        ],
+        [
+          510.17,
+          -301.29
+        ],
+        [
+          510.67,
+          -302.5
+        ],
+        [
+          511.46,
+          -303.54
+        ],
+        [
+          512.5,
+          -304.33
+        ],
+        [
+          513.71,
+          -304.83
+        ],
+        [
+          515,
+          -305
+        ],
+        [
+          516.29,
+          -304.83
+        ],
+        [
+          517.5,
+          -304.33
+        ],
+        [
+          518.54,
+          -303.54
+        ],
+        [
+          519.33,
+          -302.5
+        ],
+        [
+          519.83,
+          -301.29
+        ]
+      ],
+      "start": -60,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hanger Rod Right 1",
+      "subcategory": "Gi"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hanger Rod Right 1",
+      "param": "Gi Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hanger Rod Right 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hanger Rod Right 2",
+      "points": [
+        [
+          520,
+          320
+        ],
+        [
+          519.83,
+          321.29
+        ],
+        [
+          519.33,
+          322.5
+        ],
+        [
+          518.54,
+          323.54
+        ],
+        [
+          517.5,
+          324.33
+        ],
+        [
+          516.29,
+          324.83
+        ],
+        [
+          515,
+          325
+        ],
+        [
+          513.71,
+          324.83
+        ],
+        [
+          512.5,
+          324.33
+        ],
+        [
+          511.46,
+          323.54
+        ],
+        [
+          510.67,
+          322.5
+        ],
+        [
+          510.17,
+          321.29
+        ],
+        [
+          510,
+          320
+        ],
+        [
+          510.17,
+          318.71
+        ],
+        [
+          510.67,
+          317.5
+        ],
+        [
+          511.46,
+          316.46
+        ],
+        [
+          512.5,
+          315.67
+        ],
+        [
+          513.71,
+          315.17
+        ],
+        [
+          515,
+          315
+        ],
+        [
+          516.29,
+          315.17
+        ],
+        [
+          517.5,
+          315.67
+        ],
+        [
+          518.54,
+          316.46
+        ],
+        [
+          519.33,
+          317.5
+        ],
+        [
+          519.83,
+          318.71
+        ]
+      ],
+      "start": -60,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hanger Rod Right 2",
+      "subcategory": "Gi"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hanger Rod Right 2",
+      "param": "Gi Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hanger Rod Right 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "Power",
+      "domain": "electrical",
+      "system": "PowerBalanced",
+      "solid": "Control Box",
+      "side": "right"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Voltage",
+      "connector": "Power",
+      "connector_param": "Voltage",
+      "param": "Voltage"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Apparent Load",
+      "connector": "Power",
+      "connector_param": "Apparent Load",
+      "param": "Apparent Load"
+    },
+    {
+      "op": "add_connector",
+      "name": "Supply",
+      "domain": "duct",
+      "system": "SupplyAir",
+      "solid": "Supply Opening",
+      "side": "front",
+      "width": 820,
+      "height": 190,
+      "flow": "Out"
+    },
+    {
+      "op": "add_connector",
+      "name": "Condensate",
+      "domain": "pipe",
+      "system": "Sanitary",
+      "solid": "Drain Spigot",
+      "side": "left",
+      "diameter": 40,
+      "flow": "Out"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_MechEq_AC_Ducted_FCU.png"
+    }
+  ],
+  "values": {
+    "Casing 1000 x 680 x 260 mm": {
+      "value": "1000x680x260",
+      "source_status": "assumed",
+      "source": "typical 5-10 kW ducted unit"
+    },
+    "Supply spigot 820 x 190 mm": {
+      "value": "820x190",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "External static 50 Pa": {
+      "value": 50,
+      "source_status": "assumed",
+      "source": "standard ESP setting"
+    },
+    "Fan load 250 / 450 VA": {
+      "value": "250/450",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   }
- ],
- "values": {
-  "Casing 1000 x 680 x 260 mm": {
-   "value": "1000x680x260",
-   "source_status": "assumed",
-   "source": "typical 5-10 kW ducted unit"
-  },
-  "Supply spigot 820 x 190 mm": {
-   "value": "820x190",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "External static 50 Pa": {
-   "value": 50,
-   "source_status": "assumed",
-   "source": "standard ESP setting"
-  },
-  "Fan load 250 / 450 VA": {
-   "value": "250/450",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- }
 }

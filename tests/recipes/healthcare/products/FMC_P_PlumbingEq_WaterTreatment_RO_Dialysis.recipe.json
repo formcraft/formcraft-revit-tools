@@ -1,5400 +1,5413 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_P_PlumbingEq_WaterTreatment_RO_Dialysis",
- "template": "Metric Generic Model.rft",
- "about": "RO plant modelled as a generic product: stainless frame (posts, rails), four membrane vessels with end caps and manifold, two cartridge housings, pump base with motor and pump end, three flow meters with floats, feed and reject gauges, control panel with screen and LEDs, feed, permeate and drain stubs. Reference: query: water treatment ro dialysis plumbing equipment hospital; images: https://www.google.com/search?tbm=isch&q=water+treatment+ro+dialysis+plumbing+equipment+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Plumbing Equipment"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Voltage",
-   "type": "Voltage",
-   "group": "Electrical"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Number of Poles",
-   "type": "NumberOfPoles",
-   "group": "Electrical"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Apparent Load",
-   "type": "ApparentPower",
-   "group": "ElectricalLoads"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Asset_Tag",
-   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cover_Level_m",
-   "guid": "8ea739e9-8540-52b1-94c8-31f8c3b68946",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Invert_In_m",
-   "guid": "c6a9407b-775b-5907-ad76-c8a50d749eb7",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Invert_Out_m",
-   "guid": "dfc4212d-23c3-50c9-8f96-8111e5c21fa8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Tank_Capacity_L",
-   "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "500Lh_RO"
-  },
-  {
-   "op": "set_type_value",
-   "name": "500Lh_RO/FMC_Cost_Unit",
-   "type": "500Lh_RO",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "500Lh_RO/FMC_Geometry_Stage",
-   "type": "500Lh_RO",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "500Lh_RO/IfcExportAs",
-   "type": "500Lh_RO",
-   "param": "IfcExportAs",
-   "value": "IfcUnitaryEquipment"
-  },
-  {
-   "op": "set_type_value",
-   "name": "500Lh_RO/Description",
-   "type": "500Lh_RO",
-   "param": "Description",
-   "value": "Reverse osmosis plant 500 l/h for dialysis water, stainless skid with four membrane pressure vessels, twin cartridge pre-filters, high-pressure pump, flow meters, gauges and HMI control panel"
-  },
-  {
-   "op": "set_type_value",
-   "name": "500Lh_RO/Keynote",
-   "type": "500Lh_RO",
-   "param": "Keynote",
-   "value": "P.WTR_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "500Lh_RO/FMC_Keynote_Code",
-   "type": "500Lh_RO",
-   "param": "FMC_Keynote_Code",
-   "value": "P.WTR_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "500Lh_RO/Voltage",
-   "type": "500Lh_RO",
-   "param": "Voltage",
-   "value": 415
-  },
-  {
-   "op": "set_type_value",
-   "name": "500Lh_RO/Number of Poles",
-   "type": "500Lh_RO",
-   "param": "Number of Poles",
-   "value": 3
-  },
-  {
-   "op": "set_type_value",
-   "name": "500Lh_RO/Apparent Load",
-   "type": "500Lh_RO",
-   "param": "Apparent Load",
-   "value": 3000
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Stainless",
-   "color": [
-    180,
-    183,
-    186
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Stainless Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_StainlessSteel_Brushed",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "White",
-   "color": [
-    242,
-    242,
-    238
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "White Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_White",
-   "param": "White Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Grey",
-   "color": [
-    154,
-    160,
-    166
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Grey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Grey",
-   "param": "Grey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Blue",
-   "color": [
-    47,
-    109,
-    181
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Blue Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Blue",
-   "param": "Blue Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Polycarbonate",
-   "color": [
-    221,
-    230,
-    238
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Polycarbonate Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_Polycarbonate_Clear",
-   "param": "Polycarbonate Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Led Red",
-   "color": [
-    229,
-    72,
-    77
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Led Red Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_LED_Red",
-   "param": "Led Red Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Chrome",
-   "color": [
-    192,
-    195,
-    199
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Chrome Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Chrome_Polished",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Epoxy White",
-   "color": [
-    237,
-    237,
-    232
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Epoxy White Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Steel_EpoxyCoated_White",
-   "param": "Epoxy White Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Led Green",
-   "color": [
-    59,
-    209,
-    111
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Led Green Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_LED_Green",
-   "param": "Led Green Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Yellow",
-   "color": [
-    242,
-    194,
-    48
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Yellow Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Yellow",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Red",
-   "color": [
-    181,
-    18,
-    27
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Red Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_FireHoseReel_Red",
-   "param": "Red Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -900,
-     -426
-    ],
-    [
-     900,
-     -426
-    ],
-    [
-     900,
-     400
-    ],
-    [
-     -900,
-     400
-    ]
-   ],
-   "start": -50,
-   "end": 1900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Frame Post Front 1",
-   "points": [
-    [
-     -800,
-     -400
-    ],
-    [
-     -760,
-     -400
-    ],
-    [
-     -760,
-     -360
-    ],
-    [
-     -800,
-     -360
-    ]
-   ],
-   "start": 0,
-   "end": 1900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Frame Post Front 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Frame Post Front 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Frame Post Front 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Frame Post Front 2",
-   "points": [
-    [
-     760,
-     -400
-    ],
-    [
-     800,
-     -400
-    ],
-    [
-     800,
-     -360
-    ],
-    [
-     760,
-     -360
-    ]
-   ],
-   "start": 0,
-   "end": 1900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Frame Post Front 2",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Frame Post Front 2",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Frame Post Front 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Frame Post Back 1",
-   "points": [
-    [
-     -800,
-     360
-    ],
-    [
-     -760,
-     360
-    ],
-    [
-     -760,
-     400
-    ],
-    [
-     -800,
-     400
-    ]
-   ],
-   "start": 0,
-   "end": 1900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Frame Post Back 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Frame Post Back 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Frame Post Back 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Frame Post Back 2",
-   "points": [
-    [
-     760,
-     360
-    ],
-    [
-     800,
-     360
-    ],
-    [
-     800,
-     400
-    ],
-    [
-     760,
-     400
-    ]
-   ],
-   "start": 0,
-   "end": 1900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Frame Post Back 2",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Frame Post Back 2",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Frame Post Back 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Frame Rail Front 1",
-   "points": [
-    [
-     -800,
-     -400
-    ],
-    [
-     800,
-     -400
-    ],
-    [
-     800,
-     -360
-    ],
-    [
-     -800,
-     -360
-    ]
-   ],
-   "start": 1860,
-   "end": 1900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Frame Rail Front 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Frame Rail Front 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Frame Rail Front 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Frame Rail Front 2",
-   "points": [
-    [
-     -800,
-     -400
-    ],
-    [
-     800,
-     -400
-    ],
-    [
-     800,
-     -360
-    ],
-    [
-     -800,
-     -360
-    ]
-   ],
-   "start": 100,
-   "end": 140
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Frame Rail Front 2",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Frame Rail Front 2",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Frame Rail Front 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Frame Rail Back 1",
-   "points": [
-    [
-     -800,
-     360
-    ],
-    [
-     800,
-     360
-    ],
-    [
-     800,
-     400
-    ],
-    [
-     -800,
-     400
-    ]
-   ],
-   "start": 1860,
-   "end": 1900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Frame Rail Back 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Frame Rail Back 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Frame Rail Back 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Frame Rail Back 2",
-   "points": [
-    [
-     -800,
-     360
-    ],
-    [
-     800,
-     360
-    ],
-    [
-     800,
-     400
-    ],
-    [
-     -800,
-     400
-    ]
-   ],
-   "start": 100,
-   "end": 140
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Frame Rail Back 2",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Frame Rail Back 2",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Frame Rail Back 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Membrane Vessel 1",
-   "points": [
-    [
-     152.0,
-     1150.0
-    ],
-    [
-     150.23,
-     1163.46
-    ],
-    [
-     145.03,
-     1176.0
-    ],
-    [
-     136.77,
-     1186.77
-    ],
-    [
-     126.0,
-     1195.03
-    ],
-    [
-     113.46,
-     1200.23
-    ],
-    [
-     100.0,
-     1202.0
-    ],
-    [
-     86.54,
-     1200.23
-    ],
-    [
-     74.0,
-     1195.03
-    ],
-    [
-     63.23,
-     1186.77
-    ],
-    [
-     54.97,
-     1176.0
-    ],
-    [
-     49.77,
-     1163.46
-    ],
-    [
-     48.0,
-     1150.0
-    ],
-    [
-     49.77,
-     1136.54
-    ],
-    [
-     54.97,
-     1124.0
-    ],
-    [
-     63.23,
-     1113.23
-    ],
-    [
-     74.0,
-     1104.97
-    ],
-    [
-     86.54,
-     1099.77
-    ],
-    [
-     100.0,
-     1098.0
-    ],
-    [
-     113.46,
-     1099.77
-    ],
-    [
-     126.0,
-     1104.97
-    ],
-    [
-     136.77,
-     1113.23
-    ],
-    [
-     145.03,
-     1124.0
-    ],
-    [
-     150.23,
-     1136.54
-    ]
-   ],
-   "start": -700,
-   "end": 700,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Membrane Vessel 1",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Membrane Vessel 1",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Membrane Vessel 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Membrane Vessel 2",
-   "points": [
-    [
-     152.0,
-     1310.0
-    ],
-    [
-     150.23,
-     1323.46
-    ],
-    [
-     145.03,
-     1336.0
-    ],
-    [
-     136.77,
-     1346.77
-    ],
-    [
-     126.0,
-     1355.03
-    ],
-    [
-     113.46,
-     1360.23
-    ],
-    [
-     100.0,
-     1362.0
-    ],
-    [
-     86.54,
-     1360.23
-    ],
-    [
-     74.0,
-     1355.03
-    ],
-    [
-     63.23,
-     1346.77
-    ],
-    [
-     54.97,
-     1336.0
-    ],
-    [
-     49.77,
-     1323.46
-    ],
-    [
-     48.0,
-     1310.0
-    ],
-    [
-     49.77,
-     1296.54
-    ],
-    [
-     54.97,
-     1284.0
-    ],
-    [
-     63.23,
-     1273.23
-    ],
-    [
-     74.0,
-     1264.97
-    ],
-    [
-     86.54,
-     1259.77
-    ],
-    [
-     100.0,
-     1258.0
-    ],
-    [
-     113.46,
-     1259.77
-    ],
-    [
-     126.0,
-     1264.97
-    ],
-    [
-     136.77,
-     1273.23
-    ],
-    [
-     145.03,
-     1284.0
-    ],
-    [
-     150.23,
-     1296.54
-    ]
-   ],
-   "start": -700,
-   "end": 700,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Membrane Vessel 2",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Membrane Vessel 2",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Membrane Vessel 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Membrane Vessel 3",
-   "points": [
-    [
-     152.0,
-     1470.0
-    ],
-    [
-     150.23,
-     1483.46
-    ],
-    [
-     145.03,
-     1496.0
-    ],
-    [
-     136.77,
-     1506.77
-    ],
-    [
-     126.0,
-     1515.03
-    ],
-    [
-     113.46,
-     1520.23
-    ],
-    [
-     100.0,
-     1522.0
-    ],
-    [
-     86.54,
-     1520.23
-    ],
-    [
-     74.0,
-     1515.03
-    ],
-    [
-     63.23,
-     1506.77
-    ],
-    [
-     54.97,
-     1496.0
-    ],
-    [
-     49.77,
-     1483.46
-    ],
-    [
-     48.0,
-     1470.0
-    ],
-    [
-     49.77,
-     1456.54
-    ],
-    [
-     54.97,
-     1444.0
-    ],
-    [
-     63.23,
-     1433.23
-    ],
-    [
-     74.0,
-     1424.97
-    ],
-    [
-     86.54,
-     1419.77
-    ],
-    [
-     100.0,
-     1418.0
-    ],
-    [
-     113.46,
-     1419.77
-    ],
-    [
-     126.0,
-     1424.97
-    ],
-    [
-     136.77,
-     1433.23
-    ],
-    [
-     145.03,
-     1444.0
-    ],
-    [
-     150.23,
-     1456.54
-    ]
-   ],
-   "start": -700,
-   "end": 700,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Membrane Vessel 3",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Membrane Vessel 3",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Membrane Vessel 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Membrane Vessel 4",
-   "points": [
-    [
-     152.0,
-     1630.0
-    ],
-    [
-     150.23,
-     1643.46
-    ],
-    [
-     145.03,
-     1656.0
-    ],
-    [
-     136.77,
-     1666.77
-    ],
-    [
-     126.0,
-     1675.03
-    ],
-    [
-     113.46,
-     1680.23
-    ],
-    [
-     100.0,
-     1682.0
-    ],
-    [
-     86.54,
-     1680.23
-    ],
-    [
-     74.0,
-     1675.03
-    ],
-    [
-     63.23,
-     1666.77
-    ],
-    [
-     54.97,
-     1656.0
-    ],
-    [
-     49.77,
-     1643.46
-    ],
-    [
-     48.0,
-     1630.0
-    ],
-    [
-     49.77,
-     1616.54
-    ],
-    [
-     54.97,
-     1604.0
-    ],
-    [
-     63.23,
-     1593.23
-    ],
-    [
-     74.0,
-     1584.97
-    ],
-    [
-     86.54,
-     1579.77
-    ],
-    [
-     100.0,
-     1578.0
-    ],
-    [
-     113.46,
-     1579.77
-    ],
-    [
-     126.0,
-     1584.97
-    ],
-    [
-     136.77,
-     1593.23
-    ],
-    [
-     145.03,
-     1604.0
-    ],
-    [
-     150.23,
-     1616.54
-    ]
-   ],
-   "start": -700,
-   "end": 700,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Membrane Vessel 4",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Membrane Vessel 4",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Membrane Vessel 4",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Vessel Cap L 1",
-   "profile": [
-    [
-     0,
-     -740
-    ],
-    [
-     56,
-     -740
-    ],
-    [
-     56,
-     -700
-    ],
-    [
-     0,
-     -700
-    ]
-   ],
-   "axis_at": [
-    100,
-    1150
-   ],
-   "axis": "x",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vessel Cap L 1",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vessel Cap L 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Vessel Cap L 2",
-   "profile": [
-    [
-     0,
-     -740
-    ],
-    [
-     56,
-     -740
-    ],
-    [
-     56,
-     -700
-    ],
-    [
-     0,
-     -700
-    ]
-   ],
-   "axis_at": [
-    100,
-    1310
-   ],
-   "axis": "x",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vessel Cap L 2",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vessel Cap L 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Vessel Cap L 3",
-   "profile": [
-    [
-     0,
-     -740
-    ],
-    [
-     56,
-     -740
-    ],
-    [
-     56,
-     -700
-    ],
-    [
-     0,
-     -700
-    ]
-   ],
-   "axis_at": [
-    100,
-    1470
-   ],
-   "axis": "x",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vessel Cap L 3",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vessel Cap L 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Vessel Cap L 4",
-   "profile": [
-    [
-     0,
-     -740
-    ],
-    [
-     56,
-     -740
-    ],
-    [
-     56,
-     -700
-    ],
-    [
-     0,
-     -700
-    ]
-   ],
-   "axis_at": [
-    100,
-    1630
-   ],
-   "axis": "x",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vessel Cap L 4",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vessel Cap L 4",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Vessel Cap R 1",
-   "profile": [
-    [
-     0,
-     700
-    ],
-    [
-     56,
-     700
-    ],
-    [
-     56,
-     740
-    ],
-    [
-     0,
-     740
-    ]
-   ],
-   "axis_at": [
-    100,
-    1150
-   ],
-   "axis": "x",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vessel Cap R 1",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vessel Cap R 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Vessel Cap R 2",
-   "profile": [
-    [
-     0,
-     700
-    ],
-    [
-     56,
-     700
-    ],
-    [
-     56,
-     740
-    ],
-    [
-     0,
-     740
-    ]
-   ],
-   "axis_at": [
-    100,
-    1310
-   ],
-   "axis": "x",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vessel Cap R 2",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vessel Cap R 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Vessel Cap R 3",
-   "profile": [
-    [
-     0,
-     700
-    ],
-    [
-     56,
-     700
-    ],
-    [
-     56,
-     740
-    ],
-    [
-     0,
-     740
-    ]
-   ],
-   "axis_at": [
-    100,
-    1470
-   ],
-   "axis": "x",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vessel Cap R 3",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vessel Cap R 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Vessel Cap R 4",
-   "profile": [
-    [
-     0,
-     700
-    ],
-    [
-     56,
-     700
-    ],
-    [
-     56,
-     740
-    ],
-    [
-     0,
-     740
-    ]
-   ],
-   "axis_at": [
-    100,
-    1630
-   ],
-   "axis": "x",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vessel Cap R 4",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vessel Cap R 4",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vessel Manifold",
-   "points": [
-    [
-     -744.0,
-     100.0
-    ],
-    [
-     -744.55,
-     104.14
-    ],
-    [
-     -746.14,
-     108.0
-    ],
-    [
-     -748.69,
-     111.31
-    ],
-    [
-     -752.0,
-     113.86
-    ],
-    [
-     -755.86,
-     115.45
-    ],
-    [
-     -760.0,
-     116.0
-    ],
-    [
-     -764.14,
-     115.45
-    ],
-    [
-     -768.0,
-     113.86
-    ],
-    [
-     -771.31,
-     111.31
-    ],
-    [
-     -773.86,
-     108.0
-    ],
-    [
-     -775.45,
-     104.14
-    ],
-    [
-     -776.0,
-     100.0
-    ],
-    [
-     -775.45,
-     95.86
-    ],
-    [
-     -773.86,
-     92.0
-    ],
-    [
-     -771.31,
-     88.69
-    ],
-    [
-     -768.0,
-     86.14
-    ],
-    [
-     -764.14,
-     84.55
-    ],
-    [
-     -760.0,
-     84.0
-    ],
-    [
-     -755.86,
-     84.55
-    ],
-    [
-     -752.0,
-     86.14
-    ],
-    [
-     -748.69,
-     88.69
-    ],
-    [
-     -746.14,
-     92.0
-    ],
-    [
-     -744.55,
-     95.86
-    ]
-   ],
-   "start": 1100,
-   "end": 1680
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vessel Manifold",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vessel Manifold",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vessel Manifold",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cartridge Housing 1",
-   "points": [
-    [
-     -535.0,
-     -200.0
-    ],
-    [
-     -537.21,
-     -183.18
-    ],
-    [
-     -543.71,
-     -167.5
-    ],
-    [
-     -554.04,
-     -154.04
-    ],
-    [
-     -567.5,
-     -143.71
-    ],
-    [
-     -583.18,
-     -137.21
-    ],
-    [
-     -600.0,
-     -135.0
-    ],
-    [
-     -616.82,
-     -137.21
-    ],
-    [
-     -632.5,
-     -143.71
-    ],
-    [
-     -645.96,
-     -154.04
-    ],
-    [
-     -656.29,
-     -167.5
-    ],
-    [
-     -662.79,
-     -183.18
-    ],
-    [
-     -665.0,
-     -200.0
-    ],
-    [
-     -662.79,
-     -216.82
-    ],
-    [
-     -656.29,
-     -232.5
-    ],
-    [
-     -645.96,
-     -245.96
-    ],
-    [
-     -632.5,
-     -256.29
-    ],
-    [
-     -616.82,
-     -262.79
-    ],
-    [
-     -600.0,
-     -265.0
-    ],
-    [
-     -583.18,
-     -262.79
-    ],
-    [
-     -567.5,
-     -256.29
-    ],
-    [
-     -554.04,
-     -245.96
-    ],
-    [
-     -543.71,
-     -232.5
-    ],
-    [
-     -537.21,
-     -216.82
-    ]
-   ],
-   "start": 350,
-   "end": 850
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cartridge Housing 1",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cartridge Housing 1",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cartridge Housing 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cartridge Housing 2",
-   "points": [
-    [
-     -335.0,
-     -200.0
-    ],
-    [
-     -337.21,
-     -183.18
-    ],
-    [
-     -343.71,
-     -167.5
-    ],
-    [
-     -354.04,
-     -154.04
-    ],
-    [
-     -367.5,
-     -143.71
-    ],
-    [
-     -383.18,
-     -137.21
-    ],
-    [
-     -400.0,
-     -135.0
-    ],
-    [
-     -416.82,
-     -137.21
-    ],
-    [
-     -432.5,
-     -143.71
-    ],
-    [
-     -445.96,
-     -154.04
-    ],
-    [
-     -456.29,
-     -167.5
-    ],
-    [
-     -462.79,
-     -183.18
-    ],
-    [
-     -465.0,
-     -200.0
-    ],
-    [
-     -462.79,
-     -216.82
-    ],
-    [
-     -456.29,
-     -232.5
-    ],
-    [
-     -445.96,
-     -245.96
-    ],
-    [
-     -432.5,
-     -256.29
-    ],
-    [
-     -416.82,
-     -262.79
-    ],
-    [
-     -400.0,
-     -265.0
-    ],
-    [
-     -383.18,
-     -262.79
-    ],
-    [
-     -367.5,
-     -256.29
-    ],
-    [
-     -354.04,
-     -245.96
-    ],
-    [
-     -343.71,
-     -232.5
-    ],
-    [
-     -337.21,
-     -216.82
-    ]
-   ],
-   "start": 350,
-   "end": 850
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cartridge Housing 2",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cartridge Housing 2",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cartridge Housing 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Cartridge Head 1",
-   "profile": [
-    [
-     0,
-     850
-    ],
-    [
-     75,
-     850
-    ],
-    [
-     75,
-     900
-    ],
-    [
-     0,
-     900
-    ]
-   ],
-   "axis_at": [
-    -600,
-    -200
-   ],
-   "axis": "z",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cartridge Head 1",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cartridge Head 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Cartridge Head 2",
-   "profile": [
-    [
-     0,
-     850
-    ],
-    [
-     75,
-     850
-    ],
-    [
-     75,
-     900
-    ],
-    [
-     0,
-     900
-    ]
-   ],
-   "axis_at": [
-    -400,
-    -200
-   ],
-   "axis": "z",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cartridge Head 2",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cartridge Head 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pump Base",
-   "points": [
-    [
-     -150,
-     -300
-    ],
-    [
-     450,
-     -300
-    ],
-    [
-     450,
-     100
-    ],
-    [
-     -150,
-     100
-    ]
-   ],
-   "start": 40,
-   "end": 80
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pump Base",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pump Base",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pump Base",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "HP Pump Motor",
-   "points": [
-    [
-     10.0,
-     200.0
-    ],
-    [
-     6.25,
-     228.47
-    ],
-    [
-     -4.74,
-     255.0
-    ],
-    [
-     -22.22,
-     277.78
-    ],
-    [
-     -45.0,
-     295.26
-    ],
-    [
-     -71.53,
-     306.25
-    ],
-    [
-     -100.0,
-     310.0
-    ],
-    [
-     -128.47,
-     306.25
-    ],
-    [
-     -155.0,
-     295.26
-    ],
-    [
-     -177.78,
-     277.78
-    ],
-    [
-     -195.26,
-     255.0
-    ],
-    [
-     -206.25,
-     228.47
-    ],
-    [
-     -210.0,
-     200.0
-    ],
-    [
-     -206.25,
-     171.53
-    ],
-    [
-     -195.26,
-     145.0
-    ],
-    [
-     -177.78,
-     122.22
-    ],
-    [
-     -155.0,
-     104.74
-    ],
-    [
-     -128.47,
-     93.75
-    ],
-    [
-     -100.0,
-     90.0
-    ],
-    [
-     -71.53,
-     93.75
-    ],
-    [
-     -45.0,
-     104.74
-    ],
-    [
-     -22.22,
-     122.22
-    ],
-    [
-     -4.74,
-     145.0
-    ],
-    [
-     6.25,
-     171.53
-    ]
-   ],
-   "start": 75.6,
-   "end": 420,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "HP Pump Motor",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "HP Pump Motor",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "HP Pump Motor",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "HP Pump Fan Cowl",
-   "profile": [
-    [
-     0,
-     0
-    ],
-    [
-     99.0,
-     0
-    ],
-    [
-     114,
-     21.0
-    ],
-    [
-     114,
-     75.6
-    ],
-    [
-     0,
-     75.6
-    ]
-   ],
-   "axis_at": [
-    -100,
-    200
-   ],
-   "axis": "x",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "HP Pump Fan Cowl",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "HP Pump Fan Cowl",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "HP Pump Cowl Grille",
-   "profile": [
-    [
-     0,
-     -2
-    ],
-    [
-     66.0,
-     -2
-    ],
-    [
-     66.0,
-     0
-    ],
-    [
-     0,
-     0
-    ]
-   ],
-   "axis_at": [
-    -100,
-    200
-   ],
-   "axis": "x",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "HP Pump Cowl Grille",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "HP Pump Cowl Grille",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "HP Pump Terminal Box",
-   "points": [
-    [
-     311.0,
-     -149.5
-    ],
-    [
-     312.53,
-     -149.2
-    ],
-    [
-     313.83,
-     -148.33
-    ],
-    [
-     314.7,
-     -147.03
-    ],
-    [
-     315.0,
-     -145.5
-    ],
-    [
-     315.0,
-     -54.5
-    ],
-    [
-     314.7,
-     -52.97
-    ],
-    [
-     313.83,
-     -51.67
-    ],
-    [
-     312.53,
-     -50.8
-    ],
-    [
-     311.0,
-     -50.5
-    ],
-    [
-     193.0,
-     -50.5
-    ],
-    [
-     191.47,
-     -50.8
-    ],
-    [
-     190.17,
-     -51.67
-    ],
-    [
-     189.3,
-     -52.97
-    ],
-    [
-     189.0,
-     -54.5
-    ],
-    [
-     189.0,
-     -145.5
-    ],
-    [
-     189.3,
-     -147.03
-    ],
-    [
-     190.17,
-     -148.33
-    ],
-    [
-     191.47,
-     -149.2
-    ],
-    [
-     193.0,
-     -149.5
-    ]
-   ],
-   "start": 305,
-   "end": 359.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "HP Pump Terminal Box",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "HP Pump Terminal Box",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "HP Pump Terminal Box",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "HP Pump Fin 1",
-   "profile": [
-    [
-     110,
-     105.0
-    ],
-    [
-     115,
-     105.0
-    ],
-    [
-     115,
-     111.0
-    ],
-    [
-     110,
-     111.0
-    ]
-   ],
-   "axis_at": [
-    -100,
-    200
-   ],
-   "axis": "x",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "HP Pump Fin 1",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "HP Pump Fin 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "HP Pump Fin 2",
-   "profile": [
-    [
-     110,
-     203.0
-    ],
-    [
-     115,
-     203.0
-    ],
-    [
-     115,
-     209.0
-    ],
-    [
-     110,
-     209.0
-    ]
-   ],
-   "axis_at": [
-    -100,
-    200
-   ],
-   "axis": "x",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "HP Pump Fin 2",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "HP Pump Fin 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "HP Pump Fin 3",
-   "profile": [
-    [
-     110,
-     301.0
-    ],
-    [
-     115,
-     301.0
-    ],
-    [
-     115,
-     307.0
-    ],
-    [
-     110,
-     307.0
-    ]
-   ],
-   "axis_at": [
-    -100,
-    200
-   ],
-   "axis": "x",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "HP Pump Fin 3",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "HP Pump Fin 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "HP Pump Foot 1",
-   "points": [
-    [
-     105.0,
-     -193.5
-    ],
-    [
-     138.6,
-     -193.5
-    ],
-    [
-     138.6,
-     -6.5
-    ],
-    [
-     105.0,
-     -6.5
-    ]
-   ],
-   "start": 82,
-   "end": 139.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "HP Pump Foot 1",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "HP Pump Foot 1",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "HP Pump Foot 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "HP Pump Foot 2",
-   "points": [
-    [
-     315.0,
-     -193.5
-    ],
-    [
-     348.6,
-     -193.5
-    ],
-    [
-     348.6,
-     -6.5
-    ],
-    [
-     315.0,
-     -6.5
-    ]
-   ],
-   "start": 82,
-   "end": 139.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "HP Pump Foot 2",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "HP Pump Foot 2",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "HP Pump Foot 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pump End",
-   "points": [
-    [
-     -30.0,
-     200.0
-    ],
-    [
-     -32.39,
-     218.12
-    ],
-    [
-     -39.38,
-     235.0
-    ],
-    [
-     -50.5,
-     249.5
-    ],
-    [
-     -65.0,
-     260.62
-    ],
-    [
-     -81.88,
-     267.61
-    ],
-    [
-     -100.0,
-     270.0
-    ],
-    [
-     -118.12,
-     267.61
-    ],
-    [
-     -135.0,
-     260.62
-    ],
-    [
-     -149.5,
-     249.5
-    ],
-    [
-     -160.62,
-     235.0
-    ],
-    [
-     -167.61,
-     218.12
-    ],
-    [
-     -170.0,
-     200.0
-    ],
-    [
-     -167.61,
-     181.88
-    ],
-    [
-     -160.62,
-     165.0
-    ],
-    [
-     -149.5,
-     150.5
-    ],
-    [
-     -135.0,
-     139.38
-    ],
-    [
-     -118.12,
-     132.39
-    ],
-    [
-     -100.0,
-     130.0
-    ],
-    [
-     -81.88,
-     132.39
-    ],
-    [
-     -65.0,
-     139.38
-    ],
-    [
-     -50.5,
-     150.5
-    ],
-    [
-     -39.38,
-     165.0
-    ],
-    [
-     -32.39,
-     181.88
-    ]
-   ],
-   "start": -140,
-   "end": 0,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pump End",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pump End",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pump End",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flow Meter 1",
-   "points": [
-    [
-     218.0,
-     -385.0
-    ],
-    [
-     217.39,
-     -380.34
-    ],
-    [
-     215.59,
-     -376.0
-    ],
-    [
-     212.73,
-     -372.27
-    ],
-    [
-     209.0,
-     -369.41
-    ],
-    [
-     204.66,
-     -367.61
-    ],
-    [
-     200.0,
-     -367.0
-    ],
-    [
-     195.34,
-     -367.61
-    ],
-    [
-     191.0,
-     -369.41
-    ],
-    [
-     187.27,
-     -372.27
-    ],
-    [
-     184.41,
-     -376.0
-    ],
-    [
-     182.61,
-     -380.34
-    ],
-    [
-     182.0,
-     -385.0
-    ],
-    [
-     182.61,
-     -389.66
-    ],
-    [
-     184.41,
-     -394.0
-    ],
-    [
-     187.27,
-     -397.73
-    ],
-    [
-     191.0,
-     -400.59
-    ],
-    [
-     195.34,
-     -402.39
-    ],
-    [
-     200.0,
-     -403.0
-    ],
-    [
-     204.66,
-     -402.39
-    ],
-    [
-     209.0,
-     -400.59
-    ],
-    [
-     212.73,
-     -397.73
-    ],
-    [
-     215.59,
-     -394.0
-    ],
-    [
-     217.39,
-     -389.66
-    ]
-   ],
-   "start": 1200,
-   "end": 1450
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flow Meter 1",
-   "subcategory": "Polycarbonate"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flow Meter 1",
-   "param": "Polycarbonate Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flow Meter 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flow Meter 2",
-   "points": [
-    [
-     308.0,
-     -385.0
-    ],
-    [
-     307.39,
-     -380.34
-    ],
-    [
-     305.59,
-     -376.0
-    ],
-    [
-     302.73,
-     -372.27
-    ],
-    [
-     299.0,
-     -369.41
-    ],
-    [
-     294.66,
-     -367.61
-    ],
-    [
-     290.0,
-     -367.0
-    ],
-    [
-     285.34,
-     -367.61
-    ],
-    [
-     281.0,
-     -369.41
-    ],
-    [
-     277.27,
-     -372.27
-    ],
-    [
-     274.41,
-     -376.0
-    ],
-    [
-     272.61,
-     -380.34
-    ],
-    [
-     272.0,
-     -385.0
-    ],
-    [
-     272.61,
-     -389.66
-    ],
-    [
-     274.41,
-     -394.0
-    ],
-    [
-     277.27,
-     -397.73
-    ],
-    [
-     281.0,
-     -400.59
-    ],
-    [
-     285.34,
-     -402.39
-    ],
-    [
-     290.0,
-     -403.0
-    ],
-    [
-     294.66,
-     -402.39
-    ],
-    [
-     299.0,
-     -400.59
-    ],
-    [
-     302.73,
-     -397.73
-    ],
-    [
-     305.59,
-     -394.0
-    ],
-    [
-     307.39,
-     -389.66
-    ]
-   ],
-   "start": 1200,
-   "end": 1450
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flow Meter 2",
-   "subcategory": "Polycarbonate"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flow Meter 2",
-   "param": "Polycarbonate Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flow Meter 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flow Meter 3",
-   "points": [
-    [
-     398.0,
-     -385.0
-    ],
-    [
-     397.39,
-     -380.34
-    ],
-    [
-     395.59,
-     -376.0
-    ],
-    [
-     392.73,
-     -372.27
-    ],
-    [
-     389.0,
-     -369.41
-    ],
-    [
-     384.66,
-     -367.61
-    ],
-    [
-     380.0,
-     -367.0
-    ],
-    [
-     375.34,
-     -367.61
-    ],
-    [
-     371.0,
-     -369.41
-    ],
-    [
-     367.27,
-     -372.27
-    ],
-    [
-     364.41,
-     -376.0
-    ],
-    [
-     362.61,
-     -380.34
-    ],
-    [
-     362.0,
-     -385.0
-    ],
-    [
-     362.61,
-     -389.66
-    ],
-    [
-     364.41,
-     -394.0
-    ],
-    [
-     367.27,
-     -397.73
-    ],
-    [
-     371.0,
-     -400.59
-    ],
-    [
-     375.34,
-     -402.39
-    ],
-    [
-     380.0,
-     -403.0
-    ],
-    [
-     384.66,
-     -402.39
-    ],
-    [
-     389.0,
-     -400.59
-    ],
-    [
-     392.73,
-     -397.73
-    ],
-    [
-     395.59,
-     -394.0
-    ],
-    [
-     397.39,
-     -389.66
-    ]
-   ],
-   "start": 1200,
-   "end": 1450
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flow Meter 3",
-   "subcategory": "Polycarbonate"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flow Meter 3",
-   "param": "Polycarbonate Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flow Meter 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flow Float 1",
-   "points": [
-    [
-     212.0,
-     -385.0
-    ],
-    [
-     211.59,
-     -381.89
-    ],
-    [
-     210.39,
-     -379.0
-    ],
-    [
-     208.49,
-     -376.51
-    ],
-    [
-     206.0,
-     -374.61
-    ],
-    [
-     203.11,
-     -373.41
-    ],
-    [
-     200.0,
-     -373.0
-    ],
-    [
-     196.89,
-     -373.41
-    ],
-    [
-     194.0,
-     -374.61
-    ],
-    [
-     191.51,
-     -376.51
-    ],
-    [
-     189.61,
-     -379.0
-    ],
-    [
-     188.41,
-     -381.89
-    ],
-    [
-     188.0,
-     -385.0
-    ],
-    [
-     188.41,
-     -388.11
-    ],
-    [
-     189.61,
-     -391.0
-    ],
-    [
-     191.51,
-     -393.49
-    ],
-    [
-     194.0,
-     -395.39
-    ],
-    [
-     196.89,
-     -396.59
-    ],
-    [
-     200.0,
-     -397.0
-    ],
-    [
-     203.11,
-     -396.59
-    ],
-    [
-     206.0,
-     -395.39
-    ],
-    [
-     208.49,
-     -393.49
-    ],
-    [
-     210.39,
-     -391.0
-    ],
-    [
-     211.59,
-     -388.11
-    ]
-   ],
-   "start": 1300,
-   "end": 1320
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flow Float 1",
-   "subcategory": "Led Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flow Float 1",
-   "param": "Led Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flow Float 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flow Float 2",
-   "points": [
-    [
-     302.0,
-     -385.0
-    ],
-    [
-     301.59,
-     -381.89
-    ],
-    [
-     300.39,
-     -379.0
-    ],
-    [
-     298.49,
-     -376.51
-    ],
-    [
-     296.0,
-     -374.61
-    ],
-    [
-     293.11,
-     -373.41
-    ],
-    [
-     290.0,
-     -373.0
-    ],
-    [
-     286.89,
-     -373.41
-    ],
-    [
-     284.0,
-     -374.61
-    ],
-    [
-     281.51,
-     -376.51
-    ],
-    [
-     279.61,
-     -379.0
-    ],
-    [
-     278.41,
-     -381.89
-    ],
-    [
-     278.0,
-     -385.0
-    ],
-    [
-     278.41,
-     -388.11
-    ],
-    [
-     279.61,
-     -391.0
-    ],
-    [
-     281.51,
-     -393.49
-    ],
-    [
-     284.0,
-     -395.39
-    ],
-    [
-     286.89,
-     -396.59
-    ],
-    [
-     290.0,
-     -397.0
-    ],
-    [
-     293.11,
-     -396.59
-    ],
-    [
-     296.0,
-     -395.39
-    ],
-    [
-     298.49,
-     -393.49
-    ],
-    [
-     300.39,
-     -391.0
-    ],
-    [
-     301.59,
-     -388.11
-    ]
-   ],
-   "start": 1300,
-   "end": 1320
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flow Float 2",
-   "subcategory": "Led Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flow Float 2",
-   "param": "Led Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flow Float 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flow Float 3",
-   "points": [
-    [
-     392.0,
-     -385.0
-    ],
-    [
-     391.59,
-     -381.89
-    ],
-    [
-     390.39,
-     -379.0
-    ],
-    [
-     388.49,
-     -376.51
-    ],
-    [
-     386.0,
-     -374.61
-    ],
-    [
-     383.11,
-     -373.41
-    ],
-    [
-     380.0,
-     -373.0
-    ],
-    [
-     376.89,
-     -373.41
-    ],
-    [
-     374.0,
-     -374.61
-    ],
-    [
-     371.51,
-     -376.51
-    ],
-    [
-     369.61,
-     -379.0
-    ],
-    [
-     368.41,
-     -381.89
-    ],
-    [
-     368.0,
-     -385.0
-    ],
-    [
-     368.41,
-     -388.11
-    ],
-    [
-     369.61,
-     -391.0
-    ],
-    [
-     371.51,
-     -393.49
-    ],
-    [
-     374.0,
-     -395.39
-    ],
-    [
-     376.89,
-     -396.59
-    ],
-    [
-     380.0,
-     -397.0
-    ],
-    [
-     383.11,
-     -396.59
-    ],
-    [
-     386.0,
-     -395.39
-    ],
-    [
-     388.49,
-     -393.49
-    ],
-    [
-     390.39,
-     -391.0
-    ],
-    [
-     391.59,
-     -388.11
-    ]
-   ],
-   "start": 1300,
-   "end": 1320
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flow Float 3",
-   "subcategory": "Led Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flow Float 3",
-   "param": "Led Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flow Float 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Feed Gauge Case",
-   "points": [
-    [
-     -310.0,
-     1350.0
-    ],
-    [
-     -311.36,
-     1360.35
-    ],
-    [
-     -315.36,
-     1370.0
-    ],
-    [
-     -321.72,
-     1378.28
-    ],
-    [
-     -330.0,
-     1384.64
-    ],
-    [
-     -339.65,
-     1388.64
-    ],
-    [
-     -350.0,
-     1390.0
-    ],
-    [
-     -360.35,
-     1388.64
-    ],
-    [
-     -370.0,
-     1384.64
-    ],
-    [
-     -378.28,
-     1378.28
-    ],
-    [
-     -384.64,
-     1370.0
-    ],
-    [
-     -388.64,
-     1360.35
-    ],
-    [
-     -390.0,
-     1350.0
-    ],
-    [
-     -388.64,
-     1339.65
-    ],
-    [
-     -384.64,
-     1330.0
-    ],
-    [
-     -378.28,
-     1321.72
-    ],
-    [
-     -370.0,
-     1315.36
-    ],
-    [
-     -360.35,
-     1311.36
-    ],
-    [
-     -350.0,
-     1310.0
-    ],
-    [
-     -339.65,
-     1311.36
-    ],
-    [
-     -330.0,
-     1315.36
-    ],
-    [
-     -321.72,
-     1321.72
-    ],
-    [
-     -315.36,
-     1330.0
-    ],
-    [
-     -311.36,
-     1339.65
-    ]
-   ],
-   "start": 360,
-   "end": 385,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Feed Gauge Case",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Feed Gauge Case",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Feed Gauge Case",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Feed Gauge Dial",
-   "points": [
-    [
-     -314.0,
-     1350.0
-    ],
-    [
-     -315.23,
-     1359.32
-    ],
-    [
-     -318.82,
-     1368.0
-    ],
-    [
-     -324.54,
-     1375.46
-    ],
-    [
-     -332.0,
-     1381.18
-    ],
-    [
-     -340.68,
-     1384.77
-    ],
-    [
-     -350.0,
-     1386.0
-    ],
-    [
-     -359.32,
-     1384.77
-    ],
-    [
-     -368.0,
-     1381.18
-    ],
-    [
-     -375.46,
-     1375.46
-    ],
-    [
-     -381.18,
-     1368.0
-    ],
-    [
-     -384.77,
-     1359.32
-    ],
-    [
-     -386.0,
-     1350.0
-    ],
-    [
-     -384.77,
-     1340.68
-    ],
-    [
-     -381.18,
-     1332.0
-    ],
-    [
-     -375.46,
-     1324.54
-    ],
-    [
-     -368.0,
-     1318.82
-    ],
-    [
-     -359.32,
-     1315.23
-    ],
-    [
-     -350.0,
-     1314.0
-    ],
-    [
-     -340.68,
-     1315.23
-    ],
-    [
-     -332.0,
-     1318.82
-    ],
-    [
-     -324.54,
-     1324.54
-    ],
-    [
-     -318.82,
-     1332.0
-    ],
-    [
-     -315.23,
-     1340.68
-    ]
-   ],
-   "start": 385,
-   "end": 387,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Feed Gauge Dial",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Feed Gauge Dial",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Feed Gauge Dial",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Feed Gauge Needle",
-   "points": [
-    [
-     -351.5,
-     -389
-    ],
-    [
-     -326.0,
-     -389
-    ],
-    [
-     -326.0,
-     -387
-    ],
-    [
-     -351.5,
-     -387
-    ]
-   ],
-   "start": 1348,
-   "end": 1352
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Feed Gauge Needle",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Feed Gauge Needle",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Feed Gauge Needle",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Reject Gauge Case",
-   "points": [
-    [
-     -160.0,
-     1350.0
-    ],
-    [
-     -161.36,
-     1360.35
-    ],
-    [
-     -165.36,
-     1370.0
-    ],
-    [
-     -171.72,
-     1378.28
-    ],
-    [
-     -180.0,
-     1384.64
-    ],
-    [
-     -189.65,
-     1388.64
-    ],
-    [
-     -200.0,
-     1390.0
-    ],
-    [
-     -210.35,
-     1388.64
-    ],
-    [
-     -220.0,
-     1384.64
-    ],
-    [
-     -228.28,
-     1378.28
-    ],
-    [
-     -234.64,
-     1370.0
-    ],
-    [
-     -238.64,
-     1360.35
-    ],
-    [
-     -240.0,
-     1350.0
-    ],
-    [
-     -238.64,
-     1339.65
-    ],
-    [
-     -234.64,
-     1330.0
-    ],
-    [
-     -228.28,
-     1321.72
-    ],
-    [
-     -220.0,
-     1315.36
-    ],
-    [
-     -210.35,
-     1311.36
-    ],
-    [
-     -200.0,
-     1310.0
-    ],
-    [
-     -189.65,
-     1311.36
-    ],
-    [
-     -180.0,
-     1315.36
-    ],
-    [
-     -171.72,
-     1321.72
-    ],
-    [
-     -165.36,
-     1330.0
-    ],
-    [
-     -161.36,
-     1339.65
-    ]
-   ],
-   "start": 360,
-   "end": 385,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Reject Gauge Case",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Reject Gauge Case",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Reject Gauge Case",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Reject Gauge Dial",
-   "points": [
-    [
-     -164.0,
-     1350.0
-    ],
-    [
-     -165.23,
-     1359.32
-    ],
-    [
-     -168.82,
-     1368.0
-    ],
-    [
-     -174.54,
-     1375.46
-    ],
-    [
-     -182.0,
-     1381.18
-    ],
-    [
-     -190.68,
-     1384.77
-    ],
-    [
-     -200.0,
-     1386.0
-    ],
-    [
-     -209.32,
-     1384.77
-    ],
-    [
-     -218.0,
-     1381.18
-    ],
-    [
-     -225.46,
-     1375.46
-    ],
-    [
-     -231.18,
-     1368.0
-    ],
-    [
-     -234.77,
-     1359.32
-    ],
-    [
-     -236.0,
-     1350.0
-    ],
-    [
-     -234.77,
-     1340.68
-    ],
-    [
-     -231.18,
-     1332.0
-    ],
-    [
-     -225.46,
-     1324.54
-    ],
-    [
-     -218.0,
-     1318.82
-    ],
-    [
-     -209.32,
-     1315.23
-    ],
-    [
-     -200.0,
-     1314.0
-    ],
-    [
-     -190.68,
-     1315.23
-    ],
-    [
-     -182.0,
-     1318.82
-    ],
-    [
-     -174.54,
-     1324.54
-    ],
-    [
-     -168.82,
-     1332.0
-    ],
-    [
-     -165.23,
-     1340.68
-    ]
-   ],
-   "start": 385,
-   "end": 387,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Reject Gauge Dial",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Reject Gauge Dial",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Reject Gauge Dial",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Reject Gauge Needle",
-   "points": [
-    [
-     -201.5,
-     -389
-    ],
-    [
-     -176.0,
-     -389
-    ],
-    [
-     -176.0,
-     -387
-    ],
-    [
-     -201.5,
-     -387
-    ]
-   ],
-   "start": 1348,
-   "end": 1352
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Reject Gauge Needle",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Reject Gauge Needle",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Reject Gauge Needle",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Control Panel Enclosure",
-   "points": [
-    [
-     756.0,
-     -400.0
-    ],
-    [
-     757.53,
-     -399.7
-    ],
-    [
-     758.83,
-     -398.83
-    ],
-    [
-     759.7,
-     -397.53
-    ],
-    [
-     760.0,
-     -396.0
-    ],
-    [
-     760.0,
-     -224.0
-    ],
-    [
-     759.7,
-     -222.47
-    ],
-    [
-     758.83,
-     -221.17
-    ],
-    [
-     757.53,
-     -220.3
-    ],
-    [
-     756.0,
-     -220.0
-    ],
-    [
-     404.0,
-     -220.0
-    ],
-    [
-     402.47,
-     -220.3
-    ],
-    [
-     401.17,
-     -221.17
-    ],
-    [
-     400.3,
-     -222.47
-    ],
-    [
-     400.0,
-     -224.0
-    ],
-    [
-     400.0,
-     -396.0
-    ],
-    [
-     400.3,
-     -397.53
-    ],
-    [
-     401.17,
-     -398.83
-    ],
-    [
-     402.47,
-     -399.7
-    ],
-    [
-     404.0,
-     -400.0
-    ]
-   ],
-   "start": 1300,
-   "end": 1800
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Control Panel Enclosure",
-   "subcategory": "Epoxy White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Control Panel Enclosure",
-   "param": "Epoxy White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Control Panel Enclosure",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Control Panel Door",
-   "points": [
-    [
-     748.0,
-     1308.0
-    ],
-    [
-     749.53,
-     1308.3
-    ],
-    [
-     750.83,
-     1309.17
-    ],
-    [
-     751.7,
-     1310.47
-    ],
-    [
-     752.0,
-     1312.0
-    ],
-    [
-     752.0,
-     1788.0
-    ],
-    [
-     751.7,
-     1789.53
-    ],
-    [
-     750.83,
-     1790.83
-    ],
-    [
-     749.53,
-     1791.7
-    ],
-    [
-     748.0,
-     1792.0
-    ],
-    [
-     412.0,
-     1792.0
-    ],
-    [
-     410.47,
-     1791.7
-    ],
-    [
-     409.17,
-     1790.83
-    ],
-    [
-     408.3,
-     1789.53
-    ],
-    [
-     408.0,
-     1788.0
-    ],
-    [
-     408.0,
-     1312.0
-    ],
-    [
-     408.3,
-     1310.47
-    ],
-    [
-     409.17,
-     1309.17
-    ],
-    [
-     410.47,
-     1308.3
-    ],
-    [
-     412.0,
-     1308.0
-    ]
-   ],
-   "start": 400,
-   "end": 406,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Control Panel Door",
-   "subcategory": "Epoxy White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Control Panel Door",
-   "param": "Epoxy White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Control Panel Door",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Control Panel Screen",
-   "points": [
-    [
-     631.0,
-     1600.0
-    ],
-    [
-     632.15,
-     1600.23
-    ],
-    [
-     633.12,
-     1600.88
-    ],
-    [
-     633.77,
-     1601.85
-    ],
-    [
-     634.0,
-     1603.0
-    ],
-    [
-     634.0,
-     1727.0
-    ],
-    [
-     633.77,
-     1728.15
-    ],
-    [
-     633.12,
-     1729.12
-    ],
-    [
-     632.15,
-     1729.77
-    ],
-    [
-     631.0,
-     1730.0
-    ],
-    [
-     475.0,
-     1730.0
-    ],
-    [
-     473.85,
-     1729.77
-    ],
-    [
-     472.88,
-     1729.12
-    ],
-    [
-     472.23,
-     1728.15
-    ],
-    [
-     472.0,
-     1727.0
-    ],
-    [
-     472.0,
-     1603.0
-    ],
-    [
-     472.23,
-     1601.85
-    ],
-    [
-     472.88,
-     1600.88
-    ],
-    [
-     473.85,
-     1600.23
-    ],
-    [
-     475.0,
-     1600.0
-    ]
-   ],
-   "start": 406,
-   "end": 408,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Control Panel Screen",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Control Panel Screen",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Control Panel Screen",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Control Panel LED 1",
-   "points": [
-    [
-     480.0,
-     1540.0
-    ],
-    [
-     479.73,
-     1542.07
-    ],
-    [
-     478.93,
-     1544.0
-    ],
-    [
-     477.66,
-     1545.66
-    ],
-    [
-     476.0,
-     1546.93
-    ],
-    [
-     474.07,
-     1547.73
-    ],
-    [
-     472.0,
-     1548.0
-    ],
-    [
-     469.93,
-     1547.73
-    ],
-    [
-     468.0,
-     1546.93
-    ],
-    [
-     466.34,
-     1545.66
-    ],
-    [
-     465.07,
-     1544.0
-    ],
-    [
-     464.27,
-     1542.07
-    ],
-    [
-     464.0,
-     1540.0
-    ],
-    [
-     464.27,
-     1537.93
-    ],
-    [
-     465.07,
-     1536.0
-    ],
-    [
-     466.34,
-     1534.34
-    ],
-    [
-     468.0,
-     1533.07
-    ],
-    [
-     469.93,
-     1532.27
-    ],
-    [
-     472.0,
-     1532.0
-    ],
-    [
-     474.07,
-     1532.27
-    ],
-    [
-     476.0,
-     1533.07
-    ],
-    [
-     477.66,
-     1534.34
-    ],
-    [
-     478.93,
-     1536.0
-    ],
-    [
-     479.73,
-     1537.93
-    ]
-   ],
-   "start": 406,
-   "end": 410,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Control Panel LED 1",
-   "subcategory": "Led Green"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Control Panel LED 1",
-   "param": "Led Green Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Control Panel LED 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Control Panel LED 2",
-   "points": [
-    [
-     523.2,
-     1540.0
-    ],
-    [
-     522.93,
-     1542.07
-    ],
-    [
-     522.13,
-     1544.0
-    ],
-    [
-     520.86,
-     1545.66
-    ],
-    [
-     519.2,
-     1546.93
-    ],
-    [
-     517.27,
-     1547.73
-    ],
-    [
-     515.2,
-     1548.0
-    ],
-    [
-     513.13,
-     1547.73
-    ],
-    [
-     511.2,
-     1546.93
-    ],
-    [
-     509.54,
-     1545.66
-    ],
-    [
-     508.27,
-     1544.0
-    ],
-    [
-     507.47,
-     1542.07
-    ],
-    [
-     507.2,
-     1540.0
-    ],
-    [
-     507.47,
-     1537.93
-    ],
-    [
-     508.27,
-     1536.0
-    ],
-    [
-     509.54,
-     1534.34
-    ],
-    [
-     511.2,
-     1533.07
-    ],
-    [
-     513.13,
-     1532.27
-    ],
-    [
-     515.2,
-     1532.0
-    ],
-    [
-     517.27,
-     1532.27
-    ],
-    [
-     519.2,
-     1533.07
-    ],
-    [
-     520.86,
-     1534.34
-    ],
-    [
-     522.13,
-     1536.0
-    ],
-    [
-     522.93,
-     1537.93
-    ]
-   ],
-   "start": 406,
-   "end": 410,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Control Panel LED 2",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Control Panel LED 2",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Control Panel LED 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Control Panel LED 3",
-   "points": [
-    [
-     566.4,
-     1540.0
-    ],
-    [
-     566.13,
-     1542.07
-    ],
-    [
-     565.33,
-     1544.0
-    ],
-    [
-     564.06,
-     1545.66
-    ],
-    [
-     562.4,
-     1546.93
-    ],
-    [
-     560.47,
-     1547.73
-    ],
-    [
-     558.4,
-     1548.0
-    ],
-    [
-     556.33,
-     1547.73
-    ],
-    [
-     554.4,
-     1546.93
-    ],
-    [
-     552.74,
-     1545.66
-    ],
-    [
-     551.47,
-     1544.0
-    ],
-    [
-     550.67,
-     1542.07
-    ],
-    [
-     550.4,
-     1540.0
-    ],
-    [
-     550.67,
-     1537.93
-    ],
-    [
-     551.47,
-     1536.0
-    ],
-    [
-     552.74,
-     1534.34
-    ],
-    [
-     554.4,
-     1533.07
-    ],
-    [
-     556.33,
-     1532.27
-    ],
-    [
-     558.4,
-     1532.0
-    ],
-    [
-     560.47,
-     1532.27
-    ],
-    [
-     562.4,
-     1533.07
-    ],
-    [
-     564.06,
-     1534.34
-    ],
-    [
-     565.33,
-     1536.0
-    ],
-    [
-     566.13,
-     1537.93
-    ]
-   ],
-   "start": 406,
-   "end": 410,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Control Panel LED 3",
-   "subcategory": "Led Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Control Panel LED 3",
-   "param": "Led Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Control Panel LED 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Control Panel Isolator Plate",
-   "points": [
-    [
-     659.2,
-     1400.0
-    ],
-    [
-     731.2,
-     1400.0
-    ],
-    [
-     731.2,
-     1490.0
-    ],
-    [
-     659.2,
-     1490.0
-    ]
-   ],
-   "start": 406,
-   "end": 408,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Control Panel Isolator Plate",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Control Panel Isolator Plate",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Control Panel Isolator Plate",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Control Panel Isolator Handle",
-   "points": [
-    [
-     700.4,
-     1410.0
-    ],
-    [
-     701.17,
-     1410.15
-    ],
-    [
-     701.81,
-     1410.59
-    ],
-    [
-     702.25,
-     1411.23
-    ],
-    [
-     702.4,
-     1412.0
-    ],
-    [
-     702.4,
-     1478.0
-    ],
-    [
-     702.25,
-     1478.77
-    ],
-    [
-     701.81,
-     1479.41
-    ],
-    [
-     701.17,
-     1479.85
-    ],
-    [
-     700.4,
-     1480.0
-    ],
-    [
-     690.0,
-     1480.0
-    ],
-    [
-     689.23,
-     1479.85
-    ],
-    [
-     688.59,
-     1479.41
-    ],
-    [
-     688.15,
-     1478.77
-    ],
-    [
-     688.0,
-     1478.0
-    ],
-    [
-     688.0,
-     1412.0
-    ],
-    [
-     688.15,
-     1411.23
-    ],
-    [
-     688.59,
-     1410.59
-    ],
-    [
-     689.23,
-     1410.15
-    ],
-    [
-     690.0,
-     1410.0
-    ]
-   ],
-   "start": 408,
-   "end": 426,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Control Panel Isolator Handle",
-   "subcategory": "Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Control Panel Isolator Handle",
-   "param": "Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Control Panel Isolator Handle",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Control Panel Door Handle",
-   "points": [
-    [
-     448.4,
-     1375.0
-    ],
-    [
-     449.17,
-     1375.15
-    ],
-    [
-     449.81,
-     1375.59
-    ],
-    [
-     450.25,
-     1376.23
-    ],
-    [
-     450.4,
-     1377.0
-    ],
-    [
-     450.4,
-     1488.0
-    ],
-    [
-     450.25,
-     1488.77
-    ],
-    [
-     449.81,
-     1489.41
-    ],
-    [
-     449.17,
-     1489.85
-    ],
-    [
-     448.4,
-     1490.0
-    ],
-    [
-     438.0,
-     1490.0
-    ],
-    [
-     437.23,
-     1489.85
-    ],
-    [
-     436.59,
-     1489.41
-    ],
-    [
-     436.15,
-     1488.77
-    ],
-    [
-     436.0,
-     1488.0
-    ],
-    [
-     436.0,
-     1377.0
-    ],
-    [
-     436.15,
-     1376.23
-    ],
-    [
-     436.59,
-     1375.59
-    ],
-    [
-     437.23,
-     1375.15
-    ],
-    [
-     438.0,
-     1375.0
-    ]
-   ],
-   "start": 406,
-   "end": 422,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Control Panel Door Handle",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Control Panel Door Handle",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Control Panel Door Handle",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Feed Inlet",
-   "points": [
-    [
-     -180.0,
-     250.0
-    ],
-    [
-     -180.68,
-     255.18
-    ],
-    [
-     -182.68,
-     260.0
-    ],
-    [
-     -185.86,
-     264.14
-    ],
-    [
-     -190.0,
-     267.32
-    ],
-    [
-     -194.82,
-     269.32
-    ],
-    [
-     -200.0,
-     270.0
-    ],
-    [
-     -205.18,
-     269.32
-    ],
-    [
-     -210.0,
-     267.32
-    ],
-    [
-     -214.14,
-     264.14
-    ],
-    [
-     -217.32,
-     260.0
-    ],
-    [
-     -219.32,
-     255.18
-    ],
-    [
-     -220.0,
-     250.0
-    ],
-    [
-     -219.32,
-     244.82
-    ],
-    [
-     -217.32,
-     240.0
-    ],
-    [
-     -214.14,
-     235.86
-    ],
-    [
-     -210.0,
-     232.68
-    ],
-    [
-     -205.18,
-     230.68
-    ],
-    [
-     -200.0,
-     230.0
-    ],
-    [
-     -194.82,
-     230.68
-    ],
-    [
-     -190.0,
-     232.68
-    ],
-    [
-     -185.86,
-     235.86
-    ],
-    [
-     -182.68,
-     240.0
-    ],
-    [
-     -180.68,
-     244.82
-    ]
-   ],
-   "start": -900,
-   "end": -800,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Feed Inlet",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Feed Inlet",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Feed Inlet",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drain Outlet",
-   "points": [
-    [
-     520.0,
-     200.0
-    ],
-    [
-     519.32,
-     205.18
-    ],
-    [
-     517.32,
-     210.0
-    ],
-    [
-     514.14,
-     214.14
-    ],
-    [
-     510.0,
-     217.32
-    ],
-    [
-     505.18,
-     219.32
-    ],
-    [
-     500.0,
-     220.0
-    ],
-    [
-     494.82,
-     219.32
-    ],
-    [
-     490.0,
-     217.32
-    ],
-    [
-     485.86,
-     214.14
-    ],
-    [
-     482.68,
-     210.0
-    ],
-    [
-     480.68,
-     205.18
-    ],
-    [
-     480.0,
-     200.0
-    ],
-    [
-     480.68,
-     194.82
-    ],
-    [
-     482.68,
-     190.0
-    ],
-    [
-     485.86,
-     185.86
-    ],
-    [
-     490.0,
-     182.68
-    ],
-    [
-     494.82,
-     180.68
-    ],
-    [
-     500.0,
-     180.0
-    ],
-    [
-     505.18,
-     180.68
-    ],
-    [
-     510.0,
-     182.68
-    ],
-    [
-     514.14,
-     185.86
-    ],
-    [
-     517.32,
-     190.0
-    ],
-    [
-     519.32,
-     194.82
-    ]
-   ],
-   "start": -50,
-   "end": 40
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drain Outlet",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drain Outlet",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drain Outlet",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Permeate Outlet",
-   "points": [
-    [
-     116.0,
-     1700.0
-    ],
-    [
-     115.45,
-     1704.14
-    ],
-    [
-     113.86,
-     1708.0
-    ],
-    [
-     111.31,
-     1711.31
-    ],
-    [
-     108.0,
-     1713.86
-    ],
-    [
-     104.14,
-     1715.45
-    ],
-    [
-     100.0,
-     1716.0
-    ],
-    [
-     95.86,
-     1715.45
-    ],
-    [
-     92.0,
-     1713.86
-    ],
-    [
-     88.69,
-     1711.31
-    ],
-    [
-     86.14,
-     1708.0
-    ],
-    [
-     84.55,
-     1704.14
-    ],
-    [
-     84.0,
-     1700.0
-    ],
-    [
-     84.55,
-     1695.86
-    ],
-    [
-     86.14,
-     1692.0
-    ],
-    [
-     88.69,
-     1688.69
-    ],
-    [
-     92.0,
-     1686.14
-    ],
-    [
-     95.86,
-     1684.55
-    ],
-    [
-     100.0,
-     1684.0
-    ],
-    [
-     104.14,
-     1684.55
-    ],
-    [
-     108.0,
-     1686.14
-    ],
-    [
-     111.31,
-     1688.69
-    ],
-    [
-     113.86,
-     1692.0
-    ],
-    [
-     115.45,
-     1695.86
-    ]
-   ],
-   "start": 800,
-   "end": 900,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Permeate Outlet",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Permeate Outlet",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Permeate Outlet",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "Feed",
-   "domain": "pipe",
-   "system": "DomesticColdWater",
-   "solid": "Feed Inlet",
-   "side": "left",
-   "diameter": 25,
-   "flow": "In"
-  },
-  {
-   "op": "add_connector",
-   "name": "Permeate",
-   "domain": "pipe",
-   "system": "DomesticColdWater",
-   "solid": "Permeate Outlet",
-   "side": "right",
-   "diameter": 25,
-   "flow": "Out"
-  },
-  {
-   "op": "add_connector",
-   "name": "Reject",
-   "domain": "pipe",
-   "system": "Sanitary",
-   "solid": "Drain Outlet",
-   "side": "bottom",
-   "diameter": 25,
-   "flow": "Out"
-  },
-  {
-   "op": "add_connector",
-   "name": "Power",
-   "domain": "electrical",
-   "system": "PowerBalanced",
-   "solid": "Control Panel Enclosure",
-   "side": "top"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Voltage",
-   "connector": "Power",
-   "connector_param": "Voltage",
-   "param": "Voltage"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Number of Poles",
-   "connector": "Power",
-   "connector_param": "Number of Poles",
-   "param": "Number of Poles"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Apparent Load",
-   "connector": "Power",
-   "connector_param": "Apparent Load",
-   "param": "Apparent Load"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_PlumbingEq_WaterTreatment_RO_Dialysis.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_P_PlumbingEq_WaterTreatment_RO_Dialysis",
+  "template": "Metric Generic Model.rft",
+  "about": "RO plant modelled as a generic product: stainless frame (posts, rails), four membrane vessels with end caps and manifold, two cartridge housings, pump base with motor and pump end, three flow meters with floats, feed and reject gauges, control panel with screen and LEDs, feed, permeate and drain stubs. Reference: query: water treatment ro dialysis plumbing equipment hospital; images: https://www.google.com/search?tbm=isch&q=water+treatment+ro+dialysis+plumbing+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Plumbing Equipment"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Voltage",
+      "type": "Voltage",
+      "group": "Electrical"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Number of Poles",
+      "type": "NumberOfPoles",
+      "group": "Electrical"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Apparent Load",
+      "type": "ApparentPower",
+      "group": "ElectricalLoads"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Asset_Tag",
+      "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cover_Level_m",
+      "guid": "8ea739e9-8540-52b1-94c8-31f8c3b68946",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Invert_In_m",
+      "guid": "c6a9407b-775b-5907-ad76-c8a50d749eb7",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Invert_Out_m",
+      "guid": "dfc4212d-23c3-50c9-8f96-8111e5c21fa8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Tank_Capacity_L",
+      "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "500Lh_RO"
+    },
+    {
+      "op": "set_type_value",
+      "name": "500Lh_RO/FMC_Cost_Unit",
+      "type": "500Lh_RO",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "500Lh_RO/FMC_Geometry_Stage",
+      "type": "500Lh_RO",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "500Lh_RO/IfcExportAs",
+      "type": "500Lh_RO",
+      "param": "IfcExportAs",
+      "value": "IfcUnitaryEquipment"
+    },
+    {
+      "op": "set_type_value",
+      "name": "500Lh_RO/Description",
+      "type": "500Lh_RO",
+      "param": "Description",
+      "value": "Reverse osmosis plant 500 l/h for dialysis water, stainless skid with four membrane pressure vessels, twin cartridge pre-filters, high-pressure pump, flow meters, gauges and HMI control panel"
+    },
+    {
+      "op": "set_type_value",
+      "name": "500Lh_RO/Keynote",
+      "type": "500Lh_RO",
+      "param": "Keynote",
+      "value": "P.WTR_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "500Lh_RO/FMC_Keynote_Code",
+      "type": "500Lh_RO",
+      "param": "FMC_Keynote_Code",
+      "value": "P.WTR_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "500Lh_RO/Voltage",
+      "type": "500Lh_RO",
+      "param": "Voltage",
+      "value": 415
+    },
+    {
+      "op": "set_type_value",
+      "name": "500Lh_RO/Number of Poles",
+      "type": "500Lh_RO",
+      "param": "Number of Poles",
+      "value": 3
+    },
+    {
+      "op": "set_type_value",
+      "name": "500Lh_RO/Apparent Load",
+      "type": "500Lh_RO",
+      "param": "Apparent Load",
+      "value": 3000
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Stainless",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Stainless Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_StainlessSteel_Brushed",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "White",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "White Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_White",
+      "param": "White Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Grey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Grey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Grey",
+      "param": "Grey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Blue",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Blue Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Blue",
+      "param": "Blue Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Polycarbonate",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Polycarbonate Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_Polycarbonate_Clear",
+      "param": "Polycarbonate Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Led Red",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Led Red Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_LED_Red",
+      "param": "Led Red Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Chrome",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Chrome Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Chrome_Polished",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Epoxy White",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Epoxy White Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Steel_EpoxyCoated_White",
+      "param": "Epoxy White Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Led Green",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Led Green Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_LED_Green",
+      "param": "Led Green Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Yellow",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Yellow Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Yellow",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Red",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Red Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_FireHoseReel_Red",
+      "param": "Red Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -900,
+          -426
+        ],
+        [
+          900,
+          -426
+        ],
+        [
+          900,
+          400
+        ],
+        [
+          -900,
+          400
+        ]
+      ],
+      "start": -50,
+      "end": 1900
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Frame Post Front 1",
+      "points": [
+        [
+          -800,
+          -400
+        ],
+        [
+          -760,
+          -400
+        ],
+        [
+          -760,
+          -360
+        ],
+        [
+          -800,
+          -360
+        ]
+      ],
+      "start": 0,
+      "end": 1900
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Frame Post Front 1",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Frame Post Front 1",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Frame Post Front 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Frame Post Front 2",
+      "points": [
+        [
+          760,
+          -400
+        ],
+        [
+          800,
+          -400
+        ],
+        [
+          800,
+          -360
+        ],
+        [
+          760,
+          -360
+        ]
+      ],
+      "start": 0,
+      "end": 1900
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Frame Post Front 2",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Frame Post Front 2",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Frame Post Front 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Frame Post Back 1",
+      "points": [
+        [
+          -800,
+          360
+        ],
+        [
+          -760,
+          360
+        ],
+        [
+          -760,
+          400
+        ],
+        [
+          -800,
+          400
+        ]
+      ],
+      "start": 0,
+      "end": 1900
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Frame Post Back 1",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Frame Post Back 1",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Frame Post Back 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Frame Post Back 2",
+      "points": [
+        [
+          760,
+          360
+        ],
+        [
+          800,
+          360
+        ],
+        [
+          800,
+          400
+        ],
+        [
+          760,
+          400
+        ]
+      ],
+      "start": 0,
+      "end": 1900
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Frame Post Back 2",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Frame Post Back 2",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Frame Post Back 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Frame Rail Front 1",
+      "points": [
+        [
+          -800,
+          -400
+        ],
+        [
+          800,
+          -400
+        ],
+        [
+          800,
+          -360
+        ],
+        [
+          -800,
+          -360
+        ]
+      ],
+      "start": 1860,
+      "end": 1900
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Frame Rail Front 1",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Frame Rail Front 1",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Frame Rail Front 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Frame Rail Front 2",
+      "points": [
+        [
+          -800,
+          -400
+        ],
+        [
+          800,
+          -400
+        ],
+        [
+          800,
+          -360
+        ],
+        [
+          -800,
+          -360
+        ]
+      ],
+      "start": 100,
+      "end": 140
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Frame Rail Front 2",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Frame Rail Front 2",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Frame Rail Front 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Frame Rail Back 1",
+      "points": [
+        [
+          -800,
+          360
+        ],
+        [
+          800,
+          360
+        ],
+        [
+          800,
+          400
+        ],
+        [
+          -800,
+          400
+        ]
+      ],
+      "start": 1860,
+      "end": 1900
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Frame Rail Back 1",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Frame Rail Back 1",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Frame Rail Back 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Frame Rail Back 2",
+      "points": [
+        [
+          -800,
+          360
+        ],
+        [
+          800,
+          360
+        ],
+        [
+          800,
+          400
+        ],
+        [
+          -800,
+          400
+        ]
+      ],
+      "start": 100,
+      "end": 140
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Frame Rail Back 2",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Frame Rail Back 2",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Frame Rail Back 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Membrane Vessel 1",
+      "points": [
+        [
+          152,
+          1150
+        ],
+        [
+          150.23,
+          1163.46
+        ],
+        [
+          145.03,
+          1176
+        ],
+        [
+          136.77,
+          1186.77
+        ],
+        [
+          126,
+          1195.03
+        ],
+        [
+          113.46,
+          1200.23
+        ],
+        [
+          100,
+          1202
+        ],
+        [
+          86.54,
+          1200.23
+        ],
+        [
+          74,
+          1195.03
+        ],
+        [
+          63.23,
+          1186.77
+        ],
+        [
+          54.97,
+          1176
+        ],
+        [
+          49.77,
+          1163.46
+        ],
+        [
+          48,
+          1150
+        ],
+        [
+          49.77,
+          1136.54
+        ],
+        [
+          54.97,
+          1124
+        ],
+        [
+          63.23,
+          1113.23
+        ],
+        [
+          74,
+          1104.97
+        ],
+        [
+          86.54,
+          1099.77
+        ],
+        [
+          100,
+          1098
+        ],
+        [
+          113.46,
+          1099.77
+        ],
+        [
+          126,
+          1104.97
+        ],
+        [
+          136.77,
+          1113.23
+        ],
+        [
+          145.03,
+          1124
+        ],
+        [
+          150.23,
+          1136.54
+        ]
+      ],
+      "start": -700,
+      "end": 700,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Membrane Vessel 1",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Membrane Vessel 1",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Membrane Vessel 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Membrane Vessel 2",
+      "points": [
+        [
+          152,
+          1310
+        ],
+        [
+          150.23,
+          1323.46
+        ],
+        [
+          145.03,
+          1336
+        ],
+        [
+          136.77,
+          1346.77
+        ],
+        [
+          126,
+          1355.03
+        ],
+        [
+          113.46,
+          1360.23
+        ],
+        [
+          100,
+          1362
+        ],
+        [
+          86.54,
+          1360.23
+        ],
+        [
+          74,
+          1355.03
+        ],
+        [
+          63.23,
+          1346.77
+        ],
+        [
+          54.97,
+          1336
+        ],
+        [
+          49.77,
+          1323.46
+        ],
+        [
+          48,
+          1310
+        ],
+        [
+          49.77,
+          1296.54
+        ],
+        [
+          54.97,
+          1284
+        ],
+        [
+          63.23,
+          1273.23
+        ],
+        [
+          74,
+          1264.97
+        ],
+        [
+          86.54,
+          1259.77
+        ],
+        [
+          100,
+          1258
+        ],
+        [
+          113.46,
+          1259.77
+        ],
+        [
+          126,
+          1264.97
+        ],
+        [
+          136.77,
+          1273.23
+        ],
+        [
+          145.03,
+          1284
+        ],
+        [
+          150.23,
+          1296.54
+        ]
+      ],
+      "start": -700,
+      "end": 700,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Membrane Vessel 2",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Membrane Vessel 2",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Membrane Vessel 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Membrane Vessel 3",
+      "points": [
+        [
+          152,
+          1470
+        ],
+        [
+          150.23,
+          1483.46
+        ],
+        [
+          145.03,
+          1496
+        ],
+        [
+          136.77,
+          1506.77
+        ],
+        [
+          126,
+          1515.03
+        ],
+        [
+          113.46,
+          1520.23
+        ],
+        [
+          100,
+          1522
+        ],
+        [
+          86.54,
+          1520.23
+        ],
+        [
+          74,
+          1515.03
+        ],
+        [
+          63.23,
+          1506.77
+        ],
+        [
+          54.97,
+          1496
+        ],
+        [
+          49.77,
+          1483.46
+        ],
+        [
+          48,
+          1470
+        ],
+        [
+          49.77,
+          1456.54
+        ],
+        [
+          54.97,
+          1444
+        ],
+        [
+          63.23,
+          1433.23
+        ],
+        [
+          74,
+          1424.97
+        ],
+        [
+          86.54,
+          1419.77
+        ],
+        [
+          100,
+          1418
+        ],
+        [
+          113.46,
+          1419.77
+        ],
+        [
+          126,
+          1424.97
+        ],
+        [
+          136.77,
+          1433.23
+        ],
+        [
+          145.03,
+          1444
+        ],
+        [
+          150.23,
+          1456.54
+        ]
+      ],
+      "start": -700,
+      "end": 700,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Membrane Vessel 3",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Membrane Vessel 3",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Membrane Vessel 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Membrane Vessel 4",
+      "points": [
+        [
+          152,
+          1630
+        ],
+        [
+          150.23,
+          1643.46
+        ],
+        [
+          145.03,
+          1656
+        ],
+        [
+          136.77,
+          1666.77
+        ],
+        [
+          126,
+          1675.03
+        ],
+        [
+          113.46,
+          1680.23
+        ],
+        [
+          100,
+          1682
+        ],
+        [
+          86.54,
+          1680.23
+        ],
+        [
+          74,
+          1675.03
+        ],
+        [
+          63.23,
+          1666.77
+        ],
+        [
+          54.97,
+          1656
+        ],
+        [
+          49.77,
+          1643.46
+        ],
+        [
+          48,
+          1630
+        ],
+        [
+          49.77,
+          1616.54
+        ],
+        [
+          54.97,
+          1604
+        ],
+        [
+          63.23,
+          1593.23
+        ],
+        [
+          74,
+          1584.97
+        ],
+        [
+          86.54,
+          1579.77
+        ],
+        [
+          100,
+          1578
+        ],
+        [
+          113.46,
+          1579.77
+        ],
+        [
+          126,
+          1584.97
+        ],
+        [
+          136.77,
+          1593.23
+        ],
+        [
+          145.03,
+          1604
+        ],
+        [
+          150.23,
+          1616.54
+        ]
+      ],
+      "start": -700,
+      "end": 700,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Membrane Vessel 4",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Membrane Vessel 4",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Membrane Vessel 4",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Vessel Cap L 1",
+      "profile": [
+        [
+          0,
+          -740
+        ],
+        [
+          56,
+          -740
+        ],
+        [
+          56,
+          -700
+        ],
+        [
+          0,
+          -700
+        ]
+      ],
+      "axis_at": [
+        100,
+        1150
+      ],
+      "axis": "x",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vessel Cap L 1",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vessel Cap L 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Vessel Cap L 2",
+      "profile": [
+        [
+          0,
+          -740
+        ],
+        [
+          56,
+          -740
+        ],
+        [
+          56,
+          -700
+        ],
+        [
+          0,
+          -700
+        ]
+      ],
+      "axis_at": [
+        100,
+        1310
+      ],
+      "axis": "x",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vessel Cap L 2",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vessel Cap L 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Vessel Cap L 3",
+      "profile": [
+        [
+          0,
+          -740
+        ],
+        [
+          56,
+          -740
+        ],
+        [
+          56,
+          -700
+        ],
+        [
+          0,
+          -700
+        ]
+      ],
+      "axis_at": [
+        100,
+        1470
+      ],
+      "axis": "x",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vessel Cap L 3",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vessel Cap L 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Vessel Cap L 4",
+      "profile": [
+        [
+          0,
+          -740
+        ],
+        [
+          56,
+          -740
+        ],
+        [
+          56,
+          -700
+        ],
+        [
+          0,
+          -700
+        ]
+      ],
+      "axis_at": [
+        100,
+        1630
+      ],
+      "axis": "x",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vessel Cap L 4",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vessel Cap L 4",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Vessel Cap R 1",
+      "profile": [
+        [
+          0,
+          700
+        ],
+        [
+          56,
+          700
+        ],
+        [
+          56,
+          740
+        ],
+        [
+          0,
+          740
+        ]
+      ],
+      "axis_at": [
+        100,
+        1150
+      ],
+      "axis": "x",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vessel Cap R 1",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vessel Cap R 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Vessel Cap R 2",
+      "profile": [
+        [
+          0,
+          700
+        ],
+        [
+          56,
+          700
+        ],
+        [
+          56,
+          740
+        ],
+        [
+          0,
+          740
+        ]
+      ],
+      "axis_at": [
+        100,
+        1310
+      ],
+      "axis": "x",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vessel Cap R 2",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vessel Cap R 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Vessel Cap R 3",
+      "profile": [
+        [
+          0,
+          700
+        ],
+        [
+          56,
+          700
+        ],
+        [
+          56,
+          740
+        ],
+        [
+          0,
+          740
+        ]
+      ],
+      "axis_at": [
+        100,
+        1470
+      ],
+      "axis": "x",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vessel Cap R 3",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vessel Cap R 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Vessel Cap R 4",
+      "profile": [
+        [
+          0,
+          700
+        ],
+        [
+          56,
+          700
+        ],
+        [
+          56,
+          740
+        ],
+        [
+          0,
+          740
+        ]
+      ],
+      "axis_at": [
+        100,
+        1630
+      ],
+      "axis": "x",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vessel Cap R 4",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vessel Cap R 4",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vessel Manifold",
+      "points": [
+        [
+          -744,
+          100
+        ],
+        [
+          -744.55,
+          104.14
+        ],
+        [
+          -746.14,
+          108
+        ],
+        [
+          -748.69,
+          111.31
+        ],
+        [
+          -752,
+          113.86
+        ],
+        [
+          -755.86,
+          115.45
+        ],
+        [
+          -760,
+          116
+        ],
+        [
+          -764.14,
+          115.45
+        ],
+        [
+          -768,
+          113.86
+        ],
+        [
+          -771.31,
+          111.31
+        ],
+        [
+          -773.86,
+          108
+        ],
+        [
+          -775.45,
+          104.14
+        ],
+        [
+          -776,
+          100
+        ],
+        [
+          -775.45,
+          95.86
+        ],
+        [
+          -773.86,
+          92
+        ],
+        [
+          -771.31,
+          88.69
+        ],
+        [
+          -768,
+          86.14
+        ],
+        [
+          -764.14,
+          84.55
+        ],
+        [
+          -760,
+          84
+        ],
+        [
+          -755.86,
+          84.55
+        ],
+        [
+          -752,
+          86.14
+        ],
+        [
+          -748.69,
+          88.69
+        ],
+        [
+          -746.14,
+          92
+        ],
+        [
+          -744.55,
+          95.86
+        ]
+      ],
+      "start": 1100,
+      "end": 1680
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vessel Manifold",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vessel Manifold",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vessel Manifold",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cartridge Housing 1",
+      "points": [
+        [
+          -535,
+          -200
+        ],
+        [
+          -537.21,
+          -183.18
+        ],
+        [
+          -543.71,
+          -167.5
+        ],
+        [
+          -554.04,
+          -154.04
+        ],
+        [
+          -567.5,
+          -143.71
+        ],
+        [
+          -583.18,
+          -137.21
+        ],
+        [
+          -600,
+          -135
+        ],
+        [
+          -616.82,
+          -137.21
+        ],
+        [
+          -632.5,
+          -143.71
+        ],
+        [
+          -645.96,
+          -154.04
+        ],
+        [
+          -656.29,
+          -167.5
+        ],
+        [
+          -662.79,
+          -183.18
+        ],
+        [
+          -665,
+          -200
+        ],
+        [
+          -662.79,
+          -216.82
+        ],
+        [
+          -656.29,
+          -232.5
+        ],
+        [
+          -645.96,
+          -245.96
+        ],
+        [
+          -632.5,
+          -256.29
+        ],
+        [
+          -616.82,
+          -262.79
+        ],
+        [
+          -600,
+          -265
+        ],
+        [
+          -583.18,
+          -262.79
+        ],
+        [
+          -567.5,
+          -256.29
+        ],
+        [
+          -554.04,
+          -245.96
+        ],
+        [
+          -543.71,
+          -232.5
+        ],
+        [
+          -537.21,
+          -216.82
+        ]
+      ],
+      "start": 350,
+      "end": 850
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cartridge Housing 1",
+      "subcategory": "Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cartridge Housing 1",
+      "param": "Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cartridge Housing 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cartridge Housing 2",
+      "points": [
+        [
+          -335,
+          -200
+        ],
+        [
+          -337.21,
+          -183.18
+        ],
+        [
+          -343.71,
+          -167.5
+        ],
+        [
+          -354.04,
+          -154.04
+        ],
+        [
+          -367.5,
+          -143.71
+        ],
+        [
+          -383.18,
+          -137.21
+        ],
+        [
+          -400,
+          -135
+        ],
+        [
+          -416.82,
+          -137.21
+        ],
+        [
+          -432.5,
+          -143.71
+        ],
+        [
+          -445.96,
+          -154.04
+        ],
+        [
+          -456.29,
+          -167.5
+        ],
+        [
+          -462.79,
+          -183.18
+        ],
+        [
+          -465,
+          -200
+        ],
+        [
+          -462.79,
+          -216.82
+        ],
+        [
+          -456.29,
+          -232.5
+        ],
+        [
+          -445.96,
+          -245.96
+        ],
+        [
+          -432.5,
+          -256.29
+        ],
+        [
+          -416.82,
+          -262.79
+        ],
+        [
+          -400,
+          -265
+        ],
+        [
+          -383.18,
+          -262.79
+        ],
+        [
+          -367.5,
+          -256.29
+        ],
+        [
+          -354.04,
+          -245.96
+        ],
+        [
+          -343.71,
+          -232.5
+        ],
+        [
+          -337.21,
+          -216.82
+        ]
+      ],
+      "start": 350,
+      "end": 850
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cartridge Housing 2",
+      "subcategory": "Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cartridge Housing 2",
+      "param": "Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cartridge Housing 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Cartridge Head 1",
+      "profile": [
+        [
+          0,
+          850
+        ],
+        [
+          75,
+          850
+        ],
+        [
+          75,
+          900
+        ],
+        [
+          0,
+          900
+        ]
+      ],
+      "axis_at": [
+        -600,
+        -200
+      ],
+      "axis": "z",
+      "subcategory": "Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cartridge Head 1",
+      "param": "Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cartridge Head 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Cartridge Head 2",
+      "profile": [
+        [
+          0,
+          850
+        ],
+        [
+          75,
+          850
+        ],
+        [
+          75,
+          900
+        ],
+        [
+          0,
+          900
+        ]
+      ],
+      "axis_at": [
+        -400,
+        -200
+      ],
+      "axis": "z",
+      "subcategory": "Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cartridge Head 2",
+      "param": "Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cartridge Head 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pump Base",
+      "points": [
+        [
+          -150,
+          -300
+        ],
+        [
+          450,
+          -300
+        ],
+        [
+          450,
+          100
+        ],
+        [
+          -150,
+          100
+        ]
+      ],
+      "start": 40,
+      "end": 80
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pump Base",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pump Base",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pump Base",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "HP Pump Motor",
+      "points": [
+        [
+          10,
+          200
+        ],
+        [
+          6.25,
+          228.47
+        ],
+        [
+          -4.74,
+          255
+        ],
+        [
+          -22.22,
+          277.78
+        ],
+        [
+          -45,
+          295.26
+        ],
+        [
+          -71.53,
+          306.25
+        ],
+        [
+          -100,
+          310
+        ],
+        [
+          -128.47,
+          306.25
+        ],
+        [
+          -155,
+          295.26
+        ],
+        [
+          -177.78,
+          277.78
+        ],
+        [
+          -195.26,
+          255
+        ],
+        [
+          -206.25,
+          228.47
+        ],
+        [
+          -210,
+          200
+        ],
+        [
+          -206.25,
+          171.53
+        ],
+        [
+          -195.26,
+          145
+        ],
+        [
+          -177.78,
+          122.22
+        ],
+        [
+          -155,
+          104.74
+        ],
+        [
+          -128.47,
+          93.75
+        ],
+        [
+          -100,
+          90
+        ],
+        [
+          -71.53,
+          93.75
+        ],
+        [
+          -45,
+          104.74
+        ],
+        [
+          -22.22,
+          122.22
+        ],
+        [
+          -4.74,
+          145
+        ],
+        [
+          6.25,
+          171.53
+        ]
+      ],
+      "start": 75.6,
+      "end": 420,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "HP Pump Motor",
+      "subcategory": "Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "HP Pump Motor",
+      "param": "Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "HP Pump Motor",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "HP Pump Fan Cowl",
+      "profile": [
+        [
+          0,
+          0
+        ],
+        [
+          99,
+          0
+        ],
+        [
+          114,
+          21
+        ],
+        [
+          114,
+          75.6
+        ],
+        [
+          0,
+          75.6
+        ]
+      ],
+      "axis_at": [
+        -100,
+        200
+      ],
+      "axis": "x",
+      "subcategory": "Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "HP Pump Fan Cowl",
+      "param": "Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "HP Pump Fan Cowl",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "HP Pump Cowl Grille",
+      "profile": [
+        [
+          0,
+          -2
+        ],
+        [
+          66,
+          -2
+        ],
+        [
+          66,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "axis_at": [
+        -100,
+        200
+      ],
+      "axis": "x",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "HP Pump Cowl Grille",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "HP Pump Cowl Grille",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "HP Pump Terminal Box",
+      "points": [
+        [
+          311,
+          -149.5
+        ],
+        [
+          312.53,
+          -149.2
+        ],
+        [
+          313.83,
+          -148.33
+        ],
+        [
+          314.7,
+          -147.03
+        ],
+        [
+          315,
+          -145.5
+        ],
+        [
+          315,
+          -54.5
+        ],
+        [
+          314.7,
+          -52.97
+        ],
+        [
+          313.83,
+          -51.67
+        ],
+        [
+          312.53,
+          -50.8
+        ],
+        [
+          311,
+          -50.5
+        ],
+        [
+          193,
+          -50.5
+        ],
+        [
+          191.47,
+          -50.8
+        ],
+        [
+          190.17,
+          -51.67
+        ],
+        [
+          189.3,
+          -52.97
+        ],
+        [
+          189,
+          -54.5
+        ],
+        [
+          189,
+          -145.5
+        ],
+        [
+          189.3,
+          -147.03
+        ],
+        [
+          190.17,
+          -148.33
+        ],
+        [
+          191.47,
+          -149.2
+        ],
+        [
+          193,
+          -149.5
+        ]
+      ],
+      "start": 305,
+      "end": 359.5
+    },
+    {
+      "op": "set_subcategory",
+      "name": "HP Pump Terminal Box",
+      "subcategory": "Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "HP Pump Terminal Box",
+      "param": "Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "HP Pump Terminal Box",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "HP Pump Fin 1",
+      "profile": [
+        [
+          110,
+          105
+        ],
+        [
+          115,
+          105
+        ],
+        [
+          115,
+          111
+        ],
+        [
+          110,
+          111
+        ]
+      ],
+      "axis_at": [
+        -100,
+        200
+      ],
+      "axis": "x",
+      "subcategory": "Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "HP Pump Fin 1",
+      "param": "Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "HP Pump Fin 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "HP Pump Fin 2",
+      "profile": [
+        [
+          110,
+          203
+        ],
+        [
+          115,
+          203
+        ],
+        [
+          115,
+          209
+        ],
+        [
+          110,
+          209
+        ]
+      ],
+      "axis_at": [
+        -100,
+        200
+      ],
+      "axis": "x",
+      "subcategory": "Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "HP Pump Fin 2",
+      "param": "Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "HP Pump Fin 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "HP Pump Fin 3",
+      "profile": [
+        [
+          110,
+          301
+        ],
+        [
+          115,
+          301
+        ],
+        [
+          115,
+          307
+        ],
+        [
+          110,
+          307
+        ]
+      ],
+      "axis_at": [
+        -100,
+        200
+      ],
+      "axis": "x",
+      "subcategory": "Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "HP Pump Fin 3",
+      "param": "Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "HP Pump Fin 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "HP Pump Foot 1",
+      "points": [
+        [
+          105,
+          -193.5
+        ],
+        [
+          138.6,
+          -193.5
+        ],
+        [
+          138.6,
+          -6.5
+        ],
+        [
+          105,
+          -6.5
+        ]
+      ],
+      "start": 82,
+      "end": 139.5
+    },
+    {
+      "op": "set_subcategory",
+      "name": "HP Pump Foot 1",
+      "subcategory": "Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "HP Pump Foot 1",
+      "param": "Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "HP Pump Foot 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "HP Pump Foot 2",
+      "points": [
+        [
+          315,
+          -193.5
+        ],
+        [
+          348.6,
+          -193.5
+        ],
+        [
+          348.6,
+          -6.5
+        ],
+        [
+          315,
+          -6.5
+        ]
+      ],
+      "start": 82,
+      "end": 139.5
+    },
+    {
+      "op": "set_subcategory",
+      "name": "HP Pump Foot 2",
+      "subcategory": "Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "HP Pump Foot 2",
+      "param": "Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "HP Pump Foot 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pump End",
+      "points": [
+        [
+          -30,
+          200
+        ],
+        [
+          -32.39,
+          218.12
+        ],
+        [
+          -39.38,
+          235
+        ],
+        [
+          -50.5,
+          249.5
+        ],
+        [
+          -65,
+          260.62
+        ],
+        [
+          -81.88,
+          267.61
+        ],
+        [
+          -100,
+          270
+        ],
+        [
+          -118.12,
+          267.61
+        ],
+        [
+          -135,
+          260.62
+        ],
+        [
+          -149.5,
+          249.5
+        ],
+        [
+          -160.62,
+          235
+        ],
+        [
+          -167.61,
+          218.12
+        ],
+        [
+          -170,
+          200
+        ],
+        [
+          -167.61,
+          181.88
+        ],
+        [
+          -160.62,
+          165
+        ],
+        [
+          -149.5,
+          150.5
+        ],
+        [
+          -135,
+          139.38
+        ],
+        [
+          -118.12,
+          132.39
+        ],
+        [
+          -100,
+          130
+        ],
+        [
+          -81.88,
+          132.39
+        ],
+        [
+          -65,
+          139.38
+        ],
+        [
+          -50.5,
+          150.5
+        ],
+        [
+          -39.38,
+          165
+        ],
+        [
+          -32.39,
+          181.88
+        ]
+      ],
+      "start": -140,
+      "end": 0,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pump End",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pump End",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pump End",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flow Meter 1",
+      "points": [
+        [
+          218,
+          -385
+        ],
+        [
+          217.39,
+          -380.34
+        ],
+        [
+          215.59,
+          -376
+        ],
+        [
+          212.73,
+          -372.27
+        ],
+        [
+          209,
+          -369.41
+        ],
+        [
+          204.66,
+          -367.61
+        ],
+        [
+          200,
+          -367
+        ],
+        [
+          195.34,
+          -367.61
+        ],
+        [
+          191,
+          -369.41
+        ],
+        [
+          187.27,
+          -372.27
+        ],
+        [
+          184.41,
+          -376
+        ],
+        [
+          182.61,
+          -380.34
+        ],
+        [
+          182,
+          -385
+        ],
+        [
+          182.61,
+          -389.66
+        ],
+        [
+          184.41,
+          -394
+        ],
+        [
+          187.27,
+          -397.73
+        ],
+        [
+          191,
+          -400.59
+        ],
+        [
+          195.34,
+          -402.39
+        ],
+        [
+          200,
+          -403
+        ],
+        [
+          204.66,
+          -402.39
+        ],
+        [
+          209,
+          -400.59
+        ],
+        [
+          212.73,
+          -397.73
+        ],
+        [
+          215.59,
+          -394
+        ],
+        [
+          217.39,
+          -389.66
+        ]
+      ],
+      "start": 1200,
+      "end": 1450
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flow Meter 1",
+      "subcategory": "Polycarbonate"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flow Meter 1",
+      "param": "Polycarbonate Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flow Meter 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flow Meter 2",
+      "points": [
+        [
+          308,
+          -385
+        ],
+        [
+          307.39,
+          -380.34
+        ],
+        [
+          305.59,
+          -376
+        ],
+        [
+          302.73,
+          -372.27
+        ],
+        [
+          299,
+          -369.41
+        ],
+        [
+          294.66,
+          -367.61
+        ],
+        [
+          290,
+          -367
+        ],
+        [
+          285.34,
+          -367.61
+        ],
+        [
+          281,
+          -369.41
+        ],
+        [
+          277.27,
+          -372.27
+        ],
+        [
+          274.41,
+          -376
+        ],
+        [
+          272.61,
+          -380.34
+        ],
+        [
+          272,
+          -385
+        ],
+        [
+          272.61,
+          -389.66
+        ],
+        [
+          274.41,
+          -394
+        ],
+        [
+          277.27,
+          -397.73
+        ],
+        [
+          281,
+          -400.59
+        ],
+        [
+          285.34,
+          -402.39
+        ],
+        [
+          290,
+          -403
+        ],
+        [
+          294.66,
+          -402.39
+        ],
+        [
+          299,
+          -400.59
+        ],
+        [
+          302.73,
+          -397.73
+        ],
+        [
+          305.59,
+          -394
+        ],
+        [
+          307.39,
+          -389.66
+        ]
+      ],
+      "start": 1200,
+      "end": 1450
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flow Meter 2",
+      "subcategory": "Polycarbonate"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flow Meter 2",
+      "param": "Polycarbonate Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flow Meter 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flow Meter 3",
+      "points": [
+        [
+          398,
+          -385
+        ],
+        [
+          397.39,
+          -380.34
+        ],
+        [
+          395.59,
+          -376
+        ],
+        [
+          392.73,
+          -372.27
+        ],
+        [
+          389,
+          -369.41
+        ],
+        [
+          384.66,
+          -367.61
+        ],
+        [
+          380,
+          -367
+        ],
+        [
+          375.34,
+          -367.61
+        ],
+        [
+          371,
+          -369.41
+        ],
+        [
+          367.27,
+          -372.27
+        ],
+        [
+          364.41,
+          -376
+        ],
+        [
+          362.61,
+          -380.34
+        ],
+        [
+          362,
+          -385
+        ],
+        [
+          362.61,
+          -389.66
+        ],
+        [
+          364.41,
+          -394
+        ],
+        [
+          367.27,
+          -397.73
+        ],
+        [
+          371,
+          -400.59
+        ],
+        [
+          375.34,
+          -402.39
+        ],
+        [
+          380,
+          -403
+        ],
+        [
+          384.66,
+          -402.39
+        ],
+        [
+          389,
+          -400.59
+        ],
+        [
+          392.73,
+          -397.73
+        ],
+        [
+          395.59,
+          -394
+        ],
+        [
+          397.39,
+          -389.66
+        ]
+      ],
+      "start": 1200,
+      "end": 1450
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flow Meter 3",
+      "subcategory": "Polycarbonate"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flow Meter 3",
+      "param": "Polycarbonate Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flow Meter 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flow Float 1",
+      "points": [
+        [
+          212,
+          -385
+        ],
+        [
+          211.59,
+          -381.89
+        ],
+        [
+          210.39,
+          -379
+        ],
+        [
+          208.49,
+          -376.51
+        ],
+        [
+          206,
+          -374.61
+        ],
+        [
+          203.11,
+          -373.41
+        ],
+        [
+          200,
+          -373
+        ],
+        [
+          196.89,
+          -373.41
+        ],
+        [
+          194,
+          -374.61
+        ],
+        [
+          191.51,
+          -376.51
+        ],
+        [
+          189.61,
+          -379
+        ],
+        [
+          188.41,
+          -381.89
+        ],
+        [
+          188,
+          -385
+        ],
+        [
+          188.41,
+          -388.11
+        ],
+        [
+          189.61,
+          -391
+        ],
+        [
+          191.51,
+          -393.49
+        ],
+        [
+          194,
+          -395.39
+        ],
+        [
+          196.89,
+          -396.59
+        ],
+        [
+          200,
+          -397
+        ],
+        [
+          203.11,
+          -396.59
+        ],
+        [
+          206,
+          -395.39
+        ],
+        [
+          208.49,
+          -393.49
+        ],
+        [
+          210.39,
+          -391
+        ],
+        [
+          211.59,
+          -388.11
+        ]
+      ],
+      "start": 1300,
+      "end": 1320
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flow Float 1",
+      "subcategory": "Led Red"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flow Float 1",
+      "param": "Led Red Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flow Float 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flow Float 2",
+      "points": [
+        [
+          302,
+          -385
+        ],
+        [
+          301.59,
+          -381.89
+        ],
+        [
+          300.39,
+          -379
+        ],
+        [
+          298.49,
+          -376.51
+        ],
+        [
+          296,
+          -374.61
+        ],
+        [
+          293.11,
+          -373.41
+        ],
+        [
+          290,
+          -373
+        ],
+        [
+          286.89,
+          -373.41
+        ],
+        [
+          284,
+          -374.61
+        ],
+        [
+          281.51,
+          -376.51
+        ],
+        [
+          279.61,
+          -379
+        ],
+        [
+          278.41,
+          -381.89
+        ],
+        [
+          278,
+          -385
+        ],
+        [
+          278.41,
+          -388.11
+        ],
+        [
+          279.61,
+          -391
+        ],
+        [
+          281.51,
+          -393.49
+        ],
+        [
+          284,
+          -395.39
+        ],
+        [
+          286.89,
+          -396.59
+        ],
+        [
+          290,
+          -397
+        ],
+        [
+          293.11,
+          -396.59
+        ],
+        [
+          296,
+          -395.39
+        ],
+        [
+          298.49,
+          -393.49
+        ],
+        [
+          300.39,
+          -391
+        ],
+        [
+          301.59,
+          -388.11
+        ]
+      ],
+      "start": 1300,
+      "end": 1320
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flow Float 2",
+      "subcategory": "Led Red"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flow Float 2",
+      "param": "Led Red Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flow Float 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flow Float 3",
+      "points": [
+        [
+          392,
+          -385
+        ],
+        [
+          391.59,
+          -381.89
+        ],
+        [
+          390.39,
+          -379
+        ],
+        [
+          388.49,
+          -376.51
+        ],
+        [
+          386,
+          -374.61
+        ],
+        [
+          383.11,
+          -373.41
+        ],
+        [
+          380,
+          -373
+        ],
+        [
+          376.89,
+          -373.41
+        ],
+        [
+          374,
+          -374.61
+        ],
+        [
+          371.51,
+          -376.51
+        ],
+        [
+          369.61,
+          -379
+        ],
+        [
+          368.41,
+          -381.89
+        ],
+        [
+          368,
+          -385
+        ],
+        [
+          368.41,
+          -388.11
+        ],
+        [
+          369.61,
+          -391
+        ],
+        [
+          371.51,
+          -393.49
+        ],
+        [
+          374,
+          -395.39
+        ],
+        [
+          376.89,
+          -396.59
+        ],
+        [
+          380,
+          -397
+        ],
+        [
+          383.11,
+          -396.59
+        ],
+        [
+          386,
+          -395.39
+        ],
+        [
+          388.49,
+          -393.49
+        ],
+        [
+          390.39,
+          -391
+        ],
+        [
+          391.59,
+          -388.11
+        ]
+      ],
+      "start": 1300,
+      "end": 1320
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flow Float 3",
+      "subcategory": "Led Red"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flow Float 3",
+      "param": "Led Red Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flow Float 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Feed Gauge Case",
+      "points": [
+        [
+          -310,
+          1350
+        ],
+        [
+          -311.36,
+          1360.35
+        ],
+        [
+          -315.36,
+          1370
+        ],
+        [
+          -321.72,
+          1378.28
+        ],
+        [
+          -330,
+          1384.64
+        ],
+        [
+          -339.65,
+          1388.64
+        ],
+        [
+          -350,
+          1390
+        ],
+        [
+          -360.35,
+          1388.64
+        ],
+        [
+          -370,
+          1384.64
+        ],
+        [
+          -378.28,
+          1378.28
+        ],
+        [
+          -384.64,
+          1370
+        ],
+        [
+          -388.64,
+          1360.35
+        ],
+        [
+          -390,
+          1350
+        ],
+        [
+          -388.64,
+          1339.65
+        ],
+        [
+          -384.64,
+          1330
+        ],
+        [
+          -378.28,
+          1321.72
+        ],
+        [
+          -370,
+          1315.36
+        ],
+        [
+          -360.35,
+          1311.36
+        ],
+        [
+          -350,
+          1310
+        ],
+        [
+          -339.65,
+          1311.36
+        ],
+        [
+          -330,
+          1315.36
+        ],
+        [
+          -321.72,
+          1321.72
+        ],
+        [
+          -315.36,
+          1330
+        ],
+        [
+          -311.36,
+          1339.65
+        ]
+      ],
+      "start": 360,
+      "end": 385,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Feed Gauge Case",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Feed Gauge Case",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Feed Gauge Case",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Feed Gauge Dial",
+      "points": [
+        [
+          -314,
+          1350
+        ],
+        [
+          -315.23,
+          1359.32
+        ],
+        [
+          -318.82,
+          1368
+        ],
+        [
+          -324.54,
+          1375.46
+        ],
+        [
+          -332,
+          1381.18
+        ],
+        [
+          -340.68,
+          1384.77
+        ],
+        [
+          -350,
+          1386
+        ],
+        [
+          -359.32,
+          1384.77
+        ],
+        [
+          -368,
+          1381.18
+        ],
+        [
+          -375.46,
+          1375.46
+        ],
+        [
+          -381.18,
+          1368
+        ],
+        [
+          -384.77,
+          1359.32
+        ],
+        [
+          -386,
+          1350
+        ],
+        [
+          -384.77,
+          1340.68
+        ],
+        [
+          -381.18,
+          1332
+        ],
+        [
+          -375.46,
+          1324.54
+        ],
+        [
+          -368,
+          1318.82
+        ],
+        [
+          -359.32,
+          1315.23
+        ],
+        [
+          -350,
+          1314
+        ],
+        [
+          -340.68,
+          1315.23
+        ],
+        [
+          -332,
+          1318.82
+        ],
+        [
+          -324.54,
+          1324.54
+        ],
+        [
+          -318.82,
+          1332
+        ],
+        [
+          -315.23,
+          1340.68
+        ]
+      ],
+      "start": 385,
+      "end": 387,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Feed Gauge Dial",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Feed Gauge Dial",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Feed Gauge Dial",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Feed Gauge Needle",
+      "points": [
+        [
+          -351.5,
+          -389
+        ],
+        [
+          -326,
+          -389
+        ],
+        [
+          -326,
+          -387
+        ],
+        [
+          -351.5,
+          -387
+        ]
+      ],
+      "start": 1348,
+      "end": 1352
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Feed Gauge Needle",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Feed Gauge Needle",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Feed Gauge Needle",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Reject Gauge Case",
+      "points": [
+        [
+          -160,
+          1350
+        ],
+        [
+          -161.36,
+          1360.35
+        ],
+        [
+          -165.36,
+          1370
+        ],
+        [
+          -171.72,
+          1378.28
+        ],
+        [
+          -180,
+          1384.64
+        ],
+        [
+          -189.65,
+          1388.64
+        ],
+        [
+          -200,
+          1390
+        ],
+        [
+          -210.35,
+          1388.64
+        ],
+        [
+          -220,
+          1384.64
+        ],
+        [
+          -228.28,
+          1378.28
+        ],
+        [
+          -234.64,
+          1370
+        ],
+        [
+          -238.64,
+          1360.35
+        ],
+        [
+          -240,
+          1350
+        ],
+        [
+          -238.64,
+          1339.65
+        ],
+        [
+          -234.64,
+          1330
+        ],
+        [
+          -228.28,
+          1321.72
+        ],
+        [
+          -220,
+          1315.36
+        ],
+        [
+          -210.35,
+          1311.36
+        ],
+        [
+          -200,
+          1310
+        ],
+        [
+          -189.65,
+          1311.36
+        ],
+        [
+          -180,
+          1315.36
+        ],
+        [
+          -171.72,
+          1321.72
+        ],
+        [
+          -165.36,
+          1330
+        ],
+        [
+          -161.36,
+          1339.65
+        ]
+      ],
+      "start": 360,
+      "end": 385,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Reject Gauge Case",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Reject Gauge Case",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Reject Gauge Case",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Reject Gauge Dial",
+      "points": [
+        [
+          -164,
+          1350
+        ],
+        [
+          -165.23,
+          1359.32
+        ],
+        [
+          -168.82,
+          1368
+        ],
+        [
+          -174.54,
+          1375.46
+        ],
+        [
+          -182,
+          1381.18
+        ],
+        [
+          -190.68,
+          1384.77
+        ],
+        [
+          -200,
+          1386
+        ],
+        [
+          -209.32,
+          1384.77
+        ],
+        [
+          -218,
+          1381.18
+        ],
+        [
+          -225.46,
+          1375.46
+        ],
+        [
+          -231.18,
+          1368
+        ],
+        [
+          -234.77,
+          1359.32
+        ],
+        [
+          -236,
+          1350
+        ],
+        [
+          -234.77,
+          1340.68
+        ],
+        [
+          -231.18,
+          1332
+        ],
+        [
+          -225.46,
+          1324.54
+        ],
+        [
+          -218,
+          1318.82
+        ],
+        [
+          -209.32,
+          1315.23
+        ],
+        [
+          -200,
+          1314
+        ],
+        [
+          -190.68,
+          1315.23
+        ],
+        [
+          -182,
+          1318.82
+        ],
+        [
+          -174.54,
+          1324.54
+        ],
+        [
+          -168.82,
+          1332
+        ],
+        [
+          -165.23,
+          1340.68
+        ]
+      ],
+      "start": 385,
+      "end": 387,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Reject Gauge Dial",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Reject Gauge Dial",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Reject Gauge Dial",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Reject Gauge Needle",
+      "points": [
+        [
+          -201.5,
+          -389
+        ],
+        [
+          -176,
+          -389
+        ],
+        [
+          -176,
+          -387
+        ],
+        [
+          -201.5,
+          -387
+        ]
+      ],
+      "start": 1348,
+      "end": 1352
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Reject Gauge Needle",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Reject Gauge Needle",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Reject Gauge Needle",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Control Panel Enclosure",
+      "points": [
+        [
+          756,
+          -400
+        ],
+        [
+          757.53,
+          -399.7
+        ],
+        [
+          758.83,
+          -398.83
+        ],
+        [
+          759.7,
+          -397.53
+        ],
+        [
+          760,
+          -396
+        ],
+        [
+          760,
+          -224
+        ],
+        [
+          759.7,
+          -222.47
+        ],
+        [
+          758.83,
+          -221.17
+        ],
+        [
+          757.53,
+          -220.3
+        ],
+        [
+          756,
+          -220
+        ],
+        [
+          404,
+          -220
+        ],
+        [
+          402.47,
+          -220.3
+        ],
+        [
+          401.17,
+          -221.17
+        ],
+        [
+          400.3,
+          -222.47
+        ],
+        [
+          400,
+          -224
+        ],
+        [
+          400,
+          -396
+        ],
+        [
+          400.3,
+          -397.53
+        ],
+        [
+          401.17,
+          -398.83
+        ],
+        [
+          402.47,
+          -399.7
+        ],
+        [
+          404,
+          -400
+        ]
+      ],
+      "start": 1300,
+      "end": 1800
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Control Panel Enclosure",
+      "subcategory": "Epoxy White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Control Panel Enclosure",
+      "param": "Epoxy White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Control Panel Enclosure",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Control Panel Door",
+      "points": [
+        [
+          748,
+          1308
+        ],
+        [
+          749.53,
+          1308.3
+        ],
+        [
+          750.83,
+          1309.17
+        ],
+        [
+          751.7,
+          1310.47
+        ],
+        [
+          752,
+          1312
+        ],
+        [
+          752,
+          1788
+        ],
+        [
+          751.7,
+          1789.53
+        ],
+        [
+          750.83,
+          1790.83
+        ],
+        [
+          749.53,
+          1791.7
+        ],
+        [
+          748,
+          1792
+        ],
+        [
+          412,
+          1792
+        ],
+        [
+          410.47,
+          1791.7
+        ],
+        [
+          409.17,
+          1790.83
+        ],
+        [
+          408.3,
+          1789.53
+        ],
+        [
+          408,
+          1788
+        ],
+        [
+          408,
+          1312
+        ],
+        [
+          408.3,
+          1310.47
+        ],
+        [
+          409.17,
+          1309.17
+        ],
+        [
+          410.47,
+          1308.3
+        ],
+        [
+          412,
+          1308
+        ]
+      ],
+      "start": 400,
+      "end": 406,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Control Panel Door",
+      "subcategory": "Epoxy White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Control Panel Door",
+      "param": "Epoxy White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Control Panel Door",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Control Panel Screen",
+      "points": [
+        [
+          631,
+          1600
+        ],
+        [
+          632.15,
+          1600.23
+        ],
+        [
+          633.12,
+          1600.88
+        ],
+        [
+          633.77,
+          1601.85
+        ],
+        [
+          634,
+          1603
+        ],
+        [
+          634,
+          1727
+        ],
+        [
+          633.77,
+          1728.15
+        ],
+        [
+          633.12,
+          1729.12
+        ],
+        [
+          632.15,
+          1729.77
+        ],
+        [
+          631,
+          1730
+        ],
+        [
+          475,
+          1730
+        ],
+        [
+          473.85,
+          1729.77
+        ],
+        [
+          472.88,
+          1729.12
+        ],
+        [
+          472.23,
+          1728.15
+        ],
+        [
+          472,
+          1727
+        ],
+        [
+          472,
+          1603
+        ],
+        [
+          472.23,
+          1601.85
+        ],
+        [
+          472.88,
+          1600.88
+        ],
+        [
+          473.85,
+          1600.23
+        ],
+        [
+          475,
+          1600
+        ]
+      ],
+      "start": 406,
+      "end": 408,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Control Panel Screen",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Control Panel Screen",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Control Panel Screen",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Control Panel LED 1",
+      "points": [
+        [
+          480,
+          1540
+        ],
+        [
+          479.73,
+          1542.07
+        ],
+        [
+          478.93,
+          1544
+        ],
+        [
+          477.66,
+          1545.66
+        ],
+        [
+          476,
+          1546.93
+        ],
+        [
+          474.07,
+          1547.73
+        ],
+        [
+          472,
+          1548
+        ],
+        [
+          469.93,
+          1547.73
+        ],
+        [
+          468,
+          1546.93
+        ],
+        [
+          466.34,
+          1545.66
+        ],
+        [
+          465.07,
+          1544
+        ],
+        [
+          464.27,
+          1542.07
+        ],
+        [
+          464,
+          1540
+        ],
+        [
+          464.27,
+          1537.93
+        ],
+        [
+          465.07,
+          1536
+        ],
+        [
+          466.34,
+          1534.34
+        ],
+        [
+          468,
+          1533.07
+        ],
+        [
+          469.93,
+          1532.27
+        ],
+        [
+          472,
+          1532
+        ],
+        [
+          474.07,
+          1532.27
+        ],
+        [
+          476,
+          1533.07
+        ],
+        [
+          477.66,
+          1534.34
+        ],
+        [
+          478.93,
+          1536
+        ],
+        [
+          479.73,
+          1537.93
+        ]
+      ],
+      "start": 406,
+      "end": 410,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Control Panel LED 1",
+      "subcategory": "Led Green"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Control Panel LED 1",
+      "param": "Led Green Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Control Panel LED 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Control Panel LED 2",
+      "points": [
+        [
+          523.2,
+          1540
+        ],
+        [
+          522.93,
+          1542.07
+        ],
+        [
+          522.13,
+          1544
+        ],
+        [
+          520.86,
+          1545.66
+        ],
+        [
+          519.2,
+          1546.93
+        ],
+        [
+          517.27,
+          1547.73
+        ],
+        [
+          515.2,
+          1548
+        ],
+        [
+          513.13,
+          1547.73
+        ],
+        [
+          511.2,
+          1546.93
+        ],
+        [
+          509.54,
+          1545.66
+        ],
+        [
+          508.27,
+          1544
+        ],
+        [
+          507.47,
+          1542.07
+        ],
+        [
+          507.2,
+          1540
+        ],
+        [
+          507.47,
+          1537.93
+        ],
+        [
+          508.27,
+          1536
+        ],
+        [
+          509.54,
+          1534.34
+        ],
+        [
+          511.2,
+          1533.07
+        ],
+        [
+          513.13,
+          1532.27
+        ],
+        [
+          515.2,
+          1532
+        ],
+        [
+          517.27,
+          1532.27
+        ],
+        [
+          519.2,
+          1533.07
+        ],
+        [
+          520.86,
+          1534.34
+        ],
+        [
+          522.13,
+          1536
+        ],
+        [
+          522.93,
+          1537.93
+        ]
+      ],
+      "start": 406,
+      "end": 410,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Control Panel LED 2",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Control Panel LED 2",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Control Panel LED 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Control Panel LED 3",
+      "points": [
+        [
+          566.4,
+          1540
+        ],
+        [
+          566.13,
+          1542.07
+        ],
+        [
+          565.33,
+          1544
+        ],
+        [
+          564.06,
+          1545.66
+        ],
+        [
+          562.4,
+          1546.93
+        ],
+        [
+          560.47,
+          1547.73
+        ],
+        [
+          558.4,
+          1548
+        ],
+        [
+          556.33,
+          1547.73
+        ],
+        [
+          554.4,
+          1546.93
+        ],
+        [
+          552.74,
+          1545.66
+        ],
+        [
+          551.47,
+          1544
+        ],
+        [
+          550.67,
+          1542.07
+        ],
+        [
+          550.4,
+          1540
+        ],
+        [
+          550.67,
+          1537.93
+        ],
+        [
+          551.47,
+          1536
+        ],
+        [
+          552.74,
+          1534.34
+        ],
+        [
+          554.4,
+          1533.07
+        ],
+        [
+          556.33,
+          1532.27
+        ],
+        [
+          558.4,
+          1532
+        ],
+        [
+          560.47,
+          1532.27
+        ],
+        [
+          562.4,
+          1533.07
+        ],
+        [
+          564.06,
+          1534.34
+        ],
+        [
+          565.33,
+          1536
+        ],
+        [
+          566.13,
+          1537.93
+        ]
+      ],
+      "start": 406,
+      "end": 410,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Control Panel LED 3",
+      "subcategory": "Led Red"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Control Panel LED 3",
+      "param": "Led Red Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Control Panel LED 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Control Panel Isolator Plate",
+      "points": [
+        [
+          659.2,
+          1400
+        ],
+        [
+          731.2,
+          1400
+        ],
+        [
+          731.2,
+          1490
+        ],
+        [
+          659.2,
+          1490
+        ]
+      ],
+      "start": 406,
+      "end": 408,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Control Panel Isolator Plate",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Control Panel Isolator Plate",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Control Panel Isolator Plate",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Control Panel Isolator Handle",
+      "points": [
+        [
+          700.4,
+          1410
+        ],
+        [
+          701.17,
+          1410.15
+        ],
+        [
+          701.81,
+          1410.59
+        ],
+        [
+          702.25,
+          1411.23
+        ],
+        [
+          702.4,
+          1412
+        ],
+        [
+          702.4,
+          1478
+        ],
+        [
+          702.25,
+          1478.77
+        ],
+        [
+          701.81,
+          1479.41
+        ],
+        [
+          701.17,
+          1479.85
+        ],
+        [
+          700.4,
+          1480
+        ],
+        [
+          690,
+          1480
+        ],
+        [
+          689.23,
+          1479.85
+        ],
+        [
+          688.59,
+          1479.41
+        ],
+        [
+          688.15,
+          1478.77
+        ],
+        [
+          688,
+          1478
+        ],
+        [
+          688,
+          1412
+        ],
+        [
+          688.15,
+          1411.23
+        ],
+        [
+          688.59,
+          1410.59
+        ],
+        [
+          689.23,
+          1410.15
+        ],
+        [
+          690,
+          1410
+        ]
+      ],
+      "start": 408,
+      "end": 426,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Control Panel Isolator Handle",
+      "subcategory": "Red"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Control Panel Isolator Handle",
+      "param": "Red Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Control Panel Isolator Handle",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Control Panel Door Handle",
+      "points": [
+        [
+          448.4,
+          1375
+        ],
+        [
+          449.17,
+          1375.15
+        ],
+        [
+          449.81,
+          1375.59
+        ],
+        [
+          450.25,
+          1376.23
+        ],
+        [
+          450.4,
+          1377
+        ],
+        [
+          450.4,
+          1488
+        ],
+        [
+          450.25,
+          1488.77
+        ],
+        [
+          449.81,
+          1489.41
+        ],
+        [
+          449.17,
+          1489.85
+        ],
+        [
+          448.4,
+          1490
+        ],
+        [
+          438,
+          1490
+        ],
+        [
+          437.23,
+          1489.85
+        ],
+        [
+          436.59,
+          1489.41
+        ],
+        [
+          436.15,
+          1488.77
+        ],
+        [
+          436,
+          1488
+        ],
+        [
+          436,
+          1377
+        ],
+        [
+          436.15,
+          1376.23
+        ],
+        [
+          436.59,
+          1375.59
+        ],
+        [
+          437.23,
+          1375.15
+        ],
+        [
+          438,
+          1375
+        ]
+      ],
+      "start": 406,
+      "end": 422,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Control Panel Door Handle",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Control Panel Door Handle",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Control Panel Door Handle",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Feed Inlet",
+      "points": [
+        [
+          -180,
+          250
+        ],
+        [
+          -180.68,
+          255.18
+        ],
+        [
+          -182.68,
+          260
+        ],
+        [
+          -185.86,
+          264.14
+        ],
+        [
+          -190,
+          267.32
+        ],
+        [
+          -194.82,
+          269.32
+        ],
+        [
+          -200,
+          270
+        ],
+        [
+          -205.18,
+          269.32
+        ],
+        [
+          -210,
+          267.32
+        ],
+        [
+          -214.14,
+          264.14
+        ],
+        [
+          -217.32,
+          260
+        ],
+        [
+          -219.32,
+          255.18
+        ],
+        [
+          -220,
+          250
+        ],
+        [
+          -219.32,
+          244.82
+        ],
+        [
+          -217.32,
+          240
+        ],
+        [
+          -214.14,
+          235.86
+        ],
+        [
+          -210,
+          232.68
+        ],
+        [
+          -205.18,
+          230.68
+        ],
+        [
+          -200,
+          230
+        ],
+        [
+          -194.82,
+          230.68
+        ],
+        [
+          -190,
+          232.68
+        ],
+        [
+          -185.86,
+          235.86
+        ],
+        [
+          -182.68,
+          240
+        ],
+        [
+          -180.68,
+          244.82
+        ]
+      ],
+      "start": -900,
+      "end": -800,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Feed Inlet",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Feed Inlet",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Feed Inlet",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Drain Outlet",
+      "points": [
+        [
+          520,
+          200
+        ],
+        [
+          519.32,
+          205.18
+        ],
+        [
+          517.32,
+          210
+        ],
+        [
+          514.14,
+          214.14
+        ],
+        [
+          510,
+          217.32
+        ],
+        [
+          505.18,
+          219.32
+        ],
+        [
+          500,
+          220
+        ],
+        [
+          494.82,
+          219.32
+        ],
+        [
+          490,
+          217.32
+        ],
+        [
+          485.86,
+          214.14
+        ],
+        [
+          482.68,
+          210
+        ],
+        [
+          480.68,
+          205.18
+        ],
+        [
+          480,
+          200
+        ],
+        [
+          480.68,
+          194.82
+        ],
+        [
+          482.68,
+          190
+        ],
+        [
+          485.86,
+          185.86
+        ],
+        [
+          490,
+          182.68
+        ],
+        [
+          494.82,
+          180.68
+        ],
+        [
+          500,
+          180
+        ],
+        [
+          505.18,
+          180.68
+        ],
+        [
+          510,
+          182.68
+        ],
+        [
+          514.14,
+          185.86
+        ],
+        [
+          517.32,
+          190
+        ],
+        [
+          519.32,
+          194.82
+        ]
+      ],
+      "start": -50,
+      "end": 40
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Drain Outlet",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Drain Outlet",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Drain Outlet",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Permeate Outlet",
+      "points": [
+        [
+          116,
+          1700
+        ],
+        [
+          115.45,
+          1704.14
+        ],
+        [
+          113.86,
+          1708
+        ],
+        [
+          111.31,
+          1711.31
+        ],
+        [
+          108,
+          1713.86
+        ],
+        [
+          104.14,
+          1715.45
+        ],
+        [
+          100,
+          1716
+        ],
+        [
+          95.86,
+          1715.45
+        ],
+        [
+          92,
+          1713.86
+        ],
+        [
+          88.69,
+          1711.31
+        ],
+        [
+          86.14,
+          1708
+        ],
+        [
+          84.55,
+          1704.14
+        ],
+        [
+          84,
+          1700
+        ],
+        [
+          84.55,
+          1695.86
+        ],
+        [
+          86.14,
+          1692
+        ],
+        [
+          88.69,
+          1688.69
+        ],
+        [
+          92,
+          1686.14
+        ],
+        [
+          95.86,
+          1684.55
+        ],
+        [
+          100,
+          1684
+        ],
+        [
+          104.14,
+          1684.55
+        ],
+        [
+          108,
+          1686.14
+        ],
+        [
+          111.31,
+          1688.69
+        ],
+        [
+          113.86,
+          1692
+        ],
+        [
+          115.45,
+          1695.86
+        ]
+      ],
+      "start": 800,
+      "end": 900,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Permeate Outlet",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Permeate Outlet",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Permeate Outlet",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "Feed",
+      "domain": "pipe",
+      "system": "DomesticColdWater",
+      "solid": "Feed Inlet",
+      "side": "left",
+      "diameter": 25,
+      "flow": "In"
+    },
+    {
+      "op": "add_connector",
+      "name": "Permeate",
+      "domain": "pipe",
+      "system": "DomesticColdWater",
+      "solid": "Permeate Outlet",
+      "side": "right",
+      "diameter": 25,
+      "flow": "Out"
+    },
+    {
+      "op": "add_connector",
+      "name": "Reject",
+      "domain": "pipe",
+      "system": "Sanitary",
+      "solid": "Drain Outlet",
+      "side": "bottom",
+      "diameter": 25,
+      "flow": "Out"
+    },
+    {
+      "op": "add_connector",
+      "name": "Power",
+      "domain": "electrical",
+      "system": "PowerBalanced",
+      "solid": "Control Panel Enclosure",
+      "side": "top"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Voltage",
+      "connector": "Power",
+      "connector_param": "Voltage",
+      "param": "Voltage"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Number of Poles",
+      "connector": "Power",
+      "connector_param": "Number of Poles",
+      "param": "Number of Poles"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Apparent Load",
+      "connector": "Power",
+      "connector_param": "Apparent Load",
+      "param": "Apparent Load"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_PlumbingEq_WaterTreatment_RO_Dialysis.png"
+    }
+  ],
+  "values": {
+    "Skid 1600 x 800 x 1900 mm": {
+      "value": "1600x800x1900",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "500 l/h permeate": {
+      "value": 500,
+      "source_status": "assumed",
+      "source": "type name"
+    },
+    "Water to ISO 23500 / BS ISO 13959": {
+      "value": "ISO 23500",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Power 3 kVA, 415 V": {
+      "value": 3000,
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   }
- ],
- "values": {
-  "Skid 1600 x 800 x 1900 mm": {
-   "value": "1600x800x1900",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "500 l/h permeate": {
-   "value": 500,
-   "source_status": "assumed",
-   "source": "type name"
-  },
-  "Water to ISO 23500 / BS ISO 13959": {
-   "value": "ISO 23500",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Power 3 kVA, 415 V": {
-   "value": 3000,
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- }
 }

@@ -1,631 +1,635 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_P_PipeAccessory_Vent_AirAdmittance",
- "template": "Metric Generic Model.rft",
- "about": "AAV modelled as a generic product: spigot, flared body, black vent band with ribs, domed cap, label. Reference: query: pipe accessory vent air admittance pipe accessories hospital; images: https://www.google.com/search?tbm=isch&q=pipe+accessory+vent+air+admittance+pipe+accessories+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Pipe Accessories"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Controller_ID",
-   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Type",
-   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Signal",
-   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Protocol",
-   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "110_AAV"
-  },
-  {
-   "op": "set_type_value",
-   "name": "110_AAV/FMC_Cost_Unit",
-   "type": "110_AAV",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "110_AAV/FMC_Geometry_Stage",
-   "type": "110_AAV",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "110_AAV/IfcExportAs",
-   "type": "110_AAV",
-   "param": "IfcExportAs",
-   "value": "IfcDiscreteAccessory"
-  },
-  {
-   "op": "set_type_value",
-   "name": "110_AAV/Description",
-   "type": "110_AAV",
-   "param": "Description",
-   "value": "Air admittance valve 110 mm, grey ABS, push-fit spigot, vented body with diaphragm, domed cap"
-  },
-  {
-   "op": "set_type_value",
-   "name": "110_AAV/Keynote",
-   "type": "110_AAV",
-   "param": "Keynote",
-   "value": "P.DRN_03"
-  },
-  {
-   "op": "set_type_value",
-   "name": "110_AAV/FMC_Keynote_Code",
-   "type": "110_AAV",
-   "param": "FMC_Keynote_Code",
-   "value": "P.DRN_03"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Grey",
-   "color": [
-    154,
-    160,
-    166
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Grey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Grey",
-   "param": "Grey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "White",
-   "color": [
-    242,
-    242,
-    238
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "White Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_White",
-   "param": "White Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -80,
-     -80
-    ],
-    [
-     80,
-     -80
-    ],
-    [
-     80,
-     80
-    ],
-    [
-     -80,
-     80
-    ]
-   ],
-   "start": 0,
-   "end": 188
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Base Spigot",
-   "points": [
-    [
-     55.0,
-     0.0
-    ],
-    [
-     53.13,
-     14.24
-    ],
-    [
-     47.63,
-     27.5
-    ],
-    [
-     38.89,
-     38.89
-    ],
-    [
-     27.5,
-     47.63
-    ],
-    [
-     14.24,
-     53.13
-    ],
-    [
-     0.0,
-     55.0
-    ],
-    [
-     -14.24,
-     53.13
-    ],
-    [
-     -27.5,
-     47.63
-    ],
-    [
-     -38.89,
-     38.89
-    ],
-    [
-     -47.63,
-     27.5
-    ],
-    [
-     -53.13,
-     14.24
-    ],
-    [
-     -55.0,
-     0.0
-    ],
-    [
-     -53.13,
-     -14.24
-    ],
-    [
-     -47.63,
-     -27.5
-    ],
-    [
-     -38.89,
-     -38.89
-    ],
-    [
-     -27.5,
-     -47.63
-    ],
-    [
-     -14.24,
-     -53.13
-    ],
-    [
-     -0.0,
-     -55.0
-    ],
-    [
-     14.24,
-     -53.13
-    ],
-    [
-     27.5,
-     -47.63
-    ],
-    [
-     38.89,
-     -38.89
-    ],
-    [
-     47.63,
-     -27.5
-    ],
-    [
-     53.13,
-     -14.24
-    ]
-   ],
-   "start": 0,
-   "end": 80
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Spigot",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Spigot",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Spigot",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Body",
-   "profile": [
-    [
-     0,
-     80
-    ],
-    [
-     56,
-     80
-    ],
-    [
-     78,
-     105
-    ],
-    [
-     78,
-     112
-    ],
-    [
-     0,
-     112
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Body",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Body",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Vent Band",
-   "profile": [
-    [
-     0,
-     112
-    ],
-    [
-     74,
-     112
-    ],
-    [
-     74,
-     145
-    ],
-    [
-     0,
-     145
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Band",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Band",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vent Rib A",
-   "points": [
-    [
-     -79,
-     -4
-    ],
-    [
-     79,
-     -4
-    ],
-    [
-     79,
-     4
-    ],
-    [
-     -79,
-     4
-    ]
-   ],
-   "start": 112,
-   "end": 145
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vent Rib A",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Rib A",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Rib A",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vent Rib B",
-   "points": [
-    [
-     -4,
-     -79
-    ],
-    [
-     4,
-     -79
-    ],
-    [
-     4,
-     79
-    ],
-    [
-     -4,
-     79
-    ]
-   ],
-   "start": 112,
-   "end": 145
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vent Rib B",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Rib B",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Rib B",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Cap",
-   "profile": [
-    [
-     0,
-     145
-    ],
-    [
-     80,
-     145
-    ],
-    [
-     78,
-     160
-    ],
-    [
-     50,
-     182
-    ],
-    [
-     0,
-     188
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cap",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cap",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Label",
-   "points": [
-    [
-     -30,
-     90
-    ],
-    [
-     30,
-     90
-    ],
-    [
-     30,
-     104
-    ],
-    [
-     -30,
-     104
-    ]
-   ],
-   "start": 77,
-   "end": 79,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Label",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Label",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Label",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "Vent",
-   "domain": "pipe",
-   "system": "Vent",
-   "solid": "Base Spigot",
-   "side": "bottom",
-   "diameter": 110
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_PipeAccessory_Vent_AirAdmittance.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_P_PipeAccessory_Vent_AirAdmittance",
+  "template": "Metric Generic Model.rft",
+  "about": "AAV modelled as a generic product: spigot, flared body, black vent band with ribs, domed cap, label. Reference: query: pipe accessory vent air admittance pipe accessories hospital; images: https://www.google.com/search?tbm=isch&q=pipe+accessory+vent+air+admittance+pipe+accessories+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Pipe Accessories"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Controller_ID",
+      "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Type",
+      "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Signal",
+      "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Protocol",
+      "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "110_AAV"
+    },
+    {
+      "op": "set_type_value",
+      "name": "110_AAV/FMC_Cost_Unit",
+      "type": "110_AAV",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "110_AAV/FMC_Geometry_Stage",
+      "type": "110_AAV",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "110_AAV/IfcExportAs",
+      "type": "110_AAV",
+      "param": "IfcExportAs",
+      "value": "IfcDiscreteAccessory"
+    },
+    {
+      "op": "set_type_value",
+      "name": "110_AAV/Description",
+      "type": "110_AAV",
+      "param": "Description",
+      "value": "Air admittance valve 110 mm, grey ABS, push-fit spigot, vented body with diaphragm, domed cap"
+    },
+    {
+      "op": "set_type_value",
+      "name": "110_AAV/Keynote",
+      "type": "110_AAV",
+      "param": "Keynote",
+      "value": "P.DRN_03"
+    },
+    {
+      "op": "set_type_value",
+      "name": "110_AAV/FMC_Keynote_Code",
+      "type": "110_AAV",
+      "param": "FMC_Keynote_Code",
+      "value": "P.DRN_03"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Grey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Grey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Grey",
+      "param": "Grey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "White",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "White Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_White",
+      "param": "White Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -80,
+          -80
+        ],
+        [
+          80,
+          -80
+        ],
+        [
+          80,
+          80
+        ],
+        [
+          -80,
+          80
+        ]
+      ],
+      "start": 0,
+      "end": 188
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Base Spigot",
+      "points": [
+        [
+          55,
+          0
+        ],
+        [
+          53.13,
+          14.24
+        ],
+        [
+          47.63,
+          27.5
+        ],
+        [
+          38.89,
+          38.89
+        ],
+        [
+          27.5,
+          47.63
+        ],
+        [
+          14.24,
+          53.13
+        ],
+        [
+          0,
+          55
+        ],
+        [
+          -14.24,
+          53.13
+        ],
+        [
+          -27.5,
+          47.63
+        ],
+        [
+          -38.89,
+          38.89
+        ],
+        [
+          -47.63,
+          27.5
+        ],
+        [
+          -53.13,
+          14.24
+        ],
+        [
+          -55,
+          0
+        ],
+        [
+          -53.13,
+          -14.24
+        ],
+        [
+          -47.63,
+          -27.5
+        ],
+        [
+          -38.89,
+          -38.89
+        ],
+        [
+          -27.5,
+          -47.63
+        ],
+        [
+          -14.24,
+          -53.13
+        ],
+        [
+          0,
+          -55
+        ],
+        [
+          14.24,
+          -53.13
+        ],
+        [
+          27.5,
+          -47.63
+        ],
+        [
+          38.89,
+          -38.89
+        ],
+        [
+          47.63,
+          -27.5
+        ],
+        [
+          53.13,
+          -14.24
+        ]
+      ],
+      "start": 0,
+      "end": 80
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Base Spigot",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Base Spigot",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Base Spigot",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Body",
+      "profile": [
+        [
+          0,
+          80
+        ],
+        [
+          56,
+          80
+        ],
+        [
+          78,
+          105
+        ],
+        [
+          78,
+          112
+        ],
+        [
+          0,
+          112
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Body",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Body",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Vent Band",
+      "profile": [
+        [
+          0,
+          112
+        ],
+        [
+          74,
+          112
+        ],
+        [
+          74,
+          145
+        ],
+        [
+          0,
+          145
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Band",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vent Band",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vent Rib A",
+      "points": [
+        [
+          -79,
+          -4
+        ],
+        [
+          79,
+          -4
+        ],
+        [
+          79,
+          4
+        ],
+        [
+          -79,
+          4
+        ]
+      ],
+      "start": 112,
+      "end": 145
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vent Rib A",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Rib A",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vent Rib A",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vent Rib B",
+      "points": [
+        [
+          -4,
+          -79
+        ],
+        [
+          4,
+          -79
+        ],
+        [
+          4,
+          79
+        ],
+        [
+          -4,
+          79
+        ]
+      ],
+      "start": 112,
+      "end": 145
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vent Rib B",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Rib B",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vent Rib B",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Cap",
+      "profile": [
+        [
+          0,
+          145
+        ],
+        [
+          80,
+          145
+        ],
+        [
+          78,
+          160
+        ],
+        [
+          50,
+          182
+        ],
+        [
+          0,
+          188
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cap",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cap",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Label",
+      "points": [
+        [
+          -30,
+          90
+        ],
+        [
+          30,
+          90
+        ],
+        [
+          30,
+          104
+        ],
+        [
+          -30,
+          104
+        ]
+      ],
+      "start": 77,
+      "end": 79,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Label",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Label",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Label",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "Vent",
+      "domain": "pipe",
+      "system": "Vent",
+      "solid": "Base Spigot",
+      "side": "bottom",
+      "diameter": 110
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_PipeAccessory_Vent_AirAdmittance.png"
+    }
+  ],
+  "values": {
+    "110 mm spigot": {
+      "value": 110,
+      "source_status": "assumed",
+      "source": "BS EN 12380"
+    },
+    "Body 160 mm dia, 190 mm high": {
+      "value": "160x190",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Airflow 32 l/s": {
+      "value": 32,
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   }
- ],
- "values": {
-  "110 mm spigot": {
-   "value": 110,
-   "source_status": "assumed",
-   "source": "BS EN 12380"
-  },
-  "Body 160 mm dia, 190 mm high": {
-   "value": "160x190",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Airflow 32 l/s": {
-   "value": 32,
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- }
 }

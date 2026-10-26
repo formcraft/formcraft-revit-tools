@@ -1,3256 +1,3263 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_E_EQ_UPS_Rack",
- "template": "Metric Generic Model.rft",
- "about": "Rack UPS: power and battery modules, black bezels, rack ears with screws, LCD in window, buttons, power button, status LEDs, vents with slots, rear terminal block. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: ups rack electrical equipment hospital; images: https://www.google.com/search?tbm=isch&q=ups+rack+electrical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Electrical Equipment"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Voltage",
-   "type": "Voltage",
-   "group": "Electrical"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Apparent Load",
-   "type": "ApparentPower",
-   "group": "ElectricalLoads"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
-  },
-  {
-   "op": "add_type",
-   "name": "10kVA_Rack6U"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kVA_Rack6U/FMC_Cost_Unit",
-   "type": "10kVA_Rack6U",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kVA_Rack6U/FMC_Geometry_Stage",
-   "type": "10kVA_Rack6U",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kVA_Rack6U/IfcExportAs",
-   "type": "10kVA_Rack6U",
-   "param": "IfcExportAs",
-   "value": "IfcElectricFlowStorageDevice"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kVA_Rack6U/Description",
-   "type": "10kVA_Rack6U",
-   "param": "Description",
-   "value": "Rack-mount online UPS 10 kVA, 19 in, 3U power module and 3U battery module, LCD and status LEDs"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kVA_Rack6U/Keynote",
-   "type": "10kVA_Rack6U",
-   "param": "Keynote",
-   "value": "Z.BAT_03"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kVA_Rack6U/FMC_Keynote_Code",
-   "type": "10kVA_Rack6U",
-   "param": "FMC_Keynote_Code",
-   "value": "Z.BAT_03"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kVA_Rack6U/Voltage",
-   "type": "10kVA_Rack6U",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kVA_Rack6U/Apparent Load",
-   "type": "10kVA_Rack6U",
-   "param": "Apparent Load",
-   "value": 10000
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Steel",
-   "color": [
-    61,
-    70,
-    80
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Steel Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_SteelLTZ_Painted",
-   "param": "Steel Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Chrome",
-   "color": [
-    192,
-    195,
-    199
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Chrome Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Chrome_Polished",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Screen",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Screen Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Screen Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Grey",
-   "color": [
-    154,
-    160,
-    166
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Grey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Grey",
-   "param": "Grey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Green",
-   "color": [
-    59,
-    209,
-    111
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Green Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_LED_Green",
-   "param": "Green Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -241.0,
-     -645
-    ],
-    [
-     241.0,
-     -645
-    ],
-    [
-     241.0,
-     15
-    ],
-    [
-     -241.0,
-     15
-    ]
-   ],
-   "start": 0,
-   "end": 273
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Power Module",
-   "points": [
-    [
-     218.0,
-     -620.0
-    ],
-    [
-     218.77,
-     -619.85
-    ],
-    [
-     219.41,
-     -619.41
-    ],
-    [
-     219.85,
-     -618.77
-    ],
-    [
-     220.0,
-     -618.0
-    ],
-    [
-     220.0,
-     -2.0
-    ],
-    [
-     219.85,
-     -1.23
-    ],
-    [
-     219.41,
-     -0.59
-    ],
-    [
-     218.77,
-     -0.15
-    ],
-    [
-     218.0,
-     0.0
-    ],
-    [
-     -218.0,
-     0.0
-    ],
-    [
-     -218.77,
-     -0.15
-    ],
-    [
-     -219.41,
-     -0.59
-    ],
-    [
-     -219.85,
-     -1.23
-    ],
-    [
-     -220.0,
-     -2.0
-    ],
-    [
-     -220.0,
-     -618.0
-    ],
-    [
-     -219.85,
-     -618.77
-    ],
-    [
-     -219.41,
-     -619.41
-    ],
-    [
-     -218.77,
-     -619.85
-    ],
-    [
-     -218.0,
-     -620.0
-    ]
-   ],
-   "start": 140,
-   "end": 273
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Power Module",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Power Module",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Power Module",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Battery Module",
-   "points": [
-    [
-     218.0,
-     -620.0
-    ],
-    [
-     218.77,
-     -619.85
-    ],
-    [
-     219.41,
-     -619.41
-    ],
-    [
-     219.85,
-     -618.77
-    ],
-    [
-     220.0,
-     -618.0
-    ],
-    [
-     220.0,
-     -2.0
-    ],
-    [
-     219.85,
-     -1.23
-    ],
-    [
-     219.41,
-     -0.59
-    ],
-    [
-     218.77,
-     -0.15
-    ],
-    [
-     218.0,
-     0.0
-    ],
-    [
-     -218.0,
-     0.0
-    ],
-    [
-     -218.77,
-     -0.15
-    ],
-    [
-     -219.41,
-     -0.59
-    ],
-    [
-     -219.85,
-     -1.23
-    ],
-    [
-     -220.0,
-     -2.0
-    ],
-    [
-     -220.0,
-     -618.0
-    ],
-    [
-     -219.85,
-     -618.77
-    ],
-    [
-     -219.41,
-     -619.41
-    ],
-    [
-     -218.77,
-     -619.85
-    ],
-    [
-     -218.0,
-     -620.0
-    ]
-   ],
-   "start": 0,
-   "end": 133
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Battery Module",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Battery Module",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Battery Module",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Front Bezel",
-   "points": [
-    [
-     216.0,
-     141.0
-    ],
-    [
-     218.3,
-     141.46
-    ],
-    [
-     220.24,
-     142.76
-    ],
-    [
-     221.54,
-     144.7
-    ],
-    [
-     222.0,
-     147.0
-    ],
-    [
-     222.0,
-     266.0
-    ],
-    [
-     221.54,
-     268.3
-    ],
-    [
-     220.24,
-     270.24
-    ],
-    [
-     218.3,
-     271.54
-    ],
-    [
-     216.0,
-     272.0
-    ],
-    [
-     -216.0,
-     272.0
-    ],
-    [
-     -218.3,
-     271.54
-    ],
-    [
-     -220.24,
-     270.24
-    ],
-    [
-     -221.54,
-     268.3
-    ],
-    [
-     -222.0,
-     266.0
-    ],
-    [
-     -222.0,
-     147.0
-    ],
-    [
-     -221.54,
-     144.7
-    ],
-    [
-     -220.24,
-     142.76
-    ],
-    [
-     -218.3,
-     141.46
-    ],
-    [
-     -216.0,
-     141.0
-    ]
-   ],
-   "start": 620,
-   "end": 640,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Front Bezel",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Front Bezel",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Front Bezel",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Battery Bezel",
-   "points": [
-    [
-     216.0,
-     1.0
-    ],
-    [
-     218.3,
-     1.46
-    ],
-    [
-     220.24,
-     2.76
-    ],
-    [
-     221.54,
-     4.7
-    ],
-    [
-     222.0,
-     7.0
-    ],
-    [
-     222.0,
-     126.0
-    ],
-    [
-     221.54,
-     128.3
-    ],
-    [
-     220.24,
-     130.24
-    ],
-    [
-     218.3,
-     131.54
-    ],
-    [
-     216.0,
-     132.0
-    ],
-    [
-     -216.0,
-     132.0
-    ],
-    [
-     -218.3,
-     131.54
-    ],
-    [
-     -220.24,
-     130.24
-    ],
-    [
-     -221.54,
-     128.3
-    ],
-    [
-     -222.0,
-     126.0
-    ],
-    [
-     -222.0,
-     7.0
-    ],
-    [
-     -221.54,
-     4.7
-    ],
-    [
-     -220.24,
-     2.76
-    ],
-    [
-     -218.3,
-     1.46
-    ],
-    [
-     -216.0,
-     1.0
-    ]
-   ],
-   "start": 620,
-   "end": 640,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Battery Bezel",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Battery Bezel",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Battery Bezel",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rack Ear 1",
-   "points": [
-    [
-     -222.0,
-     0.0
-    ],
-    [
-     -221.23,
-     0.15
-    ],
-    [
-     -220.59,
-     0.59
-    ],
-    [
-     -220.15,
-     1.23
-    ],
-    [
-     -220.0,
-     2.0
-    ],
-    [
-     -220.0,
-     271.0
-    ],
-    [
-     -220.15,
-     271.77
-    ],
-    [
-     -220.59,
-     272.41
-    ],
-    [
-     -221.23,
-     272.85
-    ],
-    [
-     -222.0,
-     273.0
-    ],
-    [
-     -239.0,
-     273.0
-    ],
-    [
-     -239.77,
-     272.85
-    ],
-    [
-     -240.41,
-     272.41
-    ],
-    [
-     -240.85,
-     271.77
-    ],
-    [
-     -241.0,
-     271.0
-    ],
-    [
-     -241.0,
-     2.0
-    ],
-    [
-     -240.85,
-     1.23
-    ],
-    [
-     -240.41,
-     0.59
-    ],
-    [
-     -239.77,
-     0.15
-    ],
-    [
-     -239.0,
-     0.0
-    ]
-   ],
-   "start": 623,
-   "end": 628,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rack Ear 1",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rack Ear 1",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rack Ear 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rack Ear 2",
-   "points": [
-    [
-     239.0,
-     0.0
-    ],
-    [
-     239.77,
-     0.15
-    ],
-    [
-     240.41,
-     0.59
-    ],
-    [
-     240.85,
-     1.23
-    ],
-    [
-     241.0,
-     2.0
-    ],
-    [
-     241.0,
-     271.0
-    ],
-    [
-     240.85,
-     271.77
-    ],
-    [
-     240.41,
-     272.41
-    ],
-    [
-     239.77,
-     272.85
-    ],
-    [
-     239.0,
-     273.0
-    ],
-    [
-     222.0,
-     273.0
-    ],
-    [
-     221.23,
-     272.85
-    ],
-    [
-     220.59,
-     272.41
-    ],
-    [
-     220.15,
-     271.77
-    ],
-    [
-     220.0,
-     271.0
-    ],
-    [
-     220.0,
-     2.0
-    ],
-    [
-     220.15,
-     1.23
-    ],
-    [
-     220.59,
-     0.59
-    ],
-    [
-     221.23,
-     0.15
-    ],
-    [
-     222.0,
-     0.0
-    ]
-   ],
-   "start": 623,
-   "end": 628,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rack Ear 2",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rack Ear 2",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rack Ear 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rack Screw 1",
-   "points": [
-    [
-     -228.5,
-     30.0
-    ],
-    [
-     -228.62,
-     30.91
-    ],
-    [
-     -228.97,
-     31.75
-    ],
-    [
-     -229.53,
-     32.47
-    ],
-    [
-     -230.25,
-     33.03
-    ],
-    [
-     -231.09,
-     33.38
-    ],
-    [
-     -232.0,
-     33.5
-    ],
-    [
-     -232.91,
-     33.38
-    ],
-    [
-     -233.75,
-     33.03
-    ],
-    [
-     -234.47,
-     32.47
-    ],
-    [
-     -235.03,
-     31.75
-    ],
-    [
-     -235.38,
-     30.91
-    ],
-    [
-     -235.5,
-     30.0
-    ],
-    [
-     -235.38,
-     29.09
-    ],
-    [
-     -235.03,
-     28.25
-    ],
-    [
-     -234.47,
-     27.53
-    ],
-    [
-     -233.75,
-     26.97
-    ],
-    [
-     -232.91,
-     26.62
-    ],
-    [
-     -232.0,
-     26.5
-    ],
-    [
-     -231.09,
-     26.62
-    ],
-    [
-     -230.25,
-     26.97
-    ],
-    [
-     -229.53,
-     27.53
-    ],
-    [
-     -228.97,
-     28.25
-    ],
-    [
-     -228.62,
-     29.09
-    ]
-   ],
-   "start": 628,
-   "end": 631,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rack Screw 1",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rack Screw 1",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rack Screw 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rack Screw 2",
-   "points": [
-    [
-     234.5,
-     30.0
-    ],
-    [
-     234.38,
-     30.91
-    ],
-    [
-     234.03,
-     31.75
-    ],
-    [
-     233.47,
-     32.47
-    ],
-    [
-     232.75,
-     33.03
-    ],
-    [
-     231.91,
-     33.38
-    ],
-    [
-     231.0,
-     33.5
-    ],
-    [
-     230.09,
-     33.38
-    ],
-    [
-     229.25,
-     33.03
-    ],
-    [
-     228.53,
-     32.47
-    ],
-    [
-     227.97,
-     31.75
-    ],
-    [
-     227.62,
-     30.91
-    ],
-    [
-     227.5,
-     30.0
-    ],
-    [
-     227.62,
-     29.09
-    ],
-    [
-     227.97,
-     28.25
-    ],
-    [
-     228.53,
-     27.53
-    ],
-    [
-     229.25,
-     26.97
-    ],
-    [
-     230.09,
-     26.62
-    ],
-    [
-     231.0,
-     26.5
-    ],
-    [
-     231.91,
-     26.62
-    ],
-    [
-     232.75,
-     26.97
-    ],
-    [
-     233.47,
-     27.53
-    ],
-    [
-     234.03,
-     28.25
-    ],
-    [
-     234.38,
-     29.09
-    ]
-   ],
-   "start": 628,
-   "end": 631,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rack Screw 2",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rack Screw 2",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rack Screw 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rack Screw Upper 1",
-   "points": [
-    [
-     -228.5,
-     243.0
-    ],
-    [
-     -228.62,
-     243.91
-    ],
-    [
-     -228.97,
-     244.75
-    ],
-    [
-     -229.53,
-     245.47
-    ],
-    [
-     -230.25,
-     246.03
-    ],
-    [
-     -231.09,
-     246.38
-    ],
-    [
-     -232.0,
-     246.5
-    ],
-    [
-     -232.91,
-     246.38
-    ],
-    [
-     -233.75,
-     246.03
-    ],
-    [
-     -234.47,
-     245.47
-    ],
-    [
-     -235.03,
-     244.75
-    ],
-    [
-     -235.38,
-     243.91
-    ],
-    [
-     -235.5,
-     243.0
-    ],
-    [
-     -235.38,
-     242.09
-    ],
-    [
-     -235.03,
-     241.25
-    ],
-    [
-     -234.47,
-     240.53
-    ],
-    [
-     -233.75,
-     239.97
-    ],
-    [
-     -232.91,
-     239.62
-    ],
-    [
-     -232.0,
-     239.5
-    ],
-    [
-     -231.09,
-     239.62
-    ],
-    [
-     -230.25,
-     239.97
-    ],
-    [
-     -229.53,
-     240.53
-    ],
-    [
-     -228.97,
-     241.25
-    ],
-    [
-     -228.62,
-     242.09
-    ]
-   ],
-   "start": 628,
-   "end": 631,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rack Screw Upper 1",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rack Screw Upper 1",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rack Screw Upper 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rack Screw Upper 2",
-   "points": [
-    [
-     234.5,
-     243.0
-    ],
-    [
-     234.38,
-     243.91
-    ],
-    [
-     234.03,
-     244.75
-    ],
-    [
-     233.47,
-     245.47
-    ],
-    [
-     232.75,
-     246.03
-    ],
-    [
-     231.91,
-     246.38
-    ],
-    [
-     231.0,
-     246.5
-    ],
-    [
-     230.09,
-     246.38
-    ],
-    [
-     229.25,
-     246.03
-    ],
-    [
-     228.53,
-     245.47
-    ],
-    [
-     227.97,
-     244.75
-    ],
-    [
-     227.62,
-     243.91
-    ],
-    [
-     227.5,
-     243.0
-    ],
-    [
-     227.62,
-     242.09
-    ],
-    [
-     227.97,
-     241.25
-    ],
-    [
-     228.53,
-     240.53
-    ],
-    [
-     229.25,
-     239.97
-    ],
-    [
-     230.09,
-     239.62
-    ],
-    [
-     231.0,
-     239.5
-    ],
-    [
-     231.91,
-     239.62
-    ],
-    [
-     232.75,
-     239.97
-    ],
-    [
-     233.47,
-     240.53
-    ],
-    [
-     234.03,
-     241.25
-    ],
-    [
-     234.38,
-     242.09
-    ]
-   ],
-   "start": 628,
-   "end": 631,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rack Screw Upper 2",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rack Screw Upper 2",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rack Screw Upper 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "LCD",
-   "points": [
-    [
-     57.0,
-     190.0
-    ],
-    [
-     58.15,
-     190.23
-    ],
-    [
-     59.12,
-     190.88
-    ],
-    [
-     59.77,
-     191.85
-    ],
-    [
-     60.0,
-     193.0
-    ],
-    [
-     60.0,
-     237.0
-    ],
-    [
-     59.77,
-     238.15
-    ],
-    [
-     59.12,
-     239.12
-    ],
-    [
-     58.15,
-     239.77
-    ],
-    [
-     57.0,
-     240.0
-    ],
-    [
-     -57.0,
-     240.0
-    ],
-    [
-     -58.15,
-     239.77
-    ],
-    [
-     -59.12,
-     239.12
-    ],
-    [
-     -59.77,
-     238.15
-    ],
-    [
-     -60.0,
-     237.0
-    ],
-    [
-     -60.0,
-     193.0
-    ],
-    [
-     -59.77,
-     191.85
-    ],
-    [
-     -59.12,
-     190.88
-    ],
-    [
-     -58.15,
-     190.23
-    ],
-    [
-     -57.0,
-     190.0
-    ]
-   ],
-   "start": 640,
-   "end": 642,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "LCD",
-   "subcategory": "Screen"
-  },
-  {
-   "op": "set_material_param",
-   "name": "LCD",
-   "param": "Screen Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "LCD",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "LCD Window",
-   "points": [
-    [
-     61.0,
-     185.0
-    ],
-    [
-     62.53,
-     185.3
-    ],
-    [
-     63.83,
-     186.17
-    ],
-    [
-     64.7,
-     187.47
-    ],
-    [
-     65.0,
-     189.0
-    ],
-    [
-     65.0,
-     241.0
-    ],
-    [
-     64.7,
-     242.53
-    ],
-    [
-     63.83,
-     243.83
-    ],
-    [
-     62.53,
-     244.7
-    ],
-    [
-     61.0,
-     245.0
-    ],
-    [
-     -61.0,
-     245.0
-    ],
-    [
-     -62.53,
-     244.7
-    ],
-    [
-     -63.83,
-     243.83
-    ],
-    [
-     -64.7,
-     242.53
-    ],
-    [
-     -65.0,
-     241.0
-    ],
-    [
-     -65.0,
-     189.0
-    ],
-    [
-     -64.7,
-     187.47
-    ],
-    [
-     -63.83,
-     186.17
-    ],
-    [
-     -62.53,
-     185.3
-    ],
-    [
-     -61.0,
-     185.0
-    ]
-   ],
-   "start": 640,
-   "end": 641,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "LCD Window",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "LCD Window",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "LCD Window",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Button 1",
-   "points": [
-    [
-     96.0,
-     215.0
-    ],
-    [
-     95.8,
-     216.55
-    ],
-    [
-     95.2,
-     218.0
-    ],
-    [
-     94.24,
-     219.24
-    ],
-    [
-     93.0,
-     220.2
-    ],
-    [
-     91.55,
-     220.8
-    ],
-    [
-     90.0,
-     221.0
-    ],
-    [
-     88.45,
-     220.8
-    ],
-    [
-     87.0,
-     220.2
-    ],
-    [
-     85.76,
-     219.24
-    ],
-    [
-     84.8,
-     218.0
-    ],
-    [
-     84.2,
-     216.55
-    ],
-    [
-     84.0,
-     215.0
-    ],
-    [
-     84.2,
-     213.45
-    ],
-    [
-     84.8,
-     212.0
-    ],
-    [
-     85.76,
-     210.76
-    ],
-    [
-     87.0,
-     209.8
-    ],
-    [
-     88.45,
-     209.2
-    ],
-    [
-     90.0,
-     209.0
-    ],
-    [
-     91.55,
-     209.2
-    ],
-    [
-     93.0,
-     209.8
-    ],
-    [
-     94.24,
-     210.76
-    ],
-    [
-     95.2,
-     212.0
-    ],
-    [
-     95.8,
-     213.45
-    ]
-   ],
-   "start": 640,
-   "end": 645,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Button 1",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Button 1",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Button 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Button 2",
-   "points": [
-    [
-     118.0,
-     215.0
-    ],
-    [
-     117.8,
-     216.55
-    ],
-    [
-     117.2,
-     218.0
-    ],
-    [
-     116.24,
-     219.24
-    ],
-    [
-     115.0,
-     220.2
-    ],
-    [
-     113.55,
-     220.8
-    ],
-    [
-     112.0,
-     221.0
-    ],
-    [
-     110.45,
-     220.8
-    ],
-    [
-     109.0,
-     220.2
-    ],
-    [
-     107.76,
-     219.24
-    ],
-    [
-     106.8,
-     218.0
-    ],
-    [
-     106.2,
-     216.55
-    ],
-    [
-     106.0,
-     215.0
-    ],
-    [
-     106.2,
-     213.45
-    ],
-    [
-     106.8,
-     212.0
-    ],
-    [
-     107.76,
-     210.76
-    ],
-    [
-     109.0,
-     209.8
-    ],
-    [
-     110.45,
-     209.2
-    ],
-    [
-     112.0,
-     209.0
-    ],
-    [
-     113.55,
-     209.2
-    ],
-    [
-     115.0,
-     209.8
-    ],
-    [
-     116.24,
-     210.76
-    ],
-    [
-     117.2,
-     212.0
-    ],
-    [
-     117.8,
-     213.45
-    ]
-   ],
-   "start": 640,
-   "end": 645,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Button 2",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Button 2",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Button 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Button 3",
-   "points": [
-    [
-     140.0,
-     215.0
-    ],
-    [
-     139.8,
-     216.55
-    ],
-    [
-     139.2,
-     218.0
-    ],
-    [
-     138.24,
-     219.24
-    ],
-    [
-     137.0,
-     220.2
-    ],
-    [
-     135.55,
-     220.8
-    ],
-    [
-     134.0,
-     221.0
-    ],
-    [
-     132.45,
-     220.8
-    ],
-    [
-     131.0,
-     220.2
-    ],
-    [
-     129.76,
-     219.24
-    ],
-    [
-     128.8,
-     218.0
-    ],
-    [
-     128.2,
-     216.55
-    ],
-    [
-     128.0,
-     215.0
-    ],
-    [
-     128.2,
-     213.45
-    ],
-    [
-     128.8,
-     212.0
-    ],
-    [
-     129.76,
-     210.76
-    ],
-    [
-     131.0,
-     209.8
-    ],
-    [
-     132.45,
-     209.2
-    ],
-    [
-     134.0,
-     209.0
-    ],
-    [
-     135.55,
-     209.2
-    ],
-    [
-     137.0,
-     209.8
-    ],
-    [
-     138.24,
-     210.76
-    ],
-    [
-     139.2,
-     212.0
-    ],
-    [
-     139.8,
-     213.45
-    ]
-   ],
-   "start": 640,
-   "end": 645,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Button 3",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Button 3",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Button 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Power Button",
-   "points": [
-    [
-     -111.0,
-     215.0
-    ],
-    [
-     -111.31,
-     217.33
-    ],
-    [
-     -112.21,
-     219.5
-    ],
-    [
-     -113.64,
-     221.36
-    ],
-    [
-     -115.5,
-     222.79
-    ],
-    [
-     -117.67,
-     223.69
-    ],
-    [
-     -120.0,
-     224.0
-    ],
-    [
-     -122.33,
-     223.69
-    ],
-    [
-     -124.5,
-     222.79
-    ],
-    [
-     -126.36,
-     221.36
-    ],
-    [
-     -127.79,
-     219.5
-    ],
-    [
-     -128.69,
-     217.33
-    ],
-    [
-     -129.0,
-     215.0
-    ],
-    [
-     -128.69,
-     212.67
-    ],
-    [
-     -127.79,
-     210.5
-    ],
-    [
-     -126.36,
-     208.64
-    ],
-    [
-     -124.5,
-     207.21
-    ],
-    [
-     -122.33,
-     206.31
-    ],
-    [
-     -120.0,
-     206.0
-    ],
-    [
-     -117.67,
-     206.31
-    ],
-    [
-     -115.5,
-     207.21
-    ],
-    [
-     -113.64,
-     208.64
-    ],
-    [
-     -112.21,
-     210.5
-    ],
-    [
-     -111.31,
-     212.67
-    ]
-   ],
-   "start": 640,
-   "end": 645,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Power Button",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Power Button",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Power Button",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Status LED 1",
-   "points": [
-    [
-     -177.0,
-     230.0
-    ],
-    [
-     -177.1,
-     230.78
-    ],
-    [
-     -177.4,
-     231.5
-    ],
-    [
-     -177.88,
-     232.12
-    ],
-    [
-     -178.5,
-     232.6
-    ],
-    [
-     -179.22,
-     232.9
-    ],
-    [
-     -180.0,
-     233.0
-    ],
-    [
-     -180.78,
-     232.9
-    ],
-    [
-     -181.5,
-     232.6
-    ],
-    [
-     -182.12,
-     232.12
-    ],
-    [
-     -182.6,
-     231.5
-    ],
-    [
-     -182.9,
-     230.78
-    ],
-    [
-     -183.0,
-     230.0
-    ],
-    [
-     -182.9,
-     229.22
-    ],
-    [
-     -182.6,
-     228.5
-    ],
-    [
-     -182.12,
-     227.88
-    ],
-    [
-     -181.5,
-     227.4
-    ],
-    [
-     -180.78,
-     227.1
-    ],
-    [
-     -180.0,
-     227.0
-    ],
-    [
-     -179.22,
-     227.1
-    ],
-    [
-     -178.5,
-     227.4
-    ],
-    [
-     -177.88,
-     227.88
-    ],
-    [
-     -177.4,
-     228.5
-    ],
-    [
-     -177.1,
-     229.22
-    ]
-   ],
-   "start": 640,
-   "end": 642,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Status LED 1",
-   "subcategory": "Green"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Status LED 1",
-   "param": "Green Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Status LED 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Status LED 2",
-   "points": [
-    [
-     -177.0,
-     214.0
-    ],
-    [
-     -177.1,
-     214.78
-    ],
-    [
-     -177.4,
-     215.5
-    ],
-    [
-     -177.88,
-     216.12
-    ],
-    [
-     -178.5,
-     216.6
-    ],
-    [
-     -179.22,
-     216.9
-    ],
-    [
-     -180.0,
-     217.0
-    ],
-    [
-     -180.78,
-     216.9
-    ],
-    [
-     -181.5,
-     216.6
-    ],
-    [
-     -182.12,
-     216.12
-    ],
-    [
-     -182.6,
-     215.5
-    ],
-    [
-     -182.9,
-     214.78
-    ],
-    [
-     -183.0,
-     214.0
-    ],
-    [
-     -182.9,
-     213.22
-    ],
-    [
-     -182.6,
-     212.5
-    ],
-    [
-     -182.12,
-     211.88
-    ],
-    [
-     -181.5,
-     211.4
-    ],
-    [
-     -180.78,
-     211.1
-    ],
-    [
-     -180.0,
-     211.0
-    ],
-    [
-     -179.22,
-     211.1
-    ],
-    [
-     -178.5,
-     211.4
-    ],
-    [
-     -177.88,
-     211.88
-    ],
-    [
-     -177.4,
-     212.5
-    ],
-    [
-     -177.1,
-     213.22
-    ]
-   ],
-   "start": 640,
-   "end": 642,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Status LED 2",
-   "subcategory": "Green"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Status LED 2",
-   "param": "Green Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Status LED 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Status LED 3",
-   "points": [
-    [
-     -177.0,
-     198.0
-    ],
-    [
-     -177.1,
-     198.78
-    ],
-    [
-     -177.4,
-     199.5
-    ],
-    [
-     -177.88,
-     200.12
-    ],
-    [
-     -178.5,
-     200.6
-    ],
-    [
-     -179.22,
-     200.9
-    ],
-    [
-     -180.0,
-     201.0
-    ],
-    [
-     -180.78,
-     200.9
-    ],
-    [
-     -181.5,
-     200.6
-    ],
-    [
-     -182.12,
-     200.12
-    ],
-    [
-     -182.6,
-     199.5
-    ],
-    [
-     -182.9,
-     198.78
-    ],
-    [
-     -183.0,
-     198.0
-    ],
-    [
-     -182.9,
-     197.22
-    ],
-    [
-     -182.6,
-     196.5
-    ],
-    [
-     -182.12,
-     195.88
-    ],
-    [
-     -181.5,
-     195.4
-    ],
-    [
-     -180.78,
-     195.1
-    ],
-    [
-     -180.0,
-     195.0
-    ],
-    [
-     -179.22,
-     195.1
-    ],
-    [
-     -178.5,
-     195.4
-    ],
-    [
-     -177.88,
-     195.88
-    ],
-    [
-     -177.4,
-     196.5
-    ],
-    [
-     -177.1,
-     197.22
-    ]
-   ],
-   "start": 640,
-   "end": 642,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Status LED 3",
-   "subcategory": "Green"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Status LED 3",
-   "param": "Green Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Status LED 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bezel Vent",
-   "points": [
-    [
-     -93.0,
-     155.0
-    ],
-    [
-     -91.85,
-     155.23
-    ],
-    [
-     -90.88,
-     155.88
-    ],
-    [
-     -90.23,
-     156.85
-    ],
-    [
-     -90.0,
-     158.0
-    ],
-    [
-     -90.0,
-     257.0
-    ],
-    [
-     -90.23,
-     258.15
-    ],
-    [
-     -90.88,
-     259.12
-    ],
-    [
-     -91.85,
-     259.77
-    ],
-    [
-     -93.0,
-     260.0
-    ],
-    [
-     -197.0,
-     260.0
-    ],
-    [
-     -198.15,
-     259.77
-    ],
-    [
-     -199.12,
-     259.12
-    ],
-    [
-     -199.77,
-     258.15
-    ],
-    [
-     -200.0,
-     257.0
-    ],
-    [
-     -200.0,
-     158.0
-    ],
-    [
-     -199.77,
-     156.85
-    ],
-    [
-     -199.12,
-     155.88
-    ],
-    [
-     -198.15,
-     155.23
-    ],
-    [
-     -197.0,
-     155.0
-    ]
-   ],
-   "start": 640,
-   "end": 641,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bezel Vent",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bezel Vent",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bezel Vent",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Battery Vent",
-   "points": [
-    [
-     197.0,
-     20.0
-    ],
-    [
-     198.15,
-     20.23
-    ],
-    [
-     199.12,
-     20.88
-    ],
-    [
-     199.77,
-     21.85
-    ],
-    [
-     200.0,
-     23.0
-    ],
-    [
-     200.0,
-     107.0
-    ],
-    [
-     199.77,
-     108.15
-    ],
-    [
-     199.12,
-     109.12
-    ],
-    [
-     198.15,
-     109.77
-    ],
-    [
-     197.0,
-     110.0
-    ],
-    [
-     -197.0,
-     110.0
-    ],
-    [
-     -198.15,
-     109.77
-    ],
-    [
-     -199.12,
-     109.12
-    ],
-    [
-     -199.77,
-     108.15
-    ],
-    [
-     -200.0,
-     107.0
-    ],
-    [
-     -200.0,
-     23.0
-    ],
-    [
-     -199.77,
-     21.85
-    ],
-    [
-     -199.12,
-     20.88
-    ],
-    [
-     -198.15,
-     20.23
-    ],
-    [
-     -197.0,
-     20.0
-    ]
-   ],
-   "start": 640,
-   "end": 641,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Battery Vent",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Battery Vent",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Battery Vent",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vent Slot 1",
-   "points": [
-    [
-     -195,
-     30
-    ],
-    [
-     195,
-     30
-    ],
-    [
-     195,
-     34
-    ],
-    [
-     -195,
-     34
-    ]
-   ],
-   "start": 641,
-   "end": 642,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vent Slot 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Slot 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Slot 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vent Slot 2",
-   "points": [
-    [
-     -195,
-     38
-    ],
-    [
-     195,
-     38
-    ],
-    [
-     195,
-     42
-    ],
-    [
-     -195,
-     42
-    ]
-   ],
-   "start": 641,
-   "end": 642,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vent Slot 2",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Slot 2",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Slot 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vent Slot 3",
-   "points": [
-    [
-     -195,
-     46
-    ],
-    [
-     195,
-     46
-    ],
-    [
-     195,
-     50
-    ],
-    [
-     -195,
-     50
-    ]
-   ],
-   "start": 641,
-   "end": 642,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vent Slot 3",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Slot 3",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Slot 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vent Slot 4",
-   "points": [
-    [
-     -195,
-     54
-    ],
-    [
-     195,
-     54
-    ],
-    [
-     195,
-     58
-    ],
-    [
-     -195,
-     58
-    ]
-   ],
-   "start": 641,
-   "end": 642,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vent Slot 4",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Slot 4",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Slot 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vent Slot 5",
-   "points": [
-    [
-     -195,
-     62
-    ],
-    [
-     195,
-     62
-    ],
-    [
-     195,
-     66
-    ],
-    [
-     -195,
-     66
-    ]
-   ],
-   "start": 641,
-   "end": 642,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vent Slot 5",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Slot 5",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Slot 5",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vent Slot 6",
-   "points": [
-    [
-     -195,
-     70
-    ],
-    [
-     195,
-     70
-    ],
-    [
-     195,
-     74
-    ],
-    [
-     -195,
-     74
-    ]
-   ],
-   "start": 641,
-   "end": 642,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vent Slot 6",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Slot 6",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Slot 6",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vent Slot 7",
-   "points": [
-    [
-     -195,
-     78
-    ],
-    [
-     195,
-     78
-    ],
-    [
-     195,
-     82
-    ],
-    [
-     -195,
-     82
-    ]
-   ],
-   "start": 641,
-   "end": 642,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vent Slot 7",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Slot 7",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Slot 7",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vent Slot 8",
-   "points": [
-    [
-     -195,
-     86
-    ],
-    [
-     195,
-     86
-    ],
-    [
-     195,
-     90
-    ],
-    [
-     -195,
-     90
-    ]
-   ],
-   "start": 641,
-   "end": 642,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vent Slot 8",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Slot 8",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Slot 8",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vent Slot 9",
-   "points": [
-    [
-     -195,
-     94
-    ],
-    [
-     195,
-     94
-    ],
-    [
-     195,
-     98
-    ],
-    [
-     -195,
-     98
-    ]
-   ],
-   "start": 641,
-   "end": 642,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vent Slot 9",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Slot 9",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Slot 9",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vent Slot 10",
-   "points": [
-    [
-     -195,
-     102
-    ],
-    [
-     195,
-     102
-    ],
-    [
-     195,
-     106
-    ],
-    [
-     -195,
-     106
-    ]
-   ],
-   "start": 641,
-   "end": 642,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vent Slot 10",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Slot 10",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Slot 10",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rear Terminal Block",
-   "points": [
-    [
-     148.0,
-     160.0
-    ],
-    [
-     148.77,
-     160.15
-    ],
-    [
-     149.41,
-     160.59
-    ],
-    [
-     149.85,
-     161.23
-    ],
-    [
-     150.0,
-     162.0
-    ],
-    [
-     150.0,
-     248.0
-    ],
-    [
-     149.85,
-     248.77
-    ],
-    [
-     149.41,
-     249.41
-    ],
-    [
-     148.77,
-     249.85
-    ],
-    [
-     148.0,
-     250.0
-    ],
-    [
-     -148.0,
-     250.0
-    ],
-    [
-     -148.77,
-     249.85
-    ],
-    [
-     -149.41,
-     249.41
-    ],
-    [
-     -149.85,
-     248.77
-    ],
-    [
-     -150.0,
-     248.0
-    ],
-    [
-     -150.0,
-     162.0
-    ],
-    [
-     -149.85,
-     161.23
-    ],
-    [
-     -149.41,
-     160.59
-    ],
-    [
-     -148.77,
-     160.15
-    ],
-    [
-     -148.0,
-     160.0
-    ]
-   ],
-   "start": -15,
-   "end": 0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rear Terminal Block",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rear Terminal Block",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rear Terminal Block",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "Input",
-   "domain": "electrical",
-   "system": "PowerBalanced",
-   "solid": "Rear Terminal Block",
-   "side": "back"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Input/Voltage",
-   "connector": "Input",
-   "connector_param": "Voltage",
-   "param": "Voltage"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Input/Apparent Load",
-   "connector": "Input",
-   "connector_param": "Apparent Load",
-   "param": "Apparent Load"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\E\\_Images\\FMC_E_EQ_UPS_Rack.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_E_EQ_UPS_Rack",
+  "template": "Metric Generic Model.rft",
+  "about": "Rack UPS: power and battery modules, black bezels, rack ears with screws, LCD in window, buttons, power button, status LEDs, vents with slots, rear terminal block. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: ups rack electrical equipment hospital; images: https://www.google.com/search?tbm=isch&q=ups+rack+electrical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Electrical Equipment"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Voltage",
+      "type": "Voltage",
+      "group": "Electrical"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Apparent Load",
+      "type": "ApparentPower",
+      "group": "ElectricalLoads"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+    },
+    {
+      "op": "add_type",
+      "name": "10kVA_Rack6U"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kVA_Rack6U/FMC_Cost_Unit",
+      "type": "10kVA_Rack6U",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kVA_Rack6U/FMC_Geometry_Stage",
+      "type": "10kVA_Rack6U",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kVA_Rack6U/IfcExportAs",
+      "type": "10kVA_Rack6U",
+      "param": "IfcExportAs",
+      "value": "IfcElectricFlowStorageDevice"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kVA_Rack6U/Description",
+      "type": "10kVA_Rack6U",
+      "param": "Description",
+      "value": "Rack-mount online UPS 10 kVA, 19 in, 3U power module and 3U battery module, LCD and status LEDs"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kVA_Rack6U/Keynote",
+      "type": "10kVA_Rack6U",
+      "param": "Keynote",
+      "value": "Z.BAT_03"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kVA_Rack6U/FMC_Keynote_Code",
+      "type": "10kVA_Rack6U",
+      "param": "FMC_Keynote_Code",
+      "value": "Z.BAT_03"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kVA_Rack6U/Voltage",
+      "type": "10kVA_Rack6U",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kVA_Rack6U/Apparent Load",
+      "type": "10kVA_Rack6U",
+      "param": "Apparent Load",
+      "value": 10000
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Steel",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Steel Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_SteelLTZ_Painted",
+      "param": "Steel Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Chrome",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Chrome Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Chrome_Polished",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Screen",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Screen Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Screen Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Grey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Grey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Grey",
+      "param": "Grey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Green",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Green Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_LED_Green",
+      "param": "Green Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -241,
+          -645
+        ],
+        [
+          241,
+          -645
+        ],
+        [
+          241,
+          15
+        ],
+        [
+          -241,
+          15
+        ]
+      ],
+      "start": 0,
+      "end": 273
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Power Module",
+      "points": [
+        [
+          218,
+          -620
+        ],
+        [
+          218.77,
+          -619.85
+        ],
+        [
+          219.41,
+          -619.41
+        ],
+        [
+          219.85,
+          -618.77
+        ],
+        [
+          220,
+          -618
+        ],
+        [
+          220,
+          -2
+        ],
+        [
+          219.85,
+          -1.23
+        ],
+        [
+          219.41,
+          -0.59
+        ],
+        [
+          218.77,
+          -0.15
+        ],
+        [
+          218,
+          0
+        ],
+        [
+          -218,
+          0
+        ],
+        [
+          -218.77,
+          -0.15
+        ],
+        [
+          -219.41,
+          -0.59
+        ],
+        [
+          -219.85,
+          -1.23
+        ],
+        [
+          -220,
+          -2
+        ],
+        [
+          -220,
+          -618
+        ],
+        [
+          -219.85,
+          -618.77
+        ],
+        [
+          -219.41,
+          -619.41
+        ],
+        [
+          -218.77,
+          -619.85
+        ],
+        [
+          -218,
+          -620
+        ]
+      ],
+      "start": 140,
+      "end": 273
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Power Module",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Power Module",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Power Module",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Battery Module",
+      "points": [
+        [
+          218,
+          -620
+        ],
+        [
+          218.77,
+          -619.85
+        ],
+        [
+          219.41,
+          -619.41
+        ],
+        [
+          219.85,
+          -618.77
+        ],
+        [
+          220,
+          -618
+        ],
+        [
+          220,
+          -2
+        ],
+        [
+          219.85,
+          -1.23
+        ],
+        [
+          219.41,
+          -0.59
+        ],
+        [
+          218.77,
+          -0.15
+        ],
+        [
+          218,
+          0
+        ],
+        [
+          -218,
+          0
+        ],
+        [
+          -218.77,
+          -0.15
+        ],
+        [
+          -219.41,
+          -0.59
+        ],
+        [
+          -219.85,
+          -1.23
+        ],
+        [
+          -220,
+          -2
+        ],
+        [
+          -220,
+          -618
+        ],
+        [
+          -219.85,
+          -618.77
+        ],
+        [
+          -219.41,
+          -619.41
+        ],
+        [
+          -218.77,
+          -619.85
+        ],
+        [
+          -218,
+          -620
+        ]
+      ],
+      "start": 0,
+      "end": 133
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Battery Module",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Battery Module",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Battery Module",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Front Bezel",
+      "points": [
+        [
+          216,
+          141
+        ],
+        [
+          218.3,
+          141.46
+        ],
+        [
+          220.24,
+          142.76
+        ],
+        [
+          221.54,
+          144.7
+        ],
+        [
+          222,
+          147
+        ],
+        [
+          222,
+          266
+        ],
+        [
+          221.54,
+          268.3
+        ],
+        [
+          220.24,
+          270.24
+        ],
+        [
+          218.3,
+          271.54
+        ],
+        [
+          216,
+          272
+        ],
+        [
+          -216,
+          272
+        ],
+        [
+          -218.3,
+          271.54
+        ],
+        [
+          -220.24,
+          270.24
+        ],
+        [
+          -221.54,
+          268.3
+        ],
+        [
+          -222,
+          266
+        ],
+        [
+          -222,
+          147
+        ],
+        [
+          -221.54,
+          144.7
+        ],
+        [
+          -220.24,
+          142.76
+        ],
+        [
+          -218.3,
+          141.46
+        ],
+        [
+          -216,
+          141
+        ]
+      ],
+      "start": 620,
+      "end": 640,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Front Bezel",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Front Bezel",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Front Bezel",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Battery Bezel",
+      "points": [
+        [
+          216,
+          1
+        ],
+        [
+          218.3,
+          1.46
+        ],
+        [
+          220.24,
+          2.76
+        ],
+        [
+          221.54,
+          4.7
+        ],
+        [
+          222,
+          7
+        ],
+        [
+          222,
+          126
+        ],
+        [
+          221.54,
+          128.3
+        ],
+        [
+          220.24,
+          130.24
+        ],
+        [
+          218.3,
+          131.54
+        ],
+        [
+          216,
+          132
+        ],
+        [
+          -216,
+          132
+        ],
+        [
+          -218.3,
+          131.54
+        ],
+        [
+          -220.24,
+          130.24
+        ],
+        [
+          -221.54,
+          128.3
+        ],
+        [
+          -222,
+          126
+        ],
+        [
+          -222,
+          7
+        ],
+        [
+          -221.54,
+          4.7
+        ],
+        [
+          -220.24,
+          2.76
+        ],
+        [
+          -218.3,
+          1.46
+        ],
+        [
+          -216,
+          1
+        ]
+      ],
+      "start": 620,
+      "end": 640,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Battery Bezel",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Battery Bezel",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Battery Bezel",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rack Ear 1",
+      "points": [
+        [
+          -222,
+          0
+        ],
+        [
+          -221.23,
+          0.15
+        ],
+        [
+          -220.59,
+          0.59
+        ],
+        [
+          -220.15,
+          1.23
+        ],
+        [
+          -220,
+          2
+        ],
+        [
+          -220,
+          271
+        ],
+        [
+          -220.15,
+          271.77
+        ],
+        [
+          -220.59,
+          272.41
+        ],
+        [
+          -221.23,
+          272.85
+        ],
+        [
+          -222,
+          273
+        ],
+        [
+          -239,
+          273
+        ],
+        [
+          -239.77,
+          272.85
+        ],
+        [
+          -240.41,
+          272.41
+        ],
+        [
+          -240.85,
+          271.77
+        ],
+        [
+          -241,
+          271
+        ],
+        [
+          -241,
+          2
+        ],
+        [
+          -240.85,
+          1.23
+        ],
+        [
+          -240.41,
+          0.59
+        ],
+        [
+          -239.77,
+          0.15
+        ],
+        [
+          -239,
+          0
+        ]
+      ],
+      "start": 623,
+      "end": 628,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rack Ear 1",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rack Ear 1",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rack Ear 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rack Ear 2",
+      "points": [
+        [
+          239,
+          0
+        ],
+        [
+          239.77,
+          0.15
+        ],
+        [
+          240.41,
+          0.59
+        ],
+        [
+          240.85,
+          1.23
+        ],
+        [
+          241,
+          2
+        ],
+        [
+          241,
+          271
+        ],
+        [
+          240.85,
+          271.77
+        ],
+        [
+          240.41,
+          272.41
+        ],
+        [
+          239.77,
+          272.85
+        ],
+        [
+          239,
+          273
+        ],
+        [
+          222,
+          273
+        ],
+        [
+          221.23,
+          272.85
+        ],
+        [
+          220.59,
+          272.41
+        ],
+        [
+          220.15,
+          271.77
+        ],
+        [
+          220,
+          271
+        ],
+        [
+          220,
+          2
+        ],
+        [
+          220.15,
+          1.23
+        ],
+        [
+          220.59,
+          0.59
+        ],
+        [
+          221.23,
+          0.15
+        ],
+        [
+          222,
+          0
+        ]
+      ],
+      "start": 623,
+      "end": 628,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rack Ear 2",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rack Ear 2",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rack Ear 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rack Screw 1",
+      "points": [
+        [
+          -228.5,
+          30
+        ],
+        [
+          -228.62,
+          30.91
+        ],
+        [
+          -228.97,
+          31.75
+        ],
+        [
+          -229.53,
+          32.47
+        ],
+        [
+          -230.25,
+          33.03
+        ],
+        [
+          -231.09,
+          33.38
+        ],
+        [
+          -232,
+          33.5
+        ],
+        [
+          -232.91,
+          33.38
+        ],
+        [
+          -233.75,
+          33.03
+        ],
+        [
+          -234.47,
+          32.47
+        ],
+        [
+          -235.03,
+          31.75
+        ],
+        [
+          -235.38,
+          30.91
+        ],
+        [
+          -235.5,
+          30
+        ],
+        [
+          -235.38,
+          29.09
+        ],
+        [
+          -235.03,
+          28.25
+        ],
+        [
+          -234.47,
+          27.53
+        ],
+        [
+          -233.75,
+          26.97
+        ],
+        [
+          -232.91,
+          26.62
+        ],
+        [
+          -232,
+          26.5
+        ],
+        [
+          -231.09,
+          26.62
+        ],
+        [
+          -230.25,
+          26.97
+        ],
+        [
+          -229.53,
+          27.53
+        ],
+        [
+          -228.97,
+          28.25
+        ],
+        [
+          -228.62,
+          29.09
+        ]
+      ],
+      "start": 628,
+      "end": 631,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rack Screw 1",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rack Screw 1",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rack Screw 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rack Screw 2",
+      "points": [
+        [
+          234.5,
+          30
+        ],
+        [
+          234.38,
+          30.91
+        ],
+        [
+          234.03,
+          31.75
+        ],
+        [
+          233.47,
+          32.47
+        ],
+        [
+          232.75,
+          33.03
+        ],
+        [
+          231.91,
+          33.38
+        ],
+        [
+          231,
+          33.5
+        ],
+        [
+          230.09,
+          33.38
+        ],
+        [
+          229.25,
+          33.03
+        ],
+        [
+          228.53,
+          32.47
+        ],
+        [
+          227.97,
+          31.75
+        ],
+        [
+          227.62,
+          30.91
+        ],
+        [
+          227.5,
+          30
+        ],
+        [
+          227.62,
+          29.09
+        ],
+        [
+          227.97,
+          28.25
+        ],
+        [
+          228.53,
+          27.53
+        ],
+        [
+          229.25,
+          26.97
+        ],
+        [
+          230.09,
+          26.62
+        ],
+        [
+          231,
+          26.5
+        ],
+        [
+          231.91,
+          26.62
+        ],
+        [
+          232.75,
+          26.97
+        ],
+        [
+          233.47,
+          27.53
+        ],
+        [
+          234.03,
+          28.25
+        ],
+        [
+          234.38,
+          29.09
+        ]
+      ],
+      "start": 628,
+      "end": 631,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rack Screw 2",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rack Screw 2",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rack Screw 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rack Screw Upper 1",
+      "points": [
+        [
+          -228.5,
+          243
+        ],
+        [
+          -228.62,
+          243.91
+        ],
+        [
+          -228.97,
+          244.75
+        ],
+        [
+          -229.53,
+          245.47
+        ],
+        [
+          -230.25,
+          246.03
+        ],
+        [
+          -231.09,
+          246.38
+        ],
+        [
+          -232,
+          246.5
+        ],
+        [
+          -232.91,
+          246.38
+        ],
+        [
+          -233.75,
+          246.03
+        ],
+        [
+          -234.47,
+          245.47
+        ],
+        [
+          -235.03,
+          244.75
+        ],
+        [
+          -235.38,
+          243.91
+        ],
+        [
+          -235.5,
+          243
+        ],
+        [
+          -235.38,
+          242.09
+        ],
+        [
+          -235.03,
+          241.25
+        ],
+        [
+          -234.47,
+          240.53
+        ],
+        [
+          -233.75,
+          239.97
+        ],
+        [
+          -232.91,
+          239.62
+        ],
+        [
+          -232,
+          239.5
+        ],
+        [
+          -231.09,
+          239.62
+        ],
+        [
+          -230.25,
+          239.97
+        ],
+        [
+          -229.53,
+          240.53
+        ],
+        [
+          -228.97,
+          241.25
+        ],
+        [
+          -228.62,
+          242.09
+        ]
+      ],
+      "start": 628,
+      "end": 631,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rack Screw Upper 1",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rack Screw Upper 1",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rack Screw Upper 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rack Screw Upper 2",
+      "points": [
+        [
+          234.5,
+          243
+        ],
+        [
+          234.38,
+          243.91
+        ],
+        [
+          234.03,
+          244.75
+        ],
+        [
+          233.47,
+          245.47
+        ],
+        [
+          232.75,
+          246.03
+        ],
+        [
+          231.91,
+          246.38
+        ],
+        [
+          231,
+          246.5
+        ],
+        [
+          230.09,
+          246.38
+        ],
+        [
+          229.25,
+          246.03
+        ],
+        [
+          228.53,
+          245.47
+        ],
+        [
+          227.97,
+          244.75
+        ],
+        [
+          227.62,
+          243.91
+        ],
+        [
+          227.5,
+          243
+        ],
+        [
+          227.62,
+          242.09
+        ],
+        [
+          227.97,
+          241.25
+        ],
+        [
+          228.53,
+          240.53
+        ],
+        [
+          229.25,
+          239.97
+        ],
+        [
+          230.09,
+          239.62
+        ],
+        [
+          231,
+          239.5
+        ],
+        [
+          231.91,
+          239.62
+        ],
+        [
+          232.75,
+          239.97
+        ],
+        [
+          233.47,
+          240.53
+        ],
+        [
+          234.03,
+          241.25
+        ],
+        [
+          234.38,
+          242.09
+        ]
+      ],
+      "start": 628,
+      "end": 631,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rack Screw Upper 2",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rack Screw Upper 2",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rack Screw Upper 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "LCD",
+      "points": [
+        [
+          57,
+          190
+        ],
+        [
+          58.15,
+          190.23
+        ],
+        [
+          59.12,
+          190.88
+        ],
+        [
+          59.77,
+          191.85
+        ],
+        [
+          60,
+          193
+        ],
+        [
+          60,
+          237
+        ],
+        [
+          59.77,
+          238.15
+        ],
+        [
+          59.12,
+          239.12
+        ],
+        [
+          58.15,
+          239.77
+        ],
+        [
+          57,
+          240
+        ],
+        [
+          -57,
+          240
+        ],
+        [
+          -58.15,
+          239.77
+        ],
+        [
+          -59.12,
+          239.12
+        ],
+        [
+          -59.77,
+          238.15
+        ],
+        [
+          -60,
+          237
+        ],
+        [
+          -60,
+          193
+        ],
+        [
+          -59.77,
+          191.85
+        ],
+        [
+          -59.12,
+          190.88
+        ],
+        [
+          -58.15,
+          190.23
+        ],
+        [
+          -57,
+          190
+        ]
+      ],
+      "start": 640,
+      "end": 642,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "LCD",
+      "subcategory": "Screen"
+    },
+    {
+      "op": "set_material_param",
+      "name": "LCD",
+      "param": "Screen Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "LCD",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "LCD Window",
+      "points": [
+        [
+          61,
+          185
+        ],
+        [
+          62.53,
+          185.3
+        ],
+        [
+          63.83,
+          186.17
+        ],
+        [
+          64.7,
+          187.47
+        ],
+        [
+          65,
+          189
+        ],
+        [
+          65,
+          241
+        ],
+        [
+          64.7,
+          242.53
+        ],
+        [
+          63.83,
+          243.83
+        ],
+        [
+          62.53,
+          244.7
+        ],
+        [
+          61,
+          245
+        ],
+        [
+          -61,
+          245
+        ],
+        [
+          -62.53,
+          244.7
+        ],
+        [
+          -63.83,
+          243.83
+        ],
+        [
+          -64.7,
+          242.53
+        ],
+        [
+          -65,
+          241
+        ],
+        [
+          -65,
+          189
+        ],
+        [
+          -64.7,
+          187.47
+        ],
+        [
+          -63.83,
+          186.17
+        ],
+        [
+          -62.53,
+          185.3
+        ],
+        [
+          -61,
+          185
+        ]
+      ],
+      "start": 640,
+      "end": 641,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "LCD Window",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "LCD Window",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "LCD Window",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Button 1",
+      "points": [
+        [
+          96,
+          215
+        ],
+        [
+          95.8,
+          216.55
+        ],
+        [
+          95.2,
+          218
+        ],
+        [
+          94.24,
+          219.24
+        ],
+        [
+          93,
+          220.2
+        ],
+        [
+          91.55,
+          220.8
+        ],
+        [
+          90,
+          221
+        ],
+        [
+          88.45,
+          220.8
+        ],
+        [
+          87,
+          220.2
+        ],
+        [
+          85.76,
+          219.24
+        ],
+        [
+          84.8,
+          218
+        ],
+        [
+          84.2,
+          216.55
+        ],
+        [
+          84,
+          215
+        ],
+        [
+          84.2,
+          213.45
+        ],
+        [
+          84.8,
+          212
+        ],
+        [
+          85.76,
+          210.76
+        ],
+        [
+          87,
+          209.8
+        ],
+        [
+          88.45,
+          209.2
+        ],
+        [
+          90,
+          209
+        ],
+        [
+          91.55,
+          209.2
+        ],
+        [
+          93,
+          209.8
+        ],
+        [
+          94.24,
+          210.76
+        ],
+        [
+          95.2,
+          212
+        ],
+        [
+          95.8,
+          213.45
+        ]
+      ],
+      "start": 640,
+      "end": 645,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Button 1",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Button 1",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Button 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Button 2",
+      "points": [
+        [
+          118,
+          215
+        ],
+        [
+          117.8,
+          216.55
+        ],
+        [
+          117.2,
+          218
+        ],
+        [
+          116.24,
+          219.24
+        ],
+        [
+          115,
+          220.2
+        ],
+        [
+          113.55,
+          220.8
+        ],
+        [
+          112,
+          221
+        ],
+        [
+          110.45,
+          220.8
+        ],
+        [
+          109,
+          220.2
+        ],
+        [
+          107.76,
+          219.24
+        ],
+        [
+          106.8,
+          218
+        ],
+        [
+          106.2,
+          216.55
+        ],
+        [
+          106,
+          215
+        ],
+        [
+          106.2,
+          213.45
+        ],
+        [
+          106.8,
+          212
+        ],
+        [
+          107.76,
+          210.76
+        ],
+        [
+          109,
+          209.8
+        ],
+        [
+          110.45,
+          209.2
+        ],
+        [
+          112,
+          209
+        ],
+        [
+          113.55,
+          209.2
+        ],
+        [
+          115,
+          209.8
+        ],
+        [
+          116.24,
+          210.76
+        ],
+        [
+          117.2,
+          212
+        ],
+        [
+          117.8,
+          213.45
+        ]
+      ],
+      "start": 640,
+      "end": 645,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Button 2",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Button 2",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Button 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Button 3",
+      "points": [
+        [
+          140,
+          215
+        ],
+        [
+          139.8,
+          216.55
+        ],
+        [
+          139.2,
+          218
+        ],
+        [
+          138.24,
+          219.24
+        ],
+        [
+          137,
+          220.2
+        ],
+        [
+          135.55,
+          220.8
+        ],
+        [
+          134,
+          221
+        ],
+        [
+          132.45,
+          220.8
+        ],
+        [
+          131,
+          220.2
+        ],
+        [
+          129.76,
+          219.24
+        ],
+        [
+          128.8,
+          218
+        ],
+        [
+          128.2,
+          216.55
+        ],
+        [
+          128,
+          215
+        ],
+        [
+          128.2,
+          213.45
+        ],
+        [
+          128.8,
+          212
+        ],
+        [
+          129.76,
+          210.76
+        ],
+        [
+          131,
+          209.8
+        ],
+        [
+          132.45,
+          209.2
+        ],
+        [
+          134,
+          209
+        ],
+        [
+          135.55,
+          209.2
+        ],
+        [
+          137,
+          209.8
+        ],
+        [
+          138.24,
+          210.76
+        ],
+        [
+          139.2,
+          212
+        ],
+        [
+          139.8,
+          213.45
+        ]
+      ],
+      "start": 640,
+      "end": 645,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Button 3",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Button 3",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Button 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Power Button",
+      "points": [
+        [
+          -111,
+          215
+        ],
+        [
+          -111.31,
+          217.33
+        ],
+        [
+          -112.21,
+          219.5
+        ],
+        [
+          -113.64,
+          221.36
+        ],
+        [
+          -115.5,
+          222.79
+        ],
+        [
+          -117.67,
+          223.69
+        ],
+        [
+          -120,
+          224
+        ],
+        [
+          -122.33,
+          223.69
+        ],
+        [
+          -124.5,
+          222.79
+        ],
+        [
+          -126.36,
+          221.36
+        ],
+        [
+          -127.79,
+          219.5
+        ],
+        [
+          -128.69,
+          217.33
+        ],
+        [
+          -129,
+          215
+        ],
+        [
+          -128.69,
+          212.67
+        ],
+        [
+          -127.79,
+          210.5
+        ],
+        [
+          -126.36,
+          208.64
+        ],
+        [
+          -124.5,
+          207.21
+        ],
+        [
+          -122.33,
+          206.31
+        ],
+        [
+          -120,
+          206
+        ],
+        [
+          -117.67,
+          206.31
+        ],
+        [
+          -115.5,
+          207.21
+        ],
+        [
+          -113.64,
+          208.64
+        ],
+        [
+          -112.21,
+          210.5
+        ],
+        [
+          -111.31,
+          212.67
+        ]
+      ],
+      "start": 640,
+      "end": 645,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Power Button",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Power Button",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Power Button",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Status LED 1",
+      "points": [
+        [
+          -177,
+          230
+        ],
+        [
+          -177.1,
+          230.78
+        ],
+        [
+          -177.4,
+          231.5
+        ],
+        [
+          -177.88,
+          232.12
+        ],
+        [
+          -178.5,
+          232.6
+        ],
+        [
+          -179.22,
+          232.9
+        ],
+        [
+          -180,
+          233
+        ],
+        [
+          -180.78,
+          232.9
+        ],
+        [
+          -181.5,
+          232.6
+        ],
+        [
+          -182.12,
+          232.12
+        ],
+        [
+          -182.6,
+          231.5
+        ],
+        [
+          -182.9,
+          230.78
+        ],
+        [
+          -183,
+          230
+        ],
+        [
+          -182.9,
+          229.22
+        ],
+        [
+          -182.6,
+          228.5
+        ],
+        [
+          -182.12,
+          227.88
+        ],
+        [
+          -181.5,
+          227.4
+        ],
+        [
+          -180.78,
+          227.1
+        ],
+        [
+          -180,
+          227
+        ],
+        [
+          -179.22,
+          227.1
+        ],
+        [
+          -178.5,
+          227.4
+        ],
+        [
+          -177.88,
+          227.88
+        ],
+        [
+          -177.4,
+          228.5
+        ],
+        [
+          -177.1,
+          229.22
+        ]
+      ],
+      "start": 640,
+      "end": 642,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Status LED 1",
+      "subcategory": "Green"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Status LED 1",
+      "param": "Green Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Status LED 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Status LED 2",
+      "points": [
+        [
+          -177,
+          214
+        ],
+        [
+          -177.1,
+          214.78
+        ],
+        [
+          -177.4,
+          215.5
+        ],
+        [
+          -177.88,
+          216.12
+        ],
+        [
+          -178.5,
+          216.6
+        ],
+        [
+          -179.22,
+          216.9
+        ],
+        [
+          -180,
+          217
+        ],
+        [
+          -180.78,
+          216.9
+        ],
+        [
+          -181.5,
+          216.6
+        ],
+        [
+          -182.12,
+          216.12
+        ],
+        [
+          -182.6,
+          215.5
+        ],
+        [
+          -182.9,
+          214.78
+        ],
+        [
+          -183,
+          214
+        ],
+        [
+          -182.9,
+          213.22
+        ],
+        [
+          -182.6,
+          212.5
+        ],
+        [
+          -182.12,
+          211.88
+        ],
+        [
+          -181.5,
+          211.4
+        ],
+        [
+          -180.78,
+          211.1
+        ],
+        [
+          -180,
+          211
+        ],
+        [
+          -179.22,
+          211.1
+        ],
+        [
+          -178.5,
+          211.4
+        ],
+        [
+          -177.88,
+          211.88
+        ],
+        [
+          -177.4,
+          212.5
+        ],
+        [
+          -177.1,
+          213.22
+        ]
+      ],
+      "start": 640,
+      "end": 642,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Status LED 2",
+      "subcategory": "Green"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Status LED 2",
+      "param": "Green Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Status LED 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Status LED 3",
+      "points": [
+        [
+          -177,
+          198
+        ],
+        [
+          -177.1,
+          198.78
+        ],
+        [
+          -177.4,
+          199.5
+        ],
+        [
+          -177.88,
+          200.12
+        ],
+        [
+          -178.5,
+          200.6
+        ],
+        [
+          -179.22,
+          200.9
+        ],
+        [
+          -180,
+          201
+        ],
+        [
+          -180.78,
+          200.9
+        ],
+        [
+          -181.5,
+          200.6
+        ],
+        [
+          -182.12,
+          200.12
+        ],
+        [
+          -182.6,
+          199.5
+        ],
+        [
+          -182.9,
+          198.78
+        ],
+        [
+          -183,
+          198
+        ],
+        [
+          -182.9,
+          197.22
+        ],
+        [
+          -182.6,
+          196.5
+        ],
+        [
+          -182.12,
+          195.88
+        ],
+        [
+          -181.5,
+          195.4
+        ],
+        [
+          -180.78,
+          195.1
+        ],
+        [
+          -180,
+          195
+        ],
+        [
+          -179.22,
+          195.1
+        ],
+        [
+          -178.5,
+          195.4
+        ],
+        [
+          -177.88,
+          195.88
+        ],
+        [
+          -177.4,
+          196.5
+        ],
+        [
+          -177.1,
+          197.22
+        ]
+      ],
+      "start": 640,
+      "end": 642,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Status LED 3",
+      "subcategory": "Green"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Status LED 3",
+      "param": "Green Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Status LED 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bezel Vent",
+      "points": [
+        [
+          -93,
+          155
+        ],
+        [
+          -91.85,
+          155.23
+        ],
+        [
+          -90.88,
+          155.88
+        ],
+        [
+          -90.23,
+          156.85
+        ],
+        [
+          -90,
+          158
+        ],
+        [
+          -90,
+          257
+        ],
+        [
+          -90.23,
+          258.15
+        ],
+        [
+          -90.88,
+          259.12
+        ],
+        [
+          -91.85,
+          259.77
+        ],
+        [
+          -93,
+          260
+        ],
+        [
+          -197,
+          260
+        ],
+        [
+          -198.15,
+          259.77
+        ],
+        [
+          -199.12,
+          259.12
+        ],
+        [
+          -199.77,
+          258.15
+        ],
+        [
+          -200,
+          257
+        ],
+        [
+          -200,
+          158
+        ],
+        [
+          -199.77,
+          156.85
+        ],
+        [
+          -199.12,
+          155.88
+        ],
+        [
+          -198.15,
+          155.23
+        ],
+        [
+          -197,
+          155
+        ]
+      ],
+      "start": 640,
+      "end": 641,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bezel Vent",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bezel Vent",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bezel Vent",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Battery Vent",
+      "points": [
+        [
+          197,
+          20
+        ],
+        [
+          198.15,
+          20.23
+        ],
+        [
+          199.12,
+          20.88
+        ],
+        [
+          199.77,
+          21.85
+        ],
+        [
+          200,
+          23
+        ],
+        [
+          200,
+          107
+        ],
+        [
+          199.77,
+          108.15
+        ],
+        [
+          199.12,
+          109.12
+        ],
+        [
+          198.15,
+          109.77
+        ],
+        [
+          197,
+          110
+        ],
+        [
+          -197,
+          110
+        ],
+        [
+          -198.15,
+          109.77
+        ],
+        [
+          -199.12,
+          109.12
+        ],
+        [
+          -199.77,
+          108.15
+        ],
+        [
+          -200,
+          107
+        ],
+        [
+          -200,
+          23
+        ],
+        [
+          -199.77,
+          21.85
+        ],
+        [
+          -199.12,
+          20.88
+        ],
+        [
+          -198.15,
+          20.23
+        ],
+        [
+          -197,
+          20
+        ]
+      ],
+      "start": 640,
+      "end": 641,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Battery Vent",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Battery Vent",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Battery Vent",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vent Slot 1",
+      "points": [
+        [
+          -195,
+          30
+        ],
+        [
+          195,
+          30
+        ],
+        [
+          195,
+          34
+        ],
+        [
+          -195,
+          34
+        ]
+      ],
+      "start": 641,
+      "end": 642,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vent Slot 1",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Slot 1",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vent Slot 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vent Slot 2",
+      "points": [
+        [
+          -195,
+          38
+        ],
+        [
+          195,
+          38
+        ],
+        [
+          195,
+          42
+        ],
+        [
+          -195,
+          42
+        ]
+      ],
+      "start": 641,
+      "end": 642,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vent Slot 2",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Slot 2",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vent Slot 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vent Slot 3",
+      "points": [
+        [
+          -195,
+          46
+        ],
+        [
+          195,
+          46
+        ],
+        [
+          195,
+          50
+        ],
+        [
+          -195,
+          50
+        ]
+      ],
+      "start": 641,
+      "end": 642,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vent Slot 3",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Slot 3",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vent Slot 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vent Slot 4",
+      "points": [
+        [
+          -195,
+          54
+        ],
+        [
+          195,
+          54
+        ],
+        [
+          195,
+          58
+        ],
+        [
+          -195,
+          58
+        ]
+      ],
+      "start": 641,
+      "end": 642,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vent Slot 4",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Slot 4",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vent Slot 4",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vent Slot 5",
+      "points": [
+        [
+          -195,
+          62
+        ],
+        [
+          195,
+          62
+        ],
+        [
+          195,
+          66
+        ],
+        [
+          -195,
+          66
+        ]
+      ],
+      "start": 641,
+      "end": 642,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vent Slot 5",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Slot 5",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vent Slot 5",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vent Slot 6",
+      "points": [
+        [
+          -195,
+          70
+        ],
+        [
+          195,
+          70
+        ],
+        [
+          195,
+          74
+        ],
+        [
+          -195,
+          74
+        ]
+      ],
+      "start": 641,
+      "end": 642,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vent Slot 6",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Slot 6",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vent Slot 6",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vent Slot 7",
+      "points": [
+        [
+          -195,
+          78
+        ],
+        [
+          195,
+          78
+        ],
+        [
+          195,
+          82
+        ],
+        [
+          -195,
+          82
+        ]
+      ],
+      "start": 641,
+      "end": 642,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vent Slot 7",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Slot 7",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vent Slot 7",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vent Slot 8",
+      "points": [
+        [
+          -195,
+          86
+        ],
+        [
+          195,
+          86
+        ],
+        [
+          195,
+          90
+        ],
+        [
+          -195,
+          90
+        ]
+      ],
+      "start": 641,
+      "end": 642,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vent Slot 8",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Slot 8",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vent Slot 8",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vent Slot 9",
+      "points": [
+        [
+          -195,
+          94
+        ],
+        [
+          195,
+          94
+        ],
+        [
+          195,
+          98
+        ],
+        [
+          -195,
+          98
+        ]
+      ],
+      "start": 641,
+      "end": 642,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vent Slot 9",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Slot 9",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vent Slot 9",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vent Slot 10",
+      "points": [
+        [
+          -195,
+          102
+        ],
+        [
+          195,
+          102
+        ],
+        [
+          195,
+          106
+        ],
+        [
+          -195,
+          106
+        ]
+      ],
+      "start": 641,
+      "end": 642,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vent Slot 10",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Slot 10",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vent Slot 10",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rear Terminal Block",
+      "points": [
+        [
+          148,
+          160
+        ],
+        [
+          148.77,
+          160.15
+        ],
+        [
+          149.41,
+          160.59
+        ],
+        [
+          149.85,
+          161.23
+        ],
+        [
+          150,
+          162
+        ],
+        [
+          150,
+          248
+        ],
+        [
+          149.85,
+          248.77
+        ],
+        [
+          149.41,
+          249.41
+        ],
+        [
+          148.77,
+          249.85
+        ],
+        [
+          148,
+          250
+        ],
+        [
+          -148,
+          250
+        ],
+        [
+          -148.77,
+          249.85
+        ],
+        [
+          -149.41,
+          249.41
+        ],
+        [
+          -149.85,
+          248.77
+        ],
+        [
+          -150,
+          248
+        ],
+        [
+          -150,
+          162
+        ],
+        [
+          -149.85,
+          161.23
+        ],
+        [
+          -149.41,
+          160.59
+        ],
+        [
+          -148.77,
+          160.15
+        ],
+        [
+          -148,
+          160
+        ]
+      ],
+      "start": -15,
+      "end": 0,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rear Terminal Block",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rear Terminal Block",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rear Terminal Block",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "Input",
+      "domain": "electrical",
+      "system": "PowerBalanced",
+      "solid": "Rear Terminal Block",
+      "side": "back"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Input/Voltage",
+      "connector": "Input",
+      "connector_param": "Voltage",
+      "param": "Voltage"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Input/Apparent Load",
+      "connector": "Input",
+      "connector_param": "Apparent Load",
+      "param": "Apparent Load"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\E\\_Images\\FMC_E_EQ_UPS_Rack.png"
+    }
+  ],
+  "values": {
+    "19 in, 6U total (2 x 3U), 620 mm deep": {
+      "value": "482x267x640",
+      "source_status": "assumed",
+      "source": "typical 10 kVA rack UPS"
+    },
+    "Rating 10 kVA, 240 V": {
+      "value": "10kVA",
+      "source_status": "assumed",
+      "source": "type name"
+    },
+    "Autonomy 8 min at full load": {
+      "value": "8 min",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   }
- ],
- "values": {
-  "19 in, 6U total (2 x 3U), 620 mm deep": {
-   "value": "482x267x640",
-   "source_status": "assumed",
-   "source": "typical 10 kVA rack UPS"
-  },
-  "Rating 10 kVA, 240 V": {
-   "value": "10kVA",
-   "source_status": "assumed",
-   "source": "type name"
-  },
-  "Autonomy 8 min at full load": {
-   "value": "8 min",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- }
 }

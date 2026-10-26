@@ -1,4371 +1,4385 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_A_GenericModel_Canopy_AmbulanceBay",
- "template": "Metric Generic Model.rft",
- "about": "Canopy modelled as a generic product (Generic Models kept): six SHS columns on pads and base plates with yellow/black impact guards, edge beams, three rafters, purlins, mono-pitch roof sheet and fascia, gutter on the low side, two downpipes with shoe, four LED fittings, clear-height sign. The 4200 clear-height check is a Clearance Operation solid. Structure is indicative: sizes are for the structural engineer. Reference: query: canopy ambulance bay generic models hospital; images: https://www.google.com/search?tbm=isch&q=canopy+ambulance+bay+generic+models+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Generic Models"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Voltage",
-   "type": "Voltage",
-   "group": "Electrical"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Apparent Load",
-   "type": "ApparentPower",
-   "group": "ElectricalLoads"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
-  },
-  {
-   "op": "add_type",
-   "name": "6000x9000_Canopy"
-  },
-  {
-   "op": "set_type_value",
-   "name": "6000x9000_Canopy/FMC_Cost_Unit",
-   "type": "6000x9000_Canopy",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "6000x9000_Canopy/FMC_Geometry_Stage",
-   "type": "6000x9000_Canopy",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "6000x9000_Canopy/IfcExportAs",
-   "type": "6000x9000_Canopy",
-   "param": "IfcExportAs",
-   "value": "IfcBuildingElementProxy"
-  },
-  {
-   "op": "set_type_value",
-   "name": "6000x9000_Canopy/Description",
-   "type": "6000x9000_Canopy",
-   "param": "Description",
-   "value": "Ambulance bay canopy 6000 x 9000 mm, 4200 mm clear height"
-  },
-  {
-   "op": "set_type_value",
-   "name": "6000x9000_Canopy/Keynote",
-   "type": "6000x9000_Canopy",
-   "param": "Keynote",
-   "value": "A.CAN_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "6000x9000_Canopy/FMC_Keynote_Code",
-   "type": "6000x9000_Canopy",
-   "param": "FMC_Keynote_Code",
-   "value": "A.CAN_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "6000x9000_Canopy/Voltage",
-   "type": "6000x9000_Canopy",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "6000x9000_Canopy/Apparent Load",
-   "type": "6000x9000_Canopy",
-   "param": "Apparent Load",
-   "value": 600
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Conc",
-   "color": [
-    177,
-    175,
-    168
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Conc Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Concrete_C30",
-   "param": "Conc Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Steel",
-   "color": [
-    110,
-    110,
-    110
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Steel Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_StructuralSteel_S275",
-   "param": "Steel Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Dark",
-   "color": [
-    61,
-    70,
-    80
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Dark Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_SteelLTZ_Painted",
-   "param": "Dark Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Yellow",
-   "color": [
-    242,
-    194,
-    48
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Yellow Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Yellow",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Galv",
-   "color": [
-    167,
-    172,
-    175
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Galv Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_ColdFormed_Galvanised",
-   "param": "Galv Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Roof",
-   "color": [
-    185,
-    189,
-    191
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Roof Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Roofing_AZED_Corrugated_Silver",
-   "param": "Roof Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Epoxy",
-   "color": [
-    237,
-    237,
-    232
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Epoxy Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Steel_EpoxyCoated_White",
-   "param": "Epoxy Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Gutter",
-   "color": [
-    242,
-    242,
-    239
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Gutter Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_PVCGutter_White",
-   "param": "Gutter Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Pipe",
-   "color": [
-    74,
-    77,
-    80
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Pipe Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_uPVC_Pipe_DarkGrey",
-   "param": "Pipe Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "White",
-   "color": [
-    242,
-    242,
-    238
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "White Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_White",
-   "param": "White Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Pc",
-   "color": [
-    221,
-    230,
-    238
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Pc Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_Polycarbonate_Clear",
-   "param": "Pc Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Clearance Operation",
-   "color": [
-    111,
-    168,
-    220
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -3460.0,
-     -4820
-    ],
-    [
-     3300,
-     -4820
-    ],
-    [
-     3300,
-     4800
-    ],
-    [
-     -3460.0,
-     4800
-    ]
-   ],
-   "start": -150,
-   "end": 5180
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Pad Foundation 1",
-   "points": [
-    [
-     -3150,
-     -4650
-    ],
-    [
-     -2650,
-     -4650
-    ],
-    [
-     -2650,
-     -4150
-    ],
-    [
-     -3150,
-     -4150
-    ]
-   ],
-   "start": -150,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pad Foundation 1",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pad Foundation 1",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pad Foundation 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pad Foundation 2",
-   "points": [
-    [
-     -3150,
-     -250
-    ],
-    [
-     -2650,
-     -250
-    ],
-    [
-     -2650,
-     250
-    ],
-    [
-     -3150,
-     250
-    ]
-   ],
-   "start": -150,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pad Foundation 2",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pad Foundation 2",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pad Foundation 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pad Foundation 3",
-   "points": [
-    [
-     -3150,
-     4150
-    ],
-    [
-     -2650,
-     4150
-    ],
-    [
-     -2650,
-     4650
-    ],
-    [
-     -3150,
-     4650
-    ]
-   ],
-   "start": -150,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pad Foundation 3",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pad Foundation 3",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pad Foundation 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pad Foundation Right 1",
-   "points": [
-    [
-     2650,
-     -4650
-    ],
-    [
-     3150,
-     -4650
-    ],
-    [
-     3150,
-     -4150
-    ],
-    [
-     2650,
-     -4150
-    ]
-   ],
-   "start": -150,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pad Foundation Right 1",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pad Foundation Right 1",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pad Foundation Right 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pad Foundation Right 2",
-   "points": [
-    [
-     2650,
-     -250
-    ],
-    [
-     3150,
-     -250
-    ],
-    [
-     3150,
-     250
-    ],
-    [
-     2650,
-     250
-    ]
-   ],
-   "start": -150,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pad Foundation Right 2",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pad Foundation Right 2",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pad Foundation Right 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pad Foundation Right 3",
-   "points": [
-    [
-     2650,
-     4150
-    ],
-    [
-     3150,
-     4150
-    ],
-    [
-     3150,
-     4650
-    ],
-    [
-     2650,
-     4650
-    ]
-   ],
-   "start": -150,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pad Foundation Right 3",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pad Foundation Right 3",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pad Foundation Right 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Base Plate 1",
-   "points": [
-    [
-     -3075,
-     -4575
-    ],
-    [
-     -2725,
-     -4575
-    ],
-    [
-     -2725,
-     -4225
-    ],
-    [
-     -3075,
-     -4225
-    ]
-   ],
-   "start": 0,
-   "end": 25
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Plate 1",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Plate 1",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Plate 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Base Plate 2",
-   "points": [
-    [
-     -3075,
-     -175
-    ],
-    [
-     -2725,
-     -175
-    ],
-    [
-     -2725,
-     175
-    ],
-    [
-     -3075,
-     175
-    ]
-   ],
-   "start": 0,
-   "end": 25
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Plate 2",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Plate 2",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Plate 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Base Plate 3",
-   "points": [
-    [
-     -3075,
-     4225
-    ],
-    [
-     -2725,
-     4225
-    ],
-    [
-     -2725,
-     4575
-    ],
-    [
-     -3075,
-     4575
-    ]
-   ],
-   "start": 0,
-   "end": 25
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Plate 3",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Plate 3",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Plate 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Base Plate Right 1",
-   "points": [
-    [
-     2725,
-     -4575
-    ],
-    [
-     3075,
-     -4575
-    ],
-    [
-     3075,
-     -4225
-    ],
-    [
-     2725,
-     -4225
-    ]
-   ],
-   "start": 0,
-   "end": 25
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Plate Right 1",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Plate Right 1",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Plate Right 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Base Plate Right 2",
-   "points": [
-    [
-     2725,
-     -175
-    ],
-    [
-     3075,
-     -175
-    ],
-    [
-     3075,
-     175
-    ],
-    [
-     2725,
-     175
-    ]
-   ],
-   "start": 0,
-   "end": 25
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Plate Right 2",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Plate Right 2",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Plate Right 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Base Plate Right 3",
-   "points": [
-    [
-     2725,
-     4225
-    ],
-    [
-     3075,
-     4225
-    ],
-    [
-     3075,
-     4575
-    ],
-    [
-     2725,
-     4575
-    ]
-   ],
-   "start": 0,
-   "end": 25
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Plate Right 3",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Plate Right 3",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Plate Right 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Column 1",
-   "points": [
-    [
-     -2808.0,
-     -4500.0
-    ],
-    [
-     -2804.94,
-     -4499.39
-    ],
-    [
-     -2802.34,
-     -4497.66
-    ],
-    [
-     -2800.61,
-     -4495.06
-    ],
-    [
-     -2800.0,
-     -4492.0
-    ],
-    [
-     -2800.0,
-     -4308.0
-    ],
-    [
-     -2800.61,
-     -4304.94
-    ],
-    [
-     -2802.34,
-     -4302.34
-    ],
-    [
-     -2804.94,
-     -4300.61
-    ],
-    [
-     -2808.0,
-     -4300.0
-    ],
-    [
-     -2992.0,
-     -4300.0
-    ],
-    [
-     -2995.06,
-     -4300.61
-    ],
-    [
-     -2997.66,
-     -4302.34
-    ],
-    [
-     -2999.39,
-     -4304.94
-    ],
-    [
-     -3000.0,
-     -4308.0
-    ],
-    [
-     -3000.0,
-     -4492.0
-    ],
-    [
-     -2999.39,
-     -4495.06
-    ],
-    [
-     -2997.66,
-     -4497.66
-    ],
-    [
-     -2995.06,
-     -4499.39
-    ],
-    [
-     -2992.0,
-     -4500.0
-    ]
-   ],
-   "start": 25,
-   "end": 4500
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Column 1",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Column 1",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Column 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Column 2",
-   "points": [
-    [
-     -2808.0,
-     -100.0
-    ],
-    [
-     -2804.94,
-     -99.39
-    ],
-    [
-     -2802.34,
-     -97.66
-    ],
-    [
-     -2800.61,
-     -95.06
-    ],
-    [
-     -2800.0,
-     -92.0
-    ],
-    [
-     -2800.0,
-     92.0
-    ],
-    [
-     -2800.61,
-     95.06
-    ],
-    [
-     -2802.34,
-     97.66
-    ],
-    [
-     -2804.94,
-     99.39
-    ],
-    [
-     -2808.0,
-     100.0
-    ],
-    [
-     -2992.0,
-     100.0
-    ],
-    [
-     -2995.06,
-     99.39
-    ],
-    [
-     -2997.66,
-     97.66
-    ],
-    [
-     -2999.39,
-     95.06
-    ],
-    [
-     -3000.0,
-     92.0
-    ],
-    [
-     -3000.0,
-     -92.0
-    ],
-    [
-     -2999.39,
-     -95.06
-    ],
-    [
-     -2997.66,
-     -97.66
-    ],
-    [
-     -2995.06,
-     -99.39
-    ],
-    [
-     -2992.0,
-     -100.0
-    ]
-   ],
-   "start": 25,
-   "end": 4500
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Column 2",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Column 2",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Column 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Column 3",
-   "points": [
-    [
-     -2808.0,
-     4300.0
-    ],
-    [
-     -2804.94,
-     4300.61
-    ],
-    [
-     -2802.34,
-     4302.34
-    ],
-    [
-     -2800.61,
-     4304.94
-    ],
-    [
-     -2800.0,
-     4308.0
-    ],
-    [
-     -2800.0,
-     4492.0
-    ],
-    [
-     -2800.61,
-     4495.06
-    ],
-    [
-     -2802.34,
-     4497.66
-    ],
-    [
-     -2804.94,
-     4499.39
-    ],
-    [
-     -2808.0,
-     4500.0
-    ],
-    [
-     -2992.0,
-     4500.0
-    ],
-    [
-     -2995.06,
-     4499.39
-    ],
-    [
-     -2997.66,
-     4497.66
-    ],
-    [
-     -2999.39,
-     4495.06
-    ],
-    [
-     -3000.0,
-     4492.0
-    ],
-    [
-     -3000.0,
-     4308.0
-    ],
-    [
-     -2999.39,
-     4304.94
-    ],
-    [
-     -2997.66,
-     4302.34
-    ],
-    [
-     -2995.06,
-     4300.61
-    ],
-    [
-     -2992.0,
-     4300.0
-    ]
-   ],
-   "start": 25,
-   "end": 4500
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Column 3",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Column 3",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Column 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Column Right 1",
-   "points": [
-    [
-     2992.0,
-     -4500.0
-    ],
-    [
-     2995.06,
-     -4499.39
-    ],
-    [
-     2997.66,
-     -4497.66
-    ],
-    [
-     2999.39,
-     -4495.06
-    ],
-    [
-     3000.0,
-     -4492.0
-    ],
-    [
-     3000.0,
-     -4308.0
-    ],
-    [
-     2999.39,
-     -4304.94
-    ],
-    [
-     2997.66,
-     -4302.34
-    ],
-    [
-     2995.06,
-     -4300.61
-    ],
-    [
-     2992.0,
-     -4300.0
-    ],
-    [
-     2808.0,
-     -4300.0
-    ],
-    [
-     2804.94,
-     -4300.61
-    ],
-    [
-     2802.34,
-     -4302.34
-    ],
-    [
-     2800.61,
-     -4304.94
-    ],
-    [
-     2800.0,
-     -4308.0
-    ],
-    [
-     2800.0,
-     -4492.0
-    ],
-    [
-     2800.61,
-     -4495.06
-    ],
-    [
-     2802.34,
-     -4497.66
-    ],
-    [
-     2804.94,
-     -4499.39
-    ],
-    [
-     2808.0,
-     -4500.0
-    ]
-   ],
-   "start": 25,
-   "end": 4800
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Column Right 1",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Column Right 1",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Column Right 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Column Right 2",
-   "points": [
-    [
-     2992.0,
-     -100.0
-    ],
-    [
-     2995.06,
-     -99.39
-    ],
-    [
-     2997.66,
-     -97.66
-    ],
-    [
-     2999.39,
-     -95.06
-    ],
-    [
-     3000.0,
-     -92.0
-    ],
-    [
-     3000.0,
-     92.0
-    ],
-    [
-     2999.39,
-     95.06
-    ],
-    [
-     2997.66,
-     97.66
-    ],
-    [
-     2995.06,
-     99.39
-    ],
-    [
-     2992.0,
-     100.0
-    ],
-    [
-     2808.0,
-     100.0
-    ],
-    [
-     2804.94,
-     99.39
-    ],
-    [
-     2802.34,
-     97.66
-    ],
-    [
-     2800.61,
-     95.06
-    ],
-    [
-     2800.0,
-     92.0
-    ],
-    [
-     2800.0,
-     -92.0
-    ],
-    [
-     2800.61,
-     -95.06
-    ],
-    [
-     2802.34,
-     -97.66
-    ],
-    [
-     2804.94,
-     -99.39
-    ],
-    [
-     2808.0,
-     -100.0
-    ]
-   ],
-   "start": 25,
-   "end": 4800
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Column Right 2",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Column Right 2",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Column Right 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Column Right 3",
-   "points": [
-    [
-     2992.0,
-     4300.0
-    ],
-    [
-     2995.06,
-     4300.61
-    ],
-    [
-     2997.66,
-     4302.34
-    ],
-    [
-     2999.39,
-     4304.94
-    ],
-    [
-     3000.0,
-     4308.0
-    ],
-    [
-     3000.0,
-     4492.0
-    ],
-    [
-     2999.39,
-     4495.06
-    ],
-    [
-     2997.66,
-     4497.66
-    ],
-    [
-     2995.06,
-     4499.39
-    ],
-    [
-     2992.0,
-     4500.0
-    ],
-    [
-     2808.0,
-     4500.0
-    ],
-    [
-     2804.94,
-     4499.39
-    ],
-    [
-     2802.34,
-     4497.66
-    ],
-    [
-     2800.61,
-     4495.06
-    ],
-    [
-     2800.0,
-     4492.0
-    ],
-    [
-     2800.0,
-     4308.0
-    ],
-    [
-     2800.61,
-     4304.94
-    ],
-    [
-     2802.34,
-     4302.34
-    ],
-    [
-     2804.94,
-     4300.61
-    ],
-    [
-     2808.0,
-     4300.0
-    ]
-   ],
-   "start": 25,
-   "end": 4800
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Column Right 3",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Column Right 3",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Column Right 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Column Guard 1",
-   "points": [
-    [
-     -2790.0,
-     -4530.0
-    ],
-    [
-     -2782.35,
-     -4528.48
-    ],
-    [
-     -2775.86,
-     -4524.14
-    ],
-    [
-     -2771.52,
-     -4517.65
-    ],
-    [
-     -2770.0,
-     -4510.0
-    ],
-    [
-     -2770.0,
-     -4290.0
-    ],
-    [
-     -2771.52,
-     -4282.35
-    ],
-    [
-     -2775.86,
-     -4275.86
-    ],
-    [
-     -2782.35,
-     -4271.52
-    ],
-    [
-     -2790.0,
-     -4270.0
-    ],
-    [
-     -3010.0,
-     -4270.0
-    ],
-    [
-     -3017.65,
-     -4271.52
-    ],
-    [
-     -3024.14,
-     -4275.86
-    ],
-    [
-     -3028.48,
-     -4282.35
-    ],
-    [
-     -3030.0,
-     -4290.0
-    ],
-    [
-     -3030.0,
-     -4510.0
-    ],
-    [
-     -3028.48,
-     -4517.65
-    ],
-    [
-     -3024.14,
-     -4524.14
-    ],
-    [
-     -3017.65,
-     -4528.48
-    ],
-    [
-     -3010.0,
-     -4530.0
-    ]
-   ],
-   "start": 0,
-   "end": 1000
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Column Guard 1",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Column Guard 1",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Column Guard 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Column Guard 2",
-   "points": [
-    [
-     -2790.0,
-     -130.0
-    ],
-    [
-     -2782.35,
-     -128.48
-    ],
-    [
-     -2775.86,
-     -124.14
-    ],
-    [
-     -2771.52,
-     -117.65
-    ],
-    [
-     -2770.0,
-     -110.0
-    ],
-    [
-     -2770.0,
-     110.0
-    ],
-    [
-     -2771.52,
-     117.65
-    ],
-    [
-     -2775.86,
-     124.14
-    ],
-    [
-     -2782.35,
-     128.48
-    ],
-    [
-     -2790.0,
-     130.0
-    ],
-    [
-     -3010.0,
-     130.0
-    ],
-    [
-     -3017.65,
-     128.48
-    ],
-    [
-     -3024.14,
-     124.14
-    ],
-    [
-     -3028.48,
-     117.65
-    ],
-    [
-     -3030.0,
-     110.0
-    ],
-    [
-     -3030.0,
-     -110.0
-    ],
-    [
-     -3028.48,
-     -117.65
-    ],
-    [
-     -3024.14,
-     -124.14
-    ],
-    [
-     -3017.65,
-     -128.48
-    ],
-    [
-     -3010.0,
-     -130.0
-    ]
-   ],
-   "start": 0,
-   "end": 1000
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Column Guard 2",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Column Guard 2",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Column Guard 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Column Guard 3",
-   "points": [
-    [
-     -2790.0,
-     4270.0
-    ],
-    [
-     -2782.35,
-     4271.52
-    ],
-    [
-     -2775.86,
-     4275.86
-    ],
-    [
-     -2771.52,
-     4282.35
-    ],
-    [
-     -2770.0,
-     4290.0
-    ],
-    [
-     -2770.0,
-     4510.0
-    ],
-    [
-     -2771.52,
-     4517.65
-    ],
-    [
-     -2775.86,
-     4524.14
-    ],
-    [
-     -2782.35,
-     4528.48
-    ],
-    [
-     -2790.0,
-     4530.0
-    ],
-    [
-     -3010.0,
-     4530.0
-    ],
-    [
-     -3017.65,
-     4528.48
-    ],
-    [
-     -3024.14,
-     4524.14
-    ],
-    [
-     -3028.48,
-     4517.65
-    ],
-    [
-     -3030.0,
-     4510.0
-    ],
-    [
-     -3030.0,
-     4290.0
-    ],
-    [
-     -3028.48,
-     4282.35
-    ],
-    [
-     -3024.14,
-     4275.86
-    ],
-    [
-     -3017.65,
-     4271.52
-    ],
-    [
-     -3010.0,
-     4270.0
-    ]
-   ],
-   "start": 0,
-   "end": 1000
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Column Guard 3",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Column Guard 3",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Column Guard 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Column Guard Right 1",
-   "points": [
-    [
-     3010.0,
-     -4530.0
-    ],
-    [
-     3017.65,
-     -4528.48
-    ],
-    [
-     3024.14,
-     -4524.14
-    ],
-    [
-     3028.48,
-     -4517.65
-    ],
-    [
-     3030.0,
-     -4510.0
-    ],
-    [
-     3030.0,
-     -4290.0
-    ],
-    [
-     3028.48,
-     -4282.35
-    ],
-    [
-     3024.14,
-     -4275.86
-    ],
-    [
-     3017.65,
-     -4271.52
-    ],
-    [
-     3010.0,
-     -4270.0
-    ],
-    [
-     2790.0,
-     -4270.0
-    ],
-    [
-     2782.35,
-     -4271.52
-    ],
-    [
-     2775.86,
-     -4275.86
-    ],
-    [
-     2771.52,
-     -4282.35
-    ],
-    [
-     2770.0,
-     -4290.0
-    ],
-    [
-     2770.0,
-     -4510.0
-    ],
-    [
-     2771.52,
-     -4517.65
-    ],
-    [
-     2775.86,
-     -4524.14
-    ],
-    [
-     2782.35,
-     -4528.48
-    ],
-    [
-     2790.0,
-     -4530.0
-    ]
-   ],
-   "start": 0,
-   "end": 1000
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Column Guard Right 1",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Column Guard Right 1",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Column Guard Right 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Column Guard Right 2",
-   "points": [
-    [
-     3010.0,
-     -130.0
-    ],
-    [
-     3017.65,
-     -128.48
-    ],
-    [
-     3024.14,
-     -124.14
-    ],
-    [
-     3028.48,
-     -117.65
-    ],
-    [
-     3030.0,
-     -110.0
-    ],
-    [
-     3030.0,
-     110.0
-    ],
-    [
-     3028.48,
-     117.65
-    ],
-    [
-     3024.14,
-     124.14
-    ],
-    [
-     3017.65,
-     128.48
-    ],
-    [
-     3010.0,
-     130.0
-    ],
-    [
-     2790.0,
-     130.0
-    ],
-    [
-     2782.35,
-     128.48
-    ],
-    [
-     2775.86,
-     124.14
-    ],
-    [
-     2771.52,
-     117.65
-    ],
-    [
-     2770.0,
-     110.0
-    ],
-    [
-     2770.0,
-     -110.0
-    ],
-    [
-     2771.52,
-     -117.65
-    ],
-    [
-     2775.86,
-     -124.14
-    ],
-    [
-     2782.35,
-     -128.48
-    ],
-    [
-     2790.0,
-     -130.0
-    ]
-   ],
-   "start": 0,
-   "end": 1000
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Column Guard Right 2",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Column Guard Right 2",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Column Guard Right 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Column Guard Right 3",
-   "points": [
-    [
-     3010.0,
-     4270.0
-    ],
-    [
-     3017.65,
-     4271.52
-    ],
-    [
-     3024.14,
-     4275.86
-    ],
-    [
-     3028.48,
-     4282.35
-    ],
-    [
-     3030.0,
-     4290.0
-    ],
-    [
-     3030.0,
-     4510.0
-    ],
-    [
-     3028.48,
-     4517.65
-    ],
-    [
-     3024.14,
-     4524.14
-    ],
-    [
-     3017.65,
-     4528.48
-    ],
-    [
-     3010.0,
-     4530.0
-    ],
-    [
-     2790.0,
-     4530.0
-    ],
-    [
-     2782.35,
-     4528.48
-    ],
-    [
-     2775.86,
-     4524.14
-    ],
-    [
-     2771.52,
-     4517.65
-    ],
-    [
-     2770.0,
-     4510.0
-    ],
-    [
-     2770.0,
-     4290.0
-    ],
-    [
-     2771.52,
-     4282.35
-    ],
-    [
-     2775.86,
-     4275.86
-    ],
-    [
-     2782.35,
-     4271.52
-    ],
-    [
-     2790.0,
-     4270.0
-    ]
-   ],
-   "start": 0,
-   "end": 1000
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Column Guard Right 3",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Column Guard Right 3",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Column Guard Right 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Guard Band 1",
-   "points": [
-    [
-     -2788.0,
-     -4532.0
-    ],
-    [
-     -2780.35,
-     -4530.48
-    ],
-    [
-     -2773.86,
-     -4526.14
-    ],
-    [
-     -2769.52,
-     -4519.65
-    ],
-    [
-     -2768.0,
-     -4512.0
-    ],
-    [
-     -2768.0,
-     -4288.0
-    ],
-    [
-     -2769.52,
-     -4280.35
-    ],
-    [
-     -2773.86,
-     -4273.86
-    ],
-    [
-     -2780.35,
-     -4269.52
-    ],
-    [
-     -2788.0,
-     -4268.0
-    ],
-    [
-     -3012.0,
-     -4268.0
-    ],
-    [
-     -3019.65,
-     -4269.52
-    ],
-    [
-     -3026.14,
-     -4273.86
-    ],
-    [
-     -3030.48,
-     -4280.35
-    ],
-    [
-     -3032.0,
-     -4288.0
-    ],
-    [
-     -3032.0,
-     -4512.0
-    ],
-    [
-     -3030.48,
-     -4519.65
-    ],
-    [
-     -3026.14,
-     -4526.14
-    ],
-    [
-     -3019.65,
-     -4530.48
-    ],
-    [
-     -3012.0,
-     -4532.0
-    ]
-   ],
-   "start": 400,
-   "end": 550
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Guard Band 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Guard Band 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Guard Band 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Guard Band 2",
-   "points": [
-    [
-     -2788.0,
-     -132.0
-    ],
-    [
-     -2780.35,
-     -130.48
-    ],
-    [
-     -2773.86,
-     -126.14
-    ],
-    [
-     -2769.52,
-     -119.65
-    ],
-    [
-     -2768.0,
-     -112.0
-    ],
-    [
-     -2768.0,
-     112.0
-    ],
-    [
-     -2769.52,
-     119.65
-    ],
-    [
-     -2773.86,
-     126.14
-    ],
-    [
-     -2780.35,
-     130.48
-    ],
-    [
-     -2788.0,
-     132.0
-    ],
-    [
-     -3012.0,
-     132.0
-    ],
-    [
-     -3019.65,
-     130.48
-    ],
-    [
-     -3026.14,
-     126.14
-    ],
-    [
-     -3030.48,
-     119.65
-    ],
-    [
-     -3032.0,
-     112.0
-    ],
-    [
-     -3032.0,
-     -112.0
-    ],
-    [
-     -3030.48,
-     -119.65
-    ],
-    [
-     -3026.14,
-     -126.14
-    ],
-    [
-     -3019.65,
-     -130.48
-    ],
-    [
-     -3012.0,
-     -132.0
-    ]
-   ],
-   "start": 400,
-   "end": 550
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Guard Band 2",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Guard Band 2",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Guard Band 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Guard Band 3",
-   "points": [
-    [
-     -2788.0,
-     4268.0
-    ],
-    [
-     -2780.35,
-     4269.52
-    ],
-    [
-     -2773.86,
-     4273.86
-    ],
-    [
-     -2769.52,
-     4280.35
-    ],
-    [
-     -2768.0,
-     4288.0
-    ],
-    [
-     -2768.0,
-     4512.0
-    ],
-    [
-     -2769.52,
-     4519.65
-    ],
-    [
-     -2773.86,
-     4526.14
-    ],
-    [
-     -2780.35,
-     4530.48
-    ],
-    [
-     -2788.0,
-     4532.0
-    ],
-    [
-     -3012.0,
-     4532.0
-    ],
-    [
-     -3019.65,
-     4530.48
-    ],
-    [
-     -3026.14,
-     4526.14
-    ],
-    [
-     -3030.48,
-     4519.65
-    ],
-    [
-     -3032.0,
-     4512.0
-    ],
-    [
-     -3032.0,
-     4288.0
-    ],
-    [
-     -3030.48,
-     4280.35
-    ],
-    [
-     -3026.14,
-     4273.86
-    ],
-    [
-     -3019.65,
-     4269.52
-    ],
-    [
-     -3012.0,
-     4268.0
-    ]
-   ],
-   "start": 400,
-   "end": 550
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Guard Band 3",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Guard Band 3",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Guard Band 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Guard Band Right 1",
-   "points": [
-    [
-     3012.0,
-     -4532.0
-    ],
-    [
-     3019.65,
-     -4530.48
-    ],
-    [
-     3026.14,
-     -4526.14
-    ],
-    [
-     3030.48,
-     -4519.65
-    ],
-    [
-     3032.0,
-     -4512.0
-    ],
-    [
-     3032.0,
-     -4288.0
-    ],
-    [
-     3030.48,
-     -4280.35
-    ],
-    [
-     3026.14,
-     -4273.86
-    ],
-    [
-     3019.65,
-     -4269.52
-    ],
-    [
-     3012.0,
-     -4268.0
-    ],
-    [
-     2788.0,
-     -4268.0
-    ],
-    [
-     2780.35,
-     -4269.52
-    ],
-    [
-     2773.86,
-     -4273.86
-    ],
-    [
-     2769.52,
-     -4280.35
-    ],
-    [
-     2768.0,
-     -4288.0
-    ],
-    [
-     2768.0,
-     -4512.0
-    ],
-    [
-     2769.52,
-     -4519.65
-    ],
-    [
-     2773.86,
-     -4526.14
-    ],
-    [
-     2780.35,
-     -4530.48
-    ],
-    [
-     2788.0,
-     -4532.0
-    ]
-   ],
-   "start": 400,
-   "end": 550
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Guard Band Right 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Guard Band Right 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Guard Band Right 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Guard Band Right 2",
-   "points": [
-    [
-     3012.0,
-     -132.0
-    ],
-    [
-     3019.65,
-     -130.48
-    ],
-    [
-     3026.14,
-     -126.14
-    ],
-    [
-     3030.48,
-     -119.65
-    ],
-    [
-     3032.0,
-     -112.0
-    ],
-    [
-     3032.0,
-     112.0
-    ],
-    [
-     3030.48,
-     119.65
-    ],
-    [
-     3026.14,
-     126.14
-    ],
-    [
-     3019.65,
-     130.48
-    ],
-    [
-     3012.0,
-     132.0
-    ],
-    [
-     2788.0,
-     132.0
-    ],
-    [
-     2780.35,
-     130.48
-    ],
-    [
-     2773.86,
-     126.14
-    ],
-    [
-     2769.52,
-     119.65
-    ],
-    [
-     2768.0,
-     112.0
-    ],
-    [
-     2768.0,
-     -112.0
-    ],
-    [
-     2769.52,
-     -119.65
-    ],
-    [
-     2773.86,
-     -126.14
-    ],
-    [
-     2780.35,
-     -130.48
-    ],
-    [
-     2788.0,
-     -132.0
-    ]
-   ],
-   "start": 400,
-   "end": 550
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Guard Band Right 2",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Guard Band Right 2",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Guard Band Right 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Guard Band Right 3",
-   "points": [
-    [
-     3012.0,
-     4268.0
-    ],
-    [
-     3019.65,
-     4269.52
-    ],
-    [
-     3026.14,
-     4273.86
-    ],
-    [
-     3030.48,
-     4280.35
-    ],
-    [
-     3032.0,
-     4288.0
-    ],
-    [
-     3032.0,
-     4512.0
-    ],
-    [
-     3030.48,
-     4519.65
-    ],
-    [
-     3026.14,
-     4526.14
-    ],
-    [
-     3019.65,
-     4530.48
-    ],
-    [
-     3012.0,
-     4532.0
-    ],
-    [
-     2788.0,
-     4532.0
-    ],
-    [
-     2780.35,
-     4530.48
-    ],
-    [
-     2773.86,
-     4526.14
-    ],
-    [
-     2769.52,
-     4519.65
-    ],
-    [
-     2768.0,
-     4512.0
-    ],
-    [
-     2768.0,
-     4288.0
-    ],
-    [
-     2769.52,
-     4280.35
-    ],
-    [
-     2773.86,
-     4273.86
-    ],
-    [
-     2780.35,
-     4269.52
-    ],
-    [
-     2788.0,
-     4268.0
-    ]
-   ],
-   "start": 400,
-   "end": 550
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Guard Band Right 3",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Guard Band Right 3",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Guard Band Right 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Edge Beam Left",
-   "points": [
-    [
-     -2975,
-     -4700
-    ],
-    [
-     -2825,
-     -4700
-    ],
-    [
-     -2825,
-     4700
-    ],
-    [
-     -2975,
-     4700
-    ]
-   ],
-   "start": 4500,
-   "end": 4800
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Edge Beam Left",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Edge Beam Left",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Edge Beam Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Edge Beam Right",
-   "points": [
-    [
-     2825,
-     -4700
-    ],
-    [
-     2975,
-     -4700
-    ],
-    [
-     2975,
-     4700
-    ],
-    [
-     2825,
-     4700
-    ]
-   ],
-   "start": 4800,
-   "end": 5100
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Edge Beam Right",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Edge Beam Right",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Edge Beam Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rafter 1",
-   "points": [
-    [
-     -3200,
-     4500
-    ],
-    [
-     3200,
-     4800
-    ],
-    [
-     3200,
-     5100
-    ],
-    [
-     -3200,
-     4800
-    ]
-   ],
-   "start": 4325,
-   "end": 4475,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rafter 1",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rafter 1",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rafter 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rafter 2",
-   "points": [
-    [
-     -3200,
-     4500
-    ],
-    [
-     3200,
-     4800
-    ],
-    [
-     3200,
-     5100
-    ],
-    [
-     -3200,
-     4800
-    ]
-   ],
-   "start": -75,
-   "end": 75,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rafter 2",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rafter 2",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rafter 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rafter 3",
-   "points": [
-    [
-     -3200,
-     4500
-    ],
-    [
-     3200,
-     4800
-    ],
-    [
-     3200,
-     5100
-    ],
-    [
-     -3200,
-     4800
-    ]
-   ],
-   "start": -4475,
-   "end": -4325,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rafter 3",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rafter 3",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rafter 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Purlin 1",
-   "points": [
-    [
-     -3200,
-     4800
-    ],
-    [
-     3200,
-     5100
-    ],
-    [
-     3200,
-     5180
-    ],
-    [
-     -3200,
-     4880
-    ]
-   ],
-   "start": 4650,
-   "end": 4700,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Purlin 1",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Purlin 1",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Purlin 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Purlin 2",
-   "points": [
-    [
-     -3200,
-     4800
-    ],
-    [
-     3200,
-     5100
-    ],
-    [
-     3200,
-     5180
-    ],
-    [
-     -3200,
-     4880
-    ]
-   ],
-   "start": -4700,
-   "end": -4650,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Purlin 2",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Purlin 2",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Purlin 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Roof Sheet",
-   "points": [
-    [
-     -3300,
-     4800
-    ],
-    [
-     3300,
-     5120
-    ],
-    [
-     3300,
-     5140
-    ],
-    [
-     -3300,
-     4820
-    ]
-   ],
-   "start": -4800,
-   "end": 4800,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Roof Sheet",
-   "subcategory": "Roof"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Roof Sheet",
-   "param": "Roof Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Roof Sheet",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fascia Front",
-   "points": [
-    [
-     -3300,
-     4700
-    ],
-    [
-     3300,
-     5020
-    ],
-    [
-     3300,
-     5160
-    ],
-    [
-     -3300,
-     4840
-    ]
-   ],
-   "start": 4800,
-   "end": 4820,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fascia Front",
-   "subcategory": "Epoxy"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fascia Front",
-   "param": "Epoxy Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fascia Front",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Gutter",
-   "points": [
-    [
-     -3330.0,
-     -4800.0
-    ],
-    [
-     -3318.52,
-     -4797.72
-    ],
-    [
-     -3308.79,
-     -4791.21
-    ],
-    [
-     -3302.28,
-     -4781.48
-    ],
-    [
-     -3300.0,
-     -4770.0
-    ],
-    [
-     -3300.0,
-     4770.0
-    ],
-    [
-     -3302.28,
-     4781.48
-    ],
-    [
-     -3308.79,
-     4791.21
-    ],
-    [
-     -3318.52,
-     4797.72
-    ],
-    [
-     -3330.0,
-     4800.0
-    ],
-    [
-     -3430.0,
-     4800.0
-    ],
-    [
-     -3441.48,
-     4797.72
-    ],
-    [
-     -3451.21,
-     4791.21
-    ],
-    [
-     -3457.72,
-     4781.48
-    ],
-    [
-     -3460.0,
-     4770.0
-    ],
-    [
-     -3460.0,
-     -4770.0
-    ],
-    [
-     -3457.72,
-     -4781.48
-    ],
-    [
-     -3451.21,
-     -4791.21
-    ],
-    [
-     -3441.48,
-     -4797.72
-    ],
-    [
-     -3430.0,
-     -4800.0
-    ]
-   ],
-   "start": 4650,
-   "end": 4820
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Gutter",
-   "subcategory": "Gutter"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Gutter",
-   "param": "Gutter Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Gutter",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Downpipe 1",
-   "points": [
-    [
-     -3325.0,
-     -4200.0
-    ],
-    [
-     -3326.87,
-     -4185.76
-    ],
-    [
-     -3332.37,
-     -4172.5
-    ],
-    [
-     -3341.11,
-     -4161.11
-    ],
-    [
-     -3352.5,
-     -4152.37
-    ],
-    [
-     -3365.76,
-     -4146.87
-    ],
-    [
-     -3380.0,
-     -4145.0
-    ],
-    [
-     -3394.24,
-     -4146.87
-    ],
-    [
-     -3407.5,
-     -4152.37
-    ],
-    [
-     -3418.89,
-     -4161.11
-    ],
-    [
-     -3427.63,
-     -4172.5
-    ],
-    [
-     -3433.13,
-     -4185.76
-    ],
-    [
-     -3435.0,
-     -4200.0
-    ],
-    [
-     -3433.13,
-     -4214.24
-    ],
-    [
-     -3427.63,
-     -4227.5
-    ],
-    [
-     -3418.89,
-     -4238.89
-    ],
-    [
-     -3407.5,
-     -4247.63
-    ],
-    [
-     -3394.24,
-     -4253.13
-    ],
-    [
-     -3380.0,
-     -4255.0
-    ],
-    [
-     -3365.76,
-     -4253.13
-    ],
-    [
-     -3352.5,
-     -4247.63
-    ],
-    [
-     -3341.11,
-     -4238.89
-    ],
-    [
-     -3332.37,
-     -4227.5
-    ],
-    [
-     -3326.87,
-     -4214.24
-    ]
-   ],
-   "start": 100,
-   "end": 4650
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Downpipe 1",
-   "subcategory": "Pipe"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Downpipe 1",
-   "param": "Pipe Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Downpipe 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Downpipe 2",
-   "points": [
-    [
-     -3325.0,
-     4200.0
-    ],
-    [
-     -3326.87,
-     4214.24
-    ],
-    [
-     -3332.37,
-     4227.5
-    ],
-    [
-     -3341.11,
-     4238.89
-    ],
-    [
-     -3352.5,
-     4247.63
-    ],
-    [
-     -3365.76,
-     4253.13
-    ],
-    [
-     -3380.0,
-     4255.0
-    ],
-    [
-     -3394.24,
-     4253.13
-    ],
-    [
-     -3407.5,
-     4247.63
-    ],
-    [
-     -3418.89,
-     4238.89
-    ],
-    [
-     -3427.63,
-     4227.5
-    ],
-    [
-     -3433.13,
-     4214.24
-    ],
-    [
-     -3435.0,
-     4200.0
-    ],
-    [
-     -3433.13,
-     4185.76
-    ],
-    [
-     -3427.63,
-     4172.5
-    ],
-    [
-     -3418.89,
-     4161.11
-    ],
-    [
-     -3407.5,
-     4152.37
-    ],
-    [
-     -3394.24,
-     4146.87
-    ],
-    [
-     -3380.0,
-     4145.0
-    ],
-    [
-     -3365.76,
-     4146.87
-    ],
-    [
-     -3352.5,
-     4152.37
-    ],
-    [
-     -3341.11,
-     4161.11
-    ],
-    [
-     -3332.37,
-     4172.5
-    ],
-    [
-     -3326.87,
-     4185.76
-    ]
-   ],
-   "start": 100,
-   "end": 4650
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Downpipe 2",
-   "subcategory": "Pipe"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Downpipe 2",
-   "param": "Pipe Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Downpipe 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Downpipe Shoe",
-   "points": [
-    [
-     -3325.0,
-     120.0
-    ],
-    [
-     -3326.87,
-     134.24
-    ],
-    [
-     -3332.37,
-     147.5
-    ],
-    [
-     -3341.11,
-     158.89
-    ],
-    [
-     -3352.5,
-     167.63
-    ],
-    [
-     -3365.76,
-     173.13
-    ],
-    [
-     -3380.0,
-     175.0
-    ],
-    [
-     -3394.24,
-     173.13
-    ],
-    [
-     -3407.5,
-     167.63
-    ],
-    [
-     -3418.89,
-     158.89
-    ],
-    [
-     -3427.63,
-     147.5
-    ],
-    [
-     -3433.13,
-     134.24
-    ],
-    [
-     -3435.0,
-     120.0
-    ],
-    [
-     -3433.13,
-     105.76
-    ],
-    [
-     -3427.63,
-     92.5
-    ],
-    [
-     -3418.89,
-     81.11
-    ],
-    [
-     -3407.5,
-     72.37
-    ],
-    [
-     -3394.24,
-     66.87
-    ],
-    [
-     -3380.0,
-     65.0
-    ],
-    [
-     -3365.76,
-     66.87
-    ],
-    [
-     -3352.5,
-     72.37
-    ],
-    [
-     -3341.11,
-     81.11
-    ],
-    [
-     -3332.37,
-     92.5
-    ],
-    [
-     -3326.87,
-     105.76
-    ]
-   ],
-   "start": 4020,
-   "end": 4200,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Downpipe Shoe",
-   "subcategory": "Pipe"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Downpipe Shoe",
-   "param": "Pipe Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Downpipe Shoe",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Light Fitting 1",
-   "points": [
-    [
-     -930.0,
-     -4400.0
-    ],
-    [
-     -918.52,
-     -4397.72
-    ],
-    [
-     -908.79,
-     -4391.21
-    ],
-    [
-     -902.28,
-     -4381.48
-    ],
-    [
-     -900.0,
-     -4370.0
-    ],
-    [
-     -900.0,
-     -4130.0
-    ],
-    [
-     -902.28,
-     -4118.52
-    ],
-    [
-     -908.79,
-     -4108.79
-    ],
-    [
-     -918.52,
-     -4102.28
-    ],
-    [
-     -930.0,
-     -4100.0
-    ],
-    [
-     -1470.0,
-     -4100.0
-    ],
-    [
-     -1481.48,
-     -4102.28
-    ],
-    [
-     -1491.21,
-     -4108.79
-    ],
-    [
-     -1497.72,
-     -4118.52
-    ],
-    [
-     -1500.0,
-     -4130.0
-    ],
-    [
-     -1500.0,
-     -4370.0
-    ],
-    [
-     -1497.72,
-     -4381.48
-    ],
-    [
-     -1491.21,
-     -4391.21
-    ],
-    [
-     -1481.48,
-     -4397.72
-    ],
-    [
-     -1470.0,
-     -4400.0
-    ]
-   ],
-   "start": 4570,
-   "end": 4640
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Light Fitting 1",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Light Fitting 1",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Light Fitting 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Light Fitting 2",
-   "points": [
-    [
-     1470.0,
-     -4400.0
-    ],
-    [
-     1481.48,
-     -4397.72
-    ],
-    [
-     1491.21,
-     -4391.21
-    ],
-    [
-     1497.72,
-     -4381.48
-    ],
-    [
-     1500.0,
-     -4370.0
-    ],
-    [
-     1500.0,
-     -4130.0
-    ],
-    [
-     1497.72,
-     -4118.52
-    ],
-    [
-     1491.21,
-     -4108.79
-    ],
-    [
-     1481.48,
-     -4102.28
-    ],
-    [
-     1470.0,
-     -4100.0
-    ],
-    [
-     930.0,
-     -4100.0
-    ],
-    [
-     918.52,
-     -4102.28
-    ],
-    [
-     908.79,
-     -4108.79
-    ],
-    [
-     902.28,
-     -4118.52
-    ],
-    [
-     900.0,
-     -4130.0
-    ],
-    [
-     900.0,
-     -4370.0
-    ],
-    [
-     902.28,
-     -4381.48
-    ],
-    [
-     908.79,
-     -4391.21
-    ],
-    [
-     918.52,
-     -4397.72
-    ],
-    [
-     930.0,
-     -4400.0
-    ]
-   ],
-   "start": 4570,
-   "end": 4640
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Light Fitting 2",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Light Fitting 2",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Light Fitting 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Light Fitting Rear 1",
-   "points": [
-    [
-     -930.0,
-     4100.0
-    ],
-    [
-     -918.52,
-     4102.28
-    ],
-    [
-     -908.79,
-     4108.79
-    ],
-    [
-     -902.28,
-     4118.52
-    ],
-    [
-     -900.0,
-     4130.0
-    ],
-    [
-     -900.0,
-     4370.0
-    ],
-    [
-     -902.28,
-     4381.48
-    ],
-    [
-     -908.79,
-     4391.21
-    ],
-    [
-     -918.52,
-     4397.72
-    ],
-    [
-     -930.0,
-     4400.0
-    ],
-    [
-     -1470.0,
-     4400.0
-    ],
-    [
-     -1481.48,
-     4397.72
-    ],
-    [
-     -1491.21,
-     4391.21
-    ],
-    [
-     -1497.72,
-     4381.48
-    ],
-    [
-     -1500.0,
-     4370.0
-    ],
-    [
-     -1500.0,
-     4130.0
-    ],
-    [
-     -1497.72,
-     4118.52
-    ],
-    [
-     -1491.21,
-     4108.79
-    ],
-    [
-     -1481.48,
-     4102.28
-    ],
-    [
-     -1470.0,
-     4100.0
-    ]
-   ],
-   "start": 4570,
-   "end": 4640
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Light Fitting Rear 1",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Light Fitting Rear 1",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Light Fitting Rear 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Light Fitting Rear 2",
-   "points": [
-    [
-     1470.0,
-     4100.0
-    ],
-    [
-     1481.48,
-     4102.28
-    ],
-    [
-     1491.21,
-     4108.79
-    ],
-    [
-     1497.72,
-     4118.52
-    ],
-    [
-     1500.0,
-     4130.0
-    ],
-    [
-     1500.0,
-     4370.0
-    ],
-    [
-     1497.72,
-     4381.48
-    ],
-    [
-     1491.21,
-     4391.21
-    ],
-    [
-     1481.48,
-     4397.72
-    ],
-    [
-     1470.0,
-     4400.0
-    ],
-    [
-     930.0,
-     4400.0
-    ],
-    [
-     918.52,
-     4397.72
-    ],
-    [
-     908.79,
-     4391.21
-    ],
-    [
-     902.28,
-     4381.48
-    ],
-    [
-     900.0,
-     4370.0
-    ],
-    [
-     900.0,
-     4130.0
-    ],
-    [
-     902.28,
-     4118.52
-    ],
-    [
-     908.79,
-     4108.79
-    ],
-    [
-     918.52,
-     4102.28
-    ],
-    [
-     930.0,
-     4100.0
-    ]
-   ],
-   "start": 4570,
-   "end": 4640
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Light Fitting Rear 2",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Light Fitting Rear 2",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Light Fitting Rear 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Light Diffuser 1",
-   "points": [
-    [
-     -1480,
-     -4380
-    ],
-    [
-     -920,
-     -4380
-    ],
-    [
-     -920,
-     -4120
-    ],
-    [
-     -1480,
-     -4120
-    ]
-   ],
-   "start": 4565,
-   "end": 4570
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Light Diffuser 1",
-   "subcategory": "Pc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Light Diffuser 1",
-   "param": "Pc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Light Diffuser 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Light Diffuser 2",
-   "points": [
-    [
-     920,
-     -4380
-    ],
-    [
-     1480,
-     -4380
-    ],
-    [
-     1480,
-     -4120
-    ],
-    [
-     920,
-     -4120
-    ]
-   ],
-   "start": 4565,
-   "end": 4570
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Light Diffuser 2",
-   "subcategory": "Pc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Light Diffuser 2",
-   "param": "Pc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Light Diffuser 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Clear Height Sign",
-   "points": [
-    [
-     -700,
-     4300
-    ],
-    [
-     700,
-     4300
-    ],
-    [
-     700,
-     4500
-    ],
-    [
-     -700,
-     4500
-    ]
-   ],
-   "start": 4470,
-   "end": 4480,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Clear Height Sign",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Clear Height Sign",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Clear Height Sign",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Clear Height Text",
-   "points": [
-    [
-     -500,
-     4350
-    ],
-    [
-     500,
-     4350
-    ],
-    [
-     500,
-     4450
-    ],
-    [
-     -500,
-     4450
-    ]
-   ],
-   "start": 4480,
-   "end": 4482,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Clear Height Text",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Clear Height Text",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Clear Height Text",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Sign Bracket",
-   "points": [
-    [
-     -650,
-     -4470
-    ],
-    [
-     650,
-     -4470
-    ],
-    [
-     650,
-     -4325
-    ],
-    [
-     -650,
-     -4325
-    ]
-   ],
-   "start": 4500,
-   "end": 4580
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sign Bracket",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sign Bracket",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sign Bracket",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Clear Height Check",
-   "points": [
-    [
-     -2750,
-     -4700
-    ],
-    [
-     2750,
-     -4700
-    ],
-    [
-     2750,
-     4700
-    ],
-    [
-     -2750,
-     4700
-    ]
-   ],
-   "start": 0,
-   "end": 4200
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Clear Height Check",
-   "subcategory": "Clearance Operation"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Clear Height Check",
-   "coarse": true,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "Waste",
-   "domain": "pipe",
-   "system": "Sanitary",
-   "solid": "Downpipe 1",
-   "side": "bottom",
-   "diameter": 110,
-   "flow": "Out"
-  },
-  {
-   "op": "add_connector",
-   "name": "Power",
-   "domain": "electrical",
-   "system": "PowerBalanced",
-   "solid": "Light Fitting 1",
-   "side": "top"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Voltage",
-   "connector": "Power",
-   "connector_param": "Voltage",
-   "param": "Voltage"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Apparent Load",
-   "connector": "Power",
-   "connector_param": "Apparent Load",
-   "param": "Apparent Load"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\A\\_Images\\FMC_A_GenericModel_Canopy_AmbulanceBay.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_A_GenericModel_Canopy_AmbulanceBay",
+  "template": "Metric Generic Model.rft",
+  "about": "Canopy modelled as a generic product (Generic Models kept): six SHS columns on pads and base plates with yellow/black impact guards, edge beams, three rafters, purlins, mono-pitch roof sheet and fascia, gutter on the low side, two downpipes with shoe, four LED fittings, clear-height sign. The 4200 clear-height check is a Clearance Operation solid. Structure is indicative: sizes are for the structural engineer. Reference: query: canopy ambulance bay generic models hospital; images: https://www.google.com/search?tbm=isch&q=canopy+ambulance+bay+generic+models+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Generic Models"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Voltage",
+      "type": "Voltage",
+      "group": "Electrical"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Apparent Load",
+      "type": "ApparentPower",
+      "group": "ElectricalLoads"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+    },
+    {
+      "op": "add_type",
+      "name": "6000x9000_Canopy"
+    },
+    {
+      "op": "set_type_value",
+      "name": "6000x9000_Canopy/FMC_Cost_Unit",
+      "type": "6000x9000_Canopy",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "6000x9000_Canopy/FMC_Geometry_Stage",
+      "type": "6000x9000_Canopy",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "6000x9000_Canopy/IfcExportAs",
+      "type": "6000x9000_Canopy",
+      "param": "IfcExportAs",
+      "value": "IfcBuildingElementProxy"
+    },
+    {
+      "op": "set_type_value",
+      "name": "6000x9000_Canopy/Description",
+      "type": "6000x9000_Canopy",
+      "param": "Description",
+      "value": "Ambulance bay canopy 6000 x 9000 mm, 4200 mm clear height"
+    },
+    {
+      "op": "set_type_value",
+      "name": "6000x9000_Canopy/Keynote",
+      "type": "6000x9000_Canopy",
+      "param": "Keynote",
+      "value": "A.CAN_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "6000x9000_Canopy/FMC_Keynote_Code",
+      "type": "6000x9000_Canopy",
+      "param": "FMC_Keynote_Code",
+      "value": "A.CAN_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "6000x9000_Canopy/Voltage",
+      "type": "6000x9000_Canopy",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "6000x9000_Canopy/Apparent Load",
+      "type": "6000x9000_Canopy",
+      "param": "Apparent Load",
+      "value": 600
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Conc",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Conc Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Concrete_C30",
+      "param": "Conc Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Steel",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Steel Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_StructuralSteel_S275",
+      "param": "Steel Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Dark",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Dark Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_SteelLTZ_Painted",
+      "param": "Dark Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Yellow",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Yellow Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Yellow",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Galv",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Galv Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_ColdFormed_Galvanised",
+      "param": "Galv Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Roof",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Roof Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Roofing_AZED_Corrugated_Silver",
+      "param": "Roof Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Epoxy",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Epoxy Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Steel_EpoxyCoated_White",
+      "param": "Epoxy Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Gutter",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Gutter Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_PVCGutter_White",
+      "param": "Gutter Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Pipe",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Pipe Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_uPVC_Pipe_DarkGrey",
+      "param": "Pipe Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "White",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "White Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_White",
+      "param": "White Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Pc",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Pc Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_Polycarbonate_Clear",
+      "param": "Pc Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Clearance Operation",
+      "color": [
+        80,
+        122,
+        160
+      ],
+      "line_weight_projection": 1,
+      "line_weight_cut": 1
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -3460,
+          -4820
+        ],
+        [
+          3300,
+          -4820
+        ],
+        [
+          3300,
+          4800
+        ],
+        [
+          -3460,
+          4800
+        ]
+      ],
+      "start": -150,
+      "end": 5180
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Pad Foundation 1",
+      "points": [
+        [
+          -3150,
+          -4650
+        ],
+        [
+          -2650,
+          -4650
+        ],
+        [
+          -2650,
+          -4150
+        ],
+        [
+          -3150,
+          -4150
+        ]
+      ],
+      "start": -150,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pad Foundation 1",
+      "subcategory": "Conc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pad Foundation 1",
+      "param": "Conc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pad Foundation 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pad Foundation 2",
+      "points": [
+        [
+          -3150,
+          -250
+        ],
+        [
+          -2650,
+          -250
+        ],
+        [
+          -2650,
+          250
+        ],
+        [
+          -3150,
+          250
+        ]
+      ],
+      "start": -150,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pad Foundation 2",
+      "subcategory": "Conc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pad Foundation 2",
+      "param": "Conc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pad Foundation 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pad Foundation 3",
+      "points": [
+        [
+          -3150,
+          4150
+        ],
+        [
+          -2650,
+          4150
+        ],
+        [
+          -2650,
+          4650
+        ],
+        [
+          -3150,
+          4650
+        ]
+      ],
+      "start": -150,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pad Foundation 3",
+      "subcategory": "Conc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pad Foundation 3",
+      "param": "Conc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pad Foundation 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pad Foundation Right 1",
+      "points": [
+        [
+          2650,
+          -4650
+        ],
+        [
+          3150,
+          -4650
+        ],
+        [
+          3150,
+          -4150
+        ],
+        [
+          2650,
+          -4150
+        ]
+      ],
+      "start": -150,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pad Foundation Right 1",
+      "subcategory": "Conc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pad Foundation Right 1",
+      "param": "Conc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pad Foundation Right 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pad Foundation Right 2",
+      "points": [
+        [
+          2650,
+          -250
+        ],
+        [
+          3150,
+          -250
+        ],
+        [
+          3150,
+          250
+        ],
+        [
+          2650,
+          250
+        ]
+      ],
+      "start": -150,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pad Foundation Right 2",
+      "subcategory": "Conc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pad Foundation Right 2",
+      "param": "Conc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pad Foundation Right 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pad Foundation Right 3",
+      "points": [
+        [
+          2650,
+          4150
+        ],
+        [
+          3150,
+          4150
+        ],
+        [
+          3150,
+          4650
+        ],
+        [
+          2650,
+          4650
+        ]
+      ],
+      "start": -150,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pad Foundation Right 3",
+      "subcategory": "Conc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pad Foundation Right 3",
+      "param": "Conc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pad Foundation Right 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Base Plate 1",
+      "points": [
+        [
+          -3075,
+          -4575
+        ],
+        [
+          -2725,
+          -4575
+        ],
+        [
+          -2725,
+          -4225
+        ],
+        [
+          -3075,
+          -4225
+        ]
+      ],
+      "start": 0,
+      "end": 25
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Base Plate 1",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Base Plate 1",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Base Plate 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Base Plate 2",
+      "points": [
+        [
+          -3075,
+          -175
+        ],
+        [
+          -2725,
+          -175
+        ],
+        [
+          -2725,
+          175
+        ],
+        [
+          -3075,
+          175
+        ]
+      ],
+      "start": 0,
+      "end": 25
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Base Plate 2",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Base Plate 2",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Base Plate 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Base Plate 3",
+      "points": [
+        [
+          -3075,
+          4225
+        ],
+        [
+          -2725,
+          4225
+        ],
+        [
+          -2725,
+          4575
+        ],
+        [
+          -3075,
+          4575
+        ]
+      ],
+      "start": 0,
+      "end": 25
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Base Plate 3",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Base Plate 3",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Base Plate 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Base Plate Right 1",
+      "points": [
+        [
+          2725,
+          -4575
+        ],
+        [
+          3075,
+          -4575
+        ],
+        [
+          3075,
+          -4225
+        ],
+        [
+          2725,
+          -4225
+        ]
+      ],
+      "start": 0,
+      "end": 25
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Base Plate Right 1",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Base Plate Right 1",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Base Plate Right 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Base Plate Right 2",
+      "points": [
+        [
+          2725,
+          -175
+        ],
+        [
+          3075,
+          -175
+        ],
+        [
+          3075,
+          175
+        ],
+        [
+          2725,
+          175
+        ]
+      ],
+      "start": 0,
+      "end": 25
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Base Plate Right 2",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Base Plate Right 2",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Base Plate Right 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Base Plate Right 3",
+      "points": [
+        [
+          2725,
+          4225
+        ],
+        [
+          3075,
+          4225
+        ],
+        [
+          3075,
+          4575
+        ],
+        [
+          2725,
+          4575
+        ]
+      ],
+      "start": 0,
+      "end": 25
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Base Plate Right 3",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Base Plate Right 3",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Base Plate Right 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Column 1",
+      "points": [
+        [
+          -2808,
+          -4500
+        ],
+        [
+          -2804.94,
+          -4499.39
+        ],
+        [
+          -2802.34,
+          -4497.66
+        ],
+        [
+          -2800.61,
+          -4495.06
+        ],
+        [
+          -2800,
+          -4492
+        ],
+        [
+          -2800,
+          -4308
+        ],
+        [
+          -2800.61,
+          -4304.94
+        ],
+        [
+          -2802.34,
+          -4302.34
+        ],
+        [
+          -2804.94,
+          -4300.61
+        ],
+        [
+          -2808,
+          -4300
+        ],
+        [
+          -2992,
+          -4300
+        ],
+        [
+          -2995.06,
+          -4300.61
+        ],
+        [
+          -2997.66,
+          -4302.34
+        ],
+        [
+          -2999.39,
+          -4304.94
+        ],
+        [
+          -3000,
+          -4308
+        ],
+        [
+          -3000,
+          -4492
+        ],
+        [
+          -2999.39,
+          -4495.06
+        ],
+        [
+          -2997.66,
+          -4497.66
+        ],
+        [
+          -2995.06,
+          -4499.39
+        ],
+        [
+          -2992,
+          -4500
+        ]
+      ],
+      "start": 25,
+      "end": 4500
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Column 1",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Column 1",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Column 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Column 2",
+      "points": [
+        [
+          -2808,
+          -100
+        ],
+        [
+          -2804.94,
+          -99.39
+        ],
+        [
+          -2802.34,
+          -97.66
+        ],
+        [
+          -2800.61,
+          -95.06
+        ],
+        [
+          -2800,
+          -92
+        ],
+        [
+          -2800,
+          92
+        ],
+        [
+          -2800.61,
+          95.06
+        ],
+        [
+          -2802.34,
+          97.66
+        ],
+        [
+          -2804.94,
+          99.39
+        ],
+        [
+          -2808,
+          100
+        ],
+        [
+          -2992,
+          100
+        ],
+        [
+          -2995.06,
+          99.39
+        ],
+        [
+          -2997.66,
+          97.66
+        ],
+        [
+          -2999.39,
+          95.06
+        ],
+        [
+          -3000,
+          92
+        ],
+        [
+          -3000,
+          -92
+        ],
+        [
+          -2999.39,
+          -95.06
+        ],
+        [
+          -2997.66,
+          -97.66
+        ],
+        [
+          -2995.06,
+          -99.39
+        ],
+        [
+          -2992,
+          -100
+        ]
+      ],
+      "start": 25,
+      "end": 4500
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Column 2",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Column 2",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Column 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Column 3",
+      "points": [
+        [
+          -2808,
+          4300
+        ],
+        [
+          -2804.94,
+          4300.61
+        ],
+        [
+          -2802.34,
+          4302.34
+        ],
+        [
+          -2800.61,
+          4304.94
+        ],
+        [
+          -2800,
+          4308
+        ],
+        [
+          -2800,
+          4492
+        ],
+        [
+          -2800.61,
+          4495.06
+        ],
+        [
+          -2802.34,
+          4497.66
+        ],
+        [
+          -2804.94,
+          4499.39
+        ],
+        [
+          -2808,
+          4500
+        ],
+        [
+          -2992,
+          4500
+        ],
+        [
+          -2995.06,
+          4499.39
+        ],
+        [
+          -2997.66,
+          4497.66
+        ],
+        [
+          -2999.39,
+          4495.06
+        ],
+        [
+          -3000,
+          4492
+        ],
+        [
+          -3000,
+          4308
+        ],
+        [
+          -2999.39,
+          4304.94
+        ],
+        [
+          -2997.66,
+          4302.34
+        ],
+        [
+          -2995.06,
+          4300.61
+        ],
+        [
+          -2992,
+          4300
+        ]
+      ],
+      "start": 25,
+      "end": 4500
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Column 3",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Column 3",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Column 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Column Right 1",
+      "points": [
+        [
+          2992,
+          -4500
+        ],
+        [
+          2995.06,
+          -4499.39
+        ],
+        [
+          2997.66,
+          -4497.66
+        ],
+        [
+          2999.39,
+          -4495.06
+        ],
+        [
+          3000,
+          -4492
+        ],
+        [
+          3000,
+          -4308
+        ],
+        [
+          2999.39,
+          -4304.94
+        ],
+        [
+          2997.66,
+          -4302.34
+        ],
+        [
+          2995.06,
+          -4300.61
+        ],
+        [
+          2992,
+          -4300
+        ],
+        [
+          2808,
+          -4300
+        ],
+        [
+          2804.94,
+          -4300.61
+        ],
+        [
+          2802.34,
+          -4302.34
+        ],
+        [
+          2800.61,
+          -4304.94
+        ],
+        [
+          2800,
+          -4308
+        ],
+        [
+          2800,
+          -4492
+        ],
+        [
+          2800.61,
+          -4495.06
+        ],
+        [
+          2802.34,
+          -4497.66
+        ],
+        [
+          2804.94,
+          -4499.39
+        ],
+        [
+          2808,
+          -4500
+        ]
+      ],
+      "start": 25,
+      "end": 4800
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Column Right 1",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Column Right 1",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Column Right 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Column Right 2",
+      "points": [
+        [
+          2992,
+          -100
+        ],
+        [
+          2995.06,
+          -99.39
+        ],
+        [
+          2997.66,
+          -97.66
+        ],
+        [
+          2999.39,
+          -95.06
+        ],
+        [
+          3000,
+          -92
+        ],
+        [
+          3000,
+          92
+        ],
+        [
+          2999.39,
+          95.06
+        ],
+        [
+          2997.66,
+          97.66
+        ],
+        [
+          2995.06,
+          99.39
+        ],
+        [
+          2992,
+          100
+        ],
+        [
+          2808,
+          100
+        ],
+        [
+          2804.94,
+          99.39
+        ],
+        [
+          2802.34,
+          97.66
+        ],
+        [
+          2800.61,
+          95.06
+        ],
+        [
+          2800,
+          92
+        ],
+        [
+          2800,
+          -92
+        ],
+        [
+          2800.61,
+          -95.06
+        ],
+        [
+          2802.34,
+          -97.66
+        ],
+        [
+          2804.94,
+          -99.39
+        ],
+        [
+          2808,
+          -100
+        ]
+      ],
+      "start": 25,
+      "end": 4800
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Column Right 2",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Column Right 2",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Column Right 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Column Right 3",
+      "points": [
+        [
+          2992,
+          4300
+        ],
+        [
+          2995.06,
+          4300.61
+        ],
+        [
+          2997.66,
+          4302.34
+        ],
+        [
+          2999.39,
+          4304.94
+        ],
+        [
+          3000,
+          4308
+        ],
+        [
+          3000,
+          4492
+        ],
+        [
+          2999.39,
+          4495.06
+        ],
+        [
+          2997.66,
+          4497.66
+        ],
+        [
+          2995.06,
+          4499.39
+        ],
+        [
+          2992,
+          4500
+        ],
+        [
+          2808,
+          4500
+        ],
+        [
+          2804.94,
+          4499.39
+        ],
+        [
+          2802.34,
+          4497.66
+        ],
+        [
+          2800.61,
+          4495.06
+        ],
+        [
+          2800,
+          4492
+        ],
+        [
+          2800,
+          4308
+        ],
+        [
+          2800.61,
+          4304.94
+        ],
+        [
+          2802.34,
+          4302.34
+        ],
+        [
+          2804.94,
+          4300.61
+        ],
+        [
+          2808,
+          4300
+        ]
+      ],
+      "start": 25,
+      "end": 4800
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Column Right 3",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Column Right 3",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Column Right 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Column Guard 1",
+      "points": [
+        [
+          -2790,
+          -4530
+        ],
+        [
+          -2782.35,
+          -4528.48
+        ],
+        [
+          -2775.86,
+          -4524.14
+        ],
+        [
+          -2771.52,
+          -4517.65
+        ],
+        [
+          -2770,
+          -4510
+        ],
+        [
+          -2770,
+          -4290
+        ],
+        [
+          -2771.52,
+          -4282.35
+        ],
+        [
+          -2775.86,
+          -4275.86
+        ],
+        [
+          -2782.35,
+          -4271.52
+        ],
+        [
+          -2790,
+          -4270
+        ],
+        [
+          -3010,
+          -4270
+        ],
+        [
+          -3017.65,
+          -4271.52
+        ],
+        [
+          -3024.14,
+          -4275.86
+        ],
+        [
+          -3028.48,
+          -4282.35
+        ],
+        [
+          -3030,
+          -4290
+        ],
+        [
+          -3030,
+          -4510
+        ],
+        [
+          -3028.48,
+          -4517.65
+        ],
+        [
+          -3024.14,
+          -4524.14
+        ],
+        [
+          -3017.65,
+          -4528.48
+        ],
+        [
+          -3010,
+          -4530
+        ]
+      ],
+      "start": 0,
+      "end": 1000
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Column Guard 1",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Column Guard 1",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Column Guard 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Column Guard 2",
+      "points": [
+        [
+          -2790,
+          -130
+        ],
+        [
+          -2782.35,
+          -128.48
+        ],
+        [
+          -2775.86,
+          -124.14
+        ],
+        [
+          -2771.52,
+          -117.65
+        ],
+        [
+          -2770,
+          -110
+        ],
+        [
+          -2770,
+          110
+        ],
+        [
+          -2771.52,
+          117.65
+        ],
+        [
+          -2775.86,
+          124.14
+        ],
+        [
+          -2782.35,
+          128.48
+        ],
+        [
+          -2790,
+          130
+        ],
+        [
+          -3010,
+          130
+        ],
+        [
+          -3017.65,
+          128.48
+        ],
+        [
+          -3024.14,
+          124.14
+        ],
+        [
+          -3028.48,
+          117.65
+        ],
+        [
+          -3030,
+          110
+        ],
+        [
+          -3030,
+          -110
+        ],
+        [
+          -3028.48,
+          -117.65
+        ],
+        [
+          -3024.14,
+          -124.14
+        ],
+        [
+          -3017.65,
+          -128.48
+        ],
+        [
+          -3010,
+          -130
+        ]
+      ],
+      "start": 0,
+      "end": 1000
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Column Guard 2",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Column Guard 2",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Column Guard 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Column Guard 3",
+      "points": [
+        [
+          -2790,
+          4270
+        ],
+        [
+          -2782.35,
+          4271.52
+        ],
+        [
+          -2775.86,
+          4275.86
+        ],
+        [
+          -2771.52,
+          4282.35
+        ],
+        [
+          -2770,
+          4290
+        ],
+        [
+          -2770,
+          4510
+        ],
+        [
+          -2771.52,
+          4517.65
+        ],
+        [
+          -2775.86,
+          4524.14
+        ],
+        [
+          -2782.35,
+          4528.48
+        ],
+        [
+          -2790,
+          4530
+        ],
+        [
+          -3010,
+          4530
+        ],
+        [
+          -3017.65,
+          4528.48
+        ],
+        [
+          -3024.14,
+          4524.14
+        ],
+        [
+          -3028.48,
+          4517.65
+        ],
+        [
+          -3030,
+          4510
+        ],
+        [
+          -3030,
+          4290
+        ],
+        [
+          -3028.48,
+          4282.35
+        ],
+        [
+          -3024.14,
+          4275.86
+        ],
+        [
+          -3017.65,
+          4271.52
+        ],
+        [
+          -3010,
+          4270
+        ]
+      ],
+      "start": 0,
+      "end": 1000
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Column Guard 3",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Column Guard 3",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Column Guard 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Column Guard Right 1",
+      "points": [
+        [
+          3010,
+          -4530
+        ],
+        [
+          3017.65,
+          -4528.48
+        ],
+        [
+          3024.14,
+          -4524.14
+        ],
+        [
+          3028.48,
+          -4517.65
+        ],
+        [
+          3030,
+          -4510
+        ],
+        [
+          3030,
+          -4290
+        ],
+        [
+          3028.48,
+          -4282.35
+        ],
+        [
+          3024.14,
+          -4275.86
+        ],
+        [
+          3017.65,
+          -4271.52
+        ],
+        [
+          3010,
+          -4270
+        ],
+        [
+          2790,
+          -4270
+        ],
+        [
+          2782.35,
+          -4271.52
+        ],
+        [
+          2775.86,
+          -4275.86
+        ],
+        [
+          2771.52,
+          -4282.35
+        ],
+        [
+          2770,
+          -4290
+        ],
+        [
+          2770,
+          -4510
+        ],
+        [
+          2771.52,
+          -4517.65
+        ],
+        [
+          2775.86,
+          -4524.14
+        ],
+        [
+          2782.35,
+          -4528.48
+        ],
+        [
+          2790,
+          -4530
+        ]
+      ],
+      "start": 0,
+      "end": 1000
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Column Guard Right 1",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Column Guard Right 1",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Column Guard Right 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Column Guard Right 2",
+      "points": [
+        [
+          3010,
+          -130
+        ],
+        [
+          3017.65,
+          -128.48
+        ],
+        [
+          3024.14,
+          -124.14
+        ],
+        [
+          3028.48,
+          -117.65
+        ],
+        [
+          3030,
+          -110
+        ],
+        [
+          3030,
+          110
+        ],
+        [
+          3028.48,
+          117.65
+        ],
+        [
+          3024.14,
+          124.14
+        ],
+        [
+          3017.65,
+          128.48
+        ],
+        [
+          3010,
+          130
+        ],
+        [
+          2790,
+          130
+        ],
+        [
+          2782.35,
+          128.48
+        ],
+        [
+          2775.86,
+          124.14
+        ],
+        [
+          2771.52,
+          117.65
+        ],
+        [
+          2770,
+          110
+        ],
+        [
+          2770,
+          -110
+        ],
+        [
+          2771.52,
+          -117.65
+        ],
+        [
+          2775.86,
+          -124.14
+        ],
+        [
+          2782.35,
+          -128.48
+        ],
+        [
+          2790,
+          -130
+        ]
+      ],
+      "start": 0,
+      "end": 1000
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Column Guard Right 2",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Column Guard Right 2",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Column Guard Right 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Column Guard Right 3",
+      "points": [
+        [
+          3010,
+          4270
+        ],
+        [
+          3017.65,
+          4271.52
+        ],
+        [
+          3024.14,
+          4275.86
+        ],
+        [
+          3028.48,
+          4282.35
+        ],
+        [
+          3030,
+          4290
+        ],
+        [
+          3030,
+          4510
+        ],
+        [
+          3028.48,
+          4517.65
+        ],
+        [
+          3024.14,
+          4524.14
+        ],
+        [
+          3017.65,
+          4528.48
+        ],
+        [
+          3010,
+          4530
+        ],
+        [
+          2790,
+          4530
+        ],
+        [
+          2782.35,
+          4528.48
+        ],
+        [
+          2775.86,
+          4524.14
+        ],
+        [
+          2771.52,
+          4517.65
+        ],
+        [
+          2770,
+          4510
+        ],
+        [
+          2770,
+          4290
+        ],
+        [
+          2771.52,
+          4282.35
+        ],
+        [
+          2775.86,
+          4275.86
+        ],
+        [
+          2782.35,
+          4271.52
+        ],
+        [
+          2790,
+          4270
+        ]
+      ],
+      "start": 0,
+      "end": 1000
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Column Guard Right 3",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Column Guard Right 3",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Column Guard Right 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Guard Band 1",
+      "points": [
+        [
+          -2788,
+          -4532
+        ],
+        [
+          -2780.35,
+          -4530.48
+        ],
+        [
+          -2773.86,
+          -4526.14
+        ],
+        [
+          -2769.52,
+          -4519.65
+        ],
+        [
+          -2768,
+          -4512
+        ],
+        [
+          -2768,
+          -4288
+        ],
+        [
+          -2769.52,
+          -4280.35
+        ],
+        [
+          -2773.86,
+          -4273.86
+        ],
+        [
+          -2780.35,
+          -4269.52
+        ],
+        [
+          -2788,
+          -4268
+        ],
+        [
+          -3012,
+          -4268
+        ],
+        [
+          -3019.65,
+          -4269.52
+        ],
+        [
+          -3026.14,
+          -4273.86
+        ],
+        [
+          -3030.48,
+          -4280.35
+        ],
+        [
+          -3032,
+          -4288
+        ],
+        [
+          -3032,
+          -4512
+        ],
+        [
+          -3030.48,
+          -4519.65
+        ],
+        [
+          -3026.14,
+          -4526.14
+        ],
+        [
+          -3019.65,
+          -4530.48
+        ],
+        [
+          -3012,
+          -4532
+        ]
+      ],
+      "start": 400,
+      "end": 550
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Guard Band 1",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Guard Band 1",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Guard Band 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Guard Band 2",
+      "points": [
+        [
+          -2788,
+          -132
+        ],
+        [
+          -2780.35,
+          -130.48
+        ],
+        [
+          -2773.86,
+          -126.14
+        ],
+        [
+          -2769.52,
+          -119.65
+        ],
+        [
+          -2768,
+          -112
+        ],
+        [
+          -2768,
+          112
+        ],
+        [
+          -2769.52,
+          119.65
+        ],
+        [
+          -2773.86,
+          126.14
+        ],
+        [
+          -2780.35,
+          130.48
+        ],
+        [
+          -2788,
+          132
+        ],
+        [
+          -3012,
+          132
+        ],
+        [
+          -3019.65,
+          130.48
+        ],
+        [
+          -3026.14,
+          126.14
+        ],
+        [
+          -3030.48,
+          119.65
+        ],
+        [
+          -3032,
+          112
+        ],
+        [
+          -3032,
+          -112
+        ],
+        [
+          -3030.48,
+          -119.65
+        ],
+        [
+          -3026.14,
+          -126.14
+        ],
+        [
+          -3019.65,
+          -130.48
+        ],
+        [
+          -3012,
+          -132
+        ]
+      ],
+      "start": 400,
+      "end": 550
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Guard Band 2",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Guard Band 2",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Guard Band 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Guard Band 3",
+      "points": [
+        [
+          -2788,
+          4268
+        ],
+        [
+          -2780.35,
+          4269.52
+        ],
+        [
+          -2773.86,
+          4273.86
+        ],
+        [
+          -2769.52,
+          4280.35
+        ],
+        [
+          -2768,
+          4288
+        ],
+        [
+          -2768,
+          4512
+        ],
+        [
+          -2769.52,
+          4519.65
+        ],
+        [
+          -2773.86,
+          4526.14
+        ],
+        [
+          -2780.35,
+          4530.48
+        ],
+        [
+          -2788,
+          4532
+        ],
+        [
+          -3012,
+          4532
+        ],
+        [
+          -3019.65,
+          4530.48
+        ],
+        [
+          -3026.14,
+          4526.14
+        ],
+        [
+          -3030.48,
+          4519.65
+        ],
+        [
+          -3032,
+          4512
+        ],
+        [
+          -3032,
+          4288
+        ],
+        [
+          -3030.48,
+          4280.35
+        ],
+        [
+          -3026.14,
+          4273.86
+        ],
+        [
+          -3019.65,
+          4269.52
+        ],
+        [
+          -3012,
+          4268
+        ]
+      ],
+      "start": 400,
+      "end": 550
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Guard Band 3",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Guard Band 3",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Guard Band 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Guard Band Right 1",
+      "points": [
+        [
+          3012,
+          -4532
+        ],
+        [
+          3019.65,
+          -4530.48
+        ],
+        [
+          3026.14,
+          -4526.14
+        ],
+        [
+          3030.48,
+          -4519.65
+        ],
+        [
+          3032,
+          -4512
+        ],
+        [
+          3032,
+          -4288
+        ],
+        [
+          3030.48,
+          -4280.35
+        ],
+        [
+          3026.14,
+          -4273.86
+        ],
+        [
+          3019.65,
+          -4269.52
+        ],
+        [
+          3012,
+          -4268
+        ],
+        [
+          2788,
+          -4268
+        ],
+        [
+          2780.35,
+          -4269.52
+        ],
+        [
+          2773.86,
+          -4273.86
+        ],
+        [
+          2769.52,
+          -4280.35
+        ],
+        [
+          2768,
+          -4288
+        ],
+        [
+          2768,
+          -4512
+        ],
+        [
+          2769.52,
+          -4519.65
+        ],
+        [
+          2773.86,
+          -4526.14
+        ],
+        [
+          2780.35,
+          -4530.48
+        ],
+        [
+          2788,
+          -4532
+        ]
+      ],
+      "start": 400,
+      "end": 550
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Guard Band Right 1",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Guard Band Right 1",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Guard Band Right 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Guard Band Right 2",
+      "points": [
+        [
+          3012,
+          -132
+        ],
+        [
+          3019.65,
+          -130.48
+        ],
+        [
+          3026.14,
+          -126.14
+        ],
+        [
+          3030.48,
+          -119.65
+        ],
+        [
+          3032,
+          -112
+        ],
+        [
+          3032,
+          112
+        ],
+        [
+          3030.48,
+          119.65
+        ],
+        [
+          3026.14,
+          126.14
+        ],
+        [
+          3019.65,
+          130.48
+        ],
+        [
+          3012,
+          132
+        ],
+        [
+          2788,
+          132
+        ],
+        [
+          2780.35,
+          130.48
+        ],
+        [
+          2773.86,
+          126.14
+        ],
+        [
+          2769.52,
+          119.65
+        ],
+        [
+          2768,
+          112
+        ],
+        [
+          2768,
+          -112
+        ],
+        [
+          2769.52,
+          -119.65
+        ],
+        [
+          2773.86,
+          -126.14
+        ],
+        [
+          2780.35,
+          -130.48
+        ],
+        [
+          2788,
+          -132
+        ]
+      ],
+      "start": 400,
+      "end": 550
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Guard Band Right 2",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Guard Band Right 2",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Guard Band Right 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Guard Band Right 3",
+      "points": [
+        [
+          3012,
+          4268
+        ],
+        [
+          3019.65,
+          4269.52
+        ],
+        [
+          3026.14,
+          4273.86
+        ],
+        [
+          3030.48,
+          4280.35
+        ],
+        [
+          3032,
+          4288
+        ],
+        [
+          3032,
+          4512
+        ],
+        [
+          3030.48,
+          4519.65
+        ],
+        [
+          3026.14,
+          4526.14
+        ],
+        [
+          3019.65,
+          4530.48
+        ],
+        [
+          3012,
+          4532
+        ],
+        [
+          2788,
+          4532
+        ],
+        [
+          2780.35,
+          4530.48
+        ],
+        [
+          2773.86,
+          4526.14
+        ],
+        [
+          2769.52,
+          4519.65
+        ],
+        [
+          2768,
+          4512
+        ],
+        [
+          2768,
+          4288
+        ],
+        [
+          2769.52,
+          4280.35
+        ],
+        [
+          2773.86,
+          4273.86
+        ],
+        [
+          2780.35,
+          4269.52
+        ],
+        [
+          2788,
+          4268
+        ]
+      ],
+      "start": 400,
+      "end": 550
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Guard Band Right 3",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Guard Band Right 3",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Guard Band Right 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Edge Beam Left",
+      "points": [
+        [
+          -2975,
+          -4700
+        ],
+        [
+          -2825,
+          -4700
+        ],
+        [
+          -2825,
+          4700
+        ],
+        [
+          -2975,
+          4700
+        ]
+      ],
+      "start": 4500,
+      "end": 4800
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Edge Beam Left",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Edge Beam Left",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Edge Beam Left",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Edge Beam Right",
+      "points": [
+        [
+          2825,
+          -4700
+        ],
+        [
+          2975,
+          -4700
+        ],
+        [
+          2975,
+          4700
+        ],
+        [
+          2825,
+          4700
+        ]
+      ],
+      "start": 4800,
+      "end": 5100
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Edge Beam Right",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Edge Beam Right",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Edge Beam Right",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rafter 1",
+      "points": [
+        [
+          -3200,
+          4500
+        ],
+        [
+          3200,
+          4800
+        ],
+        [
+          3200,
+          5100
+        ],
+        [
+          -3200,
+          4800
+        ]
+      ],
+      "start": 4325,
+      "end": 4475,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rafter 1",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rafter 1",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rafter 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rafter 2",
+      "points": [
+        [
+          -3200,
+          4500
+        ],
+        [
+          3200,
+          4800
+        ],
+        [
+          3200,
+          5100
+        ],
+        [
+          -3200,
+          4800
+        ]
+      ],
+      "start": -75,
+      "end": 75,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rafter 2",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rafter 2",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rafter 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rafter 3",
+      "points": [
+        [
+          -3200,
+          4500
+        ],
+        [
+          3200,
+          4800
+        ],
+        [
+          3200,
+          5100
+        ],
+        [
+          -3200,
+          4800
+        ]
+      ],
+      "start": -4475,
+      "end": -4325,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rafter 3",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rafter 3",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rafter 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Purlin 1",
+      "points": [
+        [
+          -3200,
+          4800
+        ],
+        [
+          3200,
+          5100
+        ],
+        [
+          3200,
+          5180
+        ],
+        [
+          -3200,
+          4880
+        ]
+      ],
+      "start": 4650,
+      "end": 4700,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Purlin 1",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Purlin 1",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Purlin 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Purlin 2",
+      "points": [
+        [
+          -3200,
+          4800
+        ],
+        [
+          3200,
+          5100
+        ],
+        [
+          3200,
+          5180
+        ],
+        [
+          -3200,
+          4880
+        ]
+      ],
+      "start": -4700,
+      "end": -4650,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Purlin 2",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Purlin 2",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Purlin 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Roof Sheet",
+      "points": [
+        [
+          -3300,
+          4800
+        ],
+        [
+          3300,
+          5120
+        ],
+        [
+          3300,
+          5140
+        ],
+        [
+          -3300,
+          4820
+        ]
+      ],
+      "start": -4800,
+      "end": 4800,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Roof Sheet",
+      "subcategory": "Roof"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Roof Sheet",
+      "param": "Roof Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Roof Sheet",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fascia Front",
+      "points": [
+        [
+          -3300,
+          4700
+        ],
+        [
+          3300,
+          5020
+        ],
+        [
+          3300,
+          5160
+        ],
+        [
+          -3300,
+          4840
+        ]
+      ],
+      "start": 4800,
+      "end": 4820,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fascia Front",
+      "subcategory": "Epoxy"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fascia Front",
+      "param": "Epoxy Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fascia Front",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Gutter",
+      "points": [
+        [
+          -3330,
+          -4800
+        ],
+        [
+          -3318.52,
+          -4797.72
+        ],
+        [
+          -3308.79,
+          -4791.21
+        ],
+        [
+          -3302.28,
+          -4781.48
+        ],
+        [
+          -3300,
+          -4770
+        ],
+        [
+          -3300,
+          4770
+        ],
+        [
+          -3302.28,
+          4781.48
+        ],
+        [
+          -3308.79,
+          4791.21
+        ],
+        [
+          -3318.52,
+          4797.72
+        ],
+        [
+          -3330,
+          4800
+        ],
+        [
+          -3430,
+          4800
+        ],
+        [
+          -3441.48,
+          4797.72
+        ],
+        [
+          -3451.21,
+          4791.21
+        ],
+        [
+          -3457.72,
+          4781.48
+        ],
+        [
+          -3460,
+          4770
+        ],
+        [
+          -3460,
+          -4770
+        ],
+        [
+          -3457.72,
+          -4781.48
+        ],
+        [
+          -3451.21,
+          -4791.21
+        ],
+        [
+          -3441.48,
+          -4797.72
+        ],
+        [
+          -3430,
+          -4800
+        ]
+      ],
+      "start": 4650,
+      "end": 4820
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Gutter",
+      "subcategory": "Gutter"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Gutter",
+      "param": "Gutter Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Gutter",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Downpipe 1",
+      "points": [
+        [
+          -3325,
+          -4200
+        ],
+        [
+          -3326.87,
+          -4185.76
+        ],
+        [
+          -3332.37,
+          -4172.5
+        ],
+        [
+          -3341.11,
+          -4161.11
+        ],
+        [
+          -3352.5,
+          -4152.37
+        ],
+        [
+          -3365.76,
+          -4146.87
+        ],
+        [
+          -3380,
+          -4145
+        ],
+        [
+          -3394.24,
+          -4146.87
+        ],
+        [
+          -3407.5,
+          -4152.37
+        ],
+        [
+          -3418.89,
+          -4161.11
+        ],
+        [
+          -3427.63,
+          -4172.5
+        ],
+        [
+          -3433.13,
+          -4185.76
+        ],
+        [
+          -3435,
+          -4200
+        ],
+        [
+          -3433.13,
+          -4214.24
+        ],
+        [
+          -3427.63,
+          -4227.5
+        ],
+        [
+          -3418.89,
+          -4238.89
+        ],
+        [
+          -3407.5,
+          -4247.63
+        ],
+        [
+          -3394.24,
+          -4253.13
+        ],
+        [
+          -3380,
+          -4255
+        ],
+        [
+          -3365.76,
+          -4253.13
+        ],
+        [
+          -3352.5,
+          -4247.63
+        ],
+        [
+          -3341.11,
+          -4238.89
+        ],
+        [
+          -3332.37,
+          -4227.5
+        ],
+        [
+          -3326.87,
+          -4214.24
+        ]
+      ],
+      "start": 100,
+      "end": 4650
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Downpipe 1",
+      "subcategory": "Pipe"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Downpipe 1",
+      "param": "Pipe Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Downpipe 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Downpipe 2",
+      "points": [
+        [
+          -3325,
+          4200
+        ],
+        [
+          -3326.87,
+          4214.24
+        ],
+        [
+          -3332.37,
+          4227.5
+        ],
+        [
+          -3341.11,
+          4238.89
+        ],
+        [
+          -3352.5,
+          4247.63
+        ],
+        [
+          -3365.76,
+          4253.13
+        ],
+        [
+          -3380,
+          4255
+        ],
+        [
+          -3394.24,
+          4253.13
+        ],
+        [
+          -3407.5,
+          4247.63
+        ],
+        [
+          -3418.89,
+          4238.89
+        ],
+        [
+          -3427.63,
+          4227.5
+        ],
+        [
+          -3433.13,
+          4214.24
+        ],
+        [
+          -3435,
+          4200
+        ],
+        [
+          -3433.13,
+          4185.76
+        ],
+        [
+          -3427.63,
+          4172.5
+        ],
+        [
+          -3418.89,
+          4161.11
+        ],
+        [
+          -3407.5,
+          4152.37
+        ],
+        [
+          -3394.24,
+          4146.87
+        ],
+        [
+          -3380,
+          4145
+        ],
+        [
+          -3365.76,
+          4146.87
+        ],
+        [
+          -3352.5,
+          4152.37
+        ],
+        [
+          -3341.11,
+          4161.11
+        ],
+        [
+          -3332.37,
+          4172.5
+        ],
+        [
+          -3326.87,
+          4185.76
+        ]
+      ],
+      "start": 100,
+      "end": 4650
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Downpipe 2",
+      "subcategory": "Pipe"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Downpipe 2",
+      "param": "Pipe Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Downpipe 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Downpipe Shoe",
+      "points": [
+        [
+          -3325,
+          120
+        ],
+        [
+          -3326.87,
+          134.24
+        ],
+        [
+          -3332.37,
+          147.5
+        ],
+        [
+          -3341.11,
+          158.89
+        ],
+        [
+          -3352.5,
+          167.63
+        ],
+        [
+          -3365.76,
+          173.13
+        ],
+        [
+          -3380,
+          175
+        ],
+        [
+          -3394.24,
+          173.13
+        ],
+        [
+          -3407.5,
+          167.63
+        ],
+        [
+          -3418.89,
+          158.89
+        ],
+        [
+          -3427.63,
+          147.5
+        ],
+        [
+          -3433.13,
+          134.24
+        ],
+        [
+          -3435,
+          120
+        ],
+        [
+          -3433.13,
+          105.76
+        ],
+        [
+          -3427.63,
+          92.5
+        ],
+        [
+          -3418.89,
+          81.11
+        ],
+        [
+          -3407.5,
+          72.37
+        ],
+        [
+          -3394.24,
+          66.87
+        ],
+        [
+          -3380,
+          65
+        ],
+        [
+          -3365.76,
+          66.87
+        ],
+        [
+          -3352.5,
+          72.37
+        ],
+        [
+          -3341.11,
+          81.11
+        ],
+        [
+          -3332.37,
+          92.5
+        ],
+        [
+          -3326.87,
+          105.76
+        ]
+      ],
+      "start": 4020,
+      "end": 4200,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Downpipe Shoe",
+      "subcategory": "Pipe"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Downpipe Shoe",
+      "param": "Pipe Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Downpipe Shoe",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Light Fitting 1",
+      "points": [
+        [
+          -930,
+          -4400
+        ],
+        [
+          -918.52,
+          -4397.72
+        ],
+        [
+          -908.79,
+          -4391.21
+        ],
+        [
+          -902.28,
+          -4381.48
+        ],
+        [
+          -900,
+          -4370
+        ],
+        [
+          -900,
+          -4130
+        ],
+        [
+          -902.28,
+          -4118.52
+        ],
+        [
+          -908.79,
+          -4108.79
+        ],
+        [
+          -918.52,
+          -4102.28
+        ],
+        [
+          -930,
+          -4100
+        ],
+        [
+          -1470,
+          -4100
+        ],
+        [
+          -1481.48,
+          -4102.28
+        ],
+        [
+          -1491.21,
+          -4108.79
+        ],
+        [
+          -1497.72,
+          -4118.52
+        ],
+        [
+          -1500,
+          -4130
+        ],
+        [
+          -1500,
+          -4370
+        ],
+        [
+          -1497.72,
+          -4381.48
+        ],
+        [
+          -1491.21,
+          -4391.21
+        ],
+        [
+          -1481.48,
+          -4397.72
+        ],
+        [
+          -1470,
+          -4400
+        ]
+      ],
+      "start": 4570,
+      "end": 4640
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Light Fitting 1",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Light Fitting 1",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Light Fitting 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Light Fitting 2",
+      "points": [
+        [
+          1470,
+          -4400
+        ],
+        [
+          1481.48,
+          -4397.72
+        ],
+        [
+          1491.21,
+          -4391.21
+        ],
+        [
+          1497.72,
+          -4381.48
+        ],
+        [
+          1500,
+          -4370
+        ],
+        [
+          1500,
+          -4130
+        ],
+        [
+          1497.72,
+          -4118.52
+        ],
+        [
+          1491.21,
+          -4108.79
+        ],
+        [
+          1481.48,
+          -4102.28
+        ],
+        [
+          1470,
+          -4100
+        ],
+        [
+          930,
+          -4100
+        ],
+        [
+          918.52,
+          -4102.28
+        ],
+        [
+          908.79,
+          -4108.79
+        ],
+        [
+          902.28,
+          -4118.52
+        ],
+        [
+          900,
+          -4130
+        ],
+        [
+          900,
+          -4370
+        ],
+        [
+          902.28,
+          -4381.48
+        ],
+        [
+          908.79,
+          -4391.21
+        ],
+        [
+          918.52,
+          -4397.72
+        ],
+        [
+          930,
+          -4400
+        ]
+      ],
+      "start": 4570,
+      "end": 4640
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Light Fitting 2",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Light Fitting 2",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Light Fitting 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Light Fitting Rear 1",
+      "points": [
+        [
+          -930,
+          4100
+        ],
+        [
+          -918.52,
+          4102.28
+        ],
+        [
+          -908.79,
+          4108.79
+        ],
+        [
+          -902.28,
+          4118.52
+        ],
+        [
+          -900,
+          4130
+        ],
+        [
+          -900,
+          4370
+        ],
+        [
+          -902.28,
+          4381.48
+        ],
+        [
+          -908.79,
+          4391.21
+        ],
+        [
+          -918.52,
+          4397.72
+        ],
+        [
+          -930,
+          4400
+        ],
+        [
+          -1470,
+          4400
+        ],
+        [
+          -1481.48,
+          4397.72
+        ],
+        [
+          -1491.21,
+          4391.21
+        ],
+        [
+          -1497.72,
+          4381.48
+        ],
+        [
+          -1500,
+          4370
+        ],
+        [
+          -1500,
+          4130
+        ],
+        [
+          -1497.72,
+          4118.52
+        ],
+        [
+          -1491.21,
+          4108.79
+        ],
+        [
+          -1481.48,
+          4102.28
+        ],
+        [
+          -1470,
+          4100
+        ]
+      ],
+      "start": 4570,
+      "end": 4640
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Light Fitting Rear 1",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Light Fitting Rear 1",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Light Fitting Rear 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Light Fitting Rear 2",
+      "points": [
+        [
+          1470,
+          4100
+        ],
+        [
+          1481.48,
+          4102.28
+        ],
+        [
+          1491.21,
+          4108.79
+        ],
+        [
+          1497.72,
+          4118.52
+        ],
+        [
+          1500,
+          4130
+        ],
+        [
+          1500,
+          4370
+        ],
+        [
+          1497.72,
+          4381.48
+        ],
+        [
+          1491.21,
+          4391.21
+        ],
+        [
+          1481.48,
+          4397.72
+        ],
+        [
+          1470,
+          4400
+        ],
+        [
+          930,
+          4400
+        ],
+        [
+          918.52,
+          4397.72
+        ],
+        [
+          908.79,
+          4391.21
+        ],
+        [
+          902.28,
+          4381.48
+        ],
+        [
+          900,
+          4370
+        ],
+        [
+          900,
+          4130
+        ],
+        [
+          902.28,
+          4118.52
+        ],
+        [
+          908.79,
+          4108.79
+        ],
+        [
+          918.52,
+          4102.28
+        ],
+        [
+          930,
+          4100
+        ]
+      ],
+      "start": 4570,
+      "end": 4640
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Light Fitting Rear 2",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Light Fitting Rear 2",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Light Fitting Rear 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Light Diffuser 1",
+      "points": [
+        [
+          -1480,
+          -4380
+        ],
+        [
+          -920,
+          -4380
+        ],
+        [
+          -920,
+          -4120
+        ],
+        [
+          -1480,
+          -4120
+        ]
+      ],
+      "start": 4565,
+      "end": 4570
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Light Diffuser 1",
+      "subcategory": "Pc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Light Diffuser 1",
+      "param": "Pc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Light Diffuser 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Light Diffuser 2",
+      "points": [
+        [
+          920,
+          -4380
+        ],
+        [
+          1480,
+          -4380
+        ],
+        [
+          1480,
+          -4120
+        ],
+        [
+          920,
+          -4120
+        ]
+      ],
+      "start": 4565,
+      "end": 4570
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Light Diffuser 2",
+      "subcategory": "Pc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Light Diffuser 2",
+      "param": "Pc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Light Diffuser 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Clear Height Sign",
+      "points": [
+        [
+          -700,
+          4300
+        ],
+        [
+          700,
+          4300
+        ],
+        [
+          700,
+          4500
+        ],
+        [
+          -700,
+          4500
+        ]
+      ],
+      "start": 4470,
+      "end": 4480,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Clear Height Sign",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Clear Height Sign",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Clear Height Sign",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Clear Height Text",
+      "points": [
+        [
+          -500,
+          4350
+        ],
+        [
+          500,
+          4350
+        ],
+        [
+          500,
+          4450
+        ],
+        [
+          -500,
+          4450
+        ]
+      ],
+      "start": 4480,
+      "end": 4482,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Clear Height Text",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Clear Height Text",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Clear Height Text",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Sign Bracket",
+      "points": [
+        [
+          -650,
+          -4470
+        ],
+        [
+          650,
+          -4470
+        ],
+        [
+          650,
+          -4325
+        ],
+        [
+          -650,
+          -4325
+        ]
+      ],
+      "start": 4500,
+      "end": 4580
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Sign Bracket",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sign Bracket",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Sign Bracket",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Clear Height Check",
+      "points": [
+        [
+          -2750,
+          -4700
+        ],
+        [
+          2750,
+          -4700
+        ],
+        [
+          2750,
+          4700
+        ],
+        [
+          -2750,
+          4700
+        ]
+      ],
+      "start": 0,
+      "end": 4200
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Clear Height Check",
+      "subcategory": "Clearance Operation"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Clear Height Check",
+      "coarse": true,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "Waste",
+      "domain": "pipe",
+      "system": "Sanitary",
+      "solid": "Downpipe 1",
+      "side": "bottom",
+      "diameter": 110,
+      "flow": "Out"
+    },
+    {
+      "op": "add_connector",
+      "name": "Power",
+      "domain": "electrical",
+      "system": "PowerBalanced",
+      "solid": "Light Fitting 1",
+      "side": "top"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Voltage",
+      "connector": "Power",
+      "connector_param": "Voltage",
+      "param": "Voltage"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Apparent Load",
+      "connector": "Power",
+      "connector_param": "Apparent Load",
+      "param": "Apparent Load"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\A\\_Images\\FMC_A_GenericModel_Canopy_AmbulanceBay.png"
+    }
+  ],
+  "values": {
+    "6000 x 9000 mm plan": {
+      "value": "6000x9000",
+      "source_status": "assumed",
+      "source": "record type"
+    },
+    "Clear height 4200 mm under beams (4500 at low edge)": {
+      "value": 4200,
+      "source_status": "assumed",
+      "source": "record note; HBN 15-01 ambulance access"
+    },
+    "Columns 200 SHS on pad foundations": {
+      "value": "200 SHS",
+      "source_status": "assumed",
+      "source": "assumed, structural engineer to size"
+    },
+    "Lighting 240 V, 600 VA": {
+      "value": 600,
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   }
- ],
- "values": {
-  "6000 x 9000 mm plan": {
-   "value": "6000x9000",
-   "source_status": "assumed",
-   "source": "record type"
-  },
-  "Clear height 4200 mm under beams (4500 at low edge)": {
-   "value": 4200,
-   "source_status": "assumed",
-   "source": "record note; HBN 15-01 ambulance access"
-  },
-  "Columns 200 SHS on pad foundations": {
-   "value": "200 SHS",
-   "source_status": "assumed",
-   "source": "assumed, structural engineer to size"
-  },
-  "Lighting 240 V, 600 VA": {
-   "value": 600,
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- }
 }

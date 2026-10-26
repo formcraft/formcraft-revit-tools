@@ -1,318 +1,322 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_P_MechEq_MedGas_Outlet_O2",
- "template": "Metric Mechanical Equipment.rft",
- "about": "Healthcare pack HC (wave 1 pilot): oxygen terminal unit, BS 5682 probe, wall mounted. Proves the medical-gas pipe connector (system classification Other; the project's pipe system type FMC_MG_O2 names it). First built step by step on 17 Oct (F-058); this recipe is the retest through fmc_recipe build.",
- "ops": [
-  {
-   "op": "add_type",
-   "name": "BS5682_O2"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_P_MechEq_MedGas_Outlet_O2",
+  "template": "Metric Mechanical Equipment.rft",
+  "about": "Healthcare pack HC (wave 1 pilot): oxygen terminal unit, BS 5682 probe, wall mounted. Proves the medical-gas pipe connector (system classification Other; the project's pipe system type FMC_MG_O2 names it). First built step by step on 17 Oct (F-058); this recipe is the retest through fmc_recipe build.",
+  "ops": [
+    {
+      "op": "add_type",
+      "name": "BS5682_O2"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+    },
+    {
+      "op": "set_type_value",
+      "name": "BS5682_O2/FMC_Cost_Unit",
+      "type": "BS5682_O2",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "BS5682_O2/FMC_Geometry_Stage",
+      "type": "BS5682_O2",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "BS5682_O2/IfcExportAs",
+      "type": "BS5682_O2",
+      "param": "IfcExportAs",
+      "value": "IfcFlowTerminal"
+    },
+    {
+      "op": "set_type_value",
+      "name": "BS5682_O2/Description",
+      "type": "BS5682_O2",
+      "param": "Description",
+      "value": "Oxygen terminal unit, BS 5682 probe, wall mounted, flush back box"
+    },
+    {
+      "op": "set_type_value",
+      "name": "BS5682_O2/Default Elevation",
+      "type": "BS5682_O2",
+      "param": "Default Elevation",
+      "value": 1400
+    },
+    {
+      "op": "set_type_value",
+      "name": "BS5682_O2/Keynote",
+      "type": "BS5682_O2",
+      "param": "Keynote",
+      "value": "P.MGO_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "BS5682_O2/FMC_Keynote_Code",
+      "type": "BS5682_O2",
+      "param": "FMC_Keynote_Code",
+      "value": "P.MGO_00"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Fascia",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Socket",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Back Box",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Fascia",
+      "view": "Front",
+      "points": [
+        [
+          -45,
+          0
+        ],
+        [
+          45,
+          0
+        ],
+        [
+          45,
+          120
+        ],
+        [
+          -45,
+          120
+        ]
+      ],
+      "start": 0,
+      "end": 12
+    },
+    {
+      "op": "extrusion",
+      "name": "Socket",
+      "view": "Front",
+      "points": [
+        [
+          16,
+          60
+        ],
+        [
+          11.3,
+          71.3
+        ],
+        [
+          0,
+          76
+        ],
+        [
+          -11.3,
+          71.3
+        ],
+        [
+          -16,
+          60
+        ],
+        [
+          -11.3,
+          48.7
+        ],
+        [
+          0,
+          44
+        ],
+        [
+          11.3,
+          48.7
+        ]
+      ],
+      "start": 12,
+      "end": 30
+    },
+    {
+      "op": "extrusion",
+      "name": "Back Box",
+      "view": "Front",
+      "points": [
+        [
+          -35,
+          10
+        ],
+        [
+          35,
+          10
+        ],
+        [
+          35,
+          110
+        ],
+        [
+          -35,
+          110
+        ]
+      ],
+      "start": -60,
+      "end": 0
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "view": "Front",
+      "points": [
+        [
+          -45,
+          0
+        ],
+        [
+          45,
+          0
+        ],
+        [
+          45,
+          120
+        ],
+        [
+          -45,
+          120
+        ]
+      ],
+      "start": -60,
+      "end": 30
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fascia",
+      "subcategory": "Fascia"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Socket",
+      "subcategory": "Socket"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Back Box",
+      "subcategory": "Back Box"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fascia",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visibility",
+      "name": "Back Box",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visibility",
+      "name": "Socket",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "O2",
+      "domain": "pipe",
+      "system": "Other",
+      "solid": "Back Box",
+      "side": "back",
+      "diameter": 15,
+      "flow": "In"
+    }
+  ],
+  "values": {
+    "Fascia 90 x 120 mm": {
+      "value": "90x120",
+      "source_status": "assumed",
+      "source": "typical BS 5682 terminal unit fascia"
+    },
+    "Mounting height 1400 mm": {
+      "value": 1400,
+      "source_status": "assumed",
+      "source": "bedhead practice; HTM 02-01 basis"
+    },
+    "Keynote": {
+      "value": "P.MGO_00",
+      "source_status": "verified",
+      "source": "kit keynotes, healthcare change request 17 Oct"
+    },
+    "Connector 15 mm": {
+      "value": 15,
+      "source_status": "assumed",
+      "source": "terminal unit tail size"
+    }
   },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
-  },
-  {
-   "op": "set_type_value",
-   "name": "BS5682_O2/FMC_Cost_Unit",
-   "type": "BS5682_O2",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "BS5682_O2/FMC_Geometry_Stage",
-   "type": "BS5682_O2",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "BS5682_O2/IfcExportAs",
-   "type": "BS5682_O2",
-   "param": "IfcExportAs",
-   "value": "IfcFlowTerminal"
-  },
-  {
-   "op": "set_type_value",
-   "name": "BS5682_O2/Description",
-   "type": "BS5682_O2",
-   "param": "Description",
-   "value": "Oxygen terminal unit, BS 5682 probe, wall mounted, flush back box"
-  },
-  {
-   "op": "set_type_value",
-   "name": "BS5682_O2/Default Elevation",
-   "type": "BS5682_O2",
-   "param": "Default Elevation",
-   "value": 1400
-  },
-  {
-   "op": "set_type_value",
-   "name": "BS5682_O2/Keynote",
-   "type": "BS5682_O2",
-   "param": "Keynote",
-   "value": "P.MGO_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "BS5682_O2/FMC_Keynote_Code",
-   "type": "BS5682_O2",
-   "param": "FMC_Keynote_Code",
-   "value": "P.MGO_00"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Fascia",
-   "color": [
-    220,
-    224,
-    230
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Socket",
-   "color": [
-    255,
-    255,
-    255
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Back Box",
-   "color": [
-    150,
-    150,
-    150
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Fascia",
-   "view": "Front",
-   "points": [
-    [
-     -45,
-     0
-    ],
-    [
-     45,
-     0
-    ],
-    [
-     45,
-     120
-    ],
-    [
-     -45,
-     120
-    ]
-   ],
-   "start": 0,
-   "end": 12
-  },
-  {
-   "op": "extrusion",
-   "name": "Socket",
-   "view": "Front",
-   "points": [
-    [
-     16,
-     60
-    ],
-    [
-     11.3,
-     71.3
-    ],
-    [
-     0,
-     76
-    ],
-    [
-     -11.3,
-     71.3
-    ],
-    [
-     -16,
-     60
-    ],
-    [
-     -11.3,
-     48.7
-    ],
-    [
-     0,
-     44
-    ],
-    [
-     11.3,
-     48.7
-    ]
-   ],
-   "start": 12,
-   "end": 30
-  },
-  {
-   "op": "extrusion",
-   "name": "Back Box",
-   "view": "Front",
-   "points": [
-    [
-     -35,
-     10
-    ],
-    [
-     35,
-     10
-    ],
-    [
-     35,
-     110
-    ],
-    [
-     -35,
-     110
-    ]
-   ],
-   "start": -60,
-   "end": 0
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "view": "Front",
-   "points": [
-    [
-     -45,
-     0
-    ],
-    [
-     45,
-     0
-    ],
-    [
-     45,
-     120
-    ],
-    [
-     -45,
-     120
-    ]
-   ],
-   "start": -60,
-   "end": 30
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fascia",
-   "subcategory": "Fascia"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Socket",
-   "subcategory": "Socket"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Back Box",
-   "subcategory": "Back Box"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fascia",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_visibility",
-   "name": "Back Box",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_visibility",
-   "name": "Socket",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "O2",
-   "domain": "pipe",
-   "system": "Other",
-   "solid": "Back Box",
-   "side": "back",
-   "diameter": 15,
-   "flow": "In"
-  }
- ],
- "values": {
-  "Fascia 90 x 120 mm": {
-   "value": "90x120",
-   "source_status": "assumed",
-   "source": "typical BS 5682 terminal unit fascia"
-  },
-  "Mounting height 1400 mm": {
-   "value": 1400,
-   "source_status": "assumed",
-   "source": "bedhead practice; HTM 02-01 basis"
-  },
-  "Keynote": {
-   "value": "P.MGO_00",
-   "source_status": "verified",
-   "source": "kit keynotes, healthcare change request 17 Oct"
-  },
-  "Connector 15 mm": {
-   "value": 15,
-   "source_status": "assumed",
-   "source": "terminal unit tail size"
-  }
- },
- "checks": {}
+  "checks": {}
 }

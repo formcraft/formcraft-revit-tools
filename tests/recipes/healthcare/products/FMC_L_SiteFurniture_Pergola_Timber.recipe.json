@@ -1,2430 +1,2434 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_L_SiteFurniture_Pergola_Timber",
- "template": "Metric Generic Model.rft",
- "about": "Pergola modelled as a generic product: four posts on galvanised shoes, twin beams each side through-bolted, nine rafters, eleven shade battens, knee braces in the beam plane. Footings are drawn by structure. Reference: query: site furniture pergola timber site hospital; images: https://www.google.com/search?tbm=isch&q=site+furniture+pergola+timber+site+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Site"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Compaction_Pct_MDD",
-   "guid": "3694e24c-eacc-5409-81e2-f985cc1dda60",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_CBR_Pct",
-   "guid": "8c9ca741-f469-5a4d-bdf4-12a2eaaa8901",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Layer_Thickness_mm",
-   "guid": "6e7bbdb7-2de3-5a2a-a889-5f1d9f7db58a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "3000x3000_Pergola"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000x3000_Pergola/FMC_Cost_Unit",
-   "type": "3000x3000_Pergola",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000x3000_Pergola/FMC_Geometry_Stage",
-   "type": "3000x3000_Pergola",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000x3000_Pergola/IfcExportAs",
-   "type": "3000x3000_Pergola",
-   "param": "IfcExportAs",
-   "value": "IfcBuildingElementProxy"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000x3000_Pergola/Description",
-   "type": "3000x3000_Pergola",
-   "param": "Description",
-   "value": "Timber shade pergola 3000 x 3000, 150 x 150 posts on galvanised shoes, twin beams, rafters and shade battens, knee braces, bolted"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000x3000_Pergola/Keynote",
-   "type": "3000x3000_Pergola",
-   "param": "Keynote",
-   "value": "L.FUR_02"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000x3000_Pergola/FMC_Keynote_Code",
-   "type": "3000x3000_Pergola",
-   "param": "FMC_Keynote_Code",
-   "value": "L.FUR_02"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000x3000_Pergola/FMC_Code_Description",
-   "type": "3000x3000_Pergola",
-   "param": "FMC_Code_Description",
-   "value": "Pergola Timber: Shade pergola"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000x3000_Pergola/FMC_Code_Group",
-   "type": "3000x3000_Pergola",
-   "param": "FMC_Code_Group",
-   "value": "L.FUR"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000x3000_Pergola/FMC_Role_Code",
-   "type": "3000x3000_Pergola",
-   "param": "FMC_Role_Code",
-   "value": "L"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Timber",
-   "color": [
-    138,
-    98,
-    54
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Timber Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Timber_Mvule",
-   "param": "Timber Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Galv",
-   "color": [
-    167,
-    172,
-    175
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Galv Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_ColdFormed_Galvanised",
-   "param": "Galv Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Pine",
-   "color": [
-    169,
-    164,
-    122
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Pine Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Timber_Pine_CCATreated",
-   "param": "Pine Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -1700,
-     -1750
-    ],
-    [
-     1700,
-     -1750
-    ],
-    [
-     1700,
-     1750
-    ],
-    [
-     -1700,
-     1750
-    ]
-   ],
-   "start": 0,
-   "end": 2650
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Post Front 1",
-   "points": [
-    [
-     -1500,
-     -1500
-    ],
-    [
-     -1350,
-     -1500
-    ],
-    [
-     -1350,
-     -1350
-    ],
-    [
-     -1500,
-     -1350
-    ]
-   ],
-   "start": 150,
-   "end": 2400
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Post Front 1",
-   "subcategory": "Timber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Post Front 1",
-   "param": "Timber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Post Front 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Post Front 2",
-   "points": [
-    [
-     1350,
-     -1500
-    ],
-    [
-     1500,
-     -1500
-    ],
-    [
-     1500,
-     -1350
-    ],
-    [
-     1350,
-     -1350
-    ]
-   ],
-   "start": 150,
-   "end": 2400
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Post Front 2",
-   "subcategory": "Timber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Post Front 2",
-   "param": "Timber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Post Front 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Post Back 1",
-   "points": [
-    [
-     -1500,
-     1350
-    ],
-    [
-     -1350,
-     1350
-    ],
-    [
-     -1350,
-     1500
-    ],
-    [
-     -1500,
-     1500
-    ]
-   ],
-   "start": 150,
-   "end": 2400
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Post Back 1",
-   "subcategory": "Timber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Post Back 1",
-   "param": "Timber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Post Back 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Post Back 2",
-   "points": [
-    [
-     1350,
-     1350
-    ],
-    [
-     1500,
-     1350
-    ],
-    [
-     1500,
-     1500
-    ],
-    [
-     1350,
-     1500
-    ]
-   ],
-   "start": 150,
-   "end": 2400
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Post Back 2",
-   "subcategory": "Timber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Post Back 2",
-   "param": "Timber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Post Back 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Post Shoe Front 1",
-   "points": [
-    [
-     -1510,
-     -1510
-    ],
-    [
-     -1340,
-     -1510
-    ],
-    [
-     -1340,
-     -1340
-    ],
-    [
-     -1510,
-     -1340
-    ]
-   ],
-   "start": 0,
-   "end": 150
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Post Shoe Front 1",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Post Shoe Front 1",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Post Shoe Front 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Post Shoe Front 2",
-   "points": [
-    [
-     1340,
-     -1510
-    ],
-    [
-     1510,
-     -1510
-    ],
-    [
-     1510,
-     -1340
-    ],
-    [
-     1340,
-     -1340
-    ]
-   ],
-   "start": 0,
-   "end": 150
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Post Shoe Front 2",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Post Shoe Front 2",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Post Shoe Front 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Post Shoe Back 1",
-   "points": [
-    [
-     -1510,
-     1340
-    ],
-    [
-     -1340,
-     1340
-    ],
-    [
-     -1340,
-     1510
-    ],
-    [
-     -1510,
-     1510
-    ]
-   ],
-   "start": 0,
-   "end": 150
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Post Shoe Back 1",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Post Shoe Back 1",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Post Shoe Back 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Post Shoe Back 2",
-   "points": [
-    [
-     1340,
-     1340
-    ],
-    [
-     1510,
-     1340
-    ],
-    [
-     1510,
-     1510
-    ],
-    [
-     1340,
-     1510
-    ]
-   ],
-   "start": 0,
-   "end": 150
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Post Shoe Back 2",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Post Shoe Back 2",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Post Shoe Back 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Beam Outer 1",
-   "points": [
-    [
-     -1700,
-     -1550
-    ],
-    [
-     1700,
-     -1550
-    ],
-    [
-     1700,
-     -1500
-    ],
-    [
-     -1700,
-     -1500
-    ]
-   ],
-   "start": 2200,
-   "end": 2400
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Beam Outer 1",
-   "subcategory": "Timber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Beam Outer 1",
-   "param": "Timber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Beam Outer 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Beam Outer 2",
-   "points": [
-    [
-     -1700,
-     1400
-    ],
-    [
-     1700,
-     1400
-    ],
-    [
-     1700,
-     1450
-    ],
-    [
-     -1700,
-     1450
-    ]
-   ],
-   "start": 2200,
-   "end": 2400
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Beam Outer 2",
-   "subcategory": "Timber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Beam Outer 2",
-   "param": "Timber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Beam Outer 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Beam Inner 1",
-   "points": [
-    [
-     -1700,
-     -1350
-    ],
-    [
-     1700,
-     -1350
-    ],
-    [
-     1700,
-     -1300
-    ],
-    [
-     -1700,
-     -1300
-    ]
-   ],
-   "start": 2200,
-   "end": 2400
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Beam Inner 1",
-   "subcategory": "Timber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Beam Inner 1",
-   "param": "Timber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Beam Inner 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Beam Inner 2",
-   "points": [
-    [
-     -1700,
-     1300
-    ],
-    [
-     1700,
-     1300
-    ],
-    [
-     1700,
-     1350
-    ],
-    [
-     -1700,
-     1350
-    ]
-   ],
-   "start": 2200,
-   "end": 2400
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Beam Inner 2",
-   "subcategory": "Timber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Beam Inner 2",
-   "param": "Timber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Beam Inner 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rafter 1",
-   "points": [
-    [
-     -1525,
-     -1750
-    ],
-    [
-     -1475,
-     -1750
-    ],
-    [
-     -1475,
-     1750
-    ],
-    [
-     -1525,
-     1750
-    ]
-   ],
-   "start": 2400,
-   "end": 2600
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rafter 1",
-   "subcategory": "Timber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rafter 1",
-   "param": "Timber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rafter 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rafter 2",
-   "points": [
-    [
-     -1150,
-     -1750
-    ],
-    [
-     -1100,
-     -1750
-    ],
-    [
-     -1100,
-     1750
-    ],
-    [
-     -1150,
-     1750
-    ]
-   ],
-   "start": 2400,
-   "end": 2600
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rafter 2",
-   "subcategory": "Timber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rafter 2",
-   "param": "Timber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rafter 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rafter 3",
-   "points": [
-    [
-     -775,
-     -1750
-    ],
-    [
-     -725,
-     -1750
-    ],
-    [
-     -725,
-     1750
-    ],
-    [
-     -775,
-     1750
-    ]
-   ],
-   "start": 2400,
-   "end": 2600
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rafter 3",
-   "subcategory": "Timber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rafter 3",
-   "param": "Timber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rafter 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rafter 4",
-   "points": [
-    [
-     -400,
-     -1750
-    ],
-    [
-     -350,
-     -1750
-    ],
-    [
-     -350,
-     1750
-    ],
-    [
-     -400,
-     1750
-    ]
-   ],
-   "start": 2400,
-   "end": 2600
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rafter 4",
-   "subcategory": "Timber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rafter 4",
-   "param": "Timber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rafter 4",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rafter 5",
-   "points": [
-    [
-     -25,
-     -1750
-    ],
-    [
-     25,
-     -1750
-    ],
-    [
-     25,
-     1750
-    ],
-    [
-     -25,
-     1750
-    ]
-   ],
-   "start": 2400,
-   "end": 2600
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rafter 5",
-   "subcategory": "Timber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rafter 5",
-   "param": "Timber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rafter 5",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rafter 6",
-   "points": [
-    [
-     350,
-     -1750
-    ],
-    [
-     400,
-     -1750
-    ],
-    [
-     400,
-     1750
-    ],
-    [
-     350,
-     1750
-    ]
-   ],
-   "start": 2400,
-   "end": 2600
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rafter 6",
-   "subcategory": "Timber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rafter 6",
-   "param": "Timber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rafter 6",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rafter 7",
-   "points": [
-    [
-     725,
-     -1750
-    ],
-    [
-     775,
-     -1750
-    ],
-    [
-     775,
-     1750
-    ],
-    [
-     725,
-     1750
-    ]
-   ],
-   "start": 2400,
-   "end": 2600
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rafter 7",
-   "subcategory": "Timber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rafter 7",
-   "param": "Timber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rafter 7",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rafter 8",
-   "points": [
-    [
-     1100,
-     -1750
-    ],
-    [
-     1150,
-     -1750
-    ],
-    [
-     1150,
-     1750
-    ],
-    [
-     1100,
-     1750
-    ]
-   ],
-   "start": 2400,
-   "end": 2600
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rafter 8",
-   "subcategory": "Timber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rafter 8",
-   "param": "Timber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rafter 8",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rafter 9",
-   "points": [
-    [
-     1475,
-     -1750
-    ],
-    [
-     1525,
-     -1750
-    ],
-    [
-     1525,
-     1750
-    ],
-    [
-     1475,
-     1750
-    ]
-   ],
-   "start": 2400,
-   "end": 2600
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rafter 9",
-   "subcategory": "Timber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rafter 9",
-   "param": "Timber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rafter 9",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Shade Batten 1",
-   "points": [
-    [
-     -1650,
-     -1520
-    ],
-    [
-     1650,
-     -1520
-    ],
-    [
-     1650,
-     -1480
-    ],
-    [
-     -1650,
-     -1480
-    ]
-   ],
-   "start": 2600,
-   "end": 2650
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Shade Batten 1",
-   "subcategory": "Pine"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Shade Batten 1",
-   "param": "Pine Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Shade Batten 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Shade Batten 2",
-   "points": [
-    [
-     -1650,
-     -1220
-    ],
-    [
-     1650,
-     -1220
-    ],
-    [
-     1650,
-     -1180
-    ],
-    [
-     -1650,
-     -1180
-    ]
-   ],
-   "start": 2600,
-   "end": 2650
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Shade Batten 2",
-   "subcategory": "Pine"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Shade Batten 2",
-   "param": "Pine Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Shade Batten 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Shade Batten 3",
-   "points": [
-    [
-     -1650,
-     -920
-    ],
-    [
-     1650,
-     -920
-    ],
-    [
-     1650,
-     -880
-    ],
-    [
-     -1650,
-     -880
-    ]
-   ],
-   "start": 2600,
-   "end": 2650
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Shade Batten 3",
-   "subcategory": "Pine"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Shade Batten 3",
-   "param": "Pine Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Shade Batten 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Shade Batten 4",
-   "points": [
-    [
-     -1650,
-     -620
-    ],
-    [
-     1650,
-     -620
-    ],
-    [
-     1650,
-     -580
-    ],
-    [
-     -1650,
-     -580
-    ]
-   ],
-   "start": 2600,
-   "end": 2650
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Shade Batten 4",
-   "subcategory": "Pine"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Shade Batten 4",
-   "param": "Pine Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Shade Batten 4",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Shade Batten 5",
-   "points": [
-    [
-     -1650,
-     -320
-    ],
-    [
-     1650,
-     -320
-    ],
-    [
-     1650,
-     -280
-    ],
-    [
-     -1650,
-     -280
-    ]
-   ],
-   "start": 2600,
-   "end": 2650
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Shade Batten 5",
-   "subcategory": "Pine"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Shade Batten 5",
-   "param": "Pine Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Shade Batten 5",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Shade Batten 6",
-   "points": [
-    [
-     -1650,
-     -20
-    ],
-    [
-     1650,
-     -20
-    ],
-    [
-     1650,
-     20
-    ],
-    [
-     -1650,
-     20
-    ]
-   ],
-   "start": 2600,
-   "end": 2650
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Shade Batten 6",
-   "subcategory": "Pine"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Shade Batten 6",
-   "param": "Pine Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Shade Batten 6",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Shade Batten 7",
-   "points": [
-    [
-     -1650,
-     280
-    ],
-    [
-     1650,
-     280
-    ],
-    [
-     1650,
-     320
-    ],
-    [
-     -1650,
-     320
-    ]
-   ],
-   "start": 2600,
-   "end": 2650
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Shade Batten 7",
-   "subcategory": "Pine"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Shade Batten 7",
-   "param": "Pine Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Shade Batten 7",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Shade Batten 8",
-   "points": [
-    [
-     -1650,
-     580
-    ],
-    [
-     1650,
-     580
-    ],
-    [
-     1650,
-     620
-    ],
-    [
-     -1650,
-     620
-    ]
-   ],
-   "start": 2600,
-   "end": 2650
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Shade Batten 8",
-   "subcategory": "Pine"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Shade Batten 8",
-   "param": "Pine Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Shade Batten 8",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Shade Batten 9",
-   "points": [
-    [
-     -1650,
-     880
-    ],
-    [
-     1650,
-     880
-    ],
-    [
-     1650,
-     920
-    ],
-    [
-     -1650,
-     920
-    ]
-   ],
-   "start": 2600,
-   "end": 2650
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Shade Batten 9",
-   "subcategory": "Pine"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Shade Batten 9",
-   "param": "Pine Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Shade Batten 9",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Shade Batten 10",
-   "points": [
-    [
-     -1650,
-     1180
-    ],
-    [
-     1650,
-     1180
-    ],
-    [
-     1650,
-     1220
-    ],
-    [
-     -1650,
-     1220
-    ]
-   ],
-   "start": 2600,
-   "end": 2650
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Shade Batten 10",
-   "subcategory": "Pine"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Shade Batten 10",
-   "param": "Pine Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Shade Batten 10",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Shade Batten 11",
-   "points": [
-    [
-     -1650,
-     1480
-    ],
-    [
-     1650,
-     1480
-    ],
-    [
-     1650,
-     1520
-    ],
-    [
-     -1650,
-     1520
-    ]
-   ],
-   "start": 2600,
-   "end": 2650
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Shade Batten 11",
-   "subcategory": "Pine"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Shade Batten 11",
-   "param": "Pine Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Shade Batten 11",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Knee Brace Front Left",
-   "points": [
-    [
-     -1374.7,
-     1874.7
-    ],
-    [
-     -1024.7,
-     2224.7
-    ],
-    [
-     -975.3,
-     2175.3
-    ],
-    [
-     -1325.3,
-     1825.3
-    ]
-   ],
-   "start": 1390,
-   "end": 1460,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Knee Brace Front Left",
-   "subcategory": "Timber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Knee Brace Front Left",
-   "param": "Timber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Knee Brace Front Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Knee Brace Front Right",
-   "points": [
-    [
-     1325.3,
-     1825.3
-    ],
-    [
-     975.3,
-     2175.3
-    ],
-    [
-     1024.7,
-     2224.7
-    ],
-    [
-     1374.7,
-     1874.7
-    ]
-   ],
-   "start": 1390,
-   "end": 1460,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Knee Brace Front Right",
-   "subcategory": "Timber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Knee Brace Front Right",
-   "param": "Timber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Knee Brace Front Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Knee Brace Back Left",
-   "points": [
-    [
-     -1374.7,
-     1874.7
-    ],
-    [
-     -1024.7,
-     2224.7
-    ],
-    [
-     -975.3,
-     2175.3
-    ],
-    [
-     -1325.3,
-     1825.3
-    ]
-   ],
-   "start": -1460,
-   "end": -1390,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Knee Brace Back Left",
-   "subcategory": "Timber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Knee Brace Back Left",
-   "param": "Timber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Knee Brace Back Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Knee Brace Back Right",
-   "points": [
-    [
-     1325.3,
-     1825.3
-    ],
-    [
-     975.3,
-     2175.3
-    ],
-    [
-     1024.7,
-     2224.7
-    ],
-    [
-     1374.7,
-     1874.7
-    ]
-   ],
-   "start": -1460,
-   "end": -1390,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Knee Brace Back Right",
-   "subcategory": "Timber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Knee Brace Back Right",
-   "param": "Timber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Knee Brace Back Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Beam Bolt Front 1",
-   "points": [
-    [
-     -1415.0,
-     2300.0
-    ],
-    [
-     -1415.34,
-     2302.59
-    ],
-    [
-     -1416.34,
-     2305.0
-    ],
-    [
-     -1417.93,
-     2307.07
-    ],
-    [
-     -1420.0,
-     2308.66
-    ],
-    [
-     -1422.41,
-     2309.66
-    ],
-    [
-     -1425.0,
-     2310.0
-    ],
-    [
-     -1427.59,
-     2309.66
-    ],
-    [
-     -1430.0,
-     2308.66
-    ],
-    [
-     -1432.07,
-     2307.07
-    ],
-    [
-     -1433.66,
-     2305.0
-    ],
-    [
-     -1434.66,
-     2302.59
-    ],
-    [
-     -1435.0,
-     2300.0
-    ],
-    [
-     -1434.66,
-     2297.41
-    ],
-    [
-     -1433.66,
-     2295.0
-    ],
-    [
-     -1432.07,
-     2292.93
-    ],
-    [
-     -1430.0,
-     2291.34
-    ],
-    [
-     -1427.59,
-     2290.34
-    ],
-    [
-     -1425.0,
-     2290.0
-    ],
-    [
-     -1422.41,
-     2290.34
-    ],
-    [
-     -1420.0,
-     2291.34
-    ],
-    [
-     -1417.93,
-     2292.93
-    ],
-    [
-     -1416.34,
-     2295.0
-    ],
-    [
-     -1415.34,
-     2297.41
-    ]
-   ],
-   "start": 1290,
-   "end": 1560,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Beam Bolt Front 1",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Beam Bolt Front 1",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Beam Bolt Front 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Beam Bolt Front 2",
-   "points": [
-    [
-     1435.0,
-     2300.0
-    ],
-    [
-     1434.66,
-     2302.59
-    ],
-    [
-     1433.66,
-     2305.0
-    ],
-    [
-     1432.07,
-     2307.07
-    ],
-    [
-     1430.0,
-     2308.66
-    ],
-    [
-     1427.59,
-     2309.66
-    ],
-    [
-     1425.0,
-     2310.0
-    ],
-    [
-     1422.41,
-     2309.66
-    ],
-    [
-     1420.0,
-     2308.66
-    ],
-    [
-     1417.93,
-     2307.07
-    ],
-    [
-     1416.34,
-     2305.0
-    ],
-    [
-     1415.34,
-     2302.59
-    ],
-    [
-     1415.0,
-     2300.0
-    ],
-    [
-     1415.34,
-     2297.41
-    ],
-    [
-     1416.34,
-     2295.0
-    ],
-    [
-     1417.93,
-     2292.93
-    ],
-    [
-     1420.0,
-     2291.34
-    ],
-    [
-     1422.41,
-     2290.34
-    ],
-    [
-     1425.0,
-     2290.0
-    ],
-    [
-     1427.59,
-     2290.34
-    ],
-    [
-     1430.0,
-     2291.34
-    ],
-    [
-     1432.07,
-     2292.93
-    ],
-    [
-     1433.66,
-     2295.0
-    ],
-    [
-     1434.66,
-     2297.41
-    ]
-   ],
-   "start": 1290,
-   "end": 1560,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Beam Bolt Front 2",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Beam Bolt Front 2",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Beam Bolt Front 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Beam Bolt Back 1",
-   "points": [
-    [
-     -1415.0,
-     2300.0
-    ],
-    [
-     -1415.34,
-     2302.59
-    ],
-    [
-     -1416.34,
-     2305.0
-    ],
-    [
-     -1417.93,
-     2307.07
-    ],
-    [
-     -1420.0,
-     2308.66
-    ],
-    [
-     -1422.41,
-     2309.66
-    ],
-    [
-     -1425.0,
-     2310.0
-    ],
-    [
-     -1427.59,
-     2309.66
-    ],
-    [
-     -1430.0,
-     2308.66
-    ],
-    [
-     -1432.07,
-     2307.07
-    ],
-    [
-     -1433.66,
-     2305.0
-    ],
-    [
-     -1434.66,
-     2302.59
-    ],
-    [
-     -1435.0,
-     2300.0
-    ],
-    [
-     -1434.66,
-     2297.41
-    ],
-    [
-     -1433.66,
-     2295.0
-    ],
-    [
-     -1432.07,
-     2292.93
-    ],
-    [
-     -1430.0,
-     2291.34
-    ],
-    [
-     -1427.59,
-     2290.34
-    ],
-    [
-     -1425.0,
-     2290.0
-    ],
-    [
-     -1422.41,
-     2290.34
-    ],
-    [
-     -1420.0,
-     2291.34
-    ],
-    [
-     -1417.93,
-     2292.93
-    ],
-    [
-     -1416.34,
-     2295.0
-    ],
-    [
-     -1415.34,
-     2297.41
-    ]
-   ],
-   "start": -1560,
-   "end": -1290,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Beam Bolt Back 1",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Beam Bolt Back 1",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Beam Bolt Back 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Beam Bolt Back 2",
-   "points": [
-    [
-     1435.0,
-     2300.0
-    ],
-    [
-     1434.66,
-     2302.59
-    ],
-    [
-     1433.66,
-     2305.0
-    ],
-    [
-     1432.07,
-     2307.07
-    ],
-    [
-     1430.0,
-     2308.66
-    ],
-    [
-     1427.59,
-     2309.66
-    ],
-    [
-     1425.0,
-     2310.0
-    ],
-    [
-     1422.41,
-     2309.66
-    ],
-    [
-     1420.0,
-     2308.66
-    ],
-    [
-     1417.93,
-     2307.07
-    ],
-    [
-     1416.34,
-     2305.0
-    ],
-    [
-     1415.34,
-     2302.59
-    ],
-    [
-     1415.0,
-     2300.0
-    ],
-    [
-     1415.34,
-     2297.41
-    ],
-    [
-     1416.34,
-     2295.0
-    ],
-    [
-     1417.93,
-     2292.93
-    ],
-    [
-     1420.0,
-     2291.34
-    ],
-    [
-     1422.41,
-     2290.34
-    ],
-    [
-     1425.0,
-     2290.0
-    ],
-    [
-     1427.59,
-     2290.34
-    ],
-    [
-     1430.0,
-     2291.34
-    ],
-    [
-     1432.07,
-     2292.93
-    ],
-    [
-     1433.66,
-     2295.0
-    ],
-    [
-     1434.66,
-     2297.41
-    ]
-   ],
-   "start": -1560,
-   "end": -1290,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Beam Bolt Back 2",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Beam Bolt Back 2",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Beam Bolt Back 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\L\\_Images\\FMC_L_SiteFurniture_Pergola_Timber.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_L_SiteFurniture_Pergola_Timber",
+  "template": "Metric Generic Model.rft",
+  "about": "Pergola modelled as a generic product: four posts on galvanised shoes, twin beams each side through-bolted, nine rafters, eleven shade battens, knee braces in the beam plane. Footings are drawn by structure. Reference: query: site furniture pergola timber site hospital; images: https://www.google.com/search?tbm=isch&q=site+furniture+pergola+timber+site+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Site"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Compaction_Pct_MDD",
+      "guid": "3694e24c-eacc-5409-81e2-f985cc1dda60",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_CBR_Pct",
+      "guid": "8c9ca741-f469-5a4d-bdf4-12a2eaaa8901",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Layer_Thickness_mm",
+      "guid": "6e7bbdb7-2de3-5a2a-a889-5f1d9f7db58a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "3000x3000_Pergola"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000x3000_Pergola/FMC_Cost_Unit",
+      "type": "3000x3000_Pergola",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000x3000_Pergola/FMC_Geometry_Stage",
+      "type": "3000x3000_Pergola",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000x3000_Pergola/IfcExportAs",
+      "type": "3000x3000_Pergola",
+      "param": "IfcExportAs",
+      "value": "IfcBuildingElementProxy"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000x3000_Pergola/Description",
+      "type": "3000x3000_Pergola",
+      "param": "Description",
+      "value": "Timber shade pergola 3000 x 3000, 150 x 150 posts on galvanised shoes, twin beams, rafters and shade battens, knee braces, bolted"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000x3000_Pergola/Keynote",
+      "type": "3000x3000_Pergola",
+      "param": "Keynote",
+      "value": "L.FUR_02"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000x3000_Pergola/FMC_Keynote_Code",
+      "type": "3000x3000_Pergola",
+      "param": "FMC_Keynote_Code",
+      "value": "L.FUR_02"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000x3000_Pergola/FMC_Code_Description",
+      "type": "3000x3000_Pergola",
+      "param": "FMC_Code_Description",
+      "value": "Pergola Timber: Shade pergola"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000x3000_Pergola/FMC_Code_Group",
+      "type": "3000x3000_Pergola",
+      "param": "FMC_Code_Group",
+      "value": "L.FUR"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000x3000_Pergola/FMC_Role_Code",
+      "type": "3000x3000_Pergola",
+      "param": "FMC_Role_Code",
+      "value": "L"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Timber",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Timber Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Timber_Mvule",
+      "param": "Timber Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Galv",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Galv Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_ColdFormed_Galvanised",
+      "param": "Galv Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Pine",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Pine Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Timber_Pine_CCATreated",
+      "param": "Pine Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -1700,
+          -1750
+        ],
+        [
+          1700,
+          -1750
+        ],
+        [
+          1700,
+          1750
+        ],
+        [
+          -1700,
+          1750
+        ]
+      ],
+      "start": 0,
+      "end": 2650
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Post Front 1",
+      "points": [
+        [
+          -1500,
+          -1500
+        ],
+        [
+          -1350,
+          -1500
+        ],
+        [
+          -1350,
+          -1350
+        ],
+        [
+          -1500,
+          -1350
+        ]
+      ],
+      "start": 150,
+      "end": 2400
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Post Front 1",
+      "subcategory": "Timber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Post Front 1",
+      "param": "Timber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Post Front 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Post Front 2",
+      "points": [
+        [
+          1350,
+          -1500
+        ],
+        [
+          1500,
+          -1500
+        ],
+        [
+          1500,
+          -1350
+        ],
+        [
+          1350,
+          -1350
+        ]
+      ],
+      "start": 150,
+      "end": 2400
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Post Front 2",
+      "subcategory": "Timber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Post Front 2",
+      "param": "Timber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Post Front 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Post Back 1",
+      "points": [
+        [
+          -1500,
+          1350
+        ],
+        [
+          -1350,
+          1350
+        ],
+        [
+          -1350,
+          1500
+        ],
+        [
+          -1500,
+          1500
+        ]
+      ],
+      "start": 150,
+      "end": 2400
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Post Back 1",
+      "subcategory": "Timber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Post Back 1",
+      "param": "Timber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Post Back 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Post Back 2",
+      "points": [
+        [
+          1350,
+          1350
+        ],
+        [
+          1500,
+          1350
+        ],
+        [
+          1500,
+          1500
+        ],
+        [
+          1350,
+          1500
+        ]
+      ],
+      "start": 150,
+      "end": 2400
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Post Back 2",
+      "subcategory": "Timber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Post Back 2",
+      "param": "Timber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Post Back 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Post Shoe Front 1",
+      "points": [
+        [
+          -1510,
+          -1510
+        ],
+        [
+          -1340,
+          -1510
+        ],
+        [
+          -1340,
+          -1340
+        ],
+        [
+          -1510,
+          -1340
+        ]
+      ],
+      "start": 0,
+      "end": 150
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Post Shoe Front 1",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Post Shoe Front 1",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Post Shoe Front 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Post Shoe Front 2",
+      "points": [
+        [
+          1340,
+          -1510
+        ],
+        [
+          1510,
+          -1510
+        ],
+        [
+          1510,
+          -1340
+        ],
+        [
+          1340,
+          -1340
+        ]
+      ],
+      "start": 0,
+      "end": 150
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Post Shoe Front 2",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Post Shoe Front 2",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Post Shoe Front 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Post Shoe Back 1",
+      "points": [
+        [
+          -1510,
+          1340
+        ],
+        [
+          -1340,
+          1340
+        ],
+        [
+          -1340,
+          1510
+        ],
+        [
+          -1510,
+          1510
+        ]
+      ],
+      "start": 0,
+      "end": 150
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Post Shoe Back 1",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Post Shoe Back 1",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Post Shoe Back 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Post Shoe Back 2",
+      "points": [
+        [
+          1340,
+          1340
+        ],
+        [
+          1510,
+          1340
+        ],
+        [
+          1510,
+          1510
+        ],
+        [
+          1340,
+          1510
+        ]
+      ],
+      "start": 0,
+      "end": 150
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Post Shoe Back 2",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Post Shoe Back 2",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Post Shoe Back 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Beam Outer 1",
+      "points": [
+        [
+          -1700,
+          -1550
+        ],
+        [
+          1700,
+          -1550
+        ],
+        [
+          1700,
+          -1500
+        ],
+        [
+          -1700,
+          -1500
+        ]
+      ],
+      "start": 2200,
+      "end": 2400
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Beam Outer 1",
+      "subcategory": "Timber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Beam Outer 1",
+      "param": "Timber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Beam Outer 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Beam Outer 2",
+      "points": [
+        [
+          -1700,
+          1400
+        ],
+        [
+          1700,
+          1400
+        ],
+        [
+          1700,
+          1450
+        ],
+        [
+          -1700,
+          1450
+        ]
+      ],
+      "start": 2200,
+      "end": 2400
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Beam Outer 2",
+      "subcategory": "Timber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Beam Outer 2",
+      "param": "Timber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Beam Outer 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Beam Inner 1",
+      "points": [
+        [
+          -1700,
+          -1350
+        ],
+        [
+          1700,
+          -1350
+        ],
+        [
+          1700,
+          -1300
+        ],
+        [
+          -1700,
+          -1300
+        ]
+      ],
+      "start": 2200,
+      "end": 2400
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Beam Inner 1",
+      "subcategory": "Timber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Beam Inner 1",
+      "param": "Timber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Beam Inner 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Beam Inner 2",
+      "points": [
+        [
+          -1700,
+          1300
+        ],
+        [
+          1700,
+          1300
+        ],
+        [
+          1700,
+          1350
+        ],
+        [
+          -1700,
+          1350
+        ]
+      ],
+      "start": 2200,
+      "end": 2400
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Beam Inner 2",
+      "subcategory": "Timber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Beam Inner 2",
+      "param": "Timber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Beam Inner 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rafter 1",
+      "points": [
+        [
+          -1525,
+          -1750
+        ],
+        [
+          -1475,
+          -1750
+        ],
+        [
+          -1475,
+          1750
+        ],
+        [
+          -1525,
+          1750
+        ]
+      ],
+      "start": 2400,
+      "end": 2600
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rafter 1",
+      "subcategory": "Timber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rafter 1",
+      "param": "Timber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rafter 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rafter 2",
+      "points": [
+        [
+          -1150,
+          -1750
+        ],
+        [
+          -1100,
+          -1750
+        ],
+        [
+          -1100,
+          1750
+        ],
+        [
+          -1150,
+          1750
+        ]
+      ],
+      "start": 2400,
+      "end": 2600
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rafter 2",
+      "subcategory": "Timber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rafter 2",
+      "param": "Timber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rafter 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rafter 3",
+      "points": [
+        [
+          -775,
+          -1750
+        ],
+        [
+          -725,
+          -1750
+        ],
+        [
+          -725,
+          1750
+        ],
+        [
+          -775,
+          1750
+        ]
+      ],
+      "start": 2400,
+      "end": 2600
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rafter 3",
+      "subcategory": "Timber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rafter 3",
+      "param": "Timber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rafter 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rafter 4",
+      "points": [
+        [
+          -400,
+          -1750
+        ],
+        [
+          -350,
+          -1750
+        ],
+        [
+          -350,
+          1750
+        ],
+        [
+          -400,
+          1750
+        ]
+      ],
+      "start": 2400,
+      "end": 2600
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rafter 4",
+      "subcategory": "Timber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rafter 4",
+      "param": "Timber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rafter 4",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rafter 5",
+      "points": [
+        [
+          -25,
+          -1750
+        ],
+        [
+          25,
+          -1750
+        ],
+        [
+          25,
+          1750
+        ],
+        [
+          -25,
+          1750
+        ]
+      ],
+      "start": 2400,
+      "end": 2600
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rafter 5",
+      "subcategory": "Timber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rafter 5",
+      "param": "Timber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rafter 5",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rafter 6",
+      "points": [
+        [
+          350,
+          -1750
+        ],
+        [
+          400,
+          -1750
+        ],
+        [
+          400,
+          1750
+        ],
+        [
+          350,
+          1750
+        ]
+      ],
+      "start": 2400,
+      "end": 2600
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rafter 6",
+      "subcategory": "Timber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rafter 6",
+      "param": "Timber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rafter 6",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rafter 7",
+      "points": [
+        [
+          725,
+          -1750
+        ],
+        [
+          775,
+          -1750
+        ],
+        [
+          775,
+          1750
+        ],
+        [
+          725,
+          1750
+        ]
+      ],
+      "start": 2400,
+      "end": 2600
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rafter 7",
+      "subcategory": "Timber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rafter 7",
+      "param": "Timber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rafter 7",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rafter 8",
+      "points": [
+        [
+          1100,
+          -1750
+        ],
+        [
+          1150,
+          -1750
+        ],
+        [
+          1150,
+          1750
+        ],
+        [
+          1100,
+          1750
+        ]
+      ],
+      "start": 2400,
+      "end": 2600
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rafter 8",
+      "subcategory": "Timber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rafter 8",
+      "param": "Timber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rafter 8",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rafter 9",
+      "points": [
+        [
+          1475,
+          -1750
+        ],
+        [
+          1525,
+          -1750
+        ],
+        [
+          1525,
+          1750
+        ],
+        [
+          1475,
+          1750
+        ]
+      ],
+      "start": 2400,
+      "end": 2600
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rafter 9",
+      "subcategory": "Timber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rafter 9",
+      "param": "Timber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rafter 9",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Shade Batten 1",
+      "points": [
+        [
+          -1650,
+          -1520
+        ],
+        [
+          1650,
+          -1520
+        ],
+        [
+          1650,
+          -1480
+        ],
+        [
+          -1650,
+          -1480
+        ]
+      ],
+      "start": 2600,
+      "end": 2650
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Shade Batten 1",
+      "subcategory": "Pine"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Shade Batten 1",
+      "param": "Pine Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Shade Batten 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Shade Batten 2",
+      "points": [
+        [
+          -1650,
+          -1220
+        ],
+        [
+          1650,
+          -1220
+        ],
+        [
+          1650,
+          -1180
+        ],
+        [
+          -1650,
+          -1180
+        ]
+      ],
+      "start": 2600,
+      "end": 2650
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Shade Batten 2",
+      "subcategory": "Pine"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Shade Batten 2",
+      "param": "Pine Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Shade Batten 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Shade Batten 3",
+      "points": [
+        [
+          -1650,
+          -920
+        ],
+        [
+          1650,
+          -920
+        ],
+        [
+          1650,
+          -880
+        ],
+        [
+          -1650,
+          -880
+        ]
+      ],
+      "start": 2600,
+      "end": 2650
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Shade Batten 3",
+      "subcategory": "Pine"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Shade Batten 3",
+      "param": "Pine Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Shade Batten 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Shade Batten 4",
+      "points": [
+        [
+          -1650,
+          -620
+        ],
+        [
+          1650,
+          -620
+        ],
+        [
+          1650,
+          -580
+        ],
+        [
+          -1650,
+          -580
+        ]
+      ],
+      "start": 2600,
+      "end": 2650
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Shade Batten 4",
+      "subcategory": "Pine"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Shade Batten 4",
+      "param": "Pine Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Shade Batten 4",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Shade Batten 5",
+      "points": [
+        [
+          -1650,
+          -320
+        ],
+        [
+          1650,
+          -320
+        ],
+        [
+          1650,
+          -280
+        ],
+        [
+          -1650,
+          -280
+        ]
+      ],
+      "start": 2600,
+      "end": 2650
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Shade Batten 5",
+      "subcategory": "Pine"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Shade Batten 5",
+      "param": "Pine Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Shade Batten 5",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Shade Batten 6",
+      "points": [
+        [
+          -1650,
+          -20
+        ],
+        [
+          1650,
+          -20
+        ],
+        [
+          1650,
+          20
+        ],
+        [
+          -1650,
+          20
+        ]
+      ],
+      "start": 2600,
+      "end": 2650
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Shade Batten 6",
+      "subcategory": "Pine"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Shade Batten 6",
+      "param": "Pine Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Shade Batten 6",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Shade Batten 7",
+      "points": [
+        [
+          -1650,
+          280
+        ],
+        [
+          1650,
+          280
+        ],
+        [
+          1650,
+          320
+        ],
+        [
+          -1650,
+          320
+        ]
+      ],
+      "start": 2600,
+      "end": 2650
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Shade Batten 7",
+      "subcategory": "Pine"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Shade Batten 7",
+      "param": "Pine Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Shade Batten 7",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Shade Batten 8",
+      "points": [
+        [
+          -1650,
+          580
+        ],
+        [
+          1650,
+          580
+        ],
+        [
+          1650,
+          620
+        ],
+        [
+          -1650,
+          620
+        ]
+      ],
+      "start": 2600,
+      "end": 2650
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Shade Batten 8",
+      "subcategory": "Pine"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Shade Batten 8",
+      "param": "Pine Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Shade Batten 8",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Shade Batten 9",
+      "points": [
+        [
+          -1650,
+          880
+        ],
+        [
+          1650,
+          880
+        ],
+        [
+          1650,
+          920
+        ],
+        [
+          -1650,
+          920
+        ]
+      ],
+      "start": 2600,
+      "end": 2650
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Shade Batten 9",
+      "subcategory": "Pine"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Shade Batten 9",
+      "param": "Pine Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Shade Batten 9",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Shade Batten 10",
+      "points": [
+        [
+          -1650,
+          1180
+        ],
+        [
+          1650,
+          1180
+        ],
+        [
+          1650,
+          1220
+        ],
+        [
+          -1650,
+          1220
+        ]
+      ],
+      "start": 2600,
+      "end": 2650
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Shade Batten 10",
+      "subcategory": "Pine"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Shade Batten 10",
+      "param": "Pine Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Shade Batten 10",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Shade Batten 11",
+      "points": [
+        [
+          -1650,
+          1480
+        ],
+        [
+          1650,
+          1480
+        ],
+        [
+          1650,
+          1520
+        ],
+        [
+          -1650,
+          1520
+        ]
+      ],
+      "start": 2600,
+      "end": 2650
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Shade Batten 11",
+      "subcategory": "Pine"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Shade Batten 11",
+      "param": "Pine Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Shade Batten 11",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Knee Brace Front Left",
+      "points": [
+        [
+          -1374.7,
+          1874.7
+        ],
+        [
+          -1024.7,
+          2224.7
+        ],
+        [
+          -975.3,
+          2175.3
+        ],
+        [
+          -1325.3,
+          1825.3
+        ]
+      ],
+      "start": 1390,
+      "end": 1460,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Knee Brace Front Left",
+      "subcategory": "Timber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Knee Brace Front Left",
+      "param": "Timber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Knee Brace Front Left",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Knee Brace Front Right",
+      "points": [
+        [
+          1325.3,
+          1825.3
+        ],
+        [
+          975.3,
+          2175.3
+        ],
+        [
+          1024.7,
+          2224.7
+        ],
+        [
+          1374.7,
+          1874.7
+        ]
+      ],
+      "start": 1390,
+      "end": 1460,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Knee Brace Front Right",
+      "subcategory": "Timber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Knee Brace Front Right",
+      "param": "Timber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Knee Brace Front Right",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Knee Brace Back Left",
+      "points": [
+        [
+          -1374.7,
+          1874.7
+        ],
+        [
+          -1024.7,
+          2224.7
+        ],
+        [
+          -975.3,
+          2175.3
+        ],
+        [
+          -1325.3,
+          1825.3
+        ]
+      ],
+      "start": -1460,
+      "end": -1390,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Knee Brace Back Left",
+      "subcategory": "Timber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Knee Brace Back Left",
+      "param": "Timber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Knee Brace Back Left",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Knee Brace Back Right",
+      "points": [
+        [
+          1325.3,
+          1825.3
+        ],
+        [
+          975.3,
+          2175.3
+        ],
+        [
+          1024.7,
+          2224.7
+        ],
+        [
+          1374.7,
+          1874.7
+        ]
+      ],
+      "start": -1460,
+      "end": -1390,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Knee Brace Back Right",
+      "subcategory": "Timber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Knee Brace Back Right",
+      "param": "Timber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Knee Brace Back Right",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Beam Bolt Front 1",
+      "points": [
+        [
+          -1415,
+          2300
+        ],
+        [
+          -1415.34,
+          2302.59
+        ],
+        [
+          -1416.34,
+          2305
+        ],
+        [
+          -1417.93,
+          2307.07
+        ],
+        [
+          -1420,
+          2308.66
+        ],
+        [
+          -1422.41,
+          2309.66
+        ],
+        [
+          -1425,
+          2310
+        ],
+        [
+          -1427.59,
+          2309.66
+        ],
+        [
+          -1430,
+          2308.66
+        ],
+        [
+          -1432.07,
+          2307.07
+        ],
+        [
+          -1433.66,
+          2305
+        ],
+        [
+          -1434.66,
+          2302.59
+        ],
+        [
+          -1435,
+          2300
+        ],
+        [
+          -1434.66,
+          2297.41
+        ],
+        [
+          -1433.66,
+          2295
+        ],
+        [
+          -1432.07,
+          2292.93
+        ],
+        [
+          -1430,
+          2291.34
+        ],
+        [
+          -1427.59,
+          2290.34
+        ],
+        [
+          -1425,
+          2290
+        ],
+        [
+          -1422.41,
+          2290.34
+        ],
+        [
+          -1420,
+          2291.34
+        ],
+        [
+          -1417.93,
+          2292.93
+        ],
+        [
+          -1416.34,
+          2295
+        ],
+        [
+          -1415.34,
+          2297.41
+        ]
+      ],
+      "start": 1290,
+      "end": 1560,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Beam Bolt Front 1",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Beam Bolt Front 1",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Beam Bolt Front 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Beam Bolt Front 2",
+      "points": [
+        [
+          1435,
+          2300
+        ],
+        [
+          1434.66,
+          2302.59
+        ],
+        [
+          1433.66,
+          2305
+        ],
+        [
+          1432.07,
+          2307.07
+        ],
+        [
+          1430,
+          2308.66
+        ],
+        [
+          1427.59,
+          2309.66
+        ],
+        [
+          1425,
+          2310
+        ],
+        [
+          1422.41,
+          2309.66
+        ],
+        [
+          1420,
+          2308.66
+        ],
+        [
+          1417.93,
+          2307.07
+        ],
+        [
+          1416.34,
+          2305
+        ],
+        [
+          1415.34,
+          2302.59
+        ],
+        [
+          1415,
+          2300
+        ],
+        [
+          1415.34,
+          2297.41
+        ],
+        [
+          1416.34,
+          2295
+        ],
+        [
+          1417.93,
+          2292.93
+        ],
+        [
+          1420,
+          2291.34
+        ],
+        [
+          1422.41,
+          2290.34
+        ],
+        [
+          1425,
+          2290
+        ],
+        [
+          1427.59,
+          2290.34
+        ],
+        [
+          1430,
+          2291.34
+        ],
+        [
+          1432.07,
+          2292.93
+        ],
+        [
+          1433.66,
+          2295
+        ],
+        [
+          1434.66,
+          2297.41
+        ]
+      ],
+      "start": 1290,
+      "end": 1560,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Beam Bolt Front 2",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Beam Bolt Front 2",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Beam Bolt Front 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Beam Bolt Back 1",
+      "points": [
+        [
+          -1415,
+          2300
+        ],
+        [
+          -1415.34,
+          2302.59
+        ],
+        [
+          -1416.34,
+          2305
+        ],
+        [
+          -1417.93,
+          2307.07
+        ],
+        [
+          -1420,
+          2308.66
+        ],
+        [
+          -1422.41,
+          2309.66
+        ],
+        [
+          -1425,
+          2310
+        ],
+        [
+          -1427.59,
+          2309.66
+        ],
+        [
+          -1430,
+          2308.66
+        ],
+        [
+          -1432.07,
+          2307.07
+        ],
+        [
+          -1433.66,
+          2305
+        ],
+        [
+          -1434.66,
+          2302.59
+        ],
+        [
+          -1435,
+          2300
+        ],
+        [
+          -1434.66,
+          2297.41
+        ],
+        [
+          -1433.66,
+          2295
+        ],
+        [
+          -1432.07,
+          2292.93
+        ],
+        [
+          -1430,
+          2291.34
+        ],
+        [
+          -1427.59,
+          2290.34
+        ],
+        [
+          -1425,
+          2290
+        ],
+        [
+          -1422.41,
+          2290.34
+        ],
+        [
+          -1420,
+          2291.34
+        ],
+        [
+          -1417.93,
+          2292.93
+        ],
+        [
+          -1416.34,
+          2295
+        ],
+        [
+          -1415.34,
+          2297.41
+        ]
+      ],
+      "start": -1560,
+      "end": -1290,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Beam Bolt Back 1",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Beam Bolt Back 1",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Beam Bolt Back 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Beam Bolt Back 2",
+      "points": [
+        [
+          1435,
+          2300
+        ],
+        [
+          1434.66,
+          2302.59
+        ],
+        [
+          1433.66,
+          2305
+        ],
+        [
+          1432.07,
+          2307.07
+        ],
+        [
+          1430,
+          2308.66
+        ],
+        [
+          1427.59,
+          2309.66
+        ],
+        [
+          1425,
+          2310
+        ],
+        [
+          1422.41,
+          2309.66
+        ],
+        [
+          1420,
+          2308.66
+        ],
+        [
+          1417.93,
+          2307.07
+        ],
+        [
+          1416.34,
+          2305
+        ],
+        [
+          1415.34,
+          2302.59
+        ],
+        [
+          1415,
+          2300
+        ],
+        [
+          1415.34,
+          2297.41
+        ],
+        [
+          1416.34,
+          2295
+        ],
+        [
+          1417.93,
+          2292.93
+        ],
+        [
+          1420,
+          2291.34
+        ],
+        [
+          1422.41,
+          2290.34
+        ],
+        [
+          1425,
+          2290
+        ],
+        [
+          1427.59,
+          2290.34
+        ],
+        [
+          1430,
+          2291.34
+        ],
+        [
+          1432.07,
+          2292.93
+        ],
+        [
+          1433.66,
+          2295
+        ],
+        [
+          1434.66,
+          2297.41
+        ]
+      ],
+      "start": -1560,
+      "end": -1290,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Beam Bolt Back 2",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Beam Bolt Back 2",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Beam Bolt Back 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\L\\_Images\\FMC_L_SiteFurniture_Pergola_Timber.png"
+    }
+  ],
+  "values": {
+    "Plan 3000 x 3000 mm, 2650 mm high": {
+      "value": "3000x3000x2650",
+      "source_status": "assumed",
+      "source": "type name"
+    },
+    "Posts 150 x 150, beams 2 x 50 x 200, rafters 50 x 200": {
+      "value": "150/50x200",
+      "source_status": "assumed",
+      "source": "engineer checks spans and wind uplift"
+    },
+    "Battens 40 x 50 at 300 mm (about 15 % shade)": {
+      "value": "40x50@300",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   }
- ],
- "values": {
-  "Plan 3000 x 3000 mm, 2650 mm high": {
-   "value": "3000x3000x2650",
-   "source_status": "assumed",
-   "source": "type name"
-  },
-  "Posts 150 x 150, beams 2 x 50 x 200, rafters 50 x 200": {
-   "value": "150/50x200",
-   "source_status": "assumed",
-   "source": "engineer checks spans and wind uplift"
-  },
-  "Battens 40 x 50 at 300 mm (about 15 % shade)": {
-   "value": "40x50@300",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- }
 }

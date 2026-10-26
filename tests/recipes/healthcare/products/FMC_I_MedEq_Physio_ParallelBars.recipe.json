@@ -1,4364 +1,4371 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_I_MedEq_Physio_ParallelBars",
- "template": "Metric Generic Model.rft",
- "about": "Parallel bars modelled as a generic product: platform with rubber non-slip deck and end ramps, base tracks, 3 uprights a side with height collars and clamp knobs, rail saddles, timber hand rails with end caps. Reference: query: physio parallel bars medical equipment hospital; images: https://www.google.com/search?tbm=isch&q=physio+parallel+bars+medical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Medical Equipment"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Earth_Resistance_Ohm",
-   "guid": "0fe20834-bce9-5c3f-a498-96c0b6c61998",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_LPS_Class",
-   "guid": "aa1c5aad-32f5-5ba3-8139-a49a5faba0dd",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Asset_Tag",
-   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Serial_Number",
-   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Install_Date",
-   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Warranty_End",
-   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Maintenance_Interval_Months",
-   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_OM_Link",
-   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Controller_ID",
-   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Type",
-   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Signal",
-   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Protocol",
-   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_LP_Part",
-   "guid": "7358e31e-0924-5ef8-9e82-c11bf9ad7160",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Extinguisher_Rating",
-   "guid": "59ff9559-a353-5172-9793-e70bce8154c9",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Hose_Length_m",
-   "guid": "38ed9a83-2f51-56d9-930f-4fab315adbb5",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Sign_Code",
-   "guid": "308bad99-638f-5312-920b-abcd5888e7f3",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Design_Movement",
-   "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
-   "instance": true
-  },
-  {
-   "op": "add_type",
-   "name": "3000x900_HeightAdj"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000x900_HeightAdj/FMC_Cost_Unit",
-   "type": "3000x900_HeightAdj",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000x900_HeightAdj/FMC_Geometry_Stage",
-   "type": "3000x900_HeightAdj",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000x900_HeightAdj/IfcExportAs",
-   "type": "3000x900_HeightAdj",
-   "param": "IfcExportAs",
-   "value": "IfcMedicalDevice"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000x900_HeightAdj/Description",
-   "type": "3000x900_HeightAdj",
-   "param": "Description",
-   "value": "Physiotherapy parallel walking bars 3000 x 900, timber platform with non-slip deck and end ramps, height-adjustable uprights on base tracks, timber hand rails"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000x900_HeightAdj/Keynote",
-   "type": "3000x900_HeightAdj",
-   "param": "Keynote",
-   "value": "F.MED_27"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000x900_HeightAdj/FMC_Keynote_Code",
-   "type": "3000x900_HeightAdj",
-   "param": "FMC_Keynote_Code",
-   "value": "F.MED_27"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000x900_HeightAdj/FMC_Code_Description",
-   "type": "3000x900_HeightAdj",
-   "param": "FMC_Code_Description",
-   "value": "Physio ParallelBars: Parallel walking bars"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000x900_HeightAdj/FMC_Code_Group",
-   "type": "3000x900_HeightAdj",
-   "param": "FMC_Code_Group",
-   "value": "F.MED"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000x900_HeightAdj/FMC_Role_Code",
-   "type": "3000x900_HeightAdj",
-   "param": "FMC_Role_Code",
-   "value": "I"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Timber",
-   "color": [
-    138,
-    98,
-    54
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Timber Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Timber_Mvule",
-   "param": "Timber Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Deck",
-   "color": [
-    32,
-    32,
-    32
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Deck Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Rubber_Black",
-   "param": "Deck Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Frame",
-   "color": [
-    237,
-    237,
-    232
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Frame Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Steel_EpoxyCoated_White",
-   "param": "Frame Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Timber2",
-   "color": [
-    184,
-    138,
-    90
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Timber2 Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Timber_Musizi",
-   "param": "Timber2 Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Clearance Accessibility",
-   "color": [
-    111,
-    168,
-    220
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -1600,
-     -450.0
-    ],
-    [
-     1600,
-     -450.0
-    ],
-    [
-     1600,
-     450.0
-    ],
-    [
-     -1600,
-     450.0
-    ]
-   ],
-   "start": 0,
-   "end": 922.0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Platform",
-   "points": [
-    [
-     1490.0,
-     -450.0
-    ],
-    [
-     1493.83,
-     -449.24
-    ],
-    [
-     1497.07,
-     -447.07
-    ],
-    [
-     1499.24,
-     -443.83
-    ],
-    [
-     1500.0,
-     -440.0
-    ],
-    [
-     1500.0,
-     440.0
-    ],
-    [
-     1499.24,
-     443.83
-    ],
-    [
-     1497.07,
-     447.07
-    ],
-    [
-     1493.83,
-     449.24
-    ],
-    [
-     1490.0,
-     450.0
-    ],
-    [
-     -1490.0,
-     450.0
-    ],
-    [
-     -1493.83,
-     449.24
-    ],
-    [
-     -1497.07,
-     447.07
-    ],
-    [
-     -1499.24,
-     443.83
-    ],
-    [
-     -1500.0,
-     440.0
-    ],
-    [
-     -1500.0,
-     -440.0
-    ],
-    [
-     -1499.24,
-     -443.83
-    ],
-    [
-     -1497.07,
-     -447.07
-    ],
-    [
-     -1493.83,
-     -449.24
-    ],
-    [
-     -1490.0,
-     -450.0
-    ]
-   ],
-   "start": 0,
-   "end": 40
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Platform",
-   "subcategory": "Timber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Platform",
-   "param": "Timber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Platform",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Non Slip Deck",
-   "points": [
-    [
-     -1450,
-     -400
-    ],
-    [
-     1450,
-     -400
-    ],
-    [
-     1450,
-     400
-    ],
-    [
-     -1450,
-     400
-    ]
-   ],
-   "start": 40,
-   "end": 44
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Non Slip Deck",
-   "subcategory": "Deck"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Non Slip Deck",
-   "param": "Deck Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Non Slip Deck",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Ramp End",
-   "points": [
-    [
-     -1600,
-     0
-    ],
-    [
-     -1500,
-     0
-    ],
-    [
-     -1500,
-     40
-    ]
-   ],
-   "start": -450,
-   "end": 450,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Ramp End",
-   "subcategory": "Deck"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Ramp End",
-   "param": "Deck Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Ramp End",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Ramp Start",
-   "points": [
-    [
-     1500,
-     0
-    ],
-    [
-     1600,
-     0
-    ],
-    [
-     1500,
-     40
-    ]
-   ],
-   "start": -450,
-   "end": 450,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Ramp Start",
-   "subcategory": "Deck"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Ramp Start",
-   "param": "Deck Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Ramp Start",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Base Track Left",
-   "points": [
-    [
-     1442.0,
-     -420.0
-    ],
-    [
-     1445.06,
-     -419.39
-    ],
-    [
-     1447.66,
-     -417.66
-    ],
-    [
-     1449.39,
-     -415.06
-    ],
-    [
-     1450.0,
-     -412.0
-    ],
-    [
-     1450.0,
-     -348.0
-    ],
-    [
-     1449.39,
-     -344.94
-    ],
-    [
-     1447.66,
-     -342.34
-    ],
-    [
-     1445.06,
-     -340.61
-    ],
-    [
-     1442.0,
-     -340.0
-    ],
-    [
-     -1442.0,
-     -340.0
-    ],
-    [
-     -1445.06,
-     -340.61
-    ],
-    [
-     -1447.66,
-     -342.34
-    ],
-    [
-     -1449.39,
-     -344.94
-    ],
-    [
-     -1450.0,
-     -348.0
-    ],
-    [
-     -1450.0,
-     -412.0
-    ],
-    [
-     -1449.39,
-     -415.06
-    ],
-    [
-     -1447.66,
-     -417.66
-    ],
-    [
-     -1445.06,
-     -419.39
-    ],
-    [
-     -1442.0,
-     -420.0
-    ]
-   ],
-   "start": 44,
-   "end": 60
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Track Left",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Track Left",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Track Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Upright Left 1",
-   "points": [
-    [
-     -1325.0,
-     -380.0
-    ],
-    [
-     -1325.85,
-     -373.53
-    ],
-    [
-     -1328.35,
-     -367.5
-    ],
-    [
-     -1332.32,
-     -362.32
-    ],
-    [
-     -1337.5,
-     -358.35
-    ],
-    [
-     -1343.53,
-     -355.85
-    ],
-    [
-     -1350.0,
-     -355.0
-    ],
-    [
-     -1356.47,
-     -355.85
-    ],
-    [
-     -1362.5,
-     -358.35
-    ],
-    [
-     -1367.68,
-     -362.32
-    ],
-    [
-     -1371.65,
-     -367.5
-    ],
-    [
-     -1374.15,
-     -373.53
-    ],
-    [
-     -1375.0,
-     -380.0
-    ],
-    [
-     -1374.15,
-     -386.47
-    ],
-    [
-     -1371.65,
-     -392.5
-    ],
-    [
-     -1367.68,
-     -397.68
-    ],
-    [
-     -1362.5,
-     -401.65
-    ],
-    [
-     -1356.47,
-     -404.15
-    ],
-    [
-     -1350.0,
-     -405.0
-    ],
-    [
-     -1343.53,
-     -404.15
-    ],
-    [
-     -1337.5,
-     -401.65
-    ],
-    [
-     -1332.32,
-     -397.68
-    ],
-    [
-     -1328.35,
-     -392.5
-    ],
-    [
-     -1325.85,
-     -386.47
-    ]
-   ],
-   "start": 60,
-   "end": 860
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Upright Left 1",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Upright Left 1",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Upright Left 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Upright Left 2",
-   "points": [
-    [
-     25.0,
-     -380.0
-    ],
-    [
-     24.15,
-     -373.53
-    ],
-    [
-     21.65,
-     -367.5
-    ],
-    [
-     17.68,
-     -362.32
-    ],
-    [
-     12.5,
-     -358.35
-    ],
-    [
-     6.47,
-     -355.85
-    ],
-    [
-     0.0,
-     -355.0
-    ],
-    [
-     -6.47,
-     -355.85
-    ],
-    [
-     -12.5,
-     -358.35
-    ],
-    [
-     -17.68,
-     -362.32
-    ],
-    [
-     -21.65,
-     -367.5
-    ],
-    [
-     -24.15,
-     -373.53
-    ],
-    [
-     -25.0,
-     -380.0
-    ],
-    [
-     -24.15,
-     -386.47
-    ],
-    [
-     -21.65,
-     -392.5
-    ],
-    [
-     -17.68,
-     -397.68
-    ],
-    [
-     -12.5,
-     -401.65
-    ],
-    [
-     -6.47,
-     -404.15
-    ],
-    [
-     -0.0,
-     -405.0
-    ],
-    [
-     6.47,
-     -404.15
-    ],
-    [
-     12.5,
-     -401.65
-    ],
-    [
-     17.68,
-     -397.68
-    ],
-    [
-     21.65,
-     -392.5
-    ],
-    [
-     24.15,
-     -386.47
-    ]
-   ],
-   "start": 60,
-   "end": 860
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Upright Left 2",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Upright Left 2",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Upright Left 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Upright Left 3",
-   "points": [
-    [
-     1375.0,
-     -380.0
-    ],
-    [
-     1374.15,
-     -373.53
-    ],
-    [
-     1371.65,
-     -367.5
-    ],
-    [
-     1367.68,
-     -362.32
-    ],
-    [
-     1362.5,
-     -358.35
-    ],
-    [
-     1356.47,
-     -355.85
-    ],
-    [
-     1350.0,
-     -355.0
-    ],
-    [
-     1343.53,
-     -355.85
-    ],
-    [
-     1337.5,
-     -358.35
-    ],
-    [
-     1332.32,
-     -362.32
-    ],
-    [
-     1328.35,
-     -367.5
-    ],
-    [
-     1325.85,
-     -373.53
-    ],
-    [
-     1325.0,
-     -380.0
-    ],
-    [
-     1325.85,
-     -386.47
-    ],
-    [
-     1328.35,
-     -392.5
-    ],
-    [
-     1332.32,
-     -397.68
-    ],
-    [
-     1337.5,
-     -401.65
-    ],
-    [
-     1343.53,
-     -404.15
-    ],
-    [
-     1350.0,
-     -405.0
-    ],
-    [
-     1356.47,
-     -404.15
-    ],
-    [
-     1362.5,
-     -401.65
-    ],
-    [
-     1367.68,
-     -397.68
-    ],
-    [
-     1371.65,
-     -392.5
-    ],
-    [
-     1374.15,
-     -386.47
-    ]
-   ],
-   "start": 60,
-   "end": 860
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Upright Left 3",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Upright Left 3",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Upright Left 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Height Collar Left 1",
-   "points": [
-    [
-     -1318.0,
-     -380.0
-    ],
-    [
-     -1319.09,
-     -371.72
-    ],
-    [
-     -1322.29,
-     -364.0
-    ],
-    [
-     -1327.37,
-     -357.37
-    ],
-    [
-     -1334.0,
-     -352.29
-    ],
-    [
-     -1341.72,
-     -349.09
-    ],
-    [
-     -1350.0,
-     -348.0
-    ],
-    [
-     -1358.28,
-     -349.09
-    ],
-    [
-     -1366.0,
-     -352.29
-    ],
-    [
-     -1372.63,
-     -357.37
-    ],
-    [
-     -1377.71,
-     -364.0
-    ],
-    [
-     -1380.91,
-     -371.72
-    ],
-    [
-     -1382.0,
-     -380.0
-    ],
-    [
-     -1380.91,
-     -388.28
-    ],
-    [
-     -1377.71,
-     -396.0
-    ],
-    [
-     -1372.63,
-     -402.63
-    ],
-    [
-     -1366.0,
-     -407.71
-    ],
-    [
-     -1358.28,
-     -410.91
-    ],
-    [
-     -1350.0,
-     -412.0
-    ],
-    [
-     -1341.72,
-     -410.91
-    ],
-    [
-     -1334.0,
-     -407.71
-    ],
-    [
-     -1327.37,
-     -402.63
-    ],
-    [
-     -1322.29,
-     -396.0
-    ],
-    [
-     -1319.09,
-     -388.28
-    ]
-   ],
-   "start": 600,
-   "end": 660
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Height Collar Left 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Height Collar Left 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Height Collar Left 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Height Collar Left 2",
-   "points": [
-    [
-     32.0,
-     -380.0
-    ],
-    [
-     30.91,
-     -371.72
-    ],
-    [
-     27.71,
-     -364.0
-    ],
-    [
-     22.63,
-     -357.37
-    ],
-    [
-     16.0,
-     -352.29
-    ],
-    [
-     8.28,
-     -349.09
-    ],
-    [
-     0.0,
-     -348.0
-    ],
-    [
-     -8.28,
-     -349.09
-    ],
-    [
-     -16.0,
-     -352.29
-    ],
-    [
-     -22.63,
-     -357.37
-    ],
-    [
-     -27.71,
-     -364.0
-    ],
-    [
-     -30.91,
-     -371.72
-    ],
-    [
-     -32.0,
-     -380.0
-    ],
-    [
-     -30.91,
-     -388.28
-    ],
-    [
-     -27.71,
-     -396.0
-    ],
-    [
-     -22.63,
-     -402.63
-    ],
-    [
-     -16.0,
-     -407.71
-    ],
-    [
-     -8.28,
-     -410.91
-    ],
-    [
-     -0.0,
-     -412.0
-    ],
-    [
-     8.28,
-     -410.91
-    ],
-    [
-     16.0,
-     -407.71
-    ],
-    [
-     22.63,
-     -402.63
-    ],
-    [
-     27.71,
-     -396.0
-    ],
-    [
-     30.91,
-     -388.28
-    ]
-   ],
-   "start": 600,
-   "end": 660
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Height Collar Left 2",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Height Collar Left 2",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Height Collar Left 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Height Collar Left 3",
-   "points": [
-    [
-     1382.0,
-     -380.0
-    ],
-    [
-     1380.91,
-     -371.72
-    ],
-    [
-     1377.71,
-     -364.0
-    ],
-    [
-     1372.63,
-     -357.37
-    ],
-    [
-     1366.0,
-     -352.29
-    ],
-    [
-     1358.28,
-     -349.09
-    ],
-    [
-     1350.0,
-     -348.0
-    ],
-    [
-     1341.72,
-     -349.09
-    ],
-    [
-     1334.0,
-     -352.29
-    ],
-    [
-     1327.37,
-     -357.37
-    ],
-    [
-     1322.29,
-     -364.0
-    ],
-    [
-     1319.09,
-     -371.72
-    ],
-    [
-     1318.0,
-     -380.0
-    ],
-    [
-     1319.09,
-     -388.28
-    ],
-    [
-     1322.29,
-     -396.0
-    ],
-    [
-     1327.37,
-     -402.63
-    ],
-    [
-     1334.0,
-     -407.71
-    ],
-    [
-     1341.72,
-     -410.91
-    ],
-    [
-     1350.0,
-     -412.0
-    ],
-    [
-     1358.28,
-     -410.91
-    ],
-    [
-     1366.0,
-     -407.71
-    ],
-    [
-     1372.63,
-     -402.63
-    ],
-    [
-     1377.71,
-     -396.0
-    ],
-    [
-     1380.91,
-     -388.28
-    ]
-   ],
-   "start": 600,
-   "end": 660
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Height Collar Left 3",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Height Collar Left 3",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Height Collar Left 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Clamp Knob Left 1",
-   "points": [
-    [
-     -1336.0,
-     630.0
-    ],
-    [
-     -1336.48,
-     633.62
-    ],
-    [
-     -1337.88,
-     637.0
-    ],
-    [
-     -1340.1,
-     639.9
-    ],
-    [
-     -1343.0,
-     642.12
-    ],
-    [
-     -1346.38,
-     643.52
-    ],
-    [
-     -1350.0,
-     644.0
-    ],
-    [
-     -1353.62,
-     643.52
-    ],
-    [
-     -1357.0,
-     642.12
-    ],
-    [
-     -1359.9,
-     639.9
-    ],
-    [
-     -1362.12,
-     637.0
-    ],
-    [
-     -1363.52,
-     633.62
-    ],
-    [
-     -1364.0,
-     630.0
-    ],
-    [
-     -1363.52,
-     626.38
-    ],
-    [
-     -1362.12,
-     623.0
-    ],
-    [
-     -1359.9,
-     620.1
-    ],
-    [
-     -1357.0,
-     617.88
-    ],
-    [
-     -1353.62,
-     616.48
-    ],
-    [
-     -1350.0,
-     616.0
-    ],
-    [
-     -1346.38,
-     616.48
-    ],
-    [
-     -1343.0,
-     617.88
-    ],
-    [
-     -1340.1,
-     620.1
-    ],
-    [
-     -1337.88,
-     623.0
-    ],
-    [
-     -1336.48,
-     626.38
-    ]
-   ],
-   "start": 412,
-   "end": 450,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Clamp Knob Left 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Clamp Knob Left 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Clamp Knob Left 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Clamp Knob Left 2",
-   "points": [
-    [
-     14.0,
-     630.0
-    ],
-    [
-     13.52,
-     633.62
-    ],
-    [
-     12.12,
-     637.0
-    ],
-    [
-     9.9,
-     639.9
-    ],
-    [
-     7.0,
-     642.12
-    ],
-    [
-     3.62,
-     643.52
-    ],
-    [
-     0.0,
-     644.0
-    ],
-    [
-     -3.62,
-     643.52
-    ],
-    [
-     -7.0,
-     642.12
-    ],
-    [
-     -9.9,
-     639.9
-    ],
-    [
-     -12.12,
-     637.0
-    ],
-    [
-     -13.52,
-     633.62
-    ],
-    [
-     -14.0,
-     630.0
-    ],
-    [
-     -13.52,
-     626.38
-    ],
-    [
-     -12.12,
-     623.0
-    ],
-    [
-     -9.9,
-     620.1
-    ],
-    [
-     -7.0,
-     617.88
-    ],
-    [
-     -3.62,
-     616.48
-    ],
-    [
-     -0.0,
-     616.0
-    ],
-    [
-     3.62,
-     616.48
-    ],
-    [
-     7.0,
-     617.88
-    ],
-    [
-     9.9,
-     620.1
-    ],
-    [
-     12.12,
-     623.0
-    ],
-    [
-     13.52,
-     626.38
-    ]
-   ],
-   "start": 412,
-   "end": 450,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Clamp Knob Left 2",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Clamp Knob Left 2",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Clamp Knob Left 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Clamp Knob Left 3",
-   "points": [
-    [
-     1364.0,
-     630.0
-    ],
-    [
-     1363.52,
-     633.62
-    ],
-    [
-     1362.12,
-     637.0
-    ],
-    [
-     1359.9,
-     639.9
-    ],
-    [
-     1357.0,
-     642.12
-    ],
-    [
-     1353.62,
-     643.52
-    ],
-    [
-     1350.0,
-     644.0
-    ],
-    [
-     1346.38,
-     643.52
-    ],
-    [
-     1343.0,
-     642.12
-    ],
-    [
-     1340.1,
-     639.9
-    ],
-    [
-     1337.88,
-     637.0
-    ],
-    [
-     1336.48,
-     633.62
-    ],
-    [
-     1336.0,
-     630.0
-    ],
-    [
-     1336.48,
-     626.38
-    ],
-    [
-     1337.88,
-     623.0
-    ],
-    [
-     1340.1,
-     620.1
-    ],
-    [
-     1343.0,
-     617.88
-    ],
-    [
-     1346.38,
-     616.48
-    ],
-    [
-     1350.0,
-     616.0
-    ],
-    [
-     1353.62,
-     616.48
-    ],
-    [
-     1357.0,
-     617.88
-    ],
-    [
-     1359.9,
-     620.1
-    ],
-    [
-     1362.12,
-     623.0
-    ],
-    [
-     1363.52,
-     626.38
-    ]
-   ],
-   "start": 412,
-   "end": 450,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Clamp Knob Left 3",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Clamp Knob Left 3",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Clamp Knob Left 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rail Saddle Left 1",
-   "points": [
-    [
-     -1320.0,
-     -380.0
-    ],
-    [
-     -1321.02,
-     -372.24
-    ],
-    [
-     -1324.02,
-     -365.0
-    ],
-    [
-     -1328.79,
-     -358.79
-    ],
-    [
-     -1335.0,
-     -354.02
-    ],
-    [
-     -1342.24,
-     -351.02
-    ],
-    [
-     -1350.0,
-     -350.0
-    ],
-    [
-     -1357.76,
-     -351.02
-    ],
-    [
-     -1365.0,
-     -354.02
-    ],
-    [
-     -1371.21,
-     -358.79
-    ],
-    [
-     -1375.98,
-     -365.0
-    ],
-    [
-     -1378.98,
-     -372.24
-    ],
-    [
-     -1380.0,
-     -380.0
-    ],
-    [
-     -1378.98,
-     -387.76
-    ],
-    [
-     -1375.98,
-     -395.0
-    ],
-    [
-     -1371.21,
-     -401.21
-    ],
-    [
-     -1365.0,
-     -405.98
-    ],
-    [
-     -1357.76,
-     -408.98
-    ],
-    [
-     -1350.0,
-     -410.0
-    ],
-    [
-     -1342.24,
-     -408.98
-    ],
-    [
-     -1335.0,
-     -405.98
-    ],
-    [
-     -1328.79,
-     -401.21
-    ],
-    [
-     -1324.02,
-     -395.0
-    ],
-    [
-     -1321.02,
-     -387.76
-    ]
-   ],
-   "start": 860,
-   "end": 880
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rail Saddle Left 1",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail Saddle Left 1",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail Saddle Left 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rail Saddle Left 2",
-   "points": [
-    [
-     30.0,
-     -380.0
-    ],
-    [
-     28.98,
-     -372.24
-    ],
-    [
-     25.98,
-     -365.0
-    ],
-    [
-     21.21,
-     -358.79
-    ],
-    [
-     15.0,
-     -354.02
-    ],
-    [
-     7.76,
-     -351.02
-    ],
-    [
-     0.0,
-     -350.0
-    ],
-    [
-     -7.76,
-     -351.02
-    ],
-    [
-     -15.0,
-     -354.02
-    ],
-    [
-     -21.21,
-     -358.79
-    ],
-    [
-     -25.98,
-     -365.0
-    ],
-    [
-     -28.98,
-     -372.24
-    ],
-    [
-     -30.0,
-     -380.0
-    ],
-    [
-     -28.98,
-     -387.76
-    ],
-    [
-     -25.98,
-     -395.0
-    ],
-    [
-     -21.21,
-     -401.21
-    ],
-    [
-     -15.0,
-     -405.98
-    ],
-    [
-     -7.76,
-     -408.98
-    ],
-    [
-     -0.0,
-     -410.0
-    ],
-    [
-     7.76,
-     -408.98
-    ],
-    [
-     15.0,
-     -405.98
-    ],
-    [
-     21.21,
-     -401.21
-    ],
-    [
-     25.98,
-     -395.0
-    ],
-    [
-     28.98,
-     -387.76
-    ]
-   ],
-   "start": 860,
-   "end": 880
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rail Saddle Left 2",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail Saddle Left 2",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail Saddle Left 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rail Saddle Left 3",
-   "points": [
-    [
-     1380.0,
-     -380.0
-    ],
-    [
-     1378.98,
-     -372.24
-    ],
-    [
-     1375.98,
-     -365.0
-    ],
-    [
-     1371.21,
-     -358.79
-    ],
-    [
-     1365.0,
-     -354.02
-    ],
-    [
-     1357.76,
-     -351.02
-    ],
-    [
-     1350.0,
-     -350.0
-    ],
-    [
-     1342.24,
-     -351.02
-    ],
-    [
-     1335.0,
-     -354.02
-    ],
-    [
-     1328.79,
-     -358.79
-    ],
-    [
-     1324.02,
-     -365.0
-    ],
-    [
-     1321.02,
-     -372.24
-    ],
-    [
-     1320.0,
-     -380.0
-    ],
-    [
-     1321.02,
-     -387.76
-    ],
-    [
-     1324.02,
-     -395.0
-    ],
-    [
-     1328.79,
-     -401.21
-    ],
-    [
-     1335.0,
-     -405.98
-    ],
-    [
-     1342.24,
-     -408.98
-    ],
-    [
-     1350.0,
-     -410.0
-    ],
-    [
-     1357.76,
-     -408.98
-    ],
-    [
-     1365.0,
-     -405.98
-    ],
-    [
-     1371.21,
-     -401.21
-    ],
-    [
-     1375.98,
-     -395.0
-    ],
-    [
-     1378.98,
-     -387.76
-    ]
-   ],
-   "start": 860,
-   "end": 880
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rail Saddle Left 3",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail Saddle Left 3",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail Saddle Left 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hand Rail Left",
-   "points": [
-    [
-     -358.0,
-     900.0
-    ],
-    [
-     -358.75,
-     905.69
-    ],
-    [
-     -360.95,
-     911.0
-    ],
-    [
-     -364.44,
-     915.56
-    ],
-    [
-     -369.0,
-     919.05
-    ],
-    [
-     -374.31,
-     921.25
-    ],
-    [
-     -380.0,
-     922.0
-    ],
-    [
-     -385.69,
-     921.25
-    ],
-    [
-     -391.0,
-     919.05
-    ],
-    [
-     -395.56,
-     915.56
-    ],
-    [
-     -399.05,
-     911.0
-    ],
-    [
-     -401.25,
-     905.69
-    ],
-    [
-     -402.0,
-     900.0
-    ],
-    [
-     -401.25,
-     894.31
-    ],
-    [
-     -399.05,
-     889.0
-    ],
-    [
-     -395.56,
-     884.44
-    ],
-    [
-     -391.0,
-     880.95
-    ],
-    [
-     -385.69,
-     878.75
-    ],
-    [
-     -380.0,
-     878.0
-    ],
-    [
-     -374.31,
-     878.75
-    ],
-    [
-     -369.0,
-     880.95
-    ],
-    [
-     -364.44,
-     884.44
-    ],
-    [
-     -360.95,
-     889.0
-    ],
-    [
-     -358.75,
-     894.31
-    ]
-   ],
-   "start": -1450,
-   "end": 1450,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hand Rail Left",
-   "subcategory": "Timber2"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hand Rail Left",
-   "param": "Timber2 Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hand Rail Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Rail End Cap Left",
-   "profile": [
-    [
-     0,
-     -1475
-    ],
-    [
-     22,
-     -1450
-    ],
-    [
-     0,
-     -1450
-    ]
-   ],
-   "axis_at": [
-    -380,
-    900
-   ],
-   "axis": "x",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail End Cap Left",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail End Cap Left",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Rail End Cap Left Far",
-   "profile": [
-    [
-     0,
-     1450
-    ],
-    [
-     22,
-     1450
-    ],
-    [
-     0,
-     1475
-    ]
-   ],
-   "axis_at": [
-    -380,
-    900
-   ],
-   "axis": "x",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail End Cap Left Far",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail End Cap Left Far",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Base Track Right",
-   "points": [
-    [
-     1442.0,
-     340.0
-    ],
-    [
-     1445.06,
-     340.61
-    ],
-    [
-     1447.66,
-     342.34
-    ],
-    [
-     1449.39,
-     344.94
-    ],
-    [
-     1450.0,
-     348.0
-    ],
-    [
-     1450.0,
-     412.0
-    ],
-    [
-     1449.39,
-     415.06
-    ],
-    [
-     1447.66,
-     417.66
-    ],
-    [
-     1445.06,
-     419.39
-    ],
-    [
-     1442.0,
-     420.0
-    ],
-    [
-     -1442.0,
-     420.0
-    ],
-    [
-     -1445.06,
-     419.39
-    ],
-    [
-     -1447.66,
-     417.66
-    ],
-    [
-     -1449.39,
-     415.06
-    ],
-    [
-     -1450.0,
-     412.0
-    ],
-    [
-     -1450.0,
-     348.0
-    ],
-    [
-     -1449.39,
-     344.94
-    ],
-    [
-     -1447.66,
-     342.34
-    ],
-    [
-     -1445.06,
-     340.61
-    ],
-    [
-     -1442.0,
-     340.0
-    ]
-   ],
-   "start": 44,
-   "end": 60
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Track Right",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Track Right",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Track Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Upright Right 1",
-   "points": [
-    [
-     -1325.0,
-     380.0
-    ],
-    [
-     -1325.85,
-     386.47
-    ],
-    [
-     -1328.35,
-     392.5
-    ],
-    [
-     -1332.32,
-     397.68
-    ],
-    [
-     -1337.5,
-     401.65
-    ],
-    [
-     -1343.53,
-     404.15
-    ],
-    [
-     -1350.0,
-     405.0
-    ],
-    [
-     -1356.47,
-     404.15
-    ],
-    [
-     -1362.5,
-     401.65
-    ],
-    [
-     -1367.68,
-     397.68
-    ],
-    [
-     -1371.65,
-     392.5
-    ],
-    [
-     -1374.15,
-     386.47
-    ],
-    [
-     -1375.0,
-     380.0
-    ],
-    [
-     -1374.15,
-     373.53
-    ],
-    [
-     -1371.65,
-     367.5
-    ],
-    [
-     -1367.68,
-     362.32
-    ],
-    [
-     -1362.5,
-     358.35
-    ],
-    [
-     -1356.47,
-     355.85
-    ],
-    [
-     -1350.0,
-     355.0
-    ],
-    [
-     -1343.53,
-     355.85
-    ],
-    [
-     -1337.5,
-     358.35
-    ],
-    [
-     -1332.32,
-     362.32
-    ],
-    [
-     -1328.35,
-     367.5
-    ],
-    [
-     -1325.85,
-     373.53
-    ]
-   ],
-   "start": 60,
-   "end": 860
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Upright Right 1",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Upright Right 1",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Upright Right 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Upright Right 2",
-   "points": [
-    [
-     25.0,
-     380.0
-    ],
-    [
-     24.15,
-     386.47
-    ],
-    [
-     21.65,
-     392.5
-    ],
-    [
-     17.68,
-     397.68
-    ],
-    [
-     12.5,
-     401.65
-    ],
-    [
-     6.47,
-     404.15
-    ],
-    [
-     0.0,
-     405.0
-    ],
-    [
-     -6.47,
-     404.15
-    ],
-    [
-     -12.5,
-     401.65
-    ],
-    [
-     -17.68,
-     397.68
-    ],
-    [
-     -21.65,
-     392.5
-    ],
-    [
-     -24.15,
-     386.47
-    ],
-    [
-     -25.0,
-     380.0
-    ],
-    [
-     -24.15,
-     373.53
-    ],
-    [
-     -21.65,
-     367.5
-    ],
-    [
-     -17.68,
-     362.32
-    ],
-    [
-     -12.5,
-     358.35
-    ],
-    [
-     -6.47,
-     355.85
-    ],
-    [
-     -0.0,
-     355.0
-    ],
-    [
-     6.47,
-     355.85
-    ],
-    [
-     12.5,
-     358.35
-    ],
-    [
-     17.68,
-     362.32
-    ],
-    [
-     21.65,
-     367.5
-    ],
-    [
-     24.15,
-     373.53
-    ]
-   ],
-   "start": 60,
-   "end": 860
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Upright Right 2",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Upright Right 2",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Upright Right 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Upright Right 3",
-   "points": [
-    [
-     1375.0,
-     380.0
-    ],
-    [
-     1374.15,
-     386.47
-    ],
-    [
-     1371.65,
-     392.5
-    ],
-    [
-     1367.68,
-     397.68
-    ],
-    [
-     1362.5,
-     401.65
-    ],
-    [
-     1356.47,
-     404.15
-    ],
-    [
-     1350.0,
-     405.0
-    ],
-    [
-     1343.53,
-     404.15
-    ],
-    [
-     1337.5,
-     401.65
-    ],
-    [
-     1332.32,
-     397.68
-    ],
-    [
-     1328.35,
-     392.5
-    ],
-    [
-     1325.85,
-     386.47
-    ],
-    [
-     1325.0,
-     380.0
-    ],
-    [
-     1325.85,
-     373.53
-    ],
-    [
-     1328.35,
-     367.5
-    ],
-    [
-     1332.32,
-     362.32
-    ],
-    [
-     1337.5,
-     358.35
-    ],
-    [
-     1343.53,
-     355.85
-    ],
-    [
-     1350.0,
-     355.0
-    ],
-    [
-     1356.47,
-     355.85
-    ],
-    [
-     1362.5,
-     358.35
-    ],
-    [
-     1367.68,
-     362.32
-    ],
-    [
-     1371.65,
-     367.5
-    ],
-    [
-     1374.15,
-     373.53
-    ]
-   ],
-   "start": 60,
-   "end": 860
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Upright Right 3",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Upright Right 3",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Upright Right 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Height Collar Right 1",
-   "points": [
-    [
-     -1318.0,
-     380.0
-    ],
-    [
-     -1319.09,
-     388.28
-    ],
-    [
-     -1322.29,
-     396.0
-    ],
-    [
-     -1327.37,
-     402.63
-    ],
-    [
-     -1334.0,
-     407.71
-    ],
-    [
-     -1341.72,
-     410.91
-    ],
-    [
-     -1350.0,
-     412.0
-    ],
-    [
-     -1358.28,
-     410.91
-    ],
-    [
-     -1366.0,
-     407.71
-    ],
-    [
-     -1372.63,
-     402.63
-    ],
-    [
-     -1377.71,
-     396.0
-    ],
-    [
-     -1380.91,
-     388.28
-    ],
-    [
-     -1382.0,
-     380.0
-    ],
-    [
-     -1380.91,
-     371.72
-    ],
-    [
-     -1377.71,
-     364.0
-    ],
-    [
-     -1372.63,
-     357.37
-    ],
-    [
-     -1366.0,
-     352.29
-    ],
-    [
-     -1358.28,
-     349.09
-    ],
-    [
-     -1350.0,
-     348.0
-    ],
-    [
-     -1341.72,
-     349.09
-    ],
-    [
-     -1334.0,
-     352.29
-    ],
-    [
-     -1327.37,
-     357.37
-    ],
-    [
-     -1322.29,
-     364.0
-    ],
-    [
-     -1319.09,
-     371.72
-    ]
-   ],
-   "start": 600,
-   "end": 660
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Height Collar Right 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Height Collar Right 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Height Collar Right 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Height Collar Right 2",
-   "points": [
-    [
-     32.0,
-     380.0
-    ],
-    [
-     30.91,
-     388.28
-    ],
-    [
-     27.71,
-     396.0
-    ],
-    [
-     22.63,
-     402.63
-    ],
-    [
-     16.0,
-     407.71
-    ],
-    [
-     8.28,
-     410.91
-    ],
-    [
-     0.0,
-     412.0
-    ],
-    [
-     -8.28,
-     410.91
-    ],
-    [
-     -16.0,
-     407.71
-    ],
-    [
-     -22.63,
-     402.63
-    ],
-    [
-     -27.71,
-     396.0
-    ],
-    [
-     -30.91,
-     388.28
-    ],
-    [
-     -32.0,
-     380.0
-    ],
-    [
-     -30.91,
-     371.72
-    ],
-    [
-     -27.71,
-     364.0
-    ],
-    [
-     -22.63,
-     357.37
-    ],
-    [
-     -16.0,
-     352.29
-    ],
-    [
-     -8.28,
-     349.09
-    ],
-    [
-     -0.0,
-     348.0
-    ],
-    [
-     8.28,
-     349.09
-    ],
-    [
-     16.0,
-     352.29
-    ],
-    [
-     22.63,
-     357.37
-    ],
-    [
-     27.71,
-     364.0
-    ],
-    [
-     30.91,
-     371.72
-    ]
-   ],
-   "start": 600,
-   "end": 660
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Height Collar Right 2",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Height Collar Right 2",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Height Collar Right 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Height Collar Right 3",
-   "points": [
-    [
-     1382.0,
-     380.0
-    ],
-    [
-     1380.91,
-     388.28
-    ],
-    [
-     1377.71,
-     396.0
-    ],
-    [
-     1372.63,
-     402.63
-    ],
-    [
-     1366.0,
-     407.71
-    ],
-    [
-     1358.28,
-     410.91
-    ],
-    [
-     1350.0,
-     412.0
-    ],
-    [
-     1341.72,
-     410.91
-    ],
-    [
-     1334.0,
-     407.71
-    ],
-    [
-     1327.37,
-     402.63
-    ],
-    [
-     1322.29,
-     396.0
-    ],
-    [
-     1319.09,
-     388.28
-    ],
-    [
-     1318.0,
-     380.0
-    ],
-    [
-     1319.09,
-     371.72
-    ],
-    [
-     1322.29,
-     364.0
-    ],
-    [
-     1327.37,
-     357.37
-    ],
-    [
-     1334.0,
-     352.29
-    ],
-    [
-     1341.72,
-     349.09
-    ],
-    [
-     1350.0,
-     348.0
-    ],
-    [
-     1358.28,
-     349.09
-    ],
-    [
-     1366.0,
-     352.29
-    ],
-    [
-     1372.63,
-     357.37
-    ],
-    [
-     1377.71,
-     364.0
-    ],
-    [
-     1380.91,
-     371.72
-    ]
-   ],
-   "start": 600,
-   "end": 660
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Height Collar Right 3",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Height Collar Right 3",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Height Collar Right 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Clamp Knob Right 1",
-   "points": [
-    [
-     -1336.0,
-     630.0
-    ],
-    [
-     -1336.48,
-     633.62
-    ],
-    [
-     -1337.88,
-     637.0
-    ],
-    [
-     -1340.1,
-     639.9
-    ],
-    [
-     -1343.0,
-     642.12
-    ],
-    [
-     -1346.38,
-     643.52
-    ],
-    [
-     -1350.0,
-     644.0
-    ],
-    [
-     -1353.62,
-     643.52
-    ],
-    [
-     -1357.0,
-     642.12
-    ],
-    [
-     -1359.9,
-     639.9
-    ],
-    [
-     -1362.12,
-     637.0
-    ],
-    [
-     -1363.52,
-     633.62
-    ],
-    [
-     -1364.0,
-     630.0
-    ],
-    [
-     -1363.52,
-     626.38
-    ],
-    [
-     -1362.12,
-     623.0
-    ],
-    [
-     -1359.9,
-     620.1
-    ],
-    [
-     -1357.0,
-     617.88
-    ],
-    [
-     -1353.62,
-     616.48
-    ],
-    [
-     -1350.0,
-     616.0
-    ],
-    [
-     -1346.38,
-     616.48
-    ],
-    [
-     -1343.0,
-     617.88
-    ],
-    [
-     -1340.1,
-     620.1
-    ],
-    [
-     -1337.88,
-     623.0
-    ],
-    [
-     -1336.48,
-     626.38
-    ]
-   ],
-   "start": -450,
-   "end": -412,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Clamp Knob Right 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Clamp Knob Right 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Clamp Knob Right 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Clamp Knob Right 2",
-   "points": [
-    [
-     14.0,
-     630.0
-    ],
-    [
-     13.52,
-     633.62
-    ],
-    [
-     12.12,
-     637.0
-    ],
-    [
-     9.9,
-     639.9
-    ],
-    [
-     7.0,
-     642.12
-    ],
-    [
-     3.62,
-     643.52
-    ],
-    [
-     0.0,
-     644.0
-    ],
-    [
-     -3.62,
-     643.52
-    ],
-    [
-     -7.0,
-     642.12
-    ],
-    [
-     -9.9,
-     639.9
-    ],
-    [
-     -12.12,
-     637.0
-    ],
-    [
-     -13.52,
-     633.62
-    ],
-    [
-     -14.0,
-     630.0
-    ],
-    [
-     -13.52,
-     626.38
-    ],
-    [
-     -12.12,
-     623.0
-    ],
-    [
-     -9.9,
-     620.1
-    ],
-    [
-     -7.0,
-     617.88
-    ],
-    [
-     -3.62,
-     616.48
-    ],
-    [
-     -0.0,
-     616.0
-    ],
-    [
-     3.62,
-     616.48
-    ],
-    [
-     7.0,
-     617.88
-    ],
-    [
-     9.9,
-     620.1
-    ],
-    [
-     12.12,
-     623.0
-    ],
-    [
-     13.52,
-     626.38
-    ]
-   ],
-   "start": -450,
-   "end": -412,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Clamp Knob Right 2",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Clamp Knob Right 2",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Clamp Knob Right 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Clamp Knob Right 3",
-   "points": [
-    [
-     1364.0,
-     630.0
-    ],
-    [
-     1363.52,
-     633.62
-    ],
-    [
-     1362.12,
-     637.0
-    ],
-    [
-     1359.9,
-     639.9
-    ],
-    [
-     1357.0,
-     642.12
-    ],
-    [
-     1353.62,
-     643.52
-    ],
-    [
-     1350.0,
-     644.0
-    ],
-    [
-     1346.38,
-     643.52
-    ],
-    [
-     1343.0,
-     642.12
-    ],
-    [
-     1340.1,
-     639.9
-    ],
-    [
-     1337.88,
-     637.0
-    ],
-    [
-     1336.48,
-     633.62
-    ],
-    [
-     1336.0,
-     630.0
-    ],
-    [
-     1336.48,
-     626.38
-    ],
-    [
-     1337.88,
-     623.0
-    ],
-    [
-     1340.1,
-     620.1
-    ],
-    [
-     1343.0,
-     617.88
-    ],
-    [
-     1346.38,
-     616.48
-    ],
-    [
-     1350.0,
-     616.0
-    ],
-    [
-     1353.62,
-     616.48
-    ],
-    [
-     1357.0,
-     617.88
-    ],
-    [
-     1359.9,
-     620.1
-    ],
-    [
-     1362.12,
-     623.0
-    ],
-    [
-     1363.52,
-     626.38
-    ]
-   ],
-   "start": -450,
-   "end": -412,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Clamp Knob Right 3",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Clamp Knob Right 3",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Clamp Knob Right 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rail Saddle Right 1",
-   "points": [
-    [
-     -1320.0,
-     380.0
-    ],
-    [
-     -1321.02,
-     387.76
-    ],
-    [
-     -1324.02,
-     395.0
-    ],
-    [
-     -1328.79,
-     401.21
-    ],
-    [
-     -1335.0,
-     405.98
-    ],
-    [
-     -1342.24,
-     408.98
-    ],
-    [
-     -1350.0,
-     410.0
-    ],
-    [
-     -1357.76,
-     408.98
-    ],
-    [
-     -1365.0,
-     405.98
-    ],
-    [
-     -1371.21,
-     401.21
-    ],
-    [
-     -1375.98,
-     395.0
-    ],
-    [
-     -1378.98,
-     387.76
-    ],
-    [
-     -1380.0,
-     380.0
-    ],
-    [
-     -1378.98,
-     372.24
-    ],
-    [
-     -1375.98,
-     365.0
-    ],
-    [
-     -1371.21,
-     358.79
-    ],
-    [
-     -1365.0,
-     354.02
-    ],
-    [
-     -1357.76,
-     351.02
-    ],
-    [
-     -1350.0,
-     350.0
-    ],
-    [
-     -1342.24,
-     351.02
-    ],
-    [
-     -1335.0,
-     354.02
-    ],
-    [
-     -1328.79,
-     358.79
-    ],
-    [
-     -1324.02,
-     365.0
-    ],
-    [
-     -1321.02,
-     372.24
-    ]
-   ],
-   "start": 860,
-   "end": 880
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rail Saddle Right 1",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail Saddle Right 1",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail Saddle Right 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rail Saddle Right 2",
-   "points": [
-    [
-     30.0,
-     380.0
-    ],
-    [
-     28.98,
-     387.76
-    ],
-    [
-     25.98,
-     395.0
-    ],
-    [
-     21.21,
-     401.21
-    ],
-    [
-     15.0,
-     405.98
-    ],
-    [
-     7.76,
-     408.98
-    ],
-    [
-     0.0,
-     410.0
-    ],
-    [
-     -7.76,
-     408.98
-    ],
-    [
-     -15.0,
-     405.98
-    ],
-    [
-     -21.21,
-     401.21
-    ],
-    [
-     -25.98,
-     395.0
-    ],
-    [
-     -28.98,
-     387.76
-    ],
-    [
-     -30.0,
-     380.0
-    ],
-    [
-     -28.98,
-     372.24
-    ],
-    [
-     -25.98,
-     365.0
-    ],
-    [
-     -21.21,
-     358.79
-    ],
-    [
-     -15.0,
-     354.02
-    ],
-    [
-     -7.76,
-     351.02
-    ],
-    [
-     -0.0,
-     350.0
-    ],
-    [
-     7.76,
-     351.02
-    ],
-    [
-     15.0,
-     354.02
-    ],
-    [
-     21.21,
-     358.79
-    ],
-    [
-     25.98,
-     365.0
-    ],
-    [
-     28.98,
-     372.24
-    ]
-   ],
-   "start": 860,
-   "end": 880
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rail Saddle Right 2",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail Saddle Right 2",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail Saddle Right 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rail Saddle Right 3",
-   "points": [
-    [
-     1380.0,
-     380.0
-    ],
-    [
-     1378.98,
-     387.76
-    ],
-    [
-     1375.98,
-     395.0
-    ],
-    [
-     1371.21,
-     401.21
-    ],
-    [
-     1365.0,
-     405.98
-    ],
-    [
-     1357.76,
-     408.98
-    ],
-    [
-     1350.0,
-     410.0
-    ],
-    [
-     1342.24,
-     408.98
-    ],
-    [
-     1335.0,
-     405.98
-    ],
-    [
-     1328.79,
-     401.21
-    ],
-    [
-     1324.02,
-     395.0
-    ],
-    [
-     1321.02,
-     387.76
-    ],
-    [
-     1320.0,
-     380.0
-    ],
-    [
-     1321.02,
-     372.24
-    ],
-    [
-     1324.02,
-     365.0
-    ],
-    [
-     1328.79,
-     358.79
-    ],
-    [
-     1335.0,
-     354.02
-    ],
-    [
-     1342.24,
-     351.02
-    ],
-    [
-     1350.0,
-     350.0
-    ],
-    [
-     1357.76,
-     351.02
-    ],
-    [
-     1365.0,
-     354.02
-    ],
-    [
-     1371.21,
-     358.79
-    ],
-    [
-     1375.98,
-     365.0
-    ],
-    [
-     1378.98,
-     372.24
-    ]
-   ],
-   "start": 860,
-   "end": 880
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rail Saddle Right 3",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail Saddle Right 3",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail Saddle Right 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hand Rail Right",
-   "points": [
-    [
-     402.0,
-     900.0
-    ],
-    [
-     401.25,
-     905.69
-    ],
-    [
-     399.05,
-     911.0
-    ],
-    [
-     395.56,
-     915.56
-    ],
-    [
-     391.0,
-     919.05
-    ],
-    [
-     385.69,
-     921.25
-    ],
-    [
-     380.0,
-     922.0
-    ],
-    [
-     374.31,
-     921.25
-    ],
-    [
-     369.0,
-     919.05
-    ],
-    [
-     364.44,
-     915.56
-    ],
-    [
-     360.95,
-     911.0
-    ],
-    [
-     358.75,
-     905.69
-    ],
-    [
-     358.0,
-     900.0
-    ],
-    [
-     358.75,
-     894.31
-    ],
-    [
-     360.95,
-     889.0
-    ],
-    [
-     364.44,
-     884.44
-    ],
-    [
-     369.0,
-     880.95
-    ],
-    [
-     374.31,
-     878.75
-    ],
-    [
-     380.0,
-     878.0
-    ],
-    [
-     385.69,
-     878.75
-    ],
-    [
-     391.0,
-     880.95
-    ],
-    [
-     395.56,
-     884.44
-    ],
-    [
-     399.05,
-     889.0
-    ],
-    [
-     401.25,
-     894.31
-    ]
-   ],
-   "start": -1450,
-   "end": 1450,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hand Rail Right",
-   "subcategory": "Timber2"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hand Rail Right",
-   "param": "Timber2 Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hand Rail Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Rail End Cap Right",
-   "profile": [
-    [
-     0,
-     -1475
-    ],
-    [
-     22,
-     -1450
-    ],
-    [
-     0,
-     -1450
-    ]
-   ],
-   "axis_at": [
-    380,
-    900
-   ],
-   "axis": "x",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail End Cap Right",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail End Cap Right",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Rail End Cap Right Far",
-   "profile": [
-    [
-     0,
-     1450
-    ],
-    [
-     22,
-     1450
-    ],
-    [
-     0,
-     1475
-    ]
-   ],
-   "axis_at": [
-    380,
-    900
-   ],
-   "axis": "x",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail End Cap Right Far",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail End Cap Right Far",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Approach Zone",
-   "points": [
-    [
-     1600,
-     -750
-    ],
-    [
-     3100,
-     -750
-    ],
-    [
-     3100,
-     750
-    ],
-    [
-     1600,
-     750
-    ]
-   ],
-   "start": 0,
-   "end": 10
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Approach Zone",
-   "subcategory": "Clearance Accessibility"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Approach Zone",
-   "coarse": true,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\I\\_Images\\FMC_I_MedEq_Physio_ParallelBars.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_I_MedEq_Physio_ParallelBars",
+  "template": "Metric Generic Model.rft",
+  "about": "Parallel bars modelled as a generic product: platform with rubber non-slip deck and end ramps, base tracks, 3 uprights a side with height collars and clamp knobs, rail saddles, timber hand rails with end caps. Reference: query: physio parallel bars medical equipment hospital; images: https://www.google.com/search?tbm=isch&q=physio+parallel+bars+medical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Medical Equipment"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Earth_Resistance_Ohm",
+      "guid": "0fe20834-bce9-5c3f-a498-96c0b6c61998",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_LPS_Class",
+      "guid": "aa1c5aad-32f5-5ba3-8139-a49a5faba0dd",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Asset_Tag",
+      "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Serial_Number",
+      "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Install_Date",
+      "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Warranty_End",
+      "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Maintenance_Interval_Months",
+      "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_OM_Link",
+      "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Controller_ID",
+      "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Type",
+      "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Signal",
+      "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Protocol",
+      "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_LP_Part",
+      "guid": "7358e31e-0924-5ef8-9e82-c11bf9ad7160",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Extinguisher_Rating",
+      "guid": "59ff9559-a353-5172-9793-e70bce8154c9",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Hose_Length_m",
+      "guid": "38ed9a83-2f51-56d9-930f-4fab315adbb5",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Sign_Code",
+      "guid": "308bad99-638f-5312-920b-abcd5888e7f3",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Design_Movement",
+      "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
+      "instance": true
+    },
+    {
+      "op": "add_type",
+      "name": "3000x900_HeightAdj"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000x900_HeightAdj/FMC_Cost_Unit",
+      "type": "3000x900_HeightAdj",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000x900_HeightAdj/FMC_Geometry_Stage",
+      "type": "3000x900_HeightAdj",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000x900_HeightAdj/IfcExportAs",
+      "type": "3000x900_HeightAdj",
+      "param": "IfcExportAs",
+      "value": "IfcMedicalDevice"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000x900_HeightAdj/Description",
+      "type": "3000x900_HeightAdj",
+      "param": "Description",
+      "value": "Physiotherapy parallel walking bars 3000 x 900, timber platform with non-slip deck and end ramps, height-adjustable uprights on base tracks, timber hand rails"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000x900_HeightAdj/Keynote",
+      "type": "3000x900_HeightAdj",
+      "param": "Keynote",
+      "value": "F.MED_27"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000x900_HeightAdj/FMC_Keynote_Code",
+      "type": "3000x900_HeightAdj",
+      "param": "FMC_Keynote_Code",
+      "value": "F.MED_27"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000x900_HeightAdj/FMC_Code_Description",
+      "type": "3000x900_HeightAdj",
+      "param": "FMC_Code_Description",
+      "value": "Physio ParallelBars: Parallel walking bars"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000x900_HeightAdj/FMC_Code_Group",
+      "type": "3000x900_HeightAdj",
+      "param": "FMC_Code_Group",
+      "value": "F.MED"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000x900_HeightAdj/FMC_Role_Code",
+      "type": "3000x900_HeightAdj",
+      "param": "FMC_Role_Code",
+      "value": "I"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Timber",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Timber Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Timber_Mvule",
+      "param": "Timber Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Deck",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Deck Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Rubber_Black",
+      "param": "Deck Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Frame",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Frame Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Steel_EpoxyCoated_White",
+      "param": "Frame Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Timber2",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Timber2 Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Timber_Musizi",
+      "param": "Timber2 Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Clearance Accessibility",
+      "color": [
+        80,
+        122,
+        160
+      ],
+      "line_weight_projection": 1,
+      "line_weight_cut": 1
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -1600,
+          -450
+        ],
+        [
+          1600,
+          -450
+        ],
+        [
+          1600,
+          450
+        ],
+        [
+          -1600,
+          450
+        ]
+      ],
+      "start": 0,
+      "end": 922
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Platform",
+      "points": [
+        [
+          1490,
+          -450
+        ],
+        [
+          1493.83,
+          -449.24
+        ],
+        [
+          1497.07,
+          -447.07
+        ],
+        [
+          1499.24,
+          -443.83
+        ],
+        [
+          1500,
+          -440
+        ],
+        [
+          1500,
+          440
+        ],
+        [
+          1499.24,
+          443.83
+        ],
+        [
+          1497.07,
+          447.07
+        ],
+        [
+          1493.83,
+          449.24
+        ],
+        [
+          1490,
+          450
+        ],
+        [
+          -1490,
+          450
+        ],
+        [
+          -1493.83,
+          449.24
+        ],
+        [
+          -1497.07,
+          447.07
+        ],
+        [
+          -1499.24,
+          443.83
+        ],
+        [
+          -1500,
+          440
+        ],
+        [
+          -1500,
+          -440
+        ],
+        [
+          -1499.24,
+          -443.83
+        ],
+        [
+          -1497.07,
+          -447.07
+        ],
+        [
+          -1493.83,
+          -449.24
+        ],
+        [
+          -1490,
+          -450
+        ]
+      ],
+      "start": 0,
+      "end": 40
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Platform",
+      "subcategory": "Timber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Platform",
+      "param": "Timber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Platform",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Non Slip Deck",
+      "points": [
+        [
+          -1450,
+          -400
+        ],
+        [
+          1450,
+          -400
+        ],
+        [
+          1450,
+          400
+        ],
+        [
+          -1450,
+          400
+        ]
+      ],
+      "start": 40,
+      "end": 44
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Non Slip Deck",
+      "subcategory": "Deck"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Non Slip Deck",
+      "param": "Deck Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Non Slip Deck",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Ramp End",
+      "points": [
+        [
+          -1600,
+          0
+        ],
+        [
+          -1500,
+          0
+        ],
+        [
+          -1500,
+          40
+        ]
+      ],
+      "start": -450,
+      "end": 450,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Ramp End",
+      "subcategory": "Deck"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Ramp End",
+      "param": "Deck Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Ramp End",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Ramp Start",
+      "points": [
+        [
+          1500,
+          0
+        ],
+        [
+          1600,
+          0
+        ],
+        [
+          1500,
+          40
+        ]
+      ],
+      "start": -450,
+      "end": 450,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Ramp Start",
+      "subcategory": "Deck"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Ramp Start",
+      "param": "Deck Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Ramp Start",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Base Track Left",
+      "points": [
+        [
+          1442,
+          -420
+        ],
+        [
+          1445.06,
+          -419.39
+        ],
+        [
+          1447.66,
+          -417.66
+        ],
+        [
+          1449.39,
+          -415.06
+        ],
+        [
+          1450,
+          -412
+        ],
+        [
+          1450,
+          -348
+        ],
+        [
+          1449.39,
+          -344.94
+        ],
+        [
+          1447.66,
+          -342.34
+        ],
+        [
+          1445.06,
+          -340.61
+        ],
+        [
+          1442,
+          -340
+        ],
+        [
+          -1442,
+          -340
+        ],
+        [
+          -1445.06,
+          -340.61
+        ],
+        [
+          -1447.66,
+          -342.34
+        ],
+        [
+          -1449.39,
+          -344.94
+        ],
+        [
+          -1450,
+          -348
+        ],
+        [
+          -1450,
+          -412
+        ],
+        [
+          -1449.39,
+          -415.06
+        ],
+        [
+          -1447.66,
+          -417.66
+        ],
+        [
+          -1445.06,
+          -419.39
+        ],
+        [
+          -1442,
+          -420
+        ]
+      ],
+      "start": 44,
+      "end": 60
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Base Track Left",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Base Track Left",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Base Track Left",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Upright Left 1",
+      "points": [
+        [
+          -1325,
+          -380
+        ],
+        [
+          -1325.85,
+          -373.53
+        ],
+        [
+          -1328.35,
+          -367.5
+        ],
+        [
+          -1332.32,
+          -362.32
+        ],
+        [
+          -1337.5,
+          -358.35
+        ],
+        [
+          -1343.53,
+          -355.85
+        ],
+        [
+          -1350,
+          -355
+        ],
+        [
+          -1356.47,
+          -355.85
+        ],
+        [
+          -1362.5,
+          -358.35
+        ],
+        [
+          -1367.68,
+          -362.32
+        ],
+        [
+          -1371.65,
+          -367.5
+        ],
+        [
+          -1374.15,
+          -373.53
+        ],
+        [
+          -1375,
+          -380
+        ],
+        [
+          -1374.15,
+          -386.47
+        ],
+        [
+          -1371.65,
+          -392.5
+        ],
+        [
+          -1367.68,
+          -397.68
+        ],
+        [
+          -1362.5,
+          -401.65
+        ],
+        [
+          -1356.47,
+          -404.15
+        ],
+        [
+          -1350,
+          -405
+        ],
+        [
+          -1343.53,
+          -404.15
+        ],
+        [
+          -1337.5,
+          -401.65
+        ],
+        [
+          -1332.32,
+          -397.68
+        ],
+        [
+          -1328.35,
+          -392.5
+        ],
+        [
+          -1325.85,
+          -386.47
+        ]
+      ],
+      "start": 60,
+      "end": 860
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Upright Left 1",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Upright Left 1",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Upright Left 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Upright Left 2",
+      "points": [
+        [
+          25,
+          -380
+        ],
+        [
+          24.15,
+          -373.53
+        ],
+        [
+          21.65,
+          -367.5
+        ],
+        [
+          17.68,
+          -362.32
+        ],
+        [
+          12.5,
+          -358.35
+        ],
+        [
+          6.47,
+          -355.85
+        ],
+        [
+          0,
+          -355
+        ],
+        [
+          -6.47,
+          -355.85
+        ],
+        [
+          -12.5,
+          -358.35
+        ],
+        [
+          -17.68,
+          -362.32
+        ],
+        [
+          -21.65,
+          -367.5
+        ],
+        [
+          -24.15,
+          -373.53
+        ],
+        [
+          -25,
+          -380
+        ],
+        [
+          -24.15,
+          -386.47
+        ],
+        [
+          -21.65,
+          -392.5
+        ],
+        [
+          -17.68,
+          -397.68
+        ],
+        [
+          -12.5,
+          -401.65
+        ],
+        [
+          -6.47,
+          -404.15
+        ],
+        [
+          0,
+          -405
+        ],
+        [
+          6.47,
+          -404.15
+        ],
+        [
+          12.5,
+          -401.65
+        ],
+        [
+          17.68,
+          -397.68
+        ],
+        [
+          21.65,
+          -392.5
+        ],
+        [
+          24.15,
+          -386.47
+        ]
+      ],
+      "start": 60,
+      "end": 860
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Upright Left 2",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Upright Left 2",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Upright Left 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Upright Left 3",
+      "points": [
+        [
+          1375,
+          -380
+        ],
+        [
+          1374.15,
+          -373.53
+        ],
+        [
+          1371.65,
+          -367.5
+        ],
+        [
+          1367.68,
+          -362.32
+        ],
+        [
+          1362.5,
+          -358.35
+        ],
+        [
+          1356.47,
+          -355.85
+        ],
+        [
+          1350,
+          -355
+        ],
+        [
+          1343.53,
+          -355.85
+        ],
+        [
+          1337.5,
+          -358.35
+        ],
+        [
+          1332.32,
+          -362.32
+        ],
+        [
+          1328.35,
+          -367.5
+        ],
+        [
+          1325.85,
+          -373.53
+        ],
+        [
+          1325,
+          -380
+        ],
+        [
+          1325.85,
+          -386.47
+        ],
+        [
+          1328.35,
+          -392.5
+        ],
+        [
+          1332.32,
+          -397.68
+        ],
+        [
+          1337.5,
+          -401.65
+        ],
+        [
+          1343.53,
+          -404.15
+        ],
+        [
+          1350,
+          -405
+        ],
+        [
+          1356.47,
+          -404.15
+        ],
+        [
+          1362.5,
+          -401.65
+        ],
+        [
+          1367.68,
+          -397.68
+        ],
+        [
+          1371.65,
+          -392.5
+        ],
+        [
+          1374.15,
+          -386.47
+        ]
+      ],
+      "start": 60,
+      "end": 860
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Upright Left 3",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Upright Left 3",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Upright Left 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Height Collar Left 1",
+      "points": [
+        [
+          -1318,
+          -380
+        ],
+        [
+          -1319.09,
+          -371.72
+        ],
+        [
+          -1322.29,
+          -364
+        ],
+        [
+          -1327.37,
+          -357.37
+        ],
+        [
+          -1334,
+          -352.29
+        ],
+        [
+          -1341.72,
+          -349.09
+        ],
+        [
+          -1350,
+          -348
+        ],
+        [
+          -1358.28,
+          -349.09
+        ],
+        [
+          -1366,
+          -352.29
+        ],
+        [
+          -1372.63,
+          -357.37
+        ],
+        [
+          -1377.71,
+          -364
+        ],
+        [
+          -1380.91,
+          -371.72
+        ],
+        [
+          -1382,
+          -380
+        ],
+        [
+          -1380.91,
+          -388.28
+        ],
+        [
+          -1377.71,
+          -396
+        ],
+        [
+          -1372.63,
+          -402.63
+        ],
+        [
+          -1366,
+          -407.71
+        ],
+        [
+          -1358.28,
+          -410.91
+        ],
+        [
+          -1350,
+          -412
+        ],
+        [
+          -1341.72,
+          -410.91
+        ],
+        [
+          -1334,
+          -407.71
+        ],
+        [
+          -1327.37,
+          -402.63
+        ],
+        [
+          -1322.29,
+          -396
+        ],
+        [
+          -1319.09,
+          -388.28
+        ]
+      ],
+      "start": 600,
+      "end": 660
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Height Collar Left 1",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Height Collar Left 1",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Height Collar Left 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Height Collar Left 2",
+      "points": [
+        [
+          32,
+          -380
+        ],
+        [
+          30.91,
+          -371.72
+        ],
+        [
+          27.71,
+          -364
+        ],
+        [
+          22.63,
+          -357.37
+        ],
+        [
+          16,
+          -352.29
+        ],
+        [
+          8.28,
+          -349.09
+        ],
+        [
+          0,
+          -348
+        ],
+        [
+          -8.28,
+          -349.09
+        ],
+        [
+          -16,
+          -352.29
+        ],
+        [
+          -22.63,
+          -357.37
+        ],
+        [
+          -27.71,
+          -364
+        ],
+        [
+          -30.91,
+          -371.72
+        ],
+        [
+          -32,
+          -380
+        ],
+        [
+          -30.91,
+          -388.28
+        ],
+        [
+          -27.71,
+          -396
+        ],
+        [
+          -22.63,
+          -402.63
+        ],
+        [
+          -16,
+          -407.71
+        ],
+        [
+          -8.28,
+          -410.91
+        ],
+        [
+          0,
+          -412
+        ],
+        [
+          8.28,
+          -410.91
+        ],
+        [
+          16,
+          -407.71
+        ],
+        [
+          22.63,
+          -402.63
+        ],
+        [
+          27.71,
+          -396
+        ],
+        [
+          30.91,
+          -388.28
+        ]
+      ],
+      "start": 600,
+      "end": 660
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Height Collar Left 2",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Height Collar Left 2",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Height Collar Left 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Height Collar Left 3",
+      "points": [
+        [
+          1382,
+          -380
+        ],
+        [
+          1380.91,
+          -371.72
+        ],
+        [
+          1377.71,
+          -364
+        ],
+        [
+          1372.63,
+          -357.37
+        ],
+        [
+          1366,
+          -352.29
+        ],
+        [
+          1358.28,
+          -349.09
+        ],
+        [
+          1350,
+          -348
+        ],
+        [
+          1341.72,
+          -349.09
+        ],
+        [
+          1334,
+          -352.29
+        ],
+        [
+          1327.37,
+          -357.37
+        ],
+        [
+          1322.29,
+          -364
+        ],
+        [
+          1319.09,
+          -371.72
+        ],
+        [
+          1318,
+          -380
+        ],
+        [
+          1319.09,
+          -388.28
+        ],
+        [
+          1322.29,
+          -396
+        ],
+        [
+          1327.37,
+          -402.63
+        ],
+        [
+          1334,
+          -407.71
+        ],
+        [
+          1341.72,
+          -410.91
+        ],
+        [
+          1350,
+          -412
+        ],
+        [
+          1358.28,
+          -410.91
+        ],
+        [
+          1366,
+          -407.71
+        ],
+        [
+          1372.63,
+          -402.63
+        ],
+        [
+          1377.71,
+          -396
+        ],
+        [
+          1380.91,
+          -388.28
+        ]
+      ],
+      "start": 600,
+      "end": 660
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Height Collar Left 3",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Height Collar Left 3",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Height Collar Left 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Clamp Knob Left 1",
+      "points": [
+        [
+          -1336,
+          630
+        ],
+        [
+          -1336.48,
+          633.62
+        ],
+        [
+          -1337.88,
+          637
+        ],
+        [
+          -1340.1,
+          639.9
+        ],
+        [
+          -1343,
+          642.12
+        ],
+        [
+          -1346.38,
+          643.52
+        ],
+        [
+          -1350,
+          644
+        ],
+        [
+          -1353.62,
+          643.52
+        ],
+        [
+          -1357,
+          642.12
+        ],
+        [
+          -1359.9,
+          639.9
+        ],
+        [
+          -1362.12,
+          637
+        ],
+        [
+          -1363.52,
+          633.62
+        ],
+        [
+          -1364,
+          630
+        ],
+        [
+          -1363.52,
+          626.38
+        ],
+        [
+          -1362.12,
+          623
+        ],
+        [
+          -1359.9,
+          620.1
+        ],
+        [
+          -1357,
+          617.88
+        ],
+        [
+          -1353.62,
+          616.48
+        ],
+        [
+          -1350,
+          616
+        ],
+        [
+          -1346.38,
+          616.48
+        ],
+        [
+          -1343,
+          617.88
+        ],
+        [
+          -1340.1,
+          620.1
+        ],
+        [
+          -1337.88,
+          623
+        ],
+        [
+          -1336.48,
+          626.38
+        ]
+      ],
+      "start": 412,
+      "end": 450,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Clamp Knob Left 1",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Clamp Knob Left 1",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Clamp Knob Left 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Clamp Knob Left 2",
+      "points": [
+        [
+          14,
+          630
+        ],
+        [
+          13.52,
+          633.62
+        ],
+        [
+          12.12,
+          637
+        ],
+        [
+          9.9,
+          639.9
+        ],
+        [
+          7,
+          642.12
+        ],
+        [
+          3.62,
+          643.52
+        ],
+        [
+          0,
+          644
+        ],
+        [
+          -3.62,
+          643.52
+        ],
+        [
+          -7,
+          642.12
+        ],
+        [
+          -9.9,
+          639.9
+        ],
+        [
+          -12.12,
+          637
+        ],
+        [
+          -13.52,
+          633.62
+        ],
+        [
+          -14,
+          630
+        ],
+        [
+          -13.52,
+          626.38
+        ],
+        [
+          -12.12,
+          623
+        ],
+        [
+          -9.9,
+          620.1
+        ],
+        [
+          -7,
+          617.88
+        ],
+        [
+          -3.62,
+          616.48
+        ],
+        [
+          0,
+          616
+        ],
+        [
+          3.62,
+          616.48
+        ],
+        [
+          7,
+          617.88
+        ],
+        [
+          9.9,
+          620.1
+        ],
+        [
+          12.12,
+          623
+        ],
+        [
+          13.52,
+          626.38
+        ]
+      ],
+      "start": 412,
+      "end": 450,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Clamp Knob Left 2",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Clamp Knob Left 2",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Clamp Knob Left 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Clamp Knob Left 3",
+      "points": [
+        [
+          1364,
+          630
+        ],
+        [
+          1363.52,
+          633.62
+        ],
+        [
+          1362.12,
+          637
+        ],
+        [
+          1359.9,
+          639.9
+        ],
+        [
+          1357,
+          642.12
+        ],
+        [
+          1353.62,
+          643.52
+        ],
+        [
+          1350,
+          644
+        ],
+        [
+          1346.38,
+          643.52
+        ],
+        [
+          1343,
+          642.12
+        ],
+        [
+          1340.1,
+          639.9
+        ],
+        [
+          1337.88,
+          637
+        ],
+        [
+          1336.48,
+          633.62
+        ],
+        [
+          1336,
+          630
+        ],
+        [
+          1336.48,
+          626.38
+        ],
+        [
+          1337.88,
+          623
+        ],
+        [
+          1340.1,
+          620.1
+        ],
+        [
+          1343,
+          617.88
+        ],
+        [
+          1346.38,
+          616.48
+        ],
+        [
+          1350,
+          616
+        ],
+        [
+          1353.62,
+          616.48
+        ],
+        [
+          1357,
+          617.88
+        ],
+        [
+          1359.9,
+          620.1
+        ],
+        [
+          1362.12,
+          623
+        ],
+        [
+          1363.52,
+          626.38
+        ]
+      ],
+      "start": 412,
+      "end": 450,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Clamp Knob Left 3",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Clamp Knob Left 3",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Clamp Knob Left 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rail Saddle Left 1",
+      "points": [
+        [
+          -1320,
+          -380
+        ],
+        [
+          -1321.02,
+          -372.24
+        ],
+        [
+          -1324.02,
+          -365
+        ],
+        [
+          -1328.79,
+          -358.79
+        ],
+        [
+          -1335,
+          -354.02
+        ],
+        [
+          -1342.24,
+          -351.02
+        ],
+        [
+          -1350,
+          -350
+        ],
+        [
+          -1357.76,
+          -351.02
+        ],
+        [
+          -1365,
+          -354.02
+        ],
+        [
+          -1371.21,
+          -358.79
+        ],
+        [
+          -1375.98,
+          -365
+        ],
+        [
+          -1378.98,
+          -372.24
+        ],
+        [
+          -1380,
+          -380
+        ],
+        [
+          -1378.98,
+          -387.76
+        ],
+        [
+          -1375.98,
+          -395
+        ],
+        [
+          -1371.21,
+          -401.21
+        ],
+        [
+          -1365,
+          -405.98
+        ],
+        [
+          -1357.76,
+          -408.98
+        ],
+        [
+          -1350,
+          -410
+        ],
+        [
+          -1342.24,
+          -408.98
+        ],
+        [
+          -1335,
+          -405.98
+        ],
+        [
+          -1328.79,
+          -401.21
+        ],
+        [
+          -1324.02,
+          -395
+        ],
+        [
+          -1321.02,
+          -387.76
+        ]
+      ],
+      "start": 860,
+      "end": 880
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rail Saddle Left 1",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rail Saddle Left 1",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rail Saddle Left 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rail Saddle Left 2",
+      "points": [
+        [
+          30,
+          -380
+        ],
+        [
+          28.98,
+          -372.24
+        ],
+        [
+          25.98,
+          -365
+        ],
+        [
+          21.21,
+          -358.79
+        ],
+        [
+          15,
+          -354.02
+        ],
+        [
+          7.76,
+          -351.02
+        ],
+        [
+          0,
+          -350
+        ],
+        [
+          -7.76,
+          -351.02
+        ],
+        [
+          -15,
+          -354.02
+        ],
+        [
+          -21.21,
+          -358.79
+        ],
+        [
+          -25.98,
+          -365
+        ],
+        [
+          -28.98,
+          -372.24
+        ],
+        [
+          -30,
+          -380
+        ],
+        [
+          -28.98,
+          -387.76
+        ],
+        [
+          -25.98,
+          -395
+        ],
+        [
+          -21.21,
+          -401.21
+        ],
+        [
+          -15,
+          -405.98
+        ],
+        [
+          -7.76,
+          -408.98
+        ],
+        [
+          0,
+          -410
+        ],
+        [
+          7.76,
+          -408.98
+        ],
+        [
+          15,
+          -405.98
+        ],
+        [
+          21.21,
+          -401.21
+        ],
+        [
+          25.98,
+          -395
+        ],
+        [
+          28.98,
+          -387.76
+        ]
+      ],
+      "start": 860,
+      "end": 880
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rail Saddle Left 2",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rail Saddle Left 2",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rail Saddle Left 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rail Saddle Left 3",
+      "points": [
+        [
+          1380,
+          -380
+        ],
+        [
+          1378.98,
+          -372.24
+        ],
+        [
+          1375.98,
+          -365
+        ],
+        [
+          1371.21,
+          -358.79
+        ],
+        [
+          1365,
+          -354.02
+        ],
+        [
+          1357.76,
+          -351.02
+        ],
+        [
+          1350,
+          -350
+        ],
+        [
+          1342.24,
+          -351.02
+        ],
+        [
+          1335,
+          -354.02
+        ],
+        [
+          1328.79,
+          -358.79
+        ],
+        [
+          1324.02,
+          -365
+        ],
+        [
+          1321.02,
+          -372.24
+        ],
+        [
+          1320,
+          -380
+        ],
+        [
+          1321.02,
+          -387.76
+        ],
+        [
+          1324.02,
+          -395
+        ],
+        [
+          1328.79,
+          -401.21
+        ],
+        [
+          1335,
+          -405.98
+        ],
+        [
+          1342.24,
+          -408.98
+        ],
+        [
+          1350,
+          -410
+        ],
+        [
+          1357.76,
+          -408.98
+        ],
+        [
+          1365,
+          -405.98
+        ],
+        [
+          1371.21,
+          -401.21
+        ],
+        [
+          1375.98,
+          -395
+        ],
+        [
+          1378.98,
+          -387.76
+        ]
+      ],
+      "start": 860,
+      "end": 880
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rail Saddle Left 3",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rail Saddle Left 3",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rail Saddle Left 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hand Rail Left",
+      "points": [
+        [
+          -358,
+          900
+        ],
+        [
+          -358.75,
+          905.69
+        ],
+        [
+          -360.95,
+          911
+        ],
+        [
+          -364.44,
+          915.56
+        ],
+        [
+          -369,
+          919.05
+        ],
+        [
+          -374.31,
+          921.25
+        ],
+        [
+          -380,
+          922
+        ],
+        [
+          -385.69,
+          921.25
+        ],
+        [
+          -391,
+          919.05
+        ],
+        [
+          -395.56,
+          915.56
+        ],
+        [
+          -399.05,
+          911
+        ],
+        [
+          -401.25,
+          905.69
+        ],
+        [
+          -402,
+          900
+        ],
+        [
+          -401.25,
+          894.31
+        ],
+        [
+          -399.05,
+          889
+        ],
+        [
+          -395.56,
+          884.44
+        ],
+        [
+          -391,
+          880.95
+        ],
+        [
+          -385.69,
+          878.75
+        ],
+        [
+          -380,
+          878
+        ],
+        [
+          -374.31,
+          878.75
+        ],
+        [
+          -369,
+          880.95
+        ],
+        [
+          -364.44,
+          884.44
+        ],
+        [
+          -360.95,
+          889
+        ],
+        [
+          -358.75,
+          894.31
+        ]
+      ],
+      "start": -1450,
+      "end": 1450,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hand Rail Left",
+      "subcategory": "Timber2"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hand Rail Left",
+      "param": "Timber2 Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hand Rail Left",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Rail End Cap Left",
+      "profile": [
+        [
+          0,
+          -1475
+        ],
+        [
+          22,
+          -1450
+        ],
+        [
+          0,
+          -1450
+        ]
+      ],
+      "axis_at": [
+        -380,
+        900
+      ],
+      "axis": "x",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rail End Cap Left",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rail End Cap Left",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Rail End Cap Left Far",
+      "profile": [
+        [
+          0,
+          1450
+        ],
+        [
+          22,
+          1450
+        ],
+        [
+          0,
+          1475
+        ]
+      ],
+      "axis_at": [
+        -380,
+        900
+      ],
+      "axis": "x",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rail End Cap Left Far",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rail End Cap Left Far",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Base Track Right",
+      "points": [
+        [
+          1442,
+          340
+        ],
+        [
+          1445.06,
+          340.61
+        ],
+        [
+          1447.66,
+          342.34
+        ],
+        [
+          1449.39,
+          344.94
+        ],
+        [
+          1450,
+          348
+        ],
+        [
+          1450,
+          412
+        ],
+        [
+          1449.39,
+          415.06
+        ],
+        [
+          1447.66,
+          417.66
+        ],
+        [
+          1445.06,
+          419.39
+        ],
+        [
+          1442,
+          420
+        ],
+        [
+          -1442,
+          420
+        ],
+        [
+          -1445.06,
+          419.39
+        ],
+        [
+          -1447.66,
+          417.66
+        ],
+        [
+          -1449.39,
+          415.06
+        ],
+        [
+          -1450,
+          412
+        ],
+        [
+          -1450,
+          348
+        ],
+        [
+          -1449.39,
+          344.94
+        ],
+        [
+          -1447.66,
+          342.34
+        ],
+        [
+          -1445.06,
+          340.61
+        ],
+        [
+          -1442,
+          340
+        ]
+      ],
+      "start": 44,
+      "end": 60
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Base Track Right",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Base Track Right",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Base Track Right",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Upright Right 1",
+      "points": [
+        [
+          -1325,
+          380
+        ],
+        [
+          -1325.85,
+          386.47
+        ],
+        [
+          -1328.35,
+          392.5
+        ],
+        [
+          -1332.32,
+          397.68
+        ],
+        [
+          -1337.5,
+          401.65
+        ],
+        [
+          -1343.53,
+          404.15
+        ],
+        [
+          -1350,
+          405
+        ],
+        [
+          -1356.47,
+          404.15
+        ],
+        [
+          -1362.5,
+          401.65
+        ],
+        [
+          -1367.68,
+          397.68
+        ],
+        [
+          -1371.65,
+          392.5
+        ],
+        [
+          -1374.15,
+          386.47
+        ],
+        [
+          -1375,
+          380
+        ],
+        [
+          -1374.15,
+          373.53
+        ],
+        [
+          -1371.65,
+          367.5
+        ],
+        [
+          -1367.68,
+          362.32
+        ],
+        [
+          -1362.5,
+          358.35
+        ],
+        [
+          -1356.47,
+          355.85
+        ],
+        [
+          -1350,
+          355
+        ],
+        [
+          -1343.53,
+          355.85
+        ],
+        [
+          -1337.5,
+          358.35
+        ],
+        [
+          -1332.32,
+          362.32
+        ],
+        [
+          -1328.35,
+          367.5
+        ],
+        [
+          -1325.85,
+          373.53
+        ]
+      ],
+      "start": 60,
+      "end": 860
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Upright Right 1",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Upright Right 1",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Upright Right 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Upright Right 2",
+      "points": [
+        [
+          25,
+          380
+        ],
+        [
+          24.15,
+          386.47
+        ],
+        [
+          21.65,
+          392.5
+        ],
+        [
+          17.68,
+          397.68
+        ],
+        [
+          12.5,
+          401.65
+        ],
+        [
+          6.47,
+          404.15
+        ],
+        [
+          0,
+          405
+        ],
+        [
+          -6.47,
+          404.15
+        ],
+        [
+          -12.5,
+          401.65
+        ],
+        [
+          -17.68,
+          397.68
+        ],
+        [
+          -21.65,
+          392.5
+        ],
+        [
+          -24.15,
+          386.47
+        ],
+        [
+          -25,
+          380
+        ],
+        [
+          -24.15,
+          373.53
+        ],
+        [
+          -21.65,
+          367.5
+        ],
+        [
+          -17.68,
+          362.32
+        ],
+        [
+          -12.5,
+          358.35
+        ],
+        [
+          -6.47,
+          355.85
+        ],
+        [
+          0,
+          355
+        ],
+        [
+          6.47,
+          355.85
+        ],
+        [
+          12.5,
+          358.35
+        ],
+        [
+          17.68,
+          362.32
+        ],
+        [
+          21.65,
+          367.5
+        ],
+        [
+          24.15,
+          373.53
+        ]
+      ],
+      "start": 60,
+      "end": 860
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Upright Right 2",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Upright Right 2",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Upright Right 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Upright Right 3",
+      "points": [
+        [
+          1375,
+          380
+        ],
+        [
+          1374.15,
+          386.47
+        ],
+        [
+          1371.65,
+          392.5
+        ],
+        [
+          1367.68,
+          397.68
+        ],
+        [
+          1362.5,
+          401.65
+        ],
+        [
+          1356.47,
+          404.15
+        ],
+        [
+          1350,
+          405
+        ],
+        [
+          1343.53,
+          404.15
+        ],
+        [
+          1337.5,
+          401.65
+        ],
+        [
+          1332.32,
+          397.68
+        ],
+        [
+          1328.35,
+          392.5
+        ],
+        [
+          1325.85,
+          386.47
+        ],
+        [
+          1325,
+          380
+        ],
+        [
+          1325.85,
+          373.53
+        ],
+        [
+          1328.35,
+          367.5
+        ],
+        [
+          1332.32,
+          362.32
+        ],
+        [
+          1337.5,
+          358.35
+        ],
+        [
+          1343.53,
+          355.85
+        ],
+        [
+          1350,
+          355
+        ],
+        [
+          1356.47,
+          355.85
+        ],
+        [
+          1362.5,
+          358.35
+        ],
+        [
+          1367.68,
+          362.32
+        ],
+        [
+          1371.65,
+          367.5
+        ],
+        [
+          1374.15,
+          373.53
+        ]
+      ],
+      "start": 60,
+      "end": 860
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Upright Right 3",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Upright Right 3",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Upright Right 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Height Collar Right 1",
+      "points": [
+        [
+          -1318,
+          380
+        ],
+        [
+          -1319.09,
+          388.28
+        ],
+        [
+          -1322.29,
+          396
+        ],
+        [
+          -1327.37,
+          402.63
+        ],
+        [
+          -1334,
+          407.71
+        ],
+        [
+          -1341.72,
+          410.91
+        ],
+        [
+          -1350,
+          412
+        ],
+        [
+          -1358.28,
+          410.91
+        ],
+        [
+          -1366,
+          407.71
+        ],
+        [
+          -1372.63,
+          402.63
+        ],
+        [
+          -1377.71,
+          396
+        ],
+        [
+          -1380.91,
+          388.28
+        ],
+        [
+          -1382,
+          380
+        ],
+        [
+          -1380.91,
+          371.72
+        ],
+        [
+          -1377.71,
+          364
+        ],
+        [
+          -1372.63,
+          357.37
+        ],
+        [
+          -1366,
+          352.29
+        ],
+        [
+          -1358.28,
+          349.09
+        ],
+        [
+          -1350,
+          348
+        ],
+        [
+          -1341.72,
+          349.09
+        ],
+        [
+          -1334,
+          352.29
+        ],
+        [
+          -1327.37,
+          357.37
+        ],
+        [
+          -1322.29,
+          364
+        ],
+        [
+          -1319.09,
+          371.72
+        ]
+      ],
+      "start": 600,
+      "end": 660
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Height Collar Right 1",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Height Collar Right 1",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Height Collar Right 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Height Collar Right 2",
+      "points": [
+        [
+          32,
+          380
+        ],
+        [
+          30.91,
+          388.28
+        ],
+        [
+          27.71,
+          396
+        ],
+        [
+          22.63,
+          402.63
+        ],
+        [
+          16,
+          407.71
+        ],
+        [
+          8.28,
+          410.91
+        ],
+        [
+          0,
+          412
+        ],
+        [
+          -8.28,
+          410.91
+        ],
+        [
+          -16,
+          407.71
+        ],
+        [
+          -22.63,
+          402.63
+        ],
+        [
+          -27.71,
+          396
+        ],
+        [
+          -30.91,
+          388.28
+        ],
+        [
+          -32,
+          380
+        ],
+        [
+          -30.91,
+          371.72
+        ],
+        [
+          -27.71,
+          364
+        ],
+        [
+          -22.63,
+          357.37
+        ],
+        [
+          -16,
+          352.29
+        ],
+        [
+          -8.28,
+          349.09
+        ],
+        [
+          0,
+          348
+        ],
+        [
+          8.28,
+          349.09
+        ],
+        [
+          16,
+          352.29
+        ],
+        [
+          22.63,
+          357.37
+        ],
+        [
+          27.71,
+          364
+        ],
+        [
+          30.91,
+          371.72
+        ]
+      ],
+      "start": 600,
+      "end": 660
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Height Collar Right 2",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Height Collar Right 2",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Height Collar Right 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Height Collar Right 3",
+      "points": [
+        [
+          1382,
+          380
+        ],
+        [
+          1380.91,
+          388.28
+        ],
+        [
+          1377.71,
+          396
+        ],
+        [
+          1372.63,
+          402.63
+        ],
+        [
+          1366,
+          407.71
+        ],
+        [
+          1358.28,
+          410.91
+        ],
+        [
+          1350,
+          412
+        ],
+        [
+          1341.72,
+          410.91
+        ],
+        [
+          1334,
+          407.71
+        ],
+        [
+          1327.37,
+          402.63
+        ],
+        [
+          1322.29,
+          396
+        ],
+        [
+          1319.09,
+          388.28
+        ],
+        [
+          1318,
+          380
+        ],
+        [
+          1319.09,
+          371.72
+        ],
+        [
+          1322.29,
+          364
+        ],
+        [
+          1327.37,
+          357.37
+        ],
+        [
+          1334,
+          352.29
+        ],
+        [
+          1341.72,
+          349.09
+        ],
+        [
+          1350,
+          348
+        ],
+        [
+          1358.28,
+          349.09
+        ],
+        [
+          1366,
+          352.29
+        ],
+        [
+          1372.63,
+          357.37
+        ],
+        [
+          1377.71,
+          364
+        ],
+        [
+          1380.91,
+          371.72
+        ]
+      ],
+      "start": 600,
+      "end": 660
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Height Collar Right 3",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Height Collar Right 3",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Height Collar Right 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Clamp Knob Right 1",
+      "points": [
+        [
+          -1336,
+          630
+        ],
+        [
+          -1336.48,
+          633.62
+        ],
+        [
+          -1337.88,
+          637
+        ],
+        [
+          -1340.1,
+          639.9
+        ],
+        [
+          -1343,
+          642.12
+        ],
+        [
+          -1346.38,
+          643.52
+        ],
+        [
+          -1350,
+          644
+        ],
+        [
+          -1353.62,
+          643.52
+        ],
+        [
+          -1357,
+          642.12
+        ],
+        [
+          -1359.9,
+          639.9
+        ],
+        [
+          -1362.12,
+          637
+        ],
+        [
+          -1363.52,
+          633.62
+        ],
+        [
+          -1364,
+          630
+        ],
+        [
+          -1363.52,
+          626.38
+        ],
+        [
+          -1362.12,
+          623
+        ],
+        [
+          -1359.9,
+          620.1
+        ],
+        [
+          -1357,
+          617.88
+        ],
+        [
+          -1353.62,
+          616.48
+        ],
+        [
+          -1350,
+          616
+        ],
+        [
+          -1346.38,
+          616.48
+        ],
+        [
+          -1343,
+          617.88
+        ],
+        [
+          -1340.1,
+          620.1
+        ],
+        [
+          -1337.88,
+          623
+        ],
+        [
+          -1336.48,
+          626.38
+        ]
+      ],
+      "start": -450,
+      "end": -412,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Clamp Knob Right 1",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Clamp Knob Right 1",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Clamp Knob Right 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Clamp Knob Right 2",
+      "points": [
+        [
+          14,
+          630
+        ],
+        [
+          13.52,
+          633.62
+        ],
+        [
+          12.12,
+          637
+        ],
+        [
+          9.9,
+          639.9
+        ],
+        [
+          7,
+          642.12
+        ],
+        [
+          3.62,
+          643.52
+        ],
+        [
+          0,
+          644
+        ],
+        [
+          -3.62,
+          643.52
+        ],
+        [
+          -7,
+          642.12
+        ],
+        [
+          -9.9,
+          639.9
+        ],
+        [
+          -12.12,
+          637
+        ],
+        [
+          -13.52,
+          633.62
+        ],
+        [
+          -14,
+          630
+        ],
+        [
+          -13.52,
+          626.38
+        ],
+        [
+          -12.12,
+          623
+        ],
+        [
+          -9.9,
+          620.1
+        ],
+        [
+          -7,
+          617.88
+        ],
+        [
+          -3.62,
+          616.48
+        ],
+        [
+          0,
+          616
+        ],
+        [
+          3.62,
+          616.48
+        ],
+        [
+          7,
+          617.88
+        ],
+        [
+          9.9,
+          620.1
+        ],
+        [
+          12.12,
+          623
+        ],
+        [
+          13.52,
+          626.38
+        ]
+      ],
+      "start": -450,
+      "end": -412,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Clamp Knob Right 2",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Clamp Knob Right 2",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Clamp Knob Right 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Clamp Knob Right 3",
+      "points": [
+        [
+          1364,
+          630
+        ],
+        [
+          1363.52,
+          633.62
+        ],
+        [
+          1362.12,
+          637
+        ],
+        [
+          1359.9,
+          639.9
+        ],
+        [
+          1357,
+          642.12
+        ],
+        [
+          1353.62,
+          643.52
+        ],
+        [
+          1350,
+          644
+        ],
+        [
+          1346.38,
+          643.52
+        ],
+        [
+          1343,
+          642.12
+        ],
+        [
+          1340.1,
+          639.9
+        ],
+        [
+          1337.88,
+          637
+        ],
+        [
+          1336.48,
+          633.62
+        ],
+        [
+          1336,
+          630
+        ],
+        [
+          1336.48,
+          626.38
+        ],
+        [
+          1337.88,
+          623
+        ],
+        [
+          1340.1,
+          620.1
+        ],
+        [
+          1343,
+          617.88
+        ],
+        [
+          1346.38,
+          616.48
+        ],
+        [
+          1350,
+          616
+        ],
+        [
+          1353.62,
+          616.48
+        ],
+        [
+          1357,
+          617.88
+        ],
+        [
+          1359.9,
+          620.1
+        ],
+        [
+          1362.12,
+          623
+        ],
+        [
+          1363.52,
+          626.38
+        ]
+      ],
+      "start": -450,
+      "end": -412,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Clamp Knob Right 3",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Clamp Knob Right 3",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Clamp Knob Right 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rail Saddle Right 1",
+      "points": [
+        [
+          -1320,
+          380
+        ],
+        [
+          -1321.02,
+          387.76
+        ],
+        [
+          -1324.02,
+          395
+        ],
+        [
+          -1328.79,
+          401.21
+        ],
+        [
+          -1335,
+          405.98
+        ],
+        [
+          -1342.24,
+          408.98
+        ],
+        [
+          -1350,
+          410
+        ],
+        [
+          -1357.76,
+          408.98
+        ],
+        [
+          -1365,
+          405.98
+        ],
+        [
+          -1371.21,
+          401.21
+        ],
+        [
+          -1375.98,
+          395
+        ],
+        [
+          -1378.98,
+          387.76
+        ],
+        [
+          -1380,
+          380
+        ],
+        [
+          -1378.98,
+          372.24
+        ],
+        [
+          -1375.98,
+          365
+        ],
+        [
+          -1371.21,
+          358.79
+        ],
+        [
+          -1365,
+          354.02
+        ],
+        [
+          -1357.76,
+          351.02
+        ],
+        [
+          -1350,
+          350
+        ],
+        [
+          -1342.24,
+          351.02
+        ],
+        [
+          -1335,
+          354.02
+        ],
+        [
+          -1328.79,
+          358.79
+        ],
+        [
+          -1324.02,
+          365
+        ],
+        [
+          -1321.02,
+          372.24
+        ]
+      ],
+      "start": 860,
+      "end": 880
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rail Saddle Right 1",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rail Saddle Right 1",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rail Saddle Right 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rail Saddle Right 2",
+      "points": [
+        [
+          30,
+          380
+        ],
+        [
+          28.98,
+          387.76
+        ],
+        [
+          25.98,
+          395
+        ],
+        [
+          21.21,
+          401.21
+        ],
+        [
+          15,
+          405.98
+        ],
+        [
+          7.76,
+          408.98
+        ],
+        [
+          0,
+          410
+        ],
+        [
+          -7.76,
+          408.98
+        ],
+        [
+          -15,
+          405.98
+        ],
+        [
+          -21.21,
+          401.21
+        ],
+        [
+          -25.98,
+          395
+        ],
+        [
+          -28.98,
+          387.76
+        ],
+        [
+          -30,
+          380
+        ],
+        [
+          -28.98,
+          372.24
+        ],
+        [
+          -25.98,
+          365
+        ],
+        [
+          -21.21,
+          358.79
+        ],
+        [
+          -15,
+          354.02
+        ],
+        [
+          -7.76,
+          351.02
+        ],
+        [
+          0,
+          350
+        ],
+        [
+          7.76,
+          351.02
+        ],
+        [
+          15,
+          354.02
+        ],
+        [
+          21.21,
+          358.79
+        ],
+        [
+          25.98,
+          365
+        ],
+        [
+          28.98,
+          372.24
+        ]
+      ],
+      "start": 860,
+      "end": 880
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rail Saddle Right 2",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rail Saddle Right 2",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rail Saddle Right 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rail Saddle Right 3",
+      "points": [
+        [
+          1380,
+          380
+        ],
+        [
+          1378.98,
+          387.76
+        ],
+        [
+          1375.98,
+          395
+        ],
+        [
+          1371.21,
+          401.21
+        ],
+        [
+          1365,
+          405.98
+        ],
+        [
+          1357.76,
+          408.98
+        ],
+        [
+          1350,
+          410
+        ],
+        [
+          1342.24,
+          408.98
+        ],
+        [
+          1335,
+          405.98
+        ],
+        [
+          1328.79,
+          401.21
+        ],
+        [
+          1324.02,
+          395
+        ],
+        [
+          1321.02,
+          387.76
+        ],
+        [
+          1320,
+          380
+        ],
+        [
+          1321.02,
+          372.24
+        ],
+        [
+          1324.02,
+          365
+        ],
+        [
+          1328.79,
+          358.79
+        ],
+        [
+          1335,
+          354.02
+        ],
+        [
+          1342.24,
+          351.02
+        ],
+        [
+          1350,
+          350
+        ],
+        [
+          1357.76,
+          351.02
+        ],
+        [
+          1365,
+          354.02
+        ],
+        [
+          1371.21,
+          358.79
+        ],
+        [
+          1375.98,
+          365
+        ],
+        [
+          1378.98,
+          372.24
+        ]
+      ],
+      "start": 860,
+      "end": 880
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rail Saddle Right 3",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rail Saddle Right 3",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rail Saddle Right 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hand Rail Right",
+      "points": [
+        [
+          402,
+          900
+        ],
+        [
+          401.25,
+          905.69
+        ],
+        [
+          399.05,
+          911
+        ],
+        [
+          395.56,
+          915.56
+        ],
+        [
+          391,
+          919.05
+        ],
+        [
+          385.69,
+          921.25
+        ],
+        [
+          380,
+          922
+        ],
+        [
+          374.31,
+          921.25
+        ],
+        [
+          369,
+          919.05
+        ],
+        [
+          364.44,
+          915.56
+        ],
+        [
+          360.95,
+          911
+        ],
+        [
+          358.75,
+          905.69
+        ],
+        [
+          358,
+          900
+        ],
+        [
+          358.75,
+          894.31
+        ],
+        [
+          360.95,
+          889
+        ],
+        [
+          364.44,
+          884.44
+        ],
+        [
+          369,
+          880.95
+        ],
+        [
+          374.31,
+          878.75
+        ],
+        [
+          380,
+          878
+        ],
+        [
+          385.69,
+          878.75
+        ],
+        [
+          391,
+          880.95
+        ],
+        [
+          395.56,
+          884.44
+        ],
+        [
+          399.05,
+          889
+        ],
+        [
+          401.25,
+          894.31
+        ]
+      ],
+      "start": -1450,
+      "end": 1450,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hand Rail Right",
+      "subcategory": "Timber2"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hand Rail Right",
+      "param": "Timber2 Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hand Rail Right",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Rail End Cap Right",
+      "profile": [
+        [
+          0,
+          -1475
+        ],
+        [
+          22,
+          -1450
+        ],
+        [
+          0,
+          -1450
+        ]
+      ],
+      "axis_at": [
+        380,
+        900
+      ],
+      "axis": "x",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rail End Cap Right",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rail End Cap Right",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Rail End Cap Right Far",
+      "profile": [
+        [
+          0,
+          1450
+        ],
+        [
+          22,
+          1450
+        ],
+        [
+          0,
+          1475
+        ]
+      ],
+      "axis_at": [
+        380,
+        900
+      ],
+      "axis": "x",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rail End Cap Right Far",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rail End Cap Right Far",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Approach Zone",
+      "points": [
+        [
+          1600,
+          -750
+        ],
+        [
+          3100,
+          -750
+        ],
+        [
+          3100,
+          750
+        ],
+        [
+          1600,
+          750
+        ]
+      ],
+      "start": 0,
+      "end": 10
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Approach Zone",
+      "subcategory": "Clearance Accessibility"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Approach Zone",
+      "coarse": true,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\I\\_Images\\FMC_I_MedEq_Physio_ParallelBars.png"
+    }
+  ],
+  "values": {
+    "Length 3000 mm, width 900 mm": {
+      "value": "3000x900",
+      "source_status": "assumed",
+      "source": "record size"
+    },
+    "Rail height 700 to 1000 mm (shown 900)": {
+      "value": "700-1000",
+      "source_status": "assumed",
+      "source": "typical adjustable parallel bars"
+    },
+    "Approach zone 1500 mm at the entry end": {
+      "value": 1500,
+      "source_status": "assumed",
+      "source": "wheelchair turning space, BS 8300 / HBN 00-03"
+    }
   }
- ],
- "values": {
-  "Length 3000 mm, width 900 mm": {
-   "value": "3000x900",
-   "source_status": "assumed",
-   "source": "record size"
-  },
-  "Rail height 700 to 1000 mm (shown 900)": {
-   "value": "700-1000",
-   "source_status": "assumed",
-   "source": "typical adjustable parallel bars"
-  },
-  "Approach zone 1500 mm at the entry end": {
-   "value": 1500,
-   "source_status": "assumed",
-   "source": "wheelchair turning space, BS 8300 / HBN 00-03"
-  }
- }
 }

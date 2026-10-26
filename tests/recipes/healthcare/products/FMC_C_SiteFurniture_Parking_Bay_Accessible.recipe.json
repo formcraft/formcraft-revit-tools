@@ -1,1648 +1,1657 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_C_SiteFurniture_Parking_Bay_Accessible",
- "template": "Metric Generic Model.rft",
- "about": "Ground at z = 0, entry at -y: blue bay surface, side, divider and head lines, four hatch stripes in the transfer zone, wheelchair symbol, wheel stop with yellow bands (Fine), sign post with blue plate. Transfer and rear zones are clearances. Reference: query: site furniture parking bay accessible site hospital; images: https://www.google.com/search?tbm=isch&q=site+furniture+parking+bay+accessible+site+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Site"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Compaction_Pct_MDD",
-   "guid": "3694e24c-eacc-5409-81e2-f985cc1dda60",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_CBR_Pct",
-   "guid": "8c9ca741-f469-5a4d-bdf4-12a2eaaa8901",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Layer_Thickness_mm",
-   "guid": "6e7bbdb7-2de3-5a2a-a889-5f1d9f7db58a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "3600x5000_Accessible"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x5000_Accessible/FMC_Cost_Unit",
-   "type": "3600x5000_Accessible",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x5000_Accessible/FMC_Geometry_Stage",
-   "type": "3600x5000_Accessible",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x5000_Accessible/IfcExportAs",
-   "type": "3600x5000_Accessible",
-   "param": "IfcExportAs",
-   "value": "IfcBuildingElementProxy"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x5000_Accessible/Description",
-   "type": "3600x5000_Accessible",
-   "param": "Description",
-   "value": "Accessible parking bay 2400 x 5000 with a 1200 hatched transfer zone, blue surface, wheelchair symbol, wheel stop and sign"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x5000_Accessible/Keynote",
-   "type": "3600x5000_Accessible",
-   "param": "Keynote",
-   "value": "T.MRK_02"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x5000_Accessible/FMC_Keynote_Code",
-   "type": "3600x5000_Accessible",
-   "param": "FMC_Keynote_Code",
-   "value": "T.MRK_02"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x5000_Accessible/FMC_Code_Description",
-   "type": "3600x5000_Accessible",
-   "param": "FMC_Code_Description",
-   "value": "Parking Bay Accessible: Accessible bay with transfer zone"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x5000_Accessible/FMC_Code_Group",
-   "type": "3600x5000_Accessible",
-   "param": "FMC_Code_Group",
-   "value": "T.MRK"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x5000_Accessible/FMC_Role_Code",
-   "type": "3600x5000_Accessible",
-   "param": "FMC_Role_Code",
-   "value": "C"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Blue",
-   "color": [
-    47,
-    109,
-    181
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Blue Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Blue",
-   "param": "Blue Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "White",
-   "color": [
-    242,
-    242,
-    242
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "White Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Paint_RoadMarking_White",
-   "param": "White Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Kerb",
-   "color": [
-    181,
-    178,
-    170
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Kerb Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Concrete_Kerb_Precast",
-   "param": "Kerb Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Yellow",
-   "color": [
-    242,
-    194,
-    48
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Yellow Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Yellow",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Galv",
-   "color": [
-    167,
-    172,
-    175
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Galv Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_ColdFormed_Galvanised",
-   "param": "Galv Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Abswhite",
-   "color": [
-    242,
-    242,
-    238
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Abswhite Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_White",
-   "param": "Abswhite Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Clearance Accessibility",
-   "color": [
-    111,
-    168,
-    220
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Clearance Accessibility",
-   "color": [
-    111,
-    168,
-    220
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -1800,
-     -2500
-    ],
-    [
-     1800,
-     -2500
-    ],
-    [
-     1800,
-     2788.0
-    ],
-    [
-     -1800,
-     2788.0
-    ]
-   ],
-   "start": 0,
-   "end": 2400
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Bay Surface",
-   "points": [
-    [
-     -1800,
-     -2500
-    ],
-    [
-     600,
-     -2500
-    ],
-    [
-     600,
-     2500
-    ],
-    [
-     -1800,
-     2500
-    ]
-   ],
-   "start": 0,
-   "end": 2
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bay Surface",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bay Surface",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bay Surface",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Side Line Left",
-   "points": [
-    [
-     -1800,
-     -2500
-    ],
-    [
-     -1700,
-     -2500
-    ],
-    [
-     -1700,
-     2500
-    ],
-    [
-     -1800,
-     2500
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Side Line Left",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Side Line Left",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Side Line Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Side Line Right",
-   "points": [
-    [
-     1700,
-     -2500
-    ],
-    [
-     1800,
-     -2500
-    ],
-    [
-     1800,
-     2500
-    ],
-    [
-     1700,
-     2500
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Side Line Right",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Side Line Right",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Side Line Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Divider Line",
-   "points": [
-    [
-     550,
-     -2500
-    ],
-    [
-     650,
-     -2500
-    ],
-    [
-     650,
-     2500
-    ],
-    [
-     550,
-     2500
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Divider Line",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Divider Line",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Divider Line",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Head Line",
-   "points": [
-    [
-     -1800,
-     2400
-    ],
-    [
-     1800,
-     2400
-    ],
-    [
-     1800,
-     2500
-    ],
-    [
-     -1800,
-     2500
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Head Line",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Head Line",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Head Line",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hatch Stripe 1",
-   "points": [
-    [
-     650,
-     -2400
-    ],
-    [
-     650,
-     -2250
-    ],
-    [
-     1700,
-     -1200
-    ],
-    [
-     1700,
-     -1350
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hatch Stripe 1",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hatch Stripe 1",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hatch Stripe 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hatch Stripe 2",
-   "points": [
-    [
-     650,
-     -1400
-    ],
-    [
-     650,
-     -1250
-    ],
-    [
-     1700,
-     -200
-    ],
-    [
-     1700,
-     -350
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hatch Stripe 2",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hatch Stripe 2",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hatch Stripe 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hatch Stripe 3",
-   "points": [
-    [
-     650,
-     -400
-    ],
-    [
-     650,
-     -250
-    ],
-    [
-     1700,
-     800
-    ],
-    [
-     1700,
-     650
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hatch Stripe 3",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hatch Stripe 3",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hatch Stripe 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hatch Stripe 4",
-   "points": [
-    [
-     650,
-     600
-    ],
-    [
-     650,
-     750
-    ],
-    [
-     1700,
-     1800
-    ],
-    [
-     1700,
-     1650
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hatch Stripe 4",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hatch Stripe 4",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hatch Stripe 4",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Symbol Head",
-   "points": [
-    [
-     -650.0,
-     650.0
-    ],
-    [
-     -653.75,
-     678.47
-    ],
-    [
-     -664.74,
-     705.0
-    ],
-    [
-     -682.22,
-     727.78
-    ],
-    [
-     -705.0,
-     745.26
-    ],
-    [
-     -731.53,
-     756.25
-    ],
-    [
-     -760.0,
-     760.0
-    ],
-    [
-     -788.47,
-     756.25
-    ],
-    [
-     -815.0,
-     745.26
-    ],
-    [
-     -837.78,
-     727.78
-    ],
-    [
-     -855.26,
-     705.0
-    ],
-    [
-     -866.25,
-     678.47
-    ],
-    [
-     -870.0,
-     650.0
-    ],
-    [
-     -866.25,
-     621.53
-    ],
-    [
-     -855.26,
-     595.0
-    ],
-    [
-     -837.78,
-     572.22
-    ],
-    [
-     -815.0,
-     554.74
-    ],
-    [
-     -788.47,
-     543.75
-    ],
-    [
-     -760.0,
-     540.0
-    ],
-    [
-     -731.53,
-     543.75
-    ],
-    [
-     -705.0,
-     554.74
-    ],
-    [
-     -682.22,
-     572.22
-    ],
-    [
-     -664.74,
-     595.0
-    ],
-    [
-     -653.75,
-     621.53
-    ]
-   ],
-   "start": 2,
-   "end": 4
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Symbol Head",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Symbol Head",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Symbol Head",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Symbol Back",
-   "points": [
-    [
-     -695.0,
-     515.0
-    ],
-    [
-     -825.0,
-     515.0
-    ],
-    [
-     -825.0,
-     -215.0
-    ],
-    [
-     -695.0,
-     -215.0
-    ]
-   ],
-   "start": 2,
-   "end": 4
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Symbol Back",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Symbol Back",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Symbol Back",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Symbol Seat",
-   "points": [
-    [
-     -820.0,
-     -90.0
-    ],
-    [
-     -820.0,
-     -210.0
-    ],
-    [
-     -270.0,
-     -210.0
-    ],
-    [
-     -270.0,
-     -90.0
-    ]
-   ],
-   "start": 2,
-   "end": 4
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Symbol Seat",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Symbol Seat",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Symbol Seat",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Symbol Leg",
-   "points": [
-    [
-     -289.98,
-     -83.3
-    ],
-    [
-     -396.7,
-     -109.98
-    ],
-    [
-     -270.02,
-     -616.7
-    ],
-    [
-     -163.3,
-     -590.02
-    ]
-   ],
-   "start": 2,
-   "end": 4
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Symbol Leg",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Symbol Leg",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Symbol Leg",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Symbol Arm",
-   "points": [
-    [
-     -810.0,
-     300.0
-    ],
-    [
-     -810.0,
-     200.0
-    ],
-    [
-     -410.0,
-     200.0
-    ],
-    [
-     -410.0,
-     300.0
-    ]
-   ],
-   "start": 2,
-   "end": 4
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Symbol Arm",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Symbol Arm",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Symbol Arm",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Symbol Wheel",
-   "profile": [
-    [
-     330,
-     2
-    ],
-    [
-     420,
-     2
-    ],
-    [
-     420,
-     4
-    ],
-    [
-     330,
-     4
-    ]
-   ],
-   "axis_at": [
-    -700,
-    -330
-   ],
-   "axis": "z",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Symbol Wheel",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Symbol Wheel",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Wheel Stop",
-   "points": [
-    [
-     -1200,
-     1900
-    ],
-    [
-     0,
-     1900
-    ],
-    [
-     0,
-     2050
-    ],
-    [
-     -1200,
-     2050
-    ]
-   ],
-   "start": 0,
-   "end": 100
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Wheel Stop",
-   "subcategory": "Kerb"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Wheel Stop",
-   "param": "Kerb Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Wheel Stop",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Wheel Stop Band 1",
-   "points": [
-    [
-     -1000,
-     1899
-    ],
-    [
-     -800,
-     1899
-    ],
-    [
-     -800,
-     2051
-    ],
-    [
-     -1000,
-     2051
-    ]
-   ],
-   "start": 20,
-   "end": 101
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Wheel Stop Band 1",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Wheel Stop Band 1",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Wheel Stop Band 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Wheel Stop Band 2",
-   "points": [
-    [
-     -600,
-     1899
-    ],
-    [
-     -400,
-     1899
-    ],
-    [
-     -400,
-     2051
-    ],
-    [
-     -600,
-     2051
-    ]
-   ],
-   "start": 20,
-   "end": 101
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Wheel Stop Band 2",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Wheel Stop Band 2",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Wheel Stop Band 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Wheel Stop Band 3",
-   "points": [
-    [
-     -200,
-     1899
-    ],
-    [
-     0,
-     1899
-    ],
-    [
-     0,
-     2051
-    ],
-    [
-     -200,
-     2051
-    ]
-   ],
-   "start": 20,
-   "end": 101
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Wheel Stop Band 3",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Wheel Stop Band 3",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Wheel Stop Band 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Sign Post",
-   "points": [
-    [
-     -562.0,
-     2750.0
-    ],
-    [
-     -564.89,
-     2764.54
-    ],
-    [
-     -573.13,
-     2776.87
-    ],
-    [
-     -585.46,
-     2785.11
-    ],
-    [
-     -600.0,
-     2788.0
-    ],
-    [
-     -614.54,
-     2785.11
-    ],
-    [
-     -626.87,
-     2776.87
-    ],
-    [
-     -635.11,
-     2764.54
-    ],
-    [
-     -638.0,
-     2750.0
-    ],
-    [
-     -635.11,
-     2735.46
-    ],
-    [
-     -626.87,
-     2723.13
-    ],
-    [
-     -614.54,
-     2714.89
-    ],
-    [
-     -600.0,
-     2712.0
-    ],
-    [
-     -585.46,
-     2714.89
-    ],
-    [
-     -573.13,
-     2723.13
-    ],
-    [
-     -564.89,
-     2735.46
-    ]
-   ],
-   "start": 0,
-   "end": 2400
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sign Post",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sign Post",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sign Post",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Sign Plate",
-   "points": [
-    [
-     -825,
-     1800
-    ],
-    [
-     -375,
-     1800
-    ],
-    [
-     -375,
-     2400
-    ],
-    [
-     -825,
-     2400
-    ]
-   ],
-   "start": -2710,
-   "end": -2700,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sign Plate",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sign Plate",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sign Plate",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Sign Symbol",
-   "points": [
-    [
-     -700,
-     1950
-    ],
-    [
-     -500,
-     1950
-    ],
-    [
-     -500,
-     2250
-    ],
-    [
-     -700,
-     2250
-    ]
-   ],
-   "start": -2700,
-   "end": -2698,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sign Symbol",
-   "subcategory": "Abswhite"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sign Symbol",
-   "param": "Abswhite Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sign Symbol",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Transfer Zone",
-   "points": [
-    [
-     600,
-     -2500
-    ],
-    [
-     1800,
-     -2500
-    ],
-    [
-     1800,
-     2500
-    ],
-    [
-     600,
-     2500
-    ]
-   ],
-   "start": 0,
-   "end": 10
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Transfer Zone",
-   "subcategory": "Clearance Accessibility"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Transfer Zone",
-   "coarse": true,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rear Access Zone",
-   "points": [
-    [
-     -1800,
-     -3700
-    ],
-    [
-     1800,
-     -3700
-    ],
-    [
-     1800,
-     -2500
-    ],
-    [
-     -1800,
-     -2500
-    ]
-   ],
-   "start": 0,
-   "end": 10
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rear Access Zone",
-   "subcategory": "Clearance Accessibility"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rear Access Zone",
-   "coarse": true,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\C\\_Images\\FMC_C_SiteFurniture_Parking_Bay_Accessible.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_C_SiteFurniture_Parking_Bay_Accessible",
+  "template": "Metric Generic Model.rft",
+  "about": "Ground at z = 0, entry at -y: blue bay surface, side, divider and head lines, four hatch stripes in the transfer zone, wheelchair symbol, wheel stop with yellow bands (Fine), sign post with blue plate. Transfer and rear zones are clearances. Reference: query: site furniture parking bay accessible site hospital; images: https://www.google.com/search?tbm=isch&q=site+furniture+parking+bay+accessible+site+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Site"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Compaction_Pct_MDD",
+      "guid": "3694e24c-eacc-5409-81e2-f985cc1dda60",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_CBR_Pct",
+      "guid": "8c9ca741-f469-5a4d-bdf4-12a2eaaa8901",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Layer_Thickness_mm",
+      "guid": "6e7bbdb7-2de3-5a2a-a889-5f1d9f7db58a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "3600x5000_Accessible"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x5000_Accessible/FMC_Cost_Unit",
+      "type": "3600x5000_Accessible",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x5000_Accessible/FMC_Geometry_Stage",
+      "type": "3600x5000_Accessible",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x5000_Accessible/IfcExportAs",
+      "type": "3600x5000_Accessible",
+      "param": "IfcExportAs",
+      "value": "IfcBuildingElementProxy"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x5000_Accessible/Description",
+      "type": "3600x5000_Accessible",
+      "param": "Description",
+      "value": "Accessible parking bay 2400 x 5000 with a 1200 hatched transfer zone, blue surface, wheelchair symbol, wheel stop and sign"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x5000_Accessible/Keynote",
+      "type": "3600x5000_Accessible",
+      "param": "Keynote",
+      "value": "T.MRK_02"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x5000_Accessible/FMC_Keynote_Code",
+      "type": "3600x5000_Accessible",
+      "param": "FMC_Keynote_Code",
+      "value": "T.MRK_02"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x5000_Accessible/FMC_Code_Description",
+      "type": "3600x5000_Accessible",
+      "param": "FMC_Code_Description",
+      "value": "Parking Bay Accessible: Accessible bay with transfer zone"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x5000_Accessible/FMC_Code_Group",
+      "type": "3600x5000_Accessible",
+      "param": "FMC_Code_Group",
+      "value": "T.MRK"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x5000_Accessible/FMC_Role_Code",
+      "type": "3600x5000_Accessible",
+      "param": "FMC_Role_Code",
+      "value": "C"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Blue",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Blue Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Blue",
+      "param": "Blue Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "White",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "White Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Paint_RoadMarking_White",
+      "param": "White Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Kerb",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Kerb Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Concrete_Kerb_Precast",
+      "param": "Kerb Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Yellow",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Yellow Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Yellow",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Galv",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Galv Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_ColdFormed_Galvanised",
+      "param": "Galv Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Abswhite",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Abswhite Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_White",
+      "param": "Abswhite Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Clearance Accessibility",
+      "color": [
+        80,
+        122,
+        160
+      ],
+      "line_weight_projection": 1,
+      "line_weight_cut": 1
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Clearance Accessibility",
+      "color": [
+        80,
+        122,
+        160
+      ],
+      "line_weight_projection": 1,
+      "line_weight_cut": 1
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -1800,
+          -2500
+        ],
+        [
+          1800,
+          -2500
+        ],
+        [
+          1800,
+          2788
+        ],
+        [
+          -1800,
+          2788
+        ]
+      ],
+      "start": 0,
+      "end": 2400
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Bay Surface",
+      "points": [
+        [
+          -1800,
+          -2500
+        ],
+        [
+          600,
+          -2500
+        ],
+        [
+          600,
+          2500
+        ],
+        [
+          -1800,
+          2500
+        ]
+      ],
+      "start": 0,
+      "end": 2
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bay Surface",
+      "subcategory": "Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bay Surface",
+      "param": "Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bay Surface",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Side Line Left",
+      "points": [
+        [
+          -1800,
+          -2500
+        ],
+        [
+          -1700,
+          -2500
+        ],
+        [
+          -1700,
+          2500
+        ],
+        [
+          -1800,
+          2500
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Side Line Left",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Side Line Left",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Side Line Left",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Side Line Right",
+      "points": [
+        [
+          1700,
+          -2500
+        ],
+        [
+          1800,
+          -2500
+        ],
+        [
+          1800,
+          2500
+        ],
+        [
+          1700,
+          2500
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Side Line Right",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Side Line Right",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Side Line Right",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Divider Line",
+      "points": [
+        [
+          550,
+          -2500
+        ],
+        [
+          650,
+          -2500
+        ],
+        [
+          650,
+          2500
+        ],
+        [
+          550,
+          2500
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Divider Line",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Divider Line",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Divider Line",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Head Line",
+      "points": [
+        [
+          -1800,
+          2400
+        ],
+        [
+          1800,
+          2400
+        ],
+        [
+          1800,
+          2500
+        ],
+        [
+          -1800,
+          2500
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Head Line",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Head Line",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Head Line",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hatch Stripe 1",
+      "points": [
+        [
+          650,
+          -2400
+        ],
+        [
+          650,
+          -2250
+        ],
+        [
+          1700,
+          -1200
+        ],
+        [
+          1700,
+          -1350
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hatch Stripe 1",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hatch Stripe 1",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hatch Stripe 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hatch Stripe 2",
+      "points": [
+        [
+          650,
+          -1400
+        ],
+        [
+          650,
+          -1250
+        ],
+        [
+          1700,
+          -200
+        ],
+        [
+          1700,
+          -350
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hatch Stripe 2",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hatch Stripe 2",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hatch Stripe 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hatch Stripe 3",
+      "points": [
+        [
+          650,
+          -400
+        ],
+        [
+          650,
+          -250
+        ],
+        [
+          1700,
+          800
+        ],
+        [
+          1700,
+          650
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hatch Stripe 3",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hatch Stripe 3",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hatch Stripe 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hatch Stripe 4",
+      "points": [
+        [
+          650,
+          600
+        ],
+        [
+          650,
+          750
+        ],
+        [
+          1700,
+          1800
+        ],
+        [
+          1700,
+          1650
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hatch Stripe 4",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hatch Stripe 4",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hatch Stripe 4",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Symbol Head",
+      "points": [
+        [
+          -650,
+          650
+        ],
+        [
+          -653.75,
+          678.47
+        ],
+        [
+          -664.74,
+          705
+        ],
+        [
+          -682.22,
+          727.78
+        ],
+        [
+          -705,
+          745.26
+        ],
+        [
+          -731.53,
+          756.25
+        ],
+        [
+          -760,
+          760
+        ],
+        [
+          -788.47,
+          756.25
+        ],
+        [
+          -815,
+          745.26
+        ],
+        [
+          -837.78,
+          727.78
+        ],
+        [
+          -855.26,
+          705
+        ],
+        [
+          -866.25,
+          678.47
+        ],
+        [
+          -870,
+          650
+        ],
+        [
+          -866.25,
+          621.53
+        ],
+        [
+          -855.26,
+          595
+        ],
+        [
+          -837.78,
+          572.22
+        ],
+        [
+          -815,
+          554.74
+        ],
+        [
+          -788.47,
+          543.75
+        ],
+        [
+          -760,
+          540
+        ],
+        [
+          -731.53,
+          543.75
+        ],
+        [
+          -705,
+          554.74
+        ],
+        [
+          -682.22,
+          572.22
+        ],
+        [
+          -664.74,
+          595
+        ],
+        [
+          -653.75,
+          621.53
+        ]
+      ],
+      "start": 2,
+      "end": 4
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Symbol Head",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Symbol Head",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Symbol Head",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Symbol Back",
+      "points": [
+        [
+          -695,
+          515
+        ],
+        [
+          -825,
+          515
+        ],
+        [
+          -825,
+          -215
+        ],
+        [
+          -695,
+          -215
+        ]
+      ],
+      "start": 2,
+      "end": 4
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Symbol Back",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Symbol Back",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Symbol Back",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Symbol Seat",
+      "points": [
+        [
+          -820,
+          -90
+        ],
+        [
+          -820,
+          -210
+        ],
+        [
+          -270,
+          -210
+        ],
+        [
+          -270,
+          -90
+        ]
+      ],
+      "start": 2,
+      "end": 4
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Symbol Seat",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Symbol Seat",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Symbol Seat",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Symbol Leg",
+      "points": [
+        [
+          -289.98,
+          -83.3
+        ],
+        [
+          -396.7,
+          -109.98
+        ],
+        [
+          -270.02,
+          -616.7
+        ],
+        [
+          -163.3,
+          -590.02
+        ]
+      ],
+      "start": 2,
+      "end": 4
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Symbol Leg",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Symbol Leg",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Symbol Leg",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Symbol Arm",
+      "points": [
+        [
+          -810,
+          300
+        ],
+        [
+          -810,
+          200
+        ],
+        [
+          -410,
+          200
+        ],
+        [
+          -410,
+          300
+        ]
+      ],
+      "start": 2,
+      "end": 4
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Symbol Arm",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Symbol Arm",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Symbol Arm",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Symbol Wheel",
+      "profile": [
+        [
+          330,
+          2
+        ],
+        [
+          420,
+          2
+        ],
+        [
+          420,
+          4
+        ],
+        [
+          330,
+          4
+        ]
+      ],
+      "axis_at": [
+        -700,
+        -330
+      ],
+      "axis": "z",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Symbol Wheel",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Symbol Wheel",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Wheel Stop",
+      "points": [
+        [
+          -1200,
+          1900
+        ],
+        [
+          0,
+          1900
+        ],
+        [
+          0,
+          2050
+        ],
+        [
+          -1200,
+          2050
+        ]
+      ],
+      "start": 0,
+      "end": 100
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Wheel Stop",
+      "subcategory": "Kerb"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Wheel Stop",
+      "param": "Kerb Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Wheel Stop",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Wheel Stop Band 1",
+      "points": [
+        [
+          -1000,
+          1899
+        ],
+        [
+          -800,
+          1899
+        ],
+        [
+          -800,
+          2051
+        ],
+        [
+          -1000,
+          2051
+        ]
+      ],
+      "start": 20,
+      "end": 101
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Wheel Stop Band 1",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Wheel Stop Band 1",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Wheel Stop Band 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Wheel Stop Band 2",
+      "points": [
+        [
+          -600,
+          1899
+        ],
+        [
+          -400,
+          1899
+        ],
+        [
+          -400,
+          2051
+        ],
+        [
+          -600,
+          2051
+        ]
+      ],
+      "start": 20,
+      "end": 101
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Wheel Stop Band 2",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Wheel Stop Band 2",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Wheel Stop Band 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Wheel Stop Band 3",
+      "points": [
+        [
+          -200,
+          1899
+        ],
+        [
+          0,
+          1899
+        ],
+        [
+          0,
+          2051
+        ],
+        [
+          -200,
+          2051
+        ]
+      ],
+      "start": 20,
+      "end": 101
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Wheel Stop Band 3",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Wheel Stop Band 3",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Wheel Stop Band 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Sign Post",
+      "points": [
+        [
+          -562,
+          2750
+        ],
+        [
+          -564.89,
+          2764.54
+        ],
+        [
+          -573.13,
+          2776.87
+        ],
+        [
+          -585.46,
+          2785.11
+        ],
+        [
+          -600,
+          2788
+        ],
+        [
+          -614.54,
+          2785.11
+        ],
+        [
+          -626.87,
+          2776.87
+        ],
+        [
+          -635.11,
+          2764.54
+        ],
+        [
+          -638,
+          2750
+        ],
+        [
+          -635.11,
+          2735.46
+        ],
+        [
+          -626.87,
+          2723.13
+        ],
+        [
+          -614.54,
+          2714.89
+        ],
+        [
+          -600,
+          2712
+        ],
+        [
+          -585.46,
+          2714.89
+        ],
+        [
+          -573.13,
+          2723.13
+        ],
+        [
+          -564.89,
+          2735.46
+        ]
+      ],
+      "start": 0,
+      "end": 2400
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Sign Post",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sign Post",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Sign Post",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Sign Plate",
+      "points": [
+        [
+          -825,
+          1800
+        ],
+        [
+          -375,
+          1800
+        ],
+        [
+          -375,
+          2400
+        ],
+        [
+          -825,
+          2400
+        ]
+      ],
+      "start": -2710,
+      "end": -2700,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Sign Plate",
+      "subcategory": "Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sign Plate",
+      "param": "Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Sign Plate",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Sign Symbol",
+      "points": [
+        [
+          -700,
+          1950
+        ],
+        [
+          -500,
+          1950
+        ],
+        [
+          -500,
+          2250
+        ],
+        [
+          -700,
+          2250
+        ]
+      ],
+      "start": -2700,
+      "end": -2698,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Sign Symbol",
+      "subcategory": "Abswhite"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sign Symbol",
+      "param": "Abswhite Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Sign Symbol",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Transfer Zone",
+      "points": [
+        [
+          600,
+          -2500
+        ],
+        [
+          1800,
+          -2500
+        ],
+        [
+          1800,
+          2500
+        ],
+        [
+          600,
+          2500
+        ]
+      ],
+      "start": 0,
+      "end": 10
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Transfer Zone",
+      "subcategory": "Clearance Accessibility"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Transfer Zone",
+      "coarse": true,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rear Access Zone",
+      "points": [
+        [
+          -1800,
+          -3700
+        ],
+        [
+          1800,
+          -3700
+        ],
+        [
+          1800,
+          -2500
+        ],
+        [
+          -1800,
+          -2500
+        ]
+      ],
+      "start": 0,
+      "end": 10
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rear Access Zone",
+      "subcategory": "Clearance Accessibility"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rear Access Zone",
+      "coarse": true,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\C\\_Images\\FMC_C_SiteFurniture_Parking_Bay_Accessible.png"
+    }
+  ],
+  "values": {
+    "Bay 2400 + 1200 transfer zone, 5000 long": {
+      "value": "3600x5000",
+      "source_status": "assumed",
+      "source": "typical (BS 8300-1 / KS ISO 21542 practice)"
+    },
+    "Lines 100 mm white": {
+      "value": 100,
+      "source_status": "assumed",
+      "source": "typical"
+    },
+    "Rear access zone 1200 mm": {
+      "value": 1200,
+      "source_status": "assumed",
+      "source": "BS 8300-1 practice"
+    }
   }
- ],
- "values": {
-  "Bay 2400 + 1200 transfer zone, 5000 long": {
-   "value": "3600x5000",
-   "source_status": "assumed",
-   "source": "typical (BS 8300-1 / KS ISO 21542 practice)"
-  },
-  "Lines 100 mm white": {
-   "value": 100,
-   "source_status": "assumed",
-   "source": "typical"
-  },
-  "Rear access zone 1200 mm": {
-   "value": 1200,
-   "source_status": "assumed",
-   "source": "BS 8300-1 practice"
-  }
- }
 }
