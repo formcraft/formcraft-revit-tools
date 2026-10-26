@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
+import { touchedIds, viewImage } from "./see_view.js";
 
 function reply(body: unknown, isError = false) {
   return { content: [{ type: "text" as const, text: typeof body === "string" ? body : JSON.stringify(body, null, 2) }], isError };
@@ -133,6 +134,15 @@ export const MODIFY_MODEL_DESCRIPTION =
   "elements another user owns are refused. Use get_element_geometry first to line new work up with existing elements, " +
   "and fmc_standards for any size, height or type no brief or recipe gives (it also finds the recipe to use).";
 
+/** Ops whose result isn't something to look at in 3D (views, sheets, settings, files): no after-picture by default. */
+const NO_PICTURE = new Set(["delete", "set_param", "create_view", "duplicate_view", "set_view", "override", "hide", "unhide", "create_filter",
+  "create_template", "apply_template", "create_sheet", "place_view", "open_view", "text", "replace_text", "tag", "revision", "create_schedule",
+  "save_family", "load_into_project", "family_param", "family_type", "family_category", "create_material", "line_style", "line_pattern",
+  "fill_pattern", "object_style", "project_info", "project_units", "global_param", "associate_global", "coordinates", "acquire_coordinates",
+  "publish_coordinates", "create_workset", "set_workset", "purge", "save_selection", "copy_types", "keynote_file", "starting_view",
+  "work_plane", "zone", "panel_schedule", "view_list", "reveal_hidden", "load_case", "load_combination", "load_classification",
+  "demand_factor", "mep_settings", "check_systems", "rebar_cover_type", "area_plan", "energy_model"]);
+
 export function registerModifyModelTool(server: McpServer) {
   server.tool(
     "modify_model",
@@ -141,11 +151,20 @@ export function registerModifyModelTool(server: McpServer) {
       ops: z.array(z.object({ op: z.enum(MODEL_EDIT_OPS) }).passthrough()).min(1).describe("The edits, run in order"),
       dry_run: z.boolean().optional().default(false).describe("Run and roll back: what would change, nothing changed"),
       why: z.string().max(300).optional().describe("One sentence for the person approving: what this batch is for"),
+      snapshot: z.boolean().optional().describe("A picture of what the batch made or changed comes back with the answer (default: for geometry batches); false skips it"),
     },
     async (args) => {
       try {
         const r = await withRevitConnection((c) => c.sendCommand("fmc_model_edit", { ops: args.ops, dry_run: args.dry_run, ...(args.why ? { why: args.why } : {}) }));
-        return reply(r, r?.applied === false && !r?.dry_run);
+        const out = reply(r, r?.applied === false && !r?.dry_run) as { content: any[]; isError: boolean };
+        // Owner 26 Oct: the AI sees what it did, so it can check its own work like a person glancing at the screen
+        const geometry = args.ops.some((o) => !NO_PICTURE.has(String(o.op)));
+        const ids = r?.applied ? touchedIds(args.ops as any[], r).filter((id) => !(r.ops ?? []).some((x: any) => (x.removed_ids ?? []).includes(id))) : [];
+        if ((args.snapshot ?? geometry) && ids.length) {
+          try { const { image } = await viewImage({ ids, size: 900 }); if (image) out.content.push(image); }
+          catch (e) { out.content.push({ type: "text", text: `(no picture: ${e instanceof Error ? e.message : String(e)})` }); }
+        }
+        return out;
       } catch (e) {
         return reply(`modify_model: ${e instanceof Error ? e.message : String(e)}`, true);
       }

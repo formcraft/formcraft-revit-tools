@@ -19,6 +19,9 @@ namespace Formcraft.Shell.ViewModels
         private List<AiQueueLine> _queue = new List<AiQueueLine>();
         private IReadOnlyList<SettingsGroup> _groups = Array.Empty<SettingsGroup>();
         private string _running = "";
+        // Send to AI (owner 26 Oct): what the person types about the problem; the picture and ids come from Revit
+        private readonly TextSetting _note = new TextSetting("What's wrong", placeholder: "e.g. this wall is doubled, the roof doesn't meet the gable");
+        private readonly MessagesSetting _sendMessages = new MessagesSetting();
 
         public ApprovalsViewModel(IAiTools ai, Action<string> status)
         {
@@ -57,6 +60,13 @@ namespace Formcraft.Shell.ViewModels
             }
             waiting.Add(_messages);
             groups.Add(new SettingsGroup("Waiting for your approval", waiting.ToArray()));
+            groups.Add(new SettingsGroup("Show the AI a problem", new SettingItem[]
+            {
+                new NoteSetting("Select the elements in Revit, say what's wrong, and send: the AI gets a picture of this view with them in red, their ids and your note.", ChipKind.Grey),
+                _note,
+                new ButtonsSetting("", new[] { new SettingButton("Send to AI", new AsyncCommand(SendAsync, _status), primary: true) }),
+                _sendMessages,
+            }));
 
             var done = _queue.Where(q => q.Status != "pending").Take(20).ToList();
             if (done.Count > 0)
@@ -66,6 +76,14 @@ namespace Formcraft.Shell.ViewModels
             groups.Add(new SettingsGroup("",
                 new ButtonsSetting("", new[] { new SettingButton("Refresh", new AsyncCommand(RefreshAsync, _status)) })));
             Groups = groups;
+        }
+
+        private async Task SendAsync()
+        {
+            ToolResult r = await _ai.SendToAiAsync(_note.Value);
+            _sendMessages.Show(r.Messages);
+            _status(r.Messages.FirstOrDefault()?.Text ?? "");
+            if (r.Ok) _note.Value = "";
         }
 
         private async Task Decide(AiQueueLine q, bool approve)

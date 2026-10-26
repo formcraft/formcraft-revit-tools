@@ -192,3 +192,13 @@ until the BIM Manager approves it; the AI says so when a design depends on one. 
 `01_WIP\FMC_Project_Standards.json` overrides the kit key by key (`fmc_standards set`). `fmc_standards recipe` finds
 the kit recipe that fits; when none does, it names the recipe to write (Naming rulebook), gives the standards to build
 it from, and logs the request in `%APPDATA%\Formcraft\recipe_requests.jsonl`.
+
+## Seeing the model (owner 26 Oct)
+
+- `see_view` returns a picture the AI sees: a 3D close-up around elements with them in red, any view or sheet, or the
+  person's selection. Rolled back: nothing in the model changes.
+- `modify_model` returns a picture of what a geometry batch made or changed, so the AI checks its own work.
+- `model_check` says what is wrong in words and ids: Revit's warnings, duplicates, rooms not placed or not enclosed,
+  unhosted doors and windows, overlapping walls, free wall ends, wall tops below a roof, clashes.
+- Pane › Approvals › **Show the AI a problem**: select elements, type what's wrong, Send to AI. The AI reads it with
+  `fmc_ai inbox` (status shows `inbox_unread`): the view with the selection in red, the ids and the note.

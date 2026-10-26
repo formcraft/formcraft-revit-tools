@@ -46,6 +46,24 @@ namespace Formcraft.Shell.Tests
         }
 
         [Test]
+        public async Task Send_to_AI_sends_the_note_from_the_approvals_page_and_clears_it()
+        {
+            var (title, sent, after) = Sta.Run(() =>
+            {
+                var (_, ai, vm) = Pane();
+                vm.Approvals.RefreshAsync().GetAwaiter().GetResult();
+                var g = vm.Approvals.Groups.First(x => x.Title == "Show the AI a problem");
+                var note = g.Items.OfType<TextSetting>().First();
+                note.Value = "this wall is doubled";
+                g.Items.OfType<ButtonsSetting>().First().Buttons[0].Command.Execute(null);
+                return (g.Title, string.Join("|", ai.Sent), note.Value);
+            });
+            await Assert.That(title).IsEqualTo("Show the AI a problem");
+            await Assert.That(sent).IsEqualTo("this wall is doubled");
+            await Assert.That(after).IsEqualTo("");
+        }
+
+        [Test]
         public async Task The_general_AI_switch_goes_off_on_off_from_the_header_and_Stop_AI_overrides_it()
         {
             var (states, stoppedState, status) = Sta.Run(() =>
