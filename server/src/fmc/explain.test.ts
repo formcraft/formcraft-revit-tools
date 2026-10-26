@@ -26,6 +26,11 @@ test("Approval details (owner 26 Oct): a person sees what approving lets AI do, 
   assert.match(edit.join("\n"), /ON THEIR TYPE/);
   assert.equal(edit.at(-1), "All or nothing; one Undo takes it all back.");
 
+  const more = explain("fmc_model_edit", { ops: [{ op: "mirror", ids: [15], line_mm: [[0, 0], [0, 1000]] }, { op: "copy", ids: [15], vector_mm: [3000, 0, 0], count: 4 }] }, names);
+  assert.match(more[0], /^1\. Mirror 1 elements about \(0, 0\) → \(0, 1000\) \(as copies\)/);
+  assert.match(more[2], /^2\. Copy 1 elements 4 times, by 3000, 0, 0 mm/);
+  assert.deepEqual(explain("fmc_post_command", { command: "RoofByExtrusion" }), ["Starts Revit's RoofByExtrusion command, as if clicked on the ribbon"]);
+
   const code = explain("send_code_to_revit", { code: "var w = doc.GetElement(id);\n\nw.Pinned = false;" });
   assert.deepEqual(code, ["Runs Revit API code (2 lines, in one transaction):", "   var w = doc.GetElement(id);", "   w.Pinned = false;"]);
   assert.ok(explain("delete_element", { elementIds: Array.from({ length: 40 }, (_, i) => i) }).length <= 14, "long lists are capped");

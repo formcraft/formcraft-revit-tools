@@ -131,4 +131,46 @@ namespace RevitMCPCommandSet.Commands.Fmc
             }
         }
     }
+
+    /// <summary>Starts one of Revit's built-in commands by name (owner 26 Oct); behind the lock (it may act on the selection).</summary>
+    public class FmcPostCommandCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcPostCommandHandler _handler => (FmcPostCommandHandler)Handler;
+
+        public FmcPostCommandCommand(UIApplication uiApp) : base(new FmcPostCommandHandler(), uiApp) { }
+        public override string CommandName => "fmc_post_command";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = parameters ?? new JObject();
+                if (!RaiseAndWaitForCompletion(60000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
+
+    /// <summary>Revit's built-in commands and whether each can start now (owner 26 Oct); read-only.</summary>
+    public class FmcListCommandsCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcPostCommandHandler _handler => (FmcPostCommandHandler)Handler;
+
+        public FmcListCommandsCommand(UIApplication uiApp) : base(new FmcPostCommandHandler(), uiApp) { }
+        public override string CommandName => "fmc_list_commands";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = new JObject { ["list"] = true };
+                if (!RaiseAndWaitForCompletion(60000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
 }

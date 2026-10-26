@@ -94,6 +94,77 @@ namespace RevitMCPCommandSet.Services.Fmc
         {
             switch (name)
             {
+                case "copy":
+                {
+                    // count copies, each one vector_mm further on (count 1 = Copy, more = an array without a group)
+                    var v = Vec(op["vector_mm"], "copy needs vector_mm [x, y, z]");
+                    var ids = Targets(doc, op, made, allowPinned: true);
+                    int count = Math.Max(1, op.Value<int?>("count") ?? 1);
+                    for (int i = 1; i <= count; i++) created.AddRange(ElementTransformUtils.CopyElements(doc, ids, v * i));
+                    return new JObject { ["copies"] = count, ["made"] = created.Count };
+                }
+                case "rotate":
+                {
+                    var ids = Targets(doc, op, made);
+                    double deg = op.Value<double?>("angle_deg") ?? throw new InvalidOperationException("rotate needs angle_deg (anticlockwise in plan)");
+                    XYZ c = op["center_mm"] != null ? Vec(op["center_mm"], "center_mm is [x, y]") : Centre(doc, ids);
+                    var axis = Line.CreateBound(c, c + XYZ.BasisZ);
+                    if (op.Value<bool?>("copy") == true) { created.AddRange(ElementTransformUtils.CopyElements(doc, ids, XYZ.Zero)); ElementTransformUtils.RotateElements(doc, created, axis, deg * Math.PI / 180); }
+                    else ElementTransformUtils.RotateElements(doc, ids, axis, deg * Math.PI / 180);
+                    return new JObject { ["rotated"] = ids.Count, ["angle_deg"] = deg };
+                }
+                case "mirror":
+                {
+                    // the mirror line in plan, [[x, y], [x, y]]; copy true (default) keeps the originals, like Mirror in Revit
+                    var ids = Targets(doc, op, made);
+                    var l = Points(op["line_mm"], "mirror needs line_mm: [[x, y], [x, y]], the mirror axis in plan");
+                    XYZ dir = (l[1] - l[0]).Normalize();
+                    Plane plane = Plane.CreateByNormalAndOrigin(dir.CrossProduct(XYZ.BasisZ).Normalize(), l[0]);
+                    bool keep = op.Value<bool?>("copy") ?? true;
+                    var copies = ElementTransformUtils.MirrorElements(doc, ids, plane, keep);
+                    if (copies != null) created.AddRange(copies);
+                    return new JObject { ["mirrored"] = ids.Count, ["kept_originals"] = keep };
+                }
+                case "join":
+                case "unjoin":
+                case "switch_join":
+                {
+                    // ids: [a, b, ...]: the first is joined with each of the others
+                    var ids = Targets(doc, op, made).ToList();
+                    if (ids.Count < 2) throw new InvalidOperationException($"{name} needs at least two ids");
+                    Element a = doc.GetElement(ids[0]);
+                    int n = 0;
+                    foreach (ElementId id in ids.Skip(1))
+                    {
+                        Element b2 = doc.GetElement(id);
+                        bool joined = JoinGeometryUtils.AreElementsJoined(doc, a, b2);
+                        if (name == "join" && !joined) { JoinGeometryUtils.JoinGeometry(doc, a, b2); n++; }
+                        else if (name == "unjoin" && joined) { JoinGeometryUtils.UnjoinGeometry(doc, a, b2); n++; }
+                        else if (name == "switch_join" && joined) { JoinGeometryUtils.SwitchJoinOrder(doc, a, b2); n++; }
+                    }
+                    return new JObject { [name] = n };
+                }
+                case "cut":
+                case "uncut":
+                {
+                    // ids: [cutting, cut, ...]: the first element cuts each of the others (a void or solid cutting a solid)
+                    var ids = Targets(doc, op, made).ToList();
+                    if (ids.Count < 2) throw new InvalidOperationException($"{name} needs ids [cutting, cut, ...]");
+                    Element cutting = doc.GetElement(ids[0]);
+                    foreach (ElementId id in ids.Skip(1))
+                    {
+                        if (name == "cut") SolidSolidCutUtils.AddCutBetweenSolids(doc, doc.GetElement(id), cutting);
+                        else SolidSolidCutUtils.RemoveCutBetweenSolids(doc, doc.GetElement(id), cutting);
+                    }
+                    return new JObject { [name] = ids.Count - 1 };
+                }
+                case "pin":
+                case "unpin":
+                {
+                    var ids = Targets(doc, op, made, allowPinned: true);
+                    foreach (ElementId id in ids) doc.GetElement(id).Pinned = name == "pin";
+                    return new JObject { [name] = ids.Count };
+                }
                 case "delete":
                 {
                     var ids = Targets(doc, op, made);
@@ -239,7 +310,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     created.Add(o.Id);
                     return new JObject { ["shaft"] = o.Id.Value };
                 }
-                default: throw new InvalidOperationException($"{name} isn't an op (delete, move, set_param, change_type, attach, duplicate_type, create_roof, create_railing, create_stair, room_separation, opening, shaft)");
+                default: throw new InvalidOperationException($"{name} isn't an op (copy, rotate, mirror, join, unjoin, switch_join, cut, uncut, pin, unpin, delete, move, set_param, change_type, attach, duplicate_type, create_roof, create_railing, create_stair, room_separation, opening, shaft)");
             }
         }
 
@@ -289,14 +360,23 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         // ---- inputs ----
 
-        private static ICollection<ElementId> Targets(Document doc, JObject op, List<List<ElementId>> made)
+        private static XYZ Centre(Document doc, ICollection<ElementId> ids)
+        {
+            var boxes = ids.Select(id => doc.GetElement(id).get_BoundingBox(null)).Where(b => b != null).ToList();
+            if (boxes.Count == 0) throw new InvalidOperationException("rotate needs center_mm: these elements have no extent");
+            var min = new XYZ(boxes.Min(b => b.Min.X), boxes.Min(b => b.Min.Y), 0);
+            var max = new XYZ(boxes.Max(b => b.Max.X), boxes.Max(b => b.Max.Y), 0);
+            return (min + max) / 2;
+        }
+
+        private static ICollection<ElementId> Targets(Document doc, JObject op, List<List<ElementId>> made, bool allowPinned = false)
         {
             var ids = (op["ids"] as JArray ?? throw new InvalidOperationException("the op needs ids")).Select(x => Ref(doc, x, made)).ToList();
             if (ids.Count == 0) throw new InvalidOperationException("the op needs ids");
             foreach (ElementId id in ids)
             {
                 Element e = doc.GetElement(id) ?? throw new InvalidOperationException($"{id?.Value} isn't in this model");
-                if (e.Pinned) throw new InvalidOperationException($"{id.Value} ({e.Category?.Name}) is pinned: a person unpins it first");
+                if (e.Pinned && !allowPinned) throw new InvalidOperationException($"{id.Value} ({e.Category?.Name}) is pinned: a person unpins it first");
                 if (doc.IsWorkshared && WorksharingUtils.GetCheckoutStatus(doc, id) == CheckoutStatus.OwnedByOtherUser)
                     throw new InvalidOperationException($"{id.Value} is owned by another user (worksharing)");
             }
@@ -500,6 +580,62 @@ namespace RevitMCPCommandSet.Services.Fmc
             catch (Exception) { /* no outline for this element */ }
             if (loops.Count > 0) o["outline_loops_mm"] = loops;
             return o;
+        }
+    }
+}
+
+namespace RevitMCPCommandSet.Services.Fmc
+{
+    /// <summary>
+    /// fmc_post_command (owner 26 Oct, "every tool reachable"): starts any of Revit's built-in commands (PostableCommand)
+    /// by name, optionally with elements selected first, the way a person clicks the ribbon. Revit runs it after this
+    /// call returns; a command that asks for picks or a dialog waits for the person. list: every command and whether
+    /// Revit can start it now.
+    /// </summary>
+    public class FmcPostCommandHandler : IExternalEventHandler, IWaitableExternalEventHandler
+    {
+        private readonly ManualResetEvent _done = new ManualResetEvent(false);
+        public JObject Parameters { get; set; } = new JObject();
+        public JObject Result { get; private set; } = new JObject();
+        public string Error { get; private set; } = "";
+        public bool WaitForCompletion(int timeoutMilliseconds = 10000) { _done.Reset(); return _done.WaitOne(timeoutMilliseconds); }
+        public string GetName() => "Formcraft run a Revit command";
+
+        public void Execute(UIApplication app)
+        {
+            Result = new JObject(); Error = "";
+            try
+            {
+                if (Parameters.Value<bool?>("list") == true)
+                {
+                    var all = new JArray();
+                    foreach (PostableCommand pc in Enum.GetValues(typeof(PostableCommand)))
+                    {
+                        RevitCommandId id = RevitCommandId.LookupPostableCommandId(pc);
+                        bool can = false; try { can = id != null && app.CanPostCommand(id); } catch (Exception) { }
+                        all.Add(new JObject { ["command"] = pc.ToString(), ["can_start_now"] = can });
+                    }
+                    Result = new JObject { ["commands"] = all, ["count"] = all.Count };
+                    return;
+                }
+                string name = Parameters.Value<string>("command") ?? throw new InvalidOperationException("command is needed (a Revit command name, e.g. MirrorPickAxis; list gives them all)");
+                if (!Enum.TryParse(name.Replace(" ", ""), true, out PostableCommand cmd))
+                    throw new InvalidOperationException($"{name} isn't one of Revit's built-in commands (run_revit_command list gives them all)");
+                RevitCommandId cid = RevitCommandId.LookupPostableCommandId(cmd);
+                if (cid == null || !app.CanPostCommand(cid)) throw new InvalidOperationException($"Revit can't start {cmd} now (wrong view or document for it, or another command is running)");
+                var sel = new JArray();
+                if (Parameters["select_ids"] is JArray ids && ids.Count > 0 && app.ActiveUIDocument != null)
+                {
+                    Document doc = app.ActiveUIDocument.Document;
+                    var list = ids.Select(t => long.TryParse(t.ToString(), out long v) ? new ElementId(v) : doc.GetElement(t.ToString())?.Id).Where(x => x != null && doc.GetElement(x) != null).ToList();
+                    app.ActiveUIDocument.Selection.SetElementIds(list);
+                    foreach (var x in list) sel.Add(x.Value);
+                }
+                app.PostCommand(cid);
+                Result = new JObject { ["started"] = cmd.ToString(), ["selected"] = sel, ["note"] = "Revit runs it next; if it asks for picks or a dialog, the person finishes it in Revit" };
+            }
+            catch (Exception e) { Error = e.Message; }
+            finally { _done.Set(); }
         }
     }
 }

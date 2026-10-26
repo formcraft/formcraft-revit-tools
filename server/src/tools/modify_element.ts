@@ -6,7 +6,7 @@ function reply(body: unknown, isError = false) {
   return { content: [{ type: "text" as const, text: typeof body === "string" ? body : JSON.stringify(body, null, 2) }], isError };
 }
 
-export const MODEL_EDIT_OPS = ["delete", "move", "set_param", "change_type", "attach", "duplicate_type", "create_roof",
+export const MODEL_EDIT_OPS = ["copy", "rotate", "mirror", "join", "unjoin", "switch_join", "cut", "uncut", "pin", "unpin", "delete", "move", "set_param", "change_type", "attach", "duplicate_type", "create_roof",
   "create_railing", "create_stair", "room_separation", "opening", "shaft"] as const;
 
 export const MODIFY_MODEL_DESCRIPTION =
@@ -16,6 +16,11 @@ export const MODIFY_MODEL_DESCRIPTION =
   "batch (1-based). Ops: " +
   "delete {ids} (dependent elements go too; the answer lists every removed id) · " +
   "move {ids, vector_mm} · " +
+  "copy {ids, vector_mm, count? (more than 1 = an array, each copy one vector further)} · " +
+  "rotate {ids, angle_deg (anticlockwise), center_mm? (default the elements' centre), copy?} · " +
+  "mirror {ids, line_mm: [[x, y], [x, y]] (the axis), copy? (default true keeps the originals)} · " +
+  "join / unjoin / switch_join {ids: [a, b, ...] (a with each other)} · cut / uncut {ids: [cutting, cut, ...]} · " +
+  "pin / unpin {ids} · " +
   "set_param {ids, param, value_mm | by_mm | value_text | value, on_type?} (value_text also names a level or material, " +
   "e.g. Top Constraint \"Level 2\"; on_type changes the type, so every element of it) · " +
   "change_type {ids, type_name | type_id} · " +
@@ -47,6 +52,29 @@ export function registerModifyModelTool(server: McpServer) {
         return reply(r, r?.applied === false && !r?.dry_run);
       } catch (e) {
         return reply(`modify_model: ${e instanceof Error ? e.message : String(e)}`, true);
+      }
+    }
+  );
+
+  server.tool(
+    "run_revit_command",
+    "Formcraft (owner 26 Oct): start any of Revit's 568 built-in commands by name, the way a person clicks the ribbon, " +
+      "optionally selecting elements first (select_ids). Use it for what no other tool does: Revit runs the command after " +
+      "this answers, and a command that needs picks or a dialog waits for the person, so tell them what to click. action " +
+      "list: every command name and whether Revit can start it now. Prefer modify_model and the other tools when they " +
+      "cover the job: they run fully and report back.",
+    {
+      action: z.enum(["run", "list"]).optional().default("run"),
+      command: z.string().optional().describe("run: the command's name, e.g. RoofByExtrusion, MirrorPickAxis, Ramp, VisibilityOrGraphics"),
+      select_ids: z.array(z.union([z.number(), z.string()])).max(500).optional().describe("run: elements to select first"),
+    },
+    async (args) => {
+      try {
+        if (args.action === "list") return reply(await withRevitConnection((c) => c.sendCommand("fmc_list_commands", {})));
+        if (!args.command) return reply("run_revit_command: give command (action list gives the names)", true);
+        return reply(await withRevitConnection((c) => c.sendCommand("fmc_post_command", { command: args.command, ...(args.select_ids ? { select_ids: args.select_ids } : {}) })));
+      } catch (e) {
+        return reply(`run_revit_command: ${e instanceof Error ? e.message : String(e)}`, true);
       }
     }
   );
