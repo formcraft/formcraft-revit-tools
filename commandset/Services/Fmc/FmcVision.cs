@@ -39,6 +39,8 @@ namespace RevitMCPCommandSet.Services.Fmc
             var ids = (Parameters["ids"] as JArray ?? new JArray()).Select(t => long.TryParse(t.ToString(), out long v) ? new ElementId(v) : doc.GetElement(t.ToString())?.Id)
                 .Where(x => x != null && doc.GetElement(x) != null).ToList();
             if (Parameters.Value<bool?>("selection") == true) ids.AddRange(uidoc.Selection.GetElementIds().Where(x => !ids.Contains(x)));
+            // owner 27 Oct: select (the shared query) picks what to look at
+            if (Parameters["select"] is JObject sel) ids.AddRange(FmcSelect.Find(doc, sel, null, uidoc.ActiveView).Take(2000).Select(e => e.Id).Where(x => !ids.Contains(x)));
             var highlight = (Parameters["highlight"] as JArray)?.Select(t => new ElementId(t.Value<long>())).ToList() ?? ids;
             int px = Math.Max(400, Math.Min(2400, Parameters.Value<int?>("size") ?? 1024));
             string dir = Path.Combine(Path.GetTempPath(), "Formcraft", "vision");

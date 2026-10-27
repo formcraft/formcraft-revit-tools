@@ -229,6 +229,23 @@ it from, and logs the request in `%APPDATA%\Formcraft\recipe_requests.jsonl`.
 - Calls sent while Revit saves or syncs wait their turn: the save time doesn't count against their timeout.
 - A cancelled script stops at its next loop step, and its changes roll back.
 
+## Depth on every op (owner 27 Oct)
+
+The owner asked for the section box's depth on every feature. Three shared layers give it to all of `modify_model`'s ops:
+
+- **select**: any op that takes `ids` can take a query instead, or as well.
+  - The query: category, level, type, family, comment, mark, workset, phase, the view it's visible in, room, a section box
+    (or wholly inside one), near an element or point, hosted by or host of, parameter tests (equals, contains, starts,
+    greater than, less than, empty), exclude, not, and types.
+  - It runs when the op runs, so it finds what earlier ops in the batch made.
+  - More than `limit` (default 5000) is refused, so a query that's too wide never edits the whole model.
+- **{select} in place of one id** (host, target, id, along...): it must match exactly one element, or `first: true`.
+- **for_each** runs ops once per room, level, element, view, sheet, grid intersection or point.
+  - Each pass fills in that item's values: `{id}`, `{number}`, `{name}`, `{level}`, `{center_mm}`, `{outline_mm}`,
+    `{start_mm}`, `{next_level}` and more.
+  - `@k` is op k of the same pass. The batch is still one approval and one undo.
+- `select_by` and `see_view` take the same query, so the AI can test a query before an edit uses it.
+
 ## Session rules in code (owner 26 Oct)
 
 What used to be pasted into each chat is now the plugin's own:

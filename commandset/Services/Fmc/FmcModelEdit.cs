@@ -48,6 +48,8 @@ namespace RevitMCPCommandSet.Services.Fmc
             _after.Clear();
             var ops = (Parameters["ops"] as JArray ?? new JArray()).OfType<JObject>().ToList();
             if (ops.Count == 0) throw new InvalidOperationException("No ops to run");
+            // owner 27 Oct: for_each spreads into one op per room, level, element...; select becomes ids as each op runs
+            ops = Expand(doc, ops, out List<int> written);
             bool dry = Parameters.Value<bool?>("dry_run") ?? false;
             var made = new List<List<ElementId>>();
             var results = new JArray();
@@ -68,10 +70,13 @@ namespace RevitMCPCommandSet.Services.Fmc
                     var created = new List<ElementId>();
                     try
                     {
+                        op = WithSelect(doc, op, made, out int selected);
                         JObject r = name == "create_stair" ? Stair(doc, op, made, created)
                             : name == "edit_sketch" || name == "wall_profile" ? SketchOp(doc, name, op, made, created)
                             : InTransaction(doc, name, () => Op(doc, name, op, made, created));
                         r["op"] = i + 1; r["kind"] = name;
+                        if (selected > 0) r["selected"] = selected;
+                        if (written[i] != i + 1) r["written_op"] = written[i];
                         if (created.Count > 0) r["created_ids"] = new JArray(created.Select(x => x.Value));
                         results.Add(r);
                         made.Add(created);
@@ -79,7 +84,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     catch (Exception ex)
                     {
                         g.RollBack();
-                        return new JObject { ["applied"] = false, ["failed_op"] = i + 1, ["kind"] = name, ["reason"] = ex.Message, ["note"] = "Nothing was changed: the whole batch is one step, or none" };
+                        return new JObject { ["applied"] = false, ["failed_op"] = i + 1, ["written_op"] = written[i] != i + 1 ? written[i] : (int?)null, ["kind"] = name, ["reason"] = ex.Message, ["note"] = "Nothing was changed: the whole batch is one step, or none" };
                     }
                 }
                 if (dry) { g.RollBack(); return new JObject { ["applied"] = false, ["dry_run"] = true, ["ops"] = results, ["note"] = "Dry run: rolled back, nothing changed" }; }
@@ -496,6 +501,7 @@ namespace RevitMCPCommandSet.Services.Fmc
         private static ElementId Ref(Document doc, JToken t, List<List<ElementId>> made)
         {
             if (t == null || t.Type == JTokenType.Null) return null;
+            if (t is JObject query) return OneOf(doc, query, made);
             string s = t.ToString().Trim();
             if (s.StartsWith("$"))
             {

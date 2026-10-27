@@ -402,3 +402,8 @@ Closed on 27 Oct in `feat/section-boxes-undo` (the owner asked to fill every gap
 - Calls wait out a save or a sync instead of timing out (the time Revit spends saving doesn't count).
 - A cancelled script stops at the next loop step (a cancel check is added to every loop); its changes roll back.
 - `mirror` keeps a door or window facing the same side of its wall (`keep_side: false` leaves Revit's result).
+
+## 27 Oct 2026: depth on every op, and the ribbon lights
+
+- The AI activity strip (the ribbon lights, 15 Oct) was in PR #139 and had never been merged, so no installed build had it. It is now in the stack (PR #283). To check it in Revit: the panel title bars turn orange while the AI changes the model, amber while a change waits for approval, and blue while it reads.
+- Every op got the same depth as the section box: `select`, `{select}` in place of one id, and `for_each`. The night test's `depth` group covers them.

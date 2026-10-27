@@ -40,7 +40,7 @@ export function touchedIds(ops: Array<Record<string, any>>, answer: any): number
 export const SEE_VIEW_DESCRIPTION =
   "Formcraft (owner 26 Oct): look at the model. Returns a picture you can see. ids: a 3D close-up around those elements " +
   "with them in red (from: iso, iso_nw, iso_ne, iso_sw, front, back, left, right, top; margin_mm; ghost true greys the " +
-  "rest). box: a section box to look into (modify_model's BOX: room, level slice or cut_mm, cut_line_mm, slice, grow_mm, " +
+  "rest). select: a query in place of ids (modify_model's select: category, level, room, box, near, param...). box: a section box to look into (modify_model's BOX: room, level slice or cut_mm, cut_line_mm, slice, grow_mm, " +
   "top_mm...; with view, it boxes that 3D view, plan or section for this picture only). perspective true: a camera on the box " +
   "(from inside: standing in it at eye height; eye_mm + target_mm place the camera). save_to: a folder or .png path to keep the " +
   "picture (a WIP or staging folder). view: a plan, section, 3D view or sheet by name or id (with ids, those are highlighted in it). selection true: " +
@@ -53,6 +53,7 @@ export function registerSeeViewTool(server: McpServer) {
     SEE_VIEW_DESCRIPTION,
     {
       ids: z.array(z.union([z.number(), z.string()])).max(500).optional(),
+      select: z.record(z.string(), z.any()).optional(),
       view: z.string().optional(),
       selection: z.boolean().optional(),
       from: z.enum(["iso", "iso_nw", "iso_ne", "iso_sw", "front", "back", "left", "right", "top", "inside"]).optional(),
@@ -80,14 +81,23 @@ export function registerSeeViewTool(server: McpServer) {
 
   server.tool(
     "select_by",
-    "Formcraft (Ogala report), read-only: find elements by category (Walls or OST_Walls), level, type_name and family " +
-      "(part of the name), comment (contains), mark, workset, phase (created), box_mm [[x, y, z?], [x, y, z?]] (anything " +
-      "touching it), or view (visible in it); combine them. Gives the count by category, the ids (up to limit, default 500) " +
-      "and the first 100 with type and level. Use it to pick exactly what to edit or delete.",
+    "Formcraft (Ogala report), read-only: find elements with the same query modify_model's select takes: category (Walls " +
+      "or OST_Walls, or a list), level, type_name and family (part of the name), comment (contains), mark, workset, phase " +
+      "(created), view (visible in it; \"active\"), room (inside it), box (a section-box spec, inside? true), box_mm " +
+      "[[x, y, z?], [x, y, z?]] (anything touching it), near {id | point_mm, within_mm}, hosted_by, host_of, param {name, " +
+      "is: equals|contains|starts|gt|lt|empty|not_empty, value} (or a list), exclude, not {query}, types true; combine them. " +
+      "Gives the count by category, the ids (up to limit, default 500) and the first 100 with type and level. Try a query " +
+      "here before an edit uses it as select.",
     {
-      category: z.string().optional(), level: z.string().optional(), type_name: z.string().optional(), family: z.string().optional(),
+      category: z.union([z.string(), z.array(z.string())]).optional(), level: z.string().optional(), type_name: z.string().optional(), family: z.string().optional(),
       comment: z.string().optional(), mark: z.string().optional(), workset: z.string().optional(), phase: z.string().optional(),
       box_mm: z.array(z.array(z.number()).min(2).max(3)).length(2).optional(), view: z.string().optional(),
+      room: z.union([z.string(), z.number()]).optional(), box: z.record(z.string(), z.any()).optional(),
+      near: z.object({ id: z.union([z.string(), z.number()]).optional(), point_mm: z.array(z.number()).min(2).max(3).optional(), within_mm: z.number().optional() }).optional(),
+      hosted_by: z.union([z.string(), z.number()]).optional(), host_of: z.union([z.string(), z.number()]).optional(),
+      param: z.union([z.record(z.string(), z.any()), z.array(z.record(z.string(), z.any()))]).optional(),
+      exclude: z.array(z.union([z.string(), z.number()])).optional(), not: z.record(z.string(), z.any()).optional(),
+      ids: z.array(z.union([z.string(), z.number()])).optional(), types: z.boolean().optional(),
       limit: z.number().int().min(1).max(5000).optional(),
     },
     async (args) => {
