@@ -64,6 +64,12 @@ test("Undo and section boxes (owner 27 Oct): the person reads what is undone and
   assert.ok(box.some((l) => /cutting the toposolid/.test(l)));
 });
 
+test("Display mode (owner 27 Oct, a slow model): navigate and render read in words", () => {
+  const lines = explain("fmc_model_edit", { ops: [{ op: "display_mode", mode: "navigate" }, { op: "display_mode", mode: "render", views: ["active"] }] });
+  assert.ok(lines.some((l) => /Light look for navigating.*every 3D view/.test(l)), lines.join("\n"));
+  assert.ok(lines.some((l) => /Render look.*in 1 views/.test(l)));
+});
+
 test("Depth on every op (owner 27 Oct): a select and a for_each read in words", () => {
   const lines = explain("fmc_model_edit", { ops: [
     { op: "delete", select: { category: "Furniture", room: "101", not: { type_name: "Bed" } } },

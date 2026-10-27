@@ -22,7 +22,7 @@ export const FMC_INSTRUCTIONS = [
   "- Two or more Revits open: pass revit (the model's name) on every Revit call; never fmc_revit use (chats share this server). Unnamed changes are refused.",
   "- Edit with modify_model's typed ops first; send_code_to_revit only where no op fits, and name the missing op.",
   "- Geometry batches return a picture; see_view for anything else; select_by to pick exactly what to change.",
-  "- Section boxes: section_box, see_view box. Undo: undo_ai_batch.",
+  "- section_box, see_view box, undo_ai_batch, material_report (slow models).",
   "- Sizes and types no brief or recipe gives: fmc_standards (say when a value is only proposed).",
   "- Fix the Revit warnings a batch reports before the next batch.",
   "- A batch waiting for approval: fmc_ai wait with its id, then go on; don't end your turn while work remains.",

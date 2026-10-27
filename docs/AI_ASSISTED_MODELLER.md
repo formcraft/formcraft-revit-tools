@@ -246,6 +246,23 @@ The owner asked for the section box's depth on every feature. Three shared layer
   - `@k` is op k of the same pass. The batch is still one approval and one undo.
 - `select_by` and `see_view` take the same query, so the AI can test a query before an edit uses it.
 
+## A slow model: material_report and display_mode (owner 27 Oct)
+
+The owner's model got slow after many heavy materials went in. Textures only load in Realistic views and renders, so
+the first step is to measure, then switch views, and only then touch materials.
+
+- **material_report** (read-only) lists:
+  - materials with their texture files: found or missing, pixels, MB;
+  - model surface patterns on used materials, unused and duplicate materials, unused render appearances;
+  - views in Realistic, the heaviest families (faces and mesh triangles × instances), CAD imports;
+  - advice in words.
+- **modify_model display_mode** `{mode: navigate | render}` on chosen views or every 3D view:
+  - navigate: Shaded (or Consistent Colors), model surface patterns hidden, detail optional;
+  - render: Realistic, patterns back;
+  - a view under a template is left alone unless `templates: true`. Materials aren't touched; one undo.
+- **Next, if Realistic views are still slow:** light textures, small copies the materials point to while navigating
+  and back to the full files for rendering. Waiting on the report's numbers from the real model.
+
 ## Session rules in code (owner 26 Oct)
 
 What used to be pasted into each chat is now the plugin's own:
