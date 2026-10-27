@@ -16,7 +16,7 @@ namespace RevitMCPCommandSet.Services.Fmc
         /// </summary>
         private JObject DisplayOp(Document doc, string name, JObject op, List<List<ElementId>> made, List<ElementId> created)
         {
-            if (name != "display_mode") return null;
+            if (name != "display_mode") return FrameOp(doc, name, op, made, created);
             string mode = (op.Value<string>("mode") ?? "").ToLowerInvariant();
             if (mode != "navigate" && mode != "render") throw new InvalidOperationException("display_mode needs mode: navigate or render");
             bool nav = mode == "navigate", templates = op.Value<bool?>("templates") == true;

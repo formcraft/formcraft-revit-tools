@@ -22,7 +22,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 {
                     bool structural = op.Value<bool?>("structural") ?? true;
                     Level bottom = LevelOf(doc, op["level"]);
-                    var sym = Symbol(doc, op, structural ? BuiltInCategory.OST_StructuralColumns : BuiltInCategory.OST_Columns);
+                    var sym = Sized(doc, Symbol(doc, op, structural ? BuiltInCategory.OST_StructuralColumns : BuiltInCategory.OST_Columns), op, "RC");
                     var made2 = new JArray();
                     foreach (JArray p in PointList(op))
                     {
@@ -40,7 +40,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 case "brace":
                 {
                     Level level = LevelOf(doc, op["level"]);
-                    var sym = Symbol(doc, op, BuiltInCategory.OST_StructuralFraming);
+                    var sym = Sized(doc, Symbol(doc, op, BuiltInCategory.OST_StructuralFraming), op, "RC");
                     var s = Vec(op["start_mm"], $"{name} needs start_mm [x, y, z]"); var e = Vec(op["end_mm"], $"{name} needs end_mm [x, y, z]");
                     double z = level.Elevation;
                     Line l = Line.CreateBound(new XYZ(s.X, s.Y, z + s.Z), new XYZ(e.X, e.Y, z + e.Z));
@@ -51,7 +51,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 case "isolated_foundation":
                 {
                     Level level = LevelOf(doc, op["level"]);
-                    var sym = Symbol(doc, op, BuiltInCategory.OST_StructuralFoundation);
+                    var sym = Sized(doc, Symbol(doc, op, BuiltInCategory.OST_StructuralFoundation), op, "PAD");
                     var ids = new JArray();
                     foreach (JArray p in PointList(op))
                     {
