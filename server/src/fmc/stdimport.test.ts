@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mergeDigest, normKey, sameValue } from "./stdimport.js";
+import { applyResolutions, mergeDigest, normKey, sameValue } from "./stdimport.js";
 
 const kit = { standards: { "doors.width": { value: 900, unit: "mm", note: "kit" }, "stairs.riser_max": { value: 175, unit: "mm" } } };
 const reg = { sources: [{ id: "OLD", title: "Old", keys: ["doors.width"], gaps: [] }] };
@@ -45,4 +45,21 @@ test("keys are dotted lowercase; values compare by content", () => {
   assert.equal(normKey(" Concrete Cover.Min XC1 "), "concrete_cover.min_xc1");
   assert.ok(sameValue({ a: 1, b: [2, "3"] }, { b: [2, 3], a: "1" }));
   assert.ok(!sameValue(175, 190));
+});
+
+test("resolutions settle conflicts and keep the history; conflict gaps close", () => {
+  const m = mergeDigest(kit, reg, { id: "UG-X", relevance: "high", rules: [{ key: "stairs.riser_max", value: 190 }, { key: "doors.width", value: 1000 }] });
+  const r = applyResolutions(m.kit, m.reg, [
+    { key: "stairs.riser_max", decision: "keep", reason: "stricter" },
+    { key: "doors.width", decision: "set", value: 900, uses: { accessible: 1000 }, reason: "use-dependent" },
+    { key: "no.key", decision: "keep", reason: "x" },
+  ], "2026-10-27");
+  assert.deepEqual(r.applied, ["stairs.riser_max", "doors.width"]);
+  assert.deepEqual(r.missing, ["no.key"]);
+  const st = r.kit.standards["stairs.riser_max"] as unknown as { value: number; conflicts?: unknown; resolved: Array<{ value: number; decision: string }> };
+  assert.equal(st.value, 175); assert.equal(st.conflicts, undefined); assert.equal(st.resolved[0].value, 190);
+  assert.deepEqual((r.kit.standards["doors.width"] as { uses?: unknown }).uses, { accessible: 1000 });
+  assert.ok(r.reg.sources.find((s) => s.id === "UG-X")!.gaps!.filter((g) => g.kind === "conflict").every((g) => g.status === "resolved"));
+  const ad = applyResolutions(m.kit, m.reg, [{ key: "doors.width", decision: "adopt", reason: "newer law" }]);
+  assert.equal((ad.kit.standards["doors.width"] as { value: number }).value, 1000);
 });

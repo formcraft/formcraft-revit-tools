@@ -96,3 +96,35 @@ export function mergeDigest(kit: StandardsFile, reg: SourcesFile, d: Digest, opt
   const sources = prev ? reg.sources.map((s) => (s === prev ? src : s)) : [...reg.sources, src];
   return { kit: { ...kit, standards }, reg: { ...reg, sources }, report };
 }
+
+/**
+ * A decision on a conflict (owner 27 Oct: "fix all those conflicts"). keep: the kit value stands; adopt: the
+ * document's value replaces it; set: a new value (a merged or stricter one); merge: fields added to an object value.
+ * uses/range/note change alongside. The conflicts move to resolved with the decision, so the history stays; the
+ * matching conflict gaps in the sources close.
+ */
+export interface Resolution { key: string; decision: "keep" | "adopt" | "set" | "merge"; value?: unknown; source?: string; uses?: Record<string, unknown>; range?: unknown[] | null; note?: string; reason: string }
+
+export function applyResolutions(kit: StandardsFile, reg: SourcesFile, res: Resolution[], date = new Date().toISOString().slice(0, 10)): { kit: StandardsFile; reg: SourcesFile; applied: string[]; missing: string[] } {
+  const standards: Record<string, Entry & { resolved?: unknown[] }> = { ...(kit.standards as Record<string, Entry>) };
+  const applied: string[] = [], missing: string[] = [];
+  for (const r of res) {
+    const key = normKey(r.key), had = standards[key];
+    if (!had) { missing.push(key); continue; }
+    const pick = had.conflicts?.find((c) => !r.source || c.source === r.source);
+    let value = had.value;
+    if (r.decision === "adopt") { if (!pick) { missing.push(`${key} (no conflict to adopt)`); continue; } value = pick.value; }
+    if (r.decision === "set") value = r.value;
+    if (r.decision === "merge") value = { ...(had.value && typeof had.value === "object" ? (had.value as object) : { value: had.value }), ...(r.value as object) };
+    const e: Entry & { resolved?: unknown[] } = { ...had, value, resolved: [...((had as { resolved?: unknown[] }).resolved ?? []), ...(had.conflicts ?? []).map((c) => ({ ...c, decision: r.decision, reason: r.reason, kit_was: had.value, date }))] };
+    delete e.conflicts;
+    if (r.uses) e.uses = { ...(had.uses ?? {}), ...r.uses };
+    if (r.range === null) delete e.range; else if (r.range) e.range = r.range;
+    if (r.note) e.note = `${r.note}${had.note ? ` | was: ${had.note}` : ""}`;
+    if (r.decision !== "keep" && r.decision !== "merge") e.sources = [...new Set([...(had.sources ?? []), ...(pick ? [pick.source] : [])])];
+    standards[key] = e; applied.push(key);
+  }
+  const done = new Set(applied);
+  const sources = reg.sources.map((s) => ({ ...s, gaps: (s.gaps ?? []).map((g) => g.kind === "conflict" && done.has(g.what.split(":")[0]) ? { ...g, status: "resolved" } : g) }));
+  return { kit: { ...kit, standards }, reg: { ...reg, sources }, applied, missing };
+}
