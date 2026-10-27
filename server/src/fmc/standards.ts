@@ -8,6 +8,26 @@ export interface StandardEntry {
   value: unknown; range?: unknown[]; unit?: string; uses?: Record<string, unknown>; kit_code?: string; note?: string; status?: string;
 }
 export interface StandardsFile { version?: string; status?: string; standards: Record<string, StandardEntry>; recipes?: { disciplines?: Record<string, string> } }
+/** The kit's FMC_Standards_Sources.json: each source document, its revision, the keys citing it and the gaps to fill (owner 27 Oct). */
+export interface SourceGap { id: string; what: string; where: string; kind: string; status: string }
+export interface Source { id: string; title: string; jurisdiction?: string; revision?: Record<string, unknown>; file?: string; sha256?: string; pages?: number;
+  read?: { parts?: string[]; not_read?: string[]; date?: string; method?: string }; keys?: string[]; gaps?: SourceGap[] }
+export interface SourcesFile { version?: string; sources: Source[] }
+
+/** The sources (all, or those whose id, title or keys match the words), each with its open gaps; and every open gap by kind. */
+export function sourcesView(reg: SourcesFile | null, words?: string) {
+  const q = (words ?? "").trim().toLowerCase();
+  const all = reg?.sources ?? [];
+  const hit = q ? all.filter((s) => [s.id, s.title, ...(s.keys ?? [])].some((x) => x.toLowerCase().includes(q))) : all;
+  const open = (s: Source) => (s.gaps ?? []).filter((g) => g.status === "open");
+  const byKind: Record<string, number> = {};
+  for (const s of hit) for (const g of open(s)) byKind[g.kind] = (byKind[g.kind] ?? 0) + 1;
+  return {
+    count: hit.length, open_gaps: hit.reduce((n, s) => n + open(s).length, 0), by_kind: byKind,
+    sources: hit.map((s) => ({ id: s.id, title: s.title, revision: s.revision, pages: s.pages, read: s.read, keys: q ? s.keys : (s.keys ?? []).length, gaps: open(s) })),
+  };
+}
+
 export interface Resolved { key: string; value: unknown; unit: string; source: "project" | "kit"; status: string; range?: unknown[]; kit_code?: string; note?: string }
 
 const unitOf = (key: string, e: StandardEntry) => e.unit ?? (/^rooms\.(?!corridor)/.test(key) ? "m²" : "mm");
