@@ -19,13 +19,25 @@ export const MODEL_EDIT_OPS = ["copy", "rotate", "mirror", "join", "unjoin", "sw
   "roof_extrusion", "fascia", "gutter", "slab_edge", "curtain_system_by_face", "building_pad", "swept_blend", "model_text", "copy_to_views", "copy_to_levels", "starting_view", "work_plane", "zone", "panel_schedule", "view_list", "reveal_hidden",
   "structural_connection", "boundary_condition", "analytical_panel", "load_combination", "multi_rebar_annotation", "rebar_coupler", "rebar_shape_bar", "rebar_cover_type", "fabric_sheet", "truss_chord", "mep_connector", "load_classification", "demand_factor", "mep_settings", "check_systems", "radial_dimension", "diameter_dimension", "align", "steel_plate", "bolts", "anchors", "weld", "shorten", "notch", "corner_fillet",
   "create_wall", "create_floor", "create_ceiling", "create_room", "place_family", "rehost", "edit_sketch", "wall_profile",
-  "section_box", "box_views", "site_floor"] as const;
+  "section_box", "box_views", "site_floor", "for_each"] as const;
 
 export const MODIFY_MODEL_DESCRIPTION =
   "Formcraft: edit the model like a person does in Revit (owner 26 Oct), a list of ops as ONE batch: one approval, one " +
   "Undo, all or nothing. Mix ops freely (a roof and the walls attached to it go in one batch). Lengths mm, angles degrees, " +
   "points [x, y] or [x, y, z] in mm. ids: element ids or unique ids; \"$n\" is the first element made by op n of this " +
-  "batch (1-based). Ops: " +
+  "batch (1-based). " +
+  "Depth on every op (owner 27 Oct): select {query} in place of (or as well as) ids picks the elements when the op runs, " +
+  "so it sees what earlier ops made; a {select: {query}} (or the query itself) in place of one id (host, target, id, " +
+  "along...) must match one element (or first: true). The query, all combined: ids, category (or a list), level, " +
+  "type_name, family, comment, mark, workset, phase, view (visible in it; \"active\"), room (inside it), box (a BOX, " +
+  "inside? true), box_mm, near {id | point_mm, within_mm}, hosted_by, host_of, param {name, is: equals|contains|starts|" +
+  "gt|lt|empty|not_empty, value (lengths in mm)} or a list, exclude (ids), not {query}, types true (types, not " +
+  "instances), limit (default 5000; more is refused). for_each {per: room|level|element|view|sheet|grid_intersection|" +
+  "point, items? | select? | level? (rooms) | view_type? | name_contains?, ops: [...]} runs the ops once per item with " +
+  "its values filled in: \"{id}\", \"{name}\", \"{number}\", \"{level}\", \"{next_level}\", \"{center_mm}\", " +
+  "\"{min_mm}\", \"{max_mm}\", \"{outline_mm}\" (a room's boundary), \"{start_mm}\", \"{end_mm}\", " +
+  "\"{length_mm}\", \"{elevation_mm}\", \"{host}\", \"{type_id}\", \"{index}\" (a whole \"{x}\" is the value itself; " +
+  "inside text it is text); \"@k\" is op k of the same pass. Up to 500 items, 3000 ops. Ops: " +
   "delete {ids} (dependent elements go too; the answer lists every removed id) · " +
   "move {ids, vector_mm} · " +
   "copy {ids, vector_mm, count? (more than 1 = an array, each copy one vector further)} · " +

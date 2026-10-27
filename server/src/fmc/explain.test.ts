@@ -63,3 +63,12 @@ test("Undo and section boxes (owner 27 Oct): the person reads what is undone and
   assert.ok(box.some((l) => /boxed 3D view per level \(all\)/.test(l)));
   assert.ok(box.some((l) => /cutting the toposolid/.test(l)));
 });
+
+test("Depth on every op (owner 27 Oct): a select and a for_each read in words", () => {
+  const lines = explain("fmc_model_edit", { ops: [
+    { op: "delete", select: { category: "Furniture", room: "101", not: { type_name: "Bed" } } },
+    { op: "for_each", per: "room", level: "GF", ops: [{ op: "create_ceiling" }, { op: "tag" }] },
+  ] });
+  assert.ok(lines.some((l) => /found by Furniture, in room 101, but not type "Bed"/.test(l)), lines.join("\n"));
+  assert.ok(lines.some((l) => /For each room \(all on GF\): create_ceiling, tag/.test(l)));
+});

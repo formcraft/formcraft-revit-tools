@@ -157,6 +157,13 @@ function cases() {
     { op: "site_floor", level: levels[0], topo: "$1", outline_mm: rect(X + 3000, 163000, 3000, 3000), at: "highest" }]);
   add("modify", "mirror a door, keeping its side", [W(X, 175000, X + 6000, 175000), W(X, 178000, X + 6000, 178000), { op: "place_family", type_id: door, points_mm: [[X + 3000, 175000]], level: GF, host: "$1" },
     { op: "mirror", ids: ["$3"], line_mm: [[X, 176500], [X + 6000, 176500]] }]);
+  // depth on every op (owner 27 Oct): select, {select} in place of an id, for_each
+  add("depth", "set_param on walls found by select", [{ op: "set_param", select: { category: "Walls", level: GF, limit: 5000 }, param: "Comments", value_text: "night depth" }]);
+  add("depth", "door hosted by a {select} wall", [W(X, 190000, X + 6000, 190000), { op: "place_family", type_id: door, points_mm: [[X + 3000, 190000]], level: GF, host: { select: { category: "Walls", near: { point_mm: [X + 3000, 190000], within_mm: 200 } } } }]);
+  add("depth", "for_each point: three walls", [{ op: "for_each", per: "point", items: [[X, 193000], [X, 194000], [X, 195000]], ops: [{ op: "create_wall", level: GF, start_mm: "{center_mm}", end_mm: [X + 3000, 193000], height_mm: 3000 }] }]);
+  add("depth", "for_each level: a plan each", [{ op: "for_each", per: "level", ops: [{ op: "create_view", kind: "floor_plan", level: "{name}", name: "NIGHT FE {name}" }] }]);
+  add("depth", "for_each room: a boxed view each", [{ op: "for_each", per: "room", ops: [{ op: "section_box", room: "{id}", name: "NIGHT FE Room {number}" }] }]);
+  add("depth", "for_each element (select) with @1", [{ op: "for_each", per: "element", select: { category: "Walls", level: GF, limit: 3 }, ops: [{ op: "create_view", kind: "3d", name: "NIGHT FE wall {id}" }, { op: "section_box", view: "@1", ids: ["{id}"] }] }]);
   add("steel", "steel plate", [{ op: "steel_plate", points_mm: [[X, 155000, 450], [X + 500, 155000, 450], [X + 500, 155500, 450], [X, 155500, 450]], thickness_mm: 12 }]);
   return c;
 }
@@ -180,6 +187,9 @@ async function reads() {
     const r = await test("reads", name, "fmc_view_image", params, (x) => !!x?.file && fs.existsSync(x.file));
     if (r?.file && fs.existsSync(r.file)) fs.copyFileSync(r.file, path.join(OUT, name.replace(/[^\w]+/g, "_") + ".png"));
   }
+  await test("reads", "select_by not + param", "fmc_select_by", { category: "Walls", not: { level: GF }, param: { name: "Length", is: "gt", value: 1000 } }, (r) => typeof r?.count === "number");
+  await test("reads", "select_by near", "fmc_select_by", { near: { id: wall, within_mm: 3000 } }, (r) => r?.count > 0);
+  await test("reads", "see_view by select", "fmc_view_image", { select: { category: "Walls", level: GF }, size: 800 }, (r) => !!r?.file);
   await test("reads", "undo list status", "fmc_undo_status", {}, (r) => r?.followed === true);
   for (const fmt of ["pdf", "dwg", "image", "ifc"])
     await test("files", `export ${fmt}`, "fmc_revit_file", { action: "export", format: fmt, folder: path.join(OUT, "exports"), name: `night_${fmt}` }, (r) => r?.exported === fmt);

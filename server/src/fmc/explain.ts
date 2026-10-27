@@ -35,12 +35,39 @@ function named(n: Names, list: unknown): string[] {
   return tally(a.map((x) => (isRef(x) ? made(x) : elementName(n, x)))).map((s) => `   ${s}`);
 }
 
+/** A select query in words, for the person approving (owner 27 Oct). */
+export function query(q: P): string {
+  if (!q || typeof q !== "object") return "a query";
+  const parts: string[] = [];
+  if (q.category) parts.push([].concat(q.category).join("/"));
+  if (q.type_name) parts.push(`type "${q.type_name}"`);
+  if (q.family) parts.push(`family "${q.family}"`);
+  if (q.level) parts.push(`on ${q.level}`);
+  if (q.room) parts.push(`in room ${q.room}`);
+  if (q.box) parts.push("in a box");
+  if (q.box_mm) parts.push("in a given box");
+  if (q.near) parts.push(`within ${q.near.within_mm ?? 1000} mm of ${q.near.id ?? (q.near.point_mm ?? []).join(", ")}`);
+  if (q.hosted_by) parts.push(`hosted by ${q.hosted_by}`);
+  if (q.view) parts.push(`seen in ${q.view}`);
+  for (const r of [].concat(q.param ?? []) as P[]) parts.push(`${r.name} ${r.is ?? "equals"} ${r.value ?? ""}`.trim());
+  if (q.comment) parts.push(`comment "${q.comment}"`);
+  if (q.mark) parts.push(`mark ${q.mark}`);
+  if (q.not) parts.push(`but not ${query(q.not)}`);
+  if (q.exclude) parts.push(`except ${[].concat(q.exclude).length}`);
+  return parts.length ? parts.join(", ") : "a query";
+}
+
 function op(o: P, n: Names, i: number): string[] {
   const h = `${i}. `;
   const count = (o.ids ?? []).length;
   switch (o.op) {
     case "copy": return [`${h}Copy ${count} elements ${(o.count ?? 1) > 1 ? `${o.count} times, ` : ""}by ${(o.vector_mm ?? []).map((v: number) => Math.round(v)).join(", ")} mm:`, ...named(n, o.ids)];
     case "rotate": return [`${h}Rotate ${count} elements ${o.angle_deg}°${o.copy ? " (as copies)" : ""}:`, ...named(n, o.ids)];
+    case "for_each": {
+      const inner: P[] = Array.isArray(o.ops) ? o.ops : [];
+      const which = (o.items ?? []).length ? `${o.items.length} chosen` : o.select ? `those found by ${query(o.select)}` : o.level ? `all on ${o.level}` : "all";
+      return [`${h}For each ${o.per ?? "?"} (${which}): ${inner.map((x) => x.op).join(", ")}`];
+    }
     case "section_box": return [`${h}${o.off ? "Section box off" : "Section box"}${o.view || o.views ? ` on ${o.view ?? (o.views ?? []).join(", ")}` : " in a new 3D view"}${o.room ? `, room ${o.room}` : ""}${o.level ? `, ${o.level}` : ""}${count ? `, around ${count} elements` : ""}`];
     case "box_views": return [`${h}One boxed 3D view per ${o.per}${(o.items ?? []).length ? ` (${(o.items ?? []).length})` : " (all)"}`];
     case "site_floor": return [`${h}Floor on the site at ${o.level}${o.type_name ? `, ${o.type_name}` : ""}, cutting the toposolid${o.cut === false ? " (no cut)" : ""}`];
@@ -121,7 +148,7 @@ export function explain(command: string, params: unknown, names: Names = { types
     case "fmc_model_edit": {
       const ops: P[] = Array.isArray(p.ops) ? p.ops : [];
       return cap([...(p.why ? [`Why: ${p.why}`] : []), ...(p.dry_run ? ["DRY RUN: nothing will change"] : []),
-        ...ops.flatMap((o, i) => op(o, names, i + 1)), "All or nothing; one Undo takes it all back."]);
+        ...ops.flatMap((o, i) => [...op(o, names, i + 1), ...(o.select ? [`   the elements found by ${query(o.select)}`] : [])]), "All or nothing; one Undo takes it all back."]);
     }
     case "create_line_based_element":
       return cap(["New walls:", ...tally(data.map((d) => `${typeName(names, d.typeId, d.category)}, ${mm(d.height)} high` +
