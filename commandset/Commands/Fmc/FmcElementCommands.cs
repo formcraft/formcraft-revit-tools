@@ -363,4 +363,25 @@ namespace RevitMCPCommandSet.Commands.Fmc
             }
         }
     }
+
+    /// <summary>The structure's facts from the architecture model or its link (owner 27 Oct); read-only.</summary>
+    public class FmcStructFactsCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcStructFactsHandler _handler => (FmcStructFactsHandler)Handler;
+
+        public FmcStructFactsCommand(UIApplication uiApp) : base(new FmcStructFactsHandler(), uiApp) { }
+        public override string CommandName => "fmc_struct_facts";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = parameters ?? new JObject();
+                if (!RaiseAndWaitForCompletion(300000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
 }

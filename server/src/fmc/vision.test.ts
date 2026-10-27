@@ -57,14 +57,21 @@ test("coded session rules (owner 26 Oct): failures with reasons; auto-save only 
   const sent: string[] = [];
   const send = async (c: string) => { sent.push(c); return {}; };
   const doc = { title: "M", path: "D:\\P\\01_WIP\\M.rvt", isFamily: false, isWorkshared: false, isActive: true } as any;
-  const later = Date.now() + 11 * 60_000;
-  assert.equal(await autoSave(doc, { mode: "testing" }, send, {}, Date.now()), false, "not yet");
+  // owner 27 Oct: the clock is the file's own save time on disk, so every process and session sees it
+  const now = Date.now();
+  const savedJustNow = () => now - 60_000, savedLongAgo = () => now - 11 * 60_000, neverSaved = () => null;
+  assert.equal(await autoSave(doc, { mode: "testing" }, send, {}, now, savedJustNow), false, "saved a minute ago: not yet");
   const r: any = {};
-  assert.equal(await autoSave(doc, { mode: "testing" }, send, r, later), true);
+  assert.equal(await autoSave(doc, { mode: "testing" }, send, r, now, savedLongAgo), true);
   assert.ok(r.auto_saved);
-  assert.equal(await autoSave({ ...doc, path: "D:\\P\\01_WIP\\W.rvt", isWorkshared: true }, { mode: "testing" }, send, {}, later), false, "never workshared");
-  assert.equal(await autoSave({ ...doc, path: "D:\\P\\01_WIP\\S.rvt" }, { mode: "strict" }, send, {}, later), false, "off outside testing unless set");
-  assert.deepEqual(sent, ["fmc_revit_file"]);
+  assert.equal(await autoSave(doc, { mode: "testing" }, send, {}, now, neverSaved), true, "never saved: save now");
+  assert.equal(await autoSave({ ...doc, path: "D:\\P\\01_WIP\\W.rvt", isWorkshared: true }, { mode: "testing" }, send, {}, now, savedLongAgo), false, "never workshared");
+  assert.equal(await autoSave({ ...doc, path: "D:\\P\\01_WIP\\S.rvt" }, { mode: "strict" }, send, {}, now, savedLongAgo), false, "off outside testing unless set");
+  assert.deepEqual(sent, ["fmc_revit_file", "fmc_revit_file"]);
+  const failing = async () => { throw new Error("Revit is busy"); };
+  const rf: any = {};
+  assert.equal(await autoSave(doc, { mode: "testing" }, failing, rf, now, savedLongAgo), false);
+  assert.match(rf.auto_save_failed, /didn't save itself: Revit is busy/, "a failed save is said, not hidden");
 });
 
 test("FAM-044 (owner 26 Oct): family lines are black or dark on the rule's pens; pale colours and pen 1 parts are refused", async () => {

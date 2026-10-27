@@ -122,6 +122,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "get_selected_elements", "say_hello", "fmc_mep_facts", "fmc_element_geometry", "fmc_design_options", "fmc_list_commands", "fmc_view_image", "fmc_model_check", "fmc_select_by", "fmc_undo_status", "fmc_material_report",
   // render_in_blender: a 3D view as FBX into the WIP render folder the server checked; the model is not changed
   "fmc_scene_export",
+  // the structure's facts from the architecture model (owner 27 Oct)
+  "fmc_struct_facts",
   // LD5 Gate D: the drafting views holding items fmc_diagram drew, with their source keys (read-only)
   "fmc_diagram_drawn",
 ]);

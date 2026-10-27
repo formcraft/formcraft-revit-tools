@@ -114,6 +114,9 @@ namespace RevitMCPCommandSet.Services.Fmc
                     return InTx(doc, () =>
                     {
                         var r = RevitLinkType.Create(doc, ModelPathUtils.ConvertUserVisiblePathToModelPath(path ?? throw new InvalidOperationException("link_revit needs path")), new RevitLinkOptions(false));
+                        // owner 27 Oct: say why a link didn't load (a model open in this session is the usual reason)
+                        if (r.ElementId == ElementId.InvalidElementId || !(doc.GetElement(r.ElementId) is RevitLinkType))
+                            throw new InvalidOperationException($"Revit didn't link it: {r.LoadResult}" + " (if that model is open in this Revit, close it first)");
                         var inst = RevitLinkInstance.Create(doc, r.ElementId, (Parameters.Value<string>("placement") ?? "shared") == "origin" ? ImportPlacement.Origin : ImportPlacement.Shared);
                         return new JObject { ["link"] = inst.Id.Value };
                     });
