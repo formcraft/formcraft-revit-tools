@@ -1,6 +1,6 @@
 // Downloads the free standards listed in a manifest into the standards library (owner 27 Oct: "a script to
 // download all the free versions", region by region: Uganda, East Africa, West Africa, then the world).
-// Polite: one file at a time with a pause, a browser-like agent, no logins, no paywalls. Only manifest items of kind
+// Polite: robots.txt obeyed, one file at a time with a pause, a named agent, no logins, no paywalls. Only manifest items of kind
 // "pdf" are fetched; "page", "request", "form" and "read_online" items go to the report for a person to get.
 // A download must start with %PDF- or it is rejected (error pages, login pages). Files already in the library with
 // the same content are skipped. Writes <library>/<region>/<country>/<id>__<title>.pdf and a report beside the manifest.
@@ -8,6 +8,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { createHash } from "node:crypto";
+import { pathToFileURL } from "node:url";
 
 const args = process.argv.slice(2);
 const opt = (n, d) => (args.indexOf(n) >= 0 ? args[args.indexOf(n) + 1] : d);
@@ -18,6 +19,19 @@ const pauseMs = Number(opt("--pause", "3")) * 1000;
 const only = opt("--only") ? new Set(opt("--only").split(",")) : null;
 const dry = args.includes("--dry");
 const MAX_BYTES = 250 * 1024 * 1024;
+
+// the same robots.txt reading as read_web: a site that asks agents not to fetch a path is asked of a person instead
+const here = path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1"));
+const { robotsAllows, AGENT } = await import(pathToFileURL(path.join(here, "..", "server", "build", "fmc", "webread.js")).href);
+const robots = new Map();
+async function allowed(url) {
+  const u = new URL(url);
+  if (!robots.has(u.host)) {
+    try { const r = await fetch(`${u.protocol}//${u.host}/robots.txt`, { headers: { "User-Agent": AGENT }, signal: AbortSignal.timeout(30_000) }); robots.set(u.host, r.ok ? await r.text() : ""); }
+    catch { robots.set(u.host, ""); }
+  }
+  return robotsAllows(robots.get(u.host), u.pathname + u.search);
+}
 
 const m = JSON.parse(fs.readFileSync(manifestFile, "utf8").replace(/^\uFEFF/, ""));
 const safe = (s) => String(s).replace(/[<>:"/\\|?*\x00-\x1f]+/g, " ").replace(/\s+/g, " ").trim().slice(0, 90);
@@ -37,7 +51,7 @@ scan(library);
 async function get(url) {
   const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 180_000);
   try {
-    const r = await fetch(url, { redirect: "follow", signal: ctl.signal, headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Formcraft-standards-library/1.0", Accept: "application/pdf,*/*" } });
+    const r = await fetch(url, { redirect: "follow", signal: ctl.signal, headers: { "User-Agent": AGENT, Accept: "application/pdf,*/*" } });
     if (!r.ok) return { error: `HTTP ${r.status}` };
     const len = Number(r.headers.get("content-length") ?? 0);
     if (len > MAX_BYTES) return { error: `too large (${Math.round(len / 1e6)} MB)` };
@@ -56,6 +70,7 @@ for (const it of items) {
   const file = path.join(dir, `${safe(it.id)}__${safe(it.title)}.pdf`);
   if (fs.existsSync(file)) { report.skipped.push({ id: it.id, file, why: "already in the library" }); continue; }
   if (dry) { report.skipped.push({ id: it.id, file, why: "dry run" }); continue; }
+  if (!(await allowed(it.url))) { report.manual.push({ id: it.id, title: it.title, kind: "robots", url: it.url, notes: `${new URL(it.url).host} asks automated agents not to fetch this: download it by hand` }); continue; }
   process.stdout.write(`${it.id} ... `);
   const r = await get(it.url);
   if (r.error) { console.log(r.error); report.failed.push({ id: it.id, title: it.title, url: it.url, error: r.error }); }
