@@ -110,7 +110,20 @@ it is on (H0).
 | X3 | **One search, one log** | "Where is D-12 and what touches it", answered across apps |
 | X4 | **The pane in every app; AI conducts** | The Formcraft pane in Navisworks and Rhino; one request across three apps |
 | T | **Tables by script** (built, `fmc_tables`) | Excel ↔ kit tables, dry run first, from a button (Check › Scripts › "Kit tables (dry run)") |
-| Later | build123d as a second part source; Blender; Speckle | — |
+| Later | build123d as a second part source; Speckle; Foxit PDF Editor (idea, on hold) | — |
+| Built | Blender renders (`render_in_blender`, 27 Oct) and the built-in PDF reader (`read_pdf`, 27 Oct) | — |
+
+## Ideas on hold
+
+**Foxit PDF Editor connector** (owner 27 Oct: "put it on hold; improve it as relevance grows"). Foxit PDF Editor
+2025.2 is on the PC with the ABBYY OCR engine, and exposes Acrobat-style automation (`FoxitExch.App`, `AVDoc`,
+`PDDoc`, plus `FoxitPDFEditor`). It would cover what `read_pdf` (text only) can't:
+- OCR of scanned pages, and of pages pdf.js returns empty, with the text handed to `read_pdf`'s cache;
+- tables exported to Excel through Foxit's converters (code schedules that fall apart as plain text);
+- figures as images (the accessibility drawings, the climatic zone map), so the AI can look at them.
+First step when it's picked up: a short probe of what OCR and export allow through automation without the UI (it
+varies by edition), then a connector like Rhino's. The gaps it would close are listed in the kit's
+`FMC_Standards_Sources.json` (kinds figure and table).
 
 ## The hard parts, honestly
 - Geometry translation between apps loses information: parts are fixed shapes, staging only, traced by the identity map.
