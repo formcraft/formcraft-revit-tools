@@ -114,9 +114,12 @@ export async function readWeb(url: string, opts: { fresh?: boolean; maxAgeH?: nu
   const gap = opts.gapMs ?? 3000, timeout = opts.timeoutMs ?? 60_000;
   if (!robotsCache.has(u.host)) {
     await politely(u.host, gap);
-    try { const r = await fetchText(`${u.protocol}//${u.host}/robots.txt`, timeout); robotsCache.set(u.host, r.status < 400 ? r.body : ""); } catch { robotsCache.set(u.host, ""); }
+    // no robots.txt (4xx) means no rules; a server error or no answer means the rules are unknown: read nothing
+    const unknown = "User-agent: *
+Disallow: /";
+    try { const r = await fetchText(`${u.protocol}//${u.host}/robots.txt`, timeout); robotsCache.set(u.host, r.status < 400 ? r.body : r.status < 500 ? "" : unknown); } catch { robotsCache.set(u.host, unknown); }
   }
-  if (!robotsAllows(robotsCache.get(u.host) ?? "", u.pathname + u.search)) throw new Error(`${u.host}'s robots.txt asks agents not to read ${u.pathname}`);
+  if (!robotsAllows(robotsCache.get(u.host) ?? "", u.pathname + u.search)) throw new Error(`${u.host}'s robots.txt asks agents not to read (or could not be read) ${u.pathname}`);
   await politely(u.host, gap);
   const r = await fetchText(u.toString(), timeout);
   if (r.status === 401 || r.status === 403) throw new Error(`${u.host} refused (HTTP ${r.status}): a login or permission is needed; get it by hand`);
