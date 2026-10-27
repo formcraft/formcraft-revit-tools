@@ -20,6 +20,8 @@ export class RevitClientConnection {
     this.host = host;
     this.port = port;
     this.socket = new net.Socket();
+    // owner 27 Oct: decode as text on the socket, so a character split across two chunks (é, –, ×) is not broken
+    this.socket.setEncoding("utf8");
     this.setupSocketListeners();
   }
 
@@ -30,7 +32,7 @@ export class RevitClientConnection {
 
     this.socket.on("data", (data) => {
       // 将接收到的数据添加到缓冲区
-      const dataString = data.toString();
+      const dataString = typeof data === "string" ? data : data.toString();
       this.buffer += dataString;
 
       // 尝试解析完整的JSON响应
@@ -48,6 +50,9 @@ export class RevitClientConnection {
   }
 
   private processBuffer(): void {
+    // owner 27 Oct, speed: a whole answer is one JSON object, so it ends with "}"; parsing the growing buffer after every
+    // chunk made a big answer (a material report, a model check) cost the square of its size
+    if (!/\}\s*$/.test(this.buffer.slice(-16))) return;
     try {
       // 尝试解析JSON
       const response = JSON.parse(this.buffer);

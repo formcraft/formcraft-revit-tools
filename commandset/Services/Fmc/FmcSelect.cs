@@ -30,13 +30,24 @@ namespace RevitMCPCommandSet.Services.Fmc
             id = id ?? (t => FmcBox.Id(doc, t));
             View view = p["view"] != null ? (Same(p.Value<string>("view"), "active") && active != null ? active : FmcViewImageHandler.ViewOf(doc, p.Value<string>("view"))) : null;
             IEnumerable<Element> q;
+            Workset ws = null;
+            if (p["workset"] != null && doc.IsWorkshared)
+                ws = new FilteredWorksetCollector(doc).OfKind(WorksetKind.UserWorkset).FirstOrDefault(w => Same(w.Name, p.Value<string>("workset")))
+                    ?? throw new InvalidOperationException($"no workset {p.Value<string>("workset")}");
+            BoundingBoxXYZ bx = p["box"] is JObject bspec ? FmcBox.Resolve(doc, bspec, id, null, out _) : null;
             if (p["ids"] is JArray start && start.Count > 0) q = start.Select(t => doc.GetElement(id(t))).Where(e => e != null).ToList();
             else
             {
                 var col = view != null ? new FilteredElementCollector(doc, view.Id) : new FilteredElementCollector(doc);
                 bool types = p.Value<bool?>("types") == true;
-                q = (types ? col.WhereElementIsElementType() : col.WhereElementIsNotElementType())
-                    .Where(e => e.Category != null && (types || e.Category.CategoryType == CategoryType.Model || e is Room || e is SpatialElement || e.ViewSpecific && view != null));
+                col = types ? col.WhereElementIsElementType() : col.WhereElementIsNotElementType();
+                // owner 27 Oct, speed: Revit's quick filters first (category, workset, a box around the place asked for),
+                // so the checks below see only those elements instead of every element in the model
+                if (p["category"] != null && Categories(doc, p["category"]) is List<BuiltInCategory> bics) col = col.WherePasses(new ElementMulticategoryFilter(bics));
+                if (ws != null) col = col.WherePasses(new ElementWorksetFilter(ws.Id));
+                if (!types && Around(doc, p, id, bx) is Outline zone) col = col.WherePasses(new BoundingBoxIntersectsFilter(zone));
+                if (!types && p["hosted_by"] != null) col = col.OfClass(typeof(FamilyInstance));
+                q = col.Where(e => e.Category != null && (types || e.Category.CategoryType == CategoryType.Model || e is Room || e is SpatialElement || e.ViewSpecific && view != null));
             }
             if (p["category"] != null)
             {
@@ -45,22 +56,31 @@ namespace RevitMCPCommandSet.Services.Fmc
             }
             if (p["level"] != null)
             {
+                // the level's id(s) found once, then compared by id (no lookup per element)
                 string l = p.Value<string>("level");
-                q = q.Where(e => Same(doc.GetElement(e.LevelId)?.Name, l) || Same(doc.GetElement(e.get_Parameter(BuiltInParameter.WALL_BASE_CONSTRAINT)?.AsElementId() ?? ElementId.InvalidElementId)?.Name, l)
-                    || Same(doc.GetElement(e.get_Parameter(BuiltInParameter.FAMILY_LEVEL_PARAM)?.AsElementId() ?? ElementId.InvalidElementId)?.Name, l));
+                var lv = new HashSet<ElementId>(new FilteredElementCollector(doc).OfClass(typeof(Level)).Where(x => Same(x.Name, l)).Select(x => x.Id));
+                bool On(Parameter prm) => prm != null && prm.StorageType == StorageType.ElementId && lv.Contains(prm.AsElementId());
+                q = q.Where(e => lv.Contains(e.LevelId) || On(e.get_Parameter(BuiltInParameter.WALL_BASE_CONSTRAINT)) || On(e.get_Parameter(BuiltInParameter.FAMILY_LEVEL_PARAM)));
             }
-            if (p["type_name"] != null) q = q.Where(e => Has(e is ElementType ? e.Name : doc.GetElement(e.GetTypeId())?.Name, p.Value<string>("type_name")));
-            if (p["family"] != null) q = q.Where(e => Has((e as ElementType ?? doc.GetElement(e.GetTypeId()) as ElementType)?.FamilyName, p.Value<string>("family")));
+            // each type read once, however many elements share it
+            var typeOf = new Dictionary<ElementId, ElementType>();
+            ElementType T(Element e)
+            {
+                if (e is ElementType et) return et;
+                ElementId t = e.GetTypeId();
+                if (!typeOf.TryGetValue(t, out ElementType found)) typeOf[t] = found = doc.GetElement(t) as ElementType;
+                return found;
+            }
+            if (p["type_name"] != null) q = q.Where(e => Has(T(e)?.Name, p.Value<string>("type_name")));
+            if (p["family"] != null) q = q.Where(e => Has(T(e)?.FamilyName, p.Value<string>("family")));
             if (p["comment"] != null) q = q.Where(e => Has(e.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS)?.AsString(), p.Value<string>("comment")));
             if (p["mark"] != null) q = q.Where(e => Same(e.get_Parameter(BuiltInParameter.ALL_MODEL_MARK)?.AsString(), p.Value<string>("mark")));
-            if (p["workset"] != null && doc.IsWorkshared)
-            {
-                Workset ws = new FilteredWorksetCollector(doc).OfKind(WorksetKind.UserWorkset).FirstOrDefault(w => Same(w.Name, p.Value<string>("workset")))
-                    ?? throw new InvalidOperationException($"no workset {p.Value<string>("workset")}");
-                q = q.Where(e => e.WorksetId == ws.Id);
-            }
+            if (ws != null) q = q.Where(e => e.WorksetId == ws.Id);
             if (p["phase"] != null)
-                q = q.Where(e => Same(doc.GetElement(e.get_Parameter(BuiltInParameter.PHASE_CREATED)?.AsElementId() ?? ElementId.InvalidElementId)?.Name, p.Value<string>("phase")));
+            {
+                var ph = new HashSet<ElementId>(doc.Phases.Cast<Phase>().Where(x => Same(x.Name, p.Value<string>("phase"))).Select(x => x.Id));
+                q = q.Where(e => e.get_Parameter(BuiltInParameter.PHASE_CREATED) is Parameter prm && ph.Contains(prm.AsElementId()));
+            }
             if (p["room"] != null)
             {
                 Room r = FmcBox.RoomOf(doc, p["room"]);
@@ -78,7 +98,6 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (p["box"] is JObject spec)
             {
                 // a section-box spec (turned boxes too): each element's extent against the box, in the box's own frame
-                BoundingBoxXYZ bx = FmcBox.Resolve(doc, spec, id, null, out _);
                 Transform inv = bx.Transform.Inverse;
                 bool inside = spec.Value<bool?>("inside") == true;
                 q = q.Where(e =>
@@ -123,6 +142,59 @@ namespace RevitMCPCommandSet.Services.Fmc
                 all = all.Where(e => !skip.Contains(e.Id.Value)).ToList();
             }
             return all;
+        }
+
+        /// <summary>The categories asked for, as Revit's own (null when one of them isn't known: then names are compared).</summary>
+        private static List<BuiltInCategory> Categories(Document doc, JToken c)
+        {
+            var list = new List<BuiltInCategory>();
+            foreach (string n in c is JArray a ? a.Select(x => x.ToString()) : new[] { c.ToString() })
+            {
+                if (Enum.TryParse(n, true, out BuiltInCategory b) && b != BuiltInCategory.INVALID && n.StartsWith("OST_", StringComparison.OrdinalIgnoreCase)) { list.Add(b); continue; }
+                if (Enum.TryParse("OST_" + n, true, out b)) { list.Add(b); continue; }
+                Category byName = doc.Settings.Categories.Cast<Category>().FirstOrDefault(x => Same(x.Name, n));
+                if (byName == null || byName.BuiltInCategory == BuiltInCategory.INVALID) return null;
+                list.Add(byName.BuiltInCategory);
+            }
+            return list.Count > 0 ? list : null;
+        }
+
+        /// <summary>A world box around the place asked for (box_mm, box, near, room), for Revit's quick box filter; null when none.</summary>
+        private static Outline Around(Document doc, JObject p, Func<JToken, ElementId> id, BoundingBoxXYZ bx)
+        {
+            XYZ lo = null, hi = null;
+            void Take(XYZ a, XYZ b)
+            {
+                lo = lo == null ? a : new XYZ(Math.Max(lo.X, a.X), Math.Max(lo.Y, a.Y), Math.Max(lo.Z, a.Z));
+                hi = hi == null ? b : new XYZ(Math.Min(hi.X, b.X), Math.Min(hi.Y, b.Y), Math.Min(hi.Z, b.Z));
+            }
+            const double pad = 1.0;   // a foot of slack: the exact checks below decide
+            if (p["box_mm"] is JArray box)
+            {
+                var a = (JArray)box[0]; var b = (JArray)box[1];
+                double F(JToken t) => t.Value<double>() / 304.8;
+                Take(new XYZ(Math.Min(F(a[0]), F(b[0])) - pad, Math.Min(F(a[1]), F(b[1])) - pad, a.Count > 2 ? Math.Min(F(a[2]), F(b[2])) - pad : -1e6),
+                     new XYZ(Math.Max(F(a[0]), F(b[0])) + pad, Math.Max(F(a[1]), F(b[1])) + pad, a.Count > 2 ? Math.Max(F(a[2]), F(b[2])) + pad : 1e6));
+            }
+            if (bx != null)
+            {
+                var c = FmcBox.Corners(bx);
+                Take(new XYZ(c.Min(v => v.X) - pad, c.Min(v => v.Y) - pad, c.Min(v => v.Z) - pad), new XYZ(c.Max(v => v.X) + pad, c.Max(v => v.Y) + pad, c.Max(v => v.Z) + pad));
+            }
+            if (p["near"] is JObject near)
+            {
+                XYZ at = near["point_mm"] is JArray pt ? new XYZ(Ft(pt[0].Value<double>()), Ft(pt[1].Value<double>()), pt.Count > 2 ? Ft(pt[2].Value<double>()) : 0)
+                    : Centre(doc.GetElement(id(near["id"] ?? throw new InvalidOperationException("near needs id or point_mm"))));
+                double w = Ft(near.Value<double?>("within_mm") ?? 1000) + pad;
+                bool flat = near["point_mm"] is JArray p2 && p2.Count < 3;
+                Take(new XYZ(at.X - w, at.Y - w, flat ? -1e6 : at.Z - w), new XYZ(at.X + w, at.Y + w, flat ? 1e6 : at.Z + w));
+            }
+            if (p["room"] != null && FmcBox.RoomOf(doc, p["room"]).get_BoundingBox(null) is BoundingBoxXYZ rb)
+                Take(new XYZ(rb.Min.X - pad, rb.Min.Y - pad, -1e6), new XYZ(rb.Max.X + pad, rb.Max.Y + pad, 1e6));   // in plan only: a light above a low room is still in it
+            if (lo == null) return null;
+            // boxes that don't overlap: an empty answer, as the exact checks would give
+            if (lo.X > hi.X || lo.Y > hi.Y || lo.Z > hi.Z) hi = lo = new XYZ(1e9, 1e9, 1e9);
+            return new Outline(lo, hi);
         }
 
         /// <summary>Find, for an edit: refuses more than limit (default 5000) and none at all.</summary>

@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -133,4 +134,18 @@ test("activityOf tags each call for the AI activity strip: change, dry run or re
   // A person's own click in the pane (the pane runs the CLI with FMC_CALLER=pane) never sets the strip.
   assert.equal(callActivity("delete_element", {}, { FMC_CALLER: "pane" }), "person");
   assert.equal(callActivity("delete_element", {}, {}), "change");
+});
+
+test("Speed (owner 27 Oct): the guard config is read again only when the file changes, and a broken one still fails closed", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-guard-")), file = path.join(dir, "fmc_guard.json");
+  fs.writeFileSync(file, JSON.stringify({ live_model_lock: true, write_roots: ["D:\A"] }));
+  const a = loadConfig(file);
+  a.config.write_roots.push("C:\Evil");
+  assert.deepEqual(loadConfig(file).config.write_roots, ["D:\A"], "each caller gets its own copy");
+  fs.writeFileSync(file, JSON.stringify({ live_model_lock: true, write_roots: ["D:\A", "D:\B"] }));
+  fs.utimesSync(file, new Date(), new Date(Date.now() + 5000));
+  assert.deepEqual(loadConfig(file).config.write_roots, ["D:\A", "D:\B"]);
+  fs.writeFileSync(file, "{ broken");
+  fs.utimesSync(file, new Date(), new Date(Date.now() + 10000));
+  assert.equal(loadConfig(file).source, "defaults");
 });

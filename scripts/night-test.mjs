@@ -175,6 +175,12 @@ async function reads() {
   await test("reads", "material_report", "fmc_material_report", { limit: 10 }, (r) => typeof r?.summary?.materials === "number" && Array.isArray(r?.advice));
   await test("reads", "select_by level + category", "fmc_select_by", { level: GF, category: "Walls" }, (r) => r?.count > 0);
   await test("reads", "select_by box", "fmc_select_by", { box_mm: [[0, 0], [20000, 20000]] }, (r) => r?.count > 0);
+  // speed (owner 27 Oct): Revit's quick filters first; compare these times run to run in results.json (ms)
+  await test("speed", "select_by everything", "fmc_select_by", { limit: 1 }, (r) => r?.count > 0);
+  await test("speed", "select_by one category", "fmc_select_by", { category: "Walls", limit: 1 }, (r) => r?.count > 0);
+  await test("speed", "select_by categories by name", "fmc_select_by", { category: ["Doors", "Windows", "Plumbing Fixtures"], limit: 1 }, (r) => typeof r?.count === "number");
+  await test("speed", "select_by near a point", "fmc_select_by", { near: { point_mm: [0, 0], within_mm: 5000 }, limit: 1 }, (r) => typeof r?.count === "number");
+  await test("speed", "select_by type and param", "fmc_select_by", { category: "Walls", param: { name: "Length", is: "gt", value: 1000 }, limit: 1 }, (r) => typeof r?.count === "number");
   await test("reads", "get_element_geometry", "fmc_element_geometry", { ids: [wall, floor, roof] }, (r) => r?.elements?.length === 3);
   await test("reads", "design options", "fmc_design_options", {}, (r) => !!r);
   await test("reads", "list commands", "fmc_list_commands", {}, (r) => r?.count > 500);
