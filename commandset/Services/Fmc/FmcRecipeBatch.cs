@@ -33,7 +33,7 @@ namespace RevitMCPCommandSet.Services.Fmc
         public bool WaitForCompletion(int timeoutMilliseconds = 10000)
         {
             _resetEvent.Reset();
-            return _resetEvent.WaitOne(timeoutMilliseconds);
+            return FmcBusy.Wait(_resetEvent, timeoutMilliseconds);
         }
 
         public string GetName() => "FMC recipe batch";

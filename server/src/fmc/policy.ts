@@ -99,6 +99,16 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_schedules_apply",
   // The recipe tree's room builds (T1) and Mark & Review's applied fixes (R6)
   "fmc_room_build", "fmc_element_apply",
+  // modify_model (owner 26 Oct): the AI edits like a person, every batch approved
+  "fmc_model_edit",
+  // run_revit_command (owner 26 Oct): a built-in Revit command, which may act on the selection
+  "fmc_post_command",
+  // new_family (owner 26 Oct): a family file made from a template and opened
+  "fmc_family_new",
+  // revit_file (owner 26 Oct): save, export, link, import, sync
+  "fmc_revit_file",
+  // undo_ai_batch (owner 27 Oct): Revit's Undo of the AI's own batches, never a person's work
+  "fmc_undo",
   // Circuits (KISIC 4.4): devices grouped into circuits on a board, the kit's distribution system set; the dry run rolls back
   "fmc_circuits_create",
 ]);
@@ -109,10 +119,37 @@ export const WRITE_COMMANDS = new Set<string>([
  */
 export const READ_VIA_SEND_COMMAND = new Set<string>([
   "ai_element_filter", "analyze_model_statistics", "export_room_data", "get_available_family_types", "get_current_view_elements", "fmc_diagram_scan", "get_current_view_info", "get_material_quantities",
-  "get_selected_elements", "say_hello", "fmc_mep_facts",
+  "get_selected_elements", "say_hello", "fmc_mep_facts", "fmc_element_geometry", "fmc_design_options", "fmc_list_commands", "fmc_view_image", "fmc_model_check", "fmc_select_by", "fmc_undo_status", "fmc_material_report",
+  // render_in_blender: a 3D view as FBX into the WIP render folder the server checked; the model is not changed
+  "fmc_scene_export",
+  // the structure's facts from the architecture model (owner 27 Oct)
+  "fmc_struct_facts",
   // LD5 Gate D: the drafting views holding items fmc_diagram drew, with their source keys (read-only)
   "fmc_diagram_drawn",
 ]);
+
+/**
+ * What an AI call does, for the AI activity strip on Revit's ribbon (owner, 15 Oct). Sent with every call as
+ * _fmcActivity; the add-in removes it before the command runs (plugin/Core/SocketService.cs).
+ * "dryrun": the call asks for a dry run (dry_run true). "change": a model-changing command, or any call that turns a dry
+ * run off (dry_run false). "read": everything else. "person": a person's own click in the pane (callActivity).
+ */
+export type AiActivity = "change" | "dryrun" | "read" | "person";
+
+export function activityOf(command: string, params: unknown): AiActivity {
+  const dryRun = params && typeof params === "object" && !Array.isArray(params) ? (params as Record<string, unknown>).dry_run : undefined;
+  if (dryRun === true) return "dryrun";
+  if (dryRun === false || WRITE_COMMANDS.has(command)) return "change";
+  return "read";
+}
+
+/**
+ * The tag a call carries. The pane runs this server's CLI for a person's own clicks (plugin/Fmc/ServerCli.cs sets
+ * FMC_CALLER=pane), and those are "person": the strip shows AI work only. Ask Claude runs without it, so it shows.
+ */
+export function callActivity(command: string, params: unknown, env: NodeJS.ProcessEnv = process.env): AiActivity {
+  return env.FMC_CALLER === "pane" ? "person" : activityOf(command, params);
+}
 
 /** Commands that read or steer the Formcraft pane only. They never change the model, so they work on live models. */
 export const PANE_COMMANDS = new Set<string>(["fmc_ui"]);
@@ -126,9 +163,26 @@ export function configPath(env: NodeJS.ProcessEnv = process.env): string {
   return win.join(appData, "Formcraft", "fmc_guard.json");
 }
 
-export function loadConfig(file: string = configPath(), reader: (p: string) => string = (p) => fs.readFileSync(p, "utf8")): {
-  config: GuardConfig; source: string; problem?: string;
-} {
+type Loaded = { config: GuardConfig; source: string; problem?: string };
+const configCache = new Map<string, { stamp: string; loaded: Loaded }>();
+
+/**
+ * The guard config. Read from disk only when the file changed (owner 27 Oct, speed: it was read and parsed on every
+ * call, from 47 places): the file's size and change times are checked each time, so an edit is seen on the next call.
+ * Each caller gets its own copy. A missing or broken file is never cached, so it keeps failing closed.
+ */
+export function loadConfig(file: string = configPath(), reader?: (p: string) => string): Loaded {
+  if (reader) return readConfig(file, reader);
+  let stamp: string;
+  try { const s = fs.statSync(file); stamp = `${s.size}:${s.mtimeMs}:${s.ctimeMs}`; } catch { return readConfig(file, (p) => fs.readFileSync(p, "utf8")); }
+  const hit = configCache.get(file);
+  if (hit && hit.stamp === stamp) return structuredClone(hit.loaded);
+  const loaded = readConfig(file, (p) => fs.readFileSync(p, "utf8"));
+  if (loaded.source === file) configCache.set(file, { stamp, loaded: structuredClone(loaded) }); else configCache.delete(file);
+  return loaded;
+}
+
+function readConfig(file: string, reader: (p: string) => string): Loaded {
   let raw: string;
   try {
     raw = reader(file);

@@ -26,6 +26,12 @@ namespace revit_mcp_plugin.Shell
             p.RulebookProblems.AddRange(RevitFamilyTools.Strings(b["rulebook_problems"]));
             p.Involvement = b.Value<int?>("involvement") ?? 0;
             p.Model = b.Value<string>("model") ?? "";
+            if (b["general"] is JObject gs)
+            {
+                p.General = gs.Value<string>("state") ?? "Off";
+                p.GeneralLine = gs.Value<string>("line") ?? p.GeneralLine;
+                p.Project = gs.Value<string>("project") ?? "";
+            }
             if (b["limits"] is JObject l)
                 p.Limits = $"{l.Value<int?>("batch_elements")} per batch, {l.Value<int?>("daily_elements")} per model a day, off after {l.Value<int?>("failed_batches_per_day")} failed batches";
             foreach (JObject g in ((JArray)b["groups"]).OfType<JObject>())
@@ -46,11 +52,44 @@ namespace revit_mcp_plugin.Shell
                 Id = q.Value<string>("id") ?? "", Model = q.Value<string>("model") ?? "", Group = q.Value<string>("group") ?? "",
                 Summary = q.Value<string>("summary") ?? "", Elements = q.Value<int?>("elements") ?? 0, Status = q.Value<string>("status") ?? "",
                 Created = q.Value<string>("created") ?? "",
+                Result = q.Value<string>("result") ?? "", Detail = q.Value<string>("detail") ?? "", EstimateS = q.Value<int?>("estimate_s") ?? 0,
+                Details = (q["details"] as JArray ?? new JArray()).Select(x => x.ToString()).ToList(),
             }).ToList();
         }
 
-        public Task<ToolResult> DecideAsync(string id, bool approve) =>
-            Run(approve ? "ai_approve" : "ai_reject", new JObject { ["id"] = id }, (approve ? "Approved " : "Rejected ") + id + ". Logged when the batch runs.");
+        /// <summary>Approve runs the batch now (owner 26 Oct); the server says how it went.</summary>
+        public async Task<ToolResult> DecideAsync(string id, bool approve)
+        {
+            CliResult r = await ServerCli.RunAsync(approve ? "ai_approve" : "ai_reject", new JObject { ["id"] = id });
+            if (!r.Ok && r.Body?["message"] == null) return ToolResult.Refused(string.Join(" ", r.Reasons()));
+            var result = new ToolResult { Ok = r.Ok && (r.Body.Value<string>("result") ?? "done") != "failed" };
+            result.Messages.Add(new ToolMessage(result.Ok ? ChipKind.Good : ChipKind.Bad, r.Body.Value<string>("message") ?? ((approve ? "Approved " : "Rejected ") + id + ".")));
+            return result;
+        }
+
+        // The queue lives in %APPDATA%\Formcraft\ai_queue: watching the folder refreshes the pane with no AI and no polling.
+        private System.IO.FileSystemWatcher _watcher;
+        private event System.EventHandler _queueChanged;
+        public event System.EventHandler QueueChanged
+        {
+            add { EnsureWatcher(); _queueChanged += value; }
+            remove { _queueChanged -= value; }
+        }
+
+        private void EnsureWatcher()
+        {
+            if (_watcher != null) return;
+            try
+            {
+                string dir = System.IO.Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "Formcraft", "ai_queue");
+                System.IO.Directory.CreateDirectory(dir);
+                _watcher = new System.IO.FileSystemWatcher(dir, "*.json") { NotifyFilter = System.IO.NotifyFilters.FileName | System.IO.NotifyFilters.LastWrite };
+                System.IO.FileSystemEventHandler raise = (s, e) => _queueChanged?.Invoke(this, System.EventArgs.Empty);
+                _watcher.Created += raise; _watcher.Changed += raise; _watcher.Deleted += raise;
+                _watcher.EnableRaisingEvents = true;
+            }
+            catch { /* the Refresh button still works */ }
+        }
 
         public Task<ToolResult> StopAsync(bool stop) => stop
             ? Run("fmc_ai", new JObject { ["action"] = "stop" }, "Stop AI is on: every AI change is refused.")
@@ -58,6 +97,31 @@ namespace revit_mcp_plugin.Shell
 
         public Task<ToolResult> SaveAsync(bool on, int involvement, IReadOnlyDictionary<string, string> levels) =>
             Run("ai_config", new JObject { ["on"] = on, ["involvement"] = involvement, ["levels"] = JObject.FromObject(levels) }, "AI policy saved to fmc_guard.json.");
+
+        /// <summary>The General AI switch for the open model (pane-only command ai_general, as the Windows user running Revit).</summary>
+        public async Task<ToolResult> SetGeneralAsync(bool on)
+        {
+            AiPolicy p = await StatusAsync();
+            if (p.Model.Length == 0) return ToolResult.Refused("Open the project model first: the AI switch is set per project.");
+            // No project key: strict mode and a non-compliant model (testing mode keys every file).
+            if (p.Project.Length == 0) return ToolResult.Refused(p.GeneralLine);
+            CliResult r = await ServerCli.RunAsync("ai_general", new JObject { ["on"] = on, ["project"] = p.Project });
+            if (!r.Ok) return ToolResult.Refused(string.Join(" ", r.Reasons()));
+            var result = new ToolResult { Ok = true };
+            result.Messages.Add(new ToolMessage(on ? ChipKind.Good : ChipKind.Info, r.Body.Value<string>("line") ?? (on ? "AI is on." : "AI is off.")));
+            return result;
+        }
+
+        /// <summary>Send to AI: the server asks Revit for the picture and keeps it with the note (pane-only command ai_send).</summary>
+        public async Task<ToolResult> SendToAiAsync(string note)
+        {
+            // with two Revits open, the picture comes from this one
+            CliResult r = await ServerCli.RunAsync("ai_send", new JObject { ["note"] = note ?? "", ["revit"] = System.Diagnostics.Process.GetCurrentProcess().Id.ToString() });
+            if (!r.Ok) return ToolResult.Refused(string.Join(" ", r.Reasons()));
+            var result = new ToolResult { Ok = true };
+            result.Messages.Add(new ToolMessage(ChipKind.Good, r.Body.Value<string>("message") ?? "Sent to AI."));
+            return result;
+        }
 
         private static async Task<ToolResult> Run(string command, JObject args, string done)
         {

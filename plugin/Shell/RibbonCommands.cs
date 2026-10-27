@@ -36,6 +36,18 @@ namespace revit_mcp_plugin.Shell
         }
     }
 
+    /// <summary>The General AI switch (Core › AI switch): the same as the switch at the top of the pane.</summary>
+    [Transaction(TransactionMode.Manual)]
+    public class AiSwitchCommand : IExternalCommand
+    {
+        public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
+        {
+            // The pane's command runs the server call off Revit's thread; the button's label follows at idle.
+            ShellHost.Pane?.ToggleAiCommand.Execute(null);
+            return Result.Succeeded;
+        }
+    }
+
     /// <summary>Opens the Log file window (Core › Log file).</summary>
     [Transaction(TransactionMode.Manual)]
     public class LogFileCommand : IExternalCommand

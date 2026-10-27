@@ -1,9 +1,12 @@
+import { RUNNING_BUILD } from "../fmc/buildinfo.js";
+import { recordUsage } from "../fmc/usage.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { z } from "zod";
-import { documentTarget, revitTarget } from "../fmc/target.js";
+import { documentTarget, revitTarget } from "../fmc/target.js";
+
 import { appStatuses, realProbe, toolsOff } from "../hub/apps.js";
 import { annotateInvalidOp, annotateToolResult, isInvalidOpMessage } from "../fmc/buildinfo.js";
 import { startedByFrom, withLedger } from "../fmc/ledger.js";
@@ -28,8 +31,14 @@ export function withRevitTarget(server: McpServer) {
           const { revit, ...rest } = args ?? {};
           const document = typeof rest.document === "string" && rest.document.trim() ? rest.document.trim() : undefined;
           if (!own) delete rest.document;
-          return revitTarget.run(typeof revit === "string" ? revit : undefined,
-            () => documentTarget.run(document, () => handler(rest, extra)));
+          // Owner 26 Oct: every call is timed by the server (fmc/usage.ts), so an AI's own report can compare builds.
+          const started = Date.now();
+          const done = (ok: boolean, r?: unknown) => recordUsage({ at: new Date(started).toISOString(), tool: String(a[0]), action: typeof rest.action === "string" ? rest.action : "",
+            ms: Date.now() - started, ok, build: RUNNING_BUILD.commit, ...(!ok && queuedReply(r) ? { queued: true } : {}),
+            ...(!ok ? { error: errorText(r) } : {}) });
+          return Promise.resolve(revitTarget.run(typeof revit === "string" ? revit : undefined,
+            () => documentTarget.run(document, () => handler(rest, extra))))
+            .then((r) => { done(!(r as { isError?: boolean } | undefined)?.isError, r); return withBuildWarning(r); }, (e) => { done(false, { content: [{ text: e instanceof Error ? e.message : String(e) }] }); throw e; });
         });
     }
     return original(...a);
@@ -130,4 +139,40 @@ export async function registerTools(server: McpServer) {
       console.error(`注册工具 ${file} 时出错:`, error);
     }
   }
+}
+
+/** A reply that says the batch waits in the approval queue (Ogala report: those were counted as failures). */
+function queuedReply(r: unknown): boolean {
+  const text = ((r as { content?: Array<{ text?: string }> })?.content ?? []).map((c) => c.text ?? "").join(" ");
+  return /approval queue|waits for (your|the person's) approval|fmc_ai wait with id/i.test(text);
+}
+
+/** The reason a call failed, from its answer (first 300 characters). */
+function errorText(r: unknown): string {
+  const t = ((r as { content?: Array<{ text?: string }> })?.content ?? []).map((c) => c.text ?? "").join(" ");
+  return t.replace(/\s+/g, " ").trim().slice(0, 300);
+}
+
+let installedMemo: { at: number; commit: string } | null = null;
+/** The build the updater installed last (%APPDATA%\\Formcraft\\installed.json), read at most every 30 s. */
+function installedCommit(): string {
+  if (installedMemo && Date.now() - installedMemo.at < 30_000) return installedMemo.commit;
+  let commit = "";
+  try { commit = String(JSON.parse(fs.readFileSync(path.win32.join(process.env.APPDATA ?? "", "Formcraft", "installed.json"), "utf8").replace(/^\uFEFF/, "")).commit ?? ""); } catch { /* not installed by the updater */ }
+  installedMemo = { at: Date.now(), commit };
+  return commit;
+}
+
+/**
+ * Owner 26 Oct: after an install the Claude app keeps running the old server until it restarts. Every answer then
+ * starts with that, so a session never works on a mixed build.
+ */
+function withBuildWarning(r: unknown): unknown {
+  const installed = installedCommit();
+  const running = RUNNING_BUILD.commit.replace(/\+.*$/, "");
+  if (!installed || !running || running === "unknown" || installed.startsWith(running) || running.startsWith(installed)) return r;
+  const c = (r as { content?: unknown[] })?.content;
+  if (!Array.isArray(c)) return r;
+  c.unshift({ type: "text", text: `⚠ This Claude session runs Formcraft server ${running}, but ${installed} is installed. Tell the person: quit the Claude app completely (also from the system tray) and reopen it, then start a new chat.` });
+  return r;
 }

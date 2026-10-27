@@ -34,6 +34,24 @@ always syncs.
 - **Activity is never used to rank people (Manual 14.5).** The AI log counts operations per model and per kind, never
   per person.
 
+## The General AI switch (owner, 26 Oct 2026)
+
+Users were blocked: `fmc_ai status` said "fmc_guard.json has no valid ai_modeller section", and per-group levels were
+too much for users. Now there is one switch, **AI On / AI Off / Stopped**, at the top of the Formcraft pane and as
+**AI switch** beside Connect AI on the ribbon.
+
+- **Any user** switches it, **per project** (the project code in the model's name; a name without one stays Off). The
+  first use creates the `ai_modeller` section in fmc_guard.json with safe defaults (everything off). Stop AI overrides it.
+- **Mode** (`ai_modeller.mode` in fmc_guard.json): **testing** (the pilot, owner 26 Oct) lets AI work in any file, keyed by the FMC project code, else the project folder, else the file name; **strict** (the default, for distribution) needs an FMC-compliant model in a project's 01_WIP. Never central, approvals, limits, Stop AI and the admin-only list apply in both.
+- **On:** AI may model in the active WIP model (a person's local copy, never central), every batch waits for one-click
+  approve or reject in the pane, and the limits apply (50 per batch, 500 per model a day, off after 3 failed batches).
+  Covered, from the kit rulebook's `general` block: data, views, placing elements and fixtures, walls, floors, ceilings
+  and roofs (architecture), levels and grids.
+- **Admins only, always:** deleting, purging, running arbitrary code, links, workset setup and structural framing.
+- **Advanced (admins):** the involvement bands and per-group levels below, in Admin › AI involvement.
+- People never see lock errors: one plain line instead ("AI is off. Turn it on with the AI switch.").
+- `fmc_selftest` shows "General AI switch: section present / state".
+
 ## Who may switch it on
 
 | Decision | Who | Where |
@@ -152,3 +170,129 @@ A short briefing for modellers and Discipline Leads:
 - how to review a batch
 - how to stop it
 - that AI changes are their work once accepted
+
+## Editing like a person: modify_model (owner 26 Oct)
+
+With full access, `modify_model` runs a list of ops as one batch: one approval, one Undo, all or nothing. Ops: delete,
+move, set_param, change_type, attach (wall top/base to a roof, floor or ceiling), duplicate_type (with layers),
+create_roof (footprint, slope per edge), create_railing, create_stair (runs, landings, railings), room_separation,
+opening, shaft. `"$n"` names the first element op n made, so a roof and the walls attached to it go in one batch.
+`dry_run` rolls back and lists what would change. `get_element_geometry` reads exact locations and outlines (read-only).
+
+Every approval now says what it does, by name (`server/src/fmc/explain.ts`): the types and levels, how many of each,
+the elements a delete removes, a type change that affects every element of the type, and the first lines of any code.
+Deletes, type-wide changes and code show in amber. An approval runs once: it is used up before Revit starts.
+
+## Standards when there's no recipe: fmc_standards (owner 26 Oct)
+
+The kit's `03_Master_Data\FMC_Standards_Building.json` holds typical design values for a standard building (levels,
+ceilings, walls with their kit codes, slabs, doors, windows, stairs, guards, roofs, rooms, accessibility, structure,
+services, site), by use (residential, office, retail, education, healthcare, industrial). Every value is *proposed*
+until the BIM Manager approves it; the AI says so when a design depends on one. A project's
+`01_WIP\FMC_Project_Standards.json` overrides the kit key by key (`fmc_standards set`). `fmc_standards recipe` finds
+the kit recipe that fits; when none does, it names the recipe to write (Naming rulebook), gives the standards to build
+it from, and logs the request in `%APPDATA%\Formcraft\recipe_requests.jsonl`.
+
+## Seeing the model (owner 26 Oct)
+
+- `see_view` returns a picture the AI sees: a 3D close-up around elements with them in red, any view or sheet, or the
+  person's selection. Rolled back: nothing in the model changes.
+- `modify_model` returns a picture of what a geometry batch made or changed, so the AI checks its own work.
+- `model_check` says what is wrong in words and ids: Revit's warnings, duplicates, rooms not placed or not enclosed,
+  unhosted doors and windows, overlapping walls, free wall ends, wall tops below a roof, clashes.
+- Pane › Approvals › **Show the AI a problem**: select elements, type what's wrong, Send to AI. The AI reads it with
+  `fmc_ai inbox` (status shows `inbox_unread`): the view with the selection in red, the ids and the note.
+
+## Section boxes and undo (owner 27 Oct)
+
+- One box description works everywhere. Start the box from any mix of:
+  - elements, a category on a level, or a room
+  - corners, or another view's box
+  - a cut line (a 3D section along a line)
+  - a storey slice or a plan-like cut at a height
+
+  Then adjust it: margin, grow or shrink each side, top and bottom heights, slice, move, or turn it along an element.
+- `modify_model section_box` puts the box on views:
+  - 3D views get a section box.
+  - Plans and sections get their crop, with the view range or far clip as an option.
+  - With no view named, it makes a new 3D view, like Revit's Selection Box.
+  - `off` turns the box off.
+- `box_views` makes one boxed 3D view per room, level or element. Running it again re-boxes the views it made before.
+- `see_view box` looks into a box for one picture; nothing is kept.
+  - `perspective` puts a camera on the box; `from: inside` stands in it at eye height.
+  - `save_to` keeps the PNG, in a WIP or staging folder only.
+- `undo_ai_batch` takes back the AI's own work with Revit's Undo:
+  - by `batch_id` (from the `modify_model` answer, or a script's `undo_id`), or the last `count` batches
+  - The add-in keeps its own copy of Revit's undo list, which the Revit API doesn't expose. It refuses when a person's
+    change is above the batch: the AI never undoes a person's work.
+  - The model must be the active window. A sync or closing the model clears the list.
+- Calls sent while Revit saves or syncs wait their turn: the save time doesn't count against their timeout.
+- A cancelled script stops at its next loop step, and its changes roll back.
+
+## Depth on every op (owner 27 Oct)
+
+The owner asked for the section box's depth on every feature. Three shared layers give it to all of `modify_model`'s ops:
+
+- **select**: any op that takes `ids` can take a query instead, or as well.
+  - The query: category, level, type, family, comment, mark, workset, phase, the view it's visible in, room, a section box
+    (or wholly inside one), near an element or point, hosted by or host of, parameter tests (equals, contains, starts,
+    greater than, less than, empty), exclude, not, and types.
+  - It runs when the op runs, so it finds what earlier ops in the batch made.
+  - More than `limit` (default 5000) is refused, so a query that's too wide never edits the whole model.
+- **{select} in place of one id** (host, target, id, along...): it must match exactly one element, or `first: true`.
+- **for_each** runs ops once per room, level, element, view, sheet, grid intersection or point.
+  - Each pass fills in that item's values: `{id}`, `{number}`, `{name}`, `{level}`, `{center_mm}`, `{outline_mm}`,
+    `{start_mm}`, `{next_level}` and more.
+  - `@k` is op k of the same pass. The batch is still one approval and one undo.
+- `select_by` and `see_view` take the same query, so the AI can test a query before an edit uses it.
+
+## A slow model: material_report and display_mode (owner 27 Oct)
+
+The owner's model got slow after many heavy materials went in. Textures only load in Realistic views and renders, so
+the first step is to measure, then switch views, and only then touch materials.
+
+- **material_report** (read-only) lists:
+  - materials with their texture files: found or missing, pixels, MB;
+  - model surface patterns on used materials, unused and duplicate materials, unused render appearances;
+  - views in Realistic, the heaviest families (faces and mesh triangles × instances), CAD imports;
+  - advice in words.
+- **modify_model display_mode** `{mode: navigate | render}` on chosen views or every 3D view:
+  - navigate: Shaded (or Consistent Colors), model surface patterns hidden, detail optional;
+  - render: Realistic, patterns back;
+  - a view under a template is left alone unless `templates: true`. Materials aren't touched; one undo.
+- **Next, if Realistic views are still slow:** light textures, small copies the materials point to while navigating
+  and back to the full files for rendering. Waiting on the report's numbers from the real model.
+
+## Renders in Blender: render_in_blender (owner 27 Oct)
+
+Revit's own renderer isn't good enough; Blender's Cycles is. One call goes from a Revit 3D view to a picture.
+
+1. **Revit exports** the view (`fmc_scene_export`, the model isn't changed) through its CustomExporter as OBJ + MTL:
+   every face keeps its Revit material, one object per element, metres, Revit's coordinates. `detail` 0-15 is the
+   tessellation (6 by default for aerial cameras). Revit's FBX was tried first: 1.2 GB for Ogala and no materials in
+   Blender; the OBJ is 25 MB with all 80 materials.
+2. **Blender builds a new scene** (the person's own scenes are left alone) with Formcraft's fixed script
+   (`server/src/hub/blender.ts`), sent to the Blender Lab MCP add-on on localhost:9876 with only JSON values, never AI
+   code: Revit materials become Blender materials by name (glass, metal, wood, brick, concrete, stone, tile, grass,
+   water, fabric, paint...), coloured from Revit (sRGB made linear), a sky, a ground plane, a camera (`aerial_front` by
+   default), Cycles on the GPU (OptiX), denoised.
+3. **Files** only in `<project>_WIP\_Exchange\Renders\<stamp>_<view>`: scene.obj/.mtl/.json, render.png, scene.blend.
+   A dry run first says where.
+
+First test (Ogala ground floor, {3D}, aerial front, 1600 x 900, 64 samples, Quadro T1000): export 7.5 s, Blender 26 s.
+Next: a Formcraft material library for Blender (real textures per kit material), lighting presets, Revit view cameras.
+
+## Session rules in code (owner 26 Oct)
+
+What used to be pasted into each chat is now the plugin's own:
+- **Instructions on connect:** every chat gets the working rules (start checks, typed ops first, pictures, standards,
+  warnings, wait, failures, inbox) with the server's instructions.
+- **Prompts:** Claude's "+" menu offers *work-on-project* and *test-new-build*, with the model's name filled in.
+- **Two Revits:** a change that doesn't name its Revit is refused while more than one is open, and `fmc_revit use` is
+  refused then (chats share one server).
+- **Auto-save:** after a change the model saves itself once `auto_save_minutes` have passed (testing default 10; 0
+  off); never a workshared model or one in the background.
+- **Build check:** while the Claude app runs an older server than the installed build, every answer starts with
+  "quit and reopen the Claude app".
+- **Failure log:** every failure is kept with its reason; `fmc_ai failures` lists them.
+- **New warnings:** each `modify_model` batch reports the Revit warnings it added.

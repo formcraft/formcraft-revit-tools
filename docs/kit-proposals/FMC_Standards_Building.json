@@ -1,0 +1,94 @@
+{
+  "feature": "BuildingStandards",
+  "version": "0.1-proposed",
+  "kit_version": "2.2",
+  "status": "proposed: typical design values for a standard building, for when no recipe or brief says otherwise. Each value needs the BIM Manager's approval (status approved) and a check against the local building code and the client's brief.",
+  "units": "mm, m² and degrees",
+  "how": "fmc_standards reads these. A project's 01_WIP\\FMC_Project_Standards.json (same keys) overrides them, and the brief overrides both. A value with uses gives the use's value (residential, office, ...), else value.",
+  "uses": ["residential", "office", "retail", "education", "healthcare", "industrial"],
+  "standards": {
+    "levels.floor_to_floor": { "value": 3000, "range": [2800, 4200], "uses": { "residential": 3000, "office": 3600, "retail": 4200, "education": 3600, "healthcare": 4000, "industrial": 6000 }, "note": "Ogala uses 3400 (GF to FF)" },
+    "levels.ground_above_external": { "value": 150, "range": [150, 600], "note": "finished ground floor above finished external ground" },
+
+    "ceilings.habitable": { "value": 2700, "range": [2400, 3000], "uses": { "residential": 2700, "office": 2700, "retail": 3000, "education": 3000, "healthcare": 2700 } },
+    "ceilings.wet_rooms": { "value": 2400, "range": [2300, 2700] },
+    "ceilings.corridors": { "value": 2400, "range": [2300, 2700] },
+    "ceilings.minimum_headroom": { "value": 2100, "note": "under beams, ducts and stairs" },
+
+    "walls.external": { "value": 200, "kit_code": "B.200_00", "note": "200 block; render and paint per the brief" },
+    "walls.internal": { "value": 150, "kit_code": "B.150_00" },
+    "walls.internal_light": { "value": 100, "kit_code": "B.100_00", "note": "partitions that carry nothing" },
+    "walls.party": { "value": 225, "kit_code": "B.225_00", "note": "between dwellings or tenancies" },
+    "walls.parapet_height": { "value": 1100, "range": [1000, 1200], "note": "above the finished roof or deck" },
+
+    "slabs.floor": { "value": 150, "range": [125, 250], "note": "RC, spans up to about 5 m; 200 beyond" },
+    "slabs.roof": { "value": 150, "range": [125, 200] },
+    "slabs.ground_bed": { "value": 150, "note": "on hardcore and DPM" },
+    "slabs.screed": { "value": 50, "range": [40, 75] },
+    "slabs.wet_room_drop": { "value": 20, "range": [15, 30], "note": "finished floor drop into showers and wet rooms" },
+
+    "doors.head_height": { "value": 2100, "range": [2100, 2400] },
+    "doors.entrance": { "value": [1000, 2100], "unit": "width × height mm", "uses": { "office": [1200, 2400], "retail": [1800, 2400] } },
+    "doors.internal": { "value": [900, 2100], "unit": "width × height mm" },
+    "doors.bathroom": { "value": [800, 2100], "unit": "width × height mm" },
+    "doors.accessible_clear_width": { "value": 850, "note": "clear opening for wheelchair routes" },
+    "doors.double": { "value": [1800, 2100], "unit": "width × height mm" },
+
+    "windows.head_height": { "value": 2100, "note": "aligned with door heads" },
+    "windows.sill_habitable": { "value": 900, "range": [600, 1050] },
+    "windows.sill_kitchen": { "value": 1050, "note": "above the worktop and splashback" },
+    "windows.sill_bathroom": { "value": 1500, "note": "privacy; obscure glazing below 1700" },
+    "windows.glazed_area_ratio": { "value": 0.1, "unit": "of floor area", "note": "minimum daylight; ventilation openable area at least half of it" },
+
+    "stairs.riser_max": { "value": 175, "range": [150, 190], "uses": { "residential": 190, "office": 170, "education": 170, "healthcare": 170 } },
+    "stairs.going_min": { "value": 280, "range": [250, 300], "uses": { "residential": 250 } },
+    "stairs.width_min": { "value": 1200, "uses": { "residential": 900 } },
+    "stairs.headroom": { "value": 2000 },
+    "stairs.risers_per_flight_max": { "value": 16, "note": "a landing after at most 16 risers" },
+    "stairs.landing_depth": { "value": "stair width", "note": "at least the stair width" },
+    "stairs.handrail_height": { "value": 900, "range": [850, 1000] },
+
+    "guards.balcony": { "value": 1100, "range": [1000, 1100] },
+    "guards.stair_and_landing": { "value": 900 },
+    "guards.void_edge": { "value": 1100 },
+    "guards.max_gap": { "value": 100, "note": "no opening a 100 mm sphere passes" },
+
+    "roofs.pitched_tile_slope": { "value": 30, "unit": "degrees", "range": [22.5, 35] },
+    "roofs.pitched_sheet_slope": { "value": 10, "unit": "degrees", "range": [5, 15] },
+    "roofs.flat_fall": { "value": "1:80", "range": ["1:80", "1:40"] },
+    "roofs.eaves_overhang": { "value": 600, "range": [450, 900] },
+    "roofs.fascia_depth": { "value": 225 },
+
+    "rooms.bedroom_double_min": { "value": 11.5, "unit": "m²" },
+    "rooms.bedroom_single_min": { "value": 7.5, "unit": "m²" },
+    "rooms.kitchen_min": { "value": 6.5, "unit": "m²" },
+    "rooms.living_min": { "value": 14, "unit": "m²" },
+    "rooms.bathroom_min": { "value": 3.5, "unit": "m²" },
+    "rooms.wc_min": { "value": 1.5, "unit": "m²" },
+    "rooms.corridor_width_min": { "value": 1000, "uses": { "residential": 900, "office": 1200, "education": 1800, "healthcare": 1800 } },
+    "rooms.office_per_person": { "value": 8, "unit": "m² per person" },
+
+    "accessibility.ramp_gradient_max": { "value": "1:12", "note": "1:20 preferred; landings every 10 m" },
+    "accessibility.turning_circle": { "value": 1500 },
+    "accessibility.wc_cubicle": { "value": [1500, 2200], "unit": "width × depth mm" },
+
+    "structure.column_grid": { "value": 6000, "range": [4500, 8100], "uses": { "residential": 4500, "office": 7500 } },
+    "structure.rc_column_min": { "value": [230, 230], "unit": "mm" },
+    "structure.rc_beam_depth_ratio": { "value": "span/12", "note": "first-pass depth for continuous beams" },
+
+    "services.socket_height": { "value": 450, "range": [300, 450] },
+    "services.switch_height": { "value": 1200, "range": [900, 1200] },
+    "services.worktop_height": { "value": 900, "range": [850, 920] },
+    "services.basin_height": { "value": 850, "range": [800, 900] },
+    "services.ceiling_void": { "value": 300, "range": [150, 600], "uses": { "office": 450, "healthcare": 600 } },
+    "services.riser_size": { "value": [600, 900], "unit": "width × depth mm" },
+
+    "site.parking_bay": { "value": [2500, 5000], "unit": "width × length mm" },
+    "site.parking_aisle": { "value": 6000 },
+    "site.boundary_setback": { "value": 3000, "note": "check the planning permit" }
+  },
+  "recipes": {
+    "how": "fmc_standards recipe searches the kit's Recipes (and staged families) by words. When none fits, it gives the standard values above and the recipe name to write, following the Naming rulebook: FMC_<discipline>_<category>_<descriptor>.recipe.json in Recipes\\Families\\<discipline>.",
+    "disciplines": { "A": "architecture", "E": "electrical", "FP": "fire protection", "I": "interiors", "M": "mechanical", "P": "plumbing" }
+  }
+}

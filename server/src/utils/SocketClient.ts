@@ -2,8 +2,9 @@ import * as net from "net";
 import fs from "fs";
 import path from "path";
 import { appendJobEvent, jobFiles, jobResult, lastHeartbeatMs } from "../fmc/jobs.js";
-import { WRITE_COMMANDS, liveLockVerdict, loadConfig } from "../fmc/policy.js";
-import { documentTarget } from "../fmc/target.js";
+import { WRITE_COMMANDS, callActivity, liveLockVerdict, loadConfig } from "../fmc/policy.js";
+import { documentTarget, revitTarget } from "../fmc/target.js";
+import { readInstances } from "../fmc/connect.js";
 import { aiGate } from "../fmc/aigate.js";
 import { retryWhileBusy } from "../fmc/busy.js";
 
@@ -19,6 +20,8 @@ export class RevitClientConnection {
     this.host = host;
     this.port = port;
     this.socket = new net.Socket();
+    // owner 27 Oct: decode as text on the socket, so a character split across two chunks (é, –, ×) is not broken
+    this.socket.setEncoding("utf8");
     this.setupSocketListeners();
   }
 
@@ -29,7 +32,7 @@ export class RevitClientConnection {
 
     this.socket.on("data", (data) => {
       // 将接收到的数据添加到缓冲区
-      const dataString = data.toString();
+      const dataString = typeof data === "string" ? data : data.toString();
       this.buffer += dataString;
 
       // 尝试解析完整的JSON响应
@@ -47,6 +50,9 @@ export class RevitClientConnection {
   }
 
   private processBuffer(): void {
+    // owner 27 Oct, speed: a whole answer is one JSON object, so it ends with "}"; parsing the growing buffer after every
+    // chunk made a big answer (a material report, a model check) cost the square of its size
+    if (!/\}\s*$/.test(this.buffer.slice(-16))) return;
     try {
       // 尝试解析JSON
       const response = JSON.parse(this.buffer);
@@ -102,8 +108,14 @@ export class RevitClientConnection {
    * (server/src/fmc/policy.ts): they are refused when the active document is a live project model.
    * The lock fails closed: if the active document cannot be read, the command is not sent.
    */
-  public async sendCommand(command: string, params: any = {}, timeoutMs: number = 120000): Promise<any> {
+  public async sendCommand(command: string, params: any = {}, timeoutMs: number = 120000, long?: LongJobOptions): Promise<any> {
     if (WRITE_COMMANDS.has(command)) {
+      // Owner 26 Oct: two chats share this server; with two Revits open a change must name its Revit, so neither
+      // chat can edit the other's model
+      const open = readInstances();
+      if (open.length > 1 && !revitTarget.getStore())
+        throw new Error(`${open.length} Revits are open: name the Revit this change is for with revit (its model's name, e.g. ` +
+          `${JSON.stringify(open.flatMap((i: any) => i.documents ?? []).map((d: any) => d?.title ?? d).filter(Boolean)[0] ?? "the model")}) on every call.`);
       const { config } = loadConfig();
       if (config.live_model_lock) {
         let info: any;
@@ -120,12 +132,13 @@ export class RevitClientConnection {
         if (!verdict.ok) {
           // The lock's one new case: the AI-assisted modeller, Off unless the kit rulebook and the BIM Manager allow it.
           const gate = await aiGate(command, params, info?.active, config, (c, p) => this.sendRaw(c, p, 60000));
-          if (!gate.ok || !gate.run) throw new Error([...verdict.reasons, gate.reason].filter(Boolean).join(" "));
-          return gate.run(() => this.sendRaw(command, params, timeoutMs));
+          // A person sees one plain line (USER_LINE), never the lock's wording; fmc_ai status has the detail.
+          if (!gate.ok || !gate.run) throw new Error(gate.user ?? [...verdict.reasons, gate.reason].filter(Boolean).join(" "));
+          return gate.run(() => this.sendRaw(command, params, timeoutMs, long));
         }
       }
     }
-    return this.sendRaw(command, params, timeoutMs);
+    return this.sendRaw(command, params, timeoutMs, long);
   }
 
   /**
@@ -155,6 +168,8 @@ export class RevitClientConnection {
     // command names its own document.
     const document = documentTarget.getStore();
     if (document && params && typeof params === "object" && !Array.isArray(params) && !("document" in params)) params = { ...params, document };
+    // The AI activity strip: what this call does, for the ribbon's colour while it runs (policy.ts callActivity).
+    if (params && typeof params === "object" && !Array.isArray(params)) params = { ...params, _fmcActivity: callActivity(command, params) };
     return new Promise((resolve, reject) => {
       try {
         if (!this.isConnected) {

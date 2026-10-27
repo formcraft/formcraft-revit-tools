@@ -1,0 +1,210 @@
+/**
+ * What an approval lets AI do, in plain lines (owner 26 Oct: "they don't show me details that would tell me if I'm to
+ * approve them"). Pure: the names come from Revit when the batch is queued (aigate), so the lines say "Basic Wall:
+ * Brick 230" and "Rooms: F15 Bedroom (Level 1)" instead of ids.
+ */
+export interface Names {
+  types: Record<string, string>;
+  elements: Record<string, string>;
+}
+
+const MAX = 14;
+type P = Record<string, any>;
+
+const mm = (v: unknown) => (typeof v === "number" ? `${Math.round(v)} mm` : "?");
+const xy = (p: any) => (Array.isArray(p) ? `(${p.slice(0, 2).map((n: number) => Math.round(n)).join(", ")})`
+  : p && typeof p === "object" ? `(${Math.round(p.x)}, ${Math.round(p.y)})` : "?");
+const typeName = (n: Names, id: unknown, fallback = "") => (id == null ? fallback || "?" : n.types[String(id)] ?? `type ${id}`);
+const elementName = (n: Names, id: unknown) => n.elements[String(id)] ?? `element ${id}`;
+const made = (ref: unknown) => `what op ${String(ref).slice(1)} makes`;
+const isRef = (x: unknown) => String(x).startsWith("$");
+
+/** Counts of the same text, so 34 windows read "12 × Window: 1200 x 1500" rather than 34 lines. */
+function tally(items: string[]): string[] {
+  const m = new Map<string, number>();
+  for (const s of items) m.set(s, (m.get(s) ?? 0) + 1);
+  return [...m].map(([s, c]) => (c > 1 ? `${c} × ${s}` : s));
+}
+
+function cap(lines: string[]): string[] {
+  return lines.length <= MAX ? lines : [...lines.slice(0, MAX - 1), `…and ${lines.length - MAX + 1} more`];
+}
+
+function named(n: Names, list: unknown): string[] {
+  const a = Array.isArray(list) ? list : [];
+  return tally(a.map((x) => (isRef(x) ? made(x) : elementName(n, x)))).map((s) => `   ${s}`);
+}
+
+/** A select query in words, for the person approving (owner 27 Oct). */
+export function query(q: P): string {
+  if (!q || typeof q !== "object") return "a query";
+  const parts: string[] = [];
+  if (q.category) parts.push([].concat(q.category).join("/"));
+  if (q.type_name) parts.push(`type "${q.type_name}"`);
+  if (q.family) parts.push(`family "${q.family}"`);
+  if (q.level) parts.push(`on ${q.level}`);
+  if (q.room) parts.push(`in room ${q.room}`);
+  if (q.box) parts.push("in a box");
+  if (q.box_mm) parts.push("in a given box");
+  if (q.near) parts.push(`within ${q.near.within_mm ?? 1000} mm of ${q.near.id ?? (q.near.point_mm ?? []).join(", ")}`);
+  if (q.hosted_by) parts.push(`hosted by ${q.hosted_by}`);
+  if (q.view) parts.push(`seen in ${q.view}`);
+  for (const r of [].concat(q.param ?? []) as P[]) parts.push(`${r.name} ${r.is ?? "equals"} ${r.value ?? ""}`.trim());
+  if (q.comment) parts.push(`comment "${q.comment}"`);
+  if (q.mark) parts.push(`mark ${q.mark}`);
+  if (q.not) parts.push(`but not ${query(q.not)}`);
+  if (q.exclude) parts.push(`except ${[].concat(q.exclude).length}`);
+  return parts.length ? parts.join(", ") : "a query";
+}
+
+function op(o: P, n: Names, i: number): string[] {
+  const h = `${i}. `;
+  const count = (o.ids ?? []).length;
+  switch (o.op) {
+    case "copy": return [`${h}Copy ${count} elements ${(o.count ?? 1) > 1 ? `${o.count} times, ` : ""}by ${(o.vector_mm ?? []).map((v: number) => Math.round(v)).join(", ")} mm:`, ...named(n, o.ids)];
+    case "rotate": return [`${h}Rotate ${count} elements ${o.angle_deg}°${o.copy ? " (as copies)" : ""}:`, ...named(n, o.ids)];
+    case "for_each": {
+      const inner: P[] = Array.isArray(o.ops) ? o.ops : [];
+      const which = (o.items ?? []).length ? `${o.items.length} chosen` : o.select ? `those found by ${query(o.select)}` : o.level ? `all on ${o.level}` : "all";
+      return [`${h}For each ${o.per ?? "?"} (${which}): ${inner.map((x) => x.op).join(", ")}`];
+    }
+    case "section_box": return [`${h}${o.off ? "Section box off" : "Section box"}${o.view || o.views ? ` on ${o.view ?? (o.views ?? []).join(", ")}` : " in a new 3D view"}${o.room ? `, room ${o.room}` : ""}${o.level ? `, ${o.level}` : ""}${count ? `, around ${count} elements` : ""}`];
+    case "box_views": return [`${h}One boxed 3D view per ${o.per}${(o.items ?? []).length ? ` (${(o.items ?? []).length})` : " (all)"}`];
+    case "display_mode": return [`${h}${o.mode === "render" ? "Render look (Realistic, surface patterns on)" : "Light look for navigating (Shaded, surface patterns off)"} in ${Array.isArray(o.views) ? `${o.views.length} views` : "every 3D view"}${o.templates ? ", templates too" : ""}`];
+    case "site_floor": return [`${h}Floor on the site at ${o.level}${o.type_name ? `, ${o.type_name}` : ""}, cutting the toposolid${o.cut === false ? " (no cut)" : ""}`];
+    case "mirror": return [`${h}Mirror ${count} elements about ${xy(o.line_mm?.[0])} → ${xy(o.line_mm?.[1])}${o.copy === false ? " (moving the originals)" : " (as copies)"}:`, ...named(n, o.ids)];
+    case "join": case "unjoin": case "switch_join": case "cut": case "uncut":
+      return [`${h}${o.op.replace("_", " ")} geometry: ${count} elements:`, ...named(n, o.ids)];
+    case "pin": case "unpin": return [`${h}${o.op === "pin" ? "Pin" : "Unpin"} ${count} elements:`, ...named(n, o.ids)];
+    case "create_view": return [`${h}New ${String(o.kind ?? "view").replace("_", " ")}${o.name ? ` "${o.name}"` : ""}${o.level ? ` on ${o.level}` : ""}${o.template ? `, template ${o.template}` : ""}${o.scale ? `, 1:${o.scale}` : ""}`];
+    case "duplicate_view": return [`${h}Duplicate view ${o.view} (${o.mode ?? "duplicate"})${o.name ? ` as "${o.name}"` : ""}`];
+    case "set_view": return [`${h}Change view ${o.view}: ${Object.keys(o).filter((k) => !["op", "view"].includes(k)).join(", ")}`];
+    case "override": return [`${h}Override graphics in ${o.view}${o.color ? ` to rgb(${o.color.join(", ")})` : ""} for ` +
+      [o.ids ? `${o.ids.length} elements` : "", o.categories ? (o.categories as string[]).join(", ") : "", o.filter ? `filter ${o.filter}` : ""].filter(Boolean).join(", ")];
+    case "hide": case "unhide": return [`${h}${o.op === "hide" ? "Hide" : "Unhide"} in ${o.view}: ${[o.ids ? `${o.ids.length} elements` : "", ...((o.categories ?? []) as string[])].filter(Boolean).join(", ")}`];
+    case "create_filter": return [`${h}New view filter "${o.name}" on ${((o.categories ?? []) as string[]).join(", ")}${(o.rules ?? []).length ? `: ${(o.rules as P[]).map((r) => `${r.param} ${r.op ?? "equals"} ${r.value ?? mm(r.value_mm)}`).join(" and ")}` : ""}`];
+    case "create_template": return [`${h}New view template "${o.name}" from ${o.view}`];
+    case "apply_template": return [`${h}Apply template ${o.template} to ${(o.views ?? []).length} views${o.once ? " (once, not linked)" : ""}`];
+    case "create_sheet": return [`${h}New sheet ${o.number ?? ""} ${o.name ?? ""}${o.title_block ? `, title block ${o.title_block}` : ""}`.replace(/\s+/g, " ")];
+    case "place_view": return [`${h}Place ${o.view} on sheet ${o.sheet}`];
+    case "open_view": return [`${h}Open ${o.view} when done`];
+    case "detail_line": case "model_line": return [`${h}${o.op === "detail_line" ? `Detail lines in ${o.view}` : "Model lines"}: ${Math.max(0, (o.points_mm ?? []).length - (o.closed ? 0 : 1))} segments${o.line_style ? `, ${o.line_style}` : ""}`];
+    case "filled_region": case "masking_region": return [`${h}${o.op === "filled_region" ? `Filled region ${o.type_name ?? ""}` : "Masking region"} in ${o.view}`.replace("  ", " ")];
+    case "text": return [`${h}Text in ${o.view}: "${String(o.text ?? "").slice(0, 60)}"`];
+    case "replace_text": return [`${h}Replace "${o.find}" with "${o.replace ?? ""}" in text notes${o.views ? ` in ${o.views.length} views` : " in every view"}`];
+    case "tag": return [`${h}Tag ${count} elements in ${o.view}${o.tag_type ? ` with ${o.tag_type}` : ""}:`, ...named(n, o.ids)];
+    case "spot_elevation": case "spot_coordinate": return [`${h}${o.op === "spot_elevation" ? "Spot elevation" : "Spot coordinate"} on ${isRef(o.id) ? made(o.id) : elementName(n, o.id)} in ${o.view}`];
+    case "revision_cloud": return [`${h}Revision cloud in ${o.view}${o.revision ? `, revision ${o.revision}` : ", latest revision"}`];
+    case "place_annotation": return [`${h}Place ${o.type_name} in ${o.view}`];
+    case "color_fill_legend": return [`${h}Colour fill legend for ${o.category ?? "Rooms"} in ${o.view}${o.scheme ? `, scheme ${o.scheme}` : ""}`];
+    case "extrusion": case "blend": case "revolve": case "sweep":
+      return [`${h}${o.solid === false ? "Void" : "Solid"} ${o.op}${o.plane ? ` on ${o.plane}` : ""}${o.end_mm != null ? `, depth ${mm(o.end_mm)}` : ""}${o.height_mm != null ? `, height ${mm(o.height_mm)}` : ""}${o.material ? `, material ${o.material}` : ""}`];
+    case "family_param": return [`${h}Family parameter ${o.name} (${o.type ?? "Length"}, ${o.instance ? "instance" : "type"})${o.formula ? ` = ${o.formula}` : o.value != null ? ` = ${o.value}` : ""}`];
+    case "family_type": return [`${h}Family type ${o.name}${o.params ? `: ${Object.entries(o.params).map(([k, v]) => `${k} ${v}`).join(", ")}` : ""}`];
+    case "family_category": return [`${h}Family category: ${o.category}`];
+    case "reference_plane": return [`${h}Reference plane ${o.name ?? ""} ${xy(o.start_mm)} → ${xy(o.end_mm)}`.replace("  ", " ")];
+    case "dimension": return [`${h}Dimension between ${(o.refs ?? []).join(", ")}${o.label ? `, labelled ${o.label}` : ""}${o.equal ? ", equal" : ""}`];
+    case "save_family": return [`${h}Save the family${o.path ? ` as ${o.path}` : ""}`];
+    case "load_into_project": return [`${h}Load the family into ${o.project ?? "the open project"}${o.overwrite === false ? "" : " (overwriting)"}`];
+    case "delete": return [`${h}DELETE ${count} elements (anything hosted on them goes too):`, ...named(n, o.ids)];
+    case "move": return [`${h}Move ${count} elements by ${(o.vector_mm ?? []).map((v: number) => Math.round(v)).join(", ")} mm:`, ...named(n, o.ids)];
+    case "set_param": {
+      const v = o.value_mm != null ? mm(o.value_mm) : o.by_mm != null ? `${o.by_mm > 0 ? "+" : ""}${mm(o.by_mm)}` : JSON.stringify(o.value_text ?? o.value);
+      return [`${h}Set ${o.param} to ${v} on ${count} elements${o.on_type ? " (ON THEIR TYPE: every element of that type changes)" : ""}:`, ...named(n, o.ids)];
+    }
+    case "change_type": return [`${h}Change ${count} elements to ${o.type_name ?? typeName(n, o.type_id)}:`, ...named(n, o.ids)];
+    case "attach": return [`${h}Attach the ${o.side === "base" ? "base" : "top"} of ${count} walls to ${isRef(o.target) ? made(o.target) : elementName(n, o.target)}:`, ...named(n, o.ids)];
+    case "duplicate_type": return [`${h}New type "${o.new_name}" copied from ${typeName(n, o.type)}` +
+      (Array.isArray(o.layers) ? `, layers ${o.layers.map((l: P) => `${l.material ?? "?"} ${mm(l.width_mm)}`).join(" + ")}` : "") +
+      (o.params ? `, ${Object.entries(o.params).map(([k, v]) => `${k} ${v}`).join(", ")}` : "")];
+    case "create_roof": {
+      const slopes = Array.isArray(o.slopes_deg) ? o.slopes_deg.map((s: number | null) => (s == null ? "end" : `${s}°`)).join(", ")
+        : o.slope_deg != null ? `${o.slope_deg}° every edge` : "flat";
+      return [`${h}Roof on ${o.level}${o.offset_mm != null ? ` +${mm(o.offset_mm)}` : ""}, ${o.type_name ?? "the first roof type"}, ` +
+        `${(o.outline_mm ?? []).length} edges, slopes ${slopes}${o.overhang_mm ? `, overhang ${mm(o.overhang_mm)}` : ""}`];
+    }
+    case "create_railing": return [`${h}Railing ${o.type_name ?? "(first railing type)"} on ${o.level ?? "?"}` +
+      (o.host ? ` on ${isRef(o.host) ? made(o.host) : elementName(n, o.host)}` : `, ${(o.path_mm ?? []).length} points from ${xy(o.path_mm?.[0])}`)];
+    case "create_stair": return [`${h}Stair ${o.base_level} → ${o.top_level}, ${(o.runs ?? []).length} runs${o.risers ? `, ${o.risers} risers` : ""}` +
+      (o.railings === false ? ", no railings" : ", with railings")];
+    case "room_separation": return [`${h}${(o.lines_mm ?? []).length} room separation lines on ${o.level}`];
+    case "opening": return [`${h}Cut a ${(o.outline_mm ?? []).length}-sided hole in ${isRef(o.host) ? made(o.host) : elementName(n, o.host)}`];
+    case "shaft": return [`${h}Shaft opening ${o.base_level} → ${o.top_level}: cuts every floor between`];
+    default: {
+      // the newer ops: their kind and the inputs a person checks
+      const keys = ["level", "type_name", "name", "view", "category", "host", "wall", "target", "path", "from", "workset", "material", "format"];
+      const bits = keys.filter((k) => o[k] != null).map((k) => `${k} ${isRef(o[k]) ? made(o[k]) : typeof o[k] === "object" ? JSON.stringify(o[k]) : o[k]}`);
+      const pts = (o.points_mm ?? o.outline_mm ?? []).length;
+      return [`${h}${String(o.op).replace(/_/g, " ")}${o.ids ? ` on ${o.ids.length} elements` : ""}${pts ? `, ${pts} points` : ""}${bits.length ? ` (${bits.join(", ")})` : ""}`,
+        ...(o.ids ? named(n, o.ids) : [])];
+    }
+  }
+}
+
+/** The lines a person reads before approving. */
+export function explain(command: string, params: unknown, names: Names = { types: {}, elements: {} }): string[] {
+  const p = (params ?? {}) as P;
+  const data: P[] = Array.isArray(p.data) ? p.data : [];
+  switch (command) {
+    case "fmc_model_edit": {
+      const ops: P[] = Array.isArray(p.ops) ? p.ops : [];
+      return cap([...(p.why ? [`Why: ${p.why}`] : []), ...(p.dry_run ? ["DRY RUN: nothing will change"] : []),
+        ...ops.flatMap((o, i) => [...op(o, names, i + 1), ...(o.select ? [`   the elements found by ${query(o.select)}`] : [])]), "All or nothing; one Undo takes it all back."]);
+    }
+    case "create_line_based_element":
+      return cap(["New walls:", ...tally(data.map((d) => `${typeName(names, d.typeId, d.category)}, ${mm(d.height)} high` +
+        (d.baseOffset ? `, base ${mm(d.baseOffset)}` : ""))), ...data.slice(0, 4).map((d) => `   ${xy(d.locationLine?.p0)} → ${xy(d.locationLine?.p1)}`)]);
+    case "create_surface_based_element":
+      return cap(["New floors / ceilings:", ...tally(data.map((d) => `${typeName(names, d.typeId, d.category)}${d.name ? ` "${d.name}"` : ""}`))]);
+    case "create_point_based_element":
+      return cap(["New doors / windows / components:", ...tally(data.map((d) => `${typeName(names, d.typeId, d.name)}${d.baseOffset ? `, sill ${mm(d.baseOffset)}` : ""}`))]);
+    case "create_room":
+      return cap(["New rooms:", ...data.map((d) => `${d.number ?? ""} ${d.name ?? ""} at ${xy(d.location)}`.trim())]);
+    case "create_level":
+      return cap(["New levels:", ...data.map((d) => `${d.name ?? "?"} at ${mm(d.elevation)}`)]);
+    case "fmc_revit_file": return [`Revit file action: ${p.action}${p.format ? ` ${p.format}` : ""}${p.path ? ` ${p.path}` : ""}${p.folder ? ` to ${p.folder}` : ""}` +
+      (["sync", "relinquish"].includes(p.action) ? " (changes the central model for everyone)" : "")];
+    case "fmc_undo":
+      return [p.action === "redo" ? "Redo in Revit: the AI batch the last undo took back"
+        : `Undo in Revit: ${p.batch_id ? `AI batch ${p.batch_id} (and any AI batches above it)` : `the AI's last ${p.count ?? 1} batch${(p.count ?? 1) > 1 ? "es" : ""}`}; never a person's work`];
+    case "fmc_family_new": return [`New family from ${p.template ?? "Metric Generic Model"}, saved as ${p.path}`];
+    case "fmc_post_command":
+      return cap([`Starts Revit's ${p.command} command, as if clicked on the ribbon` + ((p.select_ids ?? []).length ? `, with ${(p.select_ids ?? []).length} elements selected:` : ""),
+        ...named(names, p.select_ids)]);
+    case "delete_element":
+      return cap([`DELETE ${(p.elementIds ?? []).length} elements:`, ...named(names, p.elementIds)]);
+    case "operate_element":
+      return cap([`${p.data?.action ?? "?"} on ${(p.data?.elementIds ?? []).length} elements:`, ...named(names, p.data?.elementIds)]);
+    case "send_code_to_revit": {
+      const code = String(p.code ?? "").split(/\r?\n/).filter((l) => l.trim());
+      return cap([`Runs Revit API code (${code.length} lines${p.transactionMode === "none" ? ", no transaction" : ", in one transaction"}):`,
+        ...code.slice(0, MAX - 2).map((l) => `   ${l.trim().slice(0, 110)}`)]);
+    }
+    default: {
+      const lists = Object.entries(p).filter(([, v]) => Array.isArray(v)).map(([k, v]) => `${(v as unknown[]).length} ${k}`);
+      return [`${command}${lists.length ? ": " + lists.join(", ") : ""}`];
+    }
+  }
+}
+
+/** The type ids and element ids a batch names, to look up in Revit before it is queued. */
+export function namesWanted(params: unknown): { typeIds: number[]; elementIds: string[] } {
+  const p = (params ?? {}) as P;
+  const typeIds = new Set<number>(); const elementIds = new Set<string>();
+  for (const d of Array.isArray(p.data) ? p.data : []) if (typeof d?.typeId === "number") typeIds.add(d.typeId);
+  for (const o of Array.isArray(p.ops) ? p.ops : []) {
+    for (const x of Array.isArray(o?.ids) ? o.ids : []) if (!isRef(x)) elementIds.add(String(x));
+    for (const k of ["target", "host", "id"]) if (o?.[k] != null && !isRef(o[k])) elementIds.add(String(o[k]));
+    if (typeof o?.type_id === "number") typeIds.add(o.type_id);
+    if (o?.op === "duplicate_type" && o.type != null) typeIds.add(Number(o.type));
+  }
+  for (const x of p.elementIds ?? p.data?.elementIds ?? p.select_ids ?? []) elementIds.add(String(x));
+  return { typeIds: [...typeIds].slice(0, 100), elementIds: [...elementIds].slice(0, 200) };
+}
+
+/** Elements as fmc_element_geometry describes them, for the lines: "Rooms: F15 Bedroom (Level 1)". */
+export function elementNames(elements: Array<P>): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const e of elements ?? []) out[String(e.id)] = `${e.category || "?"}: ${e.type || e.name || ""}${e.level ? ` (${e.level})` : ""}`.replace(/: \(/, " (");
+  return out;
+}

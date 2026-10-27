@@ -1,2683 +1,2690 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_P_PlumbingFixture_Sink_Lab_Epoxy",
- "template": "Metric Generic Model.rft",
- "about": "Lab sink modelled as a generic product: resin worktop around the cut-out, square resin bowl (floor and four walls), polypropylene waste, dilution trap, gooseneck with serrated nozzle and wrist blades. Drawn at the 600 type; the 450 type shares it. Reference: query: sink lab epoxy plumbing fixtures hospital; images: https://www.google.com/search?tbm=isch&q=sink+lab+epoxy+plumbing+fixtures+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Plumbing Fixtures"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Pipe_System",
-   "guid": "19b06c84-7f51-563a-ac4a-ed9b4addfabc",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Discharge_Units",
-   "guid": "7aa955c0-3c0f-5f8c-a77b-9124e8d513eb",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Asset_Tag",
-   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Serial_Number",
-   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Install_Date",
-   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Warranty_End",
-   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Maintenance_Interval_Months",
-   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_OM_Link",
-   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Mounting_Height_mm",
-   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
-   "instance": true
-  },
-  {
-   "op": "add_type",
-   "name": "450_Epoxy"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Epoxy/FMC_Cost_Unit",
-   "type": "450_Epoxy",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Epoxy/FMC_Geometry_Stage",
-   "type": "450_Epoxy",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Epoxy/IfcExportAs",
-   "type": "450_Epoxy",
-   "param": "IfcExportAs",
-   "value": "IfcSanitaryTerminal"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Epoxy/Description",
-   "type": "450_Epoxy",
-   "param": "Description",
-   "value": "Laboratory sink in black epoxy resin, 600 x 450 x 275 mm undermount bowl in resin worktop, gooseneck with wrist-blade valves, dilution trap"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Epoxy/Keynote",
-   "type": "450_Epoxy",
-   "param": "Keynote",
-   "value": "P.SNK_04"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Epoxy/FMC_Keynote_Code",
-   "type": "450_Epoxy",
-   "param": "FMC_Keynote_Code",
-   "value": "P.SNK_04"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Epoxy/FMC_Code_Description",
-   "type": "450_Epoxy",
-   "param": "FMC_Code_Description",
-   "value": "Sink Lab Epoxy: Lab sink"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Epoxy/FMC_Code_Group",
-   "type": "450_Epoxy",
-   "param": "FMC_Code_Group",
-   "value": "P.SNK"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Epoxy/FMC_Role_Code",
-   "type": "450_Epoxy",
-   "param": "FMC_Role_Code",
-   "value": "P"
-  },
-  {
-   "op": "add_type",
-   "name": "600_Epoxy"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_Epoxy/FMC_Cost_Unit",
-   "type": "600_Epoxy",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_Epoxy/FMC_Geometry_Stage",
-   "type": "600_Epoxy",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_Epoxy/IfcExportAs",
-   "type": "600_Epoxy",
-   "param": "IfcExportAs",
-   "value": "IfcSanitaryTerminal"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_Epoxy/Description",
-   "type": "600_Epoxy",
-   "param": "Description",
-   "value": "Laboratory sink in black epoxy resin, 600 x 450 x 275 mm undermount bowl in resin worktop, gooseneck with wrist-blade valves, dilution trap"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_Epoxy/Keynote",
-   "type": "600_Epoxy",
-   "param": "Keynote",
-   "value": "P.SNK_04"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_Epoxy/FMC_Keynote_Code",
-   "type": "600_Epoxy",
-   "param": "FMC_Keynote_Code",
-   "value": "P.SNK_04"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_Epoxy/FMC_Code_Description",
-   "type": "600_Epoxy",
-   "param": "FMC_Code_Description",
-   "value": "Sink Lab Epoxy: Lab sink"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_Epoxy/FMC_Code_Group",
-   "type": "600_Epoxy",
-   "param": "FMC_Code_Group",
-   "value": "P.SNK"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_Epoxy/FMC_Role_Code",
-   "type": "600_Epoxy",
-   "param": "FMC_Role_Code",
-   "value": "P"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Epoxy Resin",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Epoxy Resin Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Epoxy Resin Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Grey",
-   "color": [
-    154,
-    160,
-    166
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Grey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Grey",
-   "param": "Grey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Polycarbonate",
-   "color": [
-    221,
-    230,
-    238
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Polycarbonate Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_Polycarbonate_Clear",
-   "param": "Polycarbonate Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Chrome",
-   "color": [
-    192,
-    195,
-    199
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Chrome Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Chrome_Polished",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Blue",
-   "color": [
-    47,
-    109,
-    181
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Blue Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Blue",
-   "param": "Blue Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -450,
-     -760
-    ],
-    [
-     450,
-     -760
-    ],
-    [
-     450,
-     0
-    ],
-    [
-     -450,
-     0
-    ]
-   ],
-   "start": 300,
-   "end": 1263
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Worktop Front",
-   "points": [
-    [
-     -450,
-     -750
-    ],
-    [
-     450,
-     -750
-    ],
-    [
-     450,
-     -600
-    ],
-    [
-     -450,
-     -600
-    ]
-   ],
-   "start": 875,
-   "end": 900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Worktop Front",
-   "subcategory": "Epoxy Resin"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Worktop Front",
-   "param": "Epoxy Resin Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Worktop Front",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Worktop Back",
-   "points": [
-    [
-     -450,
-     -150
-    ],
-    [
-     450,
-     -150
-    ],
-    [
-     450,
-     0
-    ],
-    [
-     -450,
-     0
-    ]
-   ],
-   "start": 875,
-   "end": 900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Worktop Back",
-   "subcategory": "Epoxy Resin"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Worktop Back",
-   "param": "Epoxy Resin Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Worktop Back",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Worktop Strip 1",
-   "points": [
-    [
-     -450,
-     -600
-    ],
-    [
-     -300,
-     -600
-    ],
-    [
-     -300,
-     -150
-    ],
-    [
-     -450,
-     -150
-    ]
-   ],
-   "start": 875,
-   "end": 900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Worktop Strip 1",
-   "subcategory": "Epoxy Resin"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Worktop Strip 1",
-   "param": "Epoxy Resin Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Worktop Strip 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Worktop Strip 2",
-   "points": [
-    [
-     300,
-     -600
-    ],
-    [
-     450,
-     -600
-    ],
-    [
-     450,
-     -150
-    ],
-    [
-     300,
-     -150
-    ]
-   ],
-   "start": 875,
-   "end": 900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Worktop Strip 2",
-   "subcategory": "Epoxy Resin"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Worktop Strip 2",
-   "param": "Epoxy Resin Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Worktop Strip 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bowl Floor",
-   "points": [
-    [
-     -320,
-     -620
-    ],
-    [
-     320,
-     -620
-    ],
-    [
-     320,
-     -130
-    ],
-    [
-     -320,
-     -130
-    ]
-   ],
-   "start": 600,
-   "end": 620
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bowl Floor",
-   "subcategory": "Epoxy Resin"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bowl Floor",
-   "param": "Epoxy Resin Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bowl Floor",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bowl Front",
-   "points": [
-    [
-     -320,
-     -620
-    ],
-    [
-     320,
-     -620
-    ],
-    [
-     320,
-     -600
-    ],
-    [
-     -320,
-     -600
-    ]
-   ],
-   "start": 600,
-   "end": 875
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bowl Front",
-   "subcategory": "Epoxy Resin"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bowl Front",
-   "param": "Epoxy Resin Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bowl Front",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bowl Back",
-   "points": [
-    [
-     -320,
-     -150
-    ],
-    [
-     320,
-     -150
-    ],
-    [
-     320,
-     -130
-    ],
-    [
-     -320,
-     -130
-    ]
-   ],
-   "start": 600,
-   "end": 875
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bowl Back",
-   "subcategory": "Epoxy Resin"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bowl Back",
-   "param": "Epoxy Resin Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bowl Back",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bowl Left",
-   "points": [
-    [
-     -320,
-     -600
-    ],
-    [
-     -300,
-     -600
-    ],
-    [
-     -300,
-     -150
-    ],
-    [
-     -320,
-     -150
-    ]
-   ],
-   "start": 600,
-   "end": 875
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bowl Left",
-   "subcategory": "Epoxy Resin"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bowl Left",
-   "param": "Epoxy Resin Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bowl Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bowl Right",
-   "points": [
-    [
-     300,
-     -600
-    ],
-    [
-     320,
-     -600
-    ],
-    [
-     320,
-     -150
-    ],
-    [
-     300,
-     -150
-    ]
-   ],
-   "start": 600,
-   "end": 875
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bowl Right",
-   "subcategory": "Epoxy Resin"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bowl Right",
-   "param": "Epoxy Resin Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bowl Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Worktop Drip Edge",
-   "points": [
-    [
-     -450,
-     860
-    ],
-    [
-     450,
-     860
-    ],
-    [
-     450,
-     900
-    ],
-    [
-     -450,
-     900
-    ]
-   ],
-   "start": 750,
-   "end": 760,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Worktop Drip Edge",
-   "subcategory": "Epoxy Resin"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Worktop Drip Edge",
-   "param": "Epoxy Resin Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Worktop Drip Edge",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drain Tail",
-   "points": [
-    [
-     20.0,
-     -375.0
-    ],
-    [
-     19.32,
-     -369.82
-    ],
-    [
-     17.32,
-     -365.0
-    ],
-    [
-     14.14,
-     -360.86
-    ],
-    [
-     10.0,
-     -357.68
-    ],
-    [
-     5.18,
-     -355.68
-    ],
-    [
-     0.0,
-     -355.0
-    ],
-    [
-     -5.18,
-     -355.68
-    ],
-    [
-     -10.0,
-     -357.68
-    ],
-    [
-     -14.14,
-     -360.86
-    ],
-    [
-     -17.32,
-     -365.0
-    ],
-    [
-     -19.32,
-     -369.82
-    ],
-    [
-     -20.0,
-     -375.0
-    ],
-    [
-     -19.32,
-     -380.18
-    ],
-    [
-     -17.32,
-     -385.0
-    ],
-    [
-     -14.14,
-     -389.14
-    ],
-    [
-     -10.0,
-     -392.32
-    ],
-    [
-     -5.18,
-     -394.32
-    ],
-    [
-     -0.0,
-     -395.0
-    ],
-    [
-     5.18,
-     -394.32
-    ],
-    [
-     10.0,
-     -392.32
-    ],
-    [
-     14.14,
-     -389.14
-    ],
-    [
-     17.32,
-     -385.0
-    ],
-    [
-     19.32,
-     -380.18
-    ]
-   ],
-   "start": 460,
-   "end": 620
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drain Tail",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drain Tail",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drain Tail",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Dilution Trap",
-   "profile": [
-    [
-     0,
-     300
-    ],
-    [
-     75,
-     300
-    ],
-    [
-     80,
-     320
-    ],
-    [
-     80,
-     440
-    ],
-    [
-     70,
-     460
-    ],
-    [
-     0,
-     460
-    ]
-   ],
-   "axis_at": [
-    0,
-    -375
-   ],
-   "axis": "z",
-   "subcategory": "Polycarbonate"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Dilution Trap",
-   "param": "Polycarbonate Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Dilution Trap",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Waste Arm",
-   "points": [
-    [
-     20.0,
-     400.0
-    ],
-    [
-     19.32,
-     405.18
-    ],
-    [
-     17.32,
-     410.0
-    ],
-    [
-     14.14,
-     414.14
-    ],
-    [
-     10.0,
-     417.32
-    ],
-    [
-     5.18,
-     419.32
-    ],
-    [
-     0.0,
-     420.0
-    ],
-    [
-     -5.18,
-     419.32
-    ],
-    [
-     -10.0,
-     417.32
-    ],
-    [
-     -14.14,
-     414.14
-    ],
-    [
-     -17.32,
-     410.0
-    ],
-    [
-     -19.32,
-     405.18
-    ],
-    [
-     -20.0,
-     400.0
-    ],
-    [
-     -19.32,
-     394.82
-    ],
-    [
-     -17.32,
-     390.0
-    ],
-    [
-     -14.14,
-     385.86
-    ],
-    [
-     -10.0,
-     382.68
-    ],
-    [
-     -5.18,
-     380.68
-    ],
-    [
-     -0.0,
-     380.0
-    ],
-    [
-     5.18,
-     380.68
-    ],
-    [
-     10.0,
-     382.68
-    ],
-    [
-     14.14,
-     385.86
-    ],
-    [
-     17.32,
-     390.0
-    ],
-    [
-     19.32,
-     394.82
-    ]
-   ],
-   "start": 0,
-   "end": 375,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Waste Arm",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Waste Arm",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Waste Arm",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Tap Base",
-   "profile": [
-    [
-     0,
-     900
-    ],
-    [
-     35,
-     900
-    ],
-    [
-     30,
-     920
-    ],
-    [
-     0,
-     920
-    ]
-   ],
-   "axis_at": [
-    0,
-    -80
-   ],
-   "axis": "z",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Tap Base",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Tap Base",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Gooseneck Riser",
-   "points": [
-    [
-     13.0,
-     -80.0
-    ],
-    [
-     12.56,
-     -76.64
-    ],
-    [
-     11.26,
-     -73.5
-    ],
-    [
-     9.19,
-     -70.81
-    ],
-    [
-     6.5,
-     -68.74
-    ],
-    [
-     3.36,
-     -67.44
-    ],
-    [
-     0.0,
-     -67.0
-    ],
-    [
-     -3.36,
-     -67.44
-    ],
-    [
-     -6.5,
-     -68.74
-    ],
-    [
-     -9.19,
-     -70.81
-    ],
-    [
-     -11.26,
-     -73.5
-    ],
-    [
-     -12.56,
-     -76.64
-    ],
-    [
-     -13.0,
-     -80.0
-    ],
-    [
-     -12.56,
-     -83.36
-    ],
-    [
-     -11.26,
-     -86.5
-    ],
-    [
-     -9.19,
-     -89.19
-    ],
-    [
-     -6.5,
-     -91.26
-    ],
-    [
-     -3.36,
-     -92.56
-    ],
-    [
-     -0.0,
-     -93.0
-    ],
-    [
-     3.36,
-     -92.56
-    ],
-    [
-     6.5,
-     -91.26
-    ],
-    [
-     9.19,
-     -89.19
-    ],
-    [
-     11.26,
-     -86.5
-    ],
-    [
-     12.56,
-     -83.36
-    ]
-   ],
-   "start": 920,
-   "end": 1250
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Gooseneck Riser",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Gooseneck Riser",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Gooseneck Riser",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Gooseneck Bend",
-   "profile": [
-    [
-     0,
-     80
-    ],
-    [
-     13,
-     80
-    ],
-    [
-     13,
-     120
-    ],
-    [
-     0,
-     120
-    ]
-   ],
-   "axis_at": [
-    0,
-    1250
-   ],
-   "axis": "y",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Gooseneck Bend",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Gooseneck Bend",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Gooseneck Arm",
-   "points": [
-    [
-     13.0,
-     1250.0
-    ],
-    [
-     12.56,
-     1253.36
-    ],
-    [
-     11.26,
-     1256.5
-    ],
-    [
-     9.19,
-     1259.19
-    ],
-    [
-     6.5,
-     1261.26
-    ],
-    [
-     3.36,
-     1262.56
-    ],
-    [
-     0.0,
-     1263.0
-    ],
-    [
-     -3.36,
-     1262.56
-    ],
-    [
-     -6.5,
-     1261.26
-    ],
-    [
-     -9.19,
-     1259.19
-    ],
-    [
-     -11.26,
-     1256.5
-    ],
-    [
-     -12.56,
-     1253.36
-    ],
-    [
-     -13.0,
-     1250.0
-    ],
-    [
-     -12.56,
-     1246.64
-    ],
-    [
-     -11.26,
-     1243.5
-    ],
-    [
-     -9.19,
-     1240.81
-    ],
-    [
-     -6.5,
-     1238.74
-    ],
-    [
-     -3.36,
-     1237.44
-    ],
-    [
-     -0.0,
-     1237.0
-    ],
-    [
-     3.36,
-     1237.44
-    ],
-    [
-     6.5,
-     1238.74
-    ],
-    [
-     9.19,
-     1240.81
-    ],
-    [
-     11.26,
-     1243.5
-    ],
-    [
-     12.56,
-     1246.64
-    ]
-   ],
-   "start": 100,
-   "end": 290,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Gooseneck Arm",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Gooseneck Arm",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Gooseneck Arm",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Gooseneck Nozzle",
-   "points": [
-    [
-     11.0,
-     -280.0
-    ],
-    [
-     10.63,
-     -277.15
-    ],
-    [
-     9.53,
-     -274.5
-    ],
-    [
-     7.78,
-     -272.22
-    ],
-    [
-     5.5,
-     -270.47
-    ],
-    [
-     2.85,
-     -269.37
-    ],
-    [
-     0.0,
-     -269.0
-    ],
-    [
-     -2.85,
-     -269.37
-    ],
-    [
-     -5.5,
-     -270.47
-    ],
-    [
-     -7.78,
-     -272.22
-    ],
-    [
-     -9.53,
-     -274.5
-    ],
-    [
-     -10.63,
-     -277.15
-    ],
-    [
-     -11.0,
-     -280.0
-    ],
-    [
-     -10.63,
-     -282.85
-    ],
-    [
-     -9.53,
-     -285.5
-    ],
-    [
-     -7.78,
-     -287.78
-    ],
-    [
-     -5.5,
-     -289.53
-    ],
-    [
-     -2.85,
-     -290.63
-    ],
-    [
-     -0.0,
-     -291.0
-    ],
-    [
-     2.85,
-     -290.63
-    ],
-    [
-     5.5,
-     -289.53
-    ],
-    [
-     7.78,
-     -287.78
-    ],
-    [
-     9.53,
-     -285.5
-    ],
-    [
-     10.63,
-     -282.85
-    ]
-   ],
-   "start": 1170,
-   "end": 1250
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Gooseneck Nozzle",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Gooseneck Nozzle",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Gooseneck Nozzle",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Serrated Tip",
-   "profile": [
-    [
-     0,
-     1135
-    ],
-    [
-     6,
-     1135
-    ],
-    [
-     9,
-     1150
-    ],
-    [
-     7,
-     1160
-    ],
-    [
-     10,
-     1170
-    ],
-    [
-     0,
-     1170
-    ]
-   ],
-   "axis_at": [
-    0,
-    -280
-   ],
-   "axis": "z",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Serrated Tip",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Serrated Tip",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Valve Bodies",
-   "points": [
-    [
-     -64.0,
-     960.0
-    ],
-    [
-     -64.55,
-     964.14
-    ],
-    [
-     -66.14,
-     968.0
-    ],
-    [
-     -68.69,
-     971.31
-    ],
-    [
-     -72.0,
-     973.86
-    ],
-    [
-     -75.86,
-     975.45
-    ],
-    [
-     -80.0,
-     976.0
-    ],
-    [
-     -84.14,
-     975.45
-    ],
-    [
-     -88.0,
-     973.86
-    ],
-    [
-     -91.31,
-     971.31
-    ],
-    [
-     -93.86,
-     968.0
-    ],
-    [
-     -95.45,
-     964.14
-    ],
-    [
-     -96.0,
-     960.0
-    ],
-    [
-     -95.45,
-     955.86
-    ],
-    [
-     -93.86,
-     952.0
-    ],
-    [
-     -91.31,
-     948.69
-    ],
-    [
-     -88.0,
-     946.14
-    ],
-    [
-     -84.14,
-     944.55
-    ],
-    [
-     -80.0,
-     944.0
-    ],
-    [
-     -75.86,
-     944.55
-    ],
-    [
-     -72.0,
-     946.14
-    ],
-    [
-     -68.69,
-     948.69
-    ],
-    [
-     -66.14,
-     952.0
-    ],
-    [
-     -64.55,
-     955.86
-    ]
-   ],
-   "start": -80,
-   "end": 80,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Valve Bodies",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Valve Bodies",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Valve Bodies",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Wrist Blade 1",
-   "points": [
-    [
-     -84.0,
-     -92.0
-    ],
-    [
-     -82.47,
-     -91.7
-    ],
-    [
-     -81.17,
-     -90.83
-    ],
-    [
-     -80.3,
-     -89.53
-    ],
-    [
-     -80.0,
-     -88.0
-    ],
-    [
-     -80.0,
-     -72.0
-    ],
-    [
-     -80.3,
-     -70.47
-    ],
-    [
-     -81.17,
-     -69.17
-    ],
-    [
-     -82.47,
-     -68.3
-    ],
-    [
-     -84.0,
-     -68.0
-    ],
-    [
-     -146.0,
-     -68.0
-    ],
-    [
-     -147.53,
-     -68.3
-    ],
-    [
-     -148.83,
-     -69.17
-    ],
-    [
-     -149.7,
-     -70.47
-    ],
-    [
-     -150.0,
-     -72.0
-    ],
-    [
-     -150.0,
-     -88.0
-    ],
-    [
-     -149.7,
-     -89.53
-    ],
-    [
-     -148.83,
-     -90.83
-    ],
-    [
-     -147.53,
-     -91.7
-    ],
-    [
-     -146.0,
-     -92.0
-    ]
-   ],
-   "start": 950,
-   "end": 970
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Wrist Blade 1",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Wrist Blade 1",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Wrist Blade 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Wrist Blade 2",
-   "points": [
-    [
-     146.0,
-     -92.0
-    ],
-    [
-     147.53,
-     -91.7
-    ],
-    [
-     148.83,
-     -90.83
-    ],
-    [
-     149.7,
-     -89.53
-    ],
-    [
-     150.0,
-     -88.0
-    ],
-    [
-     150.0,
-     -72.0
-    ],
-    [
-     149.7,
-     -70.47
-    ],
-    [
-     148.83,
-     -69.17
-    ],
-    [
-     147.53,
-     -68.3
-    ],
-    [
-     146.0,
-     -68.0
-    ],
-    [
-     84.0,
-     -68.0
-    ],
-    [
-     82.47,
-     -68.3
-    ],
-    [
-     81.17,
-     -69.17
-    ],
-    [
-     80.3,
-     -70.47
-    ],
-    [
-     80.0,
-     -72.0
-    ],
-    [
-     80.0,
-     -88.0
-    ],
-    [
-     80.3,
-     -89.53
-    ],
-    [
-     81.17,
-     -90.83
-    ],
-    [
-     82.47,
-     -91.7
-    ],
-    [
-     84.0,
-     -92.0
-    ]
-   ],
-   "start": 950,
-   "end": 970
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Wrist Blade 2",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Wrist Blade 2",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Wrist Blade 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Index Button 1",
-   "points": [
-    [
-     -71.0,
-     960.0
-    ],
-    [
-     -71.31,
-     962.33
-    ],
-    [
-     -72.21,
-     964.5
-    ],
-    [
-     -73.64,
-     966.36
-    ],
-    [
-     -75.5,
-     967.79
-    ],
-    [
-     -77.67,
-     968.69
-    ],
-    [
-     -80.0,
-     969.0
-    ],
-    [
-     -82.33,
-     968.69
-    ],
-    [
-     -84.5,
-     967.79
-    ],
-    [
-     -86.36,
-     966.36
-    ],
-    [
-     -87.79,
-     964.5
-    ],
-    [
-     -88.69,
-     962.33
-    ],
-    [
-     -89.0,
-     960.0
-    ],
-    [
-     -88.69,
-     957.67
-    ],
-    [
-     -87.79,
-     955.5
-    ],
-    [
-     -86.36,
-     953.64
-    ],
-    [
-     -84.5,
-     952.21
-    ],
-    [
-     -82.33,
-     951.31
-    ],
-    [
-     -80.0,
-     951.0
-    ],
-    [
-     -77.67,
-     951.31
-    ],
-    [
-     -75.5,
-     952.21
-    ],
-    [
-     -73.64,
-     953.64
-    ],
-    [
-     -72.21,
-     955.5
-    ],
-    [
-     -71.31,
-     957.67
-    ]
-   ],
-   "start": -150,
-   "end": -146,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Index Button 1",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Index Button 1",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Index Button 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Index Button 2",
-   "points": [
-    [
-     -71.0,
-     960.0
-    ],
-    [
-     -71.31,
-     962.33
-    ],
-    [
-     -72.21,
-     964.5
-    ],
-    [
-     -73.64,
-     966.36
-    ],
-    [
-     -75.5,
-     967.79
-    ],
-    [
-     -77.67,
-     968.69
-    ],
-    [
-     -80.0,
-     969.0
-    ],
-    [
-     -82.33,
-     968.69
-    ],
-    [
-     -84.5,
-     967.79
-    ],
-    [
-     -86.36,
-     966.36
-    ],
-    [
-     -87.79,
-     964.5
-    ],
-    [
-     -88.69,
-     962.33
-    ],
-    [
-     -89.0,
-     960.0
-    ],
-    [
-     -88.69,
-     957.67
-    ],
-    [
-     -87.79,
-     955.5
-    ],
-    [
-     -86.36,
-     953.64
-    ],
-    [
-     -84.5,
-     952.21
-    ],
-    [
-     -82.33,
-     951.31
-    ],
-    [
-     -80.0,
-     951.0
-    ],
-    [
-     -77.67,
-     951.31
-    ],
-    [
-     -75.5,
-     952.21
-    ],
-    [
-     -73.64,
-     953.64
-    ],
-    [
-     -72.21,
-     955.5
-    ],
-    [
-     -71.31,
-     957.67
-    ]
-   ],
-   "start": 146,
-   "end": 150,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Index Button 2",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Index Button 2",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Index Button 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drain Plug",
-   "points": [
-    [
-     30.0,
-     -375.0
-    ],
-    [
-     28.98,
-     -367.24
-    ],
-    [
-     25.98,
-     -360.0
-    ],
-    [
-     21.21,
-     -353.79
-    ],
-    [
-     15.0,
-     -349.02
-    ],
-    [
-     7.76,
-     -346.02
-    ],
-    [
-     0.0,
-     -345.0
-    ],
-    [
-     -7.76,
-     -346.02
-    ],
-    [
-     -15.0,
-     -349.02
-    ],
-    [
-     -21.21,
-     -353.79
-    ],
-    [
-     -25.98,
-     -360.0
-    ],
-    [
-     -28.98,
-     -367.24
-    ],
-    [
-     -30.0,
-     -375.0
-    ],
-    [
-     -28.98,
-     -382.76
-    ],
-    [
-     -25.98,
-     -390.0
-    ],
-    [
-     -21.21,
-     -396.21
-    ],
-    [
-     -15.0,
-     -400.98
-    ],
-    [
-     -7.76,
-     -403.98
-    ],
-    [
-     -0.0,
-     -405.0
-    ],
-    [
-     7.76,
-     -403.98
-    ],
-    [
-     15.0,
-     -400.98
-    ],
-    [
-     21.21,
-     -396.21
-    ],
-    [
-     25.98,
-     -390.0
-    ],
-    [
-     28.98,
-     -382.76
-    ]
-   ],
-   "start": 620,
-   "end": 622
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drain Plug",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drain Plug",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drain Plug",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Drain Grid",
-   "profile": [
-    [
-     10.5,
-     622
-    ],
-    [
-     13.5,
-     622
-    ],
-    [
-     13.5,
-     623
-    ],
-    [
-     10.5,
-     623
-    ]
-   ],
-   "axis_at": [
-    0,
-    -375
-   ],
-   "axis": "z",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drain Grid",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drain Grid",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "void_extrusion",
-   "name": "Drain Hole",
-   "points": [
-    [
-     24.0,
-     -375.0
-    ],
-    [
-     23.18,
-     -368.79
-    ],
-    [
-     20.78,
-     -363.0
-    ],
-    [
-     16.97,
-     -358.03
-    ],
-    [
-     12.0,
-     -354.22
-    ],
-    [
-     6.21,
-     -351.82
-    ],
-    [
-     0.0,
-     -351.0
-    ],
-    [
-     -6.21,
-     -351.82
-    ],
-    [
-     -12.0,
-     -354.22
-    ],
-    [
-     -16.97,
-     -358.03
-    ],
-    [
-     -20.78,
-     -363.0
-    ],
-    [
-     -23.18,
-     -368.79
-    ],
-    [
-     -24.0,
-     -375.0
-    ],
-    [
-     -23.18,
-     -381.21
-    ],
-    [
-     -20.78,
-     -387.0
-    ],
-    [
-     -16.97,
-     -391.97
-    ],
-    [
-     -12.0,
-     -395.78
-    ],
-    [
-     -6.21,
-     -398.18
-    ],
-    [
-     -0.0,
-     -399.0
-    ],
-    [
-     6.21,
-     -398.18
-    ],
-    [
-     12.0,
-     -395.78
-    ],
-    [
-     16.97,
-     -391.97
-    ],
-    [
-     20.78,
-     -387.0
-    ],
-    [
-     23.18,
-     -381.21
-    ]
-   ],
-   "start": 590,
-   "end": 621
-  },
-  {
-   "op": "add_connector",
-   "name": "CW",
-   "domain": "pipe",
-   "system": "DomesticColdWater",
-   "solid": "Tap Base",
-   "side": "bottom",
-   "diameter": 15,
-   "flow": "In"
-  },
-  {
-   "op": "add_connector",
-   "name": "Waste",
-   "domain": "pipe",
-   "system": "Sanitary",
-   "solid": "Waste Arm",
-   "side": "back",
-   "diameter": 40,
-   "flow": "Out"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_PlumbingFixture_Sink_Lab_Epoxy.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_P_PlumbingFixture_Sink_Lab_Epoxy",
+  "template": "Metric Generic Model.rft",
+  "about": "Lab sink modelled as a generic product: resin worktop around the cut-out, square resin bowl (floor and four walls), polypropylene waste, dilution trap, gooseneck with serrated nozzle and wrist blades. Drawn at the 600 type; the 450 type shares it. Reference: query: sink lab epoxy plumbing fixtures hospital; images: https://www.google.com/search?tbm=isch&q=sink+lab+epoxy+plumbing+fixtures+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Plumbing Fixtures"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Pipe_System",
+      "guid": "19b06c84-7f51-563a-ac4a-ed9b4addfabc",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Discharge_Units",
+      "guid": "7aa955c0-3c0f-5f8c-a77b-9124e8d513eb",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Asset_Tag",
+      "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Serial_Number",
+      "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Install_Date",
+      "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Warranty_End",
+      "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Maintenance_Interval_Months",
+      "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_OM_Link",
+      "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Mounting_Height_mm",
+      "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+      "instance": true
+    },
+    {
+      "op": "add_type",
+      "name": "450_Epoxy"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Epoxy/FMC_Cost_Unit",
+      "type": "450_Epoxy",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Epoxy/FMC_Geometry_Stage",
+      "type": "450_Epoxy",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Epoxy/IfcExportAs",
+      "type": "450_Epoxy",
+      "param": "IfcExportAs",
+      "value": "IfcSanitaryTerminal"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Epoxy/Description",
+      "type": "450_Epoxy",
+      "param": "Description",
+      "value": "Laboratory sink in black epoxy resin, 600 x 450 x 275 mm undermount bowl in resin worktop, gooseneck with wrist-blade valves, dilution trap"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Epoxy/Keynote",
+      "type": "450_Epoxy",
+      "param": "Keynote",
+      "value": "P.SNK_04"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Epoxy/FMC_Keynote_Code",
+      "type": "450_Epoxy",
+      "param": "FMC_Keynote_Code",
+      "value": "P.SNK_04"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Epoxy/FMC_Code_Description",
+      "type": "450_Epoxy",
+      "param": "FMC_Code_Description",
+      "value": "Sink Lab Epoxy: Lab sink"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Epoxy/FMC_Code_Group",
+      "type": "450_Epoxy",
+      "param": "FMC_Code_Group",
+      "value": "P.SNK"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Epoxy/FMC_Role_Code",
+      "type": "450_Epoxy",
+      "param": "FMC_Role_Code",
+      "value": "P"
+    },
+    {
+      "op": "add_type",
+      "name": "600_Epoxy"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_Epoxy/FMC_Cost_Unit",
+      "type": "600_Epoxy",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_Epoxy/FMC_Geometry_Stage",
+      "type": "600_Epoxy",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_Epoxy/IfcExportAs",
+      "type": "600_Epoxy",
+      "param": "IfcExportAs",
+      "value": "IfcSanitaryTerminal"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_Epoxy/Description",
+      "type": "600_Epoxy",
+      "param": "Description",
+      "value": "Laboratory sink in black epoxy resin, 600 x 450 x 275 mm undermount bowl in resin worktop, gooseneck with wrist-blade valves, dilution trap"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_Epoxy/Keynote",
+      "type": "600_Epoxy",
+      "param": "Keynote",
+      "value": "P.SNK_04"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_Epoxy/FMC_Keynote_Code",
+      "type": "600_Epoxy",
+      "param": "FMC_Keynote_Code",
+      "value": "P.SNK_04"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_Epoxy/FMC_Code_Description",
+      "type": "600_Epoxy",
+      "param": "FMC_Code_Description",
+      "value": "Sink Lab Epoxy: Lab sink"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_Epoxy/FMC_Code_Group",
+      "type": "600_Epoxy",
+      "param": "FMC_Code_Group",
+      "value": "P.SNK"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_Epoxy/FMC_Role_Code",
+      "type": "600_Epoxy",
+      "param": "FMC_Role_Code",
+      "value": "P"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Epoxy Resin",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Epoxy Resin Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Epoxy Resin Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Grey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Grey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Grey",
+      "param": "Grey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Polycarbonate",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Polycarbonate Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_Polycarbonate_Clear",
+      "param": "Polycarbonate Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Chrome",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Chrome Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Chrome_Polished",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Blue",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Blue Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Blue",
+      "param": "Blue Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -450,
+          -760
+        ],
+        [
+          450,
+          -760
+        ],
+        [
+          450,
+          0
+        ],
+        [
+          -450,
+          0
+        ]
+      ],
+      "start": 300,
+      "end": 1263
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Worktop Front",
+      "points": [
+        [
+          -450,
+          -750
+        ],
+        [
+          450,
+          -750
+        ],
+        [
+          450,
+          -600
+        ],
+        [
+          -450,
+          -600
+        ]
+      ],
+      "start": 875,
+      "end": 900
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Worktop Front",
+      "subcategory": "Epoxy Resin"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Worktop Front",
+      "param": "Epoxy Resin Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Worktop Front",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Worktop Back",
+      "points": [
+        [
+          -450,
+          -150
+        ],
+        [
+          450,
+          -150
+        ],
+        [
+          450,
+          0
+        ],
+        [
+          -450,
+          0
+        ]
+      ],
+      "start": 875,
+      "end": 900
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Worktop Back",
+      "subcategory": "Epoxy Resin"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Worktop Back",
+      "param": "Epoxy Resin Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Worktop Back",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Worktop Strip 1",
+      "points": [
+        [
+          -450,
+          -600
+        ],
+        [
+          -300,
+          -600
+        ],
+        [
+          -300,
+          -150
+        ],
+        [
+          -450,
+          -150
+        ]
+      ],
+      "start": 875,
+      "end": 900
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Worktop Strip 1",
+      "subcategory": "Epoxy Resin"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Worktop Strip 1",
+      "param": "Epoxy Resin Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Worktop Strip 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Worktop Strip 2",
+      "points": [
+        [
+          300,
+          -600
+        ],
+        [
+          450,
+          -600
+        ],
+        [
+          450,
+          -150
+        ],
+        [
+          300,
+          -150
+        ]
+      ],
+      "start": 875,
+      "end": 900
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Worktop Strip 2",
+      "subcategory": "Epoxy Resin"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Worktop Strip 2",
+      "param": "Epoxy Resin Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Worktop Strip 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bowl Floor",
+      "points": [
+        [
+          -320,
+          -620
+        ],
+        [
+          320,
+          -620
+        ],
+        [
+          320,
+          -130
+        ],
+        [
+          -320,
+          -130
+        ]
+      ],
+      "start": 600,
+      "end": 620
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bowl Floor",
+      "subcategory": "Epoxy Resin"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bowl Floor",
+      "param": "Epoxy Resin Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bowl Floor",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bowl Front",
+      "points": [
+        [
+          -320,
+          -620
+        ],
+        [
+          320,
+          -620
+        ],
+        [
+          320,
+          -600
+        ],
+        [
+          -320,
+          -600
+        ]
+      ],
+      "start": 600,
+      "end": 875
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bowl Front",
+      "subcategory": "Epoxy Resin"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bowl Front",
+      "param": "Epoxy Resin Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bowl Front",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bowl Back",
+      "points": [
+        [
+          -320,
+          -150
+        ],
+        [
+          320,
+          -150
+        ],
+        [
+          320,
+          -130
+        ],
+        [
+          -320,
+          -130
+        ]
+      ],
+      "start": 600,
+      "end": 875
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bowl Back",
+      "subcategory": "Epoxy Resin"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bowl Back",
+      "param": "Epoxy Resin Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bowl Back",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bowl Left",
+      "points": [
+        [
+          -320,
+          -600
+        ],
+        [
+          -300,
+          -600
+        ],
+        [
+          -300,
+          -150
+        ],
+        [
+          -320,
+          -150
+        ]
+      ],
+      "start": 600,
+      "end": 875
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bowl Left",
+      "subcategory": "Epoxy Resin"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bowl Left",
+      "param": "Epoxy Resin Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bowl Left",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bowl Right",
+      "points": [
+        [
+          300,
+          -600
+        ],
+        [
+          320,
+          -600
+        ],
+        [
+          320,
+          -150
+        ],
+        [
+          300,
+          -150
+        ]
+      ],
+      "start": 600,
+      "end": 875
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bowl Right",
+      "subcategory": "Epoxy Resin"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bowl Right",
+      "param": "Epoxy Resin Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bowl Right",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Worktop Drip Edge",
+      "points": [
+        [
+          -450,
+          860
+        ],
+        [
+          450,
+          860
+        ],
+        [
+          450,
+          900
+        ],
+        [
+          -450,
+          900
+        ]
+      ],
+      "start": 750,
+      "end": 760,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Worktop Drip Edge",
+      "subcategory": "Epoxy Resin"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Worktop Drip Edge",
+      "param": "Epoxy Resin Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Worktop Drip Edge",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Drain Tail",
+      "points": [
+        [
+          20,
+          -375
+        ],
+        [
+          19.32,
+          -369.82
+        ],
+        [
+          17.32,
+          -365
+        ],
+        [
+          14.14,
+          -360.86
+        ],
+        [
+          10,
+          -357.68
+        ],
+        [
+          5.18,
+          -355.68
+        ],
+        [
+          0,
+          -355
+        ],
+        [
+          -5.18,
+          -355.68
+        ],
+        [
+          -10,
+          -357.68
+        ],
+        [
+          -14.14,
+          -360.86
+        ],
+        [
+          -17.32,
+          -365
+        ],
+        [
+          -19.32,
+          -369.82
+        ],
+        [
+          -20,
+          -375
+        ],
+        [
+          -19.32,
+          -380.18
+        ],
+        [
+          -17.32,
+          -385
+        ],
+        [
+          -14.14,
+          -389.14
+        ],
+        [
+          -10,
+          -392.32
+        ],
+        [
+          -5.18,
+          -394.32
+        ],
+        [
+          0,
+          -395
+        ],
+        [
+          5.18,
+          -394.32
+        ],
+        [
+          10,
+          -392.32
+        ],
+        [
+          14.14,
+          -389.14
+        ],
+        [
+          17.32,
+          -385
+        ],
+        [
+          19.32,
+          -380.18
+        ]
+      ],
+      "start": 460,
+      "end": 620
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Drain Tail",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Drain Tail",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Drain Tail",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Dilution Trap",
+      "profile": [
+        [
+          0,
+          300
+        ],
+        [
+          75,
+          300
+        ],
+        [
+          80,
+          320
+        ],
+        [
+          80,
+          440
+        ],
+        [
+          70,
+          460
+        ],
+        [
+          0,
+          460
+        ]
+      ],
+      "axis_at": [
+        0,
+        -375
+      ],
+      "axis": "z",
+      "subcategory": "Polycarbonate"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Dilution Trap",
+      "param": "Polycarbonate Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Dilution Trap",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Waste Arm",
+      "points": [
+        [
+          20,
+          400
+        ],
+        [
+          19.32,
+          405.18
+        ],
+        [
+          17.32,
+          410
+        ],
+        [
+          14.14,
+          414.14
+        ],
+        [
+          10,
+          417.32
+        ],
+        [
+          5.18,
+          419.32
+        ],
+        [
+          0,
+          420
+        ],
+        [
+          -5.18,
+          419.32
+        ],
+        [
+          -10,
+          417.32
+        ],
+        [
+          -14.14,
+          414.14
+        ],
+        [
+          -17.32,
+          410
+        ],
+        [
+          -19.32,
+          405.18
+        ],
+        [
+          -20,
+          400
+        ],
+        [
+          -19.32,
+          394.82
+        ],
+        [
+          -17.32,
+          390
+        ],
+        [
+          -14.14,
+          385.86
+        ],
+        [
+          -10,
+          382.68
+        ],
+        [
+          -5.18,
+          380.68
+        ],
+        [
+          0,
+          380
+        ],
+        [
+          5.18,
+          380.68
+        ],
+        [
+          10,
+          382.68
+        ],
+        [
+          14.14,
+          385.86
+        ],
+        [
+          17.32,
+          390
+        ],
+        [
+          19.32,
+          394.82
+        ]
+      ],
+      "start": 0,
+      "end": 375,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Waste Arm",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Waste Arm",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Waste Arm",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Tap Base",
+      "profile": [
+        [
+          0,
+          900
+        ],
+        [
+          35,
+          900
+        ],
+        [
+          30,
+          920
+        ],
+        [
+          0,
+          920
+        ]
+      ],
+      "axis_at": [
+        0,
+        -80
+      ],
+      "axis": "z",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Tap Base",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Tap Base",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Gooseneck Riser",
+      "points": [
+        [
+          13,
+          -80
+        ],
+        [
+          12.56,
+          -76.64
+        ],
+        [
+          11.26,
+          -73.5
+        ],
+        [
+          9.19,
+          -70.81
+        ],
+        [
+          6.5,
+          -68.74
+        ],
+        [
+          3.36,
+          -67.44
+        ],
+        [
+          0,
+          -67
+        ],
+        [
+          -3.36,
+          -67.44
+        ],
+        [
+          -6.5,
+          -68.74
+        ],
+        [
+          -9.19,
+          -70.81
+        ],
+        [
+          -11.26,
+          -73.5
+        ],
+        [
+          -12.56,
+          -76.64
+        ],
+        [
+          -13,
+          -80
+        ],
+        [
+          -12.56,
+          -83.36
+        ],
+        [
+          -11.26,
+          -86.5
+        ],
+        [
+          -9.19,
+          -89.19
+        ],
+        [
+          -6.5,
+          -91.26
+        ],
+        [
+          -3.36,
+          -92.56
+        ],
+        [
+          0,
+          -93
+        ],
+        [
+          3.36,
+          -92.56
+        ],
+        [
+          6.5,
+          -91.26
+        ],
+        [
+          9.19,
+          -89.19
+        ],
+        [
+          11.26,
+          -86.5
+        ],
+        [
+          12.56,
+          -83.36
+        ]
+      ],
+      "start": 920,
+      "end": 1250
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Gooseneck Riser",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Gooseneck Riser",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Gooseneck Riser",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Gooseneck Bend",
+      "profile": [
+        [
+          0,
+          80
+        ],
+        [
+          13,
+          80
+        ],
+        [
+          13,
+          120
+        ],
+        [
+          0,
+          120
+        ]
+      ],
+      "axis_at": [
+        0,
+        1250
+      ],
+      "axis": "y",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Gooseneck Bend",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Gooseneck Bend",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Gooseneck Arm",
+      "points": [
+        [
+          13,
+          1250
+        ],
+        [
+          12.56,
+          1253.36
+        ],
+        [
+          11.26,
+          1256.5
+        ],
+        [
+          9.19,
+          1259.19
+        ],
+        [
+          6.5,
+          1261.26
+        ],
+        [
+          3.36,
+          1262.56
+        ],
+        [
+          0,
+          1263
+        ],
+        [
+          -3.36,
+          1262.56
+        ],
+        [
+          -6.5,
+          1261.26
+        ],
+        [
+          -9.19,
+          1259.19
+        ],
+        [
+          -11.26,
+          1256.5
+        ],
+        [
+          -12.56,
+          1253.36
+        ],
+        [
+          -13,
+          1250
+        ],
+        [
+          -12.56,
+          1246.64
+        ],
+        [
+          -11.26,
+          1243.5
+        ],
+        [
+          -9.19,
+          1240.81
+        ],
+        [
+          -6.5,
+          1238.74
+        ],
+        [
+          -3.36,
+          1237.44
+        ],
+        [
+          0,
+          1237
+        ],
+        [
+          3.36,
+          1237.44
+        ],
+        [
+          6.5,
+          1238.74
+        ],
+        [
+          9.19,
+          1240.81
+        ],
+        [
+          11.26,
+          1243.5
+        ],
+        [
+          12.56,
+          1246.64
+        ]
+      ],
+      "start": 100,
+      "end": 290,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Gooseneck Arm",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Gooseneck Arm",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Gooseneck Arm",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Gooseneck Nozzle",
+      "points": [
+        [
+          11,
+          -280
+        ],
+        [
+          10.63,
+          -277.15
+        ],
+        [
+          9.53,
+          -274.5
+        ],
+        [
+          7.78,
+          -272.22
+        ],
+        [
+          5.5,
+          -270.47
+        ],
+        [
+          2.85,
+          -269.37
+        ],
+        [
+          0,
+          -269
+        ],
+        [
+          -2.85,
+          -269.37
+        ],
+        [
+          -5.5,
+          -270.47
+        ],
+        [
+          -7.78,
+          -272.22
+        ],
+        [
+          -9.53,
+          -274.5
+        ],
+        [
+          -10.63,
+          -277.15
+        ],
+        [
+          -11,
+          -280
+        ],
+        [
+          -10.63,
+          -282.85
+        ],
+        [
+          -9.53,
+          -285.5
+        ],
+        [
+          -7.78,
+          -287.78
+        ],
+        [
+          -5.5,
+          -289.53
+        ],
+        [
+          -2.85,
+          -290.63
+        ],
+        [
+          0,
+          -291
+        ],
+        [
+          2.85,
+          -290.63
+        ],
+        [
+          5.5,
+          -289.53
+        ],
+        [
+          7.78,
+          -287.78
+        ],
+        [
+          9.53,
+          -285.5
+        ],
+        [
+          10.63,
+          -282.85
+        ]
+      ],
+      "start": 1170,
+      "end": 1250
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Gooseneck Nozzle",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Gooseneck Nozzle",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Gooseneck Nozzle",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Serrated Tip",
+      "profile": [
+        [
+          0,
+          1135
+        ],
+        [
+          6,
+          1135
+        ],
+        [
+          9,
+          1150
+        ],
+        [
+          7,
+          1160
+        ],
+        [
+          10,
+          1170
+        ],
+        [
+          0,
+          1170
+        ]
+      ],
+      "axis_at": [
+        0,
+        -280
+      ],
+      "axis": "z",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Serrated Tip",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Serrated Tip",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Valve Bodies",
+      "points": [
+        [
+          -64,
+          960
+        ],
+        [
+          -64.55,
+          964.14
+        ],
+        [
+          -66.14,
+          968
+        ],
+        [
+          -68.69,
+          971.31
+        ],
+        [
+          -72,
+          973.86
+        ],
+        [
+          -75.86,
+          975.45
+        ],
+        [
+          -80,
+          976
+        ],
+        [
+          -84.14,
+          975.45
+        ],
+        [
+          -88,
+          973.86
+        ],
+        [
+          -91.31,
+          971.31
+        ],
+        [
+          -93.86,
+          968
+        ],
+        [
+          -95.45,
+          964.14
+        ],
+        [
+          -96,
+          960
+        ],
+        [
+          -95.45,
+          955.86
+        ],
+        [
+          -93.86,
+          952
+        ],
+        [
+          -91.31,
+          948.69
+        ],
+        [
+          -88,
+          946.14
+        ],
+        [
+          -84.14,
+          944.55
+        ],
+        [
+          -80,
+          944
+        ],
+        [
+          -75.86,
+          944.55
+        ],
+        [
+          -72,
+          946.14
+        ],
+        [
+          -68.69,
+          948.69
+        ],
+        [
+          -66.14,
+          952
+        ],
+        [
+          -64.55,
+          955.86
+        ]
+      ],
+      "start": -80,
+      "end": 80,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Valve Bodies",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Valve Bodies",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Valve Bodies",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Wrist Blade 1",
+      "points": [
+        [
+          -84,
+          -92
+        ],
+        [
+          -82.47,
+          -91.7
+        ],
+        [
+          -81.17,
+          -90.83
+        ],
+        [
+          -80.3,
+          -89.53
+        ],
+        [
+          -80,
+          -88
+        ],
+        [
+          -80,
+          -72
+        ],
+        [
+          -80.3,
+          -70.47
+        ],
+        [
+          -81.17,
+          -69.17
+        ],
+        [
+          -82.47,
+          -68.3
+        ],
+        [
+          -84,
+          -68
+        ],
+        [
+          -146,
+          -68
+        ],
+        [
+          -147.53,
+          -68.3
+        ],
+        [
+          -148.83,
+          -69.17
+        ],
+        [
+          -149.7,
+          -70.47
+        ],
+        [
+          -150,
+          -72
+        ],
+        [
+          -150,
+          -88
+        ],
+        [
+          -149.7,
+          -89.53
+        ],
+        [
+          -148.83,
+          -90.83
+        ],
+        [
+          -147.53,
+          -91.7
+        ],
+        [
+          -146,
+          -92
+        ]
+      ],
+      "start": 950,
+      "end": 970
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Wrist Blade 1",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Wrist Blade 1",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Wrist Blade 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Wrist Blade 2",
+      "points": [
+        [
+          146,
+          -92
+        ],
+        [
+          147.53,
+          -91.7
+        ],
+        [
+          148.83,
+          -90.83
+        ],
+        [
+          149.7,
+          -89.53
+        ],
+        [
+          150,
+          -88
+        ],
+        [
+          150,
+          -72
+        ],
+        [
+          149.7,
+          -70.47
+        ],
+        [
+          148.83,
+          -69.17
+        ],
+        [
+          147.53,
+          -68.3
+        ],
+        [
+          146,
+          -68
+        ],
+        [
+          84,
+          -68
+        ],
+        [
+          82.47,
+          -68.3
+        ],
+        [
+          81.17,
+          -69.17
+        ],
+        [
+          80.3,
+          -70.47
+        ],
+        [
+          80,
+          -72
+        ],
+        [
+          80,
+          -88
+        ],
+        [
+          80.3,
+          -89.53
+        ],
+        [
+          81.17,
+          -90.83
+        ],
+        [
+          82.47,
+          -91.7
+        ],
+        [
+          84,
+          -92
+        ]
+      ],
+      "start": 950,
+      "end": 970
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Wrist Blade 2",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Wrist Blade 2",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Wrist Blade 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Index Button 1",
+      "points": [
+        [
+          -71,
+          960
+        ],
+        [
+          -71.31,
+          962.33
+        ],
+        [
+          -72.21,
+          964.5
+        ],
+        [
+          -73.64,
+          966.36
+        ],
+        [
+          -75.5,
+          967.79
+        ],
+        [
+          -77.67,
+          968.69
+        ],
+        [
+          -80,
+          969
+        ],
+        [
+          -82.33,
+          968.69
+        ],
+        [
+          -84.5,
+          967.79
+        ],
+        [
+          -86.36,
+          966.36
+        ],
+        [
+          -87.79,
+          964.5
+        ],
+        [
+          -88.69,
+          962.33
+        ],
+        [
+          -89,
+          960
+        ],
+        [
+          -88.69,
+          957.67
+        ],
+        [
+          -87.79,
+          955.5
+        ],
+        [
+          -86.36,
+          953.64
+        ],
+        [
+          -84.5,
+          952.21
+        ],
+        [
+          -82.33,
+          951.31
+        ],
+        [
+          -80,
+          951
+        ],
+        [
+          -77.67,
+          951.31
+        ],
+        [
+          -75.5,
+          952.21
+        ],
+        [
+          -73.64,
+          953.64
+        ],
+        [
+          -72.21,
+          955.5
+        ],
+        [
+          -71.31,
+          957.67
+        ]
+      ],
+      "start": -150,
+      "end": -146,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Index Button 1",
+      "subcategory": "Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Index Button 1",
+      "param": "Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Index Button 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Index Button 2",
+      "points": [
+        [
+          -71,
+          960
+        ],
+        [
+          -71.31,
+          962.33
+        ],
+        [
+          -72.21,
+          964.5
+        ],
+        [
+          -73.64,
+          966.36
+        ],
+        [
+          -75.5,
+          967.79
+        ],
+        [
+          -77.67,
+          968.69
+        ],
+        [
+          -80,
+          969
+        ],
+        [
+          -82.33,
+          968.69
+        ],
+        [
+          -84.5,
+          967.79
+        ],
+        [
+          -86.36,
+          966.36
+        ],
+        [
+          -87.79,
+          964.5
+        ],
+        [
+          -88.69,
+          962.33
+        ],
+        [
+          -89,
+          960
+        ],
+        [
+          -88.69,
+          957.67
+        ],
+        [
+          -87.79,
+          955.5
+        ],
+        [
+          -86.36,
+          953.64
+        ],
+        [
+          -84.5,
+          952.21
+        ],
+        [
+          -82.33,
+          951.31
+        ],
+        [
+          -80,
+          951
+        ],
+        [
+          -77.67,
+          951.31
+        ],
+        [
+          -75.5,
+          952.21
+        ],
+        [
+          -73.64,
+          953.64
+        ],
+        [
+          -72.21,
+          955.5
+        ],
+        [
+          -71.31,
+          957.67
+        ]
+      ],
+      "start": 146,
+      "end": 150,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Index Button 2",
+      "subcategory": "Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Index Button 2",
+      "param": "Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Index Button 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Drain Plug",
+      "points": [
+        [
+          30,
+          -375
+        ],
+        [
+          28.98,
+          -367.24
+        ],
+        [
+          25.98,
+          -360
+        ],
+        [
+          21.21,
+          -353.79
+        ],
+        [
+          15,
+          -349.02
+        ],
+        [
+          7.76,
+          -346.02
+        ],
+        [
+          0,
+          -345
+        ],
+        [
+          -7.76,
+          -346.02
+        ],
+        [
+          -15,
+          -349.02
+        ],
+        [
+          -21.21,
+          -353.79
+        ],
+        [
+          -25.98,
+          -360
+        ],
+        [
+          -28.98,
+          -367.24
+        ],
+        [
+          -30,
+          -375
+        ],
+        [
+          -28.98,
+          -382.76
+        ],
+        [
+          -25.98,
+          -390
+        ],
+        [
+          -21.21,
+          -396.21
+        ],
+        [
+          -15,
+          -400.98
+        ],
+        [
+          -7.76,
+          -403.98
+        ],
+        [
+          0,
+          -405
+        ],
+        [
+          7.76,
+          -403.98
+        ],
+        [
+          15,
+          -400.98
+        ],
+        [
+          21.21,
+          -396.21
+        ],
+        [
+          25.98,
+          -390
+        ],
+        [
+          28.98,
+          -382.76
+        ]
+      ],
+      "start": 620,
+      "end": 622
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Drain Plug",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Drain Plug",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Drain Plug",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Drain Grid",
+      "profile": [
+        [
+          10.5,
+          622
+        ],
+        [
+          13.5,
+          622
+        ],
+        [
+          13.5,
+          623
+        ],
+        [
+          10.5,
+          623
+        ]
+      ],
+      "axis_at": [
+        0,
+        -375
+      ],
+      "axis": "z",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Drain Grid",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Drain Grid",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "void_extrusion",
+      "name": "Drain Hole",
+      "points": [
+        [
+          24,
+          -375
+        ],
+        [
+          23.18,
+          -368.79
+        ],
+        [
+          20.78,
+          -363
+        ],
+        [
+          16.97,
+          -358.03
+        ],
+        [
+          12,
+          -354.22
+        ],
+        [
+          6.21,
+          -351.82
+        ],
+        [
+          0,
+          -351
+        ],
+        [
+          -6.21,
+          -351.82
+        ],
+        [
+          -12,
+          -354.22
+        ],
+        [
+          -16.97,
+          -358.03
+        ],
+        [
+          -20.78,
+          -363
+        ],
+        [
+          -23.18,
+          -368.79
+        ],
+        [
+          -24,
+          -375
+        ],
+        [
+          -23.18,
+          -381.21
+        ],
+        [
+          -20.78,
+          -387
+        ],
+        [
+          -16.97,
+          -391.97
+        ],
+        [
+          -12,
+          -395.78
+        ],
+        [
+          -6.21,
+          -398.18
+        ],
+        [
+          0,
+          -399
+        ],
+        [
+          6.21,
+          -398.18
+        ],
+        [
+          12,
+          -395.78
+        ],
+        [
+          16.97,
+          -391.97
+        ],
+        [
+          20.78,
+          -387
+        ],
+        [
+          23.18,
+          -381.21
+        ]
+      ],
+      "start": 590,
+      "end": 621
+    },
+    {
+      "op": "add_connector",
+      "name": "CW",
+      "domain": "pipe",
+      "system": "DomesticColdWater",
+      "solid": "Tap Base",
+      "side": "bottom",
+      "diameter": 15,
+      "flow": "In"
+    },
+    {
+      "op": "add_connector",
+      "name": "Waste",
+      "domain": "pipe",
+      "system": "Sanitary",
+      "solid": "Waste Arm",
+      "side": "back",
+      "diameter": 40,
+      "flow": "Out"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_PlumbingFixture_Sink_Lab_Epoxy.png"
+    }
+  ],
+  "values": {
+    "Bowl 600 x 450 x 275 mm": {
+      "value": "600x450x275",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Worktop height 900 mm": {
+      "value": 900,
+      "source_status": "assumed",
+      "source": "laboratory bench height, HBN 15"
+    },
+    "Chemical-resistant epoxy resin": {
+      "value": "epoxy",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   }
- ],
- "values": {
-  "Bowl 600 x 450 x 275 mm": {
-   "value": "600x450x275",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Worktop height 900 mm": {
-   "value": 900,
-   "source_status": "assumed",
-   "source": "laboratory bench height, HBN 15"
-  },
-  "Chemical-resistant epoxy resin": {
-   "value": "epoxy",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- }
 }

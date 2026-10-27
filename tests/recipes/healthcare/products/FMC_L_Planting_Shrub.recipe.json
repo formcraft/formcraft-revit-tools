@@ -1,1823 +1,1830 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_L_Planting_Shrub",
- "template": "Metric Generic Model.rft",
- "about": "Shrub modelled as a generic product: mulch ring, stems, a core mass with four side lobes and a top lobe, flowers dotted over the surface. Geometry drawn for 1.2m_Shrub; the other types share it (sizes in the values). Reference: query: planting shrub planting hospital; images: https://www.google.com/search?tbm=isch&q=planting+shrub+planting+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Planting"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Botanical_Name",
-   "guid": "92a0ab90-e543-57c6-a940-c3b1aa34ec75",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Name",
-   "guid": "1b5f0a82-221c-5216-98d8-77903d31405a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Planting_Size",
-   "guid": "6b6409ef-63f2-54e1-ae6b-1d3d465b7a64",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Plant_Spread_mm",
-   "guid": "83ffa9f4-9a93-546d-a66e-99642f2dfb56",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Plant_Spacing_mm",
-   "guid": "6128f8ac-6988-58db-ae3b-2101706d31cd",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "0.6m_Shrub"
-  },
-  {
-   "op": "set_type_value",
-   "name": "0.6m_Shrub/FMC_Cost_Unit",
-   "type": "0.6m_Shrub",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "0.6m_Shrub/FMC_Geometry_Stage",
-   "type": "0.6m_Shrub",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "0.6m_Shrub/IfcExportAs",
-   "type": "0.6m_Shrub",
-   "param": "IfcExportAs",
-   "value": "IfcGeographicElement"
-  },
-  {
-   "op": "set_type_value",
-   "name": "0.6m_Shrub/Description",
-   "type": "0.6m_Shrub",
-   "param": "Description",
-   "value": "Flowering shrub, 0.6 m or 1.2 m, rounded layered form, mulched base"
-  },
-  {
-   "op": "set_type_value",
-   "name": "0.6m_Shrub/Keynote",
-   "type": "0.6m_Shrub",
-   "param": "Keynote",
-   "value": "L.SHR_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "0.6m_Shrub/FMC_Keynote_Code",
-   "type": "0.6m_Shrub",
-   "param": "FMC_Keynote_Code",
-   "value": "L.SHR_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "0.6m_Shrub/FMC_Code_Description",
-   "type": "0.6m_Shrub",
-   "param": "FMC_Code_Description",
-   "value": "Shrub: Shrub"
-  },
-  {
-   "op": "set_type_value",
-   "name": "0.6m_Shrub/FMC_Code_Group",
-   "type": "0.6m_Shrub",
-   "param": "FMC_Code_Group",
-   "value": "L.SHR"
-  },
-  {
-   "op": "set_type_value",
-   "name": "0.6m_Shrub/FMC_Role_Code",
-   "type": "0.6m_Shrub",
-   "param": "FMC_Role_Code",
-   "value": "L"
-  },
-  {
-   "op": "add_type",
-   "name": "1.2m_Shrub"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1.2m_Shrub/FMC_Cost_Unit",
-   "type": "1.2m_Shrub",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1.2m_Shrub/FMC_Geometry_Stage",
-   "type": "1.2m_Shrub",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1.2m_Shrub/IfcExportAs",
-   "type": "1.2m_Shrub",
-   "param": "IfcExportAs",
-   "value": "IfcGeographicElement"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1.2m_Shrub/Description",
-   "type": "1.2m_Shrub",
-   "param": "Description",
-   "value": "Flowering shrub, 0.6 m or 1.2 m, rounded layered form, mulched base"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1.2m_Shrub/Keynote",
-   "type": "1.2m_Shrub",
-   "param": "Keynote",
-   "value": "L.SHR_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1.2m_Shrub/FMC_Keynote_Code",
-   "type": "1.2m_Shrub",
-   "param": "FMC_Keynote_Code",
-   "value": "L.SHR_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1.2m_Shrub/FMC_Code_Description",
-   "type": "1.2m_Shrub",
-   "param": "FMC_Code_Description",
-   "value": "Shrub: Shrub"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1.2m_Shrub/FMC_Code_Group",
-   "type": "1.2m_Shrub",
-   "param": "FMC_Code_Group",
-   "value": "L.SHR"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1.2m_Shrub/FMC_Role_Code",
-   "type": "1.2m_Shrub",
-   "param": "FMC_Role_Code",
-   "value": "L"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Mulch",
-   "color": [
-    90,
-    62,
-    40
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Mulch Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plant_Mulch_Bark",
-   "param": "Mulch Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Bark",
-   "color": [
-    142,
-    90,
-    52
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Bark Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Timber_Mugavu",
-   "param": "Bark Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Leaf2",
-   "color": [
-    85,
-    127,
-    58
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Leaf2 Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plant_Hedge_Duranta",
-   "param": "Leaf2 Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Leaf1",
-   "color": [
-    79,
-    127,
-    47
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Leaf1 Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plant_Grass_Kikuyu",
-   "param": "Leaf1 Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Leaf3",
-   "color": [
-    92,
-    138,
-    51
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Leaf3 Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plant_Grass_Paspalum",
-   "param": "Leaf3 Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Flower",
-   "color": [
-    193,
-    68,
-    46
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Flower Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Fabric_Kitenge_Print",
-   "param": "Flower Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -660.0,
-     -650
-    ],
-    [
-     650,
-     -650
-    ],
-    [
-     650,
-     650
-    ],
-    [
-     -660.0,
-     650
-    ]
-   ],
-   "start": 0,
-   "end": 1220.0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "revolution",
-   "name": "Mulch Ring",
-   "profile": [
-    [
-     0,
-     0
-    ],
-    [
-     650,
-     0
-    ],
-    [
-     650,
-     30
-    ],
-    [
-     0,
-     30
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Mulch"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mulch Ring",
-   "param": "Mulch Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mulch Ring",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Stem 1",
-   "points": [
-    [
-     -62.0,
-     0.0
-    ],
-    [
-     -62.61,
-     4.66
-    ],
-    [
-     -64.41,
-     9.0
-    ],
-    [
-     -67.27,
-     12.73
-    ],
-    [
-     -71.0,
-     15.59
-    ],
-    [
-     -75.34,
-     17.39
-    ],
-    [
-     -80.0,
-     18.0
-    ],
-    [
-     -84.66,
-     17.39
-    ],
-    [
-     -89.0,
-     15.59
-    ],
-    [
-     -92.73,
-     12.73
-    ],
-    [
-     -95.59,
-     9.0
-    ],
-    [
-     -97.39,
-     4.66
-    ],
-    [
-     -98.0,
-     0.0
-    ],
-    [
-     -97.39,
-     -4.66
-    ],
-    [
-     -95.59,
-     -9.0
-    ],
-    [
-     -92.73,
-     -12.73
-    ],
-    [
-     -89.0,
-     -15.59
-    ],
-    [
-     -84.66,
-     -17.39
-    ],
-    [
-     -80.0,
-     -18.0
-    ],
-    [
-     -75.34,
-     -17.39
-    ],
-    [
-     -71.0,
-     -15.59
-    ],
-    [
-     -67.27,
-     -12.73
-    ],
-    [
-     -64.41,
-     -9.0
-    ],
-    [
-     -62.61,
-     -4.66
-    ]
-   ],
-   "start": 30,
-   "end": 260
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Stem 1",
-   "subcategory": "Bark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Stem 1",
-   "param": "Bark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Stem 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Stem 2",
-   "points": [
-    [
-     18.0,
-     0.0
-    ],
-    [
-     17.39,
-     4.66
-    ],
-    [
-     15.59,
-     9.0
-    ],
-    [
-     12.73,
-     12.73
-    ],
-    [
-     9.0,
-     15.59
-    ],
-    [
-     4.66,
-     17.39
-    ],
-    [
-     0.0,
-     18.0
-    ],
-    [
-     -4.66,
-     17.39
-    ],
-    [
-     -9.0,
-     15.59
-    ],
-    [
-     -12.73,
-     12.73
-    ],
-    [
-     -15.59,
-     9.0
-    ],
-    [
-     -17.39,
-     4.66
-    ],
-    [
-     -18.0,
-     0.0
-    ],
-    [
-     -17.39,
-     -4.66
-    ],
-    [
-     -15.59,
-     -9.0
-    ],
-    [
-     -12.73,
-     -12.73
-    ],
-    [
-     -9.0,
-     -15.59
-    ],
-    [
-     -4.66,
-     -17.39
-    ],
-    [
-     -0.0,
-     -18.0
-    ],
-    [
-     4.66,
-     -17.39
-    ],
-    [
-     9.0,
-     -15.59
-    ],
-    [
-     12.73,
-     -12.73
-    ],
-    [
-     15.59,
-     -9.0
-    ],
-    [
-     17.39,
-     -4.66
-    ]
-   ],
-   "start": 30,
-   "end": 260
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Stem 2",
-   "subcategory": "Bark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Stem 2",
-   "param": "Bark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Stem 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Stem 3",
-   "points": [
-    [
-     98.0,
-     0.0
-    ],
-    [
-     97.39,
-     4.66
-    ],
-    [
-     95.59,
-     9.0
-    ],
-    [
-     92.73,
-     12.73
-    ],
-    [
-     89.0,
-     15.59
-    ],
-    [
-     84.66,
-     17.39
-    ],
-    [
-     80.0,
-     18.0
-    ],
-    [
-     75.34,
-     17.39
-    ],
-    [
-     71.0,
-     15.59
-    ],
-    [
-     67.27,
-     12.73
-    ],
-    [
-     64.41,
-     9.0
-    ],
-    [
-     62.61,
-     4.66
-    ],
-    [
-     62.0,
-     0.0
-    ],
-    [
-     62.61,
-     -4.66
-    ],
-    [
-     64.41,
-     -9.0
-    ],
-    [
-     67.27,
-     -12.73
-    ],
-    [
-     71.0,
-     -15.59
-    ],
-    [
-     75.34,
-     -17.39
-    ],
-    [
-     80.0,
-     -18.0
-    ],
-    [
-     84.66,
-     -17.39
-    ],
-    [
-     89.0,
-     -15.59
-    ],
-    [
-     92.73,
-     -12.73
-    ],
-    [
-     95.59,
-     -9.0
-    ],
-    [
-     97.39,
-     -4.66
-    ]
-   ],
-   "start": 30,
-   "end": 260
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Stem 3",
-   "subcategory": "Bark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Stem 3",
-   "param": "Bark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Stem 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Body Core",
-   "profile": [
-    [
-     0.0,
-     120.0
-    ],
-    [
-     160.7,
-     142.8
-    ],
-    [
-     305.6,
-     208.8
-    ],
-    [
-     420.7,
-     311.7
-    ],
-    [
-     494.5,
-     441.3
-    ],
-    [
-     520.0,
-     585.0
-    ],
-    [
-     494.5,
-     728.7
-    ],
-    [
-     420.7,
-     858.3
-    ],
-    [
-     305.6,
-     961.2
-    ],
-    [
-     160.7,
-     1027.2
-    ],
-    [
-     0.0,
-     1050.0
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Leaf2"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Body Core",
-   "param": "Leaf2 Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Body Core",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Lobe West",
-   "profile": [
-    [
-     0.0,
-     150.0
-    ],
-    [
-     102.0,
-     166.4
-    ],
-    [
-     194.0,
-     214.0
-    ],
-    [
-     267.0,
-     288.1
-    ],
-    [
-     313.8,
-     381.5
-    ],
-    [
-     330.0,
-     485.0
-    ],
-    [
-     313.8,
-     588.5
-    ],
-    [
-     267.0,
-     681.9
-    ],
-    [
-     194.0,
-     756.0
-    ],
-    [
-     102.0,
-     803.6
-    ],
-    [
-     0.0,
-     820.0
-    ]
-   ],
-   "axis_at": [
-    -330,
-    60
-   ],
-   "axis": "z",
-   "subcategory": "Leaf1"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lobe West",
-   "param": "Leaf1 Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lobe West",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Lobe East",
-   "profile": [
-    [
-     0.0,
-     170.0
-    ],
-    [
-     98.9,
-     186.9
-    ],
-    [
-     188.1,
-     235.9
-    ],
-    [
-     258.9,
-     312.2
-    ],
-    [
-     304.3,
-     408.4
-    ],
-    [
-     320.0,
-     515.0
-    ],
-    [
-     304.3,
-     621.6
-    ],
-    [
-     258.9,
-     717.8
-    ],
-    [
-     188.1,
-     794.1
-    ],
-    [
-     98.9,
-     843.1
-    ],
-    [
-     0.0,
-     860.0
-    ]
-   ],
-   "axis_at": [
-    320,
-    -40
-   ],
-   "axis": "z",
-   "subcategory": "Leaf1"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lobe East",
-   "param": "Leaf1 Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lobe East",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Lobe South",
-   "profile": [
-    [
-     0.0,
-     160.0
-    ],
-    [
-     98.9,
-     175.7
-    ],
-    [
-     188.1,
-     221.1
-    ],
-    [
-     258.9,
-     291.9
-    ],
-    [
-     304.3,
-     381.1
-    ],
-    [
-     320.0,
-     480.0
-    ],
-    [
-     304.3,
-     578.9
-    ],
-    [
-     258.9,
-     668.1
-    ],
-    [
-     188.1,
-     738.9
-    ],
-    [
-     98.9,
-     784.3
-    ],
-    [
-     0.0,
-     800.0
-    ]
-   ],
-   "axis_at": [
-    20,
-    -320
-   ],
-   "axis": "z",
-   "subcategory": "Leaf3"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lobe South",
-   "param": "Leaf3 Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lobe South",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Lobe North",
-   "profile": [
-    [
-     0.0,
-     160.0
-    ],
-    [
-     98.9,
-     176.6
-    ],
-    [
-     188.1,
-     224.9
-    ],
-    [
-     258.9,
-     300.2
-    ],
-    [
-     304.3,
-     394.9
-    ],
-    [
-     320.0,
-     500.0
-    ],
-    [
-     304.3,
-     605.1
-    ],
-    [
-     258.9,
-     699.8
-    ],
-    [
-     188.1,
-     775.1
-    ],
-    [
-     98.9,
-     823.4
-    ],
-    [
-     0.0,
-     840.0
-    ]
-   ],
-   "axis_at": [
-    -40,
-    330
-   ],
-   "axis": "z",
-   "subcategory": "Leaf3"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lobe North",
-   "param": "Leaf3 Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lobe North",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Top Lobe",
-   "profile": [
-    [
-     0.0,
-     750.0
-    ],
-    [
-     98.9,
-     761.0
-    ],
-    [
-     188.1,
-     793.0
-    ],
-    [
-     258.9,
-     842.7
-    ],
-    [
-     304.3,
-     905.5
-    ],
-    [
-     320.0,
-     975.0
-    ],
-    [
-     304.3,
-     1044.5
-    ],
-    [
-     258.9,
-     1107.3
-    ],
-    [
-     188.1,
-     1157.0
-    ],
-    [
-     98.9,
-     1189.0
-    ],
-    [
-     0.0,
-     1200.0
-    ]
-   ],
-   "axis_at": [
-    60,
-    40
-   ],
-   "axis": "z",
-   "subcategory": "Leaf2"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Top Lobe",
-   "param": "Leaf2 Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Top Lobe",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Flower 1",
-   "profile": [
-    [
-     0.0,
-     700.0
-    ],
-    [
-     21.6,
-     702.7
-    ],
-    [
-     41.1,
-     710.5
-    ],
-    [
-     56.6,
-     722.7
-    ],
-    [
-     66.6,
-     738.0
-    ],
-    [
-     70.0,
-     755.0
-    ],
-    [
-     66.6,
-     772.0
-    ],
-    [
-     56.6,
-     787.3
-    ],
-    [
-     41.1,
-     799.5
-    ],
-    [
-     21.6,
-     807.3
-    ],
-    [
-     0.0,
-     810.0
-    ]
-   ],
-   "axis_at": [
-    377,
-    206
-   ],
-   "axis": "z",
-   "subcategory": "Flower"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flower 1",
-   "param": "Flower Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flower 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Flower 2",
-   "profile": [
-    [
-     0.0,
-     650.0
-    ],
-    [
-     21.6,
-     652.7
-    ],
-    [
-     41.1,
-     660.5
-    ],
-    [
-     56.6,
-     672.7
-    ],
-    [
-     66.6,
-     688.0
-    ],
-    [
-     70.0,
-     705.0
-    ],
-    [
-     66.6,
-     722.0
-    ],
-    [
-     56.6,
-     737.3
-    ],
-    [
-     41.1,
-     749.5
-    ],
-    [
-     21.6,
-     757.3
-    ],
-    [
-     0.0,
-     760.0
-    ]
-   ],
-   "axis_at": [
-    -247,
-    340
-   ],
-   "axis": "z",
-   "subcategory": "Flower"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flower 2",
-   "param": "Flower Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flower 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Flower 3",
-   "profile": [
-    [
-     0.0,
-     700.0
-    ],
-    [
-     21.6,
-     702.7
-    ],
-    [
-     41.1,
-     710.5
-    ],
-    [
-     56.6,
-     722.7
-    ],
-    [
-     66.6,
-     738.0
-    ],
-    [
-     70.0,
-     755.0
-    ],
-    [
-     66.6,
-     772.0
-    ],
-    [
-     56.6,
-     787.3
-    ],
-    [
-     41.1,
-     799.5
-    ],
-    [
-     21.6,
-     807.3
-    ],
-    [
-     0.0,
-     810.0
-    ]
-   ],
-   "axis_at": [
-    -312,
-    -296
-   ],
-   "axis": "z",
-   "subcategory": "Flower"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flower 3",
-   "param": "Flower Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flower 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Flower 4",
-   "profile": [
-    [
-     0.0,
-     650.0
-    ],
-    [
-     21.6,
-     652.7
-    ],
-    [
-     41.1,
-     660.5
-    ],
-    [
-     56.6,
-     672.7
-    ],
-    [
-     66.6,
-     688.0
-    ],
-    [
-     70.0,
-     705.0
-    ],
-    [
-     66.6,
-     722.0
-    ],
-    [
-     56.6,
-     737.3
-    ],
-    [
-     41.1,
-     749.5
-    ],
-    [
-     21.6,
-     757.3
-    ],
-    [
-     0.0,
-     760.0
-    ]
-   ],
-   "axis_at": [
-    254,
-    -309
-   ],
-   "axis": "z",
-   "subcategory": "Flower"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flower 4",
-   "param": "Flower Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flower 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Flower 5",
-   "profile": [
-    [
-     0.0,
-     1110.0
-    ],
-    [
-     21.6,
-     1112.7
-    ],
-    [
-     41.1,
-     1120.5
-    ],
-    [
-     56.6,
-     1132.7
-    ],
-    [
-     66.6,
-     1148.0
-    ],
-    [
-     70.0,
-     1165.0
-    ],
-    [
-     66.6,
-     1182.0
-    ],
-    [
-     56.6,
-     1197.3
-    ],
-    [
-     41.1,
-     1209.5
-    ],
-    [
-     21.6,
-     1217.3
-    ],
-    [
-     0.0,
-     1220.0
-    ]
-   ],
-   "axis_at": [
-    54,
-    140
-   ],
-   "axis": "z",
-   "subcategory": "Flower"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flower 5",
-   "param": "Flower Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flower 5",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Flower 6",
-   "profile": [
-    [
-     0.0,
-     980.0
-    ],
-    [
-     21.6,
-     982.7
-    ],
-    [
-     41.1,
-     990.5
-    ],
-    [
-     56.6,
-     1002.7
-    ],
-    [
-     66.6,
-     1018.0
-    ],
-    [
-     70.0,
-     1035.0
-    ],
-    [
-     66.6,
-     1052.0
-    ],
-    [
-     56.6,
-     1067.3
-    ],
-    [
-     41.1,
-     1079.5
-    ],
-    [
-     21.6,
-     1087.3
-    ],
-    [
-     0.0,
-     1090.0
-    ]
-   ],
-   "axis_at": [
-    -34,
-    -298
-   ],
-   "axis": "z",
-   "subcategory": "Flower"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flower 6",
-   "param": "Flower Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flower 6",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\L\\_Images\\FMC_L_Planting_Shrub.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_L_Planting_Shrub",
+  "template": "Metric Generic Model.rft",
+  "about": "Shrub modelled as a generic product: mulch ring, stems, a core mass with four side lobes and a top lobe, flowers dotted over the surface. Geometry drawn for 1.2m_Shrub; the other types share it (sizes in the values). Reference: query: planting shrub planting hospital; images: https://www.google.com/search?tbm=isch&q=planting+shrub+planting+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Planting"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Botanical_Name",
+      "guid": "92a0ab90-e543-57c6-a940-c3b1aa34ec75",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Name",
+      "guid": "1b5f0a82-221c-5216-98d8-77903d31405a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Planting_Size",
+      "guid": "6b6409ef-63f2-54e1-ae6b-1d3d465b7a64",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Plant_Spread_mm",
+      "guid": "83ffa9f4-9a93-546d-a66e-99642f2dfb56",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Plant_Spacing_mm",
+      "guid": "6128f8ac-6988-58db-ae3b-2101706d31cd",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "0.6m_Shrub"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0.6m_Shrub/FMC_Cost_Unit",
+      "type": "0.6m_Shrub",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0.6m_Shrub/FMC_Geometry_Stage",
+      "type": "0.6m_Shrub",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0.6m_Shrub/IfcExportAs",
+      "type": "0.6m_Shrub",
+      "param": "IfcExportAs",
+      "value": "IfcGeographicElement"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0.6m_Shrub/Description",
+      "type": "0.6m_Shrub",
+      "param": "Description",
+      "value": "Flowering shrub, 0.6 m or 1.2 m, rounded layered form, mulched base"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0.6m_Shrub/Keynote",
+      "type": "0.6m_Shrub",
+      "param": "Keynote",
+      "value": "L.SHR_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0.6m_Shrub/FMC_Keynote_Code",
+      "type": "0.6m_Shrub",
+      "param": "FMC_Keynote_Code",
+      "value": "L.SHR_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0.6m_Shrub/FMC_Code_Description",
+      "type": "0.6m_Shrub",
+      "param": "FMC_Code_Description",
+      "value": "Shrub: Shrub"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0.6m_Shrub/FMC_Code_Group",
+      "type": "0.6m_Shrub",
+      "param": "FMC_Code_Group",
+      "value": "L.SHR"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0.6m_Shrub/FMC_Role_Code",
+      "type": "0.6m_Shrub",
+      "param": "FMC_Role_Code",
+      "value": "L"
+    },
+    {
+      "op": "add_type",
+      "name": "1.2m_Shrub"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1.2m_Shrub/FMC_Cost_Unit",
+      "type": "1.2m_Shrub",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1.2m_Shrub/FMC_Geometry_Stage",
+      "type": "1.2m_Shrub",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1.2m_Shrub/IfcExportAs",
+      "type": "1.2m_Shrub",
+      "param": "IfcExportAs",
+      "value": "IfcGeographicElement"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1.2m_Shrub/Description",
+      "type": "1.2m_Shrub",
+      "param": "Description",
+      "value": "Flowering shrub, 0.6 m or 1.2 m, rounded layered form, mulched base"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1.2m_Shrub/Keynote",
+      "type": "1.2m_Shrub",
+      "param": "Keynote",
+      "value": "L.SHR_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1.2m_Shrub/FMC_Keynote_Code",
+      "type": "1.2m_Shrub",
+      "param": "FMC_Keynote_Code",
+      "value": "L.SHR_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1.2m_Shrub/FMC_Code_Description",
+      "type": "1.2m_Shrub",
+      "param": "FMC_Code_Description",
+      "value": "Shrub: Shrub"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1.2m_Shrub/FMC_Code_Group",
+      "type": "1.2m_Shrub",
+      "param": "FMC_Code_Group",
+      "value": "L.SHR"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1.2m_Shrub/FMC_Role_Code",
+      "type": "1.2m_Shrub",
+      "param": "FMC_Role_Code",
+      "value": "L"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Mulch",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Mulch Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plant_Mulch_Bark",
+      "param": "Mulch Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Bark",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Bark Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Timber_Mugavu",
+      "param": "Bark Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Leaf2",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Leaf2 Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plant_Hedge_Duranta",
+      "param": "Leaf2 Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Leaf1",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Leaf1 Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plant_Grass_Kikuyu",
+      "param": "Leaf1 Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Leaf3",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Leaf3 Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plant_Grass_Paspalum",
+      "param": "Leaf3 Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Flower",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Flower Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Fabric_Kitenge_Print",
+      "param": "Flower Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -660,
+          -650
+        ],
+        [
+          650,
+          -650
+        ],
+        [
+          650,
+          650
+        ],
+        [
+          -660,
+          650
+        ]
+      ],
+      "start": 0,
+      "end": 1220
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "revolution",
+      "name": "Mulch Ring",
+      "profile": [
+        [
+          0,
+          0
+        ],
+        [
+          650,
+          0
+        ],
+        [
+          650,
+          30
+        ],
+        [
+          0,
+          30
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Mulch"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Mulch Ring",
+      "param": "Mulch Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Mulch Ring",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Stem 1",
+      "points": [
+        [
+          -62,
+          0
+        ],
+        [
+          -62.61,
+          4.66
+        ],
+        [
+          -64.41,
+          9
+        ],
+        [
+          -67.27,
+          12.73
+        ],
+        [
+          -71,
+          15.59
+        ],
+        [
+          -75.34,
+          17.39
+        ],
+        [
+          -80,
+          18
+        ],
+        [
+          -84.66,
+          17.39
+        ],
+        [
+          -89,
+          15.59
+        ],
+        [
+          -92.73,
+          12.73
+        ],
+        [
+          -95.59,
+          9
+        ],
+        [
+          -97.39,
+          4.66
+        ],
+        [
+          -98,
+          0
+        ],
+        [
+          -97.39,
+          -4.66
+        ],
+        [
+          -95.59,
+          -9
+        ],
+        [
+          -92.73,
+          -12.73
+        ],
+        [
+          -89,
+          -15.59
+        ],
+        [
+          -84.66,
+          -17.39
+        ],
+        [
+          -80,
+          -18
+        ],
+        [
+          -75.34,
+          -17.39
+        ],
+        [
+          -71,
+          -15.59
+        ],
+        [
+          -67.27,
+          -12.73
+        ],
+        [
+          -64.41,
+          -9
+        ],
+        [
+          -62.61,
+          -4.66
+        ]
+      ],
+      "start": 30,
+      "end": 260
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Stem 1",
+      "subcategory": "Bark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Stem 1",
+      "param": "Bark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Stem 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Stem 2",
+      "points": [
+        [
+          18,
+          0
+        ],
+        [
+          17.39,
+          4.66
+        ],
+        [
+          15.59,
+          9
+        ],
+        [
+          12.73,
+          12.73
+        ],
+        [
+          9,
+          15.59
+        ],
+        [
+          4.66,
+          17.39
+        ],
+        [
+          0,
+          18
+        ],
+        [
+          -4.66,
+          17.39
+        ],
+        [
+          -9,
+          15.59
+        ],
+        [
+          -12.73,
+          12.73
+        ],
+        [
+          -15.59,
+          9
+        ],
+        [
+          -17.39,
+          4.66
+        ],
+        [
+          -18,
+          0
+        ],
+        [
+          -17.39,
+          -4.66
+        ],
+        [
+          -15.59,
+          -9
+        ],
+        [
+          -12.73,
+          -12.73
+        ],
+        [
+          -9,
+          -15.59
+        ],
+        [
+          -4.66,
+          -17.39
+        ],
+        [
+          0,
+          -18
+        ],
+        [
+          4.66,
+          -17.39
+        ],
+        [
+          9,
+          -15.59
+        ],
+        [
+          12.73,
+          -12.73
+        ],
+        [
+          15.59,
+          -9
+        ],
+        [
+          17.39,
+          -4.66
+        ]
+      ],
+      "start": 30,
+      "end": 260
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Stem 2",
+      "subcategory": "Bark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Stem 2",
+      "param": "Bark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Stem 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Stem 3",
+      "points": [
+        [
+          98,
+          0
+        ],
+        [
+          97.39,
+          4.66
+        ],
+        [
+          95.59,
+          9
+        ],
+        [
+          92.73,
+          12.73
+        ],
+        [
+          89,
+          15.59
+        ],
+        [
+          84.66,
+          17.39
+        ],
+        [
+          80,
+          18
+        ],
+        [
+          75.34,
+          17.39
+        ],
+        [
+          71,
+          15.59
+        ],
+        [
+          67.27,
+          12.73
+        ],
+        [
+          64.41,
+          9
+        ],
+        [
+          62.61,
+          4.66
+        ],
+        [
+          62,
+          0
+        ],
+        [
+          62.61,
+          -4.66
+        ],
+        [
+          64.41,
+          -9
+        ],
+        [
+          67.27,
+          -12.73
+        ],
+        [
+          71,
+          -15.59
+        ],
+        [
+          75.34,
+          -17.39
+        ],
+        [
+          80,
+          -18
+        ],
+        [
+          84.66,
+          -17.39
+        ],
+        [
+          89,
+          -15.59
+        ],
+        [
+          92.73,
+          -12.73
+        ],
+        [
+          95.59,
+          -9
+        ],
+        [
+          97.39,
+          -4.66
+        ]
+      ],
+      "start": 30,
+      "end": 260
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Stem 3",
+      "subcategory": "Bark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Stem 3",
+      "param": "Bark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Stem 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Body Core",
+      "profile": [
+        [
+          0,
+          120
+        ],
+        [
+          160.7,
+          142.8
+        ],
+        [
+          305.6,
+          208.8
+        ],
+        [
+          420.7,
+          311.7
+        ],
+        [
+          494.5,
+          441.3
+        ],
+        [
+          520,
+          585
+        ],
+        [
+          494.5,
+          728.7
+        ],
+        [
+          420.7,
+          858.3
+        ],
+        [
+          305.6,
+          961.2
+        ],
+        [
+          160.7,
+          1027.2
+        ],
+        [
+          0,
+          1050
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Leaf2"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Body Core",
+      "param": "Leaf2 Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Body Core",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Lobe West",
+      "profile": [
+        [
+          0,
+          150
+        ],
+        [
+          102,
+          166.4
+        ],
+        [
+          194,
+          214
+        ],
+        [
+          267,
+          288.1
+        ],
+        [
+          313.8,
+          381.5
+        ],
+        [
+          330,
+          485
+        ],
+        [
+          313.8,
+          588.5
+        ],
+        [
+          267,
+          681.9
+        ],
+        [
+          194,
+          756
+        ],
+        [
+          102,
+          803.6
+        ],
+        [
+          0,
+          820
+        ]
+      ],
+      "axis_at": [
+        -330,
+        60
+      ],
+      "axis": "z",
+      "subcategory": "Leaf1"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lobe West",
+      "param": "Leaf1 Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Lobe West",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Lobe East",
+      "profile": [
+        [
+          0,
+          170
+        ],
+        [
+          98.9,
+          186.9
+        ],
+        [
+          188.1,
+          235.9
+        ],
+        [
+          258.9,
+          312.2
+        ],
+        [
+          304.3,
+          408.4
+        ],
+        [
+          320,
+          515
+        ],
+        [
+          304.3,
+          621.6
+        ],
+        [
+          258.9,
+          717.8
+        ],
+        [
+          188.1,
+          794.1
+        ],
+        [
+          98.9,
+          843.1
+        ],
+        [
+          0,
+          860
+        ]
+      ],
+      "axis_at": [
+        320,
+        -40
+      ],
+      "axis": "z",
+      "subcategory": "Leaf1"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lobe East",
+      "param": "Leaf1 Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Lobe East",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Lobe South",
+      "profile": [
+        [
+          0,
+          160
+        ],
+        [
+          98.9,
+          175.7
+        ],
+        [
+          188.1,
+          221.1
+        ],
+        [
+          258.9,
+          291.9
+        ],
+        [
+          304.3,
+          381.1
+        ],
+        [
+          320,
+          480
+        ],
+        [
+          304.3,
+          578.9
+        ],
+        [
+          258.9,
+          668.1
+        ],
+        [
+          188.1,
+          738.9
+        ],
+        [
+          98.9,
+          784.3
+        ],
+        [
+          0,
+          800
+        ]
+      ],
+      "axis_at": [
+        20,
+        -320
+      ],
+      "axis": "z",
+      "subcategory": "Leaf3"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lobe South",
+      "param": "Leaf3 Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Lobe South",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Lobe North",
+      "profile": [
+        [
+          0,
+          160
+        ],
+        [
+          98.9,
+          176.6
+        ],
+        [
+          188.1,
+          224.9
+        ],
+        [
+          258.9,
+          300.2
+        ],
+        [
+          304.3,
+          394.9
+        ],
+        [
+          320,
+          500
+        ],
+        [
+          304.3,
+          605.1
+        ],
+        [
+          258.9,
+          699.8
+        ],
+        [
+          188.1,
+          775.1
+        ],
+        [
+          98.9,
+          823.4
+        ],
+        [
+          0,
+          840
+        ]
+      ],
+      "axis_at": [
+        -40,
+        330
+      ],
+      "axis": "z",
+      "subcategory": "Leaf3"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lobe North",
+      "param": "Leaf3 Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Lobe North",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Top Lobe",
+      "profile": [
+        [
+          0,
+          750
+        ],
+        [
+          98.9,
+          761
+        ],
+        [
+          188.1,
+          793
+        ],
+        [
+          258.9,
+          842.7
+        ],
+        [
+          304.3,
+          905.5
+        ],
+        [
+          320,
+          975
+        ],
+        [
+          304.3,
+          1044.5
+        ],
+        [
+          258.9,
+          1107.3
+        ],
+        [
+          188.1,
+          1157
+        ],
+        [
+          98.9,
+          1189
+        ],
+        [
+          0,
+          1200
+        ]
+      ],
+      "axis_at": [
+        60,
+        40
+      ],
+      "axis": "z",
+      "subcategory": "Leaf2"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Top Lobe",
+      "param": "Leaf2 Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Top Lobe",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Flower 1",
+      "profile": [
+        [
+          0,
+          700
+        ],
+        [
+          21.6,
+          702.7
+        ],
+        [
+          41.1,
+          710.5
+        ],
+        [
+          56.6,
+          722.7
+        ],
+        [
+          66.6,
+          738
+        ],
+        [
+          70,
+          755
+        ],
+        [
+          66.6,
+          772
+        ],
+        [
+          56.6,
+          787.3
+        ],
+        [
+          41.1,
+          799.5
+        ],
+        [
+          21.6,
+          807.3
+        ],
+        [
+          0,
+          810
+        ]
+      ],
+      "axis_at": [
+        377,
+        206
+      ],
+      "axis": "z",
+      "subcategory": "Flower"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flower 1",
+      "param": "Flower Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flower 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Flower 2",
+      "profile": [
+        [
+          0,
+          650
+        ],
+        [
+          21.6,
+          652.7
+        ],
+        [
+          41.1,
+          660.5
+        ],
+        [
+          56.6,
+          672.7
+        ],
+        [
+          66.6,
+          688
+        ],
+        [
+          70,
+          705
+        ],
+        [
+          66.6,
+          722
+        ],
+        [
+          56.6,
+          737.3
+        ],
+        [
+          41.1,
+          749.5
+        ],
+        [
+          21.6,
+          757.3
+        ],
+        [
+          0,
+          760
+        ]
+      ],
+      "axis_at": [
+        -247,
+        340
+      ],
+      "axis": "z",
+      "subcategory": "Flower"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flower 2",
+      "param": "Flower Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flower 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Flower 3",
+      "profile": [
+        [
+          0,
+          700
+        ],
+        [
+          21.6,
+          702.7
+        ],
+        [
+          41.1,
+          710.5
+        ],
+        [
+          56.6,
+          722.7
+        ],
+        [
+          66.6,
+          738
+        ],
+        [
+          70,
+          755
+        ],
+        [
+          66.6,
+          772
+        ],
+        [
+          56.6,
+          787.3
+        ],
+        [
+          41.1,
+          799.5
+        ],
+        [
+          21.6,
+          807.3
+        ],
+        [
+          0,
+          810
+        ]
+      ],
+      "axis_at": [
+        -312,
+        -296
+      ],
+      "axis": "z",
+      "subcategory": "Flower"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flower 3",
+      "param": "Flower Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flower 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Flower 4",
+      "profile": [
+        [
+          0,
+          650
+        ],
+        [
+          21.6,
+          652.7
+        ],
+        [
+          41.1,
+          660.5
+        ],
+        [
+          56.6,
+          672.7
+        ],
+        [
+          66.6,
+          688
+        ],
+        [
+          70,
+          705
+        ],
+        [
+          66.6,
+          722
+        ],
+        [
+          56.6,
+          737.3
+        ],
+        [
+          41.1,
+          749.5
+        ],
+        [
+          21.6,
+          757.3
+        ],
+        [
+          0,
+          760
+        ]
+      ],
+      "axis_at": [
+        254,
+        -309
+      ],
+      "axis": "z",
+      "subcategory": "Flower"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flower 4",
+      "param": "Flower Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flower 4",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Flower 5",
+      "profile": [
+        [
+          0,
+          1110
+        ],
+        [
+          21.6,
+          1112.7
+        ],
+        [
+          41.1,
+          1120.5
+        ],
+        [
+          56.6,
+          1132.7
+        ],
+        [
+          66.6,
+          1148
+        ],
+        [
+          70,
+          1165
+        ],
+        [
+          66.6,
+          1182
+        ],
+        [
+          56.6,
+          1197.3
+        ],
+        [
+          41.1,
+          1209.5
+        ],
+        [
+          21.6,
+          1217.3
+        ],
+        [
+          0,
+          1220
+        ]
+      ],
+      "axis_at": [
+        54,
+        140
+      ],
+      "axis": "z",
+      "subcategory": "Flower"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flower 5",
+      "param": "Flower Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flower 5",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Flower 6",
+      "profile": [
+        [
+          0,
+          980
+        ],
+        [
+          21.6,
+          982.7
+        ],
+        [
+          41.1,
+          990.5
+        ],
+        [
+          56.6,
+          1002.7
+        ],
+        [
+          66.6,
+          1018
+        ],
+        [
+          70,
+          1035
+        ],
+        [
+          66.6,
+          1052
+        ],
+        [
+          56.6,
+          1067.3
+        ],
+        [
+          41.1,
+          1079.5
+        ],
+        [
+          21.6,
+          1087.3
+        ],
+        [
+          0,
+          1090
+        ]
+      ],
+      "axis_at": [
+        -34,
+        -298
+      ],
+      "axis": "z",
+      "subcategory": "Flower"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flower 6",
+      "param": "Flower Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flower 6",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\L\\_Images\\FMC_L_Planting_Shrub.png"
+    }
+  ],
+  "values": {
+    "1.2 m: spread 1.2 m": {
+      "value": "1200/1200",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "0.6 m: spread 0.7 m": {
+      "value": "600/700",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Planting centres 600 to 1000 mm": {
+      "value": "600-1000",
+      "source_status": "assumed",
+      "source": "landscape architect"
+    }
   }
- ],
- "values": {
-  "1.2 m: spread 1.2 m": {
-   "value": "1200/1200",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "0.6 m: spread 0.7 m": {
-   "value": "600/700",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Planting centres 600 to 1000 mm": {
-   "value": "600-1000",
-   "source_status": "assumed",
-   "source": "landscape architect"
-  }
- }
 }

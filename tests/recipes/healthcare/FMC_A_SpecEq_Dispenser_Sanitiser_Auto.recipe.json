@@ -1,268 +1,286 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_A_SpecEq_Dispenser_Sanitiser_Auto",
- "template": "Metric Generic Model.rft",
- "about": "Wave 1: sanitiser dispenser; architectural family with a power connector (owner rule 17 Oct).",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Specialty Equipment"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Voltage",
-   "type": "Voltage",
-   "group": "Electrical"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Apparent Load",
-   "type": "ApparentPower",
-   "group": "ElectricalLoads"
-  },
-  {
-   "op": "add_type",
-   "name": "1200ml_Auto"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200ml_Auto/Keynote",
-   "type": "1200ml_Auto",
-   "param": "Keynote",
-   "value": "A.SAC_05"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200ml_Auto/FMC_Keynote_Code",
-   "type": "1200ml_Auto",
-   "param": "FMC_Keynote_Code",
-   "value": "A.SAC_05"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200ml_Auto/FMC_Cost_Unit",
-   "type": "1200ml_Auto",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200ml_Auto/FMC_Geometry_Stage",
-   "type": "1200ml_Auto",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200ml_Auto/IfcExportAs",
-   "type": "1200ml_Auto",
-   "param": "IfcExportAs",
-   "value": "IfcDiscreteAccessory"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200ml_Auto/Description",
-   "type": "1200ml_Auto",
-   "param": "Description",
-   "value": "Automatic alcohol gel dispenser, 1.2 L, touch-free, wall mounted"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200ml_Auto/Voltage",
-   "type": "1200ml_Auto",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200ml_Auto/Apparent Load",
-   "type": "1200ml_Auto",
-   "param": "Apparent Load",
-   "value": 10
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200ml_Auto/Default Elevation",
-   "type": "1200ml_Auto",
-   "param": "Default Elevation",
-   "value": 1100
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Body",
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Drip Tray",
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "line_weight_projection": 1
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -60,
-     -110
-    ],
-    [
-     60,
-     -110
-    ],
-    [
-     60,
-     0
-    ],
-    [
-     -60,
-     0
-    ]
-   ],
-   "start": 0,
-   "end": 260
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Body",
-   "points": [
-    [
-     -60,
-     -110
-    ],
-    [
-     60,
-     -110
-    ],
-    [
-     60,
-     0
-    ],
-    [
-     -60,
-     0
-    ]
-   ],
-   "start": 40,
-   "end": 260
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Body",
-   "subcategory": "Body"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Body",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drip Tray",
-   "points": [
-    [
-     -50,
-     -100
-    ],
-    [
-     50,
-     -100
-    ],
-    [
-     50,
-     -10
-    ],
-    [
-     -50,
-     -10
-    ]
-   ],
-   "start": 0,
-   "end": 15
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drip Tray",
-   "subcategory": "Drip Tray"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drip Tray",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "Power",
-   "domain": "electrical",
-   "system": "PowerBalanced",
-   "solid": "Body",
-   "side": "back"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Voltage",
-   "connector": "Power",
-   "connector_param": "Voltage",
-   "param": "Voltage"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Apparent Load",
-   "connector": "Power",
-   "connector_param": "Apparent Load",
-   "param": "Apparent Load"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_A_SpecEq_Dispenser_Sanitiser_Auto",
+  "template": "Metric Generic Model.rft",
+  "about": "Wave 1: sanitiser dispenser; architectural family with a power connector (owner rule 17 Oct).",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Specialty Equipment"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Voltage",
+      "type": "Voltage",
+      "group": "Electrical"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Apparent Load",
+      "type": "ApparentPower",
+      "group": "ElectricalLoads"
+    },
+    {
+      "op": "add_type",
+      "name": "1200ml_Auto"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200ml_Auto/Keynote",
+      "type": "1200ml_Auto",
+      "param": "Keynote",
+      "value": "A.SAC_05"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200ml_Auto/FMC_Keynote_Code",
+      "type": "1200ml_Auto",
+      "param": "FMC_Keynote_Code",
+      "value": "A.SAC_05"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200ml_Auto/FMC_Cost_Unit",
+      "type": "1200ml_Auto",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200ml_Auto/FMC_Geometry_Stage",
+      "type": "1200ml_Auto",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200ml_Auto/IfcExportAs",
+      "type": "1200ml_Auto",
+      "param": "IfcExportAs",
+      "value": "IfcDiscreteAccessory"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200ml_Auto/Description",
+      "type": "1200ml_Auto",
+      "param": "Description",
+      "value": "Automatic alcohol gel dispenser, 1.2 L, touch-free, wall mounted"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200ml_Auto/Voltage",
+      "type": "1200ml_Auto",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200ml_Auto/Apparent Load",
+      "type": "1200ml_Auto",
+      "param": "Apparent Load",
+      "value": 10
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200ml_Auto/Default Elevation",
+      "type": "1200ml_Auto",
+      "param": "Default Elevation",
+      "value": 1100
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Body",
+      "line_weight_projection": 2,
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Drip Tray",
+      "line_weight_projection": 2,
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "line_weight_projection": 3,
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -60,
+          -110
+        ],
+        [
+          60,
+          -110
+        ],
+        [
+          60,
+          0
+        ],
+        [
+          -60,
+          0
+        ]
+      ],
+      "start": 0,
+      "end": 260
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Body",
+      "points": [
+        [
+          -60,
+          -110
+        ],
+        [
+          60,
+          -110
+        ],
+        [
+          60,
+          0
+        ],
+        [
+          -60,
+          0
+        ]
+      ],
+      "start": 40,
+      "end": 260
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Body",
+      "subcategory": "Body"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Body",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Drip Tray",
+      "points": [
+        [
+          -50,
+          -100
+        ],
+        [
+          50,
+          -100
+        ],
+        [
+          50,
+          -10
+        ],
+        [
+          -50,
+          -10
+        ]
+      ],
+      "start": 0,
+      "end": 15
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Drip Tray",
+      "subcategory": "Drip Tray"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Drip Tray",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "Power",
+      "domain": "electrical",
+      "system": "PowerBalanced",
+      "solid": "Body",
+      "side": "back"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Voltage",
+      "connector": "Power",
+      "connector_param": "Voltage",
+      "param": "Voltage"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Apparent Load",
+      "connector": "Power",
+      "connector_param": "Apparent Load",
+      "param": "Apparent Load"
+    }
+  ],
+  "values": {
+    "Body 120 x 110 x 260 mm": {
+      "value": "120 x 110 x 260",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Mains option, 10 VA": {
+      "value": "10",
+      "source_status": "assumed",
+      "source": "battery models need no connector"
+    }
   }
- ],
- "values": {
-  "Body 120 x 110 x 260 mm": {
-   "value": "120 x 110 x 260",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Mains option, 10 VA": {
-   "value": "10",
-   "source_status": "assumed",
-   "source": "battery models need no connector"
-  }
- }
 }

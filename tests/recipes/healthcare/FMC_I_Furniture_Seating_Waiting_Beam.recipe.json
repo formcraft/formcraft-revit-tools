@@ -1,437 +1,455 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_I_Furniture_Seating_Waiting_Beam",
- "template": "Metric Generic Model.rft",
- "about": "Wave 1: beam seating; Seat Count drives the beam length by formula and the seats and backs by the array op (copies); 3 types.",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Furniture"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Seat Count",
-   "type": "Integer"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Beam Length",
-   "type": "Length"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Beam Start",
-   "from": [
-    0,
-    -800
-   ],
-   "to": [
-    0,
-    800
-   ],
-   "is_reference": "Left"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Beam End",
-   "from": [
-    1800,
-    -800
-   ],
-   "to": [
-    1800,
-    800
-   ],
-   "is_reference": "Right"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Seat Front",
-   "from": [
-    -200,
-    -560
-   ],
-   "to": [
-    3200,
-    -560
-   ],
-   "is_reference": "Front"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Seat Back",
-   "from": [
-    -200,
-    0
-   ],
-   "to": [
-    3200,
-    0
-   ],
-   "is_reference": "Back"
-  },
-  {
-   "op": "add_dimension",
-   "name": "Beam Length",
-   "between": [
-    "Beam Start",
-    "Beam End"
-   ],
-   "label": "Beam Length"
-  },
-  {
-   "op": "set_formula",
-   "name": "Beam Length",
-   "formula": "Seat Count * 600 mm"
-  },
-  {
-   "op": "add_type",
-   "name": "3Seat"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3Seat/Keynote",
-   "type": "3Seat",
-   "param": "Keynote",
-   "value": "F.SEA_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3Seat/FMC_Keynote_Code",
-   "type": "3Seat",
-   "param": "FMC_Keynote_Code",
-   "value": "F.SEA_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3Seat/FMC_Cost_Unit",
-   "type": "3Seat",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3Seat/FMC_Geometry_Stage",
-   "type": "3Seat",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3Seat/IfcExportAs",
-   "type": "3Seat",
-   "param": "IfcExportAs",
-   "value": "IfcFurniture"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3Seat/Description",
-   "type": "3Seat",
-   "param": "Description",
-   "value": "Beam seating, 3 seats, antimicrobial vinyl, steel beam on 2 legs"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3Seat/Seat Count",
-   "type": "3Seat",
-   "param": "Seat Count",
-   "value": 3
-  },
-  {
-   "op": "add_type",
-   "name": "4Seat"
-  },
-  {
-   "op": "set_type_value",
-   "name": "4Seat/Keynote",
-   "type": "4Seat",
-   "param": "Keynote",
-   "value": "F.SEA_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "4Seat/FMC_Keynote_Code",
-   "type": "4Seat",
-   "param": "FMC_Keynote_Code",
-   "value": "F.SEA_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "4Seat/FMC_Cost_Unit",
-   "type": "4Seat",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "4Seat/FMC_Geometry_Stage",
-   "type": "4Seat",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "4Seat/IfcExportAs",
-   "type": "4Seat",
-   "param": "IfcExportAs",
-   "value": "IfcFurniture"
-  },
-  {
-   "op": "set_type_value",
-   "name": "4Seat/Description",
-   "type": "4Seat",
-   "param": "Description",
-   "value": "Beam seating, 4 seats, antimicrobial vinyl, steel beam on 2 legs"
-  },
-  {
-   "op": "set_type_value",
-   "name": "4Seat/Seat Count",
-   "type": "4Seat",
-   "param": "Seat Count",
-   "value": 4
-  },
-  {
-   "op": "add_type",
-   "name": "5Seat"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5Seat/Keynote",
-   "type": "5Seat",
-   "param": "Keynote",
-   "value": "F.SEA_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5Seat/FMC_Keynote_Code",
-   "type": "5Seat",
-   "param": "FMC_Keynote_Code",
-   "value": "F.SEA_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5Seat/FMC_Cost_Unit",
-   "type": "5Seat",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5Seat/FMC_Geometry_Stage",
-   "type": "5Seat",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5Seat/IfcExportAs",
-   "type": "5Seat",
-   "param": "IfcExportAs",
-   "value": "IfcFurniture"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5Seat/Description",
-   "type": "5Seat",
-   "param": "Description",
-   "value": "Beam seating, 5 seats, antimicrobial vinyl, steel beam on 2 legs"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5Seat/Seat Count",
-   "type": "5Seat",
-   "param": "Seat Count",
-   "value": 5
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Frame",
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Seat",
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "line_weight_projection": 1
-  },
-  {
-   "op": "extrusion",
-   "name": "Beam",
-   "rect": [
-    "Beam Start",
-    "Beam End",
-    "Seat Front",
-    "Seat Back"
-   ],
-   "start": 330,
-   "end": 380
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Beam",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "extrusion",
-   "name": "Leg Left",
-   "points": [
-    [
-     50,
-     -500
-    ],
-    [
-     110,
-     -500
-    ],
-    [
-     110,
-     -60
-    ],
-    [
-     50,
-     -60
-    ]
-   ],
-   "start": 0,
-   "end": 330
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leg Left",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leg Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Seat",
-   "points": [
-    [
-     20,
-     -540
-    ],
-    [
-     580,
-     -540
-    ],
-    [
-     580,
-     -20
-    ],
-    [
-     20,
-     -20
-    ]
-   ],
-   "start": 400,
-   "end": 460
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Seat",
-   "subcategory": "Seat"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Seat",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Back",
-   "points": [
-    [
-     20,
-     -60
-    ],
-    [
-     580,
-     -60
-    ],
-    [
-     580,
-     -20
-    ],
-    [
-     20,
-     -20
-    ]
-   ],
-   "start": 460,
-   "end": 820
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Back",
-   "subcategory": "Seat"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Back",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "array",
-   "name": "Seats",
-   "solid": "Seat",
-   "direction": "x",
-   "count_param": "Seat Count",
-   "spacing_mm": 600,
-   "max": 5
-  },
-  {
-   "op": "array",
-   "name": "Backs",
-   "solid": "Back",
-   "direction": "x",
-   "count_param": "Seat Count",
-   "spacing_mm": 600,
-   "max": 5
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_I_Furniture_Seating_Waiting_Beam",
+  "template": "Metric Generic Model.rft",
+  "about": "Wave 1: beam seating; Seat Count drives the beam length by formula and the seats and backs by the array op (copies); 3 types.",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Furniture"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Seat Count",
+      "type": "Integer"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Beam Length",
+      "type": "Length"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Beam Start",
+      "from": [
+        0,
+        -800
+      ],
+      "to": [
+        0,
+        800
+      ],
+      "is_reference": "Left"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Beam End",
+      "from": [
+        1800,
+        -800
+      ],
+      "to": [
+        1800,
+        800
+      ],
+      "is_reference": "Right"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Seat Front",
+      "from": [
+        -200,
+        -560
+      ],
+      "to": [
+        3200,
+        -560
+      ],
+      "is_reference": "Front"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Seat Back",
+      "from": [
+        -200,
+        0
+      ],
+      "to": [
+        3200,
+        0
+      ],
+      "is_reference": "Back"
+    },
+    {
+      "op": "add_dimension",
+      "name": "Beam Length",
+      "between": [
+        "Beam Start",
+        "Beam End"
+      ],
+      "label": "Beam Length"
+    },
+    {
+      "op": "set_formula",
+      "name": "Beam Length",
+      "formula": "Seat Count * 600 mm"
+    },
+    {
+      "op": "add_type",
+      "name": "3Seat"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3Seat/Keynote",
+      "type": "3Seat",
+      "param": "Keynote",
+      "value": "F.SEA_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3Seat/FMC_Keynote_Code",
+      "type": "3Seat",
+      "param": "FMC_Keynote_Code",
+      "value": "F.SEA_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3Seat/FMC_Cost_Unit",
+      "type": "3Seat",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3Seat/FMC_Geometry_Stage",
+      "type": "3Seat",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3Seat/IfcExportAs",
+      "type": "3Seat",
+      "param": "IfcExportAs",
+      "value": "IfcFurniture"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3Seat/Description",
+      "type": "3Seat",
+      "param": "Description",
+      "value": "Beam seating, 3 seats, antimicrobial vinyl, steel beam on 2 legs"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3Seat/Seat Count",
+      "type": "3Seat",
+      "param": "Seat Count",
+      "value": 3
+    },
+    {
+      "op": "add_type",
+      "name": "4Seat"
+    },
+    {
+      "op": "set_type_value",
+      "name": "4Seat/Keynote",
+      "type": "4Seat",
+      "param": "Keynote",
+      "value": "F.SEA_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "4Seat/FMC_Keynote_Code",
+      "type": "4Seat",
+      "param": "FMC_Keynote_Code",
+      "value": "F.SEA_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "4Seat/FMC_Cost_Unit",
+      "type": "4Seat",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "4Seat/FMC_Geometry_Stage",
+      "type": "4Seat",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "4Seat/IfcExportAs",
+      "type": "4Seat",
+      "param": "IfcExportAs",
+      "value": "IfcFurniture"
+    },
+    {
+      "op": "set_type_value",
+      "name": "4Seat/Description",
+      "type": "4Seat",
+      "param": "Description",
+      "value": "Beam seating, 4 seats, antimicrobial vinyl, steel beam on 2 legs"
+    },
+    {
+      "op": "set_type_value",
+      "name": "4Seat/Seat Count",
+      "type": "4Seat",
+      "param": "Seat Count",
+      "value": 4
+    },
+    {
+      "op": "add_type",
+      "name": "5Seat"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5Seat/Keynote",
+      "type": "5Seat",
+      "param": "Keynote",
+      "value": "F.SEA_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5Seat/FMC_Keynote_Code",
+      "type": "5Seat",
+      "param": "FMC_Keynote_Code",
+      "value": "F.SEA_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5Seat/FMC_Cost_Unit",
+      "type": "5Seat",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5Seat/FMC_Geometry_Stage",
+      "type": "5Seat",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5Seat/IfcExportAs",
+      "type": "5Seat",
+      "param": "IfcExportAs",
+      "value": "IfcFurniture"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5Seat/Description",
+      "type": "5Seat",
+      "param": "Description",
+      "value": "Beam seating, 5 seats, antimicrobial vinyl, steel beam on 2 legs"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5Seat/Seat Count",
+      "type": "5Seat",
+      "param": "Seat Count",
+      "value": 5
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Frame",
+      "line_weight_projection": 2,
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Seat",
+      "line_weight_projection": 2,
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "line_weight_projection": 3,
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Beam",
+      "rect": [
+        "Beam Start",
+        "Beam End",
+        "Seat Front",
+        "Seat Back"
+      ],
+      "start": 330,
+      "end": 380
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Beam",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "extrusion",
+      "name": "Leg Left",
+      "points": [
+        [
+          50,
+          -500
+        ],
+        [
+          110,
+          -500
+        ],
+        [
+          110,
+          -60
+        ],
+        [
+          50,
+          -60
+        ]
+      ],
+      "start": 0,
+      "end": 330
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Leg Left",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Leg Left",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Seat",
+      "points": [
+        [
+          20,
+          -540
+        ],
+        [
+          580,
+          -540
+        ],
+        [
+          580,
+          -20
+        ],
+        [
+          20,
+          -20
+        ]
+      ],
+      "start": 400,
+      "end": 460
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Seat",
+      "subcategory": "Seat"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Seat",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Back",
+      "points": [
+        [
+          20,
+          -60
+        ],
+        [
+          580,
+          -60
+        ],
+        [
+          580,
+          -20
+        ],
+        [
+          20,
+          -20
+        ]
+      ],
+      "start": 460,
+      "end": 820
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Back",
+      "subcategory": "Seat"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Back",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "array",
+      "name": "Seats",
+      "solid": "Seat",
+      "direction": "x",
+      "count_param": "Seat Count",
+      "spacing_mm": 600,
+      "max": 5
+    },
+    {
+      "op": "array",
+      "name": "Backs",
+      "solid": "Back",
+      "direction": "x",
+      "count_param": "Seat Count",
+      "spacing_mm": 600,
+      "max": 5
+    }
+  ],
+  "values": {
+    "Seat pitch 600 mm": {
+      "value": "see key",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Seat height 460 mm": {
+      "value": "see key",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   }
- ],
- "values": {
-  "Seat pitch 600 mm": {
-   "value": "see key",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Seat height 460 mm": {
-   "value": "see key",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- }
 }

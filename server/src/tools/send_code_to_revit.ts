@@ -9,12 +9,13 @@ export const MAX_CODE_CHARS = 1_000_000;
 const USING = /^(using\s+)?(static\s+)?([A-Za-z_]\w*\s*=\s*)?[A-Za-z_]\w*(\.[A-Za-z_]\w*)*\s*;?$/;
 
 const transactionModeSchema = z
-  .enum(["auto", "none"])
+  .enum(["auto", "none", "read_only"])
   .default("auto")
   .describe(
     "'auto' (default) wraps the script in one transaction with the default failures handling: Revit warnings are " +
       "deleted and listed in the result, an error rolls everything back and is reported. 'none' when the script opens " +
-      "its own transactions (use FmcScript.Run(document, name, () => {...}) for the same handling)."
+      "its own transactions (use FmcScript.Run(document, name, () => {...}) for the same handling). 'read_only' (owner 26 Oct) " +
+      "runs it in a transaction that is always rolled back: the model can't change, so it needs no approval; use it to read."
   );
 
 export const SEND_CODE_DESCRIPTION =
@@ -57,7 +58,7 @@ export const SEND_CODE_SHAPE = {
       "ledger (never the code) so repeated scripts can be moved into a plugin tool (fmc_balance backlog)."),
 };
 
-type SendCodeArgs = { code: string; parameters?: string[]; usings?: string[]; transactionMode?: "auto" | "none"; purpose?: string };
+type SendCodeArgs = { code: string; parameters?: string[]; usings?: string[]; transactionMode?: "auto" | "none" | "read_only"; purpose?: string };
 
 /** The add-in's answer as text: the result, or the error with its code, and the times. */
 export function formatCodeResult(response: any): { text: string; isError: boolean } {
@@ -65,13 +66,25 @@ export function formatCodeResult(response: any): { text: string; isError: boolea
   const times = `compile ${response.compileMs ?? "?"} ms, run ${response.runMs ?? "?"} ms`;
   const extra = {
     job: response.job, document: response.document, transaction: response.transaction,
+    undo_id: response.undoId || undefined,
     warnings: response.warnings?.length ? response.warnings : undefined,
     failures: response.failures?.length ? response.failures : undefined,
     dialogs: response.dialogs?.length ? response.dialogs : undefined,
     txLeak: response.txLeak?.length ? response.txLeak : undefined,
     documentBlocked: response.documentBlocked || undefined,
     note: response.note,
+    created_ids: response.createdIds?.length ? response.createdIds : undefined,
+    // Ogala night report: compile times grew to 74-133 s before an OutOfMemoryException; and a script that touched far
+    // more than it named
+    advice: [
+      (response.compileMs ?? 0) > 30000 ? "Compiling took over 30 s: Revit is short of memory. Save (revit_file save) and ask the person to restart Revit before more scripts." : "",
+      (response.modifiedCount ?? 0) > 300 || (response.deletedIds?.length ?? 0) > 50 ? `This script changed ${response.modifiedCount ?? 0} and deleted ${response.deletedIds?.length ?? 0} elements: check that was meant (see_view, model_check).` : "",
+      /open transaction/i.test(String(response.errorMessage ?? "")) && /save/i.test(String(response.errorMessage ?? "") + String(response.error ?? "")) ? "Scripts can't save the model: use revit_file save." : "",
+    ].filter(Boolean),
+    deleted_ids: response.deletedIds?.length ? response.deletedIds : undefined,
+    modified: response.modifiedCount || undefined,
   };
+  if (!extra.advice.length) delete (extra as { advice?: string[] }).advice;
   if (response.success === false) {
     return {
       isError: true,

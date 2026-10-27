@@ -22,7 +22,7 @@ namespace RevitMCPCommandSet.Services.Fmc
         public JObject Parameters { get; set; } = new JObject();
         public JObject Result { get; private set; } = new JObject();
         public string Error { get; private set; } = "";
-        public bool WaitForCompletion(int timeoutMilliseconds = 10000) { _done.Reset(); return _done.WaitOne(timeoutMilliseconds); }
+        public bool WaitForCompletion(int timeoutMilliseconds = 10000) { _done.Reset(); return FmcBusy.Wait(_done, timeoutMilliseconds); }
         public string GetName() => "Formcraft schedules";
 
         public void Execute(UIApplication app)

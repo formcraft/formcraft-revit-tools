@@ -1,2612 +1,2617 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_C_Structure_SepticTank_MultiChamber",
- "template": "Metric Mechanical Equipment.rft",
- "about": "Ground at z = 0 at roof level: base, walls, baffle (gap at the top), roof slab, two raised access shafts with covers, inlet and outlet dip tees (Fine), pipe stubs with connectors, vent pipe with cowl. Size by the engineer. Reference: query: structure septic tank multi chamber structures hospital; images: https://www.google.com/search?tbm=isch&q=structure+septic+tank+multi+chamber+structures+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Mechanical Equipment"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cooling_Capacity_kW",
-   "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cooling_Capacity_BTUh",
-   "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Airflow_Ls",
-   "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Refrigerant",
-   "guid": "a46c59d0-d719-583b-99c0-074994d01603",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Asset_Tag",
-   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Serial_Number",
-   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Install_Date",
-   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Warranty_End",
-   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Maintenance_Interval_Months",
-   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_OM_Link",
-   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lift_Weight_kg",
-   "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Mounting_Height_mm",
-   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Power_W",
-   "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Power_W_2",
-   "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Controller_ID",
-   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Type",
-   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Signal",
-   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Protocol",
-   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Tank_Capacity_L",
-   "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "10m3_RC"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10m3_RC/FMC_Cost_Unit",
-   "type": "10m3_RC",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10m3_RC/FMC_Geometry_Stage",
-   "type": "10m3_RC",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10m3_RC/IfcExportAs",
-   "type": "10m3_RC",
-   "param": "IfcExportAs",
-   "value": "IfcTank"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10m3_RC/Description",
-   "type": "10m3_RC",
-   "param": "Description",
-   "value": "about 10 m3"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10m3_RC/Keynote",
-   "type": "10m3_RC",
-   "param": "Keynote",
-   "value": "P.SEP_02"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10m3_RC/FMC_Keynote_Code",
-   "type": "10m3_RC",
-   "param": "FMC_Keynote_Code",
-   "value": "P.SEP_02"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10m3_RC/FMC_Code_Description",
-   "type": "10m3_RC",
-   "param": "FMC_Code_Description",
-   "value": "SepticTank MultiChamber: Where no sewer"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10m3_RC/FMC_Code_Group",
-   "type": "10m3_RC",
-   "param": "FMC_Code_Group",
-   "value": "P.SEP"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10m3_RC/FMC_Role_Code",
-   "type": "10m3_RC",
-   "param": "FMC_Role_Code",
-   "value": "C"
-  },
-  {
-   "op": "add_type",
-   "name": "20m3_RC"
-  },
-  {
-   "op": "set_type_value",
-   "name": "20m3_RC/FMC_Cost_Unit",
-   "type": "20m3_RC",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "20m3_RC/FMC_Geometry_Stage",
-   "type": "20m3_RC",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "20m3_RC/IfcExportAs",
-   "type": "20m3_RC",
-   "param": "IfcExportAs",
-   "value": "IfcTank"
-  },
-  {
-   "op": "set_type_value",
-   "name": "20m3_RC/Description",
-   "type": "20m3_RC",
-   "param": "Description",
-   "value": "about 20 m3"
-  },
-  {
-   "op": "set_type_value",
-   "name": "20m3_RC/Keynote",
-   "type": "20m3_RC",
-   "param": "Keynote",
-   "value": "P.SEP_02"
-  },
-  {
-   "op": "set_type_value",
-   "name": "20m3_RC/FMC_Keynote_Code",
-   "type": "20m3_RC",
-   "param": "FMC_Keynote_Code",
-   "value": "P.SEP_02"
-  },
-  {
-   "op": "set_type_value",
-   "name": "20m3_RC/FMC_Code_Description",
-   "type": "20m3_RC",
-   "param": "FMC_Code_Description",
-   "value": "SepticTank MultiChamber: Where no sewer"
-  },
-  {
-   "op": "set_type_value",
-   "name": "20m3_RC/FMC_Code_Group",
-   "type": "20m3_RC",
-   "param": "FMC_Code_Group",
-   "value": "P.SEP"
-  },
-  {
-   "op": "set_type_value",
-   "name": "20m3_RC/FMC_Role_Code",
-   "type": "20m3_RC",
-   "param": "FMC_Role_Code",
-   "value": "C"
-  },
-  {
-   "op": "add_type",
-   "name": "40m3_RC"
-  },
-  {
-   "op": "set_type_value",
-   "name": "40m3_RC/FMC_Cost_Unit",
-   "type": "40m3_RC",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "40m3_RC/FMC_Geometry_Stage",
-   "type": "40m3_RC",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "40m3_RC/IfcExportAs",
-   "type": "40m3_RC",
-   "param": "IfcExportAs",
-   "value": "IfcTank"
-  },
-  {
-   "op": "set_type_value",
-   "name": "40m3_RC/Description",
-   "type": "40m3_RC",
-   "param": "Description",
-   "value": "about 40 m3"
-  },
-  {
-   "op": "set_type_value",
-   "name": "40m3_RC/Keynote",
-   "type": "40m3_RC",
-   "param": "Keynote",
-   "value": "P.SEP_02"
-  },
-  {
-   "op": "set_type_value",
-   "name": "40m3_RC/FMC_Keynote_Code",
-   "type": "40m3_RC",
-   "param": "FMC_Keynote_Code",
-   "value": "P.SEP_02"
-  },
-  {
-   "op": "set_type_value",
-   "name": "40m3_RC/FMC_Code_Description",
-   "type": "40m3_RC",
-   "param": "FMC_Code_Description",
-   "value": "SepticTank MultiChamber: Where no sewer"
-  },
-  {
-   "op": "set_type_value",
-   "name": "40m3_RC/FMC_Code_Group",
-   "type": "40m3_RC",
-   "param": "FMC_Code_Group",
-   "value": "P.SEP"
-  },
-  {
-   "op": "set_type_value",
-   "name": "40m3_RC/FMC_Role_Code",
-   "type": "40m3_RC",
-   "param": "FMC_Role_Code",
-   "value": "C"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Conc",
-   "color": [
-    177,
-    175,
-    168
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Conc Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Concrete_C30",
-   "param": "Conc Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Ci",
-   "color": [
-    34,
-    36,
-    38
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Ci Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_BurglarBar_Steel",
-   "param": "Ci Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Galv",
-   "color": [
-    167,
-    172,
-    175
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Galv Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_ColdFormed_Galvanised",
-   "param": "Galv Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Upvc",
-   "color": [
-    74,
-    77,
-    80
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Upvc Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_uPVC_Pipe_DarkGrey",
-   "param": "Upvc Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -2400,
-     -1100
-    ],
-    [
-     2400,
-     -1100
-    ],
-    [
-     2400,
-     1100
-    ],
-    [
-     -2400,
-     1100
-    ]
-   ],
-   "start": -2500,
-   "end": 2640
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Base Slab",
-   "points": [
-    [
-     -2100,
-     -1100
-    ],
-    [
-     2100,
-     -1100
-    ],
-    [
-     2100,
-     1100
-    ],
-    [
-     -2100,
-     1100
-    ]
-   ],
-   "start": -2500,
-   "end": -2250
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Slab",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Slab",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Slab",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Tank Wall Front",
-   "points": [
-    [
-     -2000,
-     -1000
-    ],
-    [
-     2000,
-     -1000
-    ],
-    [
-     2000,
-     -800
-    ],
-    [
-     -2000,
-     -800
-    ]
-   ],
-   "start": -2250,
-   "end": -200
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Tank Wall Front",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Tank Wall Front",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Tank Wall Front",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Tank Wall Back",
-   "points": [
-    [
-     -2000,
-     800
-    ],
-    [
-     2000,
-     800
-    ],
-    [
-     2000,
-     1000
-    ],
-    [
-     -2000,
-     1000
-    ]
-   ],
-   "start": -2250,
-   "end": -200
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Tank Wall Back",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Tank Wall Back",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Tank Wall Back",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Tank Wall Left",
-   "points": [
-    [
-     -2000,
-     -800
-    ],
-    [
-     -1800,
-     -800
-    ],
-    [
-     -1800,
-     800
-    ],
-    [
-     -2000,
-     800
-    ]
-   ],
-   "start": -2250,
-   "end": -200
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Tank Wall Left",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Tank Wall Left",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Tank Wall Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Tank Wall Right",
-   "points": [
-    [
-     1800,
-     -800
-    ],
-    [
-     2000,
-     -800
-    ],
-    [
-     2000,
-     800
-    ],
-    [
-     1800,
-     800
-    ]
-   ],
-   "start": -2250,
-   "end": -200
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Tank Wall Right",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Tank Wall Right",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Tank Wall Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Baffle Wall",
-   "points": [
-    [
-     600,
-     -800
-    ],
-    [
-     750,
-     -800
-    ],
-    [
-     750,
-     800
-    ],
-    [
-     600,
-     800
-    ]
-   ],
-   "start": -2250,
-   "end": -500
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Baffle Wall",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Baffle Wall",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Baffle Wall",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Roof Slab",
-   "points": [
-    [
-     -2000,
-     -1000
-    ],
-    [
-     2000,
-     -1000
-    ],
-    [
-     2000,
-     1000
-    ],
-    [
-     -2000,
-     1000
-    ]
-   ],
-   "start": -200,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Roof Slab",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Roof Slab",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Roof Slab",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Access Shaft 1",
-   "points": [
-    [
-     -1650,
-     -450
-    ],
-    [
-     -750,
-     -450
-    ],
-    [
-     -750,
-     450
-    ],
-    [
-     -1650,
-     450
-    ]
-   ],
-   "start": 0,
-   "end": 150
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Access Shaft 1",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Access Shaft 1",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Access Shaft 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Access Shaft 2",
-   "points": [
-    [
-     750,
-     -450
-    ],
-    [
-     1650,
-     -450
-    ],
-    [
-     1650,
-     450
-    ],
-    [
-     750,
-     450
-    ]
-   ],
-   "start": 0,
-   "end": 150
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Access Shaft 2",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Access Shaft 2",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Access Shaft 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "void_extrusion",
-   "name": "Shaft Opening 1",
-   "points": [
-    [
-     -1500,
-     -300
-    ],
-    [
-     -900,
-     -300
-    ],
-    [
-     -900,
-     300
-    ],
-    [
-     -1500,
-     300
-    ]
-   ],
-   "start": -201,
-   "end": 150
-  },
-  {
-   "op": "void_extrusion",
-   "name": "Shaft Opening 2",
-   "points": [
-    [
-     900,
-     -300
-    ],
-    [
-     1500,
-     -300
-    ],
-    [
-     1500,
-     300
-    ],
-    [
-     900,
-     300
-    ]
-   ],
-   "start": -201,
-   "end": 150
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 1 Frame Front",
-   "points": [
-    [
-     -1575.0,
-     -375.0
-    ],
-    [
-     -825.0,
-     -375.0
-    ],
-    [
-     -825.0,
-     -300.0
-    ],
-    [
-     -1575.0,
-     -300.0
-    ]
-   ],
-   "start": 150,
-   "end": 250
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 1 Frame Front",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 1 Frame Front",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 1 Frame Front",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 1 Frame Back",
-   "points": [
-    [
-     -1575.0,
-     300.0
-    ],
-    [
-     -825.0,
-     300.0
-    ],
-    [
-     -825.0,
-     375.0
-    ],
-    [
-     -1575.0,
-     375.0
-    ]
-   ],
-   "start": 150,
-   "end": 250
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 1 Frame Back",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 1 Frame Back",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 1 Frame Back",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 1 Frame Left",
-   "points": [
-    [
-     -1575.0,
-     -300.0
-    ],
-    [
-     -1500.0,
-     -300.0
-    ],
-    [
-     -1500.0,
-     300.0
-    ],
-    [
-     -1575.0,
-     300.0
-    ]
-   ],
-   "start": 150,
-   "end": 250
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 1 Frame Left",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 1 Frame Left",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 1 Frame Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 1 Frame Right",
-   "points": [
-    [
-     -900.0,
-     -300.0
-    ],
-    [
-     -825.0,
-     -300.0
-    ],
-    [
-     -825.0,
-     300.0
-    ],
-    [
-     -900.0,
-     300.0
-    ]
-   ],
-   "start": 150,
-   "end": 250
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 1 Frame Right",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 1 Frame Right",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 1 Frame Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 1 Cover",
-   "points": [
-    [
-     -1500.0,
-     -300.0
-    ],
-    [
-     -900.0,
-     -300.0
-    ],
-    [
-     -900.0,
-     300.0
-    ],
-    [
-     -1500.0,
-     300.0
-    ]
-   ],
-   "start": 244,
-   "end": 251
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 1 Cover",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 1 Cover",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 1 Cover",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 1 Pattern 1",
-   "points": [
-    [
-     -1460.0,
-     -188.0
-    ],
-    [
-     -940.0,
-     -188.0
-    ],
-    [
-     -940.0,
-     -172.0
-    ],
-    [
-     -1460.0,
-     -172.0
-    ]
-   ],
-   "start": 251,
-   "end": 253.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 1 Pattern 1",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 1 Pattern 1",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 1 Pattern 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 1 Pattern 2",
-   "points": [
-    [
-     -1460.0,
-     -68.0
-    ],
-    [
-     -940.0,
-     -68.0
-    ],
-    [
-     -940.0,
-     -52.0
-    ],
-    [
-     -1460.0,
-     -52.0
-    ]
-   ],
-   "start": 251,
-   "end": 253.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 1 Pattern 2",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 1 Pattern 2",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 1 Pattern 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 1 Pattern 3",
-   "points": [
-    [
-     -1460.0,
-     52.0
-    ],
-    [
-     -940.0,
-     52.0
-    ],
-    [
-     -940.0,
-     68.0
-    ],
-    [
-     -1460.0,
-     68.0
-    ]
-   ],
-   "start": 251,
-   "end": 253.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 1 Pattern 3",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 1 Pattern 3",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 1 Pattern 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 1 Pattern 4",
-   "points": [
-    [
-     -1460.0,
-     172.0
-    ],
-    [
-     -940.0,
-     172.0
-    ],
-    [
-     -940.0,
-     188.0
-    ],
-    [
-     -1460.0,
-     188.0
-    ]
-   ],
-   "start": 251,
-   "end": 253.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 1 Pattern 4",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 1 Pattern 4",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 1 Pattern 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 1 Keyhole 1",
-   "points": [
-    [
-     -1475.0,
-     -20
-    ],
-    [
-     -1465.0,
-     -20
-    ],
-    [
-     -1465.0,
-     20
-    ],
-    [
-     -1475.0,
-     20
-    ]
-   ],
-   "start": 251,
-   "end": 252
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 1 Keyhole 1",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 1 Keyhole 1",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 1 Keyhole 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 1 Keyhole 2",
-   "points": [
-    [
-     -935.0,
-     -20
-    ],
-    [
-     -925.0,
-     -20
-    ],
-    [
-     -925.0,
-     20
-    ],
-    [
-     -935.0,
-     20
-    ]
-   ],
-   "start": 251,
-   "end": 252
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 1 Keyhole 2",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 1 Keyhole 2",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 1 Keyhole 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 2 Frame Front",
-   "points": [
-    [
-     825.0,
-     -375.0
-    ],
-    [
-     1575.0,
-     -375.0
-    ],
-    [
-     1575.0,
-     -300.0
-    ],
-    [
-     825.0,
-     -300.0
-    ]
-   ],
-   "start": 150,
-   "end": 250
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 2 Frame Front",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 2 Frame Front",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 2 Frame Front",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 2 Frame Back",
-   "points": [
-    [
-     825.0,
-     300.0
-    ],
-    [
-     1575.0,
-     300.0
-    ],
-    [
-     1575.0,
-     375.0
-    ],
-    [
-     825.0,
-     375.0
-    ]
-   ],
-   "start": 150,
-   "end": 250
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 2 Frame Back",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 2 Frame Back",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 2 Frame Back",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 2 Frame Left",
-   "points": [
-    [
-     825.0,
-     -300.0
-    ],
-    [
-     900.0,
-     -300.0
-    ],
-    [
-     900.0,
-     300.0
-    ],
-    [
-     825.0,
-     300.0
-    ]
-   ],
-   "start": 150,
-   "end": 250
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 2 Frame Left",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 2 Frame Left",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 2 Frame Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 2 Frame Right",
-   "points": [
-    [
-     1500.0,
-     -300.0
-    ],
-    [
-     1575.0,
-     -300.0
-    ],
-    [
-     1575.0,
-     300.0
-    ],
-    [
-     1500.0,
-     300.0
-    ]
-   ],
-   "start": 150,
-   "end": 250
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 2 Frame Right",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 2 Frame Right",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 2 Frame Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 2 Cover",
-   "points": [
-    [
-     900.0,
-     -300.0
-    ],
-    [
-     1500.0,
-     -300.0
-    ],
-    [
-     1500.0,
-     300.0
-    ],
-    [
-     900.0,
-     300.0
-    ]
-   ],
-   "start": 244,
-   "end": 251
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 2 Cover",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 2 Cover",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 2 Cover",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 2 Pattern 1",
-   "points": [
-    [
-     940.0,
-     -188.0
-    ],
-    [
-     1460.0,
-     -188.0
-    ],
-    [
-     1460.0,
-     -172.0
-    ],
-    [
-     940.0,
-     -172.0
-    ]
-   ],
-   "start": 251,
-   "end": 253.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 2 Pattern 1",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 2 Pattern 1",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 2 Pattern 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 2 Pattern 2",
-   "points": [
-    [
-     940.0,
-     -68.0
-    ],
-    [
-     1460.0,
-     -68.0
-    ],
-    [
-     1460.0,
-     -52.0
-    ],
-    [
-     940.0,
-     -52.0
-    ]
-   ],
-   "start": 251,
-   "end": 253.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 2 Pattern 2",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 2 Pattern 2",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 2 Pattern 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 2 Pattern 3",
-   "points": [
-    [
-     940.0,
-     52.0
-    ],
-    [
-     1460.0,
-     52.0
-    ],
-    [
-     1460.0,
-     68.0
-    ],
-    [
-     940.0,
-     68.0
-    ]
-   ],
-   "start": 251,
-   "end": 253.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 2 Pattern 3",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 2 Pattern 3",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 2 Pattern 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 2 Pattern 4",
-   "points": [
-    [
-     940.0,
-     172.0
-    ],
-    [
-     1460.0,
-     172.0
-    ],
-    [
-     1460.0,
-     188.0
-    ],
-    [
-     940.0,
-     188.0
-    ]
-   ],
-   "start": 251,
-   "end": 253.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 2 Pattern 4",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 2 Pattern 4",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 2 Pattern 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 2 Keyhole 1",
-   "points": [
-    [
-     925.0,
-     -20
-    ],
-    [
-     935.0,
-     -20
-    ],
-    [
-     935.0,
-     20
-    ],
-    [
-     925.0,
-     20
-    ]
-   ],
-   "start": 251,
-   "end": 252
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 2 Keyhole 1",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 2 Keyhole 1",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 2 Keyhole 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 2 Keyhole 2",
-   "points": [
-    [
-     1465.0,
-     -20
-    ],
-    [
-     1475.0,
-     -20
-    ],
-    [
-     1475.0,
-     20
-    ],
-    [
-     1465.0,
-     20
-    ]
-   ],
-   "start": 251,
-   "end": 252
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 2 Keyhole 2",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 2 Keyhole 2",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 2 Keyhole 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vent Pipe",
-   "points": [
-    [
-     1855.0,
-     800.0
-    ],
-    [
-     1850.81,
-     821.05
-    ],
-    [
-     1838.89,
-     838.89
-    ],
-    [
-     1821.05,
-     850.81
-    ],
-    [
-     1800.0,
-     855.0
-    ],
-    [
-     1778.95,
-     850.81
-    ],
-    [
-     1761.11,
-     838.89
-    ],
-    [
-     1749.19,
-     821.05
-    ],
-    [
-     1745.0,
-     800.0
-    ],
-    [
-     1749.19,
-     778.95
-    ],
-    [
-     1761.11,
-     761.11
-    ],
-    [
-     1778.95,
-     749.19
-    ],
-    [
-     1800.0,
-     745.0
-    ],
-    [
-     1821.05,
-     749.19
-    ],
-    [
-     1838.89,
-     761.11
-    ],
-    [
-     1850.81,
-     778.95
-    ]
-   ],
-   "start": 0,
-   "end": 2500
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vent Pipe",
-   "subcategory": "Upvc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Pipe",
-   "param": "Upvc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Pipe",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Vent Cowl",
-   "profile": [
-    [
-     0,
-     2480
-    ],
-    [
-     55,
-     2480
-    ],
-    [
-     110,
-     2560
-    ],
-    [
-     110,
-     2600
-    ],
-    [
-     0,
-     2640
-    ]
-   ],
-   "axis_at": [
-    1800,
-    800
-   ],
-   "axis": "z",
-   "subcategory": "Upvc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Cowl",
-   "param": "Upvc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Cowl",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Inlet Pipe",
-   "points": [
-    [
-     80.0,
-     -500.0
-    ],
-    [
-     77.27,
-     -479.29
-    ],
-    [
-     69.28,
-     -460.0
-    ],
-    [
-     56.57,
-     -443.43
-    ],
-    [
-     40.0,
-     -430.72
-    ],
-    [
-     20.71,
-     -422.73
-    ],
-    [
-     0.0,
-     -420.0
-    ],
-    [
-     -20.71,
-     -422.73
-    ],
-    [
-     -40.0,
-     -430.72
-    ],
-    [
-     -56.57,
-     -443.43
-    ],
-    [
-     -69.28,
-     -460.0
-    ],
-    [
-     -77.27,
-     -479.29
-    ],
-    [
-     -80.0,
-     -500.0
-    ],
-    [
-     -77.27,
-     -520.71
-    ],
-    [
-     -69.28,
-     -540.0
-    ],
-    [
-     -56.57,
-     -556.57
-    ],
-    [
-     -40.0,
-     -569.28
-    ],
-    [
-     -20.71,
-     -577.27
-    ],
-    [
-     -0.0,
-     -580.0
-    ],
-    [
-     20.71,
-     -577.27
-    ],
-    [
-     40.0,
-     -569.28
-    ],
-    [
-     56.57,
-     -556.57
-    ],
-    [
-     69.28,
-     -540.0
-    ],
-    [
-     77.27,
-     -520.71
-    ]
-   ],
-   "start": -2400,
-   "end": -1990,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Inlet Pipe",
-   "subcategory": "Upvc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Inlet Pipe",
-   "param": "Upvc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Inlet Pipe",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Outlet Pipe",
-   "points": [
-    [
-     80.0,
-     -575.0
-    ],
-    [
-     77.27,
-     -554.29
-    ],
-    [
-     69.28,
-     -535.0
-    ],
-    [
-     56.57,
-     -518.43
-    ],
-    [
-     40.0,
-     -505.72
-    ],
-    [
-     20.71,
-     -497.73
-    ],
-    [
-     0.0,
-     -495.0
-    ],
-    [
-     -20.71,
-     -497.73
-    ],
-    [
-     -40.0,
-     -505.72
-    ],
-    [
-     -56.57,
-     -518.43
-    ],
-    [
-     -69.28,
-     -535.0
-    ],
-    [
-     -77.27,
-     -554.29
-    ],
-    [
-     -80.0,
-     -575.0
-    ],
-    [
-     -77.27,
-     -595.71
-    ],
-    [
-     -69.28,
-     -615.0
-    ],
-    [
-     -56.57,
-     -631.57
-    ],
-    [
-     -40.0,
-     -644.28
-    ],
-    [
-     -20.71,
-     -652.27
-    ],
-    [
-     -0.0,
-     -655.0
-    ],
-    [
-     20.71,
-     -652.27
-    ],
-    [
-     40.0,
-     -644.28
-    ],
-    [
-     56.57,
-     -631.57
-    ],
-    [
-     69.28,
-     -615.0
-    ],
-    [
-     77.27,
-     -595.71
-    ]
-   ],
-   "start": 1990,
-   "end": 2400,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Outlet Pipe",
-   "subcategory": "Upvc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Outlet Pipe",
-   "param": "Upvc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Outlet Pipe",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Inlet Dip Tee",
-   "points": [
-    [
-     -1620.0,
-     0.0
-    ],
-    [
-     -1626.09,
-     30.61
-    ],
-    [
-     -1643.43,
-     56.57
-    ],
-    [
-     -1669.39,
-     73.91
-    ],
-    [
-     -1700.0,
-     80.0
-    ],
-    [
-     -1730.61,
-     73.91
-    ],
-    [
-     -1756.57,
-     56.57
-    ],
-    [
-     -1773.91,
-     30.61
-    ],
-    [
-     -1780.0,
-     0.0
-    ],
-    [
-     -1773.91,
-     -30.61
-    ],
-    [
-     -1756.57,
-     -56.57
-    ],
-    [
-     -1730.61,
-     -73.91
-    ],
-    [
-     -1700.0,
-     -80.0
-    ],
-    [
-     -1669.39,
-     -73.91
-    ],
-    [
-     -1643.43,
-     -56.57
-    ],
-    [
-     -1626.09,
-     -30.61
-    ]
-   ],
-   "start": -1200,
-   "end": -400
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Inlet Dip Tee",
-   "subcategory": "Upvc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Inlet Dip Tee",
-   "param": "Upvc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Inlet Dip Tee",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Outlet Dip Tee",
-   "points": [
-    [
-     1780.0,
-     0.0
-    ],
-    [
-     1773.91,
-     30.61
-    ],
-    [
-     1756.57,
-     56.57
-    ],
-    [
-     1730.61,
-     73.91
-    ],
-    [
-     1700.0,
-     80.0
-    ],
-    [
-     1669.39,
-     73.91
-    ],
-    [
-     1643.43,
-     56.57
-    ],
-    [
-     1626.09,
-     30.61
-    ],
-    [
-     1620.0,
-     0.0
-    ],
-    [
-     1626.09,
-     -30.61
-    ],
-    [
-     1643.43,
-     -56.57
-    ],
-    [
-     1669.39,
-     -73.91
-    ],
-    [
-     1700.0,
-     -80.0
-    ],
-    [
-     1730.61,
-     -73.91
-    ],
-    [
-     1756.57,
-     -56.57
-    ],
-    [
-     1773.91,
-     -30.61
-    ]
-   ],
-   "start": -1200,
-   "end": -400
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Outlet Dip Tee",
-   "subcategory": "Upvc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Outlet Dip Tee",
-   "param": "Upvc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Outlet Dip Tee",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "SAN In",
-   "domain": "pipe",
-   "system": "Sanitary",
-   "solid": "Inlet Pipe",
-   "side": "left",
-   "diameter": 160,
-   "flow": "In"
-  },
-  {
-   "op": "add_connector",
-   "name": "SAN Out",
-   "domain": "pipe",
-   "system": "Sanitary",
-   "solid": "Outlet Pipe",
-   "side": "right",
-   "diameter": 160,
-   "flow": "Out"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\C\\_Images\\FMC_C_Structure_SepticTank_MultiChamber.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_C_Structure_SepticTank_MultiChamber",
+  "template": "Metric Mechanical Equipment.rft",
+  "about": "Ground at z = 0 at roof level: base, walls, baffle (gap at the top), roof slab, two raised access shafts with covers, inlet and outlet dip tees (Fine), pipe stubs with connectors, vent pipe with cowl. Size by the engineer. Reference: query: structure septic tank multi chamber structures hospital; images: https://www.google.com/search?tbm=isch&q=structure+septic+tank+multi+chamber+structures+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Mechanical Equipment"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cooling_Capacity_kW",
+      "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cooling_Capacity_BTUh",
+      "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Airflow_Ls",
+      "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Refrigerant",
+      "guid": "a46c59d0-d719-583b-99c0-074994d01603",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Asset_Tag",
+      "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Serial_Number",
+      "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Install_Date",
+      "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Warranty_End",
+      "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Maintenance_Interval_Months",
+      "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_OM_Link",
+      "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lift_Weight_kg",
+      "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Mounting_Height_mm",
+      "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Power_W",
+      "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Power_W_2",
+      "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Controller_ID",
+      "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Type",
+      "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Signal",
+      "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Protocol",
+      "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Tank_Capacity_L",
+      "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "10m3_RC"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10m3_RC/FMC_Cost_Unit",
+      "type": "10m3_RC",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10m3_RC/FMC_Geometry_Stage",
+      "type": "10m3_RC",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10m3_RC/IfcExportAs",
+      "type": "10m3_RC",
+      "param": "IfcExportAs",
+      "value": "IfcTank"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10m3_RC/Description",
+      "type": "10m3_RC",
+      "param": "Description",
+      "value": "about 10 m3"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10m3_RC/Keynote",
+      "type": "10m3_RC",
+      "param": "Keynote",
+      "value": "P.SEP_02"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10m3_RC/FMC_Keynote_Code",
+      "type": "10m3_RC",
+      "param": "FMC_Keynote_Code",
+      "value": "P.SEP_02"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10m3_RC/FMC_Code_Description",
+      "type": "10m3_RC",
+      "param": "FMC_Code_Description",
+      "value": "SepticTank MultiChamber: Where no sewer"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10m3_RC/FMC_Code_Group",
+      "type": "10m3_RC",
+      "param": "FMC_Code_Group",
+      "value": "P.SEP"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10m3_RC/FMC_Role_Code",
+      "type": "10m3_RC",
+      "param": "FMC_Role_Code",
+      "value": "C"
+    },
+    {
+      "op": "add_type",
+      "name": "20m3_RC"
+    },
+    {
+      "op": "set_type_value",
+      "name": "20m3_RC/FMC_Cost_Unit",
+      "type": "20m3_RC",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "20m3_RC/FMC_Geometry_Stage",
+      "type": "20m3_RC",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "20m3_RC/IfcExportAs",
+      "type": "20m3_RC",
+      "param": "IfcExportAs",
+      "value": "IfcTank"
+    },
+    {
+      "op": "set_type_value",
+      "name": "20m3_RC/Description",
+      "type": "20m3_RC",
+      "param": "Description",
+      "value": "about 20 m3"
+    },
+    {
+      "op": "set_type_value",
+      "name": "20m3_RC/Keynote",
+      "type": "20m3_RC",
+      "param": "Keynote",
+      "value": "P.SEP_02"
+    },
+    {
+      "op": "set_type_value",
+      "name": "20m3_RC/FMC_Keynote_Code",
+      "type": "20m3_RC",
+      "param": "FMC_Keynote_Code",
+      "value": "P.SEP_02"
+    },
+    {
+      "op": "set_type_value",
+      "name": "20m3_RC/FMC_Code_Description",
+      "type": "20m3_RC",
+      "param": "FMC_Code_Description",
+      "value": "SepticTank MultiChamber: Where no sewer"
+    },
+    {
+      "op": "set_type_value",
+      "name": "20m3_RC/FMC_Code_Group",
+      "type": "20m3_RC",
+      "param": "FMC_Code_Group",
+      "value": "P.SEP"
+    },
+    {
+      "op": "set_type_value",
+      "name": "20m3_RC/FMC_Role_Code",
+      "type": "20m3_RC",
+      "param": "FMC_Role_Code",
+      "value": "C"
+    },
+    {
+      "op": "add_type",
+      "name": "40m3_RC"
+    },
+    {
+      "op": "set_type_value",
+      "name": "40m3_RC/FMC_Cost_Unit",
+      "type": "40m3_RC",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "40m3_RC/FMC_Geometry_Stage",
+      "type": "40m3_RC",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "40m3_RC/IfcExportAs",
+      "type": "40m3_RC",
+      "param": "IfcExportAs",
+      "value": "IfcTank"
+    },
+    {
+      "op": "set_type_value",
+      "name": "40m3_RC/Description",
+      "type": "40m3_RC",
+      "param": "Description",
+      "value": "about 40 m3"
+    },
+    {
+      "op": "set_type_value",
+      "name": "40m3_RC/Keynote",
+      "type": "40m3_RC",
+      "param": "Keynote",
+      "value": "P.SEP_02"
+    },
+    {
+      "op": "set_type_value",
+      "name": "40m3_RC/FMC_Keynote_Code",
+      "type": "40m3_RC",
+      "param": "FMC_Keynote_Code",
+      "value": "P.SEP_02"
+    },
+    {
+      "op": "set_type_value",
+      "name": "40m3_RC/FMC_Code_Description",
+      "type": "40m3_RC",
+      "param": "FMC_Code_Description",
+      "value": "SepticTank MultiChamber: Where no sewer"
+    },
+    {
+      "op": "set_type_value",
+      "name": "40m3_RC/FMC_Code_Group",
+      "type": "40m3_RC",
+      "param": "FMC_Code_Group",
+      "value": "P.SEP"
+    },
+    {
+      "op": "set_type_value",
+      "name": "40m3_RC/FMC_Role_Code",
+      "type": "40m3_RC",
+      "param": "FMC_Role_Code",
+      "value": "C"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Conc",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Conc Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Concrete_C30",
+      "param": "Conc Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Ci",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Ci Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_BurglarBar_Steel",
+      "param": "Ci Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Galv",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Galv Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_ColdFormed_Galvanised",
+      "param": "Galv Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Upvc",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Upvc Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_uPVC_Pipe_DarkGrey",
+      "param": "Upvc Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -2400,
+          -1100
+        ],
+        [
+          2400,
+          -1100
+        ],
+        [
+          2400,
+          1100
+        ],
+        [
+          -2400,
+          1100
+        ]
+      ],
+      "start": -2500,
+      "end": 2640
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Base Slab",
+      "points": [
+        [
+          -2100,
+          -1100
+        ],
+        [
+          2100,
+          -1100
+        ],
+        [
+          2100,
+          1100
+        ],
+        [
+          -2100,
+          1100
+        ]
+      ],
+      "start": -2500,
+      "end": -2250
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Base Slab",
+      "subcategory": "Conc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Base Slab",
+      "param": "Conc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Base Slab",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Tank Wall Front",
+      "points": [
+        [
+          -2000,
+          -1000
+        ],
+        [
+          2000,
+          -1000
+        ],
+        [
+          2000,
+          -800
+        ],
+        [
+          -2000,
+          -800
+        ]
+      ],
+      "start": -2250,
+      "end": -200
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Tank Wall Front",
+      "subcategory": "Conc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Tank Wall Front",
+      "param": "Conc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Tank Wall Front",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Tank Wall Back",
+      "points": [
+        [
+          -2000,
+          800
+        ],
+        [
+          2000,
+          800
+        ],
+        [
+          2000,
+          1000
+        ],
+        [
+          -2000,
+          1000
+        ]
+      ],
+      "start": -2250,
+      "end": -200
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Tank Wall Back",
+      "subcategory": "Conc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Tank Wall Back",
+      "param": "Conc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Tank Wall Back",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Tank Wall Left",
+      "points": [
+        [
+          -2000,
+          -800
+        ],
+        [
+          -1800,
+          -800
+        ],
+        [
+          -1800,
+          800
+        ],
+        [
+          -2000,
+          800
+        ]
+      ],
+      "start": -2250,
+      "end": -200
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Tank Wall Left",
+      "subcategory": "Conc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Tank Wall Left",
+      "param": "Conc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Tank Wall Left",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Tank Wall Right",
+      "points": [
+        [
+          1800,
+          -800
+        ],
+        [
+          2000,
+          -800
+        ],
+        [
+          2000,
+          800
+        ],
+        [
+          1800,
+          800
+        ]
+      ],
+      "start": -2250,
+      "end": -200
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Tank Wall Right",
+      "subcategory": "Conc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Tank Wall Right",
+      "param": "Conc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Tank Wall Right",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Baffle Wall",
+      "points": [
+        [
+          600,
+          -800
+        ],
+        [
+          750,
+          -800
+        ],
+        [
+          750,
+          800
+        ],
+        [
+          600,
+          800
+        ]
+      ],
+      "start": -2250,
+      "end": -500
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Baffle Wall",
+      "subcategory": "Conc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Baffle Wall",
+      "param": "Conc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Baffle Wall",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Roof Slab",
+      "points": [
+        [
+          -2000,
+          -1000
+        ],
+        [
+          2000,
+          -1000
+        ],
+        [
+          2000,
+          1000
+        ],
+        [
+          -2000,
+          1000
+        ]
+      ],
+      "start": -200,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Roof Slab",
+      "subcategory": "Conc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Roof Slab",
+      "param": "Conc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Roof Slab",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Access Shaft 1",
+      "points": [
+        [
+          -1650,
+          -450
+        ],
+        [
+          -750,
+          -450
+        ],
+        [
+          -750,
+          450
+        ],
+        [
+          -1650,
+          450
+        ]
+      ],
+      "start": 0,
+      "end": 150
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Access Shaft 1",
+      "subcategory": "Conc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Access Shaft 1",
+      "param": "Conc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Access Shaft 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Access Shaft 2",
+      "points": [
+        [
+          750,
+          -450
+        ],
+        [
+          1650,
+          -450
+        ],
+        [
+          1650,
+          450
+        ],
+        [
+          750,
+          450
+        ]
+      ],
+      "start": 0,
+      "end": 150
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Access Shaft 2",
+      "subcategory": "Conc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Access Shaft 2",
+      "param": "Conc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Access Shaft 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "void_extrusion",
+      "name": "Shaft Opening 1",
+      "points": [
+        [
+          -1500,
+          -300
+        ],
+        [
+          -900,
+          -300
+        ],
+        [
+          -900,
+          300
+        ],
+        [
+          -1500,
+          300
+        ]
+      ],
+      "start": -201,
+      "end": 150
+    },
+    {
+      "op": "void_extrusion",
+      "name": "Shaft Opening 2",
+      "points": [
+        [
+          900,
+          -300
+        ],
+        [
+          1500,
+          -300
+        ],
+        [
+          1500,
+          300
+        ],
+        [
+          900,
+          300
+        ]
+      ],
+      "start": -201,
+      "end": 150
+    },
+    {
+      "op": "extrusion",
+      "name": "Cover 1 Frame Front",
+      "points": [
+        [
+          -1575,
+          -375
+        ],
+        [
+          -825,
+          -375
+        ],
+        [
+          -825,
+          -300
+        ],
+        [
+          -1575,
+          -300
+        ]
+      ],
+      "start": 150,
+      "end": 250
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cover 1 Frame Front",
+      "subcategory": "Ci"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover 1 Frame Front",
+      "param": "Ci Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover 1 Frame Front",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cover 1 Frame Back",
+      "points": [
+        [
+          -1575,
+          300
+        ],
+        [
+          -825,
+          300
+        ],
+        [
+          -825,
+          375
+        ],
+        [
+          -1575,
+          375
+        ]
+      ],
+      "start": 150,
+      "end": 250
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cover 1 Frame Back",
+      "subcategory": "Ci"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover 1 Frame Back",
+      "param": "Ci Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover 1 Frame Back",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cover 1 Frame Left",
+      "points": [
+        [
+          -1575,
+          -300
+        ],
+        [
+          -1500,
+          -300
+        ],
+        [
+          -1500,
+          300
+        ],
+        [
+          -1575,
+          300
+        ]
+      ],
+      "start": 150,
+      "end": 250
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cover 1 Frame Left",
+      "subcategory": "Ci"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover 1 Frame Left",
+      "param": "Ci Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover 1 Frame Left",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cover 1 Frame Right",
+      "points": [
+        [
+          -900,
+          -300
+        ],
+        [
+          -825,
+          -300
+        ],
+        [
+          -825,
+          300
+        ],
+        [
+          -900,
+          300
+        ]
+      ],
+      "start": 150,
+      "end": 250
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cover 1 Frame Right",
+      "subcategory": "Ci"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover 1 Frame Right",
+      "param": "Ci Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover 1 Frame Right",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cover 1 Cover",
+      "points": [
+        [
+          -1500,
+          -300
+        ],
+        [
+          -900,
+          -300
+        ],
+        [
+          -900,
+          300
+        ],
+        [
+          -1500,
+          300
+        ]
+      ],
+      "start": 244,
+      "end": 251
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cover 1 Cover",
+      "subcategory": "Ci"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover 1 Cover",
+      "param": "Ci Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover 1 Cover",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cover 1 Pattern 1",
+      "points": [
+        [
+          -1460,
+          -188
+        ],
+        [
+          -940,
+          -188
+        ],
+        [
+          -940,
+          -172
+        ],
+        [
+          -1460,
+          -172
+        ]
+      ],
+      "start": 251,
+      "end": 253.5
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cover 1 Pattern 1",
+      "subcategory": "Ci"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover 1 Pattern 1",
+      "param": "Ci Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover 1 Pattern 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cover 1 Pattern 2",
+      "points": [
+        [
+          -1460,
+          -68
+        ],
+        [
+          -940,
+          -68
+        ],
+        [
+          -940,
+          -52
+        ],
+        [
+          -1460,
+          -52
+        ]
+      ],
+      "start": 251,
+      "end": 253.5
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cover 1 Pattern 2",
+      "subcategory": "Ci"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover 1 Pattern 2",
+      "param": "Ci Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover 1 Pattern 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cover 1 Pattern 3",
+      "points": [
+        [
+          -1460,
+          52
+        ],
+        [
+          -940,
+          52
+        ],
+        [
+          -940,
+          68
+        ],
+        [
+          -1460,
+          68
+        ]
+      ],
+      "start": 251,
+      "end": 253.5
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cover 1 Pattern 3",
+      "subcategory": "Ci"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover 1 Pattern 3",
+      "param": "Ci Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover 1 Pattern 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cover 1 Pattern 4",
+      "points": [
+        [
+          -1460,
+          172
+        ],
+        [
+          -940,
+          172
+        ],
+        [
+          -940,
+          188
+        ],
+        [
+          -1460,
+          188
+        ]
+      ],
+      "start": 251,
+      "end": 253.5
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cover 1 Pattern 4",
+      "subcategory": "Ci"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover 1 Pattern 4",
+      "param": "Ci Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover 1 Pattern 4",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cover 1 Keyhole 1",
+      "points": [
+        [
+          -1475,
+          -20
+        ],
+        [
+          -1465,
+          -20
+        ],
+        [
+          -1465,
+          20
+        ],
+        [
+          -1475,
+          20
+        ]
+      ],
+      "start": 251,
+      "end": 252
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cover 1 Keyhole 1",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover 1 Keyhole 1",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover 1 Keyhole 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cover 1 Keyhole 2",
+      "points": [
+        [
+          -935,
+          -20
+        ],
+        [
+          -925,
+          -20
+        ],
+        [
+          -925,
+          20
+        ],
+        [
+          -935,
+          20
+        ]
+      ],
+      "start": 251,
+      "end": 252
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cover 1 Keyhole 2",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover 1 Keyhole 2",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover 1 Keyhole 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cover 2 Frame Front",
+      "points": [
+        [
+          825,
+          -375
+        ],
+        [
+          1575,
+          -375
+        ],
+        [
+          1575,
+          -300
+        ],
+        [
+          825,
+          -300
+        ]
+      ],
+      "start": 150,
+      "end": 250
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cover 2 Frame Front",
+      "subcategory": "Ci"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover 2 Frame Front",
+      "param": "Ci Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover 2 Frame Front",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cover 2 Frame Back",
+      "points": [
+        [
+          825,
+          300
+        ],
+        [
+          1575,
+          300
+        ],
+        [
+          1575,
+          375
+        ],
+        [
+          825,
+          375
+        ]
+      ],
+      "start": 150,
+      "end": 250
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cover 2 Frame Back",
+      "subcategory": "Ci"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover 2 Frame Back",
+      "param": "Ci Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover 2 Frame Back",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cover 2 Frame Left",
+      "points": [
+        [
+          825,
+          -300
+        ],
+        [
+          900,
+          -300
+        ],
+        [
+          900,
+          300
+        ],
+        [
+          825,
+          300
+        ]
+      ],
+      "start": 150,
+      "end": 250
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cover 2 Frame Left",
+      "subcategory": "Ci"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover 2 Frame Left",
+      "param": "Ci Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover 2 Frame Left",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cover 2 Frame Right",
+      "points": [
+        [
+          1500,
+          -300
+        ],
+        [
+          1575,
+          -300
+        ],
+        [
+          1575,
+          300
+        ],
+        [
+          1500,
+          300
+        ]
+      ],
+      "start": 150,
+      "end": 250
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cover 2 Frame Right",
+      "subcategory": "Ci"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover 2 Frame Right",
+      "param": "Ci Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover 2 Frame Right",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cover 2 Cover",
+      "points": [
+        [
+          900,
+          -300
+        ],
+        [
+          1500,
+          -300
+        ],
+        [
+          1500,
+          300
+        ],
+        [
+          900,
+          300
+        ]
+      ],
+      "start": 244,
+      "end": 251
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cover 2 Cover",
+      "subcategory": "Ci"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover 2 Cover",
+      "param": "Ci Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover 2 Cover",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cover 2 Pattern 1",
+      "points": [
+        [
+          940,
+          -188
+        ],
+        [
+          1460,
+          -188
+        ],
+        [
+          1460,
+          -172
+        ],
+        [
+          940,
+          -172
+        ]
+      ],
+      "start": 251,
+      "end": 253.5
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cover 2 Pattern 1",
+      "subcategory": "Ci"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover 2 Pattern 1",
+      "param": "Ci Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover 2 Pattern 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cover 2 Pattern 2",
+      "points": [
+        [
+          940,
+          -68
+        ],
+        [
+          1460,
+          -68
+        ],
+        [
+          1460,
+          -52
+        ],
+        [
+          940,
+          -52
+        ]
+      ],
+      "start": 251,
+      "end": 253.5
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cover 2 Pattern 2",
+      "subcategory": "Ci"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover 2 Pattern 2",
+      "param": "Ci Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover 2 Pattern 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cover 2 Pattern 3",
+      "points": [
+        [
+          940,
+          52
+        ],
+        [
+          1460,
+          52
+        ],
+        [
+          1460,
+          68
+        ],
+        [
+          940,
+          68
+        ]
+      ],
+      "start": 251,
+      "end": 253.5
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cover 2 Pattern 3",
+      "subcategory": "Ci"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover 2 Pattern 3",
+      "param": "Ci Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover 2 Pattern 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cover 2 Pattern 4",
+      "points": [
+        [
+          940,
+          172
+        ],
+        [
+          1460,
+          172
+        ],
+        [
+          1460,
+          188
+        ],
+        [
+          940,
+          188
+        ]
+      ],
+      "start": 251,
+      "end": 253.5
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cover 2 Pattern 4",
+      "subcategory": "Ci"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover 2 Pattern 4",
+      "param": "Ci Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover 2 Pattern 4",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cover 2 Keyhole 1",
+      "points": [
+        [
+          925,
+          -20
+        ],
+        [
+          935,
+          -20
+        ],
+        [
+          935,
+          20
+        ],
+        [
+          925,
+          20
+        ]
+      ],
+      "start": 251,
+      "end": 252
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cover 2 Keyhole 1",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover 2 Keyhole 1",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover 2 Keyhole 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cover 2 Keyhole 2",
+      "points": [
+        [
+          1465,
+          -20
+        ],
+        [
+          1475,
+          -20
+        ],
+        [
+          1475,
+          20
+        ],
+        [
+          1465,
+          20
+        ]
+      ],
+      "start": 251,
+      "end": 252
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cover 2 Keyhole 2",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover 2 Keyhole 2",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover 2 Keyhole 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vent Pipe",
+      "points": [
+        [
+          1855,
+          800
+        ],
+        [
+          1850.81,
+          821.05
+        ],
+        [
+          1838.89,
+          838.89
+        ],
+        [
+          1821.05,
+          850.81
+        ],
+        [
+          1800,
+          855
+        ],
+        [
+          1778.95,
+          850.81
+        ],
+        [
+          1761.11,
+          838.89
+        ],
+        [
+          1749.19,
+          821.05
+        ],
+        [
+          1745,
+          800
+        ],
+        [
+          1749.19,
+          778.95
+        ],
+        [
+          1761.11,
+          761.11
+        ],
+        [
+          1778.95,
+          749.19
+        ],
+        [
+          1800,
+          745
+        ],
+        [
+          1821.05,
+          749.19
+        ],
+        [
+          1838.89,
+          761.11
+        ],
+        [
+          1850.81,
+          778.95
+        ]
+      ],
+      "start": 0,
+      "end": 2500
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vent Pipe",
+      "subcategory": "Upvc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Pipe",
+      "param": "Upvc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vent Pipe",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Vent Cowl",
+      "profile": [
+        [
+          0,
+          2480
+        ],
+        [
+          55,
+          2480
+        ],
+        [
+          110,
+          2560
+        ],
+        [
+          110,
+          2600
+        ],
+        [
+          0,
+          2640
+        ]
+      ],
+      "axis_at": [
+        1800,
+        800
+      ],
+      "axis": "z",
+      "subcategory": "Upvc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Cowl",
+      "param": "Upvc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vent Cowl",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Inlet Pipe",
+      "points": [
+        [
+          80,
+          -500
+        ],
+        [
+          77.27,
+          -479.29
+        ],
+        [
+          69.28,
+          -460
+        ],
+        [
+          56.57,
+          -443.43
+        ],
+        [
+          40,
+          -430.72
+        ],
+        [
+          20.71,
+          -422.73
+        ],
+        [
+          0,
+          -420
+        ],
+        [
+          -20.71,
+          -422.73
+        ],
+        [
+          -40,
+          -430.72
+        ],
+        [
+          -56.57,
+          -443.43
+        ],
+        [
+          -69.28,
+          -460
+        ],
+        [
+          -77.27,
+          -479.29
+        ],
+        [
+          -80,
+          -500
+        ],
+        [
+          -77.27,
+          -520.71
+        ],
+        [
+          -69.28,
+          -540
+        ],
+        [
+          -56.57,
+          -556.57
+        ],
+        [
+          -40,
+          -569.28
+        ],
+        [
+          -20.71,
+          -577.27
+        ],
+        [
+          0,
+          -580
+        ],
+        [
+          20.71,
+          -577.27
+        ],
+        [
+          40,
+          -569.28
+        ],
+        [
+          56.57,
+          -556.57
+        ],
+        [
+          69.28,
+          -540
+        ],
+        [
+          77.27,
+          -520.71
+        ]
+      ],
+      "start": -2400,
+      "end": -1990,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Inlet Pipe",
+      "subcategory": "Upvc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Inlet Pipe",
+      "param": "Upvc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Inlet Pipe",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Outlet Pipe",
+      "points": [
+        [
+          80,
+          -575
+        ],
+        [
+          77.27,
+          -554.29
+        ],
+        [
+          69.28,
+          -535
+        ],
+        [
+          56.57,
+          -518.43
+        ],
+        [
+          40,
+          -505.72
+        ],
+        [
+          20.71,
+          -497.73
+        ],
+        [
+          0,
+          -495
+        ],
+        [
+          -20.71,
+          -497.73
+        ],
+        [
+          -40,
+          -505.72
+        ],
+        [
+          -56.57,
+          -518.43
+        ],
+        [
+          -69.28,
+          -535
+        ],
+        [
+          -77.27,
+          -554.29
+        ],
+        [
+          -80,
+          -575
+        ],
+        [
+          -77.27,
+          -595.71
+        ],
+        [
+          -69.28,
+          -615
+        ],
+        [
+          -56.57,
+          -631.57
+        ],
+        [
+          -40,
+          -644.28
+        ],
+        [
+          -20.71,
+          -652.27
+        ],
+        [
+          0,
+          -655
+        ],
+        [
+          20.71,
+          -652.27
+        ],
+        [
+          40,
+          -644.28
+        ],
+        [
+          56.57,
+          -631.57
+        ],
+        [
+          69.28,
+          -615
+        ],
+        [
+          77.27,
+          -595.71
+        ]
+      ],
+      "start": 1990,
+      "end": 2400,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Outlet Pipe",
+      "subcategory": "Upvc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Outlet Pipe",
+      "param": "Upvc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Outlet Pipe",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Inlet Dip Tee",
+      "points": [
+        [
+          -1620,
+          0
+        ],
+        [
+          -1626.09,
+          30.61
+        ],
+        [
+          -1643.43,
+          56.57
+        ],
+        [
+          -1669.39,
+          73.91
+        ],
+        [
+          -1700,
+          80
+        ],
+        [
+          -1730.61,
+          73.91
+        ],
+        [
+          -1756.57,
+          56.57
+        ],
+        [
+          -1773.91,
+          30.61
+        ],
+        [
+          -1780,
+          0
+        ],
+        [
+          -1773.91,
+          -30.61
+        ],
+        [
+          -1756.57,
+          -56.57
+        ],
+        [
+          -1730.61,
+          -73.91
+        ],
+        [
+          -1700,
+          -80
+        ],
+        [
+          -1669.39,
+          -73.91
+        ],
+        [
+          -1643.43,
+          -56.57
+        ],
+        [
+          -1626.09,
+          -30.61
+        ]
+      ],
+      "start": -1200,
+      "end": -400
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Inlet Dip Tee",
+      "subcategory": "Upvc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Inlet Dip Tee",
+      "param": "Upvc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Inlet Dip Tee",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Outlet Dip Tee",
+      "points": [
+        [
+          1780,
+          0
+        ],
+        [
+          1773.91,
+          30.61
+        ],
+        [
+          1756.57,
+          56.57
+        ],
+        [
+          1730.61,
+          73.91
+        ],
+        [
+          1700,
+          80
+        ],
+        [
+          1669.39,
+          73.91
+        ],
+        [
+          1643.43,
+          56.57
+        ],
+        [
+          1626.09,
+          30.61
+        ],
+        [
+          1620,
+          0
+        ],
+        [
+          1626.09,
+          -30.61
+        ],
+        [
+          1643.43,
+          -56.57
+        ],
+        [
+          1669.39,
+          -73.91
+        ],
+        [
+          1700,
+          -80
+        ],
+        [
+          1730.61,
+          -73.91
+        ],
+        [
+          1756.57,
+          -56.57
+        ],
+        [
+          1773.91,
+          -30.61
+        ]
+      ],
+      "start": -1200,
+      "end": -400
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Outlet Dip Tee",
+      "subcategory": "Upvc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Outlet Dip Tee",
+      "param": "Upvc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Outlet Dip Tee",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "SAN In",
+      "domain": "pipe",
+      "system": "Sanitary",
+      "solid": "Inlet Pipe",
+      "side": "left",
+      "diameter": 160,
+      "flow": "In"
+    },
+    {
+      "op": "add_connector",
+      "name": "SAN Out",
+      "domain": "pipe",
+      "system": "Sanitary",
+      "solid": "Outlet Pipe",
+      "side": "right",
+      "diameter": 160,
+      "flow": "Out"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\C\\_Images\\FMC_C_Structure_SepticTank_MultiChamber.png"
+    }
+  ],
+  "values": {
+    "Internal 3600 x 1600 x 2050 mm (10 m3 geometry)": {
+      "value": "3600x1600x2050",
+      "source_status": "assumed",
+      "source": "sizing by the engineer (note: where no sewer)"
+    },
+    "Chamber split 2:1": {
+      "value": "2:1",
+      "source_status": "assumed",
+      "source": "typical practice"
+    },
+    "Walls 200, base 250, roof 200 mm": {
+      "value": "200/250/200",
+      "source_status": "assumed",
+      "source": "typical size, engineer to confirm"
+    },
+    "Vent 110 mm to 2.5 m": {
+      "value": 110,
+      "source_status": "assumed",
+      "source": "typical"
+    }
   }
- ],
- "values": {
-  "Internal 3600 x 1600 x 2050 mm (10 m3 geometry)": {
-   "value": "3600x1600x2050",
-   "source_status": "assumed",
-   "source": "sizing by the engineer (note: where no sewer)"
-  },
-  "Chamber split 2:1": {
-   "value": "2:1",
-   "source_status": "assumed",
-   "source": "typical practice"
-  },
-  "Walls 200, base 250, roof 200 mm": {
-   "value": "200/250/200",
-   "source_status": "assumed",
-   "source": "typical size, engineer to confirm"
-  },
-  "Vent 110 mm to 2.5 m": {
-   "value": 110,
-   "source_status": "assumed",
-   "source": "typical"
-  }
- }
 }

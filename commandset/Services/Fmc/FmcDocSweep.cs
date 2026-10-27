@@ -177,8 +177,14 @@ namespace RevitMCPCommandSet.Services.Fmc
                 curves.Append(l);
             }
 
-            SweepProfile profile = FmcDocLod.ProfileFor(doc, op, v[0], lines[0].Direction, out string detail);
-            Autodesk.Revit.DB.Sweep made = doc.FamilyCreate.NewSweep(!isVoid, curves, sketch, profile, 0, ProfilePlaneLocation.Start);
+            string detail = "";
+            // a profile with splines Revit refuses is swept again with them as short lines (FmcCurves)
+            Autodesk.Revit.DB.Sweep made = FmcCurves.WithFallback(splines =>
+            {
+                op["_no_splines"] = !splines;
+                SweepProfile profile = FmcDocLod.ProfileFor(doc, op, v[0], lines[0].Direction, out detail);
+                return doc.FamilyCreate.NewSweep(!isVoid, curves, sketch, profile, 0, ProfilePlaneLocation.Start);
+            }, op["profile"] != null && FmcCurves.HasSplines(op["profile"]));
             FmcDocGeometry.Label(made, name);
             FmcDocLod.ApplySubcategory(doc, made, op);
 

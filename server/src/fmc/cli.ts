@@ -71,7 +71,8 @@ import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { askLogFile, askStatus, readApiKey, runAsk } from "./ask.js";
 import { annotateInvalidOp } from "./buildinfo.js";
 
-type Reply = { content: Array<{ type: "text"; text: string }>; isError?: boolean };
+// a tool may also return pictures (fmc_ai inbox); the CLI prints its text
+type Reply = { content: Array<{ type: "text"; text: string } | { type: "image"; data: string; mimeType: string }>; isError?: boolean };
 
 /** F74: the command running now, recorded in the call ledger when it answers (never blocks or fails the command). */
 let pending: { tool: string; args: Record<string, unknown>; t0: number; at: Date } | null = null;
@@ -92,7 +93,8 @@ function print(body: unknown, failed: boolean): never {
 
 function printReply(r: Reply): never {
   record(!r.isError);
-  process.stdout.write((r.content[0]?.text ?? "{}") + "\n");
+  const text = r.content.find((c): c is { type: "text"; text: string } => c.type === "text");
+  process.stdout.write((text?.text ?? "{}") + "\n");
   process.exit(r.isError ? 1 : 0);
 }
 
@@ -259,8 +261,8 @@ async function main() {
         return print(r, "error" in r);
       }
       // The pane's AI commands: a person approves, rejects, resumes or sets the policy. Never MCP tools.
-      case "ai_approve": case "ai_reject": case "ai_resume": case "ai_config": {
-        const r = paneAi(command, input as Record<string, unknown>, process.env.USERNAME || "unknown");
+      case "ai_approve": case "ai_reject": case "ai_resume": case "ai_config": case "ai_general": case "ai_send": {
+        const r = await paneAi(command, input as Record<string, unknown>, process.env.USERNAME || "unknown");
         return print(r, "error" in r);
       }
       case "ask_status": {

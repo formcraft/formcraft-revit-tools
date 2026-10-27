@@ -1,2223 +1,2229 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_P_PlumbingFixture_BottleRefill_Station",
- "template": "Metric Generic Model.rft",
- "about": "Refill station modelled as a generic product: upper housing with sensor and counter display, alcove side walls and back panel, base unit with vents, drip tray with grille bars, nozzle. Wall type drawn; free-standing shares it. Reference: query: bottle refill station plumbing fixtures hospital; images: https://www.google.com/search?tbm=isch&q=bottle+refill+station+plumbing+fixtures+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Plumbing Fixtures"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Voltage",
-   "type": "Voltage",
-   "group": "Electrical"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Apparent Load",
-   "type": "ApparentPower",
-   "group": "ElectricalLoads"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Pipe_System",
-   "guid": "19b06c84-7f51-563a-ac4a-ed9b4addfabc",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Discharge_Units",
-   "guid": "7aa955c0-3c0f-5f8c-a77b-9124e8d513eb",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Asset_Tag",
-   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Serial_Number",
-   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Install_Date",
-   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Warranty_End",
-   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Maintenance_Interval_Months",
-   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_OM_Link",
-   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Mounting_Height_mm",
-   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
-   "instance": true
-  },
-  {
-   "op": "add_type",
-   "name": "420_Wall"
-  },
-  {
-   "op": "set_type_value",
-   "name": "420_Wall/FMC_Cost_Unit",
-   "type": "420_Wall",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "420_Wall/FMC_Geometry_Stage",
-   "type": "420_Wall",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "420_Wall/IfcExportAs",
-   "type": "420_Wall",
-   "param": "IfcExportAs",
-   "value": "IfcSanitaryTerminal"
-  },
-  {
-   "op": "set_type_value",
-   "name": "420_Wall/Description",
-   "type": "420_Wall",
-   "param": "Description",
-   "value": "Bottle refill station, wall-mounted stainless 420 x 270 x 870 mm, chilled and filtered, sensor-operated nozzle, bottle counter display, drip tray with grille"
-  },
-  {
-   "op": "set_type_value",
-   "name": "420_Wall/Keynote",
-   "type": "420_Wall",
-   "param": "Keynote",
-   "value": "P.DRK_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "420_Wall/FMC_Keynote_Code",
-   "type": "420_Wall",
-   "param": "FMC_Keynote_Code",
-   "value": "P.DRK_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "420_Wall/FMC_Code_Description",
-   "type": "420_Wall",
-   "param": "FMC_Code_Description",
-   "value": "BottleRefill Station: Chilled filtered refill"
-  },
-  {
-   "op": "set_type_value",
-   "name": "420_Wall/FMC_Code_Group",
-   "type": "420_Wall",
-   "param": "FMC_Code_Group",
-   "value": "P.DRK"
-  },
-  {
-   "op": "set_type_value",
-   "name": "420_Wall/FMC_Role_Code",
-   "type": "420_Wall",
-   "param": "FMC_Role_Code",
-   "value": "P"
-  },
-  {
-   "op": "set_type_value",
-   "name": "420_Wall/Voltage",
-   "type": "420_Wall",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "420_Wall/Apparent Load",
-   "type": "420_Wall",
-   "param": "Apparent Load",
-   "value": 370
-  },
-  {
-   "op": "add_type",
-   "name": "420_FreeStanding"
-  },
-  {
-   "op": "set_type_value",
-   "name": "420_FreeStanding/FMC_Cost_Unit",
-   "type": "420_FreeStanding",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "420_FreeStanding/FMC_Geometry_Stage",
-   "type": "420_FreeStanding",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "420_FreeStanding/IfcExportAs",
-   "type": "420_FreeStanding",
-   "param": "IfcExportAs",
-   "value": "IfcSanitaryTerminal"
-  },
-  {
-   "op": "set_type_value",
-   "name": "420_FreeStanding/Description",
-   "type": "420_FreeStanding",
-   "param": "Description",
-   "value": "Bottle refill station, wall-mounted stainless 420 x 270 x 870 mm, chilled and filtered, sensor-operated nozzle, bottle counter display, drip tray with grille"
-  },
-  {
-   "op": "set_type_value",
-   "name": "420_FreeStanding/Keynote",
-   "type": "420_FreeStanding",
-   "param": "Keynote",
-   "value": "P.DRK_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "420_FreeStanding/FMC_Keynote_Code",
-   "type": "420_FreeStanding",
-   "param": "FMC_Keynote_Code",
-   "value": "P.DRK_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "420_FreeStanding/FMC_Code_Description",
-   "type": "420_FreeStanding",
-   "param": "FMC_Code_Description",
-   "value": "BottleRefill Station: Chilled filtered refill"
-  },
-  {
-   "op": "set_type_value",
-   "name": "420_FreeStanding/FMC_Code_Group",
-   "type": "420_FreeStanding",
-   "param": "FMC_Code_Group",
-   "value": "P.DRK"
-  },
-  {
-   "op": "set_type_value",
-   "name": "420_FreeStanding/FMC_Role_Code",
-   "type": "420_FreeStanding",
-   "param": "FMC_Role_Code",
-   "value": "P"
-  },
-  {
-   "op": "set_type_value",
-   "name": "420_FreeStanding/Voltage",
-   "type": "420_FreeStanding",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "420_FreeStanding/Apparent Load",
-   "type": "420_FreeStanding",
-   "param": "Apparent Load",
-   "value": 370
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Stainless",
-   "color": [
-    180,
-    183,
-    186
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Stainless Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_StainlessSteel_Brushed",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Chrome",
-   "color": [
-    192,
-    195,
-    199
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Chrome Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Chrome_Polished",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Led Green",
-   "color": [
-    59,
-    209,
-    111
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Led Green Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_LED_Green",
-   "param": "Led Green Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Grey",
-   "color": [
-    154,
-    160,
-    166
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Grey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Grey",
-   "param": "Grey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -210.0,
-     -273
-    ],
-    [
-     210.0,
-     -273
-    ],
-    [
-     210.0,
-     0.0
-    ],
-    [
-     -210.0,
-     0.0
-    ]
-   ],
-   "start": 850,
-   "end": 1720
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Upper Housing",
-   "points": [
-    [
-     185.0,
-     -270.0
-    ],
-    [
-     194.57,
-     -268.1
-    ],
-    [
-     202.68,
-     -262.68
-    ],
-    [
-     208.1,
-     -254.57
-    ],
-    [
-     210.0,
-     -245.0
-    ],
-    [
-     210.0,
-     -25.0
-    ],
-    [
-     208.1,
-     -15.43
-    ],
-    [
-     202.68,
-     -7.32
-    ],
-    [
-     194.57,
-     -1.9
-    ],
-    [
-     185.0,
-     0.0
-    ],
-    [
-     -185.0,
-     0.0
-    ],
-    [
-     -194.57,
-     -1.9
-    ],
-    [
-     -202.68,
-     -7.32
-    ],
-    [
-     -208.1,
-     -15.43
-    ],
-    [
-     -210.0,
-     -25.0
-    ],
-    [
-     -210.0,
-     -245.0
-    ],
-    [
-     -208.1,
-     -254.57
-    ],
-    [
-     -202.68,
-     -262.68
-    ],
-    [
-     -194.57,
-     -268.1
-    ],
-    [
-     -185.0,
-     -270.0
-    ]
-   ],
-   "start": 1450,
-   "end": 1720
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Upper Housing",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Upper Housing",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Upper Housing",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Side Wall 1",
-   "points": [
-    [
-     -210,
-     -270
-    ],
-    [
-     -185,
-     -270
-    ],
-    [
-     -185,
-     0
-    ],
-    [
-     -210,
-     0
-    ]
-   ],
-   "start": 1050,
-   "end": 1450
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Side Wall 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Side Wall 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Side Wall 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Side Wall 2",
-   "points": [
-    [
-     185,
-     -270
-    ],
-    [
-     210,
-     -270
-    ],
-    [
-     210,
-     0
-    ],
-    [
-     185,
-     0
-    ]
-   ],
-   "start": 1050,
-   "end": 1450
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Side Wall 2",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Side Wall 2",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Side Wall 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Back Panel",
-   "points": [
-    [
-     -185,
-     -60
-    ],
-    [
-     185,
-     -60
-    ],
-    [
-     185,
-     0
-    ],
-    [
-     -185,
-     0
-    ]
-   ],
-   "start": 1050,
-   "end": 1450
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Back Panel",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Back Panel",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Back Panel",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Base Unit",
-   "points": [
-    [
-     185.0,
-     -270.0
-    ],
-    [
-     194.57,
-     -268.1
-    ],
-    [
-     202.68,
-     -262.68
-    ],
-    [
-     208.1,
-     -254.57
-    ],
-    [
-     210.0,
-     -245.0
-    ],
-    [
-     210.0,
-     -25.0
-    ],
-    [
-     208.1,
-     -15.43
-    ],
-    [
-     202.68,
-     -7.32
-    ],
-    [
-     194.57,
-     -1.9
-    ],
-    [
-     185.0,
-     0.0
-    ],
-    [
-     -185.0,
-     0.0
-    ],
-    [
-     -194.57,
-     -1.9
-    ],
-    [
-     -202.68,
-     -7.32
-    ],
-    [
-     -208.1,
-     -15.43
-    ],
-    [
-     -210.0,
-     -25.0
-    ],
-    [
-     -210.0,
-     -245.0
-    ],
-    [
-     -208.1,
-     -254.57
-    ],
-    [
-     -202.68,
-     -262.68
-    ],
-    [
-     -194.57,
-     -268.1
-    ],
-    [
-     -185.0,
-     -270.0
-    ]
-   ],
-   "start": 850,
-   "end": 1050
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Unit",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Unit",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Unit",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drip Tray",
-   "points": [
-    [
-     -170,
-     -250
-    ],
-    [
-     170,
-     -250
-    ],
-    [
-     170,
-     -70
-    ],
-    [
-     -170,
-     -70
-    ]
-   ],
-   "start": 1050,
-   "end": 1058
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drip Tray",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drip Tray",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drip Tray",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drip Grille Bar 1",
-   "points": [
-    [
-     -160,
-     -245
-    ],
-    [
-     160,
-     -245
-    ],
-    [
-     160,
-     -237
-    ],
-    [
-     -160,
-     -237
-    ]
-   ],
-   "start": 1058,
-   "end": 1062
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drip Grille Bar 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drip Grille Bar 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drip Grille Bar 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drip Grille Bar 2",
-   "points": [
-    [
-     -160,
-     -224
-    ],
-    [
-     160,
-     -224
-    ],
-    [
-     160,
-     -216
-    ],
-    [
-     -160,
-     -216
-    ]
-   ],
-   "start": 1058,
-   "end": 1062
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drip Grille Bar 2",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drip Grille Bar 2",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drip Grille Bar 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drip Grille Bar 3",
-   "points": [
-    [
-     -160,
-     -203
-    ],
-    [
-     160,
-     -203
-    ],
-    [
-     160,
-     -195
-    ],
-    [
-     -160,
-     -195
-    ]
-   ],
-   "start": 1058,
-   "end": 1062
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drip Grille Bar 3",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drip Grille Bar 3",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drip Grille Bar 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drip Grille Bar 4",
-   "points": [
-    [
-     -160,
-     -182
-    ],
-    [
-     160,
-     -182
-    ],
-    [
-     160,
-     -174
-    ],
-    [
-     -160,
-     -174
-    ]
-   ],
-   "start": 1058,
-   "end": 1062
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drip Grille Bar 4",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drip Grille Bar 4",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drip Grille Bar 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drip Grille Bar 5",
-   "points": [
-    [
-     -160,
-     -161
-    ],
-    [
-     160,
-     -161
-    ],
-    [
-     160,
-     -153
-    ],
-    [
-     -160,
-     -153
-    ]
-   ],
-   "start": 1058,
-   "end": 1062
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drip Grille Bar 5",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drip Grille Bar 5",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drip Grille Bar 5",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drip Grille Bar 6",
-   "points": [
-    [
-     -160,
-     -140
-    ],
-    [
-     160,
-     -140
-    ],
-    [
-     160,
-     -132
-    ],
-    [
-     -160,
-     -132
-    ]
-   ],
-   "start": 1058,
-   "end": 1062
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drip Grille Bar 6",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drip Grille Bar 6",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drip Grille Bar 6",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drip Grille Bar 7",
-   "points": [
-    [
-     -160,
-     -119
-    ],
-    [
-     160,
-     -119
-    ],
-    [
-     160,
-     -111
-    ],
-    [
-     -160,
-     -111
-    ]
-   ],
-   "start": 1058,
-   "end": 1062
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drip Grille Bar 7",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drip Grille Bar 7",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drip Grille Bar 7",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drip Grille Bar 8",
-   "points": [
-    [
-     -160,
-     -98
-    ],
-    [
-     160,
-     -98
-    ],
-    [
-     160,
-     -90
-    ],
-    [
-     -160,
-     -90
-    ]
-   ],
-   "start": 1058,
-   "end": 1062
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drip Grille Bar 8",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drip Grille Bar 8",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drip Grille Bar 8",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Nozzle",
-   "profile": [
-    [
-     0,
-     1395
-    ],
-    [
-     10,
-     1395
-    ],
-    [
-     14,
-     1420
-    ],
-    [
-     20,
-     1450
-    ],
-    [
-     0,
-     1450
-    ]
-   ],
-   "axis_at": [
-    0,
-    -150
-   ],
-   "axis": "z",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Nozzle",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Nozzle",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Sensor Window",
-   "points": [
-    [
-     26.0,
-     1460.0
-    ],
-    [
-     27.53,
-     1460.3
-    ],
-    [
-     28.83,
-     1461.17
-    ],
-    [
-     29.7,
-     1462.47
-    ],
-    [
-     30.0,
-     1464.0
-    ],
-    [
-     30.0,
-     1476.0
-    ],
-    [
-     29.7,
-     1477.53
-    ],
-    [
-     28.83,
-     1478.83
-    ],
-    [
-     27.53,
-     1479.7
-    ],
-    [
-     26.0,
-     1480.0
-    ],
-    [
-     -26.0,
-     1480.0
-    ],
-    [
-     -27.53,
-     1479.7
-    ],
-    [
-     -28.83,
-     1478.83
-    ],
-    [
-     -29.7,
-     1477.53
-    ],
-    [
-     -30.0,
-     1476.0
-    ],
-    [
-     -30.0,
-     1464.0
-    ],
-    [
-     -29.7,
-     1462.47
-    ],
-    [
-     -28.83,
-     1461.17
-    ],
-    [
-     -27.53,
-     1460.3
-    ],
-    [
-     -26.0,
-     1460.0
-    ]
-   ],
-   "start": 270,
-   "end": 272,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sensor Window",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sensor Window",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sensor Window",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Counter Display",
-   "points": [
-    [
-     112.0,
-     1560.0
-    ],
-    [
-     115.06,
-     1560.61
-    ],
-    [
-     117.66,
-     1562.34
-    ],
-    [
-     119.39,
-     1564.94
-    ],
-    [
-     120.0,
-     1568.0
-    ],
-    [
-     120.0,
-     1652.0
-    ],
-    [
-     119.39,
-     1655.06
-    ],
-    [
-     117.66,
-     1657.66
-    ],
-    [
-     115.06,
-     1659.39
-    ],
-    [
-     112.0,
-     1660.0
-    ],
-    [
-     -112.0,
-     1660.0
-    ],
-    [
-     -115.06,
-     1659.39
-    ],
-    [
-     -117.66,
-     1657.66
-    ],
-    [
-     -119.39,
-     1655.06
-    ],
-    [
-     -120.0,
-     1652.0
-    ],
-    [
-     -120.0,
-     1568.0
-    ],
-    [
-     -119.39,
-     1564.94
-    ],
-    [
-     -117.66,
-     1562.34
-    ],
-    [
-     -115.06,
-     1560.61
-    ],
-    [
-     -112.0,
-     1560.0
-    ]
-   ],
-   "start": 270,
-   "end": 272,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Counter Display",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Counter Display",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Counter Display",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Counter Digits",
-   "points": [
-    [
-     -90,
-     1590
-    ],
-    [
-     90,
-     1590
-    ],
-    [
-     90,
-     1630
-    ],
-    [
-     -90,
-     1630
-    ]
-   ],
-   "start": 272,
-   "end": 273,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Counter Digits",
-   "subcategory": "Led Green"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Counter Digits",
-   "param": "Led Green Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Counter Digits",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Filter LED",
-   "points": [
-    [
-     156.0,
-     1500.0
-    ],
-    [
-     155.8,
-     1501.55
-    ],
-    [
-     155.2,
-     1503.0
-    ],
-    [
-     154.24,
-     1504.24
-    ],
-    [
-     153.0,
-     1505.2
-    ],
-    [
-     151.55,
-     1505.8
-    ],
-    [
-     150.0,
-     1506.0
-    ],
-    [
-     148.45,
-     1505.8
-    ],
-    [
-     147.0,
-     1505.2
-    ],
-    [
-     145.76,
-     1504.24
-    ],
-    [
-     144.8,
-     1503.0
-    ],
-    [
-     144.2,
-     1501.55
-    ],
-    [
-     144.0,
-     1500.0
-    ],
-    [
-     144.2,
-     1498.45
-    ],
-    [
-     144.8,
-     1497.0
-    ],
-    [
-     145.76,
-     1495.76
-    ],
-    [
-     147.0,
-     1494.8
-    ],
-    [
-     148.45,
-     1494.2
-    ],
-    [
-     150.0,
-     1494.0
-    ],
-    [
-     151.55,
-     1494.2
-    ],
-    [
-     153.0,
-     1494.8
-    ],
-    [
-     154.24,
-     1495.76
-    ],
-    [
-     155.2,
-     1497.0
-    ],
-    [
-     155.8,
-     1498.45
-    ]
-   ],
-   "start": 270,
-   "end": 273,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Filter LED",
-   "subcategory": "Led Green"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Filter LED",
-   "param": "Led Green Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Filter LED",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vent Slot 1",
-   "points": [
-    [
-     -150,
-     880
-    ],
-    [
-     150,
-     880
-    ],
-    [
-     150,
-     888
-    ],
-    [
-     -150,
-     888
-    ]
-   ],
-   "start": 270,
-   "end": 272,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vent Slot 1",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Slot 1",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Slot 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vent Slot 2",
-   "points": [
-    [
-     -150,
-     905
-    ],
-    [
-     150,
-     905
-    ],
-    [
-     150,
-     913
-    ],
-    [
-     -150,
-     913
-    ]
-   ],
-   "start": 270,
-   "end": 272,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vent Slot 2",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Slot 2",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Slot 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vent Slot 3",
-   "points": [
-    [
-     -150,
-     930
-    ],
-    [
-     150,
-     930
-    ],
-    [
-     150,
-     938
-    ],
-    [
-     -150,
-     938
-    ]
-   ],
-   "start": 270,
-   "end": 272,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vent Slot 3",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Slot 3",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Slot 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vent Slot 4",
-   "points": [
-    [
-     -150,
-     955
-    ],
-    [
-     150,
-     955
-    ],
-    [
-     150,
-     963
-    ],
-    [
-     -150,
-     963
-    ]
-   ],
-   "start": 270,
-   "end": 272,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vent Slot 4",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Slot 4",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Slot 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Supply Stop",
-   "points": [
-    [
-     -91.0,
-     900.0
-    ],
-    [
-     -91.31,
-     902.33
-    ],
-    [
-     -92.21,
-     904.5
-    ],
-    [
-     -93.64,
-     906.36
-    ],
-    [
-     -95.5,
-     907.79
-    ],
-    [
-     -97.67,
-     908.69
-    ],
-    [
-     -100.0,
-     909.0
-    ],
-    [
-     -102.33,
-     908.69
-    ],
-    [
-     -104.5,
-     907.79
-    ],
-    [
-     -106.36,
-     906.36
-    ],
-    [
-     -107.79,
-     904.5
-    ],
-    [
-     -108.69,
-     902.33
-    ],
-    [
-     -109.0,
-     900.0
-    ],
-    [
-     -108.69,
-     897.67
-    ],
-    [
-     -107.79,
-     895.5
-    ],
-    [
-     -106.36,
-     893.64
-    ],
-    [
-     -104.5,
-     892.21
-    ],
-    [
-     -102.33,
-     891.31
-    ],
-    [
-     -100.0,
-     891.0
-    ],
-    [
-     -97.67,
-     891.31
-    ],
-    [
-     -95.5,
-     892.21
-    ],
-    [
-     -93.64,
-     893.64
-    ],
-    [
-     -92.21,
-     895.5
-    ],
-    [
-     -91.31,
-     897.67
-    ]
-   ],
-   "start": 0,
-   "end": 40,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Supply Stop",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Supply Stop",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Supply Stop",
-   "coarse": false,
-   "medium": true,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Drain Tail",
-   "points": [
-    [
-     118.0,
-     900.0
-    ],
-    [
-     117.39,
-     904.66
-    ],
-    [
-     115.59,
-     909.0
-    ],
-    [
-     112.73,
-     912.73
-    ],
-    [
-     109.0,
-     915.59
-    ],
-    [
-     104.66,
-     917.39
-    ],
-    [
-     100.0,
-     918.0
-    ],
-    [
-     95.34,
-     917.39
-    ],
-    [
-     91.0,
-     915.59
-    ],
-    [
-     87.27,
-     912.73
-    ],
-    [
-     84.41,
-     909.0
-    ],
-    [
-     82.61,
-     904.66
-    ],
-    [
-     82.0,
-     900.0
-    ],
-    [
-     82.61,
-     895.34
-    ],
-    [
-     84.41,
-     891.0
-    ],
-    [
-     87.27,
-     887.27
-    ],
-    [
-     91.0,
-     884.41
-    ],
-    [
-     95.34,
-     882.61
-    ],
-    [
-     100.0,
-     882.0
-    ],
-    [
-     104.66,
-     882.61
-    ],
-    [
-     109.0,
-     884.41
-    ],
-    [
-     112.73,
-     887.27
-    ],
-    [
-     115.59,
-     891.0
-    ],
-    [
-     117.39,
-     895.34
-    ]
-   ],
-   "start": 0,
-   "end": 60,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drain Tail",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drain Tail",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drain Tail",
-   "coarse": false,
-   "medium": true,
-   "fine": false
-  },
-  {
-   "op": "add_connector",
-   "name": "CW",
-   "domain": "pipe",
-   "system": "DomesticColdWater",
-   "solid": "Supply Stop",
-   "side": "back",
-   "diameter": 15,
-   "flow": "In"
-  },
-  {
-   "op": "add_connector",
-   "name": "Waste",
-   "domain": "pipe",
-   "system": "Sanitary",
-   "solid": "Drain Tail",
-   "side": "back",
-   "diameter": 32,
-   "flow": "Out"
-  },
-  {
-   "op": "add_connector",
-   "name": "Power",
-   "domain": "electrical",
-   "system": "PowerBalanced",
-   "solid": "Upper Housing",
-   "side": "back"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Voltage",
-   "connector": "Power",
-   "connector_param": "Voltage",
-   "param": "Voltage"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Apparent Load",
-   "connector": "Power",
-   "connector_param": "Apparent Load",
-   "param": "Apparent Load"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_PlumbingFixture_BottleRefill_Station.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_P_PlumbingFixture_BottleRefill_Station",
+  "template": "Metric Generic Model.rft",
+  "about": "Refill station modelled as a generic product: upper housing with sensor and counter display, alcove side walls and back panel, base unit with vents, drip tray with grille bars, nozzle. Wall type drawn; free-standing shares it. Reference: query: bottle refill station plumbing fixtures hospital; images: https://www.google.com/search?tbm=isch&q=bottle+refill+station+plumbing+fixtures+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Plumbing Fixtures"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Voltage",
+      "type": "Voltage",
+      "group": "Electrical"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Apparent Load",
+      "type": "ApparentPower",
+      "group": "ElectricalLoads"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Pipe_System",
+      "guid": "19b06c84-7f51-563a-ac4a-ed9b4addfabc",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Discharge_Units",
+      "guid": "7aa955c0-3c0f-5f8c-a77b-9124e8d513eb",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Asset_Tag",
+      "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Serial_Number",
+      "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Install_Date",
+      "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Warranty_End",
+      "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Maintenance_Interval_Months",
+      "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_OM_Link",
+      "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Mounting_Height_mm",
+      "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+      "instance": true
+    },
+    {
+      "op": "add_type",
+      "name": "420_Wall"
+    },
+    {
+      "op": "set_type_value",
+      "name": "420_Wall/FMC_Cost_Unit",
+      "type": "420_Wall",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "420_Wall/FMC_Geometry_Stage",
+      "type": "420_Wall",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "420_Wall/IfcExportAs",
+      "type": "420_Wall",
+      "param": "IfcExportAs",
+      "value": "IfcSanitaryTerminal"
+    },
+    {
+      "op": "set_type_value",
+      "name": "420_Wall/Description",
+      "type": "420_Wall",
+      "param": "Description",
+      "value": "Bottle refill station, wall-mounted stainless 420 x 270 x 870 mm, chilled and filtered, sensor-operated nozzle, bottle counter display, drip tray with grille"
+    },
+    {
+      "op": "set_type_value",
+      "name": "420_Wall/Keynote",
+      "type": "420_Wall",
+      "param": "Keynote",
+      "value": "P.DRK_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "420_Wall/FMC_Keynote_Code",
+      "type": "420_Wall",
+      "param": "FMC_Keynote_Code",
+      "value": "P.DRK_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "420_Wall/FMC_Code_Description",
+      "type": "420_Wall",
+      "param": "FMC_Code_Description",
+      "value": "BottleRefill Station: Chilled filtered refill"
+    },
+    {
+      "op": "set_type_value",
+      "name": "420_Wall/FMC_Code_Group",
+      "type": "420_Wall",
+      "param": "FMC_Code_Group",
+      "value": "P.DRK"
+    },
+    {
+      "op": "set_type_value",
+      "name": "420_Wall/FMC_Role_Code",
+      "type": "420_Wall",
+      "param": "FMC_Role_Code",
+      "value": "P"
+    },
+    {
+      "op": "set_type_value",
+      "name": "420_Wall/Voltage",
+      "type": "420_Wall",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "420_Wall/Apparent Load",
+      "type": "420_Wall",
+      "param": "Apparent Load",
+      "value": 370
+    },
+    {
+      "op": "add_type",
+      "name": "420_FreeStanding"
+    },
+    {
+      "op": "set_type_value",
+      "name": "420_FreeStanding/FMC_Cost_Unit",
+      "type": "420_FreeStanding",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "420_FreeStanding/FMC_Geometry_Stage",
+      "type": "420_FreeStanding",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "420_FreeStanding/IfcExportAs",
+      "type": "420_FreeStanding",
+      "param": "IfcExportAs",
+      "value": "IfcSanitaryTerminal"
+    },
+    {
+      "op": "set_type_value",
+      "name": "420_FreeStanding/Description",
+      "type": "420_FreeStanding",
+      "param": "Description",
+      "value": "Bottle refill station, wall-mounted stainless 420 x 270 x 870 mm, chilled and filtered, sensor-operated nozzle, bottle counter display, drip tray with grille"
+    },
+    {
+      "op": "set_type_value",
+      "name": "420_FreeStanding/Keynote",
+      "type": "420_FreeStanding",
+      "param": "Keynote",
+      "value": "P.DRK_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "420_FreeStanding/FMC_Keynote_Code",
+      "type": "420_FreeStanding",
+      "param": "FMC_Keynote_Code",
+      "value": "P.DRK_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "420_FreeStanding/FMC_Code_Description",
+      "type": "420_FreeStanding",
+      "param": "FMC_Code_Description",
+      "value": "BottleRefill Station: Chilled filtered refill"
+    },
+    {
+      "op": "set_type_value",
+      "name": "420_FreeStanding/FMC_Code_Group",
+      "type": "420_FreeStanding",
+      "param": "FMC_Code_Group",
+      "value": "P.DRK"
+    },
+    {
+      "op": "set_type_value",
+      "name": "420_FreeStanding/FMC_Role_Code",
+      "type": "420_FreeStanding",
+      "param": "FMC_Role_Code",
+      "value": "P"
+    },
+    {
+      "op": "set_type_value",
+      "name": "420_FreeStanding/Voltage",
+      "type": "420_FreeStanding",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "420_FreeStanding/Apparent Load",
+      "type": "420_FreeStanding",
+      "param": "Apparent Load",
+      "value": 370
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Stainless",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Stainless Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_StainlessSteel_Brushed",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Chrome",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Chrome Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Chrome_Polished",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Led Green",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Led Green Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_LED_Green",
+      "param": "Led Green Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Grey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Grey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Grey",
+      "param": "Grey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -210,
+          -273
+        ],
+        [
+          210,
+          -273
+        ],
+        [
+          210,
+          0
+        ],
+        [
+          -210,
+          0
+        ]
+      ],
+      "start": 850,
+      "end": 1720
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Upper Housing",
+      "points": [
+        [
+          185,
+          -270
+        ],
+        [
+          194.57,
+          -268.1
+        ],
+        [
+          202.68,
+          -262.68
+        ],
+        [
+          208.1,
+          -254.57
+        ],
+        [
+          210,
+          -245
+        ],
+        [
+          210,
+          -25
+        ],
+        [
+          208.1,
+          -15.43
+        ],
+        [
+          202.68,
+          -7.32
+        ],
+        [
+          194.57,
+          -1.9
+        ],
+        [
+          185,
+          0
+        ],
+        [
+          -185,
+          0
+        ],
+        [
+          -194.57,
+          -1.9
+        ],
+        [
+          -202.68,
+          -7.32
+        ],
+        [
+          -208.1,
+          -15.43
+        ],
+        [
+          -210,
+          -25
+        ],
+        [
+          -210,
+          -245
+        ],
+        [
+          -208.1,
+          -254.57
+        ],
+        [
+          -202.68,
+          -262.68
+        ],
+        [
+          -194.57,
+          -268.1
+        ],
+        [
+          -185,
+          -270
+        ]
+      ],
+      "start": 1450,
+      "end": 1720
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Upper Housing",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Upper Housing",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Upper Housing",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Side Wall 1",
+      "points": [
+        [
+          -210,
+          -270
+        ],
+        [
+          -185,
+          -270
+        ],
+        [
+          -185,
+          0
+        ],
+        [
+          -210,
+          0
+        ]
+      ],
+      "start": 1050,
+      "end": 1450
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Side Wall 1",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Side Wall 1",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Side Wall 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Side Wall 2",
+      "points": [
+        [
+          185,
+          -270
+        ],
+        [
+          210,
+          -270
+        ],
+        [
+          210,
+          0
+        ],
+        [
+          185,
+          0
+        ]
+      ],
+      "start": 1050,
+      "end": 1450
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Side Wall 2",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Side Wall 2",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Side Wall 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Back Panel",
+      "points": [
+        [
+          -185,
+          -60
+        ],
+        [
+          185,
+          -60
+        ],
+        [
+          185,
+          0
+        ],
+        [
+          -185,
+          0
+        ]
+      ],
+      "start": 1050,
+      "end": 1450
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Back Panel",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Back Panel",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Back Panel",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Base Unit",
+      "points": [
+        [
+          185,
+          -270
+        ],
+        [
+          194.57,
+          -268.1
+        ],
+        [
+          202.68,
+          -262.68
+        ],
+        [
+          208.1,
+          -254.57
+        ],
+        [
+          210,
+          -245
+        ],
+        [
+          210,
+          -25
+        ],
+        [
+          208.1,
+          -15.43
+        ],
+        [
+          202.68,
+          -7.32
+        ],
+        [
+          194.57,
+          -1.9
+        ],
+        [
+          185,
+          0
+        ],
+        [
+          -185,
+          0
+        ],
+        [
+          -194.57,
+          -1.9
+        ],
+        [
+          -202.68,
+          -7.32
+        ],
+        [
+          -208.1,
+          -15.43
+        ],
+        [
+          -210,
+          -25
+        ],
+        [
+          -210,
+          -245
+        ],
+        [
+          -208.1,
+          -254.57
+        ],
+        [
+          -202.68,
+          -262.68
+        ],
+        [
+          -194.57,
+          -268.1
+        ],
+        [
+          -185,
+          -270
+        ]
+      ],
+      "start": 850,
+      "end": 1050
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Base Unit",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Base Unit",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Base Unit",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Drip Tray",
+      "points": [
+        [
+          -170,
+          -250
+        ],
+        [
+          170,
+          -250
+        ],
+        [
+          170,
+          -70
+        ],
+        [
+          -170,
+          -70
+        ]
+      ],
+      "start": 1050,
+      "end": 1058
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Drip Tray",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Drip Tray",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Drip Tray",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Drip Grille Bar 1",
+      "points": [
+        [
+          -160,
+          -245
+        ],
+        [
+          160,
+          -245
+        ],
+        [
+          160,
+          -237
+        ],
+        [
+          -160,
+          -237
+        ]
+      ],
+      "start": 1058,
+      "end": 1062
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Drip Grille Bar 1",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Drip Grille Bar 1",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Drip Grille Bar 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Drip Grille Bar 2",
+      "points": [
+        [
+          -160,
+          -224
+        ],
+        [
+          160,
+          -224
+        ],
+        [
+          160,
+          -216
+        ],
+        [
+          -160,
+          -216
+        ]
+      ],
+      "start": 1058,
+      "end": 1062
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Drip Grille Bar 2",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Drip Grille Bar 2",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Drip Grille Bar 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Drip Grille Bar 3",
+      "points": [
+        [
+          -160,
+          -203
+        ],
+        [
+          160,
+          -203
+        ],
+        [
+          160,
+          -195
+        ],
+        [
+          -160,
+          -195
+        ]
+      ],
+      "start": 1058,
+      "end": 1062
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Drip Grille Bar 3",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Drip Grille Bar 3",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Drip Grille Bar 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Drip Grille Bar 4",
+      "points": [
+        [
+          -160,
+          -182
+        ],
+        [
+          160,
+          -182
+        ],
+        [
+          160,
+          -174
+        ],
+        [
+          -160,
+          -174
+        ]
+      ],
+      "start": 1058,
+      "end": 1062
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Drip Grille Bar 4",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Drip Grille Bar 4",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Drip Grille Bar 4",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Drip Grille Bar 5",
+      "points": [
+        [
+          -160,
+          -161
+        ],
+        [
+          160,
+          -161
+        ],
+        [
+          160,
+          -153
+        ],
+        [
+          -160,
+          -153
+        ]
+      ],
+      "start": 1058,
+      "end": 1062
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Drip Grille Bar 5",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Drip Grille Bar 5",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Drip Grille Bar 5",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Drip Grille Bar 6",
+      "points": [
+        [
+          -160,
+          -140
+        ],
+        [
+          160,
+          -140
+        ],
+        [
+          160,
+          -132
+        ],
+        [
+          -160,
+          -132
+        ]
+      ],
+      "start": 1058,
+      "end": 1062
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Drip Grille Bar 6",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Drip Grille Bar 6",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Drip Grille Bar 6",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Drip Grille Bar 7",
+      "points": [
+        [
+          -160,
+          -119
+        ],
+        [
+          160,
+          -119
+        ],
+        [
+          160,
+          -111
+        ],
+        [
+          -160,
+          -111
+        ]
+      ],
+      "start": 1058,
+      "end": 1062
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Drip Grille Bar 7",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Drip Grille Bar 7",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Drip Grille Bar 7",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Drip Grille Bar 8",
+      "points": [
+        [
+          -160,
+          -98
+        ],
+        [
+          160,
+          -98
+        ],
+        [
+          160,
+          -90
+        ],
+        [
+          -160,
+          -90
+        ]
+      ],
+      "start": 1058,
+      "end": 1062
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Drip Grille Bar 8",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Drip Grille Bar 8",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Drip Grille Bar 8",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Nozzle",
+      "profile": [
+        [
+          0,
+          1395
+        ],
+        [
+          10,
+          1395
+        ],
+        [
+          14,
+          1420
+        ],
+        [
+          20,
+          1450
+        ],
+        [
+          0,
+          1450
+        ]
+      ],
+      "axis_at": [
+        0,
+        -150
+      ],
+      "axis": "z",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Nozzle",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Nozzle",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Sensor Window",
+      "points": [
+        [
+          26,
+          1460
+        ],
+        [
+          27.53,
+          1460.3
+        ],
+        [
+          28.83,
+          1461.17
+        ],
+        [
+          29.7,
+          1462.47
+        ],
+        [
+          30,
+          1464
+        ],
+        [
+          30,
+          1476
+        ],
+        [
+          29.7,
+          1477.53
+        ],
+        [
+          28.83,
+          1478.83
+        ],
+        [
+          27.53,
+          1479.7
+        ],
+        [
+          26,
+          1480
+        ],
+        [
+          -26,
+          1480
+        ],
+        [
+          -27.53,
+          1479.7
+        ],
+        [
+          -28.83,
+          1478.83
+        ],
+        [
+          -29.7,
+          1477.53
+        ],
+        [
+          -30,
+          1476
+        ],
+        [
+          -30,
+          1464
+        ],
+        [
+          -29.7,
+          1462.47
+        ],
+        [
+          -28.83,
+          1461.17
+        ],
+        [
+          -27.53,
+          1460.3
+        ],
+        [
+          -26,
+          1460
+        ]
+      ],
+      "start": 270,
+      "end": 272,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Sensor Window",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sensor Window",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Sensor Window",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Counter Display",
+      "points": [
+        [
+          112,
+          1560
+        ],
+        [
+          115.06,
+          1560.61
+        ],
+        [
+          117.66,
+          1562.34
+        ],
+        [
+          119.39,
+          1564.94
+        ],
+        [
+          120,
+          1568
+        ],
+        [
+          120,
+          1652
+        ],
+        [
+          119.39,
+          1655.06
+        ],
+        [
+          117.66,
+          1657.66
+        ],
+        [
+          115.06,
+          1659.39
+        ],
+        [
+          112,
+          1660
+        ],
+        [
+          -112,
+          1660
+        ],
+        [
+          -115.06,
+          1659.39
+        ],
+        [
+          -117.66,
+          1657.66
+        ],
+        [
+          -119.39,
+          1655.06
+        ],
+        [
+          -120,
+          1652
+        ],
+        [
+          -120,
+          1568
+        ],
+        [
+          -119.39,
+          1564.94
+        ],
+        [
+          -117.66,
+          1562.34
+        ],
+        [
+          -115.06,
+          1560.61
+        ],
+        [
+          -112,
+          1560
+        ]
+      ],
+      "start": 270,
+      "end": 272,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Counter Display",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Counter Display",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Counter Display",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Counter Digits",
+      "points": [
+        [
+          -90,
+          1590
+        ],
+        [
+          90,
+          1590
+        ],
+        [
+          90,
+          1630
+        ],
+        [
+          -90,
+          1630
+        ]
+      ],
+      "start": 272,
+      "end": 273,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Counter Digits",
+      "subcategory": "Led Green"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Counter Digits",
+      "param": "Led Green Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Counter Digits",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Filter LED",
+      "points": [
+        [
+          156,
+          1500
+        ],
+        [
+          155.8,
+          1501.55
+        ],
+        [
+          155.2,
+          1503
+        ],
+        [
+          154.24,
+          1504.24
+        ],
+        [
+          153,
+          1505.2
+        ],
+        [
+          151.55,
+          1505.8
+        ],
+        [
+          150,
+          1506
+        ],
+        [
+          148.45,
+          1505.8
+        ],
+        [
+          147,
+          1505.2
+        ],
+        [
+          145.76,
+          1504.24
+        ],
+        [
+          144.8,
+          1503
+        ],
+        [
+          144.2,
+          1501.55
+        ],
+        [
+          144,
+          1500
+        ],
+        [
+          144.2,
+          1498.45
+        ],
+        [
+          144.8,
+          1497
+        ],
+        [
+          145.76,
+          1495.76
+        ],
+        [
+          147,
+          1494.8
+        ],
+        [
+          148.45,
+          1494.2
+        ],
+        [
+          150,
+          1494
+        ],
+        [
+          151.55,
+          1494.2
+        ],
+        [
+          153,
+          1494.8
+        ],
+        [
+          154.24,
+          1495.76
+        ],
+        [
+          155.2,
+          1497
+        ],
+        [
+          155.8,
+          1498.45
+        ]
+      ],
+      "start": 270,
+      "end": 273,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Filter LED",
+      "subcategory": "Led Green"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Filter LED",
+      "param": "Led Green Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Filter LED",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vent Slot 1",
+      "points": [
+        [
+          -150,
+          880
+        ],
+        [
+          150,
+          880
+        ],
+        [
+          150,
+          888
+        ],
+        [
+          -150,
+          888
+        ]
+      ],
+      "start": 270,
+      "end": 272,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vent Slot 1",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Slot 1",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vent Slot 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vent Slot 2",
+      "points": [
+        [
+          -150,
+          905
+        ],
+        [
+          150,
+          905
+        ],
+        [
+          150,
+          913
+        ],
+        [
+          -150,
+          913
+        ]
+      ],
+      "start": 270,
+      "end": 272,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vent Slot 2",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Slot 2",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vent Slot 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vent Slot 3",
+      "points": [
+        [
+          -150,
+          930
+        ],
+        [
+          150,
+          930
+        ],
+        [
+          150,
+          938
+        ],
+        [
+          -150,
+          938
+        ]
+      ],
+      "start": 270,
+      "end": 272,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vent Slot 3",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Slot 3",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vent Slot 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vent Slot 4",
+      "points": [
+        [
+          -150,
+          955
+        ],
+        [
+          150,
+          955
+        ],
+        [
+          150,
+          963
+        ],
+        [
+          -150,
+          963
+        ]
+      ],
+      "start": 270,
+      "end": 272,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vent Slot 4",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Slot 4",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vent Slot 4",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Supply Stop",
+      "points": [
+        [
+          -91,
+          900
+        ],
+        [
+          -91.31,
+          902.33
+        ],
+        [
+          -92.21,
+          904.5
+        ],
+        [
+          -93.64,
+          906.36
+        ],
+        [
+          -95.5,
+          907.79
+        ],
+        [
+          -97.67,
+          908.69
+        ],
+        [
+          -100,
+          909
+        ],
+        [
+          -102.33,
+          908.69
+        ],
+        [
+          -104.5,
+          907.79
+        ],
+        [
+          -106.36,
+          906.36
+        ],
+        [
+          -107.79,
+          904.5
+        ],
+        [
+          -108.69,
+          902.33
+        ],
+        [
+          -109,
+          900
+        ],
+        [
+          -108.69,
+          897.67
+        ],
+        [
+          -107.79,
+          895.5
+        ],
+        [
+          -106.36,
+          893.64
+        ],
+        [
+          -104.5,
+          892.21
+        ],
+        [
+          -102.33,
+          891.31
+        ],
+        [
+          -100,
+          891
+        ],
+        [
+          -97.67,
+          891.31
+        ],
+        [
+          -95.5,
+          892.21
+        ],
+        [
+          -93.64,
+          893.64
+        ],
+        [
+          -92.21,
+          895.5
+        ],
+        [
+          -91.31,
+          897.67
+        ]
+      ],
+      "start": 0,
+      "end": 40,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Supply Stop",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Supply Stop",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Supply Stop",
+      "coarse": false,
+      "medium": true,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Drain Tail",
+      "points": [
+        [
+          118,
+          900
+        ],
+        [
+          117.39,
+          904.66
+        ],
+        [
+          115.59,
+          909
+        ],
+        [
+          112.73,
+          912.73
+        ],
+        [
+          109,
+          915.59
+        ],
+        [
+          104.66,
+          917.39
+        ],
+        [
+          100,
+          918
+        ],
+        [
+          95.34,
+          917.39
+        ],
+        [
+          91,
+          915.59
+        ],
+        [
+          87.27,
+          912.73
+        ],
+        [
+          84.41,
+          909
+        ],
+        [
+          82.61,
+          904.66
+        ],
+        [
+          82,
+          900
+        ],
+        [
+          82.61,
+          895.34
+        ],
+        [
+          84.41,
+          891
+        ],
+        [
+          87.27,
+          887.27
+        ],
+        [
+          91,
+          884.41
+        ],
+        [
+          95.34,
+          882.61
+        ],
+        [
+          100,
+          882
+        ],
+        [
+          104.66,
+          882.61
+        ],
+        [
+          109,
+          884.41
+        ],
+        [
+          112.73,
+          887.27
+        ],
+        [
+          115.59,
+          891
+        ],
+        [
+          117.39,
+          895.34
+        ]
+      ],
+      "start": 0,
+      "end": 60,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Drain Tail",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Drain Tail",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Drain Tail",
+      "coarse": false,
+      "medium": true,
+      "fine": false
+    },
+    {
+      "op": "add_connector",
+      "name": "CW",
+      "domain": "pipe",
+      "system": "DomesticColdWater",
+      "solid": "Supply Stop",
+      "side": "back",
+      "diameter": 15,
+      "flow": "In"
+    },
+    {
+      "op": "add_connector",
+      "name": "Waste",
+      "domain": "pipe",
+      "system": "Sanitary",
+      "solid": "Drain Tail",
+      "side": "back",
+      "diameter": 32,
+      "flow": "Out"
+    },
+    {
+      "op": "add_connector",
+      "name": "Power",
+      "domain": "electrical",
+      "system": "PowerBalanced",
+      "solid": "Upper Housing",
+      "side": "back"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Voltage",
+      "connector": "Power",
+      "connector_param": "Voltage",
+      "param": "Voltage"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Apparent Load",
+      "connector": "Power",
+      "connector_param": "Apparent Load",
+      "param": "Apparent Load"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_PlumbingFixture_BottleRefill_Station.png"
+    }
+  ],
+  "values": {
+    "420 x 270 x 870 mm, nozzle at 1395 mm": {
+      "value": "420x270x870",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Chiller 370 VA": {
+      "value": 370,
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Bottle alcove 400 mm clear": {
+      "value": 400,
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   }
- ],
- "values": {
-  "420 x 270 x 870 mm, nozzle at 1395 mm": {
-   "value": "420x270x870",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Chiller 370 VA": {
-   "value": 370,
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Bottle alcove 400 mm clear": {
-   "value": 400,
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- }
 }

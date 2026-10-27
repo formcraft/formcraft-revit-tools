@@ -1,4386 +1,4397 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_I_Casework_BiosafetyCabinet_ClassII",
- "template": "Metric Generic Model.rft",
- "about": "Cabinet modelled as a generic product: painted stand with rails and levellers, cabinet base, side and back walls, stainless work tray, perforated front grille, inclined glass sash with frame, head unit with control panel, display, keys, alarm and UV indicators, side window and service valve, top exhaust filter housing with grille. Geometry is drawn at the 1200_ClassII type; the other types share it until a parametric pass. Reference: query: casework biosafety cabinet class ii casework hospital; images: https://www.google.com/search?tbm=isch&q=casework+biosafety+cabinet+class+ii+casework+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Casework"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Voltage",
-   "type": "Voltage",
-   "group": "Electrical"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Apparent Load",
-   "type": "ApparentPower",
-   "group": "ElectricalLoads"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Assembly_Mark",
-   "guid": "63266315-bb4d-5187-9224-35d20981c3d6",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carcass_Spec",
-   "guid": "c28e7161-7153-5158-8a2d-4ff17c6b96e0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Worktop_Spec",
-   "guid": "dbb29109-d7be-55a5-8c12-9aca51551dc3",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Design_Movement",
-   "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "1200_ClassII"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200_ClassII/FMC_Cost_Unit",
-   "type": "1200_ClassII",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200_ClassII/FMC_Geometry_Stage",
-   "type": "1200_ClassII",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200_ClassII/IfcExportAs",
-   "type": "1200_ClassII",
-   "param": "IfcExportAs",
-   "value": "IfcFurniture"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200_ClassII/Description",
-   "type": "1200_ClassII",
-   "param": "Description",
-   "value": "Class II biosafety cabinet 1200 on stand"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200_ClassII/Keynote",
-   "type": "1200_ClassII",
-   "param": "Keynote",
-   "value": "K.LAB_03"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200_ClassII/FMC_Keynote_Code",
-   "type": "1200_ClassII",
-   "param": "FMC_Keynote_Code",
-   "value": "K.LAB_03"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200_ClassII/FMC_Code_Description",
-   "type": "1200_ClassII",
-   "param": "FMC_Code_Description",
-   "value": "BiosafetyCabinet ClassII: Class II BSC envelope"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200_ClassII/FMC_Code_Group",
-   "type": "1200_ClassII",
-   "param": "FMC_Code_Group",
-   "value": "K.LAB"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200_ClassII/FMC_Role_Code",
-   "type": "1200_ClassII",
-   "param": "FMC_Role_Code",
-   "value": "I"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200_ClassII/Voltage",
-   "type": "1200_ClassII",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200_ClassII/Apparent Load",
-   "type": "1200_ClassII",
-   "param": "Apparent Load",
-   "value": 1200
-  },
-  {
-   "op": "add_type",
-   "name": "1500_ClassII"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500_ClassII/FMC_Cost_Unit",
-   "type": "1500_ClassII",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500_ClassII/FMC_Geometry_Stage",
-   "type": "1500_ClassII",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500_ClassII/IfcExportAs",
-   "type": "1500_ClassII",
-   "param": "IfcExportAs",
-   "value": "IfcFurniture"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500_ClassII/Description",
-   "type": "1500_ClassII",
-   "param": "Description",
-   "value": "Class II biosafety cabinet 1500 on stand"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500_ClassII/Keynote",
-   "type": "1500_ClassII",
-   "param": "Keynote",
-   "value": "K.LAB_03"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500_ClassII/FMC_Keynote_Code",
-   "type": "1500_ClassII",
-   "param": "FMC_Keynote_Code",
-   "value": "K.LAB_03"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500_ClassII/FMC_Code_Description",
-   "type": "1500_ClassII",
-   "param": "FMC_Code_Description",
-   "value": "BiosafetyCabinet ClassII: Class II BSC envelope"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500_ClassII/FMC_Code_Group",
-   "type": "1500_ClassII",
-   "param": "FMC_Code_Group",
-   "value": "K.LAB"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500_ClassII/FMC_Role_Code",
-   "type": "1500_ClassII",
-   "param": "FMC_Role_Code",
-   "value": "I"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500_ClassII/Voltage",
-   "type": "1500_ClassII",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500_ClassII/Apparent Load",
-   "type": "1500_ClassII",
-   "param": "Apparent Load",
-   "value": 1200
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Frame",
-   "color": [
-    61,
-    70,
-    80
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Frame Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_SteelLTZ_Painted",
-   "param": "Frame Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Body",
-   "color": [
-    237,
-    237,
-    232
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Body Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Steel_EpoxyCoated_White",
-   "param": "Body Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Ss",
-   "color": [
-    180,
-    183,
-    186
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Ss Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_StainlessSteel_Brushed",
-   "param": "Ss Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Glass",
-   "color": [
-    195,
-    220,
-    228
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Glass Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Glass_Laminated",
-   "param": "Glass Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Grey",
-   "color": [
-    154,
-    160,
-    166
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Grey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Grey",
-   "param": "Grey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Green",
-   "color": [
-    59,
-    209,
-    111
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Green Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_LED_Green",
-   "param": "Green Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Grey2",
-   "color": [
-    201,
-    205,
-    210
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Grey2 Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_MedicalGrey",
-   "param": "Grey2 Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Red",
-   "color": [
-    229,
-    72,
-    77
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Red Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_LED_Red",
-   "param": "Red Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Blue",
-   "color": [
-    58,
-    141,
-    255
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Blue Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_LED_Blue",
-   "param": "Blue Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -603.0,
-     -790
-    ],
-    [
-     603.0,
-     -790
-    ],
-    [
-     603.0,
-     0.0
-    ],
-    [
-     -603.0,
-     0.0
-    ]
-   ],
-   "start": 0,
-   "end": 2153
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Stand Leg 1",
-   "points": [
-    [
-     -580.0,
-     -760
-    ],
-    [
-     -530.0,
-     -760
-    ],
-    [
-     -530.0,
-     -710
-    ],
-    [
-     -580.0,
-     -710
-    ]
-   ],
-   "start": 30,
-   "end": 730
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Stand Leg 1",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Stand Leg 1",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Stand Leg 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Stand Leg 2",
-   "points": [
-    [
-     530.0,
-     -760
-    ],
-    [
-     580.0,
-     -760
-    ],
-    [
-     580.0,
-     -710
-    ],
-    [
-     530.0,
-     -710
-    ]
-   ],
-   "start": 30,
-   "end": 730
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Stand Leg 2",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Stand Leg 2",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Stand Leg 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Stand Leg Back 1",
-   "points": [
-    [
-     -580.0,
-     -70
-    ],
-    [
-     -530.0,
-     -70
-    ],
-    [
-     -530.0,
-     -20
-    ],
-    [
-     -580.0,
-     -20
-    ]
-   ],
-   "start": 30,
-   "end": 730
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Stand Leg Back 1",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Stand Leg Back 1",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Stand Leg Back 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Stand Leg Back 2",
-   "points": [
-    [
-     530.0,
-     -70
-    ],
-    [
-     580.0,
-     -70
-    ],
-    [
-     580.0,
-     -20
-    ],
-    [
-     530.0,
-     -20
-    ]
-   ],
-   "start": 30,
-   "end": 730
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Stand Leg Back 2",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Stand Leg Back 2",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Stand Leg Back 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Stand Rail",
-   "points": [
-    [
-     -580.0,
-     -760
-    ],
-    [
-     580.0,
-     -760
-    ],
-    [
-     580.0,
-     -20
-    ],
-    [
-     -580.0,
-     -20
-    ]
-   ],
-   "start": 680,
-   "end": 730
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Stand Rail",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Stand Rail",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Stand Rail",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Stand Low Rail",
-   "points": [
-    [
-     -580.0,
-     -760
-    ],
-    [
-     580.0,
-     -760
-    ],
-    [
-     580.0,
-     -710
-    ],
-    [
-     -580.0,
-     -710
-    ]
-   ],
-   "start": 150,
-   "end": 190
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Stand Low Rail",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Stand Low Rail",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Stand Low Rail",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leveller 1",
-   "points": [
-    [
-     -535.0,
-     -735.0
-    ],
-    [
-     -536.52,
-     -727.35
-    ],
-    [
-     -540.86,
-     -720.86
-    ],
-    [
-     -547.35,
-     -716.52
-    ],
-    [
-     -555.0,
-     -715.0
-    ],
-    [
-     -562.65,
-     -716.52
-    ],
-    [
-     -569.14,
-     -720.86
-    ],
-    [
-     -573.48,
-     -727.35
-    ],
-    [
-     -575.0,
-     -735.0
-    ],
-    [
-     -573.48,
-     -742.65
-    ],
-    [
-     -569.14,
-     -749.14
-    ],
-    [
-     -562.65,
-     -753.48
-    ],
-    [
-     -555.0,
-     -755.0
-    ],
-    [
-     -547.35,
-     -753.48
-    ],
-    [
-     -540.86,
-     -749.14
-    ],
-    [
-     -536.52,
-     -742.65
-    ]
-   ],
-   "start": 0,
-   "end": 30
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leveller 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leveller 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leveller 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leveller 2",
-   "points": [
-    [
-     575.0,
-     -735.0
-    ],
-    [
-     573.48,
-     -727.35
-    ],
-    [
-     569.14,
-     -720.86
-    ],
-    [
-     562.65,
-     -716.52
-    ],
-    [
-     555.0,
-     -715.0
-    ],
-    [
-     547.35,
-     -716.52
-    ],
-    [
-     540.86,
-     -720.86
-    ],
-    [
-     536.52,
-     -727.35
-    ],
-    [
-     535.0,
-     -735.0
-    ],
-    [
-     536.52,
-     -742.65
-    ],
-    [
-     540.86,
-     -749.14
-    ],
-    [
-     547.35,
-     -753.48
-    ],
-    [
-     555.0,
-     -755.0
-    ],
-    [
-     562.65,
-     -753.48
-    ],
-    [
-     569.14,
-     -749.14
-    ],
-    [
-     573.48,
-     -742.65
-    ]
-   ],
-   "start": 0,
-   "end": 30
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leveller 2",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leveller 2",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leveller 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leveller Back 1",
-   "points": [
-    [
-     -535.0,
-     -45.0
-    ],
-    [
-     -536.52,
-     -37.35
-    ],
-    [
-     -540.86,
-     -30.86
-    ],
-    [
-     -547.35,
-     -26.52
-    ],
-    [
-     -555.0,
-     -25.0
-    ],
-    [
-     -562.65,
-     -26.52
-    ],
-    [
-     -569.14,
-     -30.86
-    ],
-    [
-     -573.48,
-     -37.35
-    ],
-    [
-     -575.0,
-     -45.0
-    ],
-    [
-     -573.48,
-     -52.65
-    ],
-    [
-     -569.14,
-     -59.14
-    ],
-    [
-     -562.65,
-     -63.48
-    ],
-    [
-     -555.0,
-     -65.0
-    ],
-    [
-     -547.35,
-     -63.48
-    ],
-    [
-     -540.86,
-     -59.14
-    ],
-    [
-     -536.52,
-     -52.65
-    ]
-   ],
-   "start": 0,
-   "end": 30
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leveller Back 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leveller Back 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leveller Back 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leveller Back 2",
-   "points": [
-    [
-     575.0,
-     -45.0
-    ],
-    [
-     573.48,
-     -37.35
-    ],
-    [
-     569.14,
-     -30.86
-    ],
-    [
-     562.65,
-     -26.52
-    ],
-    [
-     555.0,
-     -25.0
-    ],
-    [
-     547.35,
-     -26.52
-    ],
-    [
-     540.86,
-     -30.86
-    ],
-    [
-     536.52,
-     -37.35
-    ],
-    [
-     535.0,
-     -45.0
-    ],
-    [
-     536.52,
-     -52.65
-    ],
-    [
-     540.86,
-     -59.14
-    ],
-    [
-     547.35,
-     -63.48
-    ],
-    [
-     555.0,
-     -65.0
-    ],
-    [
-     562.65,
-     -63.48
-    ],
-    [
-     569.14,
-     -59.14
-    ],
-    [
-     573.48,
-     -52.65
-    ]
-   ],
-   "start": 0,
-   "end": 30
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leveller Back 2",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leveller Back 2",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leveller Back 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cabinet Base",
-   "points": [
-    [
-     592.0,
-     -780.0
-    ],
-    [
-     595.06,
-     -779.39
-    ],
-    [
-     597.66,
-     -777.66
-    ],
-    [
-     599.39,
-     -775.06
-    ],
-    [
-     600.0,
-     -772.0
-    ],
-    [
-     600.0,
-     -8.0
-    ],
-    [
-     599.39,
-     -4.94
-    ],
-    [
-     597.66,
-     -2.34
-    ],
-    [
-     595.06,
-     -0.61
-    ],
-    [
-     592.0,
-     0.0
-    ],
-    [
-     -592.0,
-     0.0
-    ],
-    [
-     -595.06,
-     -0.61
-    ],
-    [
-     -597.66,
-     -2.34
-    ],
-    [
-     -599.39,
-     -4.94
-    ],
-    [
-     -600.0,
-     -8.0
-    ],
-    [
-     -600.0,
-     -772.0
-    ],
-    [
-     -599.39,
-     -775.06
-    ],
-    [
-     -597.66,
-     -777.66
-    ],
-    [
-     -595.06,
-     -779.39
-    ],
-    [
-     -592.0,
-     -780.0
-    ]
-   ],
-   "start": 730,
-   "end": 880
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cabinet Base",
-   "subcategory": "Body"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cabinet Base",
-   "param": "Body Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cabinet Base",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Side Wall",
-   "points": [
-    [
-     -528.0,
-     -780.0
-    ],
-    [
-     -524.94,
-     -779.39
-    ],
-    [
-     -522.34,
-     -777.66
-    ],
-    [
-     -520.61,
-     -775.06
-    ],
-    [
-     -520.0,
-     -772.0
-    ],
-    [
-     -520.0,
-     -8.0
-    ],
-    [
-     -520.61,
-     -4.94
-    ],
-    [
-     -522.34,
-     -2.34
-    ],
-    [
-     -524.94,
-     -0.61
-    ],
-    [
-     -528.0,
-     0.0
-    ],
-    [
-     -592.0,
-     0.0
-    ],
-    [
-     -595.06,
-     -0.61
-    ],
-    [
-     -597.66,
-     -2.34
-    ],
-    [
-     -599.39,
-     -4.94
-    ],
-    [
-     -600.0,
-     -8.0
-    ],
-    [
-     -600.0,
-     -772.0
-    ],
-    [
-     -599.39,
-     -775.06
-    ],
-    [
-     -597.66,
-     -777.66
-    ],
-    [
-     -595.06,
-     -779.39
-    ],
-    [
-     -592.0,
-     -780.0
-    ]
-   ],
-   "start": 880,
-   "end": 1900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Side Wall",
-   "subcategory": "Body"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Side Wall",
-   "param": "Body Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Side Wall",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Side Wall Right",
-   "points": [
-    [
-     592.0,
-     -780.0
-    ],
-    [
-     595.06,
-     -779.39
-    ],
-    [
-     597.66,
-     -777.66
-    ],
-    [
-     599.39,
-     -775.06
-    ],
-    [
-     600.0,
-     -772.0
-    ],
-    [
-     600.0,
-     -8.0
-    ],
-    [
-     599.39,
-     -4.94
-    ],
-    [
-     597.66,
-     -2.34
-    ],
-    [
-     595.06,
-     -0.61
-    ],
-    [
-     592.0,
-     0.0
-    ],
-    [
-     528.0,
-     0.0
-    ],
-    [
-     524.94,
-     -0.61
-    ],
-    [
-     522.34,
-     -2.34
-    ],
-    [
-     520.61,
-     -4.94
-    ],
-    [
-     520.0,
-     -8.0
-    ],
-    [
-     520.0,
-     -772.0
-    ],
-    [
-     520.61,
-     -775.06
-    ],
-    [
-     522.34,
-     -777.66
-    ],
-    [
-     524.94,
-     -779.39
-    ],
-    [
-     528.0,
-     -780.0
-    ]
-   ],
-   "start": 880,
-   "end": 1900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Side Wall Right",
-   "subcategory": "Body"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Side Wall Right",
-   "param": "Body Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Side Wall Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Back Wall",
-   "points": [
-    [
-     -520.0,
-     -80
-    ],
-    [
-     520.0,
-     -80
-    ],
-    [
-     520.0,
-     0
-    ],
-    [
-     -520.0,
-     0
-    ]
-   ],
-   "start": 880,
-   "end": 1900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Back Wall",
-   "subcategory": "Body"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Back Wall",
-   "param": "Body Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Back Wall",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Work Tray",
-   "points": [
-    [
-     -520.0,
-     -700
-    ],
-    [
-     520.0,
-     -700
-    ],
-    [
-     520.0,
-     -80
-    ],
-    [
-     -520.0,
-     -80
-    ]
-   ],
-   "start": 880,
-   "end": 900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Work Tray",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Work Tray",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Work Tray",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Front Grille",
-   "points": [
-    [
-     -520.0,
-     -780
-    ],
-    [
-     520.0,
-     -780
-    ],
-    [
-     520.0,
-     -700
-    ],
-    [
-     -520.0,
-     -700
-    ]
-   ],
-   "start": 880,
-   "end": 905
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Front Grille",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Front Grille",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Front Grille",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 1",
-   "points": [
-    [
-     -500.0,
-     -770
-    ],
-    [
-     -490.0,
-     -770
-    ],
-    [
-     -490.0,
-     -710
-    ],
-    [
-     -500.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 2",
-   "points": [
-    [
-     -467.0,
-     -770
-    ],
-    [
-     -457.0,
-     -770
-    ],
-    [
-     -457.0,
-     -710
-    ],
-    [
-     -467.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 2",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 2",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 3",
-   "points": [
-    [
-     -434.0,
-     -770
-    ],
-    [
-     -424.0,
-     -770
-    ],
-    [
-     -424.0,
-     -710
-    ],
-    [
-     -434.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 3",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 3",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 4",
-   "points": [
-    [
-     -401.0,
-     -770
-    ],
-    [
-     -391.0,
-     -770
-    ],
-    [
-     -391.0,
-     -710
-    ],
-    [
-     -401.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 4",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 4",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 5",
-   "points": [
-    [
-     -368.0,
-     -770
-    ],
-    [
-     -358.0,
-     -770
-    ],
-    [
-     -358.0,
-     -710
-    ],
-    [
-     -368.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 5",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 5",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 5",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 6",
-   "points": [
-    [
-     -335.0,
-     -770
-    ],
-    [
-     -325.0,
-     -770
-    ],
-    [
-     -325.0,
-     -710
-    ],
-    [
-     -335.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 6",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 6",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 6",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 7",
-   "points": [
-    [
-     -302.0,
-     -770
-    ],
-    [
-     -292.0,
-     -770
-    ],
-    [
-     -292.0,
-     -710
-    ],
-    [
-     -302.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 7",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 7",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 7",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 8",
-   "points": [
-    [
-     -269.0,
-     -770
-    ],
-    [
-     -259.0,
-     -770
-    ],
-    [
-     -259.0,
-     -710
-    ],
-    [
-     -269.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 8",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 8",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 8",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 9",
-   "points": [
-    [
-     -236.0,
-     -770
-    ],
-    [
-     -226.0,
-     -770
-    ],
-    [
-     -226.0,
-     -710
-    ],
-    [
-     -236.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 9",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 9",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 9",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 10",
-   "points": [
-    [
-     -203.0,
-     -770
-    ],
-    [
-     -193.0,
-     -770
-    ],
-    [
-     -193.0,
-     -710
-    ],
-    [
-     -203.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 10",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 10",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 10",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 11",
-   "points": [
-    [
-     -170.0,
-     -770
-    ],
-    [
-     -160.0,
-     -770
-    ],
-    [
-     -160.0,
-     -710
-    ],
-    [
-     -170.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 11",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 11",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 11",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 12",
-   "points": [
-    [
-     -137.0,
-     -770
-    ],
-    [
-     -127.0,
-     -770
-    ],
-    [
-     -127.0,
-     -710
-    ],
-    [
-     -137.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 12",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 12",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 12",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 13",
-   "points": [
-    [
-     -104.0,
-     -770
-    ],
-    [
-     -94.0,
-     -770
-    ],
-    [
-     -94.0,
-     -710
-    ],
-    [
-     -104.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 13",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 13",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 13",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 14",
-   "points": [
-    [
-     -71.0,
-     -770
-    ],
-    [
-     -61.0,
-     -770
-    ],
-    [
-     -61.0,
-     -710
-    ],
-    [
-     -71.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 14",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 14",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 14",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 15",
-   "points": [
-    [
-     -38.0,
-     -770
-    ],
-    [
-     -28.0,
-     -770
-    ],
-    [
-     -28.0,
-     -710
-    ],
-    [
-     -38.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 15",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 15",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 15",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 16",
-   "points": [
-    [
-     -5.0,
-     -770
-    ],
-    [
-     5.0,
-     -770
-    ],
-    [
-     5.0,
-     -710
-    ],
-    [
-     -5.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 16",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 16",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 16",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 17",
-   "points": [
-    [
-     28.0,
-     -770
-    ],
-    [
-     38.0,
-     -770
-    ],
-    [
-     38.0,
-     -710
-    ],
-    [
-     28.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 17",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 17",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 17",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 18",
-   "points": [
-    [
-     61.0,
-     -770
-    ],
-    [
-     71.0,
-     -770
-    ],
-    [
-     71.0,
-     -710
-    ],
-    [
-     61.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 18",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 18",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 18",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 19",
-   "points": [
-    [
-     94.0,
-     -770
-    ],
-    [
-     104.0,
-     -770
-    ],
-    [
-     104.0,
-     -710
-    ],
-    [
-     94.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 19",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 19",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 19",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 20",
-   "points": [
-    [
-     127.0,
-     -770
-    ],
-    [
-     137.0,
-     -770
-    ],
-    [
-     137.0,
-     -710
-    ],
-    [
-     127.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 20",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 20",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 20",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 21",
-   "points": [
-    [
-     160.0,
-     -770
-    ],
-    [
-     170.0,
-     -770
-    ],
-    [
-     170.0,
-     -710
-    ],
-    [
-     160.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 21",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 21",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 21",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 22",
-   "points": [
-    [
-     193.0,
-     -770
-    ],
-    [
-     203.0,
-     -770
-    ],
-    [
-     203.0,
-     -710
-    ],
-    [
-     193.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 22",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 22",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 22",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 23",
-   "points": [
-    [
-     226.0,
-     -770
-    ],
-    [
-     236.0,
-     -770
-    ],
-    [
-     236.0,
-     -710
-    ],
-    [
-     226.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 23",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 23",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 23",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 24",
-   "points": [
-    [
-     259.0,
-     -770
-    ],
-    [
-     269.0,
-     -770
-    ],
-    [
-     269.0,
-     -710
-    ],
-    [
-     259.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 24",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 24",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 24",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 25",
-   "points": [
-    [
-     292.0,
-     -770
-    ],
-    [
-     302.0,
-     -770
-    ],
-    [
-     302.0,
-     -710
-    ],
-    [
-     292.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 25",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 25",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 25",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 26",
-   "points": [
-    [
-     325.0,
-     -770
-    ],
-    [
-     335.0,
-     -770
-    ],
-    [
-     335.0,
-     -710
-    ],
-    [
-     325.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 26",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 26",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 26",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 27",
-   "points": [
-    [
-     358.0,
-     -770
-    ],
-    [
-     368.0,
-     -770
-    ],
-    [
-     368.0,
-     -710
-    ],
-    [
-     358.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 27",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 27",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 27",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 28",
-   "points": [
-    [
-     391.0,
-     -770
-    ],
-    [
-     401.0,
-     -770
-    ],
-    [
-     401.0,
-     -710
-    ],
-    [
-     391.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 28",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 28",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 28",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 29",
-   "points": [
-    [
-     424.0,
-     -770
-    ],
-    [
-     434.0,
-     -770
-    ],
-    [
-     434.0,
-     -710
-    ],
-    [
-     424.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 29",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 29",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 29",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slot 30",
-   "points": [
-    [
-     457.0,
-     -770
-    ],
-    [
-     467.0,
-     -770
-    ],
-    [
-     467.0,
-     -710
-    ],
-    [
-     457.0,
-     -710
-    ]
-   ],
-   "start": 905,
-   "end": 906
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slot 30",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slot 30",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slot 30",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Sash",
-   "points": [
-    [
-     -780,
-     1150
-    ],
-    [
-     -760,
-     1150
-    ],
-    [
-     -640,
-     1750
-    ],
-    [
-     -660,
-     1750
-    ]
-   ],
-   "start": -515.0,
-   "end": 515.0,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sash",
-   "subcategory": "Glass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sash",
-   "param": "Glass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sash",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Sash Frame Bottom",
-   "points": [
-    [
-     -790,
-     1130
-    ],
-    [
-     -750,
-     1130
-    ],
-    [
-     -750,
-     1160
-    ],
-    [
-     -790,
-     1160
-    ]
-   ],
-   "start": -515.0,
-   "end": 515.0,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sash Frame Bottom",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sash Frame Bottom",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sash Frame Bottom",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Head Unit",
-   "points": [
-    [
-     592.0,
-     -700.0
-    ],
-    [
-     595.06,
-     -699.39
-    ],
-    [
-     597.66,
-     -697.66
-    ],
-    [
-     599.39,
-     -695.06
-    ],
-    [
-     600.0,
-     -692.0
-    ],
-    [
-     600.0,
-     -8.0
-    ],
-    [
-     599.39,
-     -4.94
-    ],
-    [
-     597.66,
-     -2.34
-    ],
-    [
-     595.06,
-     -0.61
-    ],
-    [
-     592.0,
-     0.0
-    ],
-    [
-     -592.0,
-     0.0
-    ],
-    [
-     -595.06,
-     -0.61
-    ],
-    [
-     -597.66,
-     -2.34
-    ],
-    [
-     -599.39,
-     -4.94
-    ],
-    [
-     -600.0,
-     -8.0
-    ],
-    [
-     -600.0,
-     -692.0
-    ],
-    [
-     -599.39,
-     -695.06
-    ],
-    [
-     -597.66,
-     -697.66
-    ],
-    [
-     -595.06,
-     -699.39
-    ],
-    [
-     -592.0,
-     -700.0
-    ]
-   ],
-   "start": 1750,
-   "end": 2050
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Head Unit",
-   "subcategory": "Body"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Head Unit",
-   "param": "Body Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Head Unit",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Head Front",
-   "points": [
-    [
-     -700,
-     1750
-    ],
-    [
-     -640,
-     1750
-    ],
-    [
-     -640,
-     2050
-    ],
-    [
-     -700,
-     2050
-    ]
-   ],
-   "start": -600.0,
-   "end": 600.0,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Head Front",
-   "subcategory": "Body"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Head Front",
-   "param": "Body Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Head Front",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Control Panel",
-   "points": [
-    [
-     394.0,
-     1830.0
-    ],
-    [
-     396.3,
-     1830.46
-    ],
-    [
-     398.24,
-     1831.76
-    ],
-    [
-     399.54,
-     1833.7
-    ],
-    [
-     400.0,
-     1836.0
-    ],
-    [
-     400.0,
-     1974.0
-    ],
-    [
-     399.54,
-     1976.3
-    ],
-    [
-     398.24,
-     1978.24
-    ],
-    [
-     396.3,
-     1979.54
-    ],
-    [
-     394.0,
-     1980.0
-    ],
-    [
-     -394.0,
-     1980.0
-    ],
-    [
-     -396.3,
-     1979.54
-    ],
-    [
-     -398.24,
-     1978.24
-    ],
-    [
-     -399.54,
-     1976.3
-    ],
-    [
-     -400.0,
-     1974.0
-    ],
-    [
-     -400.0,
-     1836.0
-    ],
-    [
-     -399.54,
-     1833.7
-    ],
-    [
-     -398.24,
-     1831.76
-    ],
-    [
-     -396.3,
-     1830.46
-    ],
-    [
-     -394.0,
-     1830.0
-    ]
-   ],
-   "start": 700,
-   "end": 706,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Control Panel",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Control Panel",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Control Panel",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Display",
-   "points": [
-    [
-     -44.0,
-     1860.0
-    ],
-    [
-     -42.47,
-     1860.3
-    ],
-    [
-     -41.17,
-     1861.17
-    ],
-    [
-     -40.3,
-     1862.47
-    ],
-    [
-     -40.0,
-     1864.0
-    ],
-    [
-     -40.0,
-     1946.0
-    ],
-    [
-     -40.3,
-     1947.53
-    ],
-    [
-     -41.17,
-     1948.83
-    ],
-    [
-     -42.47,
-     1949.7
-    ],
-    [
-     -44.0,
-     1950.0
-    ],
-    [
-     -356.0,
-     1950.0
-    ],
-    [
-     -357.53,
-     1949.7
-    ],
-    [
-     -358.83,
-     1948.83
-    ],
-    [
-     -359.7,
-     1947.53
-    ],
-    [
-     -360.0,
-     1946.0
-    ],
-    [
-     -360.0,
-     1864.0
-    ],
-    [
-     -359.7,
-     1862.47
-    ],
-    [
-     -358.83,
-     1861.17
-    ],
-    [
-     -357.53,
-     1860.3
-    ],
-    [
-     -356.0,
-     1860.0
-    ]
-   ],
-   "start": 706,
-   "end": 708,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Display",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Display",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Display",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Display Readout",
-   "points": [
-    [
-     -340.0,
-     1885
-    ],
-    [
-     -120.0,
-     1885
-    ],
-    [
-     -120.0,
-     1925
-    ],
-    [
-     -340.0,
-     1925
-    ]
-   ],
-   "start": 708,
-   "end": 709,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Display Readout",
-   "subcategory": "Green"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Display Readout",
-   "param": "Green Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Display Readout",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Key 1",
-   "points": [
-    [
-     54.0,
-     1905.0
-    ],
-    [
-     53.52,
-     1908.62
-    ],
-    [
-     52.12,
-     1912.0
-    ],
-    [
-     49.9,
-     1914.9
-    ],
-    [
-     47.0,
-     1917.12
-    ],
-    [
-     43.62,
-     1918.52
-    ],
-    [
-     40.0,
-     1919.0
-    ],
-    [
-     36.38,
-     1918.52
-    ],
-    [
-     33.0,
-     1917.12
-    ],
-    [
-     30.1,
-     1914.9
-    ],
-    [
-     27.88,
-     1912.0
-    ],
-    [
-     26.48,
-     1908.62
-    ],
-    [
-     26.0,
-     1905.0
-    ],
-    [
-     26.48,
-     1901.38
-    ],
-    [
-     27.88,
-     1898.0
-    ],
-    [
-     30.1,
-     1895.1
-    ],
-    [
-     33.0,
-     1892.88
-    ],
-    [
-     36.38,
-     1891.48
-    ],
-    [
-     40.0,
-     1891.0
-    ],
-    [
-     43.62,
-     1891.48
-    ],
-    [
-     47.0,
-     1892.88
-    ],
-    [
-     49.9,
-     1895.1
-    ],
-    [
-     52.12,
-     1898.0
-    ],
-    [
-     53.52,
-     1901.38
-    ]
-   ],
-   "start": 706,
-   "end": 710,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Key 1",
-   "subcategory": "Grey2"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Key 1",
-   "param": "Grey2 Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Key 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Key 2",
-   "points": [
-    [
-     114.0,
-     1905.0
-    ],
-    [
-     113.52,
-     1908.62
-    ],
-    [
-     112.12,
-     1912.0
-    ],
-    [
-     109.9,
-     1914.9
-    ],
-    [
-     107.0,
-     1917.12
-    ],
-    [
-     103.62,
-     1918.52
-    ],
-    [
-     100.0,
-     1919.0
-    ],
-    [
-     96.38,
-     1918.52
-    ],
-    [
-     93.0,
-     1917.12
-    ],
-    [
-     90.1,
-     1914.9
-    ],
-    [
-     87.88,
-     1912.0
-    ],
-    [
-     86.48,
-     1908.62
-    ],
-    [
-     86.0,
-     1905.0
-    ],
-    [
-     86.48,
-     1901.38
-    ],
-    [
-     87.88,
-     1898.0
-    ],
-    [
-     90.1,
-     1895.1
-    ],
-    [
-     93.0,
-     1892.88
-    ],
-    [
-     96.38,
-     1891.48
-    ],
-    [
-     100.0,
-     1891.0
-    ],
-    [
-     103.62,
-     1891.48
-    ],
-    [
-     107.0,
-     1892.88
-    ],
-    [
-     109.9,
-     1895.1
-    ],
-    [
-     112.12,
-     1898.0
-    ],
-    [
-     113.52,
-     1901.38
-    ]
-   ],
-   "start": 706,
-   "end": 710,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Key 2",
-   "subcategory": "Grey2"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Key 2",
-   "param": "Grey2 Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Key 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Key 3",
-   "points": [
-    [
-     174.0,
-     1905.0
-    ],
-    [
-     173.52,
-     1908.62
-    ],
-    [
-     172.12,
-     1912.0
-    ],
-    [
-     169.9,
-     1914.9
-    ],
-    [
-     167.0,
-     1917.12
-    ],
-    [
-     163.62,
-     1918.52
-    ],
-    [
-     160.0,
-     1919.0
-    ],
-    [
-     156.38,
-     1918.52
-    ],
-    [
-     153.0,
-     1917.12
-    ],
-    [
-     150.1,
-     1914.9
-    ],
-    [
-     147.88,
-     1912.0
-    ],
-    [
-     146.48,
-     1908.62
-    ],
-    [
-     146.0,
-     1905.0
-    ],
-    [
-     146.48,
-     1901.38
-    ],
-    [
-     147.88,
-     1898.0
-    ],
-    [
-     150.1,
-     1895.1
-    ],
-    [
-     153.0,
-     1892.88
-    ],
-    [
-     156.38,
-     1891.48
-    ],
-    [
-     160.0,
-     1891.0
-    ],
-    [
-     163.62,
-     1891.48
-    ],
-    [
-     167.0,
-     1892.88
-    ],
-    [
-     169.9,
-     1895.1
-    ],
-    [
-     172.12,
-     1898.0
-    ],
-    [
-     173.52,
-     1901.38
-    ]
-   ],
-   "start": 706,
-   "end": 710,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Key 3",
-   "subcategory": "Grey2"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Key 3",
-   "param": "Grey2 Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Key 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Key 4",
-   "points": [
-    [
-     234.0,
-     1905.0
-    ],
-    [
-     233.52,
-     1908.62
-    ],
-    [
-     232.12,
-     1912.0
-    ],
-    [
-     229.9,
-     1914.9
-    ],
-    [
-     227.0,
-     1917.12
-    ],
-    [
-     223.62,
-     1918.52
-    ],
-    [
-     220.0,
-     1919.0
-    ],
-    [
-     216.38,
-     1918.52
-    ],
-    [
-     213.0,
-     1917.12
-    ],
-    [
-     210.1,
-     1914.9
-    ],
-    [
-     207.88,
-     1912.0
-    ],
-    [
-     206.48,
-     1908.62
-    ],
-    [
-     206.0,
-     1905.0
-    ],
-    [
-     206.48,
-     1901.38
-    ],
-    [
-     207.88,
-     1898.0
-    ],
-    [
-     210.1,
-     1895.1
-    ],
-    [
-     213.0,
-     1892.88
-    ],
-    [
-     216.38,
-     1891.48
-    ],
-    [
-     220.0,
-     1891.0
-    ],
-    [
-     223.62,
-     1891.48
-    ],
-    [
-     227.0,
-     1892.88
-    ],
-    [
-     229.9,
-     1895.1
-    ],
-    [
-     232.12,
-     1898.0
-    ],
-    [
-     233.52,
-     1901.38
-    ]
-   ],
-   "start": 706,
-   "end": 710,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Key 4",
-   "subcategory": "Grey2"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Key 4",
-   "param": "Grey2 Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Key 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Alarm LED",
-   "points": [
-    [
-     348.0,
-     1940.0
-    ],
-    [
-     347.73,
-     1942.07
-    ],
-    [
-     346.93,
-     1944.0
-    ],
-    [
-     345.66,
-     1945.66
-    ],
-    [
-     344.0,
-     1946.93
-    ],
-    [
-     342.07,
-     1947.73
-    ],
-    [
-     340.0,
-     1948.0
-    ],
-    [
-     337.93,
-     1947.73
-    ],
-    [
-     336.0,
-     1946.93
-    ],
-    [
-     334.34,
-     1945.66
-    ],
-    [
-     333.07,
-     1944.0
-    ],
-    [
-     332.27,
-     1942.07
-    ],
-    [
-     332.0,
-     1940.0
-    ],
-    [
-     332.27,
-     1937.93
-    ],
-    [
-     333.07,
-     1936.0
-    ],
-    [
-     334.34,
-     1934.34
-    ],
-    [
-     336.0,
-     1933.07
-    ],
-    [
-     337.93,
-     1932.27
-    ],
-    [
-     340.0,
-     1932.0
-    ],
-    [
-     342.07,
-     1932.27
-    ],
-    [
-     344.0,
-     1933.07
-    ],
-    [
-     345.66,
-     1934.34
-    ],
-    [
-     346.93,
-     1936.0
-    ],
-    [
-     347.73,
-     1937.93
-    ]
-   ],
-   "start": 706,
-   "end": 710,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Alarm LED",
-   "subcategory": "Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Alarm LED",
-   "param": "Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Alarm LED",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "UV Lamp Indicator",
-   "points": [
-    [
-     300.0,
-     1860
-    ],
-    [
-     370.0,
-     1860
-    ],
-    [
-     370.0,
-     1880
-    ],
-    [
-     300.0,
-     1880
-    ]
-   ],
-   "start": 706,
-   "end": 708,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "UV Lamp Indicator",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "UV Lamp Indicator",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "UV Lamp Indicator",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Exhaust Filter Housing",
-   "points": [
-    [
-     440.0,
-     -550.0
-    ],
-    [
-     443.83,
-     -549.24
-    ],
-    [
-     447.07,
-     -547.07
-    ],
-    [
-     449.24,
-     -543.83
-    ],
-    [
-     450.0,
-     -540.0
-    ],
-    [
-     450.0,
-     -160.0
-    ],
-    [
-     449.24,
-     -156.17
-    ],
-    [
-     447.07,
-     -152.93
-    ],
-    [
-     443.83,
-     -150.76
-    ],
-    [
-     440.0,
-     -150.0
-    ],
-    [
-     -440.0,
-     -150.0
-    ],
-    [
-     -443.83,
-     -150.76
-    ],
-    [
-     -447.07,
-     -152.93
-    ],
-    [
-     -449.24,
-     -156.17
-    ],
-    [
-     -450.0,
-     -160.0
-    ],
-    [
-     -450.0,
-     -540.0
-    ],
-    [
-     -449.24,
-     -543.83
-    ],
-    [
-     -447.07,
-     -547.07
-    ],
-    [
-     -443.83,
-     -549.24
-    ],
-    [
-     -440.0,
-     -550.0
-    ]
-   ],
-   "start": 2050,
-   "end": 2150
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Exhaust Filter Housing",
-   "subcategory": "Body"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Exhaust Filter Housing",
-   "param": "Body Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Exhaust Filter Housing",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Exhaust Grille",
-   "points": [
-    [
-     -400.0,
-     -500
-    ],
-    [
-     400.0,
-     -500
-    ],
-    [
-     400.0,
-     -200
-    ],
-    [
-     -400.0,
-     -200
-    ]
-   ],
-   "start": 2150,
-   "end": 2153
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Exhaust Grille",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Exhaust Grille",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Exhaust Grille",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Side Window",
-   "points": [
-    [
-     -700,
-     1000
-    ],
-    [
-     -300,
-     1000
-    ],
-    [
-     -300,
-     1600
-    ],
-    [
-     -700,
-     1600
-    ]
-   ],
-   "start": -603.0,
-   "end": -600.0,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Side Window",
-   "subcategory": "Glass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Side Window",
-   "param": "Glass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Side Window",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Service Valve",
-   "points": [
-    [
-     -500,
-     1100
-    ],
-    [
-     -440,
-     1100
-    ],
-    [
-     -440,
-     1300
-    ],
-    [
-     -500,
-     1300
-    ]
-   ],
-   "start": 600.0,
-   "end": 603.0,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Service Valve",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Service Valve",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Service Valve",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "Power",
-   "domain": "electrical",
-   "system": "PowerBalanced",
-   "solid": "Head Unit",
-   "side": "top"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Voltage",
-   "connector": "Power",
-   "connector_param": "Voltage",
-   "param": "Voltage"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Apparent Load",
-   "connector": "Power",
-   "connector_param": "Apparent Load",
-   "param": "Apparent Load"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\I\\_Images\\FMC_I_Casework_BiosafetyCabinet_ClassII.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_I_Casework_BiosafetyCabinet_ClassII",
+  "template": "Metric Generic Model.rft",
+  "about": "Cabinet modelled as a generic product: painted stand with rails and levellers, cabinet base, side and back walls, stainless work tray, perforated front grille, inclined glass sash with frame, head unit with control panel, display, keys, alarm and UV indicators, side window and service valve, top exhaust filter housing with grille. Geometry is drawn at the 1200_ClassII type; the other types share it until a parametric pass. Reference: query: casework biosafety cabinet class ii casework hospital; images: https://www.google.com/search?tbm=isch&q=casework+biosafety+cabinet+class+ii+casework+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Casework"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Voltage",
+      "type": "Voltage",
+      "group": "Electrical"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Apparent Load",
+      "type": "ApparentPower",
+      "group": "ElectricalLoads"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Assembly_Mark",
+      "guid": "63266315-bb4d-5187-9224-35d20981c3d6",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carcass_Spec",
+      "guid": "c28e7161-7153-5158-8a2d-4ff17c6b96e0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Worktop_Spec",
+      "guid": "dbb29109-d7be-55a5-8c12-9aca51551dc3",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Design_Movement",
+      "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "1200_ClassII"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200_ClassII/FMC_Cost_Unit",
+      "type": "1200_ClassII",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200_ClassII/FMC_Geometry_Stage",
+      "type": "1200_ClassII",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200_ClassII/IfcExportAs",
+      "type": "1200_ClassII",
+      "param": "IfcExportAs",
+      "value": "IfcFurniture"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200_ClassII/Description",
+      "type": "1200_ClassII",
+      "param": "Description",
+      "value": "Class II biosafety cabinet 1200 on stand"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200_ClassII/Keynote",
+      "type": "1200_ClassII",
+      "param": "Keynote",
+      "value": "K.LAB_03"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200_ClassII/FMC_Keynote_Code",
+      "type": "1200_ClassII",
+      "param": "FMC_Keynote_Code",
+      "value": "K.LAB_03"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200_ClassII/FMC_Code_Description",
+      "type": "1200_ClassII",
+      "param": "FMC_Code_Description",
+      "value": "BiosafetyCabinet ClassII: Class II BSC envelope"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200_ClassII/FMC_Code_Group",
+      "type": "1200_ClassII",
+      "param": "FMC_Code_Group",
+      "value": "K.LAB"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200_ClassII/FMC_Role_Code",
+      "type": "1200_ClassII",
+      "param": "FMC_Role_Code",
+      "value": "I"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200_ClassII/Voltage",
+      "type": "1200_ClassII",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200_ClassII/Apparent Load",
+      "type": "1200_ClassII",
+      "param": "Apparent Load",
+      "value": 1200
+    },
+    {
+      "op": "add_type",
+      "name": "1500_ClassII"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500_ClassII/FMC_Cost_Unit",
+      "type": "1500_ClassII",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500_ClassII/FMC_Geometry_Stage",
+      "type": "1500_ClassII",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500_ClassII/IfcExportAs",
+      "type": "1500_ClassII",
+      "param": "IfcExportAs",
+      "value": "IfcFurniture"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500_ClassII/Description",
+      "type": "1500_ClassII",
+      "param": "Description",
+      "value": "Class II biosafety cabinet 1500 on stand"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500_ClassII/Keynote",
+      "type": "1500_ClassII",
+      "param": "Keynote",
+      "value": "K.LAB_03"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500_ClassII/FMC_Keynote_Code",
+      "type": "1500_ClassII",
+      "param": "FMC_Keynote_Code",
+      "value": "K.LAB_03"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500_ClassII/FMC_Code_Description",
+      "type": "1500_ClassII",
+      "param": "FMC_Code_Description",
+      "value": "BiosafetyCabinet ClassII: Class II BSC envelope"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500_ClassII/FMC_Code_Group",
+      "type": "1500_ClassII",
+      "param": "FMC_Code_Group",
+      "value": "K.LAB"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500_ClassII/FMC_Role_Code",
+      "type": "1500_ClassII",
+      "param": "FMC_Role_Code",
+      "value": "I"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500_ClassII/Voltage",
+      "type": "1500_ClassII",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500_ClassII/Apparent Load",
+      "type": "1500_ClassII",
+      "param": "Apparent Load",
+      "value": 1200
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Frame",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Frame Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_SteelLTZ_Painted",
+      "param": "Frame Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Body",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Body Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Steel_EpoxyCoated_White",
+      "param": "Body Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Ss",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Ss Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_StainlessSteel_Brushed",
+      "param": "Ss Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Glass",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Glass Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Glass_Laminated",
+      "param": "Glass Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Grey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Grey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Grey",
+      "param": "Grey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Green",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Green Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_LED_Green",
+      "param": "Green Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Grey2",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Grey2 Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_MedicalGrey",
+      "param": "Grey2 Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Red",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Red Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_LED_Red",
+      "param": "Red Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Blue",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Blue Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_LED_Blue",
+      "param": "Blue Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -603,
+          -790
+        ],
+        [
+          603,
+          -790
+        ],
+        [
+          603,
+          0
+        ],
+        [
+          -603,
+          0
+        ]
+      ],
+      "start": 0,
+      "end": 2153
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Stand Leg 1",
+      "points": [
+        [
+          -580,
+          -760
+        ],
+        [
+          -530,
+          -760
+        ],
+        [
+          -530,
+          -710
+        ],
+        [
+          -580,
+          -710
+        ]
+      ],
+      "start": 30,
+      "end": 730
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Stand Leg 1",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Stand Leg 1",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Stand Leg 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Stand Leg 2",
+      "points": [
+        [
+          530,
+          -760
+        ],
+        [
+          580,
+          -760
+        ],
+        [
+          580,
+          -710
+        ],
+        [
+          530,
+          -710
+        ]
+      ],
+      "start": 30,
+      "end": 730
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Stand Leg 2",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Stand Leg 2",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Stand Leg 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Stand Leg Back 1",
+      "points": [
+        [
+          -580,
+          -70
+        ],
+        [
+          -530,
+          -70
+        ],
+        [
+          -530,
+          -20
+        ],
+        [
+          -580,
+          -20
+        ]
+      ],
+      "start": 30,
+      "end": 730
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Stand Leg Back 1",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Stand Leg Back 1",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Stand Leg Back 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Stand Leg Back 2",
+      "points": [
+        [
+          530,
+          -70
+        ],
+        [
+          580,
+          -70
+        ],
+        [
+          580,
+          -20
+        ],
+        [
+          530,
+          -20
+        ]
+      ],
+      "start": 30,
+      "end": 730
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Stand Leg Back 2",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Stand Leg Back 2",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Stand Leg Back 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Stand Rail",
+      "points": [
+        [
+          -580,
+          -760
+        ],
+        [
+          580,
+          -760
+        ],
+        [
+          580,
+          -20
+        ],
+        [
+          -580,
+          -20
+        ]
+      ],
+      "start": 680,
+      "end": 730
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Stand Rail",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Stand Rail",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Stand Rail",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Stand Low Rail",
+      "points": [
+        [
+          -580,
+          -760
+        ],
+        [
+          580,
+          -760
+        ],
+        [
+          580,
+          -710
+        ],
+        [
+          -580,
+          -710
+        ]
+      ],
+      "start": 150,
+      "end": 190
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Stand Low Rail",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Stand Low Rail",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Stand Low Rail",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Leveller 1",
+      "points": [
+        [
+          -535,
+          -735
+        ],
+        [
+          -536.52,
+          -727.35
+        ],
+        [
+          -540.86,
+          -720.86
+        ],
+        [
+          -547.35,
+          -716.52
+        ],
+        [
+          -555,
+          -715
+        ],
+        [
+          -562.65,
+          -716.52
+        ],
+        [
+          -569.14,
+          -720.86
+        ],
+        [
+          -573.48,
+          -727.35
+        ],
+        [
+          -575,
+          -735
+        ],
+        [
+          -573.48,
+          -742.65
+        ],
+        [
+          -569.14,
+          -749.14
+        ],
+        [
+          -562.65,
+          -753.48
+        ],
+        [
+          -555,
+          -755
+        ],
+        [
+          -547.35,
+          -753.48
+        ],
+        [
+          -540.86,
+          -749.14
+        ],
+        [
+          -536.52,
+          -742.65
+        ]
+      ],
+      "start": 0,
+      "end": 30
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Leveller 1",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Leveller 1",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Leveller 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Leveller 2",
+      "points": [
+        [
+          575,
+          -735
+        ],
+        [
+          573.48,
+          -727.35
+        ],
+        [
+          569.14,
+          -720.86
+        ],
+        [
+          562.65,
+          -716.52
+        ],
+        [
+          555,
+          -715
+        ],
+        [
+          547.35,
+          -716.52
+        ],
+        [
+          540.86,
+          -720.86
+        ],
+        [
+          536.52,
+          -727.35
+        ],
+        [
+          535,
+          -735
+        ],
+        [
+          536.52,
+          -742.65
+        ],
+        [
+          540.86,
+          -749.14
+        ],
+        [
+          547.35,
+          -753.48
+        ],
+        [
+          555,
+          -755
+        ],
+        [
+          562.65,
+          -753.48
+        ],
+        [
+          569.14,
+          -749.14
+        ],
+        [
+          573.48,
+          -742.65
+        ]
+      ],
+      "start": 0,
+      "end": 30
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Leveller 2",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Leveller 2",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Leveller 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Leveller Back 1",
+      "points": [
+        [
+          -535,
+          -45
+        ],
+        [
+          -536.52,
+          -37.35
+        ],
+        [
+          -540.86,
+          -30.86
+        ],
+        [
+          -547.35,
+          -26.52
+        ],
+        [
+          -555,
+          -25
+        ],
+        [
+          -562.65,
+          -26.52
+        ],
+        [
+          -569.14,
+          -30.86
+        ],
+        [
+          -573.48,
+          -37.35
+        ],
+        [
+          -575,
+          -45
+        ],
+        [
+          -573.48,
+          -52.65
+        ],
+        [
+          -569.14,
+          -59.14
+        ],
+        [
+          -562.65,
+          -63.48
+        ],
+        [
+          -555,
+          -65
+        ],
+        [
+          -547.35,
+          -63.48
+        ],
+        [
+          -540.86,
+          -59.14
+        ],
+        [
+          -536.52,
+          -52.65
+        ]
+      ],
+      "start": 0,
+      "end": 30
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Leveller Back 1",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Leveller Back 1",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Leveller Back 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Leveller Back 2",
+      "points": [
+        [
+          575,
+          -45
+        ],
+        [
+          573.48,
+          -37.35
+        ],
+        [
+          569.14,
+          -30.86
+        ],
+        [
+          562.65,
+          -26.52
+        ],
+        [
+          555,
+          -25
+        ],
+        [
+          547.35,
+          -26.52
+        ],
+        [
+          540.86,
+          -30.86
+        ],
+        [
+          536.52,
+          -37.35
+        ],
+        [
+          535,
+          -45
+        ],
+        [
+          536.52,
+          -52.65
+        ],
+        [
+          540.86,
+          -59.14
+        ],
+        [
+          547.35,
+          -63.48
+        ],
+        [
+          555,
+          -65
+        ],
+        [
+          562.65,
+          -63.48
+        ],
+        [
+          569.14,
+          -59.14
+        ],
+        [
+          573.48,
+          -52.65
+        ]
+      ],
+      "start": 0,
+      "end": 30
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Leveller Back 2",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Leveller Back 2",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Leveller Back 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cabinet Base",
+      "points": [
+        [
+          592,
+          -780
+        ],
+        [
+          595.06,
+          -779.39
+        ],
+        [
+          597.66,
+          -777.66
+        ],
+        [
+          599.39,
+          -775.06
+        ],
+        [
+          600,
+          -772
+        ],
+        [
+          600,
+          -8
+        ],
+        [
+          599.39,
+          -4.94
+        ],
+        [
+          597.66,
+          -2.34
+        ],
+        [
+          595.06,
+          -0.61
+        ],
+        [
+          592,
+          0
+        ],
+        [
+          -592,
+          0
+        ],
+        [
+          -595.06,
+          -0.61
+        ],
+        [
+          -597.66,
+          -2.34
+        ],
+        [
+          -599.39,
+          -4.94
+        ],
+        [
+          -600,
+          -8
+        ],
+        [
+          -600,
+          -772
+        ],
+        [
+          -599.39,
+          -775.06
+        ],
+        [
+          -597.66,
+          -777.66
+        ],
+        [
+          -595.06,
+          -779.39
+        ],
+        [
+          -592,
+          -780
+        ]
+      ],
+      "start": 730,
+      "end": 880
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cabinet Base",
+      "subcategory": "Body"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cabinet Base",
+      "param": "Body Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cabinet Base",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Side Wall",
+      "points": [
+        [
+          -528,
+          -780
+        ],
+        [
+          -524.94,
+          -779.39
+        ],
+        [
+          -522.34,
+          -777.66
+        ],
+        [
+          -520.61,
+          -775.06
+        ],
+        [
+          -520,
+          -772
+        ],
+        [
+          -520,
+          -8
+        ],
+        [
+          -520.61,
+          -4.94
+        ],
+        [
+          -522.34,
+          -2.34
+        ],
+        [
+          -524.94,
+          -0.61
+        ],
+        [
+          -528,
+          0
+        ],
+        [
+          -592,
+          0
+        ],
+        [
+          -595.06,
+          -0.61
+        ],
+        [
+          -597.66,
+          -2.34
+        ],
+        [
+          -599.39,
+          -4.94
+        ],
+        [
+          -600,
+          -8
+        ],
+        [
+          -600,
+          -772
+        ],
+        [
+          -599.39,
+          -775.06
+        ],
+        [
+          -597.66,
+          -777.66
+        ],
+        [
+          -595.06,
+          -779.39
+        ],
+        [
+          -592,
+          -780
+        ]
+      ],
+      "start": 880,
+      "end": 1900
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Side Wall",
+      "subcategory": "Body"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Side Wall",
+      "param": "Body Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Side Wall",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Side Wall Right",
+      "points": [
+        [
+          592,
+          -780
+        ],
+        [
+          595.06,
+          -779.39
+        ],
+        [
+          597.66,
+          -777.66
+        ],
+        [
+          599.39,
+          -775.06
+        ],
+        [
+          600,
+          -772
+        ],
+        [
+          600,
+          -8
+        ],
+        [
+          599.39,
+          -4.94
+        ],
+        [
+          597.66,
+          -2.34
+        ],
+        [
+          595.06,
+          -0.61
+        ],
+        [
+          592,
+          0
+        ],
+        [
+          528,
+          0
+        ],
+        [
+          524.94,
+          -0.61
+        ],
+        [
+          522.34,
+          -2.34
+        ],
+        [
+          520.61,
+          -4.94
+        ],
+        [
+          520,
+          -8
+        ],
+        [
+          520,
+          -772
+        ],
+        [
+          520.61,
+          -775.06
+        ],
+        [
+          522.34,
+          -777.66
+        ],
+        [
+          524.94,
+          -779.39
+        ],
+        [
+          528,
+          -780
+        ]
+      ],
+      "start": 880,
+      "end": 1900
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Side Wall Right",
+      "subcategory": "Body"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Side Wall Right",
+      "param": "Body Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Side Wall Right",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Back Wall",
+      "points": [
+        [
+          -520,
+          -80
+        ],
+        [
+          520,
+          -80
+        ],
+        [
+          520,
+          0
+        ],
+        [
+          -520,
+          0
+        ]
+      ],
+      "start": 880,
+      "end": 1900
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Back Wall",
+      "subcategory": "Body"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Back Wall",
+      "param": "Body Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Back Wall",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Work Tray",
+      "points": [
+        [
+          -520,
+          -700
+        ],
+        [
+          520,
+          -700
+        ],
+        [
+          520,
+          -80
+        ],
+        [
+          -520,
+          -80
+        ]
+      ],
+      "start": 880,
+      "end": 900
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Work Tray",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Work Tray",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Work Tray",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Front Grille",
+      "points": [
+        [
+          -520,
+          -780
+        ],
+        [
+          520,
+          -780
+        ],
+        [
+          520,
+          -700
+        ],
+        [
+          -520,
+          -700
+        ]
+      ],
+      "start": 880,
+      "end": 905
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Front Grille",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Front Grille",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Front Grille",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 1",
+      "points": [
+        [
+          -500,
+          -770
+        ],
+        [
+          -490,
+          -770
+        ],
+        [
+          -490,
+          -710
+        ],
+        [
+          -500,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 1",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 1",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 2",
+      "points": [
+        [
+          -467,
+          -770
+        ],
+        [
+          -457,
+          -770
+        ],
+        [
+          -457,
+          -710
+        ],
+        [
+          -467,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 2",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 2",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 3",
+      "points": [
+        [
+          -434,
+          -770
+        ],
+        [
+          -424,
+          -770
+        ],
+        [
+          -424,
+          -710
+        ],
+        [
+          -434,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 3",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 3",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 4",
+      "points": [
+        [
+          -401,
+          -770
+        ],
+        [
+          -391,
+          -770
+        ],
+        [
+          -391,
+          -710
+        ],
+        [
+          -401,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 4",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 4",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 4",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 5",
+      "points": [
+        [
+          -368,
+          -770
+        ],
+        [
+          -358,
+          -770
+        ],
+        [
+          -358,
+          -710
+        ],
+        [
+          -368,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 5",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 5",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 5",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 6",
+      "points": [
+        [
+          -335,
+          -770
+        ],
+        [
+          -325,
+          -770
+        ],
+        [
+          -325,
+          -710
+        ],
+        [
+          -335,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 6",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 6",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 6",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 7",
+      "points": [
+        [
+          -302,
+          -770
+        ],
+        [
+          -292,
+          -770
+        ],
+        [
+          -292,
+          -710
+        ],
+        [
+          -302,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 7",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 7",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 7",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 8",
+      "points": [
+        [
+          -269,
+          -770
+        ],
+        [
+          -259,
+          -770
+        ],
+        [
+          -259,
+          -710
+        ],
+        [
+          -269,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 8",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 8",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 8",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 9",
+      "points": [
+        [
+          -236,
+          -770
+        ],
+        [
+          -226,
+          -770
+        ],
+        [
+          -226,
+          -710
+        ],
+        [
+          -236,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 9",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 9",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 9",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 10",
+      "points": [
+        [
+          -203,
+          -770
+        ],
+        [
+          -193,
+          -770
+        ],
+        [
+          -193,
+          -710
+        ],
+        [
+          -203,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 10",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 10",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 10",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 11",
+      "points": [
+        [
+          -170,
+          -770
+        ],
+        [
+          -160,
+          -770
+        ],
+        [
+          -160,
+          -710
+        ],
+        [
+          -170,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 11",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 11",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 11",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 12",
+      "points": [
+        [
+          -137,
+          -770
+        ],
+        [
+          -127,
+          -770
+        ],
+        [
+          -127,
+          -710
+        ],
+        [
+          -137,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 12",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 12",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 12",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 13",
+      "points": [
+        [
+          -104,
+          -770
+        ],
+        [
+          -94,
+          -770
+        ],
+        [
+          -94,
+          -710
+        ],
+        [
+          -104,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 13",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 13",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 13",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 14",
+      "points": [
+        [
+          -71,
+          -770
+        ],
+        [
+          -61,
+          -770
+        ],
+        [
+          -61,
+          -710
+        ],
+        [
+          -71,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 14",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 14",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 14",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 15",
+      "points": [
+        [
+          -38,
+          -770
+        ],
+        [
+          -28,
+          -770
+        ],
+        [
+          -28,
+          -710
+        ],
+        [
+          -38,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 15",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 15",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 15",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 16",
+      "points": [
+        [
+          -5,
+          -770
+        ],
+        [
+          5,
+          -770
+        ],
+        [
+          5,
+          -710
+        ],
+        [
+          -5,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 16",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 16",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 16",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 17",
+      "points": [
+        [
+          28,
+          -770
+        ],
+        [
+          38,
+          -770
+        ],
+        [
+          38,
+          -710
+        ],
+        [
+          28,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 17",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 17",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 17",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 18",
+      "points": [
+        [
+          61,
+          -770
+        ],
+        [
+          71,
+          -770
+        ],
+        [
+          71,
+          -710
+        ],
+        [
+          61,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 18",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 18",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 18",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 19",
+      "points": [
+        [
+          94,
+          -770
+        ],
+        [
+          104,
+          -770
+        ],
+        [
+          104,
+          -710
+        ],
+        [
+          94,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 19",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 19",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 19",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 20",
+      "points": [
+        [
+          127,
+          -770
+        ],
+        [
+          137,
+          -770
+        ],
+        [
+          137,
+          -710
+        ],
+        [
+          127,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 20",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 20",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 20",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 21",
+      "points": [
+        [
+          160,
+          -770
+        ],
+        [
+          170,
+          -770
+        ],
+        [
+          170,
+          -710
+        ],
+        [
+          160,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 21",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 21",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 21",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 22",
+      "points": [
+        [
+          193,
+          -770
+        ],
+        [
+          203,
+          -770
+        ],
+        [
+          203,
+          -710
+        ],
+        [
+          193,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 22",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 22",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 22",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 23",
+      "points": [
+        [
+          226,
+          -770
+        ],
+        [
+          236,
+          -770
+        ],
+        [
+          236,
+          -710
+        ],
+        [
+          226,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 23",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 23",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 23",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 24",
+      "points": [
+        [
+          259,
+          -770
+        ],
+        [
+          269,
+          -770
+        ],
+        [
+          269,
+          -710
+        ],
+        [
+          259,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 24",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 24",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 24",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 25",
+      "points": [
+        [
+          292,
+          -770
+        ],
+        [
+          302,
+          -770
+        ],
+        [
+          302,
+          -710
+        ],
+        [
+          292,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 25",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 25",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 25",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 26",
+      "points": [
+        [
+          325,
+          -770
+        ],
+        [
+          335,
+          -770
+        ],
+        [
+          335,
+          -710
+        ],
+        [
+          325,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 26",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 26",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 26",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 27",
+      "points": [
+        [
+          358,
+          -770
+        ],
+        [
+          368,
+          -770
+        ],
+        [
+          368,
+          -710
+        ],
+        [
+          358,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 27",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 27",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 27",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 28",
+      "points": [
+        [
+          391,
+          -770
+        ],
+        [
+          401,
+          -770
+        ],
+        [
+          401,
+          -710
+        ],
+        [
+          391,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 28",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 28",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 28",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 29",
+      "points": [
+        [
+          424,
+          -770
+        ],
+        [
+          434,
+          -770
+        ],
+        [
+          434,
+          -710
+        ],
+        [
+          424,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 29",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 29",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 29",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slot 30",
+      "points": [
+        [
+          457,
+          -770
+        ],
+        [
+          467,
+          -770
+        ],
+        [
+          467,
+          -710
+        ],
+        [
+          457,
+          -710
+        ]
+      ],
+      "start": 905,
+      "end": 906
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slot 30",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slot 30",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slot 30",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Sash",
+      "points": [
+        [
+          -780,
+          1150
+        ],
+        [
+          -760,
+          1150
+        ],
+        [
+          -640,
+          1750
+        ],
+        [
+          -660,
+          1750
+        ]
+      ],
+      "start": -515,
+      "end": 515,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Sash",
+      "subcategory": "Glass"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sash",
+      "param": "Glass Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Sash",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Sash Frame Bottom",
+      "points": [
+        [
+          -790,
+          1130
+        ],
+        [
+          -750,
+          1130
+        ],
+        [
+          -750,
+          1160
+        ],
+        [
+          -790,
+          1160
+        ]
+      ],
+      "start": -515,
+      "end": 515,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Sash Frame Bottom",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sash Frame Bottom",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Sash Frame Bottom",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Head Unit",
+      "points": [
+        [
+          592,
+          -700
+        ],
+        [
+          595.06,
+          -699.39
+        ],
+        [
+          597.66,
+          -697.66
+        ],
+        [
+          599.39,
+          -695.06
+        ],
+        [
+          600,
+          -692
+        ],
+        [
+          600,
+          -8
+        ],
+        [
+          599.39,
+          -4.94
+        ],
+        [
+          597.66,
+          -2.34
+        ],
+        [
+          595.06,
+          -0.61
+        ],
+        [
+          592,
+          0
+        ],
+        [
+          -592,
+          0
+        ],
+        [
+          -595.06,
+          -0.61
+        ],
+        [
+          -597.66,
+          -2.34
+        ],
+        [
+          -599.39,
+          -4.94
+        ],
+        [
+          -600,
+          -8
+        ],
+        [
+          -600,
+          -692
+        ],
+        [
+          -599.39,
+          -695.06
+        ],
+        [
+          -597.66,
+          -697.66
+        ],
+        [
+          -595.06,
+          -699.39
+        ],
+        [
+          -592,
+          -700
+        ]
+      ],
+      "start": 1750,
+      "end": 2050
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Head Unit",
+      "subcategory": "Body"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Head Unit",
+      "param": "Body Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Head Unit",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Head Front",
+      "points": [
+        [
+          -700,
+          1750
+        ],
+        [
+          -640,
+          1750
+        ],
+        [
+          -640,
+          2050
+        ],
+        [
+          -700,
+          2050
+        ]
+      ],
+      "start": -600,
+      "end": 600,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Head Front",
+      "subcategory": "Body"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Head Front",
+      "param": "Body Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Head Front",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Control Panel",
+      "points": [
+        [
+          394,
+          1830
+        ],
+        [
+          396.3,
+          1830.46
+        ],
+        [
+          398.24,
+          1831.76
+        ],
+        [
+          399.54,
+          1833.7
+        ],
+        [
+          400,
+          1836
+        ],
+        [
+          400,
+          1974
+        ],
+        [
+          399.54,
+          1976.3
+        ],
+        [
+          398.24,
+          1978.24
+        ],
+        [
+          396.3,
+          1979.54
+        ],
+        [
+          394,
+          1980
+        ],
+        [
+          -394,
+          1980
+        ],
+        [
+          -396.3,
+          1979.54
+        ],
+        [
+          -398.24,
+          1978.24
+        ],
+        [
+          -399.54,
+          1976.3
+        ],
+        [
+          -400,
+          1974
+        ],
+        [
+          -400,
+          1836
+        ],
+        [
+          -399.54,
+          1833.7
+        ],
+        [
+          -398.24,
+          1831.76
+        ],
+        [
+          -396.3,
+          1830.46
+        ],
+        [
+          -394,
+          1830
+        ]
+      ],
+      "start": 700,
+      "end": 706,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Control Panel",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Control Panel",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Control Panel",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Display",
+      "points": [
+        [
+          -44,
+          1860
+        ],
+        [
+          -42.47,
+          1860.3
+        ],
+        [
+          -41.17,
+          1861.17
+        ],
+        [
+          -40.3,
+          1862.47
+        ],
+        [
+          -40,
+          1864
+        ],
+        [
+          -40,
+          1946
+        ],
+        [
+          -40.3,
+          1947.53
+        ],
+        [
+          -41.17,
+          1948.83
+        ],
+        [
+          -42.47,
+          1949.7
+        ],
+        [
+          -44,
+          1950
+        ],
+        [
+          -356,
+          1950
+        ],
+        [
+          -357.53,
+          1949.7
+        ],
+        [
+          -358.83,
+          1948.83
+        ],
+        [
+          -359.7,
+          1947.53
+        ],
+        [
+          -360,
+          1946
+        ],
+        [
+          -360,
+          1864
+        ],
+        [
+          -359.7,
+          1862.47
+        ],
+        [
+          -358.83,
+          1861.17
+        ],
+        [
+          -357.53,
+          1860.3
+        ],
+        [
+          -356,
+          1860
+        ]
+      ],
+      "start": 706,
+      "end": 708,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Display",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Display",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Display",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Display Readout",
+      "points": [
+        [
+          -340,
+          1885
+        ],
+        [
+          -120,
+          1885
+        ],
+        [
+          -120,
+          1925
+        ],
+        [
+          -340,
+          1925
+        ]
+      ],
+      "start": 708,
+      "end": 709,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Display Readout",
+      "subcategory": "Green"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Display Readout",
+      "param": "Green Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Display Readout",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Key 1",
+      "points": [
+        [
+          54,
+          1905
+        ],
+        [
+          53.52,
+          1908.62
+        ],
+        [
+          52.12,
+          1912
+        ],
+        [
+          49.9,
+          1914.9
+        ],
+        [
+          47,
+          1917.12
+        ],
+        [
+          43.62,
+          1918.52
+        ],
+        [
+          40,
+          1919
+        ],
+        [
+          36.38,
+          1918.52
+        ],
+        [
+          33,
+          1917.12
+        ],
+        [
+          30.1,
+          1914.9
+        ],
+        [
+          27.88,
+          1912
+        ],
+        [
+          26.48,
+          1908.62
+        ],
+        [
+          26,
+          1905
+        ],
+        [
+          26.48,
+          1901.38
+        ],
+        [
+          27.88,
+          1898
+        ],
+        [
+          30.1,
+          1895.1
+        ],
+        [
+          33,
+          1892.88
+        ],
+        [
+          36.38,
+          1891.48
+        ],
+        [
+          40,
+          1891
+        ],
+        [
+          43.62,
+          1891.48
+        ],
+        [
+          47,
+          1892.88
+        ],
+        [
+          49.9,
+          1895.1
+        ],
+        [
+          52.12,
+          1898
+        ],
+        [
+          53.52,
+          1901.38
+        ]
+      ],
+      "start": 706,
+      "end": 710,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Key 1",
+      "subcategory": "Grey2"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Key 1",
+      "param": "Grey2 Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Key 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Key 2",
+      "points": [
+        [
+          114,
+          1905
+        ],
+        [
+          113.52,
+          1908.62
+        ],
+        [
+          112.12,
+          1912
+        ],
+        [
+          109.9,
+          1914.9
+        ],
+        [
+          107,
+          1917.12
+        ],
+        [
+          103.62,
+          1918.52
+        ],
+        [
+          100,
+          1919
+        ],
+        [
+          96.38,
+          1918.52
+        ],
+        [
+          93,
+          1917.12
+        ],
+        [
+          90.1,
+          1914.9
+        ],
+        [
+          87.88,
+          1912
+        ],
+        [
+          86.48,
+          1908.62
+        ],
+        [
+          86,
+          1905
+        ],
+        [
+          86.48,
+          1901.38
+        ],
+        [
+          87.88,
+          1898
+        ],
+        [
+          90.1,
+          1895.1
+        ],
+        [
+          93,
+          1892.88
+        ],
+        [
+          96.38,
+          1891.48
+        ],
+        [
+          100,
+          1891
+        ],
+        [
+          103.62,
+          1891.48
+        ],
+        [
+          107,
+          1892.88
+        ],
+        [
+          109.9,
+          1895.1
+        ],
+        [
+          112.12,
+          1898
+        ],
+        [
+          113.52,
+          1901.38
+        ]
+      ],
+      "start": 706,
+      "end": 710,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Key 2",
+      "subcategory": "Grey2"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Key 2",
+      "param": "Grey2 Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Key 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Key 3",
+      "points": [
+        [
+          174,
+          1905
+        ],
+        [
+          173.52,
+          1908.62
+        ],
+        [
+          172.12,
+          1912
+        ],
+        [
+          169.9,
+          1914.9
+        ],
+        [
+          167,
+          1917.12
+        ],
+        [
+          163.62,
+          1918.52
+        ],
+        [
+          160,
+          1919
+        ],
+        [
+          156.38,
+          1918.52
+        ],
+        [
+          153,
+          1917.12
+        ],
+        [
+          150.1,
+          1914.9
+        ],
+        [
+          147.88,
+          1912
+        ],
+        [
+          146.48,
+          1908.62
+        ],
+        [
+          146,
+          1905
+        ],
+        [
+          146.48,
+          1901.38
+        ],
+        [
+          147.88,
+          1898
+        ],
+        [
+          150.1,
+          1895.1
+        ],
+        [
+          153,
+          1892.88
+        ],
+        [
+          156.38,
+          1891.48
+        ],
+        [
+          160,
+          1891
+        ],
+        [
+          163.62,
+          1891.48
+        ],
+        [
+          167,
+          1892.88
+        ],
+        [
+          169.9,
+          1895.1
+        ],
+        [
+          172.12,
+          1898
+        ],
+        [
+          173.52,
+          1901.38
+        ]
+      ],
+      "start": 706,
+      "end": 710,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Key 3",
+      "subcategory": "Grey2"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Key 3",
+      "param": "Grey2 Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Key 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Key 4",
+      "points": [
+        [
+          234,
+          1905
+        ],
+        [
+          233.52,
+          1908.62
+        ],
+        [
+          232.12,
+          1912
+        ],
+        [
+          229.9,
+          1914.9
+        ],
+        [
+          227,
+          1917.12
+        ],
+        [
+          223.62,
+          1918.52
+        ],
+        [
+          220,
+          1919
+        ],
+        [
+          216.38,
+          1918.52
+        ],
+        [
+          213,
+          1917.12
+        ],
+        [
+          210.1,
+          1914.9
+        ],
+        [
+          207.88,
+          1912
+        ],
+        [
+          206.48,
+          1908.62
+        ],
+        [
+          206,
+          1905
+        ],
+        [
+          206.48,
+          1901.38
+        ],
+        [
+          207.88,
+          1898
+        ],
+        [
+          210.1,
+          1895.1
+        ],
+        [
+          213,
+          1892.88
+        ],
+        [
+          216.38,
+          1891.48
+        ],
+        [
+          220,
+          1891
+        ],
+        [
+          223.62,
+          1891.48
+        ],
+        [
+          227,
+          1892.88
+        ],
+        [
+          229.9,
+          1895.1
+        ],
+        [
+          232.12,
+          1898
+        ],
+        [
+          233.52,
+          1901.38
+        ]
+      ],
+      "start": 706,
+      "end": 710,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Key 4",
+      "subcategory": "Grey2"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Key 4",
+      "param": "Grey2 Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Key 4",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Alarm LED",
+      "points": [
+        [
+          348,
+          1940
+        ],
+        [
+          347.73,
+          1942.07
+        ],
+        [
+          346.93,
+          1944
+        ],
+        [
+          345.66,
+          1945.66
+        ],
+        [
+          344,
+          1946.93
+        ],
+        [
+          342.07,
+          1947.73
+        ],
+        [
+          340,
+          1948
+        ],
+        [
+          337.93,
+          1947.73
+        ],
+        [
+          336,
+          1946.93
+        ],
+        [
+          334.34,
+          1945.66
+        ],
+        [
+          333.07,
+          1944
+        ],
+        [
+          332.27,
+          1942.07
+        ],
+        [
+          332,
+          1940
+        ],
+        [
+          332.27,
+          1937.93
+        ],
+        [
+          333.07,
+          1936
+        ],
+        [
+          334.34,
+          1934.34
+        ],
+        [
+          336,
+          1933.07
+        ],
+        [
+          337.93,
+          1932.27
+        ],
+        [
+          340,
+          1932
+        ],
+        [
+          342.07,
+          1932.27
+        ],
+        [
+          344,
+          1933.07
+        ],
+        [
+          345.66,
+          1934.34
+        ],
+        [
+          346.93,
+          1936
+        ],
+        [
+          347.73,
+          1937.93
+        ]
+      ],
+      "start": 706,
+      "end": 710,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Alarm LED",
+      "subcategory": "Red"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Alarm LED",
+      "param": "Red Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Alarm LED",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "UV Lamp Indicator",
+      "points": [
+        [
+          300,
+          1860
+        ],
+        [
+          370,
+          1860
+        ],
+        [
+          370,
+          1880
+        ],
+        [
+          300,
+          1880
+        ]
+      ],
+      "start": 706,
+      "end": 708,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "UV Lamp Indicator",
+      "subcategory": "Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "UV Lamp Indicator",
+      "param": "Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "UV Lamp Indicator",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Exhaust Filter Housing",
+      "points": [
+        [
+          440,
+          -550
+        ],
+        [
+          443.83,
+          -549.24
+        ],
+        [
+          447.07,
+          -547.07
+        ],
+        [
+          449.24,
+          -543.83
+        ],
+        [
+          450,
+          -540
+        ],
+        [
+          450,
+          -160
+        ],
+        [
+          449.24,
+          -156.17
+        ],
+        [
+          447.07,
+          -152.93
+        ],
+        [
+          443.83,
+          -150.76
+        ],
+        [
+          440,
+          -150
+        ],
+        [
+          -440,
+          -150
+        ],
+        [
+          -443.83,
+          -150.76
+        ],
+        [
+          -447.07,
+          -152.93
+        ],
+        [
+          -449.24,
+          -156.17
+        ],
+        [
+          -450,
+          -160
+        ],
+        [
+          -450,
+          -540
+        ],
+        [
+          -449.24,
+          -543.83
+        ],
+        [
+          -447.07,
+          -547.07
+        ],
+        [
+          -443.83,
+          -549.24
+        ],
+        [
+          -440,
+          -550
+        ]
+      ],
+      "start": 2050,
+      "end": 2150
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Exhaust Filter Housing",
+      "subcategory": "Body"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Exhaust Filter Housing",
+      "param": "Body Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Exhaust Filter Housing",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Exhaust Grille",
+      "points": [
+        [
+          -400,
+          -500
+        ],
+        [
+          400,
+          -500
+        ],
+        [
+          400,
+          -200
+        ],
+        [
+          -400,
+          -200
+        ]
+      ],
+      "start": 2150,
+      "end": 2153
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Exhaust Grille",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Exhaust Grille",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Exhaust Grille",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Side Window",
+      "points": [
+        [
+          -700,
+          1000
+        ],
+        [
+          -300,
+          1000
+        ],
+        [
+          -300,
+          1600
+        ],
+        [
+          -700,
+          1600
+        ]
+      ],
+      "start": -603,
+      "end": -600,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Side Window",
+      "subcategory": "Glass"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Side Window",
+      "param": "Glass Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Side Window",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Service Valve",
+      "points": [
+        [
+          -500,
+          1100
+        ],
+        [
+          -440,
+          1100
+        ],
+        [
+          -440,
+          1300
+        ],
+        [
+          -500,
+          1300
+        ]
+      ],
+      "start": 600,
+      "end": 603,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Service Valve",
+      "subcategory": "Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Service Valve",
+      "param": "Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Service Valve",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "Power",
+      "domain": "electrical",
+      "system": "PowerBalanced",
+      "solid": "Head Unit",
+      "side": "top"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Voltage",
+      "connector": "Power",
+      "connector_param": "Voltage",
+      "param": "Voltage"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Apparent Load",
+      "connector": "Power",
+      "connector_param": "Apparent Load",
+      "param": "Apparent Load"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\I\\_Images\\FMC_I_Casework_BiosafetyCabinet_ClassII.png"
+    }
+  ],
+  "values": {
+    "Width 1200 / 1500 mm, depth 780 mm, height 2150 mm on stand": {
+      "value": "W x 780 x 2150",
+      "source_status": "assumed",
+      "source": "record types; typical Class II A2 cabinet"
+    },
+    "Work surface 880 mm": {
+      "value": 880,
+      "source_status": "assumed",
+      "source": "typical stand height"
+    },
+    "BS EN 12469 Class II": {
+      "value": "EN 12469",
+      "source_status": "assumed",
+      "source": "record"
+    },
+    "Supply 240 V, 1200 VA": {
+      "value": 1200,
+      "source_status": "assumed",
+      "source": "typical Class II cabinet"
+    }
   }
- ],
- "values": {
-  "Width 1200 / 1500 mm, depth 780 mm, height 2150 mm on stand": {
-   "value": "W x 780 x 2150",
-   "source_status": "assumed",
-   "source": "record types; typical Class II A2 cabinet"
-  },
-  "Work surface 880 mm": {
-   "value": 880,
-   "source_status": "assumed",
-   "source": "typical stand height"
-  },
-  "BS EN 12469 Class II": {
-   "value": "EN 12469",
-   "source_status": "assumed",
-   "source": "record"
-  },
-  "Supply 240 V, 1200 VA": {
-   "value": 1200,
-   "source_status": "assumed",
-   "source": "typical Class II cabinet"
-  }
- }
 }

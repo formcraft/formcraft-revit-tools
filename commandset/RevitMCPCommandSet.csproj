@@ -67,6 +67,19 @@
       <Reference Include="System.Net.Http" />
     </ItemGroup>
 
+    <!-- Steel fabrication (owner 26 Oct): Revit's Advance Steel API ships with the Steel Connections add-in, not NuGet.
+         Built in only where it is installed; elsewhere the steel ops say the add-in is needed. -->
+    <PropertyGroup Condition="Exists('C:\Program Files\Autodesk\Revit $(RevitVersion)\AddIns\SteelConnections\ASObjectsMgd.dll')">
+        <SteelDir>C:\Program Files\Autodesk\Revit $(RevitVersion)\AddIns\SteelConnections\</SteelDir>
+        <DefineConstants>$(DefineConstants);FMC_STEEL</DefineConstants>
+    </PropertyGroup>
+    <ItemGroup Condition="'$(SteelDir)' != ''">
+      <Reference Include="ASObjectsMgd"><HintPath>$(SteelDir)ASObjectsMgd.dll</HintPath><Private>false</Private></Reference>
+      <Reference Include="ASGeometryMgd"><HintPath>$(SteelDir)ASGeometryMgd.dll</HintPath><Private>false</Private></Reference>
+      <Reference Include="ASCADLinkMgd"><HintPath>$(SteelDir)ASCADLinkMgd.dll</HintPath><Private>false</Private></Reference>
+      <Reference Include="Autodesk.SteelConnectionsDB"><HintPath>$(SteelDir)Autodesk.SteelConnectionsDB.dll</HintPath><Private>false</Private></Reference>
+    </ItemGroup>
+
     <Target Name="DeployCommandSet" AfterTargets="Build">
         <PropertyGroup>
             <PluginAddInRoot>$(ProjectDir)..\plugin\bin\AddIn $(RevitVersion) $(Configuration)\revit_mcp_plugin\</PluginAddInRoot>

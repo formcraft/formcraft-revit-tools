@@ -235,6 +235,23 @@ namespace RevitMCPCommandSet.Services
         private List<string> GenerateLabels(int count, string startLabel, string namingStyle)
         {
             List<string> labels = new List<string>();
+            // Night test 26 Oct: "TX1" came out as T and 1. A label ending in digits keeps its prefix and counts up
+            // (TX1, TX2, ...); a letter label with a prefix counts its last letter (GA, GB, ...).
+            var m = System.Text.RegularExpressions.Regex.Match(startLabel ?? "", @"^(.*?)(\d+)$");
+            if (m.Success)
+            {
+                int n = int.Parse(m.Groups[2].Value);
+                string pad = m.Groups[2].Value.StartsWith("0") ? new string('0', m.Groups[2].Value.Length) : "";
+                for (int i = 0; i < count; i++) labels.Add(m.Groups[1].Value + (n + i).ToString(pad.Length > 0 ? pad : "0"));
+                return labels;
+            }
+            if (namingStyle != "numeric" && (startLabel ?? "").Length > 1 && char.IsLetter(startLabel[startLabel.Length - 1]))
+            {
+                string prefix = startLabel.Substring(0, startLabel.Length - 1);
+                char last = char.ToUpper(startLabel[startLabel.Length - 1]);
+                for (int i = 0; i < count; i++) labels.Add(prefix + GenerateAlphabeticLabel(last, i));
+                return labels;
+            }
 
             if (namingStyle == "numeric")
             {
@@ -326,7 +343,7 @@ namespace RevitMCPCommandSet.Services
         public bool WaitForCompletion(int timeoutMilliseconds = 10000)
         {
             _resetEvent.Reset();
-        return _resetEvent.WaitOne(timeoutMilliseconds);
+        return FmcBusy.Wait(_resetEvent, timeoutMilliseconds);
         }
 
         /// <summary>

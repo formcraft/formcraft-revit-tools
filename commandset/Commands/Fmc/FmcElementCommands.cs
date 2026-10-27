@@ -20,7 +20,7 @@ namespace RevitMCPCommandSet.Commands.Fmc
             lock (_lock)
             {
                 _handler.Parameters = parameters ?? new JObject();
-                if (!RaiseAndWaitForCompletion(30000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!RaiseAndWaitForCompletion(300000)) throw new TimeoutException($"{CommandName} timed out");
                 if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
                 return _handler.Result;
             }
@@ -62,7 +62,7 @@ namespace RevitMCPCommandSet.Commands.Fmc
             lock (_lock)
             {
                 _handler.Parameters = parameters ?? new JObject();
-                if (!RaiseAndWaitForCompletion(30000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!RaiseAndWaitForCompletion(300000)) throw new TimeoutException($"{CommandName} timed out");
                 if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
                 return _handler.Result;
             }
@@ -77,6 +77,301 @@ namespace RevitMCPCommandSet.Commands.Fmc
 
         public FmcSchedulesApplyCommand(UIApplication uiApp) : base(new FmcSchedulesHandler(), uiApp) { }
         public override string CommandName => "fmc_schedules_apply";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = parameters ?? new JObject();
+                if (!RaiseAndWaitForCompletion(300000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
+
+    /// <summary>A list of model edits as one approved batch and one Undo (owner 26 Oct); behind the lock.</summary>
+    public class FmcModelEditCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcModelEditHandler _handler => (FmcModelEditHandler)Handler;
+
+        public FmcModelEditCommand(UIApplication uiApp) : base(new FmcModelEditHandler(), uiApp) { }
+        public override string CommandName => "fmc_model_edit";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = parameters ?? new JObject();
+                if (!RaiseAndWaitForCompletion(300000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
+
+    /// <summary>Elements' exact geometry in mm (owner 26 Oct); read-only.</summary>
+    public class FmcElementGeometryCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcElementGeometryHandler _handler => (FmcElementGeometryHandler)Handler;
+
+        public FmcElementGeometryCommand(UIApplication uiApp) : base(new FmcElementGeometryHandler(), uiApp) { }
+        public override string CommandName => "fmc_element_geometry";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = parameters ?? new JObject();
+                if (!RaiseAndWaitForCompletion(300000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
+
+    /// <summary>Starts one of Revit's built-in commands by name (owner 26 Oct); behind the lock (it may act on the selection).</summary>
+    public class FmcPostCommandCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcPostCommandHandler _handler => (FmcPostCommandHandler)Handler;
+
+        public FmcPostCommandCommand(UIApplication uiApp) : base(new FmcPostCommandHandler(), uiApp) { }
+        public override string CommandName => "fmc_post_command";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = parameters ?? new JObject();
+                if (!RaiseAndWaitForCompletion(60000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
+
+    /// <summary>Revit's built-in commands and whether each can start now (owner 26 Oct); read-only.</summary>
+    public class FmcListCommandsCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcPostCommandHandler _handler => (FmcPostCommandHandler)Handler;
+
+        public FmcListCommandsCommand(UIApplication uiApp) : base(new FmcPostCommandHandler(), uiApp) { }
+        public override string CommandName => "fmc_list_commands";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = new JObject { ["list"] = true };
+                if (!RaiseAndWaitForCompletion(60000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
+
+    /// <summary>A new family from a template, saved and opened in the Family Editor (owner 26 Oct).</summary>
+    public class FmcFamilyNewCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcFamilyNewHandler _handler => (FmcFamilyNewHandler)Handler;
+
+        public FmcFamilyNewCommand(UIApplication uiApp) : base(new FmcFamilyNewHandler(), uiApp) { }
+        public override string CommandName => "fmc_family_new";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = parameters ?? new JObject();
+                if (!RaiseAndWaitForCompletion(120000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
+
+    /// <summary>What Revit does with files: save, open, export, link, import, sync (owner 26 Oct); behind the lock.</summary>
+    public class FmcRevitFileCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcRevitFileHandler _handler => (FmcRevitFileHandler)Handler;
+
+        public FmcRevitFileCommand(UIApplication uiApp) : base(new FmcRevitFileHandler(), uiApp) { }
+        public override string CommandName => "fmc_revit_file";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = parameters ?? new JObject();
+                if (!RaiseAndWaitForCompletion(1800000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
+
+    /// <summary>A picture of a view or of elements, highlighted, for the AI to see (owner 26 Oct); read-only, rolled back.</summary>
+    public class FmcViewImageCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcViewImageHandler _handler => (FmcViewImageHandler)Handler;
+
+        public FmcViewImageCommand(UIApplication uiApp) : base(new FmcViewImageHandler(), uiApp) { }
+        public override string CommandName => "fmc_view_image";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = parameters ?? new JObject();
+                if (!RaiseAndWaitForCompletion(300000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
+
+    /// <summary>Read-only model checks with ids, places and a sentence each (owner 26 Oct).</summary>
+    public class FmcModelCheckCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcModelCheckHandler _handler => (FmcModelCheckHandler)Handler;
+
+        public FmcModelCheckCommand(UIApplication uiApp) : base(new FmcModelCheckHandler(), uiApp) { }
+        public override string CommandName => "fmc_model_check";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = parameters ?? new JObject();
+                if (!RaiseAndWaitForCompletion(300000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
+
+    /// <summary>Elements by category, level, type, comment, mark, workset, phase, box or view (Ogala report); read-only.</summary>
+    public class FmcSelectByCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcSelectByHandler _handler => (FmcSelectByHandler)Handler;
+
+        public FmcSelectByCommand(UIApplication uiApp) : base(new FmcSelectByHandler(), uiApp) { }
+        public override string CommandName => "fmc_select_by";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = parameters ?? new JObject();
+                if (!RaiseAndWaitForCompletion(120000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
+
+    /// <summary>undo_ai_batch (owner 27 Oct): posts Revit's Undo for the AI's own batches only (see FmcUndo).</summary>
+    public class FmcUndoCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcUndoHandler _handler => (FmcUndoHandler)Handler;
+
+        public FmcUndoCommand(UIApplication uiApp) : base(new FmcUndoHandler(), uiApp) { }
+        public override string CommandName => "fmc_undo";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = parameters ?? new JObject();
+                if (_handler.Parameters["action"] == null) _handler.Parameters["action"] = "undo";
+                if (!RaiseAndWaitForCompletion(60000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
+
+    /// <summary>What is on Revit's undo list, the AI's and a person's, and how a running undo_ai_batch is doing; read-only.</summary>
+    public class FmcUndoStatusCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcUndoHandler _handler => (FmcUndoHandler)Handler;
+
+        public FmcUndoStatusCommand(UIApplication uiApp) : base(new FmcUndoHandler(), uiApp) { }
+        public override string CommandName => "fmc_undo_status";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = new JObject { ["action"] = "status" };
+                if (!RaiseAndWaitForCompletion(60000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
+
+    /// <summary>material_report (owner 27 Oct, a slow model): textures, patterns, unused materials, heavy families; read-only.</summary>
+    public class FmcMaterialReportCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcMaterialReportHandler _handler => (FmcMaterialReportHandler)Handler;
+
+        public FmcMaterialReportCommand(UIApplication uiApp) : base(new FmcMaterialReportHandler(), uiApp) { }
+        public override string CommandName => "fmc_material_report";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = parameters ?? new JObject();
+                if (!RaiseAndWaitForCompletion(300000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
+
+    /// <summary>render_in_blender's Revit side (owner 27 Oct): a 3D view as FBX plus materials and extent; the model is not changed.</summary>
+    public class FmcSceneExportCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcSceneExportHandler _handler => (FmcSceneExportHandler)Handler;
+
+        public FmcSceneExportCommand(UIApplication uiApp) : base(new FmcSceneExportHandler(), uiApp) { }
+        public override string CommandName => "fmc_scene_export";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = parameters ?? new JObject();
+                if (!RaiseAndWaitForCompletion(900000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
+
+    /// <summary>The structure's facts from the architecture model or its link (owner 27 Oct); read-only.</summary>
+    public class FmcStructFactsCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcStructFactsHandler _handler => (FmcStructFactsHandler)Handler;
+
+        public FmcStructFactsCommand(UIApplication uiApp) : base(new FmcStructFactsHandler(), uiApp) { }
+        public override string CommandName => "fmc_struct_facts";
 
         public override object Execute(JObject parameters, string requestId)
         {

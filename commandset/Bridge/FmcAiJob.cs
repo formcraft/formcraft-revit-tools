@@ -107,6 +107,8 @@ namespace RevitMCPCommandSet.Bridge
 
         private static void Hook(UIApplication app)
         {
+            // owner 27 Oct: calls wait out saves and syncs; the AI's batches are followed on Revit's undo list
+            FmcBusy.Hook(app); FmcUndo.Hook(app);
             if (_hooked || app == null) return;
             try
             {

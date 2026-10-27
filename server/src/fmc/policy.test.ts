@@ -1,11 +1,12 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   DEFAULT_CONFIG, GuardConfig, archivePlan, checkTemplatePath, checkWritePath, csvLine, isInside,
-  liveLockVerdict, loadConfig, nameProblems, projectFamily, WRITE_COMMANDS,
+  activityOf, callActivity, liveLockVerdict, loadConfig, nameProblems, projectFamily, WRITE_COMMANDS,
 } from "./policy.js";
 
 const cfg: GuardConfig = {
@@ -120,4 +121,31 @@ test("live-model lock agrees with the shared cases (the Formcraft Browser's C# c
     const cfgCase: GuardConfig = { ...DEFAULT_CONFIG, ...fixture.config, live_model_lock: c.lock ?? fixture.config.live_model_lock };
     assert.equal(liveLockVerdict(c.doc, cfgCase).ok, c.ok, c.name);
   }
+});
+
+test("activityOf tags each call for the AI activity strip: change, dry run or read", () => {
+  assert.equal(activityOf("delete_element", { ids: [1] }), "change");
+  assert.equal(activityOf("fmc_diagram_draw", { dry_run: true }), "dryrun");
+  assert.equal(activityOf("fmc_recipe_apply", { dry_run: false }), "change");
+  assert.equal(activityOf("fmc_recipe_apply", { dry_run: true }), "dryrun");
+  assert.equal(activityOf("get_selected_elements", {}), "read");
+  assert.equal(activityOf("fmc_document_info", undefined), "read");
+  assert.equal(activityOf("send_code_to_revit", [1, 2]), "change");
+  // A person's own click in the pane (the pane runs the CLI with FMC_CALLER=pane) never sets the strip.
+  assert.equal(callActivity("delete_element", {}, { FMC_CALLER: "pane" }), "person");
+  assert.equal(callActivity("delete_element", {}, {}), "change");
+});
+
+test("Speed (owner 27 Oct): the guard config is read again only when the file changes, and a broken one still fails closed", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-guard-")), file = path.join(dir, "fmc_guard.json");
+  fs.writeFileSync(file, JSON.stringify({ live_model_lock: true, write_roots: ["D:\A"] }));
+  const a = loadConfig(file);
+  a.config.write_roots.push("C:\Evil");
+  assert.deepEqual(loadConfig(file).config.write_roots, ["D:\A"], "each caller gets its own copy");
+  fs.writeFileSync(file, JSON.stringify({ live_model_lock: true, write_roots: ["D:\A", "D:\B"] }));
+  fs.utimesSync(file, new Date(), new Date(Date.now() + 5000));
+  assert.deepEqual(loadConfig(file).config.write_roots, ["D:\A", "D:\B"]);
+  fs.writeFileSync(file, "{ broken");
+  fs.utimesSync(file, new Date(), new Date(Date.now() + 10000));
+  assert.equal(loadConfig(file).source, "defaults");
 });
