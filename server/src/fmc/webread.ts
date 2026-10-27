@@ -115,8 +115,7 @@ export async function readWeb(url: string, opts: { fresh?: boolean; maxAgeH?: nu
   if (!robotsCache.has(u.host)) {
     await politely(u.host, gap);
     // no robots.txt (4xx) means no rules; a server error or no answer means the rules are unknown: read nothing
-    const unknown = "User-agent: *
-Disallow: /";
+    const unknown = "User-agent: *\nDisallow: /";
     try { const r = await fetchText(`${u.protocol}//${u.host}/robots.txt`, timeout); robotsCache.set(u.host, r.status < 400 ? r.body : r.status < 500 ? "" : unknown); } catch { robotsCache.set(u.host, unknown); }
   }
   if (!robotsAllows(robotsCache.get(u.host) ?? "", u.pathname + u.search)) throw new Error(`${u.host}'s robots.txt asks agents not to read (or could not be read) ${u.pathname}`);

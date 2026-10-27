@@ -28,10 +28,8 @@ async function allowed(url) {
   const u = new URL(url);
   if (!robots.has(u.host)) {
     // no robots.txt (4xx) means no rules; a server error or no answer means the rules are unknown: fetch nothing
-    try { const r = await fetch(`${u.protocol}//${u.host}/robots.txt`, { headers: { "User-Agent": AGENT }, signal: AbortSignal.timeout(30_000) }); robots.set(u.host, r.ok ? await r.text() : r.status < 500 ? "" : "User-agent: *
-Disallow: /"); }
-    catch { robots.set(u.host, "User-agent: *
-Disallow: /"); }
+    try { const r = await fetch(`${u.protocol}//${u.host}/robots.txt`, { headers: { "User-Agent": AGENT }, signal: AbortSignal.timeout(30_000) }); robots.set(u.host, r.ok ? await r.text() : r.status < 500 ? "" : "User-agent: *\nDisallow: /"); }
+    catch { robots.set(u.host, "User-agent: *\nDisallow: /"); }
   }
   return robotsAllows(robots.get(u.host), u.pathname + u.search);
 }
