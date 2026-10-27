@@ -14,7 +14,11 @@ import { Facts, FactWall, Pt, Std, inside, takedown } from "./loads.js";
 export interface FrameOptions {
   max_span_mm?: number; tol_mm?: number; beam_width_mm?: number; bearing_kpa?: number; founding_depth_mm?: number;
   fck_mpa?: number; fy_mpa?: number; rho?: number; min_wall_mm?: number;
+  /** the types the sized ones are made from (concrete families: b/h, Width/Length/Foundation Thickness) */
+  types?: { column?: string; beam?: string; pad?: string };
 }
+// Revit 2025's metric template and library (M_Concrete-Rectangular-Column, M_Concrete-Rectangular Beam, M_Footing-Rectangular)
+export const FRAME_TYPES = { column: "300 x 450mm", beam: "300 x 600mm", pad: "1800 x 1200 x 450mm" };
 
 type XY = [number, number];
 const r0 = (x: number) => Math.round(x);
@@ -256,11 +260,12 @@ export function planFrame(f: Facts, std: Std, o: FrameOptions = {}) {
     const bottom = k.bottom === ground ? padTop : k.bottom, key = `${bottom}|${k.top}|${k.size_mm.join("x")}|${fr.angle}`;
     const g = groups.get(key) ?? { bottom, top: k.top, size: k.size_mm, points: [], rotation: fr.angle }; g.points.push(k.at_mm); groups.set(key, g);
   }
-  for (const g of groups.values()) ops.push({ op: "column", level: g.bottom, top_level: g.top, points_mm: g.points, size_mm: g.size, ...(g.rotation ? { rotation_deg: g.rotation } : {}) });
-  for (const b of beams) ops.push({ op: "beam", level: b.level, start_mm: [...b.start, 0], end_mm: [...b.end, 0], size_mm: b.size_mm });
+  const T = { ...FRAME_TYPES, ...(o.types ?? {}) };
+  for (const g of groups.values()) ops.push({ op: "column", type_name: T.column, level: g.bottom, top_level: g.top, points_mm: g.points, size_mm: g.size, ...(g.rotation ? { rotation_deg: g.rotation } : {}) });
+  for (const b of beams) ops.push({ op: "beam", type_name: T.beam, level: b.level, start_mm: [...b.start, 0], end_mm: [...b.end, 0], size_mm: b.size_mm });
   const padGroups = new Map<string, { size: [number, number, number]; points: XY[] }>();
   for (const p of pads) { const key = p.size_mm.join("x"); const g = padGroups.get(key) ?? { size: p.size_mm, points: [] }; g.points.push(p.at_mm); padGroups.set(key, g); }
-  for (const g of padGroups.values()) ops.push({ op: "isolated_foundation", level: padTop, points_mm: g.points, size_mm: g.size });
+  for (const g of padGroups.values()) ops.push({ op: "isolated_foundation", type_name: T.pad, level: padTop, points_mm: g.points, size_mm: g.size });
 
   return {
     status: "PRELIMINARY – NOT FOR CONSTRUCTION (no engineer of record)",
