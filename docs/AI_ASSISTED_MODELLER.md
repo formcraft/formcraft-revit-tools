@@ -263,6 +263,25 @@ the first step is to measure, then switch views, and only then touch materials.
 - **Next, if Realistic views are still slow:** light textures, small copies the materials point to while navigating
   and back to the full files for rendering. Waiting on the report's numbers from the real model.
 
+## Renders in Blender: render_in_blender (owner 27 Oct)
+
+Revit's own renderer isn't good enough; Blender's Cycles is. One call goes from a Revit 3D view to a picture.
+
+1. **Revit exports** the view (`fmc_scene_export`, the model isn't changed) through its CustomExporter as OBJ + MTL:
+   every face keeps its Revit material, one object per element, metres, Revit's coordinates. `detail` 0-15 is the
+   tessellation (6 by default for aerial cameras). Revit's FBX was tried first: 1.2 GB for Ogala and no materials in
+   Blender; the OBJ is 25 MB with all 80 materials.
+2. **Blender builds a new scene** (the person's own scenes are left alone) with Formcraft's fixed script
+   (`server/src/hub/blender.ts`), sent to the Blender Lab MCP add-on on localhost:9876 with only JSON values, never AI
+   code: Revit materials become Blender materials by name (glass, metal, wood, brick, concrete, stone, tile, grass,
+   water, fabric, paint...), coloured from Revit (sRGB made linear), a sky, a ground plane, a camera (`aerial_front` by
+   default), Cycles on the GPU (OptiX), denoised.
+3. **Files** only in `<project>_WIP\_Exchange\Renders\<stamp>_<view>`: scene.obj/.mtl/.json, render.png, scene.blend.
+   A dry run first says where.
+
+First test (Ogala ground floor, {3D}, aerial front, 1600 x 900, 64 samples, Quadro T1000): export 7.5 s, Blender 26 s.
+Next: a Formcraft material library for Blender (real textures per kit material), lighting presets, Revit view cameras.
+
 ## Session rules in code (owner 26 Oct)
 
 What used to be pasted into each chat is now the plugin's own:

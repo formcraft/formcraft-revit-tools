@@ -8,7 +8,7 @@ import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 
-export type AppId = "revit" | "navisworks" | "robot" | "rhino" | "powerbi";
+export type AppId = "revit" | "navisworks" | "robot" | "rhino" | "powerbi" | "blender";
 export type ConnectorKind = "bridge" | "process" | "gateway";
 
 export interface AppDef {
@@ -39,6 +39,9 @@ export const APPS: AppDef[] = [
     tools: ["fmc_robot"], connector: ["<server>\\robot\\fmc-robot.exe"] },
   { id: "rhino", name: "Rhino 8", kind: "bridge", exe: "C:\\Program Files\\Rhino 8\\System\\Rhino.exe", process: "Rhino.exe",
     tools: ["fmc_rhino"], connector: ["McNeel\\Rhinoceros\\packages\\8.0\\Formcraft.Rhino\\1.0.0\\Formcraft.Rhino.rhp"] },
+  // owner 27 Oct: renders. The connector is the Blender Lab MCP add-on; the server sends only its own scripts (hub/blender.ts)
+  { id: "blender", name: "Blender 5.2", kind: "bridge", exe: "C:\\Program Files\\Blender Foundation\\Blender 5.2\\blender.exe", process: "blender.exe",
+    tools: ["fmc_blender"], connector: ["Blender Foundation\\Blender\\5.2\\extensions\\user_default\\mcp\\__init__.py"] },
   { id: "powerbi", name: "Power BI Desktop", kind: "gateway", exe: "C:\\Program Files\\Microsoft Power BI Desktop\\bin\\PBIDesktop.exe", process: "PBIDesktop.exe",
     tools: ["fmc_powerbi"], connector: [], planned: "H2" },
 ];
