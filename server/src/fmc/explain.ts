@@ -70,6 +70,7 @@ function op(o: P, n: Names, i: number): string[] {
     }
     case "section_box": return [`${h}${o.off ? "Section box off" : "Section box"}${o.view || o.views ? ` on ${o.view ?? (o.views ?? []).join(", ")}` : " in a new 3D view"}${o.room ? `, room ${o.room}` : ""}${o.level ? `, ${o.level}` : ""}${count ? `, around ${count} elements` : ""}`];
     case "box_views": return [`${h}One boxed 3D view per ${o.per}${(o.items ?? []).length ? ` (${(o.items ?? []).length})` : " (all)"}`];
+    case "display_mode": return [`${h}${o.mode === "render" ? "Render look (Realistic, surface patterns on)" : "Light look for navigating (Shaded, surface patterns off)"} in ${Array.isArray(o.views) ? `${o.views.length} views` : "every 3D view"}${o.templates ? ", templates too" : ""}`];
     case "site_floor": return [`${h}Floor on the site at ${o.level}${o.type_name ? `, ${o.type_name}` : ""}, cutting the toposolid${o.cut === false ? " (no cut)" : ""}`];
     case "mirror": return [`${h}Mirror ${count} elements about ${xy(o.line_mm?.[0])} → ${xy(o.line_mm?.[1])}${o.copy === false ? " (moving the originals)" : " (as copies)"}:`, ...named(n, o.ids)];
     case "join": case "unjoin": case "switch_join": case "cut": case "uncut":

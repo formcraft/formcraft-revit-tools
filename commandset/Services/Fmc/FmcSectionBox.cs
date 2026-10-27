@@ -302,7 +302,7 @@ namespace RevitMCPCommandSet.Services.Fmc
 
     public partial class FmcModelEditHandler
     {
-        /// <summary>section_box, box_views and site_floor (owner 27 Oct); null for any other op.</summary>
+        /// <summary>section_box, box_views and site_floor (owner 27 Oct); then display_mode; null for any other op.</summary>
         private JObject BoxOp(Document doc, string name, JObject op, List<List<ElementId>> made, List<ElementId> created)
         {
             switch (name)
@@ -415,7 +415,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     }
                     return new JObject { ["floor"] = f.Id.Value, ["top_mm"] = Mm(top), ["topo"] = topo?.Id.Value, ["excavated"] = excavated, ["notes"] = notes.Count > 0 ? notes : null };
                 }
-                default: return null;
+                default: return DisplayOp(doc, name, op, made, created);
             }
         }
 

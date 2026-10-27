@@ -151,6 +151,8 @@ function cases() {
   add("boxes", "section_box 3D section along a line", [{ op: "section_box", cut_line_mm: [[0, floorMid[1]], [20000, floorMid[1]]], keep: "left", depth_mm: 8000, name: "NIGHT Box cut line" }]);
   add("boxes", "section_box turned along a wall, then off", [{ op: "section_box", ids: [wall], along: wall, name: "NIGHT Box along" }, { op: "section_box", view: "$1", off: true }]);
   add("boxes", "section_box plan crop + view range", [{ op: "create_view", kind: "floor_plan", level: GF, name: "NIGHT Plan box" }, { op: "section_box", view: "$1", ids: [wall], margin_mm: 1000, view_range: true }]);
+  add("display", "display_mode navigate then render", [{ op: "section_box", ids: [wall], name: "NIGHT Display" },
+    { op: "display_mode", mode: "navigate", views: ["$1"], detail: "coarse" }, { op: "display_mode", mode: "render", views: ["$1"] }]);
   add("boxes", "box_views per level", [{ op: "box_views", per: "level", prefix: "NIGHT Box" }]);
   add("boxes", "box_views per element", [{ op: "box_views", per: "element", items: [wall, floor], prefix: "NIGHT Box" }]);
   add("site", "site_floor on a toposolid, excavating", [{ op: "toposolid", level: levels[0], points_mm: [[X, 160000, 0], [X + 10000, 160000, 600], [X + 10000, 170000, 900], [X, 170000, 300]] },
@@ -170,6 +172,7 @@ function cases() {
 
 async function reads() {
   await test("reads", "model_check", "fmc_model_check", { limit: 20 }, (r) => typeof r?.problems === "number");
+  await test("reads", "material_report", "fmc_material_report", { limit: 10 }, (r) => typeof r?.summary?.materials === "number" && Array.isArray(r?.advice));
   await test("reads", "select_by level + category", "fmc_select_by", { level: GF, category: "Walls" }, (r) => r?.count > 0);
   await test("reads", "select_by box", "fmc_select_by", { box_mm: [[0, 0], [20000, 20000]] }, (r) => r?.count > 0);
   await test("reads", "get_element_geometry", "fmc_element_geometry", { ids: [wall, floor, roof] }, (r) => r?.elements?.length === 3);

@@ -132,4 +132,24 @@ export function registerSeeViewTool(server: McpServer) {
       }
     }
   );
+
+  server.tool(
+    "material_report",
+    "Formcraft (owner 27 Oct, a slow model), read-only: what makes the model heavy to draw. Materials with their texture " +
+      "files (found or missing, pixels, MB), model surface patterns, unused and duplicate materials, unused render " +
+      "appearances, views in Realistic, the heaviest families (faces and mesh triangles x instances), CAD imports, and " +
+      "advice in words. textures false skips reading the files, families false the families; limit per list (default 40). " +
+      "Then modify_model display_mode navigate | render switches the views; purge clears the unused.",
+    {
+      textures: z.boolean().optional(), families: z.boolean().optional(), limit: z.number().int().min(1).max(500).optional(),
+    },
+    async (args) => {
+      try {
+        const r = await withRevitConnection((c) => c.sendCommand("fmc_material_report", args));
+        return { content: [{ type: "text" as const, text: JSON.stringify(r, null, 2) }] };
+      } catch (e) {
+        return { content: [{ type: "text" as const, text: `material_report: ${e instanceof Error ? e.message : String(e)}` }], isError: true };
+      }
+    }
+  );
 }

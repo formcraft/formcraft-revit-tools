@@ -321,4 +321,25 @@ namespace RevitMCPCommandSet.Commands.Fmc
             }
         }
     }
+
+    /// <summary>material_report (owner 27 Oct, a slow model): textures, patterns, unused materials, heavy families; read-only.</summary>
+    public class FmcMaterialReportCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcMaterialReportHandler _handler => (FmcMaterialReportHandler)Handler;
+
+        public FmcMaterialReportCommand(UIApplication uiApp) : base(new FmcMaterialReportHandler(), uiApp) { }
+        public override string CommandName => "fmc_material_report";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = parameters ?? new JObject();
+                if (!RaiseAndWaitForCompletion(300000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
 }

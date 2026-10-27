@@ -19,7 +19,7 @@ export const MODEL_EDIT_OPS = ["copy", "rotate", "mirror", "join", "unjoin", "sw
   "roof_extrusion", "fascia", "gutter", "slab_edge", "curtain_system_by_face", "building_pad", "swept_blend", "model_text", "copy_to_views", "copy_to_levels", "starting_view", "work_plane", "zone", "panel_schedule", "view_list", "reveal_hidden",
   "structural_connection", "boundary_condition", "analytical_panel", "load_combination", "multi_rebar_annotation", "rebar_coupler", "rebar_shape_bar", "rebar_cover_type", "fabric_sheet", "truss_chord", "mep_connector", "load_classification", "demand_factor", "mep_settings", "check_systems", "radial_dimension", "diameter_dimension", "align", "steel_plate", "bolts", "anchors", "weld", "shorten", "notch", "corner_fillet",
   "create_wall", "create_floor", "create_ceiling", "create_room", "place_family", "rehost", "edit_sketch", "wall_profile",
-  "section_box", "box_views", "site_floor", "for_each"] as const;
+  "section_box", "box_views", "site_floor", "for_each", "display_mode"] as const;
 
 export const MODIFY_MODEL_DESCRIPTION =
   "Formcraft: edit the model like a person does in Revit (owner 26 Oct), a list of ops as ONE batch: one approval, one " +
@@ -147,6 +147,10 @@ export const MODIFY_MODEL_DESCRIPTION =
   "below|above}, move_mm, along (an element id: the box turns to it) or angle_deg. " +
   "site_floor {level, outline_mm | loops_mm, type_name?, topo? (default the toposolid under it), at?: centre|highest|lowest|average " +
   "(where its top meets the ground), offset_mm?, cut? (default true: it excavates the toposolid)}. " +
+  "display_mode {mode: navigate|render, views? (ids, names, \"active\"; default every 3D view), style? (shaded, shaded_edges, " +
+  "consistent, realistic, realistic_edges, hidden), detail? coarse|medium|fine, templates? (true: change the template of a " +
+  "templated view)} (owner 27 Oct, a slow model: navigate = Shaded and model surface patterns hidden, quick to orbit; render = " +
+  "Realistic, patterns back. Materials aren't touched; see material_report first). " +
   "Core: create_wall {level, start_mm + end_mm | points_mm, type_name?, height_mm? | top_level?, base_offset_mm?, top_offset_mm?, structural?, flip?} · " +
   "create_floor / create_ceiling {level, outline_mm | loops_mm (first the outside, then holes), type_name?, offset_mm?, structural?} · " +
   "create_room {level, points_mm, name?, number?} · place_family {type_name | type_id, points_mm, level?, host? (wall id or \"$n\" from this batch), " +
@@ -177,7 +181,7 @@ const NO_PICTURE = new Set(["delete", "set_param", "create_view", "duplicate_vie
   "save_family", "load_into_project", "family_param", "family_type", "family_category", "create_material", "line_style", "line_pattern",
   "fill_pattern", "object_style", "project_info", "project_units", "global_param", "associate_global", "coordinates", "acquire_coordinates",
   "publish_coordinates", "create_workset", "set_workset", "purge", "save_selection", "copy_types", "keynote_file", "starting_view",
-  "work_plane", "zone", "panel_schedule", "view_list", "reveal_hidden", "section_box", "box_views", "load_case", "load_combination", "load_classification",
+  "work_plane", "zone", "panel_schedule", "view_list", "reveal_hidden", "section_box", "box_views", "display_mode", "load_case", "load_combination", "load_classification",
   "demand_factor", "mep_settings", "check_systems", "rebar_cover_type", "area_plan", "energy_model"]);
 
 export const UNDO_AI_BATCH_DESCRIPTION =
