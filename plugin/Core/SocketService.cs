@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -360,6 +360,11 @@ namespace revit_mcp_plugin.Core
                     return CreateErrorResponse(request.Id, JsonRPCErrorCodes.InternalError, busy);
                 }
 
+                // The AI activity strip (owner, 15 Oct): the server tags each call change, dryrun or read; the ribbon shows
+                // it while the call runs (Shell/AiRibbonStrip.cs). The tag is the strip's only; the command never sees it.
+                string activity = parameters.Value<string>("_fmcActivity");
+                parameters.Remove("_fmcActivity");
+                var aiCall = global::Formcraft.Shell.Services.AiActivityTracker.Shared.Begin(activity);
                 var job = RevitJobLog.Watch(request.Id, request.Method);
                 bool entered = false;
                 try
@@ -375,6 +380,7 @@ namespace revit_mcp_plugin.Core
                     // queued behind the command that went busy: refused now, not sent to wait behind it
                     if (BridgeBusy.Refusal(out busy))
                     {
+                        aiCall.End(false);
                         job.Done(false, busy);
                         ActivityLog.Add(request.Method, false, watch.ElapsedMilliseconds, "refused: Revit busy");
                         return CreateErrorResponse(request.Id, JsonRPCErrorCodes.InternalError, busy);
@@ -388,12 +394,14 @@ namespace revit_mcp_plugin.Core
                         _lastDocInfoAt = DateTime.UtcNow;
                     }
 
+                    aiCall.End(true);
                     job.Done(true, null, result);
                     ActivityLog.Add(request.Method, true, watch.ElapsedMilliseconds);
                     return CreateSuccessResponse(request.Id, result);
                 }
                 catch (Exception ex)
                 {
+                    aiCall.End(false);
                     // F-072: the wait ran out but the work may still run on Revit's API thread: the bridge is busy with it
                     // until it ends (its job record stays open, with heartbeats; its result is kept when it ends)
                     bool stillRunning = BridgeBusy.IsWaitTimeout(ex) && BridgeBusy.Mark(request.Method, request.Id, job.Started, job, command);
