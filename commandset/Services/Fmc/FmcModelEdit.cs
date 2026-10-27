@@ -26,7 +26,7 @@ namespace RevitMCPCommandSet.Services.Fmc
         public JObject Parameters { get; set; } = new JObject();
         public JObject Result { get; private set; } = new JObject();
         public string Error { get; private set; } = "";
-        public bool WaitForCompletion(int timeoutMilliseconds = 10000) { _done.Reset(); return _done.WaitOne(timeoutMilliseconds); }
+        public bool WaitForCompletion(int timeoutMilliseconds = 10000) { _done.Reset(); return FmcBusy.Wait(_done, timeoutMilliseconds); }
         public string GetName() => "Formcraft model edit";
 
         private static double Ft(double mm) => mm / 304.8;
@@ -36,9 +36,10 @@ namespace RevitMCPCommandSet.Services.Fmc
         {
             Result = new JObject(); Error = "";
             _uidoc = app.ActiveUIDocument; _openView = null;
+            FmcBusy.Hook(app); FmcUndo.Hook(app);
             try { Result = Run(app.ActiveUIDocument?.Document ?? throw new InvalidOperationException("No model is open")); if (_openView != null && !(Result.Value<bool?>("dry_run") ?? false)) _uidoc.RequestViewChange(_openView); }
             catch (Exception e) { Error = e.Message; }
-            finally { _done.Set(); }
+            finally { FmcUndo.Close(); _done.Set(); }
         }
 
         private JObject Run(Document doc)
@@ -52,7 +53,12 @@ namespace RevitMCPCommandSet.Services.Fmc
             var results = new JArray();
             // Owner 26 Oct: each batch says which Revit warnings it added, so mistakes are fixed at once (Ogala reached 98)
             var warningsBefore = WarningKeys(doc);
-            using (var g = new TransactionGroup(doc, "FMC AI edit"))
+            // owner 27 Oct: the batch's id is in its name on Revit's undo list ("FMC AI edit 3a0112: ..."), for undo_ai_batch
+            string why = Parameters.Value<string>("why");
+            string summary = string.IsNullOrWhiteSpace(why) ? string.Join(", ", ops.Select(o => o.Value<string>("op")).Distinct().Take(6)) : why.Trim();
+            if (summary.Length > 100) summary = summary.Substring(0, 97) + "...";
+            string undoId = FmcUndo.Begin("FMC AI edit {id}: " + summary);
+            using (var g = new TransactionGroup(doc, FmcUndo.Label))
             {
                 g.Start();
                 for (int i = 0; i < ops.Count; i++)
@@ -78,6 +84,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 }
                 if (dry) { g.RollBack(); return new JObject { ["applied"] = false, ["dry_run"] = true, ["ops"] = results, ["note"] = "Dry run: rolled back, nothing changed" }; }
                 g.Assimilate();
+                FmcUndo.Committed(doc, true, made.SelectMany(m => m).Select(x => x.Value));
             }
             // Saving and loading families can't run inside a transaction: they run once the batch is in
             var after = new JArray();
@@ -86,7 +93,8 @@ namespace RevitMCPCommandSet.Services.Fmc
                 try { after.Add(a()); }
                 catch (Exception ex) { after.Add(new JObject { ["failed"] = ex.Message }); }
             }
-            var done = new JObject { ["applied"] = true, ["ops"] = results, ["undo"] = "One Undo in Revit takes the whole batch back: FMC AI edit" };
+            var done = new JObject { ["applied"] = true, ["batch_id"] = undoId, ["ops"] = results,
+                ["undo"] = $"undo_ai_batch {{batch_id: \"{undoId}\"}} takes the whole batch back (one Undo in Revit: \"{FmcUndo.Label}\")" };
             if (after.Count > 0) done["after"] = after;
             var added = doc.GetWarnings().Where(w => !warningsBefore.Contains(Key(w))).ToList();
             done["warnings_total"] = doc.GetWarnings().Count;
@@ -101,6 +109,9 @@ namespace RevitMCPCommandSet.Services.Fmc
             }
             return done;
         }
+
+        /// <summary>Which side of its wall a hosted instance faces: +1 the wall's exterior, -1 the interior.</summary>
+        private static int FacingSide(FamilyInstance f) => f.Host is Wall w ? Math.Sign(f.FacingOrientation.DotProduct(w.Orientation)) : 0;
 
         private static string Key(FailureMessage w) =>
             w.GetDescriptionText() + "|" + string.Join(",", w.GetFailingElements().Select(x => x.Value).OrderBy(x => x));
@@ -153,9 +164,30 @@ namespace RevitMCPCommandSet.Services.Fmc
                     XYZ dir = (l[1] - l[0]).Normalize();
                     Plane plane = Plane.CreateByNormalAndOrigin(dir.CrossProduct(XYZ.BasisZ).Normalize(), l[0]);
                     bool keep = op.Value<bool?>("copy") ?? true;
+                    // Ogala night report: a mirrored door or window could face the other side of its wall. Each one's side
+                    // (facing against its wall's exterior) is noted, and the mirrored one is flipped back to it (keep_side false: as Revit leaves it)
+                    var hosted = ids.Select(doc.GetElement).OfType<FamilyInstance>().Where(f => f.Host is Wall)
+                        .Select(f => (f.Id, f.Symbol.Id, Mirror: plane, At: (f.Location as LocationPoint)?.Point, Side: FacingSide(f))).ToList();
                     var copies = ElementTransformUtils.MirrorElements(doc, ids, plane, keep);
                     if (copies != null) created.AddRange(copies);
-                    return new JObject { ["mirrored"] = ids.Count, ["kept_originals"] = keep };
+                    int flipped = 0;
+                    if ((op.Value<bool?>("keep_side") ?? true) && hosted.Count > 0)
+                    {
+                        doc.Regenerate();
+                        var pool = (keep ? (IEnumerable<ElementId>)(copies ?? new List<ElementId>()) : ids).Select(doc.GetElement).OfType<FamilyInstance>().Where(f => f.Host is Wall).ToList();
+                        foreach (var h in hosted)
+                        {
+                            if (h.At == null) continue;
+                            XYZ q = h.At - 2 * plane.Normal.DotProduct(h.At - plane.Origin) * plane.Normal;
+                            FamilyInstance m = keep
+                                ? pool.Where(f => f.Symbol.Id == h.Item2 && f.Location is LocationPoint).OrderBy(f => ((LocationPoint)f.Location).Point.DistanceTo(q)).FirstOrDefault()
+                                : pool.FirstOrDefault(f => f.Id == h.Item1);
+                            if (m == null) continue;
+                            pool.Remove(m);
+                            if (FacingSide(m) != h.Side && m.CanFlipFacing) { m.flipFacing(); flipped++; }
+                        }
+                    }
+                    return new JObject { ["mirrored"] = ids.Count, ["kept_originals"] = keep, ["sides_kept"] = flipped > 0 ? flipped : (int?)null };
                 }
                 case "join":
                 case "unjoin":
@@ -598,7 +630,7 @@ namespace RevitMCPCommandSet.Services.Fmc
         public JObject Parameters { get; set; } = new JObject();
         public JObject Result { get; private set; } = new JObject();
         public string Error { get; private set; } = "";
-        public bool WaitForCompletion(int timeoutMilliseconds = 10000) { _done.Reset(); return _done.WaitOne(timeoutMilliseconds); }
+        public bool WaitForCompletion(int timeoutMilliseconds = 10000) { _done.Reset(); return FmcBusy.Wait(_done, timeoutMilliseconds); }
         public string GetName() => "Formcraft element geometry";
 
         private static JArray P(XYZ p) => new JArray(Math.Round(p.X * 304.8, 1), Math.Round(p.Y * 304.8, 1), Math.Round(p.Z * 304.8, 1));
@@ -681,7 +713,7 @@ namespace RevitMCPCommandSet.Services.Fmc
         public JObject Parameters { get; set; } = new JObject();
         public JObject Result { get; private set; } = new JObject();
         public string Error { get; private set; } = "";
-        public bool WaitForCompletion(int timeoutMilliseconds = 10000) { _done.Reset(); return _done.WaitOne(timeoutMilliseconds); }
+        public bool WaitForCompletion(int timeoutMilliseconds = 10000) { _done.Reset(); return FmcBusy.Wait(_done, timeoutMilliseconds); }
         public string GetName() => "Formcraft run a Revit command";
 
         public void Execute(UIApplication app)

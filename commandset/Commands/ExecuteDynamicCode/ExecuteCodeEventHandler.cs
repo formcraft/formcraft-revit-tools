@@ -82,7 +82,7 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
         public ExecutionResultInfo TakeResult(string job) => _results.TryRemove(job ?? "", out var r) ? r : null;
 
         // Never resets here: SetExecutionParameters does, so a script that finishes before the wait starts is not missed.
-        public bool WaitForCompletion(int timeoutMilliseconds = 10000) => _resetEvent.WaitOne(timeoutMilliseconds);
+        public bool WaitForCompletion(int timeoutMilliseconds = 10000) => FmcBusy.Wait(_resetEvent, timeoutMilliseconds);
 
         public void Execute(UIApplication app)
         {
@@ -129,6 +129,9 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
                         foreach (var id in e.GetModifiedElementIds()) modified.Add(id.Value);
                     };
                     app.Application.DocumentChanged += changed;
+                    // owner 27 Oct: a script is one entry on the undo list, so undo_ai_batch can take it back
+                    string undoId = FmcUndo.Begin("FMC: AI script");
+                    bool kept = false;
                     try
                     {
                         if (_transactionMode == TransactionModeNone)
@@ -146,7 +149,7 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
                                 }
                                 finally
                                 {
-                                    if (group.HasStarted()) { if (whole) group.Assimilate(); else group.RollBack(); }
+                                    if (group.HasStarted()) { if (whole) { group.Assimilate(); kept = true; } else group.RollBack(); }
                                 }
                             }
                             info.Transaction = "none (the script manages its own; all or nothing: a failure rolls every step back)";
@@ -184,6 +187,7 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
                                 else
                                 {
                                     TransactionStatus status = transaction.Commit();
+                                    kept = status == TransactionStatus.Committed;
                                     info.Transaction = status.ToString();
                                     if (status != TransactionStatus.Committed)
                                         throw new ScriptFailure("FMC-CODE-ROLLED-BACK",
@@ -195,6 +199,9 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
                     }
                     finally
                     {
+                        FmcUndo.Committed(doc, kept, added);
+                        FmcUndo.Close();
+                        if (kept) info.UndoId = undoId;
                         app.Application.DocumentChanged -= changed;
                         info.RunMs = run.ElapsedMilliseconds;
                         CheckStillOpen(doc, info);
@@ -335,6 +342,7 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
                             })),
                         });
                     tree = FmcScriptSource.AddTracking(tree);
+                    tree = FmcScriptSource.AddCancelChecks(tree);
                 }
                 CSharpCompilation compilation = CSharpCompilation.Create(
                     "FmcScript_" + Guid.NewGuid().ToString("N"),
@@ -539,6 +547,10 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
 
         [JsonProperty("modifiedCount", NullValueHandling = NullValueHandling.Ignore)]
         public int? ModifiedCount { get; set; }
+
+        /// <summary>The script's id on Revit's undo list, for undo_ai_batch (owner 27 Oct).</summary>
+        [JsonProperty("undoId", NullValueHandling = NullValueHandling.Ignore)]
+        public string UndoId { get; set; }
 
         [JsonProperty("document", NullValueHandling = NullValueHandling.Ignore)]
         public string Document { get; set; }

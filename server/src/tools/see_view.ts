@@ -1,15 +1,28 @@
 import fs from "node:fs";
+import path from "node:path";
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
+import { checkWritePath, loadConfig } from "../fmc/policy.js";
 
 type Content = { type: "text"; text: string } | { type: "image"; data: string; mimeType: string };
 
 /** A view or a close-up of elements as an image the AI sees (owner 26 Oct: "the MCP tool has to take images"). */
 export async function viewImage(params: Record<string, unknown>): Promise<{ image?: Content; facts: any }> {
-  const facts = await withRevitConnection((c) => c.sendCommand("fmc_view_image", params));
+  const { save_to, ...rest } = params as Record<string, unknown> & { save_to?: string };
+  const facts = await withRevitConnection((c) => c.sendCommand("fmc_view_image", rest));
   const file = String(facts?.file ?? "");
   if (!file || !fs.existsSync(file)) return { facts };
+  // owner 27 Oct: a picture kept as a file too (a perspective for the person, a record of a detail)
+  if (save_to) {
+    const target = /\.png$/i.test(save_to) ? save_to : path.join(save_to, path.basename(file));
+    // the hard rule: files go only to WIP and staging folders
+    const v = checkWritePath(target, loadConfig().config, { checkName: false });
+    if (!v.ok) throw new Error(`save_to refused: ${v.reasons.join("; ")}`);
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    fs.copyFileSync(file, target);
+    facts.saved_to = target;
+  }
   const data = fs.readFileSync(file).toString("base64");
   try { fs.unlinkSync(file); } catch { /* temp folder is cleaned anyway */ }
   return { image: { type: "image", data, mimeType: "image/png" }, facts: { ...facts, file: undefined } };
@@ -27,7 +40,10 @@ export function touchedIds(ops: Array<Record<string, any>>, answer: any): number
 export const SEE_VIEW_DESCRIPTION =
   "Formcraft (owner 26 Oct): look at the model. Returns a picture you can see. ids: a 3D close-up around those elements " +
   "with them in red (from: iso, iso_nw, iso_ne, iso_sw, front, back, left, right, top; margin_mm; ghost true greys the " +
-  "rest). view: a plan, section, 3D view or sheet by name or id (with ids, those are highlighted in it). selection true: " +
+  "rest). box: a section box to look into (modify_model's BOX: room, level slice or cut_mm, cut_line_mm, slice, grow_mm, " +
+  "top_mm...; with view, it boxes that 3D view, plan or section for this picture only). perspective true: a camera on the box " +
+  "(from inside: standing in it at eye height; eye_mm + target_mm place the camera). save_to: a folder or .png path to keep the " +
+  "picture (a WIP or staging folder). view: a plan, section, 3D view or sheet by name or id (with ids, those are highlighted in it). selection true: " +
   "what the person has selected in Revit. size: pixels (default 1024; each picture costs tokens, so look when it " +
   "matters: after geometry changes, and at problems model_check finds). Nothing in the model changes.";
 
@@ -39,7 +55,12 @@ export function registerSeeViewTool(server: McpServer) {
       ids: z.array(z.union([z.number(), z.string()])).max(500).optional(),
       view: z.string().optional(),
       selection: z.boolean().optional(),
-      from: z.enum(["iso", "iso_nw", "iso_ne", "iso_sw", "front", "back", "left", "right", "top"]).optional(),
+      from: z.enum(["iso", "iso_nw", "iso_ne", "iso_sw", "front", "back", "left", "right", "top", "inside"]).optional(),
+      box: z.record(z.string(), z.any()).optional(),
+      perspective: z.boolean().optional(),
+      eye_mm: z.array(z.number()).min(2).max(3).optional(),
+      target_mm: z.array(z.number()).min(2).max(3).optional(),
+      save_to: z.string().optional(),
       margin_mm: z.number().optional(),
       ghost: z.boolean().optional(),
       style: z.enum(["shaded", "hidden"]).optional(),

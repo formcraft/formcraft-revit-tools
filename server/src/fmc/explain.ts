@@ -41,6 +41,9 @@ function op(o: P, n: Names, i: number): string[] {
   switch (o.op) {
     case "copy": return [`${h}Copy ${count} elements ${(o.count ?? 1) > 1 ? `${o.count} times, ` : ""}by ${(o.vector_mm ?? []).map((v: number) => Math.round(v)).join(", ")} mm:`, ...named(n, o.ids)];
     case "rotate": return [`${h}Rotate ${count} elements ${o.angle_deg}°${o.copy ? " (as copies)" : ""}:`, ...named(n, o.ids)];
+    case "section_box": return [`${h}${o.off ? "Section box off" : "Section box"}${o.view || o.views ? ` on ${o.view ?? (o.views ?? []).join(", ")}` : " in a new 3D view"}${o.room ? `, room ${o.room}` : ""}${o.level ? `, ${o.level}` : ""}${count ? `, around ${count} elements` : ""}`];
+    case "box_views": return [`${h}One boxed 3D view per ${o.per}${(o.items ?? []).length ? ` (${(o.items ?? []).length})` : " (all)"}`];
+    case "site_floor": return [`${h}Floor on the site at ${o.level}${o.type_name ? `, ${o.type_name}` : ""}, cutting the toposolid${o.cut === false ? " (no cut)" : ""}`];
     case "mirror": return [`${h}Mirror ${count} elements about ${xy(o.line_mm?.[0])} → ${xy(o.line_mm?.[1])}${o.copy === false ? " (moving the originals)" : " (as copies)"}:`, ...named(n, o.ids)];
     case "join": case "unjoin": case "switch_join": case "cut": case "uncut":
       return [`${h}${o.op.replace("_", " ")} geometry: ${count} elements:`, ...named(n, o.ids)];
@@ -133,6 +136,9 @@ export function explain(command: string, params: unknown, names: Names = { types
       return cap(["New levels:", ...data.map((d) => `${d.name ?? "?"} at ${mm(d.elevation)}`)]);
     case "fmc_revit_file": return [`Revit file action: ${p.action}${p.format ? ` ${p.format}` : ""}${p.path ? ` ${p.path}` : ""}${p.folder ? ` to ${p.folder}` : ""}` +
       (["sync", "relinquish"].includes(p.action) ? " (changes the central model for everyone)" : "")];
+    case "fmc_undo":
+      return [p.action === "redo" ? "Redo in Revit: the AI batch the last undo took back"
+        : `Undo in Revit: ${p.batch_id ? `AI batch ${p.batch_id} (and any AI batches above it)` : `the AI's last ${p.count ?? 1} batch${(p.count ?? 1) > 1 ? "es" : ""}`}; never a person's work`];
     case "fmc_family_new": return [`New family from ${p.template ?? "Metric Generic Model"}, saved as ${p.path}`];
     case "fmc_post_command":
       return cap([`Starts Revit's ${p.command} command, as if clicked on the ribbon` + ((p.select_ids ?? []).length ? `, with ${(p.select_ids ?? []).length} elements selected:` : ""),

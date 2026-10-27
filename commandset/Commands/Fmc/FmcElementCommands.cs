@@ -278,4 +278,47 @@ namespace RevitMCPCommandSet.Commands.Fmc
             }
         }
     }
+
+    /// <summary>undo_ai_batch (owner 27 Oct): posts Revit's Undo for the AI's own batches only (see FmcUndo).</summary>
+    public class FmcUndoCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcUndoHandler _handler => (FmcUndoHandler)Handler;
+
+        public FmcUndoCommand(UIApplication uiApp) : base(new FmcUndoHandler(), uiApp) { }
+        public override string CommandName => "fmc_undo";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = parameters ?? new JObject();
+                if (_handler.Parameters["action"] == null) _handler.Parameters["action"] = "undo";
+                if (!RaiseAndWaitForCompletion(60000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
+
+    /// <summary>What is on Revit's undo list, the AI's and a person's, and how a running undo_ai_batch is doing; read-only.</summary>
+    public class FmcUndoStatusCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcUndoHandler _handler => (FmcUndoHandler)Handler;
+
+        public FmcUndoStatusCommand(UIApplication uiApp) : base(new FmcUndoHandler(), uiApp) { }
+        public override string CommandName => "fmc_undo_status";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = new JObject { ["action"] = "status" };
+                if (!RaiseAndWaitForCompletion(60000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
 }

@@ -66,6 +66,7 @@ export function formatCodeResult(response: any): { text: string; isError: boolea
   const times = `compile ${response.compileMs ?? "?"} ms, run ${response.runMs ?? "?"} ms`;
   const extra = {
     job: response.job, document: response.document, transaction: response.transaction,
+    undo_id: response.undoId || undefined,
     warnings: response.warnings?.length ? response.warnings : undefined,
     failures: response.failures?.length ? response.failures : undefined,
     dialogs: response.dialogs?.length ? response.dialogs : undefined,

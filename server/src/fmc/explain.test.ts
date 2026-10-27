@@ -54,3 +54,12 @@ test("Names asked of Revit, and modify_model's batch size counts every element a
   assert.deepEqual(w, { typeIds: [9], elementIds: ["1", "2", "3", "4", "5"] });
   assert.equal(batchSize({ ops: [{ op: "delete", ids: Array.from({ length: 98 }, (_, i) => i) }, { op: "create_roof" }] }), 99);
 });
+
+test("Undo and section boxes (owner 27 Oct): the person reads what is undone and what gets boxed", () => {
+  assert.match(explain("fmc_undo", { batch_id: "3a0112" })[0], /AI batch 3a0112.*never a person's work/);
+  assert.match(explain("fmc_undo", { count: 2 })[0], /last 2 batches/);
+  const box = explain("fmc_model_edit", { ops: [{ op: "section_box", room: "101" }, { op: "box_views", per: "level" }, { op: "site_floor", level: "Site" }] });
+  assert.ok(box.some((l) => /Section box in a new 3D view, room 101/.test(l)));
+  assert.ok(box.some((l) => /boxed 3D view per level \(all\)/.test(l)));
+  assert.ok(box.some((l) => /cutting the toposolid/.test(l)));
+});

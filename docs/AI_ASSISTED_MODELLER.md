@@ -203,6 +203,32 @@ it from, and logs the request in `%APPDATA%\Formcraft\recipe_requests.jsonl`.
 - Pane › Approvals › **Show the AI a problem**: select elements, type what's wrong, Send to AI. The AI reads it with
   `fmc_ai inbox` (status shows `inbox_unread`): the view with the selection in red, the ids and the note.
 
+## Section boxes and undo (owner 27 Oct)
+
+- One box description works everywhere. Start the box from any mix of:
+  - elements, a category on a level, or a room
+  - corners, or another view's box
+  - a cut line (a 3D section along a line)
+  - a storey slice or a plan-like cut at a height
+
+  Then adjust it: margin, grow or shrink each side, top and bottom heights, slice, move, or turn it along an element.
+- `modify_model section_box` puts the box on views:
+  - 3D views get a section box.
+  - Plans and sections get their crop, with the view range or far clip as an option.
+  - With no view named, it makes a new 3D view, like Revit's Selection Box.
+  - `off` turns the box off.
+- `box_views` makes one boxed 3D view per room, level or element. Running it again re-boxes the views it made before.
+- `see_view box` looks into a box for one picture; nothing is kept.
+  - `perspective` puts a camera on the box; `from: inside` stands in it at eye height.
+  - `save_to` keeps the PNG, in a WIP or staging folder only.
+- `undo_ai_batch` takes back the AI's own work with Revit's Undo:
+  - by `batch_id` (from the `modify_model` answer, or a script's `undo_id`), or the last `count` batches
+  - The add-in keeps its own copy of Revit's undo list, which the Revit API doesn't expose. It refuses when a person's
+    change is above the batch: the AI never undoes a person's work.
+  - The model must be the active window. A sync or closing the model clears the list.
+- Calls sent while Revit saves or syncs wait their turn: the save time doesn't count against their timeout.
+- A cancelled script stops at its next loop step, and its changes roll back.
+
 ## Session rules in code (owner 26 Oct)
 
 What used to be pasted into each chat is now the plugin's own:

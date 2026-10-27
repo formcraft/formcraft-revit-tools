@@ -393,9 +393,12 @@ Fixed in `fix/ogala-night-report`:
 - `send_code_to_revit` results now carry `advice` for slow compiles (Revit low on memory), scripts that change far more than expected, and scripts trying to save.
 
 Still open:
-- No undo of the last AI batch other than `run_revit_command` Undo.
-- No typed op for a site floor on a toposolid; no perspective export with a section box.
-- Calls aren't queued during an autosave (the longer timeout softens this).
-- A cancelled script still runs to the end.
-- Mirroring a wall-hosted element can put it on the wrong side.
 - Kit items 7-9 in KIT_CHANGE_REQUEST_2026-10-26_Ogala.md.
+
+Closed on 27 Oct in `feat/section-boxes-undo` (the owner asked to fill every gap):
+- `undo_ai_batch`: undoes the AI's own batches with Revit's Undo (by `batch_id`, or the last `count`), never a person's work. `status` shows the undo list as the AI sees it; `redo` brings a batch back.
+- Section boxes everywhere: `modify_model` `section_box` (3D views, plan and section crops) and `box_views` (a boxed 3D view per room, level or element); `see_view` `box`, `perspective`, `from: inside`, `eye_mm`/`target_mm`, `save_to` (a perspective with a section box, kept as a file).
+- `site_floor`: a floor on a toposolid's surface that cuts it (Revit's excavation).
+- Calls wait out a save or a sync instead of timing out (the time Revit spends saving doesn't count).
+- A cancelled script stops at the next loop step (a cancel check is added to every loop); its changes roll back.
+- `mirror` keeps a door or window facing the same side of its wall (`keep_side: false` leaves Revit's result).

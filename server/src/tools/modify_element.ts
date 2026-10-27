@@ -18,7 +18,8 @@ export const MODEL_EDIT_OPS = ["copy", "rotate", "mirror", "join", "unjoin", "sw
   "column", "beam", "brace", "isolated_foundation", "wall_foundation", "foundation_slab", "structural_floor", "truss", "beam_system", "rebar", "area_reinforcement", "path_reinforcement", "fabric_area", "coping", "point_load", "line_load", "area_load", "load_case", "analytical_member", "duct", "pipe", "cable_tray", "conduit", "flex_duct", "flex_pipe", "connect", "insulation", "lining", "convert_placeholders", "wire", "space", "space_separation", "toposolid", "toposolid_subdivision", "mass_floors", "wall_by_face", "wall_sweep", "curtain_grid", "mullions", "wall_opening", "area_plan", "area", "area_boundary", "create_schedule", "revision", "radial_array", "offset", "split", "extend", "wall_join", "create_group", "place_group", "ungroup", "assembly", "parts", "displace", "paint", "remove_paint", "demolish", "path_of_travel", "energy_model", "create_material", "line_style", "line_pattern", "fill_pattern", "object_style", "project_info", "project_units", "global_param", "associate_global", "coordinates", "acquire_coordinates", "publish_coordinates", "create_workset", "set_workset", "purge", "save_selection", "copy_types", "keynote_file",
   "roof_extrusion", "fascia", "gutter", "slab_edge", "curtain_system_by_face", "building_pad", "swept_blend", "model_text", "copy_to_views", "copy_to_levels", "starting_view", "work_plane", "zone", "panel_schedule", "view_list", "reveal_hidden",
   "structural_connection", "boundary_condition", "analytical_panel", "load_combination", "multi_rebar_annotation", "rebar_coupler", "rebar_shape_bar", "rebar_cover_type", "fabric_sheet", "truss_chord", "mep_connector", "load_classification", "demand_factor", "mep_settings", "check_systems", "radial_dimension", "diameter_dimension", "align", "steel_plate", "bolts", "anchors", "weld", "shorten", "notch", "corner_fillet",
-  "create_wall", "create_floor", "create_ceiling", "create_room", "place_family", "rehost", "edit_sketch", "wall_profile"] as const;
+  "create_wall", "create_floor", "create_ceiling", "create_room", "place_family", "rehost", "edit_sketch", "wall_profile",
+  "section_box", "box_views", "site_floor"] as const;
 
 export const MODIFY_MODEL_DESCRIPTION =
   "Formcraft: edit the model like a person does in Revit (owner 26 Oct), a list of ops as ONE batch: one approval, one " +
@@ -29,7 +30,8 @@ export const MODIFY_MODEL_DESCRIPTION =
   "move {ids, vector_mm} · " +
   "copy {ids, vector_mm, count? (more than 1 = an array, each copy one vector further)} · " +
   "rotate {ids, angle_deg (anticlockwise), center_mm? (default the elements' centre), copy?} · " +
-  "mirror {ids, line_mm: [[x, y], [x, y]] (the axis), copy? (default true keeps the originals)} · " +
+  "mirror {ids, line_mm: [[x, y], [x, y]] (the axis), copy? (default true keeps the originals), keep_side? (default true: a mirrored " +
+  "door or window faces the same side of its wall as the original)} · " +
   "join / unjoin / switch_join {ids: [a, b, ...] (a with each other)} · cut / uncut {ids: [cutting, cut, ...]} · " +
   "pin / unpin {ids} · " +
   "set_param {ids, param, value_mm | by_mm | value_text | value, on_type?} (value_text also names a level or material, " +
@@ -121,6 +123,18 @@ export const MODIFY_MODEL_DESCRIPTION =
   "copy_to_views {ids, from_view, views} (Paste Aligned to views) · copy_to_levels {ids, levels, from_level?} (Paste Aligned to levels) · " +
   "starting_view {view} · work_plane {view, level? | plane?, show?} · zone {level, name?, spaces?} · panel_schedule {ids (panels)} · " +
   "view_list {name?} · reveal_hidden {view, on?}. " +
+  "Section boxes (owner 27 Oct; use them freely to focus, detail and narrow down): section_box {view | views (3D views get a " +
+  "section box; plans and sections get their crop, view_range true / far_clip true too; \"active\" is the open view; none: a new " +
+  "3D view, name?), BOX, from? (iso, iso_nw, iso_ne, iso_sw, front, back, left, right, top), show?, open?, off? (true turns it off), perspective? (new view)} · " +
+  "box_views {per: room|level|element, items? (default all rooms or levels), prefix?, BOX modifiers, from?} (one boxed 3D view each; " +
+  "a view of the same name is re-boxed). BOX: where it starts, combined: ids, category (+ level: on that level), room (id, number or " +
+  "name), box_mm [[x, y, z], [x, y, z]], from_view (copy another view's box), cut_line_mm [[x, y], [x, y]] + keep left|right + " +
+  "depth_mm? (a 3D section along a line), level (+ to_level | height_mm | cut_mm: a storey slice, or a plan-like cut); none: the " +
+  "view's own box, else the building. Then margin_mm (number or [x, y, z]; default 300 round elements, 200 round a room), grow_mm " +
+  "{top, bottom, left|west, right|east, front|south, back|north} (negative shrinks), top_mm / bottom_mm (absolute), slice {at_mm, keep: " +
+  "below|above}, move_mm, along (an element id: the box turns to it) or angle_deg. " +
+  "site_floor {level, outline_mm | loops_mm, type_name?, topo? (default the toposolid under it), at?: centre|highest|lowest|average " +
+  "(where its top meets the ground), offset_mm?, cut? (default true: it excavates the toposolid)}. " +
   "Core: create_wall {level, start_mm + end_mm | points_mm, type_name?, height_mm? | top_level?, base_offset_mm?, top_offset_mm?, structural?, flip?} · " +
   "create_floor / create_ceiling {level, outline_mm | loops_mm (first the outside, then holes), type_name?, offset_mm?, structural?} · " +
   "create_room {level, points_mm, name?, number?} · place_family {type_name | type_id, points_mm, level?, host? (wall id or \"$n\" from this batch), " +
@@ -151,10 +165,50 @@ const NO_PICTURE = new Set(["delete", "set_param", "create_view", "duplicate_vie
   "save_family", "load_into_project", "family_param", "family_type", "family_category", "create_material", "line_style", "line_pattern",
   "fill_pattern", "object_style", "project_info", "project_units", "global_param", "associate_global", "coordinates", "acquire_coordinates",
   "publish_coordinates", "create_workset", "set_workset", "purge", "save_selection", "copy_types", "keynote_file", "starting_view",
-  "work_plane", "zone", "panel_schedule", "view_list", "reveal_hidden", "load_case", "load_combination", "load_classification",
+  "work_plane", "zone", "panel_schedule", "view_list", "reveal_hidden", "section_box", "box_views", "load_case", "load_combination", "load_classification",
   "demand_factor", "mep_settings", "check_systems", "rebar_cover_type", "area_plan", "energy_model"]);
 
+export const UNDO_AI_BATCH_DESCRIPTION =
+  "Formcraft (owner 27 Oct): take back the AI's own work with Revit's Undo. batch_id (modify_model answers it; scripts answer " +
+  "undo_id): that batch and any AI batches made after it; without it, the last count batches (default 1). It never undoes a " +
+  "person's work: if a person changed the model after the batch, it refuses and says what is on top. action status: Revit's undo " +
+  "list as the AI sees it (the AI's batches and a person's changes); redo: the batch the last undo took back. The model must be the " +
+  "active window in Revit; a sync with central or closing the model clears Revit's undo list.";
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 export function registerModifyModelTool(server: McpServer) {
+  server.tool(
+    "undo_ai_batch",
+    UNDO_AI_BATCH_DESCRIPTION,
+    {
+      action: z.enum(["undo", "redo", "status"]).optional().default("undo"),
+      batch_id: z.string().max(40).optional(),
+      count: z.number().int().min(1).max(20).optional(),
+    },
+    async (args) => {
+      try {
+        if (args.action === "status") return reply(await withRevitConnection((c) => c.sendCommand("fmc_undo_status", {})));
+        const r = await withRevitConnection((c) => c.sendCommand("fmc_undo", { action: args.action, ...(args.batch_id ? { batch_id: args.batch_id } : {}), ...(args.count ? { count: args.count } : {}) }));
+        if (!r?.posted) return reply(r, !r?.queued && !r?.approval);
+        // Revit runs each Undo once it is idle; the add-in posts the next after Revit reports the last
+        let s: any;
+        for (let i = 0; i < 60; i++) {
+          await sleep(500);
+          s = await withRevitConnection((c) => c.sendCommand("fmc_undo_status", {}));
+          if (!s?.undo_running) break;
+        }
+        const top = s?.undo_list?.[0];
+        return reply({
+          asked: r.undoing ?? r.redoing, done: s?.done, stopped: s?.stopped ?? (s?.undo_running ? "still running: check with action status" : undefined),
+          now_on_top: top ? `${top.kind === "ai" ? "AI" : "a person"}: ${top.label}` : "nothing",
+        }, Boolean(s?.stopped));
+      } catch (e) {
+        return reply(`undo_ai_batch: ${e instanceof Error ? e.message : String(e)}`, true);
+      }
+    }
+  );
+
   server.tool(
     "modify_model",
     MODIFY_MODEL_DESCRIPTION,

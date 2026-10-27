@@ -164,7 +164,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     if (op.Value<bool?>("on") ?? true) v.EnableRevealHiddenMode(); else v.DisableTemporaryViewMode(TemporaryViewMode.RevealHiddenElements);
                     return new JObject { ["reveal_hidden"] = v.Name };
                 }
-                default: return null;
+                default: return BoxOp(doc, name, op, made, created);
             }
         }
 
