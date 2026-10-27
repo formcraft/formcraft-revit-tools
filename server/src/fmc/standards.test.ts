@@ -27,3 +27,16 @@ test("recipes: found by words; when none fits, the name to write and the standar
   const rel = relatedStandards(resolve(kit, null), "sliding door").map((r) => r.key);
   assert.ok(rel.includes("doors.internal") && rel.includes("accessibility.turning_circle"));
 });
+
+test("Standards sources (owner 27 Oct): each code's revision, keys and open gaps; filtered by id, title or key", async () => {
+  const { sourcesView } = await import("./standards.js");
+  const reg = { sources: [
+    { id: "UG-NBC-2019", title: "The National Building Code, 2019", keys: ["stairs.headroom", "rooms.kitchen_min"],
+      gaps: [{ id: "NBC-1", what: "stair width digit lost", where: "para 41", kind: "lost_digit", status: "open" }, { id: "NBC-0", what: "x", where: "y", kind: "table", status: "filled" }] },
+    { id: "UG-ACC-2019", title: "Accessibility Code", keys: ["accessibility.ramp"], gaps: [{ id: "ACC-1", what: "figures", where: "Schedule", kind: "figure", status: "open" }] },
+  ] };
+  const all = sourcesView(reg);
+  assert.equal(all.count, 2); assert.equal(all.open_gaps, 2); assert.deepEqual(all.by_kind, { lost_digit: 1, figure: 1 });
+  const one = sourcesView(reg, "kitchen");
+  assert.equal(one.count, 1); assert.equal(one.sources[0].id, "UG-NBC-2019"); assert.deepEqual(one.sources[0].gaps.map((g) => g.id), ["NBC-1"]);
+});

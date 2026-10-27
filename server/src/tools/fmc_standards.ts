@@ -5,7 +5,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { loadConfig } from "../fmc/policy.js";
 import { kitPaths, recipeIndex } from "../fmc/context.js";
 import { formcraftDir } from "../fmc/aiuse_io.js";
-import { StandardsFile, findRecipes, lookup, relatedStandards, resolve, suggestRecipe } from "../fmc/standards.js";
+import { SourcesFile, StandardsFile, findRecipes, lookup, relatedStandards, resolve, sourcesView, suggestRecipe } from "../fmc/standards.js";
 
 const win = path.win32;
 
@@ -21,7 +21,9 @@ export const FMC_STANDARDS_DESCRIPTION =
   "you use it). The project's 01_WIP\\FMC_Project_Standards.json overrides the kit. action recipe {words (e.g. sliding " +
   "door, louvred gable vent), discipline? (A, E, FP, I, M, P)}: the kit recipes that fit, best first; when none fits, " +
   "the recipe name and folder to write and the standards to build it from, and the request is logged for the BIM " +
-  "Manager. action set {key, value, note?}: a project value (written to the project's 01_WIP). Always check here " +
+  "Manager. action set {key, value, note?}: a project value (written to the project's 01_WIP). action sources {topic? (a " +
+  "source id, title words or a key)}: the codes the values come from (revision, file fingerprint, what was read) and the " +
+  "gaps still open (figures, tables, lost digits, things to confirm, parts not read): fill them as you go. Always check here " +
   "before inventing a size, height or type.";
 
 export function registerFmcStandardsTool(server: McpServer) {
@@ -29,7 +31,7 @@ export function registerFmcStandardsTool(server: McpServer) {
     "fmc_standards",
     FMC_STANDARDS_DESCRIPTION,
     {
-      action: z.enum(["get", "recipe", "set"]).optional().default("get"),
+      action: z.enum(["get", "recipe", "set", "sources"]).optional().default("get"),
       topic: z.string().optional(),
       use: z.string().optional(),
       words: z.string().optional(),
@@ -50,6 +52,14 @@ export function registerFmcStandardsTool(server: McpServer) {
         const proj = projFile ? readJson<Record<string, unknown>>(projFile) : null;
         const all = resolve(kit, proj, args.use);
         const where = { kit: kit ? kitFile : `missing: ${kitFile}`, project: projFile || "no project folder found" };
+
+        if (args.action === "sources") {
+          const regFile = win.join(win.dirname(kitFile), "FMC_Standards_Sources.json");
+          const reg = readJson<SourcesFile>(regFile);
+          if (!reg) return reply({ error: `No sources register at ${regFile}` }, true);
+          return reply({ ...sourcesView(reg, args.topic), file: regFile,
+            next: "Fill a gap from the printed code (or a better copy), then the BIM Manager updates the value and marks the gap filled in the register" });
+        }
 
         if (args.action === "set") {
           if (!projFile) return reply({ error: "No project folder: give project_folder (the folder holding 01_WIP)" }, true);
