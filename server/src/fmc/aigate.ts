@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import { DocInfo, GuardConfig } from "./policy.js";
 import { NEVER, PLACEABLE, USER_LINE, aiVerdict, batchSize, generalState, recordBatch } from "./aiuse.js";
 import { Names, elementNames, explain, namesWanted } from "./explain.js";
@@ -101,25 +102,33 @@ async function describe(command: string, params: object, send: (command: string,
   return explain(command, params, names);
 }
 
-/** When each model was last saved by the server (or the server started): auto-save counts from here. */
-const lastSaved = new Map<string, number>();
-const serverStart = Date.now();
+/**
+ * When a model was last saved: the file's own time on disk, so it counts across processes and sessions (owner 27 Oct:
+ * the old clock started with each server process, so scripts and fresh sessions never reached it and an afternoon's
+ * frame was lost when Revit crashed). null when the file can't be read (never saved): save now.
+ */
+export function savedAtOnDisk(file: string): number | null {
+  try { return fs.statSync(file).mtimeMs; } catch { return null; }
+}
 
 /**
- * Owner 26 Oct: an afternoon of AI work existed only in an open Revit. After a change, the model saves itself when
- * auto_save_minutes have passed (testing default 10; 0 off). Never a workshared model (the person syncs those), never
- * a model in the background.
+ * Owner 26 Oct: an afternoon of AI work existed only in an open Revit. After a change, the model saves itself when its
+ * file on disk is older than auto_save_minutes (testing default 10; 0 off). Never a workshared model (the person syncs
+ * those), never a model in the background. A failed save is reported on the result (auto_save_failed), never hidden.
  */
 export async function autoSave(active: DocInfo & { isActive?: boolean }, ai: { mode?: string; auto_save_minutes?: number },
-  send: (command: string, params: object) => Promise<any>, result: unknown, now = Date.now()): Promise<boolean> {
+  send: (command: string, params: object) => Promise<any>, result: unknown, now = Date.now(), savedAt: (file: string) => number | null = savedAtOnDisk): Promise<boolean> {
   const minutes = ai.auto_save_minutes ?? (ai.mode === "testing" ? 10 : 0);
   if (!(minutes > 0) || active.isWorkshared || active.isActive === false || !active.path) return false;
-  const key = active.path.toLowerCase();
-  if (now - (lastSaved.get(key) ?? serverStart) < minutes * 60_000) return false;
+  const last = savedAt(active.path);
+  if (last !== null && now - last < minutes * 60_000) return false;
+  const out = result && typeof result === "object" ? (result as Record<string, unknown>) : null;
   try {
     await send("fmc_revit_file", { action: "save" });
-    lastSaved.set(key, now);
-    if (result && typeof result === "object") (result as Record<string, unknown>).auto_saved = new Date(now).toISOString();
+    if (out) out.auto_saved = new Date(now).toISOString();
     return true;
-  } catch { return false; }
+  } catch (e) {
+    if (out) out.auto_save_failed = `the model didn't save itself: ${e instanceof Error ? e.message : String(e)}; save it (revit_file save)`;
+    return false;
+  }
 }
