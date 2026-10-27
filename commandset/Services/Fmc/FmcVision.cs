@@ -22,7 +22,7 @@ namespace RevitMCPCommandSet.Services.Fmc
         public JObject Parameters { get; set; } = new JObject();
         public JObject Result { get; private set; } = new JObject();
         public string Error { get; private set; } = "";
-        public bool WaitForCompletion(int timeoutMilliseconds = 10000) { _done.Reset(); return _done.WaitOne(timeoutMilliseconds); }
+        public bool WaitForCompletion(int timeoutMilliseconds = 10000) { _done.Reset(); return FmcBusy.Wait(_done, timeoutMilliseconds); }
         public string GetName() => "Formcraft view image";
 
         public void Execute(UIApplication app)
@@ -54,23 +54,77 @@ namespace RevitMCPCommandSet.Services.Fmc
                 using (var t = new Transaction(doc, "FMC view image"))
                 {
                     t.Start();
-                    string mode = Parameters.Value<string>("mode") ?? (ids.Count > 0 && Parameters["view"] == null ? "focus" : "view");
-                    if (mode == "focus" && ids.Count > 0)
+                    // owner 27 Oct: box is a section-box spec (FmcBox: room, level slice, cut line, slice, grow...); perspective
+                    // true is a camera on it (from inside: standing in the room), eye_mm / target_mm place the camera
+                    var spec = Parameters["box"] as JObject;
+                    bool persp = Parameters.Value<bool?>("perspective") == true || Parameters["eye_mm"] != null;
+                    string mode = Parameters.Value<string>("mode") ?? ((ids.Count > 0 || spec != null || persp) && Parameters["view"] == null ? "focus" : "view");
+                    if (mode == "focus" && (ids.Count > 0 || spec != null || persp))
                     {
-                        // a 3D box around the elements, padded, seen from the chosen side
+                        // a 3D box around the elements (or the spec), padded, seen from the chosen side
                         var vft = new FilteredElementCollector(doc).OfClass(typeof(ViewFamilyType)).Cast<ViewFamilyType>().First(x => x.ViewFamily == ViewFamily.ThreeDimensional);
-                        var v3 = View3D.CreateIsometric(doc, vft.Id);
-                        BoundingBoxXYZ box = Union(doc, ids) ?? throw new InvalidOperationException("these elements have no extent to look at");
-                        double pad = (Parameters.Value<double?>("margin_mm") ?? 1500) / 304.8;
-                        v3.SetSectionBox(new BoundingBoxXYZ { Min = box.Min - new XYZ(pad, pad, pad / 3), Max = box.Max + new XYZ(pad, pad, pad / 3) });
-                        v3.SetOrientation(Orientation(Parameters.Value<string>("from") ?? "iso", (box.Min + box.Max) / 2));
+                        var v3 = persp ? View3D.CreatePerspective(doc, vft.Id) : View3D.CreateIsometric(doc, vft.Id);
+                        BoundingBoxXYZ sb;
+                        if (spec != null || ids.Count == 0)
+                        {
+                            var s = (JObject)(spec ?? new JObject()).DeepClone();
+                            if (s["ids"] == null && ids.Count > 0) s["ids"] = new JArray(ids.Select(x => x.Value));
+                            if (s["margin_mm"] == null && Parameters["margin_mm"] != null) s["margin_mm"] = Parameters["margin_mm"];
+                            sb = FmcBox.Resolve(doc, s, null, null, out string what);
+                            notes.Add("box: " + what);
+                        }
+                        else
+                        {
+                            BoundingBoxXYZ box = Union(doc, ids) ?? throw new InvalidOperationException("these elements have no extent to look at");
+                            double pad = (Parameters.Value<double?>("margin_mm") ?? 1500) / 304.8;
+                            sb = new BoundingBoxXYZ { Min = box.Min - new XYZ(pad, pad, pad / 3), Max = box.Max + new XYZ(pad, pad, pad / 3) };
+                        }
+                        v3.SetSectionBox(sb);
+                        var corners = FmcBox.Corners(sb).ToList();
+                        XYZ centre = corners.Aggregate(XYZ.Zero, (a, p) => a + p) / 8;
+                        string from = Parameters.Value<string>("from") ?? "iso";
+                        if (Parameters["eye_mm"] is JArray eye)
+                        {
+                            XYZ e = P(eye), tgt = Parameters["target_mm"] is JArray ta ? P(ta) : centre, fwd = (tgt - e).Normalize();
+                            XYZ up = fwd.CrossProduct(XYZ.BasisZ).CrossProduct(fwd).Normalize();
+                            v3.SetOrientation(new ViewOrientation3D(e, up.IsZeroLength() ? XYZ.BasisY : (up.Z < 0 ? up.Negate() : up), fwd));
+                        }
+                        else if (from == "inside")
+                        {
+                            // standing in the middle at eye height, looking at the far corner
+                            double zlo = corners.Min(p => p.Z), zhi = corners.Max(p => p.Z);
+                            XYZ e = new XYZ(centre.X, centre.Y, Math.Min(zlo + 1600 / 304.8, (zlo + zhi) / 2 + 0.01));
+                            XYZ far = corners.OrderByDescending(p => new XYZ(p.X - e.X, p.Y - e.Y, 0).GetLength()).First();
+                            XYZ fwd = new XYZ(far.X - e.X, far.Y - e.Y, 0).Normalize();
+                            v3.SetOrientation(new ViewOrientation3D(e, XYZ.BasisZ, fwd));
+                        }
+                        else
+                        {
+                            ViewOrientation3D ori = Orientation(from, centre);
+                            if (persp)
+                            {
+                                double diag = corners.Max(p => p.DistanceTo(centre));
+                                ori = new ViewOrientation3D(centre - ori.ForwardDirection * diag * 1.6, ori.UpDirection, ori.ForwardDirection);
+                            }
+                            v3.SetOrientation(ori);
+                        }
                         // Ogala night report: datums and markers reach across the site, so the close-up came out a speck
                         foreach (var bic in new[] { BuiltInCategory.OST_Levels, BuiltInCategory.OST_Grids, BuiltInCategory.OST_VolumeOfInterest, BuiltInCategory.OST_SectionBox,
                             BuiltInCategory.OST_Cameras, BuiltInCategory.OST_CLines, BuiltInCategory.OST_ReferencePoints, BuiltInCategory.OST_LightingFixtureSource })
                             try { v3.SetCategoryHidden(new ElementId(bic), true); } catch (Exception) { /* not in this model */ }
                         v = v3;
                     }
-                    else v = ViewOf(doc, Parameters.Value<string>("view")) ?? uidoc.ActiveView;
+                    else
+                    {
+                        v = ViewOf(doc, Parameters.Value<string>("view")) ?? uidoc.ActiveView;
+                        // a box on a view of the model, for this picture only (rolled back with the rest)
+                        if (spec != null && v is View3D own)
+                        {
+                            BoundingBoxXYZ b = FmcBox.Resolve(doc, spec, null, own.IsSectionBoxActive ? own.GetSectionBox() : null, out string what);
+                            own.IsSectionBoxActive = true; own.SetSectionBox(b); notes.Add("box: " + what);
+                        }
+                        else if (spec != null && (v is ViewPlan || v is ViewSection)) notes.Add("box: " + FmcBox.Apply(v, FmcBox.Resolve(doc, spec, null, null, out _), spec));
+                    }
                     try { if (v.ViewType == ViewType.ThreeD) v.DisplayStyle = Parameters.Value<string>("style") == "hidden" ? DisplayStyle.HLR : DisplayStyle.ShadingWithEdges; } catch (Exception) { /* a template controls it */ }
                     try { v.DetailLevel = ViewDetailLevel.Fine; } catch (Exception) { }
                     if (highlight.Count > 0 && v.ViewType != ViewType.DrawingSheet)
@@ -111,7 +165,9 @@ namespace RevitMCPCommandSet.Services.Fmc
             };
         }
 
-        private static ViewOrientation3D Orientation(string from, XYZ target)
+        private static XYZ P(JArray a) => new XYZ(a[0].Value<double>() / 304.8, a[1].Value<double>() / 304.8, a.Count > 2 ? a[2].Value<double>() / 304.8 : 0);
+
+        internal static ViewOrientation3D Orientation(string from, XYZ target)
         {
             XYZ dir = from switch
             {
@@ -146,7 +202,7 @@ namespace RevitMCPCommandSet.Services.Fmc
         public JObject Parameters { get; set; } = new JObject();
         public JObject Result { get; private set; } = new JObject();
         public string Error { get; private set; } = "";
-        public bool WaitForCompletion(int timeoutMilliseconds = 10000) { _done.Reset(); return _done.WaitOne(timeoutMilliseconds); }
+        public bool WaitForCompletion(int timeoutMilliseconds = 10000) { _done.Reset(); return FmcBusy.Wait(_done, timeoutMilliseconds); }
         public string GetName() => "Formcraft model check";
 
         private const double Tol = 10 / 304.8;

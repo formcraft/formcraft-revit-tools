@@ -154,5 +154,20 @@ namespace RevitMCPCommandSet.Bridge
         /// Scripts don't need to call it.
         /// </summary>
         public static T Track<T>(T transaction) where T : class => FmcTxGuard.Track(transaction);
+
+        private static long _nextCancelCheck;
+
+        /// <summary>
+        /// Ogala night report: a cancelled script ran to its end. The bridge puts this call at the top of every loop in a
+        /// script; it looks for the job's cancel file at most four times a second and stops the script there (its
+        /// changes are rolled back). Scripts don't need to call it.
+        /// </summary>
+        public static void CancelPoint()
+        {
+            long now = Environment.TickCount64;
+            if (now < System.Threading.Interlocked.Read(ref _nextCancelCheck)) return;
+            System.Threading.Interlocked.Exchange(ref _nextCancelCheck, now + 250);
+            FmcAiJob.ThrowIfCancelled();
+        }
     }
 }

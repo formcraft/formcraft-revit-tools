@@ -145,6 +145,18 @@ function cases() {
   add("site", "building pad", [{ op: "building_pad", level: levels[0], outline_mm: rect(X, 145000, 6000, 4000) }]);
   add("other", "assembly, parts, paint", [W(X, 150000, X + 4000, 150000), { op: "assembly", ids: ["$1"], name: "NIGHT Assembly" }]);
   add("other", "furniture place_family unhosted", [{ op: "place_family", type_id: chair, points_mm: [[X, 152000]], level: GF }]);
+  // section boxes (owner 27 Oct)
+  add("boxes", "section_box new view around a wall", [{ op: "section_box", ids: [wall], margin_mm: 500, from: "iso_ne", name: "NIGHT Box wall" }]);
+  add("boxes", "section_box storey slice + cut + grow", [{ op: "section_box", level: GF, cut_mm: 1200, grow_mm: { north: 2000, top: -100 }, name: "NIGHT Box GF cut" }]);
+  add("boxes", "section_box 3D section along a line", [{ op: "section_box", cut_line_mm: [[0, floorMid[1]], [20000, floorMid[1]]], keep: "left", depth_mm: 8000, name: "NIGHT Box cut line" }]);
+  add("boxes", "section_box turned along a wall, then off", [{ op: "section_box", ids: [wall], along: wall, name: "NIGHT Box along" }, { op: "section_box", view: "$1", off: true }]);
+  add("boxes", "section_box plan crop + view range", [{ op: "create_view", kind: "floor_plan", level: GF, name: "NIGHT Plan box" }, { op: "section_box", view: "$1", ids: [wall], margin_mm: 1000, view_range: true }]);
+  add("boxes", "box_views per level", [{ op: "box_views", per: "level", prefix: "NIGHT Box" }]);
+  add("boxes", "box_views per element", [{ op: "box_views", per: "element", items: [wall, floor], prefix: "NIGHT Box" }]);
+  add("site", "site_floor on a toposolid, excavating", [{ op: "toposolid", level: levels[0], points_mm: [[X, 160000, 0], [X + 10000, 160000, 600], [X + 10000, 170000, 900], [X, 170000, 300]] },
+    { op: "site_floor", level: levels[0], topo: "$1", outline_mm: rect(X + 3000, 163000, 3000, 3000), at: "highest" }]);
+  add("modify", "mirror a door, keeping its side", [W(X, 175000, X + 6000, 175000), W(X, 178000, X + 6000, 178000), { op: "place_family", type_id: door, points_mm: [[X + 3000, 175000]], level: GF, host: "$1" },
+    { op: "mirror", ids: ["$3"], line_mm: [[X, 176500], [X + 6000, 176500]] }]);
   add("steel", "steel plate", [{ op: "steel_plate", points_mm: [[X, 155000, 450], [X + 500, 155000, 450], [X + 500, 155500, 450], [X, 155500, 450]], thickness_mm: 12 }]);
   return c;
 }
@@ -158,6 +170,17 @@ async function reads() {
   await test("reads", "list commands", "fmc_list_commands", {}, (r) => r?.count > 500);
   const pic = await test("reads", "see_view close-up", "fmc_view_image", { ids: [wall], size: 800 }, (r) => !!r?.file && fs.existsSync(r.file));
   if (pic?.file && fs.existsSync(pic.file)) fs.copyFileSync(pic.file, path.join(OUT, "see_view_wall.png"));
+  // owner 27 Oct: section-box pictures
+  for (const [name, params] of [
+    ["see_view box storey cut", { box: { level: GF, cut_mm: 1200 }, from: "top", size: 800 }],
+    ["see_view box slice + grow", { ids: [wall], box: { slice: { at_mm: 1500, keep: "below" }, grow_mm: { top: 500 } }, size: 800 }],
+    ["see_view perspective", { ids: [wall], perspective: true, size: 800 }],
+    ["see_view perspective inside a storey", { box: { level: GF }, perspective: true, from: "inside", size: 800 }],
+  ]) {
+    const r = await test("reads", name, "fmc_view_image", params, (x) => !!x?.file && fs.existsSync(x.file));
+    if (r?.file && fs.existsSync(r.file)) fs.copyFileSync(r.file, path.join(OUT, name.replace(/[^\w]+/g, "_") + ".png"));
+  }
+  await test("reads", "undo list status", "fmc_undo_status", {}, (r) => r?.followed === true);
   for (const fmt of ["pdf", "dwg", "image", "ifc"])
     await test("files", `export ${fmt}`, "fmc_revit_file", { action: "export", format: fmt, folder: path.join(OUT, "exports"), name: `night_${fmt}` }, (r) => r?.exported === fmt);
 }
@@ -190,6 +213,16 @@ try {
   if (PASS === "real" || PASS === "all") {
     for (const k of cases()) await edit(k.group, k.name + " [real]", k.ops, false);
     await test("reads", "model_check after the real pass", "fmc_model_check", { limit: 50 }, (r) => typeof r?.problems === "number");
+    // owner 27 Oct: undo_ai_batch takes a batch back (the sandbox must be the active window)
+    const b = await test("undo", "a batch to undo", "fmc_model_edit", { ops: [W(X, 185000, X + 3000, 185000)], why: "night test: to be undone" }, (r) => !!r?.batch_id);
+    if (b?.batch_id) {
+      await test("undo", "undo_ai_batch posts the undo", "fmc_undo", { action: "undo", batch_id: b.batch_id }, (r) => r?.posted === true);
+      let s;
+      for (let i = 0; i < 40; i++) { await new Promise((r) => setTimeout(r, 500)); s = await send("fmc_undo_status", {}); if (!s?.undo_running) break; }
+      await test("undo", "the batch is gone from the undo list", "fmc_undo_status", {}, (r) => (r?.done ?? []).includes(b.batch_id) && !r?.stopped);
+      const made = b.ops?.[0]?.created_ids?.[0];
+      if (made) await test("undo", "its wall no longer exists", "fmc_element_geometry", { ids: [made] }, (r) => (r?.elements ?? []).length === 0);
+    }
     await test("files", "save the sandbox", "fmc_revit_file", { action: "save" }, (r) => !!r?.saved);
   }
   if (PASS === "family" || PASS === "all") await familyPass();

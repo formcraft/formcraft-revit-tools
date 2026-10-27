@@ -513,7 +513,7 @@ namespace RevitMCPCommandSet.Services
         public bool WaitForCompletion(int timeoutMilliseconds = 15000)
         {
             _resetEvent.Reset();
-        return _resetEvent.WaitOne(timeoutMilliseconds);
+        return FmcBusy.Wait(_resetEvent, timeoutMilliseconds);
         }
 
         /// <summary>
