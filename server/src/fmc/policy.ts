@@ -159,9 +159,26 @@ export function configPath(env: NodeJS.ProcessEnv = process.env): string {
   return win.join(appData, "Formcraft", "fmc_guard.json");
 }
 
-export function loadConfig(file: string = configPath(), reader: (p: string) => string = (p) => fs.readFileSync(p, "utf8")): {
-  config: GuardConfig; source: string; problem?: string;
-} {
+type Loaded = { config: GuardConfig; source: string; problem?: string };
+const configCache = new Map<string, { stamp: string; loaded: Loaded }>();
+
+/**
+ * The guard config. Read from disk only when the file changed (owner 27 Oct, speed: it was read and parsed on every
+ * call, from 47 places): the file's size and change times are checked each time, so an edit is seen on the next call.
+ * Each caller gets its own copy. A missing or broken file is never cached, so it keeps failing closed.
+ */
+export function loadConfig(file: string = configPath(), reader?: (p: string) => string): Loaded {
+  if (reader) return readConfig(file, reader);
+  let stamp: string;
+  try { const s = fs.statSync(file); stamp = `${s.size}:${s.mtimeMs}:${s.ctimeMs}`; } catch { return readConfig(file, (p) => fs.readFileSync(p, "utf8")); }
+  const hit = configCache.get(file);
+  if (hit && hit.stamp === stamp) return structuredClone(hit.loaded);
+  const loaded = readConfig(file, (p) => fs.readFileSync(p, "utf8"));
+  if (loaded.source === file) configCache.set(file, { stamp, loaded: structuredClone(loaded) }); else configCache.delete(file);
+  return loaded;
+}
+
+function readConfig(file: string, reader: (p: string) => string): Loaded {
   let raw: string;
   try {
     raw = reader(file);
