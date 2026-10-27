@@ -16,6 +16,9 @@ export interface FrameOptions {
   fck_mpa?: number; fy_mpa?: number; rho?: number; min_wall_mm?: number;
   /** the types the sized ones are made from (concrete families: b/h, Width/Length/Foundation Thickness) */
   types?: { column?: string; beam?: string; pad?: string };
+  /** leave out a part of the building (owner 27 Oct: "only the main house, clear the boys' quarter"): walls that start on
+   *  or rise to these levels, and the slabs and rooms on them */
+  exclude_levels?: string[];
 }
 // Revit 2025's metric template and library (M_Concrete-Rectangular-Column, M_Concrete-Rectangular Beam, M_Footing-Rectangular)
 export const FRAME_TYPES = { column: "300 x 450mm", beam: "300 x 600mm", pad: "1800 x 1200 x 450mm" };
@@ -36,6 +39,12 @@ export function wallDirections(walls: FactWall[], share = 0.05): number[] {
   const out: number[] = [];
   for (const [a, len] of [...bins].sort((x, y) => y[1] - x[1])) if (len >= share * total && !out.some((b) => angDiff(a, b) <= 3)) out.push(a);
   return out;
+}
+
+/** The level a wall without a top level reaches by its height (±400 mm), or "". */
+function reach(f: Facts, w: FactWall): string {
+  const base = f.levels.find((l) => l.name === w.base_level)?.elevation_mm ?? 0;
+  return f.levels.find((l) => Math.abs(l.elevation_mm - (base + w.height_mm)) <= 400 && l.elevation_mm > base)?.name ?? "";
 }
 
 /** Clusters of values within tol, each its length-weighted centre. */
@@ -60,7 +69,10 @@ const toXY = (fr: Frame, p: XY): XY => [r0(p[0] * fr.c - p[1] * fr.s), r0(p[0] *
 interface Line { fr: Frame; dir: "u" | "v"; at: number; from: number; to: number; wall: FactWall; bottom: string; top: string }
 interface Col { id: number; fr: Frame; uv: XY; xy: XY; bottom: string; top: string }
 
-export function planFrame(f: Facts, std: Std, o: FrameOptions = {}) {
+export function planFrame(f0: Facts, std: Std, o: FrameOptions = {}) {
+  const ex = new Set(o.exclude_levels ?? []);
+  const f: Facts = !ex.size ? f0 : { ...f0, floors: f0.floors.filter((x) => !ex.has(x.level)), rooms: f0.rooms.filter((x) => !ex.has(x.level)), roofs: f0.roofs.filter((x) => !ex.has(x.level)),
+    walls: f0.walls.filter((w) => !ex.has(w.base_level) && !ex.has(w.top_level ?? "") && !ex.has(reach(f0, w))) };
   const tol = o.tol_mm ?? 300, maxSpan = o.max_span_mm ?? 6000, bw = o.beam_width_mm ?? 230;
   const qa = o.bearing_kpa ?? std("foundations.bearing_assumed_kpa") ?? 150, found = o.founding_depth_mm ?? std("foundations.min_depth") ?? 1000;
   const fck = o.fck_mpa ?? 25, fy = o.fy_mpa ?? 500, rho = o.rho ?? 0.01;
