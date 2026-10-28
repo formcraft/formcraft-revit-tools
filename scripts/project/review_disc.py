@@ -23,7 +23,8 @@ SC = {"designed": "Designed", "partial": "Partly", "allowance": "Allowance only"
 sec("scope", "Scope and status", p.get("summary", ""), ["Part of the project", "Status", "What it covers"], [[k, k, SC.get(v[0], v[0]), v[1]] for k, v in p.get("scope", {}).items()])
 sec("checks", "Design status", "What is done and what is still open in this discipline.", ["Item", "Status"], [[i, t, {"done": "Done", "partial": "Partly done", "not": "Open"}[c]] for i, (t, c) in enumerate(p.get("checks", []))])
 # the checks this professional verifies (review_checklists.json): done where the design reports them, else awaiting design
-CL = J(os.path.join(os.path.dirname(os.path.abspath(__file__)), "review_checklists.json"), {}).get(D, {})
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); import kitdata
+CL = kitdata.load("checklists").get(D, {})
 done = {t.lower(): c for t, c in p.get("checks", [])}
 designed = p.get("status") == "designed"
 for ti, (topic, rows) in enumerate(CL.items()):
@@ -52,7 +53,7 @@ if os.path.exists(mf):
                                "Structural Columns": "#b9bdc0", "Structural Framing": "#b9bdc0", "Planting": "#5f8f43", "Toposolid": "#b7c49a", "Furniture": "#e0a15c", "Casework": "#e0a15c"},
                     "labels": {}}
     # part names as in the project report (parts_template.json): every category under the part that draws it
-    tpl = J(os.path.join(os.path.dirname(os.path.abspath(__file__)), "parts_template.json"), {})
+    tpl = kitdata.load("parts")
     for dd, L in tpl.items():
         if dd.startswith("_"): continue
         for prt in L:

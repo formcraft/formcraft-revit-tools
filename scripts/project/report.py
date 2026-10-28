@@ -49,7 +49,8 @@ for p in pks:
     fed[p["discipline"]] = {"label": p["label"], "color": HEX.get(p["discipline"], "#999"), **m}
 # ---- every part of every discipline (parts_template.json): the Revit categories it draws and the cost items it carries.
 # A part is live (switchable) once it has geometry in the model; until then it is listed greyed out.
-TPL = {k: v for k, v in J(os.path.join(os.path.dirname(os.path.abspath(__file__)), "parts_template.json")).items() if not k.startswith("_")}
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); import kitdata   # kit 03_Master_Data/FMC_Report_Parts.json
+TPL = {k: v for k, v in kitdata.load("parts").items() if not k.startswith("_")}
 CATDISC = {c: d for d, L in TPL.items() for p in L for c in p["cats"] if c not in ("*", "#lines")}
 present = {(d, "#lines") for d, m in fed.items() if m.get("lines")}   # (discipline, category) drawn in the model
 for d, m in fed.items():

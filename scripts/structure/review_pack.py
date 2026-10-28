@@ -113,7 +113,8 @@ if mesh:
     # the building around it, for context (the architecture through the link): its own parts, in pale paper colours
     AF = os.path.join(os.path.dirname(MESHF), "architecture.web.json")
     if os.path.exists(AF):
-        A = json.load(open(AF)); tpl = json.load(open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "project", "parts_template.json"), encoding="utf-8"))
+        sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "project")); import kitdata
+        A = json.load(open(AF)); tpl = kitdata.load("parts")
         part = {c: p["name"] for p in tpl["architecture"] for c in p["cats"] if c != "*"}
         for g in A["groups"]:
             g["label"], g["color"] = "Building: " + part.get(g["cat"], "other"), {"Roofs": "#e2b3a6", "Glass": "#cfdde3"}.get(g["cat"], "#ece9e2")
