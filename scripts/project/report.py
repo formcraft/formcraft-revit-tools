@@ -4,7 +4,7 @@
 # (materials, labour, plant, preliminaries, contingency) switches on and off; the price book behind the rates; the scope
 # matrix; one chapter per discipline; the road map. Reads every package in <report dir>/packages.
 #   python -I scripts/project/report.py <report dir> <out html> [config json]
-import json, sys, os, html, datetime, base64
+import json, sys, os, re, html, datetime, base64
 RD, OUT = sys.argv[1], sys.argv[2]; CF = sys.argv[3] if len(sys.argv) > 3 else RD + "/report.json"
 e = html.escape; J = lambda p: json.load(open(p, encoding="utf-8"))
 cfg = J(CF) if os.path.exists(CF) else {}
@@ -47,13 +47,24 @@ for p in pks:
         if os.path.exists(f): m["mesh"] = J(f)
         else: del m["mesh"]
     fed[p["discipline"]] = {"label": p["label"], "color": HEX.get(p["discipline"], "#999"), **m}
-CATDISC = {"Boundary walls": "external"}   # mesh categories shown and switched with another discipline
-for m in [v for v in fed.values() if v.get("mesh")]:
-    for gr in m["mesh"]["groups"]:
-        d2 = CATDISC.get(gr["cat"])
-        if d2 and d2 in pk and d2 not in fed: fed[d2] = {"label": pk[d2]["label"], "color": HEX.get(d2, "#999")}
-for c in COST["discs"]: c["model"] = c["model"] or c["d"] in fed
-toggle_btns = "".join(f'<button class="dtog" data-d="{p["discipline"]}" aria-pressed="true" {"" if p.get("model") or p["discipline"] in fed else "data-nomodel=1"}><i style="background:{HEX.get(p["discipline"])}"></i>{e(p["label"].split(" (")[0])}</button>' for p in pks)
+# ---- every part of every discipline (parts_template.json): the Revit categories it draws and the cost items it carries.
+# A part is live (switchable) once it has geometry in the model; until then it is listed greyed out.
+TPL = {k: v for k, v in J(os.path.join(os.path.dirname(os.path.abspath(__file__)), "parts_template.json")).items() if not k.startswith("_")}
+CATDISC = {c: d for d, L in TPL.items() for p in L for c in p["cats"] if c not in ("*", "#lines")}
+present = {(d, "#lines") for d, m in fed.items() if m.get("lines")}   # (discipline, category) drawn in the model
+for d, m in fed.items():
+    for gr in (m.get("mesh") or {}).get("groups", []): present.add((CATDISC.get(gr["cat"], d), gr["cat"]))
+    if m.get("boxes") or m.get("prisms"): present.add((d, "Model"))
+def live(d, p):
+    own = {c for q in TPL[d] for c in q["cats"]}
+    return any((d, c) in present for c in p["cats"]) or ("*" in p["cats"] and any(dd == d and c not in own for dd, c in present))
+PARTS = {d: [{"k": f"{d}/{p['name']}", "name": p["name"], "cats": p["cats"], "colour": p["colour"], "order": p["order"], "live": live(d, p)} for p in L] for d, L in TPL.items()}
+for c in COST["discs"]:
+    for it in c["items"]:
+        it["p"] = next((p["k"] for p, t in zip(PARTS.get(c["d"], []), TPL.get(c["d"], [])) if t.get("items") and re.search(t["items"], it["label"])), "")
+    c["model"] = any(p["live"] for p in PARTS.get(c["d"], []))
+HASM = {c["d"]: c["model"] for c in COST["discs"]}
+toggle_btns = "".join(f'<button class="dtog" data-d="{p["discipline"]}" aria-pressed="true" {"" if HASM.get(p["discipline"]) else "data-nomodel=1"}><i style="background:{HEX.get(p["discipline"])}"></i>{e(p["label"].split(" (")[0])}</button>' for p in pks)
 # the website's baked paper textures (FMC_WEB public/textures), so the model reads as the same paper scale model
 WEBTEX = cfg.get("web_textures", r"D:\Fomcraft\FMC_WEB\public\textures")
 def data_uri(f):
@@ -134,7 +145,8 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline:2px so
 .parts { max-width:1180px; margin:0 auto; display:grid; gap:8px; padding-block:14px 18px; }
 .prow { display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
 .prow b { font:600 12px var(--mono); text-transform:uppercase; letter-spacing:.08em; display:inline-flex; gap:6px; align-items:center; min-width:130px; }
-.prow .ptog { background:#ffffff14; color:var(--hero-ink); border-color:#ffffff33; }
+.prow .ptog { background:#ffffff14; color:var(--hero-ink); border-color:#ffffff33; } .ptog small { font:inherit; opacity:.7; }
+.prow .ptog:disabled { opacity:.32; filter:blur(.5px); cursor:not-allowed; text-decoration:none; border-style:dashed; } .prow.off { opacity:.5; }
 main { max-width:1180px; margin:0 auto; padding-block:28px 80px; display:grid; gap:56px; }
 section { display:grid; gap:18px; min-width:0; scroll-margin-top:120px; }
 .chap { display:grid; grid-template-columns:auto 1fr auto; gap:4px 16px; align-items:baseline; border-top:4px solid var(--c, var(--ink)); padding-top:12px; }
@@ -292,12 +304,14 @@ JS = r"""
   const discOn = (d) => !S.discOff[d.d];
   const st = (it) => it.locked ? "now" : (S.stage[it.id] || it.s0);
   const amt = (it, i) => it.qty * ((S.on.mat ? it.r.mat[i] : 0) + (S.on.lab ? it.r.lab[i] : 0) + (S.on.plant ? it.r.plant[i] : 0));
-  const sumD = (d, sts, i) => discOn(d) ? d.items.reduce((a, it) => a + (sts.includes(st(it)) ? amt(it, i) : 0), 0) : 0;
+  const LIVE = new Set(Object.values(PARTS).flat().filter((p) => p.live).map((p) => p.k));
+  const pOn = (it) => !(it.p && LIVE.has(it.p) && S.partOff[it.p]);
+  const sumD = (d, sts, i) => discOn(d) ? d.items.reduce((a, it) => a + (sts.includes(st(it)) && pOn(it) ? amt(it, i) : 0), 0) : 0;
   const pre = () => S.on.pre ? S.pre / 100 : 0, con = () => S.on.con ? S.con / 100 : 0, K = () => (1 + pre()) * (1 + con());
   const SC = () => S.scope === "all" ? ["now", "later"] : ["now"];
   let hook3d = () => {};
   const STG = [["now", "Now"], ["later", "Later"], ["out", "Leave out"]], SITE = ["external", "landscape"];
-  const itemLi = (it) => { const s = st(it); return `<li class="s-${s}"><span class="nm">${it.label} <small>${it.qty.toLocaleString()} ${it.unit}</small></span><span class="amt">${M(amt(it, 1))}</span>` +
+  const itemLi = (it) => { const s = pOn(it) ? st(it) : "out"; return `<li class="s-${s}"${pOn(it) ? "" : ' title="Its part is switched off above"'}><span class="nm">${it.label} <small>${it.qty.toLocaleString()} ${it.unit}</small></span><span class="amt">${M(amt(it, 1))}</span>` +
     (it.locked ? `<em class="tg lock">always in: structure and shell</em>` : `<span class="seg" role="group" aria-label="When">` + STG.map(([v, l]) => `<button data-i="${it.id}" data-s="${v}" aria-pressed="${s === v}">${l}</button>`).join("") + "</span>") + "</li>"; };
   const groupsOf = (d) => [...new Set(d.items.map((it) => it.group || "Items"))].map((g) => [g, d.items.filter((it) => (it.group || "Items") === g)]);
   function render() {
@@ -314,7 +328,7 @@ JS = r"""
     $("t-top").textContent = "UGX " + BN(tot[1]); $("k-total").textContent = "UGX " + BN(tot[1]);
     $("k-range").textContent = (S.scope === "now" ? "phase 1" : "phase 1 and later") + ", likely (" + BN(tot[0]) + "–" + BN(tot[2]) + ")";
     const siteItem = (it) => /external|landscape/i.test(it.label);   // paving and planting drawn in the architecture are site works too
-    $("k-bld").textContent = "UGX " + BN(COST.discs.filter((d) => !SITE.includes(d.d) && discOn(d)).reduce((a, d) => a + d.items.reduce((b, it) => b + (sc.includes(st(it)) && !siteItem(it) ? amt(it, 1) : 0), 0), 0) * k);
+    $("k-bld").textContent = "UGX " + BN(COST.discs.filter((d) => !SITE.includes(d.d) && discOn(d)).reduce((a, d) => a + d.items.reduce((b, it) => b + (sc.includes(st(it)) && pOn(it) && !siteItem(it) ? amt(it, 1) : 0), 0), 0) * k);
     $("k-now").textContent = "UGX " + BN(nowT); $("k-later").textContent = "UGX " + BN(laterT);
     $("k-m2").textContent = "UGX " + (tot[1] / COST.gfa / 1e6).toFixed(2) + "M"; $("k-des").textContent = sub[1] ? Math.round(100 * des / sub[1]) + "%" : "—";
     const cnt = { now: 0, later: 0, out: 0 }; COST.discs.forEach((d) => discOn(d) && d.items.forEach((it) => cnt[st(it)]++));
@@ -334,7 +348,7 @@ JS = r"""
     const open = new Set([...document.querySelectorAll("#explore details[open]")].map((x) => x.dataset.d));
     $("explore").innerHTML = COST.discs.map((d) => `<details data-d="${d.d}" style="--c:${d.color}" class="${discOn(d) ? "" : "off"}" ${open.has(d.d) ? "open" : ""}><summary><span>${d.short}</span><b>now ${M(sumD(d, ["now"], 1))}<br>later ${M(sumD(d, ["later"], 1))}</b></summary><ul>` +
       groupsOf(d).map(([g, its]) => { const free = its.filter((it) => !it.locked), one = free.length && free.every((it) => st(it) === st(free[0])) ? st(free[0]) : "";
-        return `<li class="grp"><b>${g}</b><span class="amt">${M(its.reduce((a, it) => a + (SC().includes(st(it)) ? amt(it, 1) : 0), 0))}</span>` +
+        return `<li class="grp"><b>${g}</b><span class="amt">${M(its.reduce((a, it) => a + (SC().includes(st(it)) && pOn(it) ? amt(it, 1) : 0), 0))}</span>` +
           (free.length ? `<span class="seg" role="group" aria-label="${g}: when">` + STG.map(([v, l]) => `<button data-g="${d.d}|${g}" data-s="${v}" aria-pressed="${one === v}">All ${l.toLowerCase()}</button>`).join("") + "</span>" : `<em class="tg lock">always in</em>`) + "</li>" + its.map(itemLi).join(""); }).join("") + "</ul></details>").join("");
     $("ctab").innerHTML = D.map((x) => `<tr${discOn(x.d) ? "" : ' style="opacity:.45"'}><td>${x.d.label}</td><td>${x.d.status === "designed" ? "Designed" : "Allowance"}</td><td class="n">${M(x.now)}</td><td class="n">${M(x.later)}</td>` + [0, 1, 2].map((i) => `<td class="n">${i === 1 ? "<b>" : ""}${M(x.t[i])}${i === 1 ? "</b>" : ""}</td>`).join("") + "</tr>").join("") +
       (S.on.pre ? `<tr><td>Preliminaries &amp; margin</td><td>${S.pre}%</td><td></td><td></td>` + sub.map((x) => `<td class="n">${M(x * pre())}</td>`).join("") + "</tr>" : "") +
@@ -342,6 +356,9 @@ JS = r"""
     $("cfoot").innerHTML = `<tr><td>Total counted</td><td></td><td class="n">${M(nowT)}</td><td class="n">${M(laterT)}</td>` + tot.map((x) => `<td class="n">${M(x)}</td>`).join("") + "</tr>";
     document.querySelectorAll(".dtog").forEach((b) => b.setAttribute("aria-pressed", !S.discOff[b.dataset.d]));
     document.querySelectorAll(".vlook [data-look]").forEach((b) => b.setAttribute("aria-pressed", S.look === b.dataset.look)); $("dusk").setAttribute("aria-pressed", S.dusk);
+    $("parts").innerHTML = COST.discs.filter((d) => PARTS[d.d]).map((d) => `<div class="prow${discOn(d) ? "" : " off"}"><b><i style="background:${d.color}"></i>${d.short}</b>` + PARTS[d.d].map((p) => {
+      const c = d.items.filter((it) => it.p === p.k && sc.includes(st(it))).reduce((a, it) => a + amt(it, 1), 0) * k;
+      return `<button class="ptog" data-k="${p.k}" ${p.live ? "" : "disabled"} aria-pressed="${p.live && !S.partOff[p.k]}" title="${p.live ? "Switch this part in the model and the totals" : "Not designed yet: it switches on here once it is in the model"}">${p.name}${c ? `<small>${M(c)}</small>` : ""}</button>`; }).join("") + "</div>").join("");
     hook3d(); save();
   }
   document.addEventListener("click", (ev) => {
@@ -375,17 +392,10 @@ JS = r"""
   pbRender();
 
   // ---- federated 3D in the website's look: matte model colours, soft sun shadows, build-up, dusk
-  const PARTMAP = {
-    architecture: [["Site & planting", ["Toposolid", "Site", "Planting"], "#b7c49a", 0], ["Floors & ceilings", ["Floors", "Slab Edges", "Ceilings"], "#e2e1dc", 2], ["Columns & beams", ["Structural Columns", "Columns", "Structural Framing"], "#efeeea", 3],
-      ["Walls", ["Walls", "Wall Sweeps", "Curtain Wall Mullions", "Curtain Panels"], "#efeeea", 5], ["Stairs & railings", ["Stairs", "Runs", "Landings", "Supports", "Railings", "Top Rails"], "#d8d6cf", 6],
-      ["Doors & windows", ["Doors", "Windows"], "#2a333b", 7], ["Roof", ["Roofs", "Fascias", "Gutters"], "#d15334", 9], ["Furniture & fittings", ["*"], "#e2e1dc", 10]],
-    structure: [["Footings", ["Structural Foundations"], "#8f969b", 1], ["Slabs", ["Floors"], "#c9cdd0", 2], ["Columns", ["Structural Columns"], "#aeb4b9", 3], ["Beams", ["Structural Framing"], "#aeb4b9", 4],
-      ["Roof trusses", ["#lines"], "#b48c62", 8], ["Other", ["*"], "#c9cdd0", 10]],
-  };
-  const CATDISC = { "Boundary walls": "external" };
-  PARTMAP.external = [["Fence & boundary wall", ["Boundary walls"], "#e2e1dc", 1], ["Other", ["*"], "#e2e1dc", 10]];
+  const CATDISC = {}; Object.entries(PARTS).forEach(([d, L]) => L.forEach((p) => p.cats.forEach((c) => { if (c !== "*" && c !== "#lines") CATDISC[c] = d; })));
+  const DCOL = Object.fromEntries(COST.discs.map((d) => [d.d, d.color]));
   const CATCOL = { Furniture: "#ffae61", Casework: "#ffae61", "Plumbing Fixtures": "#ffffff", "Lighting Fixtures": "#ffae61", Doors: "#a0805d", Windows: "#1c252d", "Curtain Wall Mullions": "#1c252d", Railings: "#1c252d", "Top Rails": "#1c252d", Gutters: "#1c252d", Fascias: "#efeeea", Site: "#c8c2b0", Pipes: "#9aa0a4", "Wall Sweeps": "#e2e1dc" };
-  const partOf = (d, cat) => { const L = PARTMAP[d] || [["Model", ["*"], null, 5]]; return L.find((p) => p[1].includes(cat)) || L.find((p) => p[1].includes("*")) || L[L.length - 1]; };
+  const partOf = (d, cat) => { const L = PARTS[d] || []; return L.find((p) => p.cats.includes(cat)) || L.find((p) => p.cats.includes("*")) || { k: d + "/Model", name: "Model", colour: "#c8bfae", order: 5 }; };
   const cv = $("v3d"), PG = [], MESH = [];
   async function inflate(b64) {
     const bin = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
@@ -406,7 +416,7 @@ JS = r"""
     const paperTex = tex(TEX.paper, true), normTex = tex(TEX.normal, false);
     const paper = (hex, k) => new THREE.MeshStandardMaterial({ color: C(hex), map: paperTex, normalMap: normTex, normalScale: new THREE.Vector2(k || 1, k || 1), roughness: 0.94, metalness: 0, side: THREE.DoubleSide });
     const lin = new Float32Array(256).map((_, i) => Math.pow(i / 255, 2.2));
-    const groups = {}, part = (d, p) => { const k = d + "/" + p[0]; if (!groups[k]) { const g = new THREE.Group(); g.userData = { d, name: p[0], order: p[3], k }; scene.add(g); groups[k] = g; PG.push(g); } return groups[k]; };
+    const groups = {}, part = (d, p) => { const k = p.k; if (!groups[k]) { const g = new THREE.Group(); g.userData = { d, name: p.name, order: p.order, k }; scene.add(g); groups[k] = g; PG.push(g); } return groups[k]; };
     const matFor = (col, glass) => glass ? new THREE.MeshStandardMaterial({ color: C("#d9dee0"), roughness: 0.22, metalness: 0.1, emissive: C("#ffad5e"), emissiveIntensity: 0, side: THREE.DoubleSide }) : paper(col);
     const add = (g, mesh, info) => { if (info.d === "structure" && mesh.material) Object.assign(mesh.material, { polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -2 }); mesh.castShadow = true; mesh.receiveShadow = true; mesh.userData = info; g.add(mesh); MESH.push(mesh); };
     const P = (x, y, z) => new THREE.Vector3(x / 1000, z / 1000, -y / 1000);
@@ -444,7 +454,7 @@ JS = r"""
           }
           const geo = new THREE.BufferGeometry(); geo.setAttribute("position", new THREE.BufferAttribute(pos, 3)); geo.setAttribute("color", new THREE.BufferAttribute(col, 3));
           geo.setIndex(new THREE.BufferAttribute(gr.i32 ? new Uint32Array(ib) : new Uint16Array(ib), 1));
-          add(g, new THREE.Mesh(paperUV(geo), matFor(CATCOL[gr.cat] || p[2], gr.glass)), { d: dd, cat: gr.cat, glass: gr.glass, model: CATCOL[gr.cat] || p[2] });
+          add(g, new THREE.Mesh(paperUV(geo), matFor(CATCOL[gr.cat] || p.colour, gr.glass)), { d: dd, cat: gr.cat, glass: gr.glass, model: CATCOL[gr.cat] || p.colour });
         }
       } else {   // simple boxes and slabs (no Revit export yet)
         const p = partOf(d, "*"), g = part(d, p), mt = () => matFor(m.color || "#c8bfae");
@@ -461,11 +471,11 @@ JS = r"""
       }
       if ((m.lines || []).length) {
         const p = partOf(d, "#lines"), pts = []; m.lines.forEach(([A, B]) => pts.push(P(...A), P(...B)));
-        const ls = new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: C(p[2]) })); ls.userData = { d, cat: "lines", model: p[2], line: true }; part(d, p).add(ls); MESH.push(ls);
+        const ls = new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: C(p.colour) })); ls.userData = { d, cat: "lines", model: p.colour, line: true }; part(d, p).add(ls); MESH.push(ls);
       }
     }
     // frame the building (not the whole site), ground and shadows to suit
-    const bb = new THREE.Box3(); PG.filter((g) => g.userData.name !== "Site & planting").forEach((g) => bb.expandByObject(g));
+    const bb = new THREE.Box3(); PG.filter((g) => g.userData.name !== "Site & paving" && g.userData.d !== "landscape").forEach((g) => bb.expandByObject(g));
     const ctr = bb.getCenter(new THREE.Vector3()), sz = bb.getSize(new THREE.Vector3()), R = Math.max(sz.x, sz.z, 8);
     const gm = paper("#e9e8e4", 0.3); if (paperTex) { gm.map = paperTex.clone(); gm.map.needsUpdate = true; gm.map.repeat.set(R * 3.5, R * 3.5); }
     const ground = new THREE.Mesh(new THREE.PlaneGeometry(R * 14, R * 14), gm);
@@ -480,13 +490,8 @@ JS = r"""
     $("home").onclick = () => { ctl.reset(); ctl.autoRotate = false; };
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches; ctl.autoRotate = !reduced; ctl.autoRotateSpeed = 0.45;
     cv.addEventListener("pointerdown", () => (ctl.autoRotate = false));
-    // part switches under the model
-    PG.sort((a, b) => a.userData.order - b.userData.order);
-    $("parts").innerHTML = Object.keys(FED).map((d) => `<div class="prow"><b><i style="background:${FED[d].color}"></i>${FED[d].label.split(" (")[0]}</b>` +
-      PG.filter((g) => g.userData.d === d).map((g) => `<button class="ptog" data-k="${g.userData.k}" aria-pressed="${!S.partOff[g.userData.k]}">${g.userData.name}</button>`).join("") + "</div>").join("");
     hook3d = () => {
-      document.querySelectorAll(".ptog").forEach((b) => b.setAttribute("aria-pressed", !S.partOff[b.dataset.k]));
-      MESH.forEach((me) => { const u = me.userData; if (u.fixed || u.glass) return; const want = S.look === "revit" && !u.line ? "#ffffff" : S.look === "disc" ? FED[u.d].color : u.model;
+      MESH.forEach((me) => { const u = me.userData; if (u.fixed || u.glass) return; const want = S.look === "revit" && !u.line ? "#ffffff" : S.look === "disc" ? DCOL[u.d] : u.model;
         me.material.color.copy(C(want)); const vc = S.look === "revit" && !u.line; if (me.material.vertexColors !== vc) { me.material.vertexColors = vc; me.material.needsUpdate = true; } });
       const k = S.dusk ? 1 : 0; scene.background.copy(DAY).lerp(DUSK, k); scene.fog.color.copy(scene.background);
       sun.intensity = 2.1 - 1.35 * k; hemi.intensity = 0.5 - 0.25 * k; fill.intensity = 0.4 - 0.22 * k;
@@ -521,6 +526,7 @@ const COST = {json.dumps(COST, separators=(",", ":"))};
 const PB = {json.dumps(PB, separators=(",", ":"))};
 const FED = {json.dumps(fed, separators=(",", ":"))};
 const TEX = {json.dumps(TEX)};
+const PARTS = {json.dumps(PARTS, separators=(",", ":"))};
 """ + JS + "</script>")
 open(OUT, "w", encoding="utf-8").write(page)
 sub = {k: sum(dsum(p, k, 1) for p in pks) for k in ("rate_mat", "rate")}

@@ -146,7 +146,7 @@ for (const sl of t.slabs) {
   const g = CFG.attic && sl.level === CFG.attic.level ? CFG.attic.g_kn_m2 : sl.g;   // owner 28 Oct: attic as a suspended timber floor (joists, boards, plasterboard ceiling, services)
   const st = 500, cell = (st / 1000) ** 2, loop = fl.outline_mm[0], xs = loop.map((p) => p[0]), ys = loop.map((p) => p[1]);
   for (let x = Math.min(...xs) + st / 2; x < Math.max(...xs); x += st) for (let y = Math.min(...ys) + st / 2; y < Math.max(...ys); y += st) {
-    if (!inside([x, y], fl.outline_mm)) continue; const b = nearest(bs, [x, y]); add(G, b.id, cell * g); add(Q, b.id, cell * sl.q);
+    if (!inside([x, y], fl.outline_mm)) continue; const b = nearest(bs, [x, y]); add(G, b.id, cell * g); add(Q, b.id, cell * (CFG.attic && sl.level === CFG.attic.level ? sl.q : Math.max(sl.q, CFG.q_floor_min_kn_m2 ?? 0)));
   }
 }
 for (const w of t.walls) {
@@ -217,7 +217,7 @@ if (mode === "local") {
   res.levels = Object.fromEntries(lvls.map((l) => [l, { elevation_mm: elev[l], nodes: tops[l] }])); res.seismic = { Cd, V_kn: V, F_kn: F, K: SEIS.K };
   res.stacks = tops[CFG.floors[CFG.floors.length - 1]].map((n) => { const q = model.nodes.find((x) => x.n === n); const below = model.nodes.find((x) => Math.abs(x.x - q.x) < 1 && Math.abs(x.y - q.y) < 1 && Math.abs(x.z - elev[CFG.floors[CFG.floors.length - 2]]) < 1); return [n, below?.n]; });
   fs.writeFileSync(OUT + "/" + run + "_results.json", JSON.stringify(res, null, 1));
-  fs.writeFileSync(OUT + "/" + run + ".json", JSON.stringify({ run, solver: "frame3d", model: CFG.model, made_at: new Date().toISOString(), form: { ...form, cases: form.cases.map(({ bar_loads, node_loads, ...c }) => ({ ...c, bar_loads: bar_loads?.length ?? 0, node_loads: node_loads?.length ?? 0 })) }, bars: model.bars.map((b) => ({ n: b.n, id: b.id, kind: b.kind, b_mm: b.b_mm, h_mm: b.h_mm })) }, null, 1));
+  fs.writeFileSync(OUT + "/" + run + ".json", JSON.stringify({ run, solver: "frame3d", model: CFG.model, made_at: new Date().toISOString(), summary, cfg: { seismic: CFG.seismic, q_floor_min_kn_m2: CFG.q_floor_min_kn_m2 ?? null, attic: CFG.attic ?? null }, form: { ...form, cases: form.cases.map(({ bar_loads, node_loads, ...c }) => ({ ...c, bar_loads: bar_loads?.length ?? 0, node_loads: node_loads?.length ?? 0 })) }, bars: model.bars.map((b) => ({ n: b.n, id: b.id, kind: b.kind, b_mm: b.b_mm, h_mm: b.h_mm })) }, null, 1));
   console.log(JSON.stringify({ run }));
   process.exit(0);
 }
@@ -227,7 +227,7 @@ fs.mkdirSync(OUT, { recursive: true });
 const exe = R + "robot/fmc-robot.exe";
 const runX = (cmd, inp) => { try { return execFileSync(exe, [cmd], { input: JSON.stringify(inp), maxBuffer: 1 << 26, timeout: 600000 }).toString(); } catch (e) { return e.code === "ETIMEDOUT" || e.signal ? JSON.stringify({ error: `Robot is blocked on ${cmd} (a dialog open in Robot?): clear it and run again` }) : String(e.stdout || "{}"); } };
 const sent = JSON.parse(runX("send", { rtd, model: { nodes: model.nodes, bars: model.bars, supports: model.supports }, form })); if (0) JSON.parse(execFileSync(exe, ["send"], { input: JSON.stringify({ rtd, model: { nodes: model.nodes, bars: model.bars, supports: model.supports }, form }), maxBuffer: 1 << 26 }).toString());
-fs.writeFileSync(OUT + "/" + run + ".json", JSON.stringify({ run, model: CFG.model, rtd, engineer: form.engineer, made_at: new Date().toISOString(), form: { ...form, cases: form.cases.map(({ bar_loads, node_loads, ...c }) => ({ ...c, bar_loads: bar_loads?.length ?? 0, node_loads: node_loads?.length ?? 0 })) }, bars: model.bars.map((b) => ({ n: b.n, id: b.id, kind: b.kind, b_mm: b.b_mm, h_mm: b.h_mm })) }, null, 1));
+fs.writeFileSync(OUT + "/" + run + ".json", JSON.stringify({ run, model: CFG.model, rtd, engineer: form.engineer, made_at: new Date().toISOString(), summary, cfg: { seismic: CFG.seismic, q_floor_min_kn_m2: CFG.q_floor_min_kn_m2 ?? null, attic: CFG.attic ?? null }, form: { ...form, cases: form.cases.map(({ bar_loads, node_loads, ...c }) => ({ ...c, bar_loads: bar_loads?.length ?? 0, node_loads: node_loads?.length ?? 0 })) }, bars: model.bars.map((b) => ({ n: b.n, id: b.id, kind: b.kind, b_mm: b.b_mm, h_mm: b.h_mm })) }, null, 1));
 console.log(JSON.stringify({ run, error: sent.error, cases: sent.cases, unresolved: sent.unresolved_sections?.length }));
 if (sent.error) process.exit(1);
 const calc = JSON.parse(runX("calculate", { rtd })); if (calc.error) { console.log(JSON.stringify(calc)); process.exit(1); }

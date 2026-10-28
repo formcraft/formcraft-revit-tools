@@ -155,14 +155,18 @@ DRW = [("S-101", "First floor framing plan", "S-101"), ("S-100", "Foundation & g
 gallery = "".join(f'<figure class="sheet"><img loading="lazy" src="{src}" alt="{e(t)}"><figcaption><b>{n}</b> {e(t)}</figcaption></figure>' for n, t, k in DRW if (src := img(k)))
 
 # ---------------- checklist ----------------
-CH = [("Dead loads from the real build-ups", "done"), ("Imposed loads (1.5 kN/m²; 2.0 check recommended)", "partial"), ("Wind (25 m/s assumed, UNMA value needed)", "partial"),
-      ("Earthquake, US 319 static (EC8 modal check open)", "partial"), ("Load combinations EN 1990", "done"), ("Robustness ties / imperfections", "not"),
-      ("3D frame with diaphragms and infill", "done"), ("Independent Robot check of the final model", "done" if cfg.get("robot_check") else "partial"), ("Storey drift", "done"), ("Slenderness / second order", "partial"),
-      ("Beams: bending & shear", "done"), ("Beams: deflection & cracking (rules only)", "partial"), ("Torsion in edge beams", "not"), ("Columns: axial + biaxial", "done"),
-      ("Ductile detailing (strong column / weak beam open)", "partial"), ("First floor slab", "done"), ("Stairs", "done"), ("Infill wall strength & ties", "not"),
-      ("Pad bearing & bending", "done"), ("Pad punching / one-way shear", "not"), ("Geotechnical investigation", "not"), ("Settlement", "not"), ("Roof trusses", "done"),
-      ("Truss joints, bracing, uplift", "partial"), ("Attic floor & plywood diaphragm", "partial"), ("Covers for durability & 60 min fire", "done"),
-      ("Drawings (sections, bar marks open)", "partial"), ("Bar bending schedules BS 8666", "done"), ("Design report", "done"), ("Engineer of record signature", "not")]
+# statuses from the supplementary checks (extra-checks.py) where they have run; data gaps stay open
+XC = J(W + "/extra_checks.json")["checks"] if os.path.exists(W + "/extra_checks.json") else {}
+xs = lambda k, dflt: XC[k]["status"] if k in XC else dflt
+marks_done = os.path.exists(W + "/marks_ops.out.json")
+CH = [("Dead loads from the real build-ups", "done"), ("Imposed loads: 2.0 kN/m² floors, 2.5 balconies and attic", xs("q2", "partial")), ("Wind (25 m/s assumed, UNMA value needed)", "partial"),
+      ("Earthquake: US 319 static; EC8 comparison needs site ag and soil class", xs("modal", "partial")), ("Load combinations EN 1990", "done"), ("Robustness ties / imperfections", xs("ties", "not")),
+      ("3D frame with diaphragms and infill", "done"), ("Independent Robot check of the final model", "done" if cfg.get("robot_check", {}).get("run_after") == run else "partial"), ("Storey drift", "done"), ("Slenderness / second order", xs("slender", "partial")),
+      ("Beams: bending & shear", "done"), ("Beams: deflection & cracking", xs("defl", "partial")), ("Torsion in edge beams", xs("torsion", "not")), ("Columns: axial + biaxial", "done"),
+      ("Ductile detailing: strong column / weak beam", xs("scwb", "partial")), ("First floor slab", "done"), ("Stairs", "done"), ("Infill wall strength & ties", xs("infill", "not")),
+      ("Pad bearing & bending", "done"), ("Pad punching / one-way shear", xs("punch", "not")), ("Geotechnical investigation (soil test)", "not"), ("Settlement (needs the soil test)", "not"), ("Roof trusses", "done"),
+      ("Truss joints, bracing, uplift", xs("truss", "partial")), ("Attic floor & plywood diaphragm", xs("diaphragm", "partial")), ("Covers for durability & 60 min fire", "done"),
+      ("Drawings with bar marks (S-110 schedules)", "done" if marks_done else "partial"), ("Bar bending schedules BS 8666", "done"), ("Design report", "done"), ("Engineer of record signature", "not")]
 cnt = collections.Counter(s for _, s in CH)
 lab = {"done": ("Done", "ok", "✓"), "partial": ("Partial", "warn", "◐"), "not": ("Open", "bad", "○")}
 check_html = "".join(f'<li class="{lab[s][1]}"><span class="ic" aria-hidden="true">{lab[s][2]}</span><span>{e(t)}</span><em>{lab[s][0]}</em></li>' for t, s in CH)
@@ -373,7 +377,7 @@ dialog {{ border:0; padding:0; max-width:96vw; max-height:94vh; background:#fff;
 
 <section>
   <div class="chap"><span>09</span><h2>Where the design stands</h2></div>
-  <p>I measured the design against Uganda's code and, where that code is lenient, against Eurocode and ACI practice. {cnt['done']} items are done, {cnt['partial']} are partly done and {cnt['not']} are open. The open ones are for the engineer of record and the soil test before construction.</p>
+  <p>I measured the design against Uganda's code and, where that code is lenient, against Eurocode and ACI practice. {cnt['done']} items are done, {cnt['partial']} are partly done and {cnt['not']} are open. The open ones are for the engineer of record and the soil test before construction.</p>{f'<p class="callout"><b>For the engineer of record:</b> every load, formula and member result is set out for checking, section by section, with accept, correct and query marks and the sign-off, in the <a href="{e(cfg["review_url"])}">structural design review pack</a>.</p>' if cfg.get("review_url") else ""}
   <div class="prog" role="img" aria-label="{cnt['done']} done, {cnt['partial']} partial, {cnt['not']} open"><i style="flex:{cnt['done']};background:var(--good)"></i><i style="flex:{cnt['partial']};background:var(--warn)"></i><i style="flex:{cnt['not']};background:var(--crit)"></i></div>
   <ul class="checks">{check_html}</ul>
   <div class="callout"><p><b>Two conditions for the builder.</b> The stone and block walls shown as infill are part of the earthquake resistance: build them after the frame, tight to the columns and beams, tied every 450 mm, and never remove them or cut new large openings without the engineer's approval. And confirm the soil with trial pits before the footings are cast.</p></div>
