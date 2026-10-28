@@ -106,8 +106,19 @@ today = datetime.date.today().strftime("%d %B %Y")
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); import review_page
 MESHF = cfg.get("review_mesh") or os.path.join(os.path.dirname(os.path.dirname(W)), "_Report", "mesh", "structure.web.json")
 mesh = json.load(open(MESHF)) if os.path.exists(MESHF) else None
-if mesh: mesh |= {"colors": {"Structural Columns": "#7f8a94", "Structural Framing": "#a9b3bb", "Floors": "#d5d9dc", "Structural Foundations": "#8f969b"},
-                  "labels": {"Structural Columns": "Columns", "Structural Framing": "Beams", "Floors": "Slabs", "Structural Foundations": "Pads"}}
+SL = {"Structural Columns": ("Columns", "#6f7a84"), "Structural Framing": ("Beams", "#97a2ab"), "Floors": ("Slabs", "#c3c8cc"), "Structural Foundations": ("Pads", "#7f868b")}
+if mesh:
+    for g in mesh["groups"]: g["label"], g["color"] = SL.get(g["cat"], (g["cat"], "#a9b3bb")); g["offset"], g["scale"] = mesh["offset"], mesh["scale"]
+    mesh["mine"], mesh["mineLabel"] = [v[0] for v in SL.values()], "structure"
+    # the building around it, for context (the architecture through the link): its own parts, in pale paper colours
+    AF = os.path.join(os.path.dirname(MESHF), "architecture.web.json")
+    if os.path.exists(AF):
+        A = json.load(open(AF)); tpl = json.load(open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "project", "parts_template.json"), encoding="utf-8"))
+        part = {c: p["name"] for p in tpl["architecture"] for c in p["cats"] if c != "*"}
+        for g in A["groups"]:
+            g["label"], g["color"] = "Building: " + part.get(g["cat"], "other"), {"Roofs": "#e2b3a6", "Glass": "#cfdde3"}.get(g["cat"], "#ece9e2")
+            g["offset"], g["scale"] = A["offset"], A["scale"]
+        mesh["groups"] = mesh["groups"] + A["groups"]
 meta = {"title": "Ogala Structural Review", "eyebrow": "Formcraft · The Ogala Residence · Structural design · For review by the engineer of record",
         "h1": "Structural design review pack", "intro": f"Prepared by {cfg.get('presenter', 'Emlyn Atochon')}, {cfg.get('firm', 'Formcraft')}, {today} (analysis run {run}). Each section sets out the method, the formulas and every member result.",
         "back": (f'<a href="{e(cfg["project_report"])}">Back to the project report</a>' if cfg.get("project_report") else "") + (f' · <a href="{e(cfg["structure_report_url"])}">The structural design report</a>' if cfg.get("structure_report_url") else ""),

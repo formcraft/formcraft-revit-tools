@@ -44,7 +44,9 @@ button:focus-visible, textarea:focus-visible, input:focus-visible, select:focus-
 .primary { font:600 14px var(--sans); padding:9px 16px; background:var(--acc); color:#fff; border:0; border-radius:3px; cursor:pointer; justify-self:start; } .primary:disabled { opacity:.5; cursor:not-allowed; }
 .v3 { position:relative; height:min(62vh, 560px); min-height:340px; background:#e4e3df; border:1px solid var(--line); } #cv3 { width:100%; height:100%; display:block; touch-action:none; }
 .v3c { position:absolute; left:10px; top:10px; right:10px; display:flex; flex-wrap:wrap; gap:5px; } .v3c button { font:12px var(--mono); padding:4px 8px; border:1px solid #1c252d33; background:#ffffffd9; color:#1c252d; border-radius:3px; cursor:pointer; }
-.v3c button[aria-pressed="false"] { opacity:.45; text-decoration:line-through; } .v3i { position:absolute; left:10px; bottom:8px; font:12px var(--mono); color:#1c252d; background:#ffffffcc; padding:3px 6px; border-radius:3px; max-width:calc(100% - 20px); }
+.v3c button[aria-pressed="false"] { opacity:.45; text-decoration:line-through; } .v3c button.own { border-color:#1f5fbf; } .v3c button:disabled { opacity:.5; cursor:not-allowed; text-decoration:none; }
+.v3c button.only { font-weight:600; background:#1f5fbf; color:#fff; border-color:#1f5fbf; } .v3c button.only[aria-pressed="false"] { opacity:1; text-decoration:none; background:#ffffffd9; color:#1f5fbf; }
+.v3i { position:absolute; left:10px; bottom:8px; font:12px var(--mono); color:#1c252d; background:#ffffffcc; padding:3px 6px; border-radius:3px; max-width:calc(100% - 20px); }
 tr.hit td { background:color-mix(in srgb, var(--acc) 16%, transparent) !important; } tr[data-id] { cursor:pointer; }
 footer.note { border-top:1px solid var(--line); padding-top:12px; }
 .signed { display:grid; gap:4px; background:var(--soft); padding:10px 12px; } .note { font-size:13px; color:var(--muted); }
@@ -124,12 +126,13 @@ const MESH = __MESH__;
     const scene = new THREE.Scene(); scene.background = new THREE.Color("#e4e3df"); const cam = new THREE.PerspectiveCamera(34, 1, 0.05, 2000);
     scene.add(new THREE.HemisphereLight(0xffffff, 0x9aa0a6, 0.9)); const sun = new THREE.DirectionalLight(0xffffff, 0.7); sun.position.set(-1, 2, 1.2); scene.add(sun);
     const inflate = async (b64) => new Uint8Array(await new Response(new Blob([Uint8Array.from(atob(b64), (c) => c.charCodeAt(0))]).stream().pipeThrough(new DecompressionStream("gzip"))).arrayBuffer());
-    const CAT = {}, o = MESH.offset, s = MESH.scale, all = new THREE.Group(); scene.add(all);
+    const CAT = {}, all = new THREE.Group(); scene.add(all);
     for (const g of MESH.groups) {
+      const o = g.offset || MESH.offset, s = g.scale || MESH.scale;   // groups merged from another model keep their own quantisation
       const q = new Uint16Array((await inflate(g.pos)).buffer), raw = (await inflate(g.idx)).buffer, idx = g.i32 ? new Uint32Array(raw) : new Uint16Array(raw), n = g.verts;
       const pos = new Float32Array(n * 3); for (let v = 0; v < n; v++) { pos[3 * v] = o[0] + q[3 * v] * s; pos[3 * v + 1] = o[2] + q[3 * v + 2] * s; pos[3 * v + 2] = -(o[1] + q[3 * v + 1] * s); }
-      const pa = new THREE.BufferAttribute(pos, 3), col = (MESH.colors || {})[g.cat] || "#c9cdd0";
-      const lab = (MESH.labels || {})[g.cat] || (MESH.labels || {})["*"] || g.cat;   // categories grouped into the parts a reviewer thinks in
+      const pa = new THREE.BufferAttribute(pos, 3), col = g.color || (MESH.colors || {})[g.cat] || "#c9cdd0";
+      const lab = g.label || (MESH.labels || {})[g.cat] || (MESH.labels || {})["*"] || g.cat;   // categories grouped into the parts a reviewer thinks in
       const grp = CAT[lab] = CAT[lab] || new THREE.Group(); all.add(grp);
       for (const [id, t0, nt] of (g.els || [[0, 0, g.tris]])) {
         const geo = new THREE.BufferGeometry(); geo.setAttribute("position", pa); geo.setIndex(new THREE.BufferAttribute(idx.slice(t0 * 3, (t0 + nt) * 3), 1)); geo.computeVertexNormals();
@@ -139,8 +142,17 @@ const MESH = __MESH__;
     }
     const bb = new THREE.Box3().setFromObject(all), c = bb.getCenter(new THREE.Vector3()), R = bb.getSize(new THREE.Vector3()).length();
     cam.position.copy(c).add(new THREE.Vector3(R * 0.55, R * 0.45, R * 0.65)); const ctl = new THREE.OrbitControls(cam, cv); ctl.target.copy(c); ctl.enableDamping = true; ctl.screenSpacePanning = true; ctl.saveState();
-    $("v3c").innerHTML = Object.keys(CAT).map((k) => `<button data-cat="${esc(k)}" aria-pressed="true">${esc(k)}</button>`).join("") + '<button data-home="1">Reset view</button>';
-    $("v3c").onclick = (ev) => { const b = ev.target.closest("button"); if (!b) return; if (b.dataset.home) { ctl.reset(); return; } const g = CAT[b.dataset.cat]; g.visible = !g.visible; b.setAttribute("aria-pressed", g.visible); };
+    // "Only <discipline>": the reviewer's own elements alone (MESH.mine: the part names of this discipline); off = everything
+    const mine = (MESH.mine || []).filter((k) => CAT[k]);
+    const onlyBtn = MESH.mineLabel ? `<button class="only" data-only="1" aria-pressed="false" ${mine.length ? "" : "disabled title=\"Nothing of this discipline is modelled yet\""}>Only ${esc(MESH.mineLabel)}${mine.length ? "" : " (none modelled yet)"}</button>` : "";
+    $("v3c").innerHTML = onlyBtn + Object.keys(CAT).map((k) => `<button data-cat="${esc(k)}" aria-pressed="true" class="${mine.includes(k) ? "own" : ""}">${esc(k)}</button>`).join("") + '<button data-home="1">Reset view</button>';
+    const sync = () => document.querySelectorAll("#v3c [data-cat]").forEach((b) => b.setAttribute("aria-pressed", CAT[b.dataset.cat].visible));
+    $("v3c").onclick = (ev) => {
+      const b = ev.target.closest("button"); if (!b || b.disabled) return;
+      if (b.dataset.home) { ctl.reset(); return; }
+      if (b.dataset.only) { const on = b.getAttribute("aria-pressed") !== "true"; b.setAttribute("aria-pressed", on); Object.entries(CAT).forEach(([k, g]) => (g.visible = !on || mine.includes(k))); sync(); return; }
+      const g = CAT[b.dataset.cat]; g.visible = !g.visible; b.setAttribute("aria-pressed", g.visible);
+    };
     let lit = [];
     // the selected element in orange, everything else faded, so it reads at any distance
     const xray = (on) => Object.values(EL).flat().forEach((m) => { if (m.userData.op0 === undefined) m.userData.op0 = m.material.opacity; m.material.transparent = on || m.userData.op0 < 1; m.material.opacity = on ? 0.18 : m.userData.op0; m.material.depthWrite = !on; });

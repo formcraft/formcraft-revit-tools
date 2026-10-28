@@ -59,6 +59,9 @@ if os.path.exists(mf):
             for c in prt["cats"]:
                 if c == "*" and dd == D: mesh["labels"]["*"] = prt["name"]
                 elif c not in ("*", "#lines"): mesh["labels"].setdefault(c, prt["name"])
+    # this professional's own parts, for the "Only <discipline>" switch
+    mesh["mine"] = [prt["name"] for prt in tpl.get(D, [])]
+    mesh["mineLabel"] = p["label"].split(" (")[0].lower()
 today = datetime.date.today().strftime("%d %B %Y")
 links = cfg.get("links", {})
 meta = {"title": f"Ogala {p['label'].split(' (')[0]} Review", "eyebrow": f"{cfg.get('firm', 'Formcraft')} · {cfg.get('project', 'The Ogala Residence')} · {p['label']} · For review by the {signer.lower()}",
