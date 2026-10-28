@@ -150,7 +150,7 @@ gallery = "".join(f'<figure class="sheet"><img loading="lazy" src="{src}" alt="{
 # ---------------- checklist ----------------
 CH = [("Dead loads from the real build-ups", "done"), ("Imposed loads (1.5 kN/m²; 2.0 check recommended)", "partial"), ("Wind (25 m/s assumed, UNMA value needed)", "partial"),
       ("Earthquake, US 319 static (EC8 modal check open)", "partial"), ("Load combinations EN 1990", "done"), ("Robustness ties / imperfections", "not"),
-      ("3D frame with diaphragms and infill", "done"), ("Independent Robot check of the final model", "partial"), ("Storey drift", "done"), ("Slenderness / second order", "partial"),
+      ("3D frame with diaphragms and infill", "done"), ("Independent Robot check of the final model", "done" if cfg.get("robot_check") else "partial"), ("Storey drift", "done"), ("Slenderness / second order", "partial"),
       ("Beams: bending & shear", "done"), ("Beams: deflection & cracking (rules only)", "partial"), ("Torsion in edge beams", "not"), ("Columns: axial + biaxial", "done"),
       ("Ductile detailing (strong column / weak beam open)", "partial"), ("First floor slab", "done"), ("Stairs", "done"), ("Infill wall strength & ties", "not"),
       ("Pad bearing & bending", "done"), ("Pad punching / one-way shear", "not"), ("Geotechnical investigation", "not"), ("Settlement", "not"), ("Roof trusses", "done"),
@@ -160,6 +160,9 @@ cnt = collections.Counter(s for _, s in CH)
 lab = {"done": ("Done", "ok", "✓"), "partial": ("Partial", "warn", "◐"), "not": ("Open", "bad", "○")}
 check_html = "".join(f'<li class="{lab[s][1]}"><span class="ic" aria-hidden="true">{lab[s][2]}</span><span>{e(t)}</span><em>{lab[s][0]}</em></li>' for t, s in CH)
 
+rc = cfg.get("robot_check")
+robot_html = (f'<div class="callout"><p><b>Checked twice.</b> I ran the final model again, independently, in Autodesk Robot Structural Analysis ({e(rc["run"])}). '
+              f'On Robot&#39;s forces every one of the {rc["members"]} members still passes, and the sway is {rc["drift"][0]} mm and {rc["drift"][1]} mm against limits of {lim1:.0f} and {lim2:.0f} mm.</p></div>') if rc else ""
 # ---------------- page ----------------
 three = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"; orbit = "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"
 today = datetime.date.today().strftime("%d %B %Y")
@@ -311,6 +314,7 @@ dialog {{ border:0; padding:0; max-width:96vw; max-height:94vh; background:#fff;
 <section>
   <div class="chap"><span>03</span><h2>Every part, checked</h2></div>
   <p>The whole frame was modelled in 3D and analysed for {len([c for c in runj['form']['cases']])} load cases and {len(runj['form'].get('combinations', []))} combinations. Each column and beam was then checked for bending, shear and axial force, and sized up only where it failed. The result is a frame where most parts work hard — that is what an economical design looks like.</p>
+  {robot_html}
   <div class="cols">
     {histo(uc, f"Columns: how much of their strength is used ({len(uc)} column lengths)", "var(--s1)")}
     {histo(ub, f"Beams: how much of their strength is used ({len(ub)} beams)", "var(--s2)")}
