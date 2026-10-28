@@ -1,0 +1,120 @@
+{
+  "_about": "The checks each discipline's professional verifies before stamping, by topic: [check, basis (code or standard), method or formula]. review_disc.py puts them in the discipline's review pack; a check shows 'awaiting design' until the discipline's design script reports it (package checks with the same name). Uganda law and standards first; British / European standards where Uganda adopts them or is silent.",
+  "architecture": {
+    "Building regulations (Building Control Act 2013, Building Control Regulations 2020)": [
+      ["Habitable rooms: minimum floor area and width", "Building Control Regulations 2020", "each habitable room ≥ 7.5 m², bedrooms ≥ 2.4 m wide; rooms from the room schedule"],
+      ["Ceiling heights", "Building Control Regulations 2020", "habitable rooms ≥ 2.6 m clear; measured from the levels and ceilings"],
+      ["Natural light and ventilation", "Building Control Regulations 2020", "glazed area ≥ 10% of floor area; openable area ≥ 5% of floor area, per room"],
+      ["Stairs: rise, going, headroom, width", "Building Control Regulations 2020; BS 5395-1", "rise ≤ 190 mm, going ≥ 250 mm, 2R + G between 550 and 700 mm, headroom ≥ 2.0 m, width ≥ 900 mm"],
+      ["Guarding at stairs, balconies and voids", "Building Control Regulations 2020; BS 6180", "guard height ≥ 900 mm (stairs) and 1100 mm (balconies, voids); no gap > 100 mm"],
+      ["Access for people with disabilities", "Persons with Disabilities Act 2020; Accessibility Standards", "level or ramped entrance (≤ 1:12), door clear width ≥ 800 mm, one accessible WC on the entrance floor"],
+      ["Sanitary provision", "Public Health Act Cap 281", "WC, wash basin and shower per bedroom suite or per 5 people; ventilated wet rooms"]],
+    "Planning and site (Physical Planning Act 2010, KCCA)": [
+      ["Setbacks and building lines", "Physical Planning Act 2010; KCCA approved plan", "front, side and rear distances to the boundary from the site plan"],
+      ["Plot coverage and floor area ratio", "KCCA development control", "building footprint / plot area; total floor area / plot area against the zone limits"],
+      ["Building height and storeys", "KCCA development control", "storeys and ridge height against the zone"],
+      ["Parking", "KCCA development control", "spaces against the zone requirement for a dwelling"]],
+    "Documentation for the permit": [
+      ["Building permit drawing set", "KCCA submission checklist", "site plan, floor plans, sections, elevations, roof plan, schedules, signed by a registered architect"],
+      ["Door and window schedules", "Formcraft drawing standards", "every opening scheduled with size, type, fire rating and ironmongery"],
+      ["Finishes schedule", "Formcraft drawing standards", "floors, walls and ceilings per room"],
+      ["Structural walls coordinated", "Structural design (infill register)", "every wall the structure relies on marked on the plans; no new openings in them"]]
+  },
+  "plumbing": {
+    "Water supply (NWSC, BS EN 806)": [
+      ["Water demand and storage", "NWSC guidelines; BS EN 806-2", "occupants × 150 l/person/day × 2 days of storage → tank size"],
+      ["Pipe sizing by loading units", "BS EN 806-3", "sum of loading units per branch → pipe diameter; velocity ≤ 2 m/s"],
+      ["Pressure at the highest outlet", "BS EN 806-3", "static head from the tank base to the outlet ≥ 0.5 bar (5 m), else a booster pump"],
+      ["Hot water storage and temperature", "BS EN 806-2; legionella guidance", "storage at 60 °C, delivered ≥ 50 °C within 30 s; heater sizing by peak demand"],
+      ["Backflow and isolation", "BS EN 1717", "check valves, isolation valve on every branch and fitting"]],
+    "Sanitary fittings and drainage (BS EN 12056)": [
+      ["Sanitary fittings schedule", "Public Health Act Cap 281", "fittings per room: WC, basin, shower, sink, with model and connection size"],
+      ["Discharge units and stack sizing", "BS EN 12056-2", "Q = K √(Σ DU), K = 0.5 for dwellings → stack and branch diameters"],
+      ["Traps, venting and gradients", "BS EN 12056-2", "trap seal ≥ 50 mm, branch gradients 1:40 to 1:80, vent every stack"],
+      ["Septic tank sizing", "BS 6297; NEMA guidelines", "capacity C = 180 P + 2000 litres, P = population"],
+      ["Soakaway sizing", "BS 6297; percolation test (data needed)", "area from the percolation rate Vp; distance ≥ 15 m from any well"]],
+    "Rainwater (BS EN 12056-3)": [
+      ["Gutters and downpipes", "BS EN 12056-3", "Q = roof area × rainfall intensity (Kampala 75–100 mm/h) → gutter and downpipe sizes"],
+      ["Rainwater harvesting tank", "Uganda water policy guidance", "roof area × annual rainfall × 0.8 runoff; tank for the dry-season demand"]],
+    "Documentation": [
+      ["Plumbing layouts and isometrics", "Formcraft drawing standards", "supply, hot water, waste and soil per floor; isometric of every wet room"],
+      ["Drainage site plan", "Formcraft drawing standards", "manholes, inverts, falls, septic tank and soakaway"]]
+  },
+  "electrical": {
+    "Supply and loads (BS 7671, Electricity Act 1999, ERA)": [
+      ["Load schedule and maximum demand", "BS 7671; IET On-Site Guide diversity", "connected load per circuit, diversity → maximum demand in kVA"],
+      ["Supply type and UMEME connection", "UMEME / ERA connection rules", "single or three phase from the maximum demand; meter position"],
+      ["Distribution boards and single-line diagram", "BS 7671 Part 5", "every circuit, device rating, cable and RCD on one diagram"]],
+    "Circuits and protection (BS 7671)": [
+      ["Cable sizing: current and voltage drop", "BS 7671 Appendix 4", "Iz ≥ In ≥ Ib with correction factors; voltage drop ≤ 3% lighting, 5% power"],
+      ["Earth fault loop impedance and disconnection", "BS 7671 Chapter 41", "Zs ≤ Zs max for the device (0.4 s final circuits)"],
+      ["RCD protection", "BS 7671 Regulation 411.3.3", "30 mA RCD on every socket and bathroom circuit"],
+      ["Earthing arrangement and electrode", "BS 7671; BS 7430", "TT or TN-S; electrode resistance RA × IΔn ≤ 50 V"],
+      ["Surge protection", "BS 7671 Section 443", "risk assessment; type 2 SPD at the main board"]],
+    "Lightning, lighting and power": [
+      ["Lightning protection risk assessment", "BS EN 62305-2", "risk R1 against 10⁻⁵; Uganda has high thunder-day counts"],
+      ["Lighting levels per room", "CIBSE / SLL Code for Lighting", "living 100–150 lx, kitchen 300 lx, study 300 lx; fittings from the layout"],
+      ["Socket outlets per room", "Formcraft residential standard", "minimum counts per room type; kitchen worktop sockets"]],
+    "Solar PV and backup": [
+      ["PV array and inverter sizing", "IEC 62548", "daily energy Wh ÷ (peak sun hours 5.0 × 0.75) → array kWp; inverter ≥ peak load"],
+      ["Battery autonomy", "IEC 62548", "energy for the backed-up loads × days of autonomy ÷ depth of discharge"],
+      ["Data and CCTV cabling", "TIA-568; BS EN 50173", "outlet counts, cable category, network cabinet position"]]
+  },
+  "mechanical": {
+    "Ventilation": [
+      ["Extract rates", "Approved Document F (as a benchmark)", "kitchen 60 l/s (or 30 l/s cooker hood), bathroom 15 l/s, WC 6 l/s"],
+      ["Whole-house ventilation", "ASHRAE 62.2", "Q = 0.15 × floor area + 3.5 × (bedrooms + 1) l/s"]],
+    "Cooling (if fitted)": [
+      ["Cooling loads per room", "CIBSE Guide A", "sensible + latent gains per room (W/m²); unit capacity ≥ load"],
+      ["Condensate drainage and refrigerant routes", "Manufacturer and BS EN 378", "condensate falls to a trapped drain; pipe runs within the unit's limits"]],
+    "Solar hot water": [
+      ["Daily demand and storage", "BS EN 806-2; CIBSE Guide G", "50 l/person/day at 60 °C → cylinder size"],
+      ["Collector area and orientation", "BS EN 12976", "area from the demand and solar fraction; tilt about 15° facing north or south (equator)"]]
+  },
+  "interiors": {
+    "Brief and concept": [
+      ["Interior concept approved by the client", "Client brief (data needed)", "mood boards, finishes palette, signed approval"],
+      ["Kitchen layout and ergonomics", "Formcraft interior standards", "work triangle 4–8 m; clearance ≥ 1000 mm between runs; worktop height 900 mm"]],
+    "Joinery and furniture": [
+      ["Joinery drawings", "Formcraft drawing standards", "elevations, sections and details of kitchen, wardrobes, vanities, feature joinery"],
+      ["Materials and finishes schedule", "Formcraft drawing standards", "board, veneer, hardware and finishes per item"],
+      ["FF&E schedule and costs", "Formcraft cost plan", "every loose item with supplier, quantity and price"],
+      ["Surface spread of flame of finishes", "BS 476-7 / BS EN 13501-1", "wall and ceiling linings class 1 (or C-s3,d2) in escape routes"]]
+  },
+  "fire": {
+    "Means of escape (Uganda Fire Brigade requirements; BS 9991)": [
+      ["Escape from upper-floor bedrooms", "BS 9991", "escape windows (clear opening ≥ 0.33 m², ≥ 450 mm wide, sill ≤ 1100 mm) or a protected stair"],
+      ["Travel distances and protected stair", "BS 9991", "stair enclosed or alternative escape; doors onto the stair self-closing where required"],
+      ["Fire resistance of the structure", "BS 9991; structural design", "60 min for floors and the frame (covers from the structural design)"]],
+    "Detection and first-aid firefighting": [
+      ["Fire detection grade and category", "BS 5839-6", "Grade D1, Category LD2: smoke alarms in escape routes and living rooms, heat alarm in the kitchen, interlinked"],
+      ["Extinguishers and fire blanket", "BS 5306-8", "one 2 kg CO₂ and one 6 l foam per floor; fire blanket in the kitchen"],
+      ["Gas installation (if LPG)", "BS 6891; LPG guidance", "cylinders outside, ventilated, isolation valve, leak test"]],
+    "Security": [
+      ["Intruder alarm zones", "BS EN 50131 (grade 2)", "zones, detectors and panel position (client choices)"],
+      ["CCTV coverage", "BS EN 62676", "camera positions covering gate, entrances, perimeter; recorder position"],
+      ["Access control and intercom", "Client brief", "gate and front door control"]]
+  },
+  "external": {
+    "Boundary wall and gate": [
+      ["Wall stability under wind", "EN 1991-1-4; EN 1996-1-1", "wind 0.75 kPa on the wall; piers or buttresses at spacing; overturning and sliding of the footing"],
+      ["Footing size and depth", "EN 1997-1 (soil data needed)", "strip footing for the wall weight; depth below the topsoil"],
+      ["Movement joints", "EN 1996-2", "joints in masonry at ≤ 6 m (block) and at changes of height"],
+      ["Gate leaves, posts and foundations", "EN 1991-1-4", "leaf weight and wind on the posts; post foundation"]],
+    "Driveway and site drainage": [
+      ["Driveway pavement design", "Uganda road design manual (soil CBR needed)", "layer thicknesses from the subgrade CBR and car loading"],
+      ["Surface water runoff", "Rational method", "Q = C i A for paved and roof areas; channel and soakaway sizes"],
+      ["Levels and falls", "Formcraft site standards", "ground falls ≥ 1:40 away from the building for 3 m; finished floor ≥ 150 mm above ground"]]
+  },
+  "landscape": {
+    "Planting": [
+      ["Landscape concept and planting plan", "Client brief", "zones, species, sizes and quantities"],
+      ["Tree positions against foundations and drains", "NHBC Chapter 4.2 (as a benchmark)", "distance ≥ mature height × factor for the species and soil"],
+      ["Native and drought-tolerant species", "NEMA guidance", "species list and water need"]],
+    "Water and light": [
+      ["Irrigation demand", "FAO-56 crop water need", "area × crop factor × reference evapotranspiration; supplied from the harvested rainwater"],
+      ["Outdoor lighting", "CIBSE / SLL", "paths ≥ 5 lx; fittings IP65; on a timer or photocell"]],
+    "Hard and soft areas": [
+      ["Green cover against KCCA requirements", "KCCA development control", "soft landscape area / plot area against the zone minimum"]]
+  }
+}

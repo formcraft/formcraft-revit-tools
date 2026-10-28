@@ -22,6 +22,14 @@ def sec(i, title, intro, cols, rows, eqs=()): S.append({"id": i, "title": title,
 SC = {"designed": "Designed", "partial": "Partly", "allowance": "Allowance only", "not": "Not covered"}
 sec("scope", "Scope and status", p.get("summary", ""), ["Part of the project", "Status", "What it covers"], [[k, k, SC.get(v[0], v[0]), v[1]] for k, v in p.get("scope", {}).items()])
 sec("checks", "Design status", "What is done and what is still open in this discipline.", ["Item", "Status"], [[i, t, {"done": "Done", "partial": "Partly done", "not": "Open"}[c]] for i, (t, c) in enumerate(p.get("checks", []))])
+# the checks this professional verifies (review_checklists.json): done where the design reports them, else awaiting design
+CL = J(os.path.join(os.path.dirname(os.path.abspath(__file__)), "review_checklists.json"), {}).get(D, {})
+done = {t.lower(): c for t, c in p.get("checks", [])}
+designed = p.get("status") == "designed"
+for ti, (topic, rows) in enumerate(CL.items()):
+    st = lambda t: {"done": "Checked in the design", "partial": "Partly checked"}.get(done.get(t.lower()), "To verify against the model" if designed else "Awaiting design")
+    sec(f"cl{ti}", topic, "The checks the professional verifies here, with the standard each one comes from and how it is worked out." + ("" if designed else " This discipline is not designed yet: the checks are listed now so the scope is agreed, and they fill in as the design is done."),
+        ["Check", "Basis", "Method", "Status"], [[f"cl{ti}.{i}", c, b, m, st(c)] for i, (c, b, m) in enumerate(rows)])
 if p.get("key"): sec("key", "Key figures", "Measured from the model.", ["Figure", "Value"], [[i, l, v] for i, (v, l) in enumerate(p["key"])])
 q = p.get("quantities", [])
 sec("quantities", "Quantities and rates", "Every quantity is measured from the model (or an allowance where not designed yet); rates from the Formcraft price book, split into materials, labour and plant.",
@@ -37,6 +45,8 @@ if D == "architecture" and p.get("rooms"):
 if p.get("drawings"): sec("drawings", "Drawings", "The sheets in this set.", ["Sheet"], [[i, os.path.basename(x)] for i, x in enumerate(p["drawings"])])
 if p.get("notes"): sec("notes", "Notes and assumptions", "Recorded with the design.", ["Note"], [[i, n] for i, n in enumerate(p["notes"] if isinstance(p["notes"], list) else [p["notes"]])])
 mesh = None; mf = os.path.join(RD, (p.get("model") or {}).get("mesh", "") or "-")
+if not os.path.exists(mf):   # not modelled yet: the building itself, for context (fittings already placed show under their parts)
+    mf = os.path.join(RD, ((J(f"{RD}/packages/architecture.json", {}) or {}).get("model") or {}).get("mesh", "") or "-")
 if os.path.exists(mf):
     mesh = J(mf) | {"colors": {"Walls": "#e9e6df", "Boundary walls": "#d8d4cb", "Floors": "#d5d3cc", "Roofs": "#c8573a", "Doors": "#8a6b4c", "Windows": "#2f3a44", "Stairs": "#cfcac0",
                                "Structural Columns": "#b9bdc0", "Structural Framing": "#b9bdc0", "Planting": "#5f8f43", "Toposolid": "#b7c49a", "Furniture": "#e0a15c", "Casework": "#e0a15c"},
