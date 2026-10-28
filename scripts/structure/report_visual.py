@@ -179,8 +179,16 @@ lab = {"done": ("Done", "ok", "✓"), "partial": ("Partial", "warn", "◐"), "no
 check_html = "".join(f'<li class="{lab[s][1]}"><span class="ic" aria-hidden="true">{lab[s][2]}</span><span>{e(t)}</span><em>{lab[s][0]}</em></li>' for t, s in CH)
 
 rc = cfg.get("robot_check")
-robot_html = (f'<div class="callout"><p><b>Checked twice.</b> I ran the final model again, independently, in Autodesk Robot Structural Analysis ({e(rc["run"])}). '
-              f'On Robot&#39;s forces every one of the {rc["members"]} members still passes, and the sway is {rc["drift"][0]} mm and {rc["drift"][1]} mm against limits of {lim1:.0f} and {lim2:.0f} mm.</p></div>') if rc else ""
+def _robot(rc):
+    if "max_sway_mm" in rc:   # robot-record.py
+        md = rc.get("median_diff_pct", {})
+        return (f'<div class="callout"><p><b>Checked twice.</b> I ran the final model again, independently, in Autodesk Robot Structural Analysis ({e(rc["run"])}). '
+                f'Robot calculated it cleanly and agrees with my analysis: the greatest sway is {rc["max_sway_mm"]["robot"]:.1f} mm in Robot against {rc["max_sway_mm"]["local"]:.1f} mm in mine, '
+                f'and across {rc["members"]} members the forces differ by {abs(md.get("ned_kn", 0)):.0f}% (axial) and {abs(md.get("med_knm", 0)):.0f}% (bending) in the middle of the range. '
+                f'The remaining spread comes from cracked-section stiffness, which my analysis uses and Robot&#39;s default does not.</p></div>')
+    return (f'<div class="callout"><p><b>Checked twice.</b> I ran the final model again, independently, in Autodesk Robot Structural Analysis ({e(rc["run"])}). '
+            f'On Robot&#39;s forces every one of the {rc["members"]} members still passes, and the sway is {rc["drift"][0]} mm and {rc["drift"][1]} mm against limits of {lim1:.0f} and {lim2:.0f} mm.</p></div>')
+robot_html = _robot(rc) if rc else ""
 # ---------------- page ----------------
 three = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"; orbit = "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"
 today = datetime.date.today().strftime("%d %B %Y")

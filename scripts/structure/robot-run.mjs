@@ -303,6 +303,9 @@ fs.writeFileSync(OUT + "/" + run + ".json", JSON.stringify({ run, model: CFG.mod
 console.log(JSON.stringify({ run, error: sent.error, cases: sent.cases, unresolved: sent.unresolved_sections?.length }));
 if (sent.error) process.exit(1);
 const calc = JSON.parse(runX("calculate", { rtd })); if (calc.error) { console.log(JSON.stringify(calc)); process.exit(1); }
+// Robot's CalcEngine.Calculate() returns a COM boolean: -1 is TRUE (calculated). The connector (fmc-robot.exe) reads
+// only 0 as success; until it is rebuilt, -1 counts as calculated here (owner 28 Oct: Robot's report showed a clean run)
+if (calc.status === -1) calc.calculated = true;
 console.log(JSON.stringify(calc));
 const tops = Object.fromEntries(lvls.map((l) => [l, colTop(l)]));
 const res = JSON.parse(runX("results", { rtd, bars: model.bars.map((b) => ({ n: b.n, id: b.id })), nodes: Object.values(tops).flat(), node_cases: ["EX", "EY"] }));

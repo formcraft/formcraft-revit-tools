@@ -235,7 +235,9 @@ namespace Formcraft.Robot
             int status = project.CalcEngine.Calculate();
             project.SaveAs(rtd);
             HandBack(new RobotApplication());
-            return new JObject { ["rtd"] = rtd, ["calculated"] = status == 0, ["status"] = status };
+            // Calculate() returns a COM boolean: -1 is TRUE (calculated), 0 FALSE (owner 28 Oct: Robot's report showed a
+            // clean run while this said "not calculated")
+            return new JObject { ["rtd"] = rtd, ["calculated"] = status != 0, ["status"] = status };
         }
 
         // ---------- results: each bar's governing axial force and moment ----------
