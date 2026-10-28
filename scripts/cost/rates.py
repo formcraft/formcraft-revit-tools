@@ -12,21 +12,27 @@ out, problems, done = {}, [], {}
 def rate(key, stack=()):
     if key in done: return done[key]
     if key in stack: raise ValueError(f"build-up loop: {' -> '.join(stack + (key,))}")
-    b = bu[key]; w = 1 + b.get("waste_pct", 0) / 100; tot = [0.0, 0.0, 0.0]; lines = []
+    b = bu[key]; w = 1 + b.get("waste_pct", 0) / 100; tot = [0.0, 0.0, 0.0]; mat = [0.0, 0.0, 0.0]; lab = [0.0, 0.0, 0.0]; pl = [0.0, 0.0, 0.0]; lines = []
     for part, mult in (("materials", w), ("plant", 1), ("labour", 1)):
         for pk, q in b.get(part, {}).items():
             p = book.get(pk)
             if not p: problems.append(f"{key}: no price '{pk}' in the price book"); continue
             v = [num(p["low"]), num(p["likely"]), num(p["high"])]
             if any(x != x for x in v): problems.append(f"{key}: '{pk}' has no price"); continue
-            for i in range(3): tot[i] += q * mult * v[i]
+            for i in range(3):
+                tot[i] += q * mult * v[i]
+                if part == "materials": mat[i] += q * mult * v[i]
+                elif part == "labour": lab[i] += q * mult * v[i]
+                else: pl[i] += q * mult * v[i]
             lines.append({"part": part, "item": pk, "qty": q, "unit": p["unit"], "price_likely": v[1], "status": p["status"], "date": p["date"]})
     for rk, q in b.get("rates", {}).items():
         sub = rate(rk, stack + (key,))
-        for i in range(3): tot[i] += q * sub["rate"][i]
+        for i in range(3): tot[i] += q * sub["rate"][i]; mat[i] += q * sub["rate_materials"][i]; lab[i] += q * sub["rate_labour"][i]; pl[i] += q * sub["rate_plant"][i]
         lines.append({"part": "rate", "item": rk, "qty": q, "unit": sub["unit"], "price_likely": sub["rate"][1]})
     statuses = {l.get("status") for l in lines if l.get("status")}
-    r = {"label": b.get("label", key), "unit": b["unit"], "rate": [round(x, 4 if b["unit"] == "fraction" else 0) for x in tot],
+    if "material_share" in b: mat = [x * b["material_share"] for x in tot]; lab = [x * (1 - b["material_share"]) for x in tot]; pl = [0.0, 0.0, 0.0]   # supplied-and-fixed price or allowance
+    rd = lambda xs: [round(x, 4 if b["unit"] == "fraction" else 0) for x in xs]
+    r = {"label": b.get("label", key), "unit": b["unit"], "rate": rd(tot), "rate_materials": rd(mat), "rate_labour": rd(lab), "rate_plant": rd(pl), "material_share": b.get("material_share"),
          "basis": "assumed prices in the build-up" if "assumed" in statuses else "market prices", "buildup": lines}
     done[key] = r; return r
 
@@ -41,5 +47,5 @@ idx = {k: {"item": r["item"], "unit": r["unit"], "low": num(r["low"]), "likely":
            "source": r["source"], "status": r["status"]} for k, r in book.items()}
 json.dump({"_generated": res["_generated"], **idx}, open(os.path.join(D, "FMC_Price_Index.json"), "w", encoding="utf-8"), indent=1)
 for k in ("concrete", "steel", "formwork", "wall_stone", "wall_block", "roof_cover", "fence_m"):
-    if k in out: print(f"{k:12s} {out[k]['rate'][1]:>12,.0f} UGX/{out[k]['unit']}  ({out[k]['rate'][0]:,.0f}-{out[k]['rate'][2]:,.0f})  {out[k]['basis']}")
+    if k in out: print(f"{k:12s} {out[k]['rate'][1]:>12,.0f} UGX/{out[k]['unit']} full   {out[k]['rate_materials'][1]:>12,.0f} materials only  ({out[k]['basis']})")
 print(len(out), "rates;", len(problems), "problems", problems[:5])
