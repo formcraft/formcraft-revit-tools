@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { Facts } from "./loads.js";
-import { cluster, letters, planFrame, wallDirections } from "./frame.js";
+import { cluster, frameSvg, letters, planFrame, wallDirections } from "./frame.js";
 
 const STD: Record<string, any> = {
   "loads.unit_weights": [["concrete", 25], ["screed", 22], ["block", 15]], "loads.imposed_floor": 1.5, "loads.services_and_ceilings": 0.5,
@@ -39,4 +39,22 @@ test("Frame: corner columns, one more where the 8 m wall passes 6 m, beams at th
   assert.ok(total > 1.35 * 40 * 5 && total < 1.35 * 40 * 8 + 1.5 * 40 * 1.5 + 400, `column loads add up to the slab and walls (${total})`);
   assert.ok(p.ops.some((o) => o.op === "grid") && p.ops.some((o) => o.op === "isolated_foundation" && o.size_mm.length === 3));
   assert.match(p.status, /PRELIMINARY/);
+});
+
+test("Frame v2 (owner 27 Oct: too many, floating columns): short partitions get no column, upper columns stand on lower ones, slabs become structural floors, a plan per level", () => {
+  const two: Facts = {
+    ...facts,
+    levels: [{ name: "GF", elevation_mm: 0 }, { name: "FF", elevation_mm: 3000 }, { name: "RF", elevation_mm: 6000 }],
+    walls: [...facts.walls,
+      W(5, [2000, 0], [2000, 1500]),                       // a 1.5 m partition: off the structural lines
+      W(11, [0, 0], [8000, 0], "FF", "RF"), W(12, [8000, 0], [8000, 5000], "FF", "RF"), W(13, [8000, 5000], [0, 5000], "FF", "RF"),
+      W(14, [0, 5000], [0, 0], "FF", "RF"), W(15, [6500, 0], [6500, 5000], "FF", "RF")],   // an FF wall at x = 6.5 m, 1.5 m from any GF column
+  };
+  const p = planFrame(two, std);
+  const gf = p.columns.filter((c) => c.top === "FF"), ff = p.columns.filter((c) => c.top === "RF");
+  assert.ok(!gf.some((c) => c.at_mm[0] === 2000), "no column for the short partition");
+  for (const c of ff) assert.ok(gf.some((g) => Math.hypot(g.at_mm[0] - c.at_mm[0], g.at_mm[1] - c.at_mm[1]) < 1), `FF column at ${c.at_mm} stands on a GF one`);
+  assert.ok(p.warnings.some((w) => /no column below/.test(w)), "the x = 6.5 m junctions are carried by the FF beam");
+  assert.equal(p.ops.filter((o) => o.op === "structural_floor").length, 1);
+  assert.deepEqual(Object.keys(frameSvg(two, p)), ["GF", "FF", "RF"]);
 });

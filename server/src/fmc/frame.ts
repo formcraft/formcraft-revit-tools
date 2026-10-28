@@ -1,8 +1,10 @@
 /**
  * RC frame planner, preliminary (owner 27 Oct: "let's just go with the RC frame"). From the architecture model's facts
- * and the load takedown: grids on the wall lines (one grid system per wall direction: Ogala's outbuilding sits at an
- * angle to the house), columns at wall corners, junctions and free ends (more where a span would pass max_span_mm),
- * beams on every wall line at each floor and ground beams under the ground-floor walls, pad footings; sizes from the
+ * and the load takedown: grids on the structural wall lines (one grid system per wall direction: Ogala's outbuilding sits
+ * at an angle to the house). v2 (owner 27 Oct: "columns floating, too many, no slabs"): a line is structural when it has an
+ * exterior wall or min_line_mm of walls; columns only where walls meet on those lines (more where a span would pass
+ * max_span_mm), each upper column on one below; beams on those lines where a wall or a slab bears, ground beams under the
+ * ground-storey walls, pad footings, the RC slabs as structural floors, a plan per level for approval; sizes from the
  * kit's rules; quantities; the modify_model ops that build it in the structural model.
  *
  * Sizes are first-pass only: beams span/12 (structure.rc_beam_depth_ratio), columns from the ULS axial load on their
@@ -14,8 +16,14 @@ import { Facts, FactWall, Pt, Std, inside, takedown } from "./loads.js";
 export interface FrameOptions {
   max_span_mm?: number; tol_mm?: number; beam_width_mm?: number; bearing_kpa?: number; founding_depth_mm?: number;
   fck_mpa?: number; fy_mpa?: number; rho?: number; min_wall_mm?: number;
+  /** v2: a grid line carries columns and beams when its walls total this much, or it has an exterior wall */
+  min_line_mm?: number;
+  /** v2: wall junctions closer than this share one column */
+  min_col_spacing_mm?: number;
+  /** v2: an upper junction moves onto the column below when it is this close, else the beam below carries it */
+  snap_up_mm?: number;
   /** the types the sized ones are made from (concrete families: b/h, Width/Length/Foundation Thickness) */
-  types?: { column?: string; beam?: string; pad?: string };
+  types?: { column?: string; beam?: string; pad?: string; slab?: string };
   /** leave out a part of the building (owner 27 Oct: "only the main house, clear the boys' quarter"): walls that start on
    *  or rise to these levels, and the slabs and rooms on them */
   exclude_levels?: string[];
@@ -107,6 +115,8 @@ export function planFrame(f0: Facts, std: Std, o: FrameOptions = {}) {
                      : { fr, dir: "v", at: (a[0] + b[0]) / 2, from: Math.min(a[1], b[1]), to: Math.max(a[1], b[1]), wall: w, bottom: w.base_level, top: topOf(w) });
   }
   const grids: Array<{ name: string; start_mm: XY; end_mm: XY }> = [];
+  const gridCands: Array<{ fr: Frame; dir: "u" | "v"; at: number; ends: number[] }> = [];
+  const gridCount = new Map<string, number>();
   const gridAt = new Map<Frame, { u: number[]; v: number[] }>();
   for (const fr of frames) {
     const mine = lines.filter((l) => l.fr === fr);
@@ -115,72 +125,124 @@ export function planFrame(f0: Facts, std: Std, o: FrameOptions = {}) {
     const snap = (x: number, g: number[]) => g.reduce((b, y) => (Math.abs(y - x) < Math.abs(b - x) ? y : b), g[0]);
     for (const l of mine) l.at = snap(l.at, l.dir === "u" ? gu : gv);
     const ext = (dir: "u" | "v", at: number) => { const ls = mine.filter((l) => l.dir === dir && l.at === at); return [Math.min(...ls.map((l) => l.from)) - 1500, Math.max(...ls.map((l) => l.to)) + 1500]; };
-    gu.forEach((at, i) => { const [a, b] = ext("u", at); grids.push({ name: fr.prefix + letters(i), start_mm: toXY(fr, [a, at]), end_mm: toXY(fr, [b, at]) }); });
-    gv.forEach((at, i) => { const [a, b] = ext("v", at); grids.push({ name: fr.prefix + String(i + 1), start_mm: toXY(fr, [at, a]), end_mm: toXY(fr, [at, b]) }); });
+    for (const at of gu) gridCands.push({ fr, dir: "u", at, ends: ext("u", at) });
+    for (const at of gv) gridCands.push({ fr, dir: "v", at, ends: ext("v", at) });
     gridAt.set(fr, { u: gu, v: gv });
   }
 
-  // ---- columns per storey band (walls between the same two levels), per grid system
+  // ---- v2 (owner 27 Oct: "columns floating, too many, no slabs"): columns only where walls meet on structural lines,
+  // every column standing on one below, beams only on those lines, the slabs as structural floors
+  const minLine = o.min_line_mm ?? 2400, minGap = o.min_col_spacing_mm ?? 1800, snapUp = o.snap_up_mm ?? 1200;
+  const ground = lines.reduce((b, l) => (elev(l.bottom) < elev(b) ? l.bottom : b), lines[0]?.bottom ?? "");
+  const tops = [...new Set(lines.map((l) => l.top))].sort((a, b) => elev(a) - elev(b));
+  const storeys = tops.map((t, i) => ({ bottom: i ? tops[i - 1] : ground, top: t }));
+  // a wall belongs to every storey it spans (a double-height wall to both)
+  const inStorey = (l: Line, s: { bottom: string; top: string }) => elev(s.top) > elev(l.bottom) + 1 && elev(s.top) <= elev(l.top) + 1;
+  const lkey = (l: Line) => `${frames.indexOf(l.fr)}|${l.dir}|${l.at}`;
+  const lineLen = new Map<string, number>(), extLine = new Set<string>();
+  for (const l of lines) { lineLen.set(lkey(l), (lineLen.get(lkey(l)) ?? 0) + l.to - l.from); if (/exterior/i.test(l.wall.function ?? "")) extLine.add(lkey(l)); }
+  const structural = (l: Line) => extLine.has(lkey(l)) || (lineLen.get(lkey(l)) ?? 0) >= minLine;
+
   const columns: Col[] = [];
-  const nearXY = (p: XY, q: XY) => Math.hypot(p[0] - q[0], p[1] - q[1]) <= tol * 1.5;
-  const addCol = (fr: Frame, uv: XY, bottom: string, top: string) => {
-    const xy = toXY(fr, uv);
-    if (!columns.some((k) => k.bottom === bottom && k.top === top && nearXY(k.xy, xy))) columns.push({ id: columns.length + 1, fr, uv, xy, bottom, top });
-  };
+  const nearXY = (p: XY, q: XY, d = tol * 1.5) => Math.hypot(p[0] - q[0], p[1] - q[1]) <= d;
   const onLine = (l: Line, p: XY) => (l.dir === "u" ? Math.abs(p[1] - l.at) <= tol && p[0] >= l.from - tol && p[0] <= l.to + tol : Math.abs(p[0] - l.at) <= tol && p[1] >= l.from - tol && p[1] <= l.to + tol);
-  const bandKeys = [...new Set(lines.map((l) => `${l.bottom}|${l.top}`))].sort((a, b) => elev(a.split("|")[0]) - elev(b.split("|")[0]));
-  for (const key of bandKeys) {
-    const [bottom, top] = key.split("|");
+  // wall arms at a point: 2 where a wall runs through it, 1 where one ends there (a corner has 2, a T 3, a cross 4)
+  const arms = (ls: Line[], p: XY) => ls.filter((l) => onLine(l, p)).reduce((a, l) => {
+    const s = l.dir === "u" ? p[0] : p[1]; return a + (s > l.from + tol && s < l.to - tol ? 2 : 1);
+  }, 0);
+  const degree = new Map<number, number>();
+  const addCol = (fr: Frame, uv: XY, s: { bottom: string; top: string }, deg: number) => {
+    const xy = toXY(fr, uv);
+    if (columns.some((k) => k.top === s.top && nearXY(k.xy, xy))) return;
+    columns.push({ id: columns.length + 1, fr, uv, xy, bottom: s.bottom, top: s.top }); degree.set(columns.length, deg);
+  };
+  const dropped: string[] = [];
+  storeys.forEach((s, si) => {
     for (const fr of frames) {
-      const bl = lines.filter((l) => l.fr === fr && l.bottom === bottom && l.top === top);
-      const us = bl.filter((l) => l.dir === "u"), vs = bl.filter((l) => l.dir === "v");
-      for (const lu of us) for (const lv of vs) { const p: XY = [lv.at, lu.at]; if (onLine(lu, p) && onLine(lv, p)) addCol(fr, p, bottom, top); }
-      for (const l of bl) for (const end of [l.from, l.to]) addCol(fr, l.dir === "u" ? [end, l.at] : [l.at, end], bottom, top);
-      for (const dir of ["u", "v"] as const) for (const at of [...new Set(bl.filter((l) => l.dir === dir).map((l) => l.at))]) {
-        const pos = columns.filter((k) => k.fr === fr && k.bottom === bottom && (dir === "u" ? Math.abs(k.uv[1] - at) <= tol : Math.abs(k.uv[0] - at) <= tol)).map((k) => (dir === "u" ? k.uv[0] : k.uv[1])).sort((x, y) => x - y);
+      const sl = lines.filter((l) => l.fr === fr && inStorey(l, s) && structural(l));
+      const us = [...new Set(sl.filter((l) => l.dir === "u").map((l) => l.at))], vs = [...new Set(sl.filter((l) => l.dir === "v").map((l) => l.at))];
+      const cand: Array<{ uv: XY; deg: number }> = [];
+      // junctions: walls from both directions meet here (corners, T, crosses)
+      for (const u of us) for (const v of vs) {
+        const p: XY = [v, u];
+        const hu = sl.some((l) => l.dir === "u" && l.at === u && onLine(l, p)), hv = sl.some((l) => l.dir === "v" && l.at === v && onLine(l, p));
+        if (hu && hv) cand.push({ uv: p, deg: arms(sl, p) });
+      }
+      // too close together: keep the busier junction
+      cand.sort((a, b) => b.deg - a.deg);
+      const kept: typeof cand = [];
+      for (const c of cand) { if (kept.some((k) => Math.hypot(k.uv[0] - c.uv[0], k.uv[1] - c.uv[1]) < minGap)) { dropped.push(`${toXY(fr, c.uv)}`); continue; } kept.push(c); }
+      for (const c of kept) {
+        if (si === 0) { addCol(fr, c.uv, s, c.deg); continue; }
+        // upper storeys stand on a column below: snap to it, else the beam below carries the junction
+        const below = columns.filter((k) => k.top === s.bottom && k.fr === fr && nearXY(k.xy, toXY(fr, c.uv), snapUp));
+        if (below.length) { const b = below.reduce((x, y) => (Math.hypot(x.uv[0] - c.uv[0], x.uv[1] - c.uv[1]) < Math.hypot(y.uv[0] - c.uv[0], y.uv[1] - c.uv[1]) ? x : y)); addCol(fr, b.uv, s, c.deg); }
+        else warnings.push(`${s.top}: walls meet at ${toXY(fr, c.uv)} with no column below within ${snapUp} mm: the ${s.bottom} beam carries them (no floating column)`);
+      }
+      // continue a lower column up where this storey has a wall through it
+      if (si > 0) for (const k of columns.filter((x) => x.top === s.bottom && x.fr === fr)) if (sl.some((l) => onLine(l, k.uv))) addCol(fr, k.uv, s, arms(sl, k.uv));
+      // spans over max_span_mm along a wall: intermediate columns (upper ones only over one below)
+      for (const dir of ["u", "v"] as const) for (const at of dir === "u" ? us : vs) {
+        const pos = columns.filter((k) => k.fr === fr && k.top === s.top && (dir === "u" ? Math.abs(k.uv[1] - at) <= tol : Math.abs(k.uv[0] - at) <= tol))
+          .map((k) => (dir === "u" ? k.uv[0] : k.uv[1])).sort((x, y) => x - y);
         for (let i = 0; i + 1 < pos.length; i++) {
           const gap = pos[i + 1] - pos[i], mid = (pos[i] + pos[i + 1]) / 2;
-          if (gap > maxSpan && bl.some((l) => l.dir === dir && l.at === at && l.from <= mid + tol && l.to >= mid - tol)) {
-            const n = Math.ceil(gap / maxSpan);
-            for (let j = 1; j < n; j++) { const x = pos[i] + (gap * j) / n; addCol(fr, dir === "u" ? [x, at] : [at, x], bottom, top); }
+          if (gap <= maxSpan || !sl.some((l) => l.dir === dir && l.at === at && l.from <= mid + tol && l.to >= mid - tol)) continue;
+          const n = Math.ceil(gap / maxSpan);
+          for (let j = 1; j < n; j++) {
+            const x = pos[i] + (gap * j) / n, uv: XY = dir === "u" ? [x, at] : [at, x];
+            if (si === 0 || columns.some((k) => k.top === s.bottom && nearXY(k.xy, toXY(fr, uv), snapUp))) addCol(fr, uv, s, 2);
+            else warnings.push(`${s.top}: ${r0(gap)} mm span on grid at ${r0(at)} has no column below to stand a mid column on: deeper beam`);
           }
         }
       }
     }
-  }
-  // a column above needs one below: continue it down where a wall line is, else flag a transfer beam
-  for (const k of [...columns]) {
-    if (columns.some((x) => x.top === k.bottom && nearXY(x.xy, k.xy))) continue;
-    const below = lines.filter((l) => l.fr === k.fr && l.top === k.bottom && onLine(l, k.uv));
-    if (below.length) addCol(k.fr, k.uv, below[0].bottom, below[0].top);
-    else if (lines.some((l) => l.top === k.bottom)) warnings.push(`column at ${k.xy} (${k.bottom} to ${k.top}) has nothing under it: a transfer beam, or a column through the room below`);
+  });
+  if (dropped.length) warnings.push(`${dropped.length} wall junctions closer than ${minGap} mm to a busier one share its column`);
+
+  // grids only on the lines that carry columns, named in order (A, B, ... across; 1, 2, ... along)
+  for (const fr of frames) {
+    // the slab spans are measured between these lines (the beams), not every wall line
+    const kept = { u: [] as number[], v: [] as number[] }; gridAt.set(fr, kept);
+    for (const dir of ["u", "v"] as const) gridCands.filter((g) => g.fr === fr && g.dir === dir && columns.some((k) => k.fr === fr && Math.abs((dir === "u" ? k.uv[1] : k.uv[0]) - g.at) <= tol)).forEach((g, i) => {
+      const [a, b] = g.ends; gridCount.set(`${frames.indexOf(fr)}${dir}`, i + 1); kept[dir].push(g.at);
+      grids.push(dir === "u" ? { name: fr.prefix + letters(i), start_mm: toXY(fr, [a, g.at]), end_mm: toXY(fr, [b, g.at]) } : { name: fr.prefix + String(i + 1), start_mm: toXY(fr, [g.at, a]), end_mm: toXY(fr, [g.at, b]) });
+    });
   }
 
-  // ---- beams between columns on each wall line: at the band's top (the floor it carries); ground beams at the lowest level
-  const ground = bandKeys.length ? bandKeys[0].split("|")[0] : "";
+  // ---- beams on structural lines between columns: at each storey's top where a wall stands on or under the span, or a
+  // slab bears on it; ground beams under the ground storey's walls
+  const slabLoops = (lvl: string) => f.floors.filter((x) => x.level === lvl && x.layers.some((l) => /structure/i.test(l.function)) && x.outline_mm?.length).map((x) => x.outline_mm!);
+  const slabAt = (lvl: string, p: XY) => slabLoops(lvl).some((lp) => inside(p, lp));
   const beams: Array<{ level: string; start: XY; end: XY; span_mm: number; size_mm: [number, number]; ground: boolean }> = [];
-  for (const key of bandKeys) {
-    const [bottom, top] = key.split("|");
+  storeys.forEach((s, si) => {
+    const next = storeys[si + 1];
     for (const fr of frames) for (const dir of ["u", "v"] as const) {
-      const bl = lines.filter((l) => l.fr === fr && l.bottom === bottom && l.top === top && l.dir === dir);
-      for (const at of [...new Set(bl.map((l) => l.at))]) {
-        const segs = bl.filter((l) => l.at === at);
-        const pos = columns.filter((k) => k.fr === fr && (k.bottom === bottom || k.top === top) && (dir === "u" ? Math.abs(k.uv[1] - at) <= tol : Math.abs(k.uv[0] - at) <= tol))
+      const here = lines.filter((l) => l.fr === fr && l.dir === dir && structural(l) && (inStorey(l, s) || (next && inStorey(l, next))));
+      for (const at of [...new Set(here.map((l) => l.at))]) {
+        const pos = columns.filter((k) => k.fr === fr && k.top === s.top && (dir === "u" ? Math.abs(k.uv[1] - at) <= tol : Math.abs(k.uv[0] - at) <= tol))
           .map((k) => (dir === "u" ? k.uv[0] : k.uv[1])).sort((x, y) => x - y).filter((x, i, a) => i === 0 || x - a[i - 1] > tol);
         for (let i = 0; i + 1 < pos.length; i++) {
-          const mid = (pos[i] + pos[i + 1]) / 2;
-          if (!segs.some((l) => l.from <= mid && l.to >= mid)) continue;
-          const span = pos[i + 1] - pos[i];
-          const s: XY = toXY(fr, dir === "u" ? [pos[i], at] : [at, pos[i]]), e: XY = toXY(fr, dir === "u" ? [pos[i + 1], at] : [at, pos[i + 1]]);
-          for (const lv of [top, ...(bottom === ground ? [bottom] : [])]) {
-            const isGround = lv === ground;
-            if (beams.some((x) => x.level === lv && nearXY(x.start, s) && nearXY(x.end, e))) continue;
-            beams.push({ level: lv, start: s, end: e, span_mm: r0(span), size_mm: [bw, Math.max(isGround ? 400 : 300, up(span / ratio, 50))], ground: isGround });
-          }
+          const mid = (pos[i] + pos[i + 1]) / 2, span = pos[i + 1] - pos[i];
+          const wallOn = (pred: (l: Line) => boolean) => here.some((l) => l.at === at && pred(l) && l.from <= mid && l.to >= mid);
+          const off = (d: number): XY => toXY(fr, dir === "u" ? [mid, at + d] : [at + d, mid]);
+          const carries = wallOn((l) => inStorey(l, s)) || wallOn((l) => !!next && inStorey(l, next)) || slabAt(s.top, off(400)) || slabAt(s.top, off(-400));
+          const s0: XY = toXY(fr, dir === "u" ? [pos[i], at] : [at, pos[i]]), e0: XY = toXY(fr, dir === "u" ? [pos[i + 1], at] : [at, pos[i + 1]]);
+          const put = (lv: string, isGround: boolean) => {
+            if (beams.some((x) => x.level === lv && nearXY(x.start, s0) && nearXY(x.end, e0))) return;
+            beams.push({ level: lv, start: s0, end: e0, span_mm: r0(span), size_mm: [bw, Math.max(isGround ? 400 : 300, up(span / ratio, 50))], ground: isGround });
+          };
+          if (carries) put(s.top, false);
+          if (si === 0 && wallOn((l) => inStorey(l, s))) put(ground, true);
         }
       }
     }
-  }
+  });
+  // walls off the structural lines: ground ones on the ground slab or their own strip, upper ones on the slab
+  const offGrid = walls.filter((w) => topOf(w) && !lines.some((l) => l.wall === w && structural(l)));
+  const upperOff = offGrid.filter((w) => elev(w.base_level) > elev(ground) + 600);
+  if (offGrid.length - upperOff.length) warnings.push(`${offGrid.length - upperOff.length} short ground-storey walls are off the structural lines: on the ground slab (thickened under them) or a strip footing`);
+  if (upperOff.length) warnings.push(`${upperOff.length} upper walls stand on the slab between beams (${upperOff.map((w) => w.id).slice(0, 12).join(", ")}${upperOff.length > 12 ? ", ..." : ""}): fine for light block partitions on a 200 slab; check heavy ones or add a secondary beam`);
 
   // ---- column loads: each slab's ULS on its tributary area (the nearest column under it), wall weights to the columns
   // of the storey they stand on, roofs over the top columns; then summed down each stack
@@ -278,16 +340,60 @@ export function planFrame(f0: Facts, std: Std, o: FrameOptions = {}) {
   const padGroups = new Map<string, { size: [number, number, number]; points: XY[] }>();
   for (const p of pads) { const key = p.size_mm.join("x"); const g = padGroups.get(key) ?? { size: p.size_mm, points: [] }; g.points.push(p.at_mm); padGroups.set(key, g); }
   for (const g of padGroups.values()) ops.push({ op: "isolated_foundation", type_name: T.pad, level: padTop, points_mm: g.points, size_mm: g.size });
+  // the architecture's RC slabs as structural floors: the structure layer's top (below the screed and finishes)
+  // (a finish's own core counts as "structure" in Revit: only a concrete core of 100 mm or more is a slab)
+  const isRc = (l: { function: string; thickness_mm: number; material?: string }) => /structure/i.test(l.function) && l.thickness_mm >= 100 && /concrete|RC/i.test(l.material ?? "");
+  const slabs = f.floors.filter((x) => x.outline_mm?.length && x.layers.some(isRc)).map((x) => {
+    const i = x.layers.findIndex(isRc);
+    const above = x.layers.slice(0, i).reduce((a, l) => a + l.thickness_mm, 0);
+    return { id: x.id, level: x.level, type: x.type, thickness_mm: x.layers[i].thickness_mm, offset_mm: r0(((x as { offset_mm?: number }).offset_mm ?? 0) - above),
+      on_ground: elev(x.level) <= elev(ground) + 600, loops_mm: x.outline_mm!.map((lp) => lp.map((p) => [r0(p[0]), r0(p[1])] as XY)) };
+  });
+  if (!T.slab && slabs.length) warnings.push(`no slab type given (types.slab): the structural floors take the model's first floor type; their RC thicknesses are ${[...new Set(slabs.map((x) => x.thickness_mm))].join(", ")} mm`);
+  for (const s of slabs) ops.push({ op: "structural_floor", level: s.level, loops_mm: s.loops_mm, offset_mm: s.offset_mm, ...(T.slab ? { type_name: T.slab } : {}) });
 
   return {
     status: "PRELIMINARY – NOT FOR CONSTRUCTION (no engineer of record)",
     basis: { max_span_mm: maxSpan, beam_depth: `span/${ratio}`, column: `N_uls / (0.4·${fck} + 0.67·${fy}·${rho})`, pad_bearing_kpa: qa, founding_depth_mm: found, grid_directions_deg: dirs },
-    grids: { systems: frames.map((fr) => ({ prefix: fr.prefix || "(main)", angle_deg: fr.angle, lettered: gridAt.get(fr)!.u.length, numbered: gridAt.get(fr)!.v.length })), list: grids.map((g) => g.name) },
+    grids: { systems: frames.map((fr) => ({ prefix: fr.prefix || "(main)", angle_deg: fr.angle, lettered: gridCount.get(`${frames.indexOf(fr)}u`) ?? 0, numbered: gridCount.get(`${frames.indexOf(fr)}v`) ?? 0 })), list: grids.map((g) => g.name) },
     columns: colRows,
     beams: { count: beams.length, ground: beams.filter((b) => b.ground).length, by_size: tally(beams.map((b) => b.size_mm.join("x"))), longest_mm: Math.max(0, ...beams.map((b) => b.span_mm)),
       list: beams.map((b) => ({ level: b.level, start_mm: b.start, end_mm: b.end, span_mm: b.span_mm, size_mm: b.size_mm, ground: b.ground })) },
-    pads, slabs: slabChecks, quantities, loads: loads.totals, warnings, ops,
+    pads, slabs: slabChecks, structural_floors: slabs.map(({ loops_mm, ...s }) => ({ ...s, loops: loops_mm.length })), quantities, loads: loads.totals, warnings, ops,
+    plan: { grids, columns: columns.map((k) => ({ id: k.id, at_mm: k.xy, bottom: k.bottom, top: k.top })), beams, slabs, ground },
   };
+}
+
+/** One plan per level for the owner to approve before anything is built (owner 27 Oct): walls in grey, grids, columns
+ *  rising from the level (filled) and arriving from below (outlined), beams at the level, slab outlines. */
+export function frameSvg(f: Facts, p: ReturnType<typeof planFrame>): Record<string, string> {
+  const { grids, columns, beams, slabs, ground } = p.plan;
+  const elev = (n: string) => f.levels.find((l) => l.name === n)?.elevation_mm ?? 0;
+  const lv = [...new Set([ground, ...beams.map((b) => b.level), ...columns.map((c) => c.top)])].sort((a, b) => elev(a) - elev(b));
+  const pts = [...grids.flatMap((g) => [g.start_mm, g.end_mm]), ...columns.map((c) => c.at_mm)];
+  const x0 = Math.min(...pts.map((q) => q[0])) - 1500, x1 = Math.max(...pts.map((q) => q[0])) + 1500;
+  const y0 = Math.min(...pts.map((q) => q[1])) - 1500, y1 = Math.max(...pts.map((q) => q[1])) + 1500;
+  const sc = 1000 / Math.max(x1 - x0, y1 - y0), W = r0((x1 - x0) * sc), H = r0((y1 - y0) * sc);
+  const px = (q: XY | Pt): XY => [r2((q[0] - x0) * sc), r2(H - (q[1] - y0) * sc)];
+  const line = (a: XY | Pt, b: XY | Pt, attrs: string) => { const [p1, p2] = [px(a), px(b)]; return `<line x1="${p1[0]}" y1="${p1[1]}" x2="${p2[0]}" y2="${p2[1]}" ${attrs}/>`; };
+  const sq = (q: XY, h: number, attrs: string) => { const [cx, cy] = px(q); return `<rect x="${cx - h}" y="${cy - h}" width="${2 * h}" height="${2 * h}" ${attrs}/>`; };
+  const out: Record<string, string> = {};
+  lv.forEach((name, i) => {
+    const below = i ? lv[i - 1] : "";
+    const rising = columns.filter((x) => x.bottom === name), arriving = below ? columns.filter((x) => x.top === name) : [];
+    const s: string[] = [`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H + 40}" width="${W}" height="${H + 40}" font-family="Arial" font-size="11"><rect width="100%" height="100%" fill="white"/>`];
+    for (const sl of slabs.filter((x) => x.level === name)) for (const lp of sl.loops_mm) s.push(`<polygon points="${lp.map((q) => px(q).join(",")).join(" ")}" fill="#dbe8ff" stroke="#6b8fd6" stroke-width="1"/>`);
+    // the walls standing on this level (at the ground, the ones rising from the ground storey)
+    for (const w of f.walls.filter((w) => w.base_level === name || (i === 0 && elev(w.base_level) <= elev(name) + 600 && w.top_level))) s.push(line(w.start_mm, w.end_mm, `stroke="#bbb" stroke-width="${Math.max(1.5, w.thickness_mm * sc)}"`));
+    for (const g of grids) { const [tx, ty] = px(g.start_mm); s.push(line(g.start_mm, g.end_mm, `stroke="#999" stroke-dasharray="6 3" stroke-width="0.6"`), `<text x="${tx}" y="${ty}" fill="#555">${g.name}</text>`); }
+    for (const b of beams.filter((x) => x.level === name)) s.push(line(b.start, b.end, `stroke="${b.ground ? "#8a5a00" : "#d22"}" stroke-width="3"`));
+    for (const c of rising) s.push(sq(c.at_mm, 5, `fill="#111"`));
+    for (const c of arriving) s.push(sq(c.at_mm, 6, `fill="none" stroke="#111" stroke-width="1.5"`));
+    s.push(`<text x="8" y="${H + 16}" font-size="13" font-weight="bold">${name}: ${beams.filter((x) => x.level === name).length} beams, ${rising.length} columns rising, ${arriving.length} arriving</text>`);
+    s.push(`<text x="8" y="${H + 32}">black = column rising from here, outlined = column from below ending here, red = beam, brown = ground beam, blue = slab, grey = walls. PRELIMINARY – NOT FOR CONSTRUCTION</text></svg>`);
+    out[name] = s.join("\n");
+  });
+  return out;
 }
 
 function tally(xs: string[]): Record<string, number> {

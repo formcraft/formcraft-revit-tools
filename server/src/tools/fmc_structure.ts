@@ -6,7 +6,7 @@ import { checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js
 import { kitPaths } from "../fmc/context.js";
 import { StandardsFile, resolve } from "../fmc/standards.js";
 import { Facts, takedown } from "../fmc/loads.js";
-import { planFrame } from "../fmc/frame.js";
+import { frameSvg, planFrame } from "../fmc/frame.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 
 const win = path.win32;
@@ -37,6 +37,10 @@ export function registerFmcStructureTool(server: McpServer) {
     use: z.string().optional().default("residential").describe("The use the standards are read for"),
     save_to_project: z.string().optional().describe("The project folder (holding 01_WIP): write the load table there"),
     full: z.boolean().optional().default(false).describe("facts: every element, not only the counts and levels"),
+    exclude_levels: z.array(z.string()).optional().describe("frame: leave out the walls, slabs and rooms on these levels (e.g. an outbuilding)"),
+    types: z.object({ column: z.string().optional(), beam: z.string().optional(), pad: z.string().optional(), slab: z.string().optional() }).optional()
+      .describe("frame: the structural model's types to build from (concrete families with b/h; slab: a floor type of the RC thickness)"),
+    min_line_mm: z.number().min(0).max(20000).optional().describe("frame: wall length a grid line needs to carry columns (default 2400; exterior lines always)"),
   }, async (args) => {
     try {
       const facts = await withRevitConnection((c) => c.sendCommand("fmc_struct_facts", { link: args.link }, 300000)) as Facts & { counts?: unknown };
@@ -54,7 +58,7 @@ export function registerFmcStructureTool(server: McpServer) {
       const values = new Map(resolve(kit, proj, args.use).map((r) => [r.key, r.value]));
       const t = takedown(facts, (key) => values.get(key));
       if (args.action === "frame") {
-        const p = planFrame(facts, (key) => values.get(key), { max_span_mm: args.max_span_mm, bearing_kpa: args.bearing_kpa });
+        const p = planFrame(facts, (key) => values.get(key), { max_span_mm: args.max_span_mm, bearing_kpa: args.bearing_kpa, exclude_levels: args.exclude_levels, types: args.types, min_line_mm: args.min_line_mm });
         let saved2: object | undefined;
         if (args.save_to_project) {
           const stamp = new Date().toISOString().replace(/[-:]/g, "").replace("T", "-").slice(0, 15);
@@ -63,7 +67,11 @@ export function registerFmcStructureTool(server: McpServer) {
           if (!v.ok) return reply({ refused: v.reasons }, true);
           fs.mkdirSync(win.dirname(file), { recursive: true });
           fs.writeFileSync(file, JSON.stringify({ from: facts.from, ...p }, null, 2));
-          saved2 = { file };
+          // a plan per level for approval before anything is built (owner 27 Oct)
+          const plans = Object.entries(frameSvg(facts, p)).map(([lv, svg]) => {
+            const f2 = file.replace(/\.json$/, `_plan_${lv.replace(/[^\w.+-]+/g, "_")}.svg`); fs.writeFileSync(f2, svg); return f2;
+          });
+          saved2 = { file, plans };
         }
         let applied: unknown;
         if (args.apply) applied = await withRevitConnection((c) => c.sendCommand("fmc_model_edit", { ops: p.ops, dry_run: args.dry_run, why: "Preliminary RC frame from the architecture model (fmc_structure frame)" }, 900000));
