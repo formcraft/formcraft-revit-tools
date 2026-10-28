@@ -172,13 +172,15 @@ def row(i, d):
 secs, i = [], 0
 # VDC, BIM and CAD sources with checked links (manifest_international_vdc.json, fmc-fetch-standards.mjs downloads the free PDFs)
 LIB = os.environ.get("FMC_STD_LIBRARY", r"D:\Fomcraft\FMC_BIM_27\FMC_Standards_Library")
-MF = os.path.join(LIB, "manifest_international_vdc.json")
-if os.path.exists(MF):
-    M = json.load(open(MF, encoding="utf-8")); folder = os.path.join(LIB, M.get("region", "International"), M.get("country", "VDC-BIM-CAD"))
+TITLE = {"manifest_international_vdc.json": "VDC, BIM and CAD", "manifest_kenya.json": "Kenya", "manifest_tanzania.json": "Tanzania", "manifest_international_free.json": "Free international references"}
+for MF in [os.path.join(LIB, f) for f in TITLE if os.path.exists(os.path.join(LIB, f))]:   # every hunted manifest gets its own register
+    M = json.load(open(MF, encoding="utf-8")); folder = os.path.join(LIB, M.get("region", "International"), M.get("country", "VDC-BIM-CAD")); NAME = TITLE[os.path.basename(MF)]
     got = {f.split("__")[0] for f in (os.listdir(folder) if os.path.isdir(folder) else [])}
     ACC = {"free_pdf": ("Free PDF", "free"), "free_read": ("Read online", "free"), "free_register": ("Free, register", "free"), "paid": ("Paid", "paid")}
     GRP = {"bim-information": "Information management", "bim-openbim": "Open BIM", "bim-model": "Model and information need", "cad-drawing": "CAD and drawings",
            "classification": "Classification", "quality": "Quality", "project-risk": "Project and risk", "safety-environment": "Safety and environment", "software": "Revit, Robot, Navisworks"}
+    ACC["request"] = ("From the office", "paid")
+    for d in {x.get("discipline", "") for x in M.get("items", [])}: GRP.setdefault(d, d.replace("-", " ").capitalize())
     def mrow(x):
         a = ACC.get(x.get("access"), (x.get("access") or x.get("kind", ""), "paid")); have = x["id"] in got
         link = f'<a href="{html.escape(x["url"])}">{"download" if x.get("kind") == "pdf" else "open"}</a>' if x.get("url") else "not found"
@@ -188,7 +190,7 @@ if os.path.exists(MF):
     items = M.get("items", [])
     body = "".join(mrow(x) for x in sorted(items, key=lambda x: (x.get("discipline", ""), x["title"])))
     nfree = sum(1 for x in items if x.get("kind") == "pdf"); nhave = sum(1 for x in items if x["id"] in got)
-    secs.append(f'<section><h2>VDC, BIM and CAD: where to get each <span class="gc">{nhave} of {len(items)} in the library · {nfree} free PDFs download automatically · ✓ link checked</span></h2>'
+    secs.append(f'<section><h2>{html.escape(NAME)}: where to get each <span class="gc">{nhave} of {len(items)} in the library · {nfree} free PDFs download automatically · ✓ link checked</span></h2>'
                 f'<div class="tw"><table><thead><tr><th></th><th>Document</th><th>Group, edition</th><th>Access</th><th></th></tr></thead><tbody>{body}</tbody></table></div></section>')
 for name in disc:
     rows = [d for d in D if d[0] == name]

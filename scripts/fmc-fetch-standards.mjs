@@ -4,7 +4,9 @@
 // "pdf" are fetched; "page", "request", "form" and "read_online" items go to the report for a person to get.
 // A download must start with %PDF- or it is rejected (error pages, login pages). Files already in the library with
 // the same content are skipped. Writes <library>/<region>/<country>/<id>__<title>.pdf and a report beside the manifest.
-//   node scripts/fmc-fetch-standards.mjs <manifest.json> [--library <folder>] [--pause <s>] [--only <id,id>] [--dry]
+//   node --use-system-ca scripts/fmc-fetch-standards.mjs <manifest.json> [--library <folder>] [--pause <s>] [--only <id,id>] [--dry]
+// --use-system-ca (owner 28 Oct): some government servers (Kenya's NCA, the EU JRC) send an incomplete certificate chain
+// that Windows' store completes but Node's built-in list cannot; certificates are still verified.
 import fs from "node:fs";
 import path from "node:path";
 import { createHash } from "node:crypto";
