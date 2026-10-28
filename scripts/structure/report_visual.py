@@ -168,6 +168,13 @@ CH = [("Dead loads from the real build-ups", "done"), ("Imposed loads: 2.0 kN/m�
       ("Truss joints, bracing, uplift", xs("truss", "partial")), ("Attic floor & plywood diaphragm", xs("diaphragm", "partial")), ("Covers for durability & 60 min fire", "done"),
       ("Drawings with bar marks (S-110 schedules)", "done" if marks_done else "partial"), ("Bar bending schedules BS 8666", "done"), ("Design report", "done"), ("Engineer of record signature", "not")]
 cnt = collections.Counter(s for _, s in CH)
+# the walls the earthquake design relies on (infill.json) and the bare-frame redundancy result (update.py)
+INF = [p for p in (J(W + "/infill.json") if os.path.exists(W + "/infill.json") else []) if p["structural"]]
+UPD = J(W + "/update_summary.json") if os.path.exists(W + "/update_summary.json") else {}
+red = UPD.get("redundancy", {}).get("bare_frame_gravity_wind_over_capacity")
+WALLS_NOTE = (f'<p class="callout"><b>The walls are part of the structure.</b> In an earthquake this building relies on {len(INF)} masonry wall panels between its columns (US 319, K = 2). '
+              'They are built after the frame, tight to the columns and beams, tied into the columns every 450 mm, and are never removed, cut, or given bigger openings without the structural engineer. '
+              + ("Without any walls, the concrete frame still carries the full weight of the house and the wind on its own." if red == 0 else "") + "</p>") if INF else ""
 lab = {"done": ("Done", "ok", "✓"), "partial": ("Partial", "warn", "◐"), "not": ("Open", "bad", "○")}
 check_html = "".join(f'<li class="{lab[s][1]}"><span class="ic" aria-hidden="true">{lab[s][2]}</span><span>{e(t)}</span><em>{lab[s][0]}</em></li>' for t, s in CH)
 
@@ -382,6 +389,8 @@ dialog {{ border:0; padding:0; max-width:96vw; max-height:94vh; background:#fff;
   <ul class="checks">{check_html}</ul>
   <div class="callout"><p><b>Two conditions for the builder.</b> The stone and block walls shown as infill are part of the earthquake resistance: build them after the frame, tight to the columns and beams, tied every 450 mm, and never remove them or cut new large openings without the engineer's approval. And confirm the soil with trial pits before the footings are cast.</p></div>
   <div class="sig"><div><span>Prepared by</span><b>{e(PRESENTER)}, {e(FIRM)}</b></div><div><span>Status</span><b>Preliminary — not for construction</b></div><div><span>Engineer of record</span><b>to review and sign</b></div><div><span>Basis</span><b>{e(run)} · architecture model of {today}</b></div></div>
+  {WALLS_NOTE}
+  <p class="note">Prepared with Autodesk Revit, Autodesk Robot Structural Analysis and the Formcraft Construction plugin (Formcraft Revit Tools).</p>
 </section>
 </main>
 <dialog id="zoom"><img alt=""></dialog>

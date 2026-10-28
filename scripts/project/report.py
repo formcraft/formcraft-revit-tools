@@ -58,11 +58,11 @@ for d, m in fed.items():
 def live(d, p):
     own = {c for q in TPL[d] for c in q["cats"]}
     return any((d, c) in present for c in p["cats"]) or ("*" in p["cats"] and any(dd == d and c not in own for dd, c in present))
-PARTS = {d: [{"k": f"{d}/{p['name']}", "name": p["name"], "cats": p["cats"], "colour": p["colour"], "order": p["order"], "live": live(d, p)} for p in L] for d, L in TPL.items()}
+MPARTS = {d: [{"k": f"{d}/{p['name']}", "name": p["name"], "cats": p["cats"], "colour": p["colour"], "order": p["order"], "live": live(d, p)} for p in L] for d, L in TPL.items()}   # model parts (not PARTS, the project's parts)
 for c in COST["discs"]:
     for it in c["items"]:
-        it["p"] = next((p["k"] for p, t in zip(PARTS.get(c["d"], []), TPL.get(c["d"], [])) if t.get("items") and re.search(t["items"], it["label"])), "")
-    c["model"] = any(p["live"] for p in PARTS.get(c["d"], []))
+        it["p"] = next((p["k"] for p, t in zip(MPARTS.get(c["d"], []), TPL.get(c["d"], [])) if t.get("items") and re.search(t["items"], it["label"])), "")
+    c["model"] = any(p["live"] for p in MPARTS.get(c["d"], []))
 HASM = {c["d"]: c["model"] for c in COST["discs"]}
 toggle_btns = "".join(f'<button class="dtog" data-d="{p["discipline"]}" aria-pressed="true" {"" if HASM.get(p["discipline"]) else "data-nomodel=1"}><i style="background:{HEX.get(p["discipline"])}"></i>{e(p["label"].split(" (")[0])}</button>' for p in pks)
 # the website's baked paper textures (FMC_WEB public/textures), so the model reads as the same paper scale model
@@ -97,9 +97,12 @@ for n, p in enumerate(pks, 5):
         extra = '<div class="cols">' + hbars(sorted(lv.items()), "m²", "Room area by level", "var(--arch)") + hbars([(f"{r[0].title()} ({r[1].split()[0]})", r[2]) for r in big], "m²", "Largest rooms", "var(--arch)") + "</div>"
     if d == "structure" and p.get("drawings"):
         extra = '<div class="gallery">' + "".join(f'<figure class="sheet">{img_tag(x)}</figure>' for x in p["drawings"][:6]) + "</div>"
-        if cfg.get("structure_report"): extra += f'<p><a href="{e(cfg["structure_report"])}">Open the full structural design report</a>: analysis, member checks, materials, drawings.</p>'
     note = '<div class="callout plan"><p><b>To be filled in.</b> Planned, not designed yet: the items below are an allowance split into the choices the client can make. When the design is done, its model and real quantities replace them here.</p></div>' if plan else ""
     scope = "".join(f'<li><b>{e(part)}</b> <span class="sc {SC[v[0]][1]}">{SC[v[0]][0]}</span> {e(v[1])}</li>' for part, v in p.get("scope", {}).items())
+    # every discipline links to its own report and to the review pack its professional stamps (report.json links)
+    lk = cfg.get("links", {}).get(d, {})
+    docs = [(lk.get("report"), "Design report", "the full design, explained"), (lk.get("review"), "Review pack", f"for {lk.get('signer', 'the professional')} to check and stamp")]
+    extra += '<div class="docs">' + "".join(f'<a class="doc" href="{e(u)}"><b>{t}</b><span>{e(s)}</span></a>' if u else f'<span class="doc off" title="Made when this discipline is designed"><b>{t}</b><span>{e(s)}: when designed</span></span>' for u, t, s in docs) + "</div>"
     chapters.append(f'''<section id="{d}"><div class="chap" style="--c:{HEX.get(d)}"><span>{n:02d}</span><h2>{e(p["label"])}</h2><em class="st {'ok' if not plan else 'plan'}">{ST.get(p["status"], "")}</em></div>
 <p>{e(p["summary"])}</p>{note}<div class="figs">{keys}<div class="fig"><b>UGX {Mn(dsum(p, "rate_mat", 1))}</b><span>materials, all items</span></div><div class="fig"><b>UGX {Mn(dsum(p, "rate", 1))}</b><span>full rates, all items</span></div></div>{extra}
 <div class="cols"><div class="tw"><table><thead><tr><th>Item</th><th>Quantity</th><th>Materials rate</th><th>Full rate</th><th>Likely, full</th></tr></thead><tbody>{qrows}</tbody></table></div>
@@ -209,6 +212,9 @@ td.src { font-size:12px; color:var(--muted); max-width:340px; } td code { font:1
 .callout { border-left:4px solid var(--s2); background:var(--panel); padding:14px 16px; } .callout.plan { border-left-color:var(--plan); }
 .hbars { display:grid; gap:8px; } .hb { display:grid; grid-template-columns:minmax(100px, 190px) 1fr minmax(70px, auto); gap:10px; align-items:center; font-size:14px; }
 .hb .track { position:relative; height:14px; background:var(--paper); border-radius:2px; } .hb .bar { position:absolute; inset:0 auto 0 0; border-radius:0 4px 4px 0; } .hb b { font:500 13px var(--mono); text-align:right; }
+.docs { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:10px; }
+.doc { display:grid; gap:2px; padding:12px 14px; border:1px solid var(--line); border-left:4px solid var(--s1); background:var(--panel); color:var(--ink); text-decoration:none; }
+.doc b { font:700 16px var(--display); } .doc span { font-size:13px; color:var(--muted); } a.doc:hover { border-color:var(--s1); } .doc.off { border-left-color:var(--line); opacity:.6; }
 .gallery { display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:14px; } .sheet img { width:100%; aspect-ratio:4/3; object-fit:contain; background:#fff; }
 .road { list-style:none; margin:0; padding:0; display:grid; } .road li { display:grid; grid-template-columns:minmax(150px, 260px) 1fr; gap:12px; padding:10px 0; border-bottom:1px solid var(--line); } .road b { font:700 16px var(--display); }
 .pbtools { display:flex; flex-wrap:wrap; gap:8px; align-items:center; } .pbtools input[type=search] { font:14px var(--body); padding:6px 10px; border:1px solid var(--line); border-radius:3px; background:var(--panel); color:var(--ink); min-width:0; flex:1 1 220px; max-width:360px; }
@@ -291,6 +297,7 @@ BODY = f"""<header class="hero">
 
 <section>
   <div class="sig"><div><span>Prepared by</span><b>{e(PRES)}, {e(FIRM)}</b></div><div><span>Status</span><b>Design development — figures preliminary</b></div><div><span>Date</span><b>{today}</b></div></div>
+  <p class="note">Prepared with Autodesk Revit, Autodesk Robot Structural Analysis and the Formcraft Construction plugin (Formcraft Revit Tools).</p>
 </section>
 </main>"""
 
@@ -526,7 +533,7 @@ const COST = {json.dumps(COST, separators=(",", ":"))};
 const PB = {json.dumps(PB, separators=(",", ":"))};
 const FED = {json.dumps(fed, separators=(",", ":"))};
 const TEX = {json.dumps(TEX)};
-const PARTS = {json.dumps(PARTS, separators=(",", ":"))};
+const PARTS = {json.dumps(MPARTS, separators=(",", ":"))};
 """ + JS + "</script>")
 open(OUT, "w", encoding="utf-8").write(page)
 sub = {k: sum(dsum(p, k, 1) for p in pks) for k in ("rate_mat", "rate")}

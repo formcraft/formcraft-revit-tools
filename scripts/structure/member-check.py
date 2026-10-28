@@ -7,8 +7,10 @@ W, D, RUN = sys.argv[1], sys.argv[2].rstrip("/\\") + "/", sys.argv[3]
 run = json.load(open(D + RUN + ".json")); res = {b["n"]: b for b in json.load(open(D + RUN + "_results.json"))["bars"]}
 try: sizes = json.load(open(W + "/sizes.json"))
 except FileNotFoundError: sizes = {}
+try: RMIN = json.load(open(W + "/rho_min.json"))   # column steel the bare frame needs (redundancy, update.py)
+except FileNotFoundError: RMIN = {}
 fck, fy = 25, 500
-COL = [230, 250, 300, 350, 400, 450, 500, 600]
+COL =[230, 250, 300, 350, 400, 450, 500, 600]
 def vrd_max(b, h): d = h - 50; return 0.5 * b * 0.9 * d * 0.6 * (1 - fck / 250) * fck / 1.5 / 1000   # theta 45, links take the rest
 def beam_ok(b, h, M, V=0): d = h - 50; return M <= 0.156 * fck * b * d * d / 1e6 and V <= vrd_max(b, h)
 def col_ratio(a, N, My, Mz=0, V=0, rho=0.01):
@@ -33,7 +35,7 @@ for b in run["bars"]:
         need = lambda a: next((r for r in RH if col_ratio(a, N, My, Mz, V, r) <= 1), None)
         rho0 = need(bw); u = col_ratio(bw, N, My, Mz, V, rho0 or 0.03); ok = rho0 is not None; nb = bw
         while need(nb) is None and nb < 600: nb = COL[COL.index(nb) + 1] if nb in COL else 300
-        nh = nb; rhos[str(b["id"])] = max(rhos.get(str(b["id"]), 0), need(nb) or 0.03)
+        nh = nb; rhos[str(b["id"])] = max(rhos.get(str(b["id"]), 0), need(nb) or 0.03, RMIN.get(str(b["id"]), 0))   # RMIN: the bare frame's need (update.py)
     rows.append((b["kind"], b["id"], b["n"], f"{bw}x{h}", N, M, round(u, 2), ok, f"{nb}x{nh}"))
     if [nb, nh] != [bw, h] and b["id"] > 0: changes[str(b["id"])] = max(changes.get(str(b["id"]), [0, 0]), [nb, nh], key=lambda x: x[0] * x[1])   # a split beam: its bigger need
 fails = [x for x in rows if not x[7]]

@@ -102,134 +102,17 @@ sec("drawings", "Drawings and bar bending schedules", "The preliminary sheet set
         ("Steel by bar size (kg)", ", ".join(f"{a} {b}" for a, b in sorted(st["by_size"].items(), key=lambda x: int(x[0][1:])))), ("Total steel", f"{st['total']} kg")]])
 GAPS = ["Soil test: bearing 150 kPa and ground type assumed", "Wind speed: v_b 25 m/s assumed (UNMA value)", "EC8 comparison: site a_gR assumed 0.10 g"]
 
-PAGE = r"""<title>Ogala Structural Review</title>
-<meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<style>
-/* A calculation package for checking: numbered sections (method, formulas, the member table), each with a review strip;
-   row ticks inside the tables; the sign-off at the end. Engineering-sheet look: white paper, ink, one blue for actions. */
-:root { --paper:#f6f7f8; --panel:#ffffff; --ink:#15191d; --muted:#5a6570; --line:#d6dbe0; --acc:#1f5fbf; --ok:#0b8a3e; --fix:#c2362f; --q:#a86b00; --soft:#eef2f6;
-  --sans:"IBM Plex Sans", "Segoe UI", Arial, sans-serif; --mono:"IBM Plex Mono", Consolas, monospace; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper:#101316; --panel:#171b1f; --ink:#e9edf0; --muted:#a3adb7; --line:#2b3238; --acc:#6aa1f0; --ok:#3cc172; --fix:#ef6b63; --q:#e0a63a; --soft:#1d2328; color-scheme:dark } }
-:root[data-theme="dark"] { --paper:#101316; --panel:#171b1f; --ink:#e9edf0; --muted:#a3adb7; --line:#2b3238; --acc:#6aa1f0; --ok:#3cc172; --fix:#ef6b63; --q:#e0a63a; --soft:#1d2328; color-scheme:dark }
-body { background:var(--paper); color:var(--ink); font:15px/1.55 var(--sans); }
-.wrap { max-width:1100px; margin:0 auto; padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); padding-block:28px 80px; display:grid; gap:22px; }
-header { display:grid; gap:8px; border-bottom:3px solid var(--ink); padding-bottom:16px; }
-.eyebrow { font:500 12px var(--mono); letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
-h1 { font:700 clamp(26px, 4vw, 38px)/1.1 var(--sans); margin:0; text-wrap:balance; } h2 { font:700 19px/1.25 var(--sans); margin:0; } p { margin:0; max-width:75ch; }
-.bar { position:sticky; top:env(safe-area-inset-top, 0px); z-index:5; background:var(--panel); border:1px solid var(--line); padding:10px 12px; display:flex; flex-wrap:wrap; gap:8px 14px; align-items:center; }
-.prog { flex:1 1 220px; height:10px; display:flex; gap:2px; background:var(--soft); border-radius:2px; overflow:hidden; } .prog i { display:block; }
-.bar b { font:600 13px var(--mono); } .bar select { font:13px var(--sans); padding:4px 6px; background:var(--panel); color:var(--ink); border:1px solid var(--line); border-radius:3px; }
-.gaps { border-left:4px solid var(--q); background:var(--panel); padding:12px 14px; } .gaps ul { margin:6px 0 0; padding-left:18px; }
-.toc { display:flex; flex-wrap:wrap; gap:6px; } .toc a { font:12px var(--mono); color:var(--ink); text-decoration:none; border:1px solid var(--line); padding:3px 7px; border-radius:3px; background:var(--panel); }
-.toc a.ok { border-color:var(--ok); color:var(--ok); } .toc a.fix { border-color:var(--fix); color:var(--fix); } .toc a.q { border-color:var(--q); color:var(--q); }
-section { background:var(--panel); border:1px solid var(--line); display:grid; gap:12px; padding:16px; min-width:0; scroll-margin-top:70px; }
-section.ok { border-left:5px solid var(--ok); } section.fix { border-left:5px solid var(--fix); } section.q { border-left:5px solid var(--q); }
-.sh { display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; } .sh span { font:500 12px var(--mono); color:var(--muted); }
-.eq { display:grid; gap:4px; background:var(--soft); padding:10px 12px; font:13px/1.5 var(--mono); overflow-x:auto; }
-.tw { overflow-x:auto; max-height:460px; overflow-y:auto; border:1px solid var(--line); }
-table { border-collapse:collapse; width:100%; font-size:13px; } th { position:sticky; top:0; background:var(--panel); text-align:left; font:500 11px var(--mono); text-transform:uppercase; letter-spacing:.05em; color:var(--muted); padding:7px 9px; border-bottom:1px solid var(--line); }
-td { padding:6px 9px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; } td.n { text-align:right; font-family:var(--mono); } td.y { color:var(--ok); } td.no { color:var(--fix); font-weight:600; }
-tr.rfix td { background:color-mix(in srgb, var(--fix) 10%, transparent); } tr.rok td:first-child { box-shadow:inset 3px 0 var(--ok); }
-.rt { display:inline-flex; gap:2px; } .rt button { font:12px var(--mono); width:24px; height:22px; border:1px solid var(--line); background:var(--panel); color:var(--muted); border-radius:3px; cursor:pointer; padding:0; }
-.rt button[aria-pressed="true"][data-v="ok"] { background:var(--ok); color:#fff; border-color:var(--ok); } .rt button[aria-pressed="true"][data-v="fix"] { background:var(--fix); color:#fff; border-color:var(--fix); }
-.rv { display:grid; gap:8px; border-top:1px dashed var(--line); padding-top:12px; }
-.vb { display:flex; flex-wrap:wrap; gap:6px; } .vb button { font:600 13px var(--sans); padding:6px 12px; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:3px; cursor:pointer; }
-.vb button[aria-pressed="true"][data-v="ok"] { background:var(--ok); border-color:var(--ok); color:#fff; } .vb button[aria-pressed="true"][data-v="fix"] { background:var(--fix); border-color:var(--fix); color:#fff; } .vb button[aria-pressed="true"][data-v="q"] { background:var(--q); border-color:var(--q); color:#1b1300; }
-textarea, input[type=text], input[type=date] { font:14px var(--sans); width:100%; box-sizing:border-box; padding:8px; border:1px solid var(--line); border-radius:3px; background:var(--panel); color:var(--ink); }
-textarea { min-height:64px; resize:vertical; } .who { font:12px var(--mono); color:var(--muted); }
-button:focus-visible, textarea:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible { outline:2px solid var(--acc); outline-offset:2px; }
-.sign { border:2px solid var(--ink); } .sign .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px; } .sign label { display:grid; gap:4px; font-size:13px; color:var(--muted); }
-.primary { font:600 14px var(--sans); padding:9px 16px; background:var(--acc); color:#fff; border:0; border-radius:3px; cursor:pointer; justify-self:start; } .primary:disabled { opacity:.5; cursor:not-allowed; }
-.signed { display:grid; gap:4px; background:var(--soft); padding:10px 12px; } .note { font-size:13px; color:var(--muted); }
-</style>
-<div class="wrap">
-<header><div class="eyebrow">Formcraft · The Ogala Residence · Structural design · For review by the engineer of record</div>
-<h1>Structural design review pack</h1>
-<p>Prepared by __PRES__, __FIRM__, __DATE__ (analysis run __RUN__). Each section sets out the method, the formulas and every member result. Mark each section <b>Accepted</b>, <b>Needs correction</b> or <b>Query</b>, tick or cross single rows, and write your notes; they are saved for the design team. When you are satisfied, sign off at the end.</p></header>
-<div class="bar" role="status"><b id="cnt"></b><div class="prog" id="prog" aria-hidden="true"></div><label class="note">Show <select id="flt"><option value="all">all sections</option><option value="open">not yet reviewed</option><option value="fix">needs correction or query</option></select></label><span class="note" id="dbn"></span></div>
-<div class="gaps"><b>Open data, not yet available</b><ul>__GAPS__</ul></div>
-<nav class="toc" id="toc" aria-label="Sections"></nav>
-<div id="secs"></div>
-<section class="sign" id="signoff"><h2>Engineer of record: sign-off</h2>
-<p>I have reviewed this design, the sections marked accepted are correct to the codes stated, and the corrections noted are to be made before construction.</p>
-<div id="signedlist"></div>
-<div class="grid"><label>Full name<input type="text" id="sg-name" autocomplete="name"></label><label>Registration (ERB) number<input type="text" id="sg-reg"></label><label>Date<input type="date" id="sg-date"></label></div>
-<label class="note"><input type="checkbox" id="sg-ok"> I confirm the statement above</label>
-<button class="primary" id="sg-btn" disabled>Sign off</button><p class="note" id="sg-msg"></p></section>
-</div>
-<script>
-const SECS = __SECS__;
-(async function () {
-  const $ = (id) => document.getElementById(id), esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-  const REV = {};   // section id -> {verdict, note, rows, by, at}
-  const fmt = (v) => v === true ? '<td class="y">✓</td>' : v === false ? '<td class="no">✗</td>' : typeof v === "number" ? `<td class="n">${v.toLocaleString(undefined, { maximumFractionDigits: 2 })}</td>` : `<td>${esc(v)}</td>`;
-  let db = null, user = null, canWrite = false, me = null;
-  function sectionHTML(s, i) {
-    const r = REV[s.id] || {}, rows = r.rows || {};
-    return `<section id="s-${s.id}" class="${r.verdict || ""}" data-id="${s.id}"><div class="sh"><span>${String(i + 1).padStart(2, "0")}</span><h2>${esc(s.title)}</h2></div><p>${esc(s.intro)}</p>` +
-      (s.eqs.length ? `<div class="eq">${s.eqs.map((x) => `<div>${esc(x)}</div>`).join("")}</div>` : "") +
-      (s.rows.length ? `<div class="tw"><table><thead><tr><th>Check</th>${s.cols.map((c) => `<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>` + s.rows.map((row) => { const v = rows[row[0]] || "";
-        return `<tr class="${v ? "r" + v : ""}"><td><span class="rt" role="group" aria-label="Row ${esc(row[0])}"><button data-s="${s.id}" data-r="${esc(row[0])}" data-v="ok" aria-pressed="${v === "ok"}" title="This row is right" ${canWrite ? "" : "disabled"}>✓</button><button data-s="${s.id}" data-r="${esc(row[0])}" data-v="fix" aria-pressed="${v === "fix"}" title="This row needs correcting" ${canWrite ? "" : "disabled"}>✗</button></span></td>${row.slice(1).map(fmt).join("")}</tr>`; }).join("") + "</tbody></table></div>" : "") +
-      `<div class="rv"><div class="vb" role="group" aria-label="Verdict">${[["ok", "Accepted"], ["fix", "Needs correction"], ["q", "Query"]].map(([v, l]) => `<button data-s="${s.id}" data-verdict="${v}" aria-pressed="${r.verdict === v}" ${canWrite ? "" : "disabled"}>${l}</button>`).join("")}</div>
-       <textarea data-note="${s.id}" placeholder="Notes and corrections for this section" ${canWrite ? "" : "disabled"}>${esc(r.note || "")}</textarea><div class="who" data-who="${s.id}"></div></div></section>`;
-  }
-  async function who() {
-    const ids = [...new Set(Object.values(REV).map((r) => r.by).filter(Boolean))]; const ps = user && ids.length ? await user.profiles(ids) : {};
-    for (const s of SECS) { const r = REV[s.id], el = document.querySelector(`[data-who="${s.id}"]`); if (el) el.textContent = r && r.at ? `Last marked by ${(ps[r.by] && ps[r.by].name) || "a reviewer"} on ${new Date(r.at).toLocaleString()}` : ""; }
-  }
-  function render() {
-    const f = $("flt").value, focus = document.activeElement && document.activeElement.dataset ? document.activeElement.dataset.note : null;
-    $("secs").innerHTML = SECS.map((s, i) => { const v = (REV[s.id] || {}).verdict; return f === "all" || (f === "open" && !v) || (f === "fix" && (v === "fix" || v === "q")) ? sectionHTML(s, i) : ""; }).join("");
-    const n = { ok: 0, fix: 0, q: 0 }; SECS.forEach((s) => { const v = (REV[s.id] || {}).verdict; if (v) n[v]++; });
-    $("cnt").textContent = `${n.ok + n.fix + n.q} / ${SECS.length} reviewed · ${n.ok} accepted · ${n.fix} to correct · ${n.q} queries`;
-    $("prog").innerHTML = `<i style="flex:${n.ok};background:var(--ok)"></i><i style="flex:${n.fix};background:var(--fix)"></i><i style="flex:${n.q};background:var(--q)"></i><i style="flex:${SECS.length - n.ok - n.fix - n.q}"></i>`;
-    $("toc").innerHTML = SECS.map((s, i) => `<a href="#s-${s.id}" class="${(REV[s.id] || {}).verdict || ""}">${String(i + 1).padStart(2, "0")} ${esc(s.title)}</a>`).join("");
-    if (focus) { const t = document.querySelector(`[data-note="${focus}"]`); if (t) { t.focus(); t.setSelectionRange(t.value.length, t.value.length); } }
-    who();
-  }
-  // one write at a time per section document
-  const queue = {};
-  async function save(id) {
-    if (!db || !canWrite) return;
-    if (queue[id]) { queue[id].again = true; return; } queue[id] = { again: false };
-    try { do { queue[id].again = false; await db.doc("reviews/" + id).set(Object.assign({}, REV[id], { by: me, at: new Date().toISOString() })); } while (queue[id].again); $("dbn").textContent = "Saved"; }
-    catch (x) { $("dbn").textContent = x && x.code === "invalid_argument" ? "You can read this pack but not mark it" : "Could not save: try again"; }
-    delete queue[id];
-  }
-  document.addEventListener("click", (ev) => {
-    const b = ev.target.closest("button[data-verdict]"); if (b) { const r = REV[b.dataset.s] = REV[b.dataset.s] || {}; r.verdict = r.verdict === b.dataset.verdict ? "" : b.dataset.verdict; render(); save(b.dataset.s); return; }
-    const t = ev.target.closest(".rt button"); if (t) { const r = REV[t.dataset.s] = REV[t.dataset.s] || {}; r.rows = Object.assign({}, r.rows); r.rows[t.dataset.r] = r.rows[t.dataset.r] === t.dataset.v ? "" : t.dataset.v; render(); save(t.dataset.s); }
-  });
-  const timers = {};
-  document.addEventListener("input", (ev) => { const n = ev.target.dataset && ev.target.dataset.note; if (!n) return; (REV[n] = REV[n] || {}).note = ev.target.value; clearTimeout(timers[n]); timers[n] = setTimeout(() => save(n), 900); });
-  $("flt").onchange = render;
-  render();
-  // shared marks and sign-offs (database); the pack still reads without it
-  [db, user] = await Promise.all([claude.use("db"), claude.use("user")]);
-  if (!db) { $("dbn").textContent = "Marks cannot be saved in this view"; return; }
-  me = user ? await user.id() : null; const cw = user ? await user.can("data.write") : null; canWrite = !!me && cw !== false;
-  $("dbn").textContent = canWrite ? "Your marks save as you go" : "Read-only: ask Formcraft for reviewer access";
-  db.collection("reviews").onSnapshot((snap) => {
-    let changed = false;
-    snap.docChanges().forEach((c) => { if (queue[c.doc.id]) return; if (c.type === "removed") delete REV[c.doc.id]; else REV[c.doc.id] = Object.assign({}, c.doc.data()); changed = true; });
-    if (changed) render();
-  }, () => { $("dbn").textContent = "Marks are not updating: reload the page"; });
-  db.collection("signoff").onSnapshot(async (snap) => {
-    const ss = snap.docs.map((x) => x.data()); const ps = user ? await user.profiles(snap.docs.map((x) => x.id)) : {};
-    $("signedlist").innerHTML = ss.map((x, i) => `<div class="signed"><b>Signed: ${esc(x.name)}, ERB ${esc(x.reg)}, ${esc(x.date)}</b><span class="note">by ${esc((ps[snap.docs[i].id] || {}).name || "the account holder")}; ${esc(x.summary)}</span></div>`).join("");
-  }, () => {});
-  const chk = () => { $("sg-btn").disabled = !(canWrite && $("sg-ok").checked && $("sg-name").value.trim() && $("sg-reg").value.trim() && $("sg-date").value); };
-  ["sg-ok", "sg-name", "sg-reg", "sg-date"].forEach((id) => $(id).addEventListener("input", chk)); $("sg-ok").addEventListener("change", chk);
-  $("sg-btn").onclick = async () => {
-    const n = { ok: 0, fix: 0, q: 0 }; SECS.forEach((s) => { const v = (REV[s.id] || {}).verdict; if (v) n[v]++; });
-    try { await db.doc("signoff/" + me).set({ name: $("sg-name").value.trim(), reg: $("sg-reg").value.trim(), date: $("sg-date").value, at: new Date().toISOString(), summary: `${n.ok} sections accepted, ${n.fix} to correct, ${n.q} queries of ${SECS.length}` }); $("sg-msg").textContent = "Signed off and saved."; }
-    catch (x) { $("sg-msg").textContent = "The sign-off could not be saved."; }
-  };
-})();
-</script>"""
 today = datetime.date.today().strftime("%d %B %Y")
-page = (PAGE.replace("__SECS__", json.dumps(S, separators=(",", ":"), ensure_ascii=False).replace("</", "<\\/")).replace("__PRES__", e(cfg.get("presenter", "Emlyn Atochon")))
-        .replace("__FIRM__", e(cfg.get("firm", "Formcraft"))).replace("__DATE__", today).replace("__RUN__", e(run)).replace("__GAPS__", "".join(f"<li>{e(x)}</li>" for x in GAPS)))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); import review_page
+MESHF = cfg.get("review_mesh") or os.path.join(os.path.dirname(os.path.dirname(W)), "_Report", "mesh", "structure.web.json")
+mesh = json.load(open(MESHF)) if os.path.exists(MESHF) else None
+if mesh: mesh |= {"colors": {"Structural Columns": "#7f8a94", "Structural Framing": "#a9b3bb", "Floors": "#d5d9dc", "Structural Foundations": "#8f969b"},
+                  "labels": {"Structural Columns": "Columns", "Structural Framing": "Beams", "Floors": "Slabs", "Structural Foundations": "Pads"}}
+meta = {"title": "Ogala Structural Review", "eyebrow": "Formcraft · The Ogala Residence · Structural design · For review by the engineer of record",
+        "h1": "Structural design review pack", "intro": f"Prepared by {cfg.get('presenter', 'Emlyn Atochon')}, {cfg.get('firm', 'Formcraft')}, {today} (analysis run {run}). Each section sets out the method, the formulas and every member result.",
+        "back": (f'<a href="{e(cfg["project_report"])}">Back to the project report</a>' if cfg.get("project_report") else "") + (f' · <a href="{e(cfg["structure_report_url"])}">The structural design report</a>' if cfg.get("structure_report_url") else ""),
+        "signer": "Engineer of record", "statement": "I have reviewed this design, the sections marked accepted are correct to the codes stated, and the corrections noted are to be made before construction.",
+        "reglabel": "Registration (ERB) number", "gaps": GAPS}
+page = review_page.render(S, meta, mesh)
 open(OUT, "w", encoding="utf-8").write(page)
 print(OUT, f"{len(page) / 1e6:.2f} MB", len(S), "sections", sum(len(s["rows"]) for s in S), "rows")

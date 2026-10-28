@@ -28,6 +28,11 @@ for (const [o, r] of pairs) {
     (groups.get(key) ?? groups.set(key, []).get(key)).push(id);
   }
 }
+// the stairs' supports built in Revit (config.stair_ids): sized by the analysis like any other member
+for (const st of cfg.stair_ids ?? []) for (const [role, id] of Object.entries(st)) {
+  const kind = role === "landing" ? "beam" : "column", [b, h] = sizes[String(id)] ?? (kind === "beam" ? [230, 300] : [230, 230]), key = `${kind}|RC ${b}x${h}`;
+  (groups.get(key) ?? groups.set(key, []).get(key)).push(id);
+}
 for (const [key, ids] of groups) {
   const [k, name] = key.split("|"), [b, h] = name.slice(3).split("x").map(Number);
   dup(k === "column" ? "Structural Columns" : "Structural Framing", k === "column" ? "RC 230x230" : "RC 230x300", name, { b, h });

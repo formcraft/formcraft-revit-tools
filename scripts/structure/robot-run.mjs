@@ -100,7 +100,7 @@ if (CFG.infill) for (const [i, a] of cols.entries()) for (const b of cols.slice(
   // adjacent: no column of the storey between them on the line
   if (cols.some((c) => c !== a && c !== b && Math.abs(c.start[2] - a.start[2]) < 1 && Math.abs(c.end[2] - a.end[2]) < 1 && Math.abs((c.start[0] - a.start[0]) * dy - (c.start[1] - a.start[1]) * dx) < 1 && ((c.start[0] - a.start[0]) * dx + (c.start[1] - a.start[1]) * dy) > 0 && ((c.start[0] - a.start[0]) * dx + (c.start[1] - a.start[1]) * dy) < L * L)) continue;
   const zb = a.start[2], zt = a.end[2], hgt = zt - zb;
-  let cover = 0, open = 0, area = 0, tw = 0;
+  let cover = 0, open = 0, area = 0, tw = 0; const wids = [];
   for (const w of f.walls) {
     if (w.thickness_mm < 150 || !w.top_level && !(w.height_mm > 2400)) continue;
     const wb = elev[w.base_level] ?? 0; if (wb > zt - 1000 || wb + w.height_mm < zt - 600) continue;   // spans this storey
@@ -108,10 +108,10 @@ if (CFG.infill) for (const [i, a] of cols.entries()) for (const b of cols.slice(
     const off0 = Math.abs((w.start_mm[0] - a.start[0]) * uy - (w.start_mm[1] - a.start[1]) * ux), off1 = Math.abs((w.end_mm[0] - a.start[0]) * uy - (w.end_mm[1] - a.start[1]) * ux);
     if (off0 > 300 || off1 > 300) continue;
     const ov = Math.max(0, Math.min(L, Math.max(s0, s1)) - Math.max(0, Math.min(s0, s1))); if (!ov) continue;
-    cover += ov; tw = Math.max(tw, w.thickness_mm - 35); const share = ov / w.length_mm; open += (w.openings_area_m2 ?? 0) * share; area += (ov / 1000) * (hgt / 1000);
+    cover += ov; tw = Math.max(tw, w.thickness_mm - 35); const share = ov / w.length_mm; open += (w.openings_area_m2 ?? 0) * share; area += (ov / 1000) * (hgt / 1000); wids.push(w.id);
   }
   if (cover < 0.8 * L) continue;
-  panels.push({ a, b, L, hgt, tw, ratio: area ? open / area : 1, dir: Math.abs(dx) > 1 ? "x" : "y", at: Math.abs(dx) > 1 ? a.start[1] : a.start[0], zt });
+  panels.push({ a, b, L, hgt, tw, ratio: area ? open / area : 1, dir: Math.abs(dx) > 1 ? "x" : "y", at: Math.abs(dx) > 1 ? a.start[1] : a.start[0], zt, wids });
 }
 // ---- RC shear walls (owner 28 Oct: "do the shear wall thing"): on the top storey, per direction, the two most solid
 // panels farthest apart (torsion), carried down every storey below on the same line (to the foundations). Each is an
@@ -152,6 +152,11 @@ for (const q of panels) {
     for (const [p1, p2] of [[q.a.start, q.b.end], [q.b.start, q.a.end]]) struts.push({ id: sid--, kind: "strut", start: p1, end: p2, section: "", b_mm: q.tw, h_mm: Math.max(10, hEq), material_class: "Concrete", concrete_grade: "C25/30", steel_grade: "" });
   }
 }
+// the infill register (owner 28 Oct: walls kept as structure): every wall panel the analysis counts on, so the drawings,
+// the architect's review pack and the change check (infill-diff.py) all name the same walls
+fs.writeFileSync(W + "/infill.json", JSON.stringify(panels.filter((q) => !wallKey.has(q.a.id + "|" + q.b.id)).map((q) => ({
+  walls: q.wids, cols: [q.a.id, q.b.id], from: q.a.start.slice(0, 2), to: q.b.start.slice(0, 2), z: [q.a.start[2], q.zt], length_mm: Math.round(q.L), thickness_mm: q.tw + 35,
+  openings_pct: Math.round(q.ratio * 100), structural: q.ratio <= 0.3 })), null, 1));
 fs.writeFileSync(W + "/shear_walls.json", JSON.stringify(walls.map((q) => ({ dir: q.dir, from: q.a.start, to: q.b.start, bottom_z: q.a.start[2], top_z: q.zt, length_mm: Math.round(q.L), openings_ratio: Math.round(q.ratio * 100) / 100, col_ids: [q.a.id, q.b.id] }))));
 // ---- diaphragms: the RC slab (and the attic's plywood deck) tie the column tops together. Each column top is tied to
 // its 4 nearest tops on the level where the slab lies between them (a triangulated in-plane mesh: works on irregular
@@ -253,6 +258,9 @@ const form = { supports: CFG.supports, engineer: "Formcraft BIM Manager - PRELIM
       { name: `1.35G+1.5Q${sg > 0 ? "+" : "-"}0.9${w}`, kind: "ULS", factors: { G: 1.35, Q: 1.5, [w]: 0.9 * sg } },
       { name: `1.35G+1.05Q${sg > 0 ? "+" : "-"}1.5${w}`, kind: "ULS", factors: { G: 1.35, Q: 1.05, [w]: 1.5 * sg } },
       { name: `G${sg > 0 ? "+" : "-"}1.5${w}`, kind: "ULS", factors: { G: 1.0, [w]: 1.5 * sg } }]))] };
+// redundancy check (config gravity_wind_only, with infill false): the bare frame must still carry gravity and wind if
+// walls are lost; the earthquake relies on the walls by design (US 319 K = 2)
+if (CFG.gravity_wind_only) form.combinations = form.combinations.filter((c) => !Object.keys(c.factors).some((k) => /^[ET][XY]$/.test(k)));
 const sumG = [...G.values()].reduce((a, b) => a + b, 0), sumQ = [...Q.values()].reduce((a, b) => a + b, 0);
 const summary = { nodes: model.nodes.length, bars: model.bars.length, supports: model.supports.length, skipped: model.skipped, beams: beams.length, struts: struts.length, shear_wall_panels: walls.length, applied_g_kn: Math.round(sumG), applied_q_kn: Math.round(sumQ), unplaced_g_kn: Math.round(unplaced), seismic: { Cd, W_kn: Wl.map(Math.round), V_kn: Math.round(V), F_kn: F.map(Math.round) }, wind: { qp_kpa: +qp.toFixed(2), p_kpa: +pw.toFixed(2), WX_kn: FWX.map(Math.round), WY_kn: FWY.map(Math.round) },
   max_w: { G: Math.max(...form.cases[0].bar_loads.map((l) => l.w_kn_m)), Q: Math.max(...form.cases[1].bar_loads.map((l) => l.w_kn_m)) } };
