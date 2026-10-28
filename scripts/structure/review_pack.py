@@ -14,7 +14,8 @@ XC = J(W + "/extra_checks.json")["checks"] if os.path.exists(W + "/extra_checks.
 trusses = J(W + "/trusses.json") if os.path.exists(W + "/trusses.json") else []
 stairs = [s for s in (J(W + "/stairs.json") if os.path.exists(W + "/stairs.json") else []) if "waist_mm" in s]
 sm = R.get("summary", {}); seis = R.get("cfg", {}).get("seismic", {"C": 0.08, "Z": 0.8, "I": 1.0, "K": 2})
-util = {r[1]: r[6] for r in CHK}
+util = {}
+for r in CHK: util[r[1]] = max(util.get(r[1], 0), r[6])
 S = []   # sections: id, title, intro, equations, columns, rows [[row id, cells...]]
 def sec(i, title, intro, eqs, cols, rows): S.append({"id": i, "title": title, "intro": intro, "eqs": eqs, "cols": cols, "rows": [[str(r[0])] + [c if isinstance(c, (int, float, bool)) or c is None else str(c) for c in r[1:]] for r in rows]})
 

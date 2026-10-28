@@ -64,7 +64,9 @@ for o, r in pairs:
     if o["op"] == "isolated_foundation":
         for p, i in zip(o["points_mm"], ids): pad_geo[i] = (p, o["size_mm"])
 bars_by_id = {b["id"]: b for b in run["bars"]}
-force = lambda i: res[bars_by_id[i]["n"]] if i in bars_by_id else None
+def force(i):   # a member split into several bars (a beam a column meets mid-span): the worst of each value
+    rs = [res[b["n"]] for b in run["bars"] if b["id"] == i and b["n"] in res]
+    return {k: max(r.get(k, 0) for r in rs) for k in rs[0]} | {"ned_case": rs[0].get("ned_case"), "med_case": rs[0].get("med_case")} if rs else None
 
 # ---- beams (frame) from Robot; ground beams by hand (wall line load, not in the frame model)
 wall_w = []

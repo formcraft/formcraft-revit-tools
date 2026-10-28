@@ -31,7 +31,11 @@ for o, r in zip(pops.get("column", []), bops.get("column", [])):
 BEAM = {}
 for o, r in zip(pops.get("beam", []), bops.get("beam", [])):
     for i in r.get("created_ids", []): BEAM[i] = {"s": tuple(o.get("start_mm", (0, 0))[:2]), "e": tuple(o.get("end_mm", (0, 0))[:2]), "level": o.get("level", "")}
-RB = {b["id"]: b for b in res["bars"]}
+RB = {}
+for b in res["bars"]:   # split members: the worst of each value
+    o = RB.setdefault(b["id"], dict(b))
+    for k, v in b.items():
+        if isinstance(v, (int, float)) and k not in ("n", "id"): o[k] = max(o.get(k, v), v)
 beams = [dict(b, ground=False) for b in d["beams"]] + [dict(b, ground=True) for b in d["ground_beams"]]
 def bdims(b): w, h = map(int, b["size"].split("x")); return w, h
 

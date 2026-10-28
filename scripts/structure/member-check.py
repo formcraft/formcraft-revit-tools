@@ -19,7 +19,7 @@ def col_ratio(a, N, My, Mz=0, V=0, rho=0.01):
     return max(N / NRd + (hi + 0.5 * lo) / MRd, V / vrd_max(a, a))
 rows, changes, rhos = [], {}, {}
 for b in run["bars"]:
-    if b["kind"] == "strut": continue   # infill struts: analysis only
+    if b["kind"] in ("strut", "stair"): continue   # infill struts: analysis only; stair flights: stair-slab.py
     r = res.get(b["n"]); N, M = r["ned_kn"], r["med_knm"]; My, Mz, V = r.get("my_knm", M), r.get("mz_knm", 0), r.get("ved_kn", 0); bw, h = sizes.get(str(b["id"]), [b["b_mm"], b["h_mm"]])
     if b["kind"] == "beam":
         ok = beam_ok(bw, h, M, V); nb, nh = bw, h
@@ -33,9 +33,9 @@ for b in run["bars"]:
         need = lambda a: next((r for r in RH if col_ratio(a, N, My, Mz, V, r) <= 1), None)
         rho0 = need(bw); u = col_ratio(bw, N, My, Mz, V, rho0 or 0.03); ok = rho0 is not None; nb = bw
         while need(nb) is None and nb < 600: nb = COL[COL.index(nb) + 1] if nb in COL else 300
-        nh = nb; rhos[str(b["id"])] = need(nb) or 0.03
+        nh = nb; rhos[str(b["id"])] = max(rhos.get(str(b["id"]), 0), need(nb) or 0.03)
     rows.append((b["kind"], b["id"], b["n"], f"{bw}x{h}", N, M, round(u, 2), ok, f"{nb}x{nh}"))
-    if [nb, nh] != [bw, h]: changes[str(b["id"])] = [nb, nh]
+    if [nb, nh] != [bw, h] and b["id"] > 0: changes[str(b["id"])] = max(changes.get(str(b["id"]), [0, 0]), [nb, nh], key=lambda x: x[0] * x[1])   # a split beam: its bigger need
 fails = [x for x in rows if not x[7]]
 print("members", len(rows), "over capacity", len(fails))
 for k in ("beam", "column"):
@@ -54,7 +54,7 @@ sizes.update(changes); json.dump(sizes, open(W + "/sizes.json", "w"))
 # Revit: the sized type (RC bxh), made from an existing one when missing, then change_type
 ops = []; have = set()
 cat = {"beam": "Structural Framing", "column": "Structural Columns"}
-kinds = {str(b["id"]): b["kind"] for b in run["bars"] if b["kind"] != "strut"}
+kinds = {str(b["id"]): b["kind"] for b in run["bars"] if b["kind"] not in ("strut", "stair")}
 by = {}
 for i, (b, h) in changes.items(): by.setdefault((kinds[i], b, h), []).append(int(i))
 for (k, b, h), ids in by.items():
