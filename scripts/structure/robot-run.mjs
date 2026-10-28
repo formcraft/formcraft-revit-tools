@@ -171,6 +171,13 @@ for (const lvl of CFG.floors) {
     for (const [j] of near) {
       const q = tops2[j], key = [Math.min(i, j), Math.max(i, j)].join();
       if (seen.has(key) || !insideAny([(p[0] + q[0]) / 2, (p[1] + q[1]) / 2], sl)) continue;
+      // owner 28 Oct (Robot "clashing elements"): no tie where a beam already joins the two columns (two bars on the same
+      // two nodes); the beam carries that tie force
+      const same = (a, b) => Math.abs(a[0] - b[0]) < 1 && Math.abs(a[1] - b[1]) < 1 && Math.abs(a[2] - b[2]) < 50;
+      if (beams.some((bm) => (same(bm.start, p) && same(bm.end, q)) || (same(bm.start, q) && same(bm.end, p)))) { seen.add(key); continue; }
+      // nor a tie that runs past another column top (it would lie on the beams of that line)
+      const dx = q[0] - p[0], dy = q[1] - p[1], L2 = dx * dx + dy * dy;
+      if (tops2.some((r, k) => { if (k === i || k === j) return false; const u = ((r[0] - p[0]) * dx + (r[1] - p[1]) * dy) / L2; return u > 0.01 && u < 0.99 && Math.abs((r[0] - p[0]) * dy - (r[1] - p[1]) * dx) / Math.sqrt(L2) < 50; })) { seen.add(key); continue; }
       seen.add(key); struts.push({ id: sid--, kind: "strut", start: p, end: q, section: "", b_mm: sz[0], h_mm: sz[1], material_class: "Concrete", concrete_grade: "C25/30", steel_grade: "" });
     }
   }

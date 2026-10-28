@@ -72,6 +72,14 @@ col_ends = {b["end"] for b in A["column"]}
 onbeam = [b["id"] for b in A["column"] if b["start"] not in sup and b["start"] not in col_ends]
 if free: find("high", "Connectivity", f"{len(free)} free end(s) in the analysed frame (a member end with nothing else attached and no support)", free)
 if onbeam: find("high", "Connectivity", f"{len(onbeam)} column(s) standing on a beam, not on a column below (a transfer: the beam carries the column)", onbeam)
+pairs = collections.Counter(tuple(sorted((b["start"], b["end"]))) for b in M["bars"])
+dupl = [k for k, c in pairs.items() if c > 1]
+if dupl: find("high", "Connectivity", f"{len(dupl)} pair(s) of bars on the same two nodes (Robot reports these as clashing elements and will not calculate cleanly)", [f"{a}-{b}" for a, b in dupl])
+def on_bar(p, b):
+    a, e = xyz(b["start"]), xyz(b["end"]); v = [e[k] - a[k] for k in range(3)]; L2 = sum(x * x for x in v) or 1; t = sum(v[k] * (p[k] - a[k]) for k in range(3)) / L2
+    return 0.001 < t < 0.999 and math.dist(p, [a[k] + t * v[k] for k in range(3)]) < 20
+thru = [b["id"] for b in M["bars"] if any(on_bar(xyz(n), b) for n in N if n not in (b["start"], b["end"]))]
+if thru: find("high", "Connectivity", f"{len(thru)} bar(s) passing through a node without being split there (overlapping members)", thru)
 nsup = [n for n in sup if N[n]["z"] > 0]
 if nsup: find("medium", "Connectivity", f"{len(nsup)} support(s) above ground level", nsup)
 # ---- stairs (slabs are the architect's floors in the linked model: checked by the loads take-down, not here)
