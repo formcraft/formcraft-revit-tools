@@ -34,8 +34,21 @@ for (const s of src) {
   let text = "";
   try { text = s.kind === "pdf" ? await pdfText(s.url) : (await readWeb(s.url)).text; }
   catch (e) { console.log(`${s.name}: ${e.message}`); continue; }
-  const lines = text.split(/\r?\n|(?<=[.;])\s+/).map((l) => l.replace(/\s+/g, " ").trim()).filter(Boolean);
   let n = 0;
+  if (s.kind === "listing") {   // marketplace search page: "USh 55,000" then the title and description on the next lines
+    const L = text.split(/\r?\n/).map((l) => l.replace(/\s+/g, " ").trim()).filter(Boolean);
+    for (let i = 0; i < L.length; i++) {
+      const m = /^USh\s?([0-9][0-9,]*)$/i.exec(L[i]); if (!m) continue;
+      const v = Number(m[1].replace(/,/g, "")), title = `${L[i + 1] ?? ""} | ${L[i + 2] ?? ""}`, low = title.toLowerCase();
+      for (const it of s.items) {
+        if (!it.terms.some((t) => low.includes(t)) || (it.must ?? []).some((t) => !low.includes(t)) || (it.not ?? []).some((t) => low.includes(t))) continue;
+        if (v < (it.min ?? 100) || v > (it.max ?? 1e9)) continue;
+        rows.push([it.key, v, String(v), title.slice(0, 220), s.name, s.url, today]); n++;
+      }
+    }
+    console.log(`${s.name}: ${n} listings`); continue;
+  }
+  const lines = text.split(/\r?\n|(?<=[.;])\s+/).map((l) => l.replace(/\s+/g, " ").trim()).filter(Boolean);
   for (const it of s.items) for (const l of lines) {
     const low = l.toLowerCase(); if (!it.terms.some((t) => low.includes(t))) continue;
     const nums = [...l.matchAll(money)].map((m) => Number((m[1] ?? m[2]).replace(/,/g, ""))).filter((v) => v >= 100 && !(v >= 1990 && v <= 2035));
@@ -45,6 +58,10 @@ for (const s of src) {
   }
   console.log(`${s.name}: ${n} candidate lines`);
 }
+// per key: how many, low quartile, median, high quartile (to judge a candidate range at a glance)
+const by = {}; for (const r of rows) (by[r[0]] ??= []).push(r[1]);
+const q = (a, f) => { const b = [...a].sort((x, y) => x - y); return b[Math.min(b.length - 1, Math.floor(f * (b.length - 1) + 0.5))]; };
+for (const [k, v] of Object.entries(by)) console.log(`  ${k.padEnd(14)} n=${String(v.length).padStart(3)}  p25 ${q(v, .25).toLocaleString()}  median ${q(v, .5).toLocaleString()}  p75 ${q(v, .75).toLocaleString()}`);
 const csv = (v) => `"${String(v).replace(/"/g, '""')}"`;
 const out = path.join(D, "FMC_Price_Candidates.csv");
 fs.writeFileSync(out, "key,value,all_numbers,line,source,url,read\n" + rows.map((r) => r.map(csv).join(",")).join("\n") + "\n");
