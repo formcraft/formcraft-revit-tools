@@ -57,6 +57,13 @@ model3d = {"cols": cols, "beams": beams, "pads": pads, "slabs": slabs3d, "trusse
 # ---------------- cost (indicative Kampala rates; replace with the QS's) ----------------
 R = {"concrete": (480_000, 550_000, 620_000), "steel": (4_600, 5_200, 5_800), "formwork": (30_000, 38_000, 45_000), "excavation": (25_000, 35_000, 45_000),
      "truss_T1": (620_000, 720_000, 820_000), "truss_T2": (440_000, 520_000, 600_000), "attic_floor_m2": (80_000, 95_000, 110_000)}
+KIT_RATES = cfg.get("kit_rates", "D:/Fomcraft/FMC_BIM_27/FMC_Kit_v2.2/FMC_Kit_v2.2/07_Materials/FMC_Rates.json")
+if os.path.exists(KIT_RATES):   # the kit's rates computed from the price book (scripts/cost/rates.py)
+    KR = J(KIT_RATES); R.update({k: tuple(KR[k]["rate"]) for k in ("concrete", "steel", "formwork", "excavation", "attic_floor") if k in KR})
+    if "timber_truss_m3" in KR:
+        for t in trusses:
+            m3 = sum(m["length_mm"] / 1000 * math.prod(int(v) / 1000 for v in t["sizes"][m["kind"]].replace("+", "").split("x")) for m in t["members"])
+            R["truss_" + t["name"]] = tuple(round(m3 * a + b) for a, b in zip(KR["timber_truss_m3"]["rate"], KR.get("truss_fixings", {"rate": [0, 0, 0]})["rate"]))
 if RATES_F and os.path.exists(RATES_F): R.update({k: tuple(v) for k, v in J(RATES_F).items()})
 attic_area = sum(abs(sum(s["loop"][i][0] * s["loop"][(i + 1) % len(s["loop"])][1] - s["loop"][(i + 1) % len(s["loop"])][0] * s["loop"][i][1] for i in range(len(s["loop"])))) / 2e6 for s in slabs3d if s["timber"])
 qty = {"Concrete (m³)": (vol_total, "concrete"), "Reinforcement (kg)": (steel, "steel"), "Formwork (m²)": (sum(form.values()), "formwork"), "Excavation (m³)": (excav, "excavation")}

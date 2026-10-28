@@ -12,8 +12,16 @@ SW = WIP + "/_Structure/_work"
 J = lambda p: json.load(open(p, encoding="utf-8"))
 os.makedirs(RD + "/packages", exist_ok=True)
 facts = J(SW + "/facts.json"); EL = {l["name"]: l["elevation_mm"] for l in facts["levels"]}
+# rates: the project's own overrides (<report dir>/rates.json), else the kit's computed rates (FMC_Rates.json from the
+# price book, scripts/cost/rates.py), else the fallback written here (marked so it can be found and replaced)
 rates = J(RD + "/rates.json") if os.path.exists(RD + "/rates.json") else {}
-R = lambda key, dflt: tuple(rates.get(key, dflt))
+KIT_MAT = (J(RD + "/report.json").get("kit_materials") if os.path.exists(RD + "/report.json") else None) or "D:/Fomcraft/FMC_BIM_27/FMC_Kit_v2.2/FMC_Kit_v2.2/07_Materials"
+KR = {k: v for k, v in (J(KIT_MAT + "/FMC_Rates.json") if os.path.exists(KIT_MAT + "/FMC_Rates.json") else {}).items() if not k.startswith("_")}
+FALLBACK = set()
+def R(key, dflt):
+    if key in rates: return tuple(rates[key])
+    if key in KR: return tuple(KR[key]["rate"])
+    FALLBACK.add(key); return tuple(dflt)
 area = lambda lp: abs(sum(lp[i][0] * lp[(i + 1) % len(lp)][1] - lp[(i + 1) % len(lp)][0] * lp[i][1] for i in range(len(lp)))) / 2e6
 def save(p): json.dump(p, open(f"{RD}/packages/{p['discipline']}.json", "w", encoding="utf-8"), separators=(",", ":"))
 
@@ -85,6 +93,8 @@ for t in tr:
             pt = (lambda n: [ox + n[0], oy, 7250 + n[1]]) if t["along"] == "y" else (lambda n: [ox, oy + n[0], 7250 + n[1]])
             sl.append([pt(na), pt(nb)])
 steel = D["steel_kg"]["total"]; nform = vol["concrete"] * 4.2
+def truss_m3(t):   # member sizes (b x h) x lengths
+    sz = t["sizes"]; return sum(m["length_mm"] / 1000 * math.prod(int(v) / 1000 for v in sz[m["kind"]].replace("+", "").split("x")) for m in t["members"])
 struct = {"discipline": "structure", "label": "Structure", "status": "designed",
   "summary": "Confined-masonry RC frame on pad footings, 200 mm first-floor slab, timber attic floor and Fink roof trusses; checked for dead, imposed, wind and earthquake loads, verified in Robot.",
   "key": [[f"{vol['concrete']:,.0f} m³", "concrete"], [f"{steel / 1000:.1f} t", "steel"], [f"{len([b for b in sb if b[2] != b[5]])}", "column lengths"], [f"{sum(t['count'] for t in tr)}", "roof trusses"]],
@@ -93,7 +103,8 @@ struct = {"discipline": "structure", "label": "Structure", "status": "designed",
                  {"item": "Reinforcement B500, cut, bent, fixed", "qty": steel, "unit": "kg", "rate": list(R("steel", [4_600, 5_200, 5_800])), "group": "Reinforcement"},
                  {"item": "Formwork", "qty": round(nform), "unit": "m²", "rate": list(R("formwork", [30_000, 38_000, 45_000])), "group": "Formwork"},
                  {"item": "Excavation for footings", "qty": round(sum(((int(p['size'].split('x')[0]) + 600) / 1000) ** 2 * 1.25 for p in D["pads"]), 1), "unit": "m³", "rate": list(R("excavation", [25_000, 35_000, 45_000])), "group": "Earthworks"}]
-             + [{"item": f"Roof trusses {t['name']} ({t['span_mm'] / 1000:.1f} m)", "qty": t["count"], "unit": "No.", "rate": list(R("truss_" + t["name"], [620_000, 720_000, 820_000] if t["span_mm"] > 11000 else [440_000, 520_000, 600_000])), "group": "Roof structure"} for t in tr]
+             + [{"item": f"Roof trusses {t['name']} ({t['span_mm'] / 1000:.1f} m, {truss_m3(t):.3f} m³ timber each)", "qty": t["count"], "unit": "No.",
+                 "rate": [round(truss_m3(t) * a + b) for a, b in zip(R("timber_truss_m3", [1_900_000, 2_300_000, 2_700_000]), R("truss_fixings", [35_000, 50_000, 70_000]))], "group": "Roof structure"} for t in tr]
              + [{"item": "Attic timber floor (joists, 18 mm ply)", "qty": 240, "unit": "m²", "rate": list(R("attic_floor", [80_000, 95_000, 110_000])), "group": "Timber floor"}],
   "checks": [["Loads: dead, imposed, wind, earthquake", "done"], ["3D analysis + independent Robot check", "done"], ["Members, slabs, stairs, footings, trusses", "done"],
              ["Bar bending schedules", "done"], ["Soil test (bearing 150 kPa assumed)", "not"], ["Engineer of record signature", "not"]],
@@ -105,18 +116,18 @@ save(struct)
 build_cost = sum(q["qty"] * q["rate"][1] for q in arch["quantities"] + struct["quantities"])
 bnd = [w for w in facts["walls"] if "Planter wall stone" in w["type"] and w["base_level"].startswith("Site") and w["length_mm"] > 15000]
 perim = sum(w["length_mm"] for w in bnd) / 1000 or 120
-for disc, label, frac, what in (("plumbing", "Plumbing & drainage", (0.06, 0.08, 0.10), "Water supply, hot water, sanitary fittings, soil and waste, septic tank and soakaway, rainwater and storm drainage."),
-                                ("electrical", "Electrical", (0.07, 0.09, 0.12), "Power, lighting, distribution boards, earthing and lightning protection, data, CCTV and solar provision.")):
+for disc, label, frac, what in (("plumbing", "Plumbing & drainage", R("plumbing_pct", (0.06, 0.08, 0.10)), "Water supply, hot water, sanitary fittings, soil and waste, septic tank and soakaway, rainwater and storm drainage."),
+                                ("electrical", "Electrical", R("electrical_pct", (0.07, 0.09, 0.12)), "Power, lighting, distribution boards, earthing and lightning protection, data, CCTV and solar provision.")):
     save({"discipline": disc, "label": label, "status": "not_started", "summary": f"Not designed yet. {what}",
           "key": [["—", "model"], [f"{int(frac[1] * 100)}%", "of building cost (allowance)"]], "model": {},
           "quantities": [{"item": f"{label} (allowance, {int(frac[0] * 100)}–{int(frac[2] * 100)}% of building cost)", "qty": 1, "unit": "sum", "rate": [round(build_cost * f) for f in frac], "group": "Allowance"}],
           "checks": [["Design brief and loads", "not"], ["3D model", "not"], ["Calculations and drawings", "not"]], "drawings": [], "notes": []})
 gfa_main = sum(r["area_m2"] for r in facts["rooms"])
 for disc, label, rate, unit, what, items in (
-    ("mechanical", "Mechanical (ventilation, AC, solar hot water)", [40_000, 60_000, 90_000], "m² GFA", "Extract fans to wet rooms and kitchen, split AC where wanted, solar water heating with backup.", ["Ventilation and AC layout", "Solar hot water sizing", "3D model"]),
-    ("interiors", "Interiors & joinery (kitchen, wardrobes, cabinets, furniture)", [180_000, 260_000, 380_000], "m² GFA", "Kitchen units and worktops, built-in wardrobes, vanity units, shelving, doors' ironmongery upgrades, loose furniture and soft furnishing.", ["Interior design concept", "Joinery drawings and schedules", "FF&E schedule"]),
-    ("fire", "Fire safety & security", [8_000, 12_000, 18_000], "m² GFA", "Smoke detectors, extinguishers and blankets, emergency lighting, alarm and access control.", ["Fire strategy", "Security layout"]),
-    ("landscape", "Landscape", [25_000, 40_000, 60_000], "m² site (approx.)", "Soft landscape, planting, irrigation points and outdoor lighting beyond the paved areas in the architecture model.", ["Landscape design", "Planting plan"])):
+    ("mechanical", "Mechanical (ventilation, AC, solar hot water)", list(R("mechanical_gfa", [40_000, 60_000, 90_000])), "m² GFA", "Extract fans to wet rooms and kitchen, split AC where wanted, solar water heating with backup.", ["Ventilation and AC layout", "Solar hot water sizing", "3D model"]),
+    ("interiors", "Interiors & joinery (kitchen, wardrobes, cabinets, furniture)", list(R("interiors_gfa", [180_000, 260_000, 380_000])), "m² GFA", "Kitchen units and worktops, built-in wardrobes, vanity units, shelving, doors' ironmongery upgrades, loose furniture and soft furnishing.", ["Interior design concept", "Joinery drawings and schedules", "FF&E schedule"]),
+    ("fire", "Fire safety & security", list(R("fire_gfa", [8_000, 12_000, 18_000])), "m² GFA", "Smoke detectors, extinguishers and blankets, emergency lighting, alarm and access control.", ["Fire strategy", "Security layout"]),
+    ("landscape", "Landscape", list(R("landscape_site", [25_000, 40_000, 60_000])), "m² site (approx.)", "Soft landscape, planting, irrigation points and outdoor lighting beyond the paved areas in the architecture model.", ["Landscape design", "Planting plan"])):
     qty = round(gfa_main) if "GFA" in unit else 1500
     save({"discipline": disc, "label": label, "status": "not_started", "summary": f"Planned, not designed yet. {what}", "key": [["—", "model"], [f"UGX {rate[1]:,}", "per " + unit + " (allowance)"]], "model": {},
           "quantities": [{"item": f"{label} (allowance)", "qty": qty, "unit": unit, "rate": rate, "group": "Allowance"}], "checks": [[c, "not"] for c in items], "drawings": [], "notes": []})
@@ -126,4 +137,5 @@ save({"discipline": "external", "label": "External works & fence", "status": "no
       "quantities": [{"item": "Boundary wall / fence 1.8 m with footing (allowance)", "qty": round(perim), "unit": "m", "rate": list(R("fence_m", [350_000, 450_000, 600_000])), "group": "Fence"},
                      {"item": "Gate and gate house (allowance)", "qty": 1, "unit": "sum", "rate": list(R("gate", [8_000_000, 12_000_000, 18_000_000])), "group": "Fence"}],
       "checks": [["Fence and gate design", "not"], ["Site drainage and driveway", "not"]], "drawings": [], "notes": []})
+print("rates not in the kit (fallback values used):", sorted(FALLBACK) or "none")
 print({p[:-5]: os.path.getsize(f"{RD}/packages/{p}") // 1024 for p in os.listdir(RD + "/packages")}, f"building cost (arch+structure likely) UGX {build_cost / 1e6:,.0f}M")
