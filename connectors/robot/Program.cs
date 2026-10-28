@@ -7,8 +7,9 @@ namespace Formcraft.Robot
 {
     /// <summary>
     /// fmc-robot.exe status | send | calculate | results, with JSON on stdin and JSON on stdout. Track R of
-    /// docs/PLAN_EXECUTION.md: Formcraft prepares and transfers; the engineer decides. It never sets loads beyond the
-    /// cases (and self-weight) the engineer named, never chooses a section or a design code, and never signs anything.
+    /// docs/PLAN_EXECUTION.md: Formcraft prepares and transfers; the engineer decides. It sets only the loads the caller
+    /// sends with each case (bar_loads, kN/m; owner 28 Oct: preliminary runs from the kit's takedown) and the combinations
+    /// it names, never chooses a section or a design code, and never signs anything.
     /// Robot's API works in SI units (m, N, N·m); the file it saves is the one the server's guard allowed.
     /// </summary>
     public static class Program
@@ -117,7 +118,31 @@ namespace Formcraft.Robot
                     rec.SetValue((short)IRobotDeadRecordValues.I_DRV_Z, -1);
                     rec.SetValue((short)IRobotDeadRecordValues.I_DRV_ENTIRE_STRUCTURE, 1);
                 }
-                made_cases.Add(new JObject { ["n"] = number, ["name"] = c.Value<string>("name"), ["self_weight"] = c.Value<bool?>("self_weight") == true });
+                // owner 28 Oct ("do the calc in Robot"): the case's bar loads when the server sends them (kN/m, down),
+                // one record per value so equal loads share a record
+                int loadsAdded = 0;
+                foreach (var g in (c["bar_loads"] as JArray ?? new JArray()).OfType<JObject>().GroupBy(l => Math.Round(l.Value<double>("w_kn_m"), 2)))
+                {
+                    int i = sc.Records.New(IRobotLoadRecordType.I_LRT_BAR_UNIFORM);
+                    IRobotLoadRecord rec = sc.Records.Get(i);
+                    rec.SetValue((short)IRobotBarUniformRecordValues.I_BURV_PZ, -g.Key * 1000);
+                    rec.Objects.FromText(string.Join(" ", g.Select(l => l.Value<int>("bar"))));
+                    loadsAdded += g.Count();
+                }
+                made_cases.Add(new JObject { ["n"] = number, ["name"] = c.Value<string>("name"), ["self_weight"] = c.Value<bool?>("self_weight") == true, ["bar_loads"] = loadsAdded });
+                number++;
+            }
+            // combinations: {name, kind ULS|SLS, factors {case name: factor}}
+            foreach (JObject cb in (form["combinations"] as JArray ?? new JArray()).OfType<JObject>())
+            {
+                var kind = (cb.Value<string>("kind") ?? "ULS").ToUpperInvariant() == "SLS" ? IRobotCombinationType.I_CBT_SLS : IRobotCombinationType.I_CBT_ULS;
+                RobotCaseCombination comb = st.Cases.CreateCombination(number, cb.Value<string>("name") ?? ("Comb " + number), kind, IRobotCaseNature.I_CN_PERMANENT, IRobotCaseAnalizeType.I_CAT_COMB);
+                foreach (var kv in cb["factors"] as JObject ?? new JObject())
+                {
+                    var hit = made_cases.OfType<JObject>().FirstOrDefault(x => x.Value<string>("name") == kv.Key) ?? throw new ArgumentException($"combination {cb["name"]}: no case {kv.Key}");
+                    comb.CaseFactors.New(hit.Value<int>("n"), kv.Value!.Value<double>());
+                }
+                made_cases.Add(new JObject { ["n"] = number, ["name"] = cb.Value<string>("name"), ["combination"] = kind == IRobotCombinationType.I_CBT_SLS ? "SLS" : "ULS" });
                 number++;
             }
 
