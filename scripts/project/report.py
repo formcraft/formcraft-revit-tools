@@ -47,6 +47,13 @@ for p in pks:
         if os.path.exists(f): m["mesh"] = J(f)
         else: del m["mesh"]
     fed[p["discipline"]] = {"label": p["label"], "color": HEX.get(p["discipline"], "#999"), **m}
+CATDISC = {"Boundary walls": "external"}   # mesh categories shown and switched with another discipline
+for m in [v for v in fed.values() if v.get("mesh")]:
+    for gr in m["mesh"]["groups"]:
+        d2 = CATDISC.get(gr["cat"])
+        if d2 and d2 in pk and d2 not in fed: fed[d2] = {"label": pk[d2]["label"], "color": HEX.get(d2, "#999")}
+for c in COST["discs"]: c["model"] = c["model"] or c["d"] in fed
+toggle_btns = "".join(f'<button class="dtog" data-d="{p["discipline"]}" aria-pressed="true" {"" if p.get("model") or p["discipline"] in fed else "data-nomodel=1"}><i style="background:{HEX.get(p["discipline"])}"></i>{e(p["label"].split(" (")[0])}</button>' for p in pks)
 # the website's baked paper textures (FMC_WEB public/textures), so the model reads as the same paper scale model
 WEBTEX = cfg.get("web_textures", r"D:\Fomcraft\FMC_WEB\public\textures")
 def data_uri(f):
@@ -91,7 +98,6 @@ mat_rows = "".join(f'<tr><th scope="row">{e(part)}</th>' + "".join(
     (lambda v: f'<td><span class="sc {SC[v[0]][1]}" title="{e(v[1])}">{SC[v[0]][0]}</span></td>')(p.get("scope", {}).get(part, ["not", "not part of this discipline"])) for p in pks) + "</tr>" for part in PARTS)
 mat_head = "".join(f'<th style="--c:{HEX.get(p["discipline"])}"><span class="dot"></span>{e(p["label"].split(" (")[0])}</th>' for p in pks)
 road = "".join(f'<li><b>{e(p["label"])}</b><span>{e("; ".join(t for t, c in p.get("checks", []) if c != "done") or "complete")}</span></li>' for p in pks if any(c != "done" for _, c in p.get("checks", [])))
-toggle_btns = "".join(f'<button class="dtog" data-d="{p["discipline"]}" aria-pressed="true" {"" if p.get("model") else "data-nomodel=1"}><i style="background:{HEX.get(p["discipline"])}"></i>{e(p["label"].split(" (")[0])}</button>' for p in pks)
 today = datetime.date.today().strftime("%d %B %Y")
 three = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"; orbit = "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"
 
@@ -167,6 +173,7 @@ svg text { fill:var(--ink); font-family:var(--mono); } svg .big { font:800 24px 
 .explore summary b { font:500 13px var(--mono); font-variant-numeric:tabular-nums; text-align:right; }
 .explore ul { list-style:none; margin:0; padding:0 14px 12px; display:grid; }
 .explore li { display:grid; grid-template-columns:1fr auto; gap:4px 10px; align-items:center; font-size:14px; padding:7px 0; border-top:1px solid var(--line); }
+.explore li.grp { border-top:2px solid var(--ink); margin-top:6px; padding-top:9px; } .explore li.grp b { font:700 13px var(--mono); text-transform:uppercase; letter-spacing:.06em; }
 .explore li small { color:var(--muted); font:12px var(--mono); }
 .explore li .amt { font:500 13px var(--mono); font-variant-numeric:tabular-nums; white-space:nowrap; text-align:right; }
 .explore li.s-out .nm, .explore li.s-out .amt { text-decoration:line-through; color:var(--muted); } .explore li.s-later .amt { color:var(--muted); font-style:italic; }
@@ -227,6 +234,7 @@ BODY = f"""<header class="hero">
 <section>
   <div class="figs">
     <div class="fig"><b id="k-total"></b><span id="k-range"></span></div>
+    <div class="fig"><b id="k-bld"></b><span>the buildings alone: house and boys' quarters, without external works, fence and landscape</span></div>
     <div class="fig"><b id="k-now"></b><span>phase 1: built now</span></div>
     <div class="fig"><b id="k-later"></b><span>later phases</span></div>
     <div class="fig"><b id="k-m2"></b><span>per m² of room area ({gfa:,.0f} m², main house and boys' quarters)</span></div>
@@ -288,7 +296,10 @@ JS = r"""
   const pre = () => S.on.pre ? S.pre / 100 : 0, con = () => S.on.con ? S.con / 100 : 0, K = () => (1 + pre()) * (1 + con());
   const SC = () => S.scope === "all" ? ["now", "later"] : ["now"];
   let hook3d = () => {};
-  const STG = [["now", "Now"], ["later", "Later"], ["out", "Leave out"]];
+  const STG = [["now", "Now"], ["later", "Later"], ["out", "Leave out"]], SITE = ["external", "landscape"];
+  const itemLi = (it) => { const s = st(it); return `<li class="s-${s}"><span class="nm">${it.label} <small>${it.qty.toLocaleString()} ${it.unit}</small></span><span class="amt">${M(amt(it, 1))}</span>` +
+    (it.locked ? `<em class="tg lock">always in: structure and shell</em>` : `<span class="seg" role="group" aria-label="When">` + STG.map(([v, l]) => `<button data-i="${it.id}" data-s="${v}" aria-pressed="${s === v}">${l}</button>`).join("") + "</span>") + "</li>"; };
+  const groupsOf = (d) => [...new Set(d.items.map((it) => it.group || "Items"))].map((g) => [g, d.items.filter((it) => (it.group || "Items") === g)]);
   function render() {
     document.querySelectorAll(".basis .chip[data-p]").forEach((b) => b.setAttribute("aria-pressed", !!S.on[b.dataset.p]));
     $("pre-v").value = S.pre; $("con-v").value = S.con;
@@ -302,6 +313,8 @@ JS = r"""
     const what = (parts.length ? parts.join(", ") : "nothing") + (S.on.pre ? `, preliminaries ${S.pre}%` : "") + (S.on.con ? `, contingency ${S.con}%` : "");
     $("t-top").textContent = "UGX " + BN(tot[1]); $("k-total").textContent = "UGX " + BN(tot[1]);
     $("k-range").textContent = (S.scope === "now" ? "phase 1" : "phase 1 and later") + ", likely (" + BN(tot[0]) + "–" + BN(tot[2]) + ")";
+    const siteItem = (it) => /external|landscape/i.test(it.label);   // paving and planting drawn in the architecture are site works too
+    $("k-bld").textContent = "UGX " + BN(COST.discs.filter((d) => !SITE.includes(d.d) && discOn(d)).reduce((a, d) => a + d.items.reduce((b, it) => b + (sc.includes(st(it)) && !siteItem(it) ? amt(it, 1) : 0), 0), 0) * k);
     $("k-now").textContent = "UGX " + BN(nowT); $("k-later").textContent = "UGX " + BN(laterT);
     $("k-m2").textContent = "UGX " + (tot[1] / COST.gfa / 1e6).toFixed(2) + "M"; $("k-des").textContent = sub[1] ? Math.round(100 * des / sub[1]) + "%" : "—";
     const cnt = { now: 0, later: 0, out: 0 }; COST.discs.forEach((d) => discOn(d) && d.items.forEach((it) => cnt[st(it)]++));
@@ -320,8 +333,9 @@ JS = r"""
     $("legend").innerHTML = D.map((x) => `<li><button data-d="${x.d.d}" aria-pressed="${discOn(x.d)}"><i style="background:${x.d.color}"></i><span>${x.d.short}</span><b>${M(x.t[1])}</b><em>${sub[1] ? Math.round(100 * x.t[1] / sub[1]) : 0}%</em></button></li>`).join("");
     const open = new Set([...document.querySelectorAll("#explore details[open]")].map((x) => x.dataset.d));
     $("explore").innerHTML = COST.discs.map((d) => `<details data-d="${d.d}" style="--c:${d.color}" class="${discOn(d) ? "" : "off"}" ${open.has(d.d) ? "open" : ""}><summary><span>${d.short}</span><b>now ${M(sumD(d, ["now"], 1))}<br>later ${M(sumD(d, ["later"], 1))}</b></summary><ul>` +
-      d.items.map((it) => { const s = st(it); return `<li class="s-${s}"><span class="nm">${it.label} <small>${it.qty.toLocaleString()} ${it.unit}</small></span><span class="amt">${M(amt(it, 1))}</span>` +
-        (it.locked ? `<em class="tg lock">always in: structure and shell</em>` : `<span class="seg" role="group" aria-label="When">` + STG.map(([v, l]) => `<button data-i="${it.id}" data-s="${v}" aria-pressed="${s === v}">${l}</button>`).join("") + "</span>") + "</li>"; }).join("") + "</ul></details>").join("");
+      groupsOf(d).map(([g, its]) => { const free = its.filter((it) => !it.locked), one = free.length && free.every((it) => st(it) === st(free[0])) ? st(free[0]) : "";
+        return `<li class="grp"><b>${g}</b><span class="amt">${M(its.reduce((a, it) => a + (SC().includes(st(it)) ? amt(it, 1) : 0), 0))}</span>` +
+          (free.length ? `<span class="seg" role="group" aria-label="${g}: when">` + STG.map(([v, l]) => `<button data-g="${d.d}|${g}" data-s="${v}" aria-pressed="${one === v}">All ${l.toLowerCase()}</button>`).join("") + "</span>" : `<em class="tg lock">always in</em>`) + "</li>" + its.map(itemLi).join(""); }).join("") + "</ul></details>").join("");
     $("ctab").innerHTML = D.map((x) => `<tr${discOn(x.d) ? "" : ' style="opacity:.45"'}><td>${x.d.label}</td><td>${x.d.status === "designed" ? "Designed" : "Allowance"}</td><td class="n">${M(x.now)}</td><td class="n">${M(x.later)}</td>` + [0, 1, 2].map((i) => `<td class="n">${i === 1 ? "<b>" : ""}${M(x.t[i])}${i === 1 ? "</b>" : ""}</td>`).join("") + "</tr>").join("") +
       (S.on.pre ? `<tr><td>Preliminaries &amp; margin</td><td>${S.pre}%</td><td></td><td></td>` + sub.map((x) => `<td class="n">${M(x * pre())}</td>`).join("") + "</tr>" : "") +
       (S.on.con ? `<tr><td>Contingency</td><td>${S.con}%</td><td></td><td></td>` + sub.map((x) => `<td class="n">${M(x * (1 + pre()) * con())}</td>`).join("") + "</tr>" : "");
@@ -334,6 +348,7 @@ JS = r"""
     const t = ev.target;
     if (t.closest("input")) return;
     const b = t.closest("#legend button, .dtog"); if (b) { S.discOff[b.dataset.d] = !S.discOff[b.dataset.d]; if (!S.discOff[b.dataset.d]) delete S.discOff[b.dataset.d]; render(); return; }
+    const gb = t.closest(".seg button[data-g]"); if (gb) { const [dd, g] = gb.dataset.g.split("|"); COST.discs.find((x) => x.d === dd).items.forEach((it) => { if ((it.group || "Items") === g && !it.locked) { if (gb.dataset.s === it.s0) delete S.stage[it.id]; else S.stage[it.id] = gb.dataset.s; } }); render(); return; }
     const sg = t.closest(".seg button"); if (sg) { const it = COST.discs.flatMap((d) => d.items).find((x) => x.id === sg.dataset.i); if (sg.dataset.s === it.s0) delete S.stage[it.id]; else S.stage[it.id] = sg.dataset.s; render(); return; }
     const c = t.closest(".basis .chip[data-p]"); if (c) { S.on[c.dataset.p] = S.on[c.dataset.p] ? 0 : 1; render(); return; }
     const pt = t.closest(".ptog"); if (pt) { const k = pt.dataset.k; S.partOff[k] = !S.partOff[k]; if (!S.partOff[k]) delete S.partOff[k]; render(); return; }
@@ -367,6 +382,8 @@ JS = r"""
     structure: [["Footings", ["Structural Foundations"], "#8f969b", 1], ["Slabs", ["Floors"], "#c9cdd0", 2], ["Columns", ["Structural Columns"], "#aeb4b9", 3], ["Beams", ["Structural Framing"], "#aeb4b9", 4],
       ["Roof trusses", ["#lines"], "#b48c62", 8], ["Other", ["*"], "#c9cdd0", 10]],
   };
+  const CATDISC = { "Boundary walls": "external" };
+  PARTMAP.external = [["Fence & boundary wall", ["Boundary walls"], "#e2e1dc", 1], ["Other", ["*"], "#e2e1dc", 10]];
   const CATCOL = { Furniture: "#ffae61", Casework: "#ffae61", "Plumbing Fixtures": "#ffffff", "Lighting Fixtures": "#ffae61", Doors: "#a0805d", Windows: "#1c252d", "Curtain Wall Mullions": "#1c252d", Railings: "#1c252d", "Top Rails": "#1c252d", Gutters: "#1c252d", Fascias: "#efeeea", Site: "#c8c2b0", Pipes: "#9aa0a4", "Wall Sweeps": "#e2e1dc" };
   const partOf = (d, cat) => { const L = PARTMAP[d] || [["Model", ["*"], null, 5]]; return L.find((p) => p[1].includes(cat)) || L.find((p) => p[1].includes("*")) || L[L.length - 1]; };
   const cv = $("v3d"), PG = [], MESH = [];
@@ -377,7 +394,7 @@ JS = r"""
   if (window.THREE) (async () => { try {
     // renderer, lights and paper exactly as the website's hotel scene (FMC_WEB src/components/scene/hotel/hotelDay.js)
     let dirty = 2;
-    const r = new THREE.WebGLRenderer({ canvas: cv, antialias: true }); r.setPixelRatio(Math.min(2, devicePixelRatio || 1)); r.physicallyCorrectLights = true;
+    const r = new THREE.WebGLRenderer({ canvas: cv, antialias: true, logarithmicDepthBuffer: true }); r.setPixelRatio(Math.min(2, devicePixelRatio || 1)); r.physicallyCorrectLights = true;
     r.outputEncoding = THREE.sRGBEncoding; r.toneMapping = THREE.ACESFilmicToneMapping; r.toneMappingExposure = 0.92;
     r.shadowMap.enabled = true; r.shadowMap.type = THREE.PCFShadowMap; r.shadowMap.autoUpdate = false;
     const C = (h) => new THREE.Color(h).convertSRGBToLinear();
@@ -391,7 +408,7 @@ JS = r"""
     const lin = new Float32Array(256).map((_, i) => Math.pow(i / 255, 2.2));
     const groups = {}, part = (d, p) => { const k = d + "/" + p[0]; if (!groups[k]) { const g = new THREE.Group(); g.userData = { d, name: p[0], order: p[3], k }; scene.add(g); groups[k] = g; PG.push(g); } return groups[k]; };
     const matFor = (col, glass) => glass ? new THREE.MeshStandardMaterial({ color: C("#d9dee0"), roughness: 0.22, metalness: 0.1, emissive: C("#ffad5e"), emissiveIntensity: 0, side: THREE.DoubleSide }) : paper(col);
-    const add = (g, mesh, info) => { mesh.castShadow = true; mesh.receiveShadow = true; mesh.userData = info; g.add(mesh); MESH.push(mesh); };
+    const add = (g, mesh, info) => { if (info.d === "structure" && mesh.material) Object.assign(mesh.material, { polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -2 }); mesh.castShadow = true; mesh.receiveShadow = true; mesh.userData = info; g.add(mesh); MESH.push(mesh); };
     const P = (x, y, z) => new THREE.Vector3(x / 1000, z / 1000, -y / 1000);
     const greens = ["#3f6b35", "#4f7d3a", "#5f8f43", "#74a24f", "#8db75e"];
     // shells -> flat faces with paper laid on by the face's direction (1 tile = 4 m, as on the website)
@@ -404,34 +421,30 @@ JS = r"""
       }
       g.setAttribute("uv", new THREE.BufferAttribute(uv, 2)); g.computeVertexNormals(); return g;
     }
-    // acacia, the website's East African umbrella tree: leaning trunk, flat crown of paper layers
-    function acacia(g, d, x, y0, z, h, rad, k) {
-      const lean = 0.25 * Math.sin(k * 7.3), tr = new THREE.Mesh(new THREE.CylinderGeometry(0.06 * rad, 0.1 * rad, h, 6), paper("#a0805d"));
-      tr.position.set(x + lean * h / 2, y0 + h / 2, z); tr.rotation.z = -lean; add(g, tr, { d, cat: "Planting", fixed: true });
-      [[1, 0, 2], [0.86, 0.22, 3], [0.67, 0.42, 4], [0.44, 0.6, 4]].forEach(([s, dy, c], j) => {
-        const m = new THREE.Mesh(new THREE.CylinderGeometry(rad * s, rad * s * 0.94, 0.1, 11), paper(greens[c], 0.45));
-        m.scale.z = 0.86; m.rotation.y = k + j * 1.7; m.position.set(x + lean * h, y0 + h + dy * rad * 0.28, z); add(g, m, { d, cat: "Planting", fixed: true });
-      });
+    // planting at its real size and place (planters, hedges, shrubs): a paper bush filling the Revit element's box
+    function shrub(g, d, lo, hi, k) {
+      const m = new THREE.Mesh(new THREE.IcosahedronGeometry(1, 1), paper(greens[2 + k % 3], 0.45));
+      m.scale.set(Math.max(0.15, (hi[0] - lo[0]) / 2), Math.max(0.15, (hi[1] - lo[1]) / 2), Math.max(0.15, (hi[2] - lo[2]) / 2));
+      m.position.set((lo[0] + hi[0]) / 2, (lo[1] + hi[1]) / 2, (lo[2] + hi[2]) / 2); m.rotation.y = k; add(g, m, { d, cat: "Planting", fixed: true });
     }
     for (const [d, m] of Object.entries(FED)) {
       if (m.mesh) {
         const o = m.mesh.offset, s = m.mesh.scale;
         for (const gr of m.mesh.groups) {
-          const p = partOf(d, gr.cat), g = part(d, p);
+          const dd = CATDISC[gr.cat] || d, p = partOf(dd, gr.cat), g = part(dd, p);
           const q = new Uint16Array((await inflate(gr.pos)).buffer), c = await inflate(gr.col), ib = (await inflate(gr.idx)).buffer, n = gr.verts;
           const pos = new Float32Array(n * 3), col = new Float32Array(n * 3);
           for (let v = 0; v < n; v++) { pos[3 * v] = o[0] + q[3 * v] * s; pos[3 * v + 1] = o[2] + q[3 * v + 2] * s; pos[3 * v + 2] = -(o[1] + q[3 * v + 1] * s); col[3 * v] = lin[c[3 * v]]; col[3 * v + 1] = lin[c[3 * v + 1]]; col[3 * v + 2] = lin[c[3 * v + 2]]; }
-          if (gr.cat === "Planting") {   // boxes from the export -> the website's acacias at the same places
+          if (gr.cat === "Planting") {   // boxes from the export -> bushes the same size, in the same place
             for (let b = 0; b + 8 <= n; b += 8) {
               let lo = [1e9, 1e9, 1e9], hi = [-1e9, -1e9, -1e9]; for (let v = b; v < b + 8; v++) for (let k = 0; k < 3; k++) { lo[k] = Math.min(lo[k], pos[3 * v + k]); hi[k] = Math.max(hi[k], pos[3 * v + k]); }
-              const h = Math.max(2.5, (hi[1] - lo[1]) * 0.75), rad = Math.max(1.2, Math.min(3.6, Math.max(hi[0] - lo[0], hi[2] - lo[2]) / 2));
-              acacia(g, d, (lo[0] + hi[0]) / 2, lo[1], (lo[2] + hi[2]) / 2, h, rad, b / 8 + 1);
+              shrub(g, d, lo, hi, b / 8);
             }
             continue;
           }
           const geo = new THREE.BufferGeometry(); geo.setAttribute("position", new THREE.BufferAttribute(pos, 3)); geo.setAttribute("color", new THREE.BufferAttribute(col, 3));
           geo.setIndex(new THREE.BufferAttribute(gr.i32 ? new Uint32Array(ib) : new Uint16Array(ib), 1));
-          add(g, new THREE.Mesh(paperUV(geo), matFor(CATCOL[gr.cat] || p[2], gr.glass)), { d, cat: gr.cat, glass: gr.glass, model: CATCOL[gr.cat] || p[2] });
+          add(g, new THREE.Mesh(paperUV(geo), matFor(CATCOL[gr.cat] || p[2], gr.glass)), { d: dd, cat: gr.cat, glass: gr.glass, model: CATCOL[gr.cat] || p[2] });
         }
       } else {   // simple boxes and slabs (no Revit export yet)
         const p = partOf(d, "*"), g = part(d, p), mt = () => matFor(m.color || "#c8bfae");
