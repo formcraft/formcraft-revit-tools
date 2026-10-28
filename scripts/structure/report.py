@@ -94,7 +94,7 @@ CH = [
  ("Roof", "Truss joints, bracing and uplift straps", "partial", "Straps and anchors specified; nail-plate design by the fabricator; longitudinal and diagonal bracing to be detailed."),
  ("Roof", "Attic timber floor and plywood diaphragm", "partial", "Joist sizes designed; plywood nailing schedule to be specified."),
  ("Durability & fire", "Covers for exposure and 60-minute fire", "done", "Covers 25-50 mm; member sizes meet EC2 tabulated minimums for R60."),
- ("Deliverables", "Drawings", "partial", "S-001 notes; S-100 foundations; S-101/102 framing; S-103 3D; S-104/105 roof; S-106 typical details; S-107 slab; S-108 stair. Missing: dimension strings, building sections, member schedules on sheets, bar marks on drawings."),
+ ("Deliverables", "Drawings", "partial", "S-001 notes; S-100 foundations; S-101/102 framing; S-103 3D; S-104/105 roof; S-106 typical details; S-107 slab; S-108 stair; S-109 member schedules; grid dimensions on the plans. Missing: building sections and bar marks on the drawings (bars are fully listed in the BBS)."),
  ("Deliverables", "Bar bending schedules (BS 8666)", "done", f"Every element; {steel / 1000:.1f} t; lengths include laps and anchorage (shape codes 00, 11, 51)."),
  ("Deliverables", "Design report", "done", "This document."),
  ("Deliverables", "Engineer of record review and signature", "not", "Required before construction and for the building permit."),
@@ -117,7 +117,7 @@ vol_rows = [[e(k), f"{v:.1f} m³"] for k, v in vol.items()]
 check_rows = [[e(a), e(b), f'<span class="chip {chips[c][1]}">{chips[c][0]}</span>', e(n)] for a, b, c, n in CH]
 sheets = [("S-001", "General notes"), ("S-100", "Foundation and ground beam plan"), ("S-101", "First floor framing plan"), ("S-102", "Roof-level (ring beam) framing plan"),
           ("S-103", "RC frame 3D"), ("S-104", "Roof framing plan (trusses)"), ("S-105", "Roof truss elevations"), ("S-106", "Typical reinforcement details"),
-          ("S-107", "First floor slab reinforcement plan"), ("S-108", "Stair details")]
+          ("S-107", "First floor slab reinforcement plan"), ("S-108", "Stair details"), ("S-109", "Member schedules")]
 st = stairs_rc[0] if stairs_rc else None
 
 page = f"""<title>Ogala Structural Design</title>
