@@ -3,7 +3,7 @@ import path from "node:path";
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
-import { KitScript, STEPS, StepId, readDynamo, readPyRevit, readTool, stepSummary } from "../fmc/scripts.js";
+import { KitScript, STEPS, StepId, graphRunRefusal, readDynamo, readPyRevit, readTool, stepSummary } from "../fmc/scripts.js";
 import {
   AddonFile, AddonHeader, StepOutcome, addonCall, addonDir, addonStep, addonSummary, checkJob, jobResultFile, parseJob,
   readAddons, runJob, validateAddonParams,
@@ -79,7 +79,10 @@ export const FMC_SCRIPTS_DESCRIPTION =
     "order, stops at the first failure and saves results\\<job>_<date>.json in the reports folder (dry_run false in the " +
     "job is the yes). run runs an automation: Formcraft's read-only checks and the weekly report (selftest, qa, links, " +
     "workshare, annotate, review, report) and saved add-ons (\"addon:<name>\", parameters in addon_params, dry run " +
-    "unless dry_run false), stopping at the first that fails; each step is logged.";
+    "unless dry_run false), stopping at the first that fails; each step is logged. " +
+    "graph_run is refused: this is not an in-Revit Dynamo runner and it does not execute Revit nodes (RevitNodes, " +
+    "DSRevitNodesUI, Revit.Elements). Use fmc_structure, model_check, select_by, get_element_geometry or " +
+    "analyze_model_statistics, and pass document for a verification copy.";
 
 const STEP = z.string().refine((s) => s in STEPS || addonStep(s) !== null, {
   message: `a step is one of ${Object.keys(STEPS).join(", ")} or "addon:<name>"`,
@@ -94,7 +97,7 @@ const JSONISH = z.union([z.record(z.unknown()), z.string()]);
     "stopping at the first that fails; each step is logged. No step changes the model.";
 
 export const FMC_SCRIPTS_SHAPE = {
-  action: z.enum(["list", "run", "addon_list", "addon_run", "job"]),
+  action: z.enum(["list", "run", "addon_list", "addon_run", "job", "graph_run"]),
   kit_folder: z.string().optional().default("").describe("list: the Formcraft kit folder"),
   name: z.string().optional().default("Automation").describe("run: the automation's name, for the log. addon_run: the add-on's name"),
   steps: z.array(STEP).optional().default([]).describe("run: the steps in order; \"addon:<name>\" runs a saved add-on"),
@@ -264,6 +267,7 @@ async function jobRun(args: FmcScriptsArgs, cfg: GuardConfig) {
 export async function runFmcScripts(args: FmcScriptsArgs) {
   const { config } = loadConfig();
   try {
+    if (args.action === "graph_run") return reply(graphRunRefusal(), true);
     if (args.action === "list") {
       const kit = args.kit_folder.trim();
       if (!kit || !fs.existsSync(win.join(kit, "05_Scripts"))) return reply({ refused: true, reasons: [`No 05_Scripts in the kit folder: ${kit || "(not set)"}`] }, true);

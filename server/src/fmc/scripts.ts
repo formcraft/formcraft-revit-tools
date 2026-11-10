@@ -9,6 +9,25 @@ const win = path.win32;
  * (pyRevit's FMC tab, Dynamo Player, a Python prompt); it doesn't run them (Manual 17: scripts pass the release gate in
  * their own tool).
  */
+/**
+ * graph_run is not a Dynamo runner. Formcraft reads Dynamo Python headers and does not host RevitNodes,
+ * DSRevitNodesUI or Revit.Elements. Verification uses the typed read tools, with `document` set to a copy
+ * opened by fmc_file open_copy when that tool is installed.
+ */
+export function graphRunRefusal() {
+  return {
+    refused: true,
+    dynamo_runner: false,
+    in_revit: false,
+    reason: "fmc_scripts graph_run is not an in-Revit Dynamo runner. There is no DynamoModel, no RevitDynamoModel, " +
+      "and no RevitNodes host in this plugin. list only reads a kit Dynamo Python file's header. A .dyn graph is not executed, " +
+      "and raw Revit API is not wrapped as a graph. Use the typed read tools: fmc_structure facts, " +
+      "fmc_element_geometry (get_element_geometry), fmc_model_check (model_check), fmc_select_by (select_by) and analyze_model_statistics. " +
+      "Pass document when you have a verification copy open. This action does not run a graph against any document.",
+    use_instead: ["fmc_structure", "fmc_element_geometry", "fmc_model_check", "fmc_select_by", "analyze_model_statistics"],
+  };
+}
+
 export interface KitScript {
   name: string;
   type: "pyRevit" | "Dynamo (Python node)" | "Python tool";

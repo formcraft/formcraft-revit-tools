@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readDynamo, readPyRevit, readTool, stepSummary } from "./scripts.js";
+import { graphRunRefusal, readDynamo, readPyRevit, readTool, stepSummary } from "./scripts.js";
 
 const dyn = [
   "# FMC_ModelHealth  -  Dynamo Python Script node (CPython3 / PythonNet3)",
@@ -15,6 +15,17 @@ const dyn = [
   "# Written for Revit 2025 / 2026 with Dynamo 3.x. Not yet run on a Formcraft build:",
   "import clr",
 ].join("\n");
+
+test("graph_run is not an in-Revit Dynamo runner and names the typed read tools", () => {
+  const r = graphRunRefusal();
+  assert.equal(r.refused, true);
+  assert.equal(r.dynamo_runner, false);
+  assert.equal(r.in_revit, false);
+  assert.match(r.reason, /not an in-Revit Dynamo runner/);
+  assert.match(r.reason, /RevitNodes/);
+  assert.ok(r.use_instead.includes("fmc_structure"));
+  assert.ok(r.use_instead.includes("analyze_model_statistics"));
+});
 
 test("a Dynamo node is read from its own header: name, what it does, inputs, status", () => {
   const s = readDynamo("K:\\05_Scripts\\Dynamo\\FMC_ModelHealth.py", dyn);
