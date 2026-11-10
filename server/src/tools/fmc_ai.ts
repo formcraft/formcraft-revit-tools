@@ -7,6 +7,7 @@ import { revitTarget } from "../fmc/target.js";
 import { jobMaxMs } from "../utils/SocketClient.js";
 import { GuardConfig, configPath, loadConfig } from "../fmc/policy.js";
 import { COMMAND_GROUPS, LEVELS, Level, NEVER, USER_LINE, aiVerdict, generalState, modelParts, projectCode, projectKey } from "../fmc/aiuse.js";
+import { planEnableCopy } from "../fmc/opencopy.js";
 import { formcraftDir, loadAiConfig, loadRulebook, loadState, readItem, readQueue, setResult, setStatus } from "../fmc/aiuse_io.js";
 import { failures, readUsage, summariseUsage } from "../fmc/usage.js";
 
@@ -54,10 +55,15 @@ export const FMC_AI_DESCRIPTION =
     "and the switch is On. With access full (status says), every tool is yours like a person's, each batch approved: " +
     "never tell the person to do something themselves when a tool can do it; where no tool covers it and allow_code is " +
     "on, propose a send_code_to_revit batch (the person sees the code before approving); otherwise say which tool is " +
-    "missing so it can be built.";
+    "missing so it can be built. " +
+    "enable_copy turns the General AI switch On for one verification-copy path only. It does not turn on the project " +
+    "switch, so a live model that shares the copy's project code stays Off. protected_roots is required. Stop AI still wins.";
 
 export const FMC_AI_SHAPE = {
-  action: z.enum(["status", "queue", "stop", "usage", "wait", "inbox", "failures"]),
+  action: z.enum(["status", "queue", "stop", "usage", "wait", "inbox", "failures", "enable_copy"]),
+  document: z.string().optional().describe("enable_copy: the copy's full .rvt path, or its title when that copy is open"),
+  protected_roots: z.array(z.string()).optional().describe("enable_copy: live original folders, for example D:\\Fomcraft. Required."),
+  live_paths: z.array(z.string()).optional().describe("enable_copy: full paths of the live originals. Refused."),
   id: z.string().optional().describe("wait: the batch id from the queue message; queue: one batch, in full"),
   status: z.string().optional().describe("queue: pending, approved, used, rejected, done, failed or running"),
   limit: z.number().int().min(1).max(200).optional().describe("queue: how many (default 20, newest first)"),
@@ -103,6 +109,37 @@ export function policySummary(config: GuardConfig, active: any) {
   };
 }
 
+/** Turns the General AI switch on for one copy path. The project-wide switch is left as it is. */
+export async function enableCopy(args: FmcAiArgs, config: GuardConfig): Promise<Record<string, unknown>> {
+  let file = (args.document ?? "").trim();
+  if (!file || !win.extname(file)) {
+    try {
+      const info = await withRevitConnection((c) => c.sendRaw("fmc_document_info", file ? { document: file } : {}, 30000));
+      const found = info?.active?.path;
+      if (typeof found === "string" && found) file = found;
+    } catch (e) {
+      return { refused: true, reasons: [`Could not resolve the copy in Revit: ${e instanceof Error ? e.message : String(e)}`] };
+    }
+  }
+  const plan = planEnableCopy(file, config, args.protected_roots ?? [], args.live_paths ?? []);
+  if (!plan.ok) return { refused: true, reasons: plan.reasons };
+  const guardFile = configPath();
+  let raw: Record<string, unknown> = {};
+  try { raw = JSON.parse(fs.readFileSync(guardFile, "utf8").replace(/^\uFEFF/, "")); }
+  catch { return { refused: true, reasons: [`Can't read ${guardFile}: the AI switch needs the guard file`] }; }
+  const cur = raw.ai_modeller && typeof raw.ai_modeller === "object" ? raw.ai_modeller as Record<string, unknown> : { on: false, stop: false, levels: {}, projects: {} };
+  const copies = (cur.copies && typeof cur.copies === "object" ? cur.copies : {}) as Record<string, unknown>;
+  copies[plan.path] = { general: true };
+  cur.copies = copies;
+  cur.changed = { at: new Date().toISOString(), what: `General AI switch On for verification copy ${plan.path} only` };
+  raw.ai_modeller = cur;
+  fs.writeFileSync(guardFile, JSON.stringify(raw, null, 2));
+  return {
+    enabled: true, path: plan.path, project_switch: "unchanged", copies_only: true,
+    line: "AI is on for this copy only. The project switch is unchanged, so a live model that shares its project code stays off. Stop AI still wins. modify_model dry_run rolls back; other writes on the copy stay refused.",
+  };
+}
+
 export async function runFmcAi(args: FmcAiArgs) {
   const { config } = loadConfig();
   try {
@@ -125,6 +162,7 @@ export async function runFmcAi(args: FmcAiArgs) {
     if (args.action === "wait") return reply(await waitFor(String(args.id ?? ""), args.timeout_s ?? 50));
     if (args.action === "inbox") return readInbox();
     if (args.action === "failures") return reply(failures(readUsage(), args.since));
+    if (args.action === "enable_copy") return reply(await enableCopy(args, config));
     const doc = await activeDocument((ms) => withRevitConnection((c) => c.sendRaw("fmc_document_info", {}, ms)));
     return reply({ ...policySummary(config, doc.active), document_source: doc.source });
   } catch (error) {

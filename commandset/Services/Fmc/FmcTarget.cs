@@ -39,12 +39,18 @@ namespace RevitMCPCommandSet.Services.Fmc
             {
                 Document found = open.FirstOrDefault(d => Same(d, key));
                 if (found != null) return new FmcTarget(found, active != null && found.Equals(active) ? app.ActiveUIDocument : null, false);
+                // A named document that is not open is never replaced with the active one.
+                string activeName = active?.Title ?? "none";
                 if (!LooksLikeFile(key))
-                    throw new InvalidOperationException($"No open document is called \"{key}\". Open: {List(open)}.");
+                    throw new InvalidOperationException($"No open document is called \"{key}\". Open: {List(open)}. Refusing to use the active document ({activeName}).");
                 if (!mayOpen)
-                    throw new InvalidOperationException($"{Path.GetFileName(key)} isn't open. Changes go only to documents already open: open it first (in the background is fine).");
-                if (!File.Exists(key)) throw new InvalidOperationException($"File not found: {key}");
-                return new FmcTarget(OpenInBackground(app, key), null, true);
+                    throw new InvalidOperationException($"{Path.GetFileName(key)} isn't open. Refusing to use the active document ({activeName}).");
+                if (IsProtected(key, Roots(parameters)))
+                    throw new InvalidOperationException($"Refusing to open {key}: it is under a protected original. Refusing to use the active document ({activeName}).");
+                if (IsCloud(key))
+                    throw new InvalidOperationException($"Refusing to open {key}: cloud and Revit Server models are not opened in the background.");
+                if (!File.Exists(key)) throw new InvalidOperationException($"File not found: {key}. Refusing to use the active document ({activeName}).");
+                return new FmcTarget(OpenInBackground(app, key, parameters), null, true);
             }
             if (active != null) return new FmcTarget(active, app.ActiveUIDocument, false);
             if (open.Count == 1) return new FmcTarget(open[0], null, false);
@@ -66,14 +72,73 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (OpenedHere) { try { Doc.Close(false); } catch (Exception) { /* Revit closes it with the session */ } }
         }
 
-        private static Document OpenInBackground(UIApplication app, string path)
+        private static Document OpenInBackground(UIApplication app, string path, JObject parameters)
         {
+            if (IsProtected(path, Roots(parameters)))
+                throw new InvalidOperationException($"Refusing to open {path}: it is under a protected original.");
+            if (IsCloud(path))
+                throw new InvalidOperationException("Cloud and Revit Server models are not opened in the background.");
             ModelPath mp = ModelPathUtils.ConvertUserVisiblePathToModelPath(path);
             var options = new OpenOptions { Audit = false };
             bool workshared = false;
             try { workshared = BasicFileInfo.Extract(path).IsWorkshared; } catch (Exception) { /* not a project file */ }
             if (workshared) options.DetachFromCentralOption = DetachFromCentralOption.DetachAndPreserveWorksets;
             return app.Application.OpenDocumentFile(mp, options);
+        }
+
+        public static List<string> Roots(JObject parameters)
+        {
+            var list = new List<string>();
+            void Take(JToken token)
+            {
+                if (token is JArray array)
+                    foreach (JToken item in array)
+                        if (item.Type == JTokenType.String && !string.IsNullOrWhiteSpace(item.ToString())) list.Add(item.ToString());
+            }
+            Take(parameters?["_protected_roots"]);
+            Take(parameters?["protected_roots"]);
+            return list;
+        }
+
+        public static bool IsProtected(string path, IEnumerable<string> roots)
+        {
+            if (string.IsNullOrWhiteSpace(path) || roots == null) return false;
+            foreach (string root in roots)
+                if (!string.IsNullOrWhiteSpace(root) && (SamePath(path, root) || path.StartsWith(root.TrimEnd('\\', '/') + "\\", StringComparison.OrdinalIgnoreCase) || path.StartsWith(root.TrimEnd('\\', '/') + "/", StringComparison.OrdinalIgnoreCase)))
+                    return true;
+            return false;
+        }
+
+        public static bool IsCloud(string path)
+        {
+            string s = (path ?? "").Trim();
+            if (s.StartsWith("BIM 360:", StringComparison.OrdinalIgnoreCase)) return true;
+            if (s.StartsWith("Autodesk Docs:", StringComparison.OrdinalIgnoreCase)) return true;
+            if (s.StartsWith("Revit Server:", StringComparison.OrdinalIgnoreCase)) return true;
+            if (s.StartsWith("RSN:", StringComparison.OrdinalIgnoreCase)) return true;
+            bool local = s.Length >= 3 && char.IsLetter(s[0]) && s[1] == ':';
+            return !(local || s.StartsWith("\\\\"));
+        }
+
+        public static bool SamePath(string a, string b)
+        {
+            try { return string.Equals(Path.GetFullPath(a), Path.GetFullPath(b), StringComparison.OrdinalIgnoreCase); }
+            catch (Exception) { return string.Equals(a, b, StringComparison.OrdinalIgnoreCase); }
+        }
+
+        /// <summary>Path, detach, link and read-only flags for a result. is_active is filled by the caller.</summary>
+        public static JObject DescribeState(Document doc)
+        {
+            return new JObject
+            {
+                ["title"] = doc?.Title ?? "",
+                ["path"] = doc?.PathName ?? "",
+                ["is_detached"] = doc?.IsDetached ?? false,
+                ["is_workshared"] = doc?.IsWorkshared ?? false,
+                ["is_linked"] = doc?.IsLinked ?? false,
+                ["is_modified"] = doc?.IsModified ?? false,
+                ["read_only"] = doc != null && (doc.IsLinked || doc.IsDetached || FmcVerifySession.Contains(doc)),
+            };
         }
 
         public static bool Same(Document d, string key)

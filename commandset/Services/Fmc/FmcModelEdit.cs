@@ -35,9 +35,18 @@ namespace RevitMCPCommandSet.Services.Fmc
         public void Execute(UIApplication app)
         {
             Result = new JObject(); Error = "";
-            _uidoc = app.ActiveUIDocument; _openView = null;
+            _openView = null;
             FmcBusy.Hook(app); FmcUndo.Hook(app);
-            try { Result = Run(app.ActiveUIDocument?.Document ?? throw new InvalidOperationException("No model is open")); if (_openView != null && !(Result.Value<bool?>("dry_run") ?? false)) _uidoc.RequestViewChange(_openView); }
+            try
+            {
+                // A named document that is not open throws. The active document is not used in its place.
+                using (FmcTarget target = FmcTarget.Resolve(app, Parameters, mayOpen: false))
+                {
+                    _uidoc = target.Ui;
+                    Result = Run(target.Doc);
+                    if (_openView != null && _uidoc != null && !(Result.Value<bool?>("dry_run") ?? false)) _uidoc.RequestViewChange(_openView);
+                }
+            }
             catch (Exception e) { Error = e.Message; }
             finally { FmcUndo.Close(); _done.Set(); }
         }
@@ -51,6 +60,9 @@ namespace RevitMCPCommandSet.Services.Fmc
             // owner 27 Oct: for_each spreads into one op per room, level, element...; select becomes ids as each op runs
             ops = Expand(doc, ops, out List<int> written);
             bool dry = Parameters.Value<bool?>("dry_run") ?? false;
+            bool readOnly = doc.IsDetached || doc.IsLinked || FmcVerifySession.Contains(doc) || FmcTarget.IsProtected(doc.PathName ?? "", FmcTarget.Roots(Parameters));
+            if (!dry && readOnly)
+                throw new InvalidOperationException("This document is read-only (a verification copy, a link, or a protected original). dry_run true runs the batch and rolls it back; a real edit is refused. Nothing is saved, synced or relinquished.");
             var made = new List<List<ElementId>>();
             var results = new JArray();
             // Owner 26 Oct: each batch says which Revit warnings it added, so mistakes are fixed at once (Ogala reached 98)
@@ -87,7 +99,17 @@ namespace RevitMCPCommandSet.Services.Fmc
                         return new JObject { ["applied"] = false, ["failed_op"] = i + 1, ["written_op"] = written[i] != i + 1 ? written[i] : (int?)null, ["kind"] = name, ["reason"] = ex.Message, ["note"] = "Nothing was changed: the whole batch is one step, or none" };
                     }
                 }
-                if (dry) { g.RollBack(); return new JObject { ["applied"] = false, ["dry_run"] = true, ["ops"] = results, ["note"] = "Dry run: rolled back, nothing changed" }; }
+                if (dry)
+                {
+                    g.RollBack();
+                    return new JObject
+                    {
+                        ["applied"] = false, ["dry_run"] = true, ["ops"] = results,
+                        ["note"] = "Dry run: the batch ran inside a transaction group and was rolled back. Nothing was saved, synced or relinquished.",
+                        ["saved"] = false, ["synced"] = false, ["relinquished"] = false, ["rollback"] = "TransactionGroup.RollBack",
+                        ["document"] = FmcTarget.DescribeState(doc),
+                    };
+                }
                 g.Assimilate();
                 FmcUndo.Committed(doc, true, made.SelectMany(m => m).Select(x => x.Value));
             }
@@ -646,7 +668,8 @@ namespace RevitMCPCommandSet.Services.Fmc
             Result = new JObject(); Error = "";
             try
             {
-                Document doc = app.ActiveUIDocument?.Document ?? throw new InvalidOperationException("No model is open");
+                using FmcTarget target = FmcTarget.Resolve(app, Parameters, mayOpen: false);
+                Document doc = target.Doc;
                 var list = new JArray(); var missing = new JArray();
                 foreach (JToken t in Parameters["ids"] as JArray ?? new JArray())
                 {
@@ -655,7 +678,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     if (e == null) { missing.Add(s); continue; }
                     list.Add(Geometry(doc, e));
                 }
-                Result = new JObject { ["model"] = doc.Title, ["elements"] = list, ["missing"] = missing };
+                Result = new JObject { ["model"] = doc.Title, ["path"] = doc.PathName ?? "", ["read_only"] = doc.IsDetached || doc.IsLinked || FmcVerifySession.Contains(doc), ["elements"] = list, ["missing"] = missing };
             }
             catch (Exception e) { Error = e.Message; }
             finally { _done.Set(); }

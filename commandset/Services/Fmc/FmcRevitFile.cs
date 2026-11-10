@@ -37,11 +37,20 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         private JObject Run(UIApplication app, string action)
         {
-            Document doc = app.ActiveUIDocument?.Document;
+            string named = (Parameters.Value<string>("document") ?? "").Trim();
+            Document doc;
+            if (named.Length > 0 && action != "open" && action != "open_ifc" && action != "close")
+            {
+                // The named document, or a refusal. Never the active document when the name is missing.
+                using (FmcTarget target = FmcTarget.Resolve(app, Parameters, mayOpen: false)) doc = target.Doc;
+            }
+            else doc = app.ActiveUIDocument?.Document;
             string path = Parameters.Value<string>("path");
             switch (action)
             {
                 case "open":
+                    if (FmcTarget.IsCloud(path ?? "") || FmcTarget.IsProtected(path ?? "", FmcTarget.Roots(Parameters)))
+                        throw new InvalidOperationException($"Refusing to activate {path}. Use fmc_file open_copy for a background copy. A protected original is not opened.");
                     app.OpenAndActivateDocument(path ?? throw new InvalidOperationException("open needs path"));
                     return new JObject { ["opened"] = path };
                 case "open_ifc":
@@ -53,17 +62,24 @@ namespace RevitMCPCommandSet.Services.Fmc
                 {
                     string title = Parameters.Value<string>("title") ?? throw new InvalidOperationException("close needs title (a model that isn't the active one)");
                     Document d = app.Application.Documents.Cast<Document>().FirstOrDefault(x => string.Equals(x.Title, title, StringComparison.OrdinalIgnoreCase)) ?? throw new InvalidOperationException($"{title} isn't open");
-                    if (d.Equals(doc)) throw new InvalidOperationException("Revit can't close the active model from a plugin: open another first, or the person closes it");
-                    d.Close(Parameters.Value<bool?>("save") ?? false);
+                    Document activeDoc = app.ActiveUIDocument?.Document;
+                    if (activeDoc != null && d.Equals(activeDoc)) throw new InvalidOperationException("Revit can't close the active model from a plugin: open another first, or the person closes it");
+                    bool saveClose = Parameters.Value<bool?>("save") ?? false;
+                    if (saveClose && (d.IsDetached || d.IsLinked || FmcVerifySession.Contains(d) || FmcTarget.IsProtected(d.PathName ?? "", FmcTarget.Roots(Parameters))))
+                        throw new InvalidOperationException($"{d.Title} is closed only without saving.");
+                    string closedPath = d.PathName ?? "";
+                    d.Close(saveClose);
+                    if (!saveClose) FmcVerifySession.ForgetPath(closedPath);
                     return new JObject { ["closed"] = title };
                 }
             }
             if (doc == null) throw new InvalidOperationException("No model is open");
             switch (action)
             {
-                case "save": doc.Save(); return new JObject { ["saved"] = doc.PathName };
+                case "save": RefuseOriginal(doc, "save"); doc.Save(); return new JObject { ["saved"] = doc.PathName };
                 case "save_as":
                 {
+                    RefuseOriginal(doc, "save_as");
                     var o = new SaveAsOptions { OverwriteExistingFile = Parameters.Value<bool?>("overwrite") ?? false, MaximumBackups = 3 };
                     if (doc.IsWorkshared) o.SetWorksharingOptions(new WorksharingSaveAsOptions { SaveAsCentral = Parameters.Value<bool?>("as_central") ?? false });
                     doc.SaveAs(path ?? throw new InvalidOperationException("save_as needs path"), o);
@@ -139,18 +155,28 @@ namespace RevitMCPCommandSet.Services.Fmc
                     });
                 case "sync":
                 {
+                    RefuseOriginal(doc, "sync");
                     if (!doc.IsWorkshared) throw new InvalidOperationException("the model isn't workshared");
                     var o = new SynchronizeWithCentralOptions { Comment = Parameters.Value<string>("comment") ?? "", Compact = Parameters.Value<bool?>("compact") ?? false };
                     o.SetRelinquishOptions(new RelinquishOptions(Parameters.Value<bool?>("relinquish") ?? true));
                     doc.SynchronizeWithCentral(new TransactWithCentralOptions(), o);
                     return new JObject { ["synced"] = doc.Title };
                 }
-                case "reload_latest": doc.ReloadLatest(new ReloadLatestOptions()); return new JObject { ["reloaded"] = doc.Title };
+                case "reload_latest": RefuseOriginal(doc, "reload_latest"); doc.ReloadLatest(new ReloadLatestOptions()); return new JObject { ["reloaded"] = doc.Title };
                 case "relinquish":
+                    RefuseOriginal(doc, "relinquish");
                     WorksharingUtils.RelinquishOwnership(doc, new RelinquishOptions(true), new TransactWithCentralOptions());
                     return new JObject { ["relinquished"] = doc.Title };
                 default: throw new InvalidOperationException($"{action} isn't an action (save, save_as, open, close, export, link_cad, import_cad, link_image, import_image, link_pdf, link_revit, load_family, point_cloud, sync, reload_latest, relinquish)");
             }
+        }
+
+        /// <summary>A verification copy, a link and a protected original are never saved, synced, reloaded or relinquished.</summary>
+        private void RefuseOriginal(Document doc, string what)
+        {
+            if (doc == null) return;
+            if (doc.IsLinked || doc.IsDetached || FmcVerifySession.Contains(doc) || FmcTarget.IsProtected(doc.PathName ?? "", FmcTarget.Roots(Parameters)))
+                throw new InvalidOperationException($"{what} is refused on {doc.Title}: a verification copy, a link, or a protected original is never saved, synced, reloaded or relinquished.");
         }
 
         private JObject Export(Document doc)
