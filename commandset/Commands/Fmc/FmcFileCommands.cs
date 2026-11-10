@@ -63,4 +63,13 @@ namespace RevitMCPCommandSet.Commands.Fmc
         public override string CommandName => "fmc_close_document";
         protected override string Action => "close";
     }
+
+    /// <summary>Open a detached verification copy in the background. The source file is not opened or written.</summary>
+    public class FmcOpenCopyCommand : FmcFileCommandBase
+    {
+        public FmcOpenCopyCommand(UIApplication uiApp) : base(uiApp) { }
+        public override string CommandName => "fmc_open_copy";
+        protected override string Action => "open_copy";
+        protected override int TimeoutMs => 300000;
+    }
 }

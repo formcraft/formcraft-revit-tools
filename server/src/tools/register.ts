@@ -15,8 +15,8 @@ export const REVIT_ARG = z.string().optional()
   .describe("Which Revit, when two or more are open: a project or document name, a pid or a port (fmc_revit list shows them). Leave out with one Revit.");
 
 export const DOCUMENT_ARG = z.string().optional()
-  .describe("Which document: a title or a full path. It may be open in the background; read-only tools open a closed file " +
-    "in the background themselves (detached if workshared) and close it without saving. Leave out for the active document.");
+  .describe("Which document: a title or a full path of a document that is already open (including a verification copy from " +
+    "fmc_file open_copy). If that document is not open, the call fails and does not use the active document. Leave out for the active document.");
 
 /** Adds `revit` and `document` to every tool registered as server.tool(name, description, shape, handler). */
 export function withRevitTarget(server: McpServer) {

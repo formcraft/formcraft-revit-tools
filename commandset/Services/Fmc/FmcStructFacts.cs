@@ -30,7 +30,14 @@ namespace RevitMCPCommandSet.Services.Fmc
         public void Execute(UIApplication app)
         {
             Result = new JObject(); Error = "";
-            try { Result = FmcStructRead.Facts(app.ActiveUIDocument?.Document ?? throw new InvalidOperationException("No model is open"), Parameters); }
+            try
+            {
+                using (FmcTarget target = FmcTarget.Resolve(app, Parameters, mayOpen: false))
+                {
+                    Result = FmcStructRead.Facts(target.Doc, Parameters);
+                    Result["document"] = FmcTarget.DescribeState(target.Doc);
+                }
+            }
             catch (Exception e) { Error = e.Message; }
             finally { _done.Set(); }
         }

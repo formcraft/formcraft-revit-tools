@@ -213,7 +213,11 @@ namespace RevitMCPCommandSet.Services.Fmc
         public void Execute(UIApplication app)
         {
             Result = new JObject(); Error = "";
-            try { Result = Check(app.ActiveUIDocument?.Document ?? throw new InvalidOperationException("No model is open")); }
+            try
+            {
+                using (FmcTarget target = FmcTarget.Resolve(app, Parameters, mayOpen: false))
+                    Result = Check(target.Doc);
+            }
             catch (Exception e) { Error = e.Message; }
             finally { _done.Set(); }
         }
@@ -250,7 +254,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             Run("clashes", () => Clashes(doc, model));
             Run("blind_openings", () => Blind(doc, model));
             int total = r.Properties().Sum(p => p.Value.Value<int?>("count") ?? 0);
-            return new JObject { ["model"] = doc.Title, ["level"] = Parameters["level"], ["problems"] = total, ["checks"] = r,
+            return new JObject { ["model"] = doc.Title, ["path"] = doc.PathName ?? "", ["read_only"] = doc.IsDetached || doc.IsLinked || FmcVerifySession.Contains(doc), ["level"] = Parameters["level"], ["problems"] = total, ["checks"] = r,
                 ["next"] = total == 0 ? "No problems found by these checks" : "Look at each with see_view ids [...]; fix with modify_model" };
         }
 

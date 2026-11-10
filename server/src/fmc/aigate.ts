@@ -1,5 +1,6 @@
 import fs from "node:fs";
-import { DocInfo, GuardConfig } from "./policy.js";
+import { DocInfo, GuardConfig, loadConfig } from "./policy.js";
+import { underAny, protectedRoots } from "./opencopy.js";
 import { NEVER, PLACEABLE, USER_LINE, aiVerdict, batchSize, generalState, recordBatch } from "./aiuse.js";
 import { Names, elementNames, explain, namesWanted } from "./explain.js";
 import { approvalFor, claimApproval, enqueue, loadAiConfig, loadRulebook, loadState, logBatch, saveState, setResult, setStatus } from "./aiuse_io.js";
@@ -119,7 +120,10 @@ export function savedAtOnDisk(file: string): number | null {
 export async function autoSave(active: DocInfo & { isActive?: boolean }, ai: { mode?: string; auto_save_minutes?: number },
   send: (command: string, params: object) => Promise<any>, result: unknown, now = Date.now(), savedAt: (file: string) => number | null = savedAtOnDisk): Promise<boolean> {
   const minutes = ai.auto_save_minutes ?? (ai.mode === "testing" ? 10 : 0);
-  if (!(minutes > 0) || active.isWorkshared || active.isActive === false || !active.path) return false;
+  // A background copy, a detached copy, a link and a protected original are never auto-saved.
+  let protectedPath = false;
+  try { protectedPath = !!active.path && underAny(active.path, protectedRoots(loadConfig().config)); } catch { protectedPath = false; }
+  if (!(minutes > 0) || active.isWorkshared || active.isActive === false || !active.path || active.isDetached || active.isLinked || active.readOnly || protectedPath) return false;
   const last = savedAt(active.path);
   if (last !== null && now - last < minutes * 60_000) return false;
   const out = result && typeof result === "object" ? (result as Record<string, unknown>) : null;

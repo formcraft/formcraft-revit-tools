@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import { appendJobEvent, jobFiles, jobResult, lastHeartbeatMs } from "../fmc/jobs.js";
 import { WRITE_COMMANDS, callActivity, liveLockVerdict, loadConfig } from "../fmc/policy.js";
+import { protectedRoots, writeGuard } from "../fmc/opencopy.js";
 import { documentTarget, revitTarget } from "../fmc/target.js";
 import { readInstances } from "../fmc/connect.js";
 import { aiGate } from "../fmc/aigate.js";
@@ -128,6 +129,8 @@ export class RevitClientConnection {
               (error instanceof Error ? error.message : String(error))
           );
         }
+        const guard = writeGuard(info?.active, command, params, config);
+        if (!guard.ok) throw new Error(guard.reasons.join(" "));
         const verdict = liveLockVerdict(info?.active, config);
         if (!verdict.ok) {
           // The lock's one new case: the AI-assisted modeller, Off unless the kit rulebook and the BIM Manager allow it.
@@ -167,7 +170,17 @@ export class RevitClientConnection {
     // The call's document target goes with every command (the live-model lock's document check included), unless the
     // command names its own document.
     const document = documentTarget.getStore();
-    if (document && params && typeof params === "object" && !Array.isArray(params) && !("document" in params)) params = { ...params, document };
+    if (params && typeof params === "object" && !Array.isArray(params)) {
+      const extra: Record<string, unknown> = {};
+      if (document && !("document" in params)) extra.document = document;
+      if (!("_protected_roots" in params)) {
+        try {
+          const roots = protectedRoots(loadConfig().config);
+          if (roots.length) extra._protected_roots = roots;
+        } catch { /* a missing guard still refuses writes */ }
+      }
+      if (Object.keys(extra).length) params = { ...params, ...extra };
+    }
     // The AI activity strip: what this call does, for the ribbon's colour while it runs (policy.ts callActivity).
     if (params && typeof params === "object" && !Array.isArray(params)) params = { ...params, _fmcActivity: callActivity(command, params) };
     return new Promise((resolve, reject) => {

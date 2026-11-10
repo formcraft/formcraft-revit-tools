@@ -56,6 +56,16 @@ export interface GuardConfig {
   session_idle_hours: number;
   /** Gate A's family file size limit, MB (default 2; the owner may raise it for a while, e.g. for LOD 400 twins). */
   family_max_mb?: number;
+  /**
+   * Original / live model roots. Write, save, sync, reload and relinquish are refused for any document under these
+   * paths. A verification copy must sit outside them. Empty until the guard file names them (for example D:\Fomcraft).
+   */
+  protected_roots: string[];
+  /**
+   * Folders a verification copy may be written to. Empty means any path that is not a protected root and not a CDE
+   * gate folder. When set, open_copy's copy_to must be inside one of them.
+   */
+  copy_roots: string[];
 }
 
 export const DEFAULT_CONFIG: GuardConfig = {
@@ -77,6 +87,8 @@ export const DEFAULT_CONFIG: GuardConfig = {
   clash_matrix_file: "Z:\\00_Standards\\08_Navisworks\\FMC_Clash_Matrix.json",
   session_idle_hours: 12,
   family_max_mb: 2,
+  protected_roots: [],
+  copy_roots: [],
 };
 
 /** Tools that change the model. They are refused on live project models. */
@@ -300,7 +312,18 @@ export function checkTemplatePath(template: string, cfg: GuardConfig): Verdict {
   return { ok: reasons.length === 0, reasons };
 }
 
-export interface DocInfo { title: string; path: string; isFamily: boolean; isWorkshared: boolean; isActive?: boolean }
+export interface DocInfo {
+  title: string;
+  path: string;
+  isFamily: boolean;
+  isWorkshared: boolean;
+  isActive?: boolean;
+  isDetached?: boolean;
+  isLinked?: boolean;
+  /** A verification copy or a link: real writes are refused. A modify_model dry run may still roll back on a copy. */
+  readOnly?: boolean;
+  isLocal?: boolean | null;
+}
 
 /** Live-model lock: may a model-changing tool run on the active document? */
 export function liveLockVerdict(active: DocInfo | null | undefined, cfg: GuardConfig): Verdict {

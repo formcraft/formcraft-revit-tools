@@ -63,6 +63,11 @@ export interface AiModellerConfig {
   auto_save_minutes?: number;
   /** Per project code: its own General switch, and (admin, Advanced) its own switch, involvement and levels. */
   projects: Record<string, { general?: boolean; on?: boolean; involvement?: number; levels?: Record<string, Level> }>;
+  /**
+   * Per full path of a verification copy. On here does not turn on the project-wide switch, so a live model that shares
+   * the copy's FMC project code stays Off.
+   */
+  copies?: Record<string, { general?: boolean }>;
   /** Autonomy level per group (firm default); a group not listed is at Suggest. */
   levels: Record<string, Level>;
 }
@@ -171,13 +176,17 @@ export function pickAiRulebook(present: Array<{ name: string; raw: string }>): P
 export function parseConfig(raw: unknown): AiModellerConfig | null {
   const o = raw as any;
   if (!o || typeof o !== "object") return null;
-  if (typeof o.on !== "boolean" && typeof o.general !== "boolean" && !(o.projects && typeof o.projects === "object")) return null;
+  if (typeof o.on !== "boolean" && typeof o.general !== "boolean" && !(o.projects && typeof o.projects === "object") && !(o.copies && typeof o.copies === "object")) return null;
   o.on = o.on === true;
   const levels: Record<string, Level> = {};
   for (const [k, v] of Object.entries((o.levels ?? {}) as Record<string, unknown>)) if (LEVELS.includes(v as Level)) levels[k] = v as Level;
+  const copies: Record<string, { general?: boolean }> = {};
+  for (const [k, v] of Object.entries((o.copies ?? {}) as Record<string, { general?: boolean }>)) {
+    if (v && typeof v === "object") copies[win.normalize(k).toLowerCase()] = { general: v.general === true };
+  }
   return { on: o.on, stop: o.stop === true, general: o.general === true ? true : undefined, mode: o.mode === "testing" ? "testing" : "strict", access: o.access === "full" ? "full" : "general", allow_code: o.allow_code === true, auto_approve: o.auto_approve === true, auto_save_minutes: typeof o.auto_save_minutes === "number" ? o.auto_save_minutes : undefined,
     involvement: typeof o.involvement === "number" ? o.involvement : undefined,
-    projects: o.projects && typeof o.projects === "object" ? o.projects : {}, levels };
+    projects: o.projects && typeof o.projects === "object" ? o.projects : {}, levels, copies };
 }
 
 /** The model's project code and role from its name (FMC naming: [Project]-[Originator]-[Volume]-[Level]-[Type]-[Role]-[Number]). */
@@ -235,6 +244,8 @@ export function projectKey(title: string, docPath: string, mode: "strict" | "tes
 export function generalState(ai: AiModellerConfig | null, title: string, docPath = ""): "On" | "Off" | "Stopped" {
   if (!ai) return "Off";
   if (ai.stop) return "Stopped";
+  // A verification copy can be On by its own path without turning on the live model that shares its project code.
+  if (docPath && ai.copies?.[win.normalize(docPath).toLowerCase()]?.general === true) return "On";
   const project = projectKey(title, docPath, ai.mode);
   if (!project) return "Off";
   return (ai.projects[project]?.general ?? ai.general) === true ? "On" : "Off";
