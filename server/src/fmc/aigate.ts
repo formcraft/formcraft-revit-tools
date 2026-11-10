@@ -23,9 +23,11 @@ export async function aiGate(command: string, params: any, active: (DocInfo & { 
   if (!ai) return { ok: false, reason: "", user: NEVER[command] ? USER_LINE.admin(NEVER[command]) : USER_LINE.off };
   // Read-only code (owner 26 Oct): its transaction is always rolled back, so it needs no approval, only the code switch.
   const dryRun = command === "fmc_model_edit" && params?.dry_run === true;
-  if ((command === "send_code_to_revit" && params?.transactionMode === "read_only") || dryRun) {
+  // fmc_replace always rolls the group back. It needs the copy's own AI switch (enable_copy), not an approval that would imply a commit.
+  const previewReplace = command === "fmc_replace";
+  if ((command === "send_code_to_revit" && params?.transactionMode === "read_only") || dryRun || previewReplace) {
     if (ai.stop) return { ok: false, reason: "", user: USER_LINE.stopped };
-    if (!dryRun && ai.allow_code !== true) return { ok: false, reason: "", user: USER_LINE.admin("running code: the admin's 'AI may run code' switch is off") };
+    if (!dryRun && !previewReplace && ai.allow_code !== true) return { ok: false, reason: "", user: USER_LINE.admin("running code: the admin's 'AI may run code' switch is off") };
     if (generalState(ai, active.title, active.path) !== "On") return { ok: false, reason: "", user: USER_LINE.off };
     return { ok: true, reason: "", run: <T>(exec: () => Promise<T>) => exec() };
   }

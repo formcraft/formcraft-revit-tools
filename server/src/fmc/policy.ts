@@ -113,6 +113,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_room_build", "fmc_element_apply",
   // modify_model (owner 26 Oct): the AI edits like a person, every batch approved
   "fmc_model_edit",
+  // fmc_replace: a structural replacement preview. It runs only on an open_copy document and always rolls back.
+  "fmc_replace",
   // run_revit_command (owner 26 Oct): a built-in Revit command, which may act on the selection
   "fmc_post_command",
   // new_family (owner 26 Oct): a family file made from a template and opened
