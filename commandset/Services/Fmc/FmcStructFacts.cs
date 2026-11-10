@@ -262,9 +262,9 @@ namespace RevitMCPCommandSet.Services.Fmc
 #if REVIT2023_OR_GREATER
                 try
                 {
-                    var assoc = AnalyticalToPhysicalAssociationManager.GetAnalyticalToPhysicalAssociationManager(doc);
+                    var assoc = Autodesk.Revit.DB.Structure.AnalyticalToPhysicalAssociationManager.GetAnalyticalToPhysicalAssociationManager(doc);
                     ElementId aId = assoc?.GetAssociatedElementId(e.Id) ?? ElementId.InvalidElementId;
-                    if (doc.GetElement(aId) is AnalyticalMember am && am.GetCurve() is Curve c)
+                    if (doc.GetElement(aId) is Autodesk.Revit.DB.Structure.AnalyticalMember am && am.GetCurve() is Curve c)
                     {
                         o["analytical"] = new JObject
                         {

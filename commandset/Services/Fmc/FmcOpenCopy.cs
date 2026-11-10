@@ -200,7 +200,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 foreach (JToken name in names)
                 {
                     string n = name.ToString();
-                    if (known.TryGetValue(n, out WorksetId id)) config.Open(id);
+                    if (known.TryGetValue(n, out WorksetId id)) config.Open(new List<WorksetId> { id });
                     else unknown.Add(n);
                 }
                 return config;
