@@ -141,24 +141,156 @@ namespace RevitMCPCommandSet.Services.Fmc
                     ["plan_min_mm"] = b != null ? P(b.Min) : null, ["plan_max_mm"] = b != null ? P(b.Max) : null, ["layers"] = Layers(r.RoofType),
                 });
             }
-            var rooms = new JArray(new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Rooms).Cast<Room>().Where(r => r.Area > 0).Select(r => new JObject
+            // OfType, not Cast: a DirectShape in the same category must not throw "Unable to cast DirectShape to FamilyInstance".
+            var rooms = new JArray(new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Rooms).OfType<Room>().Where(r => r.Area > 0).Select(r => new JObject
             {
                 ["id"] = r.Id.Value, ["number"] = r.Number, ["name"] = r.get_Parameter(BuiltInParameter.ROOM_NAME)?.AsString(), ["level"] = r.Level?.Name,
                 ["area_m2"] = Math.Round(r.Area * 0.09290304, 2), ["department"] = r.get_Parameter(BuiltInParameter.ROOM_DEPARTMENT)?.AsString(),
                 ["occupancy"] = r.get_Parameter(BuiltInParameter.ROOM_OCCUPANCY)?.AsString(),
                 ["at_mm"] = r.Location is LocationPoint lp ? P(lp.Point) : null,
             }));
-            JArray Members(BuiltInCategory cat) => new JArray(new FilteredElementCollector(doc).OfCategory(cat).WhereElementIsNotElementType().Cast<FamilyInstance>().Select(fi => new JObject
+            JArray Members(BuiltInCategory cat)
             {
-                ["id"] = fi.Id.Value, ["type"] = fi.Symbol?.Name, ["family"] = fi.Symbol?.FamilyName, ["material"] = fi.StructuralMaterialId != ElementId.InvalidElementId ? doc.GetElement(fi.StructuralMaterialId)?.Name : null,
-                ["level"] = LevelName(fi.LevelId != ElementId.InvalidElementId ? fi.LevelId : fi.get_Parameter(BuiltInParameter.FAMILY_LEVEL_PARAM)?.AsElementId() ?? ElementId.InvalidElementId),
-                ["at_mm"] = fi.Location is LocationPoint lp ? P(lp.Point) : null,
-                ["start_mm"] = fi.Location is LocationCurve c ? P(c.Curve.GetEndPoint(0)) : null, ["end_mm"] = fi.Location is LocationCurve c2 ? P(c2.Curve.GetEndPoint(1)) : null,
-            }));
-            var stairs = new JArray(new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Stairs).WhereElementIsNotElementType().Select(s => new JObject
+                var rows = new JArray();
+                foreach (Element e in new FilteredElementCollector(doc).OfCategory(cat).WhereElementIsNotElementType())
+                    rows.Add(MemberRow(e));
+                return rows;
+            }
+            JObject MemberRow(Element e)
             {
-                ["id"] = s.Id.Value, ["type"] = doc.GetElement(s.GetTypeId())?.Name, ["box_mm"] = s.get_BoundingBox(null) is BoundingBoxXYZ sb ? new JArray(P(sb.Min), P(sb.Max)) : null,
-            }));
+                bool column = e.Category != null && (e.Category.Id.Value == (long)BuiltInCategory.OST_StructuralColumns || e.Category.Id.Value == (long)BuiltInCategory.OST_Columns);
+                var o = new JObject { ["id"] = e.Id.Value, ["class"] = e.GetType().Name, ["direct_shape"] = e is DirectShape };
+                if (e is FamilyInstance fi)
+                {
+                    o["type"] = fi.Symbol?.Name;
+                    o["family"] = fi.Symbol?.FamilyName;
+                    o["material"] = fi.StructuralMaterialId != ElementId.InvalidElementId ? doc.GetElement(fi.StructuralMaterialId)?.Name : null;
+                    ElementId levelId = fi.LevelId != ElementId.InvalidElementId ? fi.LevelId : fi.get_Parameter(BuiltInParameter.FAMILY_LEVEL_PARAM)?.AsElementId() ?? ElementId.InvalidElementId;
+                    o["level"] = LevelName(levelId);
+                    if (column) ColumnAxis(o, fi);
+                    else LocationOf(o, e);
+                }
+                else
+                {
+                    o["type"] = doc.GetElement(e.GetTypeId())?.Name;
+                    LocationOf(o, e);
+                    o["physical"] = new JObject { ["kind"] = "unavailable", ["start_mm"] = null, ["end_mm"] = null,
+                        ["note"] = "Not a family instance (often a DirectShape). No axis was taken from the bounding box." };
+                    o["start_mm"] = null;
+                    o["end_mm"] = null;
+                    o["axis_kind"] = "unavailable";
+                }
+                AnalyticalOf(o, e);
+                return o;
+            }
+            void LocationOf(JObject o, Element e)
+            {
+                if (e.Location is LocationPoint lp) { o["location"] = "point"; o["at_mm"] = P(lp.Point); }
+                else if (e.Location is LocationCurve lc && lc.Curve != null)
+                {
+                    o["location"] = "curve";
+                    o["start_mm"] = P(lc.Curve.GetEndPoint(0));
+                    o["end_mm"] = P(lc.Curve.GetEndPoint(1));
+                    o["axis_kind"] = "location_curve";
+                }
+                else { o["location"] = "none"; o["at_mm"] = null; }
+            }
+            void ColumnAxis(JObject o, FamilyInstance fi)
+            {
+                ElementId baseId = fi.get_Parameter(BuiltInParameter.FAMILY_BASE_LEVEL_PARAM)?.AsElementId() ?? ElementId.InvalidElementId;
+                ElementId topId = fi.get_Parameter(BuiltInParameter.FAMILY_TOP_LEVEL_PARAM)?.AsElementId() ?? ElementId.InvalidElementId;
+                double baseOff = fi.get_Parameter(BuiltInParameter.FAMILY_BASE_LEVEL_OFFSET_PARAM)?.AsDouble() ?? 0;
+                double topOff = fi.get_Parameter(BuiltInParameter.FAMILY_TOP_LEVEL_OFFSET_PARAM)?.AsDouble() ?? 0;
+                Level baseLevel = doc.GetElement(baseId) as Level;
+                Level topLevel = doc.GetElement(topId) as Level;
+                o["base_level"] = baseLevel?.Name;
+                o["base_offset_mm"] = Mm(baseOff);
+                o["top_level"] = topLevel?.Name;
+                o["top_offset_mm"] = Mm(topOff);
+                o["slanted"] = (fi.get_Parameter(BuiltInParameter.SLANTED_COLUMN_TYPE_PARAM)?.AsInteger() ?? 0) != 0;
+                o["attachment"] = Attachment(fi);
+                if (fi.Location is LocationCurve lc && lc.Curve != null)
+                {
+                    o["location"] = "curve";
+                    JArray start = P(lc.Curve.GetEndPoint(0)), end = P(lc.Curve.GetEndPoint(1));
+                    o["start_mm"] = start; o["end_mm"] = end; o["axis_kind"] = "location_curve";
+                    o["physical"] = new JObject { ["kind"] = "location_curve", ["start_mm"] = start, ["end_mm"] = end,
+                        ["note"] = "Location curve of a slanted column. Attachment cuts are not subtracted, so this is the axis, not the exact physical contact face." };
+                    return;
+                }
+                if (fi.Location is LocationPoint lp && baseLevel != null)
+                {
+                    o["location"] = "point";
+                    o["at_mm"] = P(lp.Point);
+                    double z0 = baseLevel.Elevation + baseOff;
+                    double z1;
+                    string note;
+                    if (topLevel != null)
+                    {
+                        z1 = topLevel.Elevation + topOff;
+                        note = "Constraint axis from base level + offset to top level + offset, at the location point's X and Y. Not the exact physical contact where an attachment cuts the column, and not a bounding-box centre.";
+                    }
+                    else
+                    {
+                        z1 = z0 + (fi.get_Parameter(BuiltInParameter.INSTANCE_LENGTH_PARAM)?.AsDouble() ?? 0);
+                        note = "Constraint axis from base level + offset plus the unconnected height. Not a bounding-box centre and not the exact physical contact.";
+                    }
+                    JArray start = P(new XYZ(lp.Point.X, lp.Point.Y, z0)), end = P(new XYZ(lp.Point.X, lp.Point.Y, z1));
+                    o["start_mm"] = start; o["end_mm"] = end; o["axis_kind"] = "constraint_axis";
+                    o["physical"] = new JObject { ["kind"] = "constraint_axis", ["start_mm"] = start, ["end_mm"] = end, ["note"] = note };
+                    return;
+                }
+                o["location"] = fi.Location is LocationPoint ? "point" : "none";
+                if (fi.Location is LocationPoint only) o["at_mm"] = P(only.Point);
+                o["start_mm"] = null; o["end_mm"] = null; o["axis_kind"] = "unavailable";
+                o["physical"] = new JObject { ["kind"] = "unavailable", ["start_mm"] = null, ["end_mm"] = null,
+                    ["note"] = "No base level, or no location point or curve. A bounding-box centre was not used." };
+            }
+            JObject Attachment(FamilyInstance fi)
+            {
+                var a = new JObject();
+                foreach (Parameter p in fi.Parameters)
+                {
+                    string n = p.Definition?.Name ?? "";
+                    if (n.IndexOf("Attach", StringComparison.OrdinalIgnoreCase) < 0) continue;
+                    a[n] = !p.HasValue ? null : p.StorageType == StorageType.Integer ? (JToken)p.AsInteger() : p.AsValueString() ?? p.AsString();
+                }
+                return a;
+            }
+            void AnalyticalOf(JObject o, Element e)
+            {
+#if REVIT2023_OR_GREATER
+                try
+                {
+                    var assoc = AnalyticalToPhysicalAssociationManager.GetAnalyticalToPhysicalAssociationManager(doc);
+                    ElementId aId = assoc?.GetAssociatedElementId(e.Id) ?? ElementId.InvalidElementId;
+                    if (doc.GetElement(aId) is AnalyticalMember am && am.GetCurve() is Curve c)
+                    {
+                        o["analytical"] = new JObject
+                        {
+                            ["id"] = am.Id.Value, ["kind"] = "analytical_member",
+                            ["start_mm"] = P(c.GetEndPoint(0)), ["end_mm"] = P(c.GetEndPoint(1)),
+                        };
+                        return;
+                    }
+                }
+                catch (Exception) { /* no analytical association */ }
+#endif
+                o["analytical"] = null;
+            }
+            var stairs = new JArray();
+            foreach (Element s in new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Stairs).WhereElementIsNotElementType())
+            {
+                var row = new JObject
+                {
+                    ["id"] = s.Id.Value, ["class"] = s.GetType().Name, ["direct_shape"] = s is DirectShape,
+                    ["type"] = doc.GetElement(s.GetTypeId())?.Name,
+                    ["box_mm"] = s.get_BoundingBox(null) is BoundingBoxXYZ sb ? new JArray(P(sb.Min), P(sb.Max)) : null,
+                    ["box_note"] = "Bounding box only. Not an endpoint.",
+                };
+                LocationOf(row, s);
+                stairs.Add(row);
+            }
 
             return new JObject
             {
@@ -166,7 +298,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 ["levels"] = new JArray(levels.Select(l => new JObject { ["name"] = l.Name, ["elevation_mm"] = Mm(_t.OfPoint(new XYZ(0, 0, l.Elevation)).Z) })),
                 ["walls"] = walls, ["floors"] = floors, ["roofs"] = roofs, ["rooms"] = rooms,
                 ["columns"] = Members(BuiltInCategory.OST_StructuralColumns), ["arch_columns"] = Members(BuiltInCategory.OST_Columns),
-                ["framing"] = Members(BuiltInCategory.OST_StructuralFraming), ["stairs"] = stairs,
+                ["framing"] = Members(BuiltInCategory.OST_StructuralFraming), ["foundations"] = Members(BuiltInCategory.OST_StructuralFoundation), ["stairs"] = stairs,
                 ["counts"] = new JObject { ["walls"] = walls.Count, ["floors"] = floors.Count, ["roofs"] = roofs.Count, ["rooms"] = rooms.Count },
             };
         }
