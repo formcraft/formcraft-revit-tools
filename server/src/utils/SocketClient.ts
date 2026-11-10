@@ -120,11 +120,15 @@ export class RevitClientConnection {
       const { config } = loadConfig();
       if (config.live_model_lock) {
         let info: any;
+        // The lock checks the document the change names, not whichever model is on screen.
+        const aimed = params && typeof params.document === "string" && params.document.trim()
+          ? params.document.trim()
+          : documentTarget.getStore();
         try {
-          info = await this.sendRaw("fmc_document_info", {});
+          info = await this.sendRaw("fmc_document_info", aimed ? { document: aimed } : {});
         } catch (error) {
           throw new Error(
-            "FMC live-model lock: could not read the active document, so the command was not sent. " +
+            "FMC live-model lock: could not read the document" + (aimed ? ` (${aimed})` : "") + ", so the command was not sent. " +
               "Is the Formcraft command set (fmc_document_info) installed? " +
               (error instanceof Error ? error.message : String(error))
           );

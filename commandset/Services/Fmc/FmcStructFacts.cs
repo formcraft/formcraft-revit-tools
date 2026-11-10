@@ -149,12 +149,28 @@ namespace RevitMCPCommandSet.Services.Fmc
                 ["occupancy"] = r.get_Parameter(BuiltInParameter.ROOM_OCCUPANCY)?.AsString(),
                 ["at_mm"] = r.Location is LocationPoint lp ? P(lp.Point) : null,
             }));
+            bool columnEnds = Parameters.Value<bool?>("column_ends") == true;
+            double searchMm = Parameters.Value<double?>("search_mm") ?? 500;
+            double touchMm = Parameters.Value<double?>("touch_mm") ?? 2;
+            HashSet<long> onlyIds = null;
+            if (Parameters["ids"] is JArray idFilter && idFilter.Count > 0)
+            {
+                onlyIds = new HashSet<long>();
+                foreach (JToken tok in idFilter)
+                    if (long.TryParse(tok.ToString(), out long idv)) onlyIds.Add(idv);
+            }
             JArray Members(BuiltInCategory cat)
             {
                 var rows = new JArray();
                 foreach (Element e in new FilteredElementCollector(doc).OfCategory(cat).WhereElementIsNotElementType())
                     rows.Add(MemberRow(e));
                 return rows;
+            }
+            void MaybeContact(JObject o, Element e)
+            {
+                if (!columnEnds || e.Category == null || e.Category.Id.Value != (long)BuiltInCategory.OST_StructuralColumns) return;
+                if (onlyIds != null && !onlyIds.Contains(e.Id.Value)) return;
+                o["contact"] = FmcColumnEnds.Read(doc, e, _t, searchMm, touchMm);
             }
             JObject MemberRow(Element e)
             {
@@ -181,6 +197,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     o["axis_kind"] = "unavailable";
                 }
                 AnalyticalOf(o, e);
+                MaybeContact(o, e);
                 return o;
             }
             void LocationOf(JObject o, Element e)

@@ -37,10 +37,12 @@ namespace RevitMCPCommandSet.Services.Fmc
 
             if (key.Length > 0)
             {
-                Document found = open.FirstOrDefault(d => Same(d, key));
-                if (found != null) return new FmcTarget(found, active != null && found.Equals(active) ? app.ActiveUIDocument : null, false);
-                // A named document that is not open is never replaced with the active one.
+                var found = open.Where(d => Same(d, key)).ToList();
                 string activeName = active?.Title ?? "none";
+                if (found.Count > 1)
+                    throw new InvalidOperationException($"More than one open document matches \"{key}\" ({string.Join("; ", found.Select(d => string.IsNullOrEmpty(d.PathName) ? d.Title : d.PathName))}). Pass the full path. Refusing to use the active document ({activeName}).");
+                if (found.Count == 1) return new FmcTarget(found[0], active != null && found[0].Equals(active) ? app.ActiveUIDocument : null, false);
+                // A named document that is not open is never replaced with the active one.
                 if (!LooksLikeFile(key))
                     throw new InvalidOperationException($"No open document is called \"{key}\". Open: {List(open)}. Refusing to use the active document ({activeName}).");
                 if (!mayOpen)
