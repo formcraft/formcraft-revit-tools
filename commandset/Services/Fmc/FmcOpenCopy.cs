@@ -77,14 +77,26 @@ namespace RevitMCPCommandSet.Services.Fmc
                 if (open.IsLinked) continue;
                 if (!FmcTarget.Same(open, copy)) continue;
                 FmcVerifySession.Remember(open);
+                try
+                {
+                    // Transmission data is not rewritten for a copy that is already open. Check the in-memory links
+                    // instead, and do not report success while a link that should be unloaded is still loaded.
+                    EnforceLinks(app, open, parameters["links"] as JObject, source);
+                }
+                catch (Exception ex)
+                {
+                    try { open.Close(false); } catch (Exception) { /* already closing */ }
+                    FmcVerifySession.Forget(open);
+                    throw new InvalidOperationException(ex.Message);
+                }
                 JObject existing = Audit(open, source, copy, false, new JArray());
                 existing["already_open"] = true;
                 existing["transmission_rewritten"] = false;
-                existing["note"] = "The copy was already open. Links were not rewritten. Close it without saving and open again to apply link options.";
+                existing["note"] = "The copy was already open. Link options were applied in memory only. The copy was not saved.";
                 return existing;
             }
 
-            bool rewritten = ApplyLinks(copy, parameters["links"] as JObject);
+            bool rewritten = ApplyLinks(copy, parameters["links"] as JObject, source);
             var dialogs = new JArray();
             string blocked = null;
             void OnDialog(object sender, DialogBoxShowingEventArgs e)
@@ -115,6 +127,9 @@ namespace RevitMCPCommandSet.Services.Fmc
                 doc = OpenDetached(app, copy, parameters);
                 if (blocked != null) throw new InvalidOperationException(blocked);
                 FmcVerifySession.Remember(doc);
+                // Transmission data is not always enough: a link already loaded in this session can stay loaded.
+                // Unload (and repath) are checked on the open copy. A miss closes it without saving.
+                EnforceLinks(app, doc, parameters["links"] as JObject, source);
                 JObject audit = Audit(doc, source, copy, rewritten, dialogs);
                 audit["unknown_worksets"] = parameters["_unknown_worksets"] as JArray ?? new JArray();
                 audit["file_was_workshared"] = parameters.Value<bool?>("_workshared_file") ?? false;
@@ -212,38 +227,156 @@ namespace RevitMCPCommandSet.Services.Fmc
         }
 
         /// <summary>Writes link load flags on the copy only. Returns whether transmission data was written.</summary>
-        private static bool ApplyLinks(string copy, JObject links)
+        private static bool ApplyLinks(string copy, JObject links, string source)
         {
+            if (FmcTarget.SamePath(copy, source))
+                throw new InvalidOperationException("Refusing to write transmission data to the source file.");
             ModelPath mp = ModelPathUtils.ConvertUserVisiblePathToModelPath(copy);
             TransmissionData data = TransmissionData.ReadTransmissionData(mp);
             if (data == null) return false;
             string mode = links?.Value<string>("mode") ?? "unload";
-            var rows = (links?["repath"] as JArray)?.OfType<JObject>().ToList() ?? new List<JObject>();
+            var rows = RepathRows(links);
             foreach (ElementId id in data.GetAllExternalFileReferenceIds().ToList())
             {
                 ExternalFileReference ext = data.GetLastSavedReferenceData(id);
                 if (ext == null || ext.ExternalFileReferenceType != ExternalFileReferenceType.RevitLink) continue;
                 string absolute = SafePath(ext.GetAbsolutePath());
                 string saved = SafePath(ext.GetPath());
-                ModelPath desired = ext.GetAbsolutePath();
-                bool load = mode == "keep";
-                if (mode == "repath")
-                {
-                    JObject hit = rows.FirstOrDefault(r => Same(r.Value<string>("from"), absolute) || Same(r.Value<string>("from"), saved));
-                    load = false;
-                    if (hit != null)
-                    {
-                        string to = hit.Value<string>("to") ?? "";
-                        if (string.IsNullOrWhiteSpace(to)) throw new InvalidOperationException("a repath row needs to");
-                        desired = ModelPathUtils.ConvertUserVisiblePathToModelPath(to);
-                        load = hit.Value<bool?>("load") ?? true;
-                    }
-                }
-                data.SetDesiredReferenceData(id, desired, ext.PathType, load);
+                LinkWish wish = Wish(mode, rows, absolute, saved, source);
+                ModelPath desired = wish.Repathed
+                    ? ModelPathUtils.ConvertUserVisiblePathToModelPath(wish.Path)
+                    : ext.GetAbsolutePath();
+                data.SetDesiredReferenceData(id, desired, ext.PathType, wish.Load);
             }
+            // Revit applies desired reference data only when the file is marked transmitted. Without this flag the
+            // load and path written above are ignored and every link opens as it was last saved.
+            data.IsTransmitted = true;
             TransmissionData.WriteTransmissionData(mp, data);
             return true;
         }
+
+        /// <summary>
+        /// After the copy is open: unload links that should not be loaded, and repath in memory when the file's
+        /// transmission data did not. Throws, naming the link, when unload or repath was requested and a link is still
+        /// loaded or still at its old path. The caller closes the copy without saving.
+        /// </summary>
+        private static void EnforceLinks(UIApplication app, Document doc, JObject links, string source)
+        {
+            string mode = links?.Value<string>("mode") ?? "unload";
+            if (mode == "keep" || doc == null || doc.IsFamilyDocument) return;
+            var rows = RepathRows(links);
+            var problems = new List<string>();
+            void OnDialog(object sender, DialogBoxShowingEventArgs e)
+            {
+                string id = e.DialogId ?? "";
+                string message = e is TaskDialogShowingEventArgs task ? task.Message ?? "" : "";
+                string text = (id + " " + message).ToLowerInvariant();
+                bool save = text.Contains("save") || text.Contains("synchron") || text.Contains("relinquish");
+                if (!save) return;
+                try { e.OverrideResult((int)TaskDialogResult.Cancel); } catch (Exception) { /* the check below fails closed */ }
+            }
+            app.DialogBoxShowing += OnDialog;
+            try
+            {
+                // The wish is taken from the path before any in-memory unload or repath. Afterwards the path may already
+                // be the new one, which would no longer match the repath row's from.
+                var planned = new List<(RevitLinkType Type, LinkWish Wish)>();
+                foreach (RevitLinkType type in new FilteredElementCollector(doc).OfClass(typeof(RevitLinkType)).Cast<RevitLinkType>())
+                {
+                    LinkPaths paths = PathsOf(type);
+                    planned.Add((type, Wish(mode, rows, paths.Absolute, paths.Saved, source)));
+                }
+                foreach ((RevitLinkType type, LinkWish wish) in planned)
+                {
+                    if (!wish.Load && Loaded(type))
+                    {
+                        try { type.Unload(null); }
+                        catch (Exception) { /* the recheck names the link if it is still loaded */ }
+                    }
+                    else if (wish.Repathed && wish.Load && !PathIs(PathsOf(type), wish.Path))
+                    {
+                        try
+                        {
+                            using (var t = new Transaction(doc, "Formcraft: repath link"))
+                            {
+                                t.Start();
+                                type.LoadFrom(ModelPathUtils.ConvertUserVisiblePathToModelPath(wish.Path), new WorksetConfiguration(WorksetConfigurationOption.OpenAllWorksets));
+                                t.Commit();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            problems.Add($"{type.Name} could not be repathed to {wish.Path}: {ex.Message}");
+                        }
+                    }
+                }
+                foreach ((RevitLinkType type, LinkWish wish) in planned)
+                {
+                    LinkPaths paths = PathsOf(type);
+                    string where = paths.Absolute.Length > 0 ? paths.Absolute : paths.Saved;
+                    if (!wish.Load && Loaded(type))
+                        problems.Add($"{type.Name} is still loaded" + (where.Length > 0 ? " from " + where : ""));
+                    else if (wish.Repathed && !PathIs(paths, wish.Path))
+                        problems.Add($"{type.Name} is still at {(where.Length > 0 ? where : "(no path)")}, not {wish.Path}");
+                }
+            }
+            finally
+            {
+                app.DialogBoxShowing -= OnDialog;
+            }
+            if (problems.Count > 0)
+                throw new InvalidOperationException("Link state was not applied (" + mode + "): " + string.Join("; ", problems) + ". The copy was closed without saving. The source file was not opened or written.");
+        }
+
+        private static List<JObject> RepathRows(JObject links) =>
+            (links?["repath"] as JArray)?.OfType<JObject>().ToList() ?? new List<JObject>();
+
+        private struct LinkWish
+        {
+            public bool Load { get; set; }
+            public bool Repathed { get; set; }
+            public string Path { get; set; }
+        }
+
+        /// <summary>keep loads every Revit link. unload loads none. repath unloads the rest and points a matching link at <c>to</c>.</summary>
+        private static LinkWish Wish(string mode, List<JObject> rows, string absolute, string saved, string source)
+        {
+            if (mode == "keep") return new LinkWish { Load = true, Path = "" };
+            if (mode != "repath") return new LinkWish { Load = false, Path = "" };
+            JObject hit = rows.FirstOrDefault(r => Same(r.Value<string>("from"), absolute) || Same(r.Value<string>("from"), saved));
+            if (hit == null) return new LinkWish { Load = false, Path = "" };
+            string to = hit.Value<string>("to") ?? "";
+            if (string.IsNullOrWhiteSpace(to)) throw new InvalidOperationException("a repath row needs to");
+            if (FmcTarget.SamePath(to, source))
+                throw new InvalidOperationException($"Refusing to open the source file as a link: {source}");
+            return new LinkWish { Load = hit.Value<bool?>("load") ?? true, Repathed = true, Path = to };
+        }
+
+        private struct LinkPaths
+        {
+            public string Absolute { get; set; }
+            public string Saved { get; set; }
+        }
+
+        private static LinkPaths PathsOf(RevitLinkType type)
+        {
+            try
+            {
+                ExternalFileReference ext = type.GetExternalFileReference();
+                if (ext == null) return new LinkPaths { Absolute = "", Saved = "" };
+                return new LinkPaths { Absolute = SafePath(ext.GetAbsolutePath()), Saved = SafePath(ext.GetPath()) };
+            }
+            catch (Exception) { return new LinkPaths { Absolute = "", Saved = "" }; }
+        }
+
+        private static bool Loaded(RevitLinkType type)
+        {
+            try { return type.GetLinkedFileStatus() == LinkedFileStatus.Loaded; }
+            catch (Exception) { return false; }
+        }
+
+        private static bool PathIs(LinkPaths paths, string wanted) =>
+            Same(paths.Absolute, wanted) || Same(paths.Saved, wanted);
 
         private static string SafePath(ModelPath path)
         {

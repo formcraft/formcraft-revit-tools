@@ -1,5 +1,7 @@
 using Autodesk.Revit.UI;
+using Newtonsoft.Json.Linq;
 using RevitMCPCommandSet.Models.Common;
+using RevitMCPCommandSet.Services.Fmc;
 using RevitMCPSDK.API.Interfaces;
 
 namespace RevitMCPCommandSet.Services
@@ -17,6 +19,10 @@ namespace RevitMCPCommandSet.Services
         public List<string> CategoryList { get; set; }
         public string FamilyNameFilter { get; set; }
         public int? Limit { get; set; }
+        /// <summary>The call's parameters, including <c>document</c>. Resolved like the Formcraft commands.</summary>
+        public JObject Parameters { get; set; } = new JObject();
+        /// <summary>Set when the read failed. The command throws it; a null list is not a successful empty result.</summary>
+        public string Error { get; private set; }
 
         // 执行时间，略微比调用超时更短一些
         public bool WaitForCompletion(int timeoutMilliseconds = 12500)
@@ -27,9 +33,14 @@ namespace RevitMCPCommandSet.Services
 
         public void Execute(UIApplication app)
         {
+            Error = null;
+            ResultFamilyTypes = null;
             try
             {
-                var doc = app.ActiveUIDocument.Document;
+                // A background copy is not the active document. Name it with document, or use the only open one.
+                // A named document that is not open is never replaced with whatever happens to be active.
+                using var target = FmcTarget.Resolve(app, Parameters, mayOpen: false);
+                var doc = target.Doc;
 
                 // 可载入族
                 var familySymbols = new FilteredElementCollector(doc)
@@ -124,7 +135,8 @@ namespace RevitMCPCommandSet.Services
             }
             catch (Exception ex)
             {
-                RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Error", "Getting family types failed: " + ex.Message);
+                Error = ex.Message;
+                ResultFamilyTypes = null;
             }
             finally
             {
