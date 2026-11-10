@@ -14,7 +14,12 @@ const win = path.win32;
 export const FMC_STRUCTURE_DESCRIPTION =
   "Formcraft structural design (owner 27 Oct), preliminary until an engineer of record signs. facts {link?}: what the " +
   "structure must carry, read from the open model or a linked architecture model (link: part of its name): levels, walls " +
-  "with their layers, floors, roofs, rooms, columns, beams, stairs. loads {link?, use?}: the load takedown from those " +
+  "with their layers, floors, roofs, rooms, columns, beams, foundations and stairs. A column's start_mm and end_mm are a " +
+  "constraint axis (base level + offset to top level + offset, or the location curve when the column is slanted) or null. " +
+  "axis_kind is constraint_axis, location_curve or unavailable. physical.note says the same. analytical is the mapped " +
+  "AnalyticalMember's endpoints when Revit has one. A bounding-box centre is never used as an endpoint. A DirectShape in " +
+  "the same category is returned with class and direct_shape true instead of failing the read. Pass document to read a " +
+  "verification copy. loads {link?, use?}: the load takedown from those " +
   "facts and the kit's standards (Uganda Structural Design Code 2019; unit weights EN 1991-1-1): every suspended slab " +
   "(self-weight, layers, finishes, services, partitions, imposed load by room), every wall's weight per metre and its " +
   "base line load, the roofs, per level and in all, with 1.35G+1.5Q, G+Q and G+ψ2Q; ground-bearing slabs listed apart; " +
