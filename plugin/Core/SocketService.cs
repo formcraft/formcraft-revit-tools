@@ -32,7 +32,7 @@ namespace revit_mcp_plugin.Core
         // then, so the active document can't change. The live-model lock reads it instead of timing out.
         private static JToken _lastDocInfo;
         private static DateTime _lastDocInfoAt;
-        private bool _isRunning;
+        private volatile bool _isRunning;
         private int _port = 8080;
         private UIApplication _uiApp;
         private ICommandRegistry _commandRegistry;
@@ -107,7 +107,7 @@ namespace revit_mcp_plugin.Core
             //{
             //    _port = configManager.Config.Settings.Port;
             //}
-            // Formcraft: the port comes from %APPDATA%\Formcraftmc_connect.json, which the MCP server reads too.
+            // The configured port is only where Start begins its search. The listening port is logged after the bind.
             _port = ConnectSettings.Load().Port;
 
             // 加载命令
@@ -117,14 +117,15 @@ namespace revit_mcp_plugin.Core
             commandManager.LoadCommands();
             // Formcraft: the self-test's facts come from the add-in itself (build stamp, this registry, ribbon, kit folder).
             _commandRegistry.RegisterCommand(new FmcSelfTestCommand(() => new System.Collections.Generic.List<string>(((RevitCommandRegistry)_commandRegistry).GetRegisteredCommands())));
-
-            _logger.Info($"Socket service initialized on port {_port}");
         }
 
         public void Start()
         {
-            if (_isRunning) return;
+            if (_isRunning && ListenerBound()) return;
+            if (_isRunning || _listener != null) Abandon("the listener was not accepting");
 
+            // A previous Revit that crashed leaves <pid>.json behind. Drop those before this one announces itself.
+            InstanceRegistry.SweepDead();
             // Two or more Revits each get their own connection: the first free port from the configured one up (8080-8089),
             // announced in %APPDATA%\Formcraft\instances so the MCP server can reach each of them.
             int first = ConnectSettings.Load().Port;
@@ -133,44 +134,71 @@ namespace revit_mcp_plugin.Core
                 LastError = "";
                 for (int port = first; port < first + PortRange; port++)
                 {
+                    TcpListener listener = null;
                     try
                     {
                         // This PC only: AI apps reach Revit through the MCP server running here, never over the network.
-                        _listener = new TcpListener(IPAddress.Loopback, port);
-                        _listener.Start();
-                        _port = port;
+                        listener = new TcpListener(IPAddress.Loopback, port);
+                        listener.Start();
+                        _listener = listener;
+                        _port = ((IPEndPoint)listener.LocalEndpoint).Port;
                         break;
                     }
-                    catch (SocketException ex) when (ex.SocketErrorCode == SocketError.AddressAlreadyInUse)
+                    catch (SocketException ex) when (AddressInUse(ex))
                     {
-                        _listener = null;
+                        try { listener?.Stop(); } catch (Exception) { /* this port stays with whoever holds it */ }
+                        if (ReferenceEquals(_listener, listener)) _listener = null;
                     }
                 }
-                if (_listener == null)
+                if (!ListenerBound())
                 {
                     LastError = $"Ports {first}-{first + PortRange - 1} are all in use ({PortRange} Revits or other programs). Close one, or set another port in {ConnectSettings.FilePath} and restart Revit.";
+                    _logger.Error("Socket service did not start: " + LastError);
+                    InstanceRegistry.Remove();
                     return;
                 }
                 _isRunning = true;
+                // Announce before the accept loop. If that loop stops, it removes this file.
+                InstanceRegistry.Announce(_port);
                 _listenerThread = new Thread(ListenForClients)
                 {
-                    IsBackground = true
+                    IsBackground = true,
+                    Name = "Formcraft socket " + _port
                 };
                 _listenerThread.Start();
-                InstanceRegistry.Announce(_port);
+                // The instance file and this line both use the port the socket bound, not the configured first port.
+                _logger.Info($"Socket service initialized on port {_port}");
             }
             catch (Exception ex)
             {
-                _isRunning = false;
-                _listener = null;
                 LastError = ex.Message;
+                Abandon(ex.Message);
             }
+        }
+
+        private static bool AddressInUse(SocketException ex) =>
+            ex.SocketErrorCode == SocketError.AddressAlreadyInUse || ex.ErrorCode == 10048 || ex.ErrorCode == 98;
+
+        private bool ListenerBound()
+        {
+            try { return _listener != null && _listener.Server != null && _listener.Server.IsBound; }
+            catch (Exception) { return false; }
+        }
+
+        /// <summary>The socket is gone. Drop the instance file so other tools do not keep calling a port nothing answers.</summary>
+        private void Abandon(string why)
+        {
+            _isRunning = false;
+            try { _listener?.Stop(); } catch (Exception) { /* already stopped */ }
+            _listener = null;
+            InstanceRegistry.Remove();
+            _logger.Error($"Socket service stopped on port {_port}: {why}");
         }
 
         public void Stop()
         {
-            if (!_isRunning) return;
             InstanceRegistry.Remove();
+            if (!_isRunning && _listener == null) return;
 
             try
             {
@@ -179,7 +207,7 @@ namespace revit_mcp_plugin.Core
                 _listener?.Stop();
                 _listener = null;
 
-                if(_listenerThread!=null && _listenerThread.IsAlive)
+                if (_listenerThread != null && _listenerThread.IsAlive && Thread.CurrentThread != _listenerThread)
                 {
                     _listenerThread.Join(1000);
                 }
@@ -194,9 +222,25 @@ namespace revit_mcp_plugin.Core
         {
             try
             {
-                while (_isRunning)
+                while (_isRunning && ListenerBound())
                 {
-                    TcpClient client = _listener.AcceptTcpClient();
+                    TcpClient client;
+                    try
+                    {
+                        client = _listener.AcceptTcpClient();
+                    }
+                    catch (Exception) when (!_isRunning)
+                    {
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                        // One failed accept used to end the thread and leave the instance file pointing at a dead port.
+                        if (!_isRunning || !ListenerBound()) break;
+                        _logger.Warning($"Socket accept failed on port {_port}: {ex.Message}");
+                        Thread.Sleep(200);
+                        continue;
+                    }
 
                     Thread clientThread = new Thread(HandleClientCommunication)
                     {
@@ -205,13 +249,13 @@ namespace revit_mcp_plugin.Core
                     clientThread.Start(client);
                 }
             }
-            catch (SocketException)
+            catch (Exception ex)
             {
-
+                if (_isRunning) _logger.Error($"Socket listener on port {_port} failed: {ex.Message}");
             }
-            catch(Exception)
+            finally
             {
-                // log
+                if (_isRunning) Abandon("the listener stopped");
             }
         }
 
