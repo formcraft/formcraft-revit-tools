@@ -13,13 +13,14 @@ export const FMC_BATCH_DESCRIPTION =
   "references is required: at least one id for the kit, the standards bank, and the rulebooks. " +
   "Actions: request, status, heartbeat, release, cancel, wait (timeout_s at most 60), drain, resume. " +
   "drain stops new grants (requests stay queued: maintenance: server update) and lets the active lease finish. " +
+  "reserve puts a named bot's label at the head of a document. Only a name in batch_schedulers may do that, matched on the MCP client or the bot field. Hostel Building Bot is the scheduler. " +
   "The waiting line is saved and restored after a restart. An active lease is not still held after a restart: it is at the head of its line. " +
   "When free memory is below ram_pause_free_mb (default 1024), request stays queued and wait holds: paused for memory, not failed. " +
   "Workshared models sync from fmc_guard.json sync_minutes (default 15) and sync_on_batch_end (default true). " +
   "sync_exclude skips those documents. sync_documents, when set, is the only list that syncs. status shows last_sync, next_sync, last_error and excluded.";
 
 const shape = {
-  action: z.enum(["request", "status", "heartbeat", "release", "cancel", "wait", "drain", "resume"]),
+  action: z.enum(["request", "status", "heartbeat", "release", "cancel", "wait", "drain", "resume", "reserve"]),
   reason: z.string().max(200).optional().describe("drain: why grants are stopped. Default: maintenance: server update."),
   document: z.string().optional().describe("Title or full path of the open document this batch changes."),
   label: z.string().optional().describe("This batch's name. A retry of a failure sends the same label (and the same batch_id, if you set one)."),
@@ -49,7 +50,7 @@ function failed(error: unknown) {
 }
 
 export async function runFmcBatch(args: {
-  action: "request" | "status" | "heartbeat" | "release" | "cancel" | "wait" | "drain" | "resume";
+  action: "request" | "status" | "heartbeat" | "release" | "cancel" | "wait" | "drain" | "resume" | "reserve";
   reason?: string;
   document?: string;
   label?: string;
@@ -76,6 +77,12 @@ export async function runFmcBatch(args: {
         references: args.references,
         correction: args.correction,
         client,
+      }));
+    }
+    if (args.action === "reserve") {
+      return reply(await board.reserve({
+        document: args.document ?? "", label: args.label ?? "", bot: args.bot, client,
+        references: args.references, batchId: args.batch_id, estOps: args.est_ops, correction: args.correction,
       }));
     }
     if (args.action === "drain") return reply(board.setMaintenance(true, args.reason || MAINTENANCE_REASON));

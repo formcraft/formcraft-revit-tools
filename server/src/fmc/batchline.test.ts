@@ -383,4 +383,24 @@ test("drain queues new work, and a restart restores the line with the active lea
   assert.deepEqual(resumed[0].line.map((row) => row.label), ["walls"]);
   assert.equal(again.snapshot().maintenance, false);
 });
+
+test("Hostel Building Bot reserves the next slot by client or by bot name", async () => {
+  const { board: made } = board();
+  const held = await req(made, "arch", "Architecture", "grids");
+  await req(made, "elec", "Architecture", "lights");
+  const reserved = await made.reserve({ document: "Architecture", label: "walls", bot: "structure", client: "Hostel Building Bot", references });
+  assert.equal(reserved.state, "queued");
+  assert.equal(reserved.position, 1);
+  const line = (made.snapshot().documents as Array<{ line: Array<{ label: string }> }>)[0].line;
+  assert.deepEqual(line.map((row) => row.label), ["walls", "lights"]);
+  const refused = await made.reserve({ document: "Site", label: "pads", bot: "site", client: "stranger", references }).then(() => "", (error) => error);
+  assert.ok(refused instanceof BatchGateError);
+  assert.equal(refused.code, "FMC-BATCH-SCHEDULER");
+  const byBot = await made.reserve({ document: "Plumbing", label: "stacks", bot: "Hostel Building Bot", client: "session-9", references });
+  assert.equal(byBot.state, "queued");
+  const claimed = await req(made, "real-structure", "Architecture", "walls", { bot: "structure" });
+  assert.equal(claimed.state, "queued");
+  await made.release(String(held.lease), "ok", "arch", "done");
+  assert.equal(made.status(String(claimed.lease), "real-structure").state, "granted");
+});
 });

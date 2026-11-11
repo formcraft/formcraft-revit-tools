@@ -21,6 +21,7 @@ export interface StoredTicket {
   attempt: number;
   requestedAt: number;
   estOps?: number;
+  reserved?: boolean;
 }
 
 export function maintenancePath(env: NodeJS.ProcessEnv = process.env): string {

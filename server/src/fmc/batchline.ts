@@ -33,7 +33,7 @@ export const WAIT_MAX_S = 60;
 const DONE_LIMIT = 200;
 
 export class BatchGateError extends Error {
-  readonly code: "FMC-BATCH-LOCKED" | "FMC-BATCH-NOREFS" | "FMC-BATCH-SAMEFIX" | "FMC-BATCH-BAD";
+  readonly code: "FMC-BATCH-LOCKED" | "FMC-BATCH-NOREFS" | "FMC-BATCH-SAMEFIX" | "FMC-BATCH-BAD" | "FMC-BATCH-SCHEDULER";
   constructor(code: BatchGateError["code"], message: string) {
     super(message);
     this.name = "BatchGateError";
@@ -139,6 +139,18 @@ export function documentKey(name: string): string {
   return syncDocumentKey(name);
 }
 
+/** Names that may reserve the next slot. An absent setting is Hostel Building Bot. An empty list is nobody. */
+export function schedulerNames(cfg: { batch_schedulers?: string[] } | undefined): string[] {
+  if (!cfg || !Array.isArray(cfg.batch_schedulers)) return ["Hostel Building Bot"];
+  return cfg.batch_schedulers.map((name) => String(name).trim()).filter(Boolean);
+}
+
+/** True when the MCP client or the bot field is a scheduler. */
+export function isScheduler(client: string, bot: string, names: string[]): boolean {
+  const want = new Set(names.map((name) => name.toLowerCase()));
+  return want.has(client.trim().toLowerCase()) || want.has(bot.trim().toLowerCase());
+}
+
 export function documentsMatch(held: string, asked: string | undefined): boolean {
   if (!asked || !asked.trim()) return false;
   const a = documentKey(held);
@@ -175,6 +187,8 @@ interface Ticket {
   references: BatchReferences;
   referencesHash: string;
   correction: string;
+  /** A scheduler placed this at the head. The named bot's next request takes the client. */
+  reserved?: boolean;
   state: "queued" | "active";
   attempt: number;
   requestedAt: number;
@@ -404,6 +418,14 @@ export class BatchBoard {
     }
     const existing = [...this.tickets.values()].find((ticket) => ticket.key === key && ticket.batchId.toLowerCase() === batchId.toLowerCase());
     if (existing) {
+      if (existing.reserved && existing.bot.toLowerCase() === bot.toLowerCase()) {
+        existing.client = input.client;
+        existing.reserved = false;
+        const head = (this.lines.get(key) ?? [])[0];
+        if (existing.state !== "active" && head === existing.id && !this.holders.has(key) && !this.heldForMemory() && !this.maintenanceReason) this.grant(existing, false);
+        this.persist();
+        return this.ticketView(existing);
+      }
       if (existing.client === input.client) return this.ticketView(existing);
       throw new BatchGateError("FMC-BATCH-BAD",
         `[FMC-BATCH-BAD] Batch "${label}" is already ${existing.state === "active" ? "running" : "in line"} on ${document} for another session. ` +
@@ -441,6 +463,45 @@ export class BatchBoard {
       else if (this.heldForMemory()) this.emit(`paused for memory; queued ${this.where(ticket)} position ${line.length}`);
       else this.emit(`queued ${this.where(ticket)} position ${line.length} attempt ${attempt}`);
     }
+    this.persist();
+    return this.ticketView(ticket);
+  }
+
+  /**
+   * A scheduler places a named bot's label at the head of the line (the next slot, not the lease that is running).
+   * The named bot's own request takes that ticket.
+   */
+  async reserve(input: RequestInput): Promise<Record<string, unknown>> {
+    this.pullMaintenance();
+    const document = input.document?.trim() ?? "";
+    const label = input.label?.trim() ?? "";
+    const bot = (input.bot?.trim() || "");
+    if (!document || !label || !bot) throw new BatchGateError("FMC-BATCH-BAD", "[FMC-BATCH-BAD] reserve needs document, label and bot.");
+    if (!isScheduler(input.client, bot, schedulerNames(loadConfig().config))) {
+      throw new BatchGateError("FMC-BATCH-SCHEDULER",
+        "[FMC-BATCH-SCHEDULER] reserve is only for a scheduler in batch_schedulers, matched on the MCP client or the bot field. Hostel Building Bot is the scheduler.");
+    }
+    const { refs, missing } = normalizeReferences(input.references, this.required);
+    if (missing.length) {
+      throw new BatchGateError("FMC-BATCH-NOREFS",
+        `[FMC-BATCH-NOREFS] A batch must name what it works from. Missing: ${missing.join(", ")}.`);
+    }
+    const key = documentKey(document);
+    this.names.set(key, document);
+    const batchId = (input.batchId?.trim() || label);
+    const existing = [...this.tickets.values()].find((ticket) => ticket.key === key && ticket.batchId.toLowerCase() === batchId.toLowerCase());
+    if (existing) return this.ticketView(existing);
+    const ticket: Ticket = {
+      id: randomUUID(), document, key, label, batchId, bot, client: bot,
+      estOps: input.estOps && input.estOps > 0 ? Math.floor(input.estOps) : undefined,
+      references: copyRefs(refs), referencesHash: referencesHash(refs), correction: "",
+      reserved: true, state: "queued", attempt: 1, requestedAt: this.now(), lastBeat: this.now(), ops: 0, writesInFlight: 0,
+    };
+    this.tickets.set(ticket.id, ticket);
+    const line = this.lines.get(key) ?? [];
+    line.unshift(ticket.id);
+    this.lines.set(key, line);
+    this.emit(`reserved ${this.where(ticket)} at the head for ${bot}`);
     this.persist();
     return this.ticketView(ticket);
   }
@@ -1162,7 +1223,7 @@ export class BatchBoard {
       const ticket: Ticket = {
         id: row.id, document: row.document, key, label: row.label, batchId: row.batchId, bot: row.bot, client: row.client,
         estOps: row.estOps, references: copyRefs(row.references), referencesHash: referencesHash(row.references),
-        correction: row.correction ?? "", state: "queued", attempt: row.attempt || 1,
+        correction: row.correction ?? "", reserved: row.reserved === true, state: "queued", attempt: row.attempt || 1,
         requestedAt: row.requestedAt || this.now(), lastBeat: this.now(), ops: 0, writesInFlight: 0,
       };
       this.tickets.set(ticket.id, ticket);
@@ -1204,6 +1265,7 @@ export class BatchBoard {
           id: ticket.id, document: ticket.document, label: ticket.label, batchId: ticket.batchId, bot: ticket.bot,
           client: ticket.client, references: copyRefs(ticket.references), correction: ticket.correction,
           attempt: ticket.attempt, requestedAt: ticket.requestedAt, ...(ticket.estOps ? { estOps: ticket.estOps } : {}),
+          ...(ticket.reserved ? { reserved: true } : {}),
         });
       }
     }
