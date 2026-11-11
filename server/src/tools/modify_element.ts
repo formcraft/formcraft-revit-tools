@@ -107,7 +107,9 @@ export const MODIFY_MODEL_DESCRIPTION =
   "load_case {name, nature?, category: dead|live} · analytical_member {start_mm, end_mm}. " +
   "MEP (points [x, y, z], z above the level): duct / pipe {level, points_mm, system?, type_name?, width_mm, height_mm | diameter_mm, placeholder?, elbows? (default true)} · " +
   "cable_tray / conduit {level, points_mm, type_name?, width_mm?, height_mm? | diameter_mm?} · flex_duct / flex_pipe {level, points_mm, system?} · " +
-  "connect {ids: two runs (elbow or transition) or three (tee)} · insulation / lining {ids, thickness_mm} · convert_placeholders {ids} · " +
+  "connect {ids: two runs (elbow or transition) or three (tee), or a pipe and a plumbing fixture. A fixture uses its nearest unconnected " +
+  "piping connector (MEPModel.ConnectorManager): sanitary for waste and soil, domestic hot or cold for supply. system?: sanitary|waste|soil|supply|domestic hot|domestic cold. " +
+  "Until this add-in is installed, use fmc_connect_fixture, which does the same join from the server.} · insulation / lining {ids, thickness_mm} · convert_placeholders {ids} · " +
   "wire {view, points_mm, style?: arc|chamfer} · space {level, points_mm, name?} · space_separation {level, lines_mm}. " +
   "Site and mass: toposolid {level, points_mm ([x, y, z] survey points) and/or outline_mm, type_name?} · toposolid_subdivision {host, outline_mm, material?} · " +
   "mass_floors {ids (masses), levels} · wall_by_face {host (mass), point_mm (on the face), type_name?}. " +
