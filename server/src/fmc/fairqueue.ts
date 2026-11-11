@@ -162,11 +162,13 @@ function hintsOf(hints?: string | DocumentRequiredHints): DocumentRequiredHints 
 function isFamilyCreate(command: string, hints: DocumentRequiredHints): boolean {
   if (command === "fmc_family_new") return true;
   if (command === "fmc_create_document" && (hints.kind ?? "").trim().toLowerCase() === "family") return true;
-  // A new family from a .rft template (fmc_recipe / fmc_doc open). Opening an existing .rfa (`file`) still needs a name.
+  // A new family from a .rft template, or reopening an existing family file (.rfa). Opening a project (.rvt) still needs a name.
   if (command === "fmc_doc_open") {
     const template = (hints.template ?? "").trim();
     const file = (hints.file ?? "").trim();
-    return template.length > 0 && file.length === 0;
+    if (template.length > 0 && file.length === 0) return true;
+    if (file.length > 0 && template.length === 0 && /\.rfa$/i.test(file)) return true;
+    return false;
   }
   return false;
 }

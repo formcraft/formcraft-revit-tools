@@ -18,7 +18,7 @@ export const REVIT_ARG = z.string().optional()
 export const DOCUMENT_ARG = z.string().optional()
   .describe("Which document: a title or a full path of a document that is already open (including a verification copy from " +
     "fmc_file open_copy). If that document is not open, the call fails and does not use the active document. " +
-    "Name the document (title or full path) on every call when more than one document is open. new_family, and a new-family recipe opened from a template, do not need it.");
+    "Name the document (title or full path) on every call when more than one document is open. new_family, a new-family recipe opened from a template, and opening an existing family file (.rfa), do not need it.");
 
 export const BATCH_LEASE_ARG = z.string().optional()
   .describe("Lease id from fmc_batch request. Required on a model-changing call while that document is held. " +

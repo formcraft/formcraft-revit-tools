@@ -21,12 +21,15 @@ test("unnamed family creation is allowed when several documents are open; other 
   assert.equal(documentRequired("fmc_create_document", docs, undefined, "family"), undefined);
 });
 
-test("recipe new-family open is allowed with several documents open; existing family or project work still needs a name", () => {
+test("recipe new-family open and reopening an .rfa are allowed with several documents open; a project file and edits still need a name", () => {
   const docs = ["Architecture", "Structure", "Electrical"];
   const template = { template: "C:\\Templates\\Metric Generic Model.rft" };
   const file = { file: "C:\\Staging\\P\\Existing.rfa" };
+  const rvt = { file: "C:\\Projects\\ExistingProject.rvt" };
   assert.equal(documentRequired("fmc_doc_open", docs, undefined, template), undefined);
-  assert.match(documentRequired("fmc_doc_open", docs, undefined, file) ?? "", /3 documents are open.*Refusing to use the active document/);
+  assert.equal(documentRequired("fmc_doc_open", docs, undefined, file), undefined);
+  assert.equal(documentRequired("fmc_doc_open", docs, undefined, { file: "C:\\Staging\\P\\Existing.RFA" }), undefined);
+  assert.match(documentRequired("fmc_doc_open", docs, undefined, rvt) ?? "", /3 documents are open.*Refusing to use the active document/);
   assert.match(documentRequired("fmc_doc_open", docs, undefined) ?? "", /3 documents are open.*Refusing to use the active document/);
   assert.match(documentRequired("fmc_doc_apply", docs, undefined) ?? "", /3 documents are open.*Refusing to use the active document/);
   assert.match(documentRequired("fmc_model_edit", docs, undefined) ?? "", /3 documents are open.*Refusing to use the active document/);
@@ -38,6 +41,12 @@ test("recipe new-family open is allowed with several documents open; existing fa
   }
   // background is a session inventory, like document_info
   assert.equal(documentRequired("fmc_doc_background", docs, undefined), undefined);
+  // The opened family path is the named target for later fmc_doc calls in that session.
+  assert.equal(documentRequired("fmc_doc_report", docs, file.file), undefined);
+  assert.equal(documentRequired("fmc_doc_screenshot", docs, file.file), undefined);
+  assert.equal(documentRequired("fmc_doc_apply", docs, file.file), undefined);
+  assert.equal(documentRequired("fmc_doc_flex", docs, file.file), undefined);
+  assert.match(documentRequired("fmc_doc_open", docs, undefined, { file: file.file, template: "C:\\Templates\\Metric Generic Model.rft" }) ?? "", /3 documents are open/);
 });
 
 test("round robin: one client's batch does not finish before the others start", async () => {
