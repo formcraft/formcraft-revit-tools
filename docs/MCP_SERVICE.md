@@ -52,6 +52,9 @@ A logon task named **Formcraft MCP** (no admin) starts the service, restarts it 
 ## Sync auto-approve
 
 `ai_modeller.auto_approve_sync` defaults to false. It does nothing unless `mode` is `testing` and `auto_approve` is true. When it is on, a bot's direct `fmc_revit_file` sync runs without waiting in the pane only if the target is a workshared local (not a central, a detached copy, a family or a protected original, and not on `sync_exclude`), the caller holds the active batch lease on that document or no other lease is active, the document is not listed in `damaged_documents` and has no recent corrupt-on-sync dialog in `FMC_Jobs_Revit.jsonl`, the RAM gate is not paused, Stop AI is off, and AI is on for the model. Relinquish on its own stays manual. Each auto-approval and each refusal is a line in `%APPDATA%\Formcraft\FMC_SyncAutoApprove.jsonl`. `fmc_ai` status shows `sync_auto_approve` and the recent lines. This is server-only.
+## Reload a link
+
+`fmc_reload_link` reloads one Revit link type. Pass `document` (a title or a full path) and `link_type_id`. Pass `path` to load that file; omit `path` to reload the link from its current location. Link instances stay where they are. It is a write: the batch lease and the live-model lock apply, and a family, a verification copy, a linked document and a protected original are refused. The reload itself is in the add-in, in a handler that opens no transaction. `send_code_to_revit` cannot do it: `transactionMode` none still opens a transaction group, and Revit 2025 refuses `LoadFrom` and `Reload` while that phase is open. The add-in installs when Revit is closed. The server tool is the check and the call.
 
 ## Several agents, one Revit
 
