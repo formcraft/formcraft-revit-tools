@@ -218,6 +218,7 @@ export function registerModifyModelTool(server: McpServer) {
         return reply({
           asked: r.undoing ?? r.redoing, done: s?.done, stopped: s?.stopped ?? (s?.undo_running ? "still running: check with action status" : undefined),
           now_on_top: top ? `${top.kind === "ai" ? "AI" : "a person"}: ${top.label}` : "nothing",
+          ...(r?.document ? { document: r.document } : {}),
         }, Boolean(s?.stopped));
       } catch (e) {
         return reply(`undo_ai_batch: ${e instanceof Error ? e.message : String(e)}`, true);
@@ -296,7 +297,8 @@ export function registerModifyModelTool(server: McpServer) {
 
   server.tool(
     "revit_file",
-    "Formcraft (owner 26 Oct): what Revit does with files, outside an edit batch. action: save, save_as {path, overwrite?, " +
+    "Formcraft (owner 26 Oct): what Revit does with files, outside an edit batch. To save a project, use fmc_save_project " +
+      "(it checks the title and the path and refuses a family). action save here does not. action: save, save_as {path, overwrite?, " +
       "as_central?}, open {path}, close {title, save?} (not the active model), export {format: dwg|dxf|dgn|sat|pdf|ifc|nwc|" +
       "fbx|dwf|gbxml|image|schedule, folder, name?, views? (names, sheet numbers or ids; default the active view), combine? " +
       "(pdf), pixels? (image)}, link_cad / import_cad {path, view?, this_view_only?}, link_image / import_image / link_pdf " +

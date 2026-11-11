@@ -13,6 +13,7 @@ import { aiGate } from "../fmc/aigate.js";
 import { retryWhileBusy } from "../fmc/busy.js";
 import { memoryGate } from "../fmc/memory.js";
 import { screenScript, scriptLimit } from "../fmc/scriptguard.js";
+import { stampAppliedDocument } from "../fmc/applieddoc.js";
 
 export class RevitClientConnection {
   host: string;
@@ -166,42 +167,48 @@ export class RevitClientConnection {
 
   /** Live-model lock, then the socket. The batch lease was already checked. */
   private async sendLocked(command: string, params: any = {}, timeoutMs: number = 120000, long?: LongJobOptions): Promise<any> {
-    {
-      // Owner 26 Oct: two chats share this server; with two Revits open a change must name its Revit, so neither
-      // chat can edit the other's model
-      const open = readInstances();
-      if (open.length > 1 && !revitTarget.getStore())
-        throw new Error(`${open.length} Revits are open: name the Revit this change is for with revit (its model's name, e.g. ` +
-          `${JSON.stringify(open.flatMap((i: any) => i.documents ?? []).map((d: any) => d?.title ?? d).filter(Boolean)[0] ?? "the model")}) on every call.`);
-      const { config } = loadConfig();
-      if (config.live_model_lock) {
-        let info: any;
-        // The lock checks the document the change names, not whichever model is on screen.
-        const aimed = params && typeof params.document === "string" && params.document.trim()
-          ? params.document.trim()
-          : documentTarget.getStore();
-        try {
-          info = await this.sendRaw("fmc_document_info", aimed ? { document: aimed } : {});
-        } catch (error) {
-          throw new Error(
-            "FMC live-model lock: could not read the document" + (aimed ? ` (${aimed})` : "") + ", so the command was not sent. " +
-              "Is the Formcraft command set (fmc_document_info) installed? " +
-              (error instanceof Error ? error.message : String(error))
-          );
-        }
-        const guard = writeGuard(info?.active, command, params, config);
-        if (!guard.ok) throw new Error(guard.reasons.join(" "));
-        const verdict = liveLockVerdict(info?.active, config);
-        if (!verdict.ok) {
-          // The lock's one new case: the AI-assisted modeller, Off unless the kit rulebook and the BIM Manager allow it.
-          const gate = await aiGate(command, params, info?.active, config, (c, p) => this.sendRaw(c, p, 60000));
-          // A person sees one plain line (USER_LINE), never the lock's wording; fmc_ai status has the detail.
-          if (!gate.ok || !gate.run) throw new Error(gate.user ?? [...verdict.reasons, gate.reason].filter(Boolean).join(" "));
-          return gate.run(() => this.sendRaw(command, params, timeoutMs, long));
-        }
+    // Owner 26 Oct: two chats share this server; with two Revits open a change must name its Revit, so neither
+    // chat can edit the other's model
+    const open = readInstances();
+    if (open.length > 1 && !revitTarget.getStore())
+      throw new Error(`${open.length} Revits are open: name the Revit this change is for with revit (its model's name, e.g. ` +
+        `${JSON.stringify(open.flatMap((i: any) => i.documents ?? []).map((d: any) => d?.title ?? d).filter(Boolean)[0] ?? "the model")}) on every call.`);
+    const aimed = params && typeof params.document === "string" && params.document.trim()
+      ? params.document.trim()
+      : documentTarget.getStore();
+    const { config } = loadConfig();
+    let active: { title?: string; path?: string } | undefined;
+    const run = async () => stampAppliedDocument(await this.sendRaw(command, params, timeoutMs, long), active, params);
+    if (config.live_model_lock) {
+      let info: any;
+      // The lock checks the document the change names, not whichever model is on screen.
+      try {
+        info = await this.sendRaw("fmc_document_info", aimed ? { document: aimed } : {});
+      } catch (error) {
+        throw new Error(
+          "FMC live-model lock: could not read the document" + (aimed ? ` (${aimed})` : "") + ", so the command was not sent. " +
+            "Is the Formcraft command set (fmc_document_info) installed? " +
+            (error instanceof Error ? error.message : String(error))
+        );
       }
+      active = info?.active;
+      const guard = writeGuard(info?.active, command, params, config);
+      if (!guard.ok) throw new Error(guard.reasons.join(" "));
+      const verdict = liveLockVerdict(info?.active, config);
+      if (!verdict.ok) {
+        // The lock's one new case: the AI-assisted modeller, Off unless the kit rulebook and the BIM Manager allow it.
+        const gate = await aiGate(command, params, info?.active, config, (c, p) => this.sendRaw(c, p, 60000));
+        // A person sees one plain line (USER_LINE), never the lock's wording; fmc_ai status has the detail.
+        if (!gate.ok || !gate.run) throw new Error(gate.user ?? [...verdict.reasons, gate.reason].filter(Boolean).join(" "));
+        return gate.run(run);
+      }
+    } else {
+      try {
+        const info = await this.sendRaw("fmc_document_info", aimed ? { document: aimed } : {});
+        active = info?.active;
+      } catch { /* the write still runs; the reply names the file only when the document could be read */ }
     }
-    return this.sendRaw(command, params, timeoutMs, long);
+    return run();
   }
 
   /**

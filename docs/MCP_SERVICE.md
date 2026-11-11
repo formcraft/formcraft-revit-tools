@@ -41,6 +41,10 @@ The server swaps in without closing Revit. The script prints `SERVER pass` or `S
 
 A logon task named **Formcraft MCP** (no admin) starts the service, restarts it if it exits, and reloads it when the updater changes the build.
 
+## The safe project save
+
+`fmc_save_project` saves a project. Pass `title` and `path`. Both must match the open document. A family (`.rfa`, or a document open in the Family Editor) is refused. The live-model lock and the batch lease apply, because the save is `fmc_revit_file` action `save` after those checks. `revit_file` action `save` by itself does not check the title and the path and does not refuse a family.
+
 ## Several agents, one Revit
 
 Revit runs one API call at a time. The service accepts many clients and takes turns: one call from each waiting client, then the next, so one bot's batch does not sit in front of the others.
