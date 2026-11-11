@@ -6,10 +6,10 @@ using Autodesk.Revit.DB;
 namespace RevitMCPCommandSet.Bridge
 {
     /// <summary>
-    /// The default failures preprocessor for every transaction an AI tool opens (F-032, issue #124). Warnings are deleted
-    /// and kept, so they go back in the tool's result instead of stopping Revit at a dialog. Errors (and document
-    /// corruption) roll the transaction back with their text, again without a dialog. Nothing is resolved silently: an
-    /// error is never "fixed" by Revit's default resolution, it is reported and the transaction leaves no change.
+    /// The default failures preprocessor for every transaction an AI tool opens (F-032, issue #124). Only a warning
+    /// named by dialogs.allow (or the built-in duplicate-mark default) is deleted and listed. Every other warning is
+    /// left for a person. Errors and document corruption roll the transaction back and are never resolved. Delete,
+    /// unjoin, overwrite, relinquish, save-as, upgrade, license, sign-in and corrupt-model text is never answered.
     /// <para>Use it on a transaction you open: <c>new FmcFailures().Attach(transaction)</c>, or
     /// <c>FmcAiJob.Failures.Attach(transaction)</c> to collect into the running AI job's result. Scripts sent with
     /// send_code_to_revit can use it too (the template has <c>using RevitMCPCommandSet.Bridge;</c>), for example for
@@ -55,8 +55,14 @@ namespace RevitMCPCommandSet.Bridge
                 FailureSeverity severity = failure.GetSeverity();
                 if (severity == FailureSeverity.Warning)
                 {
+                    if (!DialogPolicy.AllowWarning(text)) continue;
                     Warnings.Add(text);
                     accessor.DeleteWarning(failure);
+                    FmcAiJob.LogAnswer("failure", new Newtonsoft.Json.Linq.JObject
+                    {
+                        ["message"] = text,
+                        ["answer"] = "warning deleted (allowlist)",
+                    });
                 }
                 else if (severity == FailureSeverity.Error || severity == FailureSeverity.DocumentCorruption)
                 {

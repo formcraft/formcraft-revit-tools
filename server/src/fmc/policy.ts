@@ -99,6 +99,13 @@ export interface GuardConfig {
    */
   batch_schedulers?: string[];
   /**
+   * Dialogs and failure warnings an AI job may answer. allow is substrings of the dialog id or text.
+   * deny is extra text that must stay for a person. Delete, unjoin, overwrite, relinquish, save-as, upgrade,
+   * license, sign-in and corrupt-model are never answered, even if they are in allow. Omit allow for the
+   * built-in short list (save reminder, duplicate types, duplicate mark).
+   */
+  dialogs?: { allow?: string[]; deny?: string[] };
+  /**
    * Crash recovery. heartbeat_s is how long the plugin may stay silent before an instance is hung.
    * documents, when set, is the list to reopen (the five HEBERT HOSTELS models: architecture, structural,
    * electrical, plumbing, site). Empty means reopen whatever was open.

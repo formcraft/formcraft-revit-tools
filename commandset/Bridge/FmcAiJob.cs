@@ -18,10 +18,11 @@ namespace RevitMCPCommandSet.Bridge
     /// command's parameters as <c>_fmcJob</c>. A handler calls <see cref="Enter"/> when it starts work (FmcTarget.Resolve
     /// does it for every Formcraft handler; send_code_to_revit does it itself). While a job is executing:</para>
     /// <list type="bullet">
-    /// <item>failures in any transaction get the default handling of <see cref="FmcFailures"/> (warnings deleted and
-    /// listed, errors roll back with their text) when the transaction has no preprocessor of its own that handled them;</item>
-    /// <item>Revit's "Project Not Saved Recently" reminder is closed without saving (never saved: rule 6), and every
-    /// other dialog is recorded (not answered) so fmc_job can say what Revit is waiting for. See docs/BRIDGE.md.</item>
+        /// <item>failures in any transaction get <see cref="FmcFailures"/>: an allowlisted warning is deleted and listed,
+        /// every other warning is left, and errors roll back. The allow list is dialogs.allow in fmc_guard.json.</item>
+        /// <item>Dialogs are answered only from that same allow list (Cancel on the save reminder, OK on duplicate types).
+        /// Delete, unjoin, overwrite, relinquish, save-as, upgrade, license, sign-in and corrupt-model prompts are never
+        /// answered. Each answer is a line in FMC_Jobs_Revit.jsonl. See docs/BRIDGE.md.</item>
     /// </list>
     /// <para>The executing flag clears at Revit's next Idling (no add-in code runs then), so a person's own work in Revit
     /// never gets this handling.</para>
@@ -151,9 +152,10 @@ namespace RevitMCPCommandSet.Bridge
         }
 
         /// <summary>
-        /// The one dialog answered for an AI job is the save reminder ("Project Not Saved Recently"): it is closed with
-        /// Cancel, which leaves the model unsaved. Nothing ever saves (rule 6). Every other dialog is left for a person
-        /// and recorded with its id and text, so fmc_job status shows what Revit is waiting for.
+        /// Answers a dialog only when <see cref="DialogPolicy"/> allows it. The save reminder is closed with Cancel
+        /// (the model is not saved). Duplicate types get OK, which keeps the destination's types. Delete, unjoin,
+        /// overwrite, relinquish, save-as, upgrade, license, sign-in and corrupt-model prompts are never answered.
+        /// Every dialog is recorded, including the ones left for a person.
         /// </summary>
         private static void OnDialogBoxShowing(object sender, DialogBoxShowingEventArgs e)
         {
@@ -161,29 +163,28 @@ namespace RevitMCPCommandSet.Bridge
             string id = e.DialogId ?? "";
             string message = e is TaskDialogShowingEventArgs t ? t.Message ?? "" : e is MessageBoxShowingEventArgs m ? m.Message ?? "" : "";
             string answer = "left for a person";
-            if (IsSaveReminder(id, message))
+            string lowId = id.ToLowerInvariant();
+            string lowText = (message ?? "").ToLowerInvariant();
+            // The unattended runner still refuses save, sync, recovery and error dialogs, on top of the hard deny.
+            bool runnerBlocks = DialogRules.Unattended && DialogRules.Never(lowId, lowText) && !IsSaveReminder(id, message);
+            if (!runnerBlocks)
             {
-                bool closed = false;
-                try { closed = e.OverrideResult((int)TaskDialogResult.Cancel); } catch (Exception) { closed = false; }
-                answer = closed ? "closed with Cancel (not saved)" : "not answered: Revit refused Cancel, so it waits for a person (still not saved)";
-            }
-            else if (DialogRules.Unattended)
-            {
-                // F75: the unattended test runner's Revit answers its short safe list; anything else waits and the runner
-                // records it as a finding and cancels the step
-                int? result = DialogRules.Answer(id, message, out string rule);
+                int? result = DialogPolicy.DialogResult(id, message, out string rule);
                 if (result.HasValue)
                 {
                     bool done = false;
                     try { done = e.OverrideResult(result.Value); } catch (Exception) { done = false; }
-                    answer = done ? "answered by rule (unattended test run): " + rule : "not answered: Revit refused the rule's answer (" + rule + ")";
+                    answer = done ? "answered: " + rule : "not answered: Revit refused the allowlist answer (" + rule + ")";
                 }
-                else answer = "left for a person (unattended test run: no rule answers it; the runner cancels the step)";
             }
+            else answer = "left for a person (unattended test run: no rule answers it; the runner cancels the step)";
             var record = new JObject { ["at"] = DateTime.UtcNow.ToString("o"), ["dialog_id"] = id, ["message"] = Trim(message, 400), ["answer"] = answer };
             _dialogs.Add(record);
             Log(_current, "dialog", record);
         }
+
+        /// <summary>Writes one answered failure warning to FMC_Jobs_Revit.jsonl. The job id is the one executing now.</summary>
+        public static void LogAnswer(string evt, JObject detail) => Log(_current ?? "", evt, detail);
 
         /// <summary>
         /// F-032: what the command set's tools used to show in a modal TaskDialog when they failed. Every handler in the
