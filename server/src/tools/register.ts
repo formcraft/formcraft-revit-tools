@@ -105,6 +105,9 @@ export interface RegistrationReport {
   failed: { file: string; error: string }[];
 }
 
+/** The last registration. fmc_health and /health report modules that failed. Empty until registerTools runs. */
+export let lastRegistration: RegistrationReport = { registered: [], skipped: [], failed: [] };
+
 export async function registerTools(server: McpServer): Promise<RegistrationReport> {
   // 获取当前文件的目录路径
   const __filename = fileURLToPath(import.meta.url);
@@ -181,10 +184,11 @@ export async function registerTools(server: McpServer): Promise<RegistrationRepo
       console.error(`注册工具 ${file} 时出错:`, error);
     }
   }
+  lastRegistration = { registered, skipped, failed };
   if (failed.length) {
     throw new Error("Tool registration failed (" + failed.length + "):\n" + failed.map((f) => `${f.file}: ${f.error}`).join("\n"));
   }
-  return { registered, skipped, failed };
+  return lastRegistration;
 }
 
 /** A reply that says the batch waits in the approval queue (Ogala report: those were counted as failures). */

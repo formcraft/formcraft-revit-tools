@@ -1,0 +1,161 @@
+import { AsyncLocalStorage } from "node:async_hooks";
+
+/** Which MCP client a call belongs to. HTTP sets the session id; stdio is one client. */
+export const queueClient = new AsyncLocalStorage<string>();
+
+export function currentClient(): string {
+  return queueClient.getStore() || "stdio";
+}
+
+/** Queue wait is not the Revit execution time. Past this, the call answers queued, not failed. */
+export const DEFAULT_QUEUE_WAIT_MS = 10 * 60 * 1000;
+
+export class StillQueued extends Error {
+  readonly code = "FMC-QUEUED";
+  constructor(readonly position: number, readonly ahead: number) {
+    super(`[FMC-QUEUED] Waiting for Revit, position ${position} (${ahead} ahead). Not failed. fmc_queue shows the line. Send the call again if it has not started.`);
+    this.name = "StillQueued";
+  }
+}
+
+interface Job {
+  client: string;
+  label: string;
+  enqueued: number;
+  started: boolean;
+  run: () => Promise<void>;
+}
+
+export interface QueueSnapshot {
+  running: { client: string; label: string; since_ms: number } | null;
+  waiting: number;
+  clients: Array<{ client: string; waiting: number }>;
+}
+
+/**
+ * One Revit's calls, one at a time, round-robin across clients.
+ * A client that enqueues a long batch takes one turn, then the next client runs.
+ */
+export class FairQueue {
+  private readonly lanes = new Map<string, Job[]>();
+  private ring: string[] = [];
+  private cursor = 0;
+  private draining = false;
+  private running: { client: string; label: string; at: number } | null = null;
+
+  enqueue<T>(client: string, label: string, work: () => Promise<T>, queueWaitMs = DEFAULT_QUEUE_WAIT_MS): Promise<T> {
+    const name = client || "stdio";
+    return new Promise<T>((resolve, reject) => {
+      let timer: ReturnType<typeof setTimeout> | undefined;
+      const job: Job = {
+        client: name,
+        label,
+        enqueued: Date.now(),
+        started: false,
+        run: async () => {
+          if (timer) clearTimeout(timer);
+          job.started = true;
+          try { resolve(await work()); }
+          catch (error) { reject(error); }
+        },
+      };
+      timer = setTimeout(() => {
+        if (job.started) return;
+        this.drop(job);
+        const ahead = this.aheadOf(name);
+        reject(new StillQueued(ahead + 1, ahead));
+      }, queueWaitMs);
+      const lane = this.lanes.get(name);
+      if (lane) lane.push(job);
+      else { this.lanes.set(name, [job]); this.ring.push(name); }
+      void this.drain();
+    });
+  }
+
+  snapshot(): QueueSnapshot {
+    const clients = [...this.lanes.entries()].map(([client, jobs]) => ({ client, waiting: jobs.length }));
+    const waiting = clients.reduce((sum, row) => sum + row.waiting, 0);
+    return {
+      running: this.running ? { client: this.running.client, label: this.running.label, since_ms: Date.now() - this.running.at } : null,
+      waiting,
+      clients,
+    };
+  }
+
+  private aheadOf(client: string): number {
+    let n = this.running && this.running.client !== client ? 1 : 0;
+    for (const name of this.ring) {
+      if (name === client) break;
+      n += 1;
+    }
+    return n;
+  }
+
+  private drop(job: Job): void {
+    const lane = this.lanes.get(job.client);
+    if (!lane) return;
+    const index = lane.indexOf(job);
+    if (index >= 0) lane.splice(index, 1);
+    if (lane.length === 0) {
+      this.lanes.delete(job.client);
+      this.ring = this.ring.filter((name) => name !== job.client);
+      if (this.cursor >= this.ring.length) this.cursor = 0;
+    }
+  }
+
+  private async drain(): Promise<void> {
+    if (this.draining) return;
+    this.draining = true;
+    try {
+      for (;;) {
+        if (this.ring.length === 0) return;
+        if (this.cursor >= this.ring.length) this.cursor = 0;
+        const client = this.ring[this.cursor];
+        const lane = this.lanes.get(client);
+        const job = lane?.shift();
+        if (!lane || !job) {
+          this.ring.splice(this.cursor, 1);
+          continue;
+        }
+        if (lane.length === 0) {
+          this.lanes.delete(client);
+          this.ring.splice(this.cursor, 1);
+        } else {
+          this.cursor += 1;
+        }
+        this.running = { client, label: job.label, at: Date.now() };
+        try { await job.run(); }
+        finally { this.running = null; }
+      }
+    } finally {
+      this.draining = false;
+      if (this.ring.length > 0) void this.drain();
+    }
+  }
+}
+
+const byPort = new Map<number, FairQueue>();
+
+export function queueFor(port: number): FairQueue {
+  let queue = byPort.get(port);
+  if (!queue) { queue = new FairQueue(); byPort.set(port, queue); }
+  return queue;
+}
+
+export function queueSnapshots(): Array<{ port: number } & QueueSnapshot> {
+  return [...byPort.entries()].map(([port, queue]) => ({ port, ...queue.snapshot() }));
+}
+
+/** Commands that describe the session, not one model. Every other call names its document when several are open. */
+const SESSION_COMMANDS = new Set(["fmc_selftest_facts", "fmc_document_info", "fmc_revit"]);
+
+export function documentRequired(command: string, openTitles: string[], named: string | undefined): string | undefined {
+  if (SESSION_COMMANDS.has(command) || openTitles.length <= 1) return undefined;
+  const key = (named ?? "").trim();
+  if (!key) {
+    return `${openTitles.length} documents are open (${openTitles.join("; ")}). Pass document with a title or a full path on every call. Refusing to use the active document.`;
+  }
+  const hits = openTitles.filter((title) => title.toLowerCase().includes(key.toLowerCase()));
+  if (hits.length > 1) return `"${key}" matches ${hits.length} documents (${hits.join("; ")}). Pass the full path.`;
+  return undefined;
+}

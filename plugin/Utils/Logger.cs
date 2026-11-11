@@ -31,6 +31,14 @@ namespace revit_mcp_plugin.Utils
             // Write to the logfile.
             try
             {
+                // One megabyte, then the file becomes mcp_YYYYMMDD.log.1 and a new file starts. The .1 is replaced, not stacked.
+                var info = new FileInfo(_logFilePath);
+                if (info.Exists && info.Length > 1024 * 1024)
+                {
+                    string bak = _logFilePath + ".1";
+                    if (File.Exists(bak)) File.Delete(bak);
+                    File.Move(_logFilePath, bak);
+                }
                 File.AppendAllText(_logFilePath, logEntry + Environment.NewLine);
             }
             catch
