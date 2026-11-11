@@ -189,7 +189,18 @@ export interface SyncStepContext {
   batchEnd?: boolean;
 }
 
-/** Batch-end sync. Skips a document the plan refuses. Never throws. */
+/** Excluded documents are saved locally and are not synced to central. */
+export async function saveLocalOnly(document: string, send: SyncSend, reason: string): Promise<SyncRun> {
+  try {
+    await send("fmc_revit_file", { action: "save", document, batch_sync: true });
+    return { ran: true, ok: true, synced: false, detail: `${reason} Saved the local file only. Not synced to central.` };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    return { ran: true, ok: true, synced: false, detail: `${reason} Local save did not finish. The batch is not failed. ${message}`, error: message };
+  }
+}
+
+/** Batch-end sync. An excluded document is saved locally and not synced. Never throws. */
 export async function productionSyncStep(ctx: SyncStepContext, now = Date.now()): Promise<SyncRun> {
   const { withRevitConnection } = await import("../utils/ConnectionManager.js");
   const cfg = loadConfig().config;
@@ -206,6 +217,9 @@ export async function productionSyncStep(ctx: SyncStepContext, now = Date.now())
   const plan = planSync(factsFor(active, cfg), {
     now, lastSyncAt: ctx.lastSyncAt, changedAt: ctx.changedAt ?? (batchEnd ? now : null), leaseHeld: false, batchEnd,
   }, settings, ctx.document, active?.path ?? "");
+  if (plan.excluded) {
+    return saveLocalOnly(ctx.document, (command, params) => withRevitConnection((client) => client.sendCommand(command, params)), plan.reason);
+  }
   if (!plan.run) return { ran: false, ok: true, synced: false, detail: plan.reason };
   try {
     return await runDocumentSync(ctx.document, (command, params) => withRevitConnection((client) => client.sendCommand(command, params)));

@@ -4,7 +4,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { aiGate } from "./aigate.js";
-import { centralBusy, planSync, runDocumentSync, syncDocumentKey, syncSettings, syncSkip, type SyncFacts, type SyncTiming } from "./batchsync.js";
+import { centralBusy, planSync, runDocumentSync, saveLocalOnly, syncDocumentKey, syncSettings, syncSkip, type SyncFacts, type SyncTiming } from "./batchsync.js";
 import { BatchBoard, documentKey } from "./batchline.js";
 import { DEFAULT_CONFIG, type GuardConfig } from "./policy.js";
 
@@ -19,7 +19,7 @@ test("sync settings default to 15 minutes and batch end, for every document", ()
   assert.deepEqual(syncSettings({ sync_minutes: 0, sync_on_batch_end: false }), { minutes: 0, onBatchEnd: false, exclude: [], documents: null });
 });
 
-test("sync_exclude skips a document, and sync_documents is a per-document allowlist", () => {
+test("sync_exclude skips a document, and sync_documents is a per-document allowlist", async () => {
   const path = "D:\\Projects\\HEBERT\\Structure.rvt";
   assert.equal(syncDocumentKey(path), documentKey(path));
   assert.equal(syncDocumentKey("Structure"), documentKey("D:/Projects/HEBERT/Structure.rvt"));
@@ -40,6 +40,15 @@ test("sync_exclude skips a document, and sync_documents is a per-document allowl
   assert.match(plumbing.reason, /sync_documents/);
   const both = syncSettings({ sync_exclude: ["Structure"], sync_documents: ["Structure"] });
   assert.match(planSync(open, base({ batchEnd: true }), both, "D:\\Models\\Structure.rvt").reason, /sync_exclude/);
+  assert.deepEqual(syncSettings(undefined).exclude, []);
+  const calls: string[] = [];
+  const saved = await saveLocalOnly("HEBERT HOSTELS PLUMBING & DRAINAGE", async (command, params) => {
+    calls.push(`${command}:${params.action}`);
+  }, "Excluded by sync_exclude.");
+  assert.deepEqual(calls, ["fmc_revit_file:save"]);
+  assert.equal(saved.synced, false);
+  assert.match(saved.detail, /local file only/);
+  assert.match(saved.detail, /Not synced/);
 });
 
 test("only a workshared model with AI on syncs, between batches or at batch end", () => {
