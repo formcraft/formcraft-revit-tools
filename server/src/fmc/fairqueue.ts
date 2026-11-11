@@ -147,12 +147,37 @@ export function queueSnapshots(): Array<{ port: number } & QueueSnapshot> {
 }
 
 /** Commands that describe the session, not one model. Every other call names its document when several are open. */
-const SESSION_COMMANDS = new Set(["fmc_selftest_facts", "fmc_document_info", "fmc_revit"]);
+const SESSION_COMMANDS = new Set(["fmc_selftest_facts", "fmc_document_info", "fmc_revit", "fmc_doc_background"]);
 
-export function documentRequired(command: string, openTitles: string[], named: string | undefined): string | undefined {
+/** Optional hints for family-creation exemptions (kind for create_document; template/file for fmc_doc_open). A string is treated as kind, so existing callers stay valid. */
+export type DocumentRequiredHints = { kind?: string; template?: string; file?: string };
+
+function hintsOf(hints?: string | DocumentRequiredHints): DocumentRequiredHints {
+  if (hints == null) return {};
+  if (typeof hints === "string") return { kind: hints };
+  return hints;
+}
+
+/** Family-document creation does not write an already-open project, so it may omit `document`. */
+function isFamilyCreate(command: string, hints: DocumentRequiredHints): boolean {
+  if (command === "fmc_family_new") return true;
+  if (command === "fmc_create_document" && (hints.kind ?? "").trim().toLowerCase() === "family") return true;
+  // A new family from a .rft template, or reopening an existing family file (.rfa). Opening a project (.rvt) still needs a name.
+  if (command === "fmc_doc_open") {
+    const template = (hints.template ?? "").trim();
+    const file = (hints.file ?? "").trim();
+    if (template.length > 0 && file.length === 0) return true;
+    if (file.length > 0 && template.length === 0 && /\.rfa$/i.test(file)) return true;
+    return false;
+  }
+  return false;
+}
+
+export function documentRequired(command: string, openTitles: string[], named: string | undefined, hints?: string | DocumentRequiredHints): string | undefined {
   if (SESSION_COMMANDS.has(command) || openTitles.length <= 1) return undefined;
   const key = (named ?? "").trim();
   if (!key) {
+    if (isFamilyCreate(command, hintsOf(hints))) return undefined;
     return `${openTitles.length} documents are open (${openTitles.join("; ")}). Pass document with a title or a full path on every call. Refusing to use the active document.`;
   }
   const hits = openTitles.filter((title) => title.toLowerCase().includes(key.toLowerCase()));

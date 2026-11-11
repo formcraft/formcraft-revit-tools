@@ -33,7 +33,15 @@ export function saveProblems(target: string, cfg: GuardConfig): string[] {
 }
 
 /** A session in the server's ledger; used is the last call that worked on it (older entries have only opened). */
-export interface SessionRecord { id: string; source: string; opened: string; used?: string; ops: Array<{ op: string; name: string; result: string }> }
+export interface SessionRecord { id: string; source: string; opened: string; used?: string; document?: string; ops: Array<{ op: string; name: string; result: string }> }
+
+/** Title or full path of a family just opened (path is empty until the family is saved). */
+export function familyDocumentOf(r: { path?: unknown; title?: unknown } | null | undefined, fallbackPath?: string): string {
+  const path = typeof r?.path === "string" ? r.path.trim() : "";
+  const title = typeof r?.title === "string" ? r.title.trim() : "";
+  const fallback = (fallbackPath ?? "").trim();
+  return path || fallback || title;
+}
 
 // ---------- F-046 (issue #147): sessions time out ----------
 

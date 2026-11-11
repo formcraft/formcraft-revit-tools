@@ -13,10 +13,12 @@ export function registerAnalyzeModelStatisticsTool(server: McpServer) {
         .optional()
         .default(true)
         .describe("Whether to include detailed breakdown by family and type within each category. Defaults to true."),
+      verbose: z.boolean().optional().describe("Return the full statistics. Omit it for counts and ids."),
     },
     async (args, extra) => {
       const params = {
         includeDetailedTypes: args.includeDetailedTypes ?? true,
+        ...(args.verbose ? { verbose: true } : {}),
       };
 
       try {

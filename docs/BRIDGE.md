@@ -117,16 +117,18 @@ An AI job is "executing" from the moment its handler starts work (`FmcAiJob.Ente
 Formcraft handler, send_code itself, and the upstream model-changing handlers) until Revit next goes idle. Only then:
 
 - **Failures.** Transactions send_code and `FmcScript.Run` open carry `FmcFailures`. For any other transaction without a
-  preprocessor that handled its failures, the add-in's `FailuresProcessing` handler does the same: **warnings are
-  deleted and listed** in the result (e.g. "Elements have duplicate 'Mark' values", "Highlighted walls overlap"), and
-  **errors roll the transaction back** with their text (e.g. "Can't keep elements joined") instead of opening Revit's
-  error dialog. An error is never resolved by Revit's default resolution behind the person's back.
-- **Dialogs** (`DialogBoxShowing`):
+  preprocessor that handled its failures, the add-in's `FailuresProcessing` handler does the same: a warning is
+  **deleted and listed** only when `dialogs.allow` names it (the default names duplicate Mark values). Every other
+  warning is left. **Errors and document corruption roll the transaction back** and are never resolved.
+- **Dialogs** (`DialogBoxShowing`), only while an AI job is executing. `dialogs.allow` and `dialogs.deny` in
+  `fmc_guard.json` are substrings of the dialog id or text. Delete, unjoin, overwrite, relinquish, save-as, upgrade,
+  license, sign-in, corrupt-model and sync prompts are never answered, even if allow lists them. They stay up for a person and are still written to `FMC_Jobs_Revit.jsonl`.
 
 | Dialog | Answer | Why |
 |---|---|---|
-| "Project Not Saved Recently" (the save reminder; matched by an id containing *save* with *remind*, *recent* or *periodic*, or by the English text "not saved recently") | Closed with **Cancel**: the model is **not saved** | Rule 6: a tool never saves. If Revit refuses Cancel, the reminder stays for a person and the job shows `waiting_for_dialog`. |
-| Every other dialog | **Not answered**: left for a person | Recorded with its id and text in the job's `dialogs` and in `FMC_Jobs_Revit.jsonl`, so `fmc_job status` says what Revit waits for. |
+| "Project Not Saved Recently" (on the allow list; the default includes "not saved recently") | Closed with **Cancel**: the model is **not saved** | A tool never saves. If Revit refuses Cancel, the reminder stays for a person. |
+| Duplicate types (paste of types that already exist; on the allow list) | **OK**: the destination's types are kept | Nothing is deleted. |
+| Anything denied, or not on the allow list | **Not answered**: left for a person | Recorded with its id, text and answer in `FMC_Jobs_Revit.jsonl`. |
 
 - **The command set's own notices.** The upstream tools used to open a modal TaskDialog when they failed. They now record
   the notice with the job (`FmcAiJob.Notice`) and never show it; the error is in the tool's result.

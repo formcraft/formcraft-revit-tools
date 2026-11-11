@@ -107,7 +107,9 @@ export const MODIFY_MODEL_DESCRIPTION =
   "load_case {name, nature?, category: dead|live} · analytical_member {start_mm, end_mm}. " +
   "MEP (points [x, y, z], z above the level): duct / pipe {level, points_mm, system?, type_name?, width_mm, height_mm | diameter_mm, placeholder?, elbows? (default true)} · " +
   "cable_tray / conduit {level, points_mm, type_name?, width_mm?, height_mm? | diameter_mm?} · flex_duct / flex_pipe {level, points_mm, system?} · " +
-  "connect {ids: two runs (elbow or transition) or three (tee)} · insulation / lining {ids, thickness_mm} · convert_placeholders {ids} · " +
+  "connect {ids: two runs (elbow or transition) or three (tee), or a pipe and a plumbing fixture. A fixture uses its nearest unconnected " +
+  "piping connector (MEPModel.ConnectorManager): sanitary for waste and soil, domestic hot or cold for supply. system?: sanitary|waste|soil|supply|domestic hot|domestic cold. " +
+  "Until this add-in is installed, use fmc_connect_fixture, which does the same join from the server.} · insulation / lining {ids, thickness_mm} · convert_placeholders {ids} · " +
   "wire {view, points_mm, style?: arc|chamfer} · space {level, points_mm, name?} · space_separation {level, lines_mm}. " +
   "Site and mass: toposolid {level, points_mm ([x, y, z] survey points) and/or outline_mm, type_name?} · toposolid_subdivision {host, outline_mm, material?} · " +
   "mass_floors {ids (masses), levels} · wall_by_face {host (mass), point_mm (on the face), type_name?}. " +
@@ -218,6 +220,7 @@ export function registerModifyModelTool(server: McpServer) {
         return reply({
           asked: r.undoing ?? r.redoing, done: s?.done, stopped: s?.stopped ?? (s?.undo_running ? "still running: check with action status" : undefined),
           now_on_top: top ? `${top.kind === "ai" ? "AI" : "a person"}: ${top.label}` : "nothing",
+          ...(r?.document ? { document: r.document } : {}),
         }, Boolean(s?.stopped));
       } catch (e) {
         return reply(`undo_ai_batch: ${e instanceof Error ? e.message : String(e)}`, true);
@@ -296,7 +299,8 @@ export function registerModifyModelTool(server: McpServer) {
 
   server.tool(
     "revit_file",
-    "Formcraft (owner 26 Oct): what Revit does with files, outside an edit batch. action: save, save_as {path, overwrite?, " +
+    "Formcraft (owner 26 Oct): what Revit does with files, outside an edit batch. To save a project, use fmc_save_project " +
+      "(it checks the title and the path and refuses a family). action save here does not. action: save, save_as {path, overwrite?, " +
       "as_central?}, open {path}, close {title, save?} (not the active model), export {format: dwg|dxf|dgn|sat|pdf|ifc|nwc|" +
       "fbx|dwf|gbxml|image|schedule, folder, name?, views? (names, sheet numbers or ids; default the active view), combine? " +
       "(pdf), pixels? (image)}, link_cad / import_cad {path, view?, this_view_only?}, link_image / import_image / link_pdf " +

@@ -22,6 +22,8 @@ import { HOST, ProbeVerdict, probePort, readInstances } from "./connect.js";
 import { lastRegistration } from "../tools/register.js";
 import { queueClient, queueSnapshots } from "./fairqueue.js";
 import { addGrantListener, batchBoard, logBatchRestart, notifyBatchGranted } from "./batchline.js";
+import { callerFor, clientNameFromInitialize, rememberCaller, runAsCaller } from "./caller.js";
+import { memoryGate } from "./memory.js";
 
 const win = path.win32;
 
@@ -130,6 +132,7 @@ export interface HealthReport {
   registration: { registered: number; skipped: number; failed: Array<{ file: string; error: string }> };
   queue: ReturnType<typeof queueSnapshots>;
   batches: ReturnType<ReturnType<typeof batchBoard>["snapshot"]>;
+  memory: ReturnType<typeof memoryGate.view>;
 }
 
 export async function healthReport(listen: string, startedAt: number, env: NodeJS.ProcessEnv = process.env): Promise<HealthReport> {
@@ -156,6 +159,7 @@ export async function healthReport(listen: string, startedAt: number, env: NodeJ
     registration: { registered: reg.registered.length, skipped: reg.skipped.length, failed: reg.failed },
     queue: queueSnapshots(),
     batches: batchBoard().snapshot(),
+    memory: memoryGate.view(),
   };
 }
 
@@ -301,16 +305,20 @@ async function handleMcp(req: http.IncomingMessage, res: http.ServerResponse, se
       res.end(JSON.stringify({ jsonrpc: "2.0", error: { code: -32001, message: "Unknown MCP session. Connect again." }, id: null }));
       return;
     }
-    await queueClient.run(sid, () => existing.transport.handleRequest(req, res, body));
+    await runAsCaller(callerFor(sid), () => queueClient.run(sid, () => existing.transport.handleRequest(req, res, body)));
     return;
   }
   if (req.method === "POST" && isInitializeRequest(body)) {
+    const initName = clientNameFromInitialize(body);
     const mcp = await createFormcraftServer();
     let transport!: StreamableHTTPServerTransport;
     transport = new StreamableHTTPServerTransport({
       sessionIdGenerator: () => randomUUID(),
       enableJsonResponse: true,
-      onsessioninitialized: (id) => { sessions.set(id, { transport, server: mcp }); },
+      onsessioninitialized: (id) => {
+        sessions.set(id, { transport, server: mcp });
+        if (initName) rememberCaller({ client: initName, session: id, transport: "http" });
+      },
       onsessionclosed: async (id) => {
         batchBoard().disconnect(id);
         const session = sessions.get(id);

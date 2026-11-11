@@ -35,7 +35,8 @@ export const SEND_CODE_DESCRIPTION =
     "errors carry a code (FMC-CODE-COMPILE with line and column, FMC-CODE-RUNTIME with the exception's type, message and " +
     "script line, FMC-CODE-ROLLED-BACK with Revit's errors). A script still running after about 50 s answers " +
     "[FMC-JOB-RUNNING] with a job id: it has not failed; follow it with fmc_job, never send it again. Give a short `purpose`: " +
-    "repeated scripts are what Formcraft turns into tools next.";
+    "repeated scripts are what Formcraft turns into tools next. A script that calls itself, or a while(true) or for(;;) with no " +
+    "break, return or throw, is refused before it runs: a stack overflow cannot be caught and crashes Revit.";
 
 export const SEND_CODE_SHAPE = {
   code: z
@@ -77,7 +78,7 @@ export function formatCodeResult(response: any): { text: string; isError: boolea
     // Ogala night report: compile times grew to 74-133 s before an OutOfMemoryException; and a script that touched far
     // more than it named
     advice: [
-      (response.compileMs ?? 0) > 30000 ? "Compiling took over 30 s: Revit is short of memory. Save (revit_file save) and ask the person to restart Revit before more scripts." : "",
+      (response.compileMs ?? 0) > 30000 ? "Compiling took over 30 s: Revit is short of memory. Save with fmc_save_project and ask the person to restart Revit before more scripts." : "",
       (response.modifiedCount ?? 0) > 300 || (response.deletedIds?.length ?? 0) > 50 ? `This script changed ${response.modifiedCount ?? 0} and deleted ${response.deletedIds?.length ?? 0} elements: check that was meant (see_view, model_check).` : "",
       /open transaction/i.test(String(response.errorMessage ?? "")) && /save/i.test(String(response.errorMessage ?? "") + String(response.error ?? "")) ? "Scripts can't save the model: use revit_file save." : "",
     ].filter(Boolean),

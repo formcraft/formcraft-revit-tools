@@ -4,6 +4,12 @@ import { underAny, protectedRoots } from "./opencopy.js";
 import { NEVER, PLACEABLE, USER_LINE, aiVerdict, batchSize, generalState, recordBatch } from "./aiuse.js";
 import { Names, elementNames, explain, namesWanted } from "./explain.js";
 import { approvalFor, claimApproval, enqueue, loadAiConfig, loadRulebook, loadState, logBatch, saveState, setResult, setStatus } from "./aiuse_io.js";
+import { batchBoard } from "./batchline.js";
+import { syncSettings } from "./batchsync.js";
+import { currentClient } from "./fairqueue.js";
+import { memoryGate } from "./memory.js";
+import { batchLease } from "./target.js";
+import { appendSyncAutoLog, damagedNames, judgeDirectSync, readDamageDialogs } from "./syncauto.js";
 
 /**
  * The live-model lock's one new case (AI-assisted modeller, Phase A). Called only after the lock has refused a
@@ -14,7 +20,7 @@ import { approvalFor, claimApproval, enqueue, loadAiConfig, loadRulebook, loadSt
 /** `user` is the plain line a person sees instead of the lock's wording (owner 26 Oct); `reason` is the detail. */
 export interface Gate { ok: boolean; reason: string; user?: string; run?: <T>(exec: () => Promise<T>) => Promise<T> }
 
-export async function aiGate(command: string, params: any, active: (DocInfo & { isLocal?: boolean }) | null | undefined, cfg: GuardConfig,
+export async function aiGate(command: string, params: any, active: DocInfo | null | undefined, cfg: GuardConfig,
   send: (command: string, params: object) => Promise<any>, env: NodeJS.ProcessEnv = process.env): Promise<Gate> {
   if (!active) return { ok: false, reason: "" };
   const { book } = loadRulebook(cfg);
@@ -31,10 +37,47 @@ export async function aiGate(command: string, params: any, active: (DocInfo & { 
     if (generalState(ai, active.title, active.path) !== "On") return { ok: false, reason: "", user: USER_LINE.off };
     return { ok: true, reason: "", run: <T>(exec: () => Promise<T>) => exec() };
   }
+  // The batch line's own sync (fmc_guard.json sync_minutes / sync_on_batch_end). Stop AI and the AI switch still apply.
+  // A person's direct sync, without batch_sync, is auto-approved only by auto_approve_sync (below). Relinquish stays manual.
+  if (params?.batch_sync === true && command === "fmc_revit_file" && ["save", "sync", "relinquish"].includes(String(params?.action))) {
+    if (ai.stop) return { ok: false, reason: "Stop AI is on", user: USER_LINE.stopped };
+    if (generalState(ai, active.title, active.path) !== "On") return { ok: false, reason: "AI is off for this model", user: USER_LINE.off };
+    return { ok: true, reason: "", run: <T>(exec: () => Promise<T>) => exec() };
+  }
   const elements = batchSize(params);
   const approval = approvalFor(command, params, active.path, env);
+  // A direct sync (not the batch line's batch_sync, and not relinquish on its own) may run now when
+  // auto_approve_sync is on. Every approval and every refusal of that path is logged. Otherwise a person still approves.
+  const directSync = command === "fmc_revit_file" && String(params?.action) === "sync" && params?.batch_sync !== true;
+  if (directSync) {
+    const settings = syncSettings(cfg);
+    const holder = batchBoard().activeHolder(active.path || active.title);
+    const decision = judgeDirectSync(String(params?.action), false, active, ai, {
+      now: Date.now(),
+      holder,
+      caller: { lease: batchLease.getStore(), client: currentClient() },
+      ramPaused: memoryGate.leasesPaused(),
+      dialogs: readDamageDialogs(env),
+      damaged: damagedNames(cfg, ai),
+      exclude: settings.exclude,
+      protectedRoots: protectedRoots(cfg),
+    });
+    if (decision.judged) {
+      appendSyncAutoLog(env, {
+        at: new Date().toISOString(), document: active.title, path: active.path, action: "sync",
+        decision: decision.approve ? "approved" : "refused", reason: decision.reason,
+        lease: batchLease.getStore() ?? "", client: currentClient(),
+      });
+    }
+    if (decision.approve) {
+      return {
+        ok: true, reason: decision.reason,
+        run: async <T>(exec: () => Promise<T>): Promise<T> => exec(),
+      };
+    }
+  }
   // Auto-approve (owner 26 Oct): testing mode only; the batch runs now and is still listed in Approvals.
-  // Sync and relinquish change the central model for everyone: a person approves those even with auto-approve.
+  // Relinquish, and a sync auto_approve_sync did not take, still wait for a person.
   const shared = command === "fmc_revit_file" && ["sync", "relinquish"].includes(String(params?.action));
   const auto = !approval && !shared && ai.mode === "testing" && ai.auto_approve === true;
   const v = aiVerdict({ command, doc: active, elements, approved: !!approval || auto }, cfg, book, ai, loadState(env));
@@ -53,7 +96,7 @@ export async function aiGate(command: string, params: any, active: (DocInfo & { 
   if (command === "create_point_based_element") {
     const ids = ((params?.data ?? []) as Array<{ typeId?: number }>).map((d) => d?.typeId);
     if (!ids.length || ids.some((x) => typeof x !== "number")) return { ok: false, reason: "AI-assisted modeller: every element to place needs its typeId, so its category can be checked." };
-    const facts = await send("fmc_type_facts", { ids });
+    const facts = await send("fmc_type_facts", { ids, _full: true });
     const types = (facts?.types ?? []) as Array<{ id: number; category: string; found: boolean }>;
     const bad = ids.filter((id) => { const t = types.find((x) => x.id === id); return !t?.found || !PLACEABLE.includes(t.category); });
     if (bad.length) return { ok: false, reason: `AI-assisted modeller: type ${bad.join(", ")} isn't a door, window, fixture, furniture, casework, equipment or generic model: AI may only place those.` };
@@ -97,7 +140,7 @@ async function describe(command: string, params: object, send: (command: string,
   const want = namesWanted(params);
   const names: Names = { types: {}, elements: {} };
   try {
-    if (want.typeIds.length) for (const t of (await send("fmc_type_facts", { ids: want.typeIds }))?.types ?? []) if (t?.name) names.types[String(t.id)] = t.name;
+    if (want.typeIds.length) for (const t of (await send("fmc_type_facts", { ids: want.typeIds, _full: true }))?.types ?? []) if (t?.name) names.types[String(t.id)] = t.name;
   } catch { /* ids instead */ }
   try {
     if (want.elementIds.length) names.elements = elementNames((await send("fmc_element_geometry", { ids: want.elementIds }))?.elements ?? []);

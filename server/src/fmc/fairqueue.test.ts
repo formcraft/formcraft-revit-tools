@@ -13,6 +13,42 @@ test("five documents and no name is refused; one document is not", () => {
   assert.equal(documentRequired("fmc_document_info", docs, undefined), undefined);
 });
 
+test("unnamed family creation is allowed when several documents are open; other writes are not", () => {
+  const docs = ["Architecture", "Structure", "Electrical"];
+  assert.equal(documentRequired("fmc_family_new", docs, undefined), undefined);
+  assert.match(documentRequired("fmc_model_edit", docs, undefined) ?? "", /3 documents are open.*Refusing to use the active document/);
+  assert.match(documentRequired("fmc_create_document", docs, undefined, "project") ?? "", /3 documents are open.*Refusing to use the active document/);
+  assert.equal(documentRequired("fmc_create_document", docs, undefined, "family"), undefined);
+});
+
+test("recipe new-family open and reopening an .rfa are allowed with several documents open; a project file and edits still need a name", () => {
+  const docs = ["Architecture", "Structure", "Electrical"];
+  const template = { template: "C:\\Templates\\Metric Generic Model.rft" };
+  const file = { file: "C:\\Staging\\P\\Existing.rfa" };
+  const rvt = { file: "C:\\Projects\\ExistingProject.rvt" };
+  assert.equal(documentRequired("fmc_doc_open", docs, undefined, template), undefined);
+  assert.equal(documentRequired("fmc_doc_open", docs, undefined, file), undefined);
+  assert.equal(documentRequired("fmc_doc_open", docs, undefined, { file: "C:\\Staging\\P\\Existing.RFA" }), undefined);
+  assert.match(documentRequired("fmc_doc_open", docs, undefined, rvt) ?? "", /3 documents are open.*Refusing to use the active document/);
+  assert.match(documentRequired("fmc_doc_open", docs, undefined) ?? "", /3 documents are open.*Refusing to use the active document/);
+  assert.match(documentRequired("fmc_doc_apply", docs, undefined) ?? "", /3 documents are open.*Refusing to use the active document/);
+  assert.match(documentRequired("fmc_model_edit", docs, undefined) ?? "", /3 documents are open.*Refusing to use the active document/);
+  assert.match(documentRequired("fmc_create_document", docs, undefined, "project") ?? "", /3 documents are open.*Refusing to use the active document/);
+  const family = "FMC_P_PlumbingEq_Tank_Poly_Elevated";
+  for (const command of ["fmc_doc_apply", "fmc_doc_flex", "fmc_doc_save", "fmc_doc_close", "fmc_doc_report", "fmc_doc_screenshot", "fmc_family_inspect", "fmc_family_host_test"]) {
+    assert.equal(documentRequired(command, docs, family), undefined, command);
+    assert.match(documentRequired(command, docs, undefined) ?? "", /3 documents are open/, command);
+  }
+  // background is a session inventory, like document_info
+  assert.equal(documentRequired("fmc_doc_background", docs, undefined), undefined);
+  // The opened family path is the named target for later fmc_doc calls in that session.
+  assert.equal(documentRequired("fmc_doc_report", docs, file.file), undefined);
+  assert.equal(documentRequired("fmc_doc_screenshot", docs, file.file), undefined);
+  assert.equal(documentRequired("fmc_doc_apply", docs, file.file), undefined);
+  assert.equal(documentRequired("fmc_doc_flex", docs, file.file), undefined);
+  assert.match(documentRequired("fmc_doc_open", docs, undefined, { file: file.file, template: "C:\\Templates\\Metric Generic Model.rft" }) ?? "", /3 documents are open/);
+});
+
 test("round robin: one client's batch does not finish before the others start", async () => {
   const queue = new FairQueue();
   const started: string[] = [];

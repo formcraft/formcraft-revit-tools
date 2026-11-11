@@ -41,6 +41,21 @@ The server swaps in without closing Revit. The script prints `SERVER pass` or `S
 
 A logon task named **Formcraft MCP** (no admin) starts the service, restarts it if it exits, and reloads it when the updater changes the build.
 
+## Crash recovery
+
+`fmc_recover_revit` action `plan` (the default) reports crashed or hung Revit and each document's title, path, workshared state, last sync, last save, and the risk that unsaved work may be lost. It does not close a responsive instance. `apply` needs the `confirm` token from plan, and `force_unsaved=true` when unsaved or unsynced changes were found. The plugin heartbeat, the leased port, `fmc_document_info`, and re-registering the instance need the add-in. `scripts/fmc-recover-revit.ps1` runs the same plan when this server is down. `recovery.documents` in `fmc_guard.json` is the reopen list (architecture, structural, electrical, plumbing, site for the HEBERT HOSTELS models). Empty means reopen what was open. Workshared files are opened as a new local by Revit. Originals are not written.
+
+## The safe project save
+
+`fmc_save_project` saves a project. Pass `title` and `path`. Both must match the open document. A family (`.rfa`, or a document open in the Family Editor) is refused. The live-model lock and the batch lease apply, because the save is `fmc_revit_file` action `save` after those checks. `revit_file` action `save` by itself does not check the title and the path and does not refuse a family.
+
+## Sync auto-approve
+
+`ai_modeller.auto_approve_sync` defaults to false. It does nothing unless `mode` is `testing` and `auto_approve` is true. When it is on, a bot's direct `fmc_revit_file` sync runs without waiting in the pane only if the target is a workshared local (not a central, a detached copy, a family or a protected original, and not on `sync_exclude`), the caller holds the active batch lease on that document or no other lease is active, the document is not listed in `damaged_documents` and has no recent corrupt-on-sync dialog in `FMC_Jobs_Revit.jsonl`, the RAM gate is not paused, Stop AI is off, and AI is on for the model. Relinquish on its own stays manual. Each auto-approval and each refusal is a line in `%APPDATA%\Formcraft\FMC_SyncAutoApprove.jsonl`. `fmc_ai` status shows `sync_auto_approve` and the recent lines. This is server-only.
+## Reload a link
+
+`fmc_reload_link` reloads one Revit link type. Pass `document` (a title or a full path) and `link_type_id`. Pass `path` to load that file; omit `path` to reload the link from its current location. Link instances stay where they are. It is a write: the batch lease and the live-model lock apply, and a family, a verification copy, a linked document and a protected original are refused. The reload itself is in the add-in, in a handler that opens no transaction. `send_code_to_revit` cannot do it: `transactionMode` none still opens a transaction group, and Revit 2025 refuses `LoadFrom` and `Reload` while that phase is open. The add-in installs when Revit is closed. The server tool is the check and the call.
+
 ## Several agents, one Revit
 
 Revit runs one API call at a time. The service accepts many clients and takes turns: one call from each waiting client, then the next, so one bot's batch does not sit in front of the others.
@@ -77,7 +92,9 @@ On a restart every lease is cleared and a line is written to the log. The token 
 The batch line does not add its own switches. It reads `fmc_guard.json` → `ai_modeller`, the same section `fmc_ai` writes.
 
 - **Auto-save.** `auto_save_minutes` (testing default 10, 0 off), applied by the same `autoSave` used after an AI change. After a successful `release`, and before the next bot is granted, the service saves if that rule says the file is due. It does not save a workshared model, a background document, a detached or read-only verification copy, a link, or a protected original. A save that was attempted and failed marks the batch failed, so the next request for that label joins the tail. A skip is not a failure.
-- **Sync.** Not run. Admin › Automation › Scheduled sync is locked off (rule 6). The sync interval is a reminder a person pastes into Synchronize with Central. `fmc_revit_file` sync still waits for a person's approval. The pane toggles `admin.autosave` and `admin.scheduledsync` are held in memory in the shell (`AdminService.TeamValues`) and `FMC_Team.json` is not written yet, so the server cannot read them.
+- **Sync.** Workshared models sync from `fmc_guard.json` `sync_minutes` (default 15) and `sync_on_batch_end` (default true). The same values apply to every open workshared document. There is no per-file switch. Between batches, after that many minutes of changes, the service saves the local file and calls the existing `fmc_revit_file` sync, which relinquishes elements this user has borrowed. A successful batch does the same before the next bot is granted, while the lease is still held, so other writes queue and reads keep working. A busy central is retried and does not fail the batch. Non-workshared models are autosave only. Stop AI and the live-model lock still refuse the sync. A person's own `fmc_revit_file` sync, without the batch, still waits for approval. `fmc_batch` status, `fmc_queue` and `/health` show `last_sync`, `next_sync` and `last_error` per document.
+
+- **Memory.** `ram_pause_free_mb` in `fmc_guard.json` (default 1024) pauses new leases and model-changing calls when free physical memory is below that. They resume above 1.5× it (1536). `fmc_batch` request stays queued and wait holds: paused for memory, not failed. Reads keep working. `/health` shows `memory`.
 - **Auto-approve.** On only when `mode` is `testing` and `auto_approve` is true, the same test as the approval queue. It skips that queue for an ordinary model change. It does not skip references, keynotes (`fmc_replace`, Gate A), sync and relinquish, Stop AI, or the live-model lock. `fmc_queue` and `/health` show `approval` as `auto` or `manual`.
 
 `FMC_BATCH_IDLE_S`, `FMC_BATCH_MAX_S` and `FMC_BATCH_REQUIRED_REFS` override the lease timing and the reference categories. They are not the save or approval settings.

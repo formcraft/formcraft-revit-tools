@@ -1,5 +1,6 @@
 import { RUNNING_BUILD } from "../fmc/buildinfo.js";
 import { recordUsage } from "../fmc/usage.js";
+import { usageCallerFields } from "../fmc/caller.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import fs from "fs";
 import path from "path";
@@ -16,7 +17,8 @@ export const REVIT_ARG = z.string().optional()
 
 export const DOCUMENT_ARG = z.string().optional()
   .describe("Which document: a title or a full path of a document that is already open (including a verification copy from " +
-    "fmc_file open_copy). If that document is not open, the call fails and does not use the active document. Leave out for the active document.");
+    "fmc_file open_copy). If that document is not open, the call fails and does not use the active document. " +
+    "Name the document (title or full path) on every call when more than one document is open. new_family, a new-family recipe opened from a template, and opening an existing family file (.rfa), do not need it.");
 
 export const BATCH_LEASE_ARG = z.string().optional()
   .describe("Lease id from fmc_batch request. Required on a model-changing call while that document is held. " +
@@ -43,7 +45,8 @@ export function withRevitTarget(server: McpServer) {
           // Owner 26 Oct: every call is timed by the server (fmc/usage.ts), so an AI's own report can compare builds.
           const started = Date.now();
           const done = (ok: boolean, r?: unknown) => recordUsage({ at: new Date(started).toISOString(), tool: String(a[0]), action: typeof rest.action === "string" ? rest.action : "",
-            ms: Date.now() - started, ok, build: RUNNING_BUILD.commit, ...(!ok && queuedReply(r) ? { queued: true } : {}),
+            ms: Date.now() - started, ok, build: RUNNING_BUILD.commit, ...usageCallerFields(String(a[0]), args as { code?: unknown }),
+            ...(!ok && queuedReply(r) ? { queued: true } : {}),
             ...(!ok ? { error: errorText(r) } : {}) });
           return Promise.resolve(revitTarget.run(typeof revit === "string" ? revit : undefined,
             () => documentTarget.run(document, () => batchLease.run(lease, () => handler(argsForTool, extra)))))
