@@ -101,7 +101,7 @@ export interface GuardConfig {
   /**
    * Dialogs and failure warnings an AI job may answer. allow is substrings of the dialog id or text.
    * deny is extra text that must stay for a person. Delete, unjoin, overwrite, relinquish, save-as, upgrade,
-   * license, sign-in and corrupt-model are never answered, even if they are in allow. Omit allow for the
+   * license, sign-in, corrupt-model and sync are never answered, even if they are in allow. Omit allow for the
    * built-in short list (save reminder, duplicate types, duplicate mark).
    */
   dialogs?: { allow?: string[]; deny?: string[] };
