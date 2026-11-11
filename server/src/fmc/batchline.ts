@@ -20,6 +20,7 @@ import { SYNC_NOT_RUN, batchCareReport, correctionHelp, type CorrectionHelp } fr
 import { planSync, syncDocumentKey, syncSettings, syncSkip, type SyncRun } from "./batchsync.js";
 import { memoryGate, onMemoryResume } from "./memory.js";
 import { loadBatchLine, MAINTENANCE_REASON, readMaintenance, saveBatchLine, writeMaintenance, type StoredTicket } from "./batchstore.js";
+import { invalidateReads } from "./readcache.js";
 import { batchLease, documentTarget } from "./target.js";
 import { queueClient } from "./fairqueue.js";
 
@@ -893,6 +894,7 @@ export class BatchBoard {
     this.rememberDone(ticket, done);
     this.holders.delete(ticket.key);
     this.tickets.delete(ticket.id);
+    invalidateReads(ticket.document);
     this.wake(ticket.id);
     this.promote(ticket.key);
     this.persist();

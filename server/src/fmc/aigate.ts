@@ -60,7 +60,7 @@ export async function aiGate(command: string, params: any, active: (DocInfo & { 
   if (command === "create_point_based_element") {
     const ids = ((params?.data ?? []) as Array<{ typeId?: number }>).map((d) => d?.typeId);
     if (!ids.length || ids.some((x) => typeof x !== "number")) return { ok: false, reason: "AI-assisted modeller: every element to place needs its typeId, so its category can be checked." };
-    const facts = await send("fmc_type_facts", { ids });
+    const facts = await send("fmc_type_facts", { ids, _full: true });
     const types = (facts?.types ?? []) as Array<{ id: number; category: string; found: boolean }>;
     const bad = ids.filter((id) => { const t = types.find((x) => x.id === id); return !t?.found || !PLACEABLE.includes(t.category); });
     if (bad.length) return { ok: false, reason: `AI-assisted modeller: type ${bad.join(", ")} isn't a door, window, fixture, furniture, casework, equipment or generic model: AI may only place those.` };
@@ -104,7 +104,7 @@ async function describe(command: string, params: object, send: (command: string,
   const want = namesWanted(params);
   const names: Names = { types: {}, elements: {} };
   try {
-    if (want.typeIds.length) for (const t of (await send("fmc_type_facts", { ids: want.typeIds }))?.types ?? []) if (t?.name) names.types[String(t.id)] = t.name;
+    if (want.typeIds.length) for (const t of (await send("fmc_type_facts", { ids: want.typeIds, _full: true }))?.types ?? []) if (t?.name) names.types[String(t.id)] = t.name;
   } catch { /* ids instead */ }
   try {
     if (want.elementIds.length) names.elements = elementNames((await send("fmc_element_geometry", { ids: want.elementIds }))?.elements ?? []);

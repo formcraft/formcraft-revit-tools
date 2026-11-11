@@ -22,12 +22,14 @@ export function registerGetAvailableFamilyTypesTool(server: McpServer) {
         .number()
         .optional()
         .describe("Maximum number of family types to return"),
+      verbose: z.boolean().optional().describe("Return every type. Omit it for counts and ids."),
     },
     async (args, extra) => {
       const params = {
         categoryList: args.categoryList || [],
         familyNameFilter: args.familyNameFilter || "",
         limit: args.limit || 100,
+        ...(args.verbose ? { verbose: true } : {}),
       };
 
       try {

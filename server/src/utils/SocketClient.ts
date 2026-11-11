@@ -13,6 +13,7 @@ import { aiGate } from "../fmc/aigate.js";
 import { retryWhileBusy } from "../fmc/busy.js";
 import { memoryGate } from "../fmc/memory.js";
 import { screenScript, scriptLimit } from "../fmc/scriptguard.js";
+import { CACHED_READS, compactReply, invalidateIfWrite, putCachedRead, takeCachedRead, wantsFull } from "../fmc/readcache.js";
 import { stampAppliedDocument } from "../fmc/applieddoc.js";
 
 export class RevitClientConnection {
@@ -233,16 +234,26 @@ export class RevitClientConnection {
     // ([FMC-BRIDGE-BUSY]): wait and send again while that job's heartbeats are fresh, up to this call's own limit (the
     // answer limit, when the MCP server's is on), instead of failing
     const soft = softTimeoutMs();
+    const doc = named || "active";
+    if (CACHED_READS[command]) {
+      const hit = takeCachedRead(command, params, doc);
+      if (hit !== undefined) return wantsFull(params) ? hit : compactReply(hit);
+    }
     const run = () => retryWhileBusy(() => this.sendOnce(command, params, timeoutMs, long),
       { command, ceilingMs: soft > 0 ? Math.min(soft, timeoutMs) : timeoutMs, heartbeatMs: (job) => lastHeartbeatMs(job) });
+    const finish = (value: unknown) => {
+      if (CACHED_READS[command]) putCachedRead(command, params, doc, value);
+      invalidateIfWrite(command, named);
+      return CACHED_READS[command] && !wantsFull(params) ? compactReply(value) : value;
+    };
     try {
-      return await run();
+      return finish(await run());
     } catch (error) {
       // One more try for a read. A write is not repeated: it may already have changed the model.
       if (!shouldRetryReset(command, error, 0)) throw error;
       await new Promise((resolve) => setTimeout(resolve, backoffMs(0)));
       await this.reopen();
-      return await run();
+      return finish(await run());
     }
   }
 
