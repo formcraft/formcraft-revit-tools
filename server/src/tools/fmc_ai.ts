@@ -320,7 +320,12 @@ export async function paneAi(command: string, input: Record<string, unknown>, by
       if (input.access === "full" || input.access === "general") cur.access = input.access;
       if (typeof input.allow_code === "boolean") cur.allow_code = input.allow_code;
       if (typeof input.auto_approve === "boolean") cur.auto_approve = input.auto_approve;
-      cur.changed = { by, at: new Date().toISOString() };
+      // Testing mode (owner 11 Nov 2026): the pane's Testing mode button. It switches auto-approve, auto-save and the
+      // batch line's sync on together; strict turns all three off. Only a person in the pane reaches this command.
+      if (input.mode !== undefined && input.mode !== "testing" && input.mode !== "strict") return { error: "mode is testing or strict" };
+      const modeChanged = (input.mode === "testing" || input.mode === "strict") && cur.mode !== input.mode;
+      if (input.mode === "testing" || input.mode === "strict") cur.mode = input.mode;
+      cur.changed = { by, at: new Date().toISOString(), ...(modeChanged ? { what: `Testing mode ${cur.mode === "testing" ? "On" : "Off"}` } : {}) };
       raw.ai_modeller = cur;
       fs.writeFileSync(file, JSON.stringify(raw, null, 2));
       return { saved: true, ai_modeller: cur };

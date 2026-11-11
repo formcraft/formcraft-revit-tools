@@ -293,6 +293,18 @@ namespace Formcraft.Shell.ViewModels
             groups.Add(new SettingsGroup("General AI switch",
                 new NoteSetting(p.GeneralLine + (p.Project.Length > 0 ? " Project " + p.Project + "." : ""), p.General == "On" ? ChipKind.Good : p.General == "Stopped" ? ChipKind.Bad : ChipKind.Info),
                 new NoteSetting("The one switch users see (top of the pane, and AI switch on the ribbon). On: AI may model in the open WIP model, every batch waits for one-click approval, the limits apply. Deleting, purging, running code, links and worksets stay with admins. The settings below are Advanced.", ChipKind.Grey)));
+
+            // Owner 11 Nov 2026: one button turns testing mode on and off (ai_modeller.mode testing or strict).
+            groups.Add(new SettingsGroup("Testing mode",
+                new NoteSetting(p.Testing
+                    ? "Testing mode is on." + (p.AutoApprove ? " AI changes run without waiting for approval." : " Changes still wait for approval (auto-approve is off).") + " Models save every 10 minutes, and workshared models sync with central every 15 minutes and after each batch."
+                    : "Testing mode is off. Every AI change waits for approval, and a person saves and syncs.",
+                    p.Testing ? ChipKind.Warn : ChipKind.Good),
+                new NoteSetting("For trying the AI on test models. Stop AI, the live-model lock and the AI switch still apply in testing mode.", ChipKind.Grey),
+                new ButtonsSetting("", new[] { p.Testing
+                    ? new SettingButton("Turn testing mode off", new RelayCommand(() => AskTesting(false)), primary: true)
+                    : new SettingButton("Turn testing mode on", new RelayCommand(() => AskTesting(true))) })));
+
             if (!p.GuardSection) head.Add(new NoteSetting("Not set up: fmc_guard.json has no ai_modeller section yet. The AI switch creates it the first time anyone uses it.", ChipKind.Info));
             if (p.Rulebook.Length == 0)
                 head.Add(new NoteSetting("The kit has no FMC_Rulebook_AIUse yet. AI modelling stays Off until the BIM Manager adds it through a kit change request (a proposal is in docs/kit-proposals).", ChipKind.Warn));
@@ -373,6 +385,20 @@ namespace Formcraft.Shell.ViewModels
             _aiMessages.Show(r.Messages);
             _status(r.Messages.FirstOrDefault()?.Text ?? "");
             await LoadAi();
+        }
+
+        private void AskTesting(bool on)
+        {
+            string what = on
+                ? "AI changes run without waiting for approval (when auto-approve is set), models save every 10 minutes, and workshared models sync with central every 15 minutes and after each batch. It applies to every open model at once."
+                : "Every AI change waits for approval again, and a person saves and syncs. It applies to every open model at once.";
+            _ask(new DialogViewModel(on ? "Turn testing mode on?" : "Turn testing mode off?", what, on ? "Turn on" : "Turn off", async () =>
+            {
+                var r = await _ai.SetTestingAsync(on);
+                _aiMessages.Show(r.Messages);
+                _status(r.Messages.FirstOrDefault()?.Text ?? "");
+                await LoadAi();
+            }));
         }
 
         private async Task StopAi(bool stop)

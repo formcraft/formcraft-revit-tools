@@ -8,29 +8,47 @@ import { centralBusy, planSync, runDocumentSync, saveLocalOnly, syncDocumentKey,
 import { BatchBoard, documentKey } from "./batchline.js";
 import { DEFAULT_CONFIG, type GuardConfig } from "./policy.js";
 
-const settings = syncSettings({ sync_minutes: 15, sync_on_batch_end: true });
+// The batch line syncs only in testing mode (owner 11 Nov 2026).
+const testing = { ai_modeller: { mode: "testing" } };
+const settings = syncSettings({ ...testing, sync_minutes: 15, sync_on_batch_end: true });
 const open: SyncFacts = { workshared: true, stopAi: false, aiOn: true };
 const base = (over: Partial<SyncTiming> = {}): SyncTiming => ({
   now: 1_000_000, lastSyncAt: null, changedAt: 900_000, leaseHeld: false, batchEnd: false, ...over,
 });
 
-test("sync settings default to 15 minutes and batch end, for every document", () => {
-  assert.deepEqual(syncSettings(undefined), { minutes: 15, onBatchEnd: true, exclude: [], documents: null });
-  assert.deepEqual(syncSettings({ sync_minutes: 0, sync_on_batch_end: false }), { minutes: 0, onBatchEnd: false, exclude: [], documents: null });
+test("in testing mode sync defaults to 15 minutes and batch end, for every document", () => {
+  assert.deepEqual(syncSettings(testing), { minutes: 15, onBatchEnd: true, testing: true, exclude: [], documents: null });
+  assert.deepEqual(syncSettings({ ...testing, sync_minutes: 0, sync_on_batch_end: false }), { minutes: 0, onBatchEnd: false, testing: true, exclude: [], documents: null });
+});
+
+test("outside testing mode the batch line never syncs, whatever sync_minutes and sync_on_batch_end say", () => {
+  const off = { minutes: 0, onBatchEnd: false, testing: false, exclude: [], documents: null };
+  assert.deepEqual(syncSettings(undefined), off);
+  assert.deepEqual(syncSettings({ sync_minutes: 15, sync_on_batch_end: true }), off);
+  assert.deepEqual(syncSettings({ ai_modeller: { mode: "strict" }, sync_minutes: 5, sync_on_batch_end: true }), off);
+  assert.deepEqual(syncSettings({ ai_modeller: null }), off);
+  const strict = syncSettings({ ai_modeller: { mode: "strict" }, sync_minutes: 5, sync_on_batch_end: true });
+  // Due by batch end and by time, AI on, workshared: still no sync, and the reason says why.
+  const plan = planSync(open, base({ now: 900_000 + 60 * 60_000, batchEnd: true }), strict, "Structure");
+  assert.equal(plan.run, false);
+  assert.equal(plan.excluded, false);
+  assert.match(plan.reason, /Sync is off outside testing mode/);
+  // The same document in testing mode does sync.
+  assert.equal(planSync(open, base({ now: 900_000 + 60 * 60_000, batchEnd: true }), settings, "Structure").run, true);
 });
 
 test("sync_exclude skips a document, and sync_documents is a per-document allowlist", async () => {
   const path = "D:\\Projects\\HEBERT\\Structure.rvt";
   assert.equal(syncDocumentKey(path), documentKey(path));
   assert.equal(syncDocumentKey("Structure"), documentKey("D:/Projects/HEBERT/Structure.rvt"));
-  const excluded = syncSettings({ sync_exclude: ["Architecture", path] });
+  const excluded = syncSettings({ ...testing, sync_exclude: ["Architecture", path] });
   const arch = planSync(open, base({ now: 900_000 + 15 * 60_000 }), excluded, "Architecture");
   assert.equal(arch.run, false);
   assert.equal(arch.excluded, true);
   assert.match(arch.reason, /sync_exclude/);
   const byPath = syncSkip("Structure", excluded);
   assert.equal(byPath?.excluded, true);
-  const only = syncSettings({ sync_documents: ["Structure"] });
+  const only = syncSettings({ ...testing, sync_documents: ["Structure"] });
   const structure = planSync(open, base({ now: 900_000 + 15 * 60_000, batchEnd: true }), only, "Structure");
   assert.equal(structure.run, true);
   assert.equal(structure.excluded, false);
@@ -38,7 +56,7 @@ test("sync_exclude skips a document, and sync_documents is a per-document allowl
   assert.equal(plumbing.run, false);
   assert.equal(plumbing.excluded, true);
   assert.match(plumbing.reason, /sync_documents/);
-  const both = syncSettings({ sync_exclude: ["Structure"], sync_documents: ["Structure"] });
+  const both = syncSettings({ ...testing, sync_exclude: ["Structure"], sync_documents: ["Structure"] });
   assert.match(planSync(open, base({ batchEnd: true }), both, "D:\\Models\\Structure.rvt").reason, /sync_exclude/);
   assert.deepEqual(syncSettings(undefined).exclude, []);
   const calls: string[] = [];
@@ -132,4 +150,40 @@ test("batch sync is refused when Stop AI is on and does not ask for an approval"
   const allowed = await aiGate("fmc_revit_file", { action: "sync", batch_sync: true }, doc, on, async () => ({}), { APPDATA: dir } as NodeJS.ProcessEnv);
   assert.equal(allowed.ok, true);
   assert.equal(typeof allowed.run, "function");
+});
+
+test("the pane's Testing mode button sets ai_modeller.mode, keeps the rest of the guard file, and sync follows it", async () => {
+  const { paneAi } = await import("../tools/fmc_ai.js");
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-mode-"));
+  const guard = path.join(dir, "fmc_guard.json");
+  const before = process.env.FMC_GUARD_CONFIG;
+  process.env.FMC_GUARD_CONFIG = guard;
+  try {
+    fs.writeFileSync(guard, JSON.stringify({ write_roots: ["C:\\WIP"], sync_exclude: ["Plumbing"], ai_modeller: { on: true, auto_approve: true, projects: { F26001: { general: true } } } }));
+    assert.equal(syncSettings(JSON.parse(fs.readFileSync(guard, "utf8"))).testing, false);
+
+    const on = await paneAi("ai_config", { mode: "testing" }, "emlyn") as { saved?: boolean };
+    assert.equal(on.saved, true);
+    let raw = JSON.parse(fs.readFileSync(guard, "utf8"));
+    assert.equal(raw.ai_modeller.mode, "testing");
+    assert.equal(raw.ai_modeller.changed.what, "Testing mode On");
+    assert.equal(raw.ai_modeller.changed.by, "emlyn");
+    assert.deepEqual(raw.write_roots, ["C:\\WIP"]);
+    assert.equal(raw.ai_modeller.auto_approve, true);
+    assert.equal(raw.ai_modeller.projects.F26001.general, true);
+    assert.deepEqual(syncSettings(raw), { minutes: 15, onBatchEnd: true, testing: true, exclude: ["Plumbing"], documents: null });
+
+    await paneAi("ai_config", { mode: "strict" }, "emlyn");
+    raw = JSON.parse(fs.readFileSync(guard, "utf8"));
+    assert.equal(raw.ai_modeller.mode, "strict");
+    assert.equal(raw.ai_modeller.changed.what, "Testing mode Off");
+    assert.equal(syncSettings(raw).testing, false);
+    assert.equal(syncSettings(raw).minutes, 0);
+
+    const bad = await paneAi("ai_config", { mode: "full" }, "emlyn") as { error?: string };
+    assert.match(bad.error ?? "", /testing or strict/);
+    assert.equal(JSON.parse(fs.readFileSync(guard, "utf8")).ai_modeller.mode, "strict");
+  } finally {
+    if (before === undefined) delete process.env.FMC_GUARD_CONFIG; else process.env.FMC_GUARD_CONFIG = before;
+  }
 });

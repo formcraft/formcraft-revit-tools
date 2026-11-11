@@ -317,6 +317,10 @@ test("auto-save and auto-approve are the existing settings, and a failed save go
   const off = batchCareReport(env);
   assert.equal(off.approval, "manual");
   assert.equal(off.autosave_minutes, 0);
+  // Owner 11 Nov 2026: the batch line's sync is a testing-mode feature too.
+  assert.equal(off.sync, "off");
+  assert.equal(off.sync_minutes, 0);
+  assert.equal(off.sync_on_batch_end, false);
 
   const send = async () => { throw new Error("save must not run"); };
   const detached = { title: "copy", path: "D:\\Fomcraft\\Live\\A.rvt", isFamily: false, isWorkshared: false, isDetached: true, readOnly: true, isActive: true };
