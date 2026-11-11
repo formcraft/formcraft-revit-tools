@@ -114,7 +114,7 @@ export async function runFmcDoc(args: FmcDocArgs) {
       const r = await withRevitConnection((c) => c.sendRaw("fmc_doc_open", { template: args.template.trim(), file: args.file.trim() }, 120000));
       const id = String(r?.session ?? "");
       const at = new Date().toISOString();
-      const document = familyDocumentOf(r);
+      const document = familyDocumentOf(r, args.file.trim());
       ledger[id] = { id, source: args.template.trim() || args.file.trim(), opened: at, used: at, ops: [], ...(document ? { document } : {}) };
       writeLedger(config, ledger);
       log(config, "doc_open", ledger[id].source, "done", id);

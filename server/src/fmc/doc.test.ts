@@ -62,3 +62,11 @@ test("familyDocumentOf prefers the saved path and falls back to the title", () =
   assert.equal(familyDocumentOf({ title: "  ", path: "  " }), "");
   assert.equal(familyDocumentOf(undefined), "");
 });
+
+test("familyDocumentOf uses the opened .rfa path when the add-in has not yet returned a path", () => {
+  const file = "C:\\Staging\\P\\Existing.rfa";
+  assert.equal(familyDocumentOf({ title: "Existing", path: "" }, file), file);
+  assert.equal(familyDocumentOf({ title: "Existing", path: "C:\\Staging\\P\\Saved.rfa" }, file), "C:\\Staging\\P\\Saved.rfa");
+  assert.equal(familyDocumentOf(undefined, file), file);
+  assert.equal(familyDocumentOf({ title: "Existing" }, "  "), "Existing");
+});
