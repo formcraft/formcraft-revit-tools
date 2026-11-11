@@ -35,7 +35,8 @@ export const SEND_CODE_DESCRIPTION =
     "errors carry a code (FMC-CODE-COMPILE with line and column, FMC-CODE-RUNTIME with the exception's type, message and " +
     "script line, FMC-CODE-ROLLED-BACK with Revit's errors). A script still running after about 50 s answers " +
     "[FMC-JOB-RUNNING] with a job id: it has not failed; follow it with fmc_job, never send it again. Give a short `purpose`: " +
-    "repeated scripts are what Formcraft turns into tools next.";
+    "repeated scripts are what Formcraft turns into tools next. A script that calls itself, or a while(true) or for(;;) with no " +
+    "break, return or throw, is refused before it runs: a stack overflow cannot be caught and crashes Revit.";
 
 export const SEND_CODE_SHAPE = {
   code: z

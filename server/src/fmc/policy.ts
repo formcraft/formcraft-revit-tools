@@ -66,6 +66,17 @@ export interface GuardConfig {
    * gate folder. When set, open_copy's copy_to must be inside one of them.
    */
   copy_roots: string[];
+  /**
+   * Free physical memory, in MB, below which new batch leases and model-changing calls wait.
+   * They resume above 1.5× this value (1536 when this is 1024). 0 turns the pause off.
+   */
+  ram_pause_free_mb?: number;
+  /** Longest send_code_to_revit script, in characters. Default 1_000_000. */
+  script_max_chars?: number;
+  /** Minutes of changes between syncs of a workshared model. Default 15. 0 turns the timer off. */
+  sync_minutes?: number;
+  /** Sync a workshared model when a batch releases successfully. Default true. */
+  sync_on_batch_end?: boolean;
 }
 
 export const DEFAULT_CONFIG: GuardConfig = {
@@ -89,6 +100,10 @@ export const DEFAULT_CONFIG: GuardConfig = {
   family_max_mb: 2,
   protected_roots: [],
   copy_roots: [],
+  ram_pause_free_mb: 1024,
+  script_max_chars: 1_000_000,
+  sync_minutes: 15,
+  sync_on_batch_end: true,
 };
 
 /** Tools that change the model. They are refused on live project models. */

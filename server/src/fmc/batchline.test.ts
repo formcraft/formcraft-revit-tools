@@ -307,8 +307,10 @@ test("auto-save and auto-approve are the existing settings, and a failed save go
   const on = batchCareReport(env);
   assert.equal(on.approval, "auto");
   assert.equal(on.autosave_minutes, 10);
-  assert.equal(on.sync, "never");
-  assert.match(on.sync_source, /rule 6/);
+  assert.equal(on.sync, "managed");
+  assert.equal(on.sync_minutes, 15);
+  assert.equal(on.sync_on_batch_end, true);
+  assert.match(on.sync_source, /sync_minutes/);
   assert.match(on.approval_does_not_cover.join(" "), /references/);
   fs.writeFileSync(guard, JSON.stringify({ ai_modeller: { on: true, mode: "strict", auto_approve: true, auto_save_minutes: 0 } }));
   const off = batchCareReport(env);

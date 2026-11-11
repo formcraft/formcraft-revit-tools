@@ -10,7 +10,9 @@ export const FMC_BATCH_DESCRIPTION =
   "with correction set to what you changed and different references. More than three attempts is marked struggling, " +
   "which only shows in fmc_queue. Reads never need a lease. " +
   "references is required: at least one id for the kit, the standards bank, and the rulebooks. " +
-  "Actions: request, status, heartbeat, release, cancel, wait (timeout_s at most 60).";
+  "Actions: request, status, heartbeat, release, cancel, wait (timeout_s at most 60). " +
+  "When free memory is below ram_pause_free_mb (default 1024), request stays queued and wait holds: paused for memory, not failed. " +
+  "Workshared models sync from fmc_guard.json sync_minutes (default 15) and sync_on_batch_end (default true). status shows last_sync, next_sync and last_error.";
 
 const shape = {
   action: z.enum(["request", "status", "heartbeat", "release", "cancel", "wait"]),

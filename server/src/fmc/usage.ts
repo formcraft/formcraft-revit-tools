@@ -9,7 +9,11 @@ import os from "node:os";
 import path from "node:path";
 
 const win = path.win32;
-export interface UsageLine { at: string; tool: string; action: string; ms: number; ok: boolean; build: string; queued?: boolean; error?: string }
+export interface UsageLine {
+  at: string; tool: string; action: string; ms: number; ok: boolean; build: string; queued?: boolean; error?: string;
+  /** MCP clientInfo.name, session id, and stdio or http. code_head is the first lines of a send_code script. */
+  client?: string; session?: string; transport?: "stdio" | "http"; code_head?: string;
+}
 
 export const usageFile = (env: NodeJS.ProcessEnv = process.env) =>
   win.join(env.APPDATA || win.join(os.homedir(), "AppData", "Roaming"), "Formcraft", "ai_usage.jsonl");

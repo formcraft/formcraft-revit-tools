@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import type { JSONRPCMessage } from "@modelcontextprotocol/sdk/types.js";
 import { RUNNING_BUILD } from "./fmc/buildinfo.js";
 import { createFormcraftServer } from "./fmc/boot.js";
 import { bindHost, formcraftDir, httpPort, loadOrCreateToken, startHttpService, tokenPath } from "./fmc/httpservice.js";
 import { logBatchRestart, notifyBatchGranted, addGrantListener } from "./fmc/batchline.js";
 import { appendCapped } from "./fmc/logrotate.js";
 import { runStdioShim } from "./fmc/stdio_shim.js";
+import { callerFor, noteMcpMessage, runAsCaller } from "./fmc/caller.js";
 import path from "node:path";
 
 type Mode = "stdio" | "http" | "shim";
@@ -31,6 +33,11 @@ async function runStdio(): Promise<void> {
   console.error(`Formcraft server build ${RUNNING_BUILD.commit} (built ${RUNNING_BUILD.built || "?"})`);
   const transport = new StdioServerTransport();
   await server.connect(transport);
+  const previous = transport.onmessage as ((message: JSONRPCMessage, extra?: unknown) => void) | undefined;
+  (transport as { onmessage?: (message: JSONRPCMessage, extra?: unknown) => void }).onmessage = (message, extra) => {
+    noteMcpMessage(message, "stdio", "stdio");
+    runAsCaller(callerFor("stdio"), () => { previous?.(message, extra); });
+  };
   console.error("Revit MCP Server start success");
 }
 

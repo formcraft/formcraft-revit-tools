@@ -11,6 +11,8 @@ import { currentClient, documentRequired } from "../fmc/fairqueue.js";
 import { admitBatchWrite } from "../fmc/batchline.js";
 import { aiGate } from "../fmc/aigate.js";
 import { retryWhileBusy } from "../fmc/busy.js";
+import { memoryGate } from "../fmc/memory.js";
+import { screenScript, scriptLimit } from "../fmc/scriptguard.js";
 
 export class RevitClientConnection {
   host: string;
@@ -143,6 +145,11 @@ export class RevitClientConnection {
    * The lock fails closed: if the active document cannot be read, the command is not sent.
    */
   public async sendCommand(command: string, params: any = {}, timeoutMs: number = 120000, long?: LongJobOptions): Promise<any> {
+    if (command === "send_code_to_revit") {
+      const code = params && typeof params.code === "string" ? params.code : "";
+      const problem = screenScript(code, scriptLimit());
+      if (problem) throw new Error(problem.message);
+    }
     if (!WRITE_COMMANDS.has(command)) return this.sendRaw(command, params, timeoutMs, long);
     const aimed = params && typeof params.document === "string" && params.document.trim()
       ? params.document.trim()
@@ -150,6 +157,7 @@ export class RevitClientConnection {
     // The lease check is the same write list as a reset retry: reads never take a lease.
     const admission = admitBatchWrite(command, aimed, batchLease.getStore(), currentClient());
     try {
+      await memoryGate.holdWrites(Math.min(120_000, Math.max(0, timeoutMs)));
       return await this.sendLocked(command, params, timeoutMs, long);
     } finally {
       admission.finish();

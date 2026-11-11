@@ -6,14 +6,15 @@
  * verification copy, a link, or a protected original (including originals on D: once protected_roots names them).
  *
  * Auto-approve that actually runs: the same file, auto_approve true and mode "testing". aigate.ts skips the
- * approval queue for ordinary model changes. Sync and relinquish still wait for a person.
+ * approval queue for ordinary model changes. A person's own sync still waits for a person.
  *
- * The pane toggles admin.autosave (every 15 minutes) and admin.scheduledsync live on AdminService.TeamValues,
- * an in-memory store. FMC_Team.json is not written yet (the export button only says it will, U12). The server
- * cannot read them. scheduledsync is locked off (CLAUDE.md rule 6); admin.syncinterval is a reminder for a person.
+ * Workshared sync is fmc_guard.json sync_minutes (default 15) and sync_on_batch_end (default true), applied to every
+ * open workshared document. A person's own fmc_revit_file sync still waits for approval. Stop AI and the live-model
+ * lock still refuse the batch sync. The pane's admin.scheduledsync toggle is in memory only and is not read.
  */
 import fs from "node:fs";
 import path from "node:path";
+import { syncSettings } from "./batchsync.js";
 import { configPath, expandEnv, loadConfig, type GuardConfig } from "./policy.js";
 import { loadAiConfig } from "./aiuse_io.js";
 import { findRecipes, suggestRecipe } from "./standards.js";
@@ -21,8 +22,8 @@ import { kitPaths, recipeIndex } from "./context.js";
 import { mergeRulebooks } from "./rules.js";
 
 export const SYNC_NOT_RUN =
-  "Not run. Admin › Automation › Scheduled sync is locked off (CLAUDE.md rule 6) and admin.syncinterval is a reminder a person pastes into Synchronize with Central. " +
-  "fmc_revit_file sync still waits for a person's approval, even when auto-approve is on. The team toggle is in memory only, so the server cannot see a different value.";
+  "Not run for this batch. Workshared models sync from fmc_guard.json sync_minutes and sync_on_batch_end. " +
+  "A non-workshared model is autosave only. A person's fmc_revit_file sync still waits for approval.";
 
 /** What auto-approve turns off, and what it does not. */
 export const APPROVAL_COVERS = [
@@ -31,7 +32,7 @@ export const APPROVAL_COVERS = [
 
 export const APPROVAL_DOES_NOT_COVER = [
   "fmc_batch references: kit, standards and rulebook are still required.",
-  "Sync and relinquish: aigate.ts still sends those to a person.",
+  "A person's fmc_revit_file sync still waits for approval. The batch sync does not, and it still stops for Stop AI and the live-model lock.",
   "Keynotes on fmc_replace (X.YYY_ZZ) and Gate A keynote and library checks (recipes.ts gateA).",
   "Stop AI, the rulebook limits, and the live-model lock.",
 ];
@@ -41,7 +42,9 @@ export interface BatchCareReport {
   approval_source: string;
   autosave_minutes: number;
   autosave_source: string;
-  sync: "never";
+  sync: "managed" | "off";
+  sync_minutes: number;
+  sync_on_batch_end: boolean;
   sync_source: string;
   approval_covers: string[];
   approval_does_not_cover: string[];
@@ -51,19 +54,25 @@ export function batchCareReport(env: NodeJS.ProcessEnv = process.env): BatchCare
   let approval: "auto" | "manual" = "manual";
   let minutes = 0;
   let mode = "strict";
+  let sync = syncSettings(undefined);
   try {
-    const ai = loadAiConfig(loadConfig(configPath(env)).config, env);
+    const cfg = loadConfig(configPath(env)).config;
+    const ai = loadAiConfig(cfg, env);
     mode = ai?.mode ?? "strict";
     if (ai?.mode === "testing" && ai.auto_approve === true) approval = "auto";
     minutes = ai?.auto_save_minutes ?? (ai?.mode === "testing" ? 10 : 0);
+    sync = syncSettings(cfg);
   } catch { /* no guard file: manual, and do not save */ }
+  const syncOn = sync.minutes > 0 || sync.onBatchEnd;
   return {
     approval,
     approval_source: `fmc_guard.json ai_modeller (mode ${mode}, auto_approve). Auto only when mode is testing and auto_approve is true, the same test aigate.ts uses.`,
     autosave_minutes: minutes,
     autosave_source: "fmc_guard.json ai_modeller.auto_save_minutes, applied by autoSave() in aigate.ts. The pane's admin.autosave toggle is in memory only (AdminService.TeamValues) and is not read.",
-    sync: "never",
-    sync_source: SYNC_NOT_RUN,
+    sync: syncOn ? "managed" : "off",
+    sync_minutes: sync.minutes,
+    sync_on_batch_end: sync.onBatchEnd,
+    sync_source: "fmc_guard.json sync_minutes and sync_on_batch_end, applied to every open workshared document. Save the local file, then fmc_revit_file sync with relinquish. Non-workshared models are autosave only. Stop AI and the live-model lock still refuse it.",
     approval_covers: APPROVAL_COVERS,
     approval_does_not_cover: APPROVAL_DOES_NOT_COVER,
   };

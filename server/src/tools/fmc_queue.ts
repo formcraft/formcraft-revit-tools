@@ -6,7 +6,8 @@ export const FMC_QUEUE_DESCRIPTION =
   "Where calls to Revit are waiting, and who holds each document's batch lease. One Revit runs one call at a time. " +
   "Clients take turns, so a long batch does not sit in front of every other bot. batches lists the holder, the line, " +
   "the last 20 batches, batches with more than 3 attempts (struggling, not blocked), and per-bot totals (batches, failures, retries, " +
-  "average wait, average duration, last references) and the existing auto-save and auto-approve settings. " +
+  "average wait, average duration, last references), the existing auto-save and auto-approve settings, free memory, " +
+  "and last_sync, next_sync and last_error for each document. " +
   "Read-only. A call that is still waiting answers [FMC-QUEUED] and has not failed.";
 
 export function registerFmcQueueTool(server: McpServer) {

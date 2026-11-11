@@ -1,5 +1,6 @@
 import { RUNNING_BUILD } from "../fmc/buildinfo.js";
 import { recordUsage } from "../fmc/usage.js";
+import { usageCallerFields } from "../fmc/caller.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import fs from "fs";
 import path from "path";
@@ -43,7 +44,8 @@ export function withRevitTarget(server: McpServer) {
           // Owner 26 Oct: every call is timed by the server (fmc/usage.ts), so an AI's own report can compare builds.
           const started = Date.now();
           const done = (ok: boolean, r?: unknown) => recordUsage({ at: new Date(started).toISOString(), tool: String(a[0]), action: typeof rest.action === "string" ? rest.action : "",
-            ms: Date.now() - started, ok, build: RUNNING_BUILD.commit, ...(!ok && queuedReply(r) ? { queued: true } : {}),
+            ms: Date.now() - started, ok, build: RUNNING_BUILD.commit, ...usageCallerFields(String(a[0]), args as { code?: unknown }),
+            ...(!ok && queuedReply(r) ? { queued: true } : {}),
             ...(!ok ? { error: errorText(r) } : {}) });
           return Promise.resolve(revitTarget.run(typeof revit === "string" ? revit : undefined,
             () => documentTarget.run(document, () => batchLease.run(lease, () => handler(argsForTool, extra)))))

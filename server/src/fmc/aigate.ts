@@ -31,6 +31,13 @@ export async function aiGate(command: string, params: any, active: (DocInfo & { 
     if (generalState(ai, active.title, active.path) !== "On") return { ok: false, reason: "", user: USER_LINE.off };
     return { ok: true, reason: "", run: <T>(exec: () => Promise<T>) => exec() };
   }
+  // The batch line's own sync (fmc_guard.json sync_minutes / sync_on_batch_end). Stop AI and the AI switch still apply.
+  // A person's fmc_revit_file sync, without batch_sync, still waits for approval below.
+  if (params?.batch_sync === true && command === "fmc_revit_file" && ["save", "sync", "relinquish"].includes(String(params?.action))) {
+    if (ai.stop) return { ok: false, reason: "Stop AI is on", user: USER_LINE.stopped };
+    if (generalState(ai, active.title, active.path) !== "On") return { ok: false, reason: "AI is off for this model", user: USER_LINE.off };
+    return { ok: true, reason: "", run: <T>(exec: () => Promise<T>) => exec() };
+  }
   const elements = batchSize(params);
   const approval = approvalFor(command, params, active.path, env);
   // Auto-approve (owner 26 Oct): testing mode only; the batch runs now and is still listed in Approvals.
