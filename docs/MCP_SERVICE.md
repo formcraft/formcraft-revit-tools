@@ -41,6 +41,10 @@ The server swaps in without closing Revit. The script prints `SERVER pass` or `S
 
 A logon task named **Formcraft MCP** (no admin) starts the service, restarts it if it exits, and reloads it when the updater changes the build.
 
+## Crash recovery
+
+`fmc_recover_revit` action `plan` (the default) reports crashed or hung Revit and each document's title, path, workshared state, last sync, last save, and the risk that unsaved work may be lost. It does not close a responsive instance. `apply` needs the `confirm` token from plan, and `force_unsaved=true` when unsaved or unsynced changes were found. The plugin heartbeat, the leased port, `fmc_document_info`, and re-registering the instance need the add-in. `scripts/fmc-recover-revit.ps1` runs the same plan when this server is down. `recovery.documents` in `fmc_guard.json` is the reopen list (architecture, structural, electrical, plumbing, site for the HEBERT HOSTELS models). Empty means reopen what was open. Workshared files are opened as a new local by Revit. Originals are not written.
+
 ## The safe project save
 
 `fmc_save_project` saves a project. Pass `title` and `path`. Both must match the open document. A family (`.rfa`, or a document open in the Family Editor) is refused. The live-model lock and the batch lease apply, because the save is `fmc_revit_file` action `save` after those checks. `revit_file` action `save` by itself does not check the title and the path and does not refuse a family.

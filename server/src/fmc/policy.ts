@@ -77,6 +77,15 @@ export interface GuardConfig {
   sync_minutes?: number;
   /** Sync a workshared model when a batch releases successfully. Default true. */
   sync_on_batch_end?: boolean;
+  /**
+   * Crash recovery. heartbeat_s is how long the plugin may stay silent before an instance is hung.
+   * documents, when set, is the list to reopen (the five HEBERT HOSTELS models: architecture, structural,
+   * electrical, plumbing, site). Empty means reopen whatever was open.
+   */
+  recovery?: {
+    heartbeat_s?: number;
+    documents?: Array<{ role?: string; title?: string; path: string; workshared?: boolean }>;
+  };
 }
 
 export const DEFAULT_CONFIG: GuardConfig = {
@@ -104,6 +113,7 @@ export const DEFAULT_CONFIG: GuardConfig = {
   script_max_chars: 1_000_000,
   sync_minutes: 15,
   sync_on_batch_end: true,
+  recovery: { heartbeat_s: 90, documents: [] },
 };
 
 /** Tools that change the model. They are refused on live project models. */

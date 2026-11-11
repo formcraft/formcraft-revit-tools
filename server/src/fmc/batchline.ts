@@ -951,6 +951,43 @@ export class BatchBoard {
     };
   }
 
+  /**
+   * After Revit is recovered: the lease that was running goes to the tail. Nothing is rolled back.
+   * Call resumeAfterRecovery once the documents are open again.
+   */
+  requeueForRecovery(document?: string): { requeued: Array<{ lease: string; document: string; label: string; position: number }> } {
+    const keys = document ? [documentKey(document)] : [...this.holders.keys()];
+    const requeued: Array<{ lease: string; document: string; label: string; position: number }> = [];
+    for (const key of keys) {
+      const id = this.holders.get(key);
+      if (!id) continue;
+      const ticket = this.tickets.get(id);
+      if (!ticket || ticket.client === "fmc-sync") continue;
+      ticket.state = "queued";
+      this.holders.delete(key);
+      const line = this.lines.get(key) ?? [];
+      line.push(ticket.id);
+      this.lines.set(key, line);
+      requeued.push({ lease: ticket.id, document: ticket.document, label: ticket.label, position: line.length });
+      this.emit(`requeued after recovery ${this.where(ticket)} at position ${line.length}. The model was not rolled back.`);
+      this.wake(ticket.id);
+    }
+    return { requeued };
+  }
+
+  /** Grant the head of each line once recovery has reopened the documents. */
+  resumeAfterRecovery(): string[] {
+    const granted: string[] = [];
+    if (this.heldForMemory()) return granted;
+    for (const key of [...this.lines.keys()]) {
+      if (this.holders.has(key)) continue;
+      const next = (this.lines.get(key) ?? [])[0];
+      this.promote(key);
+      if (next && this.holders.get(key) === next) granted.push(next);
+    }
+    return granted;
+  }
+
   /** Grant heads that waited only because memory was low. */
   grantPaused(): void {
     if (this.heldForMemory()) return;
