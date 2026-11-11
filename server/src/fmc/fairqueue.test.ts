@@ -13,6 +13,14 @@ test("five documents and no name is refused; one document is not", () => {
   assert.equal(documentRequired("fmc_document_info", docs, undefined), undefined);
 });
 
+test("unnamed family creation is allowed when several documents are open; other writes are not", () => {
+  const docs = ["Architecture", "Structure", "Electrical"];
+  assert.equal(documentRequired("fmc_family_new", docs, undefined), undefined);
+  assert.match(documentRequired("fmc_model_edit", docs, undefined) ?? "", /3 documents are open.*Refusing to use the active document/);
+  assert.match(documentRequired("fmc_create_document", docs, undefined, "project") ?? "", /3 documents are open.*Refusing to use the active document/);
+  assert.equal(documentRequired("fmc_create_document", docs, undefined, "family"), undefined);
+});
+
 test("round robin: one client's batch does not finish before the others start", async () => {
   const queue = new FairQueue();
   const started: string[] = [];

@@ -228,7 +228,8 @@ export class RevitClientConnection {
   public async sendRaw(command: string, params: any = {}, timeoutMs: number = 120000, long?: LongJobOptions): Promise<any> {
     const named = documentTarget.getStore() || (params && typeof params.document === "string" ? params.document : undefined);
     const open = readInstances().find((instance) => instance.port === this.port);
-    const refusal = documentRequired(command, (open?.documents ?? []).map((doc) => doc.title || doc.path), named);
+    const kind = params && typeof params.kind === "string" ? params.kind : undefined;
+    const refusal = documentRequired(command, (open?.documents ?? []).map((doc) => doc.title || doc.path), named, kind);
     if (refusal) throw new Error(refusal);
     // F-072: an earlier command that outlived its wait still holds Revit, and the add-in says so at once
     // ([FMC-BRIDGE-BUSY]): wait and send again while that job's heartbeats are fresh, up to this call's own limit (the
