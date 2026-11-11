@@ -8,7 +8,8 @@
  * A failed batch is not put straight back. The bot's next request for the same label or batch id joins the tail
  * with attempt + 1. Attempts are unlimited. A retry must say what changed, and must not repeat the same references.
  * More than three attempts is marked struggling: visible, not blocking. Nothing here rolls the model back.
- * Leases live in memory only. A restart clears them.
+ * The waiting line is written to FMC_BatchLine.json. A restart restores it. An active lease does not stay held:
+ * it is put back at the head of its line, and the bot asks for the same label again.
  */
 import fs from "node:fs";
 import os from "node:os";
@@ -18,6 +19,7 @@ import { WRITE_COMMANDS, loadConfig } from "./policy.js";
 import { SYNC_NOT_RUN, batchCareReport, correctionHelp, type CorrectionHelp } from "./batchcare.js";
 import { planSync, syncDocumentKey, syncSettings, syncSkip, type SyncRun } from "./batchsync.js";
 import { memoryGate, onMemoryResume } from "./memory.js";
+import { loadBatchLine, MAINTENANCE_REASON, readMaintenance, saveBatchLine, writeMaintenance, type StoredTicket } from "./batchstore.js";
 import { batchLease, documentTarget } from "./target.js";
 import { queueClient } from "./fairqueue.js";
 
@@ -85,6 +87,12 @@ export interface BatchBoardOptions {
   memoryPaused?: () => boolean;
   /** Shown on status. Null when this board is not the service. */
   memoryView?: () => Record<string, unknown> | null;
+  /** batch.maintenance. Null when grants may proceed. Production reads the file. */
+  readMaintenance?: () => string | null;
+  /** Writes the file the updater and fmc_batch drain share. */
+  writeMaintenance?: (reason: string | null) => void;
+  /** Persists the waiting line. Production writes FMC_BatchLine.json. */
+  persistLine?: (tickets: StoredTicket[]) => void;
 }
 
 const defaultValidator: BatchReferenceValidator = () => ({ ok: true });
@@ -271,6 +279,12 @@ export class BatchBoard {
   private readonly syncStep?: BatchBoardOptions["syncStep"];
   private readonly memoryPausedFn: () => boolean;
   private readonly memoryViewFn: () => Record<string, unknown> | null;
+  private readonly readMaintenanceFn: () => string | null;
+  private readonly watchMaintenance: boolean;
+  private readonly writeMaintenanceFn: (reason: string | null) => void;
+  private readonly persistLineFn: (tickets: StoredTicket[]) => void;
+  /** Set while a hot-swap is draining. New leases stay queued. Active leases finish. */
+  private maintenanceReason: string | null = null;
   private timer: ReturnType<typeof setInterval> | undefined;
   private syncTimer: ReturnType<typeof setInterval> | undefined;
   private stopMemory: () => void = () => {};
@@ -298,6 +312,10 @@ export class BatchBoard {
     this.syncStep = opts.syncStep;
     this.memoryPausedFn = opts.memoryPaused ?? (() => false);
     this.memoryViewFn = opts.memoryView ?? (() => null);
+    this.readMaintenanceFn = opts.readMaintenance ?? (() => null);
+    this.watchMaintenance = opts.readMaintenance != null;
+    this.writeMaintenanceFn = opts.writeMaintenance ?? (() => {});
+    this.persistLineFn = opts.persistLine ?? (() => {});
     if (opts.autoSweep) {
       this.timer = setInterval(() => { try { this.sweep(); } catch (error) { this.emit(`sweep failed: ${error instanceof Error ? error.message : error}`); } }, opts.sweepEveryMs ?? 1000);
       this.timer.unref?.();
@@ -322,8 +340,10 @@ export class BatchBoard {
     this.syncTimer.unref?.();
   }
 
-  noteServiceStart(): void {
-    this.emit("service start. Leases cleared. Nothing was rolled back. Bots request a new lease.");
+  noteServiceStart(restored = 0): void {
+    this.emit(restored > 0
+      ? `service start. Restored ${restored} queued lease(s). An active lease is not still held; it is at the head of its line. Nothing was rolled back.`
+      : "service start. Leases cleared. No queued leases on disk. Nothing was rolled back. Bots request a new lease.");
   }
 
   setValidator(fn: BatchReferenceValidator | null): void {
@@ -404,6 +424,7 @@ export class BatchBoard {
       ops: 0,
       writesInFlight: 0,
     };
+    this.pullMaintenance();
     this.tickets.set(ticket.id, ticket);
     const stat = this.botStat(bot);
     stat.lastReferences = copyRefs(refs);
@@ -411,14 +432,16 @@ export class BatchBoard {
     stat.lastLabel = label;
     stat.lastClient = input.client;
     if (attempt > 1) stat.retries += 1;
-    if (!this.holders.has(key) && !this.heldForMemory()) this.grant(ticket, false);
+    if (!this.holders.has(key) && !this.heldForMemory() && !this.maintenanceReason) this.grant(ticket, false);
     else {
       const line = this.lines.get(key) ?? [];
       line.push(ticket.id);
       this.lines.set(key, line);
-      if (this.heldForMemory()) this.emit(`paused for memory; queued ${this.where(ticket)} position ${line.length}`);
+      if (this.maintenanceReason) this.emit(`${this.maintenanceReason}; queued ${this.where(ticket)} position ${line.length}`);
+      else if (this.heldForMemory()) this.emit(`paused for memory; queued ${this.where(ticket)} position ${line.length}`);
       else this.emit(`queued ${this.where(ticket)} position ${line.length} attempt ${attempt}`);
     }
+    this.persist();
     return this.ticketView(ticket);
   }
 
@@ -507,6 +530,7 @@ export class BatchBoard {
     this.rememberDone(ticket, { state: "done", outcome: "failed", end: "release", summary: "cancelled while queued", attempt: ticket.attempt, document: ticket.document, label: ticket.label, batch_id: ticket.batchId, bot: ticket.bot, ops: 0, references: ticket.references });
     this.wake(ticket.id);
     this.emit(`cancelled queued ${this.where(ticket)}`);
+    this.persist();
     return { ok: true, state: "cancelled", lease: ticket.id, document: ticket.document, label: ticket.label, attempt: ticket.attempt };
   }
 
@@ -529,11 +553,13 @@ export class BatchBoard {
         this.emit(`disconnect dropped queued ${this.where(ticket)}`);
       }
     }
+    this.persist();
     return owned.length;
   }
 
   /** Expire leases with no heartbeat or write, and leases past the hard maximum. */
   sweep(at = this.now()): string[] {
+    this.pullMaintenance();
     const expired: string[] = [];
     for (const id of [...this.holders.values()]) {
       const ticket = this.tickets.get(id);
@@ -648,6 +674,8 @@ export class BatchBoard {
     const memory = this.safeMemory();
     return {
       ...this.configView(), ...batchCareReport(), ...(memory ? { memory } : {}),
+      maintenance: this.maintenanceReason != null,
+      maintenance_reason: this.maintenanceReason,
       syncs: this.syncRows(), documents, struggling, bots,
     };
   }
@@ -679,6 +707,29 @@ export class BatchBoard {
     return `[FMC-BATCH-LOCKED] ${holder.document} is held by ${who}. ${position}${idNote} Pass batch_lease on each model-changing call. Reads are still allowed.`;
   }
 
+  /**
+   * Stop granting. Requests stay queued with the reason. Active leases finish.
+   * The reason is also the batch.maintenance file when this board is the service.
+   */
+  setMaintenance(on: boolean, reason = MAINTENANCE_REASON): Record<string, unknown> {
+    const next = on ? (reason.trim() || MAINTENANCE_REASON) : null;
+    this.maintenanceReason = next;
+    try { this.writeMaintenanceFn(next); } catch (error) { this.emit(`maintenance file failed: ${error instanceof Error ? error.message : error}`); }
+    if (!next) this.resumeGrants();
+    this.persist();
+    return this.snapshot();
+  }
+
+  /** Read batch.maintenance when the service wired a reader. */
+  pullMaintenance(): void {
+    if (!this.watchMaintenance) return;
+    let reason: string | null;
+    try { reason = this.readMaintenanceFn(); } catch { return; }
+    if (reason === this.maintenanceReason) return;
+    this.maintenanceReason = reason;
+    if (!reason) this.resumeGrants();
+  }
+
   private grant(ticket: Ticket, notify: boolean): void {
     ticket.state = "active";
     ticket.grantedAt = this.now();
@@ -694,9 +745,16 @@ export class BatchBoard {
       }
     }
     this.wake(ticket.id);
+    this.persist();
   }
 
   private promote(key: string): void {
+    if (this.maintenanceReason) {
+      const line = this.lines.get(key) ?? [];
+      this.emit(`${this.maintenanceReason}; ${line.length} queued lease(s) stay on ${this.names.get(key) ?? key}`);
+      for (const id of line) this.wake(id);
+      return;
+    }
     if (this.heldForMemory()) {
       const line = this.lines.get(key) ?? [];
       this.emit(`paused for memory; ${line.length} queued lease(s) stay on ${this.names.get(key) ?? key}`);
@@ -776,6 +834,7 @@ export class BatchBoard {
     this.tickets.delete(ticket.id);
     this.wake(ticket.id);
     this.promote(ticket.key);
+    this.persist();
     return { ok: true, ...done, lease: ticket.id };
   }
 
@@ -946,6 +1005,11 @@ export class BatchBoard {
         paused_for_memory: true,
         message: `Paused for memory: ${free} MB free, below ${below} MB. This lease stays queued and is not failed. It grants when free memory is above ${above} MB. wait holds until then or timeout_s. Reads still work.`,
       } : {}),
+      ...(this.maintenanceReason && ticket.state !== "active" ? {
+        maintenance: true,
+        reason: this.maintenanceReason,
+        message: `${this.maintenanceReason}. This lease stays queued and is not failed. It grants when maintenance ends. An active lease finishes.`,
+      } : {}),
     };
   }
 
@@ -1089,6 +1153,68 @@ export class BatchBoard {
     }
   }
 
+  /** Put a saved line back. Tickets stay queued until resumeGrants. */
+  importLine(tickets: StoredTicket[]): number {
+    let n = 0;
+    for (const row of tickets) {
+      if (this.tickets.has(row.id)) continue;
+      const key = documentKey(row.document);
+      const ticket: Ticket = {
+        id: row.id, document: row.document, key, label: row.label, batchId: row.batchId, bot: row.bot, client: row.client,
+        estOps: row.estOps, references: copyRefs(row.references), referencesHash: referencesHash(row.references),
+        correction: row.correction ?? "", state: "queued", attempt: row.attempt || 1,
+        requestedAt: row.requestedAt || this.now(), lastBeat: this.now(), ops: 0, writesInFlight: 0,
+      };
+      this.tickets.set(ticket.id, ticket);
+      this.names.set(key, row.document);
+      const line = this.lines.get(key) ?? [];
+      line.push(ticket.id);
+      this.lines.set(key, line);
+      n += 1;
+    }
+    return n;
+  }
+
+  resumeGrants(): string[] {
+    if (this.maintenanceReason || this.heldForMemory()) return [];
+    const granted: string[] = [];
+    for (const key of [...this.lines.keys()]) {
+      if (this.holders.has(key)) continue;
+      const next = (this.lines.get(key) ?? [])[0];
+      this.promote(key);
+      if (next && this.holders.get(key) === next) granted.push(next);
+    }
+    return granted;
+  }
+
+  private exportLine(): StoredTicket[] {
+    const out: StoredTicket[] = [];
+    const keys = new Set<string>([...this.holders.keys(), ...this.lines.keys()]);
+    for (const key of keys) {
+      const holderId = this.holders.get(key);
+      const holder = holderId ? this.tickets.get(holderId) : undefined;
+      const ordered: Ticket[] = [];
+      if (holder && holder.client !== "fmc-sync") ordered.push(holder);
+      for (const id of this.lines.get(key) ?? []) {
+        const ticket = this.tickets.get(id);
+        if (ticket) ordered.push(ticket);
+      }
+      for (const ticket of ordered) {
+        out.push({
+          id: ticket.id, document: ticket.document, label: ticket.label, batchId: ticket.batchId, bot: ticket.bot,
+          client: ticket.client, references: copyRefs(ticket.references), correction: ticket.correction,
+          attempt: ticket.attempt, requestedAt: ticket.requestedAt, ...(ticket.estOps ? { estOps: ticket.estOps } : {}),
+        });
+      }
+    }
+    return out;
+  }
+
+  private persist(): void {
+    try { this.persistLineFn(this.exportLine()); }
+    catch (error) { this.emit(`batch line was not saved: ${error instanceof Error ? error.message : error}`); }
+  }
+
   private emit(text: string): void {
     let line = text.startsWith("fmc batch:") ? text : `fmc batch: ${text}`;
     if (/bearer\s|mcp-http\.token|authorization:/i.test(line)) line = "fmc batch: log line dropped because it looked like a credential";
@@ -1113,6 +1239,9 @@ function productionBoard(opts: BatchBoardOptions): BatchBoard {
     memoryView: () => memoryGate.view() as unknown as Record<string, unknown>,
     saveStep: (ctx) => import("./batchsave.js").then((mod) => mod.productionSaveStep(ctx)),
     syncStep: (ctx) => import("./batchsync.js").then((mod) => mod.productionSyncStep(ctx)),
+    readMaintenance,
+    writeMaintenance,
+    persistLine: (tickets) => { try { saveBatchLine(tickets); } catch { /* the next change tries again */ } },
     ...opts,
   });
   made.bindService();
@@ -1145,7 +1274,10 @@ export function resetBatchBoard(opts: BatchBoardOptions = {}): BatchBoard {
 export function logBatchRestart(): BatchBoard {
   board?.close();
   board = productionBoard({ ...loadBatchConfig(), autoSweep: true });
-  board.noteServiceStart();
+  const restored = board.importLine(loadBatchLine());
+  board.pullMaintenance();
+  if (!board.snapshot().maintenance) board.resumeGrants();
+  board.noteServiceStart(restored);
   return board;
 }
 

@@ -12,6 +12,7 @@ import {
 import { runFmcBatch } from "../tools/fmc_batch.js";
 import { autoSave } from "./aigate.js";
 import { batchCareReport, correctionHelp } from "./batchcare.js";
+import { loadBatchLine, readMaintenance, saveBatchLine, writeMaintenance } from "./batchstore.js";
 
 const references = { kit: ["FMC_S_Column"], standards: ["structure.column.300"], rulebook: ["S.FND_01"] };
 
@@ -342,5 +343,44 @@ test("auto-save and auto-approve are the existing settings, and a failed save go
   const hist = (made.snapshot().documents as Array<{ history: Array<{ save?: { ok: boolean }; sync?: { ran: boolean } }> }>)[0].history[0];
   assert.equal(hist.save?.ok, false);
   assert.equal(hist.sync?.ran, false);
+});
+
+test("drain queues new work, and a restart restores the line with the active lease at the head", async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-line-"));
+  const env = { ...process.env, APPDATA: dir } as NodeJS.ProcessEnv;
+  const clock = { t: 5_000 };
+  const made = new BatchBoard({
+    idleMs: 120_000, maxMs: 1_800_000, autoSweep: false, now: () => clock.t,
+    persistLine: (rows) => saveBatchLine(rows, env),
+    writeMaintenance: (reason) => writeMaintenance(reason, env),
+    readMaintenance: () => readMaintenance(env),
+  });
+  const first = await req(made, "a", "Architecture", "grids");
+  assert.equal(first.state, "granted");
+  const drained = made.setMaintenance(true);
+  assert.equal(drained.maintenance, true);
+  assert.equal(drained.maintenance_reason, "maintenance: server update");
+  const second = await req(made, "b", "Architecture", "walls");
+  assert.equal(second.state, "queued");
+  assert.equal(second.reason, "maintenance: server update");
+  assert.match(String(second.message), /maintenance: server update/);
+  const saved = loadBatchLine(env);
+  assert.deepEqual(saved.map((row) => row.label), ["grids", "walls"]);
+  const again = new BatchBoard({
+    idleMs: 120_000, maxMs: 1_800_000, autoSweep: false, now: () => clock.t,
+    readMaintenance: () => readMaintenance(env),
+  });
+  assert.equal(again.importLine(saved), 2);
+  again.pullMaintenance();
+  const waiting = again.snapshot().documents as Array<{ holder: { label: string } | null; line: Array<{ label: string }> }>;
+  assert.equal(waiting[0].holder, null);
+  assert.deepEqual(waiting[0].line.map((row) => row.label), ["grids", "walls"]);
+  assert.equal(again.snapshot().maintenance, true);
+  writeMaintenance(null, env);
+  again.pullMaintenance();
+  const resumed = again.snapshot().documents as Array<{ holder: { label: string } | null; line: Array<{ label: string }> }>;
+  assert.equal(resumed[0].holder?.label, "grids");
+  assert.deepEqual(resumed[0].line.map((row) => row.label), ["walls"]);
+  assert.equal(again.snapshot().maintenance, false);
 });
 });

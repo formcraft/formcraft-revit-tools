@@ -167,7 +167,17 @@ function Test-HttpServerRunning {
     return ($pids.Count -gt 0)
 }
 
-# True only when no batch holds a document, no lease is waiting, and no Revit call is running or queued.
+function Set-BatchDrain([string]$reason) {
+    Set-Content -Path (Join-Path $state 'batch.maintenance') -Value $reason -Encoding ascii
+}
+
+function Clear-BatchDrain {
+    $flag = Join-Path $state 'batch.maintenance'
+    if (Test-Path $flag) { Remove-Item $flag -Force }
+}
+
+# True when no batch holds a document and no Revit call is running.
+# During maintenance the waiting line may still have tickets: they are on disk and come back after the restart.
 function Test-BatchLineIdle([object]$body) {
     $holders = New-Object System.Collections.Generic.List[string]
     $leaseQueue = 0
@@ -188,12 +198,16 @@ function Test-BatchLineIdle([object]$body) {
         if ($null -ne $q.running) { $running += 1 }
         if ($null -ne $q.waiting) { $waiting += [int]$q.waiting }
     }
-    $idle = ($holders.Count -eq 0 -and $leaseQueue -eq 0 -and $running -eq 0 -and $waiting -eq 0)
-    $detail = "no active fmc_batch lease and the Revit queue is empty"
+    $maintenance = $false
+    if ($null -ne $body.batches -and $null -ne $body.batches.maintenance) { $maintenance = [bool]$body.batches.maintenance }
+    if ($maintenance) { $idle = ($holders.Count -eq 0 -and $running -eq 0 -and $waiting -eq 0) }
+    else { $idle = ($holders.Count -eq 0 -and $leaseQueue -eq 0 -and $running -eq 0 -and $waiting -eq 0) }
+    if ($maintenance) { $detail = "maintenance: no active lease, waiting tickets stay on disk" }
+    else { $detail = "no active fmc_batch lease and the Revit queue is empty" }
     if (-not $idle) {
         $parts = @()
         if ($holders.Count) { $parts += ("active lease: " + ($holders -join ', ')) }
-        if ($leaseQueue) { $parts += "$leaseQueue lease(s) waiting" }
+        if (-not $maintenance -and $leaseQueue) { $parts += "$leaseQueue lease(s) waiting" }
         if ($running -or $waiting) { $parts += "Revit queue running $running, waiting $waiting" }
         $detail = $parts -join '; '
     }
@@ -235,9 +249,11 @@ function Stop-HttpServer {
 # Copy the new server beside the live one, stop the service, swap, then ask /health.
 # A failed health check puts the previous build back. Returns a short status, never the token.
 function Install-ServerBuild([string]$commit, [string]$stamp) {
-    # A hot-swap restarts the process and drops in-memory leases. Wait until nothing is mid-batch.
+    # Drain first: new leases stay queued. Active leases finish. The waiting line is on disk.
+    Set-BatchDrain 'maintenance: server update'
     $line = Wait-BatchLineIdle -Seconds 60
     if (-not $line.idle) {
+        Clear-BatchDrain
         Log ("SERVER swap held: {0}. Timed out after 60s. The running server was not stopped. The next poll retries." -f $line.detail)
         return ("waiting: {0}" -f $line.detail)
     }
@@ -249,6 +265,7 @@ function Install-ServerBuild([string]$commit, [string]$stamp) {
     # Check again after the copy. Writing mcp-http.reload makes the live process exit.
     $again = Wait-BatchLineIdle -Seconds 60
     if (-not $again.idle) {
+        Clear-BatchDrain
         if (Test-Path $incoming) { Remove-Item $incoming -Recurse -Force }
         Log ("SERVER swap held: {0}. Timed out after 60s. The running server was not stopped. The next poll retries." -f $again.detail)
         return ("waiting: {0}" -f $again.detail)
@@ -266,6 +283,7 @@ function Install-ServerBuild([string]$commit, [string]$stamp) {
     }
     Set-Content -Path (Join-Path $state 'mcp-http.reload') -Value $commit -Encoding ascii
     $health = Test-McpHealth $commit
+    Clear-BatchDrain
     if ($health.ok) { return 'pass' }
     Log "SERVER health failed ($($health.detail)). Rolling back."
     Stop-HttpServer
@@ -305,8 +323,10 @@ function Test-McpHealth([string]$commit) {
 function Install {
     $info  = Get-Content $ready -Raw | ConvertFrom-Json
     if ((Test-Path (Join-Path $next 'server\build\index.js')) -and -not (Test-Path (Join-Path $next 'server.installed'))) {
+        Set-BatchDrain 'maintenance: server update'
         $line = Wait-BatchLineIdle -Seconds 60
         if (-not $line.idle) {
+            Clear-BatchDrain
             Log ("SERVER swap held: {0}. Timed out after 60s. The running server was not stopped. The staged build stays. The next poll retries." -f $line.detail)
             return
         }
