@@ -1,14 +1,38 @@
 import { RevitClientConnection } from "./SocketClient.js";
-import { HOST, notListening, readInstances, resolvePort } from "../fmc/connect.js";
+import { HOST, forgetInstance, notListening, probePort, readInstances, resolvePort, stalePortMessage } from "../fmc/connect.js";
+import { backoffMs } from "../fmc/reconnect.js";
 import { getChosen, revitTarget } from "../fmc/target.js";
 
 // One queue per Revit: calls to the same Revit run one at a time (its API is single-threaded), calls to two Revits
 // run side by side, so two projects can be automated at once.
 const queues = new Map<number, Promise<void>>();
 
-/** The port the current call goes to (see resolvePort: the call's revit, the pane's REVIT_PORT, fmc_revit use, the only Revit). */
-export function currentPort(): number {
-  return resolvePort(revitTarget.getStore(), readInstances(), process.env, getChosen());
+/**
+ * The port the current call goes to (see resolvePort: the call's revit, the pane's REVIT_PORT, fmc_revit use, the only Revit).
+ * A port taken from an instance file is probed first. A stale file is removed and the call fails with that reason,
+ * instead of connecting and reporting ECONNRESET.
+ */
+export async function currentPort(): Promise<number> {
+  const target = revitTarget.getStore();
+  const chosen = getChosen();
+  let last: Error | undefined;
+  // A Revit that just restarted rewrites its instance file a moment later. Re-read between tries, and only
+  // drop the file once it has stayed dead.
+  for (let attempt = 0; attempt < 4; attempt++) {
+    const instances = readInstances();
+    const port = resolvePort(target, instances, process.env, chosen);
+    if (!instances.some((i) => i.port === port)) return port;
+    const verdict = await probePort(HOST, port, 300);
+    if (verdict === "ok") return port;
+    const owner = instances.find((i) => i.port === port);
+    last = new Error(stalePortMessage(port, verdict, owner));
+    if (attempt === 3) {
+      if (owner) forgetInstance(owner);
+      throw last;
+    }
+    await new Promise((resolve) => setTimeout(resolve, backoffMs(attempt)));
+  }
+  throw last ?? new Error("Revit did not answer");
 }
 
 /**
@@ -20,7 +44,7 @@ export function currentPort(): number {
 export async function withRevitConnection<T>(
   operation: (client: RevitClientConnection) => Promise<T>
 ): Promise<T> {
-  const port = currentPort();
+  const port = await currentPort();
   const previous = queues.get(port) ?? Promise.resolve();
   let release: () => void;
   const mine = new Promise<void>((resolve) => { release = resolve; });
@@ -29,6 +53,7 @@ export async function withRevitConnection<T>(
   await previous;
 
   const revitClient = new RevitClientConnection(HOST, port);
+  revitClient.refreshPort = () => currentPort();
 
   try {
     // 连接到Revit客户端

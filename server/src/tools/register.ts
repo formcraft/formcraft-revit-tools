@@ -67,7 +67,45 @@ export function annotateInvalidOpErrors(server: McpServer): boolean {
   return true;
 }
 
-export async function registerTools(server: McpServer) {
+export type RegistrarDecision =
+  | { kind: "tool"; name: string }
+  | { kind: "helper" }
+  | { kind: "bad"; reason: string };
+
+/**
+ * The tool registrar is the one export named register*Tool. Helpers such as registerFile(projectFolder) also start
+ * with "register" and must not be called with the MCP server (that threw ERR_INVALID_ARG_TYPE and fmc_review never
+ * registered). A module with only those helpers is a loud failure. A module with no register* export is a helper file.
+ */
+export function classifyRegistrar(module: Record<string, unknown>): RegistrarDecision {
+  const tools = Object.keys(module).filter((key) => /^register.+Tool$/.test(key) && typeof module[key] === "function");
+  if (tools.length > 1) return { kind: "bad", reason: `more than one register*Tool export: ${tools.join(", ")}` };
+  if (tools.length === 1) return { kind: "tool", name: tools[0] };
+  const helpers = Object.keys(module).filter((key) => key.startsWith("register") && typeof module[key] === "function");
+  if (helpers.length > 0) return { kind: "bad", reason: `helper ${helpers.join(", ")} is not a register*Tool export, so it was not called with the MCP server` };
+  return { kind: "helper" };
+}
+
+/** Calls the module's register*Tool. Throws when the module would have registered a helper instead. */
+export function callRegistrar(module: Record<string, unknown>, server: McpServer): string {
+  const decision = classifyRegistrar(module);
+  if (decision.kind === "helper") return "";
+  if (decision.kind === "bad") throw new Error(decision.reason);
+  const fn = module[decision.name] as (mcp: McpServer) => unknown;
+  const result = fn(server);
+  if (result instanceof Promise) {
+    throw new Error(`${decision.name} returned a promise; register*Tool must be synchronous`);
+  }
+  return decision.name;
+}
+
+export interface RegistrationReport {
+  registered: string[];
+  skipped: string[];
+  failed: { file: string; error: string }[];
+}
+
+export async function registerTools(server: McpServer): Promise<RegistrationReport> {
   // 获取当前文件的目录路径
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
@@ -107,13 +145,20 @@ export async function registerTools(server: McpServer) {
   let appOff = new Set<string>();
   try { appOff = toolsOff(appStatuses(realProbe(path.resolve(__dirname, "..", "..")))); } catch { /* the hub can't tell: load everything */ }
 
+  const registered: string[] = [];
+  const skipped: string[] = [];
+  const failed: { file: string; error: string }[] = [];
+
   // 动态导入并注册每个工具
   for (const file of toolFiles) {
-    if (profile === "fmc" && hiddenInFmcProfile.has(file.replace(/\.(ts|js)$/, ""))) {
+    const base = file.replace(/\.(ts|js)$/, "");
+    if (profile === "fmc" && hiddenInFmcProfile.has(base)) {
+      skipped.push(base);
       console.error(`FMC profile: skipped ${file}`);
       continue;
     }
-    if (appOff.has(file.replace(/\.(ts|js)$/, ""))) {
+    if (appOff.has(base)) {
+      skipped.push(base);
       console.error(`Hub: ${file} skipped (its app is switched off: fmc_apps)`);
       continue;
     }
@@ -123,22 +168,23 @@ export async function registerTools(server: McpServer) {
 
       // 动态导入模块
       const module = await import(importPath);
-
-      // 查找并执行注册函数
-      const registerFunctionName = Object.keys(module).find(
-        (key) => key.startsWith("register") && typeof module[key] === "function"
-      );
-
-      if (registerFunctionName) {
-        module[registerFunctionName](server);
-        console.error(`已注册工具: ${file}`);
-      } else {
-        console.warn(`警告: 在文件 ${file} 中未找到注册函数`);
+      const name = callRegistrar(module as Record<string, unknown>, server);
+      if (!name) {
+        skipped.push(base);
+        continue;
       }
+      registered.push(base);
+      console.error(`已注册工具: ${file}`);
     } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      failed.push({ file, error: message });
       console.error(`注册工具 ${file} 时出错:`, error);
     }
   }
+  if (failed.length) {
+    throw new Error("Tool registration failed (" + failed.length + "):\n" + failed.map((f) => `${f.file}: ${f.error}`).join("\n"));
+  }
+  return { registered, skipped, failed };
 }
 
 /** A reply that says the batch waits in the approval queue (Ogala report: those were counted as failures). */
