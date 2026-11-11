@@ -1,15 +1,18 @@
 /**
- * Short-lived reads of one document: its info, levels, types and views.
+ * Short-lived reads of one document: levels, types and views.
  * A write to that document, or the release of its lease, drops the cache.
  * Replies are counts and ids unless the caller passes verbose: true.
+ *
+ * fmc_document_info is not cached. Each call is a live round trip: the reply carries that call's id,
+ * a dropped socket must be seen, and the test runner counts every call. Serving it from the cache
+ * reused one reply across callers.
  */
 import { WRITE_COMMANDS } from "./policy.js";
 
-export type ReadKind = "info" | "levels" | "types" | "views";
+export type ReadKind = "levels" | "types" | "views";
 
-/** Commands whose answers are safe to reuse until the document changes. */
+/** Catalog reads. Safe to reuse until the document changes. Document info is not in this set. */
 export const CACHED_READS: Record<string, ReadKind> = {
-  fmc_document_info: "info",
   analyze_model_statistics: "levels",
   get_available_family_types: "types",
   fmc_type_facts: "types",
@@ -43,7 +46,10 @@ export function readCacheKey(command: string, params: unknown, document: string)
 
 export function takeCachedRead(command: string, params: unknown, document: string): unknown | undefined {
   if (!CACHED_READS[command]) return undefined;
-  return buckets.get(readDocumentKey(document))?.get(readCacheKey(command, params, document))?.value;
+  const hit = buckets.get(readDocumentKey(document))?.get(readCacheKey(command, params, document))?.value;
+  if (hit === undefined) return undefined;
+  // A copy, so two callers cannot share one reply object.
+  try { return structuredClone(hit); } catch { return hit; }
 }
 
 export function putCachedRead(command: string, params: unknown, document: string, value: unknown): void {
