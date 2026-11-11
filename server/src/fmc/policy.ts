@@ -78,6 +78,17 @@ export interface GuardConfig {
   /** Sync a workshared model when a batch releases successfully. Default true. */
   sync_on_batch_end?: boolean;
   /**
+   * Document titles or paths that never sync. Matched with documentKey, so a title and that file's path are the same
+   * document. Batch-end sync and the timed sync both skip these.
+   */
+  sync_exclude?: string[];
+  /**
+   * Per-document allowlist. When set, only these titles or paths sync (again by documentKey).
+   * ["Structure"] is "sync only Structure". Omit it to sync every workshared document that is not excluded.
+   * A document on both lists is excluded.
+   */
+  sync_documents?: string[];
+  /**
    * Crash recovery. heartbeat_s is how long the plugin may stay silent before an instance is hung.
    * documents, when set, is the list to reopen (the five HEBERT HOSTELS models: architecture, structural,
    * electrical, plumbing, site). Empty means reopen whatever was open.

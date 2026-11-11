@@ -4,8 +4,8 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { aiGate } from "./aigate.js";
-import { centralBusy, planSync, runDocumentSync, syncSettings, type SyncFacts, type SyncTiming } from "./batchsync.js";
-import { BatchBoard } from "./batchline.js";
+import { centralBusy, planSync, runDocumentSync, syncDocumentKey, syncSettings, syncSkip, type SyncFacts, type SyncTiming } from "./batchsync.js";
+import { BatchBoard, documentKey } from "./batchline.js";
 import { DEFAULT_CONFIG, type GuardConfig } from "./policy.js";
 
 const settings = syncSettings({ sync_minutes: 15, sync_on_batch_end: true });
@@ -15,8 +15,31 @@ const base = (over: Partial<SyncTiming> = {}): SyncTiming => ({
 });
 
 test("sync settings default to 15 minutes and batch end, for every document", () => {
-  assert.deepEqual(syncSettings(undefined), { minutes: 15, onBatchEnd: true });
-  assert.deepEqual(syncSettings({ sync_minutes: 0, sync_on_batch_end: false }), { minutes: 0, onBatchEnd: false });
+  assert.deepEqual(syncSettings(undefined), { minutes: 15, onBatchEnd: true, exclude: [], documents: null });
+  assert.deepEqual(syncSettings({ sync_minutes: 0, sync_on_batch_end: false }), { minutes: 0, onBatchEnd: false, exclude: [], documents: null });
+});
+
+test("sync_exclude skips a document, and sync_documents is a per-document allowlist", () => {
+  const path = "D:\\Projects\\HEBERT\\Structure.rvt";
+  assert.equal(syncDocumentKey(path), documentKey(path));
+  assert.equal(syncDocumentKey("Structure"), documentKey("D:/Projects/HEBERT/Structure.rvt"));
+  const excluded = syncSettings({ sync_exclude: ["Architecture", path] });
+  const arch = planSync(open, base({ now: 900_000 + 15 * 60_000 }), excluded, "Architecture");
+  assert.equal(arch.run, false);
+  assert.equal(arch.excluded, true);
+  assert.match(arch.reason, /sync_exclude/);
+  const byPath = syncSkip("Structure", excluded);
+  assert.equal(byPath?.excluded, true);
+  const only = syncSettings({ sync_documents: ["Structure"] });
+  const structure = planSync(open, base({ now: 900_000 + 15 * 60_000, batchEnd: true }), only, "Structure");
+  assert.equal(structure.run, true);
+  assert.equal(structure.excluded, false);
+  const plumbing = planSync(open, base({ now: 900_000 + 15 * 60_000, batchEnd: true }), only, "Plumbing");
+  assert.equal(plumbing.run, false);
+  assert.equal(plumbing.excluded, true);
+  assert.match(plumbing.reason, /sync_documents/);
+  const both = syncSettings({ sync_exclude: ["Structure"], sync_documents: ["Structure"] });
+  assert.match(planSync(open, base({ batchEnd: true }), both, "D:\\Models\\Structure.rvt").reason, /sync_exclude/);
 });
 
 test("only a workshared model with AI on syncs, between batches or at batch end", () => {

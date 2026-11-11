@@ -16,7 +16,7 @@ import path from "node:path";
 import { createHash, randomUUID } from "node:crypto";
 import { WRITE_COMMANDS, loadConfig } from "./policy.js";
 import { SYNC_NOT_RUN, batchCareReport, correctionHelp, type CorrectionHelp } from "./batchcare.js";
-import { planSync, syncSettings, type SyncRun } from "./batchsync.js";
+import { planSync, syncDocumentKey, syncSettings, syncSkip, type SyncRun } from "./batchsync.js";
 import { memoryGate, onMemoryResume } from "./memory.js";
 import { batchLease, documentTarget } from "./target.js";
 import { queueClient } from "./fairqueue.js";
@@ -128,9 +128,7 @@ export function loadBatchConfig(env: NodeJS.ProcessEnv = process.env, read?: (fi
 
 /** Title, path or file name, so "Architecture" and "D:\\Models\\Architecture.rvt" are one document. */
 export function documentKey(name: string): string {
-  const norm = name.trim().toLowerCase().replace(/\\/g, "/");
-  const base = norm.split("/").pop() ?? norm;
-  return base.replace(/\.rvt$/, "");
+  return syncDocumentKey(name);
 }
 
 export function documentsMatch(held: string, asked: string | undefined): boolean {
@@ -1013,23 +1011,25 @@ export class BatchBoard {
       row.lastSyncAt = this.now();
       row.lastError = null;
     } else if (sync.error) row.lastError = sync.error;
-    else if (/Not workshared|is not synced|Protected original|Sync is off/.test(sync.detail)) row.changedAt = row.lastSyncAt;
+    else if (/Not workshared|is not synced|Protected original|Sync is off|Excluded by sync_exclude|Not in sync_documents/.test(sync.detail)) row.changedAt = row.lastSyncAt;
     this.syncState.set(key, row);
     this.emit(`sync ${document}: ${sync.detail}`);
   }
 
-  private syncFields(key: string): { last_sync: string | null; next_sync: string | null; last_error: string | null } {
+  private syncFields(key: string): { last_sync: string | null; next_sync: string | null; last_error: string | null; excluded: boolean } {
+    const settings = syncSettings(loadConfig().config);
     const row = this.syncState.get(key);
-    if (!row) return { last_sync: null, next_sync: null, last_error: null };
+    if (!row) return { last_sync: null, next_sync: null, last_error: null, excluded: syncSkip(key, settings) != null };
     const plan = planSync(
       { workshared: true, stopAi: false, aiOn: true },
       { now: this.now(), lastSyncAt: row.lastSyncAt, changedAt: row.changedAt, leaseHeld: this.holders.has(key), batchEnd: false },
-      syncSettings(loadConfig().config),
+      settings,
+      row.document,
     );
-    return { last_sync: plan.last_sync, next_sync: plan.next_sync, last_error: row.lastError };
+    return { last_sync: plan.last_sync, next_sync: plan.next_sync, last_error: row.lastError, excluded: plan.excluded };
   }
 
-  private syncRows(): Array<{ document: string; last_sync: string | null; next_sync: string | null; last_error: string | null }> {
+  private syncRows(): Array<{ document: string; last_sync: string | null; next_sync: string | null; last_error: string | null; excluded: boolean }> {
     return [...this.syncState.entries()].map(([key, row]) => ({ document: row.document, ...this.syncFields(key) }));
   }
 
@@ -1071,6 +1071,7 @@ export class BatchBoard {
     const docs = readInstances().flatMap((instance) => instance.documents ?? []).filter((doc) => doc.workshared && doc.title);
     for (const doc of docs) {
       const key = documentKey(doc.title);
+      if (syncSkip(doc.title, settings, doc.path)) continue;
       if (this.holders.has(key)) continue;
       const state = this.syncState.get(key);
       if (!state?.changedAt || (state.lastSyncAt != null && state.changedAt <= state.lastSyncAt)) continue;

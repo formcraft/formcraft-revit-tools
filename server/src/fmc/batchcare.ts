@@ -45,6 +45,9 @@ export interface BatchCareReport {
   sync: "managed" | "off";
   sync_minutes: number;
   sync_on_batch_end: boolean;
+  sync_exclude: string[];
+  /** Null when every document that is not excluded may sync. */
+  sync_documents: string[] | null;
   sync_source: string;
   approval_covers: string[];
   approval_does_not_cover: string[];
@@ -72,7 +75,9 @@ export function batchCareReport(env: NodeJS.ProcessEnv = process.env): BatchCare
     sync: syncOn ? "managed" : "off",
     sync_minutes: sync.minutes,
     sync_on_batch_end: sync.onBatchEnd,
-    sync_source: "fmc_guard.json sync_minutes and sync_on_batch_end, applied to every open workshared document. Save the local file, then fmc_revit_file sync with relinquish. Non-workshared models are autosave only. Stop AI and the live-model lock still refuse it.",
+    sync_exclude: sync.exclude,
+    sync_documents: sync.documents,
+    sync_source: "fmc_guard.json sync_minutes and sync_on_batch_end. sync_exclude skips those documents. sync_documents, when set, is the only list that syncs (sync only Structure is [\"Structure\"]). Save the local file, then fmc_revit_file sync with relinquish. Non-workshared models are autosave only. Stop AI and the live-model lock still refuse it.",
     approval_covers: APPROVAL_COVERS,
     approval_does_not_cover: APPROVAL_DOES_NOT_COVER,
   };
