@@ -140,6 +140,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_struct_facts",
   // LD5 Gate D: the drafting views holding items fmc_diagram drew, with their source keys (read-only)
   "fmc_diagram_drawn",
+  // batch auto-save reads the document before it decides whether the existing auto-save may run
+  "fmc_document_info",
 ]);
 
 /**
