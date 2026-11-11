@@ -63,5 +63,34 @@ namespace revit_mcp_plugin.Core
             _port = 0;
             try { File.Delete(FileFor(Process.GetCurrentProcess().Id)); } catch (Exception) { /* already gone */ }
         }
+
+        /// <summary>Deletes instance files whose Revit process is gone. A live process removes its own file when its listener stops.</summary>
+        public static void SweepDead()
+        {
+            try
+            {
+                if (!Directory.Exists(Folder)) return;
+                foreach (string file in Directory.GetFiles(Folder, "*.json"))
+                {
+                    try
+                    {
+                        int pid = JObject.Parse(File.ReadAllText(file)).Value<int?>("pid") ?? 0;
+                        if (pid <= 0 || !Alive(pid)) File.Delete(file);
+                    }
+                    catch (Exception) { /* a half-written file is read again next time */ }
+                }
+            }
+            catch (Exception) { /* the folder is a convenience */ }
+        }
+
+        private static bool Alive(int pid)
+        {
+            try
+            {
+                using (Process.GetProcessById(pid)) return true;
+            }
+            catch (ArgumentException) { return false; }
+            catch (Exception) { return true; }
+        }
     }
 }

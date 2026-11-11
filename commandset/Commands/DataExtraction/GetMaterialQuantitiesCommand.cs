@@ -24,12 +24,15 @@ namespace RevitMCPCommandSet.Commands.DataExtraction
                 List<string> categoryFilters = parameters?["categoryFilters"]?.ToObject<List<string>>();
                 bool selectedElementsOnly = parameters?["selectedElementsOnly"]?.Value<bool>() ?? false;
 
-                // Set parameters
+                // Set parameters. A named document that is not open is refused; the active document is not substituted.
+                _handler.Parameters = parameters ?? new JObject();
                 _handler.SetParameters(categoryFilters, selectedElementsOnly);
 
                 // Execute and wait
                 if (RaiseAndWaitForCompletion(120000)) // 120 second timeout for large projects
                 {
+                    if (!string.IsNullOrEmpty(_handler.Error))
+                        throw new InvalidOperationException(_handler.Error);
                     return _handler.ResultInfo;
                 }
                 else
