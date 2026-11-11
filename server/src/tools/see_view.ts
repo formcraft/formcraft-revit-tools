@@ -43,9 +43,12 @@ export const SEE_VIEW_DESCRIPTION =
   "rest). select: a query in place of ids (modify_model's select: category, level, room, box, near, param...). box: a section box to look into (modify_model's BOX: room, level slice or cut_mm, cut_line_mm, slice, grow_mm, " +
   "top_mm...; with view, it boxes that 3D view, plan or section for this picture only). perspective true: a camera on the box " +
   "(from inside: standing in it at eye height; eye_mm + target_mm place the camera). save_to: a folder or .png path to keep the " +
-  "picture (a WIP or staging folder). view: a plan, section, 3D view or sheet by name or id (with ids, those are highlighted in it). selection true: " +
-  "what the person has selected in Revit. size: pixels (default 1024; each picture costs tokens, so look when it " +
-  "matters: after geometry changes, and at problems model_check finds). Nothing in the model changes.";
+  "picture (a WIP or staging folder). view: a plan, section, 3D view or sheet by name or id in the document you name " +
+  "(with ids, those are highlighted in it). document: title or full path of an open model, including one that is not the " +
+  "active window. The picture is exported from that document with ExportImage. The active window is not switched. " +
+  "The answer names the document title, the path, and the view. selection true: what the person has selected, only when " +
+  "that document is the active window. size: pixels (default 1024; each picture costs tokens, so look when it " +
+  "matters: after every batch, and at problems model_check finds). A read: allowed while a batch lease is held. Nothing in the model changes.";
 
 export function registerSeeViewTool(server: McpServer) {
   server.tool(

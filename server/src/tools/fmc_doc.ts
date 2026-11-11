@@ -4,7 +4,7 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
-import { SessionRecord, buildReport, idleLimit, markStale, openProblems, readLedger as readDocLedger, saveProblems, writeLedger as writeDocLedger } from "../fmc/doc.js";
+import { SessionRecord, buildReport, familyDocumentOf, idleLimit, markStale, openProblems, readLedger as readDocLedger, saveProblems, writeLedger as writeDocLedger } from "../fmc/doc.js";
 import { BRIDGE_LIMIT_BYTES, applyEnvelope, isNoAnswer, isStillQueued, progressPath, readProgress, requestBytes, stoppedAt } from "../fmc/recipebuild.js";
 import { serverBuild } from "./fmc_selftest.js";
 import { OP, expandSkeletons, familyRoots, opsProblems, resolveFamilyPaths, splitProblems } from "../fmc/ops.js";
@@ -28,6 +28,16 @@ function log(cfg: GuardConfig, action: string, target: string, result: string, d
 
 function reply(body: object, isError = false) {
   return { content: [{ type: "text" as const, text: JSON.stringify(body, null, 2) }], isError };
+}
+
+/** A session's family document (title or path from open), so later sendRaw calls satisfy documentRequired. */
+function namedOf(args: FmcDocArgs): string {
+  return String((args as FmcDocArgs & { document?: string }).document ?? "").trim();
+}
+
+function sendDoc(command: string, params: Record<string, unknown>, timeoutMs: number, document?: string) {
+  const body = document ? { ...params, document } : params;
+  return withRevitConnection((c) => c.sendRaw(command, body, timeoutMs));
 }
 
 /** The sessions the server knows (each CLI call is its own process): source, opened, last used, ops applied (B1b, F-046). */
@@ -104,7 +114,8 @@ export async function runFmcDoc(args: FmcDocArgs) {
       const r = await withRevitConnection((c) => c.sendRaw("fmc_doc_open", { template: args.template.trim(), file: args.file.trim() }, 120000));
       const id = String(r?.session ?? "");
       const at = new Date().toISOString();
-      ledger[id] = { id, source: args.template.trim() || args.file.trim(), opened: at, used: at, ops: [] };
+      const document = familyDocumentOf(r, args.file.trim());
+      ledger[id] = { id, source: args.template.trim() || args.file.trim(), opened: at, used: at, ops: [], ...(document ? { document } : {}) };
       writeLedger(config, ledger);
       log(config, "doc_open", ledger[id].source, "done", id);
       return reply({ session: id, document: r });
@@ -112,14 +123,15 @@ export async function runFmcDoc(args: FmcDocArgs) {
 
     if (!args.session.trim()) return reply({ refused: true, reasons: [`${args.action} needs the session id from open`] }, true);
     const s = ledger[args.session.trim()] ?? { id: args.session.trim(), source: "", opened: "", ops: [] };
+    const document = (s.document ?? namedOf(args)).trim();
     // F-046: every call on a session counts as use (its idle time starts again)
     if (ledger[s.id] && args.action !== "close") { s.used = new Date().toISOString(); writeLedger(config, ledger); }
 
-    if (args.action === "report") return reply({ session: s.id, document: await withRevitConnection((c) => c.sendRaw("fmc_doc_report", { session: s.id }, 60000)) });
+    if (args.action === "report") return reply({ session: s.id, document: await sendDoc("fmc_doc_report", { session: s.id }, 60000, document) });
 
     if (args.action === "screenshot") {
       const folder = win.join(expandEnv(config.reports_dir), "Screenshots");
-      const r = await withRevitConnection((c) => c.sendRaw("fmc_doc_screenshot", { session: s.id, folder, detail_level: args.detail_level, style: args.style, views: args.views }, 180000));
+      const r = await sendDoc("fmc_doc_screenshot", { session: s.id, folder, detail_level: args.detail_level, style: args.style, views: args.views }, 180000, document);
       return reply({ session: s.id, files: r?.files ?? [], extents_mm: r?.extents_mm ?? null, notes: r?.notes ?? [] });
     }
 
@@ -145,8 +157,8 @@ export async function runFmcDoc(args: FmcDocArgs) {
         return { ...o, material: r.material };
       });
       const dry = args.dry_run !== false;
-      const r = await withRevitConnection((c) => c.sendRaw("fmc_doc_apply",
-        { session: s.id, ops, dry_run: dry, shared_parameter_file: expandEnv(config.shared_parameter_file) }, 300000));
+      const r = await sendDoc("fmc_doc_apply",
+        { session: s.id, ops, dry_run: dry, shared_parameter_file: expandEnv(config.shared_parameter_file) }, 300000, document);
       if (!dry) {
         s.ops.push(...((r?.ops ?? []) as Array<{ op: string; name: string; result: string }>).map((o) => ({ op: o.op, name: o.name, result: o.result })));
         ledger[s.id] = s;
@@ -157,12 +169,12 @@ export async function runFmcDoc(args: FmcDocArgs) {
     }
 
     if (args.action === "flex") {
-      const r = await withRevitConnection((c) => c.sendRaw("fmc_doc_flex", { session: s.id, ...(args.follow?.length ? { follow: args.follow } : {}) }, 300000));
+      const r = await sendDoc("fmc_doc_flex", { session: s.id, ...(args.follow?.length ? { follow: args.follow } : {}) }, 300000, document);
       return reply({ session: s.id, ...r, next: r?.ok ? "Every type regenerates" : "Fix the constraints the failing types name, then flex again" });
     }
 
     if (args.action === "close") {
-      const r = await withRevitConnection((c) => c.sendRaw("fmc_doc_close", { session: s.id }, 60000));
+      const r = await sendDoc("fmc_doc_close", { session: s.id }, 60000, document);
       delete ledger[s.id];
       writeLedger(config, ledger);
       return reply({ session: s.id, ...r });
@@ -172,8 +184,8 @@ export async function runFmcDoc(args: FmcDocArgs) {
     const problems = saveProblems(args.path, config);
     if (problems.length) return reply({ refused: true, reasons: problems }, true);
     if (fs.existsSync(args.path) && !args.overwrite) return reply({ refused: true, reasons: [`${args.path} exists: a person decides to overwrite (overwrite: true)`] }, true);
-    const saved = await withRevitConnection((c) => c.sendRaw("fmc_doc_save", { session: s.id, path: args.path.trim(), overwrite: args.overwrite, max_backups: config.max_backups }, 120000));
-    const report = await withRevitConnection((c) => c.sendRaw("fmc_doc_report", { session: s.id }, 60000));
+    const saved = await sendDoc("fmc_doc_save", { session: s.id, path: args.path.trim(), overwrite: args.overwrite, max_backups: config.max_backups }, 120000, document);
+    const report = await sendDoc("fmc_doc_report", { session: s.id }, 60000, document);
     const build = buildReport(s, args.path.trim(), report ?? {}, kitManifest(config), serverBuild().commit, new Date());
     const buildFile = args.path.trim().replace(/\.rfa$/i, ".build.json");
     fs.writeFileSync(buildFile, JSON.stringify(build, null, 2));

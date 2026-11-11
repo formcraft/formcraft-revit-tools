@@ -162,6 +162,8 @@ export function explain(command: string, params: unknown, names: Names = { types
       return cap(["New rooms:", ...data.map((d) => `${d.number ?? ""} ${d.name ?? ""} at ${xy(d.location)}`.trim())]);
     case "create_level":
       return cap(["New levels:", ...data.map((d) => `${d.name ?? "?"} at ${mm(d.elevation)}`)]);
+    case "fmc_reload_link":
+      return [`Reload Revit link type ${p.link_type_id} in ${p.document}` + (p.path ? ` from ${p.path}` : " from its current path") + ". Link instances stay where they are."];
     case "fmc_revit_file": return [`Revit file action: ${p.action}${p.format ? ` ${p.format}` : ""}${p.path ? ` ${p.path}` : ""}${p.folder ? ` to ${p.folder}` : ""}` +
       (["sync", "relinquish"].includes(p.action) ? " (changes the central model for everyone)" : "")];
     case "fmc_undo":

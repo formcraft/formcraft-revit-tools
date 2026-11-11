@@ -8,7 +8,7 @@
   A newer staged build replaces one not yet installed. ready.json is written last, so the updater never installs a
   half-copied build. Builds from uncommitted changes ("+local") are refused unless -AllowLocal.
 #>
-param([string]$RevitYear = '2025', [switch]$AllowLocal, [string]$Target = '')
+param([string]$RevitYear = '2025', [switch]$AllowLocal, [switch]$ServerOnly, [string]$Target = '')
 
 $ErrorActionPreference = 'Stop'
 $repo   = Split-Path $PSScriptRoot -Parent
@@ -16,7 +16,8 @@ $bundle = Join-Path $repo "plugin\bin\AddIn $RevitYear Release R$($RevitYear.Sub
 $server = Join-Path $repo 'server\build'
 $next   = if ($Target) { $Target } else { Join-Path $env:LOCALAPPDATA 'Formcraft\Staging\next' }
 
-if (-not (Test-Path (Join-Path $bundle 'Formcraft.addin'))) { throw "No add-in bundle at ${bundle}: build the plugin first" }
+$haveAddin = Test-Path (Join-Path $bundle 'Formcraft.addin')
+if (-not $ServerOnly -and -not $haveAddin) { throw "No add-in bundle at ${bundle}: build the plugin first, or pass -ServerOnly" }
 if (-not (Test-Path (Join-Path $server 'build-info.json'))) { throw "No server build at ${server}: npm run build --prefix server" }
 
 $commit = (git -C $repo rev-parse --short HEAD).Trim()
@@ -25,9 +26,12 @@ $serverCommit = (Get-Content (Join-Path $server 'build-info.json') -Raw | Conver
 if ($serverCommit.Replace('+local', '') -ne $commit) { Write-Warning "Server build is ${serverCommit}, the repo is at ${commit}: rebuild the server" }
 
 if (Test-Path $next) { Remove-Item $next -Recurse -Force }
-New-Item -ItemType Directory -Force (Join-Path $next 'addin'), (Join-Path $next 'server') | Out-Null
-Copy-Item (Join-Path $bundle 'revit_mcp_plugin') (Join-Path $next 'addin') -Recurse
-Copy-Item (Join-Path $bundle 'Formcraft.addin') (Join-Path $next 'addin')
+New-Item -ItemType Directory -Force (Join-Path $next 'server') | Out-Null
+if ($haveAddin -and -not $ServerOnly) {
+    New-Item -ItemType Directory -Force (Join-Path $next 'addin') | Out-Null
+    Copy-Item (Join-Path $bundle 'revit_mcp_plugin') (Join-Path $next 'addin') -Recurse
+    Copy-Item (Join-Path $bundle 'Formcraft.addin') (Join-Path $next 'addin')
+}
 Copy-Item $server (Join-Path $next 'server') -Recurse
 # The Robot connector (connectors/robot), built where Robot is installed: it travels beside the server.
 $robot = Join-Path $repo 'server\robot'
@@ -52,12 +56,21 @@ if (Test-Path (Join-Path $rhino 'Formcraft.Rhino.rhp')) {
 }
 
 # The updater itself travels with the build, so a merged change to fmc-update.ps1 reaches the PC without a manual step.
+# The MCP service supervisor travels with it: the updater registers that logon task from these scripts.
 New-Item -ItemType Directory -Force (Join-Path $next 'updater') | Out-Null
 Copy-Item (Join-Path $PSScriptRoot 'fmc-update.ps1') (Join-Path $next 'updater') -Force
+Copy-Item (Join-Path $PSScriptRoot 'fmc-mcp-service.ps1') (Join-Path $next 'updater') -Force
+Copy-Item (Join-Path $PSScriptRoot 'fmc-mcp-task.ps1') (Join-Path $next 'updater') -Force
+# installed-files.json is not a manifest this build writes. A copy left in a drop would keep an old commit.
+Get-ChildItem $next -Recurse -Filter 'installed-files.json' -ErrorAction SilentlyContinue | Remove-Item -Force
 
 [ordered]@{ commit = $commit; staged_at = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ'); revit = $RevitYear } |
     ConvertTo-Json | Set-Content -Path (Join-Path $next 'ready.json') -Encoding UTF8
-Write-Output "Staged $commit in $next. It installs the next time Revit is closed."
+if ($haveAddin -and -not $ServerOnly) {
+    Write-Output "Staged $commit in $next. The server installs without closing Revit. The add-in installs the next time Revit is closed."
+} else {
+    Write-Output "Staged server $commit in $next. It installs without closing Revit."
+}
 # A drop outside the user's profile (the CI runner's machine-wide drop, -Target): the person's updater moves it in, so
 # it needs modify rights for local users.
 if ($Target) {

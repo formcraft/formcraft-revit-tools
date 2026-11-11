@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
+import { toolFailure } from "./failure.js";
 
 export function registerAnalyzeModelStatisticsTool(server: McpServer) {
   server.tool(
@@ -12,10 +13,12 @@ export function registerAnalyzeModelStatisticsTool(server: McpServer) {
         .optional()
         .default(true)
         .describe("Whether to include detailed breakdown by family and type within each category. Defaults to true."),
+      verbose: z.boolean().optional().describe("Return the full statistics. Omit it for counts and ids."),
     },
     async (args, extra) => {
       const params = {
         includeDetailedTypes: args.includeDetailedTypes ?? true,
+        ...(args.verbose ? { verbose: true } : {}),
       };
 
       try {
@@ -32,14 +35,7 @@ export function registerAnalyzeModelStatisticsTool(server: McpServer) {
           ],
         };
       } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `Analyze model statistics failed: ${error instanceof Error ? error.message : String(error)}`,
-            },
-          ],
-        };
+        return toolFailure(`Analyze model statistics failed: ${error instanceof Error ? error.message : String(error)}`);
       }
     }
   );

@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
+import { toolFailure } from "./failure.js";
 
 export function registerGetAvailableFamilyTypesTool(server: McpServer) {
   server.tool(
@@ -21,12 +22,14 @@ export function registerGetAvailableFamilyTypesTool(server: McpServer) {
         .number()
         .optional()
         .describe("Maximum number of family types to return"),
+      verbose: z.boolean().optional().describe("Return every type. Omit it for counts and ids."),
     },
     async (args, extra) => {
       const params = {
         categoryList: args.categoryList || [],
         familyNameFilter: args.familyNameFilter || "",
         limit: args.limit || 100,
+        ...(args.verbose ? { verbose: true } : {}),
       };
 
       try {
@@ -46,16 +49,9 @@ export function registerGetAvailableFamilyTypesTool(server: McpServer) {
           ],
         };
       } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `get available family types failed: ${
+        return toolFailure(`get available family types failed: ${
                 error instanceof Error ? error.message : String(error)
-              }`,
-            },
-          ],
-        };
+              }`);
       }
     }
   );

@@ -66,6 +66,54 @@ export interface GuardConfig {
    * gate folder. When set, open_copy's copy_to must be inside one of them.
    */
   copy_roots: string[];
+  /**
+   * Free physical memory, in MB, below which new batch leases and model-changing calls wait.
+   * They resume above 1.5× this value (1536 when this is 1024). 0 turns the pause off.
+   */
+  ram_pause_free_mb?: number;
+  /** Longest send_code_to_revit script, in characters. Default 1_000_000. */
+  script_max_chars?: number;
+  /** Minutes of changes between syncs of a workshared model. Default 15. 0 turns the timer off. */
+  sync_minutes?: number;
+  /** Sync a workshared model when a batch releases successfully. Default true. */
+  sync_on_batch_end?: boolean;
+  /**
+   * Document titles or paths that never sync. Matched with documentKey, so a title and that file's path are the same
+   * document. Batch-end sync and the timed sync both skip these.
+   */
+  sync_exclude?: string[];
+  /**
+   * Per-document allowlist. When set, only these titles or paths sync (again by documentKey).
+   * ["Structure"] is "sync only Structure". Omit it to sync every workshared document that is not excluded.
+   * A document on both lists is excluded.
+   */
+  sync_documents?: string[];
+  /**
+   * Titles or paths that must not be auto-synced. A person sets this after a damaged central.
+   * Matched like sync_exclude. A recent corrupt-on-sync dialog flags the document as well.
+   */
+  damaged_documents?: string[];
+  /**
+   * Who may reserve the next batch slot. Matched against the MCP client name and the bot field.
+   * Default is Hostel Building Bot. An empty list means nobody may reserve.
+   */
+  batch_schedulers?: string[];
+  /**
+   * Dialogs and failure warnings an AI job may answer. allow is substrings of the dialog id or text.
+   * deny is extra text that must stay for a person. Delete, unjoin, overwrite, relinquish, save-as, upgrade,
+   * license, sign-in, corrupt-model and sync are never answered, even if they are in allow. Omit allow for the
+   * built-in short list (save reminder, duplicate types, duplicate mark).
+   */
+  dialogs?: { allow?: string[]; deny?: string[] };
+  /**
+   * Crash recovery. heartbeat_s is how long the plugin may stay silent before an instance is hung.
+   * documents, when set, is the list to reopen (the five HEBERT HOSTELS models: architecture, structural,
+   * electrical, plumbing, site). Empty means reopen whatever was open.
+   */
+  recovery?: {
+    heartbeat_s?: number;
+    documents?: Array<{ role?: string; title?: string; path: string; workshared?: boolean }>;
+  };
 }
 
 export const DEFAULT_CONFIG: GuardConfig = {
@@ -89,6 +137,13 @@ export const DEFAULT_CONFIG: GuardConfig = {
   family_max_mb: 2,
   protected_roots: [],
   copy_roots: [],
+  ram_pause_free_mb: 1024,
+  script_max_chars: 1_000_000,
+  sync_minutes: 15,
+  sync_on_batch_end: true,
+  damaged_documents: [],
+  batch_schedulers: ["Hostel Building Bot"],
+  recovery: { heartbeat_s: 90, documents: [] },
 };
 
 /** Tools that change the model. They are refused on live project models. */
@@ -97,7 +152,7 @@ export const WRITE_COMMANDS = new Set<string>([
   "create_level", "create_grid", "create_room", "create_dimensions", "create_structural_framing_system",
   "operate_element", "delete_element", "color_splash", "tag_walls", "tag_rooms", "send_code_to_revit",
   "fmc_load_test_families", "fmc_material_assign", "fmc_material_purge", "fmc_sheet_create", "fmc_sheet_rename",
-  "fmc_link_add", "fmc_link_pin", "fmc_workset_create", "fmc_review_cloud", "fmc_brief_apply", "fmc_fea_write",
+  "fmc_link_add", "fmc_link_pin", "fmc_reload_link", "fmc_workset_create", "fmc_review_cloud", "fmc_brief_apply", "fmc_fea_write",
   // Line diagrams (owner, 15 Oct): the tool draws only in new documents, _Staging and _ChainTests; in a live project a
   // person presses Generate in the pane.
   "fmc_diagram_draw",
@@ -113,6 +168,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_room_build", "fmc_element_apply",
   // modify_model (owner 26 Oct): the AI edits like a person, every batch approved
   "fmc_model_edit",
+  // fmc_replace: a structural replacement preview. It runs only on an open_copy document and always rolls back.
+  "fmc_replace",
   // run_revit_command (owner 26 Oct): a built-in Revit command, which may act on the selection
   "fmc_post_command",
   // new_family (owner 26 Oct): a family file made from a template and opened
@@ -138,6 +195,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_struct_facts",
   // LD5 Gate D: the drafting views holding items fmc_diagram drew, with their source keys (read-only)
   "fmc_diagram_drawn",
+  // batch auto-save reads the document before it decides whether the existing auto-save may run
+  "fmc_document_info",
 ]);
 
 /**

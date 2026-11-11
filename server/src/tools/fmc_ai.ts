@@ -10,6 +10,7 @@ import { COMMAND_GROUPS, LEVELS, Level, NEVER, USER_LINE, aiVerdict, generalStat
 import { planEnableCopy } from "../fmc/opencopy.js";
 import { formcraftDir, loadAiConfig, loadRulebook, loadState, readItem, readQueue, setResult, setStatus } from "../fmc/aiuse_io.js";
 import { failures, readUsage, summariseUsage } from "../fmc/usage.js";
+import { readSyncAutoLog } from "../fmc/syncauto.js";
 
 const win = path.win32;
 
@@ -57,7 +58,9 @@ export const FMC_AI_DESCRIPTION =
     "on, propose a send_code_to_revit batch (the person sees the code before approving); otherwise say which tool is " +
     "missing so it can be built. " +
     "enable_copy turns the General AI switch On for one verification-copy path only. It does not turn on the project " +
-    "switch, so a live model that shares the copy's project code stays Off. protected_roots is required. Stop AI still wins.";
+    "switch, so a live model that shares the copy's project code stays Off. protected_roots is required. Stop AI still wins. " +
+    "status also shows sync_auto_approve: whether a direct sync can run on its own (testing, auto_approve and " +
+    "auto_approve_sync), and the recent lines from FMC_SyncAutoApprove.jsonl.";
 
 export const FMC_AI_SHAPE = {
   action: z.enum(["status", "queue", "stop", "usage", "wait", "inbox", "failures", "enable_copy"]),
@@ -93,7 +96,9 @@ export function policySummary(config: GuardConfig, active: any) {
   return {
     // The one setting users see (owner 26 Oct): the plain state and line for the open model's project.
     general: {
-      state: state3, project: key || null, mode: ai?.mode ?? "strict", access: ai?.access ?? "general", allow_code: ai?.allow_code ?? false, inbox_unread: inboxUnread(), auto_approve: ai?.mode === "testing" && ai?.auto_approve === true, compliant: !active?.title || !!projectCode(active.title), section: ai ? "present" : "missing (the AI switch creates it)",
+      state: state3, project: key || null, mode: ai?.mode ?? "strict", access: ai?.access ?? "general", allow_code: ai?.allow_code ?? false, inbox_unread: inboxUnread(), auto_approve: ai?.mode === "testing" && ai?.auto_approve === true,
+      auto_approve_sync: ai?.auto_approve_sync === true, sync_auto_approve: ai?.mode === "testing" && ai?.auto_approve === true && ai?.auto_approve_sync === true,
+      compliant: !active?.title || !!projectCode(active.title), section: ai ? "present" : "missing (the AI switch creates it)",
       rulebook_general: !!book?.general, covers: book?.general?.groups ?? [],
       line: state3 === "On" ? "AI is on for this project: every change waits for your approval." : state3 === "Stopped" ? USER_LINE.stopped
         : active?.title && !key ? USER_LINE.notCompliant : USER_LINE.off,
@@ -105,6 +110,11 @@ export function policySummary(config: GuardConfig, active: any) {
     model: active?.title ?? null, project, role,
     involvement: p.involvement ?? ai?.involvement ?? book?.default_involvement ?? 0,
     limits: book?.limits ?? null, today: state.models[(active?.path ?? "").toLowerCase()] ?? null,
+    sync_auto_approve: {
+      enabled: ai?.auto_approve_sync === true,
+      in_effect: ai?.mode === "testing" && ai?.auto_approve === true && ai?.auto_approve_sync === true,
+      recent: readSyncAutoLog(process.env, 10),
+    },
     groups, never: NEVER,
   };
 }

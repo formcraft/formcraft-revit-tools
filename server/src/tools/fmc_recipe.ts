@@ -184,18 +184,18 @@ export async function runGate(file: string, cfg: GuardConfig, flex: object | nul
   const recipeFile = file.replace(/\.rfa$/i, ".recipe.json");
   const recipe = fs.existsSync(recipeFile) ? parseRecipe(fs.readFileSync(recipeFile, "utf8")).recipe : null;
   let inspect: any;
-  try { inspect = body(await runFmcLibrary({ action: "inspect", path: file, overwrite: false, dry_run: true } as any)); }
+  try { inspect = body(await runFmcLibrary({ action: "inspect", path: file, overwrite: false, dry_run: true, document: file } as any)); }
   catch (e) { inspect = { ok: false, error: e instanceof Error ? e.message : String(e) }; }
   // F-039: never "couldn't be inspected" without the reason
   const inspectError = inspect.plan ? "" : String(inspect.error ?? (inspect.reasons ?? []).join("; ") ?? "") || "fmc_library inspect gave no plan";
   let flexResult = flex;
   let flexError = "";
   if (!flexResult) {
-    const open = body(await runFmcDoc({ action: "open", file, template: "", session: "", ops: [], dry_run: true, path: "", overwrite: false, detail_level: "fine", style: "shaded", views: ["3d"] }));
+    const open = body(await runFmcDoc({ action: "open", file, template: "", session: "", ops: [], dry_run: true, path: "", overwrite: false, detail_level: "fine", style: "shaded", views: ["3d"], document: file } as any));
     if (open.session) {
       const follow = recipe ? followParams(recipe) : [];
-      flexResult = body(await runFmcDoc({ action: "flex", session: open.session, template: "", file: "", ops: [], dry_run: true, path: "", overwrite: false, follow, detail_level: "fine", style: "shaded", views: ["3d"] }));
-      await runFmcDoc({ action: "close", session: open.session, template: "", file: "", ops: [], dry_run: true, path: "", overwrite: false, detail_level: "fine", style: "shaded", views: ["3d"] });
+      flexResult = body(await runFmcDoc({ action: "flex", session: open.session, template: "", file: "", ops: [], dry_run: true, path: "", overwrite: false, follow, detail_level: "fine", style: "shaded", views: ["3d"], document: file } as any));
+      await runFmcDoc({ action: "close", session: open.session, template: "", file: "", ops: [], dry_run: true, path: "", overwrite: false, detail_level: "fine", style: "shaded", views: ["3d"], document: file } as any);
     } else flexError = String(open.error ?? (open.reasons ?? []).join("; ") ?? "");
   }
   // F-061: a family the register hosts on a wall or ceiling face is placed in a throw-away project and its host moved;
@@ -208,7 +208,7 @@ export async function runGate(file: string, cfg: GuardConfig, flex: object | nul
     try {
       // F-064 long-job route: no fixed cap while Revit's heartbeats for the job come, up to the ceiling (TR-20261019-1635
       // timed out at the old fixed 180 s while Revit was still held by the previous family's flex)
-      hostTest = (await withRevitConnection((c) => c.sendLong("fmc_family_host_test", { path: file, host: kind, max_wait_ms: hostTestCeilingMs() },
+      hostTest = (await withRevitConnection((c) => c.sendLong("fmc_family_host_test", { path: file, host: kind, max_wait_ms: hostTestCeilingMs(), document: file },
         { ceilingMs: hostTestCeilingMs() }))) as HostTestResult;
       const err = (hostTest as { error?: unknown } | null)?.error;
       if (err) hostTestError = String(err);

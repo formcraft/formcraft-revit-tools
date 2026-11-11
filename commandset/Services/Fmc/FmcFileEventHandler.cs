@@ -101,13 +101,16 @@ namespace RevitMCPCommandSet.Services.Fmc
             Document active = app.ActiveUIDocument?.Document;
             var docs = new JArray();
             Document named = null;
+            int matches = 0;
             target = (target ?? "").Trim();
             foreach (Document d in app.Application.Documents)
             {
                 if (d.IsLinked) continue;
                 docs.Add(Describe(d, active));
-                if (target.Length > 0 && named == null && FmcTarget.Same(d, target)) named = d;
+                if (target.Length > 0 && FmcTarget.Same(d, target)) { matches++; named = d; }
             }
+            if (matches > 1)
+                throw new InvalidOperationException($"More than one open document matches \"{target}\". Pass the full path. Refusing to guess.");
             JObject subject = target.Length == 0 ? (active != null ? Describe(active, active) : null)
                 : named != null ? Describe(named, active)
                 : File.Exists(target) ? FromFile(target) : null;

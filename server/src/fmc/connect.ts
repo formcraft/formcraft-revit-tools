@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import net from "node:net";
 import os from "node:os";
 import path from "node:path";
 
@@ -82,7 +83,68 @@ export function label(i: RevitInstance): string {
  * REVIT_PORT of the pane that ran it, the default chosen with fmc_revit use, the only Revit open. With two or more open
  * and nothing chosen it refuses and lists them, rather than guessing which model to change.
  */
-export function resolvePort(target: string | undefined, instances: RevitInstance[], env: NodeJS.ProcessEnv, chosen: string | undefined): number {
+/** What a short TCP probe of a Revit port found. `reset` is the half-closed listener that used to surface as ECONNRESET. */
+export type ProbeVerdict = "ok" | "reset" | "refused" | "timeout";
+
+export interface PortCheck {
+  /** Already-known result for the port resolvePort selected. Production probes first, then passes the verdict in. */
+  probe: (port: number) => ProbeVerdict;
+  /** Drop a stale instance file so the next call does not keep using it. */
+  forget?: (instance: RevitInstance) => void;
+}
+
+/** The error a caller sees instead of a raw ECONNRESET when the instance file names a port that is not accepting. */
+export function stalePortMessage(port: number, verdict: ProbeVerdict, instance?: RevitInstance): string {
+  const where = `${HOST}:${port}`;
+  const who = instance
+    ? `Revit pid ${instance.pid} advertises ${where} in its instance file`
+    : `Port ${where} was selected`;
+  const why = verdict === "reset"
+    ? "the connection was reset (ECONNRESET). That file is stale: the listener was left half-closed."
+    : verdict === "timeout"
+      ? "it did not answer in time. That file is stale."
+      : "nothing is accepting connections there. That file is stale.";
+  return `${who}, but ${why} In Revit, on the Formcraft tab turn AI off and on so it listens again.`;
+}
+
+/** Delete one Revit's instance file. The port it advertised was not accepting. */
+export function forgetInstance(instance: RevitInstance, env: NodeJS.ProcessEnv = process.env): void {
+  realReader.remove(win.join(instancesFolder(env), `${instance.pid}.json`));
+}
+
+/**
+ * Open a TCP connection to host:port. `ok` only if it stays open briefly. A listener that accepts and then
+ * resets (the half-dead Revit socket) is `reset`, not success.
+ */
+export function probePort(host: string, port: number, timeoutMs = 400): Promise<ProbeVerdict> {
+  return new Promise((resolve) => {
+    const socket = net.connect({ host, port });
+    let settled = false;
+    let connected = false;
+    let grace: ReturnType<typeof setTimeout> | undefined;
+    const finish = (verdict: ProbeVerdict) => {
+      if (settled) return;
+      settled = true;
+      if (grace) clearTimeout(grace);
+      socket.removeAllListeners();
+      socket.destroy();
+      resolve(verdict);
+    };
+    socket.setTimeout(timeoutMs);
+    socket.on("connect", () => {
+      connected = true;
+      grace = setTimeout(() => finish("ok"), 80);
+    });
+    socket.on("timeout", () => finish(connected ? "reset" : "timeout"));
+    socket.on("error", (err: NodeJS.ErrnoException) => {
+      if (err.code === "ECONNRESET") finish("reset");
+      else finish(connected ? "reset" : "refused");
+    });
+    socket.on("close", () => { if (connected) finish("reset"); });
+  });
+}
+
+export function resolvePort(target: string | undefined, instances: RevitInstance[], env: NodeJS.ProcessEnv, chosen: string | undefined, check?: PortCheck): number {
   const pick = (t: string): number => {
     const q = t.trim().toLowerCase();
     const n = Number(q);
@@ -97,11 +159,23 @@ export function resolvePort(target: string | undefined, instances: RevitInstance
     if (hits.length > 1) throw new Error(`"${t}" matches ${hits.length} Revits: ${hits.map(label).join("; ")}. Use the pid or port.`);
     throw new Error(`No open Revit has a document matching "${t}". Open: ${instances.map(label).join("; ") || "none"}`);
   };
-  if (target && target.trim()) return pick(target);
-  if (env.REVIT_PORT && Number.isInteger(Number(env.REVIT_PORT))) return Number(env.REVIT_PORT);
-  if (chosen && chosen.trim()) return pick(chosen);
-  if (instances.length === 1) return instances[0].port;
-  if (instances.length > 1)
-    throw new Error(`${instances.length} Revits are open: ${instances.map(label).join("; ")}. Say which one: pass revit (a project name, pid or port) to the tool, or call fmc_revit use.`);
-  return revitPort(env);
+  const selected = (): number => {
+    if (target && target.trim()) return pick(target);
+    if (env.REVIT_PORT && Number.isInteger(Number(env.REVIT_PORT))) return Number(env.REVIT_PORT);
+    if (chosen && chosen.trim()) return pick(chosen);
+    if (instances.length === 1) return instances[0].port;
+    if (instances.length > 1)
+      throw new Error(`${instances.length} Revits are open: ${instances.map(label).join("; ")}. Say which one: pass revit (a project name, pid or port) to the tool, or call fmc_revit use.`);
+    return revitPort(env);
+  };
+  return confirmPort(selected(), instances, check);
+}
+
+function confirmPort(port: number, instances: RevitInstance[], check: PortCheck | undefined): number {
+  if (!check) return port;
+  const verdict = check.probe(port);
+  if (verdict === "ok") return port;
+  const owner = instances.find((i) => i.port === port);
+  if (owner) check.forget?.(owner);
+  throw new Error(stalePortMessage(port, verdict, owner));
 }
