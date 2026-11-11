@@ -8,7 +8,7 @@ const file = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", ".
 const src = fs.readFileSync(file, "utf8");
 
 test("dialog tier 1 never answers the destructive prompts, and the default allow list stays short", () => {
-  for (const word of ["delete", "unjoin", "overwrite", "relinquish", "save as", "save-as", "upgrade", "license", "sign-in", "corrupt"]) {
+  for (const word of ["delete", "unjoin", "overwrite", "relinquish", "sync", "save as", "save-as", "upgrade", "license", "sign-in", "corrupt"]) {
     assert.match(src, new RegExp(word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   }
   assert.match(src, /HardDeny always wins|always wins/);

@@ -17,7 +17,7 @@ namespace RevitMCPCommandSet.Bridge
         /// <summary>Never answered, even when a guard allow entry contains the words.</summary>
         public static readonly string[] HardDeny =
         {
-            "delete", "unjoin", "overwrite", "relinquish",
+            "delete", "unjoin", "overwrite", "relinquish", "sync",
             "save as", "save-as", "saveas",
             "upgrade", "license", "sign-in", "sign in", "signin",
             "corrupt",

@@ -122,7 +122,7 @@ Formcraft handler, send_code itself, and the upstream model-changing handlers) u
   warning is left. **Errors and document corruption roll the transaction back** and are never resolved.
 - **Dialogs** (`DialogBoxShowing`), only while an AI job is executing. `dialogs.allow` and `dialogs.deny` in
   `fmc_guard.json` are substrings of the dialog id or text. Delete, unjoin, overwrite, relinquish, save-as, upgrade,
-  license, sign-in and corrupt-model prompts are never answered, even if allow lists them.
+  license, sign-in, corrupt-model and sync prompts are never answered, even if allow lists them. They stay up for a person and are still written to `FMC_Jobs_Revit.jsonl`.
 
 | Dialog | Answer | Why |
 |---|---|---|
