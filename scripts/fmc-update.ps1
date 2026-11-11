@@ -41,11 +41,19 @@ function PullDrop {
     Log "Took the CI build $($info.commit) from $drop"
 }
 
-function Log([string]$m) { Add-Content -Path $log -Value ('{0:yyyy-MM-dd HH:mm:ss}  {1}' -f (Get-Date), $m) -Encoding UTF8 }
+function Log([string]$m) {
+    $max = 1MB
+    if ((Test-Path $log) -and (Get-Item $log).Length -gt $max) {
+        $bak = "$log.1"
+        if (Test-Path $bak) { Remove-Item $bak -Force }
+        Rename-Item $log $bak
+    }
+    Add-Content -Path $log -Value ('{0:yyyy-MM-dd HH:mm:ss}  {1}' -f (Get-Date), $m) -Encoding UTF8
+}
 
 # The commit is the one just installed (ready.json), and the file list is what is on disk after the copy.
 # A previous install left this file saying an older commit; nothing else updates it.
-function Write-InstalledFiles([string]$commit) {
+function Write-InstalledFiles([string]$commit, [string]$serverState = 'installed', [string]$addinState = 'installed') {
     $files = New-Object System.Collections.Generic.List[string]
     $serverBuild = Join-Path $mcp 'build'
     if (Test-Path $serverBuild) {
@@ -65,6 +73,8 @@ function Write-InstalledFiles([string]$commit) {
     $manifest = [ordered]@{
         commit       = $commit
         installed_at = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
+        server       = $serverState
+        addin        = $addinState
         files        = @($files)
     }
     $manifest | ConvertTo-Json -Depth 4 | Set-Content -Path (Join-Path $state 'installed-files.json') -Encoding UTF8
@@ -124,6 +134,76 @@ function InstallRhino {
     Log "Installed the Rhino add-in into $target"
 }
 
+function Stop-HttpServer {
+    $deadline = (Get-Date).AddSeconds(20)
+    while ((Get-Date) -lt $deadline) {
+        $pids = @(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object {
+            $_.CommandLine -and $_.CommandLine -match 'index\.js' -and $_.CommandLine -match '--http'
+        } | ForEach-Object { $_.ProcessId })
+        if ($pids.Count -eq 0) { return }
+        foreach ($procId in $pids) { try { Stop-Process -Id $procId -Force -ErrorAction SilentlyContinue } catch { } }
+        Start-Sleep -Milliseconds 300
+    }
+}
+
+# Copy the new server beside the live one, stop the service, swap, then ask /health.
+# A failed health check puts the previous build back. Returns a short status, never the token.
+function Install-ServerBuild([string]$commit, [string]$stamp) {
+    New-Item -ItemType Directory -Force $mcp | Out-Null
+    $incoming = Join-Path $mcp 'build.incoming'
+    if (Test-Path $incoming) { Remove-Item $incoming -Recurse -Force }
+    Copy-Item (Join-Path $next 'server\build') $incoming -Recurse -Force
+    Set-Content -Path (Join-Path $state 'mcp-http.reload') -Value "swap $commit" -Encoding ascii
+    Stop-HttpServer
+    $live = Join-Path $mcp 'build'
+    $bak = Join-Path $mcp "build.bak-$stamp"
+    if (Test-Path $bak) { Remove-Item $bak -Recurse -Force }
+    if (Test-Path $live) { Rename-Item $live $bak }
+    Rename-Item $incoming $live
+    if (Test-Path (Join-Path $next 'server\robot')) {
+        if (Test-Path (Join-Path $mcp 'robot')) { Rename-Item (Join-Path $mcp 'robot') ("robot.bak-{0}" -f $stamp) }
+        Copy-Item (Join-Path $next 'server\robot') $mcp -Recurse -Force
+    }
+    Set-Content -Path (Join-Path $state 'mcp-http.reload') -Value $commit -Encoding ascii
+    $health = Test-McpHealth $commit
+    if ($health.ok) { return 'pass' }
+    Log "SERVER health failed ($($health.detail)). Rolling back."
+    Stop-HttpServer
+    $failed = Join-Path $mcp "build.failed-$stamp"
+    if (Test-Path $live) { Rename-Item $live $failed }
+    if (Test-Path $bak) { Copy-Item $bak $live -Recurse }
+    Set-Content -Path (Join-Path $state 'mcp-http.reload') -Value "rollback $commit" -Encoding ascii
+    return 'fail: rolled back'
+}
+
+function Test-McpHealth([string]$commit) {
+    $tokenFile = Join-Path $state 'mcp-http.token'
+    $deadline = (Get-Date).AddSeconds(25)
+    while ((Get-Date) -lt $deadline) {
+        if (Test-Path $tokenFile) {
+            try {
+                $token = (Get-Content $tokenFile -Raw).Trim()
+                $port = 8787
+                $cfg = Join-Path $state 'fmc_http.json'
+                if (Test-Path $cfg) { try { $port = [int](Get-Content $cfg -Raw | ConvertFrom-Json).port } catch { } }
+                $req = [System.Net.HttpWebRequest]::Create("http://127.0.0.1:${port}/health")
+                $req.Timeout = 2000
+                $req.Headers.Add('Authorization', "Bearer $token")
+                $resp = $req.GetResponse()
+                $reader = New-Object System.IO.StreamReader($resp.GetResponseStream())
+                $body = $reader.ReadToEnd() | ConvertFrom-Json
+                $reader.Close(); $resp.Close()
+                $got = [string]$body.build
+                $bare = $got.Replace('+local', '')
+                if ($bare.StartsWith($commit) -or $commit.StartsWith($bare)) { return @{ ok = $true; detail = "health $got" } }
+                return @{ ok = $false; detail = "health build $got, expected $commit" }
+            } catch { }
+        }
+        Start-Sleep -Milliseconds 400
+    }
+    return @{ ok = $false; detail = 'health did not answer' }
+}
+
 function Install {
     $info  = Get-Content $ready -Raw | ConvertFrom-Json
     $stamp = Get-Date -Format 'yyyy-MM-dd_HHmm'
@@ -132,24 +212,32 @@ function Install {
     if (Test-Path (Join-Path $addins 'revit_mcp_plugin')) { Copy-Item (Join-Path $addins 'revit_mcp_plugin') $backup -Recurse -Force }
     if (Test-Path (Join-Path $addins 'Formcraft.addin'))  { Copy-Item (Join-Path $addins 'Formcraft.addin') $backup -Force }
 
-    # Revit may have started while backing up: then nothing is replaced, and the next poll tries again.
-    if (RevitRunning) { Log "Revit started during the backup: install of $($info.commit) waits for the next close"; return }
-
-    Copy-Item (Join-Path $next 'addin\revit_mcp_plugin') $addins -Recurse -Force
-    Copy-Item (Join-Path $next 'addin\Formcraft.addin') $addins -Force
-
+    # The server does not need Revit closed. The add-in DLLs do.
+    $serverState = 'not in this drop'
+    $addinState = 'not in this drop'
     $serverDone = $false
-    if (Test-Path (Join-Path $next 'server\build')) {
-        New-Item -ItemType Directory -Force $mcp | Out-Null
-        if (Test-Path (Join-Path $mcp 'build')) { Rename-Item (Join-Path $mcp 'build') ("build.bak-{0}" -f $stamp) }
-        Copy-Item (Join-Path $next 'server\build') $mcp -Recurse -Force
-        # The Robot connector, when the build carried one (built only where Robot is installed).
-        if (Test-Path (Join-Path $next 'server\robot')) {
-            if (Test-Path (Join-Path $mcp 'robot')) { Rename-Item (Join-Path $mcp 'robot') ("robot.bak-{0}" -f $stamp) }
-            Copy-Item (Join-Path $next 'server\robot') $mcp -Recurse -Force
-        }
+    if ((Test-Path (Join-Path $next 'server\build\index.js')) -and -not (Test-Path (Join-Path $next 'server.installed'))) {
+        $health = Install-ServerBuild $info.commit $stamp
         $serverDone = $true
-    }
+        $serverState = $health
+        New-Item -ItemType File -Force (Join-Path $next 'server.installed') | Out-Null
+        Log "SERVER $health ($($info.commit))"
+    } elseif (Test-Path (Join-Path $next 'server.installed')) { $serverState = 'installed'; $serverDone = $true }
+
+    $addinWaiting = $false
+    if ((Test-Path (Join-Path $next 'addin\Formcraft.addin')) -and -not (Test-Path (Join-Path $next 'addin.installed'))) {
+        if (RevitRunning) {
+            $addinWaiting = $true
+            $addinState = 'waiting: Revit is open'
+            Log "ADD-IN waiting: Revit is open. The server is handled separately. Close Revit to install the add-in. This updater will not close Revit."
+        } else {
+            Copy-Item (Join-Path $next 'addin\revit_mcp_plugin') $addins -Recurse -Force
+            Copy-Item (Join-Path $next 'addin\Formcraft.addin') $addins -Force
+            New-Item -ItemType File -Force (Join-Path $next 'addin.installed') | Out-Null
+            $addinState = 'installed'
+            Log "ADD-IN installed $($info.commit)"
+        }
+    } elseif (Test-Path (Join-Path $next 'addin.installed')) { $addinState = 'installed' }
 
     # The Navisworks add-in waits in Staging\navis-next and goes in when Navisworks is closed (InstallNavis).
     if (Test-Path (Join-Path $next 'navis\Formcraft.Navis')) {
@@ -182,7 +270,11 @@ function Install {
     }
     $record | ConvertTo-Json | Set-Content -Path (Join-Path $state 'installed.json') -Encoding UTF8
     # installed-files.json used to keep an old commit (81627a6 after a later install). Rewrite it from this install.
-    Write-InstalledFiles $info.commit
+    Write-InstalledFiles $info.commit $serverState $addinState
+    @(
+        "SERVER  $serverState  $($info.commit)"
+        "ADD-IN  $addinState"
+    ) | Set-Content -Path (Join-Path $state 'last-install.txt') -Encoding UTF8
 
     # A newer updater came with the build: it replaces this script's copy and runs from the next start (the logon task
     # starts it again within 5 minutes).
@@ -194,10 +286,15 @@ function Install {
         Log "Updater script updated from $($info.commit)"
     }
 
+    if ($addinWaiting) {
+        Log "Install of $($info.commit) is partial: server $serverState, add-in still waiting for Revit to close."
+        if ($selfUpdated) { $script:restart = $true }
+        return
+    }
     $done = Join-Path $root '_installed'
     New-Item -ItemType Directory -Force $done | Out-Null
     Move-Item $next (Join-Path $done ("{0}_{1}" -f $stamp, $info.commit))
-    Log "Installed $($info.commit) (server: $serverDone); backup $backup"
+    Log "Installed $($info.commit) (server: $serverState, add-in: $addinState); backup $backup"
     if ($selfUpdated) { $script:restart = $true }
 }
 
@@ -208,11 +305,8 @@ try {
     Log ("Updater started (poll {0}s{1})" -f $PollSeconds, $(if ($Once) { ', once' } else { '' }))
     while ($true) {
         try { PullDrop } catch { Log ("Couldn't take the CI drop: {0}" -f $_.Exception.Message) }
-        if ((Test-Path $ready) -and -not (RevitRunning)) {
-            Start-Sleep -Seconds 2   # Revit may be restarting: make sure it stays closed
-            if (-not (RevitRunning)) {
-                try { Install } catch { Log ("Install failed: {0}" -f $_.Exception.Message) }
-            }
+        if (Test-Path $ready) {
+            try { Install } catch { Log ("Install failed: {0}" -f $_.Exception.Message) }
         }
         if ((Test-Path $navisNext) -and -not (NavisRunning)) {
             try { InstallNavis } catch { Log ("Navisworks add-in install failed: {0}" -f $_.Exception.Message) }

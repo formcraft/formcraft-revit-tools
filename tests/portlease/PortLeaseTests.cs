@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Sockets;
 using Xunit;
 using revit_mcp_plugin.Core;
+using RevitMCPCommandSet.Services.Fmc;
 
 namespace PortLeaseTests;
 
@@ -192,5 +193,43 @@ public class PortLeaseTests
         lease.Stop();
         Assert.False(lease.IsRunning);
         Assert.Equal(0, lease.BoundPort);
+    }
+
+    [Fact]
+    public void APendingExternalEventDoesNotDropTheNextRequest()
+    {
+        var gate = new RevitCallGate();
+        var raised = new List<string>();
+        var pendingOnce = true;
+        void Submit(string id) => gate.Submit(id, () =>
+        {
+            if (id == "b" && pendingOnce) { pendingOnce = false; return RaiseResult.Pending; }
+            raised.Add(id);
+            return RaiseResult.Accepted;
+        });
+        Submit("a");
+        Submit("b");
+        Submit("c");
+        Assert.Equal(new[] { "a" }, raised);
+        Assert.Equal(0, gate.Dropped);
+        gate.Completed();
+        Assert.Equal(1, gate.KeptPending);
+        Assert.Equal(new[] { "a" }, raised);
+        gate.Kick();
+        Assert.Equal(new[] { "a", "b" }, raised);
+        gate.Completed();
+        Assert.Equal(new[] { "a", "b", "c" }, raised);
+        Assert.Equal(3, gate.Accepted);
+        Assert.Equal(0, gate.Dropped);
+    }
+
+    [Fact]
+    public void FiveOpenDocumentsRequireAName()
+    {
+        var docs = new[] { "Architecture", "Structure", "Electrical", "Plumbing", "Site" };
+        var error = Assert.Throws<InvalidOperationException>(() => DocumentChoice.RequireNamed("", docs));
+        Assert.Contains("Refusing to use the active document", error.Message);
+        DocumentChoice.RequireNamed("Structure", docs);
+        DocumentChoice.RequireNamed("", new[] { "Only one" });
     }
 }

@@ -817,5 +817,14 @@
     "status": "Built, Revit check due",
     "ref": "fmc_replace",
     "note": "One TransactionGroup, always rolled back, only on a document opened with fmc_file open_copy. Sequential sub-transactions so a later row can see an earlier one. Create, verify, rebind, delete exact ids, orphan check. No apply mode. Needs a Revit check on one B7 pad row and one B3 beam row."
+  },
+  {
+    "id": "F92",
+    "area": "App",
+    "group": "Core",
+    "feature": "Formcraft MCP service on this PC",
+    "status": "Built, Revit check due",
+    "ref": "docs/MCP_SERVICE.md",
+    "note": "Streamable HTTP on 127.0.0.1:8787 with a per-user token. A logon task restarts it and reloads when the updater swaps the build; a failed health check rolls the server back. The add-in still waits until Revit is closed. Several agents share one Revit by taking turns, and a model call names its document. fmc_health and fmc_queue. Needs a Windows check with Revit open."
   }
 ]

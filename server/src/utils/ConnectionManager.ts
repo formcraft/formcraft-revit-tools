@@ -1,11 +1,11 @@
 import { RevitClientConnection } from "./SocketClient.js";
 import { HOST, forgetInstance, notListening, probePort, readInstances, resolvePort, stalePortMessage } from "../fmc/connect.js";
 import { backoffMs } from "../fmc/reconnect.js";
-import { getChosen, revitTarget } from "../fmc/target.js";
+import { currentClient, documentRequired, queueFor } from "../fmc/fairqueue.js";
+import { documentTarget, getChosen, revitTarget } from "../fmc/target.js";
 
-// One queue per Revit: calls to the same Revit run one at a time (its API is single-threaded), calls to two Revits
-// run side by side, so two projects can be automated at once.
-const queues = new Map<number, Promise<void>>();
+// One fair queue per Revit. Calls to that Revit run one at a time. Clients take turns, so one batch
+// cannot sit in front of everyone else. Two Revits still run side by side.
 
 /**
  * The port the current call goes to (see resolvePort: the call's revit, the pane's REVIT_PORT, fmc_revit use, the only Revit).
@@ -45,13 +45,11 @@ export async function withRevitConnection<T>(
   operation: (client: RevitClientConnection) => Promise<T>
 ): Promise<T> {
   const port = await currentPort();
-  const previous = queues.get(port) ?? Promise.resolve();
-  let release: () => void;
-  const mine = new Promise<void>((resolve) => { release = resolve; });
-  const chain = previous.then(() => mine);
-  queues.set(port, chain);
-  await previous;
+  const named = documentTarget.getStore();
+  return queueFor(port).enqueue(currentClient(), named || "call", () => runOnPort(port, operation));
+}
 
+async function runOnPort<T>(port: number, operation: (client: RevitClientConnection) => Promise<T>): Promise<T> {
   const revitClient = new RevitClientConnection(HOST, port);
   revitClient.refreshPort = () => currentPort();
 
@@ -89,7 +87,5 @@ export async function withRevitConnection<T>(
   } finally {
     // 断开连接
     revitClient.disconnect();
-    release!();
-    if (queues.get(port) === chain) queues.delete(port); // nobody queued behind this call
   }
 }
