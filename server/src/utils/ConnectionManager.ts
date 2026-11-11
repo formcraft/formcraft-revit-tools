@@ -1,8 +1,9 @@
 import { RevitClientConnection } from "./SocketClient.js";
 import { HOST, forgetInstance, notListening, probePort, readInstances, resolvePort, stalePortMessage } from "../fmc/connect.js";
 import { backoffMs } from "../fmc/reconnect.js";
-import { currentClient, documentRequired, queueFor } from "../fmc/fairqueue.js";
-import { documentTarget, getChosen, revitTarget } from "../fmc/target.js";
+import { currentClient, queueClient, queueFor } from "../fmc/fairqueue.js";
+import { batchLease, documentTarget, getChosen, revitTarget } from "../fmc/target.js";
+import { batchBoard } from "../fmc/batchline.js";
 
 // One fair queue per Revit. Calls to that Revit run one at a time. Clients take turns, so one batch
 // cannot sit in front of everyone else. Two Revits still run side by side.
@@ -46,7 +47,16 @@ export async function withRevitConnection<T>(
 ): Promise<T> {
   const port = await currentPort();
   const named = documentTarget.getStore();
-  return queueFor(port).enqueue(currentClient(), named || "call", () => runOnPort(port, operation));
+  const lease = batchLease.getStore();
+  const client = currentClient();
+  const held = lease ? batchBoard().beginCall(lease, client) : undefined;
+  try {
+    // The fair queue runs the call later, outside this async context. Put the client, lease and document back.
+    return await queueFor(port).enqueue(client, named || "call", () =>
+      queueClient.run(client, () => batchLease.run(lease, () => documentTarget.run(named, () => runOnPort(port, operation)))));
+  } finally {
+    held?.finish();
+  }
 }
 
 async function runOnPort<T>(port: number, operation: (client: RevitClientConnection) => Promise<T>): Promise<T> {

@@ -5,7 +5,8 @@ const started = Date.now();
 
 export const FMC_HEALTH_DESCRIPTION =
   "Formcraft health, read-only. The server build this process is running, the add-in build each open Revit announced, " +
-  "whether each announced port accepts a connection, and any tool module that failed to register. Nothing is changed.";
+  "whether each announced port accepts a connection, any tool module that failed to register, and the batch line " +
+  "(holder, queue, history, struggling batches, per-bot stats). Nothing is changed.";
 
 /** Same facts as HTTP GET /health. Does not send a model command. */
 export async function runFmcHealth() {

@@ -5,7 +5,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { z } from "zod";
-import { documentTarget, revitTarget } from "../fmc/target.js";
+import { batchLease, documentTarget, revitTarget } from "../fmc/target.js";
 
 import { appStatuses, realProbe, toolsOff } from "../hub/apps.js";
 import { annotateInvalidOp, annotateToolResult, isInvalidOpMessage } from "../fmc/buildinfo.js";
@@ -18,7 +18,11 @@ export const DOCUMENT_ARG = z.string().optional()
   .describe("Which document: a title or a full path of a document that is already open (including a verification copy from " +
     "fmc_file open_copy). If that document is not open, the call fails and does not use the active document. Leave out for the active document.");
 
-/** Adds `revit` and `document` to every tool registered as server.tool(name, description, shape, handler). */
+export const BATCH_LEASE_ARG = z.string().optional()
+  .describe("Lease id from fmc_batch request. Required on a model-changing call while that document is held. " +
+    "The lease is also bound to this MCP session: another session's copy of the id is refused. Omit it on reads.");
+
+/** Adds `revit`, `document` and `batch_lease` to every tool registered as server.tool(name, description, shape, handler). */
 export function withRevitTarget(server: McpServer) {
   const original = server.tool.bind(server) as (...a: unknown[]) => unknown;
   (server as unknown as { tool: (...a: unknown[]) => unknown }).tool = (...a: unknown[]) => {
@@ -26,18 +30,23 @@ export function withRevitTarget(server: McpServer) {
       const handler = a[3] as (args: Record<string, unknown>, extra: unknown) => unknown;
       // A tool with its own `document` argument (fmc_file) keeps it: it means the same thing, and it sets the target too.
       const own = "document" in (a[2] as object);
-      return original(a[0], a[1], { ...(a[2] as object), revit: REVIT_ARG, ...(own ? {} : { document: DOCUMENT_ARG }) },
+      const ownLease = "batch_lease" in (a[2] as object);
+      return original(a[0], a[1], {
+        ...(a[2] as object), revit: REVIT_ARG, ...(own ? {} : { document: DOCUMENT_ARG }), ...(ownLease ? {} : { batch_lease: BATCH_LEASE_ARG }),
+      },
         (args: Record<string, unknown>, extra: unknown) => {
-          const { revit, ...rest } = args ?? {};
+          const { revit, batch_lease, ...rest } = args ?? {};
           const document = typeof rest.document === "string" && rest.document.trim() ? rest.document.trim() : undefined;
           if (!own) delete rest.document;
+          const lease = typeof batch_lease === "string" && batch_lease.trim() ? batch_lease.trim() : undefined;
+          const argsForTool = ownLease && lease ? { ...rest, batch_lease: lease } : rest;
           // Owner 26 Oct: every call is timed by the server (fmc/usage.ts), so an AI's own report can compare builds.
           const started = Date.now();
           const done = (ok: boolean, r?: unknown) => recordUsage({ at: new Date(started).toISOString(), tool: String(a[0]), action: typeof rest.action === "string" ? rest.action : "",
             ms: Date.now() - started, ok, build: RUNNING_BUILD.commit, ...(!ok && queuedReply(r) ? { queued: true } : {}),
             ...(!ok ? { error: errorText(r) } : {}) });
           return Promise.resolve(revitTarget.run(typeof revit === "string" ? revit : undefined,
-            () => documentTarget.run(document, () => handler(rest, extra))))
+            () => documentTarget.run(document, () => batchLease.run(lease, () => handler(argsForTool, extra)))))
             .then((r) => { done(!(r as { isError?: boolean } | undefined)?.isError, r); return withBuildWarning(r); }, (e) => { done(false, { content: [{ text: e instanceof Error ? e.message : String(e) }] }); throw e; });
         });
     }

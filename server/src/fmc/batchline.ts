@@ -1,0 +1,928 @@
+/**
+ * Document leases for discipline bots that share one Revit.
+ *
+ * One active lease per document, FIFO. Different documents run at once; their Revit calls still take the fair queue.
+ * A lease is bound to the MCP session that requested it, and every model-changing call must also pass that lease id.
+ * Reads are never blocked (WRITE_COMMANDS in policy.ts, the same list reconnect.ts uses for single-retry).
+ *
+ * A failed batch is not put straight back. The bot's next request for the same label or batch id joins the tail
+ * with attempt + 1. Attempts are unlimited. A retry must say what changed, and must not repeat the same references.
+ * More than three attempts is marked struggling: visible, not blocking. Nothing here rolls the model back.
+ * Leases live in memory only. A restart clears them.
+ */
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import { createHash, randomUUID } from "node:crypto";
+import { WRITE_COMMANDS } from "./policy.js";
+import { SYNC_NOT_RUN, batchCareReport, correctionHelp, type CorrectionHelp } from "./batchcare.js";
+import { batchLease, documentTarget } from "./target.js";
+import { queueClient } from "./fairqueue.js";
+
+const win = path.win32;
+
+export const DEFAULT_IDLE_S = 120;
+export const DEFAULT_MAX_S = 30 * 60;
+export const DEFAULT_REQUIRED_REFERENCES = ["kit", "standards", "rulebook"] as const;
+export const HISTORY_LIMIT = 20;
+export const WAIT_MAX_S = 60;
+const DONE_LIMIT = 200;
+
+export class BatchGateError extends Error {
+  readonly code: "FMC-BATCH-LOCKED" | "FMC-BATCH-NOREFS" | "FMC-BATCH-SAMEFIX" | "FMC-BATCH-BAD";
+  constructor(code: BatchGateError["code"], message: string) {
+    super(message);
+    this.name = "BatchGateError";
+    this.code = code;
+  }
+}
+
+export interface BatchReferences { [category: string]: string[] }
+
+export interface ReferenceValidation { ok: boolean; message?: string }
+
+/** Presence is checked first. This hook is for a later id check against the kit. The default accepts every id. */
+export type BatchReferenceValidator = (
+  refs: BatchReferences,
+  ctx: { document: string; label: string; batchId: string; bot: string },
+) => ReferenceValidation | Promise<ReferenceValidation>;
+
+export interface BatchConfig {
+  idleMs: number;
+  maxMs: number;
+  requiredReferences: string[];
+}
+
+export interface GrantNotice {
+  client: string;
+  lease: string;
+  document: string;
+  label: string;
+  bot: string;
+  attempt: number;
+}
+
+export type BatchEnd = "release" | "expired" | "max_duration" | "disconnect";
+
+export type SaveStep = (ctx: { document: string; label: string; client: string; lease: string; summary: string }) => Promise<{ ran: boolean; ok: boolean; detail: string }>;
+
+export interface BatchBoardOptions {
+  now?: () => number;
+  idleMs?: number;
+  maxMs?: number;
+  requiredReferences?: string[];
+  autoSweep?: boolean;
+  sweepEveryMs?: number;
+  validator?: BatchReferenceValidator | null;
+  log?: (line: string) => void;
+  /** Runs while the lease is still held, before the next bot is granted. Production uses the existing auto-save. */
+  saveStep?: SaveStep;
+}
+
+const defaultValidator: BatchReferenceValidator = () => ({ ok: true });
+let externalValidator: BatchReferenceValidator | null = null;
+
+/** Install a reference-id check. Null restores the default, which does not call the kit. */
+export function setBatchReferenceValidator(fn: BatchReferenceValidator | null): void {
+  externalValidator = fn;
+  board?.setValidator(fn);
+}
+
+export function serviceConfigFile(env: NodeJS.ProcessEnv = process.env): string {
+  const appData = env.APPDATA || win.join(os.homedir(), "AppData", "Roaming");
+  return win.join(appData, "Formcraft", "fmc_http.json");
+}
+
+function positive(value: unknown, fallback: number): number {
+  const n = Number(value);
+  return Number.isFinite(n) && n > 0 ? Math.floor(n) : fallback;
+}
+
+/** fmc_http.json `batch` plus FMC_BATCH_* env overrides. Missing file means the defaults. */
+export function loadBatchConfig(env: NodeJS.ProcessEnv = process.env, read?: (file: string) => string): BatchConfig {
+  let fileBatch: Record<string, unknown> = {};
+  try {
+    const text = (read ?? ((p) => fs.readFileSync(p, "utf8")))(serviceConfigFile(env));
+    const parsed = JSON.parse(String(text).replace(/^\uFEFF/, "")) as { batch?: Record<string, unknown> };
+    if (parsed && typeof parsed.batch === "object" && parsed.batch) fileBatch = parsed.batch;
+  } catch { /* defaults */ }
+  const fromEnv = env.FMC_BATCH_REQUIRED_REFS;
+  const fromFile = Array.isArray(fileBatch.required_references)
+    ? (fileBatch.required_references as unknown[]).map((item) => String(item).trim()).filter(Boolean)
+    : undefined;
+  const required = (fromEnv ? fromEnv.split(",").map((item) => item.trim()).filter(Boolean) : fromFile) ?? [...DEFAULT_REQUIRED_REFERENCES];
+  return {
+    idleMs: positive(env.FMC_BATCH_IDLE_S ?? fileBatch.idle_s, DEFAULT_IDLE_S) * 1000,
+    maxMs: positive(env.FMC_BATCH_MAX_S ?? fileBatch.max_s, DEFAULT_MAX_S) * 1000,
+    requiredReferences: required,
+  };
+}
+
+/** Title, path or file name, so "Architecture" and "D:\\Models\\Architecture.rvt" are one document. */
+export function documentKey(name: string): string {
+  const norm = name.trim().toLowerCase().replace(/\\/g, "/");
+  const base = norm.split("/").pop() ?? norm;
+  return base.replace(/\.rvt$/, "");
+}
+
+export function documentsMatch(held: string, asked: string | undefined): boolean {
+  if (!asked || !asked.trim()) return false;
+  const a = documentKey(held);
+  const b = documentKey(asked);
+  return a.length > 0 && a === b;
+}
+
+export function normalizeReferences(input: unknown, required: readonly string[]): { refs: BatchReferences; missing: string[] } {
+  const src = input && typeof input === "object" && !Array.isArray(input) ? input as Record<string, unknown> : {};
+  const refs: BatchReferences = {};
+  const missing: string[] = [];
+  const categories = [...required];
+  for (const key of Object.keys(src)) if (!categories.includes(key)) categories.push(key);
+  for (const category of categories) {
+    const raw = src[category];
+    const list = Array.isArray(raw)
+      ? raw.map((item) => (typeof item === "string" ? item.trim() : "")).filter(Boolean)
+      : [];
+    if (list.length) refs[category] = list;
+    else if (required.includes(category)) missing.push(category);
+  }
+  return { refs, missing };
+}
+
+interface Ticket {
+  id: string;
+  document: string;
+  key: string;
+  label: string;
+  batchId: string;
+  bot: string;
+  client: string;
+  estOps?: number;
+  references: BatchReferences;
+  referencesHash: string;
+  correction: string;
+  state: "queued" | "active";
+  attempt: number;
+  requestedAt: number;
+  grantedAt?: number;
+  lastBeat: number;
+  ops: number;
+  writesInFlight: number;
+}
+
+interface AttemptState {
+  failures: number;
+  lastError: string;
+  referencesHash: string;
+  lastCorrection: string;
+  help?: CorrectionHelp;
+  bot: string;
+  label: string;
+  batchId: string;
+  document: string;
+  references: BatchReferences;
+}
+
+interface HistoryRow {
+  lease: string;
+  document: string;
+  label: string;
+  batch_id: string;
+  bot: string;
+  attempt: number;
+  outcome: "ok" | "failed";
+  end: BatchEnd;
+  summary: string;
+  error?: string;
+  ops: number;
+  started: string;
+  ended: string;
+  duration_ms: number;
+  wait_ms: number;
+  references: BatchReferences;
+  struggling?: boolean;
+  correction?: CorrectionHelp;
+  save?: { ran: boolean; ok: boolean; detail: string };
+  sync?: { ran: boolean; detail: string };
+}
+
+interface BotStat {
+  bot: string;
+  batches: number;
+  failures: number;
+  retries: number;
+  waitMs: number;
+  durationMs: number;
+  finished: number;
+  lastReferences: BatchReferences | null;
+  lastDocument: string | null;
+  lastLabel: string | null;
+  lastClient: string | null;
+}
+
+interface DoneRow {
+  state: "done";
+  outcome: "ok" | "failed";
+  end: BatchEnd;
+  error?: string;
+  summary: string;
+  attempt: number;
+  struggling?: boolean;
+  document: string;
+  label: string;
+  batch_id: string;
+  bot: string;
+  ops: number;
+  references: BatchReferences;
+  correction?: CorrectionHelp;
+}
+
+export interface RequestInput {
+  document: string;
+  label: string;
+  estOps?: number;
+  batchId?: string;
+  bot?: string;
+  references?: unknown;
+  correction?: string;
+  client: string;
+}
+
+function copyRefs(refs: BatchReferences): BatchReferences {
+  const out: BatchReferences = {};
+  for (const [key, value] of Object.entries(refs)) out[key] = [...value];
+  return out;
+}
+
+export class BatchBoard {
+  private readonly now: () => number;
+  private readonly idleMs: number;
+  private readonly maxMs: number;
+  private readonly required: string[];
+  private validator: BatchReferenceValidator;
+  private readonly sink: (line: string) => void;
+  private readonly saveStep?: SaveStep;
+  private timer: ReturnType<typeof setInterval> | undefined;
+  private readonly tickets = new Map<string, Ticket>();
+  private readonly lines = new Map<string, string[]>();
+  private readonly holders = new Map<string, string>();
+  private readonly names = new Map<string, string>();
+  private readonly attempts = new Map<string, AttemptState>();
+  private readonly history = new Map<string, HistoryRow[]>();
+  private readonly bots = new Map<string, BotStat>();
+  private readonly done = new Map<string, DoneRow>();
+  private readonly doneOrder: string[] = [];
+  private readonly listeners = new Set<(notice: GrantNotice) => void>();
+
+  constructor(opts: BatchBoardOptions = {}) {
+    const cfg = loadBatchConfig();
+    this.now = opts.now ?? (() => Date.now());
+    this.idleMs = opts.idleMs ?? cfg.idleMs;
+    this.maxMs = opts.maxMs ?? cfg.maxMs;
+    this.required = [...(opts.requiredReferences ?? cfg.requiredReferences)];
+    this.validator = opts.validator === undefined ? (externalValidator ?? defaultValidator) : (opts.validator ?? defaultValidator);
+    this.sink = opts.log ?? ((line) => console.error(line));
+    this.saveStep = opts.saveStep;
+    if (opts.autoSweep) {
+      this.timer = setInterval(() => { try { this.sweep(); } catch (error) { this.emit(`sweep failed: ${error instanceof Error ? error.message : error}`); } }, opts.sweepEveryMs ?? 1000);
+      this.timer.unref?.();
+    }
+  }
+
+  close(): void {
+    if (this.timer) clearInterval(this.timer);
+    this.timer = undefined;
+  }
+
+  noteServiceStart(): void {
+    this.emit("service start. Leases cleared. Nothing was rolled back. Bots request a new lease.");
+  }
+
+  setValidator(fn: BatchReferenceValidator | null): void {
+    this.validator = fn ?? defaultValidator;
+  }
+
+  listen(fn: (notice: GrantNotice) => void): () => void {
+    this.listeners.add(fn);
+    return () => this.listeners.delete(fn);
+  }
+
+  configView(): { idle_s: number; max_s: number; required_references: string[] } {
+    return {
+      idle_s: Math.round(this.idleMs / 1000),
+      max_s: Math.round(this.maxMs / 1000),
+      required_references: [...this.required],
+    };
+  }
+
+  async request(input: RequestInput): Promise<Record<string, unknown>> {
+    this.sweep();
+    const document = input.document?.trim() ?? "";
+    const label = input.label?.trim() ?? "";
+    if (!document || !label) {
+      throw new BatchGateError("FMC-BATCH-BAD", "[FMC-BATCH-BAD] request needs document and label.");
+    }
+    const { refs, missing } = normalizeReferences(input.references, this.required);
+    if (missing.length) {
+      throw new BatchGateError("FMC-BATCH-NOREFS",
+        `[FMC-BATCH-NOREFS] A batch must name what it works from. Missing: ${missing.join(", ")}. ` +
+        `Each of ${this.required.join(", ")} needs at least one id in references.`);
+    }
+    const batchId = (input.batchId?.trim() || label);
+    const bot = (input.bot?.trim() || label);
+    const ctx = { document, label, batchId, bot };
+    let verdict: ReferenceValidation;
+    try {
+      verdict = await this.validator(copyRefs(refs), ctx);
+    } catch (error) {
+      const text = error instanceof Error ? error.message : String(error);
+      throw new BatchGateError("FMC-BATCH-NOREFS", `[FMC-BATCH-NOREFS] The reference check failed: ${text}`);
+    }
+    if (!verdict.ok) {
+      const text = verdict.message?.trim() || "The reference check refused this batch.";
+      throw new BatchGateError("FMC-BATCH-NOREFS", text.startsWith("[FMC-") ? text : `[FMC-BATCH-NOREFS] ${text}`);
+    }
+    const key = documentKey(document);
+    this.names.set(key, document);
+    const attemptKey = this.attemptKey(key, batchId);
+    const prior = this.attempts.get(attemptKey);
+    if (prior && prior.failures > 0) {
+      const note = (input.correction ?? "").trim();
+      if (!note || note === prior.lastCorrection || referencesHash(refs) === prior.referencesHash) {
+        throw new BatchGateError("FMC-BATCH-SAMEFIX",
+          `[FMC-BATCH-SAMEFIX] This retry repeats the failed attempt. Pass correction (what you changed) and different references. ` +
+          `It is not parked: change the kit, standards or rulebook ids and request again. Last error: ${prior.lastError}`);
+      }
+    }
+    const existing = [...this.tickets.values()].find((ticket) => ticket.key === key && ticket.batchId.toLowerCase() === batchId.toLowerCase());
+    if (existing) {
+      if (existing.client === input.client) return this.ticketView(existing);
+      throw new BatchGateError("FMC-BATCH-BAD",
+        `[FMC-BATCH-BAD] Batch "${label}" is already ${existing.state === "active" ? "running" : "in line"} on ${document} for another session. ` +
+        `Wait, or use a new label for a different batch.`);
+    }
+    const attempt = (prior?.failures ?? 0) + 1;
+    const ticket: Ticket = {
+      id: randomUUID(),
+      document, key, label, batchId, bot, client: input.client,
+      estOps: input.estOps && input.estOps > 0 ? Math.floor(input.estOps) : undefined,
+      references: copyRefs(refs),
+      referencesHash: referencesHash(refs),
+      correction: (input.correction ?? "").trim(),
+      state: "queued",
+      attempt,
+      requestedAt: this.now(),
+      lastBeat: this.now(),
+      ops: 0,
+      writesInFlight: 0,
+    };
+    this.tickets.set(ticket.id, ticket);
+    const stat = this.botStat(bot);
+    stat.lastReferences = copyRefs(refs);
+    stat.lastDocument = document;
+    stat.lastLabel = label;
+    stat.lastClient = input.client;
+    if (attempt > 1) stat.retries += 1;
+    if (!this.holders.has(key)) this.grant(ticket, false);
+    else {
+      const line = this.lines.get(key) ?? [];
+      line.push(ticket.id);
+      this.lines.set(key, line);
+      this.emit(`queued ${this.where(ticket)} position ${line.length} attempt ${attempt}`);
+    }
+    return this.ticketView(ticket);
+  }
+
+  status(lease?: string, client?: string): Record<string, unknown> {
+    this.sweep();
+    if (lease) return this.one(lease);
+    const yours = [...this.tickets.values()].filter((ticket) => !client || ticket.client === client).map((ticket) => this.ticketView(ticket));
+    return { yours, ...this.snapshot() };
+  }
+
+  heartbeat(lease: string, client: string): Record<string, unknown> {
+    this.sweep();
+    const ticket = this.tickets.get(lease);
+    if (!ticket || ticket.client !== client) throw new BatchGateError("FMC-BATCH-BAD", "[FMC-BATCH-BAD] heartbeat needs the lease this session holds or is waiting on.");
+    if (ticket.state === "active") ticket.lastBeat = this.now();
+    return this.ticketView(ticket);
+  }
+
+  release(lease: string, outcome: "ok" | "failed", client: string, summary?: string, error?: string): Record<string, unknown> {
+    this.sweep();
+    const ticket = this.tickets.get(lease);
+    if (!ticket || ticket.client !== client) throw new BatchGateError("FMC-BATCH-BAD", "[FMC-BATCH-BAD] release needs the lease this session holds.");
+    if (ticket.state !== "active") throw new BatchGateError("FMC-BATCH-BAD", "[FMC-BATCH-BAD] That lease is still queued. cancel leaves the line; release is for the batch you are running.");
+    if (outcome !== "ok" && outcome !== "failed") throw new BatchGateError("FMC-BATCH-BAD", "[FMC-BATCH-BAD] release needs outcome ok or failed.");
+    const text = outcome === "failed" ? (error?.trim() || summary?.trim() || "failed") : undefined;
+    return this.endActive(ticket, outcome, "release", text, summary?.trim() ?? "");
+  }
+
+  /** Save, if the existing auto-save says so, while this lease still holds the document. Then release. */
+  async releaseWithCare(lease: string, outcome: "ok" | "failed", client: string, summary?: string, error?: string): Promise<Record<string, unknown>> {
+    this.sweep();
+    const ticket = this.tickets.get(lease);
+    if (!ticket || ticket.client !== client) throw new BatchGateError("FMC-BATCH-BAD", "[FMC-BATCH-BAD] release needs the lease this session holds.");
+    if (ticket.state !== "active") throw new BatchGateError("FMC-BATCH-BAD", "[FMC-BATCH-BAD] That lease is still queued. cancel leaves the line; release is for the batch you are running.");
+    if (outcome !== "ok" && outcome !== "failed") throw new BatchGateError("FMC-BATCH-BAD", "[FMC-BATCH-BAD] release needs outcome ok or failed.");
+    let finalOutcome = outcome;
+    let text = outcome === "failed" ? (error?.trim() || summary?.trim() || "failed") : undefined;
+    let care: { save?: { ran: boolean; ok: boolean; detail: string }; sync?: { ran: boolean; detail: string } } | undefined;
+    if (outcome === "ok" && this.saveStep) {
+      const held = this.beginCall(ticket.id, client);
+      try {
+        const save = await queueClient.run(client, () => batchLease.run(ticket.id, () => documentTarget.run(ticket.document, () =>
+          this.saveStep!({ document: ticket.document, label: ticket.label, client, lease: ticket.id, summary: summary?.trim() ?? "" }))));
+        care = { save, sync: { ran: false, detail: SYNC_NOT_RUN } };
+        if (save.ran && !save.ok) {
+          finalOutcome = "failed";
+          text = save.detail;
+        }
+      } finally {
+        held.finish();
+      }
+    }
+    return this.endActive(ticket, finalOutcome, "release", text, summary?.trim() ?? "", care);
+  }
+
+  cancel(lease: string, client: string): Record<string, unknown> {
+    this.sweep();
+    const ticket = this.tickets.get(lease);
+    if (!ticket || ticket.client !== client) throw new BatchGateError("FMC-BATCH-BAD", "[FMC-BATCH-BAD] cancel needs a queued lease from this session.");
+    if (ticket.state === "active") throw new BatchGateError("FMC-BATCH-BAD", "[FMC-BATCH-BAD] This lease is running. release it with outcome ok or failed.");
+    const line = this.lines.get(ticket.key) ?? [];
+    this.lines.set(ticket.key, line.filter((id) => id !== ticket.id));
+    this.tickets.delete(ticket.id);
+    this.rememberDone(ticket, { state: "done", outcome: "failed", end: "release", summary: "cancelled while queued", attempt: ticket.attempt, document: ticket.document, label: ticket.label, batch_id: ticket.batchId, bot: ticket.bot, ops: 0, references: ticket.references });
+    this.wake(ticket.id);
+    this.emit(`cancelled queued ${this.where(ticket)}`);
+    return { ok: true, state: "cancelled", lease: ticket.id, document: ticket.document, label: ticket.label, attempt: ticket.attempt };
+  }
+
+  /** Drop every ticket for a session. An active lease counts as failed. Nothing is rolled back. */
+  disconnect(client: string): number {
+    const owned = [...this.tickets.values()].filter((ticket) => ticket.client === client);
+    for (const ticket of owned) {
+      if (ticket.state === "active") {
+        this.endActive(ticket, "failed", "disconnect", "Client disconnected while holding the lease. The model was not rolled back.");
+      } else {
+        const line = this.lines.get(ticket.key) ?? [];
+        this.lines.set(ticket.key, line.filter((id) => id !== ticket.id));
+        this.tickets.delete(ticket.id);
+        this.rememberDone(ticket, {
+          state: "done", outcome: "failed", end: "disconnect",
+          summary: "disconnected while queued", attempt: ticket.attempt, document: ticket.document,
+          label: ticket.label, batch_id: ticket.batchId, bot: ticket.bot, ops: 0, references: ticket.references,
+        });
+        this.wake(ticket.id);
+        this.emit(`disconnect dropped queued ${this.where(ticket)}`);
+      }
+    }
+    return owned.length;
+  }
+
+  /** Expire leases with no heartbeat or write, and leases past the hard maximum. */
+  sweep(at = this.now()): string[] {
+    const expired: string[] = [];
+    for (const id of [...this.holders.values()]) {
+      const ticket = this.tickets.get(id);
+      if (!ticket) continue;
+      const hard = at - (ticket.grantedAt ?? ticket.requestedAt) >= this.maxMs;
+      const idle = ticket.writesInFlight === 0 && at - ticket.lastBeat >= this.idleMs;
+      if (hard) {
+        this.endActive(ticket, "failed", "max_duration", "Lease reached the hard maximum. The model was not rolled back.");
+        expired.push(id);
+      } else if (idle) {
+        this.endActive(ticket, "failed", "expired", `Lease expired after ${Math.round(this.idleMs / 1000)}s without a heartbeat or a write. The model was not rolled back.`);
+        expired.push(id);
+      }
+    }
+    return expired;
+  }
+
+  /**
+   * The fair queue may hold a write before Revit runs it. That wait is still a write call:
+   * idle expiry does not drop the lease while it is queued or running. A wrong session is not counted.
+   */
+  beginCall(lease: string, client: string): { finish: () => void } {
+    const ticket = this.tickets.get(lease);
+    if (!ticket || ticket.state !== "active" || ticket.client !== client) return { finish() {} };
+    ticket.writesInFlight += 1;
+    ticket.lastBeat = this.now();
+    let finished = false;
+    return {
+      finish: () => {
+        if (finished) return;
+        finished = true;
+        const current = this.tickets.get(lease);
+        if (!current) return;
+        current.writesInFlight = Math.max(0, current.writesInFlight - 1);
+        current.lastBeat = this.now();
+      },
+    };
+  }
+
+  /**
+   * A model-changing call. Reads never reach here. No active lease: the call is allowed.
+   * An active lease requires this session and this lease id.
+   */
+  admit(document: string | undefined, lease: string | undefined, client: string): { finish: () => void } {
+    this.sweep();
+    const holder = this.holderFor(document);
+    if (!holder) return { finish() {} };
+    if (holder.client !== client || !lease || lease !== holder.id) {
+      throw new BatchGateError("FMC-BATCH-LOCKED", this.lockedMessage(holder, client));
+    }
+    holder.writesInFlight += 1;
+    holder.lastBeat = this.now();
+    holder.ops += 1;
+    let finished = false;
+    return {
+      finish: () => {
+        if (finished) return;
+        finished = true;
+        const current = this.tickets.get(holder.id);
+        if (!current) return;
+        current.writesInFlight = Math.max(0, current.writesInFlight - 1);
+        current.lastBeat = this.now();
+      },
+    };
+  }
+
+  async wait(lease: string, timeoutS: number): Promise<Record<string, unknown>> {
+    const cap = Math.min(WAIT_MAX_S, Math.max(0, timeoutS));
+    const first = this.one(lease);
+    if (first.state !== "queued" || cap === 0) return first;
+    await new Promise<void>((resolve) => {
+      const timer = setTimeout(done, cap * 1000);
+      const wrapped = () => done();
+      const bucket = this.waiters(lease);
+      bucket.add(wrapped);
+      function done() {
+        clearTimeout(timer);
+        bucket.delete(wrapped);
+        resolve();
+      }
+    });
+    return this.one(lease);
+  }
+
+  snapshot(): Record<string, unknown> {
+    const documents = [...new Set([...this.holders.keys(), ...this.lines.keys(), ...this.history.keys()])]
+      .sort()
+      .map((key) => this.documentView(key))
+      .filter((row) => row.holder || (row.line as unknown[]).length || (row.history as unknown[]).length);
+    const struggling = [...this.tickets.values()].filter((ticket) => ticket.attempt > 3).map((ticket) => ({
+      document: ticket.document, label: ticket.label, batch_id: ticket.batchId, bot: ticket.bot,
+      attempts: ticket.attempt, state: ticket.state === "active" ? "granted" : ticket.state, struggling: true,
+    }));
+    for (const row of this.attempts.values()) {
+      if (row.failures <= 3) continue;
+      if (struggling.some((item) => item.batch_id.toLowerCase() === row.batchId.toLowerCase() && documentKey(item.document) === documentKey(row.document))) continue;
+      struggling.push({ document: row.document, label: row.label, batch_id: row.batchId, bot: row.bot, attempts: row.failures, state: "between retries", struggling: true });
+    }
+    const bots = [...this.bots.values()].sort((a, b) => a.bot.localeCompare(b.bot)).map((row) => ({
+      bot: row.bot,
+      batches: row.batches,
+      failures: row.failures,
+      retries: row.retries,
+      avg_wait_ms: row.finished ? Math.round(row.waitMs / row.finished) : 0,
+      avg_duration_ms: row.finished ? Math.round(row.durationMs / row.finished) : 0,
+      last_references: row.lastReferences ? copyRefs(row.lastReferences) : null,
+      last_document: row.lastDocument,
+      last_label: row.lastLabel,
+      last_client: row.lastClient,
+    }));
+    return { ...this.configView(), ...batchCareReport(), documents, struggling, bots };
+  }
+
+  private holderFor(document: string | undefined): Ticket | undefined {
+    const actives = [...this.holders.values()].map((id) => this.tickets.get(id)).filter((ticket): ticket is Ticket => !!ticket);
+    if (document && document.trim()) return actives.find((ticket) => documentsMatch(ticket.document, document));
+    if (actives.length === 1) return actives[0];
+    if (actives.length > 1) {
+      throw new BatchGateError("FMC-BATCH-LOCKED",
+        `[FMC-BATCH-LOCKED] ${actives.length} documents are held (${actives.map((ticket) => ticket.document).join("; ")}). Pass document and batch_lease. Reads are still allowed.`);
+    }
+    return undefined;
+  }
+
+  private lockedMessage(holder: Ticket, client: string): string {
+    const who = `${holder.bot} (${holder.label}, since ${new Date(holder.grantedAt ?? holder.requestedAt).toISOString()}, ${holder.ops} ops)`;
+    const line = this.lines.get(holder.key) ?? [];
+    const mine = line.findIndex((id) => this.tickets.get(id)?.client === client);
+    let position: string;
+    if (holder.client === client && holder.id) {
+      position = leaseHint(holder);
+    } else if (mine >= 0) {
+      position = `You are position ${mine + 1} of ${line.length}.`;
+    } else {
+      position = "You are not in line. Call fmc_batch request for this document.";
+    }
+    const idNote = holder.client === client ? ` Your lease is ${holder.id}.` : "";
+    return `[FMC-BATCH-LOCKED] ${holder.document} is held by ${who}. ${position}${idNote} Pass batch_lease on each model-changing call. Reads are still allowed.`;
+  }
+
+  private grant(ticket: Ticket, notify: boolean): void {
+    ticket.state = "active";
+    ticket.grantedAt = this.now();
+    ticket.lastBeat = ticket.grantedAt;
+    this.holders.set(ticket.key, ticket.id);
+    const line = this.lines.get(ticket.key) ?? [];
+    this.lines.set(ticket.key, line.filter((id) => id !== ticket.id));
+    this.emit(`granted ${this.where(ticket)} attempt ${ticket.attempt}`);
+    if (notify) {
+      const notice: GrantNotice = { client: ticket.client, lease: ticket.id, document: ticket.document, label: ticket.label, bot: ticket.bot, attempt: ticket.attempt };
+      for (const listener of this.listeners) {
+        try { listener(notice); } catch (error) { this.emit(`grant notice failed: ${error instanceof Error ? error.message : error}`); }
+      }
+    }
+    this.wake(ticket.id);
+  }
+
+  private promote(key: string): void {
+    const line = this.lines.get(key) ?? [];
+    while (line.length) {
+      const id = line.shift()!;
+      const next = this.tickets.get(id);
+      if (!next) continue;
+      this.lines.set(key, line);
+      this.grant(next, true);
+      return;
+    }
+    this.holders.delete(key);
+    this.lines.delete(key);
+  }
+
+  private endActive(ticket: Ticket, outcome: "ok" | "failed", end: BatchEnd, error?: string, summary = "", care?: { save?: { ran: boolean; ok: boolean; detail: string }; sync?: { ran: boolean; detail: string } }): Record<string, unknown> {
+    const ended = this.now();
+    const started = ticket.grantedAt ?? ended;
+    const wait = Math.max(0, started - ticket.requestedAt);
+    const duration = Math.max(0, ended - started);
+    const row: HistoryRow = {
+      lease: ticket.id, document: ticket.document, label: ticket.label, batch_id: ticket.batchId, bot: ticket.bot,
+      attempt: ticket.attempt, outcome, end, summary, ...(error ? { error } : {}), ops: ticket.ops,
+      started: new Date(started).toISOString(), ended: new Date(ended).toISOString(),
+      duration_ms: duration, wait_ms: wait, references: copyRefs(ticket.references),
+      ...(care?.save ? { save: care.save } : {}),
+      ...(care?.sync ? { sync: care.sync } : {}),
+    };
+    const hist = this.history.get(ticket.key) ?? [];
+    hist.unshift(row);
+    this.history.set(ticket.key, hist.slice(0, HISTORY_LIMIT));
+    const stat = this.botStat(ticket.bot);
+    stat.finished += 1;
+    stat.waitMs += wait;
+    stat.durationMs += duration;
+    stat.lastReferences = copyRefs(ticket.references);
+    stat.lastDocument = ticket.document;
+    stat.lastLabel = ticket.label;
+    stat.lastClient = ticket.client;
+    let help: CorrectionHelp | undefined;
+    if (outcome === "ok") {
+      stat.batches += 1;
+      this.attempts.delete(this.attemptKey(ticket.key, ticket.batchId));
+      this.emit(`released ok ${this.where(ticket)} ops ${ticket.ops} in ${duration}ms. Not rolled back.`);
+    } else {
+      stat.failures += 1;
+      help = correctionHelp({ error: error || "failed", references: ticket.references, label: ticket.label, bot: ticket.bot });
+      const key = this.attemptKey(ticket.key, ticket.batchId);
+      const prior = this.attempts.get(key) ?? {
+        failures: 0, lastError: "", referencesHash: ticket.referencesHash, lastCorrection: "", bot: ticket.bot,
+        label: ticket.label, batchId: ticket.batchId, document: ticket.document, references: ticket.references,
+      };
+      prior.failures += 1;
+      prior.lastError = error || "failed";
+      prior.referencesHash = ticket.referencesHash;
+      prior.lastCorrection = ticket.correction;
+      prior.help = help;
+      prior.references = copyRefs(ticket.references);
+      prior.bot = ticket.bot;
+      this.attempts.set(key, prior);
+      this.emit(`failed ${this.where(ticket)} attempt ${ticket.attempt} (${end}). Next request for this label joins the tail with a different correction. The model was not rolled back.`);
+    }
+    if (help) row.correction = help;
+    if (ticket.attempt > 3) row.struggling = true;
+    const struggling = ticket.attempt > 3;
+    const done: DoneRow = {
+      state: "done", outcome, end, ...(error ? { error } : {}), summary, attempt: ticket.attempt, struggling,
+      document: ticket.document, label: ticket.label, batch_id: ticket.batchId, bot: ticket.bot, ops: ticket.ops,
+      references: copyRefs(ticket.references), ...(help ? { correction: help } : {}),
+    };
+    this.rememberDone(ticket, done);
+    this.holders.delete(ticket.key);
+    this.tickets.delete(ticket.id);
+    this.wake(ticket.id);
+    this.promote(ticket.key);
+    return { ok: true, ...done, lease: ticket.id };
+  }
+
+  private rememberDone(ticket: Ticket, row: DoneRow): void {
+    this.done.set(ticket.id, row);
+    this.doneOrder.push(ticket.id);
+    while (this.doneOrder.length > DONE_LIMIT) {
+      const old = this.doneOrder.shift();
+      if (old) this.done.delete(old);
+    }
+  }
+
+  private ticketView(ticket: Ticket): Record<string, unknown> {
+    const line = this.lines.get(ticket.key) ?? [];
+    const index = line.indexOf(ticket.id);
+    const position = ticket.state === "active" ? 0 : index + 1;
+    const eta = ticket.state === "queued" ? this.eta(ticket.key, position) : { eta_hint_s: 0, eta_basis: "granted" };
+    const holderId = this.holders.get(ticket.key);
+    const holder = holderId ? this.tickets.get(holderId) : undefined;
+    return {
+      ok: true,
+      state: ticket.state === "active" ? "granted" : ticket.state,
+      lease: ticket.id,
+      document: ticket.document,
+      label: ticket.label,
+      batch_id: ticket.batchId,
+      bot: ticket.bot,
+      attempt: ticket.attempt,
+      struggling: ticket.attempt > 3,
+      position,
+      ahead: ticket.state === "active" ? 0 : Math.max(0, position - 1) + (holder ? 1 : 0),
+      ops: ticket.ops,
+      est_ops: ticket.estOps ?? null,
+      references: copyRefs(ticket.references),
+      ...eta,
+      ...(holder && ticket.state === "queued" ? {
+        holder: { label: holder.label, bot: holder.bot, since: new Date(holder.grantedAt ?? holder.requestedAt).toISOString(), ops: holder.ops },
+      } : {}),
+    };
+  }
+
+  private one(lease: string): Record<string, unknown> {
+    const ticket = this.tickets.get(lease);
+    if (ticket) return this.ticketView(ticket);
+    const done = this.done.get(lease);
+    if (done) return { ok: true, lease, ...done, references: copyRefs(done.references) };
+    return { ok: false, state: "unknown", lease, message: "No batch with that lease. It may have been cleared when the service restarted." };
+  }
+
+  private eta(key: string, position: number): { eta_hint_s: number; eta_basis: string } {
+    let ms = 0;
+    let basis = "default";
+    const holderId = this.holders.get(key);
+    const holder = holderId ? this.tickets.get(holderId) : undefined;
+    if (holder) {
+      const avg = this.average(holder.bot);
+      const elapsed = Math.max(0, this.now() - (holder.grantedAt ?? this.now()));
+      if (holder.estOps && holder.estOps > holder.ops) {
+        const per = holder.ops > 0 ? elapsed / holder.ops : 2000;
+        ms += (holder.estOps - holder.ops) * per;
+        basis = "est_ops";
+      } else if (avg > 0) {
+        ms += Math.max(0, avg - elapsed);
+        basis = "history";
+      } else {
+        ms += 60_000;
+      }
+    }
+    const line = this.lines.get(key) ?? [];
+    for (let i = 0; i < position - 1 && i < line.length; i++) {
+      const ahead = this.tickets.get(line[i]);
+      if (!ahead) continue;
+      const avg = this.average(ahead.bot);
+      ms += avg || (ahead.estOps ? ahead.estOps * 2000 : 60_000);
+      if (basis === "default" && avg) basis = "history";
+    }
+    return { eta_hint_s: Math.max(0, Math.round(ms / 1000)), eta_basis: basis };
+  }
+
+  private average(bot: string): number {
+    const stat = this.bots.get(bot.toLowerCase());
+    return stat && stat.finished ? stat.durationMs / stat.finished : 0;
+  }
+
+  private documentView(key: string): Record<string, unknown> {
+    const holderId = this.holders.get(key);
+    const holder = holderId ? this.tickets.get(holderId) : undefined;
+    const line = [];
+    for (const [index, id] of (this.lines.get(key) ?? []).entries()) {
+      const ticket = this.tickets.get(id);
+      if (!ticket) continue;
+      line.push({
+        position: index + 1, lease: ticket.id, label: ticket.label, batch_id: ticket.batchId, bot: ticket.bot,
+        attempt: ticket.attempt, est_ops: ticket.estOps ?? null,
+        waiting_s: Math.max(0, Math.round((this.now() - ticket.requestedAt) / 1000)),
+        struggling: ticket.attempt > 3,
+        references: copyRefs(ticket.references), client: ticket.client,
+      });
+    }
+    return {
+      document: this.names.get(key) ?? holder?.document ?? this.history.get(key)?.[0]?.document ?? key,
+      holder: holder ? {
+        lease: holder.id, label: holder.label, batch_id: holder.batchId, bot: holder.bot, attempt: holder.attempt,
+        since: new Date(holder.grantedAt ?? holder.requestedAt).toISOString(), ops: holder.ops,
+        est_ops: holder.estOps ?? null, struggling: holder.attempt > 3, references: copyRefs(holder.references), client: holder.client,
+      } : null,
+      line,
+      history: (this.history.get(key) ?? []).map((row) => ({ ...row, references: copyRefs(row.references) })),
+    };
+  }
+
+  private botStat(bot: string): BotStat {
+    const key = bot.toLowerCase();
+    let stat = this.bots.get(key);
+    if (!stat) {
+      stat = { bot, batches: 0, failures: 0, retries: 0, waitMs: 0, durationMs: 0, finished: 0, lastReferences: null, lastDocument: null, lastLabel: null, lastClient: null };
+      this.bots.set(key, stat);
+    }
+    stat.bot = bot;
+    return stat;
+  }
+
+  private attemptKey(doc: string, batchId: string): string {
+    return `${doc}\0${batchId.trim().toLowerCase()}`;
+  }
+
+  private where(ticket: Ticket): string {
+    return `document=${ticket.document} label=${ticket.label} bot=${ticket.bot} lease=${ticket.id.slice(0, 8)}`;
+  }
+
+  private readonly waiterMap = new Map<string, Set<() => void>>();
+
+  private waiters(id: string): Set<() => void> {
+    let set = this.waiterMap.get(id);
+    if (!set) { set = new Set(); this.waiterMap.set(id, set); }
+    return set;
+  }
+
+  private wake(id: string): void {
+    const set = this.waiterMap.get(id);
+    if (!set) return;
+    this.waiterMap.delete(id);
+    for (const fn of set) fn();
+  }
+
+  private emit(text: string): void {
+    let line = text.startsWith("fmc batch:") ? text : `fmc batch: ${text}`;
+    if (/bearer\s|mcp-http\.token|authorization:/i.test(line)) line = "fmc batch: log line dropped because it looked like a credential";
+    try { this.sink(line); } catch { /* logging must not stop the line */ }
+  }
+}
+
+function referencesHash(refs: BatchReferences): string {
+  const text = Object.keys(refs).sort().map((key) => `${key}:${[...refs[key]].sort().join(",")}`).join("|");
+  return createHash("sha256").update(text).digest("hex").slice(0, 16);
+}
+
+function leaseHint(holder: Ticket): string {
+  return `This session holds it.`;
+}
+
+let board: BatchBoard | undefined;
+
+export function batchBoard(): BatchBoard {
+  if (!board) board = new BatchBoard({ autoSweep: true, saveStep: (ctx) => import("./batchsave.js").then((mod) => mod.productionSaveStep(ctx)) });
+  return board;
+}
+
+export function addGrantListener(fn: (notice: GrantNotice) => void): () => void {
+  return batchBoard().listen(fn);
+}
+
+export function resetBatchBoard(opts: BatchBoardOptions = {}): BatchBoard {
+  board?.close();
+  const cfg = loadBatchConfig();
+  board = new BatchBoard({
+    idleMs: cfg.idleMs,
+    maxMs: cfg.maxMs,
+    requiredReferences: cfg.requiredReferences,
+    autoSweep: false,
+    ...opts,
+  });
+  return board;
+}
+
+/** Process start. In-memory leases do not survive a restart, and the model is not rolled back. */
+export function logBatchRestart(): BatchBoard {
+  board?.close();
+  board = new BatchBoard({ ...loadBatchConfig(), autoSweep: true, saveStep: (ctx) => import("./batchsave.js").then((mod) => mod.productionSaveStep(ctx)) });
+  board.noteServiceStart();
+  return board;
+}
+
+/**
+ * Model-changing calls only. The write list is WRITE_COMMANDS, the same list a reset retry refuses to send twice.
+ * Returns a finish() the caller runs when the Revit call returns, so a long write counts as liveness.
+ */
+export function admitBatchWrite(command: string, document: string | undefined, lease: string | undefined, client: string): { finish: () => void } {
+  if (!WRITE_COMMANDS.has(command)) return { finish() {} };
+  return batchBoard().admit(document, lease, client);
+}
+
+export async function notifyBatchGranted(send: (method: string, params: unknown) => Promise<void>, notice: GrantNotice): Promise<boolean> {
+  try {
+    await send("notifications/fmc/batch_granted", {
+      lease: notice.lease, document: notice.document, label: notice.label, bot: notice.bot, attempt: notice.attempt, granted: true,
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
