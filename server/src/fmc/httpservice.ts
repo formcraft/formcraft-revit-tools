@@ -21,6 +21,7 @@ import { createFormcraftServer } from "./boot.js";
 import { HOST, ProbeVerdict, probePort, readInstances } from "./connect.js";
 import { lastRegistration } from "../tools/register.js";
 import { queueClient, queueSnapshots } from "./fairqueue.js";
+import { addGrantListener, batchBoard, logBatchRestart, notifyBatchGranted } from "./batchline.js";
 
 const win = path.win32;
 
@@ -128,6 +129,7 @@ export interface HealthReport {
   instances: Array<{ pid: number; port: number; revit: string; build: string; answering: boolean; verdict: ProbeVerdict }>;
   registration: { registered: number; skipped: number; failed: Array<{ file: string; error: string }> };
   queue: ReturnType<typeof queueSnapshots>;
+  batches: ReturnType<ReturnType<typeof batchBoard>["snapshot"]>;
 }
 
 export async function healthReport(listen: string, startedAt: number, env: NodeJS.ProcessEnv = process.env): Promise<HealthReport> {
@@ -153,6 +155,7 @@ export async function healthReport(listen: string, startedAt: number, env: NodeJ
     instances: rows,
     registration: { registered: reg.registered.length, skipped: reg.skipped.length, failed: reg.failed },
     queue: queueSnapshots(),
+    batches: batchBoard().snapshot(),
   };
 }
 
@@ -206,6 +209,14 @@ export async function startHttpService(options: HttpServiceOptions): Promise<Htt
   const env = options.env ?? process.env;
   const sessions = new Map<string, Session>();
   const startedAt = Date.now();
+  logBatchRestart();
+  const stopGrants = addGrantListener((notice) => {
+    const session = sessions.get(notice.client);
+    if (!session) return;
+    const low = (session.server as unknown as { server?: { notification?: (msg: unknown) => Promise<void> } }).server;
+    if (!low?.notification) return;
+    void notifyBatchGranted((method, params) => low.notification!({ method, params }), notice);
+  });
 
   const server = http.createServer(async (req, res) => {
     try {
@@ -267,6 +278,7 @@ export async function startHttpService(options: HttpServiceOptions): Promise<Htt
 
   async function close() {
     stopWatch();
+    stopGrants();
     for (const session of sessions.values()) {
       try { await session.transport.close(); } catch { /* already closed */ }
       try { await session.server.close(); } catch { /* already closed */ }
@@ -300,6 +312,7 @@ async function handleMcp(req: http.IncomingMessage, res: http.ServerResponse, se
       enableJsonResponse: true,
       onsessioninitialized: (id) => { sessions.set(id, { transport, server: mcp }); },
       onsessionclosed: async (id) => {
+        batchBoard().disconnect(id);
         const session = sessions.get(id);
         sessions.delete(id);
         try { await session?.server.close(); } catch { /* already closed */ }
@@ -307,7 +320,10 @@ async function handleMcp(req: http.IncomingMessage, res: http.ServerResponse, se
     });
     transport.onclose = () => {
       const id = transport.sessionId;
-      if (id) sessions.delete(id);
+      if (id) {
+        batchBoard().disconnect(id);
+        sessions.delete(id);
+      }
     };
     await mcp.connect(transport);
     await transport.handleRequest(req, res, body);

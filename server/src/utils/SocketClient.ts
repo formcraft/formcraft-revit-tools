@@ -4,10 +4,11 @@ import path from "path";
 import { appendJobEvent, jobFiles, jobResult, lastHeartbeatMs } from "../fmc/jobs.js";
 import { WRITE_COMMANDS, callActivity, liveLockVerdict, loadConfig } from "../fmc/policy.js";
 import { protectedRoots, writeGuard } from "../fmc/opencopy.js";
-import { documentTarget, revitTarget } from "../fmc/target.js";
+import { batchLease, documentTarget, revitTarget } from "../fmc/target.js";
 import { readInstances, stalePortMessage } from "../fmc/connect.js";
 import { backoffMs, shouldRetryReset } from "../fmc/reconnect.js";
-import { documentRequired } from "../fmc/fairqueue.js";
+import { currentClient, documentRequired } from "../fmc/fairqueue.js";
+import { admitBatchWrite } from "../fmc/batchline.js";
 import { aiGate } from "../fmc/aigate.js";
 import { retryWhileBusy } from "../fmc/busy.js";
 
@@ -142,7 +143,22 @@ export class RevitClientConnection {
    * The lock fails closed: if the active document cannot be read, the command is not sent.
    */
   public async sendCommand(command: string, params: any = {}, timeoutMs: number = 120000, long?: LongJobOptions): Promise<any> {
-    if (WRITE_COMMANDS.has(command)) {
+    if (!WRITE_COMMANDS.has(command)) return this.sendRaw(command, params, timeoutMs, long);
+    const aimed = params && typeof params.document === "string" && params.document.trim()
+      ? params.document.trim()
+      : documentTarget.getStore();
+    // The lease check is the same write list as a reset retry: reads never take a lease.
+    const admission = admitBatchWrite(command, aimed, batchLease.getStore(), currentClient());
+    try {
+      return await this.sendLocked(command, params, timeoutMs, long);
+    } finally {
+      admission.finish();
+    }
+  }
+
+  /** Live-model lock, then the socket. The batch lease was already checked. */
+  private async sendLocked(command: string, params: any = {}, timeoutMs: number = 120000, long?: LongJobOptions): Promise<any> {
+    {
       // Owner 26 Oct: two chats share this server; with two Revits open a change must name its Revit, so neither
       // chat can edit the other's model
       const open = readInstances();

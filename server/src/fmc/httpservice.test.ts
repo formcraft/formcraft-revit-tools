@@ -54,6 +54,10 @@ test("the service requires the bearer token, reports health, lists fmc_review, a
     assert.equal(typeof body.build, "string");
     assert.ok(body.uptime_s >= 0);
     assert.ok(Array.isArray(body.instances));
+    const care = (body as { batches?: { approval?: string; sync?: string; approval_does_not_cover?: string[] } }).batches;
+    assert.ok(care?.approval === "auto" || care?.approval === "manual");
+    assert.equal(care?.sync, "never");
+    assert.match((care?.approval_does_not_cover ?? []).join(" "), /references/);
     assert.equal(JSON.stringify(body).includes(token), false);
 
     const client = new Client({ name: "formcraft-test", version: "0" });

@@ -3,6 +3,7 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { RUNNING_BUILD } from "./fmc/buildinfo.js";
 import { createFormcraftServer } from "./fmc/boot.js";
 import { bindHost, formcraftDir, httpPort, loadOrCreateToken, startHttpService, tokenPath } from "./fmc/httpservice.js";
+import { logBatchRestart, notifyBatchGranted, addGrantListener } from "./fmc/batchline.js";
 import { appendCapped } from "./fmc/logrotate.js";
 import { runStdioShim } from "./fmc/stdio_shim.js";
 import path from "node:path";
@@ -20,6 +21,13 @@ function mode(): Mode {
 
 async function runStdio(): Promise<void> {
   const server = await createFormcraftServer();
+  logBatchRestart();
+  addGrantListener((notice) => {
+    if (notice.client !== "stdio") return;
+    const low = (server as unknown as { server?: { notification?: (msg: unknown) => Promise<void> } }).server;
+    if (!low?.notification) return;
+    void notifyBatchGranted((method, params) => low.notification!({ method, params }), notice);
+  });
   console.error(`Formcraft server build ${RUNNING_BUILD.commit} (built ${RUNNING_BUILD.built || "?"})`);
   const transport = new StdioServerTransport();
   await server.connect(transport);
