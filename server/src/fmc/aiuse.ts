@@ -59,6 +59,13 @@ export interface AiModellerConfig {
   allow_code?: boolean;
   /** Owner 26 Oct: in testing mode, batches run without waiting; each is still listed in Approvals as auto-approved. */
   auto_approve?: boolean;
+  /**
+   * Auto-approve a bot's direct fmc_revit_file sync. Default false. It does nothing unless mode is testing and
+   * auto_approve is true. Relinquish on its own stays manual.
+   */
+  auto_approve_sync?: boolean;
+  /** Titles or paths a person has marked damaged. Also read from the guard's damaged_documents list. */
+  damaged_documents?: string[];
   /** Owner 26 Oct: save the model after changes when this many minutes have passed since the last save (testing default 10; 0 off). */
   auto_save_minutes?: number;
   /** Per project code: its own General switch, and (admin, Advanced) its own switch, involvement and levels. */
@@ -184,7 +191,8 @@ export function parseConfig(raw: unknown): AiModellerConfig | null {
   for (const [k, v] of Object.entries((o.copies ?? {}) as Record<string, { general?: boolean }>)) {
     if (v && typeof v === "object") copies[win.normalize(k).toLowerCase()] = { general: v.general === true };
   }
-  return { on: o.on, stop: o.stop === true, general: o.general === true ? true : undefined, mode: o.mode === "testing" ? "testing" : "strict", access: o.access === "full" ? "full" : "general", allow_code: o.allow_code === true, auto_approve: o.auto_approve === true, auto_save_minutes: typeof o.auto_save_minutes === "number" ? o.auto_save_minutes : undefined,
+  const damaged = Array.isArray(o.damaged_documents) ? o.damaged_documents.map((item: unknown) => String(item).trim()).filter(Boolean) : [];
+  return { on: o.on, stop: o.stop === true, general: o.general === true ? true : undefined, mode: o.mode === "testing" ? "testing" : "strict", access: o.access === "full" ? "full" : "general", allow_code: o.allow_code === true, auto_approve: o.auto_approve === true, auto_approve_sync: o.auto_approve_sync === true, damaged_documents: damaged, auto_save_minutes: typeof o.auto_save_minutes === "number" ? o.auto_save_minutes : undefined,
     involvement: typeof o.involvement === "number" ? o.involvement : undefined,
     projects: o.projects && typeof o.projects === "object" ? o.projects : {}, levels, copies };
 }
@@ -206,7 +214,7 @@ export interface AiState { day: string; models: Record<string, { elements: numbe
 
 export interface AiAsk {
   command: string;
-  doc: DocInfo & { isLocal?: boolean };
+  doc: DocInfo;
   elements: number;
   /** An approval a person gave in the pane for exactly this batch. */
   approved: boolean;

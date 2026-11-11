@@ -507,6 +507,14 @@ export class BatchBoard {
     return this.ticketView(ticket);
   }
 
+  /** Who holds this document now. Null when the line is idle. */
+  activeHolder(document: string): { lease: string; client: string } | null {
+    this.sweep();
+    const holder = this.holderFor(document);
+    if (!holder) return null;
+    return { lease: holder.id, client: holder.client };
+  }
+
   status(lease?: string, client?: string): Record<string, unknown> {
     this.sweep();
     if (lease) return this.one(lease);

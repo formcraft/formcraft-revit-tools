@@ -49,6 +49,10 @@ A logon task named **Formcraft MCP** (no admin) starts the service, restarts it 
 
 `fmc_save_project` saves a project. Pass `title` and `path`. Both must match the open document. A family (`.rfa`, or a document open in the Family Editor) is refused. The live-model lock and the batch lease apply, because the save is `fmc_revit_file` action `save` after those checks. `revit_file` action `save` by itself does not check the title and the path and does not refuse a family.
 
+## Sync auto-approve
+
+`ai_modeller.auto_approve_sync` defaults to false. It does nothing unless `mode` is `testing` and `auto_approve` is true. When it is on, a bot's direct `fmc_revit_file` sync runs without waiting in the pane only if the target is a workshared local (not a central, a detached copy, a family or a protected original, and not on `sync_exclude`), the caller holds the active batch lease on that document or no other lease is active, the document is not listed in `damaged_documents` and has no recent corrupt-on-sync dialog in `FMC_Jobs_Revit.jsonl`, the RAM gate is not paused, Stop AI is off, and AI is on for the model. Relinquish on its own stays manual. Each auto-approval and each refusal is a line in `%APPDATA%\Formcraft\FMC_SyncAutoApprove.jsonl`. `fmc_ai` status shows `sync_auto_approve` and the recent lines. This is server-only.
+
 ## Several agents, one Revit
 
 Revit runs one API call at a time. The service accepts many clients and takes turns: one call from each waiting client, then the next, so one bot's batch does not sit in front of the others.

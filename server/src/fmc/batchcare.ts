@@ -6,10 +6,11 @@
  * verification copy, a link, or a protected original (including originals on D: once protected_roots names them).
  *
  * Auto-approve that actually runs: the same file, auto_approve true and mode "testing". aigate.ts skips the
- * approval queue for ordinary model changes. A person's own sync still waits for a person.
+ * approval queue for ordinary model changes. A direct sync waits unless auto_approve_sync is also on. Relinquish stays manual.
  *
  * Workshared sync is fmc_guard.json sync_minutes (default 15) and sync_on_batch_end (default true), applied to every
- * open workshared document. A person's own fmc_revit_file sync still waits for approval. Stop AI and the live-model
+ * open workshared document. A person's own fmc_revit_file sync waits for approval unless auto_approve_sync is on
+ * in testing mode with auto_approve, and every sync check passes. Relinquish stays manual. Stop AI and the live-model
  * lock still refuse the batch sync. The pane's admin.scheduledsync toggle is in memory only and is not read.
  */
 import fs from "node:fs";
@@ -23,7 +24,7 @@ import { mergeRulebooks } from "./rules.js";
 
 export const SYNC_NOT_RUN =
   "Not run for this batch. Workshared models sync from fmc_guard.json sync_minutes and sync_on_batch_end. " +
-  "A non-workshared model is autosave only. A person's fmc_revit_file sync still waits for approval.";
+  "A non-workshared model is autosave only. A direct sync waits for approval unless auto_approve_sync is on. Relinquish stays manual.";
 
 /** What auto-approve turns off, and what it does not. */
 export const APPROVAL_COVERS = [
@@ -32,7 +33,7 @@ export const APPROVAL_COVERS = [
 
 export const APPROVAL_DOES_NOT_COVER = [
   "fmc_batch references: kit, standards and rulebook are still required.",
-  "A person's fmc_revit_file sync still waits for approval. The batch sync does not, and it still stops for Stop AI and the live-model lock.",
+  "A direct fmc_revit_file sync waits for approval unless auto_approve_sync is on and every sync check passes. Relinquish stays manual. The batch line's own sync does not wait, and it still stops for Stop AI and the live-model lock.",
   "Keynotes on fmc_replace (X.YYY_ZZ) and Gate A keynote and library checks (recipes.ts gateA).",
   "Stop AI, the rulebook limits, and the live-model lock.",
 ];

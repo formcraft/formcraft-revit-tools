@@ -89,6 +89,11 @@ export interface GuardConfig {
    */
   sync_documents?: string[];
   /**
+   * Titles or paths that must not be auto-synced. A person sets this after a damaged central.
+   * Matched like sync_exclude. A recent corrupt-on-sync dialog flags the document as well.
+   */
+  damaged_documents?: string[];
+  /**
    * Who may reserve the next batch slot. Matched against the MCP client name and the bot field.
    * Default is Hostel Building Bot. An empty list means nobody may reserve.
    */
@@ -129,6 +134,7 @@ export const DEFAULT_CONFIG: GuardConfig = {
   script_max_chars: 1_000_000,
   sync_minutes: 15,
   sync_on_batch_end: true,
+  damaged_documents: [],
   batch_schedulers: ["Hostel Building Bot"],
   recovery: { heartbeat_s: 90, documents: [] },
 };
