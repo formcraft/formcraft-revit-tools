@@ -798,7 +798,7 @@
     "feature": "Detached verification copy",
     "status": "Built, Revit check due",
     "ref": "fmc_file open_copy",
-    "note": "Opens a copy in the background, detached when workshared, links keep/unload/repath on the copy only. Protected originals are not written, saved, synced or relinquished. modify_model dry_run rolls back on the copy. Needs a Revit check."
+    "note": "Opens a copy in the background, detached when workshared, links keep/unload/repath on the copy only. Unload and repath close the copy without saving and return an error if a link is still loaded. Protected originals are not written, saved, synced or relinquished. modify_model dry_run rolls back on the copy. Needs a Revit check."
   },
   {
     "id": "F90",
@@ -807,6 +807,15 @@
     "feature": "Column endpoint read",
     "status": "Built, Revit check due",
     "ref": "fmc_structure facts",
-    "note": "Columns report base and top level plus offsets, a constraint axis or location curve, attachment parameters and the analytical member. DirectShape stairs and columns no longer fail the read. Needs a Revit check on pad 1666458 and column 1666062."
+    "note": "Columns report base and top level plus offsets, a constraint axis or location curve, attachment parameters and the analytical member. full:true and column_ends also report the solid's bottom and top after cuts and joins, and the gap or overlap to each contact face. DirectShape stairs and columns no longer fail the read. Needs a Revit check on pad 1666458 and column 1666062."
+  },
+  {
+    "id": "F91",
+    "area": "Engine",
+    "group": "Structure",
+    "feature": "Preview structural replacement on a verification copy",
+    "status": "Built, Revit check due",
+    "ref": "fmc_replace",
+    "note": "One TransactionGroup, always rolled back, only on a document opened with fmc_file open_copy. Sequential sub-transactions so a later row can see an earlier one. Create, verify, rebind, delete exact ids, orphan check. No apply mode. Needs a Revit check on one B7 pad row and one B3 beam row."
   }
 ]

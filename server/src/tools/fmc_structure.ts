@@ -17,7 +17,10 @@ export const FMC_STRUCTURE_DESCRIPTION =
   "with their layers, floors, roofs, rooms, columns, beams, foundations and stairs. A column's start_mm and end_mm are a " +
   "constraint axis (base level + offset to top level + offset, or the location curve when the column is slanted) or null. " +
   "axis_kind is constraint_axis, location_curve or unavailable. physical.note says the same. analytical is the mapped " +
-  "AnalyticalMember's endpoints when Revit has one. A bounding-box centre is never used as an endpoint. A DirectShape in " +
+  "AnalyticalMember's endpoints when Revit has one. column_ends reads each structural column's solid after cuts and joins: " +
+  "bottom_mm and top_mm in host coordinates, the ids and categories touching each end (foundation, framing, floor, wall or column), " +
+  "and gap_mm (positive when the faces are apart, negative when they overlap, touch when the absolute gap is within touch_mm). " +
+  "facts with full:true includes that contact field beside the constraint axis. A bounding-box centre is never an endpoint or a contact. A DirectShape in "
   "the same category is returned with class and direct_shape true instead of failing the read. Pass document to read a " +
   "verification copy. loads {link?, use?}: the load takedown from those " +
   "facts and the kit's standards (Uganda Structural Design Code 2019; unit weights EN 1991-1-1): every suspended slab " +
@@ -35,20 +38,40 @@ const reply = (body: object, isError = false) => ({ content: [{ type: "text" as 
 
 export function registerFmcStructureTool(server: McpServer) {
   server.tool("fmc_structure", FMC_STRUCTURE_DESCRIPTION, {
-    action: z.enum(["facts", "loads", "frame"]).optional().default("loads"),
+    action: z.enum(["facts", "loads", "frame", "column_ends"]).optional().default("loads"),
     max_span_mm: z.number().min(2000).max(12000).optional(), bearing_kpa: z.number().min(50).max(1000).optional(),
     apply: z.boolean().optional().default(false), dry_run: z.boolean().optional().default(true),
     link: z.string().optional().describe("Read from this linked model (part of its name); default the open model"),
     use: z.string().optional().default("residential").describe("The use the standards are read for"),
     save_to_project: z.string().optional().describe("The project folder (holding 01_WIP): write the load table there"),
-    full: z.boolean().optional().default(false).describe("facts: every element, not only the counts and levels"),
+    full: z.boolean().optional().default(false).describe("facts: every element, not only the counts and levels. Also reads column contact faces."),
+    ids: z.array(z.number().int()).optional().describe("column_ends: only these structural column element ids. Ids that are not structural columns come back in missing."),
+    search_mm: z.number().min(0).max(5000).optional().describe("column_ends: farthest contact face to report, in millimetres. Default 500."),
+    touch_mm: z.number().min(0).max(100).optional().describe("column_ends: absolute gap at or under this, in millimetres, is a touch. Default 2."),
     exclude_levels: z.array(z.string()).optional().describe("frame: leave out the walls, slabs and rooms on these levels (e.g. an outbuilding)"),
     types: z.object({ column: z.string().optional(), beam: z.string().optional(), pad: z.string().optional(), slab: z.string().optional() }).optional()
       .describe("frame: the structural model's types to build from (concrete families with b/h; slab: a floor type of the RC thickness)"),
     min_line_mm: z.number().min(0).max(20000).optional().describe("frame: wall length a grid line needs to carry columns (default 2400; exterior lines always)"),
   }, async (args) => {
     try {
-      const facts = await withRevitConnection((c) => c.sendCommand("fmc_struct_facts", { link: args.link }, 300000)) as Facts & { counts?: unknown };
+      const facts = await withRevitConnection((c) => c.sendCommand("fmc_struct_facts", {
+        link: args.link,
+        ...(args.action === "column_ends" || args.full ? { column_ends: true } : {}),
+        ...(args.action === "column_ends" && args.ids ? { ids: args.ids } : {}),
+        ...(args.search_mm != null ? { search_mm: args.search_mm } : {}),
+        ...(args.touch_mm != null ? { touch_mm: args.touch_mm } : {}),
+      }, 300000)) as Facts & { counts?: unknown; columns?: Array<{ id: number }>; document?: unknown };
+      if (args.action === "column_ends") {
+        const want = new Set((args.ids ?? []).map((id) => Number(id)));
+        const columns = (facts.columns ?? []).filter((c) => want.size === 0 || want.has(Number(c.id)));
+        const have = new Set(columns.map((c) => Number(c.id)));
+        return reply({
+          from: facts.from, document: facts.document, units: "mm, host coordinates",
+          search_mm: args.search_mm ?? 500, touch_mm: args.touch_mm ?? 2, columns,
+          missing: [...want].filter((id) => !have.has(id)),
+          note: "contact.bottom_mm and contact.top_mm are the solid after cuts and joins. start_mm and end_mm remain the constraint axis or location curve. gap_mm is positive when the faces are apart and negative when they overlap.",
+        });
+      }
       if (args.action === "facts") return reply(args.full ? facts : { from: facts.from, levels: facts.levels, counts: facts.counts, walls_sample: facts.walls.slice(0, 5) });
 
       const { config } = loadConfig();

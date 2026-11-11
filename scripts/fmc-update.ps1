@@ -43,6 +43,34 @@ function PullDrop {
 
 function Log([string]$m) { Add-Content -Path $log -Value ('{0:yyyy-MM-dd HH:mm:ss}  {1}' -f (Get-Date), $m) -Encoding UTF8 }
 
+# The commit is the one just installed (ready.json), and the file list is what is on disk after the copy.
+# A previous install left this file saying an older commit; nothing else updates it.
+function Write-InstalledFiles([string]$commit) {
+    $files = New-Object System.Collections.Generic.List[string]
+    $serverBuild = Join-Path $mcp 'build'
+    if (Test-Path $serverBuild) {
+        Get-ChildItem $serverBuild -Recurse -File | ForEach-Object {
+            $files.Add(('server\build\' + $_.FullName.Substring($serverBuild.Length).TrimStart('\', '/')))
+        }
+    }
+    foreach ($name in @('Formcraft.addin')) {
+        if (Test-Path (Join-Path $addins $name)) { $files.Add('addin\' + $name) }
+    }
+    $addinDir = Join-Path $addins 'revit_mcp_plugin'
+    if (Test-Path $addinDir) {
+        Get-ChildItem $addinDir -Recurse -File | ForEach-Object {
+            $files.Add(('addin\revit_mcp_plugin\' + $_.FullName.Substring($addinDir.Length).TrimStart('\', '/')))
+        }
+    }
+    $manifest = [ordered]@{
+        commit       = $commit
+        installed_at = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
+        files        = @($files)
+    }
+    $manifest | ConvertTo-Json -Depth 4 | Set-Content -Path (Join-Path $state 'installed-files.json') -Encoding UTF8
+    Log "installed-files.json records $commit ($($files.Count) files)"
+}
+
 # F-042: the Claude app starts the Formcraft MCP server itself and keeps it running. Replacing the files doesn't
 # change the running process: it keeps the code it started with until the app (or its connector) restarts. The
 # updater never stops it; it lists it, so the log and installed.json say a restart is due (fmc_selftest fails too).
@@ -153,6 +181,8 @@ function Install {
         server_processes      = $stale
     }
     $record | ConvertTo-Json | Set-Content -Path (Join-Path $state 'installed.json') -Encoding UTF8
+    # installed-files.json used to keep an old commit (81627a6 after a later install). Rewrite it from this install.
+    Write-InstalledFiles $info.commit
 
     # A newer updater came with the build: it replaces this script's copy and runs from the next start (the logon task
     # starts it again within 5 minutes).
