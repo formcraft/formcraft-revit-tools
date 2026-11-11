@@ -134,6 +134,92 @@ function InstallRhino {
     Log "Installed the Rhino add-in into $target"
 }
 
+function Get-McpHttpPort {
+    $port = 8787
+    $cfg = Join-Path $state 'fmc_http.json'
+    if (Test-Path $cfg) { try { $port = [int](Get-Content $cfg -Raw | ConvertFrom-Json).port } catch { } }
+    if ($port -lt 1) { $port = 8787 }
+    return $port
+}
+
+# /health, or $null when the service does not answer. The token is not logged.
+function Read-McpHealth {
+    $tokenFile = Join-Path $state 'mcp-http.token'
+    if (-not (Test-Path $tokenFile)) { return $null }
+    try {
+        $token = (Get-Content $tokenFile -Raw).Trim()
+        $port = Get-McpHttpPort
+        $req = [System.Net.HttpWebRequest]::Create("http://127.0.0.1:${port}/health")
+        $req.Timeout = 2000
+        $req.Headers.Add('Authorization', "Bearer $token")
+        $resp = $req.GetResponse()
+        $reader = New-Object System.IO.StreamReader($resp.GetResponseStream())
+        $raw = $reader.ReadToEnd()
+        $reader.Close(); $resp.Close()
+        return $raw | ConvertFrom-Json
+    } catch { return $null }
+}
+
+function Test-HttpServerRunning {
+    $pids = @(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object {
+        $_.CommandLine -and $_.CommandLine -match 'index\.js' -and $_.CommandLine -match '--http'
+    })
+    return ($pids.Count -gt 0)
+}
+
+# True only when no batch holds a document, no lease is waiting, and no Revit call is running or queued.
+function Test-BatchLineIdle([object]$body) {
+    $holders = New-Object System.Collections.Generic.List[string]
+    $leaseQueue = 0
+    foreach ($doc in @($body.batches.documents)) {
+        if ($null -eq $doc) { continue }
+        if ($null -ne $doc.holder) {
+            $label = [string]$doc.holder.label
+            if (-not $label) { $label = [string]$doc.holder.lease }
+            if (-not $label) { $label = [string]$doc.document }
+            $holders.Add($label)
+        }
+        if ($null -ne $doc.line) { $leaseQueue += @($doc.line).Count }
+    }
+    $running = 0
+    $waiting = 0
+    foreach ($q in @($body.queue)) {
+        if ($null -eq $q) { continue }
+        if ($null -ne $q.running) { $running += 1 }
+        if ($null -ne $q.waiting) { $waiting += [int]$q.waiting }
+    }
+    $idle = ($holders.Count -eq 0 -and $leaseQueue -eq 0 -and $running -eq 0 -and $waiting -eq 0)
+    $detail = "no active fmc_batch lease and the Revit queue is empty"
+    if (-not $idle) {
+        $parts = @()
+        if ($holders.Count) { $parts += ("active lease: " + ($holders -join ', ')) }
+        if ($leaseQueue) { $parts += "$leaseQueue lease(s) waiting" }
+        if ($running -or $waiting) { $parts += "Revit queue running $running, waiting $waiting" }
+        $detail = $parts -join '; '
+    }
+    return @{ idle = $idle; detail = $detail }
+}
+
+# Poll /health until the batch line is clear, or the timeout passes. A timeout does not stop the server.
+function Wait-BatchLineIdle([int]$Seconds = 60) {
+    if (-not (Test-HttpServerRunning)) {
+        return @{ idle = $true; detail = 'no Formcraft HTTP server is running' }
+    }
+    $deadline = (Get-Date).AddSeconds($Seconds)
+    $last = 'the HTTP server is running but /health did not answer'
+    do {
+        $body = Read-McpHealth
+        if ($null -ne $body) {
+            $line = Test-BatchLineIdle $body
+            $last = $line.detail
+            if ($line.idle) { return $line }
+        }
+        if ((Get-Date) -ge $deadline) { break }
+        Start-Sleep -Seconds 5
+    } while ((Get-Date) -lt $deadline)
+    return @{ idle = $false; detail = $last }
+}
+
 function Stop-HttpServer {
     $deadline = (Get-Date).AddSeconds(20)
     while ((Get-Date) -lt $deadline) {
@@ -149,10 +235,24 @@ function Stop-HttpServer {
 # Copy the new server beside the live one, stop the service, swap, then ask /health.
 # A failed health check puts the previous build back. Returns a short status, never the token.
 function Install-ServerBuild([string]$commit, [string]$stamp) {
+    # A hot-swap restarts the process and drops in-memory leases. Wait until nothing is mid-batch.
+    $line = Wait-BatchLineIdle -Seconds 60
+    if (-not $line.idle) {
+        Log ("SERVER swap held: {0}. Timed out after 60s. The running server was not stopped. The next poll retries." -f $line.detail)
+        return ("waiting: {0}" -f $line.detail)
+    }
+    Log ("SERVER swap proceeding: {0}." -f $line.detail)
     New-Item -ItemType Directory -Force $mcp | Out-Null
     $incoming = Join-Path $mcp 'build.incoming'
     if (Test-Path $incoming) { Remove-Item $incoming -Recurse -Force }
     Copy-Item (Join-Path $next 'server\build') $incoming -Recurse -Force
+    # Check again after the copy. Writing mcp-http.reload makes the live process exit.
+    $again = Wait-BatchLineIdle -Seconds 60
+    if (-not $again.idle) {
+        if (Test-Path $incoming) { Remove-Item $incoming -Recurse -Force }
+        Log ("SERVER swap held: {0}. Timed out after 60s. The running server was not stopped. The next poll retries." -f $again.detail)
+        return ("waiting: {0}" -f $again.detail)
+    }
     Set-Content -Path (Join-Path $state 'mcp-http.reload') -Value "swap $commit" -Encoding ascii
     Stop-HttpServer
     $live = Join-Path $mcp 'build'
@@ -183,9 +283,7 @@ function Test-McpHealth([string]$commit) {
         if (Test-Path $tokenFile) {
             try {
                 $token = (Get-Content $tokenFile -Raw).Trim()
-                $port = 8787
-                $cfg = Join-Path $state 'fmc_http.json'
-                if (Test-Path $cfg) { try { $port = [int](Get-Content $cfg -Raw | ConvertFrom-Json).port } catch { } }
+                $port = Get-McpHttpPort
                 $req = [System.Net.HttpWebRequest]::Create("http://127.0.0.1:${port}/health")
                 $req.Timeout = 2000
                 $req.Headers.Add('Authorization', "Bearer $token")
@@ -206,22 +304,35 @@ function Test-McpHealth([string]$commit) {
 
 function Install {
     $info  = Get-Content $ready -Raw | ConvertFrom-Json
+    if ((Test-Path (Join-Path $next 'server\build\index.js')) -and -not (Test-Path (Join-Path $next 'server.installed'))) {
+        $line = Wait-BatchLineIdle -Seconds 60
+        if (-not $line.idle) {
+            Log ("SERVER swap held: {0}. Timed out after 60s. The running server was not stopped. The staged build stays. The next poll retries." -f $line.detail)
+            return
+        }
+    }
     $stamp = Get-Date -Format 'yyyy-MM-dd_HHmm'
     $backup = Join-Path $backups ("{0}_before-{1}" -f $stamp, $info.commit)
     New-Item -ItemType Directory -Force $backup | Out-Null
     if (Test-Path (Join-Path $addins 'revit_mcp_plugin')) { Copy-Item (Join-Path $addins 'revit_mcp_plugin') $backup -Recurse -Force }
     if (Test-Path (Join-Path $addins 'Formcraft.addin'))  { Copy-Item (Join-Path $addins 'Formcraft.addin') $backup -Force }
 
-    # The server does not need Revit closed. The add-in DLLs do.
+    # The server does not need Revit closed. The add-in DLLs do. A server swap waits until no batch lease is active and the queue is empty.
     $serverState = 'not in this drop'
     $addinState = 'not in this drop'
     $serverDone = $false
+    $serverWaiting = $false
     if ((Test-Path (Join-Path $next 'server\build\index.js')) -and -not (Test-Path (Join-Path $next 'server.installed'))) {
         $health = Install-ServerBuild $info.commit $stamp
-        $serverDone = $true
         $serverState = $health
-        New-Item -ItemType File -Force (Join-Path $next 'server.installed') | Out-Null
-        Log "SERVER $health ($($info.commit))"
+        if ($health -like 'waiting:*') {
+            $serverWaiting = $true
+            Log "SERVER $($info.commit) stays staged. $health"
+        } else {
+            $serverDone = $true
+            New-Item -ItemType File -Force (Join-Path $next 'server.installed') | Out-Null
+            Log "SERVER $health ($($info.commit))"
+        }
     } elseif (Test-Path (Join-Path $next 'server.installed')) { $serverState = 'installed'; $serverDone = $true }
 
     $addinWaiting = $false
@@ -267,6 +378,10 @@ function Install {
         # F-042: MCP server processes still running the previous build when the files were replaced
         server_restart_needed = ($stale.Count -gt 0)
         server_processes      = $stale
+    }
+    if ($serverWaiting) {
+        Log "Install of $($info.commit) is waiting: $serverState. The staged build stays until fmc_batch has no active lease and the queue is empty. installed.json was not changed."
+        return
     }
     $record | ConvertTo-Json | Set-Content -Path (Join-Path $state 'installed.json') -Encoding UTF8
     # installed-files.json used to keep an old commit (81627a6 after a later install). Rewrite it from this install.
