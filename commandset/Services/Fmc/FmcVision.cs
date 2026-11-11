@@ -13,8 +13,10 @@ namespace RevitMCPCommandSet.Services.Fmc
 {
     /// <summary>
     /// fmc_view_image (owner 26 Oct: "the AI has to see the model"): a PNG of a view, or of a close-up 3D box around
-    /// elements with them highlighted, for the AI to look at. Nothing in the model changes: the temporary view and the
-    /// overrides are rolled back. selection true uses what the person has selected in Revit.
+    /// elements with them highlighted, for the AI to look at. The picture is of the named open document, including one
+    /// that is not the active window. ExportImage uses SetOfViews so the active window is not switched. Nothing in the
+    /// model changes: the temporary view and the overrides are rolled back. selection true uses what the person has
+    /// selected, and only when this document is the active window.
     /// </summary>
     public class FmcViewImageHandler : IExternalEventHandler, IWaitableExternalEventHandler
     {
@@ -28,19 +30,26 @@ namespace RevitMCPCommandSet.Services.Fmc
         public void Execute(UIApplication app)
         {
             Result = new JObject(); Error = "";
-            try { Result = Render(app.ActiveUIDocument ?? throw new InvalidOperationException("No model is open")); }
+            try
+            {
+                // The named open document, including one that is not the active window. The active view is not changed.
+                using (FmcTarget target = FmcTarget.Resolve(app, Parameters, mayOpen: false))
+                    Result = Render(target.Doc, target.Ui);
+            }
             catch (Exception e) { Error = e.Message; }
             finally { _done.Set(); }
         }
 
-        private JObject Render(UIDocument uidoc)
+        private JObject Render(Document doc, UIDocument uidoc)
         {
-            Document doc = uidoc.Document;
             var ids = (Parameters["ids"] as JArray ?? new JArray()).Select(t => long.TryParse(t.ToString(), out long v) ? new ElementId(v) : doc.GetElement(t.ToString())?.Id)
                 .Where(x => x != null && doc.GetElement(x) != null).ToList();
-            if (Parameters.Value<bool?>("selection") == true) ids.AddRange(uidoc.Selection.GetElementIds().Where(x => !ids.Contains(x)));
+            if (Parameters.Value<bool?>("selection") == true)
+            {
+                if (uidoc != null) ids.AddRange(uidoc.Selection.GetElementIds().Where(x => !ids.Contains(x)));
+            }
             // owner 27 Oct: select (the shared query) picks what to look at
-            if (Parameters["select"] is JObject sel) ids.AddRange(FmcSelect.Find(doc, sel, null, uidoc.ActiveView).Take(2000).Select(e => e.Id).Where(x => !ids.Contains(x)));
+            if (Parameters["select"] is JObject sel) ids.AddRange(FmcSelect.Find(doc, sel, null, uidoc?.ActiveView).Take(2000).Select(e => e.Id).Where(x => !ids.Contains(x)));
             var highlight = (Parameters["highlight"] as JArray)?.Select(t => new ElementId(t.Value<long>())).ToList() ?? ids;
             int px = Math.Max(400, Math.Min(2400, Parameters.Value<int?>("size") ?? 1024));
             string dir = Path.Combine(Path.GetTempPath(), "Formcraft", "vision");
@@ -118,7 +127,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     }
                     else
                     {
-                        v = ViewOf(doc, Parameters.Value<string>("view")) ?? uidoc.ActiveView;
+                        v = ViewOf(doc, Parameters.Value<string>("view")) ?? uidoc?.ActiveView ?? DefaultView(doc);
                         // a box on a view of the model, for this picture only (rolled back with the rest)
                         if (spec != null && v is View3D own)
                         {
@@ -149,11 +158,24 @@ namespace RevitMCPCommandSet.Services.Fmc
                     ImageResolution = ImageResolution.DPI_150, ZoomType = ZoomFitType.FitToPage, PixelSize = px, FitDirection = FitDirectionType.Horizontal,
                 };
                 o.SetViewsAndSheets(new List<ElementId> { v.Id });
-                doc.ExportImage(o);
+                try { doc.ExportImage(o); }
+                catch (Autodesk.Revit.Exceptions.InternalException ex)
+                {
+                    // SetOfViews on a document that is not the active window writes the PNG, then ExportImage can throw.
+                    if (!Directory.GetFiles(dir, Path.GetFileName(stem) + "*.png").Any()) throw;
+                    notes.Add("ExportImage threw " + ex.GetType().Name + " after the PNG was written. The picture was kept. The active window was not changed.");
+                }
                 tg.RollBack();
             }
+            if (Parameters.Value<bool?>("selection") == true && uidoc == null)
+                notes.Add("selection is only available when this document is the active window. The active window was not changed.");
             string file = Directory.GetFiles(dir, Path.GetFileName(stem) + "*.png").FirstOrDefault() ?? throw new InvalidOperationException("Revit made no image");
-            return new JObject { ["file"] = file, ["view"] = viewName, ["ids"] = new JArray(ids.Select(x => x.Value)), ["highlighted"] = highlight.Count, ["pixels"] = px, ["notes"] = notes };
+            return new JObject
+            {
+                ["file"] = file, ["view"] = viewName, ["title"] = doc.Title, ["path"] = doc.PathName ?? "",
+                ["document"] = FmcTarget.DescribeState(doc),
+                ["ids"] = new JArray(ids.Select(x => x.Value)), ["highlighted"] = highlight.Count, ["pixels"] = px, ["notes"] = notes,
+            };
         }
 
         private static BoundingBoxXYZ Union(Document doc, List<ElementId> ids)
@@ -181,6 +203,15 @@ namespace RevitMCPCommandSet.Services.Fmc
             XYZ up = fwd.CrossProduct(XYZ.BasisZ).CrossProduct(fwd).Normalize();
             if (up.Z < 0) up = up.Negate();
             return new ViewOrientation3D(target - fwd * 100, up, fwd);
+        }
+
+        /// <summary>A view of this document when it is not the active window, so the active view is not used and not changed.</summary>
+        private static View DefaultView(Document doc)
+        {
+            View3D iso = new FilteredElementCollector(doc).OfClass(typeof(View3D)).Cast<View3D>().FirstOrDefault(v => !v.IsTemplate && !v.IsPerspective);
+            if (iso != null) return iso;
+            return new FilteredElementCollector(doc).OfClass(typeof(View)).Cast<View>().FirstOrDefault(v => !v.IsTemplate && v.CanBePrinted)
+                ?? throw new InvalidOperationException($"No view to export in {doc.Title}. Pass view with a view name. The active window was not changed.");
         }
 
         internal static View ViewOf(Document doc, string s)

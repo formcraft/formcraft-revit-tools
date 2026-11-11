@@ -23,10 +23,19 @@ export async function aiGate(command: string, params: any, active: (DocInfo & { 
   if (!ai) return { ok: false, reason: "", user: NEVER[command] ? USER_LINE.admin(NEVER[command]) : USER_LINE.off };
   // Read-only code (owner 26 Oct): its transaction is always rolled back, so it needs no approval, only the code switch.
   const dryRun = command === "fmc_model_edit" && params?.dry_run === true;
-  if ((command === "send_code_to_revit" && params?.transactionMode === "read_only") || dryRun) {
+  // fmc_replace always rolls the group back. It needs the copy's own AI switch (enable_copy), not an approval that would imply a commit.
+  const previewReplace = command === "fmc_replace";
+  if ((command === "send_code_to_revit" && params?.transactionMode === "read_only") || dryRun || previewReplace) {
     if (ai.stop) return { ok: false, reason: "", user: USER_LINE.stopped };
-    if (!dryRun && ai.allow_code !== true) return { ok: false, reason: "", user: USER_LINE.admin("running code: the admin's 'AI may run code' switch is off") };
+    if (!dryRun && !previewReplace && ai.allow_code !== true) return { ok: false, reason: "", user: USER_LINE.admin("running code: the admin's 'AI may run code' switch is off") };
     if (generalState(ai, active.title, active.path) !== "On") return { ok: false, reason: "", user: USER_LINE.off };
+    return { ok: true, reason: "", run: <T>(exec: () => Promise<T>) => exec() };
+  }
+  // The batch line's own sync (fmc_guard.json sync_minutes / sync_on_batch_end). Stop AI and the AI switch still apply.
+  // A person's fmc_revit_file sync, without batch_sync, still waits for approval below.
+  if (params?.batch_sync === true && command === "fmc_revit_file" && ["save", "sync", "relinquish"].includes(String(params?.action))) {
+    if (ai.stop) return { ok: false, reason: "Stop AI is on", user: USER_LINE.stopped };
+    if (generalState(ai, active.title, active.path) !== "On") return { ok: false, reason: "AI is off for this model", user: USER_LINE.off };
     return { ok: true, reason: "", run: <T>(exec: () => Promise<T>) => exec() };
   }
   const elements = batchSize(params);

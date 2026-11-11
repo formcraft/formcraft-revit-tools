@@ -1,5 +1,7 @@
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using Newtonsoft.Json.Linq;
+using RevitMCPCommandSet.Services.Fmc;
 using RevitMCPSDK.API.Interfaces;
 
 namespace RevitMCPCommandSet.Services
@@ -16,6 +18,8 @@ namespace RevitMCPCommandSet.Services
         private readonly ManualResetEvent _resetEvent = new ManualResetEvent(false);
         // 要删除的元素ID数组
         public string[] ElementIds { get; set; }
+        public JObject Parameters { get; set; } = new JObject();
+        public string Error { get; private set; }
         // 实现IWaitableExternalEventHandler接口
         public bool WaitForCompletion(int timeoutMilliseconds = 10000)
         {
@@ -24,11 +28,12 @@ namespace RevitMCPCommandSet.Services
         }
         public void Execute(UIApplication app)
         {
-            // F-032: an AI job (default failures handling, the save reminder kept from blocking). commandset/Bridge/FmcAiJob.cs
-            RevitMCPCommandSet.Bridge.FmcAiJob.Enter(app, "");
+            Error = null;
             try
             {
-                var doc = app.ActiveUIDocument.Document;
+                // FmcTarget.Resolve starts the AI job (F-032) and refuses a named document that is not open.
+                using var target = FmcTarget.Resolve(app, Parameters, mayOpen: false);
+                var doc = target.Doc;
                 DeletedCount = 0;
                 if (ElementIds == null || ElementIds.Length == 0)
                 {
@@ -81,6 +86,7 @@ namespace RevitMCPCommandSet.Services
             }
             catch (Exception ex)
             {
+                Error = ex.Message;
                 RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Error", "Deleting elements failed: " + ex.Message);
                 IsSuccess = false;
             }

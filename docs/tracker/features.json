@@ -798,7 +798,7 @@
     "feature": "Detached verification copy",
     "status": "Built, Revit check due",
     "ref": "fmc_file open_copy",
-    "note": "Opens a copy in the background, detached when workshared, links keep/unload/repath on the copy only. Protected originals are not written, saved, synced or relinquished. modify_model dry_run rolls back on the copy. Needs a Revit check."
+    "note": "Opens a copy in the background, detached when workshared, links keep/unload/repath on the copy only. Unload and repath close the copy without saving and return an error if a link is still loaded. Protected originals are not written, saved, synced or relinquished. modify_model dry_run rolls back on the copy. Needs a Revit check."
   },
   {
     "id": "F90",
@@ -807,6 +807,24 @@
     "feature": "Column endpoint read",
     "status": "Built, Revit check due",
     "ref": "fmc_structure facts",
-    "note": "Columns report base and top level plus offsets, a constraint axis or location curve, attachment parameters and the analytical member. DirectShape stairs and columns no longer fail the read. Needs a Revit check on pad 1666458 and column 1666062."
+    "note": "Columns report base and top level plus offsets, a constraint axis or location curve, attachment parameters and the analytical member. full:true and column_ends also report the solid's bottom and top after cuts and joins, and the gap or overlap to each contact face. DirectShape stairs and columns no longer fail the read. Needs a Revit check on pad 1666458 and column 1666062."
+  },
+  {
+    "id": "F91",
+    "area": "Engine",
+    "group": "Structure",
+    "feature": "Preview structural replacement on a verification copy",
+    "status": "Built, Revit check due",
+    "ref": "fmc_replace",
+    "note": "One TransactionGroup, always rolled back, only on a document opened with fmc_file open_copy. Sequential sub-transactions so a later row can see an earlier one. Create, verify, rebind, delete exact ids, orphan check. No apply mode. Needs a Revit check on one B7 pad row and one B3 beam row."
+  },
+  {
+    "id": "F92",
+    "area": "App",
+    "group": "Core",
+    "feature": "Formcraft MCP service on this PC",
+    "status": "Built, Revit check due",
+    "ref": "docs/MCP_SERVICE.md",
+    "note": "Streamable HTTP on 127.0.0.1:8787 with a per-user token. A logon task restarts it and reloads when the updater swaps the build; a failed health check rolls the server back. The add-in still waits until Revit is closed. Several agents share one Revit by taking turns, and a model call names its document. fmc_batch leases one document at a time (FIFO, heartbeat, failed batches rejoin the tail with a new correction, struggling is only a flag). Free memory below ram_pause_free_mb (default 1024) pauses new leases and writes until free memory is above 1536 MB. Workshared models sync from sync_minutes (default 15) and sync_on_batch_end (default true) using the existing fmc_revit_file save and sync; Stop AI and the live-model lock still apply. send_code_to_revit refuses a method that calls itself and an endless while(true) or for(;;) before it runs. Every applied write reply names the target file's title and path. see_view exports a named view of a named open document with ExportImage (SetOfViews), including a document that is not the active window, and the reply names the title, path and view. fmc_connect_fixture joins a pipe to a basin or WC through send_code_to_revit (one transaction, rolled back on failure) until the add-in connect, which uses the fixture's MEP connectors, is installed. fmc_save_project is the project save: it checks that title and path and refuses a family. fmc_recover_revit plans crash recovery and applies it only with the plan's confirm token; scripts/fmc-recover-revit.ps1 runs the same plan when the server is down. fmc_health and fmc_queue. Needs a Windows check with Revit open."
   }
 ]

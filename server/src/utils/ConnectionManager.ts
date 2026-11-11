@@ -1,14 +1,39 @@
 import { RevitClientConnection } from "./SocketClient.js";
-import { HOST, notListening, readInstances, resolvePort } from "../fmc/connect.js";
-import { getChosen, revitTarget } from "../fmc/target.js";
+import { HOST, forgetInstance, notListening, probePort, readInstances, resolvePort, stalePortMessage } from "../fmc/connect.js";
+import { backoffMs } from "../fmc/reconnect.js";
+import { currentClient, queueClient, queueFor } from "../fmc/fairqueue.js";
+import { batchLease, documentTarget, getChosen, revitTarget } from "../fmc/target.js";
+import { batchBoard } from "../fmc/batchline.js";
 
-// One queue per Revit: calls to the same Revit run one at a time (its API is single-threaded), calls to two Revits
-// run side by side, so two projects can be automated at once.
-const queues = new Map<number, Promise<void>>();
+// One fair queue per Revit. Calls to that Revit run one at a time. Clients take turns, so one batch
+// cannot sit in front of everyone else. Two Revits still run side by side.
 
-/** The port the current call goes to (see resolvePort: the call's revit, the pane's REVIT_PORT, fmc_revit use, the only Revit). */
-export function currentPort(): number {
-  return resolvePort(revitTarget.getStore(), readInstances(), process.env, getChosen());
+/**
+ * The port the current call goes to (see resolvePort: the call's revit, the pane's REVIT_PORT, fmc_revit use, the only Revit).
+ * A port taken from an instance file is probed first. A stale file is removed and the call fails with that reason,
+ * instead of connecting and reporting ECONNRESET.
+ */
+export async function currentPort(): Promise<number> {
+  const target = revitTarget.getStore();
+  const chosen = getChosen();
+  let last: Error | undefined;
+  // A Revit that just restarted rewrites its instance file a moment later. Re-read between tries, and only
+  // drop the file once it has stayed dead.
+  for (let attempt = 0; attempt < 4; attempt++) {
+    const instances = readInstances();
+    const port = resolvePort(target, instances, process.env, chosen);
+    if (!instances.some((i) => i.port === port)) return port;
+    const verdict = await probePort(HOST, port, 300);
+    if (verdict === "ok") return port;
+    const owner = instances.find((i) => i.port === port);
+    last = new Error(stalePortMessage(port, verdict, owner));
+    if (attempt === 3) {
+      if (owner) forgetInstance(owner);
+      throw last;
+    }
+    await new Promise((resolve) => setTimeout(resolve, backoffMs(attempt)));
+  }
+  throw last ?? new Error("Revit did not answer");
 }
 
 /**
@@ -20,15 +45,23 @@ export function currentPort(): number {
 export async function withRevitConnection<T>(
   operation: (client: RevitClientConnection) => Promise<T>
 ): Promise<T> {
-  const port = currentPort();
-  const previous = queues.get(port) ?? Promise.resolve();
-  let release: () => void;
-  const mine = new Promise<void>((resolve) => { release = resolve; });
-  const chain = previous.then(() => mine);
-  queues.set(port, chain);
-  await previous;
+  const port = await currentPort();
+  const named = documentTarget.getStore();
+  const lease = batchLease.getStore();
+  const client = currentClient();
+  const held = lease ? batchBoard().beginCall(lease, client) : undefined;
+  try {
+    // The fair queue runs the call later, outside this async context. Put the client, lease and document back.
+    return await queueFor(port).enqueue(client, named || "call", () =>
+      queueClient.run(client, () => batchLease.run(lease, () => documentTarget.run(named, () => runOnPort(port, operation)))));
+  } finally {
+    held?.finish();
+  }
+}
 
+async function runOnPort<T>(port: number, operation: (client: RevitClientConnection) => Promise<T>): Promise<T> {
   const revitClient = new RevitClientConnection(HOST, port);
+  revitClient.refreshPort = () => currentPort();
 
   try {
     // 连接到Revit客户端
@@ -64,7 +97,5 @@ export async function withRevitConnection<T>(
   } finally {
     // 断开连接
     revitClient.disconnect();
-    release!();
-    if (queues.get(port) === chain) queues.delete(port); // nobody queued behind this call
   }
 }

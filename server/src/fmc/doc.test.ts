@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { DEFAULT_CONFIG, GuardConfig } from "./policy.js";
-import { buildReport, hoursSince, idleLimit, markStale, openProblems, saveProblems } from "./doc.js";
+import { familyDocumentOf, buildReport, hoursSince, idleLimit, markStale, openProblems, saveProblems } from "./doc.js";
 
 const cfg: GuardConfig = {
   ...DEFAULT_CONFIG,
@@ -54,4 +54,11 @@ test("F-046: sessions idle longer than the guard's limit (default 12 h) are mark
   assert.deepEqual(marked.map((s) => [s.id, s.idle_hours, s.stale]), [["a", 24.3, true], ["b", 1, false], ["c", 12.1, true], ["d", null, false]]);
   assert.equal(marked[0].stale_after_hours, 12);
   assert.equal(hoursSince("not a time", now), null);
+});
+
+test("familyDocumentOf prefers the saved path and falls back to the title", () => {
+  assert.equal(familyDocumentOf({ title: "Family1", path: "C:\\Staging\\P\\Tank.rfa" }), "C:\\Staging\\P\\Tank.rfa");
+  assert.equal(familyDocumentOf({ title: "FMC_P_PlumbingEq_Tank_Poly_Elevated", path: "" }), "FMC_P_PlumbingEq_Tank_Poly_Elevated");
+  assert.equal(familyDocumentOf({ title: "  ", path: "  " }), "");
+  assert.equal(familyDocumentOf(undefined), "");
 });
