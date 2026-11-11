@@ -13,6 +13,8 @@ import { underAny, protectedRoots } from "./opencopy.js";
 export interface SyncSettings {
   minutes: number;
   onBatchEnd: boolean;
+  /** ai_modeller.mode is "testing". Outside testing mode the batch line never syncs. */
+  testing: boolean;
   /** Titles or paths that never sync. */
   exclude: string[];
   /** Per-document allowlist. Null means every document that is not excluded. */
@@ -50,18 +52,31 @@ export function syncSkip(document: string, settings: SyncSettings, also = ""): {
   return null;
 }
 
+/**
+ * The batch line's sync is a testing-mode feature (owner 11 Nov 2026), like auto-approve and auto-save.
+ * Outside testing mode (ai_modeller.mode is not "testing") it is off, whatever sync_minutes and sync_on_batch_end say:
+ * a person syncs. In testing mode the defaults are 15 minutes and batch end.
+ */
 export function syncSettings(cfg: {
   sync_minutes?: number;
   sync_on_batch_end?: boolean;
   sync_exclude?: string[];
   sync_documents?: string[];
+  ai_modeller?: unknown;
 } | undefined): SyncSettings {
+  const testing = (cfg?.ai_modeller as { mode?: unknown } | undefined)?.mode === "testing";
   const raw = cfg?.sync_minutes;
   const minutes = raw == null ? 15 : Math.floor(Number(raw));
   const safeMinutes = Number.isFinite(minutes) && minutes >= 0 ? minutes : 15;
   const onBatchEnd = cfg?.sync_on_batch_end == null ? true : cfg.sync_on_batch_end === true;
   const documents = Array.isArray(cfg?.sync_documents) ? nameList(cfg.sync_documents) : null;
-  return { minutes: safeMinutes, onBatchEnd, exclude: nameList(cfg?.sync_exclude), documents };
+  return {
+    minutes: testing ? safeMinutes : 0,
+    onBatchEnd: testing ? onBatchEnd : false,
+    testing,
+    exclude: nameList(cfg?.sync_exclude),
+    documents,
+  };
 }
 
 export interface SyncFacts {
@@ -104,6 +119,7 @@ export function planSync(facts: SyncFacts, timing: SyncTiming, settings: SyncSet
   const membership = syncSkip(document, settings, also);
   if (membership) return skip(membership.reason, true);
   if (!facts.workshared) return skip("Not workshared. Autosave only.");
+  if (!settings.testing) return skip("Sync is off outside testing mode. A person syncs.");
   if (facts.family || facts.detached || facts.linked || facts.readOnly) return skip("A family, a detached copy, a link or a read-only copy is not synced.");
   if (facts.protected) return skip("Protected original. The live-model lock refuses sync.");
   if (facts.stopAi) return skip("Stop AI is on. Sync waits.");
