@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import { Recipe, recordSides } from "../fmc/recipes.js";
-import { markStale, readLedger, writeLedger } from "../fmc/doc.js";
+import { familyDocumentOf, markStale, readLedger, writeLedger } from "../fmc/doc.js";
 import {
   BRIDGE_LIMIT_BYTES, BuildRecord, CHUNK_BYTES, ChunkRecord, applyEnvelope, isNoAnswer, isSessionGone, isStillQueued, opsHash,
   planChunks, progressPath, readBuilds, readProgress, rememberTemplatePlanes, renumberOpError, requestBytes, skippedOps, stoppedAt, writeBuild,
@@ -96,6 +96,8 @@ async function run(recipe: Recipe, o: BuildOptions, d: BuildDeps): Promise<Build
   rec.ops_total = n;
   rec.ops_hash = opsHash(ops);
   const save = () => writeBuild(o.reportsDir, rec);
+  // After the template opens, every later fmc_doc call names the created family (title or path).
+  const callDoc = (args: Record<string, unknown>) => d.doc(rec.document ? { ...args, document: rec.document } : args);
   const warnings: string[] = [];
   const progressReply = (state: string, extra: object = {}): BuildReply => {
     save();
@@ -112,13 +114,13 @@ async function run(recipe: Recipe, o: BuildOptions, d: BuildDeps): Promise<Build
     rec.failed_op = where;
     let closed: any = { closed: false, reason: "no session" };
     if (rec.session) {
-      closed = await d.doc({ action: "close", session: rec.session });
+      closed = await callDoc({ action: "close", session: rec.session });
       if (closed?.closed === true || /already closed|No such session/.test(String(closed?.reason ?? ""))) rec.session = "";
       else revitAnswering = revitAnswering && !isStillQueued(errorText(closed)) && !isNoAnswer(errorText(closed));
     }
     let background: any = null;
     if (revitAnswering) {
-      const bg = await d.doc({ action: "background" });
+      const bg = await callDoc({ action: "background" });
       if (ok(bg)) background = bg;
     }
     save();
@@ -145,6 +147,8 @@ async function run(recipe: Recipe, o: BuildOptions, d: BuildDeps): Promise<Build
     if (!open?.session) return errorText(open) || "The template didn't open";
     rec.session = String(open.session);
     rec.sessions = [...new Set([...(rec.sessions ?? []), rec.session])];
+    const document = familyDocumentOf(open.document) || familyDocumentOf(open);
+    if (document) rec.document = document;
     rememberTemplatePlanes(o.reportsDir, o.template, open.document?.reference_planes);
     save();
     return null;
@@ -174,7 +178,7 @@ async function run(recipe: Recipe, o: BuildOptions, d: BuildDeps): Promise<Build
 
   // ---- the session: open the template, or check the resumed one is still there
   if (rec.session && o.resume) {
-    const rep = await d.doc({ action: "report", session: rec.session });
+    const rep = await callDoc({ action: "report", session: rec.session });
     if (!ok(rep) && isSessionGone(errorText(rep))) {
       notes.push("The session of the build being resumed had closed (closed by fmc_recipe cleanup, or Revit restarted)");
       rec.session = "";
@@ -207,7 +211,7 @@ async function run(recipe: Recipe, o: BuildOptions, d: BuildDeps): Promise<Build
     save();
     const started = now();
     inFlight.set(fam, `ops ${from}-${to}`);
-    const r = await d.doc({ action: "apply", session: rec.session, ops: ops.slice(from - 1, to), dry_run: rec.stepwise ? false : rec.dry_run });
+    const r = await callDoc({ action: "apply", session: rec.session, ops: ops.slice(from - 1, to), dry_run: rec.stepwise ? false : rec.dry_run });
     lastMs = now() - started;
     cr.ms = lastMs;
     if (ok(r)) {
@@ -242,7 +246,7 @@ async function run(recipe: Recipe, o: BuildOptions, d: BuildDeps): Promise<Build
   // F-061: name each skipped op and why, not only how many
   const skipped_ops = done.flatMap((c) => c.skipped_ops ?? []);
   if (rec.dry_run) {
-    const closed = await d.doc({ action: "close", session: rec.session });
+    const closed = await callDoc({ action: "close", session: rec.session });
     if (closed?.closed === true) rec.session = "";
     rec.state = "dry run done";
     save();
@@ -253,13 +257,13 @@ async function run(recipe: Recipe, o: BuildOptions, d: BuildDeps): Promise<Build
     }, isError: false };
   }
   if (budget !== Infinity && now() - t0 > budget - 20000) return progressReply("ops applied", { next_step: "flex, save and Gate A" });
-  const flex = await d.doc({ action: "flex", session: rec.session, ...(o.follow?.length ? { follow: o.follow } : {}) });
+  const flex = await callDoc({ action: "flex", session: rec.session, ...(o.follow?.length ? { follow: o.follow } : {}) });
   // F-045: the sides this flex saw stay in the build record, so a later gate that can't flex the file still has them
   rec.sides = recordSides(flex, new Date(now()).toISOString());
-  const saved = await d.doc({ action: "save", session: rec.session, path: o.target, overwrite: o.overwrite });
+  const saved = await callDoc({ action: "save", session: rec.session, path: o.target, overwrite: o.overwrite });
   if (!ok(saved)) return fail({ op: null, text: `save failed: ${errorText(saved)}` });
   fs.writeFileSync(o.target.replace(/\.rfa$/i, ".recipe.json"), JSON.stringify(recipe, null, 2));
-  const closed = await d.doc({ action: "close", session: rec.session });
+  const closed = await callDoc({ action: "close", session: rec.session });
   if (closed?.closed === true) rec.session = "";
   const gate = await d.gate(o.target, flex);
   rec.state = "built";
@@ -301,7 +305,7 @@ export async function cleanupBackground(dry: boolean, reportsDir: string, doc: B
     next: closable.length ? "Run again with dry_run=false to close these without saving" : "Nothing for a tool to close",
   }, isError: false };
   const closed = [];
-  for (const s of closable) closed.push({ session: s.session, title: s.title, why: s.why, ...(await doc({ action: "close", session: s.session })) });
+  for (const s of closable) closed.push({ session: s.session, title: s.title, why: s.why, ...(await doc({ action: "close", session: s.session, ...(s.title ? { document: s.title } : {}) })) });
   const after = readLedger(reportsDir);
   for (const id of [...forget, ...closed.filter((c: any) => c.closed === true).map((c) => String(c.session))]) delete after[id];
   try { writeLedger(reportsDir, after); } catch { /* the ledger is bookkeeping: the documents are closed */ }
