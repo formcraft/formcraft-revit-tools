@@ -177,6 +177,15 @@ export function explain(command: string, params: unknown, names: Names = { types
       return cap([`DELETE ${(p.elementIds ?? []).length} elements:`, ...named(names, p.elementIds)]);
     case "operate_element":
       return cap([`${p.data?.action ?? "?"} on ${(p.data?.elementIds ?? []).length} elements:`, ...named(names, p.data?.elementIds)]);
+    case "fmc_new_local":
+      return [
+        p.dry_run === false
+          ? `Replace the open local ${p.document} with a fresh local from ${p.central}. Unsaved changes in that local are discarded.`
+          : `DRY RUN: check a fresh local for ${p.document} from ${p.central}. Nothing is closed.`,
+        `New local: ${p.local}`,
+        `Switch first: ${p.switch_to || p._script_document || "another open project"}`,
+        p.backup ? `Copy the old file to ${p.backup}. Nothing is deleted.` : "Copy the old file aside. Nothing is deleted.",
+      ];
     case "send_code_to_revit": {
       const code = String(p.code ?? "").split(/\r?\n/).filter((l) => l.trim());
       return cap([`Runs Revit API code (${code.length} lines${p.transactionMode === "none" ? ", no transaction" : ", in one transaction"}):`,

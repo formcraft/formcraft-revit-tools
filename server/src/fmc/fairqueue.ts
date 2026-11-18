@@ -174,8 +174,11 @@ function isFamilyCreate(command: string, hints: DocumentRequiredHints): boolean 
 }
 
 export function documentRequired(command: string, openTitles: string[], named: string | undefined, hints?: string | DocumentRequiredHints): string | undefined {
-  if (SESSION_COMMANDS.has(command) || openTitles.length <= 1) return undefined;
   const key = (named ?? "").trim();
+  // fmc_new_local never falls back to the active document, even when only one model is open.
+  if (command === "fmc_new_local" && !key)
+    return "fmc_new_local needs document: the title of the open local to replace. Refusing to use the active document.";
+  if (SESSION_COMMANDS.has(command) || openTitles.length <= 1) return undefined;
   if (!key) {
     if (isFamilyCreate(command, hintsOf(hints))) return undefined;
     return `${openTitles.length} documents are open (${openTitles.join("; ")}). Pass document with a title or a full path on every call. Refusing to use the active document.`;

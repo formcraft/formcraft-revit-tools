@@ -88,6 +88,8 @@ export const COMMAND_GROUPS: Record<string, string> = {
   // Owner 26 Oct: walls, floors, ceilings and roofs, levels and grids may be AI-modelled, every batch approved by a person.
   create_line_based_element: "architecture", create_surface_based_element: "architecture",
   create_level: "levels_grids", create_grid: "levels_grids",
+  // A fresh local replaces an open one. Its own group, and on the admin list, so only access=full with General On runs it.
+  fmc_new_local: "files (new local)",
 };
 
 /** Never AI-run on a project model, whatever the switch or band: admins (people) only. */
@@ -96,6 +98,7 @@ export const NEVER: Record<string, string> = {
   delete_element: "deleting", operate_element: "moving or deleting arbitrary elements", send_code_to_revit: "running arbitrary code",
   fmc_link_add: "links (coordination)", fmc_link_pin: "links (coordination)", fmc_reload_link: "links (coordination)", fmc_workset_create: "worksets (setup)",
   fmc_material_purge: "purging (deleting)",
+  fmc_new_local: "files (new local)",
 };
 
 /** What a person sees when AI isn't allowed: plain lines, never the lock's wording (owner 26 Oct). */

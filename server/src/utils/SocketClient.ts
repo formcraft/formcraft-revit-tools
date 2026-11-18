@@ -11,6 +11,7 @@ import { currentClient, documentRequired } from "../fmc/fairqueue.js";
 import { admitBatchWrite } from "../fmc/batchline.js";
 import { aiGate } from "../fmc/aigate.js";
 import { retryWhileBusy } from "../fmc/busy.js";
+import { wireNewLocal } from "../fmc/newlocal.js";
 import { memoryGate } from "../fmc/memory.js";
 import { screenScript, scriptLimit } from "../fmc/scriptguard.js";
 import { CACHED_READS, compactReply, invalidateIfWrite, putCachedRead, takeCachedRead, wantsFull } from "../fmc/readcache.js";
@@ -147,7 +148,7 @@ export class RevitClientConnection {
    * The lock fails closed: if the active document cannot be read, the command is not sent.
    */
   public async sendCommand(command: string, params: any = {}, timeoutMs: number = 120000, long?: LongJobOptions): Promise<any> {
-    if (command === "send_code_to_revit") {
+    if (command === "send_code_to_revit" || command === "fmc_new_local") {
       const code = params && typeof params.code === "string" ? params.code : "";
       const problem = screenScript(code, scriptLimit());
       if (problem) throw new Error(problem.message);
@@ -179,7 +180,15 @@ export class RevitClientConnection {
       : documentTarget.getStore();
     const { config } = loadConfig();
     let active: { title?: string; path?: string } | undefined;
-    const run = async () => stampAppliedDocument(await this.sendRaw(command, params, timeoutMs, long), active, params);
+    const run = async () => {
+      // The gate saw fmc_new_local (the local being replaced). The add-in has no such command: the fixed script
+      // goes through send_code_to_revit, bound to the other open document so the transaction group is not on the local.
+      if (command === "fmc_new_local") {
+        const wire = wireNewLocal(params ?? {});
+        return stampAppliedDocument(await this.sendRaw(wire.command, wire.params, timeoutMs, long), active, params);
+      }
+      return stampAppliedDocument(await this.sendRaw(command, params, timeoutMs, long), active, params);
+    };
     if (config.live_model_lock) {
       let info: any;
       // The lock checks the document the change names, not whichever model is on screen.
