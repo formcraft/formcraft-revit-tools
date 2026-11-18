@@ -5,7 +5,7 @@ import { COMMAND_GROUPS, NEVER, aiVerdict } from "./aiuse.js";
 import { documentRequired } from "./fairqueue.js";
 import { explain } from "./explain.js";
 import {
-  CentralFile, NewLocalInput, NewLocalPlan, OpenDoc, PlanContext, newLocalScript, planNewLocal, runNewLocalSteps, scriptLiteralProblem, wireNewLocal,
+  CentralFile, MoveFs, NewLocalInput, NewLocalPlan, OpenDoc, PlanContext, moveBackup, newLocalScript, planNewLocal, runNewLocalSteps, scriptLiteralProblem, wireNewLocal,
 } from "./newlocal.js";
 
 const cfg: GuardConfig = {
@@ -63,8 +63,12 @@ test("refuses a central that is the local, a non-central, a protected path, and 
   }));
   assert.match(blocked.reasons.join(" "), /02_shared/i);
 
-  const missing = planNewLocal(input({ document: "Plumbing" }), ctx());
+  const missing = planNewLocal(input({ document: "Plumbing", central: "C:\\missing\\central.rvt", local: "C:\\missing\\local.rvt" }), ctx({
+    exists: () => false,
+    centralFile: { exists: false, isWorkshared: false, isCentral: false, centralPath: "" },
+  }));
   assert.match(missing.reasons.join(" "), /No open document is called "Plumbing"/);
+  assert.equal(missing.resume, false);
   assert.equal(missing.closes, false);
 });
 
@@ -273,4 +277,67 @@ test("switch refused closes nothing; close refused stays closed false; activate 
   assert.match(String(happy.sent[2].params.code), /WorksharingUtils\.CreateNewLocal/);
   assert.match(String(happy.sent[2].params.code), /OpenDocumentFile/);
   assert.deepEqual(happy.sent[3], plan.calls[3]);
+});
+
+function memFs(paths: string[]): MoveFs & { has(p: string): boolean } {
+  const set = new Set(paths.map((p) => p.toLowerCase()));
+  return {
+    has: (p) => set.has(p.toLowerCase()),
+    existsSync: (p) => set.has(p.toLowerCase()),
+    renameSync: (from, to) => {
+      if (!set.has(from.toLowerCase())) throw new Error(`ENOENT ${from}`);
+      if (set.has(to.toLowerCase())) throw new Error(`EEXIST ${to}`);
+      set.delete(from.toLowerCase());
+      set.add(to.toLowerCase());
+    },
+  };
+}
+
+test("the old local is renamed to the next free backup, and its _backup folder is moved", () => {
+  const taken = local + ".bak-20261118";
+  const folder = "C:\\WIP\\F26001-FMC-ZZ-ZZ-M3-A-0001_backup";
+  const plan = planNewLocal(input(), ctx({
+    exists: (p) => [central, local, taken, folder].some((item) => item.toLowerCase() === p.toLowerCase()),
+  }));
+  assert.equal(plan.ok, true, plan.reasons.join(" | "));
+  assert.equal(plan.backup, local + ".bak-20261118-2");
+  assert.equal(plan.backup_folder_from, folder);
+  assert.equal(plan.backup_folder_to, folder + ".bak-20261118-2");
+  const disk = memFs([local, taken, folder, central]);
+  moveBackup(plan, disk);
+  assert.equal(disk.has(local), false);
+  assert.equal(disk.has(plan.backup), true);
+  assert.equal(disk.has(folder), false);
+  assert.equal(disk.has(plan.backup_folder_to), true);
+  assert.equal(disk.has(central), true);
+  assert.equal(disk.has(taken), true);
+});
+
+test("resume when the document is closed, and a target that is still there after the move stops before CreateNewLocal", async () => {
+  const resume = planNewLocal(input({ document: "ELECTRICAL_USER", dry_run: true }), ctx({
+    docs: [doc({ title: "Sketch", path: "C:\\WIP\\Sketch.rvt", isWorkshared: false, centralPath: "", isActive: true })],
+    exists: (p) => p.toLowerCase() === central.toLowerCase() || p.toLowerCase() === local.toLowerCase(),
+  }));
+  assert.equal(resume.ok, true, resume.reasons.join(" | "));
+  assert.equal(resume.resume, true);
+  assert.equal(resume.closes, false);
+  assert.match(resume.steps[0], /resume: document is closed/);
+  assert.deepEqual(resume.calls.map((c) => c.command), ["fmc_new_local", "fmc_revit_file"]);
+  assert.equal(resume.calls[1].params.action, "open");
+  assert.equal(resume.calls[1].params.path, local);
+  assert.equal(resume.script_document, "Sketch");
+
+  const sent: string[] = [];
+  const stuck: MoveFs = {
+    existsSync: (p) => p.toLowerCase() === local.toLowerCase(),
+    renameSync: () => { /* the rename did not remove the target */ },
+  };
+  const stopped = await runNewLocalSteps(resume, async (command) => {
+    sent.push(command);
+    return made;
+  }, (p) => moveBackup(p, stuck));
+  assert.equal(stopped.ok, false);
+  assert.equal(stopped.step, "backup");
+  assert.match(stopped.message ?? "", /still at/);
+  assert.deepEqual(sent, []);
 });

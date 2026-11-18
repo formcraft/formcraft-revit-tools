@@ -13,8 +13,8 @@ import {
 
 export const FMC_NEW_LOCAL_DESCRIPTION =
   "Make a fresh workshared local from a central and open it, replacing an open local. Unsaved changes in that local " +
-  "are discarded. The old file and its Revit backup folder are copied aside and never deleted; an existing backup is " +
-  "kept and the next copy is named -2, -3, and so on. The caller does not supply code. The switch, the close, and the " +
+  "are discarded. The old file and its Revit backup folder are renamed aside (never copied, never deleted); an existing backup is " +
+  "kept and the next name is -2, -3, and so on. If the local is already closed, the switch and close are skipped. The caller does not supply code. The switch, the close, and the " +
   "final activate go through the native file command fmc_revit_file. CreateNewLocal and the background open are one fixed " +
   "script. document is required (the active document is never assumed). dry_run defaults to true, lists those calls, and " +
   "closes nothing. A real run needs access=full with General On, the same approval as other writes, and in testing mode " +
@@ -30,7 +30,7 @@ export const FMC_NEW_LOCAL_SHAPE = {
   dry_run: z.boolean().optional().default(true).describe("Validate and report the plan. Nothing is closed. Default true."),
 };
 
-const NO_MODEL = /No open document|is not a local|is not a central|cannot take the screen|No other document is open|switch_to /;
+const NO_MODEL = /No open document|is not a local|is not a central|No other open project|switch_to /;
 
 function reply(body: object, isError = false) {
   return { content: [{ type: "text" as const, text: JSON.stringify(body, null, 2) }], isError };
@@ -129,7 +129,7 @@ export async function runFmcNewLocal(args: NewLocalInput) {
   if (!plan.ok) return reply({ refused: true, reasons: plan.reasons, caveat: plan.caveat, dry_run: dry }, true);
   if (dry) {
     return reply({
-      dry_run: true, closes: false, document: plan.document, central: plan.central, local: plan.local,
+      dry_run: true, closes: false, resume: plan.resume, document: plan.document, central: plan.central, local: plan.local,
       active: plan.active, switch_to: plan.switch_to, switch_path: plan.switch_path, backup: plan.backup,
       backup_folder_from: plan.backup_folder_from || undefined, backup_folder_to: plan.backup_folder_to || undefined,
       steps: plan.steps, calls: plan.calls, caveat: plan.caveat, next: "Run again with dry_run=false",

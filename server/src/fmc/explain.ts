@@ -184,7 +184,7 @@ export function explain(command: string, params: unknown, names: Names = { types
           : `DRY RUN: check a fresh local for ${p.document} from ${p.central}. Nothing is closed.`,
         `New local: ${p.local}`,
         "Switch, close, and the final activate go through fmc_revit_file. CreateNewLocal is a fixed script.",
-        p.backup ? `Copy the old file to ${p.backup}. Nothing is deleted.` : "Copy the old file aside. Nothing is deleted.",
+        p.backup ? `Move the old file to ${p.backup}. Nothing is deleted or overwritten.` : "Move the old file aside. Nothing is deleted or overwritten.",
       ];
     case "send_code_to_revit": {
       const code = String(p.code ?? "").split(/\r?\n/).filter((l) => l.trim());

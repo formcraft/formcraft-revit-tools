@@ -21,7 +21,7 @@ export const NEW_LOCAL_CAVEAT =
   "The switch, the close, and the final activate go through the native file command fmc_revit_file. " +
   "Step 2 is fmc_revit_file open of the other document's path, which activates it when that file is already open. " +
   "Step 3 is fmc_revit_file close of the local, save false, immediately after the switch. If the switch is refused, nothing is closed. " +
-  "The old file is copied aside and never deleted, and an existing backup is never overwritten. The central is only read, by CreateNewLocal. " +
+  "The old file is renamed aside (a same-volume move, never a copy and never a delete), and an existing backup is never overwritten. The target path must be gone before CreateNewLocal. The central is only read. " +
   "The new local is opened in the background with OpenAllWorksets, then fmc_revit_file open activates it. If that activate is refused, the local stays open in the background.";
 
 export interface NewLocalInput {
@@ -77,8 +77,10 @@ export interface NewLocalPlan {
   ok: boolean;
   reasons: string[];
   dry_run: boolean;
-  /** True only when this plan would close a document. A dry run is never that. */
+  /** True only when this plan would close a document. A dry run, and a resume of an already-closed local, are never that. */
   closes: boolean;
+  /** The named document is not open. Switch and close are skipped; the local path is moved if it is still on disk. */
+  resume: boolean;
   document: string;
   central: string;
   local: string;
@@ -169,13 +171,18 @@ function otherDocs(docs: OpenDoc[], target: OpenDoc): OpenDoc[] {
 
 /** Another open document to activate before the close, and to bind the script to. */
 export function pickSwitch(docs: OpenDoc[], target: OpenDoc, requested?: string): OpenDoc | undefined {
-  const others = otherDocs(docs, target).filter((d) => !d.isLinked);
+  return pickScriptHost(otherDocs(docs, target), requested);
+}
+
+/** Any open project document the script can bind to, including when the local is already closed. */
+export function pickScriptHost(docs: OpenDoc[], requested?: string): OpenDoc | undefined {
+  const open = docs.filter((d) => !d.isLinked && !!d.path);
   const want = (requested ?? "").trim();
   if (want) {
-    const hit = findDocs(others, want);
-    return hit.length === 1 && hit[0].path ? hit[0] : undefined;
+    const hit = findDocs(open, want);
+    return hit.length === 1 ? hit[0] : undefined;
   }
-  return others.find((d) => !d.isFamily && d.path);
+  return open.find((d) => !d.isFamily);
 }
 
 function queueHits(running: QueueRun, doc: OpenDoc, document: string): boolean {
@@ -218,9 +225,14 @@ export function planNewLocal(input: NewLocalInput, ctx: PlanContext): NewLocalPl
   }
 
   const hits = document ? findDocs(ctx.docs, document) : [];
-  if (document && hits.length === 0) reasons.push(`No open document is called "${document}".`);
   if (hits.length > 1) reasons.push(`"${document}" matches ${hits.length} open documents. Pass the full path.`);
   const doc = hits.length === 1 ? hits[0] : undefined;
+  const localExists = !!(local && !localPathProblem && ctx.exists(local));
+  const centralExists = !!(central && !centralPathProblem && (ctx.exists(central) || ctx.centralFile?.exists));
+  const resume = !doc && hits.length === 0 && !!document && (localExists || centralExists);
+  if (document && !doc && hits.length === 0 && !resume) {
+    reasons.push(`No open document is called "${document}". Resume needs the local file or the central on disk, and both paths.`);
+  }
   if (doc && !isLocalOf(doc, central)) reasons.push(`${doc.title} is not a local of ${central}.`);
   if (doc?.path && local && !samePath(doc.path, local)) reasons.push(`${doc.title} is open at ${doc.path}, not at ${local}.`);
   if (doc?.path && underAny(doc.path, prot)) reasons.push(`Protected original: ${doc.path}. Write, save, sync, reload and relinquish are refused.`);
@@ -229,21 +241,21 @@ export function planNewLocal(input: NewLocalInput, ctx: PlanContext): NewLocalPl
     if (blocked && !reasons.includes(blocked)) reasons.push(blocked);
   }
 
-  const host = doc ? pickSwitch(ctx.docs, doc, input.switch_to) : undefined;
-  if (doc && input.switch_to?.trim() && !host) reasons.push(`switch_to "${input.switch_to.trim()}" is not another open document.`);
-  if (doc && !host) {
-    reasons.push(`No other open project document can take the screen before ${doc.title} is closed. Step 2 cannot run, so nothing is closed.`);
+  const host = doc ? pickSwitch(ctx.docs, doc, input.switch_to) : resume ? pickScriptHost(ctx.docs, input.switch_to) : undefined;
+  if ((doc || resume) && input.switch_to?.trim() && !host) reasons.push(`switch_to "${input.switch_to.trim()}" is not another open document.`);
+  if ((doc || resume) && !host) {
+    reasons.push(`No other open project document can take the screen before ${document} is replaced. Nothing is closed.`);
   }
 
-  if (doc && ctx.holder && (!ctx.caller || ctx.holder.client !== ctx.caller.client || ctx.holder.lease !== ctx.caller.lease)) {
-    reasons.push(`Another lease holds ${doc.title} (${ctx.holder.client}, ${ctx.holder.lease}).`);
+  if (ctx.holder && (doc || resume) && (!ctx.caller || ctx.holder.client !== ctx.caller.client || ctx.holder.lease !== ctx.caller.lease)) {
+    reasons.push(`Another lease holds ${doc?.title ?? document} (${ctx.holder.client}, ${ctx.holder.lease}).`);
   }
   if (doc && ctx.queueRunning && ctx.caller && ctx.queueRunning.client !== ctx.caller.client && queueHits(ctx.queueRunning, doc, document)) {
     reasons.push(`Another caller is running a batch on ${doc.title} (${ctx.queueRunning.client}).`);
   }
 
   const names = local && !localPathProblem ? backupNames(local, suffix, ctx.exists) : { file: "", folderFrom: "", folderTo: "" };
-  if (local && !localPathProblem && !names.file) reasons.push("No free backup name (tried -2 through -1000). Nothing was copied.");
+  if (local && !localPathProblem && !names.file) reasons.push("No free backup name (tried -2 through -1000). Nothing was moved.");
   for (const [value, label] of [[host?.title ?? "", "switch title"], [host?.path ?? "", "switch path"], [names.file, "backup"], [names.folderFrom, "backup folder"], [names.folderTo, "backup folder"]] as Array<[string, string]>) {
     if (!value) continue;
     const problem = scriptLiteralProblem(value, label);
@@ -256,6 +268,7 @@ export function planNewLocal(input: NewLocalInput, ctx: PlanContext): NewLocalPl
     reasons: unique,
     dry_run: dry,
     closes: false,
+    resume,
     document,
     central,
     local,
@@ -270,45 +283,58 @@ export function planNewLocal(input: NewLocalInput, ctx: PlanContext): NewLocalPl
     steps: [],
     caveat: NEW_LOCAL_CAVEAT,
   };
-  if (!base.ok || !doc || !host) return base;
+  if (!base.ok || !host || (!doc && !resume)) return base;
 
-  const steps = [
-    `Validate ${central} is a central and ${doc.title} is a local of it.`,
-    `fmc_revit_file {action:"open", path:${JSON.stringify(host.path)}}`,
-    `fmc_revit_file {action:"close", title:${JSON.stringify(doc.title)}, save:false}`,
-    `Copy ${local} to ${names.file}` + (names.folderFrom ? ` and ${names.folderFrom} to ${names.folderTo}` : "") + ". Nothing is deleted.",
-    `send_code_to_revit on ${host.title}: WorksharingUtils.CreateNewLocal, then OpenDocumentFile with OpenAllWorksets.`,
-    `fmc_revit_file {action:"open", path:${JSON.stringify(local)}}`,
-  ];
+  const moveStep = localExists
+    ? `Rename ${local} to ${names.file}` + (names.folderFrom ? ` and ${names.folderFrom} to ${names.folderTo}` : "") + ". Nothing is deleted or overwritten."
+    : `The local file is already gone. CreateNewLocal writes ${local}.`;
+  const steps = resume
+    ? [
+      "resume: document is closed",
+      moveStep,
+      `send_code_to_revit on ${host.title}: WorksharingUtils.CreateNewLocal, then OpenDocumentFile with OpenAllWorksets.`,
+      `fmc_revit_file {action:"open", path:${JSON.stringify(local)}}`,
+    ]
+    : [
+      `Validate ${central} is a central and ${doc!.title} is a local of it.`,
+      `fmc_revit_file {action:"open", path:${JSON.stringify(host.path)}}`,
+      `fmc_revit_file {action:"close", title:${JSON.stringify(doc!.title)}, save:false}`,
+      moveStep,
+      `send_code_to_revit on ${host.title}: WorksharingUtils.CreateNewLocal, then OpenDocumentFile with OpenAllWorksets.`,
+      `fmc_revit_file {action:"open", path:${JSON.stringify(local)}}`,
+    ];
   let script: string | undefined;
   try {
     script = newLocalScript({ central, local });
   } catch (error) {
     return { ...base, ok: false, reasons: [error instanceof Error ? error.message : String(error)] };
   }
-  const ready: NewLocalPlan = { ...base, steps, script, closes: !dry, switch_path: host.path, script_document: host.title };
+  const ready: NewLocalPlan = { ...base, steps, script, closes: !dry && !resume, resume, switch_path: host.path, script_document: host.title };
   return { ...ready, calls: liveCalls(ready) };
 }
 
 /** What a real run sends, in order. The script call is fmc_new_local so the fixed body is not treated as caller-supplied code. */
 export function liveCalls(plan: NewLocalPlan): Array<{ command: string; params: Record<string, unknown> }> {
+  const make = {
+    command: "fmc_new_local",
+    params: {
+      document: plan.script_document,
+      _script_document: plan.script_document,
+      code: plan.script,
+      parameters: [],
+      usings: [],
+      transactionMode: "none",
+      purpose: "Fresh workshared local",
+      dry_run: false,
+    },
+  };
+  const activate = { command: "fmc_revit_file", params: { action: "open", path: plan.local, document: plan.script_document } };
+  if (plan.resume) return [make, activate];
   return [
     { command: "fmc_revit_file", params: { action: "open", path: plan.switch_path } },
     { command: "fmc_revit_file", params: { action: "close", title: plan.document, save: false } },
-    {
-      command: "fmc_new_local",
-      params: {
-        document: plan.script_document,
-        _script_document: plan.script_document,
-        code: plan.script,
-        parameters: [],
-        usings: [],
-        transactionMode: "none",
-        purpose: "Fresh workshared local",
-        dry_run: false,
-      },
-    },
-    { command: "fmc_revit_file", params: { action: "open", path: plan.local, document: plan.script_document } },
+    make,
+    activate,
   ];
 }
 
@@ -429,13 +455,28 @@ bool isLocal = opened.IsWorkshared && !opened.IsDetached && !openedIsCentral;
 return new { ok = true, title = opened.Title, path = opened.PathName ?? local, isWorkshared = opened.IsWorkshared, isLocal, central = openedCentral, worksets, elapsed_ms = watch.ElapsedMilliseconds, opened_how = "background" };
 `;
 
-/** Copy the closed local and its Revit backup folder. Never overwrites an existing backup. */
-export function copyBackup(plan: Pick<NewLocalPlan, "local" | "backup" | "backup_folder_from" | "backup_folder_to">, io: Pick<typeof fs, "existsSync" | "copyFileSync" | "cpSync" | "constants"> = fs): void {
-  if (io.existsSync(plan.backup)) throw new Error(`Backup already exists: ${plan.backup}. Nothing was overwritten.`);
-  io.copyFileSync(plan.local, plan.backup, io.constants.COPYFILE_EXCL);
-  if (!plan.backup_folder_from) return;
-  if (io.existsSync(plan.backup_folder_to)) throw new Error(`Backup folder already exists: ${plan.backup_folder_to}. Nothing was overwritten.`);
-  io.cpSync(plan.backup_folder_from, plan.backup_folder_to, { recursive: true, errorOnExist: true, force: false });
+export interface MoveFs {
+  existsSync(p: string): boolean;
+  renameSync(from: string, to: string): void;
+}
+
+/**
+ * Move the closed local, and its sibling _backup folder, onto free backup names.
+ * fs.rename on the same volume. Nothing is copied and nothing is deleted.
+ * After the moves the target path must be gone, or CreateNewLocal is not called.
+ */
+export function moveBackup(plan: Pick<NewLocalPlan, "local" | "backup" | "backup_folder_from" | "backup_folder_to">, io: MoveFs = fs): void {
+  if (io.existsSync(plan.local)) {
+    if (io.existsSync(plan.backup)) throw new Error(`Backup already exists: ${plan.backup}. Nothing was overwritten.`);
+    io.renameSync(plan.local, plan.backup);
+  }
+  if (plan.backup_folder_from && io.existsSync(plan.backup_folder_from)) {
+    if (io.existsSync(plan.backup_folder_to)) throw new Error(`Backup folder already exists: ${plan.backup_folder_to}. Nothing was overwritten.`);
+    io.renameSync(plan.backup_folder_from, plan.backup_folder_to);
+  }
+  if (io.existsSync(plan.local)) {
+    throw new Error(`The local is still at ${plan.local} after the move. CreateNewLocal was not called.`);
+  }
 }
 
 export interface NewLocalRun {
@@ -483,24 +524,30 @@ function failText(error: unknown): string {
 export async function runNewLocalSteps(
   plan: NewLocalPlan,
   sendCommand: (command: string, params: Record<string, unknown>) => Promise<unknown>,
-  copy: (plan: NewLocalPlan) => void = copyBackup,
+  move: (plan: NewLocalPlan) => void = moveBackup,
 ): Promise<NewLocalRun> {
   const started = Date.now();
-  const [activateOther, closeLocal, makeLocal, activateNew] = plan.calls;
-  try {
-    await sendCommand(activateOther.command, activateOther.params);
-  } catch (error) {
-    return { ok: false, step: "switch", closed: false, message: `Step 2 could not activate ${plan.switch_to} (${plan.switch_path}). ${failText(error)} Nothing was closed.` };
+  const scriptAt = plan.calls.findIndex((call) => call.command === "fmc_new_local");
+  const makeLocal = plan.calls[scriptAt];
+  const activateNew = plan.calls[scriptAt + 1];
+  if (!plan.resume) {
+    const activateOther = plan.calls[0];
+    const closeLocal = plan.calls[1];
+    try {
+      await sendCommand(activateOther.command, activateOther.params);
+    } catch (error) {
+      return { ok: false, step: "switch", closed: false, message: `Step 2 could not activate ${plan.switch_to} (${plan.switch_path}). ${failText(error)} Nothing was closed.` };
+    }
+    try {
+      await sendCommand(closeLocal.command, closeLocal.params);
+    } catch (error) {
+      return { ok: false, step: "close", closed: false, message: `Step 3 could not close ${plan.document}. ${failText(error)} Nothing else was changed.` };
+    }
   }
   try {
-    await sendCommand(closeLocal.command, closeLocal.params);
+    move(plan);
   } catch (error) {
-    return { ok: false, step: "close", closed: false, message: `Step 3 could not close ${plan.document}. ${failText(error)} Nothing else was changed.` };
-  }
-  try {
-    copy(plan);
-  } catch (error) {
-    return { ok: false, step: "backup", closed: true, backup: plan.backup, message: `The document was closed and the backup copy failed: ${failText(error)} The old file was not deleted.` };
+    return { ok: false, step: "backup", closed: true, backup: plan.backup, message: `${failText(error)} Nothing was deleted.` };
   }
   let made: Record<string, unknown> | null;
   try {
