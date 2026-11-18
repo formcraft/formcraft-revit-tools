@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { dialogFor, inFlightJob, notIdleMessage, readRevitJobLines } from "./notidle.js";
 import net from "node:net";
 import os from "node:os";
 import path from "node:path";
@@ -107,6 +108,19 @@ export function stalePortMessage(port: number, verdict: ProbeVerdict, instance?:
   return `${who}, but ${why} In Revit, on the Formcraft tab turn AI off and on so it listens again.`;
 }
 
+/**
+ * A port that did not stay open. A heartbeating job is Revit not idle: the instance file stays, and AI is not toggled.
+ * The toggle line is only for a port that refuses while no job is in flight.
+ */
+export function portRefusal(port: number, verdict: ProbeVerdict, instance: RevitInstance | undefined, env: NodeJS.ProcessEnv = process.env, now = Date.now()): { notIdle: boolean; message: string } {
+  if (instance) {
+    const lines = readRevitJobLines(env);
+    const flight = inFlightJob(lines, instance.pid, now);
+    if (flight) return { notIdle: true, message: notIdleMessage(flight, dialogFor(instance.pid, flight.job, env, lines)) };
+  }
+  return { notIdle: false, message: stalePortMessage(port, verdict, instance) };
+}
+
 /** Delete one Revit's instance file. The port it advertised was not accepting. */
 export function forgetInstance(instance: RevitInstance, env: NodeJS.ProcessEnv = process.env): void {
   realReader.remove(win.join(instancesFolder(env), `${instance.pid}.json`));
@@ -168,14 +182,15 @@ export function resolvePort(target: string | undefined, instances: RevitInstance
       throw new Error(`${instances.length} Revits are open: ${instances.map(label).join("; ")}. Say which one: pass revit (a project name, pid or port) to the tool, or call fmc_revit use.`);
     return revitPort(env);
   };
-  return confirmPort(selected(), instances, check);
+  return confirmPort(selected(), instances, check, env);
 }
 
-function confirmPort(port: number, instances: RevitInstance[], check: PortCheck | undefined): number {
+function confirmPort(port: number, instances: RevitInstance[], check: PortCheck | undefined, env: NodeJS.ProcessEnv): number {
   if (!check) return port;
   const verdict = check.probe(port);
   if (verdict === "ok") return port;
   const owner = instances.find((i) => i.port === port);
-  if (owner) check.forget?.(owner);
-  throw new Error(stalePortMessage(port, verdict, owner));
+  const refusal = portRefusal(port, verdict, owner, env);
+  if (!refusal.notIdle && owner) check.forget?.(owner);
+  throw new Error(refusal.message);
 }

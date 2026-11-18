@@ -1,6 +1,9 @@
 import fs from "node:fs";
 import { Recipe, recordSides } from "../fmc/recipes.js";
 import { familyDocumentOf, markStale, readLedger, writeLedger } from "../fmc/doc.js";
+import { loadBatchConfig } from "../fmc/batchline.js";
+import { findJob } from "../fmc/jobs.js";
+import { ownChunkJob } from "../fmc/notidle.js";
 import {
   BRIDGE_LIMIT_BYTES, BuildRecord, CHUNK_BYTES, ChunkRecord, applyEnvelope, isNoAnswer, isSessionGone, isStillQueued, opsHash,
   planChunks, progressPath, readBuilds, readProgress, rememberTemplatePlanes, renumberOpError, requestBytes, skippedOps, stoppedAt, writeBuild,
@@ -34,8 +37,12 @@ export interface BuildDeps {
   /** How long one call may keep starting chunks (ms); Infinity for the pane's CLI, which has no client cut-off. */
   budgetMs?: number;
   appData?: string;
-  /** How long a chunk may stay without an answer before it counts as hung (the apply's hard timeout). */
+  /** How long a chunk may stay without an answer before it counts as hung, when no job is in flight. */
   hardMs?: number;
+  /** How long to follow this build's own chunk (FMC-JOB-RUNNING, BUSY, or NOT-IDLE). Default: the batch max_s. */
+  maxWaitMs?: number;
+  /** Test hook. The default polls fmc_job and the progress file until the chunk finishes or maxWaitMs passes. */
+  followChunk?: (job: string, ctx: { session: string; sentAt: string; maxMs: number }) => Promise<"done" | "failed" | "waiting">;
 }
 
 export interface BuildReply { body: Record<string, unknown>; isError: boolean }
@@ -48,6 +55,25 @@ function errorText(r: any): string {
 
 const ok = (r: any) => r && r.ok !== false && !r.refused && !r.error;
 
+/** Poll fmc_job and the apply's progress file until the chunk finishes, fails, or maxMs passes. The template stays open. */
+async function followChunkJob(job: string, ctx: { session: string; sentAt: string; maxMs: number }, appData?: string): Promise<"done" | "failed" | "waiting"> {
+  const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+  const deadline = Date.now() + ctx.maxMs;
+  while (Date.now() <= deadline) {
+    const p = readProgress(progressPath(ctx.session, appData));
+    const fresh = p && (!p.started || !ctx.sentAt || Date.parse(p.started) >= Date.parse(ctx.sentAt) - 5000) ? p : null;
+    if (fresh?.state === "finished") return "done";
+    if (fresh?.state === "failed") return "failed";
+    const view = findJob(job);
+    if (view?.state === "finished") return "done";
+    if (view?.state === "failed" || view?.state === "cancelled") return "failed";
+    const left = deadline - Date.now();
+    if (left <= 0) return "waiting";
+    await sleep(Math.min(2000, left));
+  }
+  return "waiting";
+}
+
 export async function buildRecipe(recipe: Recipe, o: BuildOptions, d: BuildDeps): Promise<BuildReply> {
   const fam = recipe.family;
   if (inFlight.has(fam)) return { body: { refused: true, reasons: [`A call for ${fam} is still working (${inFlight.get(fam)}): wait for it, then resume`] }, isError: true };
@@ -59,7 +85,7 @@ async function run(recipe: Recipe, o: BuildOptions, d: BuildDeps): Promise<Build
   const now = d.now ?? Date.now;
   const t0 = now();
   const budget = d.budgetMs ?? Infinity;
-  const hardMs = d.hardMs ?? 300000;
+  const maxWaitMs = d.maxWaitMs ?? loadBatchConfig().maxMs;
   const ops = (o.ops ?? recipe.ops) as unknown[];
   const n = ops.length;
   const fam = recipe.family;
@@ -171,7 +197,8 @@ async function run(recipe: Recipe, o: BuildOptions, d: BuildDeps): Promise<Build
       return fail(stoppedAt(fresh, last.from - 1, last.sent_at));
     } else {
       const where = stoppedAt(fresh, last.from - 1, last.sent_at);
-      if (last.sent_at && now() - Date.parse(last.sent_at) > hardMs) { last.state = "no answer"; return fail(where, false); }
+      const waited = last.sent_at ? now() - Date.parse(last.sent_at) : 0;
+      if (last.sent_at && waited > maxWaitMs) { last.state = "no answer"; return fail(where, false); }
       return progressReply("running in Revit", { at: where.text });
     }
   }
@@ -211,9 +238,35 @@ async function run(recipe: Recipe, o: BuildOptions, d: BuildDeps): Promise<Build
     save();
     const started = now();
     inFlight.set(fam, `ops ${from}-${to}`);
-    const r = await callDoc({ action: "apply", session: rec.session, ops: ops.slice(from - 1, to), dry_run: rec.stepwise ? false : rec.dry_run });
+    let r: any;
+    try {
+      r = await callDoc({ action: "apply", session: rec.session, ops: ops.slice(from - 1, to), dry_run: rec.stepwise ? false : rec.dry_run });
+    } catch (error) {
+      r = { ok: false, error: error instanceof Error ? error.message : String(error) };
+    }
     lastMs = now() - started;
     cr.ms = lastMs;
+    const held = ownChunkJob(errorText(r));
+    if (!ok(r) && held) {
+      cr.state = "running in Revit";
+      const outcome = await (d.followChunk ?? ((job, ctx) => followChunkJob(job, ctx, d.appData)))(held, { session: rec.session, sentAt: cr.sent_at ?? "", maxMs: maxWaitMs });
+      const fresh = readProgress(progressPath(rec.session, d.appData));
+      if (outcome === "done") {
+        Object.assign(cr, { state: "done", created: fresh?.result?.created ?? 0, updated: fresh?.result?.updated ?? 0, skipped: fresh?.result?.skipped ?? 0, warnings: fresh?.result?.warnings ?? 0 });
+        rec.last_good_op = to;
+        rec.good_hash = opsHash(ops.slice(0, to));
+        save();
+        continue;
+      }
+      if (outcome === "failed") {
+        cr.state = "failed";
+        cr.error = fresh?.error || errorText(r);
+        return fail(stoppedAt(fresh, from - 1, cr.sent_at));
+      }
+      rec.state = "waiting";
+      save();
+      return progressReply("running in Revit", { job: held, at: stoppedAt(fresh, from - 1, cr.sent_at).text });
+    }
     if (ok(r)) {
       Object.assign(cr, { state: "done", created: r.created ?? 0, updated: r.updated ?? 0, skipped: r.skipped ?? 0, warnings: (r.warnings ?? []).length,
         skipped_ops: skippedOps(r, from - 1) });

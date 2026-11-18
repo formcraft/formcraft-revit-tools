@@ -1,5 +1,5 @@
 import { RevitClientConnection } from "./SocketClient.js";
-import { HOST, forgetInstance, notListening, probePort, readInstances, resolvePort, stalePortMessage } from "../fmc/connect.js";
+import { HOST, forgetInstance, notListening, portRefusal, probePort, readInstances, resolvePort } from "../fmc/connect.js";
 import { backoffMs } from "../fmc/reconnect.js";
 import { currentClient, queueClient, queueFor } from "../fmc/fairqueue.js";
 import { batchLease, documentTarget, getChosen, revitTarget } from "../fmc/target.js";
@@ -26,7 +26,9 @@ export async function currentPort(): Promise<number> {
     const verdict = await probePort(HOST, port, 300);
     if (verdict === "ok") return port;
     const owner = instances.find((i) => i.port === port);
-    last = new Error(stalePortMessage(port, verdict, owner));
+    const refusal = portRefusal(port, verdict, owner);
+    if (refusal.notIdle) throw new Error(refusal.message);
+    last = new Error(refusal.message);
     if (attempt === 3) {
       if (owner) forgetInstance(owner);
       throw last;

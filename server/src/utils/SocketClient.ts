@@ -5,7 +5,7 @@ import { appendJobEvent, jobFiles, jobResult, lastHeartbeatMs } from "../fmc/job
 import { WRITE_COMMANDS, callActivity, liveLockVerdict, loadConfig } from "../fmc/policy.js";
 import { protectedRoots, writeGuard } from "../fmc/opencopy.js";
 import { batchLease, documentTarget, revitTarget } from "../fmc/target.js";
-import { readInstances, stalePortMessage } from "../fmc/connect.js";
+import { portRefusal, readInstances } from "../fmc/connect.js";
 import { backoffMs, shouldRetryReset } from "../fmc/reconnect.js";
 import { currentClient, documentRequired } from "../fmc/fairqueue.js";
 import { admitBatchWrite } from "../fmc/batchline.js";
@@ -54,18 +54,24 @@ export class RevitClientConnection {
     this.socket.on("close", () => {
       this.isConnected = false;
       // A probe that connects and then drops, with no JSON, ends the call here. Pending reads can be retried.
-      this.failPending(stalePortMessage(this.port, "reset"));
+      this.failPending(this.resetMessage());
     });
 
     this.socket.on("error", (error: NodeJS.ErrnoException) => {
       this.isConnected = false;
-      // A half-closed Revit listener accepts and then resets. Say so, and fail the call, instead of only logging ECONNRESET.
+      // ECONNRESET while a job is heartbeating is Revit not idle, not a half-closed listener.
       const reset = error?.code === "ECONNRESET";
-      const message = reset ? stalePortMessage(this.port, "reset") : (error?.message || "The connection to Revit failed.");
+      const message = reset ? this.resetMessage() : (error?.message || "The connection to Revit failed.");
       if (reset) console.error(message);
       else console.error("RevitClientConnection error:", error?.message || error);
       if (reset) this.failPending(message);
     });
+  }
+
+  /** ECONNRESET on this port. A heartbeating job is named; otherwise the listener really refused. */
+  private resetMessage(): string {
+    const owner = readInstances().find((instance) => instance.port === this.port);
+    return portRefusal(this.port, "reset", owner).message;
   }
 
   private failPending(message: string): void {

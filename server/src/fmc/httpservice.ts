@@ -19,6 +19,7 @@ import { isInitializeRequest } from "@modelcontextprotocol/sdk/types.js";
 import { BUILD_INFO_FILE, RUNNING_BUILD } from "./buildinfo.js";
 import { createFormcraftServer } from "./boot.js";
 import { HOST, ProbeVerdict, probePort, readInstances } from "./connect.js";
+import { dialogFor, inFlightJob, readRevitJobLines } from "./notidle.js";
 import { lastRegistration } from "../tools/register.js";
 import { queueClient, queueSnapshots } from "./fairqueue.js";
 import { addGrantListener, batchBoard, logBatchRestart, notifyBatchGranted } from "./batchline.js";
@@ -128,22 +129,42 @@ export interface HealthReport {
   addin: string[];
   uptime_s: number;
   listen: string;
-  instances: Array<{ pid: number; port: number; revit: string; build: string; answering: boolean; verdict: ProbeVerdict }>;
+  instances: Array<{
+    pid: number; port: number; revit: string; build: string; answering: boolean;
+    verdict: ProbeVerdict | "waiting_for_idle";
+    busy: { job: string; command: string; since_s: number; dialog: string } | null;
+  }>;
   registration: { registered: number; skipped: number; failed: Array<{ file: string; error: string }> };
   queue: ReturnType<typeof queueSnapshots>;
   batches: ReturnType<ReturnType<typeof batchBoard>["snapshot"]>;
   memory: ReturnType<typeof memoryGate.view>;
 }
 
+export function describeInstance(
+  instance: { pid: number; port: number; revit?: string; build?: string },
+  probe: ProbeVerdict,
+  lines: ReturnType<typeof readRevitJobLines>,
+  now = Date.now(),
+  dialog = "",
+): HealthReport["instances"][number] {
+  const flight = inFlightJob(lines, instance.pid, now);
+  return {
+    pid: instance.pid, port: instance.port, revit: instance.revit || "", build: instance.build || "",
+    answering: probe === "ok",
+    verdict: flight ? "waiting_for_idle" : probe,
+    busy: flight ? { job: flight.job, command: flight.command, since_s: flight.age_s, dialog: flight ? dialog : "" } : null,
+  };
+}
+
 export async function healthReport(listen: string, startedAt: number, env: NodeJS.ProcessEnv = process.env): Promise<HealthReport> {
   const instances = readInstances(env);
+  const lines = readRevitJobLines(env);
   const rows = [];
+  const now = Date.now();
   for (const instance of instances) {
-    const verdict = await probePort(HOST, instance.port, 300);
-    rows.push({
-      pid: instance.pid, port: instance.port, revit: instance.revit || "", build: instance.build || "",
-      answering: verdict === "ok", verdict,
-    });
+    const probe = await probePort(HOST, instance.port, 300);
+    const flight = inFlightJob(lines, instance.pid, now);
+    rows.push(describeInstance(instance, probe, lines, now, flight ? dialogFor(instance.pid, flight.job, env, lines) : ""));
   }
   const reg = lastRegistration;
   const addin = [...new Set(rows.map((row) => row.build).filter(Boolean))];
