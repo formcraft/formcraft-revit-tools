@@ -84,6 +84,14 @@ export interface RevitIo {
   exists?: (p: string) => boolean;
 }
 
+/**
+ * The document-info key for the dry run. A missing local is a resume: Info does not need that file.
+ * The central is on disk, and the open-document list comes back either way. Never the closed title.
+ */
+export function documentInfoKey(local: string, central: string, fileExists: (p: string) => boolean): string {
+  return fileExists(local) ? local : central;
+}
+
 /** An open document the script may bind to. Never the closed local's title. */
 export function bindTitle(docs: OpenDoc[], closedTitle: string, localPath: string, requested?: string): string {
   const closed = closedTitle.trim().toLowerCase();
@@ -125,8 +133,8 @@ export async function runFmcNewLocal(args: NewLocalInput, io?: RevitIo) {
   let centralFile: CentralFile = assumed;
   let docs: OpenDoc[] = [];
   try {
-    // The full local path: Info uses FromFile when that file is not open. Never the closed title.
-    const info = asRecord(await sendRaw("fmc_document_info", { document: args.local }));
+    // A path that exists. A missing local is described nowhere; the central still lists the open documents.
+    const info = asRecord(await sendRaw("fmc_document_info", { document: documentInfoKey(args.local, args.central, exists) }));
     docs = info ? docsFromInfo(info) : [];
     const closed = !docs.some((d) => d.title.toLowerCase() === args.document.trim().toLowerCase() || (d.path && d.path.toLowerCase() === args.local.trim().toLowerCase()));
     const probeDocument = closed ? bindTitle(docs, args.document, args.local, args.switch_to) : args.document;

@@ -313,13 +313,28 @@ export function planNewLocal(input: NewLocalInput, ctx: PlanContext): NewLocalPl
   return { ...ready, calls: liveCalls(ready) };
 }
 
+/**
+ * The file the live-model lock reads for CreateNewLocal.
+ * The move runs first, so plan.local is gone by the time this call is sent. A backup path, and the central, are
+ * described by FromFile, which does not set isLocal. aiVerdict then refuses the file as a central (unknown local
+ * status) before the full-access return, so those keys do not behave like the open local did. The script is bound
+ * to the other open project: that file exists, Revit describes it with isLocal, and the script does not edit it.
+ * The destination was already refused when it is protected or blocked. The lease stays on the replaced title.
+ */
+export function createLockDocument(plan: Pick<NewLocalPlan, "switch_path">): string {
+  return plan.switch_path;
+}
+
 /** What a real run sends, in order. The script call is fmc_new_local so the fixed body is not treated as caller-supplied code. */
 export function liveCalls(plan: NewLocalPlan): Array<{ command: string; params: Record<string, unknown> }> {
-  const aimed = { _lease_document: plan.document, _lock_document: plan.local };
+  const lease = { _lease_document: plan.document };
+  // Switch and close run while the local file is still there. Activate runs after CreateNewLocal has written it again.
+  const onLocal = { ...lease, _lock_document: plan.local };
   const make = {
     command: "fmc_new_local",
     params: {
-      ...aimed,
+      ...lease,
+      _lock_document: createLockDocument(plan),
       document: plan.script_document,
       _script_document: plan.script_document,
       code: plan.script,
@@ -330,11 +345,11 @@ export function liveCalls(plan: NewLocalPlan): Array<{ command: string; params: 
       dry_run: false,
     },
   };
-  const activate = { command: "fmc_revit_file", params: { ...aimed, action: "open", path: plan.local, document: plan.script_document } };
+  const activate = { command: "fmc_revit_file", params: { ...onLocal, action: "open", path: plan.local, document: plan.script_document } };
   if (plan.resume) return [make, activate];
   return [
-    { command: "fmc_revit_file", params: { ...aimed, action: "open", path: plan.switch_path, document: plan.script_document } },
-    { command: "fmc_revit_file", params: { ...aimed, action: "close", title: plan.document, save: false, document: plan.script_document } },
+    { command: "fmc_revit_file", params: { ...onLocal, action: "open", path: plan.switch_path, document: plan.script_document } },
+    { command: "fmc_revit_file", params: { ...onLocal, action: "close", title: plan.document, save: false, document: plan.script_document } },
     make,
     activate,
   ];

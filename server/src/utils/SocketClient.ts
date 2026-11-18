@@ -183,7 +183,7 @@ export class RevitClientConnection {
     const aimed = params && typeof params.document === "string" && params.document.trim()
       ? params.document.trim()
       : documentTarget.getStore();
-    // A closed local has no title Revit can open. FromFile answers fmc_document_info for the full path.
+    // fmc_new_local names a file that exists at this moment. CreateNewLocal uses the open host: the local was just moved aside.
     const lockKey = params && typeof params._lock_document === "string" && params._lock_document.trim()
       ? params._lock_document.trim()
       : aimed;

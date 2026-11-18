@@ -1,8 +1,12 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { runFmcNewLocal } from "../tools/fmc_new_local.js";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { runFmcNewLocal, documentInfoKey } from "../tools/fmc_new_local.js";
 import { DEFAULT_CONFIG, GuardConfig, WRITE_COMMANDS } from "./policy.js";
-import { COMMAND_GROUPS, NEVER, aiVerdict } from "./aiuse.js";
+import { AiModellerConfig, COMMAND_GROUPS, NEVER, aiVerdict, parseRulebook } from "./aiuse.js";
+import { writeGuard } from "./opencopy.js";
 import { documentRequired } from "./fairqueue.js";
 import { explain } from "./explain.js";
 import {
@@ -97,6 +101,9 @@ test("an active document switches to another open project, and a dry run only re
   assert.equal(active.calls[1].params.document, "Sketch");
   assert.equal(active.calls[2].command, "fmc_new_local");
   assert.equal(active.calls[2].params.document, "Sketch");
+  assert.equal(active.calls[2].params._lock_document, "C:\\WIP\\Sketch.rvt");
+  assert.equal(active.calls[0].params._lock_document, local);
+  assert.equal(active.calls[1].params._lock_document, local);
   assert.equal(active.calls[3].params.action, "open");
   assert.equal(active.calls[3].params.path, local);
   assert.equal(active.calls[3].params.document, "Sketch");
@@ -410,6 +417,98 @@ test("a closed document is never the Revit document of a dry run or a real run",
   assert.equal(script?.params.document, host);
   assert.equal(script?.params._script_document, host);
   assert.equal(script?.params._lease_document, title);
-  assert.equal(script?.params._lock_document, localPath);
+  assert.equal(script?.params._lock_document, "C:\\WIP\\HEBERT HOSTELS_USER.rvt");
+  assert.equal(commands.find((c) => c.command === "fmc_revit_file")?.params._lock_document, localPath);
   assert.equal(wireNewLocal(script!.params).params.document, host);
+});
+
+test("a missing local is a resume with nothing to move", async () => {
+  const host = "C:\\WIP\\Sketch.rvt";
+  const exists = (p: string) => p.toLowerCase() === central.toLowerCase() || p.toLowerCase() === host.toLowerCase();
+  const plan = planNewLocal(input({ document: "ELECTRICAL_USER" }), ctx({
+    docs: [doc({ title: "Sketch", path: host, isWorkshared: true, isActive: true, centralPath: "" })],
+    exists,
+  }));
+  assert.equal(plan.ok, true, plan.reasons.join(" | "));
+  assert.equal(plan.resume, true);
+  assert.match(plan.steps.join("\n"), /already gone/);
+  assert.equal(plan.backup_folder_from, "");
+  assert.equal(plan.backup_folder_to, "");
+  assert.equal(documentInfoKey(local, central, exists), central);
+  const disk = memFs([central, host]);
+  moveBackup(plan, disk);
+  assert.equal(disk.has(local), false);
+  assert.equal(disk.has(central), true);
+  const sent: string[] = [];
+  const ran = await runNewLocalSteps(plan, async (command) => {
+    sent.push(command);
+    return made;
+  });
+  assert.equal(ran.ok, true);
+  assert.deepEqual(sent, ["fmc_new_local", "fmc_revit_file"]);
+});
+
+test("a lock read on a missing local uses the open host, which exists", () => {
+  const host = "C:\\Users\\USER\\Documents\\HEBERT HOSTELS_USER.rvt";
+  const localPath = "C:\\Users\\USER\\Documents\\HEBERT HOSTELS ELECTRICAL_USER.rvt";
+  const centralPath = "C:\\Users\\USER\\Documents\\HEBERT HOSTELS ELECTRICAL_central.rvt";
+  const exists = (p: string) => [host, centralPath].some((item) => item.toLowerCase() === p.toLowerCase());
+  const plan = planNewLocal(input({ document: "HEBERT HOSTELS ELECTRICAL_USER", central: centralPath, local: localPath }), ctx({
+    docs: [doc({ title: "HEBERT HOSTELS_USER", path: host, isWorkshared: true, isActive: true, centralPath: "" })],
+    exists,
+    centralFile: { exists: true, isWorkshared: true, isCentral: true, centralPath },
+  }));
+  assert.equal(plan.ok, true, plan.reasons.join(" | "));
+  assert.equal(plan.resume, true);
+  const make = plan.calls[0].params;
+  assert.equal(make._lock_document, host);
+  assert.equal(exists(String(make._lock_document)), true);
+  assert.notEqual(make._lock_document, localPath);
+  assert.notEqual(make._lock_document, centralPath);
+  assert.equal(make._script_document, "HEBERT HOSTELS_USER");
+  assert.equal(make.document, "HEBERT HOSTELS_USER");
+  assert.equal(make._lease_document, "HEBERT HOSTELS ELECTRICAL_USER");
+  assert.equal(plan.calls[1].params._lock_document, localPath);
+  assert.equal(plan.calls[1].params.action, "open");
+});
+
+test("resume after a partial run skips the taken backup and still creates the local", () => {
+  const host = "C:\\WIP\\Sketch.rvt";
+  const bak = local + ".bak-20261118";
+  const bak2 = local + ".bak-20261118-2";
+  const exists = (p: string) => [central, host, bak, bak2].some((item) => item.toLowerCase() === p.toLowerCase());
+  const plan = planNewLocal(input({ document: "ELECTRICAL_USER" }), ctx({
+    docs: [doc({ title: "Sketch", path: host, isWorkshared: true, isActive: true, centralPath: "" })],
+    exists,
+  }));
+  assert.equal(plan.ok, true, plan.reasons.join(" | "));
+  assert.equal(plan.resume, true);
+  assert.equal(plan.backup, local + ".bak-20261118-3");
+  assert.equal(plan.backup_folder_from, "");
+  assert.match(plan.steps.join("\n"), /already gone/);
+  assert.doesNotMatch(plan.steps.join("\n"), /Rename /);
+  assert.equal(plan.calls[0].params._lock_document, host);
+  const disk = memFs([central, host, bak, bak2]);
+  moveBackup(plan, disk);
+  assert.equal(disk.has(local), false);
+  assert.equal(disk.has(bak2), true);
+  assert.equal(disk.has(plan.backup), false);
+});
+
+test("FromFile of the backup or the central is refused as a central; the open host is not", () => {
+  const proposal = fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..", "docs", "kit-proposals", "FMC_Rulebook_AIUse.json"), "utf8");
+  const book = parseRulebook(proposal).book;
+  assert.ok(book);
+  const full: AiModellerConfig = { on: true, stop: false, access: "full", mode: "testing", general: true, allow_code: true, projects: {}, levels: {} };
+  const empty = { day: "", models: {} };
+  const fromFile = (title: string, file: string) => ({ title, path: file, isFamily: false, isWorkshared: true, isActive: false });
+  const backup = fromFile("HEBERT HOSTELS ELECTRICAL_USER.rvt.bak-20261118-2", local + ".bak-20261118-2");
+  const centralDoc = fromFile("central", central);
+  for (const docInfo of [backup, centralDoc]) {
+    const verdict = aiVerdict({ command: "fmc_new_local", doc: docInfo, elements: 0, approved: true }, cfg, book, full, empty);
+    assert.match(verdict.reasons[0] ?? "", /central model/, docInfo.path);
+    assert.equal(writeGuard(docInfo, "fmc_new_local", {}, cfg).ok, true, docInfo.path);
+  }
+  const host = { title: "HEBERT HOSTELS_USER", path: "C:\\Users\\USER\\Documents\\HEBERT HOSTELS_USER.rvt", isFamily: false, isWorkshared: true, isLocal: true };
+  assert.equal(aiVerdict({ command: "fmc_new_local", doc: host, elements: 0, approved: true }, cfg, book, full, empty).ok, true);
 });
