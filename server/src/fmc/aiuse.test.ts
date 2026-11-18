@@ -44,7 +44,7 @@ test("never (admins only): structure, deleting, purging, arbitrary code, links a
 
 test("General AI switch: On for the project covers walls, floors, roofs, levels, grids and placing, every batch approved", () => {
   const g = ai({ on: false, projects: { F26001: { general: true } } }); // the admin's Advanced switch stays off
-  for (const c of ["tag_rooms", "create_level", "create_grid", "create_line_based_element", "create_surface_based_element", "create_point_based_element", "fmc_material_assign"]) {
+  for (const c of ["tag_rooms", "create_level", "create_grid", "fmc_grids_from_link", "create_line_based_element", "create_surface_based_element", "create_point_based_element", "fmc_material_assign"]) {
     const v = aiVerdict(ask(c), cfg, book, g, empty);
     assert.equal(v.needs_approval, true, c);
     assert.equal(v.via, "general", c);

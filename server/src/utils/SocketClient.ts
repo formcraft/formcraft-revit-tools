@@ -12,6 +12,7 @@ import { admitBatchWrite } from "../fmc/batchline.js";
 import { aiGate } from "../fmc/aigate.js";
 import { retryWhileBusy } from "../fmc/busy.js";
 import { wireNewLocal } from "../fmc/newlocal.js";
+import { wireGrids } from "../fmc/grids.js";
 import { memoryGate } from "../fmc/memory.js";
 import { screenScript, scriptLimit } from "../fmc/scriptguard.js";
 import { CACHED_READS, compactReply, invalidateIfWrite, putCachedRead, takeCachedRead, wantsFull } from "../fmc/readcache.js";
@@ -148,7 +149,7 @@ export class RevitClientConnection {
    * The lock fails closed: if the active document cannot be read, the command is not sent.
    */
   public async sendCommand(command: string, params: any = {}, timeoutMs: number = 120000, long?: LongJobOptions): Promise<any> {
-    if (command === "send_code_to_revit" || command === "fmc_new_local") {
+    if (command === "send_code_to_revit" || command === "fmc_new_local" || command === "fmc_grids_from_link") {
       const code = params && typeof params.code === "string" ? params.code : "";
       const problem = screenScript(code, scriptLimit());
       if (problem) throw new Error(problem.message);
@@ -194,6 +195,10 @@ export class RevitClientConnection {
       // goes through send_code_to_revit, bound to the other open document so the transaction group is not on the local.
       if (command === "fmc_new_local") {
         const wire = wireNewLocal(params ?? {});
+        return stampAppliedDocument(await this.sendRaw(wire.command, wire.params, timeoutMs, long), active, params);
+      }
+      if (command === "fmc_grids_from_link") {
+        const wire = wireGrids(params ?? {});
         return stampAppliedDocument(await this.sendRaw(wire.command, wire.params, timeoutMs, long), active, params);
       }
       return stampAppliedDocument(await this.sendRaw(command, params, timeoutMs, long), active, params);

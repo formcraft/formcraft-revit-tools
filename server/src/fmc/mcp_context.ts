@@ -21,7 +21,7 @@ export const FMC_INSTRUCTIONS = [
   "- Start: fmc_selftest, fmc_ai status (switch, mode, auto-approve, inbox_unread), then model_check.",
   "- Two or more Revits open: pass revit (the model's name) on every Revit call; never fmc_revit use (chats share this server). Unnamed changes are refused.",
   "- Edit with modify_model's typed ops first; send_code_to_revit only where no op fits, and name the missing op.",
-  "- Geometry batches return a picture; see_view for anything else; select_by to pick exactly what to change.",
+  "- A picture is opt-in: modify_model picture true, or see_view. select_by picks exactly what to change.",
   "- section_box, see_view box, undo_ai_batch, material_report (slow models).",
   "- Sizes and types no brief or recipe gives: fmc_standards (say when a value is only proposed).",
   "- Fix the Revit warnings a batch reports before the next batch.",

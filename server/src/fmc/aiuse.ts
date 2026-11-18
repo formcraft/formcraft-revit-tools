@@ -87,7 +87,7 @@ export const COMMAND_GROUPS: Record<string, string> = {
   create_room: "create_from_brief", fmc_brief_apply: "create_from_brief", create_point_based_element: "create_from_brief",
   // Owner 26 Oct: walls, floors, ceilings and roofs, levels and grids may be AI-modelled, every batch approved by a person.
   create_line_based_element: "architecture", create_surface_based_element: "architecture",
-  create_level: "levels_grids", create_grid: "levels_grids",
+  create_level: "levels_grids", create_grid: "levels_grids", fmc_grids_from_link: "levels_grids",
   // A fresh local replaces an open one. Its own group, and on the admin list, so only access=full with General On runs it.
   fmc_new_local: "files (new local)",
 };

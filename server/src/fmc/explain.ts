@@ -177,6 +177,12 @@ export function explain(command: string, params: unknown, names: Names = { types
       return cap([`DELETE ${(p.elementIds ?? []).length} elements:`, ...named(names, p.elementIds)]);
     case "operate_element":
       return cap([`${p.data?.action ?? "?"} on ${(p.data?.elementIds ?? []).length} elements:`, ...named(names, p.data?.elementIds)]);
+    case "fmc_grids_from_link":
+      return [
+        p.dry_run === false
+          ? `Copy grids from link ${p.link} into ${p.document}. Grids are not monitored.`
+          : `DRY RUN: grids from link ${p.link} into ${p.document}. Nothing is created. Grids are not monitored.`,
+      ];
     case "fmc_new_local":
       return [
         p.dry_run === false

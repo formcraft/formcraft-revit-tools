@@ -182,6 +182,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_circuits_create",
   // A fresh workshared local. The server sends a fixed script; the add-in command is still send_code_to_revit.
   "fmc_new_local",
+  // Grids copied from a loaded link. The server sends a fixed script; the add-in command is still send_code_to_revit.
+  "fmc_grids_from_link",
 ]);
 
 /**

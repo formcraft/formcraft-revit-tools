@@ -178,6 +178,8 @@ export function documentRequired(command: string, openTitles: string[], named: s
   // fmc_new_local never falls back to the active document, even when only one model is open.
   if (command === "fmc_new_local" && !key)
     return "fmc_new_local needs document: the title of the open local to replace. Refusing to use the active document.";
+  if (command === "fmc_grids_from_link" && !key)
+    return "fmc_grids_from_link needs document: the host model. Refusing to use the active document.";
   if (SESSION_COMMANDS.has(command) || openTitles.length <= 1) return undefined;
   if (!key) {
     if (isFamilyCreate(command, hintsOf(hints))) return undefined;
