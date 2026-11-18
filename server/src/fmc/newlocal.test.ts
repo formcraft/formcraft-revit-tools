@@ -1,5 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { runFmcNewLocal } from "../tools/fmc_new_local.js";
 import { DEFAULT_CONFIG, GuardConfig, WRITE_COMMANDS } from "./policy.js";
 import { COMMAND_GROUPS, NEVER, aiVerdict } from "./aiuse.js";
 import { documentRequired } from "./fairqueue.js";
@@ -87,11 +88,20 @@ test("an active document switches to another open project, and a dry run only re
   assert.equal(active.dry_run, true);
   assert.equal(active.closes, false);
   assert.equal(active.backup, "C:\\WIP\\F26001-FMC-ZZ-ZZ-M3-A-0001.rvt.bak-20261118");
-  assert.deepEqual(active.calls[0], { command: "fmc_revit_file", params: { action: "open", path: "C:\\WIP\\Sketch.rvt" } });
-  assert.deepEqual(active.calls[1], { command: "fmc_revit_file", params: { action: "close", title: "Architecture", save: false } });
+  assert.equal(active.calls[0].params.action, "open");
+  assert.equal(active.calls[0].params.path, "C:\\WIP\\Sketch.rvt");
+  assert.equal(active.calls[0].params.document, "Sketch");
+  assert.equal(active.calls[1].params.action, "close");
+  assert.equal(active.calls[1].params.title, "Architecture");
+  assert.equal(active.calls[1].params.save, false);
+  assert.equal(active.calls[1].params.document, "Sketch");
   assert.equal(active.calls[2].command, "fmc_new_local");
   assert.equal(active.calls[2].params.document, "Sketch");
-  assert.deepEqual(active.calls[3], { command: "fmc_revit_file", params: { action: "open", path: local, document: "Sketch" } });
+  assert.equal(active.calls[3].params.action, "open");
+  assert.equal(active.calls[3].params.path, local);
+  assert.equal(active.calls[3].params.document, "Sketch");
+  assert.equal(active.calls[3].params._lease_document, "Architecture");
+  assert.equal(active.calls[3].params._lock_document, local);
   assert.match(active.steps.join("\n"), /fmc_revit_file \{action:"open", path:/);
   assert.match(active.steps.join("\n"), /fmc_revit_file \{action:"close", title:"Architecture", save:false\}/);
   assert.match(active.steps.join("\n"), /CreateNewLocal/);
@@ -109,7 +119,9 @@ test("an active document switches to another open project, and a dry run only re
   const idle = planNewLocal(input({ dry_run: false }), ctx());
   assert.equal(idle.ok, true, idle.reasons.join(" | "));
   assert.equal(idle.closes, true);
-  assert.deepEqual(idle.calls[0].params, { action: "open", path: "C:\\WIP\\Sketch.rvt" });
+  assert.equal(idle.calls[0].params.action, "open");
+  assert.equal(idle.calls[0].params.path, "C:\\WIP\\Sketch.rvt");
+  assert.equal(idle.calls[0].params.document, "Sketch");
   assert.equal(wireNewLocal({ code: idle.script, _script_document: idle.script_document }).params.document, "Sketch");
 
   const familyFirst = planNewLocal(input(), ctx({
@@ -340,4 +352,64 @@ test("resume when the document is closed, and a target that is still there after
   assert.equal(stopped.step, "backup");
   assert.match(stopped.message ?? "", /still at/);
   assert.deepEqual(sent, []);
+});
+
+test("a closed document is never the Revit document of a dry run or a real run", async () => {
+  const title = "HEBERT HOSTELS ELECTRICAL_USER";
+  const host = "HEBERT HOSTELS_USER";
+  const localPath = "C:\\WIP\\HEBERT HOSTELS ELECTRICAL_USER.rvt";
+  const centralPath = "C:\\WIP\\HEBERT HOSTELS ELECTRICAL_central.rvt";
+  const raw: Array<{ command: string; params: Record<string, unknown> }> = [];
+  const commands: Array<{ command: string; params: Record<string, unknown> }> = [];
+  const info = {
+    documents: [
+      { title: host, path: "C:\\WIP\\HEBERT HOSTELS_USER.rvt", isFamily: false, isWorkshared: true, isActive: true, isLinked: false },
+      { title: "FMC_P_PlumbingFixture_ShowerTray_Param", path: "C:\\Fam\\Shower.rfa", isFamily: true, isWorkshared: false, isActive: false },
+    ],
+  };
+  const probe = {
+    success: true,
+    result: JSON.stringify({
+      ok: true, exists: true, isWorkshared: true, isCentral: true, centralPath,
+      docFound: false, docTitle: "", docPath: "", docFamily: false, docWorkshared: false, docDetached: false, docActive: false, docCentral: "",
+    }),
+  };
+  const io = {
+    exists: (p: string) => p.toLowerCase() === localPath.toLowerCase() || p.toLowerCase() === centralPath.toLowerCase(),
+    sendRaw: async (command: string, params: Record<string, unknown>) => {
+      raw.push({ command, params });
+      if (command === "fmc_document_info") return info;
+      return probe;
+    },
+    sendCommand: async (command: string, params: Record<string, unknown>) => {
+      commands.push({ command, params });
+      if (params.document === title) throw new Error(`closed title sent: ${command}`);
+      if (command === "fmc_new_local") {
+        return { success: true, result: JSON.stringify({ ok: true, title: host, path: localPath, isWorkshared: true, isLocal: true, central: centralPath, worksets: 2, opened_how: "background" }) };
+      }
+      return { opened: params.path };
+    },
+  };
+  const args = { document: title, central: centralPath, local: localPath, dry_run: true };
+  const dry = await runFmcNewLocal(args, io);
+  const dryText = dry.content[0].text;
+  assert.match(dryText, /resume: document is closed/);
+  assert.equal(dry.isError, false);
+  for (const call of raw) assert.notEqual(call.params.document, title, call.command);
+  assert.equal(raw[0].params.document, localPath);
+  assert.equal(raw.find((c) => c.command === "send_code_to_revit")?.params.document, host);
+  assert.equal(commands.length, 0);
+  const planned = JSON.parse(dryText) as { calls: Array<{ params: { document?: string } }> };
+  for (const call of planned.calls) assert.notEqual(call.params.document, title);
+
+  raw.length = 0;
+  const real = await runFmcNewLocal({ ...args, dry_run: false }, io);
+  assert.equal(real.isError, false);
+  for (const call of [...raw, ...commands]) assert.notEqual(call.params.document, title, `${call.command} document`);
+  const script = commands.find((c) => c.command === "fmc_new_local");
+  assert.equal(script?.params.document, host);
+  assert.equal(script?.params._script_document, host);
+  assert.equal(script?.params._lease_document, title);
+  assert.equal(script?.params._lock_document, localPath);
+  assert.equal(wireNewLocal(script!.params).params.document, host);
 });

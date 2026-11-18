@@ -315,9 +315,11 @@ export function planNewLocal(input: NewLocalInput, ctx: PlanContext): NewLocalPl
 
 /** What a real run sends, in order. The script call is fmc_new_local so the fixed body is not treated as caller-supplied code. */
 export function liveCalls(plan: NewLocalPlan): Array<{ command: string; params: Record<string, unknown> }> {
+  const aimed = { _lease_document: plan.document, _lock_document: plan.local };
   const make = {
     command: "fmc_new_local",
     params: {
+      ...aimed,
       document: plan.script_document,
       _script_document: plan.script_document,
       code: plan.script,
@@ -328,11 +330,11 @@ export function liveCalls(plan: NewLocalPlan): Array<{ command: string; params: 
       dry_run: false,
     },
   };
-  const activate = { command: "fmc_revit_file", params: { action: "open", path: plan.local, document: plan.script_document } };
+  const activate = { command: "fmc_revit_file", params: { ...aimed, action: "open", path: plan.local, document: plan.script_document } };
   if (plan.resume) return [make, activate];
   return [
-    { command: "fmc_revit_file", params: { action: "open", path: plan.switch_path } },
-    { command: "fmc_revit_file", params: { action: "close", title: plan.document, save: false } },
+    { command: "fmc_revit_file", params: { ...aimed, action: "open", path: plan.switch_path, document: plan.script_document } },
+    { command: "fmc_revit_file", params: { ...aimed, action: "close", title: plan.document, save: false, document: plan.script_document } },
     make,
     activate,
   ];
@@ -377,6 +379,10 @@ export function newLocalProbeScript(central: string, document: string): string {
 export function wireNewLocal(params: Record<string, unknown>): { command: "send_code_to_revit"; params: Record<string, unknown> } {
   const scriptDoc = typeof params._script_document === "string" ? params._script_document.trim() : "";
   if (!scriptDoc) throw new Error("[FMC-NEW-LOCAL] The script has no other document to bind to. Nothing was sent.");
+  const closed = typeof params._lease_document === "string" ? params._lease_document.trim() : "";
+  if (closed && scriptDoc.toLowerCase() === closed.toLowerCase()) {
+    throw new Error(`[FMC-NEW-LOCAL] The script must not be bound to ${closed}: that document is the local being replaced. Nothing was sent.`);
+  }
   if (typeof params.code !== "string" || !params.code.trim()) throw new Error("[FMC-NEW-LOCAL] The script is missing. Nothing was sent.");
   return {
     command: "send_code_to_revit",

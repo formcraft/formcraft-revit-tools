@@ -24,9 +24,9 @@ export const FMC_NEW_LOCAL_DESCRIPTION =
 export const FMC_NEW_LOCAL_SHAPE = {
   document: z.string().min(1).describe("Title of the open local to replace. Required. The active document is never assumed."),
   central: z.string().min(1).describe("Full path of the central .rvt."),
-  local: z.string().min(1).describe("Full path of the new local .rvt. This is the open local's file: it is copied aside, then CreateNewLocal overwrites this path."),
-  switch_to: z.string().min(1).optional().describe("Title of another open document to activate first when the local is on screen. Default: any other open project document."),
-  backup_suffix: z.string().min(1).max(64).optional().describe("Suffix on the copied file name. Default .bak-YYYYMMDD. An existing backup is not overwritten."),
+  local: z.string().min(1).describe("Full path of the new local .rvt. The old file at this path is renamed (moved) aside, then CreateNewLocal writes it again. Required when the document is not open: its path cannot be read from Revit."),
+  switch_to: z.string().min(1).optional().describe("Title of another open document to activate first when the local is on screen. Default: any other open project document. In resume mode the script binds to this document."),
+  backup_suffix: z.string().min(1).max(64).optional().describe("Suffix on the renamed file. Default .bak-YYYYMMDD. The old local is moved, not copied. An existing backup is not overwritten."),
   dry_run: z.boolean().optional().default(true).describe("Validate and report the plan. Nothing is closed. Default true."),
 };
 
@@ -78,9 +78,32 @@ function applyCentral(docs: OpenDoc[], body: Record<string, unknown>): CentralFi
   };
 }
 
-export async function runFmcNewLocal(args: NewLocalInput) {
+export interface RevitIo {
+  sendRaw(command: string, params: Record<string, unknown>): Promise<unknown>;
+  sendCommand(command: string, params: Record<string, unknown>): Promise<unknown>;
+  exists?: (p: string) => boolean;
+}
+
+/** An open document the script may bind to. Never the closed local's title. */
+export function bindTitle(docs: OpenDoc[], closedTitle: string, localPath: string, requested?: string): string {
+  const closed = closedTitle.trim().toLowerCase();
+  const open = docs.filter((d) => d.title.trim().toLowerCase() !== closed && !(d.path && localPath && d.path.toLowerCase() === localPath.toLowerCase()));
+  const host = open.find((d) => requested && (d.title.toLowerCase() === requested.trim().toLowerCase() || (d.path && d.path.toLowerCase() === requested.trim().toLowerCase())))
+    ?? open.find((d) => !d.isFamily && !d.isLinked && d.path);
+  if (!host) throw new Error(`No other open project document can take the script. ${closedTitle} is not used.`);
+  if (host.title.trim().toLowerCase() === closed) throw new Error(`Refusing to bind a Revit command to the closed document ${closedTitle}.`);
+  return host.title;
+}
+
+export async function runFmcNewLocal(args: NewLocalInput, io?: RevitIo) {
   const { config } = loadConfig();
-  const exists = (p: string) => { try { return fs.existsSync(p); } catch { return false; } };
+  const exists = io?.exists ?? ((p: string) => { try { return fs.existsSync(p); } catch { return false; } });
+  const sendRaw = (command: string, params: Record<string, unknown>) => io
+    ? io.sendRaw(command, params)
+    : withRevitConnection((client) => client.sendRaw(command, params));
+  const sendCommand = (command: string, params: Record<string, unknown>) => io
+    ? io.sendCommand(command, params)
+    : withRevitConnection((client) => client.sendCommand(command, params));
   const dry = args.dry_run !== false;
   const caller = { lease: batchLease.getStore(), client: currentClient() };
   let queueRunning: { client: string; label: string } | null = null;
@@ -102,16 +125,19 @@ export async function runFmcNewLocal(args: NewLocalInput) {
   let centralFile: CentralFile = assumed;
   let docs: OpenDoc[] = [];
   try {
-    const info = asRecord(await withRevitConnection((client) => client.sendRaw("fmc_document_info", {})));
+    // The full local path: Info uses FromFile when that file is not open. Never the closed title.
+    const info = asRecord(await sendRaw("fmc_document_info", { document: args.local }));
     docs = info ? docsFromInfo(info) : [];
-    const response = await withRevitConnection((client) => client.sendRaw("send_code_to_revit", {
-      code: newLocalProbeScript(args.central, args.document),
+    const closed = !docs.some((d) => d.title.toLowerCase() === args.document.trim().toLowerCase() || (d.path && d.path.toLowerCase() === args.local.trim().toLowerCase()));
+    const probeDocument = closed ? bindTitle(docs, args.document, args.local, args.switch_to) : args.document;
+    const response = await sendRaw("send_code_to_revit", {
+      code: newLocalProbeScript(args.central, args.local),
       parameters: [],
       usings: [],
       transactionMode: "read_only",
-      document: args.document,
+      document: probeDocument,
       purpose: "Read central and local before fmc_new_local",
-    }));
+    });
     const row = asRecord(response);
     if (row?.success === false) {
       const message = String(row.errorMessage || row.error || "Could not read the open document.");
@@ -137,7 +163,7 @@ export async function runFmcNewLocal(args: NewLocalInput) {
   }
 
   try {
-    const ran = await withRevitConnection((client) => runNewLocalSteps(plan, (command, params) => client.sendCommand(command, params)));
+    const ran = await runNewLocalSteps(plan, sendCommand);
     if (!ran.ok) return reply({ ...ran, caveat: NEW_LOCAL_CAVEAT }, true);
     return reply({ ...ran, caveat: NEW_LOCAL_CAVEAT });
   } catch (error) {

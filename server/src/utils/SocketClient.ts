@@ -157,8 +157,13 @@ export class RevitClientConnection {
     const aimed = params && typeof params.document === "string" && params.document.trim()
       ? params.document.trim()
       : documentTarget.getStore();
+    // fmc_new_local keeps the batch lease on the caller's document title. The Revit `document` on that call is an open
+    // file (or, for the lock read, the local's full path), which is not the lease key once the local is closed.
+    const leaseKey = params && typeof params._lease_document === "string" && params._lease_document.trim()
+      ? params._lease_document.trim()
+      : aimed;
     // The lease check is the same write list as a reset retry: reads never take a lease.
-    const admission = admitBatchWrite(command, aimed, batchLease.getStore(), currentClient());
+    const admission = admitBatchWrite(command, leaseKey, batchLease.getStore(), currentClient());
     try {
       await memoryGate.holdWrites(Math.min(120_000, Math.max(0, timeoutMs)));
       return await this.sendLocked(command, params, timeoutMs, long);
@@ -178,6 +183,10 @@ export class RevitClientConnection {
     const aimed = params && typeof params.document === "string" && params.document.trim()
       ? params.document.trim()
       : documentTarget.getStore();
+    // A closed local has no title Revit can open. FromFile answers fmc_document_info for the full path.
+    const lockKey = params && typeof params._lock_document === "string" && params._lock_document.trim()
+      ? params._lock_document.trim()
+      : aimed;
     const { config } = loadConfig();
     let active: { title?: string; path?: string } | undefined;
     const run = async () => {
@@ -193,10 +202,10 @@ export class RevitClientConnection {
       let info: any;
       // The lock checks the document the change names, not whichever model is on screen.
       try {
-        info = await this.sendRaw("fmc_document_info", aimed ? { document: aimed } : {});
+        info = await this.sendRaw("fmc_document_info", lockKey ? { document: lockKey } : {});
       } catch (error) {
         throw new Error(
-          "FMC live-model lock: could not read the document" + (aimed ? ` (${aimed})` : "") + ", so the command was not sent. " +
+          "FMC live-model lock: could not read the document" + (lockKey ? ` (${lockKey})` : "") + ", so the command was not sent. " +
             "Is the Formcraft command set (fmc_document_info) installed? " +
             (error instanceof Error ? error.message : String(error))
         );
@@ -214,7 +223,7 @@ export class RevitClientConnection {
       }
     } else {
       try {
-        const info = await this.sendRaw("fmc_document_info", aimed ? { document: aimed } : {});
+        const info = await this.sendRaw("fmc_document_info", lockKey ? { document: lockKey } : {});
         active = info?.active;
       } catch { /* the write still runs; the reply names the file only when the document could be read */ }
     }
@@ -273,6 +282,12 @@ export class RevitClientConnection {
     // command names its own document.
     const document = documentTarget.getStore();
     if (params && typeof params === "object" && !Array.isArray(params)) {
+      if ("_lease_document" in params || "_lock_document" in params) {
+        const rest = { ...params };
+        delete rest._lease_document;
+        delete rest._lock_document;
+        params = rest;
+      }
       const extra: Record<string, unknown> = {};
       if (document && !("document" in params)) extra.document = document;
       if (!("_protected_roots" in params)) {
