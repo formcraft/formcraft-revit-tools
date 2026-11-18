@@ -1,3 +1,5 @@
+import { NOT_IDLE, NOT_IDLE_HINT, ageWords } from "./notidle.js";
+
 /**
  * F-072 (issue #248): the add-in answers "[FMC-BRIDGE-BUSY] Revit is still running <command> since <time> (job <id>)"
  * while an earlier command that outlived its wait still holds Revit's API thread (plugin/Core/BridgeBusy.cs). Before,
@@ -22,6 +24,19 @@ export function parseBusy(x: unknown): BridgeBusy | null {
 /** For a finding or a log line: "Revit was busy with fmc_doc_flex since 2026-10-19 13:37:20 (job 1792…)". */
 export function busyWords(b: BridgeBusy): string {
   return `Revit was busy with ${b.command} since ${b.since} (job ${b.job})`;
+}
+
+/**
+ * The call's own wait ended, but Revit's job is still heartbeating. The listener is not dead.
+ * Finish or cancel the dialog or command in Revit. Do not toggle AI.
+ */
+export class RevitNotIdleError extends Error {
+  readonly code = NOT_IDLE;
+  constructor(readonly busy: BridgeBusy, readonly waitedMs: number, readonly forCommand: string) {
+    const age = ageWords(Math.max(0, Math.round(waitedMs / 1000)));
+    super(`[${NOT_IDLE}] Revit is not idle. Job ${busy.job} (${busy.command}) since ${busy.since} (this call waited ${age}). ${NOT_IDLE_HINT} ${forCommand} was not sent.`);
+    this.name = "RevitNotIdleError";
+  }
 }
 
 /** The wait gave up: the busy answer's words (so it is still recognised), how long it waited and why it stopped. */
@@ -76,8 +91,13 @@ export async function retryWhileBusy<T>(send: () => Promise<T>, o: BusyWaitOptio
       const t = now();
       if (!t0) t0 = t;
       const waited = t - t0;
-      if (waited + poll > o.ceilingMs) throw new BridgeBusyError(b, waited, "ceiling", o.command);
-      if (t - Math.max(o.heartbeatMs(b.job), t0) > stale) throw new BridgeBusyError(b, waited, "no heartbeat", o.command);
+      const beat = o.heartbeatMs(b.job);
+      const fresh = beat > 0 && t - beat <= stale;
+      if (waited + poll > o.ceilingMs) {
+        if (fresh) throw new RevitNotIdleError(b, waited, o.command);
+        throw new BridgeBusyError(b, waited, "ceiling", o.command);
+      }
+      if (t - Math.max(beat, t0) > stale) throw new BridgeBusyError(b, waited, "no heartbeat", o.command);
       o.onWait?.(b, waited);
       await sleep(poll);
     }

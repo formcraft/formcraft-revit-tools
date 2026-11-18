@@ -1,6 +1,8 @@
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using Newtonsoft.Json.Linq;
 using RevitMCPCommandSet.Models.DataExtraction;
+using RevitMCPCommandSet.Services.Fmc;
 using RevitMCPSDK.API.Interfaces;
 
 namespace RevitMCPCommandSet.Services.DataExtraction
@@ -11,6 +13,8 @@ namespace RevitMCPCommandSet.Services.DataExtraction
         private bool _selectedElementsOnly;
 
         public GetMaterialQuantitiesResult ResultInfo { get; private set; }
+        public JObject Parameters { get; set; } = new JObject();
+        public string Error { get; private set; }
         public bool TaskCompleted { get; private set; }
         private readonly ManualResetEvent _resetEvent = new ManualResetEvent(false);
 
@@ -30,10 +34,11 @@ namespace RevitMCPCommandSet.Services.DataExtraction
 
         public void Execute(UIApplication app)
         {
+            Error = null;
             try
             {
-                var uiDoc = app.ActiveUIDocument;
-                var doc = uiDoc.Document;
+                using var target = FmcTarget.Resolve(app, Parameters, mayOpen: false);
+                var doc = target.Doc;
 
                 // Dictionary to accumulate material quantities
                 var materialData = new Dictionary<ElementId, MaterialQuantityModel>();
@@ -42,6 +47,7 @@ namespace RevitMCPCommandSet.Services.DataExtraction
                 ICollection<Element> elements;
                 if (_selectedElementsOnly)
                 {
+                    var uiDoc = target.RequireUi("Material quantities of the selection");
                     var selectedIds = uiDoc.Selection.GetElementIds();
                     elements = selectedIds.Select(id => doc.GetElement(id)).Where(e => e != null).ToList();
                 }
@@ -134,6 +140,7 @@ namespace RevitMCPCommandSet.Services.DataExtraction
             }
             catch (Exception ex)
             {
+                Error = ex.Message;
                 ResultInfo = new GetMaterialQuantitiesResult
                 {
                     Success = false,

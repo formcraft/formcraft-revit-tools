@@ -31,11 +31,14 @@ namespace RevitMCPCommandSet.Commands.Delete
                     }
 
                     // 设置要删除的元素ID数组
+                    _handler.Parameters = parameters ?? new JObject();
                     _handler.ElementIds = elementIds;
 
                     // 触发外部事件并等待完成
                     if (RaiseAndWaitForCompletion(300000)) // owner 26 Oct: big batches take Revit over 10 s; wait up to 5 min
                     {
+                        if (!string.IsNullOrEmpty(_handler.Error))
+                            throw new InvalidOperationException(_handler.Error);
                         if (_handler.IsSuccess)
                         {
                             return new { deleted = true, count = _handler.DeletedCount };

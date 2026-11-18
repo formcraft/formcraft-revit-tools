@@ -118,7 +118,7 @@ export async function runFmcLibrary(args: FmcLibraryArgs) {
     else if (!fs.existsSync(source)) reasons.push(`Not found: ${source}`);
     if (reasons.length) return reply({ refused: true, reasons }, true);
 
-    const facts = await withRevitConnection((c) => c.sendRaw("fmc_family_inspect", { path: source }, 300000));
+    const facts = await withRevitConnection((c) => c.sendRaw("fmc_family_inspect", { path: source, document: source }, 300000));
     // F-039: each type's keynote from the saved file (the Keynote parameter, or the kit's keynote code parameter)
     const typeKeynotes = new Map<string, Record<string, string>>(((facts.type_keynotes ?? []) as Array<{ name: string; values: Record<string, string> }>).map((t) => [t.name, t.values ?? {}]));
     const keynoteOf = (t: string) => {

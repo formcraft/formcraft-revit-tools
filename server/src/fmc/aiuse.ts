@@ -59,6 +59,13 @@ export interface AiModellerConfig {
   allow_code?: boolean;
   /** Owner 26 Oct: in testing mode, batches run without waiting; each is still listed in Approvals as auto-approved. */
   auto_approve?: boolean;
+  /**
+   * Auto-approve a bot's direct fmc_revit_file sync. Default false. It does nothing unless mode is testing and
+   * auto_approve is true. Relinquish on its own stays manual.
+   */
+  auto_approve_sync?: boolean;
+  /** Titles or paths a person has marked damaged. Also read from the guard's damaged_documents list. */
+  damaged_documents?: string[];
   /** Owner 26 Oct: save the model after changes when this many minutes have passed since the last save (testing default 10; 0 off). */
   auto_save_minutes?: number;
   /** Per project code: its own General switch, and (admin, Advanced) its own switch, involvement and levels. */
@@ -80,15 +87,18 @@ export const COMMAND_GROUPS: Record<string, string> = {
   create_room: "create_from_brief", fmc_brief_apply: "create_from_brief", create_point_based_element: "create_from_brief",
   // Owner 26 Oct: walls, floors, ceilings and roofs, levels and grids may be AI-modelled, every batch approved by a person.
   create_line_based_element: "architecture", create_surface_based_element: "architecture",
-  create_level: "levels_grids", create_grid: "levels_grids",
+  create_level: "levels_grids", create_grid: "levels_grids", fmc_grids_from_link: "levels_grids",
+  // A fresh local replaces an open one. Its own group, and on the admin list, so only access=full with General On runs it.
+  fmc_new_local: "files (new local)",
 };
 
 /** Never AI-run on a project model, whatever the switch or band: admins (people) only. */
 export const NEVER: Record<string, string> = {
   create_structural_framing_system: "structure",
   delete_element: "deleting", operate_element: "moving or deleting arbitrary elements", send_code_to_revit: "running arbitrary code",
-  fmc_link_add: "links (coordination)", fmc_link_pin: "links (coordination)", fmc_workset_create: "worksets (setup)",
+  fmc_link_add: "links (coordination)", fmc_link_pin: "links (coordination)", fmc_reload_link: "links (coordination)", fmc_workset_create: "worksets (setup)",
   fmc_material_purge: "purging (deleting)",
+  fmc_new_local: "files (new local)",
 };
 
 /** What a person sees when AI isn't allowed: plain lines, never the lock's wording (owner 26 Oct). */
@@ -184,7 +194,8 @@ export function parseConfig(raw: unknown): AiModellerConfig | null {
   for (const [k, v] of Object.entries((o.copies ?? {}) as Record<string, { general?: boolean }>)) {
     if (v && typeof v === "object") copies[win.normalize(k).toLowerCase()] = { general: v.general === true };
   }
-  return { on: o.on, stop: o.stop === true, general: o.general === true ? true : undefined, mode: o.mode === "testing" ? "testing" : "strict", access: o.access === "full" ? "full" : "general", allow_code: o.allow_code === true, auto_approve: o.auto_approve === true, auto_save_minutes: typeof o.auto_save_minutes === "number" ? o.auto_save_minutes : undefined,
+  const damaged = Array.isArray(o.damaged_documents) ? o.damaged_documents.map((item: unknown) => String(item).trim()).filter(Boolean) : [];
+  return { on: o.on, stop: o.stop === true, general: o.general === true ? true : undefined, mode: o.mode === "testing" ? "testing" : "strict", access: o.access === "full" ? "full" : "general", allow_code: o.allow_code === true, auto_approve: o.auto_approve === true, auto_approve_sync: o.auto_approve_sync === true, damaged_documents: damaged, auto_save_minutes: typeof o.auto_save_minutes === "number" ? o.auto_save_minutes : undefined,
     involvement: typeof o.involvement === "number" ? o.involvement : undefined,
     projects: o.projects && typeof o.projects === "object" ? o.projects : {}, levels, copies };
 }
@@ -206,7 +217,7 @@ export interface AiState { day: string; models: Record<string, { elements: numbe
 
 export interface AiAsk {
   command: string;
-  doc: DocInfo & { isLocal?: boolean };
+  doc: DocInfo;
   elements: number;
   /** An approval a person gave in the pane for exactly this batch. */
   approved: boolean;

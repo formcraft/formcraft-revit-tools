@@ -170,5 +170,33 @@ namespace Formcraft.Shell.Tests
             await Assert.That(stopped).IsTrue();
             await Assert.That(label).IsEqualTo("Resume AI");
         }
+
+        [Test]
+        public async Task Testing_mode_button_asks_first_then_turns_it_on_and_off()
+        {
+            var (before, asked, notYet, on, afterOn, off, afterOff) = Sta.Run(() =>
+            {
+                var (admin, ai, vm) = Pane();
+                Func<SettingButton> button = () => admin.Groups.Single(g => g.Title == "Testing mode").Items.OfType<ButtonsSetting>().Single().Buttons.Single();
+                var b = button().Label;
+                button().Command.Execute(null);
+                var t = vm.Dialog!.Title;
+                var waiting = ai.Testing; // nothing changes until the person confirms
+                vm.Dialog.ConfirmCommand!.Execute(null);
+                var isOn = ai.Testing;
+                var labelOn = button().Label;
+                button().Command.Execute(null);
+                vm.Dialog!.ConfirmCommand!.Execute(null);
+                return (b, t, waiting, isOn, labelOn, ai.Testing, button().Label);
+            });
+
+            await Assert.That(before).IsEqualTo("Turn testing mode on");
+            await Assert.That(asked).IsEqualTo("Turn testing mode on?");
+            await Assert.That(notYet).IsFalse();
+            await Assert.That(on).IsTrue();
+            await Assert.That(afterOn).IsEqualTo("Turn testing mode off");
+            await Assert.That(off).IsFalse();
+            await Assert.That(afterOff).IsEqualTo("Turn testing mode on");
+        }
     }
 }

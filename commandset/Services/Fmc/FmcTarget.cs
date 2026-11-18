@@ -37,10 +37,12 @@ namespace RevitMCPCommandSet.Services.Fmc
 
             if (key.Length > 0)
             {
-                Document found = open.FirstOrDefault(d => Same(d, key));
-                if (found != null) return new FmcTarget(found, active != null && found.Equals(active) ? app.ActiveUIDocument : null, false);
-                // A named document that is not open is never replaced with the active one.
+                var found = open.Where(d => Same(d, key)).ToList();
                 string activeName = active?.Title ?? "none";
+                if (found.Count > 1)
+                    throw new InvalidOperationException($"More than one open document matches \"{key}\" ({string.Join("; ", found.Select(d => string.IsNullOrEmpty(d.PathName) ? d.Title : d.PathName))}). Pass the full path. Refusing to use the active document ({activeName}).");
+                if (found.Count == 1) return new FmcTarget(found[0], active != null && found[0].Equals(active) ? app.ActiveUIDocument : null, false);
+                // A named document that is not open is never replaced with the active one.
                 if (!LooksLikeFile(key))
                     throw new InvalidOperationException($"No open document is called \"{key}\". Open: {List(open)}. Refusing to use the active document ({activeName}).");
                 if (!mayOpen)
@@ -52,11 +54,11 @@ namespace RevitMCPCommandSet.Services.Fmc
                 if (!File.Exists(key)) throw new InvalidOperationException($"File not found: {key}. Refusing to use the active document ({activeName}).");
                 return new FmcTarget(OpenInBackground(app, key, parameters), null, true);
             }
-            if (active != null) return new FmcTarget(active, app.ActiveUIDocument, false);
-            if (open.Count == 1) return new FmcTarget(open[0], null, false);
-            throw new InvalidOperationException(open.Count == 0
-                ? "No document is open in Revit. Open one (the workbench _Staging\\FMC_Claude_Workbench.rvt is fine), or pass document with a file path."
-                : $"{open.Count} documents are open and none is active: pass document with one of {List(open)}.");
+            // Several open documents and no name used to follow whichever file was on screen. That sent
+            // every unnamed call into one discipline's model. Name the document, or there is only one open.
+            DocumentChoice.RequireNamed("", open.ConvertAll(d => string.IsNullOrEmpty(d.PathName) ? d.Title : d.PathName));
+            if (open.Count == 1) return new FmcTarget(open[0], active != null && open[0].Equals(active) ? app.ActiveUIDocument : null, false);
+            throw new InvalidOperationException("No document is open in Revit. Open one, or pass document with a file path.");
         }
 
         /// <summary>The UI document, for commands that need the active view or the selection.</summary>

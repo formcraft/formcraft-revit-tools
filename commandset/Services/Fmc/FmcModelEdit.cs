@@ -121,7 +121,8 @@ namespace RevitMCPCommandSet.Services.Fmc
                 catch (Exception ex) { after.Add(new JObject { ["failed"] = ex.Message }); }
             }
             var done = new JObject { ["applied"] = true, ["batch_id"] = undoId, ["ops"] = results,
-                ["undo"] = $"undo_ai_batch {{batch_id: \"{undoId}\"}} takes the whole batch back (one Undo in Revit: \"{FmcUndo.Label}\")" };
+                ["undo"] = $"undo_ai_batch {{batch_id: \"{undoId}\"}} takes the whole batch back (one Undo in Revit: \"{FmcUndo.Label}\")",
+                ["document"] = FmcTarget.DescribeState(doc) };
             if (after.Count > 0) done["after"] = after;
             var added = doc.GetWarnings().Where(w => !warningsBefore.Contains(Key(w))).ToList();
             done["warnings_total"] = doc.GetWarnings().Count;

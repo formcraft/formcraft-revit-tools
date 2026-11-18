@@ -171,7 +171,7 @@ export function planOpenCopy(input: OpenCopyInput, cfg: GuardConfig, exists: (p:
 
 /**
  * Whether a model-changing command may run on this document. A named protected original is always refused.
- * A detached or read-only verification copy accepts only modify_model with dry_run true (a real rollback).
+ * A detached or read-only verification copy accepts modify_model with dry_run true, and fmc_replace (always rolled back).
  * A missing document is not treated as success: the caller still has to have a document.
  */
 export function writeGuard(doc: (DocInfo & { isLocal?: boolean | null }) | null | undefined, command: string, params: Record<string, unknown> | null | undefined, cfg: GuardConfig): { ok: boolean; reasons: string[] } {
@@ -183,7 +183,10 @@ export function writeGuard(doc: (DocInfo & { isLocal?: boolean | null }) | null 
   const protectedDoc = !!path && underAny(path, prot);
   const liveDoc = !!path && live.some((p) => samePath(p, path) || isInside(path, p));
   const readOnly = doc.readOnly === true || doc.isDetached === true || doc.isLinked === true;
-  const dryEdit = command === "fmc_model_edit" && params?.dry_run === true;
+  const previewReplace = command === "fmc_replace";
+  const dryEdit = (command === "fmc_model_edit" && params?.dry_run === true) || previewReplace;
+  if (previewReplace && !readOnly)
+    reasons.push("fmc_replace runs only on a verification copy opened by fmc_file open_copy. This document is not one. Nothing is saved.");
   if (doc.isLinked) reasons.push("A linked document is never written, saved, synced, reloaded or relinquished.");
   if (protectedDoc) reasons.push(`Protected original: ${path}. Write, save, sync, reload and relinquish are refused.`);
   if (liveDoc) reasons.push(`Live path: ${path}. Write, save, sync, reload and relinquish are refused.`);

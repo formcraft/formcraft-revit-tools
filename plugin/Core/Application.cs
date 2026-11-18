@@ -8,6 +8,8 @@ namespace revit_mcp_plugin.Core
     {
         public Result OnStartup(UIControlledApplication application)
         {
+            // Instance files from a Revit that exited without stopping its listener. This process has not listened yet.
+            try { InstanceRegistry.SweepDead(); } catch (Exception) { /* the folder is a convenience */ }
             // Formcraft: one pane and one ribbon tab. The Connect page (Claude service, health, probe, families, files,
             // activity, guard) is set up first; the Formcraft pane hosts it, with the Core and module panels.
             FormcraftBrowser.Register(application);

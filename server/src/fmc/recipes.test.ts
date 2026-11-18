@@ -728,3 +728,41 @@ test("QS01: a lighting fixture's light path beam isn't its body: the Coarse enve
     { op: "revolution", name: "Lens Main Light Path", profile: [[0, 0], [5, 0], [0, 5]] }, vis("Lens Main Light Path", true, true, true)];
   assert.deepEqual(lodLadder("FMC_E_LightFixture_OperatingLight_Ceiling_Detailed", ops), { coarse: "LOD 100", medium: "LOD 300", fine: "LOD 400 + Render" });
 });
+
+test("a new-family recipe build with 3 documents open passes, and every later call names the family document", async () => {
+  const { buildRecipe } = await import("../tools/fmc_recipe_build.js");
+  const { documentRequired } = await import("./fairqueue.js");
+  const openDocs = ["HEBERT HOSTELS PLUMBING & DRAINAGE", "HERBERT HOSTELS_SITE", "Architecture"];
+  const familyTitle = "FMC_A_Door_SteelFanlight";
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-recipe-target-"));
+  const clock = { t: Date.parse("2026-11-11T10:00:00Z") };
+  const inner = fakeRevit({ appData: dir, clock, msPerOp: 1 });
+  const doc = async (a: Record<string, any>) => {
+    const command = a.action === "open" ? "fmc_doc_open" : `fmc_doc_${a.action}`;
+    const refusal = documentRequired(command, openDocs, a.document, { template: a.template, file: a.file });
+    if (refusal) return { ok: false, error: refusal, refused: true };
+    const r = await inner.doc(a);
+    if (a.action === "open" && r.ok !== false)
+      return { ...r, document: { ...r.document, title: familyTitle, path: "" } };
+    return r;
+  };
+  const recipe = parseRecipe(door()).recipe!;
+  const r = await buildRecipe(recipe, {
+    recipeFile: "r.json", template: "Metric Door.rft", target: path.join(dir, "A", `${recipe.family}.rfa`),
+    overwrite: false, stepwise: true, chunkSize: 20, reportsDir: dir, sharedParameterFile: "",
+    notes: [], sources: {}, dry: false, resume: false,
+  }, { doc, gate: async () => ({ verdict: "Pass", lines: [] }), now: () => clock.t, budgetMs: Infinity, appData: dir });
+  assert.equal(r.isError, false, JSON.stringify(r.body));
+  assert.ok(r.body.built, JSON.stringify(r.body));
+  const later = inner.calls.filter((c) => c.action !== "open");
+  assert.ok(later.length > 0, "the build sent steps after open");
+  for (const c of later) {
+    if (c.action === "background") continue;
+    assert.equal(c.document, familyTitle, `${c.action} must name the created family`);
+  }
+  assert.equal(inner.calls.find((c) => c.action === "open")?.document, undefined, "the create step itself is unnamed");
+
+  assert.match(documentRequired("fmc_model_edit", openDocs, undefined) ?? "", /3 documents are open.*Refusing to use the active document/);
+  const existing = await doc({ action: "open", file: path.join(dir, "ExistingProject.rvt") });
+  assert.match(String(existing.error ?? ""), /3 documents are open.*Refusing to use the active document/);
+});

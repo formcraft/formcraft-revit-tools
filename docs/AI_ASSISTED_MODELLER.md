@@ -196,7 +196,9 @@ it from, and logs the request in `%APPDATA%\Formcraft\recipe_requests.jsonl`.
 ## Seeing the model (owner 26 Oct)
 
 - `see_view` returns a picture the AI sees: a 3D close-up around elements with them in red, any view or sheet, or the
-  person's selection. Rolled back: nothing in the model changes.
+  person's selection. Pass `document` (title or full path) and `view`. The picture is exported from that open model
+  with `ExportImage`, including a model that is not the active window. The active window is not switched. The answer
+  names the document title, the path, and the view. It is a read, so it runs during a batch. Rolled back: nothing in the model changes.
 - `modify_model` returns a picture of what a geometry batch made or changed, so the AI checks its own work.
 - `model_check` says what is wrong in words and ids: Revit's warnings, duplicates, rooms not placed or not enclosed,
   unhosted doors and windows, overlapping walls, free wall ends, wall tops below a roof, clashes.

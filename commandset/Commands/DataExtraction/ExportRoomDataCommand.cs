@@ -24,12 +24,15 @@ namespace RevitMCPCommandSet.Commands.DataExtraction
                 bool includeUnplacedRooms = parameters?["includeUnplacedRooms"]?.Value<bool>() ?? false;
                 bool includeNotEnclosedRooms = parameters?["includeNotEnclosedRooms"]?.Value<bool>() ?? false;
 
-                // Set parameters
+                // Set parameters. A named document that is not open is refused; the active document is not substituted.
+                _handler.Parameters = parameters ?? new JObject();
                 _handler.SetParameters(includeUnplacedRooms, includeNotEnclosedRooms);
 
                 // Execute and wait
                 if (RaiseAndWaitForCompletion(60000)) // 60 second timeout
                 {
+                    if (!string.IsNullOrEmpty(_handler.Error))
+                        throw new InvalidOperationException(_handler.Error);
                     return _handler.ResultInfo;
                 }
                 else

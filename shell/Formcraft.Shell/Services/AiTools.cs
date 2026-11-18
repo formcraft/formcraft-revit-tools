@@ -46,6 +46,11 @@ namespace Formcraft.Shell.Services
         /// <summary>The plain line a person sees for it, never the lock's wording.</summary>
         public string GeneralLine { get; set; } = "AI is off. Turn it on with the AI switch.";
         public string Project { get; set; } = "";
+        /// <summary>ai_modeller.mode: "testing" or "strict" (owner 11 Nov 2026: one button turns testing mode on and off).</summary>
+        public string Mode { get; set; } = "strict";
+        public bool Testing => Mode == "testing";
+        /// <summary>Auto-approve is in force: testing mode and ai_modeller.auto_approve.</summary>
+        public bool AutoApprove { get; set; }
         public bool GuardSection { get; set; }
         public string Rulebook { get; set; } = "";
         public List<string> RulebookProblems { get; } = new List<string>();
@@ -70,6 +75,8 @@ namespace Formcraft.Shell.Services
         Task<ToolResult> SaveAsync(bool on, int involvement, IReadOnlyDictionary<string, string> levels);
         /// <summary>The General AI switch for the open model's project (any user; Stop AI still overrides it).</summary>
         Task<ToolResult> SetGeneralAsync(bool on);
+        /// <summary>Testing mode on or off (ai_modeller.mode testing or strict), through the pane's own ai_config command.</summary>
+        Task<ToolResult> SetTestingAsync(bool on);
         /// <summary>Send to AI (owner 26 Oct): the active view with the selection in red, the ids and a note, into the AI's inbox.</summary>
         Task<ToolResult> SendToAiAsync(string note);
         /// <summary>Raised when the approval queue changes (a new batch, a decision, a result), so pages refresh themselves.</summary>
@@ -82,6 +89,7 @@ namespace Formcraft.Shell.Services
         public bool On { get; set; } = true;
         public bool Stopped { get; set; }
         public bool GeneralOn { get; set; }
+        public bool Testing { get; set; }
         public event EventHandler? QueueChanged;
         /// <summary>Tests: a new batch arrives.</summary>
         public void Add(AiQueueLine q) { Queue.Insert(0, q); QueueChanged?.Invoke(this, EventArgs.Empty); }
@@ -110,7 +118,17 @@ namespace Formcraft.Shell.Services
             p.GeneralLine = p.General == "On" ? "AI is on for this project: every change waits for your approval."
                 : p.General == "Stopped" ? "AI is stopped. Resume it with the AI switch." : "AI is off. Turn it on with the AI switch.";
             p.Project = "F26001";
+            p.Mode = Testing ? "testing" : "strict";
+            p.AutoApprove = Testing;
             return Task.FromResult(p);
+        }
+
+        public Task<ToolResult> SetTestingAsync(bool on)
+        {
+            Testing = on;
+            var r = new ToolResult { Ok = true };
+            r.Messages.Add(new ToolMessage(on ? ChipKind.Warn : ChipKind.Good, on ? "Testing mode is on." : "Testing mode is off."));
+            return Task.FromResult(r);
         }
 
         public Task<List<AiQueueLine>> QueueAsync() => Task.FromResult(Queue.ToList());

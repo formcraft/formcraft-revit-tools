@@ -31,6 +31,8 @@ namespace revit_mcp_plugin.Shell
                 p.General = gs.Value<string>("state") ?? "Off";
                 p.GeneralLine = gs.Value<string>("line") ?? p.GeneralLine;
                 p.Project = gs.Value<string>("project") ?? "";
+                p.Mode = gs.Value<string>("mode") == "testing" ? "testing" : "strict";
+                p.AutoApprove = gs.Value<bool?>("auto_approve") ?? false;
             }
             if (b["limits"] is JObject l)
                 p.Limits = $"{l.Value<int?>("batch_elements")} per batch, {l.Value<int?>("daily_elements")} per model a day, off after {l.Value<int?>("failed_batches_per_day")} failed batches";
@@ -97,6 +99,12 @@ namespace revit_mcp_plugin.Shell
 
         public Task<ToolResult> SaveAsync(bool on, int involvement, IReadOnlyDictionary<string, string> levels) =>
             Run("ai_config", new JObject { ["on"] = on, ["involvement"] = involvement, ["levels"] = JObject.FromObject(levels) }, "AI policy saved to fmc_guard.json.");
+
+        /// <summary>Testing mode (owner 11 Nov 2026): ai_modeller.mode through the pane-only ai_config command, never an MCP tool.</summary>
+        public Task<ToolResult> SetTestingAsync(bool on) =>
+            Run("ai_config", new JObject { ["mode"] = on ? "testing" : "strict" },
+                on ? "Testing mode is on: auto-approve, auto-save and sync with central run without asking."
+                   : "Testing mode is off: every change waits for approval, and a person syncs.");
 
         /// <summary>The General AI switch for the open model (pane-only command ai_general, as the Windows user running Revit).</summary>
         public async Task<ToolResult> SetGeneralAsync(bool on)

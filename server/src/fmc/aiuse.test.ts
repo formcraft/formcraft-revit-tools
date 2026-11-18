@@ -35,7 +35,7 @@ test("Off unless the guard section and the kit rulebook both exist; Stop AI refu
 
 test("never (admins only): structure, deleting, purging, arbitrary code, links and worksets, at any level or switch", () => {
   const all = ai({ involvement: 100, levels: { views: "Auto in WIP" }, projects: { F26001: { general: true } } });
-  for (const c of ["create_structural_framing_system", "delete_element", "operate_element", "send_code_to_revit", "fmc_link_add", "fmc_link_pin", "fmc_workset_create", "fmc_material_purge"]) {
+  for (const c of ["create_structural_framing_system", "delete_element", "operate_element", "send_code_to_revit", "fmc_link_add", "fmc_link_pin", "fmc_reload_link", "fmc_workset_create", "fmc_material_purge", "fmc_new_local"]) {
     const v = aiVerdict(ask(c), cfg, book, all, empty);
     assert.match(v.reasons[0], /AI never runs/, c);
     assert.match(v.user ?? "", /^Only an admin can do this/, c);
@@ -44,7 +44,7 @@ test("never (admins only): structure, deleting, purging, arbitrary code, links a
 
 test("General AI switch: On for the project covers walls, floors, roofs, levels, grids and placing, every batch approved", () => {
   const g = ai({ on: false, projects: { F26001: { general: true } } }); // the admin's Advanced switch stays off
-  for (const c of ["tag_rooms", "create_level", "create_grid", "create_line_based_element", "create_surface_based_element", "create_point_based_element", "fmc_material_assign"]) {
+  for (const c of ["tag_rooms", "create_level", "create_grid", "fmc_grids_from_link", "create_line_based_element", "create_surface_based_element", "create_point_based_element", "fmc_material_assign"]) {
     const v = aiVerdict(ask(c), cfg, book, g, empty);
     assert.equal(v.needs_approval, true, c);
     assert.equal(v.via, "general", c);
@@ -83,7 +83,7 @@ test("General AI switch: per project, Stop AI overrides it, limits still apply, 
 
 test("Full access (owner 26 Oct): every tool like a person, delete and purge included, each batch approved; code only with its switch", () => {
   const full = ai({ on: false, access: "full", projects: { F26001: { general: true } } });
-  for (const c of ["delete_element", "fmc_material_purge", "fmc_sheet_create", "fmc_casework_place", "fmc_link_add", "create_structural_framing_system"]) {
+  for (const c of ["delete_element", "fmc_material_purge", "fmc_sheet_create", "fmc_casework_place", "fmc_link_add", "fmc_reload_link", "create_structural_framing_system", "fmc_new_local"]) {
     const v = aiVerdict(ask(c), cfg, book, full, empty);
     assert.equal(v.needs_approval, true, c);
     assert.ok(aiVerdict(ask(c, { approved: true }), cfg, book, full, empty).ok, c);

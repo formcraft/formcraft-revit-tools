@@ -162,6 +162,8 @@ export function explain(command: string, params: unknown, names: Names = { types
       return cap(["New rooms:", ...data.map((d) => `${d.number ?? ""} ${d.name ?? ""} at ${xy(d.location)}`.trim())]);
     case "create_level":
       return cap(["New levels:", ...data.map((d) => `${d.name ?? "?"} at ${mm(d.elevation)}`)]);
+    case "fmc_reload_link":
+      return [`Reload Revit link type ${p.link_type_id} in ${p.document}` + (p.path ? ` from ${p.path}` : " from its current path") + ". Link instances stay where they are."];
     case "fmc_revit_file": return [`Revit file action: ${p.action}${p.format ? ` ${p.format}` : ""}${p.path ? ` ${p.path}` : ""}${p.folder ? ` to ${p.folder}` : ""}` +
       (["sync", "relinquish"].includes(p.action) ? " (changes the central model for everyone)" : "")];
     case "fmc_undo":
@@ -175,6 +177,21 @@ export function explain(command: string, params: unknown, names: Names = { types
       return cap([`DELETE ${(p.elementIds ?? []).length} elements:`, ...named(names, p.elementIds)]);
     case "operate_element":
       return cap([`${p.data?.action ?? "?"} on ${(p.data?.elementIds ?? []).length} elements:`, ...named(names, p.data?.elementIds)]);
+    case "fmc_grids_from_link":
+      return [
+        p.dry_run === false
+          ? `Copy grids from link ${p.link} into ${p.document}. Grids are not monitored.`
+          : `DRY RUN: grids from link ${p.link} into ${p.document}. Nothing is created. Grids are not monitored.`,
+      ];
+    case "fmc_new_local":
+      return [
+        p.dry_run === false
+          ? `Replace the open local ${p.document} with a fresh local from ${p.central}. Unsaved changes in that local are discarded.`
+          : `DRY RUN: check a fresh local for ${p.document} from ${p.central}. Nothing is closed.`,
+        `New local: ${p.local}`,
+        "Switch, close, and the final activate go through fmc_revit_file. CreateNewLocal is a fixed script.",
+        p.backup ? `Move the old file to ${p.backup}. Nothing is deleted or overwritten.` : "Move the old file aside. Nothing is deleted or overwritten.",
+      ];
     case "send_code_to_revit": {
       const code = String(p.code ?? "").split(/\r?\n/).filter((l) => l.trim());
       return cap([`Runs Revit API code (${code.length} lines${p.transactionMode === "none" ? ", no transaction" : ", in one transaction"}):`,

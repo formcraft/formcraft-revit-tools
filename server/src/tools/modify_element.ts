@@ -107,7 +107,9 @@ export const MODIFY_MODEL_DESCRIPTION =
   "load_case {name, nature?, category: dead|live} · analytical_member {start_mm, end_mm}. " +
   "MEP (points [x, y, z], z above the level): duct / pipe {level, points_mm, system?, type_name?, width_mm, height_mm | diameter_mm, placeholder?, elbows? (default true)} · " +
   "cable_tray / conduit {level, points_mm, type_name?, width_mm?, height_mm? | diameter_mm?} · flex_duct / flex_pipe {level, points_mm, system?} · " +
-  "connect {ids: two runs (elbow or transition) or three (tee)} · insulation / lining {ids, thickness_mm} · convert_placeholders {ids} · " +
+  "connect {ids: two runs (elbow or transition) or three (tee), or a pipe and a plumbing fixture. A fixture uses its nearest unconnected " +
+  "piping connector (MEPModel.ConnectorManager): sanitary for waste and soil, domestic hot or cold for supply. system?: sanitary|waste|soil|supply|domestic hot|domestic cold. " +
+  "Until this add-in is installed, use fmc_connect_fixture, which does the same join from the server.} · insulation / lining {ids, thickness_mm} · convert_placeholders {ids} · " +
   "wire {view, points_mm, style?: arc|chamfer} · space {level, points_mm, name?} · space_separation {level, lines_mm}. " +
   "Site and mass: toposolid {level, points_mm ([x, y, z] survey points) and/or outline_mm, type_name?} · toposolid_subdivision {host, outline_mm, material?} · " +
   "mass_floors {ids (masses), levels} · wall_by_face {host (mass), point_mm (on the face), type_name?}. " +
@@ -173,9 +175,10 @@ export const MODIFY_MODEL_DESCRIPTION =
   "notch {ids [beam], end, side?: top|bottom, length_mm, depth_mm} · corner_fillet {ids [plate], vertex, radius_mm}. " +
   "dry_run true runs it and rolls back, answering what would change: do that first for deletes. Pinned elements and " +
   "elements another user owns are refused. Use get_element_geometry first to line new work up with existing elements, " +
-  "and fmc_standards for any size, height or type no brief or recipe gives (it also finds the recipe to use).";
+  "and fmc_standards for any size, height or type no brief or recipe gives (it also finds the recipe to use). " +
+  "A picture is not taken unless picture is true (snapshot true is the same switch). Elements with no extent are not pictured.";
 
-/** Ops whose result isn't something to look at in 3D (views, sheets, settings, files): no after-picture by default. */
+/** Ops whose result isn't something to look at in 3D (views, sheets, settings, files). */
 const NO_PICTURE = new Set(["delete", "set_param", "create_view", "duplicate_view", "set_view", "override", "hide", "unhide", "create_filter",
   "create_template", "apply_template", "create_sheet", "place_view", "open_view", "text", "replace_text", "tag", "revision", "create_schedule",
   "save_family", "load_into_project", "family_param", "family_type", "family_category", "create_material", "line_style", "line_pattern",
@@ -183,6 +186,24 @@ const NO_PICTURE = new Set(["delete", "set_param", "create_view", "duplicate_vie
   "publish_coordinates", "create_workset", "set_workset", "purge", "save_selection", "copy_types", "keynote_file", "starting_view",
   "work_plane", "zone", "panel_schedule", "view_list", "reveal_hidden", "section_box", "box_views", "display_mode", "load_case", "load_combination", "load_classification",
   "demand_factor", "mep_settings", "check_systems", "rebar_cover_type", "area_plan", "energy_model"]);
+
+/** Elements whose model bounding box is empty (grids, levels, reference planes, tags). A close-up cannot be framed. */
+const NO_EXTENT = new Set(["reference_plane", "dimension", "radial_dimension", "diameter_dimension", "align",
+  "spot_elevation", "spot_coordinate", "revision_cloud", "text", "replace_text", "tag", "place_annotation",
+  "color_fill_legend", "detail_line", "multi_rebar_annotation"]);
+
+/** A picture is taken only when the caller asks. Default off. */
+export function wantsAfterPicture(args: { picture?: boolean; snapshot?: boolean }): boolean {
+  return args.picture === true || args.snapshot === true;
+}
+
+/** True when at least one op can leave an element with a model extent. Datums and annotations cannot. */
+export function batchHasExtent(ops: Array<{ op?: string }>): boolean {
+  return ops.some((op) => {
+    const name = String(op?.op ?? "");
+    return !NO_PICTURE.has(name) && !NO_EXTENT.has(name);
+  });
+}
 
 export const UNDO_AI_BATCH_DESCRIPTION =
   "Formcraft (owner 27 Oct): take back the AI's own work with Revit's Undo. batch_id (modify_model answers it; scripts answer " +
@@ -218,6 +239,7 @@ export function registerModifyModelTool(server: McpServer) {
         return reply({
           asked: r.undoing ?? r.redoing, done: s?.done, stopped: s?.stopped ?? (s?.undo_running ? "still running: check with action status" : undefined),
           now_on_top: top ? `${top.kind === "ai" ? "AI" : "a person"}: ${top.label}` : "nothing",
+          ...(r?.document ? { document: r.document } : {}),
         }, Boolean(s?.stopped));
       } catch (e) {
         return reply(`undo_ai_batch: ${e instanceof Error ? e.message : String(e)}`, true);
@@ -232,18 +254,21 @@ export function registerModifyModelTool(server: McpServer) {
       ops: z.array(z.object({ op: z.enum(MODEL_EDIT_OPS) }).passthrough()).min(1).describe("The edits, run in order"),
       dry_run: z.boolean().optional().default(false).describe("Run and roll back: what would change, nothing changed"),
       why: z.string().max(1000).optional().describe("A sentence or two (up to 1000 characters) for the person approving: what this batch is for"),
-      snapshot: z.boolean().optional().describe("A picture of what the batch made or changed comes back with the answer (default: for geometry batches); false skips it"),
+      picture: z.boolean().optional().default(false).describe("Take a picture of the changed elements and return it with the answer. Default false. A picture is for a failed check or a founder's sign-off, not after every batch."),
+      snapshot: z.boolean().optional().describe("Same switch as picture. Default off. Nothing is pictured unless picture or snapshot is true."),
     },
     async (args) => {
       try {
         const r = await withRevitConnection((c) => c.sendCommand("fmc_model_edit", { ops: args.ops, dry_run: args.dry_run, ...(args.why ? { why: args.why } : {}) }));
         const out = reply(r, r?.applied === false && !r?.dry_run) as { content: any[]; isError: boolean };
         // Owner 26 Oct: the AI sees what it did, so it can check its own work like a person glancing at the screen
-        const geometry = args.ops.some((o) => !NO_PICTURE.has(String(o.op)));
         const ids = r?.applied ? touchedIds(args.ops as any[], r).filter((id) => !(r.ops ?? []).some((x: any) => (x.removed_ids ?? []).includes(id))) : [];
-        if ((args.snapshot ?? geometry) && ids.length) {
+        if (wantsAfterPicture(args) && ids.length && batchHasExtent(args.ops)) {
           try { const { image } = await viewImage({ ids, size: 900 }); if (image) out.content.push(image); }
-          catch (e) { out.content.push({ type: "text", text: `(no picture: ${e instanceof Error ? e.message : String(e)})` }); }
+          catch (e) {
+            const message = e instanceof Error ? e.message : String(e);
+            if (!/no extent/i.test(message)) out.content.push({ type: "text", text: `(no picture: ${message})` });
+          }
         }
         return out;
       } catch (e) {
@@ -296,7 +321,8 @@ export function registerModifyModelTool(server: McpServer) {
 
   server.tool(
     "revit_file",
-    "Formcraft (owner 26 Oct): what Revit does with files, outside an edit batch. action: save, save_as {path, overwrite?, " +
+    "Formcraft (owner 26 Oct): what Revit does with files, outside an edit batch. To save a project, use fmc_save_project " +
+      "(it checks the title and the path and refuses a family). action save here does not. action: save, save_as {path, overwrite?, " +
       "as_central?}, open {path}, close {title, save?} (not the active model), export {format: dwg|dxf|dgn|sat|pdf|ifc|nwc|" +
       "fbx|dwf|gbxml|image|schedule, folder, name?, views? (names, sheet numbers or ids; default the active view), combine? " +
       "(pdf), pixels? (image)}, link_cad / import_cad {path, view?, this_view_only?}, link_image / import_image / link_pdf " +
