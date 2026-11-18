@@ -8,16 +8,17 @@ import { batchBoard } from "../fmc/batchline.js";
 import { batchLease } from "../fmc/target.js";
 import fs from "node:fs";
 import {
-  CentralFile, NEW_LOCAL_CAVEAT, NewLocalInput, OpenDoc, newLocalProbeScript, planNewLocal,
+  CentralFile, NEW_LOCAL_CAVEAT, NewLocalInput, OpenDoc, codeResult, newLocalProbeScript, planNewLocal, runNewLocalSteps,
 } from "../fmc/newlocal.js";
 
 export const FMC_NEW_LOCAL_DESCRIPTION =
   "Make a fresh workshared local from a central and open it, replacing an open local. Unsaved changes in that local " +
   "are discarded. The old file and its Revit backup folder are copied aside and never deleted; an existing backup is " +
-  "kept and the next copy is named -2, -3, and so on. The caller does not supply code: the server sends one fixed " +
-  "script through send_code_to_revit. document is required (the active document is never assumed). dry_run defaults to " +
-  "true and closes nothing. A real run needs access=full with General On, the same approval as other writes, and in " +
-  "testing mode with auto-approve it runs and is listed as auto-approved. " +
+  "kept and the next copy is named -2, -3, and so on. The caller does not supply code. The switch, the close, and the " +
+  "final activate go through the native file command fmc_revit_file. CreateNewLocal and the background open are one fixed " +
+  "script. document is required (the active document is never assumed). dry_run defaults to true, lists those calls, and " +
+  "closes nothing. A real run needs access=full with General On, the same approval as other writes, and in testing mode " +
+  "with auto-approve it runs and is listed as auto-approved. " +
   NEW_LOCAL_CAVEAT;
 
 export const FMC_NEW_LOCAL_SHAPE = {
@@ -39,17 +40,8 @@ function asRecord(value: unknown): Record<string, unknown> | null {
   return value && typeof value === "object" && !Array.isArray(value) ? value as Record<string, unknown> : null;
 }
 
-function parseBody(response: unknown): Record<string, unknown> | null {
-  const row = asRecord(response);
-  let result: unknown = row && "result" in row ? row.result : response;
-  if (typeof result === "string") {
-    try { result = JSON.parse(result); } catch { return null; }
-  }
-  return asRecord(result);
-}
-
-function docsFromProbe(body: Record<string, unknown>): OpenDoc[] {
-  const list = Array.isArray(body.docs) ? body.docs : [];
+function docsFromInfo(info: Record<string, unknown>): OpenDoc[] {
+  const list = Array.isArray(info.documents) ? info.documents : [];
   const docs: OpenDoc[] = [];
   for (const item of list) {
     const row = asRecord(item);
@@ -57,23 +49,33 @@ function docsFromProbe(body: Record<string, unknown>): OpenDoc[] {
     docs.push({
       title: String(row.title ?? ""),
       path: String(row.path ?? ""),
-      isFamily: row.family === true,
-      isWorkshared: false,
-      isActive: row.active === true,
+      isFamily: row.isFamily === true,
+      isWorkshared: row.isWorkshared === true,
+      isActive: row.isActive === true,
+      isDetached: row.isDetached === true,
+      isLinked: row.isLinked === true,
     });
   }
+  return docs;
+}
+
+function applyCentral(docs: OpenDoc[], body: Record<string, unknown>): CentralFile {
   const title = String(body.docTitle ?? "");
   const found = docs.find((d) => d.title === title) ?? docs.find((d) => d.path && d.path.toLowerCase() === String(body.docPath ?? "").toLowerCase());
   if (found && body.docFound === true) {
-    found.isFamily = body.docFamily === true;
+    found.centralPath = String(body.docCentral ?? "");
     found.isWorkshared = body.docWorkshared === true;
     found.isDetached = body.docDetached === true;
+    found.isFamily = body.docFamily === true;
     found.isActive = body.docActive === true;
-    found.centralPath = String(body.docCentral ?? "");
-    found.path = String(body.docPath ?? found.path);
-    found.title = title || found.title;
+    if (body.docPath) found.path = String(body.docPath);
   }
-  return docs;
+  return {
+    exists: body.exists === true,
+    isWorkshared: body.isWorkshared === true,
+    isCentral: body.isCentral === true,
+    centralPath: String(body.centralPath ?? ""),
+  };
 }
 
 export async function runFmcNewLocal(args: NewLocalInput) {
@@ -100,6 +102,8 @@ export async function runFmcNewLocal(args: NewLocalInput) {
   let centralFile: CentralFile = assumed;
   let docs: OpenDoc[] = [];
   try {
+    const info = asRecord(await withRevitConnection((client) => client.sendRaw("fmc_document_info", {})));
+    docs = info ? docsFromInfo(info) : [];
     const response = await withRevitConnection((client) => client.sendRaw("send_code_to_revit", {
       code: newLocalProbeScript(args.central, args.document),
       parameters: [],
@@ -113,15 +117,9 @@ export async function runFmcNewLocal(args: NewLocalInput) {
       const message = String(row.errorMessage || row.error || "Could not read the open document.");
       return reply({ refused: true, reasons: [message], caveat: NEW_LOCAL_CAVEAT, dry_run: dry }, true);
     }
-    const body = parseBody(response);
+    const body = codeResult(response);
     if (!body) return reply({ refused: true, reasons: ["Revit did not return the central check."], caveat: NEW_LOCAL_CAVEAT, dry_run: dry }, true);
-    centralFile = {
-      exists: body.exists === true,
-      isWorkshared: body.isWorkshared === true,
-      isCentral: body.isCentral === true,
-      centralPath: String(body.centralPath ?? ""),
-    };
-    docs = docsFromProbe(body);
+    centralFile = applyCentral(docs, body);
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     return reply({ refused: true, reasons: [message], caveat: NEW_LOCAL_CAVEAT, dry_run: dry }, true);
@@ -132,44 +130,16 @@ export async function runFmcNewLocal(args: NewLocalInput) {
   if (dry) {
     return reply({
       dry_run: true, closes: false, document: plan.document, central: plan.central, local: plan.local,
-      active: plan.active, switch_to: plan.switch_to, backup: plan.backup,
+      active: plan.active, switch_to: plan.switch_to, switch_path: plan.switch_path, backup: plan.backup,
       backup_folder_from: plan.backup_folder_from || undefined, backup_folder_to: plan.backup_folder_to || undefined,
-      steps: plan.steps, caveat: plan.caveat, next: "Run again with dry_run=false",
+      steps: plan.steps, calls: plan.calls, caveat: plan.caveat, next: "Run again with dry_run=false",
     });
   }
 
   try {
-    const response = await withRevitConnection((client) => client.sendCommand("fmc_new_local", {
-      document: plan.document,
-      central: plan.central,
-      local: plan.local,
-      switch_to: plan.switch_to,
-      backup: plan.backup,
-      _script_document: plan.script_document,
-      code: plan.script,
-      parameters: [],
-      usings: [],
-      transactionMode: "none",
-      purpose: "Fresh workshared local",
-      dry_run: false,
-    }));
-    const row = asRecord(response);
-    if (row?.success === false) {
-      return reply({
-        ok: false, refused: false,
-        message: row.errorMessage || row.error || "The new local was not made.",
-        caveat: NEW_LOCAL_CAVEAT,
-      }, true);
-    }
-    const body = parseBody(response);
-    if (!body || body.ok === false) {
-      return reply({ ok: false, ...body, caveat: NEW_LOCAL_CAVEAT }, true);
-    }
-    return reply({
-      title: body.title, path: body.path, isWorkshared: body.isWorkshared, isLocal: body.isLocal,
-      central: body.central, worksets: body.worksets, backup: body.backup, elapsed_ms: body.elapsed_ms,
-      opened_how: body.opened_how, caveat: NEW_LOCAL_CAVEAT,
-    });
+    const ran = await withRevitConnection((client) => runNewLocalSteps(plan, (command, params) => client.sendCommand(command, params)));
+    if (!ran.ok) return reply({ ...ran, caveat: NEW_LOCAL_CAVEAT }, true);
+    return reply({ ...ran, caveat: NEW_LOCAL_CAVEAT });
   } catch (error) {
     if (error instanceof JobStillRunning) {
       return reply({ status: "running", job: error.job, message: error.message, caveat: NEW_LOCAL_CAVEAT });

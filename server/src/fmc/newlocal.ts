@@ -3,6 +3,7 @@
  * The caller never supplies code. The server builds one fixed script and sends it through send_code_to_revit.
  * Only paths and titles that passed the literal check are placed in the script, as verbatim C# strings.
  */
+import fs from "node:fs";
 import path from "node:path";
 import { GuardConfig } from "./policy.js";
 import { underAny, protectedRoots, samePath } from "./opencopy.js";
@@ -12,22 +13,16 @@ import { screenScript } from "./scriptguard.js";
 const win = path.win32;
 
 /**
- * What the live add-in (ed5e130) allows this script to do.
- * send_code_to_revit compiles the body of Execute(Document document, object[] parameters) and runs it from
- * ExternalEvent.Execute(UIApplication). The script is not given a UIApplication parameter; it builds one with
- * new UIApplication(document.Application), which is valid in that API context.
- * Before the body runs, transactionMode "none" still starts a TransactionGroup on that document (ExecuteCodeEventHandler).
- * OpenAndActivateDocument is refused while a transaction group is open, and Close is refused on the active document
- * and on the document that group belongs to. The script is therefore bound to another open document. Step 2 tries
- * the UI switch and, if Revit refuses, stops before Close. Step 6 tries the UI open and falls back to
- * Application.OpenDocumentFile, which does not need to change the active document.
+ * Switch, close, and the final activate go through fmc_revit_file. That command runs in its own external event
+ * (FmcRevitFile), not inside send_code_to_revit. CreateNewLocal and the background open stay in one fixed script,
+ * bound to the other open document.
  */
 export const NEW_LOCAL_CAVEAT =
-  "Step 2 (activate another document) and the UI open in step 6 call UIApplication.OpenAndActivateDocument. " +
-  "The live add-in runs every send_code_to_revit script inside a transaction group on the script's document, and Revit " +
-  "refuses OpenAndActivateDocument while that group is open. The script is bound to the other open document, not to the " +
-  "local being replaced. If the switch is refused, nothing is closed. If the UI open is refused, the new local is opened " +
-  "in the background with Application.OpenDocumentFile and OpenAllWorksets.";
+  "The switch, the close, and the final activate go through the native file command fmc_revit_file. " +
+  "Step 2 is fmc_revit_file open of the other document's path, which activates it when that file is already open. " +
+  "Step 3 is fmc_revit_file close of the local, save false, immediately after the switch. If the switch is refused, nothing is closed. " +
+  "The old file is copied aside and never deleted, and an existing backup is never overwritten. The central is only read, by CreateNewLocal. " +
+  "The new local is opened in the background with OpenAllWorksets, then fmc_revit_file open activates it. If that activate is refused, the local stays open in the background.";
 
 export interface NewLocalInput {
   document: string;
@@ -45,6 +40,7 @@ export interface OpenDoc {
   isWorkshared: boolean;
   isActive: boolean;
   isDetached?: boolean;
+  isLinked?: boolean;
   centralPath?: string;
 }
 
@@ -88,8 +84,12 @@ export interface NewLocalPlan {
   local: string;
   active: boolean;
   switch_to: string;
-  /** Title or path passed as send_code's document, so the transaction group is not on the local. */
+  /** Title passed as the script's document: the other open project, which stays open. */
   script_document: string;
+  /** PathName of switch_to, from fmc_document_info. fmc_revit_file open activates that already-open file. */
+  switch_path: string;
+  /** The calls a real run sends, in order. Dry run lists them and sends none. */
+  calls: Array<{ command: string; params: Record<string, unknown> }>;
   backup: string;
   backup_folder_from: string;
   backup_folder_to: string;
@@ -167,16 +167,15 @@ function otherDocs(docs: OpenDoc[], target: OpenDoc): OpenDoc[] {
   return docs.filter((d) => d !== target && !!d.path);
 }
 
-/** Another open document to activate, and to bind the script to. Project documents first. */
+/** Another open document to activate before the close, and to bind the script to. */
 export function pickSwitch(docs: OpenDoc[], target: OpenDoc, requested?: string): OpenDoc | undefined {
-  const others = otherDocs(docs, target);
+  const others = otherDocs(docs, target).filter((d) => !d.isLinked);
   const want = (requested ?? "").trim();
   if (want) {
     const hit = findDocs(others, want);
-    return hit.length === 1 ? hit[0] : undefined;
+    return hit.length === 1 && hit[0].path ? hit[0] : undefined;
   }
-  const project = others.find((d) => !d.isFamily);
-  return project ?? others[0];
+  return others.find((d) => !d.isFamily && d.path);
 }
 
 function queueHits(running: QueueRun, doc: OpenDoc, document: string): boolean {
@@ -233,9 +232,7 @@ export function planNewLocal(input: NewLocalInput, ctx: PlanContext): NewLocalPl
   const host = doc ? pickSwitch(ctx.docs, doc, input.switch_to) : undefined;
   if (doc && input.switch_to?.trim() && !host) reasons.push(`switch_to "${input.switch_to.trim()}" is not another open document.`);
   if (doc && !host) {
-    reasons.push(doc.isActive
-      ? `${doc.title} is the active document and no other open document can take the screen. Step 2 cannot run, so nothing is closed.`
-      : `No other document is open. The script would be bound to ${doc.title}, and this add-in cannot close the document its transaction group belongs to.`);
+    reasons.push(`No other open project document can take the screen before ${doc.title} is closed. Step 2 cannot run, so nothing is closed.`);
   }
 
   if (doc && ctx.holder && (!ctx.caller || ctx.holder.client !== ctx.caller.client || ctx.holder.lease !== ctx.caller.lease)) {
@@ -265,6 +262,8 @@ export function planNewLocal(input: NewLocalInput, ctx: PlanContext): NewLocalPl
     active: !!doc?.isActive,
     switch_to: host?.title || (input.switch_to ?? "").trim(),
     script_document: host?.title ?? "",
+    switch_path: host?.path ?? "",
+    calls: [],
     backup: names.file,
     backup_folder_from: names.folderFrom,
     backup_folder_to: names.folderTo,
@@ -275,37 +274,47 @@ export function planNewLocal(input: NewLocalInput, ctx: PlanContext): NewLocalPl
 
   const steps = [
     `Validate ${central} is a central and ${doc.title} is a local of it.`,
-    doc.isActive
-      ? `Step 2: ${doc.title} is active. Activate ${host.title} with UIApplication.OpenAndActivateDocument. If Revit refuses, stop and close nothing.`
-      : `Step 2: ${doc.title} is not active. Leave the active document as it is.`,
-    `Step 3: Close ${doc.title} with Close(false), discarding unsaved changes.`,
-    `Step 4: Copy the old local to ${names.file}` + (names.folderFrom ? ` and ${names.folderFrom} to ${names.folderTo}` : "") + ". Nothing is deleted.",
-    `Step 5: WorksharingUtils.CreateNewLocal from ${central} onto ${local}.`,
-    "Step 6: Open the new local with OpenAllWorksets. Prefer OpenAndActivateDocument; if the transaction group refuses, open it in the background.",
+    `fmc_revit_file {action:"open", path:${JSON.stringify(host.path)}}`,
+    `fmc_revit_file {action:"close", title:${JSON.stringify(doc.title)}, save:false}`,
+    `Copy ${local} to ${names.file}` + (names.folderFrom ? ` and ${names.folderFrom} to ${names.folderTo}` : "") + ". Nothing is deleted.",
+    `send_code_to_revit on ${host.title}: WorksharingUtils.CreateNewLocal, then OpenDocumentFile with OpenAllWorksets.`,
+    `fmc_revit_file {action:"open", path:${JSON.stringify(local)}}`,
   ];
   let script: string | undefined;
   try {
-    script = newLocalScript({
-      central, local, targetTitle: doc.title, targetPath: doc.path,
-      switchTitle: host.title, switchPath: host.path,
-      backupFile: names.file, backupFolderFrom: names.folderFrom, backupFolderTo: names.folderTo,
-    });
+    script = newLocalScript({ central, local });
   } catch (error) {
     return { ...base, ok: false, reasons: [error instanceof Error ? error.message : String(error)] };
   }
-  return { ...base, steps, script, closes: !dry };
+  const ready: NewLocalPlan = { ...base, steps, script, closes: !dry, switch_path: host.path, script_document: host.title };
+  return { ...ready, calls: liveCalls(ready) };
+}
+
+/** What a real run sends, in order. The script call is fmc_new_local so the fixed body is not treated as caller-supplied code. */
+export function liveCalls(plan: NewLocalPlan): Array<{ command: string; params: Record<string, unknown> }> {
+  return [
+    { command: "fmc_revit_file", params: { action: "open", path: plan.switch_path } },
+    { command: "fmc_revit_file", params: { action: "close", title: plan.document, save: false } },
+    {
+      command: "fmc_new_local",
+      params: {
+        document: plan.script_document,
+        _script_document: plan.script_document,
+        code: plan.script,
+        parameters: [],
+        usings: [],
+        transactionMode: "none",
+        purpose: "Fresh workshared local",
+        dry_run: false,
+      },
+    },
+    { command: "fmc_revit_file", params: { action: "open", path: plan.local, document: plan.script_document } },
+  ];
 }
 
 export interface ScriptFields {
   central: string;
   local: string;
-  targetTitle: string;
-  targetPath: string;
-  switchTitle: string;
-  switchPath: string;
-  backupFile: string;
-  backupFolderFrom: string;
-  backupFolderTo: string;
 }
 
 function verbatim(value: string, label: string): string {
@@ -318,14 +327,7 @@ function verbatim(value: string, label: string): string {
 export function newLocalScript(fields: ScriptFields): string {
   const code = NEW_LOCAL_SCRIPT
     .replaceAll("__CENTRAL__", verbatim(fields.central, "central"))
-    .replaceAll("__LOCAL__", verbatim(fields.local, "local"))
-    .replaceAll("__TARGET_TITLE__", verbatim(fields.targetTitle, "document"))
-    .replaceAll("__TARGET_PATH__", verbatim(fields.targetPath, "local"))
-    .replaceAll("__SWITCH_TITLE__", verbatim(fields.switchTitle, "switch_to"))
-    .replaceAll("__SWITCH_PATH__", verbatim(fields.switchPath, "switch_to"))
-    .replaceAll("__BACKUP_FILE__", verbatim(fields.backupFile, "backup"))
-    .replaceAll("__BACKUP_FROM__", verbatim(fields.backupFolderFrom, "backup folder"))
-    .replaceAll("__BACKUP_TO__", verbatim(fields.backupFolderTo, "backup folder"));
+    .replaceAll("__LOCAL__", verbatim(fields.local, "local"));
   if (code.includes("__")) throw new Error("[FMC-NEW-LOCAL] The script template was not filled. Nothing was sent.");
   const problem = screenScript(code);
   if (problem) throw new Error(problem.message);
@@ -397,122 +399,126 @@ const NEW_LOCAL_SCRIPT = `
 var watch = System.Diagnostics.Stopwatch.StartNew();
 string central = __CENTRAL__;
 string local = __LOCAL__;
-string targetTitle = __TARGET_TITLE__;
-string targetPath = __TARGET_PATH__;
-string switchTitle = __SWITCH_TITLE__;
-string switchPath = __SWITCH_PATH__;
-string backupFile = __BACKUP_FILE__;
-string backupFrom = __BACKUP_FROM__;
-string backupTo = __BACKUP_TO__;
-UIApplication uiapp = new UIApplication(document.Application);
-var app = uiapp.Application;
-Document target = null;
-foreach (Document d in app.Documents)
-{
-    if (d.IsLinked) continue;
-    bool title = string.Equals(d.Title, targetTitle, StringComparison.OrdinalIgnoreCase);
-    bool byPath = false;
-    try { byPath = !string.IsNullOrEmpty(d.PathName) && string.Equals(System.IO.Path.GetFullPath(d.PathName), System.IO.Path.GetFullPath(targetPath), StringComparison.OrdinalIgnoreCase); } catch (Exception) { byPath = false; }
-    if (title || byPath) target = d;
-}
-if (target == null) return new { ok = false, step = "validate", closed = false, message = "No open document matches the local. Nothing was closed." };
-if (document.Equals(target)) return new { ok = false, step = "close", closed = false, message = "Step 3 cannot close the document the script is bound to: the add-in holds a transaction group on it. Nothing was closed." };
-if (!System.IO.File.Exists(central)) return new { ok = false, step = "validate", closed = false, message = "Central not found. Nothing was closed." };
+if (!System.IO.File.Exists(central)) return new { ok = false, step = "create_local", message = "Central not found. The backup was kept." };
 var info = BasicFileInfo.Extract(central);
 bool isCentralFlag = false;
 try { isCentralFlag = info.IsCentral; } catch (Exception) { isCentralFlag = false; }
 string infoCentral = info.CentralPath ?? "";
 bool centralSelf = false;
 try { centralSelf = string.Equals(System.IO.Path.GetFullPath(infoCentral), System.IO.Path.GetFullPath(central), StringComparison.OrdinalIgnoreCase); } catch (Exception) { centralSelf = string.Equals(infoCentral, central, StringComparison.OrdinalIgnoreCase); }
-if (!info.IsWorkshared || !(isCentralFlag || centralSelf)) return new { ok = false, step = "validate", closed = false, message = "The file is not a central. Nothing was closed." };
-if (!target.IsWorkshared || target.IsDetached) return new { ok = false, step = "validate", closed = false, message = "The open document is not a workshared local. Nothing was closed." };
-string docCentral = "";
-try { docCentral = ModelPathUtils.ConvertModelPathToUserVisiblePath(target.GetWorksharingCentralModelPath()); } catch (Exception ex) { return new { ok = false, step = "validate", closed = false, message = "Could not read the local's central: " + ex.Message + " Nothing was closed." }; }
-bool sameCentral = false;
-bool docIsCentral = false;
-try {
-    sameCentral = string.Equals(System.IO.Path.GetFullPath(docCentral), System.IO.Path.GetFullPath(central), StringComparison.OrdinalIgnoreCase);
-    docIsCentral = string.Equals(System.IO.Path.GetFullPath(docCentral), System.IO.Path.GetFullPath(target.PathName), StringComparison.OrdinalIgnoreCase);
-} catch (Exception) {
-    sameCentral = string.Equals(docCentral, central, StringComparison.OrdinalIgnoreCase);
-    docIsCentral = string.Equals(docCentral, target.PathName, StringComparison.OrdinalIgnoreCase);
-}
-if (!sameCentral || docIsCentral) return new { ok = false, step = "validate", closed = false, message = "The open document is not a local of that central. Nothing was closed." };
-Document activeDoc = uiapp.ActiveUIDocument == null ? null : uiapp.ActiveUIDocument.Document;
-if (activeDoc != null && activeDoc.Equals(target))
-{
-    try { uiapp.OpenAndActivateDocument(switchPath); }
-    catch (Exception ex)
-    {
-        return new { ok = false, step = "switch", closed = false, message = "Step 2 cannot activate " + switchTitle + ". OpenAndActivateDocument was refused (" + ex.Message + "). The add-in holds a transaction group for the whole script. Activate " + switchTitle + " in Revit, then run again. Nothing was closed." };
-    }
-}
-activeDoc = uiapp.ActiveUIDocument == null ? null : uiapp.ActiveUIDocument.Document;
-if (activeDoc != null && activeDoc.Equals(target)) return new { ok = false, step = "close", closed = false, message = "Step 3 cannot close the active document. Nothing was closed." };
-bool closed = false;
-try { closed = target.Close(false); }
-catch (Exception ex) { return new { ok = false, step = "close", closed = false, message = "Step 3 Close(false) failed: " + ex.Message + " Nothing else was changed." }; }
-if (!closed) return new { ok = false, step = "close", closed = false, message = "Revit did not close the document. Nothing else was changed." };
-try
-{
-    System.IO.File.Copy(local, backupFile, false);
-    if (backupFrom.Length > 0 && System.IO.Directory.Exists(backupFrom))
-    {
-        var stack = new List<string[]>();
-        stack.Add(new[] { backupFrom, backupTo });
-        for (int i = 0; i < stack.Count && i < 10000; i++)
-        {
-            string src = stack[i][0];
-            string dst = stack[i][1];
-            System.IO.Directory.CreateDirectory(dst);
-            foreach (string file in System.IO.Directory.GetFiles(src))
-                System.IO.File.Copy(file, System.IO.Path.Combine(dst, System.IO.Path.GetFileName(file)), false);
-            foreach (string sub in System.IO.Directory.GetDirectories(src))
-                stack.Add(new[] { sub, System.IO.Path.Combine(dst, System.IO.Path.GetFileName(sub)) });
-        }
-        if (stack.Count >= 10000) throw new InvalidOperationException("The backup folder is deeper than 10000 directories.");
-    }
-}
-catch (Exception ex) { return new { ok = false, step = "backup", closed = true, message = "The document was closed and the backup copy failed: " + ex.Message + " The old file was not deleted." }; }
+if (!info.IsWorkshared || !(isCentralFlag || centralSelf)) return new { ok = false, step = "create_local", message = "The file is not a central. The backup was kept. The central was not written." };
 try
 {
     ModelPath source = ModelPathUtils.ConvertUserVisiblePathToModelPath(central);
     ModelPath dest = ModelPathUtils.ConvertUserVisiblePathToModelPath(local);
     WorksharingUtils.CreateNewLocal(source, dest);
 }
-catch (Exception ex) { return new { ok = false, step = "create_local", closed = true, backup = backupFile, message = "CreateNewLocal failed: " + ex.Message + " The backup was kept." }; }
-string how = "";
-Document opened = null;
+catch (Exception ex) { return new { ok = false, step = "create_local", message = "CreateNewLocal failed: " + ex.Message + " The backup was kept." }; }
 var openOptions = new OpenOptions();
 openOptions.DetachFromCentralOption = DetachFromCentralOption.DoNotDetach;
 openOptions.SetOpenWorksetsConfiguration(new WorksetConfiguration(WorksetConfigurationOption.OpenAllWorksets));
-ModelPath openedPath = ModelPathUtils.ConvertUserVisiblePathToModelPath(local);
-try
-{
-    UIDocument ui = uiapp.OpenAndActivateDocument(openedPath, openOptions, false);
-    opened = ui.Document;
-    how = "ui";
-}
-catch (Exception)
-{
-    try { opened = app.OpenDocumentFile(openedPath, openOptions); how = "background"; }
-    catch (Exception openEx)
-    {
-        foreach (Document d in app.Documents)
-        {
-            if (d.IsLinked || string.IsNullOrEmpty(d.PathName)) continue;
-            try { if (string.Equals(System.IO.Path.GetFullPath(d.PathName), System.IO.Path.GetFullPath(local), StringComparison.OrdinalIgnoreCase)) opened = d; } catch (Exception) { }
-        }
-        if (opened == null) return new { ok = false, step = "open", closed = true, backup = backupFile, path = local, message = "Step 6 could not open the new local. OpenAndActivateDocument and OpenDocumentFile were both refused (" + openEx.Message + "). The file is at " + local + "." };
-        how = "already_open";
-    }
-}
-if (opened == null) return new { ok = false, step = "open", closed = true, backup = backupFile, path = local, message = "Step 6 did not open the new local. The file is at " + local + "." };
+Document opened;
+try { opened = document.Application.OpenDocumentFile(ModelPathUtils.ConvertUserVisiblePathToModelPath(local), openOptions); }
+catch (Exception ex) { return new { ok = false, step = "open", path = local, message = "Step 6 could not open the new local in the background: " + ex.Message + " The file is at " + local + "." }; }
 int worksets = new FilteredWorksetCollector(opened).OfKind(WorksetKind.UserWorkset).ToWorksets().Count;
 string openedCentral = "";
 try { openedCentral = ModelPathUtils.ConvertModelPathToUserVisiblePath(opened.GetWorksharingCentralModelPath()); } catch (Exception) { openedCentral = ""; }
 bool openedIsCentral = false;
 try { openedIsCentral = !string.IsNullOrEmpty(opened.PathName) && string.Equals(System.IO.Path.GetFullPath(openedCentral), System.IO.Path.GetFullPath(opened.PathName), StringComparison.OrdinalIgnoreCase); } catch (Exception) { openedIsCentral = false; }
 bool isLocal = opened.IsWorkshared && !opened.IsDetached && !openedIsCentral;
-return new { ok = true, title = opened.Title, path = opened.PathName ?? local, isWorkshared = opened.IsWorkshared, isLocal, central = openedCentral, worksets, backup = backupFile, elapsed_ms = watch.ElapsedMilliseconds, opened_how = how };
+return new { ok = true, title = opened.Title, path = opened.PathName ?? local, isWorkshared = opened.IsWorkshared, isLocal, central = openedCentral, worksets, elapsed_ms = watch.ElapsedMilliseconds, opened_how = "background" };
 `;
+
+/** Copy the closed local and its Revit backup folder. Never overwrites an existing backup. */
+export function copyBackup(plan: Pick<NewLocalPlan, "local" | "backup" | "backup_folder_from" | "backup_folder_to">, io: Pick<typeof fs, "existsSync" | "copyFileSync" | "cpSync" | "constants"> = fs): void {
+  if (io.existsSync(plan.backup)) throw new Error(`Backup already exists: ${plan.backup}. Nothing was overwritten.`);
+  io.copyFileSync(plan.local, plan.backup, io.constants.COPYFILE_EXCL);
+  if (!plan.backup_folder_from) return;
+  if (io.existsSync(plan.backup_folder_to)) throw new Error(`Backup folder already exists: ${plan.backup_folder_to}. Nothing was overwritten.`);
+  io.cpSync(plan.backup_folder_from, plan.backup_folder_to, { recursive: true, errorOnExist: true, force: false });
+}
+
+export interface NewLocalRun {
+  ok: boolean;
+  step?: string;
+  closed?: boolean;
+  active?: boolean;
+  message?: string;
+  note?: string;
+  title?: unknown;
+  path?: unknown;
+  isWorkshared?: unknown;
+  isLocal?: unknown;
+  central?: unknown;
+  worksets?: unknown;
+  backup?: string;
+  elapsed_ms?: number;
+  opened_how?: unknown;
+}
+
+function asRecord(value: unknown): Record<string, unknown> | null {
+  return value && typeof value === "object" && !Array.isArray(value) ? value as Record<string, unknown> : null;
+}
+
+export function codeResult(response: unknown): Record<string, unknown> | null {
+  const row = asRecord(response);
+  if (row?.success === false) {
+    return { ok: false, step: "create_local", message: String(row.errorMessage || row.error || "The script failed. The backup was kept.") };
+  }
+  let result: unknown = row && "result" in row ? row.result : response;
+  if (typeof result === "string") {
+    try { result = JSON.parse(result); } catch { return null; }
+  }
+  return asRecord(result);
+}
+
+function failText(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
+/**
+ * Switch, close, copy, CreateNewLocal, background open, then activate.
+ * The switch and the close are back to back. A refused switch does not close.
+ */
+export async function runNewLocalSteps(
+  plan: NewLocalPlan,
+  sendCommand: (command: string, params: Record<string, unknown>) => Promise<unknown>,
+  copy: (plan: NewLocalPlan) => void = copyBackup,
+): Promise<NewLocalRun> {
+  const started = Date.now();
+  const [activateOther, closeLocal, makeLocal, activateNew] = plan.calls;
+  try {
+    await sendCommand(activateOther.command, activateOther.params);
+  } catch (error) {
+    return { ok: false, step: "switch", closed: false, message: `Step 2 could not activate ${plan.switch_to} (${plan.switch_path}). ${failText(error)} Nothing was closed.` };
+  }
+  try {
+    await sendCommand(closeLocal.command, closeLocal.params);
+  } catch (error) {
+    return { ok: false, step: "close", closed: false, message: `Step 3 could not close ${plan.document}. ${failText(error)} Nothing else was changed.` };
+  }
+  try {
+    copy(plan);
+  } catch (error) {
+    return { ok: false, step: "backup", closed: true, backup: plan.backup, message: `The document was closed and the backup copy failed: ${failText(error)} The old file was not deleted.` };
+  }
+  let made: Record<string, unknown> | null;
+  try {
+    made = codeResult(await sendCommand(makeLocal.command, makeLocal.params));
+  } catch (error) {
+    return { ok: false, step: "create_local", closed: true, backup: plan.backup, message: `${failText(error)} The backup was kept.` };
+  }
+  if (!made || made.ok === false) {
+    return { ok: false, step: String(made?.step ?? "create_local"), closed: true, backup: plan.backup, message: String(made?.message ?? "CreateNewLocal failed. The backup was kept.") };
+  }
+  const summary = {
+    ok: true, closed: true, title: made.title, path: made.path ?? plan.local, isWorkshared: made.isWorkshared, isLocal: made.isLocal,
+    central: made.central, worksets: made.worksets, backup: plan.backup, opened_how: made.opened_how, elapsed_ms: Date.now() - started,
+  };
+  try {
+    await sendCommand(activateNew.command, activateNew.params);
+  } catch (error) {
+    return { ...summary, active: false, note: `The new local is open in the background. Activating it was refused: ${failText(error)}` };
+  }
+  return { ...summary, active: true };
+}

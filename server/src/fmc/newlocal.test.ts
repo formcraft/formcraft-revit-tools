@@ -5,7 +5,7 @@ import { COMMAND_GROUPS, NEVER, aiVerdict } from "./aiuse.js";
 import { documentRequired } from "./fairqueue.js";
 import { explain } from "./explain.js";
 import {
-  CentralFile, NewLocalInput, OpenDoc, PlanContext, newLocalScript, planNewLocal, scriptLiteralProblem, wireNewLocal,
+  CentralFile, NewLocalInput, NewLocalPlan, OpenDoc, PlanContext, newLocalScript, planNewLocal, runNewLocalSteps, scriptLiteralProblem, wireNewLocal,
 } from "./newlocal.js";
 
 const cfg: GuardConfig = {
@@ -78,12 +78,18 @@ test("an active document switches to another open project, and a dry run only re
   assert.equal(active.ok, true, active.reasons.join(" | "));
   assert.equal(active.active, true);
   assert.equal(active.switch_to, "Sketch");
+  assert.equal(active.switch_path, "C:\\WIP\\Sketch.rvt");
   assert.equal(active.script_document, "Sketch");
-  assert.match(active.steps.join("\n"), /Step 2: Architecture is active. Activate Sketch with UIApplication.OpenAndActivateDocument/);
   assert.equal(active.dry_run, true);
   assert.equal(active.closes, false);
   assert.equal(active.backup, "C:\\WIP\\F26001-FMC-ZZ-ZZ-M3-A-0001.rvt.bak-20261118");
-  assert.match(active.steps.join("\n"), /Close\(false\)/);
+  assert.deepEqual(active.calls[0], { command: "fmc_revit_file", params: { action: "open", path: "C:\\WIP\\Sketch.rvt" } });
+  assert.deepEqual(active.calls[1], { command: "fmc_revit_file", params: { action: "close", title: "Architecture", save: false } });
+  assert.equal(active.calls[2].command, "fmc_new_local");
+  assert.equal(active.calls[2].params.document, "Sketch");
+  assert.deepEqual(active.calls[3], { command: "fmc_revit_file", params: { action: "open", path: local, document: "Sketch" } });
+  assert.match(active.steps.join("\n"), /fmc_revit_file \{action:"open", path:/);
+  assert.match(active.steps.join("\n"), /fmc_revit_file \{action:"close", title:"Architecture", save:false\}/);
   assert.match(active.steps.join("\n"), /CreateNewLocal/);
   assert.match(active.steps.join("\n"), /OpenAllWorksets/);
 
@@ -99,8 +105,19 @@ test("an active document switches to another open project, and a dry run only re
   const idle = planNewLocal(input({ dry_run: false }), ctx());
   assert.equal(idle.ok, true, idle.reasons.join(" | "));
   assert.equal(idle.closes, true);
-  assert.match(idle.steps.join("\n"), /is not active/);
+  assert.deepEqual(idle.calls[0].params, { action: "open", path: "C:\\WIP\\Sketch.rvt" });
   assert.equal(wireNewLocal({ code: idle.script, _script_document: idle.script_document }).params.document, "Sketch");
+
+  const familyFirst = planNewLocal(input(), ctx({
+    docs: [
+      doc({ title: "Architecture", path: local }),
+      doc({ title: "Door", path: "C:\\WIP\\Door.rfa", isFamily: true, isWorkshared: false, centralPath: "" }),
+      doc({ title: "Linked", path: "C:\\WIP\\Linked.rvt", isLinked: true, isWorkshared: false, centralPath: "" }),
+      doc({ title: "Sketch", path: "C:\\WIP\\Sketch.rvt", isWorkshared: false, centralPath: "" }),
+    ],
+  }));
+  assert.equal(familyFirst.switch_to, "Sketch");
+  assert.equal(familyFirst.switch_path, "C:\\WIP\\Sketch.rvt");
 });
 
 test("a backup that already exists takes the next free name, and another caller's lease or batch is refused", () => {
@@ -139,20 +156,16 @@ test("quotes and newlines are rejected and are not written into the script", () 
     assert.equal(plan.script, undefined);
   }
   assert.match(scriptLiteralProblem("ok\n", "document") ?? "", /quote or a newline/);
-  assert.throws(() => newLocalScript({
-    central, local: 'C:\\WIP\\A".rvt', targetTitle: "Architecture", targetPath: local,
-    switchTitle: "Sketch", switchPath: "C:\\WIP\\Sketch.rvt",
-    backupFile: "C:\\WIP\\A.rvt.bak", backupFolderFrom: "", backupFolderTo: "",
-  }), /quote or a newline/);
+  assert.throws(() => newLocalScript({ central, local: 'C:\\WIP\\A".rvt' }), /quote or a newline/);
 
   const good = planNewLocal(input(), ctx());
   assert.equal(good.ok, true, good.reasons.join(" | "));
   const script = good.script ?? "";
   assert.match(script, /WorksharingUtils\.CreateNewLocal/);
-  assert.match(script, /Close\(false\)/);
-  assert.match(script, /WorksetConfigurationOption\.OpenAllWorksets/);
-  assert.match(script, /OpenAndActivateDocument/);
   assert.match(script, /OpenDocumentFile/);
+  assert.match(script, /WorksetConfigurationOption\.OpenAllWorksets/);
+  assert.doesNotMatch(script, /OpenAndActivateDocument/);
+  assert.doesNotMatch(script, /Close\(false\)/);
   assert.doesNotMatch(script, /new Transaction/);
   assert.match(script, /@"C:\\WIP\\F26001-FMC-ZZ-ZZ-M3-A-0001_central\.rvt"/);
   assert.equal(script.includes('A".rvt'), false);
@@ -179,4 +192,85 @@ test("the command is a write in its own group, admin-only unless access is full,
   const testing = aiVerdict({ command: "fmc_new_local", doc: model, elements: 1, approved: true }, cfg, book, { on: false, stop: false, access: "full", mode: "testing", auto_approve: true, projects: { F26001: { general: true } }, levels: {} }, state);
   assert.equal(testing.ok, true, testing.reasons.join(" | "));
   assert.match(explain("fmc_new_local", { document: "Architecture", central, local, dry_run: true }).join(" "), /DRY RUN/);
+  assert.match(explain("fmc_new_local", { document: "Architecture", central, local, dry_run: true }).join(" "), /fmc_revit_file/);
+});
+
+const made = {
+  success: true,
+  result: JSON.stringify({
+    ok: true, title: "Architecture", path: local, isWorkshared: true, isLocal: true, central, worksets: 4, opened_how: "background",
+  }),
+};
+
+function harness(failAt?: "switch" | "close" | "activate") {
+  const sent: Array<{ command: string; params: Record<string, unknown> }> = [];
+  let copied: NewLocalPlan | undefined;
+  const sendCommand = async (command: string, params: Record<string, unknown>) => {
+    sent.push({ command, params });
+    if (failAt === "switch" && sent.length === 1) throw new Error("An internal error has occurred");
+    if (failAt === "close" && command === "fmc_revit_file" && params.action === "close") {
+      throw new Error("Revit can't close the active model from a plugin: open another first, or the person closes it");
+    }
+    if (failAt === "activate" && command === "fmc_revit_file" && params.action === "open" && params.path === local) {
+      throw new Error("An internal error has occurred");
+    }
+    if (command === "fmc_new_local") return made;
+    return { opened: params.path, closed: params.title };
+  };
+  return { sent, sendCommand, copy: (plan: NewLocalPlan) => { copied = plan; }, copied: () => copied };
+}
+
+test("switch refused closes nothing; close refused stays closed false; activate refused leaves the local in the background", async () => {
+  const plan = planNewLocal(input({ dry_run: false }), ctx());
+  assert.equal(plan.ok, true, plan.reasons.join(" | "));
+
+  const switched = harness("switch");
+  const switchResult = await runNewLocalSteps(plan, switched.sendCommand, switched.copy);
+  assert.equal(switchResult.ok, false);
+  assert.equal(switchResult.step, "switch");
+  assert.equal(switchResult.closed, false);
+  assert.match(switchResult.message ?? "", /Nothing was closed/);
+  assert.deepEqual(switched.sent.map((c) => c.command), ["fmc_revit_file"]);
+  assert.equal(switched.copied(), undefined);
+
+  const closed = harness("close");
+  const closeResult = await runNewLocalSteps(plan, closed.sendCommand, closed.copy);
+  assert.equal(closeResult.ok, false);
+  assert.equal(closeResult.step, "close");
+  assert.equal(closeResult.closed, false);
+  assert.match(closeResult.message ?? "", /active model/);
+  assert.deepEqual(closed.sent.map((c) => [c.command, c.params.action]), [
+    ["fmc_revit_file", "open"],
+    ["fmc_revit_file", "close"],
+  ]);
+  assert.equal(closed.sent[0].params.path, "C:\\WIP\\Sketch.rvt");
+  assert.equal(closed.sent[1].params.save, false);
+  assert.equal(closed.copied(), undefined);
+
+  const background = harness("activate");
+  const backgroundResult = await runNewLocalSteps(plan, background.sendCommand, background.copy);
+  assert.equal(backgroundResult.ok, true);
+  assert.equal(backgroundResult.active, false);
+  assert.match(backgroundResult.note ?? "", /background/);
+  assert.equal(background.copied()?.local, local);
+  assert.notEqual(background.copied()?.local, central);
+
+  const happy = harness();
+  const done = await runNewLocalSteps(plan, happy.sendCommand, happy.copy);
+  assert.equal(done.ok, true);
+  assert.equal(done.active, true);
+  assert.equal(done.title, "Architecture");
+  assert.equal(done.path, local);
+  assert.equal(done.isWorkshared, true);
+  assert.equal(done.isLocal, true);
+  assert.equal(done.central, central);
+  assert.equal(done.worksets, 4);
+  assert.equal(done.backup, plan.backup);
+  assert.deepEqual(happy.sent.map((c) => c.command), ["fmc_revit_file", "fmc_revit_file", "fmc_new_local", "fmc_revit_file"]);
+  assert.deepEqual(happy.sent[0], plan.calls[0]);
+  assert.deepEqual(happy.sent[1], plan.calls[1]);
+  assert.equal(happy.sent[2].params._script_document, "Sketch");
+  assert.match(String(happy.sent[2].params.code), /WorksharingUtils\.CreateNewLocal/);
+  assert.match(String(happy.sent[2].params.code), /OpenDocumentFile/);
+  assert.deepEqual(happy.sent[3], plan.calls[3]);
 });

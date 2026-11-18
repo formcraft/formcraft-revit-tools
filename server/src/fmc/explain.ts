@@ -183,7 +183,7 @@ export function explain(command: string, params: unknown, names: Names = { types
           ? `Replace the open local ${p.document} with a fresh local from ${p.central}. Unsaved changes in that local are discarded.`
           : `DRY RUN: check a fresh local for ${p.document} from ${p.central}. Nothing is closed.`,
         `New local: ${p.local}`,
-        `Switch first: ${p.switch_to || p._script_document || "another open project"}`,
+        "Switch, close, and the final activate go through fmc_revit_file. CreateNewLocal is a fixed script.",
         p.backup ? `Copy the old file to ${p.backup}. Nothing is deleted.` : "Copy the old file aside. Nothing is deleted.",
       ];
     case "send_code_to_revit": {
