@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
+import { executeKeynoteBatch } from "../fmc/keynote.js";
+import { documentTarget } from "../fmc/target.js";
 import { touchedIds, viewImage } from "./see_view.js";
 
 function reply(body: unknown, isError = false) {
@@ -11,7 +13,7 @@ export const MODEL_EDIT_OPS = ["copy", "rotate", "mirror", "join", "unjoin", "sw
   "create_railing", "create_stair", "room_separation", "opening", "shaft",
   "create_view", "duplicate_view", "set_view", "override", "hide", "unhide", "create_filter", "create_template", "apply_template",
   "create_sheet", "place_view", "open_view",
-  "detail_line", "model_line", "filled_region", "masking_region", "text", "replace_text", "tag", "spot_elevation", "spot_coordinate",
+  "detail_line", "model_line", "filled_region", "masking_region", "text", "replace_text", "tag", "keynote_legend", "place_schedule", "spot_elevation", "spot_coordinate",
   "revision_cloud", "place_annotation", "color_fill_legend",
   "extrusion", "blend", "revolve", "sweep", "family_param", "family_type", "family_category", "reference_plane", "dimension",
   "save_family", "load_into_project",
@@ -81,8 +83,16 @@ export const MODIFY_MODEL_DESCRIPTION =
   "filled_region {view, outline_mm | loops_mm (first outside, rest holes), type_name?} · masking_region {view, outline_mm} · " +
   "text {view, point_mm, text, type_name?, width_mm? (on paper), align?: Left|Center|Right} · " +
   "replace_text {find, replace, views?} · " +
-  "tag {view, ids, tag_type? (a keynote, material or any tag type name), mode?: category|multi|material, leader?, " +
-  "offset_mm?, orientation?} (rooms, spaces and areas get their own tags) · " +
+  "tag {view, ids | select, tag_type?, mode?: category|multi|material|keynote_element|keynote_material|keynote_user, leader? " +
+  "(default true for a keynote mode), one_per_key? (default true for a keynote mode: one tag per distinct key already in the view " +
+  "or made by this op), key? (the keynote code, required for keynote_user), offset_mm?, orientation?} " +
+  "keynote_element, keynote_material and keynote_user set Key Source to Element, Material or User, the same as Annotate > Keynote. " +
+  "A tag is kept only when Key Source reads back as that word; otherwise it is deleted and listed under skipped, with the reason. " +
+  "The answer is counts, created ids and skipped. No picture. These three modes, keynote_legend and place_schedule run through " +
+  "the code bridge (a server hot-swap; the add-in is unchanged) and must be their own batch. category, multi and material stay " +
+  "on the add-in, and rooms, spaces and areas still get their own tags. · " +
+  "keynote_legend {name?, filtered_by_sheet?} creates a keynote legend schedule. · " +
+  "place_schedule {sheet, schedule, point_mm} places a schedule or legend on a sheet; point_mm is on the sheet. · " +
   "spot_elevation / spot_coordinate {view, id (floor, roof, toposolid...), point_mm, leader?} · " +
   "revision_cloud {view, outline_mm, revision? (description or number; default the latest)} · " +
   "place_annotation {view, type_name (detail item, symbol or generic annotation), point_mm, rotation_deg?} · " +
@@ -180,7 +190,7 @@ export const MODIFY_MODEL_DESCRIPTION =
 
 /** Ops whose result isn't something to look at in 3D (views, sheets, settings, files). */
 const NO_PICTURE = new Set(["delete", "set_param", "create_view", "duplicate_view", "set_view", "override", "hide", "unhide", "create_filter",
-  "create_template", "apply_template", "create_sheet", "place_view", "open_view", "text", "replace_text", "tag", "revision", "create_schedule",
+  "create_template", "apply_template", "create_sheet", "place_view", "open_view", "text", "replace_text", "tag", "keynote_legend", "place_schedule", "revision", "create_schedule",
   "save_family", "load_into_project", "family_param", "family_type", "family_category", "create_material", "line_style", "line_pattern",
   "fill_pattern", "object_style", "project_info", "project_units", "global_param", "associate_global", "coordinates", "acquire_coordinates",
   "publish_coordinates", "create_workset", "set_workset", "purge", "save_selection", "copy_types", "keynote_file", "starting_view",
@@ -189,7 +199,7 @@ const NO_PICTURE = new Set(["delete", "set_param", "create_view", "duplicate_vie
 
 /** Elements whose model bounding box is empty (grids, levels, reference planes, tags). A close-up cannot be framed. */
 const NO_EXTENT = new Set(["reference_plane", "dimension", "radial_dimension", "diameter_dimension", "align",
-  "spot_elevation", "spot_coordinate", "revision_cloud", "text", "replace_text", "tag", "place_annotation",
+  "spot_elevation", "spot_coordinate", "revision_cloud", "text", "replace_text", "tag", "keynote_legend", "place_schedule", "place_annotation",
   "color_fill_legend", "detail_line", "multi_rebar_annotation"]);
 
 /** A picture is taken only when the caller asks. Default off. */
@@ -259,6 +269,9 @@ export function registerModifyModelTool(server: McpServer) {
     },
     async (args) => {
       try {
+        const keynote = await executeKeynoteBatch(args.ops, args.dry_run, documentTarget.getStore(),
+          (command, params) => withRevitConnection((c) => c.sendCommand(command, params)));
+        if (keynote) return reply(keynote.body, keynote.isError);
         const r = await withRevitConnection((c) => c.sendCommand("fmc_model_edit", { ops: args.ops, dry_run: args.dry_run, ...(args.why ? { why: args.why } : {}) }));
         const out = reply(r, r?.applied === false && !r?.dry_run) as { content: any[]; isError: boolean };
         // Owner 26 Oct: the AI sees what it did, so it can check its own work like a person glancing at the screen
