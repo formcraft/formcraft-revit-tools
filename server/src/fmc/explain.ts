@@ -3,6 +3,8 @@
  * approve them"). Pure: the names come from Revit when the batch is queued (aigate), so the lines say "Basic Wall:
  * Brick 230" and "Rooms: F15 Bedroom (Level 1)" instead of ids.
  */
+import { keynoteApprovalLines } from "./keynote.js";
+
 export interface Names {
   types: Record<string, string>;
   elements: Record<string, string>;
@@ -92,7 +94,16 @@ function op(o: P, n: Names, i: number): string[] {
     case "filled_region": case "masking_region": return [`${h}${o.op === "filled_region" ? `Filled region ${o.type_name ?? ""}` : "Masking region"} in ${o.view}`.replace("  ", " ")];
     case "text": return [`${h}Text in ${o.view}: "${String(o.text ?? "").slice(0, 60)}"`];
     case "replace_text": return [`${h}Replace "${o.find}" with "${o.replace ?? ""}" in text notes${o.views ? ` in ${o.views.length} views` : " in every view"}`];
-    case "tag": return [`${h}Tag ${count} elements in ${o.view}${o.tag_type ? ` with ${o.tag_type}` : ""}:`, ...named(n, o.ids)];
+    case "tag": {
+      if (typeof o.mode === "string" && o.mode.startsWith("keynote_")) {
+        const src = o.mode === "keynote_material" ? "Material" : o.mode === "keynote_user" ? "User" : "Element";
+        const per = o.one_per_key === false ? "" : ", one per key";
+        return [`${h}Keynote tag (${src}) in ${o.view}${o.tag_type ? ` with ${o.tag_type}` : ""}${per}:`, ...named(n, o.ids)];
+      }
+      return [`${h}Tag ${count} elements in ${o.view}${o.tag_type ? ` with ${o.tag_type}` : ""}:`, ...named(n, o.ids)];
+    }
+    case "keynote_legend": return [`${h}Keynote legend${o.name ? ` "${o.name}"` : ""}${o.filtered_by_sheet ? ", filtered by sheet" : ""}`];
+    case "place_schedule": return [`${h}Place ${o.schedule} on sheet ${o.sheet}`];
     case "spot_elevation": case "spot_coordinate": return [`${h}${o.op === "spot_elevation" ? "Spot elevation" : "Spot coordinate"} on ${isRef(o.id) ? made(o.id) : elementName(n, o.id)} in ${o.view}`];
     case "revision_cloud": return [`${h}Revision cloud in ${o.view}${o.revision ? `, revision ${o.revision}` : ", latest revision"}`];
     case "place_annotation": return [`${h}Place ${o.type_name} in ${o.view}`];
@@ -193,9 +204,12 @@ export function explain(command: string, params: unknown, names: Names = { types
         p.backup ? `Move the old file to ${p.backup}. Nothing is deleted or overwritten.` : "Move the old file aside. Nothing is deleted or overwritten.",
       ];
     case "send_code_to_revit": {
-      const code = String(p.code ?? "").split(/\r?\n/).filter((l) => l.trim());
-      return cap([`Runs Revit API code (${code.length} lines${p.transactionMode === "none" ? ", no transaction" : ", in one transaction"}):`,
-        ...code.slice(0, MAX - 2).map((l) => `   ${l.trim().slice(0, 110)}`)]);
+      const code = String(p.code ?? "");
+      const keynote = keynoteApprovalLines(code);
+      if (keynote) return cap(keynote);
+      const lines = code.split(/\r?\n/).filter((l) => l.trim());
+      return cap([`Runs Revit API code (${lines.length} lines${p.transactionMode === "none" ? ", no transaction" : ", in one transaction"}):`,
+        ...lines.slice(0, MAX - 2).map((l) => `   ${l.trim().slice(0, 110)}`)]);
     }
     default: {
       const lists = Object.entries(p).filter(([, v]) => Array.isArray(v)).map(([k, v]) => `${(v as unknown[]).length} ${k}`);
