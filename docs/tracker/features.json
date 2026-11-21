@@ -835,5 +835,14 @@
     "status": "Built, Revit check due",
     "ref": "modify_model tag mode keynote_element",
     "note": "Server hot-swap only: modify_model sends one script through send_code_to_revit. IndependentTag.Create leaves Key Source unset and Parameter.Set is read-only, so the script uses Parameter.SetInternal and deletes a tag unless Key Source reads back as Element, Material or User. keynote_legend and place_schedule are in the same batch. FMC_TAG_Keynote in scripts/kitbuild/annotation/tags_spec.py now starts from Metric Keynote Tag.rft with types Key and Key+Text; a family already staged from Metric Generic Tag.rft does not change until that build is re-run, and labels still need a person. Needs a Revit check on sheet view A201."
+  },
+  {
+    "id": "F94",
+    "area": "Engine",
+    "group": "Site",
+    "feature": "Property line from model lines, with a person finishing Revit's command",
+    "status": "Built, Revit check due",
+    "ref": "modify_model property_line",
+    "note": "Server hot-swap only. Revit 2025.4 and 2026 have no PropertyLine.Create (CS0117); Create arrives in 2027 and this op does not call it. points_mm returns FMC-NO-API-PROPERTYLINE. from_ids checks the chain, then selects the lines and posts PostableCommand.PropertyLine, returning FMC-NEEDS-HUMAN. Source lines stay unless property_line_verify later deletes them after a new property line exists. No FMC_TAG property-line family is in the kit. Needs a Revit check on a site plan."
   }
 ]

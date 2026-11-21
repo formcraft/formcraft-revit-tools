@@ -4,6 +4,7 @@
  * Brick 230" and "Rooms: F15 Bedroom (Level 1)" instead of ids.
  */
 import { keynoteApprovalLines } from "./keynote.js";
+import { propertyLineApprovalLines } from "./propertyline.js";
 
 export interface Names {
   types: Record<string, string>;
@@ -207,6 +208,8 @@ export function explain(command: string, params: unknown, names: Names = { types
       const code = String(p.code ?? "");
       const keynote = keynoteApprovalLines(code);
       if (keynote) return cap(keynote);
+      const propertyLine = propertyLineApprovalLines(code);
+      if (propertyLine) return cap(propertyLine);
       const lines = code.split(/\r?\n/).filter((l) => l.trim());
       return cap([`Runs Revit API code (${lines.length} lines${p.transactionMode === "none" ? ", no transaction" : ", in one transaction"}):`,
         ...lines.slice(0, MAX - 2).map((l) => `   ${l.trim().slice(0, 110)}`)]);
