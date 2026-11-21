@@ -2,6 +2,7 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { executeKeynoteBatch } from "../fmc/keynote.js";
+import { executePropertyLineBatch } from "../fmc/propertyline.js";
 import { documentTarget } from "../fmc/target.js";
 import { touchedIds, viewImage } from "./see_view.js";
 
@@ -13,7 +14,7 @@ export const MODEL_EDIT_OPS = ["copy", "rotate", "mirror", "join", "unjoin", "sw
   "create_railing", "create_stair", "room_separation", "opening", "shaft",
   "create_view", "duplicate_view", "set_view", "override", "hide", "unhide", "create_filter", "create_template", "apply_template",
   "create_sheet", "place_view", "open_view",
-  "detail_line", "model_line", "filled_region", "masking_region", "text", "replace_text", "tag", "keynote_legend", "place_schedule", "spot_elevation", "spot_coordinate",
+  "detail_line", "model_line", "property_line", "property_line_verify", "property_line_tag", "filled_region", "masking_region", "text", "replace_text", "tag", "keynote_legend", "place_schedule", "spot_elevation", "spot_coordinate",
   "revision_cloud", "place_annotation", "color_fill_legend",
   "extrusion", "blend", "revolve", "sweep", "family_param", "family_type", "family_category", "reference_plane", "dimension",
   "save_family", "load_into_project",
@@ -80,6 +81,14 @@ export const MODIFY_MODEL_DESCRIPTION =
   "open_view {view} (shown when the batch is done). " +
   "Annotation (points in model mm; on a sheet or drafting view, in its own): " +
   "detail_line {view, points_mm (a polyline), closed?, line_style?} · model_line {points_mm, level?, line_style?} · " +
+  "property_line {from_ids (model or detail line ids) | points_mm, closed? (default true), level?, name?, keep_source? (default true), " +
+  "dry_run? (default true on this op, even when the batch dry_run is false)} · property_line_verify {known_ids?, delete_source_ids?} · " +
+  "property_line_tag {view, ids | select, tag_type?, leader?}. Revit 2025 and 2026 have no PropertyLine.Create (it arrives in 2027; " +
+  "calling it is CS0117). points_mm returns FMC-NO-API-PROPERTYLINE and is not sent to Revit. from_ids with dry_run false selects those " +
+  "lines and posts the Property Line command, then returns FMC-NEEDS-HUMAN: choose Create by sketching, then Pick Lines, and finish. " +
+  "That command cannot be awaited and does not create the line by itself. Source lines are kept; keep_source false does not delete them " +
+  "until property_line_verify finds a new property line and is given delete_source_ids. The kit has no property-line tag family. " +
+  "These ops are their own batch, a server hot-swap; the add-in is unchanged. · " +
   "filled_region {view, outline_mm | loops_mm (first outside, rest holes), type_name?} · masking_region {view, outline_mm} · " +
   "text {view, point_mm, text, type_name?, width_mm? (on paper), align?: Left|Center|Right} · " +
   "replace_text {find, replace, views?} · " +
@@ -192,6 +201,7 @@ export const MODIFY_MODEL_DESCRIPTION =
 const NO_PICTURE = new Set(["delete", "set_param", "create_view", "duplicate_view", "set_view", "override", "hide", "unhide", "create_filter",
   "create_template", "apply_template", "create_sheet", "place_view", "open_view", "text", "replace_text", "tag", "keynote_legend", "place_schedule", "revision", "create_schedule",
   "save_family", "load_into_project", "family_param", "family_type", "family_category", "create_material", "line_style", "line_pattern",
+  "property_line", "property_line_verify", "property_line_tag",
   "fill_pattern", "object_style", "project_info", "project_units", "global_param", "associate_global", "coordinates", "acquire_coordinates",
   "publish_coordinates", "create_workset", "set_workset", "purge", "save_selection", "copy_types", "keynote_file", "starting_view",
   "work_plane", "zone", "panel_schedule", "view_list", "reveal_hidden", "section_box", "box_views", "display_mode", "load_case", "load_combination", "load_classification",
@@ -272,6 +282,9 @@ export function registerModifyModelTool(server: McpServer) {
         const keynote = await executeKeynoteBatch(args.ops, args.dry_run, documentTarget.getStore(),
           (command, params) => withRevitConnection((c) => c.sendCommand(command, params)));
         if (keynote) return reply(keynote.body, keynote.isError);
+        const propertyLine = await executePropertyLineBatch(args.ops, args.dry_run, documentTarget.getStore(),
+          (command, params) => withRevitConnection((c) => c.sendCommand(command, params)));
+        if (propertyLine) return reply(propertyLine.body, propertyLine.isError);
         const r = await withRevitConnection((c) => c.sendCommand("fmc_model_edit", { ops: args.ops, dry_run: args.dry_run, ...(args.why ? { why: args.why } : {}) }));
         const out = reply(r, r?.applied === false && !r?.dry_run) as { content: any[]; isError: boolean };
         // Owner 26 Oct: the AI sees what it did, so it can check its own work like a person glancing at the screen

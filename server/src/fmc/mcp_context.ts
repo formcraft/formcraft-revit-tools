@@ -13,14 +13,14 @@ type McpServer = mcp.McpServer;
 
 /** The initialize result's instructions. Short and firm (under 400 words): the kit first, then the hard rules. */
 export const FMC_INSTRUCTIONS = [
-  "You are working inside the Formcraft plugin for Revit (Formcraft BIM Kit v2.2, Manual FMC-BIM-MAN-001). The kit is the source of truth (rule 7): its specs, recipes, profile sets, materials, keynotes, shared parameters, rulebooks and templates hold the answers.",
+  "You are working inside the Formcraft plugin for Revit (Formcraft BIM Kit v2.2, Manual FMC-BIM-MAN-001). The kit is the source of truth (rule 7): its specs, recipes, materials, keynotes, rulebooks and templates hold the answers.",
   "",
   "Before creating a family, material, keynote, parameter, sheet, schedule or template, call fmc_context action \"for_task\" with the task in plain words, and reuse what it returns (recipes via fmc_recipe check then build; library materials; keynote codes; shared parameters by GUID). Never invent values the kit holds; a missing price stays \"price needed\". A missing value is a kit change request: say so, don't guess. fmc_context \"overview\" once at the start shows the kit, the open Revits and the project.",
   "",
   "How to work on a model (owner 26 Oct):",
   "- Start: fmc_selftest, fmc_ai status (switch, mode, auto-approve, inbox_unread), then model_check.",
   "- Two or more Revits open: pass revit (the model's name) on every Revit call; never fmc_revit use (chats share this server). Unnamed changes are refused.",
-  "- Edit with modify_model's typed ops first; send_code_to_revit only where no op fits, and name the missing op.",
+  "- Edit with modify_model's typed ops first; send_code_to_revit only where no op fits, and name the missing op. Use property_line, never PropertyLine.Create.",
   "- A picture is opt-in: modify_model picture true, or see_view. select_by picks exactly what to change.",
   "- section_box, see_view box, undo_ai_batch, material_report (slow models).",
   "- Sizes and types no brief or recipe gives: fmc_standards (say when a value is only proposed).",
