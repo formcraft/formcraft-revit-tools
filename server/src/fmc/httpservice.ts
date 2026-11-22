@@ -23,6 +23,7 @@ import { dialogFor, inFlightJob, readRevitJobLines } from "./notidle.js";
 import { lastRegistration } from "../tools/register.js";
 import { queueClient, queueSnapshots } from "./fairqueue.js";
 import { addGrantListener, batchBoard, logBatchRestart, notifyBatchGranted } from "./batchline.js";
+import { coordinationReport } from "./coordination.js";
 import { callerFor, clientNameFromInitialize, rememberCaller, runAsCaller } from "./caller.js";
 import { memoryGate } from "./memory.js";
 
@@ -144,6 +145,8 @@ export interface HealthReport {
   /** Per open document: next_save_at, next_sync_at, last_save_at, last_sync_at, defer_reason. */
   schedule: unknown;
   memory: ReturnType<typeof memoryGate.view>;
+  /** Editing requests (never granted) and per-document coordination counts. */
+  coordination: ReturnType<typeof coordinationReport>;
 }
 
 export function describeInstance(
@@ -200,6 +203,7 @@ export async function healthReport(listen: string, startedAt: number, env: NodeJ
     batches: batchBoard().snapshot(),
     schedule: batchBoard().snapshot().syncs,
     memory: memoryGate.view(),
+    coordination: coordinationReport(env),
   };
 }
 

@@ -7,6 +7,7 @@
  * Central being busy retries with backoff and does not fail the batch.
  */
 import { isDocBusyMessage } from "./docschedule.js";
+import { CENTRAL_BUSY, appendConflict, centralBusyReason, type ConflictKind } from "./coordination.js";
 import { generalState } from "./aiuse.js";
 import { loadAiConfig } from "./aiuse_io.js";
 import { loadConfig, type DocInfo, type GuardConfig } from "./policy.js";
@@ -143,45 +144,51 @@ export interface SyncRun {
   synced: boolean;
   detail: string;
   error?: string;
+  /** Set when the central is busy. The batch is not failed. The next tick tries again. */
+  defer_reason?: string;
 }
 
 export function centralBusy(message: string): boolean {
-  if (/Stop AI|AI is off|protected original|live-model lock|isn't workshared|not workshared|verification copy|\[FMC-/i.test(message)) return false;
-  return /central|busy|locked|another user|temporarily|timed out|timeout|conflict|unavailable|being accessed/i.test(message);
+  return centralBusyReason(message) != null;
 }
 
 export interface SyncSend { (command: string, params: Record<string, unknown>): Promise<unknown> }
 
 /**
- * Save the local file, then sync with central and relinquish the elements this user has borrowed.
- * A busy central retries. The result is never a batch failure.
+ * Reload latest, save the local file, then sync. One attempt.
+ * A busy central is deferred until the next tick. It is not retried in a tight loop, and it does not fail the batch.
+ * Relinquish is only what this user has checked out.
  */
 export async function runDocumentSync(document: string, send: SyncSend, opts?: {
   sleep?: (ms: number) => Promise<void>;
   delays?: number[];
+  record?: (kind: ConflictKind, detail: string) => void;
 }): Promise<SyncRun> {
-  const sleep = opts?.sleep ?? ((ms: number) => new Promise((resolve) => setTimeout(resolve, ms)));
-  const delays = opts?.delays ?? [2_000, 5_000, 15_000];
-  let last = "";
-  for (let attempt = 0; attempt <= delays.length; attempt++) {
-    try {
-      await send("fmc_revit_file", { action: "save", document, batch_sync: true });
-      await send("fmc_revit_file", { action: "sync", document, relinquish: true, comment: "Formcraft batch sync", batch_sync: true });
-      const extra = attempt ? ` after ${attempt} ${attempt === 1 ? "retry" : "retries"}` : "";
-      return { ran: true, ok: true, synced: true, detail: `Saved the local file and synced ${document} with central (borrowed and created elements relinquished, not every workset)${extra}.` };
-    } catch (error) {
-      last = error instanceof Error ? error.message : String(error);
-      if (isDocBusyMessage(last)) return { ran: false, ok: true, synced: false, detail: last };
-      if (!centralBusy(last) || attempt === delays.length) break;
-      await sleep(delays[attempt]);
-    }
-  }
-  if (isDocBusyMessage(last)) return { ran: false, ok: true, synced: false, detail: last };
-  return {
-    ran: true, ok: true, synced: false,
-    detail: `Sync did not finish for ${document}. The batch is not failed. ${last}`,
-    error: last,
+  const record = opts?.record ?? ((kind, detail) => appendConflict({ at: new Date().toISOString(), document, kind, detail, code: kind === "central_busy" ? "FMC-CENTRAL-BUSY" : undefined }));
+  const busy = (message: string): SyncRun => {
+    record("central_busy", message);
+    return { ran: false, ok: true, synced: false, defer_reason: CENTRAL_BUSY, detail: `Deferred. ${CENTRAL_BUSY}. ${message}` };
   };
+  try {
+    await send("fmc_revit_file", { action: "reload_latest", document, batch_sync: true });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    if (isDocBusyMessage(message)) return { ran: false, ok: true, synced: false, detail: message };
+    if (centralBusy(message)) return busy(message);
+    record("reload_conflict", message);
+    return { ran: true, ok: true, synced: false, detail: `Reload latest did not finish. The batch is not failed. ${message}`, error: message };
+  }
+  try {
+    await send("fmc_revit_file", { action: "save", document, batch_sync: true });
+    await send("fmc_revit_file", { action: "sync", document, relinquish: true, comment: "Formcraft batch sync", batch_sync: true });
+    return { ran: true, ok: true, synced: true, detail: `Reloaded latest, saved the local file and synced ${document} with central (only elements and user worksets this user had checked out).` };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    if (isDocBusyMessage(message)) return { ran: false, ok: true, synced: false, detail: message };
+    if (centralBusy(message)) return busy(message);
+    record("sync_failed", message);
+    return { ran: true, ok: true, synced: false, detail: `Sync did not finish for ${document}. The batch is not failed. ${message}`, error: message };
+  }
 }
 
 export function factsFor(doc: DocInfo | undefined, cfg: GuardConfig, env: NodeJS.ProcessEnv = process.env): SyncFacts {

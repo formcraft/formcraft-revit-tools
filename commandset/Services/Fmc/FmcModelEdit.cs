@@ -17,8 +17,9 @@ namespace RevitMCPCommandSet.Services.Fmc
     /// group: if any op fails the whole batch is rolled back and the answer says which op and why. dry_run runs it all
     /// and rolls back, listing what would change (deletes list every element Revit would remove with them).
     /// Lengths in mm, angles in degrees. Ids are element ids or unique ids; "$n" is the first element made by op n (1-based)
-    /// of this batch, so a roof and the walls attached to it go in one batch. Pinned elements and elements another user
-    /// owns are refused. Warnings are dismissed; errors fail the op.
+    /// of this batch, so a roof and the walls attached to it go in one batch. Pinned elements are refused.
+    /// Elements another user owns, or that are not current with central, are skipped and named. Nothing requests a checkout.
+    /// Warnings are dismissed; errors fail the op.
     /// </summary>
     public partial class FmcModelEditHandler : IExternalEventHandler, IWaitableExternalEventHandler
     {
@@ -29,6 +30,7 @@ namespace RevitMCPCommandSet.Services.Fmc
         public bool WaitForCompletion(int timeoutMilliseconds = 10000) { _done.Reset(); return FmcBusy.Wait(_done, timeoutMilliseconds); }
         public string GetName() => "Formcraft model edit";
 
+        private readonly JArray _opSkipped = new JArray();
         private static double Ft(double mm) => mm / 304.8;
         private static double Mm(double ft) => Math.Round(ft * 304.8, 1);
 
@@ -82,6 +84,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     var created = new List<ElementId>();
                     try
                     {
+                        _opSkipped.Clear();
                         op = WithSelect(doc, op, made, out int selected);
                         JObject r = name == "create_stair" ? Stair(doc, op, made, created)
                             : name == "edit_sketch" || name == "wall_profile" ? SketchOp(doc, name, op, made, created)
@@ -90,8 +93,15 @@ namespace RevitMCPCommandSet.Services.Fmc
                         if (selected > 0) r["selected"] = selected;
                         if (written[i] != i + 1) r["written_op"] = written[i];
                         if (created.Count > 0) r["created_ids"] = new JArray(created.Select(x => x.Value));
+                        if (_opSkipped.Count > 0) r["skipped"] = new JArray(_opSkipped);
                         results.Add(r);
                         made.Add(created);
+                    }
+                    catch (FmcCheckout.AllHeldBack held)
+                    {
+                        results.Add(new JObject { ["op"] = i + 1, ["kind"] = name, ["applied"] = false, ["skipped"] = held.Skipped });
+                        made.Add(created);
+                        continue;
                     }
                     catch (Exception ex)
                     {
@@ -506,7 +516,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             return (min + max) / 2;
         }
 
-        private static ICollection<ElementId> Targets(Document doc, JObject op, List<List<ElementId>> made, bool allowPinned = false)
+        private ICollection<ElementId> Targets(Document doc, JObject op, List<List<ElementId>> made, bool allowPinned = false)
         {
             var ids = (op["ids"] as JArray ?? throw new InvalidOperationException("the op needs ids")).Select(x => Ref(doc, x, made)).ToList();
             if (ids.Count == 0) throw new InvalidOperationException("the op needs ids");
@@ -514,10 +524,11 @@ namespace RevitMCPCommandSet.Services.Fmc
             {
                 Element e = doc.GetElement(id) ?? throw new InvalidOperationException($"{id?.Value} isn't in this model");
                 if (e.Pinned && !allowPinned) throw new InvalidOperationException($"{id.Value} ({e.Category?.Name}) is pinned: a person unpins it first");
-                if (doc.IsWorkshared && WorksharingUtils.GetCheckoutStatus(doc, id) == CheckoutStatus.OwnedByOtherUser)
-                    throw new InvalidOperationException($"{id.Value} is owned by another user (worksharing)");
             }
-            return ids;
+            var kept = new List<ElementId>();
+            FmcCheckout.Partition(doc, ids, kept, _opSkipped);
+            if (kept.Count == 0) throw new FmcCheckout.AllHeldBack((JArray)_opSkipped.DeepClone());
+            return kept;
         }
 
         /// <summary>An element id, a unique id, or "$n" (the first element made by op n of this batch).</summary>

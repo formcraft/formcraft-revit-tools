@@ -13,6 +13,7 @@ namespace RevitMCPCommandSet.Services
 
         // 成功删除的元素数量
         public int DeletedCount { get; private set; }
+        public JArray Skipped { get; private set; } = new JArray();
         // 状态同步对象
         public bool TaskCompleted { get; private set; }
         private readonly ManualResetEvent _resetEvent = new ManualResetEvent(false);
@@ -35,6 +36,7 @@ namespace RevitMCPCommandSet.Services
                 using var target = FmcTarget.Resolve(app, Parameters, mayOpen: false);
                 var doc = target.Doc;
                 DeletedCount = 0;
+                Skipped = new JArray();
                 if (ElementIds == null || ElementIds.Length == 0)
                 {
                     IsSuccess = false;
@@ -51,7 +53,9 @@ namespace RevitMCPCommandSet.Services
                         // 检查元素是否存在
                         if (doc.GetElement(elementId) != null)
                         {
-                            elementIdsToDelete.Add(elementId);
+                            JObject held = FmcCheckout.Hold(doc, elementId);
+                            if (held != null) Skipped.Add(held);
+                            else elementIdsToDelete.Add(elementId);
                         }
                     }
                     else
@@ -76,6 +80,10 @@ namespace RevitMCPCommandSet.Services
 
                         transaction.Commit();
                     }
+                    IsSuccess = true;
+                }
+                else if (Skipped.Count > 0)
+                {
                     IsSuccess = true;
                 }
                 else

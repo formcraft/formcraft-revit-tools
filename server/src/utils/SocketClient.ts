@@ -4,6 +4,7 @@ import path from "path";
 import { appendJobEvent, jobFiles, jobResult, lastHeartbeatMs } from "../fmc/jobs.js";
 import { WRITE_COMMANDS, callActivity, liveLockVerdict, loadConfig } from "../fmc/policy.js";
 import { protectedRoots, writeGuard } from "../fmc/opencopy.js";
+import { appendConflict, namedElementIds, splitCheckout, withoutIds, type CurrencyRow, type SkippedElement } from "../fmc/coordination.js";
 import { batchLease, documentTarget, revitTarget } from "../fmc/target.js";
 import { portRefusal, readInstances } from "../fmc/connect.js";
 import { backoffMs, shouldRetryReset } from "../fmc/reconnect.js";
@@ -202,10 +203,44 @@ export class RevitClientConnection {
     const admission = admitBatchWrite(command, leaseKey, batchLease.getStore(), currentClient());
     try {
       await memoryGate.holdWrites(Math.min(120_000, Math.max(0, timeoutMs)));
-      return await this.sendLocked(command, params, timeoutMs, long);
+      const screened = await this.screenOwnership(command, params, aimed);
+      if (screened.stopped) return { ok: false, applied: false, skipped: screened.skipped };
+      const result = await this.sendLocked(command, screened.params, timeoutMs, long);
+      if (screened.skipped.length && result && typeof result === "object") {
+        const prior = Array.isArray((result as { skipped?: unknown }).skipped) ? (result as { skipped: unknown[] }).skipped : [];
+        return { ...(result as Record<string, unknown>), skipped: [...prior, ...screened.skipped] };
+      }
+      return result;
     } finally {
       admission.finish();
     }
+  }
+
+  /** Drop elements another user owns, or that are not current. An older add-in has no currency command: the write still goes. */
+  private async screenOwnership(command: string, params: any, aimed: string | undefined): Promise<{ params: any; skipped: SkippedElement[]; stopped: boolean }> {
+    if (command === "fmc_revit_file" || command === "fmc_undo" || command === "fmc_new_local" || command === "fmc_elem_currency") {
+      return { params, skipped: [], stopped: false };
+    }
+    const ids = [...new Set(namedElementIds(params))];
+    const document = params && typeof params.document === "string" && params.document.trim() ? params.document.trim() : aimed;
+    if (!ids.length || !document) return { params, skipped: [], stopped: false };
+    let rows: CurrencyRow[] = [];
+    try {
+      const report = await this.sendRaw("fmc_elem_currency", { document, ids }, 20000) as { elements?: CurrencyRow[] };
+      rows = report?.elements ?? [];
+    } catch {
+      return { params, skipped: [], stopped: false };
+    }
+    const split = splitCheckout(ids, rows);
+    for (const row of split.skipped) {
+      appendConflict({
+        at: new Date().toISOString(), document, code: row.code,
+        kind: row.code === "FMC-ELEM-NOT-CURRENT" ? "not_current" : "owned_by_other",
+        detail: `${row.id} ${row.owner}`.trim(),
+      });
+    }
+    if (split.kept.length === 0) return { params, skipped: split.skipped, stopped: true };
+    return { params: withoutIds(params, split.skipped), skipped: split.skipped, stopped: false };
   }
 
   /** Live-model lock, then the socket. The batch lease was already checked. */

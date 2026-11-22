@@ -159,21 +159,48 @@ namespace RevitMCPCommandSet.Services.Fmc
                     RefuseOriginal(doc, "sync");
                     RefuseBusy(doc);
                     if (!doc.IsWorkshared) throw new InvalidOperationException("the model isn't workshared");
-                    var o = new SynchronizeWithCentralOptions { Comment = Parameters.Value<string>("comment") ?? "", Compact = Parameters.Value<bool?>("compact") ?? false };
-                    // Borrowed and created elements only. new RelinquishOptions(true) would relinquish every workset.
+                    // SynchronizeWithCentral reloads latest as part of the sync. Reload first so a locked central
+                    // defers before this user's changes are pushed. Another user's borrowings are not touched.
+                    try { doc.ReloadLatest(new ReloadLatestOptions()); }
+                    catch (Exception ex) { if (CentralBusy(ex)) throw new InvalidOperationException("[FMC-CENTRAL-BUSY] central busy: " + ex.Message); throw; }
+                    var o = new SynchronizeWithCentralOptions { Comment = Parameters.Value<string>("comment") ?? "", Compact = false };
                     var relinquish = new RelinquishOptions(false);
-                    relinquish.CheckedOutElements = Parameters.Value<bool?>("relinquish") ?? true;
+                    // Only what this user has checked out. The API cannot relinquish another user's elements or worksets.
+                    if (Parameters.Value<bool?>("relinquish") ?? true)
+                    {
+                        relinquish.CheckedOutElements = true;
+                        relinquish.UserWorksets = true;
+                    }
                     o.SetRelinquishOptions(relinquish);
-                    doc.SynchronizeWithCentral(new TransactWithCentralOptions(), o);
-                    return new JObject { ["synced"] = doc.Title, ["relinquished"] = "checked out elements" };
+                    try { doc.SynchronizeWithCentral(new TransactWithCentralOptions(), o); }
+                    catch (Exception ex) { if (CentralBusy(ex)) throw new InvalidOperationException("[FMC-CENTRAL-BUSY] central busy: " + ex.Message); throw; }
+                    return new JObject { ["synced"] = doc.Title, ["reloaded_latest"] = true, ["relinquished"] = "elements and user worksets checked out by this user" };
                 }
-                case "reload_latest": RefuseOriginal(doc, "reload_latest"); doc.ReloadLatest(new ReloadLatestOptions()); return new JObject { ["reloaded"] = doc.Title };
+                case "reload_latest":
+                    RefuseOriginal(doc, "reload_latest");
+                    RefuseBusy(doc);
+                    try { doc.ReloadLatest(new ReloadLatestOptions()); }
+                    catch (Exception ex) { if (CentralBusy(ex)) throw new InvalidOperationException("[FMC-CENTRAL-BUSY] central busy: " + ex.Message); throw; }
+                    return new JObject { ["reloaded"] = doc.Title };
                 case "relinquish":
                     RefuseOriginal(doc, "relinquish");
                     WorksharingUtils.RelinquishOwnership(doc, new RelinquishOptions(true), new TransactWithCentralOptions());
                     return new JObject { ["relinquished"] = doc.Title };
                 default: throw new InvalidOperationException($"{action} isn't an action (save, save_as, open, close, export, link_cad, import_cad, link_image, import_image, link_pdf, link_revit, load_family, point_cloud, sync, reload_latest, relinquish)");
             }
+        }
+
+        /// <summary>A locked or busy central is a defer, not a failure. Revit only reports it when reload or sync is attempted.</summary>
+        private static bool CentralBusy(Exception ex)
+        {
+            string name = ex?.GetType().Name ?? "";
+            string message = ex?.Message ?? "";
+            if (name.IndexOf("CentralModel", StringComparison.OrdinalIgnoreCase) >= 0) return true;
+            if (name.IndexOf("RevitServer", StringComparison.OrdinalIgnoreCase) >= 0) return true;
+            return message.IndexOf("locked", StringComparison.OrdinalIgnoreCase) >= 0
+                || message.IndexOf("another user", StringComparison.OrdinalIgnoreCase) >= 0
+                || message.IndexOf("being accessed", StringComparison.OrdinalIgnoreCase) >= 0
+                || message.IndexOf("contention", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         /// <summary>An open transaction makes save and sync wait. The server treats FMC-DOC-BUSY as defer, not a failure.</summary>

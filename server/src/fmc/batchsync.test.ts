@@ -91,24 +91,31 @@ test("only a workshared model with AI on syncs, between batches or at batch end"
   assert.equal(planSync(open, base({ changedAt: null, batchEnd: true }), settings).run, false);
 });
 
-test("a busy central retries and does not fail the batch; a lock refusal does not retry", async () => {
+test("a busy central is deferred once, not retried tightly, and does not fail the batch", async () => {
   assert.equal(centralBusy("central model is locked by another user"), true);
   assert.equal(centralBusy("Stop AI is on"), false);
   assert.equal(centralBusy("Live-model lock: Architecture is a project model"), false);
-  const sleeps: number[] = [];
-  let tries = 0;
-  const saved = await runDocumentSync("Architecture", async (command, params) => {
-    tries++;
-    assert.equal(params.batch_sync, true);
-    assert.equal(params.document, "Architecture");
-    if (command === "fmc_revit_file" && params.action === "sync" && tries < 4) throw new Error("The central model is locked");
+  const calls: string[] = [];
+  const notes: string[] = [];
+  const deferred = await runDocumentSync("A-0002_USER", async (_command, params) => {
+    calls.push(String(params.action));
+    if (params.action === "reload_latest") throw new Error("[FMC-CENTRAL-BUSY] central busy: currently being accessed by another user");
+    return { ok: true };
+  }, { record: (kind) => { notes.push(kind); } });
+  assert.deepEqual(calls, ["reload_latest"]);
+  assert.equal(deferred.synced, false);
+  assert.equal(deferred.ok, true);
+  assert.equal(deferred.defer_reason, "central busy");
+  assert.equal(deferred.error, undefined);
+  assert.deepEqual(notes, ["central_busy"]);
+  const done = await runDocumentSync("A-0002_USER", async (_command, params) => {
+    calls.push(String(params.action));
     if (params.action === "sync") assert.equal(params.relinquish, true);
     return { ok: true };
-  }, { sleep: async (ms) => { sleeps.push(ms); }, delays: [10, 20, 30] });
-  assert.equal(saved.synced, true);
-  assert.equal(saved.ok, true);
-  assert.deepEqual(sleeps, [10]);
-  const refused = await runDocumentSync("Architecture", async () => { throw new Error("Stop AI is on"); }, { delays: [10, 20] });
+  }, { record: () => {} });
+  assert.deepEqual(calls.slice(1), ["reload_latest", "save", "sync"]);
+  assert.equal(done.synced, true);
+  const refused = await runDocumentSync("Architecture", async () => { throw new Error("Stop AI is on"); }, { record: () => {} });
   assert.equal(refused.synced, false);
   assert.equal(refused.ok, true);
   assert.match(refused.detail, /not failed/);

@@ -628,8 +628,8 @@ export class BatchBoard {
           lastSyncAt: this.syncState.get(ticket.key)?.lastSyncAt ?? null,
           batchEnd: true,
         });
-        if (isDocBusyMessage(sync.detail) || isDocBusyMessage(sync.error)) {
-          this.lastDefer = sync.detail;
+        if (sync.defer_reason || isDocBusyMessage(sync.detail) || isDocBusyMessage(sync.error)) {
+          this.lastDefer = sync.defer_reason || sync.detail;
           const row = { ran: false, detail: sync.detail };
           care = care ? { ...care, sync: row } : { sync: row };
         } else {
@@ -1437,8 +1437,8 @@ export class BatchBoard {
     const ran = await this.withServiceHold(chosen.document, () => this.syncStep?.({
       document: chosen.document, label: "idle", changedAt: state?.changedAt ?? null, lastSyncAt: state?.lastSyncAt ?? null, batchEnd: false,
     }) ?? Promise.resolve({ ran: false, ok: true as const, synced: false, detail: "No sync step.", error: undefined }));
-    if (!ran || isDocBusyMessage(ran.detail) || isDocBusyMessage(ran.error)) {
-      this.lastDefer = ran?.detail ?? "The document has an open transaction or transaction group.";
+    if (!ran || ran.defer_reason || isDocBusyMessage(ran.detail) || isDocBusyMessage(ran.error)) {
+      this.lastDefer = ran?.defer_reason || ran?.detail || "The document has an open transaction or transaction group.";
       return;
     }
     this.lastDefer = null;
