@@ -113,7 +113,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     ViewPlan view = FindPlan(doc, op.Value<string>("view_id"));
                     if (view == null) { skipped.Add(new JObject { ["view_id"] = op.Value<string>("view_id"), ["code"] = "FMC-NORTH-VIEW-NOT-PLAN" }); continue; }
                     if (!Hold(doc, view.Id, skipped)) continue;
-                    Parameter scope = view.get_Parameter(BuiltInParameter.VIEWER_VOLUME_OF_INTEREST);
+                    Parameter scope = view.get_Parameter(BuiltInParameter.VIEWER_VOLUME_OF_INTEREST_CROP);
                     if (scope == null || scope.IsReadOnly || !scope.Set(box.Id))
                     {
                         skipped.Add(new JObject { ["view_id"] = view.Id.Value.ToString(), ["code"] = "FMC-NORTH-SCOPE-REQUIRED" });

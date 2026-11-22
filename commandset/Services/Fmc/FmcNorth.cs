@@ -189,7 +189,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 string scopeName = "";
                 try
                 {
-                    Parameter scope = view.get_Parameter(BuiltInParameter.VIEWER_VOLUME_OF_INTEREST);
+                    Parameter scope = view.get_Parameter(BuiltInParameter.VIEWER_VOLUME_OF_INTEREST_CROP);
                     if (scope != null && scope.StorageType == StorageType.ElementId && scope.AsElementId() != null && scope.AsElementId() != ElementId.InvalidElementId)
                     {
                         scopeId = scope.AsElementId().Value.ToString();
