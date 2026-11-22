@@ -188,6 +188,38 @@ test("leak and continuity use the bank tolerance, including a connection_toleran
   assert.equal(runContinuity(board, loose.limits, {}).findings.some((finding) => finding.code === "ELEC-VOLTAGE-MISMATCH"), false);
 });
 
+test("conduit and tray open ends are the same leak codes, and they are not FLOW-NO-SYSTEM", () => {
+  const ends = Array.from({ length: 4 }, (_, index) => ({
+    element_id: index + 1,
+    index: 0,
+    domain: index < 3 ? "conduit" : "tray",
+    origin: [index * 1000, 0, 0] as number[],
+    direction: [1, 0, 0] as number[],
+    flow: "",
+    shape: "round",
+    size_mm: 20,
+    height_mm: 0,
+    connected: false,
+    type: "end",
+    open_end: true,
+    system_id: 0,
+    refs: [] as number[][],
+  }));
+  const snapshot: TraceSnapshot = {
+    flow: {
+      elements: ends.map((end) => ({ id: end.element_id, kind: end.domain, domain: end.domain, system_ids: [] as number[] })),
+      connectors: ends,
+      systems: [],
+    },
+  };
+  const conduit = runLeak(snapshot, limits(), { domain: "conduit" });
+  assert.equal(conduit.counts["FLOW-OPEN-END"], 3);
+  assert.equal(conduit.findings.some((finding) => finding.code === "FLOW-NO-SYSTEM"), false);
+  const both = runLeak(snapshot, limits(), { domain: "electrical_containment" });
+  assert.equal(both.counts["FLOW-OPEN-END"], 4);
+  assert.equal(runLeak(snapshot, limits(), { domain: "tray" }).counts["FLOW-OPEN-END"], 1);
+});
+
 test("connector axes face each other within the provisional angle", () => {
   assert.equal(directionsOppose([1, 0, 0], [-1, 0, 0], 15), true);
   assert.equal(directionsOppose([1, 0, 0], [1, 0, 0], 15), false);

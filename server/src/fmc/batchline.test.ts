@@ -4,6 +4,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { queueClient } from "./fairqueue.js";
+import { documentTarget } from "./target.js";
 import { WRITE_COMMANDS } from "./policy.js";
 import {
   BatchBoard, BatchGateError, admitBatchWrite, loadBatchConfig, logBatchRestart, normalizeReferences,
@@ -416,6 +417,40 @@ test("Hostel Building Bot reserves the next slot by client or by bot name", asyn
   assert.equal(claimed.state, "queued");
   await made.release(String(held.lease), "ok", "arch", "done");
   assert.equal(made.status(String(claimed.lease), "real-structure").state, "granted");
+});
+
+test("release syncs the lease title, not a name with _USER removed", async () => {
+  const title = "F26901-FMC-ZZ-ZZ-M3-E-0001_USER";
+  const stripped = "F26901-FMC-ZZ-ZZ-M3-E-0001";
+  const seen: string[] = [];
+  const { board: made } = board({
+    readOpenDocs: () => [{ title, path: "C:\\Users\\USER\\Documents\\" + title + ".rvt", workshared: true }],
+    saveStep: async (ctx) => {
+      seen.push("save:" + ctx.document);
+      seen.push("target:" + (documentTarget.getStore() ?? ""));
+      return { ran: true, ok: true, detail: "saved" };
+    },
+    syncStep: async (ctx) => {
+      seen.push("sync:" + ctx.document);
+      seen.push("target:" + (documentTarget.getStore() ?? ""));
+      return { ran: true, ok: true, synced: true, detail: "synced" };
+    },
+  });
+  const granted = await req(made, "e", title, "circuits");
+  const released = await documentTarget.run(stripped, () => made.releaseWithCare(String(granted.lease), "ok", "e", "done"));
+  assert.equal(released.sync_document, title);
+  assert.deepEqual(seen, ["save:" + title, "target:" + title, "sync:" + title, "target:" + title]);
+  const dropped = board({
+    readOpenDocs: () => [{ title, path: "", workshared: true }],
+    saveStep: async () => ({ ran: true, ok: true, detail: "saved" }),
+    syncStep: async (ctx) => {
+      assert.equal(ctx.document, title);
+      return { ran: true, ok: true, synced: true, detail: "synced" };
+    },
+  }).board;
+  const asked = await req(dropped, "e", stripped, "circuits");
+  const again = await dropped.releaseWithCare(String(asked.lease), "ok", "e", "done");
+  assert.equal(again.sync_document, title);
 });
 
 test("a Plumbing lease does not stop Electrical's batch-end sync", async () => {

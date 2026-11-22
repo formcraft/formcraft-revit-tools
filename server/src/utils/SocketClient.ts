@@ -10,7 +10,7 @@ import { portRefusal, readInstances } from "../fmc/connect.js";
 import { backoffMs, shouldRetryReset } from "../fmc/reconnect.js";
 import { currentClient, documentDecision } from "../fmc/fairqueue.js";
 import { admitBatchWrite, documentsMatch, leaseHeldDocument } from "../fmc/batchline.js";
-import { attachResolvedDocument, leaseCovers, resolveOpenDocument, type OpenDocRef } from "../fmc/docresolve.js";
+import { attachResolvedDocument, leaseCovers, preferUnstrippedDocument, resolveOpenDocument, type OpenDocRef } from "../fmc/docresolve.js";
 import { aiGate } from "../fmc/aigate.js";
 import { retryWhileBusy } from "../fmc/busy.js";
 import { DialogBlockingError, blockingForJob } from "../fmc/dialogrules.js";
@@ -168,7 +168,8 @@ export class RevitClientConnection {
 
   /** Exact title or path. A given document that is not open is refused here, before Revit can fall back to the active one. */
   private decideDocument(command: string, params: any) {
-    const named = documentTarget.getStore() || (params && typeof params.document === "string" ? params.document : undefined);
+    const explicit = params && typeof params.document === "string" ? params.document : undefined;
+    const named = preferUnstrippedDocument(documentTarget.getStore(), explicit);
     const str = (key: string) => (params && typeof params[key] === "string" ? params[key] as string : undefined);
     return documentDecision(command, this.openDocRefs(), named, { kind: str("kind"), template: str("template"), file: str("file") });
   }
@@ -319,7 +320,8 @@ export class RevitClientConnection {
   }
 
   public async sendRaw(command: string, params: any = {}, timeoutMs: number = 120000, long?: LongJobOptions): Promise<any> {
-    const named = documentTarget.getStore() || (params && typeof params.document === "string" ? params.document : undefined);
+    const explicit = params && typeof params.document === "string" ? params.document : undefined;
+    const named = preferUnstrippedDocument(documentTarget.getStore(), explicit);
     const open = readInstances().find((instance) => instance.port === this.port);
     const decision = this.decideDocument(command, params);
     if (!decision.ok) throw new Error(decision.message);
