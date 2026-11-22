@@ -853,5 +853,14 @@
     "status": "Built, Revit check due",
     "ref": "fmc_dialog_rules",
     "note": "Rules in %APPDATA%\\Formcraft\\fmc_dialog_rules.json, hot-reloaded, hooked for the whole session. Scope always answers the save reminder with CommandLink3 (Do not save the project, 1003) and the sync reminder with CommandLink3 (Do not synchronize, 1003). AccessingFile is log only. DocWarn and PasteSimilar are OK, ExtendedError and SelectElement are Cancel, during AI jobs. Never-auto (not overridable): save, sync, relinquish, upgrade, recover, fatal and serious errors, Save_File, RevitSaveOptions, PartitionsSaveToCentral, Worksets_Errors, Changes_Not_Saved. A blocked call returns FMC-DIALOG-BLOCKING. /health instances[].busy.dialog names the dialog id. The add-in installs only while Revit is closed. The server degrades against an older add-in."
+  },
+  {
+    "id": "F96",
+    "area": "Engine",
+    "group": "Coordinate",
+    "feature": "Coordination matrix across models, objects and families",
+    "status": "Built, Revit check due",
+    "ref": "fmc_coord",
+    "note": "fmc_coord keeps a versioned record (survey, base, true north, elevation datum, shared origin, control points, and model, object and family transforms) next to the project and in %APPDATA%\\Formcraft\\coord. publish, check, align and place call fmc_coord_apply once. read, export and import, and a check of two published models, stay on the server. dry_run defaults true. document is required. Tolerances are coord.tol_mm and coord.tol_deg. Needs a Revit check."
   }
 ]
