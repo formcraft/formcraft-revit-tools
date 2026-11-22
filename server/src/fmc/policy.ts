@@ -183,6 +183,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_model_edit",
   // fmc_replace: a structural replacement preview. It runs only on an open_copy document and always rolls back.
   "fmc_replace",
+  // A Dynamo graph. Preview rolls the transaction group back. Apply keeps it. Inspect does not use this command.
+  "fmc_dynamo",
   // run_revit_command (owner 26 Oct): a built-in Revit command, which may act on the selection
   "fmc_post_command",
   // new_family (owner 26 Oct): a family file made from a template and opened

@@ -12,9 +12,9 @@ const win = path.win32;
 export const DOC_BUSY = "FMC-DOC-BUSY";
 
 export interface DeferFacts {
-  /** FairQueue has a running job or a waiting one. */
+  /** This document has a running or queued Revit job. */
   queueBusy: boolean;
-  /** Active fmc_batch leases, any document. */
+  /** This document's own lease. Other documents do not count. */
   leasesHeld: number;
   /** A modal dialog is open (/health busy.dialog). */
   modalDialog: boolean;
@@ -25,12 +25,12 @@ export interface DeferFacts {
 }
 
 /**
- * Skip this tick and try again next tick. Null when the session may save or sync.
- * A batch-end step calls this only after its own lease has been released, so that lease is not in leasesHeld.
+ * Skip this document and try again next tick. Null when it may save or sync.
+ * leasesHeld and queueBusy are for this document only. A lease on another model does not defer it.
  */
 export function deferReason(facts: DeferFacts): string | null {
-  if (facts.queueBusy) return "A Revit job is running or queued.";
-  if (facts.leasesHeld > 0) return "A batch lease is held. Autosave and sync wait until every lease is released.";
+  if (facts.queueBusy) return "A Revit job is running or queued on this document.";
+  if (facts.leasesHeld > 0) return "A batch lease is held on this document.";
   if (facts.modalDialog) return "A modal dialog is open.";
   if (facts.memoryPaused) return "Memory pause is active.";
   if (facts.docBusy) return "The document has an open transaction or transaction group.";
@@ -63,16 +63,25 @@ export function nextActionAt(lastAt: number | null, startedAt: number, intervalM
 }
 
 export interface DueAction {
-  kind: "save" | "sync";
+  kind: "save" | "sync" | "batch";
   document: string;
   at: number;
 }
 
-/** The earliest action that is already due. Saves beat syncs that share a timestamp. Null when nothing is due. */
+/** A due batch-end sync comes first. Otherwise the earliest action. Saves beat routine syncs that share a timestamp. */
 export function pickOne(actions: DueAction[], now: number): DueAction | null {
   const due = actions.filter((action) => action.at <= now);
-  due.sort((a, b) => a.at - b.at || (a.kind === "save" ? 0 : 1) - (b.kind === "save" ? 0 : 1) || a.document.localeCompare(b.document));
+  const batch = (kind: DueAction["kind"]) => kind === "batch" ? 0 : 1;
+  const save = (kind: DueAction["kind"]) => kind === "save" ? 0 : 1;
+  due.sort((a, b) => batch(a.kind) - batch(b.kind) || a.at - b.at || save(a.kind) - save(b.kind) || a.document.localeCompare(b.document));
   return due[0] ?? null;
+}
+
+/** If the scheduled time is already past, step forward by whole intervals until it is ahead of now. */
+export function nextOpenAt(at: number, now: number, intervalMs: number): number {
+  if (intervalMs <= 0 || at > now) return at;
+  const steps = Math.floor((now - at) / intervalMs) + 1;
+  return at + steps * intervalMs;
 }
 
 export interface ScheduledDoc {
@@ -93,6 +102,9 @@ export interface DocClock {
   lastSyncAt: number | null;
   lastSaveAt: number | null;
   lastError: string | null;
+  /** A batch-end sync was deferred. The idle tick retries it until a sync succeeds. */
+  pendingBatchEnd?: boolean;
+  deferReason?: string | null;
 }
 
 export function clockKey(name: string): string {
@@ -139,6 +151,8 @@ function asClock(value: unknown): DocClock | null {
     lastSyncAt: at("lastSyncAt"),
     lastSaveAt: at("lastSaveAt"),
     lastError: typeof row.lastError === "string" ? row.lastError : null,
+    ...(row.pendingBatchEnd === true ? { pendingBatchEnd: true } : {}),
+    ...(typeof row.deferReason === "string" ? { deferReason: row.deferReason } : {}),
   };
 }
 
@@ -191,6 +205,8 @@ export interface TickInput {
   syncSkipped: (doc: ScheduledDoc) => boolean;
   /** Autosave is off for this document (family, protected, detached, Stop AI, and the rest). */
   saveSkipped: (doc: ScheduledDoc) => boolean;
+  /** This document still owes a batch-end sync. It is due now and beats a routine save. */
+  batchEnd?: (doc: ScheduledDoc) => boolean;
 }
 
 /** The one save or sync to run now, or null. */
@@ -204,6 +220,9 @@ export function planTick(input: TickInput): DueAction | null {
     const offset = staggerOffsetMs(index, count, Math.max(input.saveIntervalMs, input.syncIntervalMs));
     if (input.saveIntervalMs > 0 && !input.saveSkipped(doc)) {
       actions.push({ kind: "save", document: name, at: nextActionAt(clock?.lastSaveAt ?? null, input.startedAt, input.saveIntervalMs, offset) });
+    }
+    if (input.batchEnd?.(doc) && !input.syncSkipped(doc)) {
+      actions.push({ kind: "batch", document: name, at: input.now });
     }
     const pending = clock?.changedAt != null && (clock.lastSyncAt == null || clock.changedAt > clock.lastSyncAt);
     if (input.syncIntervalMs > 0 && pending && !input.syncSkipped(doc)) {
