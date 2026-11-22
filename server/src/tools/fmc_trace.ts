@@ -22,6 +22,8 @@ import {
   type TraceSnapshot,
 } from "../fmc/trace.js";
 import { dropOwnedEdits, PHASE2_DEFAULTS, planFixes, refuseTraceWrite, type TraceEdit } from "../fmc/trace_phase2.js";
+import { copyTraceFile, flattenFindings, handoffDir, latestTraceFile, pageFindings } from "../fmc/tracereport.js";
+import { onDriveD } from "../fmc/clashscan.js";
 import { countSystems, editsForRecommendations, recommend, summariseCounts, summariseRecommendations } from "../fmc/trace_phase3.js";
 
 function reply(body: object, isError = false) {
@@ -68,12 +70,14 @@ export const FMC_TRACE_DESCRIPTION =
   "fix recommendations takes those ids. A resize, a cap and a system assignment are applied. A split, a regrade, a cleanout and a valve stay advisory. " +
   "HEBERT HOSTELS, a central model, and protected_paths are refused. " +
   "Not run yet: duct_airflow, fitting_corner, earthing, tray_fill. " +
+  "report: page a saved findings file. No Revit call. offset, limit and codes filter the findings. copy_to copies the file under %LOCALAPPDATA%\\Formcraft or the HANDOFF folder, never D:. " +
   "Example: action leak, document F26901-FMC-ZZ-ZZ-M3-P-0001_USER. Example: action continuity, document F26901-FMC-ZZ-ZZ-M3-E-0001_USER.";
 
 const limit = (key: string) => z.number().optional().describe(`${key} override. PROVISIONAL when omitted.`);
 
 export const FMC_TRACE_SHAPE = {
-  action: z.enum(["checks", "limits", "leak", "continuity", "run", "missing", "standards", "counts", "recommend", "fix"]),
+  action: z.enum(["checks", "limits", "leak", "continuity", "run", "missing", "standards", "counts", "recommend", "fix", "report"]),
+  document: z.string().optional().default("").describe("Exact title or full path when more than one document is open."),
   checks: z.array(z.string()).optional().describe("run: check ids. Default leak and continuity. Phase 2 ids are skipped."),
   system: z.string().optional().default("").describe("leak: piping or duct system name, classification or element id. Empty checks every system."),
   source: z.string().optional().default("").describe("leak: element id to walk from. Empty uses each system's base equipment, or the largest connected part when a system has none."),
@@ -93,6 +97,11 @@ export const FMC_TRACE_SHAPE = {
   max_edits: z.number().int().min(1).max(100).optional().default(25).describe("fix: how many corrections one call may plan or apply."),
   recommendations: z.array(z.string()).optional().default([]).describe("fix: recommendation ids from fmc_trace recommend. Only the deterministic ones are edited."),
   ids: z.array(z.number().int()).optional().describe("fix: apply only edits whose elements are all in this list. Omit it to plan every correction up to max_edits."),
+  path: z.string().optional().default("").describe("report: a saved findings file. Empty uses the latest file for document."),
+  offset: z.number().int().min(0).optional().default(0),
+  limit: z.number().int().min(1).max(500).optional().default(50),
+  codes: z.array(z.string()).optional().default([]).describe("report: keep these finding codes only."),
+  copy_to: z.string().optional().default("").describe("report: copy the file under %LOCALAPPDATA%\\Formcraft or HANDOFF. handoff uses the HANDOFF folder. Never D:."),
 };
 
 export type FmcTraceArgs = z.infer<z.ZodObject<typeof FMC_TRACE_SHAPE>>;
@@ -130,7 +139,27 @@ async function highlightTemporary(ids: number[]): Promise<{ applied: boolean; re
   }
 }
 
+function reportSaved(args: FmcTraceArgs) {
+  const dir = traceReportHostDir();
+  const file = args.path.trim() || latestTraceFile(dir, args.document) || "";
+  if (!file || !fs.existsSync(file)) return reply({ tool: "fmc_trace", read_only: true, action: "report", error: "No saved findings file." }, true);
+  if (onDriveD(file)) return reply({ tool: "fmc_trace", read_only: true, code: "FMC-CLASH-PATH", message: "Refusing to read a findings path on D:." }, true);
+  let body: unknown;
+  try { body = JSON.parse(fs.readFileSync(file, "utf8")); }
+  catch (error) { return reply({ tool: "fmc_trace", read_only: true, error: error instanceof Error ? error.message : String(error) }, true); }
+  const page = pageFindings(flattenFindings(body), { offset: args.offset, limit: args.limit, codes: args.codes });
+  let copy: string | undefined;
+  const target = args.copy_to.trim();
+  if (target) {
+    const dest = target.toLowerCase() === "handoff" ? handoffDir() : target;
+    try { copy = copyTraceFile(file, dest); }
+    catch (error) { return reply({ tool: "fmc_trace", read_only: true, code: "FMC-CLASH-PATH", message: error instanceof Error ? error.message : String(error), page }, true); }
+  }
+  return reply({ tool: "fmc_trace", read_only: true, action: "report", file, ...page, ...(copy ? { copy } : {}) });
+}
+
 export async function runFmcTrace(args: FmcTraceArgs) {
+  if (args.action === "report") return reportSaved(args);
   const bank = traceBank();
   const resolved = resolveTraceLimits(overrides(args), bank);
   if (!resolved.ok) return reply({ refused: true, read_only: true, reasons: [resolved.message] }, true);

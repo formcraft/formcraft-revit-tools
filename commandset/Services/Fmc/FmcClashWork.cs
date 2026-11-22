@@ -58,6 +58,11 @@ namespace RevitMCPCommandSet.Services.Fmc
                         return;
                     }
                     string source = Parameters.Value<string>("source") ?? "";
+                    if (string.Equals(mode, "sleeves", StringComparison.OrdinalIgnoreCase))
+                    {
+                        Sleeves(doc);
+                        return;
+                    }
                     if (source.StartsWith("cache:", StringComparison.OrdinalIgnoreCase))
                     {
                         ScanAgainstCache(doc, source.Substring("cache:".Length).Trim());
@@ -83,7 +88,12 @@ namespace RevitMCPCommandSet.Services.Fmc
                     string file = Path.Combine(folder, "clash-" + DateTime.UtcNow.ToString("yyyyMMdd-HHmmss") + ".jsonl");
                     using (var writer = new StreamWriter(file, false))
                     {
-                        foreach (JObject pair in (Parameters["pairs"] as JArray ?? new JArray()).OfType<JObject>())
+                        JArray pairTokens = Parameters["pairs"] as JArray ?? new JArray();
+                        if (pairTokens.Count == 0) pairTokens = DefaultPairs();
+                        bool centreline = Parameters.Value<bool?>("centreline") == true;
+                        double clearance = (Parameters.Value<double?>("clearance_mm") ?? 0) / FeetToMm;
+                        List<OpeningInfo> openings = LoadOpenings(doc);
+                        foreach (JObject pair in pairTokens.OfType<JObject>())
                         {
                             string nameA = pair.Value<string>("a") ?? "";
                             string nameB = pair.Value<string>("b") ?? "";
@@ -155,10 +165,12 @@ namespace RevitMCPCommandSet.Services.Fmc
                                             count++;
                                             string key = nameA + "|" + nameB;
                                             byPair[key] = byPair.TryGetValue(key, out int have) ? have + 1 : 1;
+                                            string status = Mark(a, b, nameA, nameB, centreline, clearance, openings, out long openingId);
                                             var line = new JObject
                                             {
                                                 ["a"] = a.Id, ["b"] = b.Id, ["category_a"] = nameA, ["category_b"] = nameB,
                                                 ["link_a"] = a.Link, ["link_b"] = b.Link, ["overlap"] = true, ["exact"] = exactHit == null ? (JToken)JValue.CreateNull() : exactHit,
+                                                ["status"] = status, ["opening_id"] = openingId,
                                             };
                                             writer.WriteLine(line.ToString(Newtonsoft.Json.Formatting.None));
                                             if (sample.Count < 40) sample.Add(line);
@@ -286,6 +298,194 @@ namespace RevitMCPCommandSet.Services.Fmc
             string text = (name ?? "").Trim();
             if (!text.StartsWith("OST_", StringComparison.OrdinalIgnoreCase)) text = "OST_" + text;
             return Enum.TryParse(text, true, out category);
+        }
+
+        private sealed class OpeningInfo
+        {
+            public long Id;
+            public long Host;
+            public XYZ Min;
+            public XYZ Max;
+            public string Kind;
+            public string Name;
+        }
+
+        private static JArray DefaultPairs()
+        {
+            string[] hosts = { "OST_Walls", "OST_Floors", "OST_Ceilings", "OST_Roofs", "OST_StructuralColumns", "OST_StructuralFraming", "OST_StructuralFoundation", "OST_Site" };
+            string[] guests = { "OST_PipeCurves", "OST_DuctCurves", "OST_Conduit", "OST_CableTray", "OST_MechanicalEquipment", "OST_PlumbingEquipment", "OST_GenericModel", "OST_SpecialityEquipment", "OST_ElectricalFixtures", "OST_LightingFixtures" };
+            var pairs = new JArray();
+            foreach (string host in hosts) foreach (string guest in guests) pairs.Add(new JObject { ["a"] = host, ["b"] = guest });
+            return pairs;
+        }
+
+        private static List<OpeningInfo> LoadOpenings(Document doc)
+        {
+            var list = new List<OpeningInfo>();
+            try
+            {
+                foreach (Opening opening in new FilteredElementCollector(doc).OfClass(typeof(Opening)).Cast<Opening>())
+                {
+                    BoundingBoxXYZ box = opening.get_BoundingBox(null);
+                    if (box == null) continue;
+                    long host = 0;
+                    try { host = opening.Host?.Id.Value ?? 0; } catch (Exception) { host = 0; }
+                    list.Add(new OpeningInfo { Id = opening.Id.Value, Host = host, Min = box.Min, Max = box.Max, Kind = "opening", Name = opening.Name ?? "" });
+                }
+            }
+            catch (Exception) { /* a model with no openings still scans */ }
+            var hosted = new[] { BuiltInCategory.OST_Doors, BuiltInCategory.OST_Windows, BuiltInCategory.OST_GenericModel, BuiltInCategory.OST_PipeAccessory, BuiltInCategory.OST_SpecialityEquipment };
+            foreach (FamilyInstance instance in new FilteredElementCollector(doc).WherePasses(new ElementMulticategoryFilter(hosted)).WhereElementIsNotElementType().OfType<FamilyInstance>())
+            {
+                if (instance.Host == null) continue;
+                string name = ((instance.Symbol?.FamilyName ?? "") + " " + (instance.Symbol?.Name ?? "") + " " + instance.Name).ToLowerInvariant();
+                bool sleeve = name.Contains("sleeve");
+                bool door = instance.Category != null && (instance.Category.Id.Value == (long)BuiltInCategory.OST_Doors || instance.Category.Id.Value == (long)BuiltInCategory.OST_Windows);
+                if (!sleeve && !door) continue;
+                BoundingBoxXYZ box = instance.get_BoundingBox(null);
+                if (box == null) continue;
+                list.Add(new OpeningInfo { Id = instance.Id.Value, Host = instance.Host.Id.Value, Min = box.Min, Max = box.Max, Kind = sleeve ? "sleeve" : "opening", Name = name });
+            }
+            return list;
+        }
+
+        private static string Mark(Box a, Box b, string catA, string catB, bool centreline, double clearance, List<OpeningInfo> openings, out long openingId)
+        {
+            openingId = 0;
+            try
+            {
+                if (Joined(a, b)) return "join";
+                if (HostedOn(a, b) || HostedOn(b, a)) return "hosted";
+                long wall = catA.IndexOf("Wall", StringComparison.OrdinalIgnoreCase) >= 0 || catA.IndexOf("Floor", StringComparison.OrdinalIgnoreCase) >= 0 ? a.Id
+                    : catB.IndexOf("Wall", StringComparison.OrdinalIgnoreCase) >= 0 || catB.IndexOf("Floor", StringComparison.OrdinalIgnoreCase) >= 0 ? b.Id : 0;
+                if (wall != 0 && InsideOpening(a, b, wall, openings, out openingId)) return "cleared_by_opening";
+                if (centreline && (CurveMisses(a, b) || CurveMisses(b, a))) return "clearance";
+                double depth = Math.Min(Math.Min(Overlap1(a.Min.X, a.Max.X, b.Min.X, b.Max.X), Overlap1(a.Min.Y, a.Max.Y, b.Min.Y, b.Max.Y)), Overlap1(a.Min.Z, a.Max.Z, b.Min.Z, b.Max.Z));
+                if (clearance > 0 && depth > 0 && depth <= clearance) return "clearance";
+            }
+            catch (Exception) { return "hard"; }
+            return "hard";
+        }
+
+        private static bool Joined(Box a, Box b)
+        {
+            ConnectorManager manager = Connectors(a.Doc.GetElement(new ElementId(a.Id)));
+            if (manager == null) return false;
+            foreach (Connector connector in manager.Connectors)
+            {
+                try
+                {
+                    foreach (Connector other in connector.AllRefs)
+                        if (other?.Owner != null && other.Owner.Id.Value == b.Id) return true;
+                }
+                catch (Exception) { /* one connector is not a reason to call this a clash */ }
+            }
+            return false;
+        }
+
+        private static ConnectorManager Connectors(Element element)
+        {
+            if (element is MEPCurve curve) return curve.ConnectorManager;
+            if (element is FamilyInstance instance) return instance.MEPModel?.ConnectorManager;
+            return null;
+        }
+
+        private static bool HostedOn(Box device, Box host)
+        {
+            if (device.Doc.GetElement(new ElementId(device.Id)) is FamilyInstance instance && instance.Host != null)
+                return instance.Host.Id.Value == host.Id;
+            return false;
+        }
+
+        private static bool InsideOpening(Box a, Box b, long wall, List<OpeningInfo> openings, out long openingId)
+        {
+            openingId = 0;
+            XYZ min = new XYZ(Math.Max(a.Min.X, b.Min.X), Math.Max(a.Min.Y, b.Min.Y), Math.Max(a.Min.Z, b.Min.Z));
+            XYZ max = new XYZ(Math.Min(a.Max.X, b.Max.X), Math.Min(a.Max.Y, b.Max.Y), Math.Min(a.Max.Z, b.Max.Z));
+            foreach (OpeningInfo opening in openings)
+            {
+                if (opening.Host != 0 && opening.Host != wall) continue;
+                if (min.X >= opening.Min.X - 0.01 && min.Y >= opening.Min.Y - 0.01 && min.Z >= opening.Min.Z - 0.01
+                    && max.X <= opening.Max.X + 0.01 && max.Y <= opening.Max.Y + 0.01 && max.Z <= opening.Max.Z + 0.01)
+                {
+                    openingId = opening.Id;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private static bool CurveMisses(Box curve, Box other)
+        {
+            if (!(curve.Doc.GetElement(new ElementId(curve.Id)) is MEPCurve mep)) return false;
+            if (!(mep.Location is LocationCurve located) || located.Curve == null || !located.Curve.IsBound) return false;
+            double radius = 0;
+            foreach (BuiltInParameter parameter in new[] { BuiltInParameter.RBS_PIPE_DIAMETER_PARAM, BuiltInParameter.RBS_CURVE_DIAMETER_PARAM, BuiltInParameter.RBS_CONDUIT_DIAMETER_PARAM, BuiltInParameter.RBS_CURVE_WIDTH_PARAM })
+            {
+                Parameter value = mep.get_Parameter(parameter);
+                if (value == null || !value.HasValue) continue;
+                radius = Math.Max(radius, value.AsDouble() / 2);
+            }
+            XYZ p0 = located.Curve.GetEndPoint(0);
+            XYZ p1 = located.Curve.GetEndPoint(1);
+            XYZ min = new XYZ(other.Min.X - radius, other.Min.Y - radius, other.Min.Z - radius);
+            XYZ max = new XYZ(other.Max.X + radius, other.Max.Y + radius, other.Max.Z + radius);
+            return !SegmentHits(p0, p1, min, max);
+        }
+
+        private static bool SegmentHits(XYZ p0, XYZ p1, XYZ min, XYZ max)
+        {
+            double t0 = 0, t1 = 1;
+            double[] start = { p0.X, p0.Y, p0.Z };
+            double[] delta = { p1.X - p0.X, p1.Y - p0.Y, p1.Z - p0.Z };
+            double[] lo = { min.X, min.Y, min.Z };
+            double[] hi = { max.X, max.Y, max.Z };
+            for (int axis = 0; axis < 3; axis++)
+            {
+                if (Math.Abs(delta[axis]) < 1e-9)
+                {
+                    if (start[axis] < lo[axis] || start[axis] > hi[axis]) return false;
+                    continue;
+                }
+                double near = (lo[axis] - start[axis]) / delta[axis];
+                double far = (hi[axis] - start[axis]) / delta[axis];
+                if (near > far) { double swap = near; near = far; far = swap; }
+                t0 = Math.Max(t0, near);
+                t1 = Math.Min(t1, far);
+                if (t0 > t1) return false;
+            }
+            return true;
+        }
+
+        private static double Overlap1(double a0, double a1, double b0, double b1) => Math.Min(a1, b1) - Math.Max(a0, b0);
+
+        private void Sleeves(Document doc)
+        {
+            double radius = (Parameters.Value<double?>("radius_mm") ?? 300) / FeetToMm;
+            long hitA = Parameters.Value<long?>("hit_a") ?? 0;
+            long hitB = Parameters.Value<long?>("hit_b") ?? 0;
+            JArray point = Parameters["point_mm"] as JArray;
+            XYZ at = null;
+            if (point != null && point.Count >= 3) at = new XYZ(point[0].Value<double>() / FeetToMm, point[1].Value<double>() / FeetToMm, point[2].Value<double>() / FeetToMm);
+            var rows = new JArray();
+            foreach (OpeningInfo opening in LoadOpenings(doc))
+            {
+                bool named = opening.Id == hitA || opening.Id == hitB || opening.Host == hitA || opening.Host == hitB;
+                XYZ centre = (opening.Min + opening.Max) / 2;
+                bool near = at != null && centre.DistanceTo(at) <= radius;
+                if (!named && !near && hitA == 0 && at == null) continue;
+                if (!named && !near) continue;
+                rows.Add(new JObject
+                {
+                    ["id"] = opening.Id, ["host_id"] = opening.Host, ["kind"] = opening.Kind, ["name"] = opening.Name,
+                    ["min"] = Mm(opening.Min), ["max"] = Mm(opening.Max),
+                });
+            }
+            Result["read_only"] = true;
+            Result["applied"] = false;
+            Result["sleeves"] = rows;
+            Result["count"] = rows.Count;
+            Result["resolved_document"] = FmcTarget.Resolved(doc);
         }
 
         private static long WorkingSet()

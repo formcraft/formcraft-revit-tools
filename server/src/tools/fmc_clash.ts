@@ -5,6 +5,8 @@ import {
   cacheStatus, findCacheByTitle, onDriveD, readCacheHeader, refuseCacheWrite, summariseHits, writeClashCache,
   type CacheElement, type CacheHeader, type ClashHit,
 } from "../fmc/clashscan.js";
+import { DEFAULT_CLASH_CATEGORIES, defaultClashPairs, importLegacy, type LegacyExport } from "../fmc/clashfilter.js";
+import fs from "node:fs";
 import { reportHostDir, writeReport } from "../fmc/localreport.js";
 
 function reply(body: object, isError = false) {
@@ -18,6 +20,10 @@ export const FMC_CLASH_DESCRIPTION =
   "export_cache writes per-element boxes, and optional capped triangle meshes, under %LOCALAPPDATA%\\Formcraft\\clash\\cache. " +
   "It does not save the source model and it does not write on D:. " +
   "source cache:<file or doc title> scans the open host against that cache and reports the cache age. " +
+  "source import:<file> reads the clash-bot JSON (doc, captured_at, elements[].bbox_mm, openings[].bbox_mm). Those coordinates are millimetres and are not scaled. Live Revit boxes are internal feet converted by 304.8. " +
+  "An empty pairs list uses the default set, which includes OST_PlumbingEquipment, OST_Site, OST_GenericModel and OST_SpecialityEquipment. " +
+  "Each hit has status hard, cleared_by_opening, join, hosted or clearance. centreline tests a pipe, duct, conduit or tray centreline plus radius instead of the full box. " +
+  "sleeves lists openings and sleeve families near a hit or a point. " +
   "STALE when the source file's modified time is newer than the cache. " +
   "An axis-aligned box prefilter runs in chunks. Exact solid intersection runs only for box hits, and only when exact is true. " +
   "Geometry for the whole model is not kept. Results are appended to a JSONL file. " +
@@ -30,12 +36,18 @@ const pair = z.object({
 });
 
 const shape = {
-  action: z.enum(["scan", "export_cache"]).optional().default("scan"),
+  action: z.enum(["scan", "export_cache", "sleeves"]).optional().default("scan"),
   document: z.string().optional().default(""),
   pairs: z.array(pair).optional().default([]).describe("Category names, for example OST_Walls and OST_DuctCurves. Required for scan."),
   categories: z.array(z.string()).optional().default([]).describe("export_cache: categories to store. Empty uses the pairs."),
   link: z.string().optional().default("").describe("Link instance to use as the other model, for example S. The source model does not have to be open."),
-  source: z.string().optional().default("").describe("cache:<file or doc title>. Scans the open host against that cache."),
+  source: z.string().optional().default("").describe("cache:<file or title>, or import:<legacy json file>."),
+  centreline: z.boolean().optional().default(false).describe("MEP curves: test centreline plus radius or half-width, not the full AABB."),
+  clearance_mm: z.number().min(0).max(500).optional().default(0),
+  hit_a: z.number().int().optional(),
+  hit_b: z.number().int().optional(),
+  point_mm: z.array(z.number()).length(3).optional(),
+  radius_mm: z.number().min(0).max(5000).optional().default(300),
   meshes: z.boolean().optional().default(false).describe("export_cache: also store a capped triangle mesh per element."),
   mesh_cap: z.number().int().min(0).max(200).optional().default(24),
   chunk: z.number().int().min(1).max(2000).optional().default(250),
@@ -73,13 +85,14 @@ function resolveCache(source: string, env?: NodeJS.ProcessEnv): { file: string }
 
 export async function runFmcClash(args: FmcClashArgs, io: ClashIo = {}) {
   if (args.action === "export_cache") return exportCache(args, io);
+  if (args.action === "sleeves") return sleeves(args, io);
+  if (args.source.trim().toLowerCase().startsWith("import:")) return importSource(args, io);
   if (args.source.trim()) return scanCache(args, io);
-  if (!args.pairs.length) {
-    return reply({ tool: "fmc_clash", read_only: true, code: "FMC-CLASH-CATEGORY", message: "scan needs at least one category pair." }, true);
-  }
+  const pairs = args.pairs.length ? args.pairs : defaultClashPairs();
   const body = {
-    mode: "scan", document: args.document, pairs: args.pairs, chunk: args.chunk, tolerance_mm: args.tolerance_mm,
+    mode: "scan", document: args.document, pairs, chunk: args.chunk, tolerance_mm: args.tolerance_mm,
     exact: args.exact, include_links: args.include_links, max_hits: args.max_hits, link: args.link,
+    centreline: args.centreline, clearance_mm: args.clearance_mm,
   };
   let result: Record<string, unknown>;
   try {
@@ -112,8 +125,35 @@ export async function runFmcClash(args: FmcClashArgs, io: ClashIo = {}) {
   }, result.code === "FMC-LINK-NOT-LOADED" || result.code === "FMC-LINK-NOT-FOUND");
 }
 
+async function sleeves(args: FmcClashArgs, io: ClashIo) {
+  const body = {
+    mode: "sleeves", document: args.document, hit_a: args.hit_a ?? 0, hit_b: args.hit_b ?? 0,
+    point_mm: args.point_mm ?? [], radius_mm: args.radius_mm,
+  };
+  try {
+    const result = (io.read ? await io.read(body) : await withRevitConnection((client) => client.sendRaw("fmc_clash", body, 120000))) as Record<string, unknown>;
+    return reply({ tool: "fmc_clash", read_only: true, applied: false, action: "sleeves", ...result });
+  } catch (error) {
+    return reply({ tool: "fmc_clash", read_only: true, error: error instanceof Error ? error.message : String(error) }, true);
+  }
+}
+
+async function importSource(args: FmcClashArgs, io: ClashIo) {
+  const file = args.source.replace(/^import:/i, "").trim();
+  if (!file) return reply({ tool: "fmc_clash", read_only: true, code: "FMC-CLASH-CACHE", message: "import: needs a file." }, true);
+  if (onDriveD(file)) return reply({ tool: "fmc_clash", read_only: true, code: "FMC-CLASH-PATH", message: "The import is read. A cache is not written on D:." }, true);
+  let raw: LegacyExport;
+  try { raw = JSON.parse(fs.readFileSync(file, "utf8").replace(/^\uFEFF/, "")) as LegacyExport; }
+  catch (error) { return reply({ tool: "fmc_clash", read_only: true, code: "FMC-CLASH-CACHE", message: error instanceof Error ? error.message : String(error) }, true); }
+  const converted = importLegacy(raw);
+  const refused = refuseCacheWrite(cacheDir(io.env), "");
+  if (refused) return reply({ tool: "fmc_clash", read_only: true, code: "FMC-CLASH-PATH", message: refused }, true);
+  const cache = writeClashCache(cacheDir(io.env), converted.header, converted.elements);
+  return scanCache({ ...args, source: `cache:${cache}`, pairs: args.pairs.length ? args.pairs : defaultClashPairs() }, io);
+}
+
 async function exportCache(args: FmcClashArgs, io: ClashIo) {
-  const categories = args.categories.length ? args.categories : [...new Set(args.pairs.flatMap((item) => [item.a, item.b]))];
+  const categories = args.categories.length ? args.categories : args.pairs.length ? [...new Set(args.pairs.flatMap((item) => [item.a, item.b]))] : [...DEFAULT_CLASH_CATEGORIES];
   if (!categories.length) {
     return reply({ tool: "fmc_clash", read_only: true, code: "FMC-CLASH-CATEGORY", message: "export_cache needs categories." }, true);
   }

@@ -72,8 +72,23 @@ export const SEND_CODE_SHAPE = {
 
 type SendCodeArgs = { code: string; parameters?: string[]; usings?: string[]; transactionMode?: "auto" | "none" | "read_only"; purpose?: string; allow_full_scan?: boolean };
 
+/**
+ * A script result that is already an object, or a JSON string of an object or array, parsed once.
+ * Anything else stays out of output_json. The text reply is unchanged apart from this extra field.
+ */
+export function outputJson(result: unknown): unknown | undefined {
+  let value = result;
+  if (typeof value === "string") {
+    const text = value.trim();
+    if (!text.startsWith("{") && !text.startsWith("[")) return undefined;
+    try { value = JSON.parse(text); } catch { return undefined; }
+  }
+  if (value !== null && typeof value === "object") return value;
+  return undefined;
+}
+
 /** The add-in's answer as text: the result, or the error with its code, and the times. */
-export function formatCodeResult(response: any): { text: string; isError: boolean } {
+export function formatCodeResult(response: any): { text: string; isError: boolean; output_json?: unknown } {
   if (!response || typeof response !== "object") return { text: `Code execution finished.\nResult: ${JSON.stringify(response)}`, isError: false };
   const times = `compile ${response.compileMs ?? "?"} ms, run ${response.runMs ?? "?"} ms`;
   const resolved = resolvedDocumentFrom(response.resolved_document) ?? resolvedDocumentFrom(response.document);
@@ -107,7 +122,8 @@ export function formatCodeResult(response: any): { text: string; isError: boolea
   }
   let result: unknown = response.result;
   if (typeof result === "string") { try { result = JSON.parse(result); } catch { /* keep the text */ } }
-  return { isError: false, text: `Code execution successful (${times})\n` + JSON.stringify({ result, ...extra }, null, 2) };
+  const output_json = outputJson(response.result);
+  return { isError: false, text: `Code execution successful (${times})\n` + JSON.stringify({ result, ...(output_json === undefined ? {} : { output_json }), ...extra }, null, 2), output_json };
 }
 
 export async function runSendCode(args: SendCodeArgs) {
@@ -120,8 +136,8 @@ export async function runSendCode(args: SendCodeArgs) {
   };
   try {
     const response = await withRevitConnection(async (revitClient) => revitClient.sendCommand("send_code_to_revit", params));
-    const { text, isError } = formatCodeResult(response);
-    return { content: [{ type: "text" as const, text }], isError };
+    const { text, isError, output_json } = formatCodeResult(response);
+    return { content: [{ type: "text" as const, text }], isError, ...(output_json === undefined ? {} : { output_json }) };
   } catch (error) {
     if (error instanceof JobStillRunning) {
       return {

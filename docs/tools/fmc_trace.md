@@ -31,6 +31,19 @@ Dry run first. Each edit has a code and a confidence. `caps: true` is required b
 }
 ```
 
+Page a saved file. This does not call Revit. `copy_to` of `handoff` uses `C:\Users\USER\agent-tools\HANDOFF` (or `FMC_HANDOFF`). A copy is refused on `D:`.
+
+```json
+{
+  "action": "report",
+  "document": "F26901-FMC-ZZ-ZZ-M3-P-0001_USER",
+  "offset": 0,
+  "limit": 50,
+  "codes": ["FLOW-OPEN-END", "FLOW-NOT-CONNECTED"],
+  "copy_to": "handoff"
+}
+```
+
 Conduit and tray ends:
 
 ```json
