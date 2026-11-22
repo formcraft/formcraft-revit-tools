@@ -205,6 +205,10 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_phase_apply",
   // Joins and the envelope pressure test. Reads stay on fmc_joins. This command is the one transaction.
   "fmc_joins_apply",
+  // True north: crop, scope box or a sheet north arrow. One transaction. Never SetProjectPosition.
+  "fmc_north_apply",
+  // Legend views: duplicate a seed view or copy a seed component. One transaction. No text notes.
+  "fmc_legend_apply",
 ]);
 
 /**
@@ -228,6 +232,10 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_phase",
   // Join audit, hosting, room closure and the envelope sample. No transaction.
   "fmc_joins",
+  // True north, survey point, view orientation and grid angles. No transaction.
+  "fmc_north",
+  // Legend views and legend components. No transaction.
+  "fmc_legend_views",
 ]);
 
 /**

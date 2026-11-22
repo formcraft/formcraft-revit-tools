@@ -908,5 +908,23 @@
     "status": "Built, Revit check due",
     "ref": "fmc_hw",
     "note": "One tool: scan, gpu_prefer, memory, free, advice, offload. The GPU cannot replace system RAM. The model, regeneration, transactions and the Revit API stay on the CPU. Video memory is for views. Scan lists GPUs (WMI, DXGI when the collector has it), RAM, page file, disks, CPU, Revit working set, private bytes and commit, which GPU Revit is on, and hardware acceleration. Cached at startup and shown on /health hw. gpu_prefer sets the Windows high-performance GPU for Revit.exe only with confirm:true and does not write Revit.ini. offload reports and, with confirm:true, writes hardware acceleration, anti-aliasing and optimize-view-navigation for the next Revit start. free closes non-active, non-pinned views beyond keep and never the last view. It does not save unless the existing autosave would. A local save does not clear the undo stack. Soft and hard tiers use ram_pause_free_mb and the 1.5× resume line. No new guard setting. Point, clash and ray samples run on the CPU unless an optional GPU library matches that result. The add-in builds without that library. Needs a Revit check. The add-in needs a Revit restart; the server works against an older add-in for the OS scan."
+  },
+  {
+    "id": "F102",
+    "area": "Engine",
+    "group": "Coordinate",
+    "feature": "True north and project north",
+    "status": "Built, Revit check due",
+    "ref": "fmc_north, docs/NORTH.md",
+    "note": "audit, compare, align_views and north_arrows. fmc_coord still owns the coordination record and is the tool that may move a survey point. fmc_north never calls SetProjectPosition and never acquires coordinates. audit reads the project-north to true-north angle, the site, shared coordinates, the survey and project base points, each view's orientation, and each grid set's dominant angle. compare checks A, E, P and S, or a named list, within north.tol_deg and north.tol_mm (else coord.tol_*, else provisional 0.01 deg and 1 mm, which cannot PASS). Links use GetTotalTransform against shared coordinates. align_views rotates plan-view crops or an existing scope box square to a grid set and does not change project north. north_arrows rotates a sheet symbol. dry_run defaults true. A write is fmc_north_apply, one transaction, with batch_lease and kit, standards and rulebook references. JSON under %LOCALAPPDATA%\\Formcraft\\north. No pictures. Needs a Revit check."
+  },
+  {
+    "id": "F103",
+    "area": "Engine",
+    "group": "Drawings",
+    "feature": "Legend views and symbols",
+    "status": "Built, Revit check due",
+    "ref": "fmc_legend seed, create_view, place, docs/LEGEND.md",
+    "note": "The chain action is unchanged. seed, create_view and place copy a seed because Revit cannot create a LegendComponent or a ViewLegend. seed is read-only and returns FMC-LEGEND-NO-SEED when no component exists. create_view duplicates a legend view or copies one from another open document and reports a refusal. place copies the seed into a grid and sets LEGEND_COMPONENT, LEGEND_COMPONENT_VIEW and, for a wall, LEGEND_COMPONENT_LENGTH, one SubTransaction per component. label is none, keynote or type_mark. No free text notes. If a tag cannot be placed, type marks are returned for a schedule. dry_run defaults true. A write is fmc_legend_apply, one transaction, with batch_lease and references. JSON under %LOCALAPPDATA%\\Formcraft\\legend. No pictures. Needs a Revit check."
   }
 ]
