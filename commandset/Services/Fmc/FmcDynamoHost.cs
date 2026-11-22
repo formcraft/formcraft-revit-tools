@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Autodesk.Revit.DB;
+using Autodesk.Revit.UI;
 using Newtonsoft.Json.Linq;
 
 namespace RevitMCPCommandSet.Services.Fmc
@@ -24,38 +25,65 @@ namespace RevitMCPCommandSet.Services.Fmc
                 {
                     string file = FindDll();
                     if (string.IsNullOrEmpty(file))
-                        return Unavailable("Dynamo for Revit is not loaded in this session, and DynamoRevitDS.dll was not found next to Revit.");
+                        return Unavailable("Dynamo for Revit is not loaded in this session, and DynamoRevitDS.dll was not found next to Revit.", false);
                     try { loaded.Add(Assembly.LoadFrom(file)); }
-                    catch (Exception ex) { return Unavailable("Dynamo for Revit could not be loaded: " + ex.Message); }
+                    catch (Exception ex) { return Failure("FMC-DYNAMO-UNAVAILABLE", ex, false, false); }
                 }
                 string version = loaded.Select(a => a.GetName().Version?.ToString()).FirstOrDefault(v => !string.IsNullOrEmpty(v)) ?? "";
+                bool started = ModelStarted();
                 return new JObject
                 {
                     ["loaded"] = true,
+                    ["model_started"] = started,
                     ["version"] = version,
                     ["assemblies"] = new JArray(loaded.Select(a => a.GetName().Name).Distinct()),
                     ["binding"] = "reflection",
-                    ["note"] = "Dynamo calls are late-bound. This build does not reference the Dynamo for Revit assemblies.",
+                    ["note"] = started
+                        ? "Dynamo for Revit is loaded and its model has been started. Calls are late-bound."
+                        : "Dynamo for Revit assemblies are loaded. The RevitDynamoModel has not been started in this session.",
                 };
             }
             catch (Exception ex)
             {
-                return Unavailable(ex.GetType().Name + ": " + ex.Message);
+                return Failure("FMC-DYNAMO-UNAVAILABLE", ex, false, false);
             }
         }
 
-        public static JObject Run(Document doc, string file, JObject inputs)
+        /// <summary>
+        /// Runs one graph. If Dynamo's model has not been started, this calls DynamoRevit.ExecuteCommand
+        /// with dynShowUI false and dynAutomation true. That dictionary is Dynamo's own startup switch.
+        /// It does not write a Revit journal and it does not launch Revit. Nothing is saved.
+        /// </summary>
+        public static JObject Run(UIApplication app, Document doc, string file, JObject inputs)
         {
+            if (doc == null || !doc.IsValidObject)
+                return Failure("FMC-DYNAMO-UNAVAILABLE", new InvalidOperationException("The document for this graph is not open."), true, ModelStarted());
             JObject session = Session();
             if (session.Value<bool?>("loaded") != true) return session;
-            Type modelType = FindType("RevitDynamoModel") ?? FindType("DynamoRevit");
-            if (modelType == null)
-                return Unavailable("Dynamo for Revit is loaded but RevitDynamoModel was not found. Open Dynamo in this session. Nothing was run.");
+            bool started = session.Value<bool?>("model_started") == true;
+            if (!started)
+            {
+                Exception startError = TryStartHeadless(app);
+                started = ModelStarted();
+                if (!started)
+                {
+                    JObject refused = Failure("FMC-DYNAMO-NOT-STARTED", startError ?? new InvalidOperationException("RevitDynamoModel is still null after a headless start."), true, false);
+                    refused["hint"] = "Open Dynamo once in this Revit session.";
+                    refused["message"] = "[FMC-DYNAMO-NOT-STARTED] " + (startError == null
+                        ? "Dynamo for Revit did not start a model."
+                        : Unwrap(startError).Message) + " Open Dynamo once in this Revit session.";
+                    return refused;
+                }
+            }
             try
             {
-                object model = ExistingModel(modelType) ?? StartModel(modelType, doc);
+                object model = CurrentModel();
                 if (model == null)
-                    return Unavailable("Dynamo for Revit did not return a model. The graph was not run, and DynamoSandbox was not started.");
+                {
+                    JObject refused = Failure("FMC-DYNAMO-NOT-STARTED", new InvalidOperationException("RevitDynamoModel was null."), true, false);
+                    refused["hint"] = "Open Dynamo once in this Revit session.";
+                    return refused;
+                }
                 InvokeOpen(model, file);
                 SetInputs(model, inputs);
                 InvokeRun(model);
@@ -63,6 +91,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 {
                     ["ran"] = true,
                     ["loaded"] = true,
+                    ["model_started"] = true,
                     ["version"] = session["version"],
                     ["outputs"] = ReadWatches(model),
                     ["binding"] = "reflection",
@@ -70,8 +99,9 @@ namespace RevitMCPCommandSet.Services.Fmc
             }
             catch (Exception ex)
             {
-                Exception inner = ex is TargetInvocationException tie && tie.InnerException != null ? tie.InnerException : ex;
-                return Unavailable(inner.GetType().Name + ": " + inner.Message);
+                JObject failed = Failure("FMC-DYNAMO-UNAVAILABLE", ex, true, ModelStarted());
+                failed["version"] = session["version"];
+                return failed;
             }
         }
 
@@ -82,14 +112,91 @@ namespace RevitMCPCommandSet.Services.Fmc
             return normal.Contains("\\05_scripts\\library\\") || normal.Contains("\\05_scripts\\dynamo\\");
         }
 
-        private static JObject Unavailable(string why)
+        private static JObject Unavailable(string why, bool modelStarted)
         {
             return new JObject
             {
                 ["loaded"] = false,
+                ["model_started"] = modelStarted,
+                ["ran"] = false,
                 ["code"] = "FMC-DYNAMO-UNAVAILABLE",
+                ["exception_type"] = "",
                 ["message"] = "[FMC-DYNAMO-UNAVAILABLE] " + why + " This is not DynamoSandbox and not a send_code bypass.",
+                ["stack"] = "",
             };
+        }
+
+        private static Exception Unwrap(Exception ex)
+        {
+            return ex is TargetInvocationException tie && tie.InnerException != null ? Unwrap(tie.InnerException) : ex;
+        }
+
+        private static JObject Failure(string code, Exception ex, bool loaded, bool modelStarted)
+        {
+            Exception inner = Unwrap(ex);
+            return new JObject
+            {
+                ["loaded"] = loaded,
+                ["model_started"] = modelStarted,
+                ["ran"] = false,
+                ["code"] = code,
+                ["exception_type"] = inner.GetType().FullName,
+                ["message"] = inner.Message,
+                ["stack"] = string.IsNullOrEmpty(inner.StackTrace) ? inner.ToString() : inner.GetType().FullName + ": " + inner.Message + Environment.NewLine + inner.StackTrace,
+            };
+        }
+
+        /// <summary>True when DynamoRevit.RevitDynamoModel exists and its state has started. Loaded assemblies alone are not enough.</summary>
+        private static bool ModelStarted()
+        {
+            object model = CurrentModel();
+            if (model == null) return false;
+            string state = model.GetType().GetProperty("State")?.GetValue(model)?.ToString() ?? "";
+            return state.StartsWith("Started", StringComparison.Ordinal);
+        }
+
+        private static object CurrentModel()
+        {
+            Type host = FindType("DynamoRevit");
+            PropertyInfo property = host?.GetProperty("RevitDynamoModel", BindingFlags.Public | BindingFlags.Static);
+            return property?.GetValue(null);
+        }
+
+        /// <summary>
+        /// DynamoRevit.ExecuteCommand with the UI hidden. Returns null when the call itself did not throw.
+        /// A null model afterwards is reported by the caller.
+        /// </summary>
+        private static Exception TryStartHeadless(UIApplication app)
+        {
+            Type hostType = FindType("DynamoRevit");
+            Type dataType = FindType("DynamoRevitCommandData");
+            if (hostType == null || dataType == null)
+                return new InvalidOperationException("DynamoRevit.ExecuteCommand is not in the loaded assemblies.");
+            object data;
+            try { data = Activator.CreateInstance(dataType); }
+            catch (Exception ex) { return Unwrap(ex); }
+            if (data == null) return new InvalidOperationException("DynamoRevitCommandData could not be created.");
+            try
+            {
+                dataType.GetProperty("Application")?.SetValue(data, app);
+                var journal = new Dictionary<string, string>
+                {
+                    ["dynShowUI"] = "False",
+                    ["dynAutomation"] = "True",
+                };
+                dataType.GetProperty("JournalData")?.SetValue(data, journal);
+                MethodInfo execute = hostType.GetMethod("ExecuteCommand", new[] { dataType });
+                if (execute == null) return new MissingMethodException(hostType.FullName, "ExecuteCommand");
+                object host = Activator.CreateInstance(hostType);
+                object result = execute.Invoke(host, new[] { data });
+                if (result != null && !string.Equals(result.ToString(), "Succeeded", StringComparison.OrdinalIgnoreCase))
+                    return new InvalidOperationException("DynamoRevit.ExecuteCommand returned " + result + ".");
+            }
+            catch (Exception ex)
+            {
+                return Unwrap(ex);
+            }
+            return null;
         }
 
         private static IEnumerable<Assembly> Loaded()
@@ -127,57 +234,6 @@ namespace RevitMCPCommandSet.Services.Fmc
                 if (hit != null) return hit;
             }
             return null;
-        }
-
-        private static object ExistingModel(Type modelType)
-        {
-            foreach (PropertyInfo property in modelType.GetProperties(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance))
-            {
-                if (property.PropertyType == modelType || property.Name.IndexOf("Model", StringComparison.OrdinalIgnoreCase) >= 0)
-                {
-                    try
-                    {
-                        object value = property.GetGetMethod()?.IsStatic == true ? property.GetValue(null) : null;
-                        if (value != null && modelType.IsInstanceOfType(value)) return value;
-                    }
-                    catch { /* the next property */ }
-                }
-            }
-            Type host = FindType("DynamoRevit");
-            if (host == null) return null;
-            foreach (PropertyInfo property in host.GetProperties(BindingFlags.Public | BindingFlags.Static))
-            {
-                try
-                {
-                    object hostValue = property.GetValue(null);
-                    if (hostValue == null) continue;
-                    PropertyInfo model = hostValue.GetType().GetProperties().FirstOrDefault(p => p.PropertyType.Name.IndexOf("DynamoModel", StringComparison.OrdinalIgnoreCase) >= 0 || p.Name == "RevitDynamoModel");
-                    object value = model?.GetValue(hostValue);
-                    if (value != null) return value;
-                }
-                catch { /* keep looking */ }
-            }
-            return null;
-        }
-
-        private static object StartModel(Type modelType, Document doc)
-        {
-            MethodInfo start = modelType.GetMethods(BindingFlags.Public | BindingFlags.Static).FirstOrDefault(m => m.Name == "Start");
-            if (start == null) return null;
-            System.Reflection.ParameterInfo[] parameters = start.GetParameters();
-            if (parameters.Length == 0) return start.Invoke(null, null);
-            object config = Activator.CreateInstance(parameters[0].ParameterType);
-            if (config == null) return null;
-            TrySet(config, "DynamoCorePath", null);
-            TrySet(config, "Context", "Revit");
-            return start.Invoke(null, new[] { config });
-        }
-
-        private static void TrySet(object target, string name, object value)
-        {
-            PropertyInfo property = target.GetType().GetProperty(name);
-            if (property == null || !property.CanWrite || value == null) return;
-            try { property.SetValue(target, value); } catch { /* optional configuration */ }
         }
 
         private static void InvokeOpen(object model, string file)

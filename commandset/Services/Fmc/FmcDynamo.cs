@@ -83,8 +83,8 @@ namespace RevitMCPCommandSet.Services.Fmc
                     FmcAiJob.ThrowIfCancelled();
                     if (CancelFile(scriptJob)) cancel = true;
                     run = cancel
-                        ? new JObject { ["cancelled"] = true, ["message"] = "Cancelled before the graph ran." }
-                        : FmcDynamoHost.Run(doc, path, inputs);
+                        ? new JObject { ["cancelled"] = true, ["ran"] = false, ["message"] = "Cancelled before the graph ran." }
+                        : FmcDynamoHost.Run(app, doc, path, inputs);
                     if (!cancel && CancelFile(scriptJob)) cancel = true;
                     after = FmcModelDiff.Read(doc, modified.Concat(added), 50);
                 }
@@ -112,10 +112,14 @@ namespace RevitMCPCommandSet.Services.Fmc
                     ["parameter_after"] = after,
                     ["outputs"] = run?["outputs"] ?? new JObject(),
                     ["loaded"] = run?["loaded"],
+                    ["model_started"] = run?["model_started"],
                     ["version"] = run?["version"],
                     ["code"] = run?["code"],
+                    ["exception_type"] = run?["exception_type"],
                     ["message"] = run?["message"],
-                    ["ran"] = run?.Value<bool?>("ran") == true && kept || run?.Value<bool?>("ran") == true,
+                    ["stack"] = run?["stack"],
+                    ["hint"] = run?["hint"],
+                    ["ran"] = run?.Value<bool?>("ran") == true,
                     ["cancelled"] = cancel,
                     ["binding"] = "reflection",
                     ["resolved_document"] = FmcTarget.Resolved(doc),
@@ -131,7 +135,8 @@ namespace RevitMCPCommandSet.Services.Fmc
         private static bool runKeeps(JObject run)
         {
             if (run == null) return false;
-            if (run.Value<string>("code") == "FMC-DYNAMO-UNAVAILABLE") return false;
+            string code = run.Value<string>("code") ?? "";
+            if (code.StartsWith("FMC-", StringComparison.Ordinal)) return false;
             return run.Value<bool?>("ran") == true;
         }
 

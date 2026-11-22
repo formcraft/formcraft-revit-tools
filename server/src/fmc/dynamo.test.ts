@@ -36,6 +36,11 @@ test("inspect reads inputs, outputs, packages, nodes and Python nodes from the .
   assert.equal(parsed.inspect.python_nodes.length, 1);
   assert.equal(parsed.inspect.python_nodes[0].engine, "CPython3");
   assert.equal(parsed.inspect.revit_nodes, false);
+  assert.equal(parsed.inspect.needs_revit, false);
+  assert.deepEqual(parsed.inspect.python_revit_refs, []);
+  const level = parsed.inspect.inputs.find((item) => item.name === "Level");
+  assert.equal(level?.type, "string");
+  assert.equal(level?.default_value, null);
 });
 
 test("a Revit package blocks offline mode and does not launch Revit", () => {
@@ -69,6 +74,66 @@ test("only 05_Scripts/library and 05_Scripts/Dynamo are approved", () => {
   assert.equal(approvedScriptPath(win.join(kit, "05_Scripts", "tools", "other.py"), kit), false);
   assert.equal(approvedScriptPath("C:\\Temp\\Rooms.dyn", kit), false);
   assert.match(outsideRootMessage("C:\\Temp\\Rooms.dyn", kit), /FMC-SCRIPT-ROOT/);
+});
+
+test("Dynamo 3 NodeViews IsSetAsInput is an input, with the node's default value", () => {
+  const parsed = parseDyn("FMC_ModelHealth.dyn", JSON.stringify({
+    Name: "FMC_ModelHealth",
+    Inputs: [],
+    Outputs: [],
+    Nodes: [
+      { Id: "a", ConcreteType: "CoreNodeModels.Input.StringInput, CoreNodeModels", NodeType: "StringInputNode", InputValue: "QA" },
+      { Id: "b", ConcreteType: "CoreNodeModels.Input.StringInput, CoreNodeModels", NodeType: "StringInputNode", InputValue: "" },
+      { Id: "c", ConcreteType: "CoreNodeModels.Input.StringInput, CoreNodeModels", NodeType: "StringInputNode", InputValue: "P" },
+      { Id: "p", ConcreteType: "PythonNode, Dynamo.Graph.Nodes.Python", NodeType: "PythonScriptNode", Engine: "CPython3", Code: "OUT = IN[0]\n" },
+    ],
+    View: {
+      NodeViews: [
+        { Id: "a", Name: "Project", IsSetAsInput: true, IsSetAsOutput: false },
+        { Id: "b", Name: "Level", IsSetAsInput: true },
+        { Id: "c", Name: "Role", IsSetAsInput: true },
+        { Id: "p", Name: "Python Script", IsSetAsOutput: true },
+      ],
+    },
+  }));
+  assert.equal(parsed.ok, true);
+  if (!parsed.ok) return;
+  assert.deepEqual(parsed.inspect.inputs.map((item) => [item.name, item.type, item.default_value]), [
+    ["Project", "StringInput", "QA"],
+    ["Level", "StringInput", ""],
+    ["Role", "StringInput", "P"],
+  ]);
+  assert.equal(parsed.inspect.outputs.some((item) => item.name === "Python Script"), true);
+  assert.equal(parsed.inspect.needs_revit, false);
+  assert.equal(parsed.inspect.revit_nodes, false);
+});
+
+test("a Python-only graph that imports RevitServices needs Revit and cannot run offline", () => {
+  const parsed = parseDyn("Health.dyn", JSON.stringify({
+    Name: "Health",
+    Inputs: [],
+    Outputs: [],
+    Nodes: [{
+      Id: "py",
+      ConcreteType: "PythonNode, Dynamo.Graph.Nodes.Python",
+      NodeType: "PythonScriptNode",
+      Engine: "CPython3",
+      Code: "import clr\nclr.AddReference('RevitServices')\nfrom RevitServices.Persistence import DocumentManager\ndoc = DocumentManager.Instance.CurrentDBDocument\n",
+    }],
+  }));
+  assert.equal(parsed.ok, true);
+  if (!parsed.ok) return;
+  assert.equal(parsed.inspect.revit_nodes, false);
+  assert.equal(parsed.inspect.needs_revit, true);
+  assert.ok(parsed.inspect.python_revit_refs.includes("clr.AddReference('RevitServices')"));
+  assert.ok(parsed.inspect.python_revit_refs.includes("RevitServices"));
+  assert.ok(parsed.inspect.python_revit_refs.includes("DocumentManager"));
+  const decision = offlineDecision(parsed.inspect);
+  assert.equal(decision.ok, false);
+  if (decision.ok) return;
+  assert.equal(decision.code, "FMC-DYNAMO-NEEDS-REVIT");
+  assert.match(decision.message, /RevitServices/);
+  assert.match(decision.message, /was not launched/);
 });
 
 test("a .dyn that is not JSON is refused", () => {

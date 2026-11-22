@@ -431,8 +431,9 @@ test("the add-in commands are registered, reads and writes are listed, and owner
   assert.match(apply, /Pinned/);
   assert.doesNotMatch(collector + apply, /CheckoutElements\s*\(/);
   assert.doesNotMatch(collector + apply, /\.Save\s*\(|SynchronizeWithCentral\s*\(/);
-  const dir = joinsDir({ FMC_JOINS_DIR: path.join(os.tmpdir(), "fmc-joins-unit") } as NodeJS.ProcessEnv);
-  assert.equal(dir.includes("AppData"), false);
+  const override = path.join(os.tmpdir(), "fmc-joins-unit");
+  const dir = joinsDir({ FMC_JOINS_DIR: override } as NodeJS.ProcessEnv);
+  assert.equal(dir, override);
   const file = writeJoinsReport(dir, "unit", { ok: true });
   assert.equal(file.startsWith(dir), true);
   fs.rmSync(dir, { recursive: true, force: true });

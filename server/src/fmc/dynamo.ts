@@ -25,6 +25,8 @@ export interface DynPort {
   id: string;
   name: string;
   type: string;
+  /** The value saved on the node. Null when the graph does not set one. */
+  default_value: unknown;
 }
 
 export interface DynPackage {
@@ -42,8 +44,13 @@ export interface DynInspect {
   packages: DynPackage[];
   nodes: { count: number; types: Array<{ type: string; count: number }> };
   python_nodes: Array<{ id: string; name: string; engine: string }>;
+  /** A Revit node or a Revit package. Python that imports Revit does not set this. */
   revit_nodes: boolean;
   revit_packages: string[];
+  /** Python that references the Revit API, even when the graph has no Revit nodes. */
+  needs_revit: boolean;
+  /** The Revit imports found in embedded Python, such as RevitServices or clr.AddReference('RevitAPI'). */
+  python_revit_refs: string[];
 }
 
 export function kitRootFrom(cfg: GuardConfig, env: NodeJS.ProcessEnv = process.env, given = ""): string {
@@ -86,12 +93,84 @@ function shortType(node: Record<string, unknown>): string {
   return parts[parts.length - 1] || head;
 }
 
-function portOf(node: Record<string, unknown>, fallback: string): DynPort {
+function nodeId(node: Record<string, unknown>, fallback: string): string {
+  return text(node.Id) || text(node.ID) || fallback;
+}
+
+function pickDefault(sources: Array<Record<string, unknown> | undefined>): unknown {
+  for (const source of sources) {
+    if (!source) continue;
+    for (const key of ["DefaultValue", "InputValue", "Value"]) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) return source[key];
+    }
+  }
+  return null;
+}
+
+function portType(sources: Array<Record<string, unknown> | undefined>, fallback: string): string {
+  for (const source of sources) {
+    if (!source) continue;
+    const named = text(source.Type) || text(source.TypeName);
+    if (named) return named;
+  }
+  for (const source of sources) {
+    if (!source) continue;
+    const described = text(asArray(source.Outputs)[0]?.Description);
+    if (described) return described;
+    if (text(source.ConcreteType) || text(source.NodeType)) {
+      const short = shortType(source);
+      if (short && short !== "Node") return short;
+    }
+  }
+  return fallback;
+}
+
+function realName(value: string): boolean {
+  return value.length > 0 && !/^input \d+$/.test(value) && !/^output \d+$/.test(value);
+}
+
+/** Later sources fill a blank name, type or default. A real name on the node view wins over a blank node name. */
+function mergePort(current: DynPort | undefined, next: DynPort): DynPort {
+  if (!current) return next;
   return {
-    id: text(node.Id) || text(node.ID) || fallback,
-    name: text(node.Name) || text(node.NickName) || text(node.Symbol) || text(node.Description) || fallback,
-    type: text(node.Type) || text(node.TypeName) || shortType(node),
+    id: current.id || next.id,
+    name: realName(next.name) ? next.name : current.name,
+    type: next.type && next.type !== "Node" ? next.type : current.type,
+    default_value: next.default_value !== null && next.default_value !== undefined ? next.default_value : current.default_value,
   };
+}
+
+function viewNodes(graph: Record<string, unknown>): Record<string, unknown>[] {
+  const view = graph.View;
+  if (!view || typeof view !== "object" || Array.isArray(view)) return [];
+  return asArray((view as Record<string, unknown>).NodeViews);
+}
+
+const PYTHON_REVIT_REFS: Array<{ label: string; re: RegExp }> = [
+  { label: "clr.AddReference('RevitAPIUI')", re: /clr\s*\.\s*AddReference\s*\(\s*['"]RevitAPIUI['"]\s*\)/i },
+  { label: "clr.AddReference('RevitAPI')", re: /clr\s*\.\s*AddReference\s*\(\s*['"]RevitAPI['"]\s*\)/i },
+  { label: "clr.AddReference('RevitServices')", re: /clr\s*\.\s*AddReference\s*\(\s*['"]RevitServices['"]\s*\)/i },
+  { label: "clr.AddReference('RevitNodes')", re: /clr\s*\.\s*AddReference\s*\(\s*['"]RevitNodes['"]\s*\)/i },
+  { label: "from Autodesk.Revit", re: /\bfrom\s+Autodesk\.Revit\b/ },
+  { label: "import Autodesk.Revit", re: /\bimport\s+Autodesk\.Revit\b/ },
+  { label: "Autodesk.Revit", re: /\bAutodesk\.Revit\b/ },
+  { label: "RevitAPIUI", re: /\bRevitAPIUI\b/ },
+  { label: "RevitAPI", re: /\bRevitAPI(?!UI)\b/ },
+  { label: "RevitServices", re: /\bRevitServices\b/ },
+  { label: "RevitNodes", re: /\bRevitNodes\b/ },
+  { label: "DocumentManager", re: /\bDocumentManager\b/ },
+  { label: "TransactionManager", re: /\bTransactionManager\b/ },
+];
+
+/** Imports and references that mean this Python cannot run in DynamoCLI. */
+export function pythonRevitRefs(code: string): string[] {
+  const found: string[] = [];
+  for (const rule of PYTHON_REVIT_REFS) if (rule.re.test(code) && !found.includes(rule.label)) found.push(rule.label);
+  return found;
+}
+
+function pythonCode(node: Record<string, unknown>): string {
+  return [node.Code, node.Script, node.CodeBody].filter((item) => typeof item === "string").join("\n");
 }
 
 function isRevitNode(node: Record<string, unknown>): boolean {
@@ -119,21 +198,46 @@ export function parseDyn(file: string, raw: string): { ok: true; inspect: DynIns
   }
   const graph = body as Record<string, unknown>;
   const nodes = asArray(graph.Nodes);
-  const inputs: DynPort[] = [];
-  const outputs: DynPort[] = [];
+  const views = viewNodes(graph);
+  const viewById = new Map(views.map((item) => [nodeId(item, ""), item]));
+  const nodeById = new Map(nodes.map((item, index) => [nodeId(item, `node ${index + 1}`), item]));
+  const inputs = new Map<string, DynPort>();
+  const outputs = new Map<string, DynPort>();
   const python: DynInspect["python_nodes"] = [];
+  const pythonRefs: string[] = [];
   const types = new Map<string, number>();
   let revitNodes = false;
+  const asPort = (id: string, sources: Array<Record<string, unknown> | undefined>, fallbackName: string): DynPort => ({
+    id,
+    name: sources.map((item) => text(item?.Name) || text(item?.NickName) || text(item?.Symbol)).find(realName) || fallbackName,
+    type: portType(sources, "Node"),
+    default_value: pickDefault(sources),
+  });
   nodes.forEach((node, index) => {
+    const id = nodeId(node, `node ${index + 1}`);
     const type = shortType(node);
+    const view = viewById.get(id);
     types.set(type, (types.get(type) ?? 0) + 1);
     if (isRevitNode(node)) revitNodes = true;
-    if (node.IsSetAsInput === true || node.IsInput === true) inputs.push(portOf(node, `input ${index + 1}`));
-    if (node.IsSetAsOutput === true || node.IsOutput === true || isWatch(node)) outputs.push(portOf(node, `output ${index + 1}`));
-    if (isPythonNode(node)) python.push({ id: text(node.Id), name: text(node.Name) || type, engine: text(node.Engine) || text(node.EngineName) });
+    const input = node.IsSetAsInput === true || node.IsInput === true || view?.IsSetAsInput === true;
+    const output = node.IsSetAsOutput === true || node.IsOutput === true || view?.IsSetAsOutput === true || isWatch(node);
+    if (input) inputs.set(id, mergePort(inputs.get(id), asPort(id, [view, node], `input ${inputs.size + 1}`)));
+    if (output) outputs.set(id, mergePort(outputs.get(id), asPort(id, [view, node], `output ${outputs.size + 1}`)));
+    if (isPythonNode(node)) {
+      python.push({ id, name: text(view?.Name) || text(node.Name) || type, engine: text(node.Engine) || text(node.EngineName) });
+      for (const label of pythonRevitRefs(pythonCode(node))) if (!pythonRefs.includes(label)) pythonRefs.push(label);
+    }
   });
-  asArray(graph.Inputs).forEach((item, index) => inputs.push(portOf(item, `input ${index + 1}`)));
-  asArray(graph.Outputs).forEach((item, index) => outputs.push(portOf(item, `output ${index + 1}`)));
+  asArray(graph.Inputs).forEach((item, index) => {
+    const key = nodeId(item, "") || `input ${index + 1}`;
+    const node = nodeById.get(key);
+    inputs.set(key, mergePort(inputs.get(key), asPort(key, [item, viewById.get(key), node], text(item.Name) || `input ${index + 1}`)));
+  });
+  asArray(graph.Outputs).forEach((item, index) => {
+    const key = nodeId(item, "") || `output ${index + 1}`;
+    const node = nodeById.get(key);
+    outputs.set(key, mergePort(outputs.get(key), asPort(key, [item, viewById.get(key), node], text(item.Name) || `output ${index + 1}`)));
+  });
   const packages: DynPackage[] = [];
   for (const item of [...asArray(graph.NodeLibraryDependencies), ...asArray(graph.Dependencies)]) {
     const name = text(item.Name) || text(item.PackageName) || text(item.Reference);
@@ -141,21 +245,22 @@ export function parseDyn(file: string, raw: string): { ok: true; inspect: DynIns
     packages.push({ name, version: text(item.Version), reference: text(item.ReferenceType) || text(item.Reference) });
   }
   const revitPackages = [...new Set(packages.map((item) => item.name).filter((name) => REVIT_PACKAGE.test(name) || REVIT_TYPE.test(name)))];
-  const seenIn = new Set<string>();
-  const seenOut = new Set<string>();
+  const hasRevitNodes = revitNodes || revitPackages.length > 0;
   return {
     ok: true,
     inspect: {
       file,
       name: text(graph.Name) || win.basename(file, ".dyn"),
       uuid: text(graph.Uuid) || text(graph.UUID),
-      inputs: inputs.filter((item) => (seenIn.has(item.id + item.name) ? false : (seenIn.add(item.id + item.name), true))),
-      outputs: outputs.filter((item) => (seenOut.has(item.id + item.name) ? false : (seenOut.add(item.id + item.name), true))),
+      inputs: [...inputs.values()],
+      outputs: [...outputs.values()],
       packages,
       nodes: { count: nodes.length, types: [...types.entries()].map(([type, count]) => ({ type, count })).sort((a, b) => b.count - a.count || a.type.localeCompare(b.type)) },
       python_nodes: python,
-      revit_nodes: revitNodes || revitPackages.length > 0,
+      revit_nodes: hasRevitNodes,
       revit_packages: revitPackages,
+      needs_revit: hasRevitNodes || pythonRefs.length > 0,
+      python_revit_refs: pythonRefs,
     },
   };
 }
@@ -174,11 +279,15 @@ export function readDyn(file: string): { ok: true; inspect: DynInspect } | { ok:
  * This never launches Revit and never replays a journal.
  */
 export function offlineDecision(inspect: DynInspect): { ok: true } | { ok: false; code: "FMC-DYNAMO-NEEDS-REVIT"; message: string } {
-  if (!inspect.revit_nodes && inspect.revit_packages.length === 0) return { ok: true };
-  const names = inspect.revit_packages.length ? inspect.revit_packages.join(", ") : "Revit nodes";
+  if (!inspect.needs_revit && !inspect.revit_nodes && inspect.revit_packages.length === 0 && inspect.python_revit_refs.length === 0) return { ok: true };
+  const names = [
+    inspect.revit_packages.join(", "),
+    inspect.revit_nodes && inspect.revit_packages.length === 0 ? "Revit nodes" : "",
+    inspect.python_revit_refs.length ? `Python ${inspect.python_revit_refs.join(", ")}` : "",
+  ].filter(Boolean).join("; ");
   return {
     ok: false,
     code: "FMC-DYNAMO-NEEDS-REVIT",
-    message: `[FMC-DYNAMO-NEEDS-REVIT] This graph uses Revit (${names}). Offline DynamoCLI runs only graphs with no Revit nodes. Revit was not launched.`,
+    message: `[FMC-DYNAMO-NEEDS-REVIT] This graph uses Revit (${names}). Offline DynamoCLI runs only graphs with no Revit nodes and no Python that references Revit. Revit was not launched.`,
   };
 }
