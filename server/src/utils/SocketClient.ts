@@ -16,7 +16,7 @@ import { retryWhileBusy } from "../fmc/busy.js";
 import { DialogBlockingError, blockingForJob } from "../fmc/dialogrules.js";
 import { wireNewLocal } from "../fmc/newlocal.js";
 import { wireGrids } from "../fmc/grids.js";
-import { memoryGate } from "../fmc/memory.js";
+import { admitWrite, memoryGate } from "../fmc/memory.js";
 import { screenScript, scriptLimit } from "../fmc/scriptguard.js";
 import { CACHED_READS, compactReply, invalidateIfWrite, putCachedRead, takeCachedRead, wantsFull } from "../fmc/readcache.js";
 import { stampAppliedDocument } from "../fmc/applieddoc.js";
@@ -202,7 +202,7 @@ export class RevitClientConnection {
     // The lease check is the same write list as a reset retry: reads never take a lease.
     const admission = admitBatchWrite(command, leaseKey, batchLease.getStore(), currentClient());
     try {
-      await memoryGate.holdWrites(Math.min(120_000, Math.max(0, timeoutMs)));
+      await admitWrite(memoryGate, command, params, Math.min(120_000, Math.max(0, timeoutMs)));
       const screened = await this.screenOwnership(command, params, aimed);
       if (screened.stopped) return { ok: false, applied: false, skipped: screened.skipped };
       const result = await this.sendLocked(command, screened.params, timeoutMs, long);

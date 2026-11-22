@@ -1179,7 +1179,7 @@ export class BatchBoard {
       ...(memory ? { memory } : {}),
       ...(paused ? {
         paused_for_memory: true,
-        message: `Paused for memory: ${free} MB free, below ${below} MB. This lease stays queued and is not failed. It grants when free memory is above ${above} MB. wait holds until then or timeout_s. Reads still work.`,
+        message: `Paused for memory: ${free} MB free, pause below ${below} MB, resume above ${above} MB. ${tierCode(memory)} This lease stays queued and is not failed. It grants when free memory is above ${above} MB. wait holds until then or timeout_s. Reads still work.`,
       } : {}),
       ...(this.maintenanceReason && ticket.state !== "active" ? {
         maintenance: true,
@@ -1571,9 +1571,16 @@ function modalDialogOpen(env: NodeJS.ProcessEnv = process.env): boolean {
   }
 }
 
+function tierCode(memory: Record<string, unknown> | null): string {
+  const tier = typeof memory?.tier === "string" ? memory.tier : "";
+  if (tier === "soft") return "FMC-MEMORY-SOFT.";
+  if (tier === "hard" || memory?.paused === true || !tier) return "FMC-MEMORY-HARD.";
+  return "FMC-MEMORY-HARD.";
+}
+
 function productionBoard(opts: BatchBoardOptions = {}, env: NodeJS.ProcessEnv = process.env): BatchBoard {
   const made = new BatchBoard({
-    memoryPaused: () => memoryGate.leasesPaused(),
+    memoryPaused: () => memoryGate.blocksNewLeases(),
     memoryView: () => memoryGate.view() as unknown as Record<string, unknown>,
     queueBusy: () => {
       try { return queueSnapshots().some((row) => row.running != null || row.waiting > 0); } catch { return false; }

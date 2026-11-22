@@ -26,6 +26,7 @@ import { addGrantListener, batchBoard, logBatchRestart, notifyBatchGranted } fro
 import { coordinationReport } from "./coordination.js";
 import { callerFor, clientNameFromInitialize, rememberCaller, runAsCaller } from "./caller.js";
 import { memoryGate } from "./memory.js";
+import { hwHealth } from "./hw.js";
 
 const win = path.win32;
 
@@ -145,6 +146,8 @@ export interface HealthReport {
   /** Per open document: next_save_at, next_sync_at, last_save_at, last_sync_at, defer_reason. */
   schedule: unknown;
   memory: ReturnType<typeof memoryGate.view>;
+  /** Last hardware scan. Pending until the startup scan finishes. */
+  hw: ReturnType<typeof hwHealth>;
   /** Editing requests (never granted) and per-document coordination counts. */
   coordination: ReturnType<typeof coordinationReport>;
 }
@@ -203,6 +206,7 @@ export async function healthReport(listen: string, startedAt: number, env: NodeJ
     batches: batchBoard().snapshot(),
     schedule: batchBoard().snapshot().syncs,
     memory: memoryGate.view(),
+    hw: hwHealth(),
     coordination: coordinationReport(env),
   };
 }

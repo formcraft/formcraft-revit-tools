@@ -15,6 +15,7 @@ import os from "node:os";
 import path from "node:path";
 import { MISSING_CHECK, REMAINING_PHASE2, STANDARDS_CHECKS, STANDARDS_IDS } from "./trace_phase2.js";
 import { citeLimit, unmatchedCells, type TraceBankEntry } from "./trace_bank.js";
+import { hypotWithin, pointBoxDistanceMm } from "./hwgpu.js";
 
 export const LEAK_CODES = [
   "FLOW-OPEN-END",
@@ -438,11 +439,7 @@ function dist(a: number[], b: number[]): number {
 }
 
 function pointBoxDistance(point: number[], box: number[]): number {
-  if (point.length < 3 || box.length < 6) return Number.POSITIVE_INFINITY;
-  const dx = point[0] < box[0] ? box[0] - point[0] : point[0] > box[3] ? point[0] - box[3] : 0;
-  const dy = point[1] < box[1] ? box[1] - point[1] : point[1] > box[4] ? point[1] - box[4] : 0;
-  const dz = point[2] < box[2] ? box[2] - point[2] : point[2] > box[5] ? point[2] - box[5] : 0;
-  return Math.hypot(dx, dy, dz);
+  return pointBoxDistanceMm(point, box);
 }
 
 function sizesDiffer(a: TraceConnector, b: TraceConnector, tol: number): boolean {
@@ -535,7 +532,7 @@ class PointIndex {
         for (let iz = cz - span; iz <= cz + span; iz++) {
           for (const index of this.cells.get(cellKey(ix, iy, iz)) ?? []) {
             const point = this.points[index];
-            if (Math.hypot(point.x - x, point.y - y, point.z - z) <= radius) hits.push(index);
+            if (hypotWithin(x, y, z, point.x, point.y, point.z, radius)) hits.push(index);
           }
         }
       }
