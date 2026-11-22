@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { LinkFact, auditLinks, candidates, linkProblems, roleOf } from "./links.js";
+import { linkResolvedDocument } from "../tools/fmc_links.js";
 
 const shared = "Z:\\Projects\\F26001\\02_Shared";
 const good: LinkFact = { id: 1, name: "F26001-FMC-ZZ-ZZ-M3-S-0001.rvt", path: shared + "\\S\\F26001-FMC-ZZ-ZZ-M3-S-0001.rvt", path_type: "Relative",
@@ -25,6 +26,16 @@ test("candidates skip backups, mark linked models and the model itself", () => {
     shared + "\\A\\F26001-FMC-ZZ-ZZ-M3-A-0001.rvt", shared + "\\M\\F26001-FMC-ZZ-ZZ-M3-M-0001.rvt"];
   const c = candidates(files, [good], "F26001-FMC-ZZ-ZZ-M3-A-0001.rvt");
   assert.deepEqual(c.map((x) => `${x.role} ${x.linked} ${x.own}`), ["A false true", "M false false", "S true false"]);
+});
+
+test("fmc_links keeps resolved_document from a stamp or from the model title", () => {
+  assert.deepEqual(linkResolvedDocument({
+    model: "S-0001.rvt",
+    resolved_document: { title: "S-0001", path: "D:\\Jobs\\_Staging\\S-0001.rvt" },
+  }), { title: "S-0001", path: "D:\\Jobs\\_Staging\\S-0001.rvt" });
+  assert.deepEqual(linkResolvedDocument({ model: "A-0002_USER.rvt" }), { title: "A-0002_USER", path: "" });
+  assert.equal(linkResolvedDocument({}), null);
+  assert.deepEqual(linkResolvedDocument({ document: "E-0001" }), { title: "E-0001", path: "" });
 });
 
 test("links come from 02_Shared only, never the model itself", () => {

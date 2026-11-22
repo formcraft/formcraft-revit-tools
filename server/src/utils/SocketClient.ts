@@ -175,7 +175,7 @@ export class RevitClientConnection {
   public async sendCommand(command: string, params: any = {}, timeoutMs: number = 120000, long?: LongJobOptions): Promise<any> {
     if (command === "send_code_to_revit" || command === "fmc_new_local" || command === "fmc_grids_from_link") {
       const code = params && typeof params.code === "string" ? params.code : "";
-      const problem = screenScript(code, scriptLimit());
+      const problem = screenScript(code, scriptLimit(), { allowFullScan: params?.allow_full_scan === true });
       if (problem) throw new Error(problem.message);
     }
     if (!WRITE_COMMANDS.has(command)) return this.sendRaw(command, params, timeoutMs, long);
