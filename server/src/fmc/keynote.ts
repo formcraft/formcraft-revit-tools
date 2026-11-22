@@ -8,6 +8,14 @@
  * Material or User; otherwise it is deleted in the same transaction. The installed add-in is not involved:
  * modify_model sends one fixed script through send_code_to_revit (one transaction, the same live-model lock,
  * batch lease and approval as any other write). A server hot-swap is enough.
+ *
+ * A blank tag is not a success. The key the tag will show is read before placement: KEYNOTE_PARAM on the
+ * element type, then the instance, for keynote_element; the material keynote for keynote_material; the given
+ * key for keynote_user. An empty key is not tagged (skipped_empty_keynote, id and type name). The key is
+ * looked up in KeynoteTable.GetKeynoteTable. A type that shows Keynote Text is not placed when that key is
+ * missing (key_not_in_table). After placement TagText is read. An empty TagText is kept and listed under
+ * blank, with the tag id, so it is not reported as a shown keynote. When tag_type is omitted, a loaded
+ * FMC_TAG_Keynote_v2 type Key Value is used, then the model's default keynote tag (M_Keynote Tag).
  */
 import { screenScript } from "./scriptguard.js";
 
@@ -37,6 +45,9 @@ var made = new List<List<long>>();
 var opsOut = new JArray();
 int knownElement = int.MinValue, knownMaterial = int.MinValue, knownUser = int.MinValue;
 string how = "";
+HashSet<string> tableKeys = null;
+string tableError = null;
+bool tableLoaded = false;
 BindingFlags hidden = BindingFlags.Instance | BindingFlags.NonPublic;
 var setInt = typeof(Parameter).GetMethod("SetInternal", hidden, null, new System.Type[] { typeof(int), typeof(bool).MakeByRefType() }, null);
 var setStr = typeof(Parameter).GetMethod("SetInternal", hidden, null, new System.Type[] { typeof(string), typeof(bool).MakeByRefType() }, null);
@@ -117,10 +128,71 @@ string TextKey(Element e)
 }
 string ElementKey(Element e)
 {
-    string s = TextKey(e);
-    if (s != "") return s;
+    if (e == null) return "";
     Element type = e.GetTypeId() == ElementId.InvalidElementId ? null : document.GetElement(e.GetTypeId());
-    return TextKey(type);
+    string s = TextKey(type);
+    if (s != "") return s;
+    return TextKey(e);
+}
+string TypeNameOf(Element e)
+{
+    if (e == null) return "";
+    ElementId tid = e.GetTypeId();
+    if (tid != null && tid != ElementId.InvalidElementId)
+    {
+        Element t = document.GetElement(tid);
+        if (t != null && !string.IsNullOrWhiteSpace(t.Name)) return t.Name;
+    }
+    return e.Name ?? "";
+}
+// none: the type shows the key, so a missing table row does not blank it.
+// text: Keynote Text only. both: the key and the keynote text.
+string TextKindOf(FamilySymbol sym)
+{
+    if (sym == null) return "none";
+    Parameter showText = sym.LookupParameter("Show_Text");
+    Parameter showKey = sym.LookupParameter("Show_Key");
+    if (showText != null && showText.StorageType == StorageType.Integer)
+    {
+        if (showText.AsInteger() == 0) return "none";
+        bool keyOn = showKey == null || showKey.StorageType != StorageType.Integer || showKey.AsInteger() != 0;
+        return keyOn ? "both" : "text";
+    }
+    string n = (sym.Name ?? "").Trim();
+    if (n.IndexOf("text", System.StringComparison.OrdinalIgnoreCase) < 0) return "none";
+    bool both = n.IndexOf("key value", System.StringComparison.OrdinalIgnoreCase) >= 0
+        || n.IndexOf("+", System.StringComparison.Ordinal) >= 0
+        || n.IndexOf(" and ", System.StringComparison.OrdinalIgnoreCase) >= 0;
+    return both ? "both" : "text";
+}
+void LoadKeynoteTable()
+{
+    if (tableLoaded) return;
+    tableLoaded = true;
+    try
+    {
+        KeynoteTable table = KeynoteTable.GetKeynoteTable(document);
+        if (table == null) { tableError = "this model has no keynote table"; return; }
+        var keys = new HashSet<string>(System.StringComparer.OrdinalIgnoreCase);
+        foreach (KeyBasedTreeEntry entry in table.GetKeyBasedTreeEntries())
+        {
+            if (entry == null || string.IsNullOrWhiteSpace(entry.Key)) continue;
+            keys.Add(entry.Key.Trim());
+        }
+        tableKeys = keys;
+    }
+    catch (System.Exception ex)
+    {
+        tableError = ex.Message;
+        tableKeys = null;
+    }
+}
+// 1 in the table, 0 not in the table, -1 the table could not be read.
+int KeyInTable(string key)
+{
+    LoadKeynoteTable();
+    if (tableKeys == null) return -1;
+    return tableKeys.Contains((key ?? "").Trim()) ? 1 : 0;
 }
 XYZ Where(Element e)
 {
@@ -205,12 +277,26 @@ FamilySymbol TagSymbol(string name)
         .ToList();
     if (string.IsNullOrWhiteSpace(name))
     {
+        FamilySymbol preferred = syms.FirstOrDefault(f =>
+            string.Equals(f.FamilyName, "FMC_TAG_Keynote_v2", System.StringComparison.OrdinalIgnoreCase)
+            && string.Equals(f.Name, "Key Value", System.StringComparison.OrdinalIgnoreCase));
+        if (preferred != null) return preferred;
         Category cat = Category.GetCategory(document, BuiltInCategory.OST_KeynoteTags);
-        if (cat == null) throw new InvalidOperationException("this model has no keynote tag category");
-        ElementId def = document.GetDefaultFamilyTypeId(cat.Id);
-        FamilySymbol fallback = document.GetElement(def) as FamilySymbol;
-        if (fallback == null) throw new InvalidOperationException("no keynote tag is loaded (load M_Keynote Tag or FMC_TAG_Keynote)");
-        return fallback;
+        if (cat != null)
+        {
+            ElementId def = document.GetDefaultFamilyTypeId(cat.Id);
+            FamilySymbol fallback = def == null || def == ElementId.InvalidElementId ? null : document.GetElement(def) as FamilySymbol;
+            if (fallback != null) return fallback;
+        }
+        var metric = syms.Where(f => string.Equals(f.FamilyName, "M_Keynote Tag", System.StringComparison.OrdinalIgnoreCase)).ToList();
+        if (metric.Count == 1) return metric[0];
+        if (metric.Count > 1)
+        {
+            FamilySymbol keyOnly = metric.FirstOrDefault(f => TextKindOf(f) == "none");
+            if (keyOnly != null) return keyOnly;
+            return metric.OrderBy(f => f.Name, System.StringComparer.OrdinalIgnoreCase).First();
+        }
+        throw new InvalidOperationException("no keynote tag is loaded (load FMC_TAG_Keynote_v2: Key Value, or M_Keynote Tag)");
     }
     string wanted = name.Trim();
     FamilySymbol exact = syms.FirstOrDefault(f =>
@@ -282,6 +368,11 @@ foreach (JObject op in (batch["ops"] as JArray ?? new JArray()).OfType<JObject>(
             }
         }
         var skipped = new JArray();
+        var emptyKey = new JArray();
+        var notInTable = new JArray();
+        var blank = new JArray();
+        string textKind = TextKindOf(sym);
+        string tagType = sym.FamilyName + ": " + sym.Name;
         JArray ids = op["ids"] as JArray ?? new JArray();
         if (ids.Count > 2000) throw new InvalidOperationException("tag takes at most 2000 elements; split the batch");
         foreach (JToken t in ids)
@@ -289,26 +380,43 @@ foreach (JObject op in (batch["ops"] as JArray ?? new JArray()).OfType<JObject>(
             Element e = ById(t);
             long id = e != null ? e.Id.Value : (t.Type == JTokenType.Integer ? t.Value<long>() : 0);
             if (e == null) { skipped.Add(new JObject { ["id"] = t.ToString(), ["reason"] = "isn't in this model" }); continue; }
+            string typeName = TypeNameOf(e);
             string key = "";
             Reference host = new Reference(e);
             if (want == "Material")
             {
                 string matKey;
                 Reference face = MaterialFace(e, view, out matKey);
-                if (face == null) { skipped.Add(new JObject { ["id"] = id, ["reason"] = "no face to take a material keynote from" }); continue; }
-                if (matKey == "") { skipped.Add(new JObject { ["id"] = id, ["reason"] = "no material keynote" }); continue; }
+                if (face == null) { skipped.Add(new JObject { ["id"] = id, ["type_name"] = typeName, ["reason"] = "no face to take a material keynote from" }); continue; }
                 host = face;
                 key = matKey;
             }
-            else if (want == "User")
+            else if (want == "User") key = userKey;
+            else key = ElementKey(e);
+            if (key == "")
             {
-                key = userKey;
-                if (key == "") { skipped.Add(new JObject { ["id"] = id, ["reason"] = "user keynote needs key" }); continue; }
+                emptyKey.Add(new JObject { ["id"] = id, ["type_name"] = typeName });
+                skipped.Add(new JObject { ["id"] = id, ["type_name"] = typeName, ["reason"] = "skipped_empty_keynote" });
+                continue;
             }
-            else
+            if (textKind != "none")
             {
-                key = ElementKey(e);
-                if (key == "") { skipped.Add(new JObject { ["id"] = id, ["reason"] = "no keynote on the element" }); continue; }
+                int inTable = KeyInTable(key);
+                if (inTable == 0)
+                {
+                    notInTable.Add(new JObject { ["id"] = id, ["key"] = key, ["type_name"] = typeName, ["tag_type"] = tagType });
+                    if (textKind == "text")
+                    {
+                        skipped.Add(new JObject { ["id"] = id, ["key"] = key, ["type_name"] = typeName, ["reason"] = "key_not_in_table" });
+                        continue;
+                    }
+                }
+                else if (inTable < 0 && textKind == "text")
+                {
+                    string why = string.IsNullOrWhiteSpace(tableError) ? "keynote table could not be read" : "keynote table could not be read: " + tableError;
+                    skipped.Add(new JObject { ["id"] = id, ["key"] = key, ["type_name"] = typeName, ["reason"] = why });
+                    continue;
+                }
             }
             if (onePer && seen.Contains(key))
             {
@@ -342,16 +450,39 @@ foreach (JObject op in (batch["ops"] as JArray ?? new JArray()).OfType<JObject>(
                 skipped.Add(new JObject { ["id"] = id, ["key"] = key, ["reason"] = "Key Value could not be set" });
                 continue;
             }
+            document.Regenerate();
+            string tagText = "";
+            try { tagText = tag.TagText ?? ""; }
+            catch (System.Exception) { tagText = ""; }
+            bool textBlank = string.IsNullOrWhiteSpace(tagText);
+            if (textBlank)
+            {
+                blank.Add(new JObject
+                {
+                    ["id"] = id, ["tag_id"] = tag.Id.Value, ["key"] = key, ["type_name"] = typeName,
+                    ["tag_type"] = tagType, ["tag_text"] = "",
+                });
+            }
             if (onePer) seen.Add(key);
             created.Add(tag.Id.Value);
         }
+        int shown = created.Count - blank.Count;
         var row = new JObject
         {
             ["op"] = opsOut.Count + 1, ["kind"] = "tag", ["mode"] = mode, ["view"] = view.Name,
-            ["tag_type"] = sym.FamilyName + ": " + sym.Name, ["key_source"] = want,
-            ["tagged"] = created.Count, ["created_ids"] = new JArray(created), ["skipped"] = skipped,
-            ["counts"] = new JObject { ["created"] = created.Count, ["skipped"] = skipped.Count },
+            ["tag_type"] = tagType, ["key_source"] = want, ["shows_keynote_text"] = textKind != "none",
+            ["tagged"] = created.Count, ["shown"] = shown, ["created_ids"] = new JArray(created), ["skipped"] = skipped,
+            ["skipped_empty_keynote"] = emptyKey, ["key_not_in_table"] = notInTable, ["blank"] = blank,
+            ["counts"] = new JObject
+            {
+                ["created"] = created.Count, ["skipped"] = skipped.Count, ["shown"] = shown,
+                ["skipped_empty_keynote"] = emptyKey.Count, ["key_not_in_table"] = notInTable.Count, ["blank"] = blank.Count,
+            },
         };
+        if (textKind != "none" && tableLoaded && tableKeys == null)
+            row["keynote_table"] = new JObject { ["read"] = false, ["reason"] = string.IsNullOrWhiteSpace(tableError) ? "the keynote table could not be read" : tableError };
+        if (blank.Count > 0)
+            row["blank_note"] = "TagText was empty after placement. Those tags are in the model and are listed under blank. They are not shown keynotes.";
         if (how != "") row["how"] = how;
         opsOut.Add(row);
         made.Add(created);
@@ -411,7 +542,7 @@ return new JObject
     ["ops"] = opsOut,
     ["note"] = dry
         ? "Dry run: the batch ran and was rolled back. Nothing was saved, synced or relinquished."
-        : "Key Source is written with Parameter.SetInternal because the public Set is read-only. A tag is kept only when Key Source reads back as Element, Material or User.",
+        : "Key Source is written with Parameter.SetInternal because the public Set is read-only. A tag is kept only when Key Source reads back as Element, Material or User. An empty keynote is skipped_empty_keynote. A Keynote Text type whose key is missing from the keynote table is key_not_in_table and is not placed. TagText is read after placement. A blank TagText is listed under blank and is not a shown keynote.",
 };
 `.trim();
 
@@ -494,7 +625,9 @@ export function keynoteSummaries(ops: KeynoteOp[], dryRun: boolean): string[] {
     if (op.op === "tag") {
       const src = SOURCE[op.mode as KeynoteMode] ?? "Element";
       const count = Array.isArray(op.ids) ? op.ids.length : 0;
-      const type = typeof op.tag_type === "string" && op.tag_type.trim() ? ` with ${op.tag_type.trim()}` : "";
+      const type = typeof op.tag_type === "string" && op.tag_type.trim()
+        ? ` with ${op.tag_type.trim()}`
+        : " with FMC_TAG_Keynote_v2: Key Value if loaded, otherwise the model's keynote tag";
       const per = op.one_per_key === false ? "" : ", one tag per key";
       const leader = op.leader === false ? "" : ", leader on";
       return `${n} Keynote tag (${src}) in ${op.view} on ${count} elements${type}${per}${leader}.`;
