@@ -862,5 +862,14 @@
     "status": "Built, Revit check due",
     "ref": "fmc_coord",
     "note": "fmc_coord keeps a versioned record (survey, base, true north, elevation datum, shared origin, control points, and model, object and family transforms) next to the project and in %APPDATA%\\Formcraft\\coord. publish, check, align and place call fmc_coord_apply once. read, export and import, and a check of two published models, stay on the server. dry_run defaults true. document is required. Tolerances are coord.tol_mm and coord.tol_deg. Needs a Revit check."
+  },
+  {
+    "id": "F97",
+    "area": "Engine",
+    "group": "Manage",
+    "feature": "Phases and revisions from a batch",
+    "status": "Built, Revit check due",
+    "ref": "fmc_phase",
+    "note": "One tool. phases, audit, batch_check, revision_open, revision_cloud, compare, issue and unissue. The batch declares its phase (fmc_batch phase, or the phase argument). Dry run defaults to true. A write is fmc_phase_apply, one transaction, at most 50 operations, with batch_lease. Document is an exact title or path. Counts and ids, no images. The revision ledger is FMC_Revisions.jsonl. phase.* and revision.* come from the standards bank; a missing key is PROVISIONAL and cannot PASS. Needs a Revit check."
   }
 ]

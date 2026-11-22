@@ -197,6 +197,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_new_local",
   // Grids copied from a loaded link. The server sends a fixed script; the add-in command is still send_code_to_revit.
   "fmc_grids_from_link",
+  // Phases and revisions. Reads stay on fmc_phase. This command is the one transaction.
+  "fmc_phase_apply",
 ]);
 
 /**
@@ -216,6 +218,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_document_info",
   // checkout status and central currency. Read-only. Never requests ownership.
   "fmc_elem_currency",
+  // Phases, filters, revisions and the compact element rows fmc_phase summarises. No transaction.
+  "fmc_phase",
 ]);
 
 /**
