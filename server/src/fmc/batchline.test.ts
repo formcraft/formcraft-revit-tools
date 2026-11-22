@@ -288,7 +288,8 @@ test("service config and a restart clear leases without logging a token", async 
   try {
     const made = resetBatchBoard({ autoSweep: false, log: (line) => lines.push(line) });
     await req(made, "a", "Architecture", "grids");
-    const restarted = logBatchRestart();
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-restart-"));
+    const restarted = logBatchRestart({ ...process.env, APPDATA: dir } as NodeJS.ProcessEnv);
     assert.equal((restarted.snapshot().documents as unknown[]).length, 0);
     restarted.close();
   } finally {

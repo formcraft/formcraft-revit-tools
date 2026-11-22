@@ -113,6 +113,8 @@ export interface BatchBoardOptions {
    * A test board leaves this unset, so it never reads the live log.
    */
   modalDialog?: () => boolean;
+  /** Open documents. Production reads the instance files. A test board leaves this unset. */
+  readOpenDocs?: () => Array<{ title?: string; path?: string; family?: boolean; workshared?: boolean; modified?: boolean }>;
 }
 
 const defaultValidator: BatchReferenceValidator = () => ({ ok: true });
@@ -321,6 +323,7 @@ export class BatchBoard {
   private readonly saveClocksFn: (rows: DocClock[]) => void;
   private readonly queueBusyFn: () => boolean;
   private readonly modalDialogFn: () => boolean;
+  private readonly readOpenDocsFn: () => Array<{ title?: string; path?: string; family?: boolean; workshared?: boolean; modified?: boolean }>;
   private readonly startedAt: number;
   private lastDefer: string | null = null;
   /** Set while a hot-swap is draining. New leases stay queued. Active leases finish. */
@@ -362,6 +365,7 @@ export class BatchBoard {
     this.saveClocksFn = opts.saveClocks ?? (() => {});
     this.queueBusyFn = opts.queueBusy ?? (() => false);
     this.modalDialogFn = opts.modalDialog ?? (() => false);
+    this.readOpenDocsFn = opts.readOpenDocs ?? (() => []);
     this.startedAt = this.now();
     for (const row of this.loadClocksFn()) this.rememberClock(row);
     if (opts.autoSweep) {
@@ -1261,8 +1265,8 @@ export class BatchBoard {
 
   private visibleDocs(): Array<{ title: string; path: string; family: boolean; workshared: boolean; modified: boolean }> {
     try {
-      return readInstances().flatMap((instance) => instance.documents ?? []).map((doc) => ({
-        title: doc.title, path: doc.path, family: doc.family === true, workshared: doc.workshared === true, modified: doc.modified === true,
+      return this.readOpenDocsFn().map((doc) => ({
+        title: doc.title ?? "", path: doc.path ?? "", family: doc.family === true, workshared: doc.workshared === true, modified: doc.modified === true,
       }));
     } catch {
       return [];
@@ -1361,7 +1365,7 @@ export class BatchBoard {
     const keys = new Map<string, string>();
     for (const [key, row] of this.syncState) keys.set(key, row.document);
     try {
-      for (const doc of orderedProjects(readInstances().flatMap((instance) => instance.documents ?? []))) {
+      for (const doc of orderedProjects(this.visibleDocs())) {
         const name = doc.title || doc.path;
         const key = documentKey(name);
         if (!keys.has(key)) keys.set(key, name);
@@ -1408,9 +1412,7 @@ export class BatchBoard {
     }
     const settings = syncSettings(loadConfig().config);
     const minutes = autosaveMinutes();
-    const docs = readInstances().flatMap((instance) => instance.documents ?? []).map((doc) => ({
-      title: doc.title, path: doc.path, family: doc.family === true, workshared: doc.workshared === true, modified: doc.modified === true,
-    }));
+    const docs = this.visibleDocs();
     const chosen = planTick({
       now: this.now(),
       startedAt: this.startedAt,
@@ -1539,34 +1541,35 @@ function autosaveMinutes(): number {
   }
 }
 
-function modalDialogOpen(): boolean {
+function modalDialogOpen(env: NodeJS.ProcessEnv = process.env): boolean {
   try {
-    const lines = readRevitJobLines();
+    const lines = readRevitJobLines(env);
     const now = Date.now();
-    return readInstances().some((instance) => {
+    return readInstances(env).some((instance) => {
       const flight = inFlightJob(lines, instance.pid, now);
-      return !!flight && dialogFor(instance.pid, flight.job, process.env, lines).length > 0;
+      return !!flight && dialogFor(instance.pid, flight.job, env, lines).length > 0;
     });
   } catch {
     return false;
   }
 }
 
-function productionBoard(opts: BatchBoardOptions): BatchBoard {
+function productionBoard(opts: BatchBoardOptions = {}, env: NodeJS.ProcessEnv = process.env): BatchBoard {
   const made = new BatchBoard({
     memoryPaused: () => memoryGate.leasesPaused(),
     memoryView: () => memoryGate.view() as unknown as Record<string, unknown>,
     queueBusy: () => {
       try { return queueSnapshots().some((row) => row.running != null || row.waiting > 0); } catch { return false; }
     },
-    modalDialog: () => modalDialogOpen(),
+    modalDialog: () => modalDialogOpen(env),
+    readOpenDocs: () => readInstances(env).flatMap((instance) => instance.documents ?? []),
     saveStep: (ctx) => import("./batchsave.js").then((mod) => mod.productionSaveStep(ctx)),
     syncStep: (ctx) => import("./batchsync.js").then((mod) => mod.productionSyncStep(ctx)),
-    readMaintenance,
-    writeMaintenance,
-    persistLine: (tickets) => { try { saveBatchLine(tickets); } catch { /* the next change tries again */ } },
-    loadClocks: () => loadSyncState(),
-    saveClocks: (rows) => { try { saveSyncState(rows); } catch { /* the next change tries again */ } },
+    readMaintenance: () => readMaintenance(env),
+    writeMaintenance: (reason) => writeMaintenance(reason, env),
+    persistLine: (tickets) => { try { saveBatchLine(tickets, env); } catch { /* the next change tries again */ } },
+    loadClocks: () => loadSyncState(env),
+    saveClocks: (rows) => { try { saveSyncState(rows, env); } catch { /* the next change tries again */ } },
     ...opts,
   });
   made.bindService();
@@ -1595,11 +1598,11 @@ export function resetBatchBoard(opts: BatchBoardOptions = {}): BatchBoard {
   return board;
 }
 
-/** Process start. In-memory leases do not survive a restart, and the model is not rolled back. */
-export function logBatchRestart(): BatchBoard {
+/** Process start. In-memory leases do not survive a restart, and the model is not rolled back. Pass env in tests so the live batch line is not read. */
+export function logBatchRestart(env: NodeJS.ProcessEnv = process.env): BatchBoard {
   board?.close();
-  board = productionBoard({ ...loadBatchConfig(), autoSweep: true });
-  const restored = board.importLine(loadBatchLine());
+  board = productionBoard({ ...loadBatchConfig(env), autoSweep: true }, env);
+  const restored = board.importLine(loadBatchLine(env));
   board.pullMaintenance();
   if (!board.snapshot().maintenance) board.resumeGrants();
   board.noteServiceStart(restored);
