@@ -853,5 +853,14 @@
     "status": "Built, Revit check due",
     "ref": "fmc_dialog_rules",
     "note": "Rules in %APPDATA%\\Formcraft\\fmc_dialog_rules.json, hot-reloaded, hooked for the whole session. Scope always answers the save reminder with CommandLink3 (Do not save the project, 1003) and the sync reminder with CommandLink3 (Do not synchronize, 1003). AccessingFile is log only. DocWarn and PasteSimilar are OK, ExtendedError and SelectElement are Cancel, during AI jobs. Never-auto (not overridable): save, sync, relinquish, upgrade, recover, fatal and serious errors, Save_File, RevitSaveOptions, PartitionsSaveToCentral, Worksets_Errors, Changes_Not_Saved. A blocked call returns FMC-DIALOG-BLOCKING. /health instances[].busy.dialog names the dialog id. The add-in installs only while Revit is closed. The server degrades against an older add-in."
+  },
+  {
+    "id": "F96",
+    "area": "Engine",
+    "group": "Engineer",
+    "feature": "Systems flow tracer",
+    "status": "Built, Revit check due",
+    "ref": "fmc_trace",
+    "note": "Read-only leak test (piping, drainage, duct) and electrical continuity. One Revit round-trip per document. Replies are pass/fail counts and capped element ids; the full JSON is under %LOCALAPPDATA%\\Formcraft\\trace. Tolerances are PROVISIONAL (trace.* in the standards bank). Highlight is opt-in and unsaved. Phase 2 checks are named and not run. Needs a Revit check on P-0001_USER and E-0001_USER. The add-in needs a Revit restart; the server walk does not."
   }
 ]
