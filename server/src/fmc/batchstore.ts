@@ -22,6 +22,8 @@ export interface StoredTicket {
   requestedAt: number;
   estOps?: number;
   reserved?: boolean;
+  /** Phase the batch declared. fmc_phase batch_check reads it when its own phase is omitted. */
+  phase?: string;
 }
 
 export function maintenancePath(env: NodeJS.ProcessEnv = process.env): string {

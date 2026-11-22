@@ -209,6 +209,8 @@ interface Ticket {
   references: BatchReferences;
   referencesHash: string;
   correction: string;
+  /** Phase this batch works in. Empty when the batch did not declare one. */
+  phase?: string;
   /** A scheduler placed this at the head. The named bot's next request takes the client. */
   reserved?: boolean;
   state: "queued" | "active";
@@ -295,6 +297,8 @@ export interface RequestInput {
   bot?: string;
   references?: unknown;
   correction?: string;
+  /** Optional phase fmc_phase batch_check reads from this lease. */
+  phase?: string;
   client: string;
 }
 
@@ -457,6 +461,7 @@ export class BatchBoard {
     }
     const existing = [...this.tickets.values()].find((ticket) => ticket.key === key && ticket.batchId.toLowerCase() === batchId.toLowerCase());
     if (existing) {
+      if (input.phase?.trim()) existing.phase = input.phase.trim();
       if (existing.reserved && existing.bot.toLowerCase() === bot.toLowerCase()) {
         existing.client = input.client;
         existing.reserved = false;
@@ -465,7 +470,10 @@ export class BatchBoard {
         this.persist();
         return this.ticketView(existing);
       }
-      if (existing.client === input.client) return this.ticketView(existing);
+      if (existing.client === input.client) {
+        if (input.phase?.trim()) this.persist();
+        return this.ticketView(existing);
+      }
       throw new BatchGateError("FMC-BATCH-BAD",
         `[FMC-BATCH-BAD] Batch "${label}" is already ${existing.state === "active" ? "running" : "in line"} on ${document} for another session. ` +
         `Wait, or use a new label for a different batch.`);
@@ -478,6 +486,7 @@ export class BatchBoard {
       references: copyRefs(refs),
       referencesHash: referencesHash(refs),
       correction: (input.correction ?? "").trim(),
+      phase: input.phase?.trim() || undefined,
       state: "queued",
       attempt,
       requestedAt: this.now(),
@@ -534,6 +543,7 @@ export class BatchBoard {
       id: randomUUID(), document, key, label, batchId, bot, client: bot,
       estOps: input.estOps && input.estOps > 0 ? Math.floor(input.estOps) : undefined,
       references: copyRefs(refs), referencesHash: referencesHash(refs), correction: "",
+      phase: input.phase?.trim() || undefined,
       reserved: true, state: "queued", attempt: 1, requestedAt: this.now(), lastBeat: this.now(), ops: 0, writesInFlight: 0,
     };
     this.tickets.set(ticket.id, ticket);
@@ -998,6 +1008,11 @@ export class BatchBoard {
     return { ok: true, ...done, lease: ticket.id };
   }
 
+  /** The phase stored on this lease. Empty when the batch did not declare one. */
+  phaseOf(lease: string): string {
+    return this.tickets.get(lease)?.phase?.trim() ?? "";
+  }
+
   private rememberDone(ticket: Ticket, row: DoneRow): void {
     this.done.set(ticket.id, row);
     this.doneOrder.push(ticket.id);
@@ -1028,6 +1043,7 @@ export class BatchBoard {
       ahead: ticket.state === "active" ? 0 : Math.max(0, position - 1) + (holder ? 1 : 0),
       ops: ticket.ops,
       est_ops: ticket.estOps ?? null,
+      ...(ticket.phase ? { phase: ticket.phase } : {}),
       references: copyRefs(ticket.references),
       ...this.syncFields(ticket.key),
       ...this.memoryFields(ticket),
@@ -1460,7 +1476,7 @@ export class BatchBoard {
       const ticket: Ticket = {
         id: row.id, document: row.document, key, label: row.label, batchId: row.batchId, bot: row.bot, client: row.client,
         estOps: row.estOps, references: copyRefs(row.references), referencesHash: referencesHash(row.references),
-        correction: row.correction ?? "", reserved: row.reserved === true, state: "queued", attempt: row.attempt || 1,
+        correction: row.correction ?? "", phase: row.phase?.trim() || undefined, reserved: row.reserved === true, state: "queued", attempt: row.attempt || 1,
         requestedAt: row.requestedAt || this.now(), lastBeat: this.now(), ops: 0, writesInFlight: 0,
       };
       this.tickets.set(ticket.id, ticket);
@@ -1502,6 +1518,7 @@ export class BatchBoard {
           id: ticket.id, document: ticket.document, label: ticket.label, batchId: ticket.batchId, bot: ticket.bot,
           client: ticket.client, references: copyRefs(ticket.references), correction: ticket.correction,
           attempt: ticket.attempt, requestedAt: ticket.requestedAt, ...(ticket.estOps ? { estOps: ticket.estOps } : {}),
+          ...(ticket.phase ? { phase: ticket.phase } : {}),
           ...(ticket.reserved ? { reserved: true } : {}),
         });
       }
