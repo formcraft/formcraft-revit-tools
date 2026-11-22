@@ -213,6 +213,10 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_north_apply",
   // Legend views: duplicate a seed view or copy a seed component. One transaction. No text notes.
   "fmc_legend_apply",
+  // Kit typical details copied into a drafting view. One transaction. The kit file is not saved.
+  "fmc_details_apply",
+  // A parameter or label on the family loaded in the project, or a project binding. The kit family file is not saved.
+  "fmc_family_params_apply",
 ]);
 
 /**
@@ -240,6 +244,12 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_north",
   // Legend views and legend components. No transaction.
   "fmc_legend_views",
+  // The open project a detail will be placed in. No copy.
+  "fmc_details",
+  // Parameters on a family already loaded in the project. The family file is closed without saving.
+  "fmc_family_params",
+  // Clear headroom. No transaction.
+  "fmc_headroom",
 ]);
 
 /**
