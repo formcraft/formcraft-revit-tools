@@ -133,6 +133,7 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
                     // owner 27 Oct: a script is one entry on the undo list, so undo_ai_batch can take it back
                     string undoId = FmcUndo.Begin("FMC: AI script");
                     bool kept = false;
+                    bool reportDiff = _parameters.Value<bool?>("report_diff") == true;
                     try
                     {
                         if (_transactionMode == TransactionModeNone)
@@ -144,12 +145,14 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
                                 bool whole = false;
                                 try
                                 {
+                                    if (reportDiff) info.ParameterBefore = FmcModelDiff.Read(doc, SnapshotIds(_parameters), 50);
                                     try { result = script.Invoke(doc, _executionParameters); }
                                     finally { CloseLeaks(info); }
                                     whole = info.TxLeak == null && !FmcAiJob.CancelRequested(job);
                                 }
                                 finally
                                 {
+                                    if (reportDiff) info.ParameterAfter = FmcModelDiff.Read(doc, modified.Concat(added), 50);
                                     if (group.HasStarted()) { if (whole) { group.Assimilate(); kept = true; } else group.RollBack(); }
                                 }
                             }
@@ -162,6 +165,7 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
                             {
                                 FmcAiJob.Failures.Attach(transaction);
                                 transaction.Start();
+                                if (reportDiff) info.ParameterBefore = FmcModelDiff.Read(doc, SnapshotIds(_parameters), 50);
                                 try
                                 {
                                     result = script.Invoke(doc, _executionParameters);
@@ -169,6 +173,7 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
                                 finally
                                 {
                                     CloseLeaks(info);
+                                    if (reportDiff) info.ParameterAfter = FmcModelDiff.Read(doc, modified.Concat(added), 50);
                                 }
                                 if (info.TxLeak != null)
                                 {
@@ -207,9 +212,19 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
                         info.RunMs = run.ElapsedMilliseconds;
                         CheckStillOpen(doc, info);
                     }
-                    if (info.Transaction == null || !info.Transaction.StartsWith("RolledBack"))
+                    bool rolled = info.Transaction != null && info.Transaction.StartsWith("RolledBack");
+                    if (reportDiff || !rolled)
                     {
-                        info.CreatedIds = added.Take(1000).ToList(); info.DeletedIds = deleted.Take(1000).ToList(); info.ModifiedCount = modified.Count;
+                        int cap = reportDiff ? 50 : 1000;
+                        info.CreatedIds = added.Take(cap).ToList();
+                        info.DeletedIds = deleted.Take(cap).ToList();
+                        info.ModifiedCount = modified.Count;
+                        if (reportDiff)
+                        {
+                            info.CreatedCount = added.Count;
+                            info.DeletedCount = deleted.Count;
+                            info.ModifiedIds = modified.Take(50).ToList();
+                        }
                     }
                     if (info.DocumentBlocked)
                         throw new ScriptFailure("FMC-CODE-TX-LEAK", NeedsAPerson(doc), new JObject { ["result"] = Serialize(result, info) });
@@ -503,6 +518,19 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
             }
         }
 
+        private static IEnumerable<long> SnapshotIds(JObject parameters)
+        {
+            var ids = new List<long>();
+            if (parameters?["snapshot_ids"] is JArray array)
+            {
+                foreach (var token in array)
+                {
+                    if (token.Type == JTokenType.Integer || token.Type == JTokenType.Float) ids.Add(token.Value<long>());
+                }
+            }
+            return ids.Take(50);
+        }
+
         public string GetName() => "FMC: AI script";
     }
 
@@ -548,6 +576,23 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
 
         [JsonProperty("modifiedCount", NullValueHandling = NullValueHandling.Ignore)]
         public int? ModifiedCount { get; set; }
+
+        [JsonProperty("createdCount", NullValueHandling = NullValueHandling.Ignore)]
+        public int? CreatedCount { get; set; }
+
+        [JsonProperty("deletedCount", NullValueHandling = NullValueHandling.Ignore)]
+        public int? DeletedCount { get; set; }
+
+        [JsonProperty("modifiedIds", NullValueHandling = NullValueHandling.Ignore)]
+        public List<long> ModifiedIds { get; set; }
+
+        /// <summary>Parameter values captured before the script, for ids the caller named. Capped.</summary>
+        [JsonProperty("parameter_before", NullValueHandling = NullValueHandling.Ignore)]
+        public JArray ParameterBefore { get; set; }
+
+        /// <summary>Parameter values of created and modified elements, read before rollback or commit. Capped.</summary>
+        [JsonProperty("parameter_after", NullValueHandling = NullValueHandling.Ignore)]
+        public JArray ParameterAfter { get; set; }
 
         /// <summary>The script's id on Revit's undo list, for undo_ai_batch (owner 27 Oct).</summary>
         [JsonProperty("undoId", NullValueHandling = NullValueHandling.Ignore)]

@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { graphRunRefusal, readDynamo, readPyRevit, readTool, stepSummary } from "./scripts.js";
+import { GRAPH_RUN_FORWARDS_TO, readDynamo, readPyRevit, readTool, stepSummary } from "./scripts.js";
 
 const dyn = [
   "# FMC_ModelHealth  -  Dynamo Python Script node (CPython3 / PythonNet3)",
@@ -16,15 +16,8 @@ const dyn = [
   "import clr",
 ].join("\n");
 
-test("graph_run is not an in-Revit Dynamo runner and names the typed read tools", () => {
-  const r = graphRunRefusal();
-  assert.equal(r.refused, true);
-  assert.equal(r.dynamo_runner, false);
-  assert.equal(r.in_revit, false);
-  assert.match(r.reason, /not an in-Revit Dynamo runner/);
-  assert.match(r.reason, /RevitNodes/);
-  assert.ok(r.use_instead.includes("fmc_structure"));
-  assert.ok(r.use_instead.includes("analyze_model_statistics"));
+test("graph_run forwards to fmc_dynamo instead of refusing every graph", () => {
+  assert.equal(GRAPH_RUN_FORWARDS_TO, "fmc_dynamo");
 });
 
 test("a Dynamo node is read from its own header: name, what it does, inputs, status", () => {

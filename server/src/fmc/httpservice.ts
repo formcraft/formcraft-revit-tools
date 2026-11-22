@@ -26,6 +26,7 @@ import { addGrantListener, batchBoard, logBatchRestart, notifyBatchGranted } fro
 import { coordinationReport } from "./coordination.js";
 import { callerFor, clientNameFromInitialize, rememberCaller, runAsCaller } from "./caller.js";
 import { memoryGate } from "./memory.js";
+import { noteRestart } from "./scriptjobs.js";
 
 const win = path.win32;
 
@@ -147,6 +148,8 @@ export interface HealthReport {
   memory: ReturnType<typeof memoryGate.view>;
   /** Editing requests (never granted) and per-document coordination counts. */
   coordination: ReturnType<typeof coordinationReport>;
+  /** Background Dynamo and library script jobs. */
+  jobs: { queued: number; running: number; last_finished: string | null };
 }
 
 export function describeInstance(
@@ -204,6 +207,7 @@ export async function healthReport(listen: string, startedAt: number, env: NodeJ
     schedule: batchBoard().snapshot().syncs,
     memory: memoryGate.view(),
     coordination: coordinationReport(env),
+    jobs: noteRestart(env),
   };
 }
 

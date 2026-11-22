@@ -32,9 +32,11 @@ export async function aiGate(command: string, params: any, active: DocInfo | nul
   const dryRun = command === "fmc_model_edit" && params?.dry_run === true;
   // fmc_replace always rolls the group back. It needs the copy's own AI switch (enable_copy), not an approval that would imply a commit.
   const previewReplace = command === "fmc_replace";
-  if ((command === "send_code_to_revit" && params?.transactionMode === "read_only") || dryRun || previewReplace) {
+  // A Dynamo or library preview rolls back. It must not save, and it must not reach autoSave.
+  const previewScript = scriptPreview(command, params);
+  if ((command === "send_code_to_revit" && params?.transactionMode === "read_only") || dryRun || previewReplace || previewScript) {
     if (ai.stop) return { ok: false, reason: "", user: USER_LINE.stopped };
-    if (!dryRun && !previewReplace && ai.allow_code !== true) return { ok: false, reason: "", user: USER_LINE.admin("running code: the admin's 'AI may run code' switch is off") };
+    if (!dryRun && !previewReplace && !previewScript && ai.allow_code !== true) return { ok: false, reason: "", user: USER_LINE.admin("running code: the admin's 'AI may run code' switch is off") };
     if (generalState(ai, active.title, active.path) !== "On") return { ok: false, reason: "", user: USER_LINE.off };
     return { ok: true, reason: "", run: <T>(exec: () => Promise<T>) => exec() };
   }
@@ -114,7 +116,11 @@ export async function aiGate(command: string, params: any, active: DocInfo | nul
       if (autoItem) setStatus(autoItem.id, "used", "auto-approved (testing)", env);
       try {
         const r = await exec();
-        await autoSave(active, ai, send, r);
+        if (scriptCallSkipsAutoSave(command, params)) {
+          if (r && typeof r === "object") (r as Record<string, unknown>).auto_saved = false;
+        } else {
+          await autoSave(active, ai, send, r);
+        }
         if (autoItem) setResult(autoItem.id, "done", `${autoItem.summary} · ${JSON.stringify(r ?? {}).slice(0, 4000)}`, env);
         if (book) saveState(recordBatch(loadState(env), active.path, elements, false, book), env);
         logBatch(cfg, { ...row, result: "done", detail: v.band ?? "" });
@@ -168,6 +174,23 @@ export function savedAtOnDisk(file: string): number | null {
  * matches a path only when a listed prefix is the leading folders. An empty list matches nothing, which is why
  * D:\Fomcraft\FMC_PROJECTS_27\THE OGALA RESIDENCE\01_WIP\S\F26901-FMC-ZZ-ZZ-M3-S-0001.rvt was saved.
  */
+/** Preview, dry-run and apply of fmc_dynamo and fmc_script_run do not save. The timer and the batch-end sync still do. */
+export function scriptCallSkipsAutoSave(command: string, params: { mode?: unknown; dry_run?: unknown; transactionMode?: unknown; fmc_caller?: unknown } | null | undefined): boolean {
+  const mode = typeof params?.mode === "string" ? params.mode : "";
+  const caller = typeof params?.fmc_caller === "string" ? params.fmc_caller : "";
+  const tool = command === "fmc_dynamo" || command === "fmc_script_run" || caller === "fmc_dynamo" || caller === "fmc_script_run";
+  if (!tool) return false;
+  return mode === "preview" || mode === "apply" || mode === "offline" || params?.dry_run === true || params?.transactionMode === "read_only";
+}
+
+function scriptPreview(command: string, params: { mode?: unknown; dry_run?: unknown; transactionMode?: unknown; fmc_caller?: unknown } | null | undefined): boolean {
+  const mode = typeof params?.mode === "string" ? params.mode : "";
+  const caller = typeof params?.fmc_caller === "string" ? params.fmc_caller : "";
+  const named = command === "fmc_dynamo" || command === "fmc_script_run" || caller === "fmc_dynamo" || caller === "fmc_script_run";
+  if (!named) return false;
+  return mode === "preview" || mode === "offline" || params?.dry_run === true || params?.transactionMode === "read_only";
+}
+
 export async function autoSave(active: DocInfo & { isActive?: boolean }, ai: { mode?: string; auto_save_minutes?: number },
   send: (command: string, params: object) => Promise<any>, result: unknown, now = Date.now(), savedAt: (file: string) => number | null = savedAtOnDisk): Promise<boolean> {
   const minutes = ai.auto_save_minutes ?? (ai.mode === "testing" ? 10 : 0);
