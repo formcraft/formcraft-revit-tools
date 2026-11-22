@@ -380,6 +380,17 @@ export function noteRestart(env: NodeJS.ProcessEnv = process.env): JobSummary {
 const runners = new Map<string, (job: ScriptJob) => Promise<Record<string, unknown>>>();
 const pumping = new Set<string>();
 
+/**
+ * A background job that did not run, or that came back with an FMC- code, is failed.
+ * A preview that ran and rolled back is finished. Cancel stays cancel.
+ */
+export function jobResultState(result: Record<string, unknown>): "finished" | "failed" | "cancelled" {
+  if (result.cancelled === true) return "cancelled";
+  const code = typeof result.code === "string" ? result.code : "";
+  if (result.refused === true || result.ran === false || code.startsWith("FMC-")) return "failed";
+  return "finished";
+}
+
 /** Run queued jobs one at a time for this Revit. submit returns before this finishes. */
 export function scheduleJobs(queue: ScriptJobQueue, revitKey: string, run: (job: ScriptJob) => Promise<Record<string, unknown>>): void {
   const key = queue.queueFile + "|" + revitKey;
@@ -394,7 +405,11 @@ export function scheduleJobs(queue: ScriptJobQueue, revitKey: string, run: (job:
         if (!job) break;
         try {
           const result = await run(job);
-          const state = result.cancelled === true ? "cancelled" : result.refused === true ? "failed" : "finished";
+          const state = jobResultState(result);
+          if (state === "failed") {
+            const code = typeof result.code === "string" && result.code ? result.code : "ran=false";
+            queue.append(job.job_id, `failed ${code}`);
+          }
           queue.finish(job.job_id, state, result);
         } catch (error) {
           const current = queue.status(job.job_id);

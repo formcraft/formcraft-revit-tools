@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { ScriptJobQueue, jobSummary, resetScriptJobs } from "./scriptjobs.js";
+import { ScriptJobQueue, jobResultState, jobSummary, resetScriptJobs, scheduleJobs } from "./scriptjobs.js";
 
 function dirs(): { queueFile: string; resultsRoot: string } {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-jobs-"));
@@ -123,6 +123,38 @@ test("apply needs a lease for that document, and the lease is heartbeated while 
   assert.equal(body.auto_saved, false);
   assert.equal(body.batch_end_sync.status, "deferred");
   assert.equal(body.resolved_document.title, "Architecture");
+});
+
+test("a run that did not run is failed, and result.json keeps the exception", async () => {
+  seq = 0;
+  const place = dirs();
+  const queue = ScriptJobQueue.open({ ...place, now: clock(), ids });
+  const made = queue.submit({ kind: "dynamo", document: "Architecture", mode: "preview", graph: "A.dyn" });
+  assert.equal(made.ok, true);
+  if (!made.ok) return;
+  assert.equal(jobResultState({ ran: false, code: "FMC-DYNAMO-NOT-STARTED" }), "failed");
+  assert.equal(jobResultState({ code: "FMC-DYNAMO-UNAVAILABLE", ran: true }), "failed");
+  assert.equal(jobResultState({ ran: true, rolled_back: true }), "finished");
+  assert.equal(jobResultState({ cancelled: true, code: "FMC-DYNAMO-NOT-STARTED" }), "cancelled");
+  scheduleJobs(queue, "default", async () => ({
+    ran: false,
+    code: "FMC-DYNAMO-NOT-STARTED",
+    exception_type: "System.NullReferenceException",
+    message: "Object reference not set to an instance of an object.",
+    stack: "at RevitMCPCommandSet.Services.Fmc.FmcDynamoHost.Run",
+  }));
+  await new Promise((resolve) => setTimeout(resolve, 30));
+  const job = queue.status(made.job_id);
+  assert.equal(job?.state, "failed");
+  const body = JSON.parse(fs.readFileSync(path.join(job!.result_ref, "result.json"), "utf8")) as {
+    exception_type: string; message: string; stack: string; code: string; ran: boolean;
+  };
+  assert.equal(body.exception_type, "System.NullReferenceException");
+  assert.match(body.message, /Object reference not set/);
+  assert.match(body.stack, /FmcDynamoHost\.Run/);
+  assert.equal(body.ran, false);
+  const lines = queue.log(made.job_id)?.lines.join("\n") ?? "";
+  assert.match(lines, /failed FMC-DYNAMO-NOT-STARTED/);
 });
 
 test("job summary reads the queue file and does not require a live profile", () => {

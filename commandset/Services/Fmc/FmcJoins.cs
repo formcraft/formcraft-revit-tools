@@ -76,8 +76,11 @@ namespace RevitMCPCommandSet.Services.Fmc
     {
         private const double Mm = 304.8;
 
+        private static FmcNonFamily Skipped = new FmcNonFamily();
+
         internal static JObject Collect(Document doc, JObject parameters)
         {
+            Skipped = new FmcNonFamily();
             string action = (parameters.Value<string>("action") ?? "audit").Trim().ToLowerInvariant();
             string mode = (parameters.Value<string>("mode") ?? "envelope").Trim().ToLowerInvariant();
             int cap = Math.Max(1, parameters.Value<int?>("scan_cap") ?? 800);
@@ -93,23 +96,23 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (!string.IsNullOrWhiteSpace(parameters.Value<string>("room")) || !string.IsNullOrWhiteSpace(parameters.Value<string>("space")))
             {
                 SpatialElement place = FindPlace(doc, parameters.Value<string>("room"), parameters.Value<string>("space"), out bool missing);
-                if (missing) return Empty(action, "room_not_found", true);
+                if (missing) return WithSkip(Empty(action, "room_not_found", true));
                 if (box == null && place?.get_BoundingBox(null) is BoundingBoxXYZ placeBox)
                     box = new BoundingBoxIntersectsFilter(OutlineOf(placeBox.Min, placeBox.Max, search));
             }
-            if (levelMissing) return Empty(action, "level_not_found", true);
+            if (levelMissing) return WithSkip(Empty(action, "level_not_found", true));
             var cats = Categories(action, category);
             int count = Count(doc, cats, level, box, parameters["ids"] as JArray);
             if (!scoped && count > cap)
             {
-                return new JObject
+                return WithSkip(new JObject
                 {
                     ["refused"] = true,
                     ["code"] = "FMC-JOINS-SCOPE",
                     ["message"] = "[FMC-JOINS-SCOPE] Name a level, category, bounding box, room, space or element ids. An unscoped scan above the cap is refused.",
                     ["element_count"] = count,
                     ["scoped"] = false,
-                };
+                });
             }
             bool partial = false;
             var body = new JObject { ["scoped"] = scoped, ["element_count"] = count, ["pairs"] = new JArray(), ["hosts"] = new JArray(), ["rooms"] = new JArray(), ["room_walls"] = new JArray(), ["leaks"] = new JArray() };
@@ -130,13 +133,13 @@ namespace RevitMCPCommandSet.Services.Fmc
                 body["envelope"] = pressure["envelope"];
             }
             body["partial"] = partial;
-            return body;
+            return WithSkip(body);
         }
 
         internal static JArray Images(UIApplication app, Document doc)
         {
-            View view = new FilteredElementCollector(doc).OfClass(typeof(View3D)).Cast<View>().FirstOrDefault(v => !v.IsTemplate)
-                ?? new FilteredElementCollector(doc).OfClass(typeof(ViewPlan)).Cast<View>().FirstOrDefault(v => !v.IsTemplate);
+            View view = new FilteredElementCollector(doc).OfClass(typeof(View3D)).OfType<View>().FirstOrDefault(v => !v.IsTemplate)
+                ?? new FilteredElementCollector(doc).OfClass(typeof(ViewPlan)).OfType<View>().FirstOrDefault(v => !v.IsTemplate);
             if (view == null) throw new InvalidOperationException("This document has no view to export.");
             string dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Formcraft", "joins");
             Directory.CreateDirectory(dir);
@@ -541,7 +544,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             }
             var solids = new List<Solid>();
             var options = new Options { ComputeReferences = false, IncludeNonVisibleObjects = false, DetailLevel = ViewDetailLevel.Fine };
-            foreach (Element element in exterior.Cast<Element>().Concat(roofs).Concat(grade))
+            foreach (Element element in exterior.OfType<Element>().Concat(roofs).Concat(grade))
             {
                 if (solids.Count >= 40) { partial = true; break; }
                 Solids(element, options, solids, 40);
@@ -647,7 +650,9 @@ namespace RevitMCPCommandSet.Services.Fmc
                 foreach (JToken token in ids)
                 {
                     if (!long.TryParse(token.ToString(), out long value)) continue;
-                    if (doc.GetElement(new ElementId(value)) is T element) picked.Add(element);
+                    Element found = doc.GetElement(new ElementId(value));
+                    if (found is T element) picked.Add(element);
+                    else if (found != null) NoteSkip<T>(found);
                 }
                 return picked;
             }
@@ -662,8 +667,24 @@ namespace RevitMCPCommandSet.Services.Fmc
             {
                 if (list.Count >= cap) { partial = true; break; }
                 if (element is T typed) list.Add(typed);
+                else NoteSkip<T>(element);
             }
             return list;
+        }
+
+        private static JObject WithSkip(JObject body)
+        {
+            if (body != null) body["skipped_non_family"] = Skipped.Report();
+            return body;
+        }
+
+        /// <summary>A category filter can return a DirectShape. Record it instead of casting.</summary>
+        private static void NoteSkip<T>(Element element) where T : Element
+        {
+            if (element == null || element is T) return;
+            bool familyOrCurve = typeof(FamilyInstance).IsAssignableFrom(typeof(T)) || typeof(MEPCurve).IsAssignableFrom(typeof(T));
+            if (!familyOrCurve && element is not DirectShape) return;
+            Skipped.Add(element);
         }
 
         private static int Count(Document doc, BuiltInCategory[] cats, ElementId level, ElementFilter box, JArray ids)
@@ -744,7 +765,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             missing = false;
             if (string.IsNullOrWhiteSpace(key)) return null;
             if (long.TryParse(key, out long id) && doc.GetElement(new ElementId(id)) is Level byId) return byId.Id;
-            Level level = new FilteredElementCollector(doc).OfClass(typeof(Level)).Cast<Level>().FirstOrDefault(item => string.Equals(item.Name, key, StringComparison.OrdinalIgnoreCase));
+            Level level = new FilteredElementCollector(doc).OfClass(typeof(Level)).OfType<Level>().FirstOrDefault(item => string.Equals(item.Name, key, StringComparison.OrdinalIgnoreCase));
             if (level == null) { missing = true; return null; }
             return level.Id;
         }
@@ -754,7 +775,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             string key = string.IsNullOrWhiteSpace(room) ? space : room;
             missing = false;
             if (string.IsNullOrWhiteSpace(key)) return null;
-            var places = new FilteredElementCollector(doc).OfClass(typeof(SpatialElement)).Cast<SpatialElement>()
+            var places = new FilteredElementCollector(doc).OfClass(typeof(SpatialElement)).OfType<SpatialElement>()
                 .Where(item => item is Room || item is Space).ToList();
             SpatialElement found = places.FirstOrDefault(item => Id(item) == key || string.Equals(item.Number, key, StringComparison.OrdinalIgnoreCase) || string.Equals(item.Name, key, StringComparison.OrdinalIgnoreCase));
             if (found == null) missing = true;
@@ -814,7 +835,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             ids = new List<string>();
             try
             {
-                foreach (Element element in location.get_ElementsAtJoin(end).Cast<Element>())
+                foreach (Element element in location.get_ElementsAtJoin(end).OfType<Element>())
                     if (element != null && element.Id.Value != wall.Id.Value) ids.Add(Id(element));
             }
             catch (Exception) { /* an end that cannot report joins is treated as open */ }
@@ -926,8 +947,16 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         private static XYZ Seed(Document doc, ElementId level, List<Wall> walls, List<Floor> floors)
         {
-            Room room = new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Rooms).WhereElementIsNotElementType().Cast<Room>()
-                .FirstOrDefault(item => item.Location != null && (level == null || item.LevelId == level));
+            Room room = null;
+            foreach (Element element in new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Rooms).WhereElementIsNotElementType())
+            {
+                if (element is Room item && item.Location != null && (level == null || item.LevelId == level))
+                {
+                    room = item;
+                    break;
+                }
+                if (element is not Room) NoteSkip<Room>(element);
+            }
             if (room?.Location is LocationPoint point) return point.Point + XYZ.BasisZ;
             BoundingBoxXYZ box = walls.Select(item => item.get_BoundingBox(null)).FirstOrDefault(item => item != null)
                 ?? floors.Select(item => item.get_BoundingBox(null)).FirstOrDefault(item => item != null);

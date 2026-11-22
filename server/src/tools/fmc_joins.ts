@@ -36,6 +36,7 @@ export const FMC_JOINS_DESCRIPTION =
   "dry_run defaults to true and returns the plan. dry_run false applies those ops through fmc_joins_apply, one transaction, at most 50 operations, and needs batch_lease. " +
   "Pass the ops from the dry run. A fix does not scan again. " +
   "Collectors are scoped by level, category, bounding box, room, space or ids. An unscoped scan above joins.scan_cap is refused. " +
+  "A DirectShape or other element that is not the expected family is skipped, and the reply includes skipped_non_family { count, ids }. " +
   "The reply is counts and ids per finding code, with location and size in the JSON file under %LOCALAPPDATA%\\Formcraft\\joins. Images are included only when images is true. " +
   "Tolerances are joins.* in FMC_Standards_Building.json. A missing key is a labelled PROVISIONAL default and cannot PASS. " +
   "draft or approved with a clause can PASS. A null status is UNKNOWN. A null value uses the labelled provisional default. " +
@@ -234,6 +235,7 @@ function stamp(snapshot: JoinsSnapshot, extra: Record<string, unknown>, askedIma
     read_only: true,
     saved: false,
     synced: false,
+    skipped_non_family: snapshot.skipped_non_family,
     images: imagesOf(snapshot, askedImages),
     active_unchanged: snapshot.active_unchanged !== false,
     bank_shapes: JOINS_BANK_SHAPES,
@@ -292,6 +294,7 @@ export async function runFmcJoins(args: FmcJoinsArgs, io: JoinsIo = {}) {
         message: snapshot.message || "[FMC-JOINS-SCOPE] Name a level, category, bounding box, room, space or element ids. An unscoped scan above the cap is refused.",
         element_count: snapshot.element_count,
         scan_cap: limits.values.scan_cap,
+        skipped_non_family: snapshot.skipped_non_family,
         ...(snapshot.resolved_document ? { resolved_document: snapshot.resolved_document } : {}),
       }, true);
     }
