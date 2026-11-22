@@ -123,6 +123,8 @@ export interface TracePanel {
   supply_from_id?: number;
   /** Main device rating in amperes. 0 means the parameter is empty. */
   main_a?: number;
+  /** Panel ways, when the family stores them. 0 means unknown. */
+  ways?: number;
 }
 
 export interface TraceCircuit {

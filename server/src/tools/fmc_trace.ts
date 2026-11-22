@@ -21,6 +21,7 @@ import {
   type TraceSnapshot,
 } from "../fmc/trace.js";
 import { dropOwnedEdits, PHASE2_DEFAULTS, planFixes, refuseTraceWrite, type TraceEdit } from "../fmc/trace_phase2.js";
+import { countSystems, editsForRecommendations, recommend, summariseCounts, summariseRecommendations } from "../fmc/trace_phase3.js";
 
 function reply(body: object, isError = false) {
   return { content: [{ type: "text" as const, text: JSON.stringify(body) }], isError };
@@ -50,6 +51,9 @@ export const FMC_TRACE_DESCRIPTION =
   "fix: a deterministic correction plan. dry_run defaults to true and returns the edits. dry_run false needs batch_lease and runs fmc_trace_apply, one transaction, " +
   "skipping elements owned by someone else or not current. The transaction rolls back if the failure count rises. " +
   "caps true is required before an end cap is planned. circuit is the circuit id for an unpowered device; a panel alone does not choose a circuit. " +
+  "counts: a bill of quantities from that same snapshot (fixtures, fixture units, fittings, valves, traps, cleanouts, vents, pipe and duct length by size, terminals, dampers, circuits, loads, phases, spare ways when the panel stores them, cable length when modelled, orphans). " +
+  "recommend: actionable items with a code, the element or system, the current value, the target, and the standards key. PROVISIONAL when the key is not in the bank. " +
+  "fix recommendations takes those ids. A resize, a cap and a system assignment are applied. A split, a regrade, a cleanout and a valve stay advisory. " +
   "HEBERT HOSTELS, a central model, and protected_paths are refused. " +
   "Not run yet: duct_airflow, fitting_corner, earthing, tray_fill. " +
   "Example: action leak, document F26901-FMC-ZZ-ZZ-M3-P-0001_USER. Example: action continuity, document F26901-FMC-ZZ-ZZ-M3-E-0001_USER.";
@@ -57,7 +61,7 @@ export const FMC_TRACE_DESCRIPTION =
 const limit = (key: string) => z.number().optional().describe(`${key} override. PROVISIONAL when omitted.`);
 
 export const FMC_TRACE_SHAPE = {
-  action: z.enum(["checks", "limits", "leak", "continuity", "run", "missing", "standards", "fix"]),
+  action: z.enum(["checks", "limits", "leak", "continuity", "run", "missing", "standards", "counts", "recommend", "fix"]),
   checks: z.array(z.string()).optional().describe("run: check ids. Default leak and continuity. Phase 2 ids are skipped."),
   system: z.string().optional().default("").describe("leak: piping or duct system name, classification or element id. Empty checks every system."),
   source: z.string().optional().default("").describe("leak: element id to walk from. Empty uses each system's base equipment, or the largest connected part when a system has none."),
@@ -75,6 +79,7 @@ export const FMC_TRACE_SHAPE = {
   caps: z.boolean().optional().default(false).describe("fix: include end caps. Off unless you ask."),
   circuit: z.string().optional().default("").describe("fix: element id of the circuit an unpowered device should join."),
   max_edits: z.number().int().min(1).max(100).optional().default(25).describe("fix: how many corrections one call may plan or apply."),
+  recommendations: z.array(z.string()).optional().default([]).describe("fix: recommendation ids from fmc_trace recommend. Only the deterministic ones are edited."),
 };
 
 export type FmcTraceArgs = z.infer<z.ZodObject<typeof FMC_TRACE_SHAPE>>;
@@ -117,6 +122,7 @@ export async function runFmcTrace(args: FmcTraceArgs) {
   if (!resolved.ok) return reply({ refused: true, read_only: true, reasons: [resolved.message] }, true);
   if (args.action === "checks") return reply({ ...catalogue(), phase2_defaults: PHASE2_DEFAULTS, not_run: ["duct_airflow", "fitting_corner", "earthing", "tray_fill"] });
   if (args.action === "limits") return reply({ tool: "fmc_trace", read_only: true, limits: resolved.limits, standard_keys: catalogue().standard_keys, phase2_defaults: PHASE2_DEFAULTS, api_limits: catalogue().api_limits });
+  if (args.action === "counts" || args.action === "recommend") return countOrRecommend(args, resolved.limits);
   if (args.action === "fix") return fixTrace(args, resolved.limits);
 
   const selection = selectChecks(args.action, args.checks);
@@ -181,7 +187,25 @@ function traceBank(): TraceFilter["bank"] {
   }
 }
 
-async function fixTrace(args: FmcTraceArgs, limits: { values: { near_miss_mm: number; direction_deg: number; size_mismatch_mm: number } }) {
+async function countOrRecommend(args: FmcTraceArgs, limits: { values: { near_miss_mm: number; direction_deg: number; size_mismatch_mm: number; touch_mm: number; connected_gap_mm: number; voltage_tol_v: number } }) {
+  let snapshot: TraceSnapshot;
+  try {
+    snapshot = await withRevitConnection((client) => client.sendRaw("fmc_trace", { mode: "snapshot", checks: ["counts"] }, 300000)) as TraceSnapshot;
+  } catch (error) {
+    return reply({ tool: "fmc_trace", read_only: true, error: error instanceof Error ? error.message : String(error) }, true);
+  }
+  const filter = { ...filterOf(args), bank: traceBank() };
+  const counts = countSystems(snapshot);
+  const items = args.action === "recommend" ? recommend(snapshot, filter, limits) : [];
+  const report = writeJson(snapshot, args.action === "counts" ? { counts } : { counts, recommendations: items });
+  const sample = args.sample_limit;
+  return reply({
+    tool: "fmc_trace", read_only: true, action: args.action, report,
+    ...(args.action === "counts" ? summariseCounts(counts, sample) : summariseRecommendations(items, sample)),
+  });
+}
+
+async function fixTrace(args: FmcTraceArgs, limits: { values: { near_miss_mm: number; direction_deg: number; size_mismatch_mm: number; touch_mm: number; connected_gap_mm: number; voltage_tol_v: number } }) {
   let snapshot: TraceSnapshot;
   try {
     snapshot = await withRevitConnection((client) => client.sendRaw("fmc_trace", { mode: "snapshot", checks: ["missing", "leak", "continuity"] }, 300000)) as TraceSnapshot;
@@ -191,7 +215,11 @@ async function fixTrace(args: FmcTraceArgs, limits: { values: { near_miss_mm: nu
   const { config } = loadConfig();
   const refusal = refuseTraceWrite({ title: snapshot?.model, path: snapshot?.resolved_document?.path, is_central: snapshot?.is_central }, config.protected_paths ?? []);
   if (refusal) return reply({ tool: "fmc_trace", refused: true, reasons: [refusal] }, true);
-  const plan = planFixes(snapshot, limits, { caps: args.caps, circuit: args.circuit, max: args.max_edits });
+  const named = args.recommendations ?? [];
+  const advice = named.length ? editsForRecommendations(recommend(snapshot, { ...filterOf(args), bank: traceBank() }, limits), named) : null;
+  const plan = advice
+    ? { edits: advice.edits.slice(0, args.max_edits), warnings: [...advice.advisory.map((item) => `${item.id} is advisory and was not edited`), ...advice.unknown.map((id) => `${id} is not a recommendation`)], rule: "Recommendations: a resize, a cap and a system assignment can be edited. The rest stay advisory.", capped: advice.edits.length > args.max_edits }
+    : planFixes(snapshot, limits, { caps: args.caps, circuit: args.circuit, max: args.max_edits });
   let skipped: Array<{ id: string; code: string; owner: string }> = [];
   try {
     const currency = await withRevitConnection((client) => client.sendRaw("fmc_elem_currency", { ids: plan.edits.flatMap((edit) => edit.ids) }, 60000)) as { elements?: Array<{ id: string; owner?: string; checkout?: string; updates?: string }> };
@@ -219,11 +247,15 @@ async function fixTrace(args: FmcTraceArgs, limits: { values: { near_miss_mm: nu
 }
 
 function correctionReport(snapshot: TraceSnapshot, edits: TraceEdit[], applied: Record<string, unknown>): string {
+  return writeJson(snapshot, { before: { model: snapshot.model, resolved_document: snapshot.resolved_document }, edits, after: applied }, "fix");
+}
+
+function writeJson(snapshot: TraceSnapshot, body: unknown, kind = "trace"): string {
   const dir = traceReportHostDir();
   fs.mkdirSync(dir, { recursive: true });
-  const name = `trace-fix-${(snapshot.model || "model").replace(/[<>:"|?*\\/]/g, "_").slice(0, 40)}-${new Date().toISOString().replace(/[:.]/g, "-")}.json`;
+  const name = `trace-${kind}-${(snapshot.model || "model").replace(/[<>:"|?*\\/]/g, "_").slice(0, 40)}-${new Date().toISOString().replace(/[:.]/g, "-")}.json`;
   const file = path.join(dir, name);
-  fs.writeFileSync(file, JSON.stringify({ before: { model: snapshot.model, resolved_document: snapshot.resolved_document }, edits, after: applied }));
+  fs.writeFileSync(file, JSON.stringify(body));
   return file;
 }
 

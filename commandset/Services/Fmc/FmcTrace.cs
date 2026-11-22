@@ -112,8 +112,8 @@ namespace RevitMCPCommandSet.Services.Fmc
         {
             var want = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (JToken token in Parameters["checks"] as JArray ?? new JArray()) want.Add(token.ToString());
-            var flowIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "leak", "missing", "drainage_fall", "venting", "cross_connection", "dead_legs", "pressure_flow" };
-            var elecIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "continuity", "missing", "voltage_drop", "overload", "phase_balance" };
+            var flowIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "leak", "missing", "drainage_fall", "venting", "cross_connection", "dead_legs", "pressure_flow", "counts", "recommend" };
+            var elecIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "continuity", "missing", "voltage_drop", "overload", "phase_balance", "counts", "recommend" };
             bool flow = want.Count == 0 || want.Any(flowIds.Contains);
             bool electrical = want.Count == 0 || want.Any(elecIds.Contains);
             var result = new JObject { ["truncated"] = false, ["connectors_skipped"] = 0 };
@@ -283,6 +283,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     ["supply_circuit_id"] = supplyCircuit,
                     ["supply_from_id"] = supplyFrom,
                     ["main_a"] = MainAmps(board),
+                    ["ways"] = Ways(board),
                 });
             }
 
@@ -545,6 +546,18 @@ namespace RevitMCPCommandSet.Services.Fmc
                 if (parameter == null || !parameter.HasValue) continue;
                 if (parameter.StorageType == StorageType.Double) return Math.Round(parameter.AsDouble(), 1);
                 if (parameter.StorageType == StorageType.Integer) return parameter.AsInteger();
+            }
+            return 0;
+        }
+
+        private static double Ways(Element element)
+        {
+            foreach (string name in new[] { "Number of Ways", "Max Number of Circuits", "Slots", "FMC_Ways" })
+            {
+                Parameter parameter = element.LookupParameter(name);
+                if (parameter == null || !parameter.HasValue) continue;
+                if (parameter.StorageType == StorageType.Integer) return parameter.AsInteger();
+                if (parameter.StorageType == StorageType.Double) return Math.Round(parameter.AsDouble(), 0);
             }
             return 0;
         }

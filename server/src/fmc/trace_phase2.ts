@@ -59,8 +59,14 @@ export const PHASE2_DEFAULTS: Record<string, number> = {
   "trace.fu_capacity_15": 1,
   "trace.fu_capacity_22": 3,
   "trace.fu_capacity_28": 6,
+  "trace.fu_capacity_32": 6,
+  "trace.fu_capacity_40": 12,
   "trace.fu_capacity_42": 16,
+  "trace.fu_capacity_50": 20,
   "trace.fu_capacity_54": 40,
+  "trace.max_points_per_circuit": 10,
+  "trace.max_lights_per_circuit": 12,
+  "trace.max_circuit_load_w": 1000,
   "trace.voltage_drop_pct": 4,
   "trace.mv_per_amp_m": 18,
   "trace.overload_ratio": 1,
@@ -174,14 +180,16 @@ function fallKey(size: number): string {
 
 function capacityKey(size: number): string | null {
   if (size <= 0) return null;
-  if (size <= 18) return "trace.fu_capacity_15";
-  if (size <= 25) return "trace.fu_capacity_22";
-  if (size <= 32) return "trace.fu_capacity_28";
-  if (size <= 50) return "trace.fu_capacity_42";
+  if (size <= 15) return "trace.fu_capacity_15";
+  if (size <= 22) return "trace.fu_capacity_22";
+  if (size <= 28) return "trace.fu_capacity_28";
+  if (size <= 32) return "trace.fu_capacity_32";
+  if (size <= 40) return "trace.fu_capacity_40";
+  if (size <= 50) return "trace.fu_capacity_50";
   return "trace.fu_capacity_54";
 }
 
-function fixtureUnits(el: TraceElement, filter?: TraceFilter): { units: number; known: boolean; key: string } {
+export function fixtureUnits(el: TraceElement, filter?: TraceFilter): { units: number; known: boolean; key: string } {
   const text = words(el);
   const pick = (key: string) => ({ units: citeLimit(key, filter).value, known: true, key });
   if (/\bwc\b|water closet|closet/.test(text)) return pick("trace.fu_wc");
