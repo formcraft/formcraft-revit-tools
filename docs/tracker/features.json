@@ -177,7 +177,7 @@
     "feature": "Sheets against the register",
     "status": "Built, Revit check due",
     "ref": "U19",
-    "note": "Issue sets split on '+' and matched by membership (F-043); retest due"
+    "note": "Issue sets split on '+' and matched by membership (F-043); retest due. pair, arrange and park pack views in the title block and set Parked (docs/SHEETS_LAYOUT.md). dry_run defaults true. A layout write is fmc_sheets_layout_apply, one transaction, with batch_lease and references. Margins missing from the standards bank are provisional and cannot PASS. Needs a Revit check."
   },
   {
     "id": "F21",
@@ -952,5 +952,50 @@
     "status": "Built, Revit check due",
     "ref": "fmc_legend seed, create_view, place, docs/LEGEND.md",
     "note": "The chain action is unchanged. seed, create_view and place copy a seed because Revit cannot create a LegendComponent or a ViewLegend. seed is read-only and returns FMC-LEGEND-NO-SEED when no component exists. create_view duplicates a legend view or copies one from another open document and reports a refusal. place copies the seed into a grid and sets LEGEND_COMPONENT, LEGEND_COMPONENT_VIEW and, for a wall, LEGEND_COMPONENT_LENGTH, one SubTransaction per component. label is none, keynote or type_mark. No free text notes. If a tag cannot be placed, type marks are returned for a schedule. dry_run defaults true. A write is fmc_legend_apply, one transaction, with batch_lease and references. JSON under %LOCALAPPDATA%\\Formcraft\\legend. No pictures. Needs a Revit check."
+  },
+  {
+    "id": "F107",
+    "area": "Engine",
+    "group": "Drawings",
+    "feature": "Keynote placement from a seed",
+    "status": "Built, Revit check due",
+    "ref": "fmc_keynote_place, docs/KEYNOTE_PLACE.md",
+    "note": "Finds a linked keynote tag of type element, material or user in any view, or copies one from 02_Keynotes/Seeds/FMC_Keynote_Seed.rvt. Copies that seed into every target plan with CopyElements and retargets the host. The API still cannot create the keynote link: a blank copy is rolled back as FMC-NO-API-KEYNOTE-LINK. A missing kit file is FMC-KEYNOTE-SEED-MISSING. A refused copy is FMC-KEYNOTE-COPY-REFUSED. dry_run defaults true. A write is fmc_keynote_place_apply, one transaction, with batch_lease and references. JSON under %LOCALAPPDATA%\\Formcraft\\keynote. No pictures. Needs a Revit check."
+  },
+  {
+    "id": "F108",
+    "area": "Engine",
+    "group": "Drawings",
+    "feature": "Sheet pair, arrange and park",
+    "status": "Built, Revit check due",
+    "ref": "fmc_sheets pair, arrange, park, docs/SHEETS_LAYOUT.md",
+    "note": "pair packs views in a grid inside the title block. arrange uses grid, pair or stack. park sets a browser-organization parameter or FMC_Sheet_Status to Parked. Margins are sheets.margin_left_mm, sheets.margin_other_mm and sheets.gap_mm. A missing key is provisional and cannot PASS. dry_run defaults true. A write is fmc_sheets_layout_apply, one transaction, with batch_lease and references. JSON under %LOCALAPPDATA%\\Formcraft\\sheets. No pictures. Needs a Revit check."
+  },
+  {
+    "id": "F109",
+    "area": "Engine",
+    "group": "Drawings",
+    "feature": "View templates, filters and room colour",
+    "status": "Built, Revit check due",
+    "ref": "fmc_viewstyle, docs/VIEWSTYLE.md, server/data/FMC_ViewStyle.json",
+    "note": "templates, filters and room_fill read 03_Master_Data/FMC_ViewStyle.json, or the sample under server/data when the kit file is missing. Sample colours are PROVISIONAL and cannot PASS. A template is created from a view. A filter is a parameter filter with a colour. room_fill adds entries only when a scheme already named for Department or Name exists. A scheme the API has just created cannot be bound, and the code is FMC-VIEWSTYLE-SCHEME-PARAM. dry_run defaults true. A write is fmc_viewstyle_apply, one transaction, with batch_lease and references. JSON under %LOCALAPPDATA%\\Formcraft\\viewstyle. No pictures. Needs a Revit check."
+  },
+  {
+    "id": "F110",
+    "area": "Engine",
+    "group": "Drawings",
+    "feature": "Dimension strings",
+    "status": "Built, Revit check due",
+    "ref": "fmc_dims auto, docs/DIMS.md",
+    "note": "auto plans strings along parallel grids and along exterior walls, with openings in the chain. Interior walls are skipped. chain defaults true. offset_mm defaults to 600. dry_run defaults true and returns the references. A write is fmc_dims_apply, one transaction, one subtransaction per string, with batch_lease and references. A missing reference is FMC-DIMS-NO-REFERENCE and that string is not created. JSON under %LOCALAPPDATA%\\Formcraft\\dims. No pictures. Needs a Revit check."
+  },
+  {
+    "id": "F111",
+    "area": "Engine",
+    "group": "Drawings",
+    "feature": "PDF self-check",
+    "status": "Built, Revit check due",
+    "ref": "fmc_pdf_review, docs/PDF_REVIEW.md",
+    "note": "Rasterizes exported PDF pages to PNG under %LOCALAPPDATA%\\Formcraft\\images. Never D: and never beside the model. The renderer is pdftoppm, pdftocairo, Ghostscript, or FMC_PDFIUM. None of those is FMC-PDF-NO-RENDERER, and the text checks are still returned. Checks are a blank page, page size A0 to A4, and missing title-block text. dpi defaults to 110. dry_run defaults true and writes no PNG. The model is not changed, so there is no batch lease. Needs a Revit check only for the export that produces the PDF."
   }
 ]

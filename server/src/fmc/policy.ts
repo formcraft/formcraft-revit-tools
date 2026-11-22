@@ -213,6 +213,14 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_north_apply",
   // Legend views: duplicate a seed view or copy a seed component. One transaction. No text notes.
   "fmc_legend_apply",
+  // Keynote placement: copy a linked seed into each plan and retarget the host. One transaction.
+  "fmc_keynote_place_apply",
+  // Sheet pair, arrange and park. One transaction. The register compare stays a read.
+  "fmc_sheets_layout_apply",
+  // View templates, filters and room colour fills. One transaction.
+  "fmc_viewstyle_apply",
+  // Dimension strings. One transaction, one subtransaction per string.
+  "fmc_dims_apply",
 ]);
 
 /**
@@ -240,6 +248,14 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_north",
   // Legend views and legend components. No transaction.
   "fmc_legend_views",
+  // Keynote tags, hosts and plan views. No transaction.
+  "fmc_keynote_place",
+  // Sheet outlines, view sizes and sheet parameters. No transaction.
+  "fmc_sheets_layout",
+  // Existing templates, filters and room names. No transaction.
+  "fmc_viewstyle",
+  // Grids, exterior walls and openings in one view. No transaction.
+  "fmc_dims",
 ]);
 
 /**
