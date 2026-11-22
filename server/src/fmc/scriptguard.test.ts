@@ -35,6 +35,30 @@ test("while(true) and for(;;) without a break are refused; a break or a bounded 
   assert.match(nested?.message ?? "", /while\(true\)/);
 });
 
+test("an unscoped collector that reads every parameter is refused; a category or a named parameter is not", () => {
+  const crash = [
+    "foreach (Element e in new FilteredElementCollector(document)) {",
+    "  foreach (Parameter p in e.Parameters) {",
+    "    var t = p.StorageType;",
+    "    var s = p.AsValueString();",
+    "  }",
+    "}",
+    "return null;",
+  ].join("\n");
+  const hit = screenScript(crash, 1_000_000);
+  assert.equal(hit?.code, "FMC-SEND-CODE-UNSCOPED");
+  assert.match(hit?.message ?? "", /OfCategory or OfClass/);
+  assert.match(hit?.message ?? "", /LookupParameter/);
+  assert.match(hit?.message ?? "", /Nothing was sent to Revit/);
+  assert.equal(screenScript(crash, 1_000_000, { allowFullScan: true }), null);
+  ok("foreach (Element e in new FilteredElementCollector(document).OfCategory(BuiltInCategory.OST_Walls)) {\n  foreach (Parameter p in e.Parameters) { var t = p.StorageType; }\n}\nreturn null;");
+  ok("foreach (Wall w in new FilteredElementCollector(document).OfClass(typeof(Wall)).Cast<Wall>()) {\n  var p = w.get_Parameter(BuiltInParameter.ALL_MODEL_MARK);\n  if (p != null && p.StorageType == StorageType.String) return p.AsString();\n}\nreturn null;");
+  ok("var col = new FilteredElementCollector(document);\ncol.OfClass(typeof(Wall));\nforeach (Element e in col) {\n  foreach (Parameter p in e.GetOrderedParameters()) { var t = p.StorageType; }\n}\nreturn null;");
+  ok("foreach (Element e in new FilteredElementCollector(document).WhereElementIsNotElementType()) {\n  var p = e.LookupParameter(\"Mark\");\n  return p == null ? \"\" : p.AsString();\n}");
+  const ordered = "var all = new FilteredElementCollector(document).ToElements();\nforeach (Element e in all) {\n  foreach (Parameter p in e.ParametersMap) { var s = p.AsValueString(); }\n}\nreturn null;";
+  assert.equal(screenScript(ordered, 1_000_000)?.code, "FMC-SEND-CODE-UNSCOPED");
+});
+
 test("a script over the size limit is refused before anything else", () => {
   const hit = screenScript("return null;", 5);
   assert.equal(hit?.code, "FMC-CODE-TOO-LARGE");

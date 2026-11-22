@@ -23,7 +23,11 @@ function board(partial: ConstructorParameters<typeof BatchBoard>[0] = {}) {
   const clock = { t: 1_700_000_000_000 };
   const logs: string[] = [];
   const { now, ...rest } = partial;
-  const made = new BatchBoard({ idleMs: 120_000, maxMs: 1_800_000, autoSweep: false, log: (line) => logs.push(line), ...rest, now: now ?? (() => clock.t) });
+  const made = new BatchBoard({
+    idleMs: 120_000, maxMs: 1_800_000, autoSweep: false, log: (line) => logs.push(line),
+    queueBusy: () => false, modalDialog: () => false, memoryPaused: () => false,
+    ...rest, now: now ?? (() => clock.t),
+  });
   return { board: made, clock, logs };
 }
 
@@ -284,7 +288,8 @@ test("service config and a restart clear leases without logging a token", async 
   try {
     const made = resetBatchBoard({ autoSweep: false, log: (line) => lines.push(line) });
     await req(made, "a", "Architecture", "grids");
-    const restarted = logBatchRestart();
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-restart-"));
+    const restarted = logBatchRestart({ ...process.env, APPDATA: dir } as NodeJS.ProcessEnv);
     assert.equal((restarted.snapshot().documents as unknown[]).length, 0);
     restarted.close();
   } finally {
@@ -330,7 +335,10 @@ test("auto-save and auto-approve are the existing settings, and a failed save go
 
   const { board: made } = board({
     saveStep: async () => {
-      assert.equal(made.status(String(heldLease)).state, "granted");
+      const docs = made.snapshot().documents as Array<{ holder: unknown }>;
+      assert.equal(docs[0]?.holder ?? null, null, "the lease is released before the save");
+      const jumped = await req(made, "c", "Architecture", "doors");
+      assert.equal(jumped.state, "queued", "a new request waits until the save finishes");
       return { ran: true, ok: false, detail: "the model didn't save itself: disk full" };
     },
   });
@@ -343,7 +351,7 @@ test("auto-save and auto-approve are the existing settings, and a failed save go
   assert.equal(made.status(String(b.lease)).state, "granted");
   const again = await req(made, "a", "Architecture", "grids", { correction: "saved a copy instead", references: changedRefs(2) });
   assert.equal(again.attempt, 2);
-  assert.equal(again.position, 1);
+  assert.equal(again.position, 2);
   const hist = (made.snapshot().documents as Array<{ history: Array<{ save?: { ok: boolean }; sync?: { ran: boolean } }> }>)[0].history[0];
   assert.equal(hist.save?.ok, false);
   assert.equal(hist.sync?.ran, false);
@@ -355,6 +363,7 @@ test("drain queues new work, and a restart restores the line with the active lea
   const clock = { t: 5_000 };
   const made = new BatchBoard({
     idleMs: 120_000, maxMs: 1_800_000, autoSweep: false, now: () => clock.t,
+    queueBusy: () => false, modalDialog: () => false, memoryPaused: () => false,
     persistLine: (rows) => saveBatchLine(rows, env),
     writeMaintenance: (reason) => writeMaintenance(reason, env),
     readMaintenance: () => readMaintenance(env),
@@ -372,6 +381,7 @@ test("drain queues new work, and a restart restores the line with the active lea
   assert.deepEqual(saved.map((row) => row.label), ["grids", "walls"]);
   const again = new BatchBoard({
     idleMs: 120_000, maxMs: 1_800_000, autoSweep: false, now: () => clock.t,
+    queueBusy: () => false, modalDialog: () => false, memoryPaused: () => false,
     readMaintenance: () => readMaintenance(env),
   });
   assert.equal(again.importLine(saved), 2);
@@ -406,5 +416,97 @@ test("Hostel Building Bot reserves the next slot by client or by bot name", asyn
   assert.equal(claimed.state, "queued");
   await made.release(String(held.lease), "ok", "arch", "done");
   assert.equal(made.status(String(claimed.lease), "real-structure").state, "granted");
+});
+
+test("a Plumbing lease does not stop Electrical's batch-end sync", async () => {
+  const calls: Array<{ document: string; batchEnd?: boolean }> = [];
+  const { board: made } = board({
+    saveStep: async () => ({ ran: true, ok: true, detail: "saved" }),
+    syncStep: async (ctx) => {
+      calls.push({ document: ctx.document, batchEnd: ctx.batchEnd });
+      return { ran: true, ok: true, synced: true, detail: "synced" };
+    },
+  });
+  const plumbing = await req(made, "p", "Plumbing", "pipes");
+  const electrical = await req(made, "e", "Electrical", "lights");
+  assert.equal(plumbing.state, "granted");
+  assert.equal(electrical.state, "granted");
+  const released = await made.releaseWithCare(String(electrical.lease), "ok", "e", "done");
+  const sync = released.batch_end_sync as { status: string; pending: boolean };
+  assert.equal(sync.status, "synced");
+  assert.equal(sync.pending, false);
+  assert.deepEqual(calls, [{ document: "Electrical", batchEnd: true }]);
+  assert.equal(made.activeHolder("Plumbing")?.lease, plumbing.lease);
+});
+
+test("a deferred batch-end sync is retried, then cleared, and a restart keeps it until then", async () => {
+  let disk: Array<{ document: string; pendingBatchEnd?: boolean; lastSyncAt: number | null }> = [];
+  let n = 0;
+  const { board: made } = board({
+    saveStep: async () => ({ ran: true, ok: true, detail: "saved" }),
+    loadClocks: () => disk.map((row) => ({ ...row, changedAt: 1, lastSaveAt: null, lastError: null })),
+    saveClocks: (rows) => { disk = rows.map((row) => ({ document: row.document, pendingBatchEnd: row.pendingBatchEnd, lastSyncAt: row.lastSyncAt })); },
+    syncStep: async (ctx) => {
+      n += 1;
+      assert.equal(ctx.batchEnd, true);
+      if (n === 1) return { ran: false, ok: true, synced: false, detail: "central busy", defer_reason: "central busy" };
+      return { ran: true, ok: true, synced: true, detail: "synced" };
+    },
+  });
+  await req(made, "p", "Plumbing", "pipes");
+  const electrical = await req(made, "e", "Electrical", "lights");
+  const released = await made.releaseWithCare(String(electrical.lease), "ok", "e", "done");
+  const sync = released.batch_end_sync as { status: string; pending: boolean; reason: string };
+  assert.equal(sync.status, "deferred");
+  assert.equal(sync.pending, true);
+  assert.match(sync.reason, /central busy/);
+  assert.equal(disk.some((row) => row.document === "Electrical" && row.pendingBatchEnd === true), true);
+  const pending = (made.snapshot().syncs as Array<{ document: string; pending_batch_end: boolean }>).find((row) => row.document === "Electrical");
+  assert.equal(pending?.pending_batch_end, true);
+  const restarted = board({
+    loadClocks: () => disk.map((row) => ({ ...row, changedAt: 1, lastSaveAt: null, lastError: null })),
+    saveClocks: (rows) => { disk = rows.map((row) => ({ document: row.document, pendingBatchEnd: row.pendingBatchEnd, lastSyncAt: row.lastSyncAt })); },
+    syncStep: async (ctx) => {
+      n += 1;
+      assert.equal(ctx.document, "Electrical");
+      assert.equal(ctx.batchEnd, true);
+      return { ran: true, ok: true, synced: true, detail: "synced" };
+    },
+  }).board;
+  await restarted.syncIdle();
+  assert.equal(n, 2);
+  const cleared = (restarted.snapshot().syncs as Array<{ document: string; pending_batch_end: boolean }>).find((row) => row.document === "Electrical");
+  assert.equal(cleared?.pending_batch_end, false);
+  assert.equal(disk.some((row) => row.pendingBatchEnd), false);
+});
+
+test("expiry after a write sets pending batch-end, and a lease that never wrote does not", async () => {
+  const { board: made, clock } = board({ idleMs: 1_000 });
+  const electrical = await req(made, "e", "Electrical", "lights");
+  made.admit("Electrical", String(electrical.lease), "e").finish();
+  await req(made, "p", "Plumbing", "pipes");
+  made.sweep(clock.t + 5_000);
+  const rows = made.snapshot().syncs as Array<{ document: string; pending_batch_end?: boolean }>;
+  assert.equal(rows.find((row) => row.document === "Electrical")?.pending_batch_end, true);
+  assert.notEqual(rows.find((row) => row.document === "Plumbing")?.pending_batch_end, true);
+});
+
+test("health last_sync and last_save follow the sync state file, and next_sync is not in the past", async () => {
+  const older = Date.UTC(2026, 10, 22, 14, 39, 44);
+  const newer = Date.UTC(2026, 10, 22, 15, 25, 5);
+  const now = newer + 20 * 60_000;
+  let reads = 0;
+  const { board: made } = board({
+    now: () => now,
+    loadClocks: () => {
+      reads += 1;
+      const at = reads === 1 ? older : newer;
+      return [{ document: "Electrical", changedAt: at, lastSyncAt: at, lastSaveAt: at, lastError: null }];
+    },
+  });
+  const row = (made.snapshot().syncs as Array<{ document: string; last_sync: string | null; last_save: string | null; next_sync: string | null }>).find((item) => item.document === "Electrical");
+  assert.equal(row?.last_sync, new Date(newer).toISOString());
+  assert.equal(row?.last_save, new Date(newer).toISOString());
+  if (row?.next_sync) assert.ok(Date.parse(row.next_sync) > now);
 });
 });

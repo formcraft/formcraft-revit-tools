@@ -47,6 +47,8 @@ namespace RevitMCPCommandSet.Bridge
             foreach (string u in usings) source.Append("using ").Append(u).Append(";\n");
             source.Append("namespace AIGeneratedCode\n{\n    public static class CodeExecutor\n    {\n");
             source.Append("        public static object Execute(Document document, object[] parameters)\n        {\n");
+            // `doc` is the call's resolved document. It is not uiapp.ActiveUIDocument.Document.
+            source.Append("            Document doc = document;\n");
             source.Append("#line 1 \"").Append(ScriptPath).Append("\"\n");
             source.Append(code).Append('\n');
             source.Append("#line default\n        }\n    }\n}\n");

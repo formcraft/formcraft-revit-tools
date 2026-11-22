@@ -29,14 +29,16 @@ namespace RevitMCPCommandSet.Services.Fmc
             Result = new JObject(); Error = "";
             try
             {
-                Document doc = app.ActiveUIDocument?.Document ?? throw new InvalidOperationException("No model is open");
+                using var target = FmcTarget.Resolve(app, Parameters, mayOpen: false);
+                Document doc = target.Doc;
+                View view = target.Ui?.ActiveView ?? doc.ActiveView;
                 var elements = new JArray();
                 var missing = new JArray();
                 foreach (string uid in (Parameters["unique_ids"] as JArray ?? new JArray()).Select(x => x.Value<string>()))
                 {
                     Element e = string.IsNullOrEmpty(uid) ? null : doc.GetElement(uid);
                     if (e == null) { missing.Add(uid); continue; }
-                    elements.Add(Facts(doc, e, app.ActiveUIDocument.ActiveView));
+                    elements.Add(Facts(doc, e, view));
                 }
                 Result = new JObject { ["model"] = doc.Title, ["elements"] = elements, ["missing"] = missing };
             }

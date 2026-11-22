@@ -384,4 +384,25 @@ namespace RevitMCPCommandSet.Commands.Fmc
             }
         }
     }
+
+    /// <summary>Checkout status and whether elements are current with central. Read-only. Never checks an element out.</summary>
+    public class FmcElemCurrencyCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcElemCurrencyHandler _handler => (FmcElemCurrencyHandler)Handler;
+
+        public FmcElemCurrencyCommand(UIApplication uiApp) : base(new FmcElemCurrencyHandler(), uiApp) { }
+        public override string CommandName => "fmc_elem_currency";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = parameters ?? new JObject();
+                if (!RaiseAndWaitForCompletion(60000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
 }

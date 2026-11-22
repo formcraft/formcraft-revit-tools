@@ -83,6 +83,19 @@ export interface GuardConfig {
    */
   sync_exclude?: string[];
   /**
+   * Titles or paths that never autosave. Combined with sync_exclude and protected_paths.
+   * A listed title also covers its local (HEBERT HOSTELS covers HEBERT HOSTELS_USER).
+   * The timer, the save after an AI command, and the batch-end save all skip these.
+   */
+  save_exclude?: string[];
+  /**
+   * Folder prefixes autosave must not write under. Matched like protected_roots (a path segment prefix).
+   * Empty matches nothing. protected_roots is still checked as well.
+   */
+  protected_paths?: string[];
+  /** Folder for see_view and other screenshots. Default %LOCALAPPDATA%\\Formcraft\\images. Never D: and never beside a model. */
+  image_dir?: string;
+  /**
    * Per-document allowlist. When set, only these titles or paths sync (again by documentKey).
    * ["Structure"] is "sync only Structure". Omit it to sync every workshared document that is not excluded.
    * A document on both lists is excluded.
@@ -201,6 +214,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_diagram_drawn",
   // batch auto-save reads the document before it decides whether the existing auto-save may run
   "fmc_document_info",
+  // checkout status and central currency. Read-only. Never requests ownership.
+  "fmc_elem_currency",
 ]);
 
 /**

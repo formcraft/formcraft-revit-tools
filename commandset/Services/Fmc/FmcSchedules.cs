@@ -28,7 +28,11 @@ namespace RevitMCPCommandSet.Services.Fmc
         public void Execute(UIApplication app)
         {
             Result = new JObject(); Error = "";
-            try { Result = Apply(app.ActiveUIDocument?.Document ?? throw new InvalidOperationException("Open the template or WIP model first")); }
+            try
+            {
+                using var target = FmcTarget.Resolve(app, Parameters, mayOpen: false);
+                Result = Apply(target.Doc);
+            }
             catch (Exception e) { Error = e.Message; }
             finally { _done.Set(); }
         }

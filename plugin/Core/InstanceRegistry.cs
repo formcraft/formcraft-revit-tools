@@ -51,7 +51,7 @@ namespace revit_mcp_plugin.Core
                     ["unattended"] = UnattendedMode.On,
                     ["documents"] = new JArray((docs ?? new List<DocState>()).Select(d => new JObject
                     {
-                        ["title"] = d.Title, ["path"] = d.Path, ["active"] = d.IsActive, ["family"] = d.IsFamily, ["workshared"] = d.IsWorkshared,
+                        ["title"] = d.Title, ["path"] = d.Path, ["active"] = d.IsActive, ["family"] = d.IsFamily, ["workshared"] = d.IsWorkshared, ["modified"] = d.IsModified,
                     })),
                 };
                 string file = FileFor(Process.GetCurrentProcess().Id);

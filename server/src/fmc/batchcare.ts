@@ -2,8 +2,9 @@
  * The batch line reads the settings that already exist. It does not add its own.
  *
  * Auto-save that actually runs: fmc_guard.json ai_modeller.auto_save_minutes, applied by autoSave() in aigate.ts
- * (testing default 10 minutes, 0 off). Never a workshared model, a background document, a detached or read-only
- * verification copy, a link, or a protected original (including originals on D: once protected_roots names them).
+ * (testing default 10 minutes, 0 off). That path still skips a workshared model. The timed autosave saves a
+ * workshared local with doc.Save and does not touch the central. save_exclude and protected_paths skip every autosave.
+ * A background document, a detached or read-only verification copy, a link, or a protected original are still skipped.
  *
  * Auto-approve that actually runs: the same file, auto_approve true and mode "testing". aigate.ts skips the
  * approval queue for ordinary model changes. A direct sync waits unless auto_approve_sync is also on. Relinquish stays manual.

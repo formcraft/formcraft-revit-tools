@@ -1,5 +1,6 @@
 using Autodesk.Revit.UI;
 using RevitMCPCommandSet.Models.Common;
+using RevitMCPCommandSet.Services.Fmc;
 using RevitMCPSDK.API.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -32,8 +33,9 @@ namespace RevitMCPCommandSet.Services
         {
             try
             {
-                var uiDoc = app.ActiveUIDocument;
-                var doc = uiDoc.Document;
+                using var target = FmcTarget.Resolve(app, FmcCallContext.Parameters ?? new Newtonsoft.Json.Linq.JObject(), false);
+                var uiDoc = target.Ui ?? throw new InvalidOperationException($"[FMC-DOC-REQUIRED] Selection is only available when {target.Doc.Title} is the active document. Refusing to read the active document's selection.");
+                var doc = target.Doc;
 
                 // 获取当前选中的元素
                 var selectedIds = uiDoc.Selection.GetElementIds();

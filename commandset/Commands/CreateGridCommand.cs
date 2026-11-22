@@ -2,6 +2,7 @@ using Autodesk.Revit.UI;
 using Newtonsoft.Json.Linq;
 using RevitMCPCommandSet.Models.Architecture;
 using RevitMCPCommandSet.Services;
+using RevitMCPCommandSet.Services.Fmc;
 using RevitMCPSDK.API.Base;
 
 namespace RevitMCPCommandSet.Commands
@@ -40,6 +41,7 @@ namespace RevitMCPCommandSet.Commands
                     throw new ArgumentException($"Invalid grid parameters: {validationError}");
                 }
 
+                FmcCallContext.Begin(parameters);
                 // Set parameters and trigger event
                 _handler.SetParameters(data);
 

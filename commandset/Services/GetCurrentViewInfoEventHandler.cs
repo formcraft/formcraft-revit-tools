@@ -1,5 +1,6 @@
 using Autodesk.Revit.UI;
 using RevitMCPCommandSet.Models.Common;
+using RevitMCPCommandSet.Services.Fmc;
 using RevitMCPSDK.API.Interfaces;
 
 namespace RevitMCPCommandSet.Services
@@ -24,8 +25,7 @@ namespace RevitMCPCommandSet.Services
         {
             try
             {
-                var uiDoc = app.ActiveUIDocument;
-                var doc = uiDoc.Document;
+                var doc = FmcCallContext.Document(app);
                 var activeView = doc.ActiveView;
 
                 ResultInfo = new CurrentViewInfo

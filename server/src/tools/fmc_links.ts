@@ -4,7 +4,9 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
+import { resolvedDocumentFrom, type ResolvedDocument } from "../fmc/docresolve.js";
 import { LinkFact, auditLinks, candidates, linkProblems, roleOf } from "../fmc/links.js";
+import { classifyLinkLine } from "../fmc/reloadlink.js";
 
 const win = path.win32;
 
@@ -22,6 +24,20 @@ function log(cfg: GuardConfig, action: string, dryRun: boolean, target: string, 
 
 function reply(body: object, isError = false) {
   return { content: [{ type: "text" as const, text: JSON.stringify(body, null, 2) }], isError };
+}
+
+/** The host model fmc_links just read or changed. A title-only model name still echoes resolved_document. */
+export function linkResolvedDocument(facts: unknown, fallback?: unknown): ResolvedDocument | null {
+  const row = facts && typeof facts === "object" ? facts as Record<string, unknown> : {};
+  const fromFacts = resolvedDocumentFrom(row.resolved_document) ?? resolvedDocumentFrom(row.document) ?? resolvedDocumentFrom(fallback);
+  if (fromFacts) return fromFacts;
+  const model = typeof row.model === "string" ? row.model.trim() : "";
+  if (!model) return null;
+  return { title: model.replace(/\.rvt$/i, ""), path: "" };
+}
+
+function withDocument<T extends object>(body: T, doc: ResolvedDocument | null): T & { resolved_document?: ResolvedDocument } {
+  return doc ? { ...body, resolved_document: doc } : body;
 }
 
 /** .rvt files in the folder and one level of subfolders (02_Shared\<Role>\). */
@@ -65,40 +81,42 @@ export async function runFmcLinks(args: FmcLinksArgs) {
     const facts = await withRevitConnection((c) => c.sendRaw("fmc_link_facts", {}, 60000));
     const links = (facts?.links ?? []) as LinkFact[];
     const model = String(facts?.model ?? "");
+    const host = linkResolvedDocument(facts);
 
     if (args.action === "audit") {
       const audit = auditLinks(links, !!facts?.workshared, (facts?.worksets ?? []) as string[]);
       const folder = args.link_from.trim();
       const found = folder ? candidates(listModels(folder), links, model) : [];
-      return reply({ model, workshared: !!facts?.workshared, coordinates: facts?.coordinates ?? {}, links, audit,
+      return reply(withDocument({ model, workshared: !!facts?.workshared, coordinates: facts?.coordinates ?? {}, links, audit,
         to_fix: audit.filter((a) => a.state === "Fix").length, link_from: folder, candidates: found,
-        link_from_problem: folder && !fs.existsSync(folder) ? `Folder not found: ${folder}` : "" });
+        link_from_problem: folder && !fs.existsSync(folder) ? `Folder not found: ${folder}` : "" }, host));
     }
 
     if (args.action === "pin") {
       const ids = links.filter((l) => !l.pinned).map((l) => l.id);
-      if (!ids.length) return reply({ dry_run: dry, nothing: true, message: "Every link is pinned" });
-      if (dry) return reply({ dry_run: true, would: links.filter((l) => !l.pinned).map((l) => ({ id: l.id, name: l.name })), next: "Run again with dry_run=false" });
+      if (!ids.length) return reply(withDocument({ dry_run: dry, nothing: true, message: "Every link is pinned" }, host));
+      if (dry) return reply(withDocument({ dry_run: true, would: links.filter((l) => !l.pinned).map((l) => ({ id: l.id, name: l.name })), next: "Run again with dry_run=false" }, host));
       const r = await withRevitConnection((c) => c.sendCommand("fmc_link_pin", { element_ids: ids }, 60000));
       log(config, "links_pin", false, model, "done", `${ids.length} links pinned`);
-      return reply({ done: true, pinned: r?.pinned ?? ids.length });
+      return reply(withDocument({ done: true, pinned: r?.pinned ?? ids.length }, linkResolvedDocument(r, host)));
     }
 
     // link
     const wanted = args.models.map((m) => m.trim()).filter(Boolean);
-    if (!wanted.length) return reply({ refused: true, reasons: ["Choose the models to link"] }, true);
+    if (!wanted.length) return reply(withDocument({ refused: true, reasons: ["Choose the models to link"] }, host), true);
     const reasons = wanted.flatMap((m) => linkProblems(m, model)).concat(wanted.filter((m) => !fs.existsSync(m)).map((m) => `${m}: not found`));
-    if (reasons.length) return reply({ refused: true, reasons }, true);
+    if (reasons.length) return reply(withDocument({ refused: true, reasons }, host), true);
     const linkedNames = new Set(links.map((l) => win.basename(l.path || l.name).toLowerCase()));
     const items = wanted.map((m) => ({ path: m, name: win.basename(m), workset: `Z_Links_${roleOf(m) || "<Role>"}`, already: linkedNames.has(win.basename(m).toLowerCase()) }));
     const todo = items.filter((i) => !i.already);
-    if (dry) return reply({ dry_run: true, would: items.map((i) => ({ ...i, result: i.already ? "already linked" : "would link by shared coordinates" + (args.pin ? " and pin" : "") })),
-      positioning: "Auto – By Shared Coordinates", next: "Run again with dry_run=false" });
-    if (!todo.length) return reply({ done: true, nothing: true, message: "Already linked" });
+    if (dry) return reply(withDocument({ dry_run: true, would: items.map((i) => ({ ...i, result: i.already ? "already linked" : "would link by shared coordinates" + (args.pin ? " and pin" : "") })),
+      positioning: "Auto – By Shared Coordinates", next: "Run again with dry_run=false" }, host));
+    if (!todo.length) return reply(withDocument({ done: true, nothing: true, message: "Already linked" }, host));
     const r = await withRevitConnection((c) => c.sendCommand("fmc_link_add", { models: todo.map((t) => ({ path: t.path, workset: t.workset })), pin: args.pin }, 300000));
-    const results = (r?.models ?? []) as Array<{ name: string; result: string }>;
-    log(config, "links_add", false, model, "done", results.map((x) => `${x.name}: ${x.result}`).join("; "));
-    return reply({ done: true, models: results });
+    const results = ((r?.models ?? []) as Array<{ name: string; result: string }>).map((row) => ({ ...row, ...classifyLinkLine(String(row.result ?? "")) }));
+    const failed = results.filter((row) => row.ok === false);
+    log(config, "links_add", false, model, failed.length ? "failed" : "done", results.map((x) => `${x.name}: ${x.result}`).join("; "));
+    return reply(withDocument({ done: failed.length === 0, ok: failed.length === 0, models: results }, linkResolvedDocument(r, host)), failed.length > 0);
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
     log(config, "links_" + args.action, dry, "", "error", msg);

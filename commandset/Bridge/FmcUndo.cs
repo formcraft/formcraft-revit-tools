@@ -49,6 +49,20 @@ namespace RevitMCPCommandSet
 
         public static string Key(Document d) => string.IsNullOrEmpty(d.PathName) ? d.Title : d.PathName;
 
+        /// <summary>The document key that recorded this batch id, or null when it is on no list.</summary>
+        public static string BatchDocument(string batchId)
+        {
+            if (string.IsNullOrWhiteSpace(batchId)) return null;
+            lock (L)
+            {
+                foreach (var pair in Undos)
+                {
+                    if (pair.Value.Any(entry => entry.Id == batchId || entry.Batch == batchId)) return pair.Key;
+                }
+            }
+            return null;
+        }
+
         /// <summary>Call on Revit's API thread before the AI's first change (any handler's Execute).</summary>
         public static void Hook(UIApplication app)
         {
@@ -239,6 +253,8 @@ namespace RevitMCPCommandSet
         {
             lock (L)
             {
+                if (app.ActiveUIDocument?.Document == null || !app.ActiveUIDocument.Document.Equals(doc))
+                    throw new InvalidOperationException($"Revit redoes in the active model: make {doc.Title} the active window first. Refusing to redo the active document.");
                 var r = Of(Redos, Key(doc));
                 if (r.Count == 0) throw new InvalidOperationException("Nothing to redo");
                 Entry top = r[r.Count - 1];
@@ -288,12 +304,25 @@ namespace RevitMCPCommandSet.Services.Fmc
             try
             {
                 FmcBusy.Hook(app); FmcUndo.Hook(app);
-                Document doc = app.ActiveUIDocument?.Document ?? throw new InvalidOperationException("No model is open");
-                switch (Parameters.Value<string>("action") ?? "status")
+                using (FmcTarget target = FmcTarget.Resolve(app, Parameters, mayOpen: false))
                 {
-                    case "undo": Result = FmcUndo.Undo(app, doc, Parameters.Value<string>("batch_id"), Parameters.Value<int?>("count") ?? 1); break;
-                    case "redo": Result = FmcUndo.Redo(app, doc); break;
-                    default: Result = FmcUndo.Status(doc); break;
+                    Document doc = target.Doc;
+                    string batchId = Parameters.Value<string>("batch_id") ?? "";
+                    if (batchId.Length > 0)
+                    {
+                        string owner = FmcUndo.BatchDocument(batchId);
+                        if (owner == null)
+                            throw new InvalidOperationException($"[FMC-DOC-NOT-FOUND] Batch {batchId} isn't on an undo list. Refusing to use the active document.");
+                        if (!string.Equals(owner, FmcUndo.Key(doc), StringComparison.OrdinalIgnoreCase))
+                            throw new InvalidOperationException($"[FMC-DOC-NOT-FOUND] Batch {batchId} belongs to {owner}, not {doc.Title}. Refusing to undo a different document.");
+                    }
+                    switch (Parameters.Value<string>("action") ?? "status")
+                    {
+                        case "undo": Result = FmcUndo.Undo(app, doc, batchId, Parameters.Value<int?>("count") ?? 1); break;
+                        case "redo": Result = FmcUndo.Redo(app, doc); break;
+                        default: Result = FmcUndo.Status(doc); break;
+                    }
+                    Result["resolved_document"] = FmcTarget.Resolved(doc);
                 }
             }
             catch (Exception e) { Error = e.Message; }

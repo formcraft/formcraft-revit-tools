@@ -37,14 +37,12 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         private JObject Run(UIApplication app, string action)
         {
-            string named = (Parameters.Value<string>("document") ?? "").Trim();
-            Document doc;
-            if (named.Length > 0 && action != "open" && action != "open_ifc" && action != "close")
+            Document doc = null;
+            if (action != "open" && action != "open_ifc" && action != "close")
             {
-                // The named document, or a refusal. Never the active document when the name is missing.
+                // The named document, or the only open one. Never the active document when the name is missing and several are open.
                 using (FmcTarget target = FmcTarget.Resolve(app, Parameters, mayOpen: false)) doc = target.Doc;
             }
-            else doc = app.ActiveUIDocument?.Document;
             string path = Parameters.Value<string>("path");
             switch (action)
             {
@@ -60,8 +58,11 @@ namespace RevitMCPCommandSet.Services.Fmc
                 }
                 case "close":
                 {
-                    string title = Parameters.Value<string>("title") ?? throw new InvalidOperationException("close needs title (a model that isn't the active one)");
-                    Document d = app.Application.Documents.Cast<Document>().FirstOrDefault(x => string.Equals(x.Title, title, StringComparison.OrdinalIgnoreCase)) ?? throw new InvalidOperationException($"{title} isn't open");
+                    string title = Parameters.Value<string>("title") ?? Parameters.Value<string>("document") ?? throw new InvalidOperationException("[FMC-DOC-REQUIRED] close needs title (a model that isn't the active one). Refusing to use the active document.");
+                    var hits = app.Application.Documents.Cast<Document>().Where(x => !x.IsLinked && FmcTarget.Same(x, title)).ToList();
+                    if (hits.Count == 0) throw new InvalidOperationException($"[FMC-DOC-NOT-FOUND] {title} isn't open. Refusing to use the active document.");
+                    if (hits.Count > 1) throw new InvalidOperationException($"[FMC-DOC-AMBIGUOUS] \"{title}\" matches {hits.Count} open documents. Pass the full path. Refusing to use the active document.");
+                    Document d = hits[0];
                     Document activeDoc = app.ActiveUIDocument?.Document;
                     if (activeDoc != null && d.Equals(activeDoc)) throw new InvalidOperationException("Revit can't close the active model from a plugin: open another first, or the person closes it");
                     bool saveClose = Parameters.Value<bool?>("save") ?? false;
@@ -76,7 +77,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (doc == null) throw new InvalidOperationException("No model is open");
             switch (action)
             {
-                case "save": RefuseOriginal(doc, "save"); doc.Save(); return new JObject { ["saved"] = doc.PathName };
+                case "save": RefuseOriginal(doc, "save"); RefuseBusy(doc); doc.Save(); return new JObject { ["saved"] = doc.PathName, ["local_only"] = doc.IsWorkshared };
                 case "save_as":
                 {
                     RefuseOriginal(doc, "save_as");
@@ -85,7 +86,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     doc.SaveAs(path ?? throw new InvalidOperationException("save_as needs path"), o);
                     return new JObject { ["saved_as"] = path };
                 }
-                case "export": return Export(doc);
+                case "export": return Export(app, doc);
                 case "export_family":
                 {
                     // Save a family out of the project (Save As Library Family)
@@ -156,19 +157,57 @@ namespace RevitMCPCommandSet.Services.Fmc
                 case "sync":
                 {
                     RefuseOriginal(doc, "sync");
+                    RefuseBusy(doc);
                     if (!doc.IsWorkshared) throw new InvalidOperationException("the model isn't workshared");
-                    var o = new SynchronizeWithCentralOptions { Comment = Parameters.Value<string>("comment") ?? "", Compact = Parameters.Value<bool?>("compact") ?? false };
-                    o.SetRelinquishOptions(new RelinquishOptions(Parameters.Value<bool?>("relinquish") ?? true));
-                    doc.SynchronizeWithCentral(new TransactWithCentralOptions(), o);
-                    return new JObject { ["synced"] = doc.Title };
+                    // SynchronizeWithCentral reloads latest as part of the sync. Reload first so a locked central
+                    // defers before this user's changes are pushed. Another user's borrowings are not touched.
+                    try { doc.ReloadLatest(new ReloadLatestOptions()); }
+                    catch (Exception ex) { if (CentralBusy(ex)) throw new InvalidOperationException("[FMC-CENTRAL-BUSY] central busy: " + ex.Message); throw; }
+                    var o = new SynchronizeWithCentralOptions { Comment = Parameters.Value<string>("comment") ?? "", Compact = false };
+                    var relinquish = new RelinquishOptions(false);
+                    // Only what this user has checked out. The API cannot relinquish another user's elements or worksets.
+                    if (Parameters.Value<bool?>("relinquish") ?? true)
+                    {
+                        relinquish.CheckedOutElements = true;
+                        relinquish.UserWorksets = true;
+                    }
+                    o.SetRelinquishOptions(relinquish);
+                    try { doc.SynchronizeWithCentral(new TransactWithCentralOptions(), o); }
+                    catch (Exception ex) { if (CentralBusy(ex)) throw new InvalidOperationException("[FMC-CENTRAL-BUSY] central busy: " + ex.Message); throw; }
+                    return new JObject { ["synced"] = doc.Title, ["reloaded_latest"] = true, ["relinquished"] = "elements and user worksets checked out by this user" };
                 }
-                case "reload_latest": RefuseOriginal(doc, "reload_latest"); doc.ReloadLatest(new ReloadLatestOptions()); return new JObject { ["reloaded"] = doc.Title };
+                case "reload_latest":
+                    RefuseOriginal(doc, "reload_latest");
+                    RefuseBusy(doc);
+                    try { doc.ReloadLatest(new ReloadLatestOptions()); }
+                    catch (Exception ex) { if (CentralBusy(ex)) throw new InvalidOperationException("[FMC-CENTRAL-BUSY] central busy: " + ex.Message); throw; }
+                    return new JObject { ["reloaded"] = doc.Title };
                 case "relinquish":
                     RefuseOriginal(doc, "relinquish");
                     WorksharingUtils.RelinquishOwnership(doc, new RelinquishOptions(true), new TransactWithCentralOptions());
                     return new JObject { ["relinquished"] = doc.Title };
                 default: throw new InvalidOperationException($"{action} isn't an action (save, save_as, open, close, export, link_cad, import_cad, link_image, import_image, link_pdf, link_revit, load_family, point_cloud, sync, reload_latest, relinquish)");
             }
+        }
+
+        /// <summary>A locked or busy central is a defer, not a failure. Revit only reports it when reload or sync is attempted.</summary>
+        private static bool CentralBusy(Exception ex)
+        {
+            string name = ex?.GetType().Name ?? "";
+            string message = ex?.Message ?? "";
+            if (name.IndexOf("CentralModel", StringComparison.OrdinalIgnoreCase) >= 0) return true;
+            if (name.IndexOf("RevitServer", StringComparison.OrdinalIgnoreCase) >= 0) return true;
+            return message.IndexOf("locked", StringComparison.OrdinalIgnoreCase) >= 0
+                || message.IndexOf("another user", StringComparison.OrdinalIgnoreCase) >= 0
+                || message.IndexOf("being accessed", StringComparison.OrdinalIgnoreCase) >= 0
+                || message.IndexOf("contention", StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        /// <summary>An open transaction makes save and sync wait. The server treats FMC-DOC-BUSY as defer, not a failure.</summary>
+        private static void RefuseBusy(Document doc)
+        {
+            if (doc != null && doc.IsModifiable)
+                throw new InvalidOperationException($"[FMC-DOC-BUSY] {doc.Title} has an open transaction or transaction group. Save and sync wait until it closes.");
         }
 
         /// <summary>A verification copy, a link and a protected original are never saved, synced, reloaded or relinquished.</summary>
@@ -179,10 +218,11 @@ namespace RevitMCPCommandSet.Services.Fmc
                 throw new InvalidOperationException($"{what} is refused on {doc.Title}: a verification copy, a link, or a protected original is never saved, synced, reloaded or relinquished.");
         }
 
-        private JObject Export(Document doc)
+        private JObject Export(UIApplication app, Document doc)
         {
             string format = (Parameters.Value<string>("format") ?? throw new InvalidOperationException("export needs format")).ToLowerInvariant();
             string folder = Parameters.Value<string>("folder") ?? throw new InvalidOperationException("export needs folder");
+            if (format == "image") folder = FmcImageExport.Folder(folder, doc);
             string name = Parameters.Value<string>("name") ?? doc.Title;
             Directory.CreateDirectory(folder);
             var views = (Parameters["views"] as JArray ?? new JArray()).Select(t => ViewByName(doc, t.ToString()).Id).ToList();
@@ -217,7 +257,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     var o = new ImageExportOptions { FilePath = Path.Combine(folder, name), ExportRange = ExportRange.SetOfViews, HLRandWFViewsFileType = ImageFileType.PNG,
                         ShadowViewsFileType = ImageFileType.PNG, PixelSize = Parameters.Value<int?>("pixels") ?? 2400, ZoomType = ZoomFitType.FitToPage };
                     o.SetViewsAndSheets(views);
-                    doc.ExportImage(o); break;
+                    FmcImageExport.Export(app, doc, o); break;
                 }
                 case "schedule":
                     foreach (ElementId v in views)

@@ -6,10 +6,12 @@
  * throws because the parameter is read-only. A probe tag is made in a sub-transaction and rolled back. If that tag
  * is blank, nothing is placed and the answer is FMC-NO-API-KEYNOTE-LINK: Annotate > Keynote > Element, or Tag All
  * Not Tagged with Keynote Tags, per view. keynote_retag posts that command (FMC-NEEDS-HUMAN). keynote_clone copies
- * one linked tag and repoints it. keynote_audit lists blank keynote tags and does not delete them.
+ * one linked tag and repoints it. keynote_audit lists blank keynote tags and linked ones (TagText not
+ * empty), with a seed for keynote_clone per tag type, and does not delete them.
  * The installed add-in is not involved for these ops: modify_model sends one fixed script through send_code_to_revit.
  * A server hot-swap is enough, except the generic tag op in the add-in, which also refuses a keynote tag type.
  */
+import { shapedDocumentFields } from "./docresolve.js";
 import { screenScript } from "./scriptguard.js";
 
 export const KEYNOTE_MODES = ["keynote_element", "keynote_material", "keynote_user"] as const;
@@ -510,34 +512,120 @@ foreach (JObject op in (batch["ops"] as JArray ?? new JArray()).OfType<JObject>(
     if (name == "keynote_audit")
     {
         var views = new JArray();
+        var linked = new JArray();
+        var typeOrder = new System.Collections.Generic.List<string>();
+        var best = new System.Collections.Generic.List<JObject>();
         int blankTags = 0;
+        JObject bestAny = null;
         foreach (IndependentTag tag in new FilteredElementCollector(document).OfClass(typeof(IndependentTag)).Cast<IndependentTag>())
         {
             if (tag.Category == null || tag.Category.Id.Value != (long)BuiltInCategory.OST_KeynoteTags) continue;
-            if (!TagTextEmpty(tag)) continue;
+            ElementType tagTypeEl = document.GetElement(tag.GetTypeId()) as ElementType;
+            string typeName = tagTypeEl == null ? "" : (tagTypeEl.Name ?? "");
+            bool seenType = false;
+            foreach (string haveType in typeOrder)
+                if (string.Equals(haveType, typeName, System.StringComparison.OrdinalIgnoreCase)) seenType = true;
+            if (!seenType) typeOrder.Add(typeName);
             View owner = document.GetElement(tag.OwnerViewId) as View;
             string vname = owner == null ? "" : (owner.Name ?? "");
-            JObject groupRow = null;
-            foreach (JObject group in views.OfType<JObject>())
+            if (TagTextEmpty(tag))
             {
-                if (string.Equals(group.Value<string>("view"), vname, System.StringComparison.OrdinalIgnoreCase)) groupRow = group;
+                JObject groupRow = null;
+                foreach (JObject group in views.OfType<JObject>())
+                {
+                    if (string.Equals(group.Value<string>("view"), vname, System.StringComparison.OrdinalIgnoreCase)) groupRow = group;
+                }
+                if (groupRow == null)
+                {
+                    groupRow = new JObject { ["view"] = vname, ["count"] = 0, ["ids"] = new JArray() };
+                    views.Add(groupRow);
+                }
+                JArray bucket = groupRow["ids"] as JArray;
+                bucket.Add(tag.Id.Value);
+                groupRow["count"] = bucket.Count;
+                blankTags++;
+                continue;
             }
-            if (groupRow == null)
+            long hostId = 0;
+            try
             {
-                groupRow = new JObject { ["view"] = vname, ["count"] = 0, ["ids"] = new JArray() };
-                views.Add(groupRow);
+                foreach (Reference r in tag.GetTaggedReferences())
+                {
+                    if (r != null && r.ElementId != null && r.ElementId != ElementId.InvalidElementId) { hostId = r.ElementId.Value; break; }
+                }
             }
-            JArray bucket = groupRow["ids"] as JArray;
-            bucket.Add(tag.Id.Value);
-            groupRow["count"] = bucket.Count;
-            blankTags++;
+            catch (System.Exception) { hostId = 0; }
+            Element host = hostId == 0 ? null : document.GetElement(new ElementId(hostId));
+            string key = ElementKey(host);
+            if (key == "") key = TextKey(tag);
+            string source = SourceText(tag);
+            var item = new JObject
+            {
+                ["id"] = tag.Id.Value, ["view"] = vname, ["host"] = hostId, ["key"] = key,
+                ["key_source"] = source, ["tag_type"] = typeName,
+            };
+            linked.Add(item);
+            JObject have = null;
+            foreach (JObject row in best)
+                if (string.Equals(row.Value<string>("tag_type"), typeName, System.StringComparison.OrdinalIgnoreCase)) have = row;
+            bool take = have == null;
+            if (!take)
+            {
+                bool haveKey = !string.IsNullOrWhiteSpace(have.Value<string>("key"));
+                bool itemKey = !string.IsNullOrWhiteSpace(key);
+                long haveId = have.Value<long>("id");
+                if (itemKey && !haveKey) take = true;
+                else if (itemKey == haveKey && tag.Id.Value.CompareTo(haveId) == -1) take = true;
+            }
+            if (take)
+            {
+                if (have != null) best.Remove(have);
+                best.Add(item);
+            }
+            bool takeAny = bestAny == null;
+            if (!takeAny)
+            {
+                bool anyKey = !string.IsNullOrWhiteSpace(bestAny.Value<string>("key"));
+                bool itemKey = !string.IsNullOrWhiteSpace(key);
+                long anyId = bestAny.Value<long>("id");
+                if (itemKey && !anyKey) takeAny = true;
+                else if (itemKey == anyKey && tag.Id.Value.CompareTo(anyId) == -1) takeAny = true;
+            }
+            if (takeAny) bestAny = item;
         }
-        opsOut.Add(new JObject
+        var seeds = new JArray();
+        foreach (string typeName in typeOrder)
+        {
+            JObject seed = null;
+            foreach (JObject row in best)
+                if (string.Equals(row.Value<string>("tag_type"), typeName, System.StringComparison.OrdinalIgnoreCase)) seed = row;
+            if (seed != null)
+            {
+                seeds.Add(new JObject
+                {
+                    ["tag_type"] = typeName, ["seed"] = seed["id"], ["view"] = seed["view"],
+                    ["host"] = seed["host"], ["key"] = seed["key"], ["key_source"] = seed["key_source"],
+                });
+            }
+            else
+            {
+                seeds.Add(new JObject
+                {
+                    ["tag_type"] = typeName, ["seed"] = null,
+                    ["hint"] = "No linked keynote tag of this type. Make one linked tag via the UI (keynote_retag on one view).",
+                });
+            }
+        }
+        var audit = new JObject
         {
             ["op"] = opsOut.Count + 1, ["kind"] = "keynote_audit", ["views"] = views,
-            ["blank"] = blankTags, ["deleted"] = 0,
-            ["note"] = "Report only. Blank keynote tags were not deleted.",
-        });
+            ["blank"] = blankTags, ["deleted"] = 0, ["linked"] = linked, ["linked_count"] = linked.Count,
+            ["seeds"] = seeds, ["seed"] = bestAny == null ? JValue.CreateNull() : bestAny["id"],
+            ["note"] = "Report only. Blank keynote tags were not deleted. Linked tags (TagText not empty) are listed, with a seed for keynote_clone per tag type.",
+        };
+        if (bestAny == null)
+            audit["hint"] = "No linked keynote tag. Make one linked tag via the UI (keynote_retag on one view).";
+        opsOut.Add(audit);
         made.Add(created);
         continue;
     }
@@ -780,7 +868,7 @@ export function keynoteSummaries(ops: KeynoteOp[], dryRun: boolean): string[] {
       const name = typeof op.name === "string" && op.name.trim() ? ` "${op.name.trim()}"` : "";
       return `${n} Keynote legend${name}${op.filtered_by_sheet ? ", filtered by sheet" : ""}.`;
     }
-    if (op.op === "keynote_audit") return `${n} List keynote tags whose TagText is empty, grouped by view. Nothing is deleted.`;
+    if (op.op === "keynote_audit") return `${n} List blank keynote tags by view, and linked tags (TagText not empty) with a seed for keynote_clone per tag type. Nothing is deleted.`;
     if (op.op === "keynote_retag") {
       const views = Array.isArray(op.views) ? op.views.length : op.view != null ? 1 : 0;
       return `${n} Tag All Not Tagged for ${views} view${views === 1 ? "" : "s"}. Pick Keynote Tags and press OK. Nothing is tagged by the API.`;
@@ -867,7 +955,7 @@ function parseResult(value: unknown): Record<string, unknown> | null {
 /** The modify_model shape: counts, created ids, skipped with reasons. No picture. */
 export function shapeKeynoteResult(response: unknown, dryRun: boolean): { body: Record<string, unknown>; isError: boolean } {
   const row = asRecord(response) ?? {};
-  const stamped = asRecord(row.document);
+  const stamped = shapedDocumentFields(row.resolved_document ?? row.document);
   const parsed = parseResult(row.result);
   if (row.success === false) {
     return {
@@ -878,7 +966,7 @@ export function shapeKeynoteResult(response: unknown, dryRun: boolean): { body: 
         rolled_back: true,
         reason: row.errorMessage || row.error || "The keynote batch was rolled back. Nothing was changed.",
         errorCode: row.errorCode,
-        ...(stamped ? { document: stamped } : {}),
+        ...stamped,
       },
     };
   }
@@ -893,7 +981,7 @@ export function shapeKeynoteResult(response: unknown, dryRun: boolean): { body: 
         reason: parsed.reason,
         hint: parsed.hint,
         views: parsed.views,
-        ...(stamped ? { document: stamped } : {}),
+        ...stamped,
       },
     };
   }
@@ -908,7 +996,7 @@ export function shapeKeynoteResult(response: unknown, dryRun: boolean): { body: 
       ops,
       note: typeof parsed?.note === "string" ? parsed.note : undefined,
       ...(typeof parsed?.code === "string" ? { code: parsed.code } : {}),
-      ...(stamped ? { document: stamped } : {}),
+      ...stamped,
       ...(Array.isArray(row.warnings) && row.warnings.length ? { warnings: row.warnings } : {}),
     },
   };

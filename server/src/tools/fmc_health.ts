@@ -5,7 +5,7 @@ const started = Date.now();
 
 export const FMC_HEALTH_DESCRIPTION =
   "Formcraft health, read-only. The server build this process is running, the add-in build each open Revit announced, " +
-  "whether each announced port accepts a connection, and when a Revit job is still heartbeating (waiting_for_idle, " +
+  "whether each announced port accepts a connection, the open documents of each Revit (title and path), and when a Revit job is still heartbeating (waiting_for_idle, " +
   "with the job, its age and any blocking dialog, named by dialog id when the add-in or the job log has one) instead of calling that port dead. Also any tool module that failed to register, and the batch line " +
   "(holder, queue, history, struggling batches, per-bot stats), free memory, and per-document sync. Nothing is changed.";
 

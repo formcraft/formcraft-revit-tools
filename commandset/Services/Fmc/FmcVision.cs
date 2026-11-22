@@ -14,7 +14,8 @@ namespace RevitMCPCommandSet.Services.Fmc
     /// <summary>
     /// fmc_view_image (owner 26 Oct: "the AI has to see the model"): a PNG of a view, or of a close-up 3D box around
     /// elements with them highlighted, for the AI to look at. The picture is of the named open document, including one
-    /// that is not the active window. ExportImage uses SetOfViews so the active window is not switched. Nothing in the
+    /// that is not the active window. ExportImage uses SetOfViews. Revit can still make that document active;
+    /// FmcImageExport puts the previous document and view back. Nothing in the
     /// model changes: the temporary view and the overrides are rolled back. selection true uses what the person has
     /// selected, and only when this document is the active window.
     /// </summary>
@@ -34,13 +35,13 @@ namespace RevitMCPCommandSet.Services.Fmc
             {
                 // The named open document, including one that is not the active window. The active view is not changed.
                 using (FmcTarget target = FmcTarget.Resolve(app, Parameters, mayOpen: false))
-                    Result = Render(target.Doc, target.Ui);
+                    Result = Render(app, target.Doc, target.Ui);
             }
             catch (Exception e) { Error = e.Message; }
             finally { _done.Set(); }
         }
 
-        private JObject Render(Document doc, UIDocument uidoc)
+        private JObject Render(UIApplication app, Document doc, UIDocument uidoc)
         {
             var ids = (Parameters["ids"] as JArray ?? new JArray()).Select(t => long.TryParse(t.ToString(), out long v) ? new ElementId(v) : doc.GetElement(t.ToString())?.Id)
                 .Where(x => x != null && doc.GetElement(x) != null).ToList();
@@ -52,8 +53,11 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (Parameters["select"] is JObject sel) ids.AddRange(FmcSelect.Find(doc, sel, null, uidoc?.ActiveView).Take(2000).Select(e => e.Id).Where(x => !ids.Contains(x)));
             var highlight = (Parameters["highlight"] as JArray)?.Select(t => new ElementId(t.Value<long>())).ToList() ?? ids;
             int px = Math.Max(400, Math.Min(2400, Parameters.Value<int?>("size") ?? 1024));
-            string dir = Path.Combine(Path.GetTempPath(), "Formcraft", "vision");
-            Directory.CreateDirectory(dir);
+            string dir = FmcImageExport.Folder(Parameters.Value<string>("image_dir"), doc);
+            // ExportImage can make this document the active window. PutBack runs after the transaction
+            // group rolls back, because switching back is refused while that group is open.
+            var prior = FmcImageExport.Capture(app);
+            try {
             foreach (var old in Directory.GetFiles(dir, "*.png").Where(f => File.GetCreationTimeUtc(f) < DateTime.UtcNow.AddHours(-6))) { try { File.Delete(old); } catch (Exception) { } }
             string stem = Path.Combine(dir, "view_" + DateTime.Now.ToString("HHmmssfff"));
             var notes = new JArray();
@@ -158,12 +162,12 @@ namespace RevitMCPCommandSet.Services.Fmc
                     ImageResolution = ImageResolution.DPI_150, ZoomType = ZoomFitType.FitToPage, PixelSize = px, FitDirection = FitDirectionType.Horizontal,
                 };
                 o.SetViewsAndSheets(new List<ElementId> { v.Id });
-                try { doc.ExportImage(o); }
+                try { FmcImageExport.Write(doc, o); }
                 catch (Autodesk.Revit.Exceptions.InternalException ex)
                 {
                     // SetOfViews on a document that is not the active window writes the PNG, then ExportImage can throw.
                     if (!Directory.GetFiles(dir, Path.GetFileName(stem) + "*.png").Any()) throw;
-                    notes.Add("ExportImage threw " + ex.GetType().Name + " after the PNG was written. The picture was kept. The active window was not changed.");
+                    notes.Add("ExportImage threw " + ex.GetType().Name + " after the PNG was written. The picture was kept. The previous document and view are restored after the rollback.");
                 }
                 tg.RollBack();
             }
@@ -176,6 +180,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 ["document"] = FmcTarget.DescribeState(doc),
                 ["ids"] = new JArray(ids.Select(x => x.Value)), ["highlighted"] = highlight.Count, ["pixels"] = px, ["notes"] = notes,
             };
+            } finally { FmcImageExport.PutBack(app, prior); }
         }
 
         private static BoundingBoxXYZ Union(Document doc, List<ElementId> ids)

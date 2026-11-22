@@ -16,13 +16,18 @@ import os from "node:os";
 import path from "node:path";
 import { createHash, randomUUID } from "node:crypto";
 import { WRITE_COMMANDS, loadConfig } from "./policy.js";
+import { loadAiConfig } from "./aiuse_io.js";
 import { SYNC_NOT_RUN, batchCareReport, correctionHelp, type CorrectionHelp } from "./batchcare.js";
 import { planSync, syncDocumentKey, syncSettings, syncSkip, type SyncRun } from "./batchsync.js";
 import { memoryGate, onMemoryResume } from "./memory.js";
 import { loadBatchLine, MAINTENANCE_REASON, readMaintenance, saveBatchLine, writeMaintenance, type StoredTicket } from "./batchstore.js";
 import { invalidateReads } from "./readcache.js";
 import { batchLease, documentTarget } from "./target.js";
-import { queueClient } from "./fairqueue.js";
+import { queueClient, queueSnapshots } from "./fairqueue.js";
+import { deferReason, isDocBusyMessage, loadSyncState, nextActionAt, nextOpenAt, orderedProjects, planTick, saveSyncState, seedModified, seedWorksharedClocks, staggerOffsetMs, type DocClock } from "./docschedule.js";
+import { excludedFromSync, saveBlocked, saveSkipReason } from "./savepolicy.js";
+import { dialogFor, inFlightJob, readRevitJobLines } from "./notidle.js";
+import { readInstances } from "./connect.js";
 
 const win = path.win32;
 
@@ -83,7 +88,7 @@ export interface BatchBoardOptions {
   /** Runs while the lease is still held, before the next bot is granted. Production uses the existing auto-save. */
   saveStep?: SaveStep;
   /** Runs after a successful save, while the lease is still held. A failure does not fail the batch. */
-  syncStep?: (ctx: { document: string; label: string; changedAt: number | null; lastSyncAt: number | null }) => Promise<SyncRun>;
+  syncStep?: (ctx: { document: string; label: string; changedAt: number | null; lastSyncAt: number | null; batchEnd?: boolean }) => Promise<SyncRun>;
   /** When true, a free document stays queued instead of being granted. */
   memoryPaused?: () => boolean;
   /** Shown on status. Null when this board is not the service. */
@@ -94,6 +99,22 @@ export interface BatchBoardOptions {
   writeMaintenance?: (reason: string | null) => void;
   /** Persists the waiting line. Production writes FMC_BatchLine.json. */
   persistLine?: (tickets: StoredTicket[]) => void;
+  /** Reloads changedAt, lastSyncAt and lastSaveAt. Production reads fmc_sync_state.json. */
+  loadClocks?: () => DocClock[];
+  /** Writes those clocks. Production writes fmc_sync_state.json. */
+  saveClocks?: (rows: DocClock[]) => void;
+  /**
+   * True when a Revit job is running or queued. Production reads the fair queue.
+   * A test board leaves this unset, so it never reads the live queue.
+   */
+  queueBusy?: () => boolean;
+  /**
+   * True when a modal dialog is open. Production reads the Revit job log.
+   * A test board leaves this unset, so it never reads the live log.
+   */
+  modalDialog?: () => boolean;
+  /** Open documents. Production reads the instance files. A test board leaves this unset. */
+  readOpenDocs?: () => Array<{ title?: string; path?: string; family?: boolean; workshared?: boolean; modified?: boolean }>;
 }
 
 const defaultValidator: BatchReferenceValidator = () => ({ ok: true });
@@ -298,15 +319,24 @@ export class BatchBoard {
   private readonly watchMaintenance: boolean;
   private readonly writeMaintenanceFn: (reason: string | null) => void;
   private readonly persistLineFn: (tickets: StoredTicket[]) => void;
+  private readonly loadClocksFn: () => DocClock[];
+  private readonly saveClocksFn: (rows: DocClock[]) => void;
+  private readonly queueBusyFn: () => boolean;
+  private readonly modalDialogFn: () => boolean;
+  private readonly readOpenDocsFn: () => Array<{ title?: string; path?: string; family?: boolean; workshared?: boolean; modified?: boolean }>;
+  private readonly startedAt: number;
+  private lastDefer: string | null = null;
   /** Set while a hot-swap is draining. New leases stay queued. Active leases finish. */
   private maintenanceReason: string | null = null;
   private timer: ReturnType<typeof setInterval> | undefined;
   private syncTimer: ReturnType<typeof setInterval> | undefined;
   private stopMemory: () => void = () => {};
   private readonly tickets = new Map<string, Ticket>();
-  private readonly syncState = new Map<string, { document: string; lastSyncAt: number | null; changedAt: number | null; lastError: string | null }>();
+  private readonly syncState = new Map<string, { document: string; lastSyncAt: number | null; changedAt: number | null; lastSaveAt: number | null; lastError: string | null; pendingBatchEnd?: boolean; deferReason?: string | null }>();
   private readonly lines = new Map<string, string[]>();
   private readonly holders = new Map<string, string>();
+  /** Set after a lease is dropped and until its save and sync finish. Not a lease, so autosave is not deferred by it. New grants wait. */
+  private readonly care = new Set<string>();
   private readonly names = new Map<string, string>();
   private readonly attempts = new Map<string, AttemptState>();
   private readonly history = new Map<string, HistoryRow[]>();
@@ -331,6 +361,13 @@ export class BatchBoard {
     this.watchMaintenance = opts.readMaintenance != null;
     this.writeMaintenanceFn = opts.writeMaintenance ?? (() => {});
     this.persistLineFn = opts.persistLine ?? (() => {});
+    this.loadClocksFn = opts.loadClocks ?? (() => []);
+    this.saveClocksFn = opts.saveClocks ?? (() => {});
+    this.queueBusyFn = opts.queueBusy ?? (() => false);
+    this.modalDialogFn = opts.modalDialog ?? (() => false);
+    this.readOpenDocsFn = opts.readOpenDocs ?? (() => []);
+    this.startedAt = this.now();
+    for (const row of this.loadClocksFn()) this.rememberClock(row);
     if (opts.autoSweep) {
       this.timer = setInterval(() => { try { this.sweep(); } catch (error) { this.emit(`sweep failed: ${error instanceof Error ? error.message : error}`); } }, opts.sweepEveryMs ?? 1000);
       this.timer.unref?.();
@@ -356,6 +393,7 @@ export class BatchBoard {
   }
 
   noteServiceStart(restored = 0): void {
+    this.seedOpenChanges();
     this.emit(restored > 0
       ? `service start. Restored ${restored} queued lease(s). An active lease is not still held; it is at the head of its line. Nothing was rolled back.`
       : "service start. Leases cleared. No queued leases on disk. Nothing was rolled back. Bots request a new lease.");
@@ -423,7 +461,7 @@ export class BatchBoard {
         existing.client = input.client;
         existing.reserved = false;
         const head = (this.lines.get(key) ?? [])[0];
-        if (existing.state !== "active" && head === existing.id && !this.holders.has(key) && !this.heldForMemory() && !this.maintenanceReason) this.grant(existing, false);
+        if (existing.state !== "active" && head === existing.id && !this.grantsPaused(key)) this.grant(existing, false);
         this.persist();
         return this.ticketView(existing);
       }
@@ -455,7 +493,7 @@ export class BatchBoard {
     stat.lastLabel = label;
     stat.lastClient = input.client;
     if (attempt > 1) stat.retries += 1;
-    if (!this.holders.has(key) && !this.heldForMemory() && !this.maintenanceReason) this.grant(ticket, false);
+    if (!this.grantsPaused(key)) this.grant(ticket, false);
     else {
       const line = this.lines.get(key) ?? [];
       line.push(ticket.id);
@@ -540,7 +578,11 @@ export class BatchBoard {
     return this.endActive(ticket, outcome, "release", text, summary?.trim() ?? "");
   }
 
-  /** Save, if the existing auto-save says so, while this lease still holds the document. Then release. */
+  /**
+   * Release the lease first. Save and sync run only after that, still recorded on this batch.
+   * Only this document's own job, a dialog, low memory, or an open transaction defers them.
+   * A lease on another document does not. A defer is retried on the next idle tick.
+   */
   async releaseWithCare(lease: string, outcome: "ok" | "failed", client: string, summary?: string, error?: string): Promise<Record<string, unknown>> {
     this.sweep();
     const ticket = this.tickets.get(lease);
@@ -550,43 +592,99 @@ export class BatchBoard {
     let finalOutcome = outcome;
     let text = outcome === "failed" ? (error?.trim() || summary?.trim() || "failed") : undefined;
     let care: { save?: { ran: boolean; ok: boolean; detail: string }; sync?: { ran: boolean; detail: string; error?: string } } | undefined;
-    if (outcome === "ok" && this.saveStep) {
-      const held = this.beginCall(ticket.id, client);
-      try {
-        const save = await queueClient.run(client, () => batchLease.run(ticket.id, () => documentTarget.run(ticket.document, () =>
-          this.saveStep!({ document: ticket.document, label: ticket.label, client, lease: ticket.id, summary: summary?.trim() ?? "" }))));
-        care = { save, sync: { ran: false, detail: SYNC_NOT_RUN } };
-        if (save.ran && !save.ok) {
-          finalOutcome = "failed";
-          text = save.detail;
+    let deferredNow: string | null = null;
+    let batchEndSync: { status: "synced" | "deferred" | "skipped"; reason: string; pending: boolean } = {
+      status: "skipped", reason: outcome === "ok" ? "No batch-end sync." : "The batch did not finish ok.", pending: false,
+    };
+    try {
+    if (outcome === "ok" && (this.saveStep || this.syncStep)) {
+      if (this.holders.get(ticket.key) === ticket.id) this.holders.delete(ticket.key);
+      this.care.add(ticket.key);
+      const deferred = this.docDefer(ticket.key);
+      if (deferred) {
+        deferredNow = deferred;
+        this.noteDefer(ticket.document, deferred);
+        this.markPendingBatchEnd(ticket.document);
+        care = { save: { ran: false, ok: true, detail: deferred }, sync: { ran: false, detail: deferred } };
+        batchEndSync = { status: "deferred", reason: deferred, pending: true };
+      } else if (this.saveStep) {
+        let save: { ran: boolean; ok: boolean; detail: string };
+        try {
+          save = await this.saveStep({ document: ticket.document, label: ticket.label, client, lease: ticket.id, summary: summary?.trim() ?? "" });
+        } catch (error) {
+          const message = error instanceof Error ? error.message : String(error);
+          save = { ran: !isDocBusyMessage(message), ok: false, detail: message };
         }
-      } finally {
-        held.finish();
+        if (isDocBusyMessage(save.detail)) {
+          deferredNow = save.detail;
+          this.noteDefer(ticket.document, save.detail);
+          this.markPendingBatchEnd(ticket.document);
+          care = { save: { ran: false, ok: true, detail: save.detail }, sync: { ran: false, detail: save.detail } };
+          batchEndSync = { status: "deferred", reason: save.detail, pending: true };
+        } else {
+          care = { save, sync: { ran: false, detail: SYNC_NOT_RUN } };
+          if (save.ran && save.ok) this.noteSave(ticket.document);
+          if (save.ran && !save.ok) {
+            finalOutcome = "failed";
+            text = save.detail;
+          }
+        }
       }
     }
-    if (finalOutcome === "ok" && this.syncStep) {
-      const held = this.beginCall(ticket.id, client);
+    if (finalOutcome === "ok" && this.syncStep && !deferredNow) {
       try {
-        const sync = await queueClient.run(client, () => batchLease.run(ticket.id, () => documentTarget.run(ticket.document, () =>
-          this.syncStep!({
-            document: ticket.document,
-            label: ticket.label,
-            changedAt: this.syncState.get(ticket.key)?.changedAt ?? this.now(),
-            lastSyncAt: this.syncState.get(ticket.key)?.lastSyncAt ?? null,
-          }))));
-        this.applySync(ticket.document, sync);
-        const row = { ran: sync.ran, detail: sync.detail, ...(sync.error ? { error: sync.error } : {}) };
-        care = care ? { ...care, sync: row } : { sync: row };
+        const sync = await this.syncStep({
+          document: ticket.document,
+          label: ticket.label,
+          changedAt: this.syncState.get(ticket.key)?.changedAt ?? this.now(),
+          lastSyncAt: this.syncState.get(ticket.key)?.lastSyncAt ?? null,
+          batchEnd: true,
+        });
+        if (sync.defer_reason || isDocBusyMessage(sync.detail) || isDocBusyMessage(sync.error)) {
+          const why = sync.defer_reason || sync.detail;
+          this.noteDefer(ticket.document, why);
+          this.markPendingBatchEnd(ticket.document);
+          const row = { ran: false, detail: sync.detail };
+          care = care ? { ...care, sync: row } : { sync: row };
+          batchEndSync = { status: "deferred", reason: why, pending: true };
+        } else {
+          this.applySync(ticket.document, sync);
+          const row = { ran: sync.ran, detail: sync.detail, ...(sync.error ? { error: sync.error } : {}) };
+          care = care ? { ...care, sync: row } : { sync: row };
+          batchEndSync = sync.synced
+            ? { status: "synced", reason: sync.detail, pending: false }
+            : { status: "skipped", reason: sync.detail, pending: this.isPendingBatchEnd(ticket.key) };
+        }
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
-        this.applySync(ticket.document, { ran: true, ok: true, synced: false, detail: `Sync did not finish. The batch is not failed. ${message}`, error: message });
-        const row = { ran: true, detail: `Sync did not finish. The batch is not failed. ${message}`, error: message };
-        care = care ? { ...care, sync: row } : { sync: row };
-      } finally {
-        held.finish();
+        if (isDocBusyMessage(message)) {
+          this.noteDefer(ticket.document, message);
+          this.markPendingBatchEnd(ticket.document);
+          const row = { ran: false, detail: message };
+          care = care ? { ...care, sync: row } : { sync: row };
+          batchEndSync = { status: "deferred", reason: message, pending: true };
+        } else {
+          this.applySync(ticket.document, { ran: true, ok: true, synced: false, detail: `Sync did not finish. The batch is not failed. ${message}`, error: message });
+          this.markPendingBatchEnd(ticket.document);
+          const row = { ran: true, detail: `Sync did not finish. The batch is not failed. ${message}`, error: message };
+          care = care ? { ...care, sync: row } : { sync: row };
+          batchEndSync = { status: "deferred", reason: message, pending: true };
+        }
       }
     }
-    return this.endActive(ticket, finalOutcome, "release", text, summary?.trim() ?? "", care);
+    } finally {
+      this.care.delete(ticket.key);
+    }
+    if (finalOutcome !== "ok" && batchEndSync.status !== "deferred") {
+      batchEndSync = { status: "skipped", reason: text || "The batch did not finish ok.", pending: false };
+    }
+    const done = this.endActive(ticket, finalOutcome, "release", text, summary?.trim() ?? "", care);
+    return { ...done, batch_end_sync: batchEndSync };
+  }
+
+  /** A lease, a save still finishing, low memory, or a drain. The save itself is not a lease. */
+  private grantsPaused(key: string): boolean {
+    return this.holders.has(key) || this.care.has(key) || this.heldForMemory() || this.maintenanceReason != null;
   }
 
   cancel(lease: string, client: string): Record<string, unknown> {
@@ -596,6 +694,7 @@ export class BatchBoard {
     if (ticket.state === "active") throw new BatchGateError("FMC-BATCH-BAD", "[FMC-BATCH-BAD] This lease is running. release it with outcome ok or failed.");
     const line = this.lines.get(ticket.key) ?? [];
     this.lines.set(ticket.key, line.filter((id) => id !== ticket.id));
+    if (ticket.ops > 0) this.markPendingBatchEnd(ticket.document);
     this.tickets.delete(ticket.id);
     this.rememberDone(ticket, { state: "done", outcome: "failed", end: "release", summary: "cancelled while queued", attempt: ticket.attempt, document: ticket.document, label: ticket.label, batch_id: ticket.batchId, bot: ticket.bot, ops: 0, references: ticket.references });
     this.wake(ticket.id);
@@ -673,6 +772,13 @@ export class BatchBoard {
    * A model-changing call. Reads never reach here. No active lease: the call is allowed.
    * An active lease requires this session and this lease id.
    */
+  /** The document a lease was granted for, when this process still has that lease. */
+  heldDocument(lease: string): string | undefined {
+    const id = lease.trim();
+    if (!id) return undefined;
+    return this.tickets.get(id)?.document;
+  }
+
   admit(document: string | undefined, lease: string | undefined, client: string): { finish: () => void } {
     this.sweep();
     const holder = this.holderFor(document);
@@ -819,6 +925,12 @@ export class BatchBoard {
   }
 
   private promote(key: string): void {
+    if (this.care.has(key)) {
+      const line = this.lines.get(key) ?? [];
+      this.emit(`save or sync still finishing; ${line.length} queued lease(s) stay on ${this.names.get(key) ?? key}`);
+      for (const id of line) this.wake(id);
+      return;
+    }
     if (this.maintenanceReason) {
       const line = this.lines.get(key) ?? [];
       this.emit(`${this.maintenanceReason}; ${line.length} queued lease(s) stay on ${this.names.get(key) ?? key}`);
@@ -902,6 +1014,9 @@ export class BatchBoard {
     this.rememberDone(ticket, done);
     this.holders.delete(ticket.key);
     this.tickets.delete(ticket.id);
+    if ((end === "expired" || end === "max_duration" || end === "disconnect") && ticket.ops > 0 && ticket.client !== "fmc-sync") {
+      this.markPendingBatchEnd(ticket.document);
+    }
     invalidateReads(ticket.document);
     this.wake(ticket.id);
     this.promote(ticket.key);
@@ -1113,7 +1228,7 @@ export class BatchBoard {
     const granted: string[] = [];
     if (this.heldForMemory()) return granted;
     for (const key of [...this.lines.keys()]) {
-      if (this.holders.has(key)) continue;
+      if (this.holders.has(key) || this.care.has(key)) continue;
       const next = (this.lines.get(key) ?? [])[0];
       this.promote(key);
       if (next && this.holders.get(key) === next) granted.push(next);
@@ -1125,47 +1240,256 @@ export class BatchBoard {
   grantPaused(): void {
     if (this.heldForMemory()) return;
     for (const key of [...this.lines.keys()]) {
-      if (this.holders.has(key)) continue;
+      if (this.holders.has(key) || this.care.has(key)) continue;
       this.promote(key);
     }
   }
 
   private noteChange(document: string): void {
     const key = documentKey(document);
-    const row = this.syncState.get(key) ?? { document, lastSyncAt: null, changedAt: null, lastError: null };
+    const row = this.syncState.get(key) ?? { document, lastSyncAt: null, changedAt: null, lastSaveAt: null, lastError: null };
     row.document = this.names.get(key) ?? document;
     row.changedAt = this.now();
     this.syncState.set(key, row);
+    this.persistClocks();
+  }
+
+  private noteSave(document: string): void {
+    const key = documentKey(document);
+    const row = this.syncState.get(key) ?? { document, lastSyncAt: null, changedAt: null, lastSaveAt: null, lastError: null };
+    row.document = this.names.get(key) ?? document;
+    row.lastSaveAt = this.now();
+    this.syncState.set(key, row);
+    this.persistClocks();
+  }
+
+  private rememberClock(row: DocClock): void {
+    const key = documentKey(row.document);
+    const prior = this.syncState.get(key);
+    this.syncState.set(key, {
+      document: row.document,
+      changedAt: row.changedAt,
+      lastSyncAt: row.lastSyncAt,
+      lastSaveAt: row.lastSaveAt,
+      lastError: row.lastError,
+      ...(row.pendingBatchEnd || prior?.pendingBatchEnd ? { pendingBatchEnd: true } : {}),
+      ...(row.deferReason || prior?.deferReason ? { deferReason: row.deferReason ?? prior?.deferReason ?? null } : {}),
+    });
+    this.names.set(key, row.document);
+  }
+
+  private persistClocks(): void {
+    try {
+      this.saveClocksFn([...this.syncState.values()].map((row) => ({
+        document: row.document,
+        changedAt: row.changedAt,
+        lastSyncAt: row.lastSyncAt,
+        lastSaveAt: row.lastSaveAt,
+        lastError: row.lastError,
+        ...(row.pendingBatchEnd ? { pendingBatchEnd: true } : {}),
+        ...(row.deferReason ? { deferReason: row.deferReason } : {}),
+      })));
+    } catch (error) {
+      this.emit(`sync clocks were not saved: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
+  /** Take a newer timestamp from fmc_sync_state.json so /health matches the file after a restart or a hot-swap. */
+  private refreshClocksFromDisk(): void {
+    let clocks: DocClock[] = [];
+    try { clocks = this.loadClocksFn(); } catch { return; }
+    const newer = (a: number | null | undefined, b: number | null | undefined) => Math.max(a ?? 0, b ?? 0);
+    for (const disk of clocks) {
+      const key = documentKey(disk.document);
+      const mem = this.syncState.get(key);
+      if (!mem) {
+        this.rememberClock(disk);
+        continue;
+      }
+      const sync = newer(mem.lastSyncAt, disk.lastSyncAt);
+      const save = newer(mem.lastSaveAt, disk.lastSaveAt);
+      const changed = newer(mem.changedAt, disk.changedAt);
+      if (sync > 0) mem.lastSyncAt = sync;
+      if (save > 0) mem.lastSaveAt = save;
+      if (changed > 0) mem.changedAt = changed;
+      if (disk.pendingBatchEnd) mem.pendingBatchEnd = true;
+      if (!mem.deferReason && disk.deferReason) mem.deferReason = disk.deferReason;
+    }
+  }
+
+  private visibleDocs(): Array<{ title: string; path: string; family: boolean; workshared: boolean; modified: boolean }> {
+    try {
+      return this.readOpenDocsFn().map((doc) => ({
+        title: doc.title ?? "", path: doc.path ?? "", family: doc.family === true, workshared: doc.workshared === true, modified: doc.modified === true,
+      }));
+    } catch {
+      return [];
+    }
+  }
+
+  /** Modified files, and every workshared local that is not in sync_exclude, get a clock. */
+  private seedOpenChanges(): void {
+    const open = this.visibleDocs();
+    const cfg = loadConfig().config;
+    const settings = syncSettings(cfg);
+    let clocks: DocClock[] = [...this.syncState.values()].map((row) => ({
+      document: row.document, changedAt: row.changedAt, lastSyncAt: row.lastSyncAt, lastSaveAt: row.lastSaveAt, lastError: row.lastError,
+      ...(row.pendingBatchEnd ? { pendingBatchEnd: true } : {}),
+      ...(row.deferReason ? { deferReason: row.deferReason } : {}),
+    }));
+    clocks = seedModified(clocks, open, this.now());
+    clocks = seedWorksharedClocks(clocks, open, this.now(), (doc) =>
+      excludedFromSync(doc, cfg) || syncSkip(doc.title ?? "", settings, doc.path ?? "") != null);
+    let changed = clocks.length !== this.syncState.size;
+    for (const row of clocks) {
+      const prior = this.syncState.get(documentKey(row.document));
+      if (!prior || prior.changedAt !== row.changedAt || prior.lastSyncAt !== row.lastSyncAt) changed = true;
+      this.rememberClock(row);
+    }
+    if (changed) this.persistClocks();
+  }
+
+  /** A modal dialog or the memory pause blocks every document. A lease does not. */
+  sessionDefer(): string | null {
+    return this.sessionBlock();
+  }
+
+  /** Modal dialog or memory pause. These stop every document. */
+  private sessionBlock(): string | null {
+    let modalDialog = false;
+    try { modalDialog = this.modalDialogFn(); } catch { modalDialog = false; }
+    return deferReason({
+      queueBusy: false,
+      leasesHeld: 0,
+      modalDialog,
+      memoryPaused: this.memoryPausedFn(),
+      docBusy: false,
+    });
+  }
+
+  /** A write still inside this document's own lease. Another document's job does not count. */
+  private docWritesInFlight(key: string): boolean {
+    for (const ticket of this.tickets.values()) {
+      if (ticket.key === key && ticket.client !== "fmc-sync" && ticket.writesInFlight > 0) return true;
+    }
+    return false;
+  }
+
+  /**
+   * Defer this document only. Another document's lease is ignored.
+   * A queued or running write on this document, a modal, the memory pause, or an open transaction does defer it.
+   */
+  private docDefer(key: string): string | null {
+    const blocked = this.sessionBlock();
+    if (blocked) return blocked;
+    return deferReason({
+      queueBusy: this.docWritesInFlight(key),
+      leasesHeld: this.holders.has(key) ? 1 : 0,
+      modalDialog: false,
+      memoryPaused: false,
+      docBusy: false,
+    });
+  }
+
+  private noteDefer(document: string, reason: string): void {
+    this.lastDefer = reason;
+    const key = documentKey(document);
+    const row = this.syncState.get(key) ?? { document, lastSyncAt: null, changedAt: null, lastSaveAt: null, lastError: null };
+    row.document = this.names.get(key) ?? document;
+    row.deferReason = reason;
+    this.syncState.set(key, row);
+    this.emit(`sync deferred ${row.document}: ${reason}`);
+  }
+
+  /** Remember a batch-end sync that did not run, and write it to fmc_sync_state.json. */
+  private markPendingBatchEnd(document: string): void {
+    const key = documentKey(document);
+    const row = this.syncState.get(key) ?? { document, lastSyncAt: null, changedAt: null, lastSaveAt: null, lastError: null };
+    row.document = this.names.get(key) ?? document;
+    row.pendingBatchEnd = true;
+    this.syncState.set(key, row);
+    this.persistClocks();
+  }
+
+  private isPendingBatchEnd(key: string): boolean {
+    return this.syncState.get(key)?.pendingBatchEnd === true;
   }
 
   private applySync(document: string, sync: SyncRun): void {
     const key = documentKey(document);
-    const row = this.syncState.get(key) ?? { document, lastSyncAt: null, changedAt: null, lastError: null };
+    const row = this.syncState.get(key) ?? { document, lastSyncAt: null, changedAt: null, lastSaveAt: null, lastError: null };
     row.document = document;
+    const notApplicable = /Not workshared|is not synced|Protected original|Sync is off|Excluded by sync_exclude|Not in sync_documents/.test(sync.detail);
     if (sync.synced) {
       row.lastSyncAt = this.now();
+      row.lastSaveAt = row.lastSaveAt ?? this.now();
       row.lastError = null;
+      row.pendingBatchEnd = undefined;
+      row.deferReason = null;
+    } else if (isDocBusyMessage(sync.detail) || isDocBusyMessage(sync.error)) {
+      this.lastDefer = sync.detail;
     } else if (sync.error) row.lastError = sync.error;
-    else if (/Not workshared|is not synced|Protected original|Sync is off|Excluded by sync_exclude|Not in sync_documents/.test(sync.detail)) row.changedAt = row.lastSyncAt;
+    else if (notApplicable) {
+      row.changedAt = row.lastSyncAt;
+      row.pendingBatchEnd = undefined;
+    }
     this.syncState.set(key, row);
+    this.persistClocks();
     this.emit(`sync ${document}: ${sync.detail}`);
   }
 
-  private syncFields(key: string): { last_sync: string | null; next_sync: string | null; last_error: string | null; excluded: boolean } {
+  private syncFields(key: string): { last_sync: string | null; last_sync_at: string | null; next_sync: string | null; next_sync_at: string | null; last_save: string | null; last_save_at: string | null; next_save_at: string | null; last_error: string | null; excluded: boolean; skip_reason: "excluded" | null; defer_reason: string | null; pending_batch_end: boolean } {
     const settings = syncSettings(loadConfig().config);
     const row = this.syncState.get(key);
-    if (!row) return { last_sync: null, next_sync: null, last_error: null, excluded: syncSkip(key, settings) != null };
+    const iso = (t: number | null | undefined) => (t == null ? null : new Date(t).toISOString());
+    const names = [...this.syncState.keys()].sort();
+    const index = Math.max(0, names.indexOf(key));
+    const count = Math.max(1, names.length);
+    const saveMinutes = autosaveMinutes();
+    const saveInterval = saveMinutes > 0 ? saveMinutes * 60_000 : 0;
+    const syncInterval = settings.minutes > 0 ? settings.minutes * 60_000 : 0;
+    const offset = staggerOffsetMs(index, count, Math.max(saveInterval, syncInterval));
+    const label = row?.document ?? this.names.get(key) ?? key;
+    const skip = saveSkipReason({ title: label });
+    const ahead = (at: number | null) => (at == null ? null : nextOpenAt(at, this.now(), saveInterval > 0 ? saveInterval : syncInterval));
+    const nextSave = skip || !(saveInterval > 0) ? null : iso(ahead((row?.lastSaveAt == null ? this.startedAt : row.lastSaveAt) + (row?.lastSaveAt == null ? offset : saveInterval)));
+    const own = this.docDefer(key) ?? row?.deferReason ?? null;
+    if (!row) return { last_sync: null, last_sync_at: null, next_sync: null, next_sync_at: null, last_save: null, last_save_at: null, next_save_at: nextSave, last_error: null, excluded: syncSkip(key, settings) != null || skip != null, skip_reason: skip, defer_reason: own ?? skip, pending_batch_end: false };
     const plan = planSync(
       { workshared: true, stopAi: false, aiOn: true },
       { now: this.now(), lastSyncAt: row.lastSyncAt, changedAt: row.changedAt, leaseHeld: this.holders.has(key), batchEnd: false },
       settings,
       row.document,
     );
-    return { last_sync: plan.last_sync, next_sync: plan.next_sync, last_error: row.lastError, excluded: plan.excluded };
+    const saveAt = skip || !(saveInterval > 0) ? null : ahead(nextActionAt(row.lastSaveAt, this.startedAt, saveInterval, offset));
+    const syncExcluded = plan.excluded || excludedFromSync({ title: row.document });
+    const syncAnchor = row.lastSyncAt ?? row.changedAt;
+    const syncAt = syncInterval > 0 && !syncExcluded && syncAnchor != null
+      ? nextOpenAt(nextActionAt(syncAnchor, this.startedAt, syncInterval, offset), this.now(), syncInterval)
+      : null;
+    const lastSync = iso(row.lastSyncAt);
+    const lastSave = iso(row.lastSaveAt);
+    return {
+      last_sync: lastSync, last_sync_at: lastSync, next_sync: iso(syncAt), next_sync_at: iso(syncAt),
+      last_save: lastSave, last_save_at: lastSave, next_save_at: iso(saveAt) ?? nextSave,
+      last_error: row.lastError, excluded: plan.excluded || skip != null, skip_reason: skip,
+      defer_reason: own ?? skip, pending_batch_end: row.pendingBatchEnd === true,
+    };
   }
 
-  private syncRows(): Array<{ document: string; last_sync: string | null; next_sync: string | null; last_error: string | null; excluded: boolean }> {
-    return [...this.syncState.entries()].map(([key, row]) => ({ document: row.document, ...this.syncFields(key) }));
+  private syncRows(): Array<Record<string, unknown>> {
+    this.refreshClocksFromDisk();
+    this.seedOpenChanges();
+    const keys = new Map<string, string>();
+    for (const [key, row] of this.syncState) keys.set(key, row.document);
+    try {
+      for (const doc of orderedProjects(this.visibleDocs())) {
+        const name = doc.title || doc.path;
+        const key = documentKey(name);
+        if (!keys.has(key)) keys.set(key, name);
+      }
+    } catch { /* no instance files in a test */ }
+    return [...keys.entries()].map(([key, document]) => ({ document, ...this.syncFields(key) }));
   }
 
   /**
@@ -1196,31 +1520,75 @@ export class BatchBoard {
     }
   }
 
-  /** Between batches: sync workshared documents that are due. No-op when Revit has published none. */
+  /** Documents the idle tick may save or sync, including one that still owes a batch-end sync. */
+  private scheduledDocs(): Array<{ title: string; path: string; family: boolean; workshared: boolean; modified: boolean }> {
+    const docs = this.visibleDocs();
+    const seen = new Set(docs.map((doc) => documentKey(doc.title || doc.path)));
+    for (const row of this.syncState.values()) {
+      if (!row.pendingBatchEnd) continue;
+      const key = documentKey(row.document);
+      if (seen.has(key)) continue;
+      docs.push({ title: row.document, path: "", family: false, workshared: true, modified: true });
+      seen.add(key);
+    }
+    return docs;
+  }
+
+  /** One save or one sync. A lease or an in-flight job skips only that document. A pending batch-end sync is retried until it succeeds. */
   async syncIdle(): Promise<void> {
-    if (this.heldForMemory()) return;
+    this.seedOpenChanges();
+    const blocked = this.sessionBlock();
+    if (blocked) {
+      this.lastDefer = blocked;
+      this.emit(`idle sync deferred: ${blocked}`);
+      return;
+    }
     const settings = syncSettings(loadConfig().config);
-    if (settings.minutes <= 0) return;
-    const { readInstances } = await import("./connect.js");
-    const { productionSyncStep } = await import("./batchsync.js");
-    const docs = readInstances().flatMap((instance) => instance.documents ?? []).filter((doc) => doc.workshared && doc.title);
-    for (const doc of docs) {
-      const key = documentKey(doc.title);
-      if (syncSkip(doc.title, settings, doc.path)) continue;
-      if (this.holders.has(key)) continue;
-      const state = this.syncState.get(key);
-      if (!state?.changedAt || (state.lastSyncAt != null && state.changedAt <= state.lastSyncAt)) continue;
-      const anchor = state.lastSyncAt ?? state.changedAt;
-      if (this.now() - anchor < settings.minutes * 60_000) continue;
-      const ran = await this.withServiceHold(doc.title, () => productionSyncStep({
-        document: doc.title, label: "idle", changedAt: state.changedAt, lastSyncAt: state.lastSyncAt, batchEnd: false,
-      }));
-      if (!ran) continue;
-      this.applySync(doc.title, ran);
-      if (!ran.synced && !ran.ran) {
-        const row = this.syncState.get(key);
-        if (row) row.changedAt = row.lastSyncAt;
-      }
+    const minutes = autosaveMinutes();
+    const docs = this.scheduledDocs();
+    const held = (doc: { title: string; path?: string }) => {
+      const key = documentKey(doc.title || doc.path || "");
+      return this.holders.has(key) || this.care.has(key) || this.docWritesInFlight(key);
+    };
+    const chosen = planTick({
+      now: this.now(),
+      startedAt: this.startedAt,
+      docs,
+      clocks: [...this.syncState.values()],
+      saveIntervalMs: minutes > 0 ? minutes * 60_000 : 0,
+      syncIntervalMs: settings.minutes > 0 ? settings.minutes * 60_000 : 0,
+      saveSkipped: (doc) => doc.family === true || saveBlocked({ title: doc.title, path: doc.path }) != null || held(doc),
+      syncSkipped: (doc) => !doc.workshared || syncSkip(doc.title, settings, doc.path) != null || held(doc),
+      batchEnd: (doc) => this.isPendingBatchEnd(documentKey(doc.title || doc.path || "")) && !held(doc),
+    });
+    if (!chosen) {
+      this.lastDefer = null;
+      return;
+    }
+    if (chosen.kind === "save") {
+      const { productionSaveStep } = await import("./batchsave.js");
+      const save = await productionSaveStep({ document: chosen.document, label: "autosave" });
+      if (isDocBusyMessage(save.detail)) { this.noteDefer(chosen.document, save.detail); return; }
+      this.lastDefer = null;
+      if (!(save.ran && !save.ok)) this.noteSave(chosen.document);
+      return;
+    }
+    const batch = chosen.kind === "batch";
+    const state = this.syncState.get(documentKey(chosen.document));
+    const ran = await this.withServiceHold(chosen.document, () => this.syncStep?.({
+      document: chosen.document, label: batch ? "batch-end" : "idle", changedAt: state?.changedAt ?? null, lastSyncAt: state?.lastSyncAt ?? null, batchEnd: batch,
+    }) ?? Promise.resolve({ ran: false, ok: true as const, synced: false, detail: "No sync step.", error: undefined }));
+    if (!ran || ran.defer_reason || isDocBusyMessage(ran.detail) || isDocBusyMessage(ran.error)) {
+      const why = ran?.defer_reason || ran?.detail || "The document has an open transaction or transaction group.";
+      this.noteDefer(chosen.document, why);
+      if (batch) this.markPendingBatchEnd(chosen.document);
+      return;
+    }
+    this.lastDefer = null;
+    this.applySync(chosen.document, ran);
+    if (!ran.synced && !ran.ran) {
+      const row = this.syncState.get(documentKey(chosen.document));
+      if (row && !batch) row.changedAt = row.lastSyncAt;
     }
   }
 
@@ -1250,7 +1618,7 @@ export class BatchBoard {
     if (this.maintenanceReason || this.heldForMemory()) return [];
     const granted: string[] = [];
     for (const key of [...this.lines.keys()]) {
-      if (this.holders.has(key)) continue;
+      if (this.holders.has(key) || this.care.has(key)) continue;
       const next = (this.lines.get(key) ?? [])[0];
       this.promote(key);
       if (next && this.holders.get(key) === next) granted.push(next);
@@ -1305,15 +1673,44 @@ function leaseHint(holder: Ticket): string {
 
 let board: BatchBoard | undefined;
 
-function productionBoard(opts: BatchBoardOptions): BatchBoard {
+function autosaveMinutes(): number {
+  try {
+    const ai = loadAiConfig(loadConfig().config);
+    return ai?.auto_save_minutes ?? (ai?.mode === "testing" ? 10 : 0);
+  } catch {
+    return 0;
+  }
+}
+
+function modalDialogOpen(env: NodeJS.ProcessEnv = process.env): boolean {
+  try {
+    const lines = readRevitJobLines(env);
+    const now = Date.now();
+    return readInstances(env).some((instance) => {
+      const flight = inFlightJob(lines, instance.pid, now);
+      return !!flight && dialogFor(instance.pid, flight.job, env, lines).length > 0;
+    });
+  } catch {
+    return false;
+  }
+}
+
+function productionBoard(opts: BatchBoardOptions = {}, env: NodeJS.ProcessEnv = process.env): BatchBoard {
   const made = new BatchBoard({
     memoryPaused: () => memoryGate.leasesPaused(),
     memoryView: () => memoryGate.view() as unknown as Record<string, unknown>,
+    queueBusy: () => {
+      try { return queueSnapshots().some((row) => row.running != null || row.waiting > 0); } catch { return false; }
+    },
+    modalDialog: () => modalDialogOpen(env),
+    readOpenDocs: () => readInstances(env).flatMap((instance) => instance.documents ?? []),
     saveStep: (ctx) => import("./batchsave.js").then((mod) => mod.productionSaveStep(ctx)),
     syncStep: (ctx) => import("./batchsync.js").then((mod) => mod.productionSyncStep(ctx)),
-    readMaintenance,
-    writeMaintenance,
-    persistLine: (tickets) => { try { saveBatchLine(tickets); } catch { /* the next change tries again */ } },
+    readMaintenance: () => readMaintenance(env),
+    writeMaintenance: (reason) => writeMaintenance(reason, env),
+    persistLine: (tickets) => { try { saveBatchLine(tickets, env); } catch { /* the next change tries again */ } },
+    loadClocks: () => loadSyncState(env),
+    saveClocks: (rows) => { try { saveSyncState(rows, env); } catch { /* the next change tries again */ } },
     ...opts,
   });
   made.bindService();
@@ -1342,11 +1739,11 @@ export function resetBatchBoard(opts: BatchBoardOptions = {}): BatchBoard {
   return board;
 }
 
-/** Process start. In-memory leases do not survive a restart, and the model is not rolled back. */
-export function logBatchRestart(): BatchBoard {
+/** Process start. In-memory leases do not survive a restart, and the model is not rolled back. Pass env in tests so the live batch line is not read. */
+export function logBatchRestart(env: NodeJS.ProcessEnv = process.env): BatchBoard {
   board?.close();
-  board = productionBoard({ ...loadBatchConfig(), autoSweep: true });
-  const restored = board.importLine(loadBatchLine());
+  board = productionBoard({ ...loadBatchConfig(env), autoSweep: true }, env);
+  const restored = board.importLine(loadBatchLine(env));
   board.pullMaintenance();
   if (!board.snapshot().maintenance) board.resumeGrants();
   board.noteServiceStart(restored);
@@ -1357,6 +1754,12 @@ export function logBatchRestart(): BatchBoard {
  * Model-changing calls only. The write list is WRITE_COMMANDS, the same list a reset retry refuses to send twice.
  * Returns a finish() the caller runs when the Revit call returns, so a long write counts as liveness.
  */
+export function leaseHeldDocument(lease: string | undefined): string | undefined {
+  const id = (lease ?? "").trim();
+  if (!id) return undefined;
+  return batchBoard().heldDocument(id);
+}
+
 export function admitBatchWrite(command: string, document: string | undefined, lease: string | undefined, client: string): { finish: () => void } {
   if (!WRITE_COMMANDS.has(command)) return { finish() {} };
   return batchBoard().admit(document, lease, client);

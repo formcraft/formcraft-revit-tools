@@ -23,6 +23,7 @@ import { dialogFor, inFlightJob, readRevitJobLines } from "./notidle.js";
 import { lastRegistration } from "../tools/register.js";
 import { queueClient, queueSnapshots } from "./fairqueue.js";
 import { addGrantListener, batchBoard, logBatchRestart, notifyBatchGranted } from "./batchline.js";
+import { coordinationReport } from "./coordination.js";
 import { callerFor, clientNameFromInitialize, rememberCaller, runAsCaller } from "./caller.js";
 import { memoryGate } from "./memory.js";
 
@@ -133,26 +134,44 @@ export interface HealthReport {
     pid: number; port: number; revit: string; build: string; answering: boolean;
     verdict: ProbeVerdict | "waiting_for_idle";
     busy: { job: string; command: string; since_s: number; dialog: string } | null;
+    documents: Array<{ title: string; path: string; active: boolean; family: boolean }>;
+    resolved_document: { title: string; path: string } | null;
   }>;
+  /** The one open project document, when the session has exactly one. Otherwise null: the instance lists name the rest. */
+  resolved_document: { title: string; path: string } | null;
   registration: { registered: number; skipped: number; failed: Array<{ file: string; error: string }> };
   queue: ReturnType<typeof queueSnapshots>;
   batches: ReturnType<ReturnType<typeof batchBoard>["snapshot"]>;
+  /** Per open document: next_save_at, next_sync_at, last_save_at, last_sync_at, defer_reason. */
+  schedule: unknown;
   memory: ReturnType<typeof memoryGate.view>;
+  /** Editing requests (never granted) and per-document coordination counts. */
+  coordination: ReturnType<typeof coordinationReport>;
 }
 
 export function describeInstance(
-  instance: { pid: number; port: number; revit?: string; build?: string },
+  instance: { pid: number; port: number; revit?: string; build?: string; documents?: Array<{ title?: string; path?: string; active?: boolean; family?: boolean }> },
   probe: ProbeVerdict,
   lines: ReturnType<typeof readRevitJobLines>,
   now = Date.now(),
   dialog = "",
 ): HealthReport["instances"][number] {
   const flight = inFlightJob(lines, instance.pid, now);
+  const documents = (instance.documents ?? []).map((doc) => ({
+    title: doc.title ?? "",
+    path: doc.path ?? "",
+    active: doc.active === true,
+    family: doc.family === true,
+  }));
+  const projects = documents.filter((doc) => !doc.family);
+  const choose = projects.length > 0 ? projects : documents;
   return {
     pid: instance.pid, port: instance.port, revit: instance.revit || "", build: instance.build || "",
     answering: probe === "ok",
     verdict: flight ? "waiting_for_idle" : probe,
     busy: flight ? { job: flight.job, command: flight.command, since_s: flight.age_s, dialog: flight ? dialog : "" } : null,
+    documents,
+    resolved_document: choose.length === 1 ? { title: choose[0].title, path: choose[0].path } : null,
   };
 }
 
@@ -168,6 +187,7 @@ export async function healthReport(listen: string, startedAt: number, env: NodeJ
   }
   const reg = lastRegistration;
   const addin = [...new Set(rows.map((row) => row.build).filter(Boolean))];
+  const openProjects = rows.flatMap((row) => row.documents.filter((doc) => !doc.family));
   return {
     ok: reg.failed.length === 0,
     build: RUNNING_BUILD.commit,
@@ -176,11 +196,14 @@ export async function healthReport(listen: string, startedAt: number, env: NodeJ
     addin,
     uptime_s: Math.max(0, Math.round((Date.now() - startedAt) / 1000)),
     listen,
+    resolved_document: openProjects.length === 1 ? { title: openProjects[0].title, path: openProjects[0].path } : null,
     instances: rows,
     registration: { registered: reg.registered.length, skipped: reg.skipped.length, failed: reg.failed },
     queue: queueSnapshots(),
     batches: batchBoard().snapshot(),
+    schedule: batchBoard().snapshot().syncs,
     memory: memoryGate.view(),
+    coordination: coordinationReport(env),
   };
 }
 

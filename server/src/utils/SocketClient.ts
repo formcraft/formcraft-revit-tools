@@ -4,11 +4,13 @@ import path from "path";
 import { appendJobEvent, jobFiles, jobResult, lastHeartbeatMs } from "../fmc/jobs.js";
 import { WRITE_COMMANDS, callActivity, liveLockVerdict, loadConfig } from "../fmc/policy.js";
 import { protectedRoots, writeGuard } from "../fmc/opencopy.js";
+import { appendConflict, namedElementIds, splitCheckout, withoutIds, type CurrencyRow, type SkippedElement } from "../fmc/coordination.js";
 import { batchLease, documentTarget, revitTarget } from "../fmc/target.js";
 import { portRefusal, readInstances } from "../fmc/connect.js";
 import { backoffMs, shouldRetryReset } from "../fmc/reconnect.js";
-import { currentClient, documentRequired } from "../fmc/fairqueue.js";
-import { admitBatchWrite } from "../fmc/batchline.js";
+import { currentClient, documentDecision } from "../fmc/fairqueue.js";
+import { admitBatchWrite, documentsMatch, leaseHeldDocument } from "../fmc/batchline.js";
+import { attachResolvedDocument, leaseCovers, resolveOpenDocument, type OpenDocRef } from "../fmc/docresolve.js";
 import { aiGate } from "../fmc/aigate.js";
 import { retryWhileBusy } from "../fmc/busy.js";
 import { DialogBlockingError, blockingForJob } from "../fmc/dialogrules.js";
@@ -155,16 +157,43 @@ export class RevitClientConnection {
    * (server/src/fmc/policy.ts): they are refused when the active document is a live project model.
    * The lock fails closed: if the active document cannot be read, the command is not sent.
    */
+  private openDocRefs(): OpenDocRef[] {
+    const open = readInstances().find((instance) => instance.port === this.port);
+    return (open?.documents ?? []).map((doc) => ({
+      title: doc.title ?? "",
+      path: doc.path ?? "",
+      family: doc.family === true,
+    }));
+  }
+
+  /** Exact title or path. A given document that is not open is refused here, before Revit can fall back to the active one. */
+  private decideDocument(command: string, params: any) {
+    const named = documentTarget.getStore() || (params && typeof params.document === "string" ? params.document : undefined);
+    const str = (key: string) => (params && typeof params[key] === "string" ? params[key] as string : undefined);
+    return documentDecision(command, this.openDocRefs(), named, { kind: str("kind"), template: str("template"), file: str("file") });
+  }
+
   public async sendCommand(command: string, params: any = {}, timeoutMs: number = 120000, long?: LongJobOptions): Promise<any> {
     if (command === "send_code_to_revit" || command === "fmc_new_local" || command === "fmc_grids_from_link") {
       const code = params && typeof params.code === "string" ? params.code : "";
-      const problem = screenScript(code, scriptLimit());
+      const problem = screenScript(code, scriptLimit(), { allowFullScan: params?.allow_full_scan === true });
       if (problem) throw new Error(problem.message);
     }
     if (!WRITE_COMMANDS.has(command)) return this.sendRaw(command, params, timeoutMs, long);
-    const aimed = params && typeof params.document === "string" && params.document.trim()
-      ? params.document.trim()
-      : documentTarget.getStore();
+    const decision = this.decideDocument(command, params);
+    if (!decision.ok) throw new Error(decision.message);
+    const aimed = decision.document
+      ? (decision.document.path || decision.document.title)
+      : (params && typeof params.document === "string" && params.document.trim()
+        ? params.document.trim()
+        : documentTarget.getStore());
+    const lease = batchLease.getStore();
+    if (lease && decision.document) {
+      const held = leaseHeldDocument(lease);
+      if (held && !leaseCovers(held, decision.document, documentsMatch)) {
+        throw new Error(`[FMC-BATCH-LOCKED] Lease ${lease} is for ${held}, not ${decision.document.title || decision.document.path}. Refusing to write a different document.`);
+      }
+    }
     // fmc_new_local keeps the batch lease on the caller's document title. The Revit `document` on that call is an open
     // file (or, for the lock read, the local's full path), which is not the lease key once the local is closed.
     const leaseKey = params && typeof params._lease_document === "string" && params._lease_document.trim()
@@ -174,10 +203,44 @@ export class RevitClientConnection {
     const admission = admitBatchWrite(command, leaseKey, batchLease.getStore(), currentClient());
     try {
       await memoryGate.holdWrites(Math.min(120_000, Math.max(0, timeoutMs)));
-      return await this.sendLocked(command, params, timeoutMs, long);
+      const screened = await this.screenOwnership(command, params, aimed);
+      if (screened.stopped) return { ok: false, applied: false, skipped: screened.skipped };
+      const result = await this.sendLocked(command, screened.params, timeoutMs, long);
+      if (screened.skipped.length && result && typeof result === "object") {
+        const prior = Array.isArray((result as { skipped?: unknown }).skipped) ? (result as { skipped: unknown[] }).skipped : [];
+        return { ...(result as Record<string, unknown>), skipped: [...prior, ...screened.skipped] };
+      }
+      return result;
     } finally {
       admission.finish();
     }
+  }
+
+  /** Drop elements another user owns, or that are not current. An older add-in has no currency command: the write still goes. */
+  private async screenOwnership(command: string, params: any, aimed: string | undefined): Promise<{ params: any; skipped: SkippedElement[]; stopped: boolean }> {
+    if (command === "fmc_revit_file" || command === "fmc_undo" || command === "fmc_new_local" || command === "fmc_elem_currency") {
+      return { params, skipped: [], stopped: false };
+    }
+    const ids = [...new Set(namedElementIds(params))];
+    const document = params && typeof params.document === "string" && params.document.trim() ? params.document.trim() : aimed;
+    if (!ids.length || !document) return { params, skipped: [], stopped: false };
+    let rows: CurrencyRow[] = [];
+    try {
+      const report = await this.sendRaw("fmc_elem_currency", { document, ids }, 20000) as { elements?: CurrencyRow[] };
+      rows = report?.elements ?? [];
+    } catch {
+      return { params, skipped: [], stopped: false };
+    }
+    const split = splitCheckout(ids, rows);
+    for (const row of split.skipped) {
+      appendConflict({
+        at: new Date().toISOString(), document, code: row.code,
+        kind: row.code === "FMC-ELEM-NOT-CURRENT" ? "not_current" : "owned_by_other",
+        detail: `${row.id} ${row.owner}`.trim(),
+      });
+    }
+    if (split.kept.length === 0) return { params, skipped: split.skipped, stopped: true };
+    return { params: withoutIds(params, split.skipped), skipped: split.skipped, stopped: false };
   }
 
   /** Live-model lock, then the socket. The batch lease was already checked. */
@@ -258,18 +321,20 @@ export class RevitClientConnection {
   public async sendRaw(command: string, params: any = {}, timeoutMs: number = 120000, long?: LongJobOptions): Promise<any> {
     const named = documentTarget.getStore() || (params && typeof params.document === "string" ? params.document : undefined);
     const open = readInstances().find((instance) => instance.port === this.port);
-    const str = (key: string) => (params && typeof params[key] === "string" ? params[key] as string : undefined);
-    const refusal = documentRequired(command, (open?.documents ?? []).map((doc) => doc.title || doc.path), named,
-      { kind: str("kind"), template: str("template"), file: str("file") });
-    if (refusal) throw new Error(refusal);
+    const decision = this.decideDocument(command, params);
+    if (!decision.ok) throw new Error(decision.message);
+    if (decision.pin && decision.document && params && typeof params === "object" && !Array.isArray(params)) {
+      const pin = decision.document.path || decision.document.title;
+      if (pin) params = { ...params, document: pin };
+    }
     // F-072: an earlier command that outlived its wait still holds Revit, and the add-in says so at once
     // ([FMC-BRIDGE-BUSY]): wait and send again while that job's heartbeats are fresh, up to this call's own limit (the
     // answer limit, when the MCP server's is on), instead of failing
     const soft = softTimeoutMs();
-    const doc = named || "active";
+    const doc = decision.document?.path || decision.document?.title || named || "active";
     if (CACHED_READS[command]) {
       const hit = takeCachedRead(command, params, doc);
-      if (hit !== undefined) return wantsFull(params) ? hit : compactReply(hit);
+      if (hit !== undefined) return attachResolvedDocument(wantsFull(params) ? hit : compactReply(hit), decision.document);
     }
     const pid = open?.pid;
     const run = () => retryWhileBusy(() => this.sendOnce(command, params, timeoutMs, long),
@@ -283,7 +348,8 @@ export class RevitClientConnection {
     const finish = (value: unknown) => {
       if (CACHED_READS[command]) putCachedRead(command, params, doc, value);
       invalidateIfWrite(command, named);
-      return CACHED_READS[command] && !wantsFull(params) ? compactReply(value) : value;
+      const body = CACHED_READS[command] && !wantsFull(params) ? compactReply(value) : value;
+      return attachResolvedDocument(body, decision.document);
     };
     try {
       return finish(await run());

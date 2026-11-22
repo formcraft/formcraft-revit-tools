@@ -110,7 +110,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 if (target.Length > 0 && FmcTarget.Same(d, target)) { matches++; named = d; }
             }
             if (matches > 1)
-                throw new InvalidOperationException($"More than one open document matches \"{target}\". Pass the full path. Refusing to guess.");
+                throw new InvalidOperationException($"[FMC-DOC-AMBIGUOUS] \"{target}\" matches {matches} open documents. Pass the full path. Refusing to use the active document.");
             JObject subject = target.Length == 0 ? (active != null ? Describe(active, active) : null)
                 : named != null ? Describe(named, active)
                 : File.Exists(target) ? FromFile(target) : null;
@@ -144,15 +144,19 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         private static Document Find(UIApplication app, string key)
         {
-            if (string.IsNullOrWhiteSpace(key)) throw new ArgumentException("document is required");
+            if (string.IsNullOrWhiteSpace(key)) throw new ArgumentException("[FMC-DOC-REQUIRED] document is required. Refusing to use the active document.");
+            Document found = null;
+            int matches = 0;
             foreach (Document d in app.Application.Documents)
             {
                 if (d.IsLinked) continue;
-                if (string.Equals(d.Title, key, StringComparison.OrdinalIgnoreCase)) return d;
-                if (!string.IsNullOrEmpty(d.PathName) &&
-                    string.Equals(Path.GetFullPath(d.PathName), Path.GetFullPath(key), StringComparison.OrdinalIgnoreCase)) return d;
+                if (!FmcTarget.Same(d, key)) continue;
+                matches++;
+                found = d;
             }
-            throw new InvalidOperationException($"Document not open: {key}");
+            if (matches > 1) throw new InvalidOperationException($"[FMC-DOC-AMBIGUOUS] \"{key}\" matches {matches} open documents. Pass the full path. Refusing to use the active document.");
+            if (matches == 0) throw new InvalidOperationException($"[FMC-DOC-NOT-FOUND] No open document has title or path \"{key}\". Refusing to use the active document.");
+            return found;
         }
 
         private SaveAsOptions Options()

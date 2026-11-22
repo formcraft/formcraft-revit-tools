@@ -8,8 +8,13 @@ import { loadConfig } from "./policy.js";
 export const DEFAULT_SCRIPT_MAX_CHARS = 1_000_000;
 
 export interface ScriptProblem {
-  code: "FMC-CODE-TOO-LARGE" | "FMC-CODE-RECURSION" | "FMC-CODE-LOOP";
+  code: "FMC-CODE-TOO-LARGE" | "FMC-CODE-RECURSION" | "FMC-CODE-LOOP" | "FMC-SEND-CODE-UNSCOPED";
   message: string;
+}
+
+export interface ScreenOptions {
+  /** allow_full_scan on send_code_to_revit. The unscoped parameter walk is still a crash risk. */
+  allowFullScan?: boolean;
 }
 
 const KEYWORDS = new Set([
@@ -24,7 +29,7 @@ export function scriptLimit(): number {
   return Number.isFinite(n) && n > 0 ? n : DEFAULT_SCRIPT_MAX_CHARS;
 }
 
-export function screenScript(code: string, maxChars = DEFAULT_SCRIPT_MAX_CHARS): ScriptProblem | null {
+export function screenScript(code: string, maxChars = DEFAULT_SCRIPT_MAX_CHARS, opts?: ScreenOptions): ScriptProblem | null {
   if (code.length > maxChars) {
     return {
       code: "FMC-CODE-TOO-LARGE",
@@ -35,7 +40,10 @@ export function screenScript(code: string, maxChars = DEFAULT_SCRIPT_MAX_CHARS):
   const masked = maskLiterals(code);
   const recursion = findRecursion(masked);
   if (recursion) return recursion;
-  return findLoop(masked);
+  const loop = findLoop(masked);
+  if (loop) return loop;
+  if (opts?.allowFullScan) return null;
+  return findUnscopedParameterScan(masked);
 }
 
 /** Comments and string literals become spaces. Newlines stay so line numbers match the script. */
@@ -294,6 +302,104 @@ function hasDirectExit(body: string): boolean {
 
 function conditionOf(header: string): string {
   return header.replace(/\s+/g, "");
+}
+
+const SCOPED_COLLECTOR = /OfClass\s*\(|OfCategory\s*\(|OfCategoryId\s*\(|ElementClassFilter|ElementCategoryFilter|ElementMulticlassFilter/;
+const PARAMETER_DUMP = /\.Parameters\b|\.ParametersMap\b|GetOrderedParameters\s*\(/;
+const PARAMETER_READ = /\.StorageType\b|AsValueString\s*\(/;
+
+/**
+ * Revit 2025.4 died with AccessViolationException in Parameter.get_StorageType while a read_only script
+ * walked every parameter of every element. .NET 8 cannot catch that. A collector with no category or class,
+ * together with a full parameter enumeration that reads StorageType or AsValueString, is refused.
+ */
+function findUnscopedParameterScan(src: string): ScriptProblem | null {
+  if (!PARAMETER_DUMP.test(src) || !PARAMETER_READ.test(src)) return null;
+  if (!iteratesUnscopedCollector(src)) return null;
+  return {
+    code: "FMC-SEND-CODE-UNSCOPED",
+    message: "[FMC-SEND-CODE-UNSCOPED] This script walks every parameter of every element: a FilteredElementCollector with no category or class filter, then Parameters, GetOrderedParameters or ParametersMap, reading StorageType or AsValueString. " +
+      "That walk crashed Revit 2025.4 (AccessViolationException in Parameter.get_StorageType). .NET cannot catch it. " +
+      "Fix: scope the collector with OfCategory or OfClass, and read named parameters with LookupParameter or get_Parameter(BuiltInParameter), in batches. " +
+      "Pass allow_full_scan true only when a full scan is really meant. Nothing was sent to Revit.",
+  };
+}
+
+function iteratesUnscopedCollector(src: string): boolean {
+  const re = /new\s+FilteredElementCollector\s*\(/g;
+  let match: RegExpExecArray | null;
+  while ((match = re.exec(src))) {
+    const built = collectorExpr(src, match.index);
+    const name = assignedName(src, match.index);
+    const later = name ? variableTail(src, name, built.end) : "";
+    const whole = built.expr + later;
+    if (SCOPED_COLLECTOR.test(whole)) continue;
+    if (collectorIterated(src, match.index, built.expr) || (name ? variableIterated(src, name, built.end) : false)) return true;
+  }
+  return false;
+}
+
+function collectorExpr(src: string, at: number): { expr: string; end: number } {
+  const paren = src.indexOf("(", at);
+  const close = paren < 0 ? -1 : matchForward(src, paren, "(", ")");
+  if (close < 0) return { expr: src.slice(at), end: src.length };
+  let i = close + 1;
+  while (i < src.length) {
+    let j = i;
+    while (j < src.length && /\s/.test(src[j])) j++;
+    if (src[j] !== ".") break;
+    j++;
+    while (j < src.length && /\s/.test(src[j])) j++;
+    if (!/[A-Za-z_]/.test(src[j] ?? "")) break;
+    while (j < src.length && /[A-Za-z0-9_]/.test(src[j])) j++;
+    while (j < src.length && /\s/.test(src[j])) j++;
+    if (src[j] === "<") {
+      const endGen = src.indexOf(">", j);
+      if (endGen < 0) break;
+      j = endGen + 1;
+      while (j < src.length && /\s/.test(src[j])) j++;
+    }
+    if (src[j] !== "(") break;
+    const end = matchForward(src, j, "(", ")");
+    if (end < 0) break;
+    i = end + 1;
+  }
+  return { expr: src.slice(at, i), end: i };
+}
+
+function assignedName(src: string, at: number): string | undefined {
+  const back = src.slice(Math.max(0, at - 160), at);
+  const named = /([A-Za-z_]\w*)\s*=\s*$/.exec(back);
+  if (!named || KEYWORDS.has(named[1]) || named[1] === "return" || named[1] === "new") return undefined;
+  return named[1];
+}
+
+function variableTail(src: string, name: string, from: number): string {
+  const re = new RegExp("(?<![\\w.])" + name + "\\s*\\.", "g");
+  re.lastIndex = from;
+  let out = "";
+  let hit: RegExpExecArray | null;
+  while ((hit = re.exec(src))) out += src.slice(hit.index, Math.min(src.length, hit.index + 120));
+  return out;
+}
+
+function collectorIterated(src: string, at: number, expr: string): boolean {
+  if (/\.\s*(ToElements|ToElementIds|GetElementIterator|Cast)\s*(<|\()/.test(expr)) return true;
+  const before = src.slice(Math.max(0, at - 100), at).replace(/\s+/g, " ");
+  return /\bforeach\s*\(/.test(before) && /\bin\s*$/.test(before);
+}
+
+function variableIterated(src: string, name: string, from: number): boolean {
+  const re = new RegExp("(?<![\\w.])" + name + "\\b", "g");
+  re.lastIndex = from;
+  let hit: RegExpExecArray | null;
+  while ((hit = re.exec(src))) {
+    const after = src.slice(hit.index + name.length, hit.index + name.length + 40);
+    if (/^\s*\.\s*(ToElements|ToElementIds|GetElementIterator|Cast)\b/.test(after)) return true;
+    const before = src.slice(Math.max(0, hit.index - 30), hit.index).replace(/\s+/g, " ");
+    if (/\bin\s*$/.test(before)) return true;
+  }
+  return false;
 }
 
 function findLoop(src: string): ScriptProblem | null {

@@ -41,7 +41,7 @@ namespace RevitMCPCommandSet.Commands.Delete
                             throw new InvalidOperationException(_handler.Error);
                         if (_handler.IsSuccess)
                         {
-                            return new { deleted = true, count = _handler.DeletedCount };
+                            return new { deleted = _handler.DeletedCount > 0, count = _handler.DeletedCount, skipped = _handler.Skipped };
                         }
                         else
                         {

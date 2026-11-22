@@ -72,7 +72,20 @@ test("health names a waiting Revit instead of calling the port dead", () => {
     { at: new Date(now).toISOString(), job: "fmc_doc_35f7ff63", command: "fmc_doc_apply", pid, event: "heartbeat", started },
     { at: new Date(now).toISOString(), job: "fmc_doc_35f7ff63", command: "fmc_doc_apply", pid, event: "dialog", message: "Save changes to Project1?" },
   ];
-  const row = describeInstance(one(8080, pid), "reset", lines, now, "Save changes to Project1?");
+  const row = describeInstance({
+    ...one(8080, pid),
+    documents: [
+      { title: "S-0001", path: "D:\\Jobs\\_Staging\\S-0001.rvt", active: false, family: false },
+      { title: "E-0001", path: "D:\\Jobs\\_Staging\\E-0001.rvt", active: true, family: false },
+    ],
+  }, "reset", lines, now, "Save changes to Project1?");
+  assert.equal(row.resolved_document, null);
+  assert.deepEqual(row.documents.map((doc) => doc.title), ["S-0001", "E-0001"]);
+  const only = describeInstance({
+    ...one(8080, pid),
+    documents: [{ title: "P-0001", path: "D:\\Jobs\\_Staging\\P-0001.rvt", active: true, family: false }],
+  }, "ok", [], now, "");
+  assert.deepEqual(only.resolved_document, { title: "P-0001", path: "D:\\Jobs\\_Staging\\P-0001.rvt" });
   assert.equal(row.verdict, "waiting_for_idle");
   assert.equal(row.answering, false);
   assert.equal(row.busy?.job, "fmc_doc_35f7ff63");

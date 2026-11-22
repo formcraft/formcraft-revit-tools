@@ -27,23 +27,26 @@ namespace RevitMCPCommandSet.Services.Fmc
         public void Execute(UIApplication app)
         {
             Result = new JObject(); Error = "";
-            try { Result = Export(app.ActiveUIDocument ?? throw new InvalidOperationException("No model is open")); }
+            try
+            {
+                using var target = FmcTarget.Resolve(app, Parameters, mayOpen: false);
+                Result = Export(target.Doc, target.Ui?.ActiveView);
+            }
             catch (Exception e) { Error = e.Message; }
             finally { _done.Set(); }
         }
 
         private static JArray Mm(XYZ p) => new JArray(Math.Round(p.X * 304.8, 1), Math.Round(p.Y * 304.8, 1), Math.Round(p.Z * 304.8, 1));
 
-        private JObject Export(UIDocument uidoc)
+        private JObject Export(Document doc, View uiView)
         {
-            Document doc = uidoc.Document;
             string folder = Parameters.Value<string>("folder") ?? throw new InvalidOperationException("folder is needed");
             string name = Parameters.Value<string>("name") ?? "scene";
             if (!Path.IsPathRooted(folder)) throw new InvalidOperationException("folder must be absolute");
             string v = Parameters.Value<string>("view");
             View3D view = (v != null ? FmcViewImageHandler.ViewOf(doc, v) : null) as View3D
                 ?? new FilteredElementCollector(doc).OfClass(typeof(View3D)).Cast<View3D>().FirstOrDefault(x => !x.IsTemplate && x.Name == "{3D}")
-                ?? uidoc.ActiveView as View3D
+                ?? uiView as View3D
                 ?? throw new InvalidOperationException(v != null ? $"no 3D view {v}" : "no {3D} view: name a 3D view");
             if (view.IsTemplate) throw new InvalidOperationException($"{view.Name} is a template");
 
