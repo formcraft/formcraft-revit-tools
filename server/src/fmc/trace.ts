@@ -13,6 +13,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { MISSING_CHECK, REMAINING_PHASE2, STANDARDS_CHECKS, STANDARDS_IDS } from "./trace_phase2.js";
 
 export const LEAK_CODES = [
   "FLOW-OPEN-END",
@@ -86,6 +87,8 @@ export interface TraceConnector {
   type: string;
   open_end: boolean;
   system_id: number;
+  /** PipeSystemType or DuctSystemType, when Revit has one. */
+  system_class?: string;
   refs: number[][];
 }
 
@@ -118,6 +121,8 @@ export interface TracePanel {
   has_supply: boolean;
   supply_circuit_id?: number;
   supply_from_id?: number;
+  /** Main device rating in amperes. 0 means the parameter is empty. */
+  main_a?: number;
 }
 
 export interface TraceCircuit {
@@ -132,6 +137,10 @@ export interface TraceCircuit {
   distribution?: string;
   element_ids: number[];
   apparent_va?: number;
+  rating_a?: number;
+  length_m?: number;
+  wire_size?: string;
+  phase?: string;
 }
 
 export interface TraceDevice {
@@ -143,6 +152,8 @@ export interface TraceDevice {
   distribution?: string;
   power_connector: boolean;
   circuit_ids: number[];
+  /** Ground connector on the family: connected, open, or absent when the family exposes none. */
+  ground?: "connected" | "open" | "absent";
 }
 
 export interface TraceSnapshot {
@@ -164,6 +175,8 @@ export interface TraceSnapshot {
     devices?: TraceDevice[];
   };
   highlight?: { requested?: string; applied?: boolean; reason?: string; ids?: number[] };
+  is_central?: boolean;
+  is_workshared?: boolean;
 }
 
 export interface TraceFilter {
@@ -171,10 +184,12 @@ export interface TraceFilter {
   source?: string;
   domain?: "piping" | "duct" | "both";
   panel?: string;
+  /** Standards-bank rows for this call, keyed by trace.*. A missing key stays provisional. */
+  bank?: Record<string, { value: number; clause: string }>;
 }
 
 export interface TraceFinding {
-  code: ProblemCode;
+  code: string;
   id: number;
   other_id?: number;
   connector?: number;
@@ -193,6 +208,11 @@ export interface CheckRun {
   findings: TraceFinding[];
   checked: Record<string, number>;
   warnings: string[];
+  /** System roll-ups and the list of things the model cannot show. */
+  extra?: {
+    not_detectable?: string[];
+    systems?: Array<{ id: number; name: string; verdict: "compliant" | "not compliant" | "incomplete data" }>;
+  };
 }
 
 export interface TraceCheck {
@@ -212,20 +232,7 @@ export interface TraceSelection {
   unknown: string[];
 }
 
-const PHASE_2: Array<{ id: string; title: string; needs: string }> = [
-  { id: "drainage_fall", title: "Drainage fall", needs: "Curve endpoints are already on the snapshot. Slope limits are not in the standards bank." },
-  { id: "venting", title: "Drainage venting", needs: "Trap and vent classification from the kit, then a walk off each trap." },
-  { id: "cross_connection", title: "Cross-connection", needs: "Potable and waste classifications must not share a connector path." },
-  { id: "dead_legs", title: "Dead legs", needs: "A capped branch longer than a kit length, measured along the curve." },
-  { id: "pressure_flow", title: "Pressure and flow", needs: "Residual pressure and flow from the kit. The tracer does not size pipe." },
-  { id: "duct_airflow", title: "Duct airflow", needs: "Airflow on terminals and a kit velocity band. Phase 1 only walks the duct connectors." },
-  { id: "fitting_corner", title: "Fitting and corner", needs: "Elbow angle and a missing transition at a size change. Phase 1 reports the size change only." },
-  { id: "voltage_drop", title: "Voltage drop", needs: "Circuit length and cable size, which Revit often does not store." },
-  { id: "overload", title: "Overload", needs: "Protective-device ratings from the kit. Apparent load is collected and not judged." },
-  { id: "phase_balance", title: "Phase balance", needs: "Phase assignment per circuit. Revit does not always store it." },
-  { id: "earthing", title: "Earthing", needs: "Earth-path connectors and a kit resistance target." },
-  { id: "tray_fill", title: "Tray fill", needs: "Cable-tray connectors and contents. Phase 1 does not collect trays." },
-];
+const PHASE_2: Array<{ id: string; title: string; needs: string }> = REMAINING_PHASE2;
 
 function unimplemented(spec: { id: string; title: string; needs: string }, codes: readonly string[] = []): TraceCheck {
   return {
@@ -252,6 +259,8 @@ function unimplemented(spec: { id: string; title: string; needs: string }, codes
 export const TRACE_CHECKS: TraceCheck[] = [
   { id: "leak", title: "Leak test (piping, drainage, duct)", phase: 1, implemented: true, codes: LEAK_CODES, needs: "Connector graph and piping or duct systems.", run: runLeak },
   { id: "continuity", title: "Electrical continuity", phase: 1, implemented: true, codes: ELEC_CODES, needs: "Panels, power circuits and power connectors.", run: runContinuity },
+  MISSING_CHECK,
+  ...STANDARDS_CHECKS,
   ...PHASE_2.map((spec) => unimplemented(spec)),
 ];
 
@@ -320,6 +329,8 @@ export function selectChecks(action: string, names?: string[]): TraceSelection {
   let ids: string[];
   if (action === "leak") ids = ["leak"];
   else if (action === "continuity") ids = ["continuity"];
+  else if (action === "missing") ids = ["missing"];
+  else if (action === "standards") ids = [...STANDARDS_IDS];
   else ids = names && names.length ? names.map((name) => name.trim()).filter(Boolean) : ["leak", "continuity"];
   const run: TraceCheck[] = [];
   const skipped: TraceSelection["skipped"] = [];
@@ -1011,6 +1022,8 @@ export function summarizeTrace(runs: CheckRun[], extra: {
       ids: capIds(run.findings, sampleLimit),
       checked: run.checked,
       warnings: run.warnings,
+      ...(run.extra?.systems ? { systems: run.extra.systems } : {}),
+      ...(run.extra?.not_detectable ? { not_detectable: run.extra.not_detectable } : {}),
     };
   });
   const highlightIds = extra.highlight === "ids" || extra.highlight === "temporary"
@@ -1102,6 +1115,7 @@ export function reportBody(snapshot: TraceSnapshot, runs: CheckRun[], limits: Re
       checked: run.checked,
       warnings: run.warnings,
       findings: run.findings,
+      ...(run.extra ? { extra: run.extra } : {}),
     })),
     api_limits: snapshot.api_limits?.length ? snapshot.api_limits : TRACE_API_LIMITS,
     phase_2: PHASE_2,

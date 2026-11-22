@@ -861,6 +861,6 @@
     "feature": "Systems flow tracer",
     "status": "Built, Revit check due",
     "ref": "fmc_trace",
-    "note": "Read-only leak test (piping, drainage, duct) and electrical continuity. One Revit round-trip per document. Replies are pass/fail counts and capped element ids; the full JSON is under %LOCALAPPDATA%\\Formcraft\\trace. Tolerances are PROVISIONAL (trace.* in the standards bank). Highlight is opt-in and unsaved. Phase 2 checks are named and not run. Needs a Revit check on P-0001_USER and E-0001_USER. The add-in needs a Revit restart; the server walk does not."
+    "note": "Read-only leak test, electrical continuity, missing parts and standards verdicts. PASS only when a trace.* key is in the standards bank; otherwise PROVISIONAL or UNKNOWN. fix plans corrections and, with dry_run false and a batch lease, applies them in one transaction and rolls back if the failure count rises. HEBERT HOSTELS, centrals and protected paths are refused. Replies are capped; the JSON is under %LOCALAPPDATA%\\Formcraft\\trace. Needs a Revit check. The add-in needs a Revit restart; the server walk does not."
   }
 ]

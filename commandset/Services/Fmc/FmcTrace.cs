@@ -54,6 +54,8 @@ namespace RevitMCPCommandSet.Services.Fmc
                     Result["model"] = target.Doc.Title;
                     Result["resolved_document"] = FmcTarget.Resolved(target.Doc);
                     Result["read_only"] = true;
+                    Result["is_workshared"] = target.Doc.IsWorkshared;
+                    Result["is_central"] = IsCentral(target.Doc);
                     Result["modified_during_call"] = !modifiedBefore && target.Doc.IsModified;
                 }
             }
@@ -110,8 +112,10 @@ namespace RevitMCPCommandSet.Services.Fmc
         {
             var want = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (JToken token in Parameters["checks"] as JArray ?? new JArray()) want.Add(token.ToString());
-            bool flow = want.Count == 0 || want.Contains("leak");
-            bool electrical = want.Count == 0 || want.Contains("continuity");
+            var flowIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "leak", "missing", "drainage_fall", "venting", "cross_connection", "dead_legs", "pressure_flow" };
+            var elecIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "continuity", "missing", "voltage_drop", "overload", "phase_balance" };
+            bool flow = want.Count == 0 || want.Any(flowIds.Contains);
+            bool electrical = want.Count == 0 || want.Any(elecIds.Contains);
             var result = new JObject { ["truncated"] = false, ["connectors_skipped"] = 0 };
             var state = new CollectState();
             if (flow) result["flow"] = CollectFlow(doc, state);
@@ -278,6 +282,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     ["has_supply"] = supplyCircuit != 0 || feeder,
                     ["supply_circuit_id"] = supplyCircuit,
                     ["supply_from_id"] = supplyFrom,
+                    ["main_a"] = MainAmps(board),
                 });
             }
 
@@ -320,6 +325,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                     ["distribution"] = distribution ?? "",
                     ["element_ids"] = new JArray(loads),
                     ["apparent_va"] = apparent,
+                    ["rating_a"] = Measure(system, BuiltInParameter.RBS_ELEC_CIRCUIT_RATING_PARAM, UnitTypeId.Amperes),
+                    ["length_m"] = Measure(system, BuiltInParameter.RBS_ELEC_CIRCUIT_LENGTH_PARAM, UnitTypeId.Meters),
+                    ["wire_size"] = system.get_Parameter(BuiltInParameter.RBS_ELEC_CIRCUIT_WIRE_SIZE_PARAM)?.AsString() ?? "",
+                    ["phase"] = TextOf(system, "Phase").Length > 0 ? TextOf(system, "Phase") : TextOf(system, "FMC_Phase"),
                 });
             }
 
@@ -333,6 +342,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             foreach (FamilyInstance device in new FilteredElementCollector(doc).WherePasses(new ElementMulticategoryFilter(deviceCats)).WhereElementIsNotElementType().Cast<FamilyInstance>())
             {
                 bool power = false;
+                string ground = "absent";
                 ConnectorManager manager = device.MEPModel?.ConnectorManager;
                 if (manager != null)
                 {
@@ -340,7 +350,15 @@ namespace RevitMCPCommandSet.Services.Fmc
                     {
                         try
                         {
-                            if (connector.Domain == Domain.DomainElectrical && IsPower(connector.ElectricalSystemType)) power = true;
+                            if (connector.Domain != Domain.DomainElectrical) continue;
+                            if (IsPower(connector.ElectricalSystemType)) power = true;
+                            string described = "";
+                            try { described = connector.Description ?? ""; } catch (Exception) { described = ""; }
+                            if (System.Text.RegularExpressions.Regex.IsMatch(described, "ground|earth|cpc", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                            {
+                                if (!connector.IsConnected) ground = "open";
+                                else if (ground != "open") ground = "connected";
+                            }
                         }
                         catch (Exception) { state.Skipped++; }
                     }
@@ -364,6 +382,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     ["poles"] = Poles(device),
                     ["distribution"] = Distribution(device),
                     ["power_connector"] = power,
+                    ["ground"] = ground,
                     ["circuit_ids"] = new JArray(circuitIds),
                 });
             }
@@ -409,7 +428,14 @@ namespace RevitMCPCommandSet.Services.Fmc
                     string flow = "";
                     try { flow = connector.Direction.ToString().ToLowerInvariant(); } catch (Exception) { /* no flow */ }
                     long systemId = 0;
+                    string systemClass = "";
                     try { if (connector.MEPSystem != null) systemId = connector.MEPSystem.Id.Value; } catch (Exception) { /* unset */ }
+                    try
+                    {
+                        if (connector.Domain == Domain.DomainPiping) systemClass = connector.PipeSystemType.ToString();
+                        else if (connector.Domain == Domain.DomainHvac) systemClass = connector.DuctSystemType.ToString();
+                    }
+                    catch (Exception) { /* a connector with no system class */ }
                     var refs = new JArray();
                     try
                     {
@@ -436,6 +462,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                         ["type"] = curve ? "curve" : connector.ConnectorType == ConnectorType.End ? "end" : "other",
                         ["open_end"] = !curve && !connected,
                         ["system_id"] = systemId,
+                        ["system_class"] = systemClass,
                         ["refs"] = refs,
                     });
                 }
@@ -489,6 +516,44 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (category == (long)BuiltInCategory.OST_MechanicalEquipment || category == (long)BuiltInCategory.OST_PlumbingEquipment) return "equipment";
             if (element is MEPCurve) return "curve";
             return "other";
+        }
+
+        private static bool IsCentral(Document doc)
+        {
+            if (doc == null || !doc.IsWorkshared || string.IsNullOrEmpty(doc.PathName)) return false;
+            try
+            {
+                string central = ModelPathUtils.ConvertModelPathToUserVisiblePath(doc.GetWorksharingCentralModelPath());
+                return !string.IsNullOrEmpty(central) && string.Equals(System.IO.Path.GetFullPath(central), System.IO.Path.GetFullPath(doc.PathName), StringComparison.OrdinalIgnoreCase);
+            }
+            catch (Exception) { return false; }
+        }
+
+        private static double Measure(Element element, BuiltInParameter parameter, ForgeTypeId unit)
+        {
+            Parameter value = element.get_Parameter(parameter);
+            if (value == null || !value.HasValue || value.StorageType != StorageType.Double) return 0;
+            try { return Math.Round(UnitUtils.ConvertFromInternalUnits(value.AsDouble(), unit), 2); }
+            catch (Exception) { return 0; }
+        }
+
+        private static double MainAmps(Element element)
+        {
+            foreach (string name in new[] { "Mains", "Main Rating", "FMC_Main_Rating" })
+            {
+                Parameter parameter = element.LookupParameter(name);
+                if (parameter == null || !parameter.HasValue) continue;
+                if (parameter.StorageType == StorageType.Double) return Math.Round(parameter.AsDouble(), 1);
+                if (parameter.StorageType == StorageType.Integer) return parameter.AsInteger();
+            }
+            return 0;
+        }
+
+        private static string TextOf(Element element, string name)
+        {
+            Parameter parameter = element.LookupParameter(name);
+            if (parameter == null || !parameter.HasValue) return "";
+            return (parameter.StorageType == StorageType.String ? parameter.AsString() : parameter.AsValueString()) ?? "";
         }
 
         private static bool IsPower(ElectricalSystemType type) =>

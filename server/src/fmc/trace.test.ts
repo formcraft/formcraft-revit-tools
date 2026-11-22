@@ -268,16 +268,16 @@ test("the reply is counts and a capped id list; the JSON file keeps every findin
   assert.equal(summary.limits_status, "PROVISIONAL");
 });
 
-test("phase 2 checks are listed in priority order and are not run", () => {
+test("phase 2 standards checks run, and tray fill stays listed and not run", () => {
   const list = catalogue();
   const ids = list.checks.map((check) => check.id);
-  assert.deepEqual(ids.slice(0, 2), ["leak", "continuity"]);
-  assert.deepEqual(ids.slice(2, 6), ["drainage_fall", "venting", "cross_connection", "dead_legs"]);
-  const picked = selectChecks("run", ["leak", "drainage_fall", "nope"]);
-  assert.deepEqual(picked.run.map((check) => check.id), ["leak"]);
-  assert.equal(picked.skipped[0].id, "drainage_fall");
+  assert.deepEqual(ids.slice(0, 3), ["leak", "continuity", "missing"]);
+  assert.deepEqual(ids.slice(3, 7), ["drainage_fall", "venting", "cross_connection", "dead_legs"]);
+  const picked = selectChecks("run", ["leak", "drainage_fall", "tray_fill", "nope"]);
+  assert.deepEqual(picked.run.map((check) => check.id), ["leak", "drainage_fall"]);
+  assert.equal(picked.skipped[0].id, "tray_fill");
   assert.deepEqual(picked.unknown, ["nope"]);
-  assert.equal(picked.skipped[0].phase, 2);
+  assert.equal(list.checks.find((check) => check.id === "drainage_fall")?.implemented, true);
 });
 
 test("checks and limits do not need Revit, and the description names the codes", async () => {

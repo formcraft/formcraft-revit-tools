@@ -1,17 +1,26 @@
+import fs from "node:fs";
+import path from "node:path";
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
+import { kitPaths } from "../fmc/context.js";
+import { splitCheckout } from "../fmc/coordination.js";
+import { loadConfig } from "../fmc/policy.js";
+import { resolve, type Resolved } from "../fmc/standards.js";
+import { batchLease } from "../fmc/target.js";
 import {
   catalogue,
   resolveTraceLimits,
   selectChecks,
   summarizeTrace,
   traceFromSnapshot,
+  traceReportHostDir,
   writeTraceReport,
   type LimitKey,
   type TraceFilter,
   type TraceSnapshot,
 } from "../fmc/trace.js";
+import { dropOwnedEdits, PHASE2_DEFAULTS, planFixes, refuseTraceWrite, type TraceEdit } from "../fmc/trace_phase2.js";
 
 function reply(body: object, isError = false) {
   return { content: [{ type: "text" as const, text: JSON.stringify(body) }], isError };
@@ -35,13 +44,20 @@ export const FMC_TRACE_DESCRIPTION =
   "FLOW-NOT-CONNECTED is an open connector within touch_mm of another element's bounding box with no connector pair within near_miss_mm. " +
   "highlight: off (default), ids (capped id list only) or temporary (View.IsolateElementsTemporary on the active view when this document is already active; never saved; a background document is not activated). " +
   "Tolerances are PROVISIONAL until the standards bank has trace.near_miss_mm, trace.touch_mm, trace.size_mismatch_mm, trace.direction_deg, trace.connected_gap_mm and trace.voltage_tol_v. " +
-  "Later checks are named and not run: drainage_fall, venting, cross_connection, dead_legs, pressure_flow, duct_airflow, fitting_corner, voltage_drop, overload, phase_balance, earthing, tray_fill. " +
-  "Example: action leak, document P-0001_USER. Example: action continuity, document E-0001_USER.";
+  "missing: parts a working system should have (trap, waste, isolation, cleanout, vent, fitting, cap, source, rating, main, switch, earth, duct system, damper). " +
+  "standards: PASS, FAIL, UNKNOWN or PROVISIONAL per element, and compliant, not compliant or incomplete data per system. " +
+  "A PASS is only against a trace.* value in the standards bank. A missing key is PROVISIONAL and is not a pass. " +
+  "fix: a deterministic correction plan. dry_run defaults to true and returns the edits. dry_run false needs batch_lease and runs fmc_trace_apply, one transaction, " +
+  "skipping elements owned by someone else or not current. The transaction rolls back if the failure count rises. " +
+  "caps true is required before an end cap is planned. circuit is the circuit id for an unpowered device; a panel alone does not choose a circuit. " +
+  "HEBERT HOSTELS, a central model, and protected_paths are refused. " +
+  "Not run yet: duct_airflow, fitting_corner, earthing, tray_fill. " +
+  "Example: action leak, document F26901-FMC-ZZ-ZZ-M3-P-0001_USER. Example: action continuity, document F26901-FMC-ZZ-ZZ-M3-E-0001_USER.";
 
 const limit = (key: string) => z.number().optional().describe(`${key} override. PROVISIONAL when omitted.`);
 
 export const FMC_TRACE_SHAPE = {
-  action: z.enum(["checks", "limits", "leak", "continuity", "run"]),
+  action: z.enum(["checks", "limits", "leak", "continuity", "run", "missing", "standards", "fix"]),
   checks: z.array(z.string()).optional().describe("run: check ids. Default leak and continuity. Phase 2 ids are skipped."),
   system: z.string().optional().default("").describe("leak: piping or duct system name, classification or element id. Empty checks every system."),
   source: z.string().optional().default("").describe("leak: element id to walk from. Empty uses each system's base equipment, or the largest connected part when a system has none."),
@@ -55,6 +71,10 @@ export const FMC_TRACE_SHAPE = {
   voltage_tol_v: limit("voltage_tol_v (default 15)"),
   sample_limit: z.number().int().min(1).max(100).optional().default(20).describe("How many element ids the reply keeps per check. The JSON file keeps all of them."),
   highlight: z.enum(["off", "ids", "temporary"]).optional().default("off"),
+  dry_run: z.boolean().optional().default(true).describe("fix: return the plan unless false. A real apply needs batch_lease."),
+  caps: z.boolean().optional().default(false).describe("fix: include end caps. Off unless you ask."),
+  circuit: z.string().optional().default("").describe("fix: element id of the circuit an unpowered device should join."),
+  max_edits: z.number().int().min(1).max(100).optional().default(25).describe("fix: how many corrections one call may plan or apply."),
 };
 
 export type FmcTraceArgs = z.infer<z.ZodObject<typeof FMC_TRACE_SHAPE>>;
@@ -95,8 +115,9 @@ async function highlightTemporary(ids: number[]): Promise<{ applied: boolean; re
 export async function runFmcTrace(args: FmcTraceArgs) {
   const resolved = resolveTraceLimits(overrides(args));
   if (!resolved.ok) return reply({ refused: true, read_only: true, reasons: [resolved.message] }, true);
-  if (args.action === "checks") return reply(catalogue());
-  if (args.action === "limits") return reply({ tool: "fmc_trace", read_only: true, limits: resolved.limits, standard_keys: catalogue().standard_keys, api_limits: catalogue().api_limits });
+  if (args.action === "checks") return reply({ ...catalogue(), phase2_defaults: PHASE2_DEFAULTS, not_run: ["duct_airflow", "fitting_corner", "earthing", "tray_fill"] });
+  if (args.action === "limits") return reply({ tool: "fmc_trace", read_only: true, limits: resolved.limits, standard_keys: catalogue().standard_keys, phase2_defaults: PHASE2_DEFAULTS, api_limits: catalogue().api_limits });
+  if (args.action === "fix") return fixTrace(args, resolved.limits);
 
   const selection = selectChecks(args.action, args.checks);
   if (!selection.run.length) {
@@ -121,8 +142,9 @@ export async function runFmcTrace(args: FmcTraceArgs) {
     return reply({ tool: "fmc_trace", read_only: true, error: message }, true);
   }
   if (!snapshot || typeof snapshot !== "object") return reply({ tool: "fmc_trace", read_only: true, error: "fmc_trace returned no graph" }, true);
-  const runs = traceFromSnapshot(snapshot, selection, resolved.limits, filterOf(args));
-  const report = writeTraceReport(snapshot, runs, resolved.limits, filterOf(args));
+  const filter = { ...filterOf(args), bank: traceBank() };
+  const runs = traceFromSnapshot(snapshot, selection, resolved.limits, filter);
+  const report = writeTraceReport(snapshot, runs, resolved.limits, filter);
   let highlightResult: { applied?: boolean; reason?: string } | undefined;
   if (args.highlight === "temporary") {
     const ids = [...new Set(runs.flatMap((run) => run.findings.map((finding) => finding.id)))];
@@ -139,6 +161,70 @@ export async function runFmcTrace(args: FmcTraceArgs) {
     highlightResult,
   });
   return reply(summary);
+}
+
+function traceBank(): TraceFilter["bank"] {
+  try {
+    const { config } = loadConfig();
+    const file = path.win32.join(path.win32.dirname(kitPaths(config).recipesDir), "FMC_Standards_Building.json");
+    const kit = JSON.parse(fs.readFileSync(file, "utf8").replace(/^\uFEFF/, ""));
+    const out: NonNullable<TraceFilter["bank"]> = {};
+    for (const row of resolve(kit, null) as Resolved[]) {
+      if (!row.key.startsWith("trace.")) continue;
+      const value = typeof row.value === "number" ? row.value : Number(row.value);
+      if (!Number.isFinite(value) || value < 0) continue;
+      out[row.key] = { value, clause: row.note || row.status || "standards bank" };
+    }
+    return out;
+  } catch {
+    return {};
+  }
+}
+
+async function fixTrace(args: FmcTraceArgs, limits: { values: { near_miss_mm: number; direction_deg: number; size_mismatch_mm: number } }) {
+  let snapshot: TraceSnapshot;
+  try {
+    snapshot = await withRevitConnection((client) => client.sendRaw("fmc_trace", { mode: "snapshot", checks: ["missing", "leak", "continuity"] }, 300000)) as TraceSnapshot;
+  } catch (error) {
+    return reply({ tool: "fmc_trace", read_only: true, error: error instanceof Error ? error.message : String(error) }, true);
+  }
+  const { config } = loadConfig();
+  const refusal = refuseTraceWrite({ title: snapshot?.model, path: snapshot?.resolved_document?.path, is_central: snapshot?.is_central }, config.protected_paths ?? []);
+  if (refusal) return reply({ tool: "fmc_trace", refused: true, reasons: [refusal] }, true);
+  const plan = planFixes(snapshot, limits, { caps: args.caps, circuit: args.circuit, max: args.max_edits });
+  let skipped: Array<{ id: string; code: string; owner: string }> = [];
+  try {
+    const currency = await withRevitConnection((client) => client.sendRaw("fmc_elem_currency", { ids: plan.edits.flatMap((edit) => edit.ids) }, 60000)) as { elements?: Array<{ id: string; owner?: string; checkout?: string; updates?: string }> };
+    skipped = splitCheckout(plan.edits.flatMap((edit) => edit.ids).map(String), currency?.elements ?? []).skipped;
+  } catch { /* an older add-in still partitions inside the apply */ }
+  const edits = dropOwnedEdits(plan.edits, skipped);
+  if (args.dry_run !== false) {
+    return reply({
+      tool: "fmc_trace", dry_run: true, read_only: true, edits, skipped, warnings: plan.warnings, rule: plan.rule, capped: plan.capped,
+      document: snapshot.resolved_document ?? { title: snapshot.model ?? "", path: "" },
+      next: "Show this plan. Apply with dry_run false and batch_lease. caps and circuit stay as you set them.",
+    });
+  }
+  if (!batchLease.getStore()) return reply({ tool: "fmc_trace", refused: true, reasons: ["fix with dry_run false needs batch_lease from fmc_batch request."] }, true);
+  try {
+    const applied = await withRevitConnection((client) => client.sendCommand("fmc_trace_apply", {
+      edits, ids: edits.flatMap((edit: TraceEdit) => edit.ids), near_miss_mm: limits.values.near_miss_mm,
+      size_mismatch_mm: limits.values.size_mismatch_mm, max_edits: args.max_edits,
+    }, 300000)) as Record<string, unknown>;
+    const report = correctionReport(snapshot, edits, applied);
+    return reply({ tool: "fmc_trace", dry_run: false, ...applied, planned: edits.length, skipped, warnings: plan.warnings, rule: plan.rule, report });
+  } catch (error) {
+    return reply({ tool: "fmc_trace", error: error instanceof Error ? error.message : String(error) }, true);
+  }
+}
+
+function correctionReport(snapshot: TraceSnapshot, edits: TraceEdit[], applied: Record<string, unknown>): string {
+  const dir = traceReportHostDir();
+  fs.mkdirSync(dir, { recursive: true });
+  const name = `trace-fix-${(snapshot.model || "model").replace(/[<>:"|?*\\/]/g, "_").slice(0, 40)}-${new Date().toISOString().replace(/[:.]/g, "-")}.json`;
+  const file = path.join(dir, name);
+  fs.writeFileSync(file, JSON.stringify({ before: { model: snapshot.model, resolved_document: snapshot.resolved_document }, edits, after: applied }));
+  return file;
 }
 
 export function registerFmcTraceTool(server: McpServer) {

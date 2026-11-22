@@ -193,6 +193,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_undo",
   // Circuits (KISIC 4.4): devices grouped into circuits on a board, the kit's distribution system set; the dry run rolls back
   "fmc_circuits_create",
+  // Systems flow tracer corrections. Reads stay on fmc_trace. This command is the one transaction.
+  "fmc_trace_apply",
   // A fresh workshared local. The server sends a fixed script; the add-in command is still send_code_to_revit.
   "fmc_new_local",
   // Grids copied from a loaded link. The server sends a fixed script; the add-in command is still send_code_to_revit.
