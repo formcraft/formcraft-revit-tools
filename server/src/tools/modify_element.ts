@@ -37,7 +37,7 @@ export const MODEL_EDIT_OPS = ["copy", "rotate", "mirror", "join", "unjoin", "sw
   "create_railing", "create_stair", "room_separation", "opening", "shaft",
   "create_view", "duplicate_view", "set_view", "override", "hide", "unhide", "create_filter", "create_template", "apply_template",
   "create_sheet", "place_view", "open_view",
-  "detail_line", "model_line", "property_line", "property_line_verify", "property_line_tag", "filled_region", "masking_region", "text", "replace_text", "tag", "keynote_legend", "place_schedule", "spot_elevation", "spot_coordinate",
+  "detail_line", "model_line", "property_line", "property_line_verify", "property_line_tag", "filled_region", "masking_region", "text", "replace_text", "tag", "keynote_legend", "place_schedule", "keynote_audit", "keynote_retag", "keynote_clone", "spot_elevation", "spot_coordinate",
   "revision_cloud", "place_annotation", "color_fill_legend",
   "extrusion", "blend", "revolve", "sweep", "family_param", "family_type", "family_category", "reference_plane", "dimension",
   "save_family", "load_into_project",
@@ -118,18 +118,16 @@ export const MODIFY_MODEL_DESCRIPTION =
   "tag {view, ids | select, tag_type?, mode?: category|multi|material|keynote_element|keynote_material|keynote_user, leader? " +
   "(default true for a keynote mode), one_per_key? (default true for a keynote mode: one tag per distinct key already in the view " +
   "or made by this op), key? (the keynote code, required for keynote_user), offset_mm?, orientation?} " +
-  "keynote_element, keynote_material and keynote_user set Key Source to Element, Material or User, the same as Annotate > Keynote. " +
-  "When tag_type is omitted, a loaded FMC_TAG_Keynote_v2 type Key Value is used (that family also has Keynote Text); otherwise the model's " +
-  "default keynote tag, which on a metric template is M_Keynote Tag. Before tagging, the key that will display is read: KEYNOTE_PARAM on the " +
-  "element type, then the instance, for keynote_element; the material keynote for keynote_material; the given key for keynote_user. That key is " +
-  "checked in KeynoteTable.GetKeynoteTable. An empty keynote is not tagged and is listed as skipped_empty_keynote (id and type name). A tag type " +
-  "that shows Keynote Text is not placed when the key is missing from the table, and is listed as key_not_in_table. A type that shows the key and " +
-  "the text is still placed, and the missing key is still listed. A tag is kept only when Key Source reads back as that word; otherwise it is " +
-  "deleted and listed under skipped, with the reason. After placement, TagText is read. A blank TagText is kept and listed under blank " +
-  "(id, tag id, key, type name, tag type). shown counts only tags whose TagText was not empty. The answer is counts, created ids, skipped, skipped_empty_keynote, " +
-  "key_not_in_table and blank. No picture. These three modes, keynote_legend and place_schedule run through " +
-  "the code bridge (a server hot-swap; the add-in is unchanged) and must be their own batch. category, multi and material stay " +
-  "on the add-in, and rooms, spaces and areas still get their own tags. · " +
+  "keynote_element, keynote_material and keynote_user do not set Key Source. The API cannot link a keynote tag: a probe tag is rolled back, " +
+  "and if TagText and Keynote Text are empty the answer is FMC-NO-API-KEYNOTE-LINK and nothing is placed. Tag them with Annotate > Keynote > Element, " +
+  "or Tag All Not Tagged with Keynote Tags, per view. When tag_type is omitted, a loaded FMC_TAG_Keynote_v2 type Key Value is used; otherwise the model's " +
+  "default keynote tag (M_Keynote Tag). An empty keynote is skipped_empty_keynote. A Keynote Text type whose key is missing from the table is " +
+  "key_not_in_table and is not placed. A blank TagText is deleted, not kept. shown counts only tags whose TagText was not empty. " +
+  "keynote_retag {views | view, ui_assist? (default true), ids?} with dry_run false activates the first view, selects nothing, and posts Tag All Not Tagged " +
+  "(FMC-NEEDS-HUMAN) when that command exists. The answer lists the view queue. keynote_clone {seed, ids, dry_run? (default true)} copies one linked tag " +
+  "and repoints it; a blank copy is rolled back. keynote_audit lists keynote tags with an empty TagText, grouped by view, and deletes nothing. " +
+  "These ops run through the code bridge (a server hot-swap) and must be their own batch. category, multi and material stay on the add-in; a keynote tag " +
+  "type on that path is refused. Rooms, spaces and areas still get their own tags. · " +
   "keynote_legend {name?, filtered_by_sheet?} creates a keynote legend schedule. · " +
   "place_schedule {sheet, schedule, point_mm} places a schedule or legend on a sheet; point_mm is on the sheet. · " +
   "spot_elevation / spot_coordinate {view, id (floor, roof, toposolid...), point_mm, leader?} · " +
@@ -229,7 +227,7 @@ export const MODIFY_MODEL_DESCRIPTION =
 
 /** Ops whose result isn't something to look at in 3D (views, sheets, settings, files). */
 const NO_PICTURE = new Set(["delete", "set_param", "create_view", "duplicate_view", "set_view", "override", "hide", "unhide", "create_filter",
-  "create_template", "apply_template", "create_sheet", "place_view", "open_view", "text", "replace_text", "tag", "keynote_legend", "place_schedule", "revision", "create_schedule",
+  "create_template", "apply_template", "create_sheet", "place_view", "open_view", "text", "replace_text", "tag", "keynote_legend", "place_schedule", "keynote_audit", "keynote_retag", "keynote_clone", "revision", "create_schedule",
   "save_family", "load_into_project", "family_param", "family_type", "family_category", "create_material", "line_style", "line_pattern",
   "property_line", "property_line_verify", "property_line_tag",
   "fill_pattern", "object_style", "project_info", "project_units", "global_param", "associate_global", "coordinates", "acquire_coordinates",
@@ -239,7 +237,7 @@ const NO_PICTURE = new Set(["delete", "set_param", "create_view", "duplicate_vie
 
 /** Elements whose model bounding box is empty (grids, levels, reference planes, tags). A close-up cannot be framed. */
 const NO_EXTENT = new Set(["reference_plane", "dimension", "radial_dimension", "diameter_dimension", "align",
-  "spot_elevation", "spot_coordinate", "revision_cloud", "text", "replace_text", "tag", "keynote_legend", "place_schedule", "place_annotation",
+  "spot_elevation", "spot_coordinate", "revision_cloud", "text", "replace_text", "tag", "keynote_legend", "place_schedule", "keynote_audit", "keynote_retag", "keynote_clone", "place_annotation",
   "color_fill_legend", "detail_line", "multi_rebar_annotation"]);
 
 /** A picture is taken only when the caller asks. Default off. */

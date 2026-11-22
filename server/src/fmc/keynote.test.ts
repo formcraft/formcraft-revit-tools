@@ -38,13 +38,18 @@ test("keynote ops are checked before a script is sent", () => {
     { op: "place_schedule", sheet: "$2", schedule: "A201 Keynotes", point_mm: [20, 280] }]), null);
 });
 
-test("the bridge script sets Key Source and keeps a tag only when it reads back", async () => {
+test("the bridge script probes a keynote tag and does not write Key Source", async () => {
   const call = keynoteCall([tag, { op: "keynote_legend", name: "A201 Keynotes", filtered_by_sheet: true },
     { op: "place_schedule", sheet: "A201", schedule: "$2", point_mm: [20, 280] }], true, "Ogala Residence");
   assert.equal(screenScript(call.code), null);
-  assert.match(KEYNOTE_SCRIPT, /SetInternal/);
-  assert.match(KEYNOTE_SCRIPT, /KEY_SOURCE_PARAM/);
-  assert.match(KEYNOTE_SCRIPT, /AsValueString/);
+  assert.doesNotMatch(KEYNOTE_SCRIPT, /SetInternal/);
+  assert.doesNotMatch(KEYNOTE_SCRIPT, /\bint\s+shown\b/);
+  assert.doesNotMatch(KEYNOTE_SCRIPT, /Same\s*\(\s*string\s+shown\b/);
+  assert.match(KEYNOTE_SCRIPT, /Same\(string have, string want\)/);
+  assert.match(KEYNOTE_SCRIPT, /FMC-NO-API-KEYNOTE-LINK/);
+  assert.match(KEYNOTE_SCRIPT, /using \(SubTransaction sub = new SubTransaction\(document\)\)/);
+  assert.match(KEYNOTE_SCRIPT, /Annotate > Keynote > Element/);
+  assert.match(KEYNOTE_SCRIPT, /Tag All Not Tagged/);
   assert.match(KEYNOTE_SCRIPT, /document\.Delete\(tag\.Id\)/);
   assert.match(KEYNOTE_SCRIPT, /CreateKeynoteLegend/);
   assert.match(KEYNOTE_SCRIPT, /IsFilteredBySheet = true/);
@@ -136,7 +141,7 @@ test("an omitted tag type prefers FMC_TAG_Keynote_v2 Key Value, and a blank tag 
   assert.match(KEYNOTE_SCRIPT, /key_not_in_table/);
   assert.match(KEYNOTE_SCRIPT, /tag\.TagText/);
   assert.match(KEYNOTE_SCRIPT, /\["blank"\] = blank/);
-  assert.match(KEYNOTE_SCRIPT, /\["tag_id"\] = tag\.Id\.Value/);
+  assert.match(KEYNOTE_SCRIPT, /blank_rolled_back/);
   assert.match(KEYNOTE_SCRIPT, /\["skipped_empty_keynote"\] = emptyKey/);
   assert.match(KEYNOTE_SCRIPT, /\["key_not_in_table"\] = notInTable/);
   assert.match(KEYNOTE_SCRIPT, /TagText was empty after placement/);
@@ -159,6 +164,81 @@ test("an omitted tag type prefers FMC_TAG_Keynote_v2 Key Value, and a blank tag 
   const user = keynoteCall([{ op: "tag", mode: "keynote_user", view: "A201", ids: [9], key: "A.WAL_01" }], false);
   assert.match(user.code, /KeynoteTable\.GetKeynoteTable/);
   assert.equal(JSON.parse(String((user.params.parameters as string[])[0])).ops[0].key, "A.WAL_01");
+});
+
+test("an unlinked probe is FMC-NO-API-KEYNOTE-LINK and lists the views", () => {
+  const shaped = shapeKeynoteResult({
+    success: true,
+    result: {
+      applied: false,
+      code: "FMC-NO-API-KEYNOTE-LINK",
+      placed: 0,
+      reason: "A keynote tag created through the API is not linked.",
+      hint: "Annotate > Keynote > Element, or Tag All Not Tagged with Keynote Tags, in each view.",
+      views: [{ view: "E-0001", hosts: 127 }],
+    },
+  }, true);
+  assert.equal(shaped.isError, true);
+  assert.equal(shaped.body.code, "FMC-NO-API-KEYNOTE-LINK");
+  assert.equal(shaped.body.placed, 0);
+  assert.deepEqual(shaped.body.views, [{ view: "E-0001", hosts: 127 }]);
+  assert.match(String(shaped.body.hint), /Tag All Not Tagged/);
+});
+
+test("keynote_retag posts Tag All Not Tagged for the first view and keeps the queue", async () => {
+  const sent: string[] = [];
+  const out = await executeKeynoteBatch(
+    [{ op: "keynote_retag", views: ["E-0001", "E-0002"], ui_assist: true, dry_run: false }],
+    false,
+    "A-0002",
+    async (command) => {
+      sent.push(command);
+      if (command === "fmc_post_command") return { started: "TagAllNotTagged", selected: [] };
+      return {
+        success: true,
+        result: {
+          applied: false,
+          ops: [{
+            kind: "keynote_retag", command_exists: true, posted_ready: true, code: "FMC-NEEDS-HUMAN",
+            views: [{ view: "E-0001", hosts: 12 }, { view: "E-0002", hosts: 12 }],
+            hint: "In the dialog, pick the Keynote Tags category and press OK.",
+            reason: "posted",
+          }],
+        },
+      };
+    },
+  );
+  assert.deepEqual(sent, ["send_code_to_revit", "fmc_post_command"]);
+  assert.equal(out?.body.code, "FMC-NEEDS-HUMAN");
+  assert.equal(out?.body.posted, true);
+  assert.equal(out?.body.command, "TagAllNotTagged");
+  assert.equal((out?.body.views as Array<{ view: string }>).length, 2);
+  const skipped = await executeKeynoteBatch(
+    [{ op: "keynote_retag", view: "E-0001", dry_run: false }],
+    false,
+    "A-0002",
+    async () => ({
+      success: true,
+      result: { ops: [{ kind: "keynote_retag", command_exists: false, posted_ready: false, views: [{ view: "E-0001", hosts: 0 }], reason: "This Revit has no Tag All Not Tagged command. Nothing was posted." }] },
+    }),
+  );
+  assert.equal(skipped?.body.posted, false);
+  assert.match(String(skipped?.body.reason), /no Tag All Not Tagged/);
+  const call = keynoteCall([{ op: "keynote_retag", views: ["E-0001"], ui_assist: true, dry_run: false }], false);
+  assert.equal(call.params.transactionMode, "none");
+  assert.match(call.code, /TagAllNotTagged/);
+  assert.match(call.code, /SetElementIds\(new List<ElementId>\(\)\)/);
+  const dry = keynoteCall([{ op: "keynote_clone", seed: 9, ids: [15, 16] }], false);
+  const clone = JSON.parse(String((dry.params.parameters as string[])[0])).ops[0];
+  assert.equal(clone.dry_run, true);
+  assert.equal(dry.params.transactionMode, "read_only");
+  assert.match(KEYNOTE_SCRIPT, /ElementTransformUtils\.CopyElement/);
+  assert.match(KEYNOTE_SCRIPT, /AddReferences/);
+  assert.match(KEYNOTE_SCRIPT, /RemoveReferences/);
+  assert.match(KEYNOTE_SCRIPT, /GetTaggedReferences/);
+  assert.match(KEYNOTE_SCRIPT, /blank_rolled_back/);
+  assert.match(KEYNOTE_SCRIPT, /keynote_audit/);
+  assert.match(KEYNOTE_SCRIPT, /Nothing blank was kept|Blank keynote tags were not deleted/);
 });
 
 test("keynote mode source declares no identifier twice across nested scopes", () => {
@@ -343,6 +423,7 @@ class ScriptParser {
     if (!this.more()) return;
     if (this.is(";")) { this.eat(); return; }
     if (this.is("{")) { block.stmts.push({ type: "block", block: this.parseBlock() }); return; }
+    if (this.is("using")) { this.parseUsing(block); return; }
     if (this.is("if")) { this.parseIf(block); return; }
     if (this.is("foreach")) { this.parseForeach(block); return; }
     if (this.is("for")) { this.parseFor(block); return; }
@@ -359,6 +440,21 @@ class ScriptParser {
     this.skipExpression(block, { comma: false });
     this.expect(";");
     if (this.i === start) throw new Error(`parser did not advance at line ${this.peek().line}`);
+  }
+  parseUsing(block: Block): void {
+    this.eat();
+    if (!this.is("(")) { this.parseDeclaration(block); return; }
+    this.eat();
+    this.paren++;
+    const init = this.empty();
+    const names: Decl[] = [];
+    if (this.looksLikeDeclaration()) this.parseDeclarators(init, names);
+    else this.skipExpression(init, { comma: false });
+    this.expect(")");
+    this.paren--;
+    const body = this.parseBlockOrStatement();
+    block.stmts.push(...init.stmts);
+    block.stmts.push({ type: "extra", extra: names, block: body, before: [] });
   }
   parseIf(block: Block): void {
     this.eat();

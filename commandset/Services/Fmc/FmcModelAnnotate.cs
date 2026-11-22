@@ -102,7 +102,13 @@ namespace RevitMCPCommandSet.Services.Fmc
                         if (e is Room room) tag = doc.Create.NewRoomTag(new LinkElementId(room.Id), new UV(at.X, at.Y), v.Id);
                         else if (e is Space space) tag = doc.Create.NewSpaceTag(space, new UV(at.X, at.Y), (ViewPlan)v);
                         else if (e is Area area) tag = doc.Create.NewAreaTag((ViewPlan)v, area, new UV(at.X, at.Y));
-                        else if (tagType != null) tag = IndependentTag.Create(doc, tagType, v.Id, new Reference(e), leader, orient, at);
+                        else if (tagType != null)
+                        {
+                            Element typeEl = doc.GetElement(tagType);
+                            if (typeEl?.Category != null && typeEl.Category.Id.Value == (long)BuiltInCategory.OST_KeynoteTags)
+                                throw new InvalidOperationException("FMC-NO-API-KEYNOTE-LINK: the API does not link a keynote tag (TagText stays empty). Use Annotate > Keynote > Element, or Tag All Not Tagged with Keynote Tags. Nothing was tagged.");
+                            tag = IndependentTag.Create(doc, tagType, v.Id, new Reference(e), leader, orient, at);
+                        }
                         else tag = IndependentTag.Create(doc, v.Id, new Reference(e), leader, mode, orient, at);
                         if (tagType != null && !(tag is IndependentTag)) tag.ChangeTypeId(tagType);
                         created.Add(tag.Id); n++;
