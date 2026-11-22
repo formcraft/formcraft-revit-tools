@@ -5,6 +5,9 @@
  */
 
 import type { CheckRun, TraceCheck, TraceConnector, TraceElement, TraceFilter, TraceFinding, TraceSnapshot, TraceSystem } from "./trace.js";
+import { citeCell, citeLimit as bankCite, deadLegLimitMm, fallLimit, loadingUnits, phaseLimits, pipeCapacity, voltageDropMv, type CitedLimit } from "./trace_bank.js";
+export { PHASE2_DEFAULTS } from "./trace_bank.js";
+export type { CitedLimit };
 
 export const MISSING_CODES = [
   "FLOW-NO-WASTE",
@@ -41,43 +44,9 @@ export const NOT_DETECTABLE = [
   "Cable-tray fill, earthing resistance, and airflow. Those collectors are not in this pass.",
 ];
 
-/** PROVISIONAL numbers. They are not kit values. A bank key with the same name replaces one. */
-export const PHASE2_DEFAULTS: Record<string, number> = {
-  "trace.drain_fall_75": 1 / 40,
-  "trace.drain_fall_100": 1 / 80,
-  "trace.drain_fall_150": 1 / 150,
-  "trace.drain_fall_over": 1 / 200,
-  "trace.vent_max_mm": 3000,
-  "trace.cross_connection": 0,
-  "trace.dead_leg_mm": 300,
-  "trace.fu_wc": 6,
-  "trace.fu_basin": 1,
-  "trace.fu_sink": 2,
-  "trace.fu_shower": 2,
-  "trace.fu_bath": 3,
-  "trace.fu_urinal": 3,
-  "trace.fu_capacity_15": 1,
-  "trace.fu_capacity_22": 3,
-  "trace.fu_capacity_28": 6,
-  "trace.fu_capacity_32": 6,
-  "trace.fu_capacity_40": 12,
-  "trace.fu_capacity_42": 16,
-  "trace.fu_capacity_50": 20,
-  "trace.fu_capacity_54": 40,
-  "trace.max_points_per_circuit": 10,
-  "trace.max_lights_per_circuit": 12,
-  "trace.max_circuit_load_w": 1000,
-  "trace.voltage_drop_pct": 4,
-  "trace.mv_per_amp_m": 18,
-  "trace.overload_ratio": 1,
-  "trace.phase_imbalance_pct": 15,
-};
-
-export interface CitedLimit {
-  key: string;
-  value: number;
-  source: "standards" | "provisional" | "call";
-  clause: string;
+/** A trace.* row as the standards file stores it, or the normalized number tests already pass. */
+export function citeLimit(key: string, filter?: TraceFilter): CitedLimit {
+  return bankCite(key, filter?.bank as never);
 }
 
 export interface TraceEdit {
@@ -99,14 +68,6 @@ export interface TraceEdit {
 }
 
 const RESIZE_RULE = "The smaller pipe or duct is resized up to the larger size at the joint. Fittings are not resized; Revit follows the pipe.";
-
-export function citeLimit(key: string, filter?: TraceFilter): CitedLimit {
-  const bank = filter?.bank?.[key];
-  if (bank && Number.isFinite(bank.value) && bank.value >= 0) {
-    return { key, value: bank.value, source: "standards", clause: bank.clause || "standards bank" };
-  }
-  return { key, value: PHASE2_DEFAULTS[key] ?? 0, source: "provisional", clause: "PROVISIONAL default. Not in the standards bank." };
-}
 
 function words(el?: TraceElement): string {
   return `${el?.name ?? ""} ${el?.category ?? ""} ${el?.kind ?? ""}`.toLowerCase();
@@ -171,34 +132,18 @@ function slope(el?: TraceElement): number | null {
   return Math.abs(curve[1][2] - curve[0][2]) / horiz;
 }
 
-function fallKey(size: number): string {
-  if (size <= 75) return "trace.drain_fall_75";
-  if (size <= 100) return "trace.drain_fall_100";
-  if (size <= 150) return "trace.drain_fall_150";
-  return "trace.drain_fall_over";
-}
-
-function capacityKey(size: number): string | null {
-  if (size <= 0) return null;
-  if (size <= 15) return "trace.fu_capacity_15";
-  if (size <= 22) return "trace.fu_capacity_22";
-  if (size <= 28) return "trace.fu_capacity_28";
-  if (size <= 32) return "trace.fu_capacity_32";
-  if (size <= 40) return "trace.fu_capacity_40";
-  if (size <= 50) return "trace.fu_capacity_50";
-  return "trace.fu_capacity_54";
-}
-
 export function fixtureUnits(el: TraceElement, filter?: TraceFilter): { units: number; known: boolean; key: string } {
   const text = words(el);
-  const pick = (key: string) => ({ units: citeLimit(key, filter).value, known: true, key });
-  if (/\bwc\b|water closet|closet/.test(text)) return pick("trace.fu_wc");
-  if (/basin/.test(text)) return pick("trace.fu_basin");
-  if (/sink/.test(text)) return pick("trace.fu_sink");
-  if (/shower/.test(text)) return pick("trace.fu_shower");
-  if (/\bbath\b/.test(text)) return pick("trace.fu_bath");
-  if (/urinal/.test(text)) return pick("trace.fu_urinal");
-  return { units: 0, known: false, key: "" };
+  const cell = /\bwc\b|water closet|closet/.test(text) ? "wc"
+    : /basin/.test(text) ? "basin"
+      : /sink/.test(text) ? "sink"
+        : /shower/.test(text) ? "shower"
+          : /\bbath\b/.test(text) ? "bath"
+            : /urinal/.test(text) ? "urinal"
+              : "";
+  if (!cell) return { units: 0, known: false, key: "trace.fixture_units" };
+  const limit = citeCell("trace.fixture_units", cell, filter?.bank as never);
+  return { units: limit.value ?? 0, known: limit.value != null, key: "trace.fixture_units" };
 }
 
 interface Graph {
@@ -486,15 +431,16 @@ function rollup(verdicts: Verdict[], systems: TraceSystem[]): Array<{ id: number
 }
 
 function judge(measured: number | null, limit: CitedLimit, failsWhen: "above" | "below", check: string, id: number, system?: string, systemId?: number): Verdict {
-  if (measured == null || !Number.isFinite(measured)) {
-    return { id, system, system_id: systemId, check, verdict: "UNKNOWN", key: limit.key, clause: limit.clause, detail: "the model does not store a value to compare" };
+  if (measured == null || !Number.isFinite(measured) || limit.value == null) {
+    return { id, system, system_id: systemId, check, verdict: "UNKNOWN", key: limit.key, clause: limit.clause, detail: limit.value == null ? "the bank value is null and there is no default" : "the model does not store a value to compare" };
   }
-  const bad = failsWhen === "above" ? measured > limit.value + 1e-9 : measured < limit.value - 1e-9;
+  const limitValue = limit.value;
+  const bad = failsWhen === "above" ? measured > limitValue + 1e-9 : measured < limitValue - 1e-9;
   const placement = bad ? "outside" : "inside";
   if (limit.source === "provisional") {
-    return { id, system, system_id: systemId, check, verdict: "PROVISIONAL", key: limit.key, clause: limit.clause, measured, limit: limit.value, detail: `${placement} the provisional limit (${round(measured)} against ${round(limit.value)})` };
+    return { id, system, system_id: systemId, check, verdict: "PROVISIONAL", key: limit.key, clause: limit.clause, measured, limit: limit.value,     detail: `${placement} the provisional limit (${round(measured)} against ${round(limitValue)})` };
   }
-  return { id, system, system_id: systemId, check, verdict: bad ? "FAIL" : "PASS", key: limit.key, clause: limit.clause, measured, limit: limit.value, detail: `${placement} ${limit.key} (${round(measured)} against ${round(limit.value)})` };
+  return { id, system, system_id: systemId, check, verdict: bad ? "FAIL" : "PASS", key: limit.key, clause: limit.clause, measured, limit: limitValue, detail: `${placement} ${limit.key} (${round(measured)} against ${round(limitValue)})` };
 }
 
 function round(value: number): string {
@@ -520,26 +466,45 @@ export function runDrainageFall(snapshot: TraceSnapshot, _limits: unknown, filte
     const blob = systemBlob(graph, element.id);
     if (!wasteClass(blob)) continue;
     const systemId = (graph.member.get(element.id) ?? [])[0];
-    const limit = citeLimit(fallKey(pipeSize(graph, element.id)), filter);
+    const limit = fallLimit(pipeSize(graph, element.id), filter.bank as never);
     verdicts.push(judge(slope(element), limit, "below", "drainage_fall", element.id, systemNames(graph, element.id), systemId));
   }
   return standardsRun("drainage_fall", "Drainage fall", verdicts, graph.systems, { pipes: verdicts.length });
 }
 
+/** Distance from the trap to the vent connection, not the length of the whole trap arm. */
+function ventJunctionMm(graph: Graph, trapId: number): number | null {
+  const seen = new Set<number>([trapId]);
+  const queue: Array<{ id: number; dist: number }> = [{ id: trapId, dist: 0 }];
+  while (queue.length) {
+    const current = queue.shift() as { id: number; dist: number };
+    for (const next of graph.adj.get(current.id) ?? []) {
+      if (seen.has(next)) continue;
+      seen.add(next);
+      if (partRole(graph.elements.get(next)) === "vent" || ventClass(systemBlob(graph, next))) return current.dist;
+      const element = graph.elements.get(next);
+      const step = element && ["pipe", "flex_pipe", "curve"].includes(element.kind ?? "") ? curveLength(element) : 0;
+      queue.push({ id: next, dist: current.dist + step });
+    }
+  }
+  return null;
+}
+
 export function runVenting(snapshot: TraceSnapshot, _limits: unknown, filter: TraceFilter): CheckRun {
   const graph = graphOf(snapshot);
   const verdicts: Verdict[] = [];
-  const limit = citeLimit("trace.vent_max_mm", filter);
+  const limit = bankCite("trace.vent_distance", filter.bank as never);
   for (const element of graph.elements.values()) {
     if (partRole(element) !== "trap" && !(element.kind === "fixture" && (graph.byElement.get(element.id) ?? []).some((connector) => wasteClass(connectorClass(graph, connector))))) continue;
     const around = nearest(graph, element.id, 8);
     const vent = around.find((id) => id !== element.id && (partRole(graph.elements.get(id)) === "vent" || ventClass(systemBlob(graph, id))));
     const systemId = (graph.member.get(element.id) ?? [])[0];
-    if (vent == null) {
-      verdicts.push({ id: element.id, system: systemNames(graph, element.id), system_id: systemId, check: "venting", verdict: "UNKNOWN", key: limit.key, clause: limit.clause, detail: "no vent was reached, so the distance is not measurable" });
+    const offset = ventJunctionMm(graph, element.id);
+    if (offset == null) {
+      verdicts.push({ id: element.id, system: systemNames(graph, element.id), system_id: systemId, check: "venting", verdict: "UNKNOWN", key: limit.key, clause: limit.clause, detail: "no vent connection was reached, so the distance from the trap outlet is not measurable" });
       continue;
     }
-    verdicts.push(judge(pathLength(graph, element.id, vent), limit, "above", "venting", element.id, systemNames(graph, element.id), systemId));
+    verdicts.push(judge(offset, limit, "above", "venting", element.id, systemNames(graph, element.id), systemId));
   }
   return standardsRun("venting", "Venting distance", verdicts, graph.systems, { traps: verdicts.length });
 }
@@ -568,13 +533,13 @@ export function runCrossConnection(snapshot: TraceSnapshot, _limits: unknown, fi
       if (limit.source === "provisional") {
         verdicts.push({ id: connector.element_id, system: systemNames(graph, connector.element_id), system_id: systemId, check: "cross_connection", verdict: "PROVISIONAL", key: limit.key, clause: limit.clause, detail: "a supply connector joins a waste connector" });
       } else {
-        verdicts.push({ id: connector.element_id, system: systemNames(graph, connector.element_id), system_id: systemId, check: "cross_connection", verdict: "FAIL", key: limit.key, clause: limit.clause, measured: 1, limit: limit.value, detail: "a supply connector joins a waste connector" });
+        verdicts.push({ id: connector.element_id, system: systemNames(graph, connector.element_id), system_id: systemId, check: "cross_connection", verdict: "FAIL", key: limit.key, clause: limit.clause, measured: 1, limit: limit.value ?? undefined, detail: "a supply connector joins a waste connector" });
       }
     }
   }
   if (joins === 0) {
     for (const system of graph.systems) {
-      verdicts.push({ id: system.id, system: system.name, system_id: system.id, check: "cross_connection", verdict: limit.source === "provisional" ? "PROVISIONAL" : "PASS", key: limit.key, clause: limit.clause, measured: 0, limit: limit.value, detail: limit.source === "provisional" ? "no supply-to-waste join seen; the rule is not in the standards bank" : "no supply-to-waste join" });
+      verdicts.push({ id: system.id, system: system.name, system_id: system.id, check: "cross_connection", verdict: limit.source === "provisional" ? "PROVISIONAL" : "PASS", key: limit.key, clause: limit.clause, measured: 0, limit: limit.value ?? undefined, detail: limit.source === "provisional" ? "no supply-to-waste join seen; the rule is not in the standards bank" : "no supply-to-waste join" });
     }
   }
   return standardsRun("cross_connection", "Cross-connection", verdicts, graph.systems, { joins });
@@ -583,24 +548,26 @@ export function runCrossConnection(snapshot: TraceSnapshot, _limits: unknown, fi
 export function runDeadLegs(snapshot: TraceSnapshot, _limits: unknown, filter: TraceFilter): CheckRun {
   const graph = graphOf(snapshot);
   const verdicts: Verdict[] = [];
-  const limit = citeLimit("trace.dead_leg_mm", filter);
   for (const element of graph.elements.values()) {
     const cons = (graph.byElement.get(element.id) ?? []).filter((connector) => connector.type !== "curve");
     if (element.kind !== "fitting" || cons.length < 3) continue;
-    if (!supplyClass(systemBlob(graph, element.id))) continue;
+    if (!/hot/.test(systemBlob(graph, element.id).toLowerCase())) continue;
     for (const branch of cons) {
       const next = (branch.refs ?? [])[0]?.[0];
       if (next == null) continue;
       const end = followToCap(graph, element.id, next);
       if (!end) continue;
       const length = pathLength(graph, element.id, end) ?? 0;
+      const size = Math.max(pipeSize(graph, element.id), pipeSize(graph, next));
+      const limit = deadLegLimitMm(size, filter.bank as never);
       const systemId = (graph.member.get(element.id) ?? [])[0];
       verdicts.push(judge(length, limit, "above", "dead_legs", element.id, systemNames(graph, element.id), systemId));
     }
   }
   if (verdicts.length === 0) {
-    for (const system of graph.systems.filter((system) => supplyClass(`${system.classification ?? ""} ${system.name}`))) {
-      verdicts.push({ id: system.id, system: system.name, system_id: system.id, check: "dead_legs", verdict: "UNKNOWN", key: limit.key, clause: limit.clause, detail: "no capped branch was measured" });
+    const limit = deadLegLimitMm(15, filter.bank as never);
+    for (const system of graph.systems.filter((system) => /hot/.test(`${system.classification ?? ""} ${system.name}`.toLowerCase()))) {
+      verdicts.push({ id: system.id, system: system.name, system_id: system.id, check: "dead_legs", verdict: "UNKNOWN", key: limit.key, clause: limit.clause, detail: "no capped hot-water branch was measured" });
     }
   }
   return standardsRun("dead_legs", "Dead legs", verdicts, graph.systems, { branches: verdicts.length });
@@ -627,22 +594,28 @@ export function runPressureFlow(snapshot: TraceSnapshot, _limits: unknown, filte
     const members = [...new Set(system.element_ids ?? [])];
     let units = 0;
     let unknown = false;
+    let pressure: number | null = null;
     for (const id of members) {
       const element = graph.elements.get(id);
-      if (!element || element.kind !== "fixture") continue;
-      const fu = fixtureUnits(element, filter);
-      if (!fu.known) unknown = true;
-      else units += fu.units;
+      if (!element) continue;
+      if (element.pressure_kpa != null) pressure = pressure == null ? element.pressure_kpa : Math.min(pressure, element.pressure_kpa);
+      if (element.kind !== "fixture") continue;
+      const lu = loadingUnits(`${element.name ?? ""} ${element.category ?? ""}`, filter.bank as never);
+      if (!lu.known || lu.units == null) unknown = true;
+      else units += lu.units;
     }
     const sized = members.map((id) => pipeSize(graph, id)).filter((size) => size > 0);
     const size = sized.length ? Math.max(...sized) : 0;
-    const key = capacityKey(size);
-    if (unknown || !key) {
-      verdicts.push({ id: system.id, system: system.name, system_id: system.id, check: "pressure_flow", verdict: "UNKNOWN", key: key ?? "trace.fu_capacity_15", clause: citeLimit(key ?? "trace.fu_capacity_15", filter).clause, measured: units, detail: unknown ? "a fixture has no fixture-unit name" : "no pipe size to compare with the fixture units" });
-      continue;
+    const limit = size > 0 ? pipeCapacity(size, filter.bank as never) : citeLimit("trace.pipe_capacity_fu", filter);
+    if (unknown || size <= 0 || limit.value == null) {
+      verdicts.push({ id: system.id, system: system.name, system_id: system.id, check: "pressure_flow", verdict: "UNKNOWN", key: limit.key, clause: limit.clause, measured: units, detail: unknown ? "a fixture has no supply loading unit" : "no pipe size or pipe capacity to compare" });
+    } else {
+      verdicts.push(judge(units, limit, "above", "pressure_flow", system.id, system.name, system.id));
     }
-    const limit = citeLimit(key, filter);
-    verdicts.push(judge(units, limit, "above", "pressure_flow", system.id, system.name, system.id));
+    const residual = bankCite("trace.residual_pressure_min", filter.bank as never);
+    verdicts.push(pressure == null
+      ? { id: system.id, system: system.name, system_id: system.id, check: "residual_pressure", verdict: "UNKNOWN", key: residual.key, clause: residual.clause, limit: residual.value ?? undefined, detail: "residual pressure is not stored on the system" }
+      : judge(pressure, residual, "below", "residual_pressure", system.id, system.name, system.id));
   }
   return standardsRun("pressure_flow", "Pressure and flow by fixture units", verdicts, graph.systems, { systems: verdicts.length });
 }
@@ -657,22 +630,21 @@ function wireArea(wire: string): number | null {
 export function runVoltageDrop(snapshot: TraceSnapshot, _limits: unknown, filter: TraceFilter): CheckRun {
   const verdicts: Verdict[] = [];
   const dropLimit = citeLimit("trace.voltage_drop_pct", filter);
-  const mv = citeLimit("trace.mv_per_amp_m", filter);
   for (const circuit of snapshot.electrical?.circuits ?? []) {
     const length = circuit.length_m;
     const volts = circuit.voltage ?? 0;
     const area = wireArea(circuit.wire_size ?? "");
     const amps = (circuit.apparent_va && volts) ? circuit.apparent_va / volts : (circuit.rating_a ?? 0);
-    if (length == null || length <= 0 || volts <= 0 || area == null || amps <= 0) {
-      verdicts.push({ id: circuit.id, system: circuit.panel_name, check: "voltage_drop", verdict: "UNKNOWN", key: dropLimit.key, clause: dropLimit.clause, detail: "length, voltage, wire size or current is missing" });
+    const mv = area == null ? null : voltageDropMv(area, filter.bank as never);
+    if (length == null || length <= 0 || volts <= 0 || area == null || amps <= 0 || mv == null || mv.value == null || dropLimit.value == null) {
+      verdicts.push({ id: circuit.id, system: circuit.panel_name, check: "voltage_drop", verdict: "UNKNOWN", key: mv?.key ?? dropLimit.key, clause: mv?.clause ?? dropLimit.clause, detail: "length, voltage, wire size, current or mV/A/m is missing" });
       continue;
     }
-    // Provisional copper resistance scales from 18 mV/A/m at 1 mm². The bank can replace trace.mv_per_amp_m.
-    const percent = ((mv.value / area) * amps * length) / volts / 10;
+    const percent = (mv.value * amps * length) / volts / 10;
     const bad = percent > dropLimit.value;
     const source = dropLimit.source === "provisional" || mv.source === "provisional" ? "provisional" : dropLimit.source;
-    const clause = source === "provisional" ? "PROVISIONAL default. Not in the standards bank." : dropLimit.clause;
-    verdicts.push({ id: circuit.id, system: circuit.panel_name, check: "voltage_drop", verdict: source === "provisional" ? "PROVISIONAL" : bad ? "FAIL" : "PASS", key: dropLimit.key, clause, measured: percent, limit: dropLimit.value, detail: `${bad ? "outside" : "inside"} ${round(percent)}% against ${dropLimit.value}%` });
+    const clause = source === "provisional" ? mv.clause : dropLimit.clause;
+    verdicts.push({ id: circuit.id, system: circuit.panel_name, check: "voltage_drop", verdict: source === "provisional" ? "PROVISIONAL" : bad ? "FAIL" : "PASS", key: mv.key, clause, measured: percent, limit: dropLimit.value, detail: `${bad ? "outside" : "inside"} ${round(percent)}% against ${dropLimit.value}%` });
   }
   return standardsRun("voltage_drop", "Voltage drop", verdicts, [], { circuits: verdicts.length });
 }
@@ -695,7 +667,8 @@ export function runOverload(snapshot: TraceSnapshot, _limits: unknown, filter: T
 
 export function runPhaseBalance(snapshot: TraceSnapshot, _limits: unknown, filter: TraceFilter): CheckRun {
   const verdicts: Verdict[] = [];
-  const limit = citeLimit("trace.phase_imbalance_pct", filter);
+  const limits = phaseLimits(filter.bank as never);
+  const limit = limits.standing;
   const byPanel = new Map<number, Array<{ phase: string; load: number }>>();
   for (const circuit of snapshot.electrical?.circuits ?? []) {
     if (!circuit.panel_id) continue;
@@ -716,7 +689,11 @@ export function runPhaseBalance(snapshot: TraceSnapshot, _limits: unknown, filte
     const min = Math.min(...values, 0);
     const avg = values.reduce((sum, value) => sum + value, 0) / values.length;
     const imbalance = avg > 0 ? ((max - min) / avg) * 100 : 0;
-    verdicts.push(judge(imbalance, limit, "above", "phase_balance", panel.id, panel.name));
+    if (limits.shortTerm.value != null && limit.value != null && imbalance > limit.value && imbalance <= limits.shortTerm.value) {
+      verdicts.push({ id: panel.id, system: panel.name, check: "phase_balance", verdict: "PROVISIONAL", key: limit.key, clause: limits.shortTerm.clause, measured: imbalance, limit: limit.value, detail: `within the ${limits.shortTerm.value}% short-term allowance, over the ${limit.value}% limit` });
+    } else {
+      verdicts.push(judge(imbalance, limit, "above", "phase_balance", panel.id, panel.name));
+    }
   }
   return standardsRun("phase_balance", "Phase balance", verdicts, [], { panels: verdicts.length });
 }

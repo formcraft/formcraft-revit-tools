@@ -5,7 +5,8 @@
  */
 
 import type { TraceElement, TraceFilter, TraceSnapshot, TraceSystem } from "./trace.js";
-import { citeLimit, fixtureUnits, partRole, runMissing, type CitedLimit, type TraceEdit } from "./trace_phase2.js";
+import { fixtureUnits, partRole, runMissing, type TraceEdit } from "./trace_phase2.js";
+import { citeLimit, fallLimit, loadingUnits, nextPipeSize, phaseLimits, pipeCapacity, type CitedLimit } from "./trace_bank.js";
 
 export const RECOMMENDATION_CODES = [
   "REC-UPSIZE-PIPE",
@@ -16,18 +17,10 @@ export const RECOMMENDATION_CODES = [
   "REC-ADD-CLEANOUT",
   "REC-ADD-VALVE",
   "REC-REGRADE",
+  "REC-DRAIN-MIN",
+  "REC-CABLE-MIN",
   "REC-ADD-CAP",
   "REC-ASSIGN-SYSTEM",
-] as const;
-
-const SIZE_LADDER = [
-  { nominal: 15, key: "trace.fu_capacity_15" },
-  { nominal: 22, key: "trace.fu_capacity_22" },
-  { nominal: 28, key: "trace.fu_capacity_28" },
-  { nominal: 32, key: "trace.fu_capacity_32" },
-  { nominal: 40, key: "trace.fu_capacity_40" },
-  { nominal: 50, key: "trace.fu_capacity_50" },
-  { nominal: 54, key: "trace.fu_capacity_54" },
 ] as const;
 
 export interface TraceRecommendation {
@@ -215,19 +208,6 @@ export function countSystems(snapshot: TraceSnapshot): TraceCounts {
   };
 }
 
-function rung(size: number): { nominal: number; key: string } {
-  return SIZE_LADDER.find((step) => size <= step.nominal) ?? SIZE_LADDER[SIZE_LADDER.length - 1];
-}
-
-function nextRung(size: number, units: number, filter: TraceFilter): { nominal: number; limit: CitedLimit } | null {
-  for (const step of SIZE_LADDER) {
-    if (step.nominal <= size) continue;
-    const limit = citeLimit(step.key, filter);
-    if (limit.value >= units) return { nominal: step.nominal, limit };
-  }
-  return null;
-}
-
 function rec(partial: Omit<TraceRecommendation, "provisional" | "key" | "clause"> & { limit: CitedLimit }): TraceRecommendation {
   return {
     id: partial.id, code: partial.code, element_id: partial.element_id, system: partial.system,
@@ -244,47 +224,47 @@ export function recommend(snapshot: TraceSnapshot, filter: TraceFilter, limits: 
     const mine = members(system, elements).filter((element) => element.kind === "pipe" || element.kind === "flex_pipe");
     let units = 0;
     for (const element of members(system, elements)) if (element.kind === "fixture") {
-      const fu = fixtureUnits(element, filter);
-      if (fu.known) units += fu.units;
+      const lu = loadingUnits(`${element.name ?? ""} ${element.category ?? ""}`, filter.bank);
+      if (lu.known && lu.units != null) units += lu.units;
     }
     const sizes = mine.map((element) => pipeSize(snapshot, element.id)).filter((size) => size > 0);
     if (!sizes.length || units <= 0) continue;
     const main = Math.max(...sizes);
-    const current = citeLimit(rung(main).key, filter);
-    if (units <= current.value) continue;
-    const next = nextRung(main, units, filter);
+    const current = pipeCapacity(main, filter.bank);
+    if (current.value == null || units <= current.value) continue;
+    const next = nextPipeSize(main, units, filter.bank);
     if (!next) continue;
     for (const element of mine.filter((item) => pipeSize(snapshot, item.id) === main)) {
       out.push(rec({
         id: `REC-UPSIZE-PIPE:${element.id}`, code: "REC-UPSIZE-PIPE", element_id: element.id, system: system.name,
-        current: `${units} FU on ${main} mm`, target: `${next.nominal} mm`, limit: current, advisory: false,
-        edit: { op: "resize", ids: [element.id], element_id: element.id, size_mm: next.nominal, height_mm: 0, detail: `increase pipe ${main} to ${next.nominal} mm: ${units} FU exceeds the ${current.value} FU capacity` },
+        current: `${units} loading units on ${main} mm`, target: `${next.nominal} mm`, limit: current, advisory: false,
+        edit: { op: "resize", ids: [element.id], element_id: element.id, size_mm: next.nominal, height_mm: 0, detail: `increase pipe ${main} to ${next.nominal} mm: ${units} loading units exceeds the ${current.value} capacity` },
       }));
     }
   }
 
-  const points = citeLimit("trace.max_points_per_circuit", filter);
-  const lights = citeLimit("trace.max_lights_per_circuit", filter);
-  const loadLimit = citeLimit("trace.max_circuit_load_w", filter);
+  const points = citeLimit("trace.max_points_per_circuit", filter.bank);
+  const lights = citeLimit("trace.max_lights_per_circuit", filter.bank);
+  const loadLimit = citeLimit("trace.max_circuit_load_w", filter.bank);
   for (const circuit of snapshot.electrical?.circuits ?? []) {
     const on = (snapshot.electrical?.devices ?? []).filter((device) => (device.circuit_ids ?? []).includes(circuit.id));
     const sockets = on.filter((device) => isSocket(device.name ?? "", device.category ?? "")).length;
     const lamps = on.filter((device) => isLight(device.category ?? "")).length;
     const label = circuit.number || String(circuit.id);
-    if (sockets > points.value) {
+    if (points.value != null && sockets > points.value) {
       out.push(rec({
         id: `REC-SPLIT-SOCKETS:${circuit.id}`, code: "REC-SPLIT-SOCKETS", element_id: circuit.id, system: circuit.panel_name,
         current: `circuit ${label} has ${sockets} sockets`, target: `max ${points.value} per circuit, so split it`, limit: points, advisory: true,
       }));
     }
-    if (lamps > lights.value) {
+    if (lights.value != null && lamps > lights.value) {
       out.push(rec({
         id: `REC-SPLIT-LIGHTS:${circuit.id}`, code: "REC-SPLIT-LIGHTS", element_id: circuit.id, system: circuit.panel_name,
         current: `${lamps} lights`, target: `${lights.value} per circuit`, limit: lights, advisory: true,
       }));
     }
     const va = circuit.apparent_va ?? 0;
-    if (lamps > 0 && va > loadLimit.value) {
+    if (loadLimit.value != null && lamps > 0 && va > loadLimit.value) {
       out.push(rec({
         id: `REC-SPLIT-LOAD:${circuit.id}`, code: "REC-SPLIT-LOAD", element_id: circuit.id, system: circuit.panel_name,
         current: `lighting circuit load ${Math.round(va / 100) / 10} kW`, target: `exceeds ${Math.round(loadLimit.value / 100) / 10} kW, so split it`, limit: loadLimit, advisory: true,
@@ -292,7 +272,7 @@ export function recommend(snapshot: TraceSnapshot, filter: TraceFilter, limits: 
     }
   }
 
-  const balance = citeLimit("trace.phase_imbalance_pct", filter);
+  const balance = phaseLimits(filter.bank).standing;
   for (const panel of snapshot.electrical?.panels ?? []) {
     const mine = (snapshot.electrical?.circuits ?? []).filter((circuit) => circuit.panel_id === panel.id && (circuit.phase ?? "").trim());
     const all = (snapshot.electrical?.circuits ?? []).filter((circuit) => circuit.panel_id === panel.id);
@@ -308,7 +288,7 @@ export function recommend(snapshot: TraceSnapshot, filter: TraceFilter, limits: 
     const min = Math.min(...entries.map((entry) => entry[1]));
     const avg = entries.reduce((sum, entry) => sum + entry[1], 0) / entries.length;
     const imbalance = avg > 0 ? ((max - min) / avg) * 100 : 0;
-    if (imbalance <= balance.value) continue;
+    if (balance.value == null || imbalance <= balance.value) continue;
     const heavy = entries.reduce((best, entry) => entry[1] > best[1] ? entry : best);
     const light = entries.reduce((best, entry) => entry[1] < best[1] ? entry : best);
     const movers = mine.filter((circuit) => circuit.phase!.trim() === heavy[0]).sort((a, b) => (b.apparent_va ?? 0) - (a.apparent_va ?? 0)).slice(0, 2);
@@ -323,17 +303,17 @@ export function recommend(snapshot: TraceSnapshot, filter: TraceFilter, limits: 
   const missing = runMissing(snapshot, limits, filter);
   for (const item of missing.findings) {
     if (item.code === "FLOW-NO-CLEANOUT") {
-      const limit = citeLimit("trace.dead_leg_mm", filter);
+      const limit = citeLimit("trace.near_miss_mm", filter.bank);
       out.push(rec({ id: `REC-ADD-CLEANOUT:${item.id}`, code: "REC-ADD-CLEANOUT", element_id: item.id, system: item.system, current: "no cleanout", target: "a cleanout at this bend", limit, advisory: true }));
     }
     if (item.code === "FLOW-NO-ISOLATION") {
-      const limit = citeLimit("trace.dead_leg_mm", filter);
+      const limit = citeLimit("trace.near_miss_mm", filter.bank);
       out.push(rec({ id: `REC-ADD-VALVE:${item.id}`, code: "REC-ADD-VALVE", element_id: item.id, system: item.system, current: "no isolation valve", target: "an isolation valve on this branch", limit, advisory: true }));
     }
     if (item.code === "FLOW-NO-CAP") {
       const connector = (snapshot.flow?.connectors ?? []).find((itemConnector) => itemConnector.element_id === item.id && itemConnector.open_end);
       out.push(rec({
-        id: `REC-ADD-CAP:${item.id}`, code: "REC-ADD-CAP", element_id: item.id, system: item.system, current: "open end", target: "an end cap", limit: citeLimit("trace.near_miss_mm", filter), advisory: false,
+        id: `REC-ADD-CAP:${item.id}`, code: "REC-ADD-CAP", element_id: item.id, system: item.system, current: "open end", target: "an end cap", limit: citeLimit("trace.near_miss_mm", filter.bank), advisory: false,
         edit: { op: "cap", ids: [item.id], element_id: item.id, index: connector?.index ?? 0, detail: "open pipe or duct end: place a cap if a cap family is loaded" },
       }));
     }
@@ -345,12 +325,35 @@ export function recommend(snapshot: TraceSnapshot, filter: TraceFilter, limits: 
     if (element.kind !== "pipe" && element.kind !== "flex_pipe") continue;
     const value = slopeOf(element);
     if (value == null) continue;
-    const limit = citeLimit(pipeSize(snapshot, element.id) <= 100 ? "trace.drain_fall_100" : pipeSize(snapshot, element.id) <= 150 ? "trace.drain_fall_150" : "trace.drain_fall_over", filter);
-    if (value >= limit.value) continue;
+    const limit = fallLimit(pipeSize(snapshot, element.id), filter.bank);
+    if (limit.value == null || value >= limit.value) continue;
     const system = systems.find((item) => (element.system_ids ?? []).includes(item.id));
     out.push(rec({
       id: `REC-REGRADE:${element.id}`, code: "REC-REGRADE", element_id: element.id, system: system?.name,
       current: ratio(value), target: ratio(limit.value), limit, advisory: true,
+    }));
+  }
+  const drainMin = citeLimit("trace.drain_min_mm", filter.bank);
+  const cableMin = citeLimit("trace.cable_min_mm2", filter.bank);
+  for (const element of elements) {
+    const classes = (element.system_ids ?? []).map((id) => systems.find((system) => system.id === id)?.classification ?? "").join(" ");
+    if (!/sanitary|waste|soil|storm|foul/.test(classes.toLowerCase())) continue;
+    if (element.kind !== "pipe" && element.kind !== "flex_pipe") continue;
+    const size = pipeSize(snapshot, element.id);
+    if (drainMin.value == null || size <= 0 || size >= drainMin.value) continue;
+    out.push(rec({
+      id: `REC-DRAIN-MIN:${element.id}`, code: "REC-DRAIN-MIN", element_id: element.id,
+      current: `${size} mm`, target: `${drainMin.value} mm`, limit: drainMin, advisory: false,
+      edit: { op: "resize", ids: [element.id], element_id: element.id, size_mm: drainMin.value, height_mm: 0, detail: `drain ${size} mm is below the ${drainMin.value} mm minimum` },
+    }));
+  }
+  for (const circuit of snapshot.electrical?.circuits ?? []) {
+    const area = /(\d+(?:\.\d+)?)/.exec(circuit.wire_size ?? "");
+    const mm2 = area ? Number(area[1]) : null;
+    if (mm2 == null || cableMin.value == null || mm2 >= cableMin.value) continue;
+    out.push(rec({
+      id: `REC-CABLE-MIN:${circuit.id}`, code: "REC-CABLE-MIN", element_id: circuit.id, system: circuit.panel_name,
+      current: `${mm2} mm²`, target: `${cableMin.value} mm²`, limit: cableMin, advisory: true,
     }));
   }
 
@@ -371,7 +374,7 @@ export function recommend(snapshot: TraceSnapshot, filter: TraceFilter, limits: 
     const systemId = [...neighbours][0];
     out.push(rec({
       id: `REC-ASSIGN-SYSTEM:${element.id}`, code: "REC-ASSIGN-SYSTEM", element_id: element.id, system: systems.find((system) => system.id === systemId)?.name,
-      current: "no system", target: `system ${systemId}`, limit: citeLimit("trace.near_miss_mm", filter), advisory: false,
+      current: "no system", target: `system ${systemId}`, limit: citeLimit("trace.near_miss_mm", filter.bank), advisory: false,
       edit: { op: "assign_system", ids: [element.id], element_id: element.id, system_id: systemId, detail: `element touches only system ${systemId}: assign it` },
     }));
   }

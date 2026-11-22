@@ -89,8 +89,8 @@ test("recommendations name the pipe, the circuit, the phase, the bend and the fa
   const snapshot: TraceSnapshot = {
     flow: {
       elements: [
-        { id: 1, name: "WC", kind: "fixture", system_ids: [1] },
-        { id: 2, name: "Basin", kind: "fixture", system_ids: [1] },
+        { id: 1, name: "Flush valve WC", kind: "fixture", system_ids: [1] },
+        { id: 2, name: "Bath", kind: "fixture", system_ids: [1] },
         { id: 3, name: "Sink", kind: "fixture", system_ids: [1] },
         { id: 4, kind: "pipe", system_ids: [1], curve: [[0, 0, 0], [8000, 0, -66.7]] },
         { id: 8, name: "Basin", kind: "fixture", system_ids: [2] },
@@ -131,7 +131,7 @@ test("recommendations name the pipe, the circuit, the phase, the bend and the fa
   assert.ok(upsize, items.map((item) => item.code).join(","));
   assert.equal(upsize?.element_id, 4);
   assert.equal(upsize?.target, "40 mm");
-  assert.match(upsize?.edit?.detail ?? "", /9 FU exceeds the 6 FU capacity/);
+  assert.match(upsize?.edit?.detail ?? "", /loading units exceeds the 6 capacity/);
   assert.equal(upsize?.provisional, true);
   assert.equal(upsize?.advisory, false);
   const sockets = items.find((item) => item.code === "REC-SPLIT-SOCKETS");
@@ -150,7 +150,7 @@ test("recommendations name the pipe, the circuit, the phase, the bend and the fa
   assert.equal(fall?.element_id, 12);
   assert.match(fall?.current ?? "", /1:/);
   assert.equal(fall?.advisory, true);
-  const banked = recommend(snapshot, { bank: { "trace.fu_capacity_32": { value: 6, clause: "table 3" }, "trace.fu_capacity_40": { value: 12, clause: "table 3" } } }, limits);
+  const banked = recommend(snapshot, { bank: { "trace.pipe_capacity_fu": { value: { "32": 6, "40": 12 }, status: "draft", clause: "table 3" } } }, limits);
   const signed = banked.find((item) => item.id === "REC-UPSIZE-PIPE:4");
   assert.equal(signed?.provisional, false);
   assert.equal(signed?.clause, "table 3");

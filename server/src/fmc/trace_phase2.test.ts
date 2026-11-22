@@ -168,10 +168,10 @@ test("HEBERT HOSTELS, a central and a protected path are refused", () => {
 });
 
 test("a cited limit says PROVISIONAL when the bank has no trace key", () => {
-  const limit = citeLimit("trace.vent_max_mm", {});
+  const limit = citeLimit("trace.vent_distance", {});
   assert.equal(limit.source, "provisional");
-  assert.equal(limit.value, 3000);
-  const banked = citeLimit("trace.vent_max_mm", { bank: { "trace.vent_max_mm": { value: 1500, clause: "clause 5" } } });
+  assert.equal(limit.value, 300);
+  const banked = citeLimit("trace.vent_distance", { bank: { "trace.vent_distance": { value: 1500, clause: "clause 5" } } });
   assert.equal(banked.source, "standards");
   assert.equal(banked.clause, "clause 5");
 });

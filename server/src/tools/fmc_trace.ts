@@ -6,7 +6,7 @@ import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { kitPaths } from "../fmc/context.js";
 import { splitCheckout } from "../fmc/coordination.js";
 import { loadConfig } from "../fmc/policy.js";
-import { resolve, type Resolved } from "../fmc/standards.js";
+import { traceEntriesFromStandards, TRACE_BANK_SHAPES } from "../fmc/trace_bank.js";
 import { batchLease } from "../fmc/target.js";
 import {
   catalogue,
@@ -120,8 +120,8 @@ async function highlightTemporary(ids: number[]): Promise<{ applied: boolean; re
 export async function runFmcTrace(args: FmcTraceArgs) {
   const resolved = resolveTraceLimits(overrides(args));
   if (!resolved.ok) return reply({ refused: true, read_only: true, reasons: [resolved.message] }, true);
-  if (args.action === "checks") return reply({ ...catalogue(), phase2_defaults: PHASE2_DEFAULTS, not_run: ["duct_airflow", "fitting_corner", "earthing", "tray_fill"] });
-  if (args.action === "limits") return reply({ tool: "fmc_trace", read_only: true, limits: resolved.limits, standard_keys: catalogue().standard_keys, phase2_defaults: PHASE2_DEFAULTS, api_limits: catalogue().api_limits });
+  if (args.action === "checks") return reply({ ...catalogue(), phase2_defaults: PHASE2_DEFAULTS, bank_shapes: TRACE_BANK_SHAPES, not_run: ["duct_airflow", "fitting_corner", "earthing", "tray_fill"] });
+  if (args.action === "limits") return reply({ tool: "fmc_trace", read_only: true, limits: resolved.limits, standard_keys: catalogue().standard_keys, phase2_defaults: PHASE2_DEFAULTS, bank_shapes: TRACE_BANK_SHAPES, api_limits: catalogue().api_limits });
   if (args.action === "counts" || args.action === "recommend") return countOrRecommend(args, resolved.limits);
   if (args.action === "fix") return fixTrace(args, resolved.limits);
 
@@ -173,15 +173,8 @@ function traceBank(): TraceFilter["bank"] {
   try {
     const { config } = loadConfig();
     const file = path.win32.join(path.win32.dirname(kitPaths(config).recipesDir), "FMC_Standards_Building.json");
-    const kit = JSON.parse(fs.readFileSync(file, "utf8").replace(/^\uFEFF/, ""));
-    const out: NonNullable<TraceFilter["bank"]> = {};
-    for (const row of resolve(kit, null) as Resolved[]) {
-      if (!row.key.startsWith("trace.")) continue;
-      const value = typeof row.value === "number" ? row.value : Number(row.value);
-      if (!Number.isFinite(value) || value < 0) continue;
-      out[row.key] = { value, clause: row.note || row.status || "standards bank" };
-    }
-    return out;
+    const kit = JSON.parse(fs.readFileSync(file, "utf8").replace(/^\uFEFF/, "")) as { standards?: Record<string, unknown> };
+    return traceEntriesFromStandards(kit.standards);
   } catch {
     return {};
   }

@@ -14,6 +14,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { MISSING_CHECK, REMAINING_PHASE2, STANDARDS_CHECKS, STANDARDS_IDS } from "./trace_phase2.js";
+import type { TraceBankEntry } from "./trace_bank.js";
 
 export const LEAK_CODES = [
   "FLOW-OPEN-END",
@@ -101,6 +102,8 @@ export interface TraceElement {
   system_ids?: number[];
   bbox?: number[] | null;
   curve?: number[][];
+  /** Stored residual pressure, when the family has it. Compared with trace.residual_pressure_min. */
+  pressure_kpa?: number;
 }
 
 export interface TraceSystem {
@@ -186,8 +189,8 @@ export interface TraceFilter {
   source?: string;
   domain?: "piping" | "duct" | "both";
   panel?: string;
-  /** Standards-bank rows for this call, keyed by trace.*. A missing key stays provisional. */
-  bank?: Record<string, { value: number; clause: string }>;
+  /** Standards-bank rows for this call, keyed by trace.*. A number, null, or a table. */
+  bank?: Record<string, TraceBankEntry>;
 }
 
 export interface TraceFinding {
