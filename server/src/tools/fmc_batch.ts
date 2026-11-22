@@ -25,7 +25,8 @@ export const FMC_BATCH_DESCRIPTION =
   "Autosave (auto_save_minutes, default 10) saves every open project locally, including a workshared local, and never writes the central file. " +
   "Autosave skips save_exclude, sync_exclude and protected_paths. A sync_exclude title also covers its local, so HEBERT HOSTELS covers HEBERT HOSTELS_USER. " +
   "protected_paths is a folder-prefix list autosave will not write under. " +
-  "protected_roots is the same kind of prefix list and matches nothing while it is empty.";
+  "protected_roots is the same kind of prefix list and matches nothing while it is empty. " +
+  "phase is optional. It is stored on the lease and fmc_phase batch_check reads it when its own phase is omitted.";
 
 const shape = {
   action: z.enum(["request", "status", "heartbeat", "release", "cancel", "wait", "drain", "resume", "reserve"]),
@@ -45,6 +46,7 @@ const shape = {
   summary: z.string().max(500).optional().describe("Short note stored in the batch history."),
   error: z.string().max(1000).optional().describe("release failed: what went wrong. Kept in the history."),
   timeout_s: z.number().min(0).max(60).optional().describe("wait: seconds to block, at most 60. 0 returns the current status."),
+  phase: z.string().optional().describe("request and reserve: the phase this batch works in. Stored on the lease for fmc_phase batch_check."),
 };
 
 function reply(body: unknown, isError = false) {
@@ -72,6 +74,7 @@ export async function runFmcBatch(args: {
   summary?: string;
   error?: string;
   timeout_s?: number;
+  phase?: string;
 }, client = currentClient()) {
   const board = batchBoard();
   try {
@@ -84,13 +87,14 @@ export async function runFmcBatch(args: {
         bot: args.bot,
         references: args.references,
         correction: args.correction,
+        phase: args.phase,
         client,
       }));
     }
     if (args.action === "reserve") {
       return reply(await board.reserve({
         document: args.document ?? "", label: args.label ?? "", bot: args.bot, client,
-        references: args.references, batchId: args.batch_id, estOps: args.est_ops, correction: args.correction,
+        references: args.references, batchId: args.batch_id, estOps: args.est_ops, correction: args.correction, phase: args.phase,
       }));
     }
     if (args.action === "drain") return reply(board.setMaintenance(true, args.reason || MAINTENANCE_REASON));
