@@ -209,6 +209,10 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_circuits_apply",
   // Conduit fittings, the size table and type fittings. Reads stay on fmc_conduit. One subtransaction per fitting.
   "fmc_conduit_apply",
+  // True north: crop, scope box or a sheet north arrow. One transaction. Never SetProjectPosition.
+  "fmc_north_apply",
+  // Legend views: duplicate a seed view or copy a seed component. One transaction. No text notes.
+  "fmc_legend_apply",
 ]);
 
 /**
@@ -232,6 +236,10 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_phase",
   // Join audit, hosting, room closure and the envelope sample. No transaction.
   "fmc_joins",
+  // True north, survey point, view orientation and grid angles. No transaction.
+  "fmc_north",
+  // Legend views and legend components. No transaction.
+  "fmc_legend_views",
 ]);
 
 /**
