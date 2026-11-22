@@ -16,6 +16,7 @@ import { retryWhileBusy } from "../fmc/busy.js";
 import { DialogBlockingError, blockingForJob } from "../fmc/dialogrules.js";
 import { wireNewLocal } from "../fmc/newlocal.js";
 import { wireGrids } from "../fmc/grids.js";
+import { jobBusyReason, leaseBusyReason } from "../fmc/busyreason.js";
 import { admitWrite, memoryGate } from "../fmc/memory.js";
 import { screenScript, scriptLimit } from "../fmc/scriptguard.js";
 import { CACHED_READS, compactReply, invalidateIfWrite, putCachedRead, takeCachedRead, wantsFull } from "../fmc/readcache.js";
@@ -192,7 +193,7 @@ export class RevitClientConnection {
     if (lease && decision.document) {
       const held = leaseHeldDocument(lease);
       if (held && !leaseCovers(held, decision.document, documentsMatch)) {
-        throw new Error(`[FMC-BATCH-LOCKED] Lease ${lease} is for ${held}, not ${decision.document.title || decision.document.path}. Refusing to write a different document.`);
+        throw new Error(`[FMC-BATCH-LOCKED] Lease ${lease} is for ${held}, not ${decision.document.title || decision.document.path}. Refusing to write a different document. busy_reason: ${leaseBusyReason("the lease holder", held)}.`);
       }
     }
     // fmc_new_local keeps the batch lease on the caller's document title. The Revit `document` on that call is an open
@@ -548,7 +549,8 @@ export class JobStillRunning extends Error {
     super(
       `[FMC-JOB-RUNNING] ${command} is still running in Revit after ${seconds} s (not failed). Job ${job}. ` +
         `Don't send it again: ask fmc_job status ${job}, then fmc_job result ${job} once it has finished ` +
-        `(fmc_job cancel ${job} asks Revit to stop it at its next check). The answer is also kept in ${lateResultsPath()}.`);
+        `(fmc_job cancel ${job} asks Revit to stop it at its next check). The answer is also kept in ${lateResultsPath()}. ` +
+        `busy_reason: ${jobBusyReason(command, seconds)}.`);
     this.name = "JobStillRunning";
   }
 }

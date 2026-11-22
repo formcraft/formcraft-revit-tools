@@ -4,6 +4,8 @@ Power and lighting on a workshared local such as `F26901-FMC-ZZ-ZZ-M3-E-0001_USE
 
 `Connector.IsConnected` is not used. A device is already on a circuit when `MEPModel.GetElectricalSystems()` says so. A family with no electrical connector is `FMC-NO-CONNECTOR`. Data, telephone and fire alarm are skipped. Replacing a panel family in place is not done.
 
+A panel is electrical equipment whose part type is Panelboard, Switchboard or Other Panel, or whose family has a panel-schedule MEP connector (power balanced or unbalanced). A board family is accepted. When that board has no distribution system the reply is `FMC-PANEL-NO-DISTRIBUTION`, with the hint to set the Distribution System parameter and a dry-run plan that sets it. Nothing is written until `dry_run` is false and `batch_lease` is passed.
+
 ## plan
 
 ```json

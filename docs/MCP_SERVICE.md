@@ -8,7 +8,7 @@ One Node process on this PC speaks MCP over Streamable HTTP. Revit stays on 8080
 - Header: `Authorization: Bearer <token>`
 - Token file: `%APPDATA%\Formcraft\mcp-http.token` (this user only). It is not printed in logs.
 - Health: `GET http://127.0.0.1:8787/health` with the same header. Build of the server, add-in builds announced by Revit, which ports answer, queue depth, and any tool that failed to register.
-- Tool `fmc_health` returns the same facts. `fmc_queue` is the waiting line only.
+- Tool `fmc_health` returns the same facts. `fmc_queue` lists queued and running jobs (`list`, `cancel`, `purge_stale`). A wait or a refusal includes `busy_reason`. `GET /health` includes the same `busy_reason`.
 
 Claude Desktop can keep stdio and still use this process:
 
@@ -51,7 +51,7 @@ A logon task named **Formcraft MCP** (no admin) starts the service, restarts it 
 
 ## Sync auto-approve
 
-`ai_modeller.auto_approve_sync` defaults to false. It does nothing unless `mode` is `testing` and `auto_approve` is true. When it is on, a bot's direct `fmc_revit_file` sync runs without waiting in the pane only if the target is a workshared local (not a central, a detached copy, a family or a protected original, and not on `sync_exclude`), the caller holds the active batch lease on that document or no other lease is active, the document is not listed in `damaged_documents` and has no recent corrupt-on-sync dialog in `FMC_Jobs_Revit.jsonl`, the RAM gate is not paused, Stop AI is off, and AI is on for the model. Relinquish on its own stays manual. Each auto-approval and each refusal is a line in `%APPDATA%\Formcraft\FMC_SyncAutoApprove.jsonl`. `fmc_ai` status shows `sync_auto_approve` and the recent lines. This is server-only.
+`ai_modeller.auto_approve_sync` defaults to false. It does nothing unless `mode` is `testing` and `auto_approve` is true. When it is on, an AI sync uses the same checks for a direct sync, a batch-end sync and the managed timer: a workshared local (not a central, a detached copy, a family or a protected original, and not on `sync_exclude`), the caller holds the active batch lease on that document or no other lease is active, the document is not listed in `damaged_documents` and has no recent corrupt-on-sync dialog in `FMC_Jobs_Revit.jsonl`, the RAM gate is not paused, Stop AI is off, and AI is on for the model. An approval is listed as `auto-approved (sync)`. Relinquish of other people's elements stays manual. Each auto-approval and each refusal is a line in `%APPDATA%\Formcraft\FMC_SyncAutoApprove.jsonl`. `fmc_ai` action `policy` returns the effective approve, save and sync policy and does not write `fmc_guard.json`. `fmc_ai` status shows `sync_auto_approve` and the recent lines. This is server-only.
 ## Reload a link
 
 `fmc_reload_link` reloads one Revit link type. Pass `document` (a title or a full path) and `link_type_id`. Pass `path` to load that file; omit `path` to reload the link from its current location. Link instances stay where they are. It is a write: the batch lease and the live-model lock apply, and a family, a verification copy, a linked document and a protected original are refused. The reload itself is in the add-in, in a handler that opens no transaction. `send_code_to_revit` cannot do it: `transactionMode` none still opens a transaction group, and Revit 2025 refuses `LoadFrom` and `Reload` while that phase is open. The add-in installs when Revit is closed. The server tool is the check and the call.

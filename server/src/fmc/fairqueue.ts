@@ -1,4 +1,5 @@
 import { AsyncLocalStorage } from "node:async_hooks";
+import { jobBusyReason, withBusy } from "./busyreason.js";
 import { DOC_REQUIRED, resolveOpenDocument, type DocResolveResult, type OpenDocRef } from "./docresolve.js";
 
 /** Which MCP client a call belongs to. HTTP sets the session id; stdio is one client. */
@@ -13,24 +14,54 @@ export const DEFAULT_QUEUE_WAIT_MS = 10 * 60 * 1000;
 
 export class StillQueued extends Error {
   readonly code = "FMC-QUEUED";
-  constructor(readonly position: number, readonly ahead: number) {
-    super(`[FMC-QUEUED] Waiting for Revit, position ${position} (${ahead} ahead). Not failed. fmc_queue shows the line. Send the call again if it has not started.`);
+  readonly busy_reason: string;
+  constructor(readonly position: number, readonly ahead: number, busyReason = "Revit not idle") {
+    super(withBusy(
+      `[FMC-QUEUED] Waiting for Revit, position ${position} (${ahead} ahead). Not failed. fmc_queue shows the line. Send the call again if it has not started.`,
+      busyReason,
+    ));
     this.name = "StillQueued";
+    this.busy_reason = busyReason;
+  }
+}
+
+/** A queued call was removed by fmc_queue cancel or purge_stale. It never started. */
+export class QueueCancelled extends Error {
+  readonly code = "FMC-QUEUE-CANCELLED";
+  readonly busy_reason: string;
+  constructor(readonly jobId: string, busyReason: string) {
+    super(withBusy(`[FMC-QUEUE-CANCELLED] Queued job ${jobId} was removed before it started. Not failed.`, busyReason));
+    this.name = "QueueCancelled";
+    this.busy_reason = busyReason;
   }
 }
 
 interface Job {
+  id: string;
   client: string;
   label: string;
+  document: string;
   enqueued: number;
   started: boolean;
+  settled: boolean;
+  reject: (error: Error) => void;
   run: () => Promise<void>;
 }
 
+export interface QueueJobRow {
+  job_id: string;
+  state: "queued" | "running";
+  tool: string;
+  caller: string;
+  document: string;
+  age_s: number;
+}
+
 export interface QueueSnapshot {
-  running: { client: string; label: string; since_ms: number } | null;
+  running: { job_id: string; client: string; label: string; document: string; since_ms: number } | null;
   waiting: number;
   clients: Array<{ client: string; waiting: number }>;
+  jobs: QueueJobRow[];
 }
 
 /**
@@ -42,29 +73,41 @@ export class FairQueue {
   private ring: string[] = [];
   private cursor = 0;
   private draining = false;
-  private running: { client: string; label: string; at: number } | null = null;
+  private seq = 0;
+  private running: { id: string; client: string; label: string; document: string; at: number } | null = null;
 
-  enqueue<T>(client: string, label: string, work: () => Promise<T>, queueWaitMs = DEFAULT_QUEUE_WAIT_MS): Promise<T> {
+  enqueue<T>(client: string, label: string, work: () => Promise<T>, queueWaitMs = DEFAULT_QUEUE_WAIT_MS, document = ""): Promise<T> {
     const name = client || "stdio";
     return new Promise<T>((resolve, reject) => {
       let timer: ReturnType<typeof setTimeout> | undefined;
       const job: Job = {
+        id: `q${++this.seq}`,
         client: name,
         label,
+        document,
         enqueued: Date.now(),
         started: false,
+        settled: false,
+        reject,
         run: async () => {
           if (timer) clearTimeout(timer);
+          if (job.settled) return;
           job.started = true;
           try { resolve(await work()); }
-          catch (error) { reject(error); }
+          catch (error) { reject(error instanceof Error ? error : new Error(String(error))); }
+          finally { job.settled = true; }
         },
       };
       timer = setTimeout(() => {
-        if (job.started) return;
+        if (job.started || job.settled) return;
         this.drop(job);
+        job.settled = true;
         const ahead = this.aheadOf(name);
-        reject(new StillQueued(ahead + 1, ahead));
+        const running = this.running;
+        const reason = running
+          ? jobBusyReason(running.label, Math.max(0, Math.round((Date.now() - running.at) / 1000)))
+          : "Revit not idle";
+        reject(new StillQueued(ahead + 1, ahead, reason));
       }, queueWaitMs);
       const lane = this.lanes.get(name);
       if (lane) lane.push(job);
@@ -73,14 +116,77 @@ export class FairQueue {
     });
   }
 
-  snapshot(): QueueSnapshot {
+  snapshot(now = Date.now()): QueueSnapshot {
     const clients = [...this.lanes.entries()].map(([client, jobs]) => ({ client, waiting: jobs.length }));
     const waiting = clients.reduce((sum, row) => sum + row.waiting, 0);
+    const jobs: QueueJobRow[] = [];
+    if (this.running) {
+      jobs.push({
+        job_id: this.running.id, state: "running", tool: this.running.label, caller: this.running.client,
+        document: this.running.document, age_s: Math.max(0, Math.round((now - this.running.at) / 1000)),
+      });
+    }
+    for (const lane of this.lanes.values()) {
+      for (const job of lane) {
+        if (job.started) continue;
+        jobs.push({
+          job_id: job.id, state: "queued", tool: job.label, caller: job.client, document: job.document,
+          age_s: Math.max(0, Math.round((now - job.enqueued) / 1000)),
+        });
+      }
+    }
     return {
-      running: this.running ? { client: this.running.client, label: this.running.label, since_ms: Date.now() - this.running.at } : null,
+      running: this.running
+        ? { job_id: this.running.id, client: this.running.client, label: this.running.label, document: this.running.document, since_ms: now - this.running.at }
+        : null,
       waiting,
       clients,
+      jobs,
     };
+  }
+
+  /** Drop a job that has not started. A running job is left to the caller. */
+  cancelQueued(id: string, now = Date.now()): "cancelled" | "running" | "missing" {
+    if (this.running?.id === id) return "running";
+    for (const lane of this.lanes.values()) {
+      const job = lane.find((item) => item.id === id);
+      if (!job) continue;
+      if (job.started) return "running";
+      this.drop(job);
+      if (!job.settled) {
+        job.settled = true;
+        const running = this.running;
+        const reason = running ? jobBusyReason(running.label, Math.max(0, Math.round((now - running.at) / 1000))) : "Revit not idle";
+        job.reject(new QueueCancelled(id, reason));
+      }
+      return "cancelled";
+    }
+    return "missing";
+  }
+
+  /** Queued jobs older than olderThanMs. They have not started, so removing them does not interrupt Revit. */
+  purgeQueued(olderThanMs: number, now = Date.now()): QueueJobRow[] {
+    const min = Math.max(0, olderThanMs);
+    const stale: Job[] = [];
+    for (const lane of this.lanes.values()) {
+      for (const job of lane) {
+        if (job.started) continue;
+        if (now - job.enqueued >= min) stale.push(job);
+      }
+    }
+    const rows: QueueJobRow[] = [];
+    for (const job of stale) {
+      rows.push({
+        job_id: job.id, state: "queued", tool: job.label, caller: job.client, document: job.document,
+        age_s: Math.max(0, Math.round((now - job.enqueued) / 1000)),
+      });
+      this.drop(job);
+      if (!job.settled) {
+        job.settled = true;
+        job.reject(new QueueCancelled(job.id, jobBusyReason(job.label, Math.max(0, Math.round((now - job.enqueued) / 1000)))));
+      }
+    }
+    return rows;
   }
 
   private aheadOf(client: string): number {
@@ -124,7 +230,7 @@ export class FairQueue {
         } else {
           this.cursor += 1;
         }
-        this.running = { client, label: job.label, at: Date.now() };
+        this.running = { id: job.id, client, label: job.label, document: job.document, at: Date.now() };
         try { await job.run(); }
         finally { this.running = null; }
       }

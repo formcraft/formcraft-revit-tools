@@ -65,6 +65,28 @@ test("no connector, a suspect panelboard and a declared load are reported separa
   assert.equal(audit.findings.some((finding) => finding.id === 1 && finding.code === "FMC-NO-CONNECTOR"), true);
 });
 
+test("a board without a distribution system returns FMC-PANEL-NO-DISTRIBUTION and a dry-run plan", () => {
+  const bare = { id: 10, name: "DB-BQ", level: "Level 1", x: 0, y: 0, z: 0, distribution: "", has_supply: false, is_board: true, part_type: "Panelboard" };
+  const planned = planCircuits({ devices: [light(1)], panels: [bare], distribution: "DS_415-240V_3Ph_4W" });
+  assert.equal(planned.circuits.length, 0);
+  assert.equal(planned.distribution_plans[0]?.code, "FMC-PANEL-NO-DISTRIBUTION");
+  assert.match(planned.distribution_plans[0]?.hint ?? "", /Distribution System/);
+  assert.equal(planned.distribution_plans[0]?.plan[0]?.parameter, "Distribution System");
+  assert.equal(planned.distribution_plans[0]?.plan[0]?.value, "DS_415-240V_3Ph_4W");
+  assert.equal(planned.skipped.some((row) => row.code === "FMC-PANEL-NO-DISTRIBUTION"), true);
+});
+
+test("electrical equipment with a panel-schedule connector is a board, not a refused family", () => {
+  const device = {
+    id: 44, name: "DB Board", category: "Electrical Equipment", schedule_capable: true, has_connector: true,
+    system_type: "PowerUnBalanced", distribution: "DS_415-240V_3Ph_4W", level: "Level 1",
+  };
+  const load = light(1);
+  const planned = planCircuits({ devices: [device, load], panels: [] });
+  assert.equal(planned.skipped.some((row) => row.id === 44 && /refused/i.test(row.detail)), false);
+  assert.equal(planned.circuits.some((circuit) => circuit.panel_id === 44), true);
+});
+
 test("apply without a lease changes nothing", async () => {
   let applied = false;
   const result = await runFmcCircuits({

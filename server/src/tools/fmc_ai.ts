@@ -11,7 +11,8 @@ import { COMMAND_GROUPS, LEVELS, Level, NEVER, USER_LINE, aiVerdict, generalStat
 import { planEnableCopy } from "../fmc/opencopy.js";
 import { formcraftDir, loadAiConfig, loadRulebook, loadState, readItem, readQueue, setResult, setStatus } from "../fmc/aiuse_io.js";
 import { failures, readUsage, summariseUsage } from "../fmc/usage.js";
-import { readSyncAutoLog } from "../fmc/syncauto.js";
+import { readSyncAutoLog, syncAutoInEffect } from "../fmc/syncauto.js";
+import { syncSettings } from "../fmc/batchsync.js";
 
 const win = path.win32;
 
@@ -61,10 +62,13 @@ export const FMC_AI_DESCRIPTION =
     "enable_copy turns the General AI switch On for one verification-copy path only. It does not turn on the project " +
     "switch, so a live model that shares the copy's project code stays Off. protected_roots is required. Stop AI still wins. " +
     "status also shows sync_auto_approve: whether a direct sync can run on its own (testing, auto_approve and " +
-    "auto_approve_sync), and the recent lines from FMC_SyncAutoApprove.jsonl.";
+    "auto_approve_sync), and the recent lines from FMC_SyncAutoApprove.jsonl. " +
+    "policy: the effective approve, save and sync policy (batch-end, the managed timer and a direct sync). " +
+    "It does not write fmc_guard.json. When auto_approve_sync is in effect, an AI sync is listed in Approvals as auto-approved (sync). " +
+    "Relinquish of other people's elements is never automatic.";
 
 export const FMC_AI_SHAPE = {
-  action: z.enum(["status", "queue", "stop", "usage", "wait", "inbox", "failures", "enable_copy"]),
+  action: z.enum(["status", "queue", "stop", "usage", "wait", "inbox", "failures", "enable_copy", "policy"]),
   document: z.string().optional().describe("enable_copy: the copy's full .rvt path, or its title when that copy is open"),
   protected_roots: z.array(z.string()).optional().describe("enable_copy: live original folders, for example D:\\Fomcraft. Required."),
   live_paths: z.array(z.string()).optional().describe("enable_copy: full paths of the live originals. Refused."),
@@ -76,6 +80,38 @@ export const FMC_AI_SHAPE = {
 };
 
 export type FmcAiArgs = z.infer<z.ZodObject<typeof FMC_AI_SHAPE>>;
+
+/**
+ * What an AI may approve, save and sync, from the guard that is already loaded.
+ * Does not write fmc_guard.json. Defaults stay as shipped: auto_approve_sync is off unless the file says otherwise.
+ */
+export function effectivePolicy(config: GuardConfig, ai = loadAiConfig(config)) {
+  const sync = syncSettings(config);
+  const inEffect = syncAutoInEffect(ai);
+  const saveMinutes = ai?.auto_save_minutes ?? (ai?.mode === "testing" ? 10 : 0);
+  return {
+    approve: ai?.mode === "testing" && ai.auto_approve === true ? "auto" : "manual",
+    save: {
+      auto_save_minutes: saveMinutes,
+      workshared: "never",
+      save_exclude: "never",
+      protected_paths: "never",
+    },
+    sync: {
+      auto_approve_sync: ai?.auto_approve_sync === true,
+      in_effect: inEffect,
+      approval_label: "auto-approved (sync)",
+      batch_end: sync.onBatchEnd,
+      timer_minutes: sync.minutes,
+      direct: inEffect ? "auto" : "manual",
+      managed: inEffect ? "auto" : "follows sync_minutes and sync_on_batch_end without an Approvals row",
+    },
+    relinquish_others: "never",
+    mode: ai?.mode ?? "strict",
+    stop: ai?.stop === true,
+    ai_on: ai?.on === true && ai?.stop !== true,
+  };
+}
 
 /** The policy for the document a call works on, one line per group. */
 export function policySummary(config: GuardConfig, active: any) {
@@ -174,6 +210,7 @@ export async function runFmcAi(args: FmcAiArgs) {
     if (args.action === "inbox") return readInbox();
     if (args.action === "failures") return reply(failures(readUsage(), args.since));
     if (args.action === "enable_copy") return reply(await enableCopy(args, config));
+    if (args.action === "policy") return reply({ tool: "fmc_ai", action: "policy", ...effectivePolicy(config) });
     const doc = await activeDocument((ms) => withRevitConnection((c) => c.sendRaw("fmc_document_info", {}, ms)));
     return reply({ ...policySummary(config, doc.active), document_source: doc.source });
   } catch (error) {

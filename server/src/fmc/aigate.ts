@@ -10,7 +10,7 @@ import { syncSettings } from "./batchsync.js";
 import { currentClient } from "./fairqueue.js";
 import { memoryGate } from "./memory.js";
 import { batchLease } from "./target.js";
-import { appendSyncAutoLog, damagedNames, judgeDirectSync, readDamageDialogs } from "./syncauto.js";
+import { appendSyncAutoLog, damagedNames, judgeAiSync, readDamageDialogs, syncAutoInEffect, type SyncSource } from "./syncauto.js";
 
 /**
  * The live-model lock's one new case (AI-assisted modeller, Phase A). Called only after the lock has refused a
@@ -40,44 +40,74 @@ export async function aiGate(command: string, params: any, active: DocInfo | nul
     if (generalState(ai, active.title, active.path) !== "On") return { ok: false, reason: "", user: USER_LINE.off };
     return { ok: true, reason: "", run: <T>(exec: () => Promise<T>) => exec() };
   }
-  // The batch line's own sync (fmc_guard.json sync_minutes / sync_on_batch_end). Stop AI and the AI switch still apply.
-  // A person's direct sync, without batch_sync, is auto-approved only by auto_approve_sync (below). Relinquish stays manual.
-  if (params?.batch_sync === true && command === "fmc_revit_file" && ["save", "sync", "relinquish"].includes(String(params?.action))) {
-    if (ai.stop) return { ok: false, reason: "Stop AI is on", user: USER_LINE.stopped };
-    if (generalState(ai, active.title, active.path) !== "On") return { ok: false, reason: "AI is off for this model", user: USER_LINE.off };
-    return { ok: true, reason: "", run: <T>(exec: () => Promise<T>) => exec() };
-  }
-  const elements = batchSize(params);
-  const approval = approvalFor(command, params, active.path, env);
-  // A direct sync (not the batch line's batch_sync, and not relinquish on its own) may run now when
-  // auto_approve_sync is on. Every approval and every refusal of that path is logged. Otherwise a person still approves.
-  const directSync = command === "fmc_revit_file" && String(params?.action) === "sync" && params?.batch_sync !== true;
-  if (directSync) {
+  // Relinquish of elements, including another user's, is never automatic. Sync may relinquish only what this user checked out.
+  const fileAction = command === "fmc_revit_file" ? String(params?.action ?? "") : "";
+  const relinquishOthers = params?.relinquish_others === true;
+  const syncFacts = () => {
     const settings = syncSettings(cfg);
-    const holder = batchBoard().activeHolder(active.path || active.title);
-    const decision = judgeDirectSync(String(params?.action), false, active, ai, {
+    return {
       now: Date.now(),
-      holder,
-      caller: { lease: batchLease.getStore(), client: currentClient() },
+      holder: batchBoard().activeHolder(active.path || active.title),
+      caller: { lease: batchLease.getStore() ?? "", client: currentClient() },
       ramPaused: memoryGate.leasesPaused(),
       dialogs: readDamageDialogs(env),
       damaged: damagedNames(cfg, ai),
       exclude: settings.exclude,
       protectedRoots: protectedRoots(cfg),
-    });
+    };
+  };
+  const rememberSync = (source: SyncSource) => {
+    const item = enqueue(command, { action: "sync", document: active.path || active.title, sync_source: source }, active.path, active.title, "sync", 0, env, new Date(), ["auto-approved (sync)"]);
+    setStatus(item.id, "used", "auto-approved (sync)", env);
+    return item.id;
+  };
+  const runAutoSync = (source: SyncSource, reason: string): Gate => ({
+    ok: true, reason,
+    run: async <T>(exec: () => Promise<T>): Promise<T> => {
+      const id = rememberSync(source);
+      try {
+        const result = await exec();
+        setResult(id, "done", "auto-approved (sync)", env);
+        return result;
+      } catch (error) {
+        setResult(id, "failed", error instanceof Error ? error.message : String(error), env);
+        throw error;
+      }
+    },
+  });
+  // The batch line's own save, and its sync when auto_approve_sync is off (the shipped default).
+  // When the flag is on, batch-end and the managed timer use the same checks as a direct sync and are listed as auto-approved (sync).
+  if (params?.batch_sync === true && command === "fmc_revit_file" && ["save", "sync"].includes(fileAction) && !relinquishOthers) {
+    if (ai.stop) return { ok: false, reason: "Stop AI is on", user: USER_LINE.stopped };
+    if (generalState(ai, active.title, active.path) !== "On") return { ok: false, reason: "AI is off for this model", user: USER_LINE.off };
+    if (fileAction === "sync" && syncAutoInEffect(ai)) {
+      const source: SyncSource = params?.sync_source === "timer" ? "timer" : "batch_end";
+      const decision = judgeAiSync(source, active, ai, syncFacts());
+      appendSyncAutoLog(env, {
+        at: new Date().toISOString(), document: active.title, path: active.path, action: "sync", source,
+        decision: decision.approve ? "approved" : "refused", reason: decision.reason,
+        lease: batchLease.getStore() ?? "", client: currentClient(),
+      });
+      if (!decision.approve) return { ok: false, reason: decision.reason, user: decision.reason };
+      return runAutoSync(source, decision.reason);
+    }
+    return { ok: true, reason: "", run: <T>(exec: () => Promise<T>) => exec() };
+  }
+  const elements = batchSize(params);
+  const approval = approvalFor(command, params, active.path, env);
+  // A direct sync may run now when auto_approve_sync is on. The same judge covers batch-end and the timer above.
+  // Relinquish on its own still waits for a person. Every approval and every refusal of this path is logged.
+  const directSync = fileAction === "sync" && params?.batch_sync !== true && !relinquishOthers;
+  if (directSync) {
+    const decision = judgeAiSync("direct", active, ai, syncFacts());
     if (decision.judged) {
       appendSyncAutoLog(env, {
-        at: new Date().toISOString(), document: active.title, path: active.path, action: "sync",
+        at: new Date().toISOString(), document: active.title, path: active.path, action: "sync", source: "direct",
         decision: decision.approve ? "approved" : "refused", reason: decision.reason,
         lease: batchLease.getStore() ?? "", client: currentClient(),
       });
     }
-    if (decision.approve) {
-      return {
-        ok: true, reason: decision.reason,
-        run: async <T>(exec: () => Promise<T>): Promise<T> => exec(),
-      };
-    }
+    if (decision.approve) return runAutoSync("direct", decision.reason);
   }
   // Auto-approve (owner 26 Oct): testing mode only; the batch runs now and is still listed in Approvals.
   // Relinquish, and a sync auto_approve_sync did not take, still wait for a person.

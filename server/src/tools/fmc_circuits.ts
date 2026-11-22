@@ -8,7 +8,7 @@ import { kitPaths } from "../fmc/context.js";
 import fs from "node:fs";
 import path from "node:path";
 import {
-  auditCircuits, circuitCaps, planCircuits, sampleIds, TARGET_DISTRIBUTION, voltageDropLimit,
+  DISTRIBUTION_HINT, auditCircuits, circuitCaps, planCircuits, sampleIds, TARGET_DISTRIBUTION, voltageDropLimit,
   type CircuitDevice, type CircuitPanel, type ExistingCircuit,
 } from "../fmc/circuitplan.js";
 import { writeReport } from "../fmc/localreport.js";
@@ -25,7 +25,9 @@ export const FMC_CIRCUITS_DESCRIPTION =
   "limits (the caps and whether each one is PROVISIONAL). " +
   "Lighting and sockets are never on one circuit. Kinds are L, R, AC, SH and STAIR. The name pattern is {board}/{zone}-{type}{n}, for example DB-BQ/A1-L. " +
   "Phases are balanced across L1, L2 and L3. A panel in accept_no_supply, or marked utility-fed, may have no supply. " +
-  "non_board_ids are Panelboard part types that are loads (SPD, isolator, pump control). Families with no electrical connector are FMC-NO-CONNECTOR, not a crash. " +
+  "A board is electrical equipment whose part type is Panelboard, Switchboard or Other Panel, or whose family has a panel-schedule MEP connector (power balanced or unbalanced). " +
+  "It is not refused for being a board family. When that board has no distribution system the reply is FMC-PANEL-NO-DISTRIBUTION, with a dry-run plan that sets the Distribution System parameter. " +
+  "non_board_ids are panel part types that are loads (SPD, isolator, pump control). Families with no electrical connector are FMC-NO-CONNECTOR, not a crash. " +
   "Assignment uses MEPModel.GetElectricalSystems, not Connector.IsConnected. Data, telephone and fire alarm are skipped. " +
   "Switch-to-luminaire groups are included when include_switches is true. " +
   "dry_run defaults to true. apply and panel with dry_run false need batch_lease. One Revit transaction, one subtransaction per circuit. " +
@@ -126,7 +128,7 @@ export async function runFmcCircuits(args: FmcCircuitsArgs, io: CircuitsIo = {})
   const panels = snapshot.panels ?? [];
   const plan = planCircuits({
     devices, panels, bank, panel: args.panel, pattern: args.pattern, load_unit: args.load_unit,
-    non_board_ids: args.non_board_ids, include_switches: args.include_switches,
+    non_board_ids: args.non_board_ids, include_switches: args.include_switches, distribution: args.distribution,
   });
   const listed = args.ids;
   const circuits = listed
@@ -140,13 +142,22 @@ export async function runFmcCircuits(args: FmcCircuitsArgs, io: CircuitsIo = {})
     : null;
   const ids = sampleIds(circuits.flatMap((circuit) => circuit.element_ids), args.sample_limit);
   const report = writeReport("circuits", args.action, { plan: { ...plan, circuits }, audit, snapshot: { model: snapshot.model, resolved_document: snapshot.resolved_document } }, io.env);
+  const distribution_plans = plan.distribution_plans ?? [];
+  if ((args.action === "apply" || args.action === "panel") && distribution_plans.length > 0 && circuits.length === 0) {
+    return reply({
+      tool: "fmc_circuits", ok: false, code: "FMC-PANEL-NO-DISTRIBUTION", dry_run: true, read_only: true,
+      message: `[FMC-PANEL-NO-DISTRIBUTION] ${distribution_plans[0].panel} has no distribution system.`,
+      hint: DISTRIBUTION_HINT, distribution_plans, document: snapshot.resolved_document ?? { title: snapshot.model ?? args.document, path: "" },
+      report,
+    }, true);
+  }
   if (args.action === "plan" || args.action === "audit") {
     return reply({
       tool: "fmc_circuits", read_only: true, action: args.action, document: snapshot.resolved_document ?? { title: snapshot.model ?? args.document, path: "" },
       counts: plan.counts, circuits: circuits.map((circuit) => ({ name: circuit.name, kind: circuit.kind, panel: circuit.panel_name, phase: circuit.phase, slot: circuit.slot, points: circuit.points, load_w: circuit.load_w, ids: circuit.element_ids.slice(0, 20), flags: circuit.flags, provisional: circuit.provisional })),
       skipped: plan.skipped.slice(0, args.sample_limit), switches: plan.switches.slice(0, args.sample_limit),
       phase: plan.phase, audit: audit ? { counts: audit.counts, findings: audit.findings.slice(0, args.sample_limit), provisional: audit.provisional } : undefined,
-      ids, report, skipped_non_family: snapshot.skipped_non_family ?? { count: 0, ids: [] },
+      ids, report, distribution_plans, skipped_non_family: snapshot.skipped_non_family ?? { count: 0, ids: [] },
       rule: plan.rule,
     });
   }
@@ -159,7 +170,7 @@ export async function runFmcCircuits(args: FmcCircuitsArgs, io: CircuitsIo = {})
       circuits: args.action === "apply" ? circuits : undefined,
       panel: args.action === "panel" ? { id: args.panel, distribution: args.distribution, supply_from: args.supply_from, feeder: args.feeder, mains_a: args.mains_a, mains_type: args.mains_type } : undefined,
       counts: { circuits: circuits.length, points: circuits.reduce((sum, circuit) => sum + circuit.points, 0) },
-      ids, report, provisional: plan.caps.some((cap) => cap.provisional),
+      ids, report, distribution_plans, provisional: plan.caps.some((cap) => cap.provisional),
       next: "Apply with dry_run false and batch_lease. That call is one transaction.",
     });
   }

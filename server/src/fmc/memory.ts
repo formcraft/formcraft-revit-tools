@@ -14,6 +14,7 @@
  */
 import { spawn } from "node:child_process";
 import os from "node:os";
+import { RAM_BUSY, withBusy } from "./busyreason.js";
 import { loadConfig } from "./policy.js";
 
 export const DEFAULT_PAUSE_MB = 1024;
@@ -178,12 +179,13 @@ export class MemoryGate {
     while (this.view().paused || this.view().tier === "hard") {
       if (Date.now() - start >= cap) {
         const view = this.view();
-        throw new Error(
+        throw new Error(withBusy(
           `[FMC-RAM-PAUSE] [FMC-MEMORY-HARD] Paused for memory: ${view.free_mb} MB free, below ${view.pause_below_mb} MB. ` +
           `${view.reason} Writes and new leases wait until free memory is above ${view.resume_above_mb} MB. ` +
           `This write was not sent and the model was not changed. Not a script failure. ` +
           `Retry; fmc_batch status and /health show memory.`,
-        );
+          RAM_BUSY,
+        ));
       }
       await new Promise((resolve) => setTimeout(resolve, 200));
     }
@@ -203,16 +205,18 @@ export class MemoryGate {
       if (view.tier === "ok" || view.tier === "off") return;
       if (Date.now() - start >= cap) {
         if (view.tier === "hard" || view.paused) {
-          throw new Error(
+          throw new Error(withBusy(
             `[FMC-RAM-PAUSE] [FMC-MEMORY-HARD] Paused for memory: ${view.free_mb} MB free. ${view.reason} ` +
             `This write was not sent and the model was not changed. Not a script failure.`,
-          );
+            RAM_BUSY,
+          ));
         }
-        throw new Error(
+        throw new Error(withBusy(
           `[FMC-MEMORY-SOFT] Queued for memory, not failed: ${view.free_mb} MB free. ${view.reason} ` +
           `This heavy write was not sent and the model was not changed. Not a script failure. ` +
           `It runs when free memory is above ${view.resume_above_mb} MB. fmc_batch status and /health show memory.`,
-        );
+          RAM_BUSY,
+        ));
       }
       await new Promise((resolve) => setTimeout(resolve, 200));
     }

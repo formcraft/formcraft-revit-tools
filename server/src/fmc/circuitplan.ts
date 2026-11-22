@@ -56,6 +56,10 @@ export interface CircuitDevice {
   is_switch?: boolean;
   is_direct_shape?: boolean;
   room_area_m2?: number;
+  /** Set when the family is a panel: part type, or a panel-schedule connector. */
+  is_board?: boolean;
+  schedule_capable?: boolean;
+  distribution?: string;
 }
 
 export interface CircuitPanel {
@@ -113,6 +117,48 @@ export interface PlannedCircuit {
   flags: string[];
 }
 
+export interface DistributionFix {
+  code: "FMC-PANEL-NO-DISTRIBUTION";
+  panel_id: number;
+  panel: string;
+  hint: string;
+  dry_run: true;
+  plan: Array<{ op: "set_parameter"; parameter: "Distribution System"; built_in: "RBS_FAMILY_CONTENT_DISTRIBUTION_SYSTEM"; value: string; panel_id: number }>;
+}
+
+export const DISTRIBUTION_HINT = "Set the Distribution System parameter (RBS_FAMILY_CONTENT_DISTRIBUTION_SYSTEM) on the board.";
+
+/** Panelboard, Switchboard or Other Panel, in the API spelling or the dialog spelling. */
+export function isPanelPart(part: string | undefined): boolean {
+  return /^(panelboard|switchboard|otherpanel)$/i.test((part ?? "").replace(/[\s_]/g, ""));
+}
+
+/** Electrical equipment Revit can take as a circuit panel. A board family is not refused for lacking the word board. */
+export function isBoardEquipment(device: Pick<CircuitDevice, "is_board" | "schedule_capable" | "part_type" | "category">): boolean {
+  if (device.is_board === true || device.schedule_capable === true) return true;
+  if (!isPanelPart(device.part_type)) return false;
+  const category = (device.category ?? "").toLowerCase();
+  return category.length === 0 || /electrical equipment/.test(category);
+}
+
+export function distributionFix(panel: Pick<CircuitPanel, "id" | "name">, distribution: string): DistributionFix {
+  const value = (distribution || TARGET_DISTRIBUTION).trim() || TARGET_DISTRIBUTION;
+  return {
+    code: "FMC-PANEL-NO-DISTRIBUTION",
+    panel_id: panel.id,
+    panel: panel.name,
+    hint: DISTRIBUTION_HINT,
+    dry_run: true,
+    plan: [{
+      op: "set_parameter",
+      parameter: "Distribution System",
+      built_in: "RBS_FAMILY_CONTENT_DISTRIBUTION_SYSTEM",
+      value,
+      panel_id: panel.id,
+    }],
+  };
+}
+
 export interface CircuitSkip {
   id: number;
   code: string;
@@ -128,6 +174,8 @@ export interface CircuitPlan {
   voltage_drop: CapField;
   counts: { devices: number; planned: number; skipped: number; points: number };
   rule: string;
+  /** Boards that cannot take a circuit until Distribution System is set. The plan does not write it. */
+  distribution_plans: DistributionFix[];
 }
 
 export interface AuditFinding {
@@ -267,12 +315,30 @@ export function planCircuits(input: {
   non_board_ids?: number[];
   include_switches?: boolean;
   overrides?: Partial<Record<string, number>>;
+  distribution?: string;
 }): CircuitPlan {
   const caps = circuitCaps(input.bank, input.overrides);
   const capOf = (kind: CircuitKind) => caps.find((cap) => cap.kind === kind) as CircuitCap;
   const unit = input.load_unit === "VA" ? "VA" : "W";
   const pattern = (input.pattern ?? "").trim() || DEFAULT_NAME_PATTERN;
   const nonBoard = new Set(input.non_board_ids ?? []);
+  const promoted: CircuitPanel[] = [];
+  for (const device of input.devices) {
+    if (!isBoardEquipment(device) || nonBoard.has(device.id)) continue;
+    if (input.panels.some((panel) => panel.id === device.id) || promoted.some((panel) => panel.id === device.id)) continue;
+    promoted.push({
+      id: device.id, name: device.name || device.mark || String(device.id), level: device.level, x: device.x, y: device.y, z: device.z,
+      distribution: device.distribution ?? "", voltage: device.voltage, is_board: true, part_type: device.part_type,
+    });
+  }
+  const panels = [...input.panels, ...promoted];
+  const distribution_plans: DistributionFix[] = [];
+  const noted = new Set<number>();
+  const noteMissing = (panel: CircuitPanel) => {
+    if ((panel.distribution ?? "").trim() || noted.has(panel.id)) return;
+    noted.add(panel.id);
+    distribution_plans.push(distributionFix(panel, input.distribution ?? ""));
+  };
   const skipped: CircuitSkip[] = [];
   const buckets = new Map<string, Bucket>();
   const switches: CircuitPlan["switches"] = [];
@@ -285,8 +351,10 @@ export function planCircuits(input: {
     }
     if (nonBoard.has(device.id)) {
       /* declared load, even when the part type is Panelboard */
-    } else if (/panelboard|switchboard|otherpanel/i.test(device.part_type ?? "") && device.has_connector !== false) {
-      skipped.push({ id: device.id, code: "CIRCUIT-SUSPECT-BOARD", detail: `${device.name || device.id} has part type ${device.part_type}. Pass it in non_board_ids to circuit it as a load.` });
+    } else if (isBoardEquipment(device) && device.has_connector !== false) {
+      if (/spd|isolat|pump|control panel/i.test(textOf(device))) {
+        skipped.push({ id: device.id, code: "CIRCUIT-SUSPECT-BOARD", detail: `${device.name || device.id} has part type ${device.part_type || "panel"}. Pass it in non_board_ids to circuit it as a load.` });
+      }
       continue;
     }
     if ((device.circuit_ids ?? []).length > 0) continue;
@@ -316,9 +384,14 @@ export function planCircuits(input: {
       skipped.push({ id: device.id, code: "FMC-UNCLASSIFIED", detail: `${device.name || device.category || device.id} is not lighting, a socket, an AC spur, a shower or a stair light.` });
       continue;
     }
-    const panel = pickPanel(device, input.panels, input.panel ?? "");
+    const panel = pickPanel(device, panels, input.panel ?? "");
     if (!panel) {
       skipped.push({ id: device.id, code: "FMC-NO-PANEL", detail: input.panel ? `Panel ${input.panel} is not a board in this model.` : "No panel board to assign." });
+      continue;
+    }
+    if (!(panel.distribution ?? "").trim()) {
+      noteMissing(panel);
+      skipped.push({ id: device.id, code: "FMC-PANEL-NO-DISTRIBUTION", detail: `${panel.name} has no distribution system. ${DISTRIBUTION_HINT}` });
       continue;
     }
     if (kind === "L" || kind === "STAIR") {
@@ -425,6 +498,7 @@ export function planCircuits(input: {
       clause: limits.standing.clause,
     },
     voltage_drop: drop,
+    distribution_plans,
     counts: {
       devices: input.devices.length,
       planned: circuits.length,
@@ -500,7 +574,9 @@ export function auditCircuits(input: {
     if (panel.has_supply === false && !accepted) {
       findings.push({ code: "ELEC-NO-SUPPLY", id: panel.id, detail: `${panel.name} has no supply. Pass it in accept_no_supply when it is utility-fed.` });
     }
-    if (panel.distribution && panel.distribution !== target) {
+    if (!(panel.distribution ?? "").trim()) {
+      findings.push({ code: "FMC-PANEL-NO-DISTRIBUTION", id: panel.id, detail: `${panel.name} has no distribution system. ${DISTRIBUTION_HINT}` });
+    } else if (panel.distribution !== target) {
       findings.push({ code: "ELEC-VOLTAGE-MISMATCH", id: panel.id, detail: `${panel.name} distribution is ${panel.distribution}. Target is ${target}. Replacing the family in place is out of scope.` });
     }
   }

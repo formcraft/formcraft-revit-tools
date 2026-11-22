@@ -213,6 +213,10 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_north_apply",
   // Legend views: duplicate a seed view or copy a seed component. One transaction. No text notes.
   "fmc_legend_apply",
+  // Open or close a document. List stays on fmc_docs. The last document is never closed.
+  "fmc_docs_apply",
+  // Close spare documents or purge unused elements. Status stays on fmc_memory.
+  "fmc_memory_apply",
 ]);
 
 /**

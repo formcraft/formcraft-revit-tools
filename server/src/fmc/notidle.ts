@@ -4,6 +4,7 @@
  * holds the job. The port is left alone and AI is not toggled.
  */
 import { spawnSync } from "node:child_process";
+import { dialogBusyReason, jobBusyReason, withBusy } from "./busyreason.js";
 import { jobFiles, readJsonLines } from "./jobs.js";
 import { blockingDialog, formatDialog, leftForPerson } from "./dialogrules.js";
 
@@ -13,7 +14,13 @@ export const NOT_IDLE_HINT = "Revit is busy or waiting on a dialog or an active 
 /** A heartbeat younger than this still counts as in flight (Revit writes one a minute). */
 export const FLIGHT_FRESH_MS = 3 * 60 * 1000;
 
-const LIVE = new Set(["heartbeat", "running", "queued", "bridge_busy", "dialog"]);
+/**
+ * A job that only wrote "queued" and never started. After this it is stale: it must not keep
+ * every later call waiting with no reason. A real queue behind a heartbeating command is unaffected.
+ */
+export const QUEUE_ONLY_FRESH_MS = 60 * 1000;
+
+const STRONG = new Set(["heartbeat", "running", "bridge_busy", "dialog"]);
 const DONE = new Set(["finished", "bridge_free", "cancelled"]);
 
 export interface JobLine {
@@ -39,13 +46,13 @@ export interface InFlightJob {
 
 /** The newest job on this Revit whose last sign of life is still fresh. A finished job is not in flight. */
 export function inFlightJob(lines: JobLine[], pid: number, now = Date.now(), freshMs = FLIGHT_FRESH_MS): InFlightJob | null {
-  const jobs = new Map<string, InFlightJob & { live: boolean }>();
+  const jobs = new Map<string, InFlightJob & { live: boolean; strong: boolean }>();
   for (const e of lines) {
     if (!e || e.pid !== pid || typeof e.job !== "string" || !e.job) continue;
     const at = Date.parse(String(e.at ?? ""));
     let row = jobs.get(e.job);
     if (!row) {
-      row = { job: e.job, command: String(e.command ?? ""), pid, startedMs: Number.isFinite(at) ? at : now, heartbeatMs: 0, age_s: 0, live: false };
+      row = { job: e.job, command: String(e.command ?? ""), pid, startedMs: Number.isFinite(at) ? at : now, heartbeatMs: 0, age_s: 0, live: false, strong: false };
       jobs.set(e.job, row);
     }
     if (e.command) row.command = String(e.command);
@@ -53,12 +60,18 @@ export function inFlightJob(lines: JobLine[], pid: number, now = Date.now(), fre
     if (Number.isFinite(started)) row.startedMs = Math.min(row.startedMs, started);
     const event = String(e.event ?? "");
     if (DONE.has(event)) row.live = false;
-    else if (LIVE.has(event)) {
+    else if (event === "queued" || STRONG.has(event)) {
       row.live = true;
+      if (STRONG.has(event)) row.strong = true;
       if (Number.isFinite(at)) row.heartbeatMs = Math.max(row.heartbeatMs, at);
     }
   }
-  const live = [...jobs.values()].filter((row) => row.live && now - row.heartbeatMs <= freshMs);
+  const live = [...jobs.values()].filter((row) => {
+    if (!row.live) return false;
+    const age = now - row.heartbeatMs;
+    if (row.strong) return age <= freshMs;
+    return age <= Math.min(freshMs, QUEUE_ONLY_FRESH_MS);
+  });
   live.sort((a, b) => b.heartbeatMs - a.heartbeatMs);
   const hit = live[0];
   if (!hit) return null;
@@ -95,7 +108,8 @@ export function notIdleMessage(job: InFlightJob, dialog = ""): string {
   const shown = dialog.trim();
   const who = `Job ${job.job} (${job.command || "a command"}) has been in flight for ${ageWords(job.age_s)}.`;
   const box = shown ? ` Dialog: ${JSON.stringify(shown)}.` : "";
-  return `[${NOT_IDLE}] Revit pid ${job.pid} is not idle. ${who}${box} ${NOT_IDLE_HINT}`;
+  const reason = shown ? dialogBusyReason(shown) : jobBusyReason(job.command || "a command", job.age_s);
+  return withBusy(`[${NOT_IDLE}] Revit pid ${job.pid} is not idle. ${who}${box} ${NOT_IDLE_HINT}`, reason);
 }
 
 /** Read-only. A visible modal dialog (#32770) owned by this pid. Never clicked, never closed. */

@@ -132,7 +132,8 @@ namespace RevitMCPCommandSet.Services.Fmc
             catch (Exception) { /* not assigned; do not call Connector.IsConnected */ }
             string part = PartName(device);
             bool declaredLoad = nonBoard.Contains(device.Id.Value);
-            bool board = !declaredLoad && (part == "PanelBoard" || part == "SwitchBoard" || part == "OtherPanel");
+            bool schedule = ScheduleCapable(device);
+            bool board = !declaredLoad && (IsPanelPart(part) || schedule);
             string name = device.Name ?? "";
             bool suspect = part == "PanelBoard" && !declaredLoad && Regex.IsMatch(name, "spd|isolat|pump|control panel", RegexOptions.IgnoreCase);
             Room room = null;
@@ -163,6 +164,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 ["z"] = point == null ? 0 : Math.Round(point.Z * FeetToMm, 1),
                 ["is_switch"] = Regex.IsMatch((device.Category?.Name ?? "") + " " + name, "switch", RegexOptions.IgnoreCase) && (device.Category?.Name ?? "").IndexOf("Device", StringComparison.OrdinalIgnoreCase) >= 0,
                 ["is_board"] = board,
+                ["schedule_capable"] = schedule,
                 ["suspect_board"] = suspect,
                 ["utility_fed"] = device.LookupParameter("FMC_UtilityFed")?.AsInteger() == 1 || Regex.IsMatch(MarkOf(device) + " " + name, "utility", RegexOptions.IgnoreCase),
                 ["distribution"] = DistributionName(device),
@@ -180,6 +182,36 @@ namespace RevitMCPCommandSet.Services.Fmc
                 ["has_supply"] = row["has_supply"], ["utility_fed"] = row["utility_fed"],
                 ["part_type"] = row["part_type"], ["is_board"] = true,
             };
+        }
+
+        private static bool IsPanelPart(string part)
+        {
+            string name = (part ?? "").Replace(" ", "").Replace("_", "");
+            return name.Equals("PanelBoard", StringComparison.OrdinalIgnoreCase)
+                || name.Equals("SwitchBoard", StringComparison.OrdinalIgnoreCase)
+                || name.Equals("OtherPanel", StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Electrical equipment with a power-balanced or power-unbalanced connector can take a panel schedule.
+        /// A device connector is PowerCircuit and is not enough on its own.
+        /// </summary>
+        private static bool ScheduleCapable(FamilyInstance device)
+        {
+            if (device.Category?.Id.Value != (long)BuiltInCategory.OST_ElectricalEquipment) return false;
+            try
+            {
+                ConnectorSet set = device.MEPModel?.ConnectorManager?.Connectors;
+                if (set == null) return false;
+                foreach (Connector item in set)
+                {
+                    if (item.Domain != Domain.DomainElectrical) continue;
+                    if (item.ElectricalSystemType == ElectricalSystemType.PowerBalanced || item.ElectricalSystemType == ElectricalSystemType.PowerUnBalanced)
+                        return true;
+                }
+            }
+            catch (Exception) { return false; }
+            return false;
         }
 
         private static string PartName(FamilyInstance device)
@@ -376,6 +408,10 @@ namespace RevitMCPCommandSet.Services.Fmc
             ElectricalSystem system = ElectricalSystem.Create(doc, ids, ElectricalSystemType.PowerCircuit);
             FamilyInstance panel = FindPanel(doc, plan.Value<string>("panel_name") ?? "") ?? FindPanel(doc, (plan.Value<long?>("panel_id") ?? 0).ToString());
             if (panel == null) throw new InvalidOperationException("Panel " + (plan.Value<string>("panel_name") ?? "") + " was not found. The circuit was not kept.");
+            if (!IsPanelPart(PartName(panel)) && !ScheduleCapable(panel))
+                throw new InvalidOperationException("FMC-PANEL-NO-DISTRIBUTION is not this case. " + (panel.Symbol?.FamilyName ?? panel.Name) + " is not a panel: it needs Part Type Panelboard, Switchboard or Other Panel, or a panel-schedule connector.");
+            if (string.IsNullOrWhiteSpace(DistributionName(panel)))
+                throw new InvalidOperationException("FMC-PANEL-NO-DISTRIBUTION " + (panel.Name ?? "") + " has no distribution system. Set the Distribution System parameter (RBS_FAMILY_CONTENT_DISTRIBUTION_SYSTEM).");
             system.SelectPanel(panel);
             string name = plan.Value<string>("name") ?? "";
             TrySet(system, BuiltInParameter.RBS_ELEC_CIRCUIT_NAME, name, "circuit name", unset);

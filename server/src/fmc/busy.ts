@@ -1,3 +1,4 @@
+import { jobBusyReason, withBusy } from "./busyreason.js";
 import { NOT_IDLE, NOT_IDLE_HINT, ageWords } from "./notidle.js";
 
 /**
@@ -34,7 +35,11 @@ export class RevitNotIdleError extends Error {
   readonly code = NOT_IDLE;
   constructor(readonly busy: BridgeBusy, readonly waitedMs: number, readonly forCommand: string) {
     const age = ageWords(Math.max(0, Math.round(waitedMs / 1000)));
-    super(`[${NOT_IDLE}] Revit is not idle. Job ${busy.job} (${busy.command}) since ${busy.since} (this call waited ${age}). ${NOT_IDLE_HINT} ${forCommand} was not sent.`);
+    const seconds = Math.max(0, Math.round(waitedMs / 1000));
+    super(withBusy(
+      `[${NOT_IDLE}] Revit is not idle. Job ${busy.job} (${busy.command}) since ${busy.since} (this call waited ${age}). ${NOT_IDLE_HINT} ${forCommand} was not sent.`,
+      jobBusyReason(busy.command, seconds),
+    ));
     this.name = "RevitNotIdleError";
   }
 }
@@ -43,9 +48,12 @@ export class RevitNotIdleError extends Error {
 export class BridgeBusyError extends Error {
   readonly code = "FMC-BRIDGE-BUSY";
   constructor(readonly busy: BridgeBusy, readonly waitedMs: number, readonly why: "ceiling" | "no heartbeat", readonly forCommand: string) {
-    super(`${BUSY_TAG} Revit is still running ${busy.command} since ${busy.since} (job ${busy.job}), so ${forCommand} wasn't sent: ` +
+    super(withBusy(
+      `${BUSY_TAG} Revit is still running ${busy.command} since ${busy.since} (job ${busy.job}), so ${forCommand} wasn't sent: ` +
       `waited ${Math.round(waitedMs / 1000)} s, then gave up (${why === "ceiling" ? "the call's time limit" : "Revit's heartbeats for that job stopped"}). ` +
-      `fmc_job status ${busy.job} follows it; send ${forCommand} again once it has finished.`);
+      `fmc_job status ${busy.job} follows it; send ${forCommand} again once it has finished.`,
+      jobBusyReason(busy.command, Math.max(0, Math.round(waitedMs / 1000))),
+    ));
     this.name = "BridgeBusyError";
   }
 }

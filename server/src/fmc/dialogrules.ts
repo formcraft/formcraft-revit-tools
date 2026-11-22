@@ -12,6 +12,7 @@
  */
 import fs from "node:fs";
 import path from "node:path";
+import { dialogBusyReason } from "./busyreason.js";
 import { formcraftHome, readJsonLines, jobFiles } from "./jobs.js";
 
 export const SAVE_REMINDER_ID = "TaskDialog_Project_Not_Saved_Recently";
@@ -72,7 +73,7 @@ export interface OpenDialog {
 export class DialogBlockingError extends Error {
   readonly code = DIALOG_BLOCKING;
   constructor(readonly dialogId: string, readonly text: string, readonly job: string) {
-    super(`[${DIALOG_BLOCKING}] Revit is waiting on a person. Dialog ${dialogId || "(no id)"}: ${JSON.stringify(trim(text, 400))}. Job ${job}. Do not retry. Tell a person; this dialog was not answered.`);
+    super(`[${DIALOG_BLOCKING}] Revit is waiting on a person. Dialog ${dialogId || "(no id)"}: ${JSON.stringify(trim(text, 400))}. Job ${job}. Do not retry. Tell a person; this dialog was not answered. busy_reason: ${dialogBusyReason(text || dialogId || "untitled")}.`);
     this.name = "DialogBlockingError";
   }
 }

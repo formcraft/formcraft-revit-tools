@@ -1,0 +1,94 @@
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import { FairQueue, StillQueued } from "./fairqueue.js";
+import { inFlightJob } from "./notidle.js";
+import { decideCancel, jobIsStale, markRevitCancelled, rowFromRevit, selectStale, type QueueListRow } from "./queueops.js";
+import { findJob } from "./jobs.js";
+
+const row = (over: Partial<QueueListRow>): QueueListRow => ({
+  job_id: "job1", state: "queued", age_s: 120, document: "E-0001_USER", tool: "fmc_circuits",
+  lease_holder: "", caller: "stdio", instance: "port 8080", source: "revit", stale: true, revit_idle: true,
+  busy_reason: "job running fmc_circuits for 120 s",
+  ...over,
+});
+
+test("a queued job can be cancelled, and a live running job is FMC-JOB-RUNNING", () => {
+  const queued = decideCancel(row({}));
+  assert.equal(queued.ok, true);
+  assert.match(queued.busy_reason, /job running fmc_circuits for 120 s/);
+  const running = decideCancel(row({ state: "running", stale: false, revit_idle: false, age_s: 40 }));
+  assert.equal(running.ok, false);
+  assert.equal(running.code, "FMC-JOB-RUNNING");
+  assert.match(running.busy_reason, /job running/);
+  const stale = decideCancel(row({ state: "running", stale: true, revit_idle: true, age_s: 400 }));
+  assert.equal(stale.ok, true);
+  assert.equal(decideCancel(null).code, "FMC-QUEUE-UNKNOWN");
+});
+
+test("purge_stale selects queued jobs older than the limit and leaves a fresh one", () => {
+  const jobs = [
+    row({ job_id: "old", age_s: 600 }),
+    row({ job_id: "new", age_s: 20 }),
+    row({ job_id: "run", state: "running", age_s: 900 }),
+  ];
+  const picked = selectStale(jobs, 5);
+  assert.deepEqual(picked.map((item) => item.job_id), ["old"]);
+});
+
+test("a queued-only job older than a minute is not in flight, and a heartbeat still is", () => {
+  const now = Date.now();
+  const queued = [{ at: new Date(now - 90_000).toISOString(), job: "stuck", command: "fmc_doc_apply", pid: 7, event: "queued", started: new Date(now - 90_000).toISOString() }];
+  assert.equal(inFlightJob(queued, 7, now), null);
+  const fresh = [{ at: new Date(now - 10_000).toISOString(), job: "wait", command: "fmc_doc_apply", pid: 7, event: "queued", started: new Date(now - 10_000).toISOString() }];
+  assert.equal(inFlightJob(fresh, 7, now)?.job, "wait");
+  assert.equal(jobIsStale("queued", 90, true, true), true);
+  assert.equal(jobIsStale("running", 40, false, false), false);
+});
+
+test("cancel of a fair-queue job that has not started rejects it, and a running one is refused", async () => {
+  const queue = new FairQueue();
+  let started = false;
+  const blocker = queue.enqueue("arch", "fmc_model_edit", () => new Promise((resolve) => setTimeout(resolve, 80)), 5000, "A_USER");
+  await new Promise((resolve) => setTimeout(resolve, 5));
+  const waiting = queue.enqueue("elec", "fmc_circuits", async () => { started = true; }, 5000, "E_USER");
+  const snap = queue.snapshot();
+  const queued = snap.jobs.find((job) => job.state === "queued");
+  assert.ok(queued);
+  assert.equal(queue.cancelQueued(queued!.job_id), "cancelled");
+  await assert.rejects(waiting, (error: unknown) => error instanceof Error && /FMC-QUEUE-CANCELLED/.test(error.message) && /busy_reason:/.test(error.message));
+  assert.equal(started, false);
+  const running = snap.jobs.find((job) => job.state === "running");
+  if (running) assert.equal(queue.cancelQueued(running.job_id), "running");
+  await blocker;
+});
+
+test("a queue wait names the job that is running", async () => {
+  const queue = new FairQueue();
+  const blocker = queue.enqueue("arch", "fmc_model_edit", () => new Promise((resolve) => setTimeout(resolve, 80)));
+  const waiting = queue.enqueue("struct", "fmc_docs", async () => 1, 30);
+  await assert.rejects(waiting, (error: unknown) => {
+    assert.ok(error instanceof StillQueued);
+    assert.match(error.busy_reason, /job running fmc_model_edit|Revit not idle/);
+    assert.match(error.message, /busy_reason:/);
+    return true;
+  });
+  await blocker;
+});
+
+test("marking a stale revit job cancelled takes it out of the open list", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-queue-"));
+  const env = { APPDATA: dir } as NodeJS.ProcessEnv;
+  const home = path.join(dir, "Formcraft");
+  fs.mkdirSync(home, { recursive: true });
+  const started = new Date(Date.now() - 120_000).toISOString();
+  fs.writeFileSync(path.join(home, "FMC_Jobs_Revit.jsonl"), JSON.stringify({
+    at: started, job: "abc123", command: "fmc_circuits", event: "queued", started,
+  }) + "\n");
+  const before = rowFromRevit(findJob("abc123", env)!, Date.now());
+  assert.equal(before.state, "queued");
+  markRevitCancelled("abc123", "fmc_circuits", env);
+  assert.equal(findJob("abc123", env)?.state, "cancelled");
+});

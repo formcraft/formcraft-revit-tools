@@ -8,9 +8,11 @@ import { parseConfig } from "./aiuse.js";
 import { resetBatchBoard } from "./batchline.js";
 import { memoryGate } from "./memory.js";
 import { DEFAULT_CONFIG, type GuardConfig } from "./policy.js";
-import { policySummary } from "../tools/fmc_ai.js";
+import { effectivePolicy, policySummary } from "../tools/fmc_ai.js";
+import { batchKey } from "./aiuse.js";
+import { formcraftDir } from "./aiuse_io.js";
 import {
-  appendSyncAutoLog, isDamageDialog, judgeDirectSync, readSyncAutoLog, recentDamage, syncAutoLogPath,
+  appendSyncAutoLog, isDamageDialog, judgeAiSync, judgeDirectSync, readSyncAutoLog, recentDamage, syncAutoInEffect, syncAutoLogPath,
   type SyncAutoFacts, type SyncHost,
 } from "./syncauto.js";
 
@@ -145,4 +147,39 @@ test("aigate auto-approves a direct sync when the checks pass, and leaves relinq
   const blocked = await aiGate("fmc_revit_file", { action: "sync", document: local.path }, local, cfg, send, env);
   assert.equal(blocked.ok, false);
   assert.match(String(readSyncAutoLog(env).at(-1)?.reason), /Another lease/);
+});
+
+test("batch-end, the timer and a direct sync share auto_approve_sync, and Approvals says auto-approved (sync)", async () => {
+  assert.equal(syncAutoInEffect(ai), true);
+  assert.equal(judgeAiSync("batch_end", local, ai, facts()).approve, true);
+  assert.equal(judgeAiSync("timer", local, ai, facts()).approve, true);
+  assert.equal(judgeAiSync("direct", local, { ...ai, auto_approve_sync: false }, facts()).judged, false);
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-sync-policy-"));
+  const env = { APPDATA: dir } as NodeJS.ProcessEnv;
+  const guardFile = path.join(dir, "Formcraft", "fmc_guard.json");
+  const cfg = {
+    ...DEFAULT_CONFIG,
+    protected_roots: ["D:\\Fomcraft\\Live"],
+    ai_modeller: { on: true, stop: false, mode: "testing", auto_approve: true, auto_approve_sync: true, projects: { F26001: { general: true } } },
+  } as GuardConfig;
+  resetBatchBoard({ requiredReferences: [] });
+  const gate = await aiGate("fmc_revit_file", { action: "sync", batch_sync: true, sync_source: "batch_end", document: local.path }, local, cfg, async () => ({ synced: true }), env);
+  assert.equal(gate.ok, true, gate.reason || gate.user);
+  await gate.run?.(async () => ({ synced: true }));
+  const id = batchKey("fmc_revit_file", { action: "sync", document: local.path || local.title, sync_source: "batch_end" }, local.path);
+  const file = path.win32.join(formcraftDir(env), "ai_queue", `${id}.json`);
+  const item = JSON.parse(fs.readFileSync(file, "utf8")) as { by?: string; status?: string; details?: string[] };
+  assert.equal(item.by, "auto-approved (sync)");
+  assert.equal(item.status, "used");
+  assert.deepEqual(item.details, ["auto-approved (sync)"]);
+  const others = await aiGate("fmc_revit_file", { action: "sync", relinquish_others: true, document: local.path }, local, cfg, async () => ({}), env);
+  assert.equal(others.ok, false);
+  const before = fs.existsSync(guardFile) ? fs.readFileSync(guardFile, "utf8") : "";
+  const policy = effectivePolicy(cfg, ai);
+  assert.equal(policy.sync.in_effect, true);
+  assert.equal(policy.sync.approval_label, "auto-approved (sync)");
+  assert.equal(policy.relinquish_others, "never");
+  assert.equal(policy.approve, "auto");
+  const after = fs.existsSync(guardFile) ? fs.readFileSync(guardFile, "utf8") : "";
+  assert.equal(after, before);
 });
