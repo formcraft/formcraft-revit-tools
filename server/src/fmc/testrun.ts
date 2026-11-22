@@ -32,7 +32,7 @@ export const RUNNER_ACTIONS = ["open_in_revit", "close_revit"] as const;
 /** The tools `node build/fmc/cli.js <tool>` runs (a test keeps this list in step with cli.ts). fmc_testrun isn't one: no runs inside runs. */
 export const CLI_TOOLS = [
   "fmc_file", "fmc_family", "fmc_project", "fmc_template", "fmc_library", "fmc_qa", "fmc_material", "fmc_sheets", "fmc_annotate",
-  "fmc_issue", "fmc_links", "fmc_coord", "fmc_phase", "fmc_selftest", "fmc_workshare", "fmc_review", "fmc_report", "fmc_doc", "fmc_revit", "fmc_brief",
+  "fmc_issue", "fmc_links", "fmc_coord", "fmc_phase", "fmc_hw", "fmc_joins", "fmc_dynamo", "fmc_script_run", "fmc_selftest", "fmc_workshare", "fmc_review", "fmc_report", "fmc_doc", "fmc_revit", "fmc_brief",
   "fmc_scripts", "fmc_systems", "fmc_build", "fmc_ai", "fmc_recipe", "fmc_robot", "fmc_navis", "fmc_rhino", "fmc_legend", "fmc_apps",
   "fmc_flow", "fmc_select", "fmc_find", "fmc_tree", "fmc_room", "fmc_casework", "fmc_ceiling", "fmc_schedules", "fmc_changes", "fmc_balance", "fmc_powerbi", "fmc_tables", "fmc_calc", "fmc_diagram"];
 

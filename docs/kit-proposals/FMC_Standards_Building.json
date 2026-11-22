@@ -88,7 +88,19 @@
     "site.boundary_setback": { "value": 3000, "note": "check the planning permit" },
 
     "coord.tol_mm": { "value": 5, "unit": "mm", "status": "draft", "clause": "STD 8.5", "note": "shared-coordinate position. provisional never PASS; draft or approved PASS only with a clause; null status is UNKNOWN" },
-    "coord.tol_deg": { "value": 0.01, "unit": "degrees", "status": "draft", "clause": "STD 8.5", "note": "shared-coordinate plan angle. Same status model as coord.tol_mm" }
+    "coord.tol_deg": { "value": 0.01, "unit": "degrees", "status": "draft", "clause": "STD 8.5", "note": "shared-coordinate plan angle. Same status model as coord.tol_mm" },
+
+    "joins.gap_mm": { "value": 10, "unit": "mm", "status": "provisional", "clause": "", "note": "Face gap above this, and beyond joins.near_miss_mm, is JOIN-GAP. An unjoined wall end is JOIN-WALL-END-OPEN. Provisional never PASS." },
+    "joins.overlap_mm": { "value": 5, "unit": "mm", "status": "provisional", "clause": "", "note": "Overlap past this is JOIN-OVERLAP." },
+    "joins.near_miss_mm": { "value": 50, "unit": "mm", "status": "provisional", "clause": "", "note": "A gap above joins.gap_mm and within this is JOIN-NEAR-MISS. A snap stays inside this distance." },
+    "joins.leak_min_mm": { "value": 10, "unit": "mm", "status": "provisional", "clause": "", "note": "Envelope openings smaller than this are not leaks. SEALED needs this key draft or approved, with a clause." },
+    "joins.host_offset_mm": { "value": 20, "unit": "mm", "status": "provisional", "clause": "", "note": "Host, face or level offset past this is a hosting finding. Wall base offset uses it as JOIN-BASE-OFFSET." },
+    "joins.search_mm": { "value": 300, "unit": "mm", "status": "provisional", "clause": "", "note": "Pairs farther apart than this are not compared." },
+    "joins.scan_cap": { "value": 800, "unit": "elements", "status": "provisional", "clause": "", "note": "An unscoped collector above this count is refused. A scoped collector stops at this count." },
+    "joins.voxel_mm": { "value": 250, "unit": "mm", "status": "provisional", "clause": "", "note": "Edge and voxel step for the pressure test." },
+    "joins.max_ops": { "value": 50, "unit": "ops", "status": "provisional", "clause": "", "note": "Operations in one fmc_joins_apply. The tool never sends more than 50." },
+    "joins.max_rays": { "value": 48, "unit": "rays", "status": "provisional", "clause": "", "note": "Rays from an interior seed. A capped sample with no leak is UNKNOWN, not SEALED." },
+    "joins.max_pairs": { "value": 400, "unit": "pairs", "status": "provisional", "clause": "", "note": "Element pairs measured in one read." }
   },
   "recipes": {
     "how": "fmc_standards recipe searches the kit's Recipes (and staged families) by words. When none fits, it gives the standard values above and the recipe name to write, following the Naming rulebook: FMC_<discipline>_<category>_<descriptor>.recipe.json in Recipes\\Families\\<discipline>.",

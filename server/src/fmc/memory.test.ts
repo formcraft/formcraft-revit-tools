@@ -30,7 +30,47 @@ test("1024 MB pauses and memory above 1536 resumes", () => {
   assert.match(logs.at(-1) ?? "", /resumed/);
   free = 100;
   assert.equal(gate.view().paused, true);
+  assert.equal(gate.view().tier, "hard");
+  assert.equal(gate.view().code, "FMC-MEMORY-HARD");
   return assert.rejects(() => gate.holdWrites(0), /FMC-RAM-PAUSE/);
+});
+
+test("soft is the band between the two existing lines, and a heavy job is queued not failed", async () => {
+  let free = 1400;
+  const gate = new MemoryGate(
+    (): MemorySample => ({ freeMb: free, totalMb: 16000, revitWorkingSetMb: 4000, source: "os" }),
+    () => memoryLimits(1024),
+    () => {},
+    0,
+  );
+  assert.equal(gate.view().paused, false);
+  assert.equal(gate.view().tier, "soft");
+  assert.equal(gate.view().code, "FMC-MEMORY-SOFT");
+  assert.equal(gate.leasesPaused(), false);
+  assert.equal(gate.blocksNewLeases(), true);
+  const { admitWrite, isHeavyWrite } = await import("./memory.js");
+  assert.equal(isHeavyWrite("send_code_to_revit", { code: "return 1;" }), true);
+  assert.equal(isHeavyWrite("create_level", {}), false);
+  await assert.rejects(() => admitWrite(gate, "send_code_to_revit", { code: "x" }, 0), /FMC-MEMORY-SOFT/);
+  await admitWrite(gate, "create_level", {}, 0);
+  free = 1023;
+  assert.equal(gate.view().tier, "hard");
+  assert.equal(gate.view().paused, true);
+  free = 1200;
+  assert.equal(gate.view().paused, true, "the hard latch holds until above the resume line");
+  assert.equal(gate.view().tier, "hard");
+  free = 1537;
+  assert.equal(gate.view().tier, "ok");
+  assert.equal(gate.view().paused, false);
+  free = 500;
+  const off = new MemoryGate(
+    (): MemorySample => ({ freeMb: free, totalMb: 16000, revitWorkingSetMb: null, source: "os" }),
+    () => memoryLimits(0),
+    () => {},
+    0,
+  );
+  assert.equal(off.view().tier, "off");
+  assert.equal(off.view().paused, false);
 });
 
 test("a lease stays queued while memory is paused and grants when it clears", async () => {

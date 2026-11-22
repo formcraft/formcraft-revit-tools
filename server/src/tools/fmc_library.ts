@@ -9,6 +9,12 @@ import { DEFAULT_LIMIT, worstFamilies } from "../fmc/digest.js";
 import {
   ScannedFamily, categoryTokens, checkFamily, decodeKeynoteFile, keynoteTableWarnings, nextKeynoteCode, parseKeynotes, searchKeynotes, standardName, summarise,
 } from "../fmc/library.js";
+import { kitRootFrom } from "../fmc/dynamo.js";
+import { findScript, loadLibrary, resolveEntry, validateManifest, withResolved } from "../fmc/scriptlib.js";
+import { prepareLibraryStep } from "../fmc/batchstep.js";
+import { runFmcDynamo } from "./fmc_dynamo.js";
+import { runFmcScriptRun } from "./fmc_script_run.js";
+import { namedDocument } from "../fmc/scriptexec.js";
 
 const win = path.win32;
 
@@ -40,7 +46,10 @@ function readKit(cfg: GuardConfig) {
 }
 
 export const FMC_LIBRARY_DESCRIPTION =
-  "Formcraft families against the kit. scan (read-only, also on live models): every loadable family in the active " +
+  "Script library and families. list, validate and run are the script library in 05_Scripts/library (index.json plus a manifest per script). " +
+  "list is read-only. validate checks the manifest, including references.kit, references.standards and references.rulebook. " +
+  "run dispatches to fmc_dynamo or fmc_script_run. A manifest missing any of those references is refused. background true submits and returns a job id. " +
+  "Families: scan (read-only, also on live models): every loadable family in the named document " +
     "project, checked for the naming rule, the required FMC parameters by GUID (from FMC_Family_Specs.json), keynotes " +
     "and type names; each gets a score and Compliant, Fixable or Needs a person. inspect: the same for an outside .rfa, " +
     "plus file size and imported CAD, and a proposed standard name. bring_in: saves an outside family to library " +
@@ -48,7 +57,12 @@ export const FMC_LIBRARY_DESCRIPTION =
     "parameters and keynotes search the kit's files; keynote_request records a new keynote for the BIM Manager.";
 
 export const FMC_LIBRARY_SHAPE = {
-  action: z.enum(["scan", "inspect", "bring_in", "parameters", "keynotes", "keynote_request"]),
+  action: z.enum(["scan", "inspect", "bring_in", "parameters", "keynotes", "keynote_request", "list", "validate", "run"]),
+  id: z.string().optional().describe("list is unused. validate and run: the script id in 05_Scripts/library/index.json"),
+  background: z.boolean().optional().default(false).describe("run: submit a background job instead of waiting"),
+  arguments: z.record(z.unknown()).optional().describe("run: arguments for the script. references are filled from the manifest when omitted."),
+  revit_version: z.string().optional().describe("run apply: this Revit's version, checked against the manifest before apply"),
+  workshared: z.boolean().optional().describe("run apply: whether the document is workshared"),
   path: z.string().optional().describe("inspect, bring_in: the outside .rfa"),
   role: z.string().optional().describe("inspect, bring_in: role code for the standard name"),
   description: z.string().optional().describe("inspect, bring_in: plain words for the name, e.g. 'Socket MK'"),
@@ -66,7 +80,70 @@ export const FMC_LIBRARY_SHAPE = {
 
 export type FmcLibraryArgs = z.infer<z.ZodObject<typeof FMC_LIBRARY_SHAPE>>;
 
+function callInputs(args: Record<string, unknown> | undefined): Record<string, unknown> {
+  const raw = { ...(args ?? {}) };
+  if (raw.inputs && typeof raw.inputs === "object" && !Array.isArray(raw.inputs)) return raw.inputs as Record<string, unknown>;
+  delete raw.references;
+  delete raw.dry_run;
+  delete raw.mode;
+  delete raw.background;
+  return raw;
+}
+
+async function runScriptLibrary(args: FmcLibraryArgs) {
+  const { config } = loadConfig();
+  const kit = kitRootFrom(config, process.env, "");
+  if (args.action === "list") {
+    const loaded = loadLibrary(kit);
+    return reply({
+      folder: loaded.folder, index: loaded.index, problems: loaded.problems,
+      scripts: loaded.entries.map((entry) => ({
+        id: entry.id, manifest: entry.manifest_path, runner: entry.manifest?.runner,
+        revit_version: entry.manifest?.revit_version, writes_model: entry.manifest?.writes_model,
+        workshared_safe: entry.manifest?.workshared_safe, est_ai_calls_saved: entry.manifest?.est_ai_calls_saved,
+        problems: entry.problems.length ? entry.problems : undefined,
+      })),
+      resolved_document: null,
+    }, loaded.problems.length > 0 && loaded.entries.length === 0);
+  }
+  const id = (args.id ?? "").trim();
+  if (!id) return reply({ refused: true, message: `${args.action} needs id.`, resolved_document: null }, true);
+  const found = findScript(kit, id);
+  if (!found) return reply({ refused: true, code: "FMC-SCRIPT-NOT-FOUND", message: `No library script ${id}.`, resolved_document: null }, true);
+  if (args.action === "validate") {
+    const fresh = found.manifest ? validateManifest(found.manifest) : { ok: false as const, problems: found.problems };
+    return reply({ id, ok: fresh.ok && found.problems.length === 0, problems: fresh.ok ? found.problems : fresh.problems, manifest: found.manifest, resolved_document: null }, !fresh.ok || found.problems.length > 0);
+  }
+  if (!found.manifest || found.problems.length) return reply({ refused: true, id, problems: found.problems, resolved_document: null }, true);
+  const prepared = prepareLibraryStep(
+    { tool: "library", id, arguments: args.arguments, background: args.background },
+    found.manifest,
+    {
+      previewOnly: args.dry_run !== false && args.arguments?.mode !== "apply",
+      revitVersion: args.revit_version,
+      document: { title: namedDocument(), path: namedDocument(), workshared: args.workshared },
+    },
+  );
+  if (prepared.problems.length) return reply(withResolved({ refused: true, id, problems: prepared.problems }, null), true);
+  const mode = prepared.mode;
+  const inputs = callInputs(prepared.arguments);
+  if (found.manifest.runner === "dynamo") {
+    const entry = resolveEntry(kit, found.manifest_path, found.manifest.entry);
+    if (!entry.ok) return reply(withResolved({ refused: true, code: "FMC-SCRIPT-ROOT", message: entry.message }, null), true);
+    return runFmcDynamo({
+      action: prepared.background ? "submit" : "run",
+      path: entry.file,
+      inputs, mode, dry_run: prepared.dry_run, job_id: "", state: "", priority: 0, label: id, kit_folder: kit,
+    });
+  }
+  return runFmcScriptRun({
+    action: prepared.background ? "submit" : "run",
+    id, inputs, mode, dry_run: prepared.dry_run, job_id: "", state: "", priority: 0, label: id, kit_folder: kit,
+  });
+}
+
 export async function runFmcLibrary(args: FmcLibraryArgs) {
+  if (args.action === "list" || args.action === "validate" || args.action === "run") return runScriptLibrary(args);
   const { config, problem } = loadConfig();
   const k = readKit(config);
   try {
