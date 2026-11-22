@@ -304,6 +304,11 @@
       "assemblyPath": "RevitMCPCommandSet.dll"
     },
     {
+      "commandName": "fmc_coord_apply",
+      "description": "Formcraft: coordination snapshot, align or place (align and place change the model only when dry_run is false; behind the lock)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
       "commandName": "fmc_reload_link",
       "description": "Formcraft: reload one Revit link type with no transaction phase (behind the lock)",
       "assemblyPath": "RevitMCPCommandSet.dll"
@@ -489,6 +494,11 @@
       "assemblyPath": "RevitMCPCommandSet.dll"
     },
     {
+      "commandName": "fmc_dynamo",
+      "description": "Formcraft: run a kit Dynamo graph in-process through Dynamo for Revit (late-bound). Preview rolls the transaction group back. Apply keeps it. Neither saves. Status reports whether Dynamo for Revit is loaded.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
       "commandName": "fmc_scene_export",
       "description": "Formcraft: a 3D view as FBX plus materials, extent and camera, for Blender renders (files in WIP; the model is not changed)",
       "assemblyPath": "RevitMCPCommandSet.dll"
@@ -549,6 +559,16 @@
       "assemblyPath": "RevitMCPCommandSet.dll"
     },
     {
+      "commandName": "fmc_trace",
+      "description": "Formcraft systems flow tracer: leak test, continuity, missing parts and standards verdicts (read-only, no transaction)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_trace_apply",
+      "description": "Formcraft systems flow tracer: apply a dry-run correction plan in one transaction, and roll it back if the failure count rises",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
       "commandName": "fmc_ceiling_place",
       "description": "Formcraft ceilings (CL2): a ceiling design placed in one transaction: I.CLG ceilings per zone, line features where families are loaded, fixtures as marks only (dry run is the real run rolled back)",
       "assemblyPath": "RevitMCPCommandSet.dll"
@@ -567,6 +587,16 @@
       "description": "Formcraft hub: select elements by UniqueId or element id and zoom to them (view only; the model never changes)",
       "commandName": "fmc_find_elements",
       "description": "Formcraft hub: elements by mark, number or name, and what touches them (read-only)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_phase",
+      "description": "Formcraft phases: phases, phase filters, revisions and a compact element summary (read-only)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_phase_apply",
+      "description": "Formcraft phases: one transaction for a phase or revision plan (dry run stays on the server)",
       "assemblyPath": "RevitMCPCommandSet.dll"
     }
   ]

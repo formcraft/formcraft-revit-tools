@@ -96,9 +96,11 @@ export const COMMAND_GROUPS: Record<string, string> = {
 export const NEVER: Record<string, string> = {
   create_structural_framing_system: "structure",
   delete_element: "deleting", operate_element: "moving or deleting arbitrary elements", send_code_to_revit: "running arbitrary code",
-  fmc_link_add: "links (coordination)", fmc_link_pin: "links (coordination)", fmc_reload_link: "links (coordination)", fmc_workset_create: "worksets (setup)",
+  fmc_link_add: "links (coordination)", fmc_link_pin: "links (coordination)", fmc_reload_link: "links (coordination)", fmc_coord_apply: "coordinates (coordination)", fmc_workset_create: "worksets (setup)",
   fmc_material_purge: "purging (deleting)",
   fmc_new_local: "files (new local)",
+  fmc_dynamo: "running a Dynamo graph",
+  fmc_script_run: "running a library script",
 };
 
 /** What a person sees when AI isn't allowed: plain lines, never the lock's wording (owner 26 Oct). */
@@ -270,7 +272,7 @@ export function aiVerdict(ask: AiAsk, cfg: GuardConfig, book: AiRulebook | null,
   if (ai.stop) return no("Stop AI is on: every AI change is refused until it is switched off", { user: USER_LINE.stopped });
   // Full access (owner 26 Oct): every tool like a person, each batch approved; code only with the admin's code switch.
   const full = ai.access === "full" && generalState(ai, ask.doc.title, ask.doc.path) === "On";
-  if (full && ask.command === "send_code_to_revit" && ai.allow_code !== true)
+  if (full && (ask.command === "send_code_to_revit" || ask.command === "fmc_dynamo" || ask.command === "fmc_script_run") && ai.allow_code !== true)
     return no("Running code needs the admin's 'AI may run code' switch", { user: USER_LINE.admin("running code: the admin's 'AI may run code' switch is off") });
   if (!full && NEVER[ask.command]) return no(`AI never runs ${ask.command} on a project model: ${NEVER[ask.command]}`, { user: USER_LINE.admin(NEVER[ask.command]) });
   const group = COMMAND_GROUPS[ask.command] ?? (full ? "full" : undefined);

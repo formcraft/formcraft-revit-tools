@@ -19,6 +19,15 @@ test("standards (owner 26 Oct): kit values by use, the project's on top, each wi
   assert.equal(lookup(all, "walls external")[0].kit_code, "B.200_00");
 });
 
+test("lookup prefers an exact case-sensitive key, then a case-insensitive one", () => {
+  const row = (key: string, value: number) => ({ key, value, unit: "", source: "kit" as const, status: "proposed" });
+  const all = [row("qk_range", 1), row("Qk_range", 2), row("stairs.riser_max", 190)];
+  assert.equal(lookup(all, "Qk_range")[0].value, 2);
+  assert.equal(lookup(all, "qk_range")[0].value, 1);
+  assert.deepEqual(lookup(all, "QK_RANGE").map((item) => item.key).sort(), ["Qk_range", "qk_range"]);
+  assert.equal(lookup(all, "STAIRS.RISER_MAX")[0].key, "stairs.riser_max");
+});
+
 test("recipes: found by words; when none fits, the name to write and the standards to build it from", () => {
   const index = new Map([["FMC_A_Door_Single_Flush", ["d.json"]], ["FMC_A_Window_Laboratory_Fixed", ["w.json"]]]);
   assert.equal(findRecipes(index, "single door")[0].family, "FMC_A_Door_Single_Flush");
