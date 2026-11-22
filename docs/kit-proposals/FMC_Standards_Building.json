@@ -85,7 +85,10 @@
 
     "site.parking_bay": { "value": [2500, 5000], "unit": "width × length mm" },
     "site.parking_aisle": { "value": 6000 },
-    "site.boundary_setback": { "value": 3000, "note": "check the planning permit" }
+    "site.boundary_setback": { "value": 3000, "note": "check the planning permit" },
+
+    "coord.tol_mm": { "value": 5, "unit": "mm", "status": "draft", "clause": "STD 8.5", "note": "shared-coordinate position. provisional never PASS; draft or approved PASS only with a clause; null status is UNKNOWN" },
+    "coord.tol_deg": { "value": 0.01, "unit": "degrees", "status": "draft", "clause": "STD 8.5", "note": "shared-coordinate plan angle. Same status model as coord.tol_mm" }
   },
   "recipes": {
     "how": "fmc_standards recipe searches the kit's Recipes (and staged families) by words. When none fits, it gives the standard values above and the recipe name to write, following the Naming rulebook: FMC_<discipline>_<category>_<descriptor>.recipe.json in Recipes\\Families\\<discipline>.",

@@ -862,5 +862,32 @@
     "status": "Built, Revit check due",
     "ref": "fmc_dynamo, fmc_script_run, fmc_library, docs/RUN_FMC_BATCH.md",
     "note": "fmc_dynamo inspects a .dyn on the server and runs it in-process through Dynamo for Revit by reflection, so the add-in builds without those assemblies. If Dynamo for Revit is not loaded the answer is FMC-DYNAMO-UNAVAILABLE. Preview rolls a transaction group back and does not save. Apply keeps the group, needs batch_lease, and does not save; the existing timer and batch-end sync do. Offline DynamoCLI runs only graphs with no Revit nodes (FMC-DYNAMO-NEEDS-REVIT otherwise) and does not launch Revit. fmc_script_run loads 05_Scripts/library by id. C# goes through send_code. A missing kit, standards or rulebook reference is refused. allow_full_scan is refused. workshared_safe scripts that call CheckoutElements or an editing request are refused. submit, status, list, log and cancel share one queue. One job at a time per Revit, waiting while Revit is not idle. The queue file is %APPDATA%\\Formcraft\\jobs\\queue.json. A running job becomes interrupted on restart and is not started again. /health jobs reports queued, running and last_finished. graph_run forwards to fmc_dynamo. Needs a Revit check with Dynamo for Revit installed."
+  },
+  {
+    "id": "F97",
+    "area": "Engine",
+    "group": "Manage",
+    "feature": "Phases and revisions from a batch",
+    "status": "Built, Revit check due",
+    "ref": "fmc_phase",
+    "note": "One tool. phases, audit, batch_check, revision_open, revision_cloud, compare, issue and unissue. The batch declares its phase (fmc_batch phase, or the phase argument). Dry run defaults to true. A write is fmc_phase_apply, one transaction, at most 50 operations, with batch_lease. Document is an exact title or path. Counts and ids, no images. The revision ledger is FMC_Revisions.jsonl. phase.* and revision.* come from the standards bank; a missing key is PROVISIONAL and cannot PASS. Needs a Revit check."
+  },
+  {
+    "id": "F98",
+    "area": "Engine",
+    "group": "Engineer",
+    "feature": "Systems flow tracer",
+    "status": "Built, Revit check due",
+    "ref": "fmc_trace",
+    "note": "Read-only leak test, continuity, missing parts, standards verdicts, counts and recommendations. limits, leak and continuity read tolerances from the bank with a per-field source. Aliases: trace.near_miss_tolerance, trace.voltage_drop_max, and trace.connection_tolerance (a scalar for touch and connected gap, or an object of the joint fields). A null alias is UNKNOWN and the labelled provisional default is still used. A null pipe capacity with capacity_FU_tool_default keeps the built-in size table as a PROVISIONAL tool default. Voltage-drop cells that are not a known cable size are reported as unmatched_cells. A provisional bank entry never PASSes. A draft or approved entry with a clause can. Vent distance is 300 mm from the trap outlet. Recommendations that resize, cap or assign a system can be passed to fix. Splits, regrades, cleanouts and valves stay advisory. fix with dry_run false needs a batch lease and rolls back if the failure count rises. HEBERT HOSTELS, centrals and protected paths are refused. Replies are capped; the JSON is under %LOCALAPPDATA%\\Formcraft\\trace. Needs a Revit check. The add-in needs a Revit restart; the server walk does not."
+  },
+  {
+    "id": "F99",
+    "area": "Engine",
+    "group": "Coordinate",
+    "feature": "Coordination matrix across models, objects and families",
+    "status": "Built, Revit check due",
+    "ref": "fmc_coord",
+    "note": "fmc_coord keeps a versioned record (survey, base, true north, elevation datum, shared origin, control points, and model, object and family transforms) next to the project and in %APPDATA%\\Formcraft\\coord. publish, check, align and place call fmc_coord_apply once. read, export and import, and a check of two published models, stay on the server. dry_run defaults true. document is required. Tolerances are coord.tol_mm and coord.tol_deg. Needs a Revit check."
   }
 ]

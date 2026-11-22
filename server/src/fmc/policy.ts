@@ -165,7 +165,7 @@ export const WRITE_COMMANDS = new Set<string>([
   "create_level", "create_grid", "create_room", "create_dimensions", "create_structural_framing_system",
   "operate_element", "delete_element", "color_splash", "tag_walls", "tag_rooms", "send_code_to_revit",
   "fmc_load_test_families", "fmc_material_assign", "fmc_material_purge", "fmc_sheet_create", "fmc_sheet_rename",
-  "fmc_link_add", "fmc_link_pin", "fmc_reload_link", "fmc_workset_create", "fmc_review_cloud", "fmc_brief_apply", "fmc_fea_write",
+  "fmc_link_add", "fmc_link_pin", "fmc_reload_link", "fmc_coord_apply", "fmc_workset_create", "fmc_review_cloud", "fmc_brief_apply", "fmc_fea_write",
   // Line diagrams (owner, 15 Oct): the tool draws only in new documents, _Staging and _ChainTests; in a live project a
   // person presses Generate in the pane.
   "fmc_diagram_draw",
@@ -195,10 +195,14 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_undo",
   // Circuits (KISIC 4.4): devices grouped into circuits on a board, the kit's distribution system set; the dry run rolls back
   "fmc_circuits_create",
+  // Systems flow tracer corrections. Reads stay on fmc_trace. This command is the one transaction.
+  "fmc_trace_apply",
   // A fresh workshared local. The server sends a fixed script; the add-in command is still send_code_to_revit.
   "fmc_new_local",
   // Grids copied from a loaded link. The server sends a fixed script; the add-in command is still send_code_to_revit.
   "fmc_grids_from_link",
+  // Phases and revisions. Reads stay on fmc_phase. This command is the one transaction.
+  "fmc_phase_apply",
 ]);
 
 /**
@@ -218,6 +222,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_document_info",
   // checkout status and central currency. Read-only. Never requests ownership.
   "fmc_elem_currency",
+  // Phases, filters, revisions and the compact element rows fmc_phase summarises. No transaction.
+  "fmc_phase",
 ]);
 
 /**

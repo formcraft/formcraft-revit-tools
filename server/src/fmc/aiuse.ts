@@ -96,7 +96,7 @@ export const COMMAND_GROUPS: Record<string, string> = {
 export const NEVER: Record<string, string> = {
   create_structural_framing_system: "structure",
   delete_element: "deleting", operate_element: "moving or deleting arbitrary elements", send_code_to_revit: "running arbitrary code",
-  fmc_link_add: "links (coordination)", fmc_link_pin: "links (coordination)", fmc_reload_link: "links (coordination)", fmc_workset_create: "worksets (setup)",
+  fmc_link_add: "links (coordination)", fmc_link_pin: "links (coordination)", fmc_reload_link: "links (coordination)", fmc_coord_apply: "coordinates (coordination)", fmc_workset_create: "worksets (setup)",
   fmc_material_purge: "purging (deleting)",
   fmc_new_local: "files (new local)",
   fmc_dynamo: "running a Dynamo graph",

@@ -190,12 +190,14 @@ function isFamilyCreate(command: string, hints: DocumentRequiredHints): boolean 
 export function documentDecision(command: string, openTitles: Array<string | OpenDocRef>, named: string | undefined, hints?: string | DocumentRequiredHints): DocResolveResult {
   const key = (named ?? "").trim();
   const parsed = hintsOf(hints);
-  // fmc_new_local never falls back to the active document, even when only one model is open.
+  // These never fall back to the active document, even when only one model is open.
   const force = !key && command === "fmc_new_local"
     ? `[${DOC_REQUIRED}] fmc_new_local needs document: the title of the open local to replace. Refusing to use the active document.`
     : !key && command === "fmc_grids_from_link"
       ? `[${DOC_REQUIRED}] fmc_grids_from_link needs document: the host model. Refusing to use the active document.`
-      : undefined;
+      : !key && command === "fmc_coord_apply"
+        ? `[${DOC_REQUIRED}] fmc_coord_apply needs document: a title or a full path. Refusing to use the active document.`
+        : undefined;
   return resolveOpenDocument({
     named: key,
     open: openTitles,
