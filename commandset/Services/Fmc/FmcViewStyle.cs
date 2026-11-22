@@ -254,7 +254,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     bool created = false;
                     if (scheme == null)
                     {
-                        scheme = ColorFillScheme.Create(doc, rooms);
+                        // Revit 2025 has no ColorFillScheme.Create. A missing scheme is reported, not created.
                         created = true;
                     }
                     // A scheme this call just created has no public way to bind Department or Name.

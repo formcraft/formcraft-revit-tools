@@ -35,7 +35,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 using (FmcTarget target = FmcTarget.Resolve(app, Parameters, mayOpen: false))
                 {
                     Document doc = target.Doc;
-                    var levels = new HashSet<string>(StringComparison.OrdinalIgnoreCase);
+                    var levels = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                     foreach (JToken token in Parameters["levels"] as JArray ?? new JArray())
                         if (!string.IsNullOrWhiteSpace(token.ToString())) levels.Add(token.ToString().Trim());
                     bool host = Wants(Parameters["sources"] as JArray, "host");
@@ -252,7 +252,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             long id = element.Category.Id.Value;
             if (id == (long)BuiltInCategory.OST_StructuralFraming)
             {
-                if (element is FamilyInstance instance && (instance.StructuralType == StructuralType.Column || instance.StructuralType == StructuralType.Footing)) return "";
+                if (element is FamilyInstance instance && (instance.StructuralType == Autodesk.Revit.DB.Structure.StructuralType.Column || instance.StructuralType == Autodesk.Revit.DB.Structure.StructuralType.Footing)) return "";
                 return "beam";
             }
             if (id == (long)BuiltInCategory.OST_DuctCurves || id == (long)BuiltInCategory.OST_FlexDuctCurves || id == (long)BuiltInCategory.OST_DuctFitting) return "duct";

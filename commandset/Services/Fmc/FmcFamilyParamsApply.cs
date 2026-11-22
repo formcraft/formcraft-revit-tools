@@ -1,3 +1,4 @@
+using System.IO;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Newtonsoft.Json.Linq;
@@ -74,25 +75,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                         }
                     }
                     Family loaded = null;
-                    using (var projectTransaction = new Transaction(doc, "Formcraft load family"))
-                    {
-                        var options = projectTransaction.GetFailureHandlingOptions();
-                        options.SetFailuresPreprocessor(new Quiet());
-                        options.SetClearAfterRollback(true);
-                        projectTransaction.SetFailureHandlingOptions(options);
-                        projectTransaction.Start();
-                        try
-                        {
-                            if (!fam.LoadFamily(doc, new Overwrite(), out loaded) || loaded == null)
-                                throw new InvalidOperationException("[FMC-FAMILY-LOAD] LoadFamily did not return the family. The project was not saved. The family file was not saved.");
-                            projectTransaction.Commit();
-                        }
-                        catch
-                        {
-                            if (projectTransaction.HasStarted() && !projectTransaction.HasEnded()) projectTransaction.RollBack();
-                            throw;
-                        }
-                    }
+                    // Document.LoadFamily(Document, IFamilyLoadOptions) runs its own transaction in the project and must not be called inside one.
+                    loaded = fam.LoadFamily(doc, new Overwrite());
+                    if (loaded == null)
+                        throw new InvalidOperationException("[FMC-FAMILY-LOAD] LoadFamily did not return the family. The project was not saved. The family file was not saved.");
                     Result = new JObject
                     {
                         ["ok"] = true,
@@ -152,8 +138,8 @@ namespace RevitMCPCommandSet.Services.Fmc
             double x = origin != null && origin.Count > 0 ? origin[0].Value<double>() / 304.8 : 10 / 304.8;
             double y = origin != null && origin.Count > 1 ? origin[1].Value<double>() / 304.8 : 10 / 304.8;
             var list = new List<FamilyParameter> { parameter };
-            TextElement label = fam.FamilyCreate.NewLabel(view, new XYZ(x, y, 0), TextAlignFlags.TEF_ALIGN_LEFT | TextAlignFlags.TEF_ALIGN_TOP, list);
-            if (label == null) throw new InvalidOperationException("[FMC-PARAM-LABEL] NewLabel did not create a label. No text note was substituted.");
+            // The Revit 2025 API has no method that creates a family label (FamilyItemFactory has no NewLabel). Nothing is placed and no text note is substituted.
+            throw new InvalidOperationException("[FMC-NO-API-LABEL] Revit 2025 has no API to create a label in a family. Place the label for \"" + name + "\" by hand in the kit title block; the parameter itself can be added with action add.");
         }
 
         private JObject Bind(UIApplication app, Document doc)
@@ -328,7 +314,7 @@ namespace RevitMCPCommandSet.Services.Fmc
         {
             public FailureProcessingResult PreprocessFailures(FailuresAccessor accessor)
             {
-                foreach (FailureMessage message in accessor.GetFailureMessages())
+                foreach (FailureMessageAccessor message in accessor.GetFailureMessages())
                     if (message.GetSeverity() == FailureSeverity.Warning) accessor.DeleteWarning(message);
                 return FailureProcessingResult.Continue;
             }

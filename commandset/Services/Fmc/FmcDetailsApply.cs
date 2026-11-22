@@ -1,3 +1,4 @@
+using System.IO;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Newtonsoft.Json.Linq;
@@ -287,7 +288,7 @@ namespace RevitMCPCommandSet.Services.Fmc
         {
             public FailureProcessingResult PreprocessFailures(FailuresAccessor accessor)
             {
-                foreach (FailureMessage message in accessor.GetFailureMessages())
+                foreach (FailureMessageAccessor message in accessor.GetFailureMessages())
                     if (message.GetSeverity() == FailureSeverity.Warning) accessor.DeleteWarning(message);
                 return FailureProcessingResult.Continue;
             }

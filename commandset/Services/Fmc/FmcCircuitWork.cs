@@ -184,7 +184,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             };
         }
 
-        private static bool IsPanelPart(string part)
+        internal static bool IsPanelPart(string part)
         {
             string name = (part ?? "").Replace(" ", "").Replace("_", "");
             return name.Equals("PanelBoard", StringComparison.OrdinalIgnoreCase)
@@ -196,7 +196,7 @@ namespace RevitMCPCommandSet.Services.Fmc
         /// Electrical equipment with a power-balanced or power-unbalanced connector can take a panel schedule.
         /// A device connector is PowerCircuit and is not enough on its own.
         /// </summary>
-        private static bool ScheduleCapable(FamilyInstance device)
+        internal static bool ScheduleCapable(FamilyInstance device)
         {
             if (device.Category?.Id.Value != (long)BuiltInCategory.OST_ElectricalEquipment) return false;
             try
@@ -214,7 +214,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             return false;
         }
 
-        private static string PartName(FamilyInstance device)
+        internal static string PartName(FamilyInstance device)
         {
             Parameter parameter = device.Symbol?.Family?.get_Parameter(BuiltInParameter.FAMILY_CONTENT_PART_TYPE);
             if (parameter == null || parameter.StorageType != StorageType.Integer) return "";
@@ -244,7 +244,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             catch (Exception) { return 0; }
         }
 
-        private static string DistributionName(FamilyInstance device)
+        internal static string DistributionName(FamilyInstance device)
         {
             try
             {
@@ -408,9 +408,9 @@ namespace RevitMCPCommandSet.Services.Fmc
             ElectricalSystem system = ElectricalSystem.Create(doc, ids, ElectricalSystemType.PowerCircuit);
             FamilyInstance panel = FindPanel(doc, plan.Value<string>("panel_name") ?? "") ?? FindPanel(doc, (plan.Value<long?>("panel_id") ?? 0).ToString());
             if (panel == null) throw new InvalidOperationException("Panel " + (plan.Value<string>("panel_name") ?? "") + " was not found. The circuit was not kept.");
-            if (!IsPanelPart(PartName(panel)) && !ScheduleCapable(panel))
+            if (!FmcCircuitsHandler.IsPanelPart(FmcCircuitsHandler.PartName(panel)) && !FmcCircuitsHandler.ScheduleCapable(panel))
                 throw new InvalidOperationException("FMC-PANEL-NO-DISTRIBUTION is not this case. " + (panel.Symbol?.FamilyName ?? panel.Name) + " is not a panel: it needs Part Type Panelboard, Switchboard or Other Panel, or a panel-schedule connector.");
-            if (string.IsNullOrWhiteSpace(DistributionName(panel)))
+            if (string.IsNullOrWhiteSpace(FmcCircuitsHandler.DistributionName(panel)))
                 throw new InvalidOperationException("FMC-PANEL-NO-DISTRIBUTION " + (panel.Name ?? "") + " has no distribution system. Set the Distribution System parameter (RBS_FAMILY_CONTENT_DISTRIBUTION_SYSTEM).");
             system.SelectPanel(panel);
             string name = plan.Value<string>("name") ?? "";
