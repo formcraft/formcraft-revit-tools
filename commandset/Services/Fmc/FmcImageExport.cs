@@ -27,6 +27,15 @@ namespace RevitMCPCommandSet.Services.Fmc
             return dir;
         }
 
+        /// <summary>The document and view on screen before a picture is taken.</summary>
+        internal static Shot Capture(UIApplication app) => Shot.Take(app);
+
+        /// <summary>Write the PNG. Does not touch the active window. Call PutBack after any transaction has closed.</summary>
+        internal static void Write(Document doc, ImageExportOptions options) => doc.ExportImage(options);
+
+        /// <summary>Put the captured document and view back. Safe only when no transaction phase is open.</summary>
+        internal static void PutBack(UIApplication app, Shot prior) => prior?.Restore(app);
+
         internal static void Export(UIApplication app, Document doc, ImageExportOptions options)
         {
             Shot prior = Shot.Take(app);
@@ -50,7 +59,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 || left.StartsWith(right + "/", StringComparison.OrdinalIgnoreCase);
         }
 
-        private sealed class Shot
+        internal sealed class Shot
         {
             private readonly Document _doc;
             private readonly string _path;

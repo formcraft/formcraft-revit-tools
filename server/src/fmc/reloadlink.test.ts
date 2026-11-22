@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 import { NEVER } from "./aiuse.js";
 import { writeGuard } from "./opencopy.js";
 import { WRITE_COMMANDS } from "./policy.js";
-import { judgeReload, planReloadLink } from "./reloadlink.js";
+import { classifyLinkLine, judgeReload, planReloadLink } from "./reloadlink.js";
 import { runReloadLink } from "../tools/fmc_reload_link.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
@@ -68,6 +68,8 @@ test("the add-in handler opens no transaction, and the server sends fmc_reload_l
   assert.match(handler, /type\.LoadFrom\(ModelPathUtils\.ConvertUserVisiblePathToModelPath\(given\), new WorksetConfiguration\(\)\)/);
   assert.match(handler, /type\.Reload\(\)/);
   assert.match(handler, /GetLinkedFileStatus/);
+  assert.match(handler, /GetLinkDocument/);
+  assert.match(handler, /\["link_open"\]/);
   assert.match(handler, /IsFamilyDocument/);
   assert.match(handler, /FmcTarget\.Resolve/);
   assert.match(handler, /FmcVerifySession\.Contains/);
@@ -84,11 +86,13 @@ test("LinkLoaded with status Unloaded is a failure, and Loaded stays ok", () => 
     load_result: "LinkLoaded", status: "Unloaded", path: oldPath, positions_kept: true, link_type_id: 775979,
   }, centralPath);
   assert.equal(unloaded.ok, false);
-  assert.equal(unloaded.code, "FMC-LINK-NOT-LOADED");
-  assert.match(unloaded.message ?? "", /LoadResult LinkLoaded/);
-  assert.match(unloaded.message ?? "", /still Unloaded/);
+  assert.equal(unloaded.code, "FMC-LINK-PATH-MISMATCH");
   assert.equal(unloaded.path_matches, false);
   assert.match(unloaded.message ?? "", /still D:\\Arch\\HEBERT HOSTELS_old\.rvt/);
+  const stillOut = judgeReload({ load_result: "LinkLoaded", status: "Unloaded", path: centralPath }, centralPath);
+  assert.equal(stillOut.ok, false);
+  assert.equal(stillOut.code, "FMC-LINK-NOT-LOADED");
+  assert.match(stillOut.message ?? "", /still Unloaded/);
 
   const loaded = judgeReload({ load_result: "LinkLoaded", status: "Loaded", path: centralPath, positions_kept: true }, centralPath);
   assert.equal(loaded.ok, true);
@@ -125,6 +129,41 @@ test("an open local of the same central is named, and a loaded link is not", () 
   assert.equal(loaded.hint, undefined);
 });
 
+test("Loaded is a lie when the file is open as a host, the path differs, or the link document is null", () => {
+  const central = "D:\\Arch\\A-0002.rvt";
+  const open = [{ title: "A-0002_USER", path: "C:\\Users\\USER\\A-0002_USER.rvt", isWorkshared: true, central }];
+  const host = judgeReload({
+    load_result: "LinkOpenAsHost", status: "Loaded", path: "D:\\Arch\\A-0002_old.rvt", link_open: false, link_document: null,
+  }, central, open);
+  assert.equal(host.ok, false);
+  assert.equal(host.code, "FMC-LINK-OPEN-AS-HOST");
+  assert.equal(host.status, "NotLoaded");
+  assert.equal(host.reported_status, "Loaded");
+  assert.equal(host.path_matches, false);
+  assert.match(host.hint ?? "", /A-0002_USER/);
+  assert.match(host.message ?? "", /geometry is not in the model/);
+
+  const mismatch = judgeReload({ load_result: "LinkLoaded", status: "Loaded", path: "D:\\Arch\\A-0002_old.rvt", link_open: true }, central, open);
+  assert.equal(mismatch.ok, false);
+  assert.equal(mismatch.code, "FMC-LINK-PATH-MISMATCH");
+  assert.equal(mismatch.status, "NotLoaded");
+
+  const empty = judgeReload({ load_result: "LinkLoaded", status: "Loaded", path: central, link_open: false, link_document: null }, central);
+  assert.equal(empty.ok, false);
+  assert.equal(empty.code, "FMC-LINK-NOT-LOADED");
+  assert.match(empty.message ?? "", /GetLinkDocument is null/);
+  assert.equal(empty.status, "NotLoaded");
+
+  const real = judgeReload({ load_result: "LinkLoaded", status: "Loaded", path: central, link_open: true, link_document: { title: "A-0002", path: central } }, central);
+  assert.equal(real.ok, true);
+  assert.equal(real.status, undefined);
+
+  const linked = classifyLinkLine("not linked: LinkOpenAsHost");
+  assert.equal(linked.ok, false);
+  assert.equal(linked.code, "FMC-LINK-OPEN-AS-HOST");
+  assert.equal(classifyLinkLine("linked by shared coordinates, pinned").ok, true);
+});
+
 test("the tool reply keeps load_result, status and path, and asks for the open model's central", async () => {
   const asked: string[] = [];
   const ran = await runReloadLink({ document: "HEBERT HOSTELS ELECTRICAL_USER", link_type_id: 775979, path: centralPath }, {
@@ -144,7 +183,7 @@ test("the tool reply keeps load_result, status and path, and asks for the open m
   assert.equal(ran.isError, true);
   const body = JSON.parse(ran.content[0].text) as { ok: boolean; code: string; load_result: string; status: string; path: string; hint: string; path_matches: boolean };
   assert.equal(body.ok, false);
-  assert.equal(body.code, "FMC-LINK-NOT-LOADED");
+  assert.equal(body.code, "FMC-LINK-PATH-MISMATCH");
   assert.equal(body.load_result, "LinkLoaded");
   assert.equal(body.status, "Unloaded");
   assert.equal(body.path, oldPath);

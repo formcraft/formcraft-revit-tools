@@ -82,6 +82,14 @@ namespace RevitMCPCommandSet.Services.Fmc
                 if (after == null || !after.GetTotalTransform().Origin.IsAlmostEqualTo(origin)) positionsKept = false;
             }
 
+            Document linked = null;
+            foreach (RevitLinkInstance link in new FilteredElementCollector(doc).OfClass(typeof(RevitLinkInstance)).Cast<RevitLinkInstance>())
+            {
+                if (link.GetTypeId().GetValue() != type.Id.GetValue()) continue;
+                try { linked = link.GetLinkDocument(); } catch (Exception) { linked = null; }
+                if (linked != null) break;
+            }
+
             return new JObject
             {
                 ["load_result"] = load.LoadResult.ToString(),
@@ -90,6 +98,8 @@ namespace RevitMCPCommandSet.Services.Fmc
                 ["link_type_id"] = id,
                 ["instances"] = placed.Count,
                 ["positions_kept"] = positionsKept,
+                ["link_open"] = linked != null,
+                ["link_document"] = linked == null ? JValue.CreateNull() : new JObject { ["title"] = linked.Title ?? "", ["path"] = linked.PathName ?? "" },
                 ["document"] = new JObject { ["title"] = doc.Title ?? "", ["path"] = doc.PathName ?? "" },
             };
         }

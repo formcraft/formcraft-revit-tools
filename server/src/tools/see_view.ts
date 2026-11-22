@@ -44,8 +44,9 @@ export const SEE_VIEW_DESCRIPTION =
   "folder (%LOCALAPPDATA%\\Formcraft\\images, or image_dir in fmc_guard.json). Never beside the model and never on D:. " +
   "view: a plan, section, 3D view or sheet by name or id in the document you name " +
   "(with ids, those are highlighted in it). document: title or full path of an open model, including one that is not the " +
-  "active window. The picture is exported with ExportImage and SetOfViews. If Revit switches the active document, the " +
-  "previous document and view are restored. " +
+  "active window. The picture is fmc_view_image: ExportImage and SetOfViews. Revit can switch the active document " +
+  "(a shot of S-0001 has left that model on screen). The previous document and view are restored after the temporary " +
+  "transaction rolls back. " +
   "The answer names the document title, the path, and the view. selection true: what the person has selected, only when " +
   "that document is the active window. size: pixels (default 1024; each picture costs tokens, so look when it " +
   "matters: after every batch, and at problems model_check finds). A read: allowed while a batch lease is held. Nothing in the model changes.";

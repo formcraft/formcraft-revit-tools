@@ -6,6 +6,7 @@ import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { resolvedDocumentFrom, type ResolvedDocument } from "../fmc/docresolve.js";
 import { LinkFact, auditLinks, candidates, linkProblems, roleOf } from "../fmc/links.js";
+import { classifyLinkLine } from "../fmc/reloadlink.js";
 
 const win = path.win32;
 
@@ -112,9 +113,10 @@ export async function runFmcLinks(args: FmcLinksArgs) {
       positioning: "Auto – By Shared Coordinates", next: "Run again with dry_run=false" }, host));
     if (!todo.length) return reply(withDocument({ done: true, nothing: true, message: "Already linked" }, host));
     const r = await withRevitConnection((c) => c.sendCommand("fmc_link_add", { models: todo.map((t) => ({ path: t.path, workset: t.workset })), pin: args.pin }, 300000));
-    const results = (r?.models ?? []) as Array<{ name: string; result: string }>;
-    log(config, "links_add", false, model, "done", results.map((x) => `${x.name}: ${x.result}`).join("; "));
-    return reply(withDocument({ done: true, models: results }, linkResolvedDocument(r, host)));
+    const results = ((r?.models ?? []) as Array<{ name: string; result: string }>).map((row) => ({ ...row, ...classifyLinkLine(String(row.result ?? "")) }));
+    const failed = results.filter((row) => row.ok === false);
+    log(config, "links_add", false, model, failed.length ? "failed" : "done", results.map((x) => `${x.name}: ${x.result}`).join("; "));
+    return reply(withDocument({ done: failed.length === 0, ok: failed.length === 0, models: results }, linkResolvedDocument(r, host)), failed.length > 0);
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
     log(config, "links_" + args.action, dry, "", "error", msg);

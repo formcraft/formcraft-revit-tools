@@ -76,12 +76,32 @@ export interface ReloadVerdict {
   code?: string;
   message?: string;
   hint?: string;
+  /** Replaces a false Loaded. The add-in's own word is reported_status. */
+  status?: string;
+  reported_status?: string;
   /** Set after a LoadFrom. False when the path Revit reports is not the path that was requested. */
   path_matches?: boolean;
 }
 
+function compact(value: string): string {
+  return value.toLowerCase().replace(/[^a-z]/g, "");
+}
+
+/** LinkLoadResult or LinkedFileStatus says the file, or its central, is already open as a host. */
+export function openAsHost(loadResult: string, status: string): boolean {
+  return compact(loadResult).includes("openashost") || compact(status).includes("openashost");
+}
+
+/** The add-in sets link_open from GetLinkDocument. Absent means an older add-in, which cannot say. */
+function linkDocumentMissing(result: Record<string, unknown>): boolean {
+  if (result.link_open === false) return true;
+  if ("link_document" in result && (result.link_document == null)) return true;
+  return false;
+}
+
 /**
- * LoadResult is not success. The link is loaded only when status is Loaded.
+ * LoadResult is not success, and status Loaded is not success on its own.
+ * The reply may say Loaded only when the link document is open and, if a path was asked for, that path is the one Revit has.
  * An open non-linked document with the same path, or the same central, is named: Revit will not
  * load a link to a model that is open in this session.
  */
@@ -93,26 +113,52 @@ export function judgeReload(result: Record<string, unknown>, requestedPath: stri
   const lines: string[] = [];
   let ok = true;
   let code: string | undefined;
-  if (status !== "Loaded") {
+  let pathMatches: boolean | undefined;
+  if (asked) pathMatches = reported.length > 0 && samePath(reported, asked);
+  if (openAsHost(loadResult, status)) {
+    ok = false;
+    code = "FMC-LINK-OPEN-AS-HOST";
+    lines.push(`Revit reported ${loadResult || status}. The link file, or its central, is open as a host document in this Revit. The link document is empty and its geometry is not in the model.`);
+    if (pathMatches === false) lines.push(`The link path is still ${reported || "(none)"}, not ${asked}.`);
+  } else if (pathMatches === false) {
+    ok = false;
+    code = "FMC-LINK-PATH-MISMATCH";
+    lines.push(`The link path is still ${reported || "(none)"}, not ${asked}.`);
+  } else if (linkDocumentMissing(result)) {
+    ok = false;
+    code = "FMC-LINK-NOT-LOADED";
+    lines.push("GetLinkDocument is null after the reload. The link is not in the model.");
+  } else if (status !== "Loaded") {
     ok = false;
     code = "FMC-LINK-NOT-LOADED";
     lines.push(`Revit reported LoadResult ${loadResult} but the link is still ${status}.`);
   }
-  let pathMatches: boolean | undefined;
-  if (asked) {
-    pathMatches = reported.length > 0 && samePath(reported, asked);
-    if (!pathMatches) lines.push(`The link path is still ${reported || "(none)"}, not ${asked}.`);
-  }
-  const hint = !ok && asked ? openModelHint(asked, open) : undefined;
+  const needle = asked || reported;
+  const hint = !ok && needle ? openModelHint(needle, open) : undefined;
   if (hint) lines.push(hint);
   const message = lines.join(" ");
+  const lied = !ok && status === "Loaded";
   return {
     ok,
     ...(code ? { code } : {}),
+    ...(lied ? { status: "NotLoaded", reported_status: status } : {}),
     ...(message ? { message } : {}),
     ...(hint ? { hint } : {}),
     ...(pathMatches !== undefined ? { path_matches: pathMatches } : {}),
   };
+}
+
+/** A one-line result from fmc_links link (RevitLinkType.Create). LinkOpenAsHost is not a successful link. */
+export function classifyLinkLine(text: string): { ok: boolean; code?: string; hint?: string } {
+  if (openAsHost(text, "")) {
+    return {
+      ok: false,
+      code: "FMC-LINK-OPEN-AS-HOST",
+      hint: "The file or its central is open as a host document in this Revit. Close that local and link again.",
+    };
+  }
+  if (/^not linked/i.test(text.trim())) return { ok: false, code: "FMC-LINK-NOT-LOADED" };
+  return { ok: true };
 }
 
 /** Name an open project whose file or central is the path LoadFrom asked for. Linked documents are not the model itself. */
