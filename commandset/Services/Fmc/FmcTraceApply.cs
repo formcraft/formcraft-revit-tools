@@ -47,19 +47,39 @@ namespace RevitMCPCommandSet.Services.Fmc
                     if (cap > 100) cap = 100;
                     var edits = (Parameters["edits"] as JArray ?? new JArray()).OfType<JObject>().Take(cap).ToList();
                     var done = new JArray();
-                    int before = Score(doc, near, sizeTol);
+                    var skipped = new FmcNonFamily();
+                    int before = Score(doc, near, sizeTol, skipped);
                     using (var transaction = new Transaction(doc, "Formcraft trace corrections"))
                     {
                         transaction.Start();
+                        var options = transaction.GetFailureHandlingOptions();
+                        options.SetFailuresPreprocessor(new FittingFailures());
+                        options.SetClearAfterRollback(true);
+                        transaction.SetFailureHandlingOptions(options);
                         FamilySymbol pipeCap = CapSymbol(doc, BuiltInCategory.OST_PipeFitting);
                         FamilySymbol ductCap = CapSymbol(doc, BuiltInCategory.OST_DuctFitting);
                         foreach (JObject edit in edits)
                         {
-                            JObject row = ApplyOne(doc, edit, pipeCap, ductCap);
-                            done.Add(row);
+                            using (var sub = new SubTransaction(doc))
+                            {
+                                sub.Start();
+                                JObject row;
+                                try
+                                {
+                                    row = ApplyOne(doc, edit, pipeCap, ductCap);
+                                    if (row.Value<bool?>("ok") == true) sub.Commit();
+                                    else sub.RollBack();
+                                }
+                                catch (Exception ex)
+                                {
+                                    try { sub.RollBack(); } catch (Exception) { /* already rolled back */ }
+                                    row = new JObject { ["op"] = edit.Value<string>("op") ?? "", ["ok"] = false, ["error"] = ex.Message };
+                                }
+                                done.Add(row);
+                            }
                         }
                         try { doc.Regenerate(); } catch (Exception) { /* the score still reads what was created */ }
-                        int after = Score(doc, near, sizeTol);
+                        int after = Score(doc, near, sizeTol, null);
                         bool worse = after > before;
                         if (worse) transaction.RollBack();
                         else transaction.Commit();
@@ -74,6 +94,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     Result["resolved_document"] = FmcTarget.Resolved(doc);
                     Result["is_central"] = false;
                     Result["modified_during_call"] = !modifiedBefore && doc.IsModified;
+                    Result["skipped_non_family"] = skipped.Report();
                 }
             }
             catch (Exception ex) { Error = ex.Message; }
@@ -111,6 +132,11 @@ namespace RevitMCPCommandSet.Services.Fmc
         {
             string op = (edit.Value<string>("op") ?? "").Trim();
             var ids = Ids(edit);
+            foreach (ElementId id in ids)
+            {
+                if (doc.GetElement(id) is DirectShape shape)
+                    return new JObject { ["op"] = op, ["ok"] = false, ["skipped_directshape"] = true, ["id"] = shape.Id.Value, ["error"] = "DirectShape skipped." };
+            }
             var skipped = new JArray();
             var kept = new List<ElementId>();
             FmcCheckout.Partition(doc, ids, kept, skipped);
@@ -126,6 +152,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                     case "elbow":
                         Connectors(doc, edit, out Connector e1, out Connector e2, out _);
                         doc.Create.NewElbowFitting(e1, e2);
+                        break;
+                    case "union":
+                        Connectors(doc, edit, out Connector u1, out Connector u2, out _);
+                        doc.Create.NewUnionFitting(u1, u2);
                         break;
                     case "transition":
                         Connectors(doc, edit, out Connector t1, out Connector t2, out _);
@@ -143,6 +173,9 @@ namespace RevitMCPCommandSet.Services.Fmc
                         break;
                     case "assign_system":
                         Assign(doc, edit);
+                        break;
+                    case "create_system":
+                        CreateSystem(doc, edit);
                         break;
                     case "circuit":
                         Circuit(doc, edit);
@@ -217,6 +250,31 @@ namespace RevitMCPCommandSet.Services.Fmc
             connector.ConnectTo(mate);
         }
 
+        private static void CreateSystem(Document doc, JObject edit)
+        {
+            Element element = doc.GetElement(new ElementId(edit.Value<long?>("element_id") ?? 0));
+            if (element == null) throw new InvalidOperationException("The element is not in the document.");
+            if (element is DirectShape) throw new InvalidOperationException("DirectShape skipped.");
+            string classification = (edit.Value<string>("classification") ?? "").Trim();
+            if (classification.Length == 0) throw new InvalidOperationException("No system classification was given. Nothing was created.");
+            PipingSystemType type = new FilteredElementCollector(doc).OfClass(typeof(PipingSystemType)).Cast<PipingSystemType>()
+                .FirstOrDefault(item => string.Equals(item.Name, classification, StringComparison.OrdinalIgnoreCase) || string.Equals(item.SystemClassification.ToString(), classification, StringComparison.OrdinalIgnoreCase));
+            if (type == null)
+            {
+                if (!Enum.TryParse(classification, true, out MEPSystemClassification parsed) || parsed == MEPSystemClassification.UndefinedSystemClassification)
+                    throw new InvalidOperationException("No piping system type matches " + classification + ". A classification was not invented.");
+                type = PipingSystemType.Create(doc, parsed, "FMC " + classification);
+            }
+            ConnectorManager manager = element is MEPCurve curve ? curve.ConnectorManager : element is FamilyInstance instance ? instance.MEPModel?.ConnectorManager : null;
+            if (manager == null) throw new InvalidOperationException("The element has no connectors to add to a system.");
+            PipingSystem system = PipingSystem.Create(doc, type.Id, "FMC " + classification);
+            var set = new ConnectorSet();
+            foreach (Connector connector in manager.Connectors)
+                if (connector.Domain == Domain.DomainPiping) set.Insert(connector);
+            if (set.Size == 0) throw new InvalidOperationException("The element has no piping connector.");
+            system.Add(set);
+        }
+
         private static void Assign(Document doc, JObject edit)
         {
             Element element = doc.GetElement(new ElementId(edit.Value<long?>("element_id") ?? 0));
@@ -242,50 +300,92 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         private static FamilySymbol CapSymbol(Document doc, BuiltInCategory category)
         {
-            return new FilteredElementCollector(doc).OfCategory(category).OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>()
+            return new FilteredElementCollector(doc).OfCategory(category).OfClass(typeof(FamilySymbol)).OfType<FamilySymbol>()
                 .FirstOrDefault(symbol => Regex.IsMatch((symbol.FamilyName ?? "") + " " + symbol.Name, "cap", RegexOptions.IgnoreCase));
         }
 
         /// <summary>Open ends, near-miss pairs, size mismatches, uncircuited devices and empty circuits. A rise rolls the transaction back.</summary>
-        private static int Score(Document doc, double nearMm, double sizeTolMm)
+        private static int Score(Document doc, double nearMm, double sizeTolMm, FmcNonFamily skipped)
         {
             int score = 0;
             var open = new List<Connector>();
             foreach (Element element in new FilteredElementCollector(doc).OfClass(typeof(MEPCurve)).WhereElementIsNotElementType())
-                Collect(element is MEPCurve curve ? curve.ConnectorManager : null, open, ref score, sizeTolMm);
-            foreach (FamilyInstance instance in new FilteredElementCollector(doc).OfClass(typeof(FamilyInstance)).WhereElementIsNotElementType().Cast<FamilyInstance>())
-                Collect(instance.MEPModel?.ConnectorManager, open, ref score, sizeTolMm);
+            {
+                if (element is MEPCurve curve) Collect(curve.ConnectorManager, open, ref score, sizeTolMm);
+                else skipped?.Add(element);
+            }
+            foreach (Element element in new FilteredElementCollector(doc).OfClass(typeof(FamilyInstance)).WhereElementIsNotElementType())
+            {
+                if (element is FamilyInstance instance) Collect(instance.MEPModel?.ConnectorManager, open, ref score, sizeTolMm);
+                else skipped?.Add(element);
+            }
             double near = nearMm / FeetToMm;
             for (int i = 0; i < open.Count && i < 4000; i++)
                 for (int j = i + 1; j < open.Count && j < 4000; j++)
                     if (open[i].Owner.Id != open[j].Owner.Id && open[i].Domain == open[j].Domain && open[i].Origin.DistanceTo(open[j].Origin) <= near)
                         score++;
-            foreach (FamilyInstance device in new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_ElectricalFixtures).WhereElementIsNotElementType().Cast<FamilyInstance>()
-                .Concat(new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_LightingFixtures).WhereElementIsNotElementType().Cast<FamilyInstance>()))
+            foreach (BuiltInCategory category in new[] { BuiltInCategory.OST_ElectricalFixtures, BuiltInCategory.OST_LightingFixtures })
             {
-                bool power = false;
-                try
-                {
-                    ConnectorSet set = device.MEPModel?.ConnectorManager?.Connectors;
-                    if (set == null) continue;
-                    foreach (Connector connector in set)
-                        if (connector.Domain == Domain.DomainElectrical && connector.ElectricalSystemType == ElectricalSystemType.PowerCircuit) power = true;
-                }
-                catch (Exception) { continue; }
-                if (!power) continue;
-                int circuits = 0;
-                try { circuits = device.MEPModel?.GetElectricalSystems()?.Count(system => system.SystemType == ElectricalSystemType.PowerCircuit) ?? 0; }
-                catch (Exception) { circuits = 0; }
-                if (circuits == 0) score++;
+                foreach (Element element in new FilteredElementCollector(doc).OfCategory(category).WhereElementIsNotElementType())
+                    ScoreDevice(element, ref score, skipped);
             }
-            foreach (ElectricalSystem system in new FilteredElementCollector(doc).OfClass(typeof(ElectricalSystem)).Cast<ElectricalSystem>())
+            foreach (Element element in new FilteredElementCollector(doc).OfClass(typeof(ElectricalSystem)))
             {
+                if (element is not ElectricalSystem system) { skipped?.Add(element); continue; }
                 if (system.SystemType != ElectricalSystemType.PowerCircuit) continue;
                 int loads = 0;
                 try { foreach (Element member in system.Elements) if (member != null) loads++; } catch (Exception) { continue; }
                 if (loads == 0) score++;
             }
             return score;
+        }
+
+        private static void ScoreDevice(Element element, ref int score, FmcNonFamily skipped)
+        {
+            if (element is not FamilyInstance device)
+            {
+                skipped?.Add(element);
+                return;
+            }
+            bool power = false;
+            try
+            {
+                ConnectorSet set = device.MEPModel?.ConnectorManager?.Connectors;
+                if (set == null) return;
+                foreach (Connector connector in set)
+                    if (connector.Domain == Domain.DomainElectrical && connector.ElectricalSystemType == ElectricalSystemType.PowerCircuit) power = true;
+            }
+            catch (Exception) { return; }
+            if (!power) return;
+            int circuits = 0;
+            try { circuits = device.MEPModel?.GetElectricalSystems()?.Count(system => system.SystemType == ElectricalSystemType.PowerCircuit) ?? 0; }
+            catch (Exception) { circuits = 0; }
+            if (circuits == 0) score++;
+        }
+
+        /// <summary>A fitting lookup that fails at commit is deleted so the rest of the transaction can commit.</summary>
+        private sealed class FittingFailures : IFailuresPreprocessor
+        {
+            public FailureProcessingResult PreprocessFailures(FailuresAccessor accessor)
+            {
+                accessor.DeleteAllWarnings();
+                foreach (FailureMessageAccessor failure in accessor.GetFailureMessages().ToList())
+                {
+                    if (failure.GetSeverity() == FailureSeverity.Warning)
+                    {
+                        accessor.DeleteWarning(failure);
+                        continue;
+                    }
+                    IList<ElementId> ids = failure.GetFailingElementIds()?.ToList();
+                    if (ids != null && ids.Count > 0)
+                    {
+                        accessor.DeleteElements(ids.ToList());
+                        continue;
+                    }
+                    return FailureProcessingResult.ProceedWithRollBack;
+                }
+                return FailureProcessingResult.Continue;
+            }
         }
 
         private static void Collect(ConnectorManager manager, List<Connector> open, ref int score, double sizeTolMm)

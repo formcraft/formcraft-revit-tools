@@ -189,12 +189,62 @@ export interface TraceSnapshot {
   highlight?: { requested?: string; applied?: boolean; reason?: string; ids?: number[] };
   is_central?: boolean;
   is_workshared?: boolean;
+  /** Elements in a collected category that are not a family, pipe or duct. A DirectShape is the usual case. */
+  skipped_non_family?: {
+    count?: number;
+    ids?: Array<number | string>;
+    capped?: boolean;
+    items?: Array<{ id?: number | string; class?: string; category?: string }>;
+  };
+}
+
+export interface SkippedNonFamilyItem {
+  id: number;
+  class?: string;
+  category?: string;
+}
+
+export interface SkippedNonFamily {
+  count: number;
+  ids: number[];
+  capped: boolean;
+  items: SkippedNonFamilyItem[];
+}
+
+const SKIPPED_CAP = 50;
+
+function finiteId(value: unknown): number | null {
+  const id = typeof value === "number" ? value : typeof value === "string" && value.trim() !== "" ? Number(value) : Number.NaN;
+  return Number.isFinite(id) ? id : null;
+}
+
+/** Count plus capped ids. A missing snapshot is an empty report, not a silent drop. */
+export function skippedNonFamily(snapshot: { skipped_non_family?: TraceSnapshot["skipped_non_family"] } | null | undefined): SkippedNonFamily {
+  const raw = snapshot?.skipped_non_family;
+  const items: SkippedNonFamilyItem[] = [];
+  for (const item of raw?.items ?? []) {
+    const id = finiteId(item?.id);
+    if (id == null) continue;
+    const row: SkippedNonFamilyItem = { id };
+    if (typeof item.class === "string" && item.class) row.class = item.class;
+    if (typeof item.category === "string" && item.category) row.category = item.category;
+    items.push(row);
+    if (items.length >= SKIPPED_CAP) break;
+  }
+  const fromIds = (raw?.ids ?? []).map(finiteId).filter((id): id is number => id != null);
+  const ids = (fromIds.length ? fromIds : items.map((item) => item.id)).slice(0, SKIPPED_CAP);
+  const count = typeof raw?.count === "number" && Number.isFinite(raw.count) ? raw.count : Math.max(ids.length, items.length);
+  return { count, ids, capped: raw?.capped === true || count > ids.length, items };
+}
+
+export function withSkippedNonFamily<T extends object>(body: T, snapshot: TraceSnapshot | null | undefined): T & { skipped_non_family: SkippedNonFamily } {
+  return { ...body, skipped_non_family: skippedNonFamily(snapshot) };
 }
 
 export interface TraceFilter {
   system?: string;
   source?: string;
-  domain?: "piping" | "duct" | "both";
+  domain?: "piping" | "duct" | "both" | "conduit" | "tray" | "electrical_containment";
   panel?: string;
   /** Standards-bank rows for this call, keyed by trace.*. A number, null, or a table. */
   bank?: Record<string, TraceBankEntry>;
@@ -409,7 +459,14 @@ function norm(value: string): string {
 function domainWanted(filter: TraceFilter): string[] {
   if (filter.domain === "piping") return ["piping"];
   if (filter.domain === "duct") return ["hvac"];
+  if (filter.domain === "conduit") return ["conduit"];
+  if (filter.domain === "tray") return ["tray"];
+  if (filter.domain === "electrical_containment") return ["conduit", "tray"];
   return ["piping", "hvac"];
+}
+
+function containmentDomain(filter: TraceFilter): boolean {
+  return filter.domain === "conduit" || filter.domain === "tray" || filter.domain === "electrical_containment";
 }
 
 function systemDomainOk(domain: string, filter: TraceFilter): boolean {
@@ -847,14 +904,16 @@ export function runLeak(snapshot: TraceSnapshot, limits: ResolvedLimits, filter:
     }
   }
 
-  for (const element of prep.elements) {
-    if (!prep.scope.has(element.id)) continue;
-    if ((prep.membership.get(element.id) ?? []).length > 0) continue;
-    push(findings, seen, {
-      code: "FLOW-NO-SYSTEM",
-      id: element.id,
-      detail: `${element.kind || element.category || "element"} is on no piping or duct system`,
-    });
+  if (!containmentDomain(filter)) {
+    for (const element of prep.elements) {
+      if (!prep.scope.has(element.id)) continue;
+      if ((prep.membership.get(element.id) ?? []).length > 0) continue;
+      push(findings, seen, {
+        code: "FLOW-NO-SYSTEM",
+        id: element.id,
+        detail: `${element.kind || element.category || "element"} is on no piping or duct system`,
+      });
+    }
   }
 
   let reachableCount = 0;
@@ -993,6 +1052,7 @@ export interface TraceSummary {
   report: string;
   sample_limit: number;
   warnings: string[];
+  skipped_non_family?: SkippedNonFamily;
 }
 
 function capIds(findings: TraceFinding[], limit: number): Array<{ code: string; id: number }> {
@@ -1079,6 +1139,7 @@ export function summarizeTrace(runs: CheckRun[], extra: {
     report: extra.report,
     sample_limit: sampleLimit,
     warnings,
+    ...(extra.snapshot ? { skipped_non_family: skippedNonFamily(extra.snapshot) } : {}),
   };
 }
 

@@ -50,7 +50,7 @@ export function citeLimit(key: string, filter?: TraceFilter): CitedLimit {
 }
 
 export interface TraceEdit {
-  op: "connect" | "elbow" | "tee" | "transition" | "resize" | "cap" | "assign_system" | "circuit";
+  op: "connect" | "elbow" | "tee" | "transition" | "union" | "resize" | "cap" | "assign_system" | "create_system" | "circuit";
   ids: number[];
   element_id?: number;
   system_id?: number;
@@ -64,6 +64,9 @@ export interface TraceEdit {
   index?: number;
   size_mm?: number;
   height_mm?: number;
+  classification?: string;
+  code?: string;
+  confidence?: number;
   detail: string;
 }
 
@@ -734,14 +737,22 @@ function pairKey(a: number, b: number): string {
   return a < b ? `${a}|${b}` : `${b}|${a}`;
 }
 
-export function planFixes(snapshot: TraceSnapshot, limits: { values: { near_miss_mm: number; direction_deg: number; size_mismatch_mm: number } }, options: { caps?: boolean; circuit?: string; max?: number } = {}): { edits: TraceEdit[]; warnings: string[]; rule: string; capped: boolean } {
+export function planFixes(snapshot: TraceSnapshot, limits: { values: { near_miss_mm: number; direction_deg: number; size_mismatch_mm: number; touch_mm?: number } }, options: { caps?: boolean; circuit?: string; max?: number; ids?: number[]; domain?: string } = {}): { edits: TraceEdit[]; held: TraceEdit[]; warnings: string[]; rule: string; capped: boolean } {
   const graph = graphOf(snapshot);
   const edits: TraceEdit[] = [];
+  const held: TraceEdit[] = [];
   const warnings: string[] = [];
   const max = options.max ?? 25;
+  const domainOk = (connector: TraceConnector) => {
+    const want = options.domain;
+    if (!want || want === "both") return connector.domain === "piping" || connector.domain === "hvac" || !connector.domain;
+    if (want === "electrical_containment") return connector.domain === "conduit" || connector.domain === "tray";
+    if (want === "duct") return connector.domain === "hvac";
+    return connector.domain === want;
+  };
   const used = new Set<string>();
   const take = (key: string) => { if (used.has(key)) return false; used.add(key); return true; };
-  const physical = graph.connectors.filter((connector) => connector.type !== "curve" && !connector.connected && connector.open_end && connector.origin.length >= 3);
+  const physical = graph.connectors.filter((connector) => domainOk(connector) && connector.type !== "curve" && !connector.connected && connector.open_end && connector.origin.length >= 3);
   type Pair = { left: TraceConnector; right: TraceConnector; gap: number };
   const pairs: Pair[] = [];
   for (let i = 0; i < physical.length; i++) {
@@ -784,9 +795,11 @@ export function planFixes(snapshot: TraceSnapshot, limits: { values: { near_miss
     const aligned = oppose(pair.left.direction, pair.right.direction, limits.values.direction_deg) === true;
     const sizes = pair.left.size_mm > 0 && pair.right.size_mm > 0 && Math.abs(pair.left.size_mm - pair.right.size_mm) > limits.values.size_mismatch_mm;
     const ids = [pair.left.element_id, pair.right.element_id];
-    if (aligned && sizes) edits.push({ op: "transition", ids, a: pair.left.element_id, ai: pair.left.index, b: pair.right.element_id, bi: pair.right.index, detail: "in-line connectors differ in size: insert a transition" });
-    else if (aligned) edits.push({ op: "connect", ids, a: pair.left.element_id, ai: pair.left.index, b: pair.right.element_id, bi: pair.right.index, detail: "connectors face each other within tolerance: connect them" });
-    else edits.push({ op: "elbow", ids, a: pair.left.element_id, ai: pair.left.index, b: pair.right.element_id, bi: pair.right.index, detail: "connectors meet off the straight: insert an elbow" });
+    const touch = limits.values.touch_mm ?? 10;
+    if (aligned && sizes) edits.push({ op: "transition", code: "FLOW-SIZE-MISMATCH", confidence: 0.8, ids, a: pair.left.element_id, ai: pair.left.index, b: pair.right.element_id, bi: pair.right.index, detail: "in-line connectors differ in size: insert a transition" });
+    else if (aligned && pair.gap <= touch) edits.push({ op: "connect", code: "FLOW-NOT-CONNECTED", confidence: 0.9, ids, a: pair.left.element_id, ai: pair.left.index, b: pair.right.element_id, bi: pair.right.index, detail: "connectors face each other and are close enough to connect" });
+    else if (aligned) edits.push({ op: "union", code: "FLOW-OPEN-END", confidence: 0.75, ids, a: pair.left.element_id, ai: pair.left.index, b: pair.right.element_id, bi: pair.right.index, detail: "in-line open ends: insert a union, or extend and trim" });
+    else edits.push({ op: "elbow", code: "FLOW-OPEN-END", confidence: 0.7, ids, a: pair.left.element_id, ai: pair.left.index, b: pair.right.element_id, bi: pair.right.index, detail: "connectors meet off the straight: insert an elbow" });
   }
   const resized = new Set<string>();
   for (const connector of graph.connectors) {
@@ -801,17 +814,18 @@ export function planFixes(snapshot: TraceSnapshot, limits: { values: { near_miss
       const larger = smaller === connector ? other : connector;
       const element = graph.elements.get(smaller.element_id);
       if (!element || !["pipe", "duct", "flex_pipe", "flex_duct", "curve"].includes(element.kind ?? "")) continue;
+      if (!domainOk(connector) || !domainOk(other)) continue;
       resized.add(key);
-      edits.push({ op: "resize", ids: [smaller.element_id], element_id: smaller.element_id, size_mm: larger.size_mm, height_mm: larger.height_mm || 0, detail: `${RESIZE_RULE} ${smaller.element_id} from ${smaller.size_mm} mm to ${larger.size_mm} mm.` });
+      edits.push({ op: "resize", code: "FLOW-SIZE-MISMATCH", confidence: 0.85, ids: [smaller.element_id], element_id: smaller.element_id, size_mm: larger.size_mm, height_mm: larger.height_mm || 0, detail: `${RESIZE_RULE} ${smaller.element_id} from ${smaller.size_mm} mm to ${larger.size_mm} mm.` });
     }
   }
-  if (options.caps) {
-    for (const connector of physical) {
-      if (claimed.has(`${connector.element_id}:${connector.index}`)) continue;
-      const element = graph.elements.get(connector.element_id);
-      if (!element || !["pipe", "duct", "flex_pipe", "flex_duct", "curve"].includes(element.kind ?? "")) continue;
-      edits.push({ op: "cap", ids: [connector.element_id], element_id: connector.element_id, index: connector.index, detail: "open pipe or duct end: place a cap if a cap family is loaded" });
-    }
+  for (const connector of physical) {
+    if (claimed.has(`${connector.element_id}:${connector.index}`)) continue;
+    const element = graph.elements.get(connector.element_id);
+    if (!element || !["pipe", "duct", "flex_pipe", "flex_duct", "curve"].includes(element.kind ?? "")) continue;
+    const cap: TraceEdit = { op: "cap", code: "FLOW-OPEN-END", confidence: 0.6, ids: [connector.element_id], element_id: connector.element_id, index: connector.index, detail: "open pipe or duct end: place a cap if a cap family is loaded" };
+    if (options.caps) edits.push(cap);
+    else held.push(cap);
   }
   for (const element of graph.elements.values()) {
     if ((graph.member.get(element.id) ?? []).length > 0) continue;
@@ -819,7 +833,18 @@ export function planFixes(snapshot: TraceSnapshot, limits: { values: { near_miss
     for (const other of graph.adj.get(element.id) ?? []) for (const systemId of graph.member.get(other) ?? []) neighbourSystems.add(systemId);
     if (neighbourSystems.size !== 1) continue;
     const systemId = [...neighbourSystems][0];
-    edits.push({ op: "assign_system", ids: [element.id], element_id: element.id, system_id: systemId, detail: `element touches only system ${systemId}: assign it` });
+    edits.push({ op: "assign_system", code: "FLOW-NO-SYSTEM", confidence: 0.8, ids: [element.id], element_id: element.id, system_id: systemId, detail: `element touches only system ${systemId}: assign it` });
+  }
+  if (!options.domain || options.domain === "piping" || options.domain === "both") {
+    for (const element of graph.elements.values()) {
+      if ((graph.member.get(element.id) ?? []).length > 0) continue;
+      if (!["pipe", "flex_pipe", "fixture"].includes(element.kind ?? "")) continue;
+      const classes = (graph.byElement.get(element.id) ?? []).map((connector) => connector.system_class ?? "").filter(Boolean);
+      const classification = classes[0] ?? "";
+      if (!classification) continue;
+      if (edits.some((edit) => edit.op === "assign_system" && edit.element_id === element.id)) continue;
+      edits.push({ op: "create_system", code: "FLOW-NO-SYSTEM", confidence: 0.55, ids: [element.id], element_id: element.id, classification, detail: `create a piping system classified ${classification} and add the element` });
+    }
   }
   const circuitId = Number(options.circuit ?? "");
   if (options.circuit && !Number.isInteger(circuitId)) warnings.push("circuit must be an element id.");
@@ -829,12 +854,15 @@ export function planFixes(snapshot: TraceSnapshot, limits: { values: { near_miss
     else {
       for (const device of snapshot.electrical?.devices ?? []) {
         if (!device.power_connector || (device.circuit_ids ?? []).length > 0) continue;
-        edits.push({ op: "circuit", ids: [device.id], element_id: device.id, circuit_id: circuitId, detail: `add the device to circuit ${circuitId}` });
+        edits.push({ op: "circuit", code: "ELEC-NO-CIRCUIT", confidence: 0.7, ids: [device.id], element_id: device.id, circuit_id: circuitId, detail: `add the device to circuit ${circuitId}` });
       }
     }
   }
-  const capped = edits.length > max;
-  return { edits: edits.slice(0, max), warnings, rule: RESIZE_RULE, capped };
+  const listed = options.ids;
+  const keep = (edit: TraceEdit) => !listed || (edit.ids.length > 0 && edit.ids.every((id) => listed.includes(id)));
+  const chosen = edits.filter(keep);
+  const capped = chosen.length > max;
+  return { edits: chosen.slice(0, max), held: held.filter(keep), warnings, rule: RESIZE_RULE, capped };
 }
 
 export function dropOwnedEdits(edits: TraceEdit[], skipped: Array<{ id: string }>): TraceEdit[] {

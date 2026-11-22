@@ -23,6 +23,7 @@ import {
   type TraceSnapshot,
 } from "./trace.js";
 import { parseTraceArgs, runFmcTrace } from "../tools/fmc_trace.js";
+import { copyTraceFile, pageFindings, flattenFindings } from "./tracereport.js";
 
 const limits = (): ResolvedLimits => {
   const resolved = resolveTraceLimits({});
@@ -186,6 +187,38 @@ test("leak and continuity use the bank tolerance, including a connection_toleran
   if (!loose.ok) return;
   assert.equal(loose.limits.fields.find((field) => field.key === "trace.voltage_tol_v")?.alias_used, "trace.connection_tolerance");
   assert.equal(runContinuity(board, loose.limits, {}).findings.some((finding) => finding.code === "ELEC-VOLTAGE-MISMATCH"), false);
+});
+
+test("conduit and tray open ends are the same leak codes, and they are not FLOW-NO-SYSTEM", () => {
+  const ends = Array.from({ length: 4 }, (_, index) => ({
+    element_id: index + 1,
+    index: 0,
+    domain: index < 3 ? "conduit" : "tray",
+    origin: [index * 1000, 0, 0] as number[],
+    direction: [1, 0, 0] as number[],
+    flow: "",
+    shape: "round",
+    size_mm: 20,
+    height_mm: 0,
+    connected: false,
+    type: "end",
+    open_end: true,
+    system_id: 0,
+    refs: [] as number[][],
+  }));
+  const snapshot: TraceSnapshot = {
+    flow: {
+      elements: ends.map((end) => ({ id: end.element_id, kind: end.domain, domain: end.domain, system_ids: [] as number[] })),
+      connectors: ends,
+      systems: [],
+    },
+  };
+  const conduit = runLeak(snapshot, limits(), { domain: "conduit" });
+  assert.equal(conduit.counts["FLOW-OPEN-END"], 3);
+  assert.equal(conduit.findings.some((finding) => finding.code === "FLOW-NO-SYSTEM"), false);
+  const both = runLeak(snapshot, limits(), { domain: "electrical_containment" });
+  assert.equal(both.counts["FLOW-OPEN-END"], 4);
+  assert.equal(runLeak(snapshot, limits(), { domain: "tray" }).counts["FLOW-OPEN-END"], 1);
 });
 
 test("connector axes face each other within the provisional angle", () => {
@@ -388,6 +421,26 @@ test("phase 2 standards checks run, and tray fill stays listed and not run", () 
   assert.equal(picked.skipped[0].id, "tray_fill");
   assert.deepEqual(picked.unknown, ["nope"]);
   assert.equal(list.checks.find((check) => check.id === "drainage_fall")?.implemented, true);
+});
+
+test("report pages a saved findings file and refuses a copy onto D:", async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-trace-page-"));
+  const home = path.join(dir, "Formcraft");
+  const file = path.join(home, "trace", "trace-P-0001-page.json");
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, JSON.stringify({ checks: [{ id: "leak", findings: [
+    { code: "FLOW-OPEN-END", id: 1 }, { code: "FLOW-NO-SYSTEM", id: 2 }, { code: "FLOW-OPEN-END", id: 3 },
+  ] }] }));
+  const page = pageFindings(flattenFindings(JSON.parse(fs.readFileSync(file, "utf8"))), { offset: 1, limit: 1, codes: ["FLOW-OPEN-END"] });
+  assert.equal(page.total, 2);
+  assert.equal(page.findings[0].id, 3);
+  const copied = copyTraceFile(file, path.join(home, "handoff"), { ...process.env, LOCALAPPDATA: dir });
+  assert.equal(fs.existsSync(copied), true);
+  assert.throws(() => copyTraceFile(file, "D:\\Jobs\\out", { ...process.env, LOCALAPPDATA: dir }), /D:/);
+  const reply = await runFmcTrace(parseTraceArgs({ action: "report", path: file, offset: 0, limit: 1, codes: ["FLOW-NO-SYSTEM"] }));
+  const body = JSON.parse(reply.content[0].text);
+  assert.equal(body.read_only, true);
+  assert.equal(body.findings[0].id, 2);
 });
 
 test("checks and limits do not need Revit, and the description names the codes", async () => {

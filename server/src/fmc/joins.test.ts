@@ -431,10 +431,28 @@ test("the add-in commands are registered, reads and writes are listed, and owner
   assert.match(apply, /Pinned/);
   assert.doesNotMatch(collector + apply, /CheckoutElements\s*\(/);
   assert.doesNotMatch(collector + apply, /\.Save\s*\(|SynchronizeWithCentral\s*\(/);
+  assert.doesNotMatch(collector, /Cast<FamilyInstance>|Cast<MEPCurve>|Cast<Pipe>/);
+  assert.match(collector, /skipped_non_family/);
   const override = path.join(os.tmpdir(), "fmc-joins-unit");
   const dir = joinsDir({ FMC_JOINS_DIR: override } as NodeJS.ProcessEnv);
   assert.equal(dir, override);
   const file = writeJoinsReport(dir, "unit", { ok: true });
   assert.equal(file.startsWith(dir), true);
   fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test("a DirectShape in a collected category stays on the joins snapshot", () => {
+  const snapshot = normalizeSnapshot({
+    pairs: [], hosts: [], rooms: [], room_walls: [], leaks: [],
+    skipped_non_family: {
+      count: 1,
+      ids: [1822136],
+      items: [{ id: 1822136, class: "DirectShape", category: "Plumbing Fixtures" }],
+    },
+  });
+  assert.equal(snapshot.skipped_non_family?.count, 1);
+  assert.deepEqual(snapshot.skipped_non_family?.ids, [1822136]);
+  assert.equal(snapshot.skipped_non_family?.items[0]?.class, "DirectShape");
+  assert.equal(snapshot.skipped_non_family?.items[0]?.category, "Plumbing Fixtures");
+  assert.equal(snapshot.hosts.some((row) => row.id === "1822136"), false);
 });

@@ -133,6 +133,8 @@ test("F-033/F-034: send_code results read in English with the code, the line and
   assert.equal(ok.isError, false);
   assert.match(ok.text, /compile 850 ms, run 40 ms/);
   assert.deepEqual(JSON.parse(ok.text.split("\n").slice(1).join("\n")).result, { walls: 12 });
+  assert.deepEqual(ok.output_json, { walls: 12 });
+  assert.equal(formatCodeResult({ success: true, result: "not json", compileMs: 1, runMs: 1 }).output_json, undefined);
 
   const bad = formatCodeResult({ success: false, errorCode: "FMC-CODE-RUNTIME", compileMs: 700, runMs: 3,
     errorMessage: "[FMC-CODE-RUNTIME] InvalidOperationException at line 4: The referenced object is not valid",
