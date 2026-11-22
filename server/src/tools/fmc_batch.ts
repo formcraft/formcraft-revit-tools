@@ -17,7 +17,13 @@ export const FMC_BATCH_DESCRIPTION =
   "The waiting line is saved and restored after a restart. An active lease is not still held after a restart: it is at the head of its line. " +
   "When free memory is below ram_pause_free_mb (default 1024), request stays queued and wait holds: paused for memory, not failed. " +
   "Workshared models sync from fmc_guard.json sync_minutes (default 15) and sync_on_batch_end (default true). " +
-  "sync_exclude skips those documents. sync_documents, when set, is the only list that syncs. status shows last_sync, next_sync, last_error and excluded.";
+  "sync_exclude skips those documents, including the five HEBERT HOSTELS models when they are listed there. sync_documents, when set, is the only list that syncs. " +
+  "Holding any fmc_batch lease defers autosave and sync for every open document until that lease is released. " +
+  "The save and sync after release run only once that lease is dropped, and they are still recorded on that batch. " +
+  "status shows last_save_at, next_save_at, last_sync_at, next_sync_at, last_error, excluded and defer_reason. " +
+  "Autosave (auto_save_minutes, default 10) saves every open project locally, including a workshared local, and never writes the central file. " +
+  "save_exclude skips titles or paths (matched like sync_exclude). protected_paths is a folder-prefix list autosave will not write under. " +
+  "protected_roots is the same kind of prefix list and matches nothing while it is empty.";
 
 const shape = {
   action: z.enum(["request", "status", "heartbeat", "release", "cancel", "wait", "drain", "resume", "reserve"]),

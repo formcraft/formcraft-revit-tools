@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import { DocInfo, GuardConfig, loadConfig } from "./policy.js";
-import { underAny, protectedRoots } from "./opencopy.js";
+import { protectedRoots } from "./opencopy.js";
+import { saveBlocked } from "./savepolicy.js";
 import { NEVER, PLACEABLE, USER_LINE, aiVerdict, batchSize, generalState, recordBatch } from "./aiuse.js";
 import { Names, elementNames, explain, namesWanted } from "./explain.js";
 import { approvalFor, claimApproval, enqueue, loadAiConfig, loadRulebook, loadState, logBatch, saveState, setResult, setStatus } from "./aiuse_io.js";
@@ -159,16 +160,21 @@ export function savedAtOnDisk(file: string): number | null {
 
 /**
  * Owner 26 Oct: an afternoon of AI work existed only in an open Revit. After a change, the model saves itself when its
- * file on disk is older than auto_save_minutes (testing default 10; 0 off). Never a workshared model (the person syncs
- * those), never a model in the background. A failed save is reported on the result (auto_save_failed), never hidden.
+ * file on disk is older than auto_save_minutes (testing default 10; 0 off). This path still skips a workshared model
+ * (the timed autosave saves that local file). Never a model in the background. save_exclude and protected_paths
+ * (and protected_roots) refuse the save. A failed save is reported on the result (auto_save_failed), never hidden.
+ *
+ * The protected-path check used to be only underAny(path, protected_roots). protected_roots defaults to [] and
+ * matches a path only when a listed prefix is the leading folders. An empty list matches nothing, which is why
+ * D:\Fomcraft\FMC_PROJECTS_27\THE OGALA RESIDENCE\01_WIP\S\F26901-FMC-ZZ-ZZ-M3-S-0001.rvt was saved.
  */
 export async function autoSave(active: DocInfo & { isActive?: boolean }, ai: { mode?: string; auto_save_minutes?: number },
   send: (command: string, params: object) => Promise<any>, result: unknown, now = Date.now(), savedAt: (file: string) => number | null = savedAtOnDisk): Promise<boolean> {
   const minutes = ai.auto_save_minutes ?? (ai.mode === "testing" ? 10 : 0);
-  // A background copy, a detached copy, a link and a protected original are never auto-saved.
-  let protectedPath = false;
-  try { protectedPath = !!active.path && underAny(active.path, protectedRoots(loadConfig().config)); } catch { protectedPath = false; }
-  if (!(minutes > 0) || active.isWorkshared || active.isActive === false || !active.path || active.isDetached || active.isLinked || active.readOnly || protectedPath) return false;
+  const blocked = saveBlocked({ title: active.title, path: active.path });
+  if (blocked) return false;
+  // A background copy, a detached copy, a link and a workshared model are never auto-saved here.
+  if (!(minutes > 0) || active.isWorkshared || active.isActive === false || !active.path || active.isDetached || active.isLinked || active.readOnly) return false;
   const last = savedAt(active.path);
   if (last !== null && now - last < minutes * 60_000) return false;
   const out = result && typeof result === "object" ? (result as Record<string, unknown>) : null;

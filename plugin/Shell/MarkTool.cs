@@ -140,12 +140,25 @@ namespace revit_mcp_plugin.Shell
         private static JArray Mm(XYZ p) => new JArray(Math.Round(p.X * 304.8, 1), Math.Round(p.Y * 304.8, 1), Math.Round(p.Z * 304.8, 1));
         private static JArray Vec(XYZ v) => new JArray(Math.Round(v.X, 6), Math.Round(v.Y, 6), Math.Round(v.Z, 6));
 
-        /// <summary>The active view as a PNG in the temp folder (the server copies it beside the ticket); null when Revit won't export it.</summary>
+        /// <summary>Pictures live in %LOCALAPPDATA%\Formcraft\images, never beside the model and never on D:.</summary>
+        private static string MarkImages()
+        {
+            string local = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string dir = Path.Combine(local, "Formcraft", "images");
+            if (dir.Length >= 2 && (dir[0] == 'D' || dir[0] == 'd') && dir[1] == ':')
+                dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "agent-tools", "images");
+            if (dir.Length >= 2 && (dir[0] == 'D' || dir[0] == 'd') && dir[1] == ':')
+                dir = @"C:\Users\Public\agent-tools\images";
+            Directory.CreateDirectory(dir);
+            return dir;
+        }
+
+        /// <summary>The active view as a PNG in the image folder; null when Revit won't export it.</summary>
         private static string Picture(Document doc, View view)
         {
             try
             {
-                string stem = Path.Combine(Path.GetTempPath(), "fmc_mark_" + DateTime.Now.ToString("yyyyMMdd_HHmmss"));
+                string stem = Path.Combine(MarkImages(), "fmc_mark_" + DateTime.Now.ToString("yyyyMMdd_HHmmss"));
                 var o = new ImageExportOptions
                 {
                     ExportRange = ExportRange.SetOfViews, FilePath = stem, HLRandWFViewsFileType = ImageFileType.PNG, ShadowViewsFileType = ImageFileType.PNG,
@@ -153,7 +166,7 @@ namespace revit_mcp_plugin.Shell
                 };
                 o.SetViewsAndSheets(new List<ElementId> { view.Id });
                 doc.ExportImage(o);
-                return Directory.GetFiles(Path.GetTempPath(), Path.GetFileName(stem) + "*.png").FirstOrDefault();
+                return Directory.GetFiles(Path.GetDirectoryName(stem), Path.GetFileName(stem) + "*.png").FirstOrDefault();
             }
             catch (Exception) { return null; }
         }

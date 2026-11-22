@@ -44,7 +44,7 @@ export function notListening(port: number): string {
 /** One Revit with the AI connection on, as it announces itself in %APPDATA%\Formcraft\instances\<pid>.json. */
 export interface RevitInstance {
   pid: number; port: number; revit: string; user: string; started: string; updated: string; build: string;
-  documents: Array<{ title: string; path: string; active: boolean; family: boolean; workshared: boolean }>;
+  documents: Array<{ title: string; path: string; active: boolean; family: boolean; workshared: boolean; modified?: boolean }>;
 }
 
 export function instancesFolder(env: NodeJS.ProcessEnv = process.env): string { return win.join(win.dirname(connectFile(env)), "instances"); }

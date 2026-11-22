@@ -330,7 +330,10 @@ test("auto-save and auto-approve are the existing settings, and a failed save go
 
   const { board: made } = board({
     saveStep: async () => {
-      assert.equal(made.status(String(heldLease)).state, "granted");
+      const docs = made.snapshot().documents as Array<{ holder: unknown }>;
+      assert.equal(docs[0]?.holder ?? null, null, "the lease is released before the save");
+      const jumped = await req(made, "c", "Architecture", "doors");
+      assert.equal(jumped.state, "queued", "a new request waits until the save finishes");
       return { ran: true, ok: false, detail: "the model didn't save itself: disk full" };
     },
   });
@@ -343,7 +346,7 @@ test("auto-save and auto-approve are the existing settings, and a failed save go
   assert.equal(made.status(String(b.lease)).state, "granted");
   const again = await req(made, "a", "Architecture", "grids", { correction: "saved a copy instead", references: changedRefs(2) });
   assert.equal(again.attempt, 2);
-  assert.equal(again.position, 1);
+  assert.equal(again.position, 2);
   const hist = (made.snapshot().documents as Array<{ history: Array<{ save?: { ok: boolean }; sync?: { ran: boolean } }> }>)[0].history[0];
   assert.equal(hist.save?.ok, false);
   assert.equal(hist.sync?.ran, false);

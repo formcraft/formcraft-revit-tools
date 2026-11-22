@@ -114,23 +114,21 @@ test("a busy central retries and does not fail the batch; a lock refusal does no
   assert.match(refused.detail, /not failed/);
 });
 
-test("a failed sync does not fail the batch, and the lease is still held while it runs", async () => {
-  let held = false;
+test("a failed sync does not fail the batch, and the lease is already released", async () => {
+  let saw = false;
   const made = new BatchBoard({
     autoSweep: false,
     log: () => {},
     syncStep: async () => {
-      held = made.status().documents ? true : true;
-      const status = made.snapshot();
-      const doc = (status.documents as Array<{ holder: { lease: string } | null }>)[0];
-      assert.ok(doc.holder, "the lease is held during sync");
+      saw = true;
+      assert.equal(made.activeHolder("Architecture"), null);
       return { ran: true, ok: true, synced: false, detail: "Sync did not finish. The batch is not failed. central locked", error: "central locked" };
     },
   });
   const refs = { kit: ["k"], standards: ["s"], rulebook: ["r"] };
   const got = await made.request({ document: "Architecture", label: "grids", client: "a", references: refs });
   const released = await made.releaseWithCare(String(got.lease), "ok", "a", "done");
-  assert.equal(held, true);
+  assert.equal(saw, true);
   assert.equal(released.outcome, "ok");
   const view = (made.snapshot().documents as Array<{ last_error: string | null; last_sync: string | null }>)[0];
   assert.equal(view.last_error, "central locked");

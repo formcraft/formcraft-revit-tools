@@ -2,13 +2,16 @@
  * Sync workshared models with central between batches.
  * Settings live in fmc_guard.json (sync_minutes, sync_on_batch_end) and apply to every open workshared document.
  * A non-workshared model is left to the existing auto-save. Stop AI and the live-model lock still refuse a sync.
- * The save and the sync are the existing fmc_revit_file actions (save, then sync with relinquish).
+ * The save and the sync are the existing fmc_revit_file actions (save the local file, then sync).
+ * Sync relinquishes only the elements this user borrowed or created (CheckedOutElements), not every workset.
  * Central being busy retries with backoff and does not fail the batch.
  */
+import { isDocBusyMessage } from "./docschedule.js";
 import { generalState } from "./aiuse.js";
 import { loadAiConfig } from "./aiuse_io.js";
 import { loadConfig, type DocInfo, type GuardConfig } from "./policy.js";
 import { underAny, protectedRoots } from "./opencopy.js";
+import { saveBlocked } from "./savepolicy.js";
 
 export interface SyncSettings {
   minutes: number;
@@ -165,13 +168,15 @@ export async function runDocumentSync(document: string, send: SyncSend, opts?: {
       await send("fmc_revit_file", { action: "save", document, batch_sync: true });
       await send("fmc_revit_file", { action: "sync", document, relinquish: true, comment: "Formcraft batch sync", batch_sync: true });
       const extra = attempt ? ` after ${attempt} ${attempt === 1 ? "retry" : "retries"}` : "";
-      return { ran: true, ok: true, synced: true, detail: `Saved the local file and synced ${document} with central (borrowed elements relinquished)${extra}.` };
+      return { ran: true, ok: true, synced: true, detail: `Saved the local file and synced ${document} with central (borrowed and created elements relinquished, not every workset)${extra}.` };
     } catch (error) {
       last = error instanceof Error ? error.message : String(error);
+      if (isDocBusyMessage(last)) return { ran: false, ok: true, synced: false, detail: last };
       if (!centralBusy(last) || attempt === delays.length) break;
       await sleep(delays[attempt]);
     }
   }
+  if (isDocBusyMessage(last)) return { ran: false, ok: true, synced: false, detail: last };
   return {
     ran: true, ok: true, synced: false,
     detail: `Sync did not finish for ${document}. The batch is not failed. ${last}`,
@@ -234,6 +239,8 @@ export async function productionSyncStep(ctx: SyncStepContext, now = Date.now())
     now, lastSyncAt: ctx.lastSyncAt, changedAt: ctx.changedAt ?? (batchEnd ? now : null), leaseHeld: false, batchEnd,
   }, settings, ctx.document, active?.path ?? "");
   if (plan.excluded) {
+    const blocked = saveBlocked({ title: active?.title ?? ctx.document, path: active?.path }, cfg);
+    if (blocked) return { ran: false, ok: true, synced: false, detail: `${plan.reason} ${blocked}` };
     return saveLocalOnly(ctx.document, (command, params) => withRevitConnection((client) => client.sendCommand(command, params)), plan.reason);
   }
   if (!plan.run) return { ran: false, ok: true, synced: false, detail: plan.reason };

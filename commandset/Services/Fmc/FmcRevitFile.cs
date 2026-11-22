@@ -77,7 +77,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (doc == null) throw new InvalidOperationException("No model is open");
             switch (action)
             {
-                case "save": RefuseOriginal(doc, "save"); doc.Save(); return new JObject { ["saved"] = doc.PathName };
+                case "save": RefuseOriginal(doc, "save"); RefuseBusy(doc); doc.Save(); return new JObject { ["saved"] = doc.PathName, ["local_only"] = doc.IsWorkshared };
                 case "save_as":
                 {
                     RefuseOriginal(doc, "save_as");
@@ -86,7 +86,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     doc.SaveAs(path ?? throw new InvalidOperationException("save_as needs path"), o);
                     return new JObject { ["saved_as"] = path };
                 }
-                case "export": return Export(doc);
+                case "export": return Export(app, doc);
                 case "export_family":
                 {
                     // Save a family out of the project (Save As Library Family)
@@ -157,11 +157,15 @@ namespace RevitMCPCommandSet.Services.Fmc
                 case "sync":
                 {
                     RefuseOriginal(doc, "sync");
+                    RefuseBusy(doc);
                     if (!doc.IsWorkshared) throw new InvalidOperationException("the model isn't workshared");
                     var o = new SynchronizeWithCentralOptions { Comment = Parameters.Value<string>("comment") ?? "", Compact = Parameters.Value<bool?>("compact") ?? false };
-                    o.SetRelinquishOptions(new RelinquishOptions(Parameters.Value<bool?>("relinquish") ?? true));
+                    // Borrowed and created elements only. new RelinquishOptions(true) would relinquish every workset.
+                    var relinquish = new RelinquishOptions(false);
+                    relinquish.CheckedOutElements = Parameters.Value<bool?>("relinquish") ?? true;
+                    o.SetRelinquishOptions(relinquish);
                     doc.SynchronizeWithCentral(new TransactWithCentralOptions(), o);
-                    return new JObject { ["synced"] = doc.Title };
+                    return new JObject { ["synced"] = doc.Title, ["relinquished"] = "checked out elements" };
                 }
                 case "reload_latest": RefuseOriginal(doc, "reload_latest"); doc.ReloadLatest(new ReloadLatestOptions()); return new JObject { ["reloaded"] = doc.Title };
                 case "relinquish":
@@ -172,6 +176,13 @@ namespace RevitMCPCommandSet.Services.Fmc
             }
         }
 
+        /// <summary>An open transaction makes save and sync wait. The server treats FMC-DOC-BUSY as defer, not a failure.</summary>
+        private static void RefuseBusy(Document doc)
+        {
+            if (doc != null && doc.IsModifiable)
+                throw new InvalidOperationException($"[FMC-DOC-BUSY] {doc.Title} has an open transaction or transaction group. Save and sync wait until it closes.");
+        }
+
         /// <summary>A verification copy, a link and a protected original are never saved, synced, reloaded or relinquished.</summary>
         private void RefuseOriginal(Document doc, string what)
         {
@@ -180,10 +191,11 @@ namespace RevitMCPCommandSet.Services.Fmc
                 throw new InvalidOperationException($"{what} is refused on {doc.Title}: a verification copy, a link, or a protected original is never saved, synced, reloaded or relinquished.");
         }
 
-        private JObject Export(Document doc)
+        private JObject Export(UIApplication app, Document doc)
         {
             string format = (Parameters.Value<string>("format") ?? throw new InvalidOperationException("export needs format")).ToLowerInvariant();
             string folder = Parameters.Value<string>("folder") ?? throw new InvalidOperationException("export needs folder");
+            if (format == "image") folder = FmcImageExport.Folder(folder, doc);
             string name = Parameters.Value<string>("name") ?? doc.Title;
             Directory.CreateDirectory(folder);
             var views = (Parameters["views"] as JArray ?? new JArray()).Select(t => ViewByName(doc, t.ToString()).Id).ToList();
@@ -218,7 +230,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     var o = new ImageExportOptions { FilePath = Path.Combine(folder, name), ExportRange = ExportRange.SetOfViews, HLRandWFViewsFileType = ImageFileType.PNG,
                         ShadowViewsFileType = ImageFileType.PNG, PixelSize = Parameters.Value<int?>("pixels") ?? 2400, ZoomType = ZoomFitType.FitToPage };
                     o.SetViewsAndSheets(views);
-                    doc.ExportImage(o); break;
+                    FmcImageExport.Export(app, doc, o); break;
                 }
                 case "schedule":
                     foreach (ElementId v in views)

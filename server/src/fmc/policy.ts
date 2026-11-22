@@ -83,6 +83,18 @@ export interface GuardConfig {
    */
   sync_exclude?: string[];
   /**
+   * Titles or paths that never autosave. Matched like sync_exclude (title, path, or file name, without .rvt).
+   * The timer, the save after an AI command, and the batch-end save all skip these.
+   */
+  save_exclude?: string[];
+  /**
+   * Folder prefixes autosave must not write under. Matched like protected_roots (a path segment prefix).
+   * Empty matches nothing. protected_roots is still checked as well.
+   */
+  protected_paths?: string[];
+  /** Folder for see_view and other screenshots. Default %LOCALAPPDATA%\\Formcraft\\images. Never D: and never beside a model. */
+  image_dir?: string;
+  /**
    * Per-document allowlist. When set, only these titles or paths sync (again by documentKey).
    * ["Structure"] is "sync only Structure". Omit it to sync every workshared document that is not excluded.
    * A document on both lists is excluded.

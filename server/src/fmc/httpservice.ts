@@ -141,6 +141,8 @@ export interface HealthReport {
   registration: { registered: number; skipped: number; failed: Array<{ file: string; error: string }> };
   queue: ReturnType<typeof queueSnapshots>;
   batches: ReturnType<ReturnType<typeof batchBoard>["snapshot"]>;
+  /** Per open document: next_save_at, next_sync_at, last_save_at, last_sync_at, defer_reason. */
+  schedule: unknown;
   memory: ReturnType<typeof memoryGate.view>;
 }
 
@@ -196,6 +198,7 @@ export async function healthReport(listen: string, startedAt: number, env: NodeJ
     registration: { registered: reg.registered.length, skipped: reg.skipped.length, failed: reg.failed },
     queue: queueSnapshots(),
     batches: batchBoard().snapshot(),
+    schedule: batchBoard().snapshot().syncs,
     memory: memoryGate.view(),
   };
 }

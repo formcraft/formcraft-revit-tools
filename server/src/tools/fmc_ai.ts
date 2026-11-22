@@ -6,6 +6,7 @@ import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { revitTarget } from "../fmc/target.js";
 import { jobMaxMs } from "../utils/SocketClient.js";
 import { GuardConfig, configPath, loadConfig } from "../fmc/policy.js";
+import { imageDir } from "../fmc/images.js";
 import { COMMAND_GROUPS, LEVELS, Level, NEVER, USER_LINE, aiVerdict, generalState, modelParts, projectCode, projectKey } from "../fmc/aiuse.js";
 import { planEnableCopy } from "../fmc/opencopy.js";
 import { formcraftDir, loadAiConfig, loadRulebook, loadState, readItem, readQueue, setResult, setStatus } from "../fmc/aiuse_io.js";
@@ -274,7 +275,7 @@ export async function paneAi(command: string, input: Record<string, unknown>, by
       // Owner 26 Oct: the person shows the AI a problem: the active view with their selection in red, the ids and a note
       // the Revit the person pressed Send in (the pane passes its process id)
       const facts = await revitTarget.run(input.revit ? String(input.revit) : undefined, () =>
-        withRevitConnection((c) => c.sendCommand("fmc_view_image", { selection: true, mode: "view", size: 1400 })));
+        withRevitConnection((c) => c.sendCommand("fmc_view_image", { selection: true, mode: "view", size: 1400, image_dir: imageDir(loadConfig().config) })));
       const item = { id: Date.now().toString(36), at: new Date().toISOString(), by, note: String(input.note ?? ""), view: facts?.view ?? "", ids: facts?.ids ?? [], read: false };
       fs.mkdirSync(inboxDir(), { recursive: true });
       if (facts?.file && fs.existsSync(facts.file)) fs.copyFileSync(facts.file, win.join(inboxDir(), item.id + ".png"));
