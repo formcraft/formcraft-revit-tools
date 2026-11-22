@@ -125,7 +125,7 @@ export const MODIFY_MODEL_DESCRIPTION =
   "key_not_in_table and is not placed. A blank TagText is deleted, not kept. shown counts only tags whose TagText was not empty. " +
   "keynote_retag {views | view, ui_assist? (default true), ids?} with dry_run false activates the first view, selects nothing, and posts Tag All Not Tagged " +
   "(FMC-NEEDS-HUMAN) when that command exists. The answer lists the view queue. keynote_clone {seed, ids, dry_run? (default true)} copies one linked tag " +
-  "and repoints it; a blank copy is rolled back. keynote_audit lists keynote tags with an empty TagText, grouped by view, and deletes nothing. " +
+  "and repoints it; a blank copy is rolled back. keynote_audit lists blank keynote tags by view and linked tags (TagText not empty: id, view, host, key, Key Source), with a seed for keynote_clone per tag type. If a type has no linked tag, seed is null and the hint is to make one via keynote_retag. It deletes nothing. " +
   "These ops run through the code bridge (a server hot-swap) and must be their own batch. category, multi and material stay on the add-in; a keynote tag " +
   "type on that path is refused. Rooms, spaces and areas still get their own tags. · " +
   "keynote_legend {name?, filtered_by_sheet?} creates a keynote legend schedule. · " +

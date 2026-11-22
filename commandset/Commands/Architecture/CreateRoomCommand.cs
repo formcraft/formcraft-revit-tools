@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using RevitMCPSDK.API.Base;
 using RevitMCPCommandSet.Models.Architecture;
 using RevitMCPCommandSet.Services.Architecture;
+using RevitMCPCommandSet.Services.Fmc;
 
 namespace RevitMCPCommandSet.Commands.Architecture
 {
@@ -36,6 +37,7 @@ namespace RevitMCPCommandSet.Commands.Architecture
                 if (data == null)
                     throw new ArgumentNullException(nameof(data), "No room data provided");
 
+                FmcCallContext.Begin(parameters);
                 // Set parameters for the event handler
                 _handler.SetParameters(data);
 

@@ -769,12 +769,17 @@ namespace RevitMCPCommandSet.Services.Fmc
                 RevitCommandId cid = RevitCommandId.LookupPostableCommandId(cmd);
                 if (cid == null || !app.CanPostCommand(cid)) throw new InvalidOperationException($"Revit can't start {cmd} now (wrong view or document for it, or another command is running)");
                 var sel = new JArray();
-                if (Parameters["select_ids"] is JArray ids && ids.Count > 0 && app.ActiveUIDocument != null)
+                using (FmcTarget target = FmcTarget.Resolve(app, Parameters, mayOpen: false))
                 {
-                    Document doc = app.ActiveUIDocument.Document;
-                    var list = ids.Select(t => long.TryParse(t.ToString(), out long v) ? new ElementId(v) : doc.GetElement(t.ToString())?.Id).Where(x => x != null && doc.GetElement(x) != null).ToList();
-                    app.ActiveUIDocument.Selection.SetElementIds(list);
-                    foreach (var x in list) sel.Add(x.Value);
+                    if (target.Ui == null)
+                        throw new InvalidOperationException($"[FMC-DOC-REQUIRED] Revit runs {cmd} in the active document. Make {target.Doc.Title} active. Refusing to use the active document.");
+                    if (Parameters["select_ids"] is JArray ids && ids.Count > 0)
+                    {
+                        Document doc = target.Doc;
+                        var list = ids.Select(t => long.TryParse(t.ToString(), out long v) ? new ElementId(v) : doc.GetElement(t.ToString())?.Id).Where(x => x != null && doc.GetElement(x) != null).ToList();
+                        target.Ui.Selection.SetElementIds(list);
+                        foreach (var x in list) sel.Add(x.Value);
+                    }
                 }
                 app.PostCommand(cid);
                 Result = new JObject { ["started"] = cmd.ToString(), ["selected"] = sel, ["note"] = "Revit runs it next; if it asks for picks or a dialog, the person finishes it in Revit" };

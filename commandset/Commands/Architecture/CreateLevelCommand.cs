@@ -2,6 +2,7 @@ using Autodesk.Revit.UI;
 using Newtonsoft.Json.Linq;
 using RevitMCPSDK.API.Base;
 using RevitMCPCommandSet.Services.Architecture;
+using RevitMCPCommandSet.Services.Fmc;
 using LevelCreationInfo = RevitMCPCommandSet.Models.Architecture.LevelInfo;
 
 namespace RevitMCPCommandSet.Commands.Architecture
@@ -36,6 +37,7 @@ namespace RevitMCPCommandSet.Commands.Architecture
                 if (data == null || data.Count == 0)
                     throw new ArgumentNullException(nameof(data), "No level data provided");
 
+                FmcCallContext.Begin(parameters);
                 // Set parameters for the event handler
                 _handler.SetParameters(data);
 

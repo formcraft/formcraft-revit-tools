@@ -1,4 +1,5 @@
 import { AsyncLocalStorage } from "node:async_hooks";
+import { DOC_REQUIRED, resolveOpenDocument, type DocResolveResult, type OpenDocRef } from "./docresolve.js";
 
 /** Which MCP client a call belongs to. HTTP sets the session id; stdio is one client. */
 export const queueClient = new AsyncLocalStorage<string>();
@@ -149,6 +150,19 @@ export function queueSnapshots(): Array<{ port: number } & QueueSnapshot> {
 /** Commands that describe the session, not one model. Every other call names its document when several are open. */
 const SESSION_COMMANDS = new Set(["fmc_selftest_facts", "fmc_document_info", "fmc_revit", "fmc_doc_background"]);
 
+/**
+ * These commands may name a file that is not open yet (they open it, or they describe it from disk).
+ * A path that matches no open document is not FMC-DOC-NOT-FOUND, and it is not the active document.
+ */
+const CLOSED_PATH_COMMANDS = new Set([
+  "fmc_doc_open", "fmc_create_document", "fmc_family_new", "fmc_open_copy", "fmc_document_info",
+  "fmc_family_inspect", "fmc_family_scan", "fmc_family_bring_in", "fmc_family_host_test",
+  "fmc_qa_facts", "fmc_sheet_facts", "fmc_link_facts", "fmc_material_facts", "fmc_workshare_facts",
+  "fmc_build_facts", "fmc_annotation_facts", "fmc_missing_tags", "fmc_issue_facts", "fmc_issue_export",
+  "fmc_analytical_export", "fmc_electrical_facts", "fmc_structural_facts", "fmc_mep_facts",
+  "fmc_diagram_scan", "fmc_diagram_drawn", "fmc_find_elements",
+]);
+
 /** Optional hints for family-creation exemptions (kind for create_document; template/file for fmc_doc_open). A string is treated as kind, so existing callers stay valid. */
 export type DocumentRequiredHints = { kind?: string; template?: string; file?: string };
 
@@ -173,19 +187,25 @@ function isFamilyCreate(command: string, hints: DocumentRequiredHints): boolean 
   return false;
 }
 
-export function documentRequired(command: string, openTitles: string[], named: string | undefined, hints?: string | DocumentRequiredHints): string | undefined {
+export function documentDecision(command: string, openTitles: Array<string | OpenDocRef>, named: string | undefined, hints?: string | DocumentRequiredHints): DocResolveResult {
   const key = (named ?? "").trim();
+  const parsed = hintsOf(hints);
   // fmc_new_local never falls back to the active document, even when only one model is open.
-  if (command === "fmc_new_local" && !key)
-    return "fmc_new_local needs document: the title of the open local to replace. Refusing to use the active document.";
-  if (command === "fmc_grids_from_link" && !key)
-    return "fmc_grids_from_link needs document: the host model. Refusing to use the active document.";
-  if (SESSION_COMMANDS.has(command) || openTitles.length <= 1) return undefined;
-  if (!key) {
-    if (isFamilyCreate(command, hintsOf(hints))) return undefined;
-    return `${openTitles.length} documents are open (${openTitles.join("; ")}). Pass document with a title or a full path on every call. Refusing to use the active document.`;
-  }
-  const hits = openTitles.filter((title) => title.toLowerCase().includes(key.toLowerCase()));
-  if (hits.length > 1) return `"${key}" matches ${hits.length} documents (${hits.join("; ")}). Pass the full path.`;
-  return undefined;
+  const force = !key && command === "fmc_new_local"
+    ? `[${DOC_REQUIRED}] fmc_new_local needs document: the title of the open local to replace. Refusing to use the active document.`
+    : !key && command === "fmc_grids_from_link"
+      ? `[${DOC_REQUIRED}] fmc_grids_from_link needs document: the host model. Refusing to use the active document.`
+      : undefined;
+  return resolveOpenDocument({
+    named: key,
+    open: openTitles,
+    allowOmit: !force && (SESSION_COMMANDS.has(command) || isFamilyCreate(command, parsed)),
+    allowClosedPath: CLOSED_PATH_COMMANDS.has(command),
+    forceMessage: force,
+  });
+}
+
+export function documentRequired(command: string, openTitles: Array<string | OpenDocRef>, named: string | undefined, hints?: string | DocumentRequiredHints): string | undefined {
+  const decision = documentDecision(command, openTitles, named, hints);
+  return decision.ok ? undefined : decision.message;
 }

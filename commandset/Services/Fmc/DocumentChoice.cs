@@ -14,7 +14,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (!string.IsNullOrWhiteSpace(key)) return;
             int count = openLabels == null ? 0 : openLabels.Count;
             if (count > 1)
-                throw new InvalidOperationException(count + " documents are open (" + string.Join("; ", openLabels) + "). Pass document with a title or a full path. Refusing to use the active document.");
+                throw new InvalidOperationException("[FMC-DOC-REQUIRED] " + count + " documents are open (" + string.Join("; ", openLabels) + "). Pass document with a title or a full path. Refusing to use the active document.");
             if (count == 0)
                 throw new InvalidOperationException("No document is open in Revit. Pass document with a file path.");
         }

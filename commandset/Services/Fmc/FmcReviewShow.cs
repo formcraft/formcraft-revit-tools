@@ -40,8 +40,9 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         private JObject Show(UIApplication app)
         {
-            UIDocument ui = app.ActiveUIDocument ?? throw new InvalidOperationException("Open the model in Revit first");
-            Document doc = ui.Document;
+            using var target = FmcTarget.Resolve(app, Parameters, mayOpen: false);
+            UIDocument ui = target.RequireUi("Showing a review");
+            Document doc = target.Doc;
             JObject w = Parameters["where"] as JObject ?? new JObject();
             var notes = new JArray();
 

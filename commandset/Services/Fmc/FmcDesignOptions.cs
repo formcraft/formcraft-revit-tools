@@ -64,7 +64,8 @@ namespace RevitMCPCommandSet.Services.Fmc
             Result = new JObject(); Error = "";
             try
             {
-                Document doc = app.ActiveUIDocument?.Document ?? throw new InvalidOperationException("No model is open");
+                using var target = FmcTarget.Resolve(app, Parameters, mayOpen: false);
+                Document doc = target.Doc;
                 var options = new JArray();
                 foreach (DesignOption o in new FilteredElementCollector(doc).OfClass(typeof(DesignOption)).Cast<DesignOption>())
                 {

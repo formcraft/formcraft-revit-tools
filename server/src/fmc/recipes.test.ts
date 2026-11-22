@@ -733,17 +733,20 @@ test("a new-family recipe build with 3 documents open passes, and every later ca
   const { buildRecipe } = await import("../tools/fmc_recipe_build.js");
   const { documentRequired } = await import("./fairqueue.js");
   const openDocs = ["HEBERT HOSTELS PLUMBING & DRAINAGE", "HERBERT HOSTELS_SITE", "Architecture"];
+  const known = [...openDocs];
   const familyTitle = "FMC_A_Door_SteelFanlight";
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-recipe-target-"));
   const clock = { t: Date.parse("2026-11-11T10:00:00Z") };
   const inner = fakeRevit({ appData: dir, clock, msPerOp: 1 });
   const doc = async (a: Record<string, any>) => {
     const command = a.action === "open" ? "fmc_doc_open" : `fmc_doc_${a.action}`;
-    const refusal = documentRequired(command, openDocs, a.document, { template: a.template, file: a.file });
+    const refusal = documentRequired(command, known, a.document, { template: a.template, file: a.file });
     if (refusal) return { ok: false, error: refusal, refused: true };
     const r = await inner.doc(a);
-    if (a.action === "open" && r.ok !== false)
+    if (a.action === "open" && r.ok !== false) {
+      if (!known.includes(familyTitle)) known.push(familyTitle);
       return { ...r, document: { ...r.document, title: familyTitle, path: "" } };
+    }
     return r;
   };
   const recipe = parseRecipe(door()).recipe!;
@@ -764,5 +767,5 @@ test("a new-family recipe build with 3 documents open passes, and every later ca
 
   assert.match(documentRequired("fmc_model_edit", openDocs, undefined) ?? "", /3 documents are open.*Refusing to use the active document/);
   const existing = await doc({ action: "open", file: path.join(dir, "ExistingProject.rvt") });
-  assert.match(String(existing.error ?? ""), /3 documents are open.*Refusing to use the active document/);
+  assert.match(String(existing.error ?? ""), /documents are open.*Refusing to use the active document/);
 });

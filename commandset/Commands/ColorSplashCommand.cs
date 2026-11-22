@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using RevitMCPSDK.API.Base;
 using RevitMCPCommandSet.Services;
+using RevitMCPCommandSet.Services.Fmc;
 
 namespace RevitMCPCommandSet.Commands
 {
@@ -61,6 +62,7 @@ namespace RevitMCPCommandSet.Commands
                 }
 
                 // Set parameters for the event handler
+                FmcCallContext.Begin(parameters);
                 _handler.SetParameters(categoryName, parameterName, useGradient, customColors);
 
                 // Trigger external event and wait for completion

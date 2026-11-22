@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using RevitMCPSDK.API.Base;
 using RevitMCPCommandSet.Models.Common;
 using RevitMCPCommandSet.Services;
+using RevitMCPCommandSet.Services.Fmc;
 
 namespace RevitMCPCommandSet.Commands
 {
@@ -35,6 +36,7 @@ namespace RevitMCPCommandSet.Commands
                     throw new ArgumentNullException(nameof(data), "No data was sent");
 
                 // 设置面状构件体参数
+                FmcCallContext.Begin(parameters);
                 _handler.SetParameters(data);
 
                 // 触发外部事件并等待完成

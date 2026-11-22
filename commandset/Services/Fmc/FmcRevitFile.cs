@@ -37,14 +37,12 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         private JObject Run(UIApplication app, string action)
         {
-            string named = (Parameters.Value<string>("document") ?? "").Trim();
-            Document doc;
-            if (named.Length > 0 && action != "open" && action != "open_ifc" && action != "close")
+            Document doc = null;
+            if (action != "open" && action != "open_ifc" && action != "close")
             {
-                // The named document, or a refusal. Never the active document when the name is missing.
+                // The named document, or the only open one. Never the active document when the name is missing and several are open.
                 using (FmcTarget target = FmcTarget.Resolve(app, Parameters, mayOpen: false)) doc = target.Doc;
             }
-            else doc = app.ActiveUIDocument?.Document;
             string path = Parameters.Value<string>("path");
             switch (action)
             {
@@ -60,8 +58,11 @@ namespace RevitMCPCommandSet.Services.Fmc
                 }
                 case "close":
                 {
-                    string title = Parameters.Value<string>("title") ?? throw new InvalidOperationException("close needs title (a model that isn't the active one)");
-                    Document d = app.Application.Documents.Cast<Document>().FirstOrDefault(x => string.Equals(x.Title, title, StringComparison.OrdinalIgnoreCase)) ?? throw new InvalidOperationException($"{title} isn't open");
+                    string title = Parameters.Value<string>("title") ?? Parameters.Value<string>("document") ?? throw new InvalidOperationException("[FMC-DOC-REQUIRED] close needs title (a model that isn't the active one). Refusing to use the active document.");
+                    var hits = app.Application.Documents.Cast<Document>().Where(x => !x.IsLinked && FmcTarget.Same(x, title)).ToList();
+                    if (hits.Count == 0) throw new InvalidOperationException($"[FMC-DOC-NOT-FOUND] {title} isn't open. Refusing to use the active document.");
+                    if (hits.Count > 1) throw new InvalidOperationException($"[FMC-DOC-AMBIGUOUS] \"{title}\" matches {hits.Count} open documents. Pass the full path. Refusing to use the active document.");
+                    Document d = hits[0];
                     Document activeDoc = app.ActiveUIDocument?.Document;
                     if (activeDoc != null && d.Equals(activeDoc)) throw new InvalidOperationException("Revit can't close the active model from a plugin: open another first, or the person closes it");
                     bool saveClose = Parameters.Value<bool?>("save") ?? false;

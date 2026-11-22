@@ -31,19 +31,22 @@ namespace RevitMCPCommandSet.Services.Fmc
         public void Execute(UIApplication app)
         {
             Result = new JObject(); Error = "";
-            try { Result = Apply(app.ActiveUIDocument ?? throw new InvalidOperationException("No model is open")); }
+            try
+            {
+                using var target = FmcTarget.Resolve(app, Parameters, mayOpen: false);
+                Result = Apply(target.Doc, target.Ui);
+            }
             catch (Exception e) { Error = e.Message; }
             finally { _done.Set(); }
         }
 
-        private JObject Apply(UIDocument uidoc)
+        private JObject Apply(Document doc, UIDocument uidoc)
         {
-            Document doc = uidoc.Document;
             if (doc.IsFamilyDocument) throw new InvalidOperationException("A ticket's fix is applied in a project model");
             var steps = (Parameters["steps"] as JArray ?? new JArray()).OfType<JObject>().ToList();
             if (steps.Count == 0) throw new InvalidOperationException("No steps to apply");
             string fallbackUid = Parameters.Value<string>("unique_id") ?? "";
-            View view = FindView(doc, Parameters.Value<string>("view")) ?? uidoc.ActiveView;
+            View view = FindView(doc, Parameters.Value<string>("view")) ?? uidoc?.ActiveView ?? doc.ActiveView;
             string ticket = Parameters.Value<string>("ticket") ?? "";
             var done = new JArray();
             using (var t = new Transaction(doc, "FMC fix " + ticket))

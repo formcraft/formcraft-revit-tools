@@ -16,6 +16,7 @@
  * The installed add-in is not changed. Reads and the optional tag go through send_code_to_revit; the command goes
  * through the existing fmc_post_command. A server hot-swap is enough.
  */
+import { shapedDocumentFields } from "./docresolve.js";
 import { screenScript } from "./scriptguard.js";
 
 export const CODE_NO_API = "FMC-NO-API-PROPERTYLINE";
@@ -700,9 +701,9 @@ async function call(send: SendCommand, command: string, params: Record<string, u
   }
 }
 
-function sentResult(value: unknown, dry: boolean): { ok: true; result: Record<string, unknown>; document?: Record<string, unknown> } | { ok: false; body: Record<string, unknown> } {
+function sentResult(value: unknown, dry: boolean): { ok: true; result: Record<string, unknown>; document?: { title: string; path: string }; resolved_document?: { title: string; path: string } } | { ok: false; body: Record<string, unknown> } {
   const row = asRecord(value) ?? {};
-  const stamped = asRecord(row.document);
+  const stamped = shapedDocumentFields(row.resolved_document ?? row.document);
   if (row.success === false) {
     const message = String(row.errorMessage || row.error || "Revit rolled the script back. Nothing was changed.");
     return {
@@ -712,13 +713,13 @@ function sentResult(value: unknown, dry: boolean): { ok: true; result: Record<st
         reason: message,
         ...(String(message).includes(CODE_NO_TAG) ? { code: CODE_NO_TAG, kit_tag_family: null, kit_note: KIT_PROPERTY_LINE_TAG } : {}),
         ...(typeof row.errorCode === "string" ? { errorCode: row.errorCode } : {}),
-        ...(stamped ? { document: stamped } : {}),
+        ...stamped,
       },
     };
   }
   const result = parseResult(row.result) ?? parseResult(row);
-  if (!result) return { ok: false, body: { applied: false, dry_run: dry, created: false, reason: "Revit returned no property-line result. Nothing was changed." } };
-  return { ok: true, result, ...(stamped ? { document: stamped } : {}) };
+  if (!result) return { ok: false, body: { applied: false, dry_run: dry, created: false, reason: "Revit returned no property-line result. Nothing was changed.", ...stamped } };
+  return { ok: true, result, ...stamped };
 }
 
 async function resolveSelect(op: PropertyOp, key: "from_ids" | "ids", send: SendCommand): Promise<PropertyOp> {
@@ -831,7 +832,7 @@ async function runCreate(op: PropertyOp, batchDry: boolean, document: string | u
     active_view: parsed.result.active_view,
     ...notApplied(op),
     ...keepNote(op, ids.ids),
-    ...(parsed.document ? { document: parsed.document } : {}),
+    ...(parsed.document ? { document: parsed.document, resolved_document: parsed.resolved_document ?? parsed.document } : {}),
   };
   if (checked.problems.length) return fail({ ...base, problems: checked.problems, reason: checked.problems[0] });
   const chain = checked.chain;
@@ -929,7 +930,7 @@ async function runVerify(op: PropertyOp, batchDry: boolean, document: string | u
     ...(newLines ? { new_ids: newLines.map((line) => line.id) } : { new_ids: null, note: "Pass known_ids (the property line ids from before the command) to tell which line is new." }),
     addin_rebuild: false,
     source_kept: true,
-    ...(parsed.document ? { document: parsed.document } : {}),
+    ...(parsed.document ? { document: parsed.document, resolved_document: parsed.resolved_document ?? parsed.document } : {}),
   };
   const segmentApi = asRecord(parsed.result.property_line_segment_type);
   body.segment_members = {
@@ -1011,7 +1012,7 @@ async function runTag(op: PropertyOp, batchDry: boolean, document: string | unde
       kit_tag_family: null,
       kit_note: KIT_PROPERTY_LINE_TAG,
       addin_rebuild: false,
-      ...(parsed.document ? { document: parsed.document } : {}),
+      ...(parsed.document ? { document: parsed.document, resolved_document: parsed.resolved_document ?? parsed.document } : {}),
       ...(dry ? { note: "Dry run: tags were rolled back. Nothing was kept." } : {}),
     },
   };

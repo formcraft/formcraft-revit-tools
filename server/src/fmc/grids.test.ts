@@ -15,7 +15,7 @@ test("a quote in a grid name is refused and is not written into the script", () 
   const missing = planGrids({ document: " ", link: 12 });
   assert.match(missing.reasons.join(" "), /active document is not used/);
   assert.equal(planGrids({ document: "Architecture", link: 0 }).ok, false);
-  assert.equal(documentRequired("fmc_grids_from_link", ["Architecture"], undefined), "fmc_grids_from_link needs document: the host model. Refusing to use the active document.");
+  assert.equal(documentRequired("fmc_grids_from_link", ["Architecture"], undefined), "[FMC-DOC-REQUIRED] fmc_grids_from_link needs document: the host model. Refusing to use the active document.");
 });
 
 test("the fixed script copies lines and arcs by the link transform and does not monitor them", () => {

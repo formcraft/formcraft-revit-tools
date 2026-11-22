@@ -6,8 +6,8 @@ import { RevitClientConnection } from "../utils/SocketClient.js";
 
 test("five documents and no name is refused; one document is not", () => {
   const docs = ["Architecture", "Structure", "Electrical", "Plumbing", "Site"];
-  assert.match(documentRequired("fmc_model_edit", docs, undefined) ?? "", /5 documents are open.*Refusing to use the active document/);
-  assert.match(documentRequired("fmc_model_edit", docs, "e") ?? "", /matches/);
+  assert.match(documentRequired("fmc_model_edit", docs, undefined) ?? "", /FMC-DOC-REQUIRED.*5 documents are open.*Refusing to use the active document/);
+  assert.match(documentRequired("fmc_model_edit", docs, "e") ?? "", /FMC-DOC-NOT-FOUND/);
   assert.equal(documentRequired("fmc_model_edit", docs, "Structure"), undefined);
   assert.equal(documentRequired("fmc_model_edit", ["Only"], undefined), undefined);
   assert.equal(documentRequired("fmc_document_info", docs, undefined), undefined);
@@ -36,16 +36,19 @@ test("recipe new-family open and reopening an .rfa are allowed with several docu
   assert.match(documentRequired("fmc_create_document", docs, undefined, "project") ?? "", /3 documents are open.*Refusing to use the active document/);
   const family = "FMC_P_PlumbingEq_Tank_Poly_Elevated";
   for (const command of ["fmc_doc_apply", "fmc_doc_flex", "fmc_doc_save", "fmc_doc_close", "fmc_doc_report", "fmc_doc_screenshot", "fmc_family_inspect", "fmc_family_host_test"]) {
-    assert.equal(documentRequired(command, docs, family), undefined, command);
+    assert.match(documentRequired(command, docs, family) ?? "", /FMC-DOC-NOT-FOUND/, command);
+    assert.equal(documentRequired(command, [...docs, family], family), undefined, command);
     assert.match(documentRequired(command, docs, undefined) ?? "", /3 documents are open/, command);
   }
   // background is a session inventory, like document_info
   assert.equal(documentRequired("fmc_doc_background", docs, undefined), undefined);
-  // The opened family path is the named target for later fmc_doc calls in that session.
-  assert.equal(documentRequired("fmc_doc_report", docs, file.file), undefined);
-  assert.equal(documentRequired("fmc_doc_screenshot", docs, file.file), undefined);
-  assert.equal(documentRequired("fmc_doc_apply", docs, file.file), undefined);
-  assert.equal(documentRequired("fmc_doc_flex", docs, file.file), undefined);
+  // A path is the named target only when that file is open. A path that is not open is not the active document.
+  const openFamily = [...docs, file.file];
+  assert.equal(documentRequired("fmc_doc_report", openFamily, file.file), undefined);
+  assert.equal(documentRequired("fmc_doc_screenshot", openFamily, file.file), undefined);
+  assert.equal(documentRequired("fmc_doc_apply", openFamily, file.file), undefined);
+  assert.equal(documentRequired("fmc_doc_flex", openFamily, file.file), undefined);
+  assert.match(documentRequired("fmc_doc_report", docs, file.file) ?? "", /FMC-DOC-NOT-FOUND/);
   assert.match(documentRequired("fmc_doc_open", docs, undefined, { file: file.file, template: "C:\\Templates\\Metric Generic Model.rft" }) ?? "", /3 documents are open/);
 });
 

@@ -107,6 +107,7 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
                 using (target)
                 {
                     info.Document = doc.Title;
+                    info.ResolvedDocument = FmcTarget.Resolved(doc);
                     // KISIC §4.1: a document a script left with an open transaction the bridge couldn't roll back.
                     string blocked = FmcTxGuard.BlockedReason(doc);
                     if (blocked != null)
@@ -554,6 +555,10 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
 
         [JsonProperty("document", NullValueHandling = NullValueHandling.Ignore)]
         public string Document { get; set; }
+
+        /// <summary>The document the script ran in: title and path. Not whichever model was active.</summary>
+        [JsonProperty("resolved_document", NullValueHandling = NullValueHandling.Ignore)]
+        public JObject ResolvedDocument { get; set; }
 
         [JsonProperty("transactionMode")]
         public string TransactionMode { get; set; } = string.Empty;

@@ -1,6 +1,7 @@
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Architecture;
 using Autodesk.Revit.UI;
+using RevitMCPCommandSet.Services.Fmc;
 using RevitMCPCommandSet.Utils;
 using RevitMCPSDK.API.Interfaces;
 
@@ -39,8 +40,7 @@ namespace RevitMCPCommandSet.Services
     public class TagRoomsEventHandler : IExternalEventHandler, IWaitableExternalEventHandler
     {
         private UIApplication _uiApp;
-        private UIDocument _uiDoc => _uiApp.ActiveUIDocument;
-        private Document _doc => _uiDoc.Document;
+        private Document _doc => FmcCallContext.Document(_uiApp);
 
         /// <summary>
         /// Event wait object for synchronization
@@ -132,7 +132,7 @@ namespace RevitMCPCommandSet.Services
                         if (floorPlanView != null)
                         {
                             string previousViewName = activeView.Name;
-                            _uiDoc.ActiveView = floorPlanView;
+                            new UIDocument(_doc).ActiveView = floorPlanView;
                             activeView = floorPlanView;
                             viewSwitchMessage = $"Switched from '{previousViewName}' to '{floorPlanView.Name}' for room tagging";
                         }

@@ -40,25 +40,37 @@ namespace RevitMCPCommandSet.Services.Fmc
                 var found = open.Where(d => Same(d, key)).ToList();
                 string activeName = active?.Title ?? "none";
                 if (found.Count > 1)
-                    throw new InvalidOperationException($"More than one open document matches \"{key}\" ({string.Join("; ", found.Select(d => string.IsNullOrEmpty(d.PathName) ? d.Title : d.PathName))}). Pass the full path. Refusing to use the active document ({activeName}).");
-                if (found.Count == 1) return new FmcTarget(found[0], active != null && found[0].Equals(active) ? app.ActiveUIDocument : null, false);
+                    throw new InvalidOperationException($"[FMC-DOC-AMBIGUOUS] \"{key}\" matches {found.Count} open documents ({string.Join("; ", found.Select(d => string.IsNullOrEmpty(d.PathName) ? d.Title : d.PathName))}). Pass the full path. Refusing to use the active document ({activeName}).");
+                if (found.Count == 1) return Taken(found[0], active, app);
                 // A named document that is not open is never replaced with the active one.
                 if (!LooksLikeFile(key))
-                    throw new InvalidOperationException($"No open document is called \"{key}\". Open: {List(open)}. Refusing to use the active document ({activeName}).");
+                    throw new InvalidOperationException($"[FMC-DOC-NOT-FOUND] No open document has title or path \"{key}\". Open: {List(open)}. Refusing to use the active document ({activeName}).");
                 if (!mayOpen)
-                    throw new InvalidOperationException($"{Path.GetFileName(key)} isn't open. Refusing to use the active document ({activeName}).");
+                    throw new InvalidOperationException($"[FMC-DOC-NOT-FOUND] {Path.GetFileName(key)} isn't open. Refusing to use the active document ({activeName}).");
                 if (IsProtected(key, Roots(parameters)))
                     throw new InvalidOperationException($"Refusing to open {key}: it is under a protected original. Refusing to use the active document ({activeName}).");
                 if (IsCloud(key))
                     throw new InvalidOperationException($"Refusing to open {key}: cloud and Revit Server models are not opened in the background.");
-                if (!File.Exists(key)) throw new InvalidOperationException($"File not found: {key}. Refusing to use the active document ({activeName}).");
+                if (!File.Exists(key)) throw new InvalidOperationException($"[FMC-DOC-NOT-FOUND] File not found: {key}. Refusing to use the active document ({activeName}).");
                 return new FmcTarget(OpenInBackground(app, key, parameters), null, true);
             }
-            // Several open documents and no name used to follow whichever file was on screen. That sent
-            // every unnamed call into one discipline's model. Name the document, or there is only one open.
-            DocumentChoice.RequireNamed("", open.ConvertAll(d => string.IsNullOrEmpty(d.PathName) ? d.Title : d.PathName));
-            if (open.Count == 1) return new FmcTarget(open[0], active != null && open[0].Equals(active) ? app.ActiveUIDocument : null, false);
+            // Several project documents and no name used to follow whichever file was on screen.
+            var projects = open.Where(d => !d.IsFamilyDocument).ToList();
+            var choose = projects.Count > 0 ? projects : open;
+            DocumentChoice.RequireNamed("", choose.ConvertAll(d => string.IsNullOrEmpty(d.PathName) ? d.Title : d.PathName));
+            if (choose.Count == 1) return Taken(choose[0], active, app);
             throw new InvalidOperationException("No document is open in Revit. Open one, or pass document with a file path.");
+        }
+
+        private static FmcTarget Taken(Document doc, Document active, UIApplication app)
+        {
+            return new FmcTarget(doc, active != null && doc.Equals(active) ? app.ActiveUIDocument : null, false);
+        }
+
+        /// <summary>title and path, for resolved_document on a reply.</summary>
+        public static JObject Resolved(Document doc)
+        {
+            return new JObject { ["title"] = doc?.Title ?? "", ["path"] = doc?.PathName ?? "" };
         }
 
         /// <summary>The UI document, for commands that need the active view or the selection.</summary>
@@ -143,13 +155,13 @@ namespace RevitMCPCommandSet.Services.Fmc
             };
         }
 
+        /// <summary>Exact title or exact path. A file name that is not the title does not match.</summary>
         public static bool Same(Document d, string key)
         {
             if (string.Equals(d.Title, key, StringComparison.OrdinalIgnoreCase)) return true;
-            if (string.Equals(Path.GetFileNameWithoutExtension(d.PathName ?? ""), key, StringComparison.OrdinalIgnoreCase) && !key.Contains("\\")) return true;
-            if (string.IsNullOrEmpty(d.PathName) || !LooksLikeFile(key)) return false;
+            if (string.IsNullOrEmpty(d.PathName)) return false;
             try { return string.Equals(Path.GetFullPath(d.PathName), Path.GetFullPath(key), StringComparison.OrdinalIgnoreCase); }
-            catch (Exception) { return false; }
+            catch (Exception) { return string.Equals(d.PathName, key, StringComparison.OrdinalIgnoreCase); }
         }
 
         private static bool LooksLikeFile(string key) =>

@@ -26,6 +26,7 @@ using Newtonsoft.Json.Linq;
 using RevitMCPSDK.API.Base;
 using RevitMCPCommandSet.Models.Annotation;
 using RevitMCPCommandSet.Services.AnnotationComponents;
+using RevitMCPCommandSet.Services.Fmc;
 
 namespace RevitMCPCommandSet.Commands.AnnotationComponents;
 
@@ -66,6 +67,7 @@ public class CreateDimensionCommand : ExternalEventCommandBase
             if (dimensions == null || dimensions.Count == 0)
                 throw new ArgumentException("Dimension list cannot be empty");
 
+            FmcCallContext.Begin(parameters);
             // Set parameters and execute
             _handler.SetParameters(dimensions);
 

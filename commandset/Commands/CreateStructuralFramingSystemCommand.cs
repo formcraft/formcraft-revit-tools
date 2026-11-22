@@ -2,6 +2,7 @@ using Autodesk.Revit.UI;
 using Newtonsoft.Json.Linq;
 using RevitMCPCommandSet.Models.Structure;
 using RevitMCPCommandSet.Services;
+using RevitMCPCommandSet.Services.Fmc;
 using RevitMCPSDK.API.Base;
 
 namespace RevitMCPCommandSet.Commands
@@ -41,6 +42,7 @@ namespace RevitMCPCommandSet.Commands
                 }
 
                 // Set parameters and trigger event
+                FmcCallContext.Begin(parameters);
                 _handler.SetParameters(data);
 
                 // Wait for completion with 15 second timeout (beam creation can be slower)

@@ -31,7 +31,11 @@ namespace RevitMCPCommandSet.Services.Fmc
         public void Execute(UIApplication app)
         {
             Result = new JObject(); Error = "";
-            try { Result = Build(app.ActiveUIDocument?.Document ?? throw new InvalidOperationException("Open the WIP model first")); }
+            try
+            {
+                using var target = FmcTarget.Resolve(app, Parameters, mayOpen: false);
+                Result = Build(target.Doc);
+            }
             catch (Exception e) { Error = e.Message; }
             finally { _done.Set(); }
         }

@@ -5,6 +5,7 @@ using Autodesk.Revit.UI;
 using Newtonsoft.Json;
 using RevitMCPSDK.API.Interfaces;
 using RevitMCPCommandSet.Models.Common;
+using RevitMCPCommandSet.Services.Fmc;
 using RevitMCPCommandSet.Utils;
 using System;
 using System.Collections.Generic;
@@ -20,8 +21,7 @@ namespace RevitMCPCommandSet.Services
     public class AIElementFilterEventHandler : IExternalEventHandler, IWaitableExternalEventHandler
     {
         private UIApplication uiApp;
-        private UIDocument uiDoc => uiApp.ActiveUIDocument;
-        private Document doc => uiDoc.Document;
+        private Document doc => FmcCallContext.Document(uiApp);
         private Autodesk.Revit.ApplicationServices.Application app => uiApp.Application;
         /// <summary>
         /// 事件等待对象

@@ -1,6 +1,7 @@
 ﻿using Autodesk.Revit.UI;
 using Newtonsoft.Json.Linq;
 using RevitMCPCommandSet.Services;
+using RevitMCPCommandSet.Services.Fmc;
 using RevitMCPSDK.API.Base;
 
 namespace RevitMCPCommandSet.Commands
@@ -41,6 +42,7 @@ namespace RevitMCPCommandSet.Commands
                 }
 
                 // 设置标记参数
+                FmcCallContext.Begin(parameters);
                 _handler.SetParameters(useLeader, tagTypeId);
 
                 // 触发外部事件并等待完成

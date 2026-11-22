@@ -673,6 +673,13 @@ export class BatchBoard {
    * A model-changing call. Reads never reach here. No active lease: the call is allowed.
    * An active lease requires this session and this lease id.
    */
+  /** The document a lease was granted for, when this process still has that lease. */
+  heldDocument(lease: string): string | undefined {
+    const id = lease.trim();
+    if (!id) return undefined;
+    return this.tickets.get(id)?.document;
+  }
+
   admit(document: string | undefined, lease: string | undefined, client: string): { finish: () => void } {
     this.sweep();
     const holder = this.holderFor(document);
@@ -1357,6 +1364,12 @@ export function logBatchRestart(): BatchBoard {
  * Model-changing calls only. The write list is WRITE_COMMANDS, the same list a reset retry refuses to send twice.
  * Returns a finish() the caller runs when the Revit call returns, so a long write counts as liveness.
  */
+export function leaseHeldDocument(lease: string | undefined): string | undefined {
+  const id = (lease ?? "").trim();
+  if (!id) return undefined;
+  return batchBoard().heldDocument(id);
+}
+
 export function admitBatchWrite(command: string, document: string | undefined, lease: string | undefined, client: string): { finish: () => void } {
   if (!WRITE_COMMANDS.has(command)) return { finish() {} };
   return batchBoard().admit(document, lease, client);

@@ -239,6 +239,14 @@ test("keynote_retag posts Tag All Not Tagged for the first view and keeps the qu
   assert.match(KEYNOTE_SCRIPT, /blank_rolled_back/);
   assert.match(KEYNOTE_SCRIPT, /keynote_audit/);
   assert.match(KEYNOTE_SCRIPT, /Nothing blank was kept|Blank keynote tags were not deleted/);
+  assert.match(KEYNOTE_SCRIPT, /\["linked"\] = linked/);
+  assert.match(KEYNOTE_SCRIPT, /\["host"\] = hostId/);
+  assert.match(KEYNOTE_SCRIPT, /\["key_source"\] = source/);
+  assert.match(KEYNOTE_SCRIPT, /\["seed"\] = seed\["id"\]/);
+  assert.match(KEYNOTE_SCRIPT, /keynote_retag on one view/);
+  assert.match(KEYNOTE_SCRIPT, /TagText not empty/);
+  const audit = KEYNOTE_SCRIPT.slice(KEYNOTE_SCRIPT.indexOf('if (name == "keynote_audit")'), KEYNOTE_SCRIPT.indexOf('if (name == "keynote_clone")'));
+  assert.doesNotMatch(audit, /document\.Delete/);
 });
 
 test("keynote mode source declares no identifier twice across nested scopes", () => {

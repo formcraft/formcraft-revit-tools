@@ -1,6 +1,7 @@
 using Autodesk.Revit.UI;
 using Newtonsoft.Json.Linq;
 using RevitMCPCommandSet.Services;
+using RevitMCPCommandSet.Services.Fmc;
 using RevitMCPSDK.API.Base;
 
 namespace RevitMCPCommandSet.Commands
@@ -50,6 +51,7 @@ namespace RevitMCPCommandSet.Commands
                 }
 
                 // Set parameters for the event handler
+                FmcCallContext.Begin(parameters);
                 _handler.SetParameters(useLeader, tagTypeId, roomIds);
 
                 // Trigger external event and wait for completion

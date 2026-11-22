@@ -2,6 +2,7 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { JobStillRunning } from "../utils/SocketClient.js";
+import { resolvedDocumentFrom } from "../fmc/docresolve.js";
 
 /** Largest script accepted (characters). The add-in checks the same limit; docs/BRIDGE.md. */
 export const MAX_CODE_CHARS = 1_000_000;
@@ -19,7 +20,8 @@ const transactionModeSchema = z
   );
 
 export const SEND_CODE_DESCRIPTION =
-  "Send C# code to Revit. The code is the body of `object Execute(Document document, object[] parameters)`: end it " +
+  "Send C# code to Revit. The code is the body of `object Execute(Document document, object[] parameters)`. " +
+    "`document` and `doc` are the call's resolved document, not whichever model is active. End it " +
     "with `return <value>;` (`return null;` when there is nothing to return). Namespaces always in scope: System, " +
     "System.Linq, System.Collections.Generic, System.Text, Autodesk.Revit.DB (+ .Architecture, .Structure), " +
     "Autodesk.Revit.UI and RevitMCPCommandSet.Bridge; add more with `usings`. Helpers: FmcScript.Mm(mm) → feet, " +
@@ -65,8 +67,9 @@ type SendCodeArgs = { code: string; parameters?: string[]; usings?: string[]; tr
 export function formatCodeResult(response: any): { text: string; isError: boolean } {
   if (!response || typeof response !== "object") return { text: `Code execution finished.\nResult: ${JSON.stringify(response)}`, isError: false };
   const times = `compile ${response.compileMs ?? "?"} ms, run ${response.runMs ?? "?"} ms`;
+  const resolved = resolvedDocumentFrom(response.resolved_document) ?? resolvedDocumentFrom(response.document);
   const extra = {
-    job: response.job, document: response.document, transaction: response.transaction,
+    job: response.job, document: response.document, ...(resolved ? { resolved_document: resolved } : {}), transaction: response.transaction,
     undo_id: response.undoId || undefined,
     warnings: response.warnings?.length ? response.warnings : undefined,
     failures: response.failures?.length ? response.failures : undefined,
