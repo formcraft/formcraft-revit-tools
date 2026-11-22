@@ -1,13 +1,36 @@
+import fs from "node:fs";
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { executeKeynoteBatch } from "../fmc/keynote.js";
+import { decodeKeynoteFile, keynoteTableWarnings } from "../fmc/library.js";
 import { executePropertyLineBatch } from "../fmc/propertyline.js";
 import { documentTarget } from "../fmc/target.js";
 import { touchedIds, viewImage } from "./see_view.js";
 
 function reply(body: unknown, isError = false) {
   return { content: [{ type: "text" as const, text: typeof body === "string" ? body : JSON.stringify(body, null, 2) }], isError };
+}
+
+/** keynote_file loads the table in Revit. An LF-only file comes back as one entry; say so on the answer. */
+function attachKeynoteFileWarnings(ops: Array<{ op?: string; path?: unknown }>, result: any): void {
+  if (!result || typeof result !== "object") return;
+  const seen = new Set<string>();
+  const rows = Array.isArray(result.ops) ? result.ops : [];
+  for (const row of rows) if (Array.isArray(row?.warnings)) for (const w of row.warnings) seen.add(String(w));
+  const notes: string[] = [];
+  for (const op of ops) {
+    if (op?.op !== "keynote_file" || typeof op.path !== "string" || !op.path.trim()) continue;
+    let text = "";
+    try { text = decodeKeynoteFile(fs.readFileSync(op.path)); }
+    catch { continue; }
+    const row = rows.find((item: any) => item?.kind === "keynote_file" && item?.keynotes === op.path);
+    const loaded = typeof row?.loaded === "number" && row.loaded >= 0 ? row.loaded : undefined;
+    for (const warning of keynoteTableWarnings(text, loaded)) if (!seen.has(warning)) { seen.add(warning); notes.push(warning); }
+  }
+  if (!notes.length) return;
+  const prev = Array.isArray(result.warnings) ? result.warnings.map(String) : [];
+  result.warnings = [...prev, ...notes];
 }
 
 export const MODEL_EDIT_OPS = ["copy", "rotate", "mirror", "join", "unjoin", "switch_join", "cut", "uncut", "pin", "unpin", "delete", "move", "set_param", "change_type", "attach", "duplicate_type", "create_roof",
@@ -293,6 +316,7 @@ export function registerModifyModelTool(server: McpServer) {
           (command, params) => withRevitConnection((c) => c.sendCommand(command, params)));
         if (propertyLine) return reply(propertyLine.body, propertyLine.isError);
         const r = await withRevitConnection((c) => c.sendCommand("fmc_model_edit", { ops: args.ops, dry_run: args.dry_run, ...(args.why ? { why: args.why } : {}) }));
+        attachKeynoteFileWarnings(args.ops, r);
         const out = reply(r, r?.applied === false && !r?.dry_run) as { content: any[]; isError: boolean };
         // Owner 26 Oct: the AI sees what it did, so it can check its own work like a person glancing at the screen
         const ids = r?.applied ? touchedIds(args.ops as any[], r).filter((id) => !(r.ops ?? []).some((x: any) => (x.removed_ids ?? []).includes(id))) : [];

@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
-  ScannedFamily, categoryTokens, checkFamily, nameOk, nextKeynoteCode, parseKeynotes, searchKeynotes, standardName, summarise,
+  ScannedFamily, categoryTokens, checkFamily, decodeKeynoteFile, keynoteTableWarnings, nameOk, nextKeynoteCode, parseKeynotes, searchKeynotes, standardName, summarise,
 } from "./library.js";
 import { FamilySpec, parseSharedParameters } from "./specs.js";
 
@@ -75,4 +75,17 @@ test("keynotes: parse, search and the next free code in a group", () => {
   assert.deepEqual(searchKeynotes(all, "twin").map((k) => k.code), ["E.SOC_00"]);
   assert.equal(nextKeynoteCode(all, "E.SOC"), "E.SOC_04");
   assert.equal(nextKeynoteCode(all, "E.LED"), "E.LED_00");
+});
+
+test("a keynote table with LF line endings warns, and a short load warns when the file has many lines", () => {
+  const lf = "A\tArchitectural\t\nB\tBlockwork\t\nC\tConcrete\t\nD\tDoors\t\n";
+  const crlf = lf.replace(/\n/g, "\r\n");
+  assert.equal(keynoteTableWarnings(crlf).length, 0);
+  assert.equal(keynoteTableWarnings(crlf, 4).length, 0);
+  assert.match(keynoteTableWarnings(lf).join("\n"), /LF line endings/);
+  assert.match(keynoteTableWarnings(lf, 1).join("\n"), /loaded 1 keynote entry from a file with 4 lines/);
+  assert.equal(keynoteTableWarnings("A\tArchitectural\t\n").length, 0);
+  const utf16 = Buffer.concat([Buffer.from([0xff, 0xfe]), Buffer.from(crlf, "utf16le")]);
+  assert.equal(keynoteTableWarnings(decodeKeynoteFile(utf16)).length, 0);
+  assert.equal(parseKeynotes(decodeKeynoteFile(utf16)).length, 4);
 });

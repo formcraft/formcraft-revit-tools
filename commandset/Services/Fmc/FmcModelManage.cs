@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Autodesk.Revit.DB;
 using Newtonsoft.Json.Linq;
@@ -195,9 +196,37 @@ namespace RevitMCPCommandSet.Services.Fmc
                 case "keynote_file":
                 {
                     string path = op.Value<string>("path") ?? throw new InvalidOperationException("keynote_file needs path");
-                    var r = ExternalResourceReference.CreateLocalResource(doc, ExternalResourceTypes.BuiltInExternalResourceTypes.KeynoteTable, ModelPathUtils.ConvertUserVisiblePathToModelPath(path), PathType.Absolute);
-                    KeynoteTable.GetKeynoteTable(doc).LoadFrom(r, new KeyBasedTreeEntriesLoadResults());
-                    return new JObject { ["keynotes"] = path };
+                    var warnings = new JArray();
+                    int lines = 0;
+                    try
+                    {
+                        string body = File.ReadAllText(path).TrimStart('\uFEFF');
+                        foreach (string raw in body.Split('\n'))
+                        {
+                            string line = raw.TrimEnd('\r').Trim();
+                            if (line.Length == 0 || line.StartsWith("#")) continue;
+                            lines++;
+                        }
+                        // Revit treats an LF-only table as a single row. CRLF (UTF-8 with a BOM, or UTF-16) loads.
+                        if (body.Contains("\n") && body.IndexOf("\r\n", StringComparison.Ordinal) < 0 && lines > 1)
+                            warnings.Add("This keynote file uses LF line endings. Revit reads that as one entry. Save it as CRLF (UTF-8 with a BOM is fine) and load it again.");
+                    }
+                    catch (Exception) { /* LoadFrom reports a path it cannot read */ }
+                    var resource = ExternalResourceReference.CreateLocalResource(doc, ExternalResourceTypes.BuiltInExternalResourceTypes.KeynoteTable, ModelPathUtils.ConvertUserVisiblePathToModelPath(path), PathType.Absolute);
+                    KeynoteTable.GetKeynoteTable(doc).LoadFrom(resource, new KeyBasedTreeEntriesLoadResults());
+                    int loaded = 0;
+                    try
+                    {
+                        foreach (KeyBasedTreeEntry entry in KeynoteTable.GetKeynoteTable(doc).GetKeyBasedTreeEntries())
+                            if (entry != null && !string.IsNullOrWhiteSpace(entry.Key)) loaded++;
+                    }
+                    catch (Exception) { loaded = -1; }
+                    if (loaded >= 0 && lines >= 4 && loaded * 2 < lines)
+                        warnings.Add($"Revit loaded {loaded} keynote {(loaded == 1 ? "entry" : "entries")} from a file with {lines} lines. That is far below the file. Save the file as CRLF and load it again.");
+                    var row = new JObject { ["keynotes"] = path, ["lines"] = lines };
+                    if (loaded >= 0) row["loaded"] = loaded;
+                    if (warnings.Count > 0) row["warnings"] = warnings;
+                    return row;
                 }
                 default: return null;
             }

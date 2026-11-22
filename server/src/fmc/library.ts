@@ -192,6 +192,39 @@ export function parseKeynotes(text: string): Keynote[] {
     .map((f) => ({ code: f[0].trim(), description: (f[1] ?? "").trim(), parent: (f[2] ?? "").trim() }));
 }
 
+/** UTF-8 (with or without a BOM) or UTF-16, which is what Revit's keynote loader accepts. */
+export function decodeKeynoteFile(bytes: Buffer): string {
+  if (bytes.length >= 2 && bytes[0] === 0xff && bytes[1] === 0xfe) return bytes.subarray(2).toString("utf16le");
+  if (bytes.length >= 2 && bytes[0] === 0xfe && bytes[1] === 0xff) {
+    const body = bytes.subarray(2);
+    const swapped = Buffer.alloc(body.length - (body.length % 2));
+    for (let i = 0; i + 1 < body.length; i += 2) { swapped[i] = body[i + 1]; swapped[i + 1] = body[i]; }
+    return swapped.toString("utf16le");
+  }
+  const text = bytes.toString("utf8");
+  return text.charCodeAt(0) === 0xfeff ? text.slice(1) : text;
+}
+
+/**
+ * Revit loads an LF-only keynote file as one entry. `loaded` is the count after KeynoteTable.LoadFrom,
+ * when the caller has it. A CRLF file, and a load that kept the rows, produces no warning.
+ */
+export function keynoteTableWarnings(text: string, loaded?: number): string[] {
+  const warnings: string[] = [];
+  const body = text.replace(/^\uFEFF/, "");
+  const entries = body.split(/\r?\n/).filter((line) => {
+    const s = line.trim();
+    return s.length > 0 && !s.startsWith("#");
+  }).length;
+  if (body.includes("\n") && !body.includes("\r\n") && entries > 1) {
+    warnings.push("This keynote file uses LF line endings. Revit reads that as one entry. Save it as CRLF (UTF-8 with a BOM is fine) and load it again.");
+  }
+  if (typeof loaded === "number" && entries >= 4 && loaded * 2 < entries) {
+    warnings.push(`Revit loaded ${loaded} keynote ${loaded === 1 ? "entry" : "entries"} from a file with ${entries} lines. That is far below the file. Save the file as CRLF and load it again.`);
+  }
+  return warnings;
+}
+
 export function searchKeynotes(all: Keynote[], query: string, limit = 50): Keynote[] {
   const q = query.trim().toLowerCase();
   const hits = q ? all.filter((k) => k.code.toLowerCase().includes(q) || k.description.toLowerCase().includes(q)) : all;
