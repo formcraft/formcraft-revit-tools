@@ -88,7 +88,9 @@ test("label binds an existing parameter, bind names categories, and apply needs 
   const label = textOf(await runFmcFamilyParams(args({
     action: "label", document: project.title, family: "FMC_A_Titleblock_A1", name: "Status", dry_run: true,
   }), { ...io, kitFile: io.kit, read: async () => withStatus }));
-  assert.equal(label.isError, false);
+  // Revit 2025 has no label API: the dry run says so instead of planning a write that can only fail.
+  assert.equal(label.isError, true);
+  assert.equal(label.code, "FMC-NO-API-LABEL");
   assert.equal((label.plan as { action: string }).action, "label");
 
   const bind = textOf(await runFmcFamilyParams(args({
@@ -134,7 +136,7 @@ test("label binds an existing parameter, bind names categories, and apply needs 
   assert.equal(apply.includes(".Save("), false);
   assert.equal(apply.includes("SaveAs"), false);
   assert.match(apply, /Close\(false\)/);
-  assert.match(apply, /NewLabel/);
+  assert.match(apply, /FMC-NO-API-LABEL/);
   assert.ok(WRITE_COMMANDS.has("fmc_family_params_apply"));
   assert.ok(READ_VIA_SEND_COMMAND.has("fmc_family_params"));
   assert.equal(WRITE_COMMANDS.has("fmc_family_params"), false);

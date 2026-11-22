@@ -5,7 +5,7 @@ import { IDLE_BUSY, withBusy } from "../fmc/busyreason.js";
 import { queueFor, queueSnapshots } from "../fmc/fairqueue.js";
 import { readInstances } from "../fmc/connect.js";
 import { inFlightJob, readRevitJobLines } from "../fmc/notidle.js";
-import {
+import { queueBusyReason,
   decideCancel, markRevitCancelled, openRevitJobs, purgeFair, rowFromFair, rowFromLease, selectStale,
   type LeaseRow, type QueueListRow,
 } from "../fmc/queueops.js";
@@ -86,7 +86,9 @@ function portOf(instance: string): number | undefined {
 
 export async function runFmcQueue(args: FmcQueueArgs, env: NodeJS.ProcessEnv = process.env, now = Date.now()) {
   const rows = listQueue(env, now);
-  const busy = rows[0]?.busy_reason ?? null;
+  // Not rows[0]: the oldest row is often a stale log entry while Revit is idle (live test 23 Nov 2026).
+  const busy = queueBusyReason(rows);
+  const staleCount = rows.filter((row) => row.stale && row.revit_idle).length;
   if (args.action === "list" || !args.action) {
     return reply({
       tool: "fmc_queue",
@@ -96,13 +98,15 @@ export async function runFmcQueue(args: FmcQueueArgs, env: NodeJS.ProcessEnv = p
       jobs: rows,
       batches: batchBoard().snapshot(),
       busy_reason: busy,
+      stale_count: staleCount,
+      ...(staleCount ? { stale_note: `${staleCount} log entr${staleCount === 1 ? "y says" : "ies say"} running while Revit is idle. They are not live and do not block calls. fmc_queue cancel job_id clears one.` } : {}),
     });
   }
   if (args.action === "cancel") {
     const id = args.job_id.trim();
     if (!id) return reply({ tool: "fmc_queue", refused: true, code: "FMC-QUEUE-UNKNOWN", message: "cancel needs job_id.", busy_reason: IDLE_BUSY }, true);
     const row = findRow(id, rows);
-    const decision = decideCancel(row);
+    const decision = decideCancel(row, busy);
     if (!decision.ok) {
       return reply({
         tool: "fmc_queue", refused: true, code: decision.code, job_id: id, job: row,
@@ -141,7 +145,7 @@ export async function runFmcQueue(args: FmcQueueArgs, env: NodeJS.ProcessEnv = p
   if (args.dry_run !== false) {
     return reply({
       tool: "fmc_queue", action: "purge_stale", dry_run: true, older_than_min: older,
-      count: stale.length, jobs: stale, busy_reason: stale[0]?.busy_reason ?? busy,
+      count: stale.length, jobs: stale, busy_reason: busy,
       next: "Purge with dry_run false. Queued jobs only. Running jobs stay.",
     });
   }

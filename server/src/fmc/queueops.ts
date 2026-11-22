@@ -124,6 +124,16 @@ export function rowFromLease(lease: LeaseRow, now: number, instance = ""): Queue
   };
 }
 
+/**
+ * The reason the queue is busy now. Rows are sorted oldest first, so the first row is often a stale log entry
+ * (a job that still says running days later while Revit is idle). Stale rows never make the queue busy:
+ * the first live row names the reason, and with only stale rows (or none) the queue is not busy (null).
+ */
+export function queueBusyReason(rows: QueueListRow[]): string | null {
+  const live = rows.find((row) => !(row.stale && row.revit_idle));
+  return live ? live.busy_reason : null;
+}
+
 export interface CancelDecision {
   ok: boolean;
   code?: "FMC-JOB-RUNNING" | "FMC-QUEUE-UNKNOWN";
@@ -135,9 +145,9 @@ export interface CancelDecision {
  * Queued jobs can be cancelled. A running job is refused unless it is stale and Revit is idle:
  * the log still says running, but Revit has stopped heartbeating.
  */
-export function decideCancel(row: QueueListRow | null): CancelDecision {
+export function decideCancel(row: QueueListRow | null, queueBusy: string | null = IDLE_BUSY): CancelDecision {
   if (!row) {
-    return { ok: false, code: "FMC-QUEUE-UNKNOWN", busy_reason: IDLE_BUSY, message: "No queued or running job with that id. fmc_queue list shows them." };
+    return { ok: false, code: "FMC-QUEUE-UNKNOWN", busy_reason: queueBusy ?? "none: no live job (Revit idle)", message: "No queued or running job with that id. fmc_queue list shows them." };
   }
   if (row.state === "queued") {
     return { ok: true, busy_reason: row.busy_reason, message: `Cancel queued ${row.tool} (${row.job_id}). It has not started.` };

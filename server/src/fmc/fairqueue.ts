@@ -254,7 +254,9 @@ export function queueSnapshots(): Array<{ port: number } & QueueSnapshot> {
 }
 
 /** Commands that describe the session, not one model. Every other call names its document when several are open. */
-const SESSION_COMMANDS = new Set(["fmc_selftest_facts", "fmc_document_info", "fmc_revit", "fmc_doc_background"]);
+// fmc_docs (list, probe) lists every open document; its writes are fmc_docs_apply. fmc_north (audit, compare) is read-only
+// and resolves document, documents or all_open itself in the add-in; its writes are fmc_north_apply.
+const SESSION_COMMANDS = new Set(["fmc_selftest_facts", "fmc_document_info", "fmc_revit", "fmc_doc_background", "fmc_docs", "fmc_north"]);
 
 /**
  * These commands may name a file that is not open yet (they open it, or they describe it from disk).

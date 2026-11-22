@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { pathToFileURL } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { configPath, loadConfig, type GuardConfig } from "../fmc/policy.js";
@@ -46,7 +46,7 @@ function failed(error: unknown) {
 }
 
 async function readFacts(file: string): Promise<PageFact[]> {
-  const here = path.dirname(new URL(import.meta.url).pathname);
+  const here = path.dirname(fileURLToPath(import.meta.url));
   const candidates = [
     path.resolve(here, "..", "vendor", "pdfjs"),
     path.resolve(here, "..", "..", "node_modules", "pdfjs-dist", "legacy", "build"),

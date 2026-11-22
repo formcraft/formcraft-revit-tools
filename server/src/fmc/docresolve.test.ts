@@ -10,6 +10,8 @@ import {
 } from "./docresolve.js";
 import { shapeKeynoteResult } from "./keynote.js";
 import { formatCodeResult } from "../tools/send_code_to_revit.js";
+import { formatCodeResult as formatCodeResult2, outputJson } from "../tools/send_code_to_revit.js";
+import { documentDecision } from "./fairqueue.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 
@@ -139,4 +141,24 @@ test("a string document and an object document both become resolved_document", (
   const stamped = attachResolvedDocument({ ok: true }, { title: "P-0001", path: "D:\\P-0001.rvt" }) as unknown as { resolved_document: { title: string } };
   assert.equal(stamped.resolved_document.title, "P-0001");
   assert.equal(attachResolvedDocument(stamped, { title: "E-0001", path: "" }), stamped);
+});
+
+test("send_code output_json survives the add-in's double encoding of a string result (live test 23 Nov 2026)", () => {
+  const inner = JSON.stringify({ plans: ["A_FP_L00"], panels: 7 });
+  const twice = JSON.stringify(inner);
+  assert.deepEqual(outputJson(twice), { plans: ["A_FP_L00"], panels: 7 });
+  assert.deepEqual(outputJson(inner), { plans: ["A_FP_L00"], panels: 7 });
+  assert.equal(outputJson(JSON.stringify("plain text")), undefined);
+  assert.equal(outputJson(""), undefined);
+  const shaped = formatCodeResult2({ success: true, result: twice, compileMs: 1, runMs: 1 });
+  assert.deepEqual(shaped.output_json, { plans: ["A_FP_L00"], panels: 7 });
+  assert.match(shaped.text, /"output_json"/);
+});
+
+test("fmc_docs list and fmc_north compare do not need one document when several are open (live test 23 Nov 2026)", () => {
+  const open = [{ title: "A-0002_USER", path: "C:\\A.rvt" }, { title: "E-0001_USER", path: "C:\\E.rvt" }];
+  assert.equal(documentDecision("fmc_docs", open, "").ok, true);
+  assert.equal(documentDecision("fmc_north", open, "").ok, true);
+  assert.equal(documentDecision("fmc_docs_apply", open, "").ok, false);
+  assert.equal(documentDecision("fmc_north_apply", open, "").ok, false);
 });
