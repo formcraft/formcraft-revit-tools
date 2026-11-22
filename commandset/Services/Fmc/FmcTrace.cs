@@ -122,6 +122,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (electrical) result["electrical"] = CollectElectrical(doc, state);
             result["truncated"] = state.Truncated;
             result["connectors_skipped"] = state.Skipped;
+            result["skipped_non_family"] = state.NonFamily.Report();
             if (state.Notes.Count > 0) result["notes"] = new JArray(state.Notes);
             return result;
         }
@@ -172,7 +173,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 });
             }
 
-            foreach (PipingSystem system in new FilteredElementCollector(doc).OfClass(typeof(PipingSystem)).Cast<PipingSystem>())
+            foreach (PipingSystem system in new FilteredElementCollector(doc).OfClass(typeof(PipingSystem)).OfType<PipingSystem>())
             {
                 string classification = "";
                 ElementSet owned = null;
@@ -180,9 +181,9 @@ namespace RevitMCPCommandSet.Services.Fmc
                 try { classification = system.SystemType.ToString(); } catch (Exception) { /* unset */ }
                 try { owned = system.Elements; } catch (Exception) { state.Note("A piping system could not list its elements."); }
                 try { basis = system.BaseEquipment; } catch (Exception) { /* no base equipment */ }
-                AddSystem(system, "piping", classification, basis, owned == null ? null : owned.Cast<Element>());
+                AddSystem(system, "piping", classification, basis, owned == null ? null : owned.OfType<Element>());
             }
-            foreach (MechanicalSystem system in new FilteredElementCollector(doc).OfClass(typeof(MechanicalSystem)).Cast<MechanicalSystem>())
+            foreach (MechanicalSystem system in new FilteredElementCollector(doc).OfClass(typeof(MechanicalSystem)).OfType<MechanicalSystem>())
             {
                 string classification = "";
                 ElementSet owned = null;
@@ -190,7 +191,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 try { classification = system.SystemType.ToString(); } catch (Exception) { /* unset */ }
                 try { owned = system.Elements; } catch (Exception) { state.Note("A duct system could not list its elements."); }
                 try { basis = system.BaseEquipment; } catch (Exception) { /* no base equipment */ }
-                AddSystem(system, "hvac", classification, basis, owned == null ? null : owned.Cast<Element>());
+                AddSystem(system, "hvac", classification, basis, owned == null ? null : owned.OfType<Element>());
             }
 
             var elements = new JArray();
@@ -200,6 +201,12 @@ namespace RevitMCPCommandSet.Services.Fmc
             {
                 if (element == null || state.Truncated || !seen.Add(element.Id.Value)) return;
                 if (elements.Count >= Cap || connectors.Count >= Cap) { state.Truncated = true; return; }
+                // A DirectShape in a pipe, duct or fixture category has no family connectors. Casting it throws.
+                if (element is not MEPCurve && element is not FamilyInstance && element is not FabricationPart)
+                {
+                    state.Skip(element);
+                    return;
+                }
                 JArray found = ReadConnectors(element, state);
                 if (found.Count == 0) return;
                 members.TryGetValue(element.Id.Value, out HashSet<long> onSystems);
@@ -222,7 +229,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 Take(element);
             try
             {
-                foreach (FabricationPart part in new FilteredElementCollector(doc).OfClass(typeof(FabricationPart)).WhereElementIsNotElementType().Cast<FabricationPart>())
+                foreach (FabricationPart part in new FilteredElementCollector(doc).OfClass(typeof(FabricationPart)).WhereElementIsNotElementType().OfType<FabricationPart>())
                     Take(part);
             }
             catch (Exception)
@@ -236,8 +243,13 @@ namespace RevitMCPCommandSet.Services.Fmc
         {
             var panels = new JArray();
             var panelDist = new Dictionary<long, string>();
-            foreach (FamilyInstance board in new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_ElectricalEquipment).WhereElementIsNotElementType().Cast<FamilyInstance>())
+            foreach (Element element in new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_ElectricalEquipment).WhereElementIsNotElementType())
             {
+                if (element is not FamilyInstance board)
+                {
+                    state.Skip(element);
+                    continue;
+                }
                 string name = Text(board, BuiltInParameter.RBS_ELEC_PANEL_NAME);
                 if (name.Length == 0) name = Short(board.Name);
                 string distribution = Distribution(board);
@@ -288,7 +300,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             }
 
             var circuits = new JArray();
-            foreach (ElectricalSystem system in new FilteredElementCollector(doc).OfClass(typeof(ElectricalSystem)).Cast<ElectricalSystem>())
+            foreach (ElectricalSystem system in new FilteredElementCollector(doc).OfClass(typeof(ElectricalSystem)).OfType<ElectricalSystem>())
             {
                 if (!IsPower(system.SystemType)) continue;
                 long panelId = 0;
@@ -340,8 +352,13 @@ namespace RevitMCPCommandSet.Services.Fmc
                 BuiltInCategory.OST_MechanicalEquipment, BuiltInCategory.OST_PlumbingFixtures, BuiltInCategory.OST_SpecialityEquipment,
                 BuiltInCategory.OST_FireAlarmDevices,
             };
-            foreach (FamilyInstance device in new FilteredElementCollector(doc).WherePasses(new ElementMulticategoryFilter(deviceCats)).WhereElementIsNotElementType().Cast<FamilyInstance>())
+            foreach (Element element in new FilteredElementCollector(doc).WherePasses(new ElementMulticategoryFilter(deviceCats)).WhereElementIsNotElementType())
             {
+                if (element is not FamilyInstance device)
+                {
+                    state.Skip(element);
+                    continue;
+                }
                 bool power = false;
                 string ground = "absent";
                 ConnectorManager manager = device.MEPModel?.ConnectorManager;
@@ -605,8 +622,47 @@ namespace RevitMCPCommandSet.Services.Fmc
         {
             public bool Truncated;
             public int Skipped;
+            public FmcNonFamily NonFamily = new FmcNonFamily();
             public List<string> Notes = new List<string>();
             public void Note(string message) { if (Notes.Count < 20 && !Notes.Contains(message)) Notes.Add(message); }
+            public void Skip(Element element) => NonFamily.Add(element);
+        }
+    }
+
+    /// <summary>Elements in an MEP or fixture category that are not a family. A DirectShape is the usual case. Ids are capped; the count is not.</summary>
+    internal sealed class FmcNonFamily
+    {
+        private const int Cap = 50;
+        private readonly HashSet<long> _seen = new HashSet<long>();
+        private readonly List<long> _ids = new List<long>();
+        private readonly JArray _items = new JArray();
+        public int Count { get; private set; }
+
+        public void Add(Element element)
+        {
+            if (element == null) return;
+            long id = element.Id.Value;
+            if (!_seen.Add(id)) return;
+            Count++;
+            if (_ids.Count >= Cap) return;
+            _ids.Add(id);
+            _items.Add(new JObject
+            {
+                ["id"] = id,
+                ["class"] = element.GetType().Name,
+                ["category"] = element.Category?.Name ?? "",
+            });
+        }
+
+        public JObject Report()
+        {
+            return new JObject
+            {
+                ["count"] = Count,
+                ["ids"] = new JArray(_ids),
+                ["capped"] = Count > _ids.Count,
+                ["items"] = _items,
+            };
         }
     }
 }

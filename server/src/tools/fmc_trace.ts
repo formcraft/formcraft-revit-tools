@@ -15,6 +15,7 @@ import {
   summarizeTrace,
   traceFromSnapshot,
   traceReportHostDir,
+  withSkippedNonFamily,
   writeTraceReport,
   type LimitKey,
   type TraceFilter,
@@ -39,6 +40,7 @@ export const FMC_TRACE_DESCRIPTION =
   "run (leak and continuity, or checks, in one Revit round-trip per document). " +
   "domain: piping, duct or both. " +
   "The reply is pass/fail counts per check and a capped list of element ids with a problem code. " +
+  "A DirectShape or other element that is not a family, pipe or duct is not cast. The reply includes skipped_non_family { count, ids } (ids capped at 50) so it is not dropped silently. " +
   "The full findings are a JSON file under %LOCALAPPDATA%\\Formcraft\\trace and the reply includes that path. " +
   "Codes: FLOW-OPEN-END, FLOW-NOT-CONNECTED, FLOW-SIZE-MISMATCH, FLOW-NEAR-MISS, FLOW-NO-SYSTEM, FLOW-ISLAND, " +
   "ELEC-NO-CIRCUIT, ELEC-NO-PANEL, ELEC-NO-SUPPLY, ELEC-VOLTAGE-MISMATCH, ELEC-EMPTY-CIRCUIT. " +
@@ -194,12 +196,13 @@ async function countOrRecommend(args: FmcTraceArgs, limits: { values: { near_mis
   const filter = { ...filterOf(args), bank };
   const counts = countSystems(snapshot);
   const items = args.action === "recommend" ? recommend(snapshot, filter, limits) : [];
-  const report = writeJson(snapshot, args.action === "counts" ? { counts } : { counts, recommendations: items });
+  const skipped_non_family = withSkippedNonFamily({}, snapshot).skipped_non_family;
+  const report = writeJson(snapshot, args.action === "counts" ? { counts, skipped_non_family } : { counts, recommendations: items, skipped_non_family });
   const sample = args.sample_limit;
-  return reply({
+  return reply(withSkippedNonFamily({
     tool: "fmc_trace", read_only: true, action: args.action, report,
     ...(args.action === "counts" ? summariseCounts(counts, sample) : summariseRecommendations(items, sample)),
-  });
+  }, snapshot));
 }
 
 async function fixTrace(args: FmcTraceArgs, limits: { values: { near_miss_mm: number; direction_deg: number; size_mismatch_mm: number; touch_mm: number; connected_gap_mm: number; voltage_tol_v: number } }, bank: TraceFilter["bank"]) {
@@ -211,7 +214,7 @@ async function fixTrace(args: FmcTraceArgs, limits: { values: { near_miss_mm: nu
   }
   const { config } = loadConfig();
   const refusal = refuseTraceWrite({ title: snapshot?.model, path: snapshot?.resolved_document?.path, is_central: snapshot?.is_central }, config.protected_paths ?? []);
-  if (refusal) return reply({ tool: "fmc_trace", refused: true, reasons: [refusal] }, true);
+  if (refusal) return reply(withSkippedNonFamily({ tool: "fmc_trace", refused: true, reasons: [refusal] }, snapshot), true);
   const named = args.recommendations ?? [];
   const advice = named.length ? editsForRecommendations(recommend(snapshot, { ...filterOf(args), bank }, limits), named) : null;
   const plan = advice
@@ -224,11 +227,11 @@ async function fixTrace(args: FmcTraceArgs, limits: { values: { near_miss_mm: nu
   } catch { /* an older add-in still partitions inside the apply */ }
   const edits = dropOwnedEdits(plan.edits, skipped);
   if (args.dry_run !== false) {
-    return reply({
+    return reply(withSkippedNonFamily({
       tool: "fmc_trace", dry_run: true, read_only: true, edits, skipped, warnings: plan.warnings, rule: plan.rule, capped: plan.capped,
       document: snapshot.resolved_document ?? { title: snapshot.model ?? "", path: "" },
       next: "Show this plan. Apply with dry_run false and batch_lease. caps and circuit stay as you set them.",
-    });
+    }, snapshot));
   }
   if (!batchLease.getStore()) return reply({ tool: "fmc_trace", refused: true, reasons: ["fix with dry_run false needs batch_lease from fmc_batch request."] }, true);
   try {
@@ -237,7 +240,7 @@ async function fixTrace(args: FmcTraceArgs, limits: { values: { near_miss_mm: nu
       size_mismatch_mm: limits.values.size_mismatch_mm, max_edits: args.max_edits,
     }, 300000)) as Record<string, unknown>;
     const report = correctionReport(snapshot, edits, applied);
-    return reply({ tool: "fmc_trace", dry_run: false, ...applied, planned: edits.length, skipped, warnings: plan.warnings, rule: plan.rule, report });
+    return reply(withSkippedNonFamily({ tool: "fmc_trace", dry_run: false, ...applied, planned: edits.length, skipped, warnings: plan.warnings, rule: plan.rule, report }, snapshot));
   } catch (error) {
     return reply({ tool: "fmc_trace", error: error instanceof Error ? error.message : String(error) }, true);
   }

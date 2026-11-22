@@ -10,6 +10,7 @@ import {
   asNumber, citeJoins, opCap, verdictFor,
   type CitedValue, type JoinsBankEntry, type JoinsVerdict,
 } from "./joins_bank.js";
+import { skippedNonFamily, type SkippedNonFamily } from "./trace.js";
 
 export const ID_CAP = 50;
 
@@ -124,6 +125,7 @@ export interface JoinsSnapshot {
   images: { path: string }[];
   held: HeldRow[];
   active_unchanged?: boolean;
+  skipped_non_family?: SkippedNonFamily;
 }
 
 export interface JoinsValues {
@@ -432,6 +434,7 @@ export function normalizeSnapshot(raw: unknown): JoinsSnapshot {
     scoped: body.scoped === true,
     partial: body.partial === true,
     active_unchanged: body.active_unchanged === true,
+    skipped_non_family: skippedNonFamily({ skipped_non_family: body.skipped_non_family as SkippedNonFamily }),
   };
 }
 

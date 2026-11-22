@@ -3,7 +3,16 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import type { TraceSnapshot } from "./trace.js";
+import {
+  selectChecks,
+  skippedNonFamily,
+  summarizeTrace,
+  traceFromSnapshot,
+  withSkippedNonFamily,
+  type ResolvedLimits,
+  type TraceSnapshot,
+} from "./trace.js";
+import { countSystems, recommend } from "./trace_phase3.js";
 import {
   citeLimit,
   dropOwnedEdits,
@@ -184,4 +193,82 @@ test("the apply command is the only trace write, and it does not save or switch 
   assert.equal((apply.match(/new Transaction/g) ?? []).length, 1);
   assert.match(apply, /RollBack/);
   assert.equal(/SynchronizeWithCentral|CheckoutElements|RequestViewChange|OpenAndActivateDocument|\.Save\(/.test(apply), false);
+});
+
+const TRENCHES = [1822136, 1822137, 1822138, 1822139];
+
+function directShapeSnapshot(): TraceSnapshot {
+  return {
+    model: "F26901-FMC-ZZ-ZZ-M3-P-0001_USER",
+    flow: {
+      elements: [{ id: 1, name: "WC", kind: "fixture", category: "Plumbing Fixtures" }],
+      connectors: [
+        { element_id: 1, index: 0, domain: "piping", origin: [0, 0, 0], direction: [0, 0, -1], flow: "out", shape: "round", size_mm: 110, height_mm: 0, connected: false, type: "end", open_end: true, system_id: 9, system_class: "Sanitary", refs: [] },
+      ],
+      systems: [{ id: 9, name: "Soil", domain: "piping", classification: "Sanitary", element_ids: [1] }],
+    },
+    electrical: { panels: [], circuits: [], devices: [] },
+    skipped_non_family: {
+      count: TRENCHES.length,
+      ids: TRENCHES,
+      capped: false,
+      items: TRENCHES.map((id) => ({ id, class: "DirectShape", category: "Plumbing Fixtures" })),
+    },
+  };
+}
+
+test("a DirectShape in a fixture category is reported for missing, standards, recommend, fix and counts", () => {
+  const snapshot = directShapeSnapshot();
+  const resolved = { status: limits.status, values: limits.values, fields: [], kit_change: limits.kit_change } as ResolvedLimits;
+  const skip = skippedNonFamily(snapshot);
+  assert.equal(skip.count, 4);
+  assert.deepEqual(skip.ids, TRENCHES);
+  assert.equal(skip.items[0]?.class, "DirectShape");
+  assert.equal(skip.items[0]?.category, "Plumbing Fixtures");
+
+  const missing = summarizeTrace(traceFromSnapshot(snapshot, selectChecks("missing"), resolved, {}), {
+    limits: resolved, skipped: [], unknown: [], sampleLimit: 20, highlight: "off", report: "memory", snapshot,
+  });
+  assert.equal(missing.skipped_non_family?.count, 4);
+  assert.deepEqual(missing.skipped_non_family?.ids, TRENCHES);
+  assert.equal(missing.checks.some((check) => check.ids.some((row) => TRENCHES.includes(row.id))), false);
+  assert.ok(missing.checks.some((check) => check.ids.some((row) => row.id === 1 && row.code === "FLOW-NO-WASTE")));
+
+  const standards = summarizeTrace(traceFromSnapshot(snapshot, selectChecks("standards"), resolved, {}), {
+    limits: resolved, skipped: [], unknown: [], sampleLimit: 20, highlight: "off", report: "memory", snapshot,
+  });
+  assert.equal(standards.skipped_non_family?.count, 4);
+  assert.equal(standards.checks.some((check) => check.ids.some((row) => TRENCHES.includes(row.id))), false);
+
+  const counts = withSkippedNonFamily({ counts: countSystems(snapshot) }, snapshot);
+  assert.equal(counts.skipped_non_family.count, 4);
+  assert.deepEqual(counts.skipped_non_family.ids, TRENCHES);
+  assert.equal(counts.counts.document.elements, 1);
+  assert.equal(counts.counts.plumbing.fixtures.WC, 1);
+
+  const recommended = withSkippedNonFamily({ recommendations: recommend(snapshot, {}, limits) }, snapshot);
+  assert.equal(recommended.skipped_non_family.count, 4);
+  assert.equal(recommended.recommendations.some((item) => TRENCHES.includes(item.element_id)), false);
+
+  const plan = withSkippedNonFamily(planFixes(snapshot, limits, {}), snapshot);
+  assert.equal(plan.skipped_non_family.count, 4);
+  assert.equal(plan.edits.some((edit) => edit.ids.some((id) => TRENCHES.includes(id))), false);
+
+  const many = Array.from({ length: 60 }, (_, index) => 1822136 + index);
+  const capped = skippedNonFamily({
+    skipped_non_family: { count: 60, ids: many, items: many.map((id) => ({ id, class: "DirectShape", category: "Plumbing Fixtures" })) },
+  });
+  assert.equal(capped.count, 60);
+  assert.equal(capped.ids.length, 50);
+  assert.equal(capped.capped, true);
+  assert.equal(capped.items.length, 50);
+
+  const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
+  for (const file of ["FmcTrace.cs", "FmcTraceApply.cs", "FmcJoins.cs"]) {
+    const text = fs.readFileSync(path.join(root, "commandset", "Services", "Fmc", file), "utf8");
+    assert.equal(text.includes("Cast<FamilyInstance>"), false, file);
+    assert.equal(text.includes("Cast<MEPCurve>"), false, file);
+    assert.equal(text.includes("Cast<Pipe>"), false, file);
+    assert.match(text, /skipped_non_family/);
+  }
 });

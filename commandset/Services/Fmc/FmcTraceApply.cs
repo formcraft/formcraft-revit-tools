@@ -47,7 +47,8 @@ namespace RevitMCPCommandSet.Services.Fmc
                     if (cap > 100) cap = 100;
                     var edits = (Parameters["edits"] as JArray ?? new JArray()).OfType<JObject>().Take(cap).ToList();
                     var done = new JArray();
-                    int before = Score(doc, near, sizeTol);
+                    var skipped = new FmcNonFamily();
+                    int before = Score(doc, near, sizeTol, skipped);
                     using (var transaction = new Transaction(doc, "Formcraft trace corrections"))
                     {
                         transaction.Start();
@@ -59,7 +60,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                             done.Add(row);
                         }
                         try { doc.Regenerate(); } catch (Exception) { /* the score still reads what was created */ }
-                        int after = Score(doc, near, sizeTol);
+                        int after = Score(doc, near, sizeTol, null);
                         bool worse = after > before;
                         if (worse) transaction.RollBack();
                         else transaction.Commit();
@@ -74,6 +75,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     Result["resolved_document"] = FmcTarget.Resolved(doc);
                     Result["is_central"] = false;
                     Result["modified_during_call"] = !modifiedBefore && doc.IsModified;
+                    Result["skipped_non_family"] = skipped.Report();
                 }
             }
             catch (Exception ex) { Error = ex.Message; }
@@ -242,50 +244,67 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         private static FamilySymbol CapSymbol(Document doc, BuiltInCategory category)
         {
-            return new FilteredElementCollector(doc).OfCategory(category).OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>()
+            return new FilteredElementCollector(doc).OfCategory(category).OfClass(typeof(FamilySymbol)).OfType<FamilySymbol>()
                 .FirstOrDefault(symbol => Regex.IsMatch((symbol.FamilyName ?? "") + " " + symbol.Name, "cap", RegexOptions.IgnoreCase));
         }
 
         /// <summary>Open ends, near-miss pairs, size mismatches, uncircuited devices and empty circuits. A rise rolls the transaction back.</summary>
-        private static int Score(Document doc, double nearMm, double sizeTolMm)
+        private static int Score(Document doc, double nearMm, double sizeTolMm, FmcNonFamily skipped)
         {
             int score = 0;
             var open = new List<Connector>();
             foreach (Element element in new FilteredElementCollector(doc).OfClass(typeof(MEPCurve)).WhereElementIsNotElementType())
-                Collect(element is MEPCurve curve ? curve.ConnectorManager : null, open, ref score, sizeTolMm);
-            foreach (FamilyInstance instance in new FilteredElementCollector(doc).OfClass(typeof(FamilyInstance)).WhereElementIsNotElementType().Cast<FamilyInstance>())
-                Collect(instance.MEPModel?.ConnectorManager, open, ref score, sizeTolMm);
+            {
+                if (element is MEPCurve curve) Collect(curve.ConnectorManager, open, ref score, sizeTolMm);
+                else skipped?.Add(element);
+            }
+            foreach (Element element in new FilteredElementCollector(doc).OfClass(typeof(FamilyInstance)).WhereElementIsNotElementType())
+            {
+                if (element is FamilyInstance instance) Collect(instance.MEPModel?.ConnectorManager, open, ref score, sizeTolMm);
+                else skipped?.Add(element);
+            }
             double near = nearMm / FeetToMm;
             for (int i = 0; i < open.Count && i < 4000; i++)
                 for (int j = i + 1; j < open.Count && j < 4000; j++)
                     if (open[i].Owner.Id != open[j].Owner.Id && open[i].Domain == open[j].Domain && open[i].Origin.DistanceTo(open[j].Origin) <= near)
                         score++;
-            foreach (FamilyInstance device in new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_ElectricalFixtures).WhereElementIsNotElementType().Cast<FamilyInstance>()
-                .Concat(new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_LightingFixtures).WhereElementIsNotElementType().Cast<FamilyInstance>()))
+            foreach (BuiltInCategory category in new[] { BuiltInCategory.OST_ElectricalFixtures, BuiltInCategory.OST_LightingFixtures })
             {
-                bool power = false;
-                try
-                {
-                    ConnectorSet set = device.MEPModel?.ConnectorManager?.Connectors;
-                    if (set == null) continue;
-                    foreach (Connector connector in set)
-                        if (connector.Domain == Domain.DomainElectrical && connector.ElectricalSystemType == ElectricalSystemType.PowerCircuit) power = true;
-                }
-                catch (Exception) { continue; }
-                if (!power) continue;
-                int circuits = 0;
-                try { circuits = device.MEPModel?.GetElectricalSystems()?.Count(system => system.SystemType == ElectricalSystemType.PowerCircuit) ?? 0; }
-                catch (Exception) { circuits = 0; }
-                if (circuits == 0) score++;
+                foreach (Element element in new FilteredElementCollector(doc).OfCategory(category).WhereElementIsNotElementType())
+                    ScoreDevice(element, ref score, skipped);
             }
-            foreach (ElectricalSystem system in new FilteredElementCollector(doc).OfClass(typeof(ElectricalSystem)).Cast<ElectricalSystem>())
+            foreach (Element element in new FilteredElementCollector(doc).OfClass(typeof(ElectricalSystem)))
             {
+                if (element is not ElectricalSystem system) { skipped?.Add(element); continue; }
                 if (system.SystemType != ElectricalSystemType.PowerCircuit) continue;
                 int loads = 0;
                 try { foreach (Element member in system.Elements) if (member != null) loads++; } catch (Exception) { continue; }
                 if (loads == 0) score++;
             }
             return score;
+        }
+
+        private static void ScoreDevice(Element element, ref int score, FmcNonFamily skipped)
+        {
+            if (element is not FamilyInstance device)
+            {
+                skipped?.Add(element);
+                return;
+            }
+            bool power = false;
+            try
+            {
+                ConnectorSet set = device.MEPModel?.ConnectorManager?.Connectors;
+                if (set == null) return;
+                foreach (Connector connector in set)
+                    if (connector.Domain == Domain.DomainElectrical && connector.ElectricalSystemType == ElectricalSystemType.PowerCircuit) power = true;
+            }
+            catch (Exception) { return; }
+            if (!power) return;
+            int circuits = 0;
+            try { circuits = device.MEPModel?.GetElectricalSystems()?.Count(system => system.SystemType == ElectricalSystemType.PowerCircuit) ?? 0; }
+            catch (Exception) { circuits = 0; }
+            if (circuits == 0) score++;
         }
 
         private static void Collect(ConnectorManager manager, List<Connector> open, ref int score, double sizeTolMm)
