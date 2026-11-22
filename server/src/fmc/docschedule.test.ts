@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { deferReason, loadSyncState, nextActionAt, pickOne, planTick, saveSyncState, seedModified, seedWorksharedClocks, staggerOffsetMs, syncStatePath } from "./docschedule.js";
+import { deferReason, loadSyncState, nextActionAt, nextOpenAt, pickOne, planTick, saveSyncState, seedModified, seedWorksharedClocks, staggerOffsetMs, syncStatePath } from "./docschedule.js";
 import { excludedFromSync, saveBlocked, saveSkipReason } from "./savepolicy.js";
 import { imageDir, keptImagePath } from "./images.js";
 import { DEFAULT_CONFIG } from "./policy.js";
@@ -15,7 +15,8 @@ test("defer reason is the first session-wide wait, and a clear session is null",
   assert.equal(deferReason(clear), null);
   const reason = (facts: Parameters<typeof deferReason>[0]) => deferReason(facts) ?? "";
   assert.match(reason({ ...clear, queueBusy: true }), /job is running or queued/);
-  assert.match(reason({ ...clear, leasesHeld: 2 }), /every lease is released/);
+  assert.match(reason({ ...clear, leasesHeld: 1 }), /this document/);
+  assert.match(reason({ ...clear, queueBusy: true }), /this document/);
   assert.match(reason({ ...clear, modalDialog: true }), /modal dialog/);
   assert.match(reason({ ...clear, memoryPaused: true }), /Memory pause/);
   assert.match(reason({ ...clear, docBusy: true }), /transaction/);
@@ -44,6 +45,14 @@ test("one tick runs the earliest save, and a sync does not share that tick", () 
   ], now);
   assert.equal(chosen?.kind, "save");
   assert.equal(chosen?.document, "B");
+  const batch = pickOne([
+    { kind: "save", document: "B", at: 1_000 },
+    { kind: "batch", document: "E", at: 9_000 },
+  ], now);
+  assert.equal(batch?.kind, "batch");
+  assert.equal(batch?.document, "E");
+  const overdue = nextActionAt(now - 90_000, now - 200_000, 60_000, 0);
+  assert.ok(nextOpenAt(overdue, now, 60_000) > now);
   const tick = planTick({
     now: 1_000,
     startedAt: 1_000,

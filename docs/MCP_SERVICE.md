@@ -103,7 +103,7 @@ The batch line does not add its own switches. It reads `fmc_guard.json` → `ai_
 
 `fmc_hw` is one tool. `scan`, `memory` and `advice` only report. `gpu_prefer`, `free` and `offload` dry-run unless `dry_run` is false. `gpu_prefer` and `offload` also need `confirm:true` before they write. The token is never printed. There is no new guard setting: the pause still uses `ram_pause_free_mb`.
 
-The GPU cannot replace system RAM. Revit's model database, regeneration, transactions and API calls run on the CPU. Video memory holds drawn views. `gpu_prefer` sets the Windows high-performance GPU for `Revit.exe` and does not write `Revit.ini`. `offload` reports hardware acceleration, anti-aliasing and optimize-view-navigation, and writes those ini keys only with `confirm:true`. They take effect the next time Revit starts. Point, clash and ray/voxel samples run on the CPU. An optional GPU library is used only when its result matches the CPU kernel. The add-in builds without that library. `fmc_joins` pressure_test is not a Revit command; the ray sample does not read the open model. ExportImage stays a Revit API call.
+The GPU cannot replace system RAM. Revit's model database, regeneration, transactions and API calls run on the CPU. Video memory holds drawn views. `gpu_prefer` sets the Windows high-performance GPU for `Revit.exe` and does not write `Revit.ini`. `offload` reports hardware acceleration, anti-aliasing and optimize-view-navigation, and writes those ini keys only with `confirm:true`. They take effect the next time Revit starts. Point, clash and ray/voxel samples run on the CPU. An optional GPU library is used only when its result matches the CPU kernel. The add-in builds without that library. `fmc_joins` pressure_test still walks the envelope in Revit on the CPU. The ray sample in `offload` does not replace that walk and does not read the open model. ExportImage stays a Revit API call.
 
 `/health` includes `hw`, filled from the scan cached at startup. See `docs/HW.md`.
 
@@ -114,6 +114,16 @@ The GPU cannot replace system RAM. Revit's model database, regeneration, transac
 `phases`, `audit`, `compare` of two phases, and every dry run read the model through `fmc_phase` (one call, no transaction). `compare` of two revisions reads `%APPDATA%\Formcraft\ledger\FMC_Revisions.jsonl` and does not call Revit. `batch_check`, `revision_open`, `revision_cloud`, `issue` and `unissue` with `dry_run` false go through `fmc_phase_apply`, one transaction, at most 50 operations, and need `batch_lease`. `dry_run` defaults to true. The tool does not save or sync. `save_exclude`, `sync_exclude`, `protected_paths` and `auto_save_minutes` are the guard settings that already exist. Elements another user owns, or that are not current, are skipped.
 
 `phase.*` and `revision.*` are read from `FMC_Standards_Building.json`. A missing key uses a provisional default and cannot PASS. A draft or approved entry with a clause can PASS. A null value is UNKNOWN.
+
+## Joins and the envelope (`fmc_joins`)
+
+`fmc_joins` is one tool. Every model call names `document` (exact title or full path). A missing name is `FMC-DOC-REQUIRED`, no match is `FMC-DOC-NOT-FOUND`, and two matches is `FMC-DOC-AMBIGUOUS`. The active document is not a guess.
+
+`checks` and `limits` stay on the server. `audit`, `hosting`, `pressure_test`, `rooms` and a `fix` dry run each make one `fmc_joins` read. `fix` with `dry_run` false applies the ops from that plan through `fmc_joins_apply`, one transaction, at most 50 operations, and needs `batch_lease`. The tool does not save or sync. `save_exclude`, `sync_exclude` and `protected_paths` come from `fmc_guard.json`. Pinned elements, and elements another user owns or that are not current, are reported and not moved. Ownership is never taken.
+
+Collectors take a level, a category, a bounding box, a room, a space or element ids. An unscoped scan above `joins.scan_cap` is refused. The reply is counts and ids per finding code. The JSON file, and a PNG only when `images` is true, go under `%LOCALAPPDATA%\Formcraft\joins`.
+
+`joins.*` are read from `FMC_Standards_Building.json`. A missing key uses a labelled provisional default and cannot PASS. A draft or approved entry with a clause can PASS. A null status is UNKNOWN. A null value uses the labelled provisional default. A pressure-test sample with no leak is `SEALED` only against a key that can PASS. A capped or unfinished sample is `UNKNOWN`.
 
 ## Roll back
 

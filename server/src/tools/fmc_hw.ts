@@ -183,7 +183,7 @@ export async function runFmcHw(args: FmcHwArgs, io: HwIo = {}) {
       jobs: jobs.jobs.map((job) => ({
         ...job,
         where: job.kind === "pressure_test"
-          ? "fmc_joins pressure_test is not a Revit command in this build. This ray/voxel sample did not read a model."
+          ? "fmc_joins pressure_test walks the envelope on the CPU. This ray/voxel sample did not replace that walk and did not read a model."
           : job.kind === "coord_points"
             ? "fmc_coord point distances. The 4×4 transform stays on the CPU."
             : job.kind.startsWith("trace")

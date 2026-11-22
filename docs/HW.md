@@ -12,7 +12,7 @@ These stay on the CPU and in system RAM. No action in this tool changes that.
 - Every Revit API call, including `ExportImage`, screenshots and view export. The GPU draws the view only when hardware acceleration is on. The call itself is still on the CPU.
 - `fmc_trace` verdicts. Walking the connectors stays on the API. Only a numeric point or clash sample can use a GPU kernel, and only when that kernel matches the CPU result.
 - `fmc_coord` transforms. The 4×4 stays on the CPU. Only a point-distance sample can use the kernel.
-- `fmc_joins` pressure_test. That command is not in this build. The ray/voxel sample does not read an open model.
+- `fmc_joins` pressure_test. The envelope walk and the leak verdict stay on the Revit API and the CPU. The ray/voxel kernel in `offload` is a separate numeric sample. It does not read the open model and it does not change the verdict.
 
 Video memory is for drawn views. It is not a substitute for system RAM. A full page file or a dedicated GPU does not shrink the model.
 
