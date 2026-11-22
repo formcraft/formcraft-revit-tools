@@ -96,8 +96,15 @@ export const MODIFY_MODEL_DESCRIPTION =
   "(default true for a keynote mode), one_per_key? (default true for a keynote mode: one tag per distinct key already in the view " +
   "or made by this op), key? (the keynote code, required for keynote_user), offset_mm?, orientation?} " +
   "keynote_element, keynote_material and keynote_user set Key Source to Element, Material or User, the same as Annotate > Keynote. " +
-  "A tag is kept only when Key Source reads back as that word; otherwise it is deleted and listed under skipped, with the reason. " +
-  "The answer is counts, created ids and skipped. No picture. These three modes, keynote_legend and place_schedule run through " +
+  "When tag_type is omitted, a loaded FMC_TAG_Keynote_v2 type Key Value is used (that family also has Keynote Text); otherwise the model's " +
+  "default keynote tag, which on a metric template is M_Keynote Tag. Before tagging, the key that will display is read: KEYNOTE_PARAM on the " +
+  "element type, then the instance, for keynote_element; the material keynote for keynote_material; the given key for keynote_user. That key is " +
+  "checked in KeynoteTable.GetKeynoteTable. An empty keynote is not tagged and is listed as skipped_empty_keynote (id and type name). A tag type " +
+  "that shows Keynote Text is not placed when the key is missing from the table, and is listed as key_not_in_table. A type that shows the key and " +
+  "the text is still placed, and the missing key is still listed. A tag is kept only when Key Source reads back as that word; otherwise it is " +
+  "deleted and listed under skipped, with the reason. After placement, TagText is read. A blank TagText is kept and listed under blank " +
+  "(id, tag id, key, type name, tag type). shown counts only tags whose TagText was not empty. The answer is counts, created ids, skipped, skipped_empty_keynote, " +
+  "key_not_in_table and blank. No picture. These three modes, keynote_legend and place_schedule run through " +
   "the code bridge (a server hot-swap; the add-in is unchanged) and must be their own batch. category, multi and material stay " +
   "on the add-in, and rooms, spaces and areas still get their own tags. · " +
   "keynote_legend {name?, filtered_by_sheet?} creates a keynote legend schedule. · " +

@@ -122,6 +122,44 @@ test("a rolled-back script is an error and does not claim the model changed", ()
   assert.match(String(shaped.body.reason), /no view A201/);
 });
 
+test("an omitted tag type prefers FMC_TAG_Keynote_v2 Key Value, and a blank tag is not called shown", () => {
+  assert.match(KEYNOTE_SCRIPT, /FMC_TAG_Keynote_v2/);
+  assert.match(KEYNOTE_SCRIPT, /string\.Equals\(f\.Name, "Key Value"/);
+  assert.match(KEYNOTE_SCRIPT, /M_Keynote Tag/);
+  assert.match(KEYNOTE_SCRIPT, /GetDefaultFamilyTypeId/);
+  const elementKey = KEYNOTE_SCRIPT.slice(KEYNOTE_SCRIPT.indexOf("string ElementKey"));
+  assert.match(elementKey, /TextKey\(type\)[\s\S]{0,80}return TextKey\(e\)/);
+  assert.match(KEYNOTE_SCRIPT, /KeynoteTable\.GetKeynoteTable\(document\)/);
+  assert.match(KEYNOTE_SCRIPT, /GetKeyBasedTreeEntries/);
+  assert.match(KEYNOTE_SCRIPT, /skipped_empty_keynote/);
+  assert.match(KEYNOTE_SCRIPT, /\["type_name"\] = typeName/);
+  assert.match(KEYNOTE_SCRIPT, /key_not_in_table/);
+  assert.match(KEYNOTE_SCRIPT, /tag\.TagText/);
+  assert.match(KEYNOTE_SCRIPT, /\["blank"\] = blank/);
+  assert.match(KEYNOTE_SCRIPT, /\["tag_id"\] = tag\.Id\.Value/);
+  assert.match(KEYNOTE_SCRIPT, /\["skipped_empty_keynote"\] = emptyKey/);
+  assert.match(KEYNOTE_SCRIPT, /\["key_not_in_table"\] = notInTable/);
+  assert.match(KEYNOTE_SCRIPT, /TagText was empty after placement/);
+  assert.match(KEYNOTE_SCRIPT, /shown = created\.Count - blank\.Count/);
+  assert.match(KEYNOTE_SCRIPT, /document\.Delete\(tag\.Id\)/);
+  assert.doesNotMatch(KEYNOTE_SCRIPT, /while\s*\(\s*true\s*\)/);
+  assert.match(MODIFY_MODEL_DESCRIPTION, /FMC_TAG_Keynote_v2/);
+  assert.match(MODIFY_MODEL_DESCRIPTION, /skipped_empty_keynote/);
+  assert.match(MODIFY_MODEL_DESCRIPTION, /key_not_in_table/);
+  assert.match(MODIFY_MODEL_DESCRIPTION, /TagText/);
+  assert.match(MODIFY_MODEL_DESCRIPTION, /Key Value/);
+  const bare = keynoteCall([{ op: "tag", mode: "keynote_material", view: "A201", ids: [4] }], true, "Ogala");
+  assert.equal(screenScript(bare.code), null);
+  const payload = JSON.parse(String((bare.params.parameters as string[])[0]));
+  assert.equal(payload.ops[0].tag_type, undefined);
+  assert.equal(payload.ops[0].mode, "keynote_material");
+  const lines = explain("send_code_to_revit", bare.params);
+  assert.match(lines.join("\n"), /FMC_TAG_Keynote_v2: Key Value if loaded/);
+  const user = keynoteCall([{ op: "tag", mode: "keynote_user", view: "A201", ids: [9], key: "A.WAL_01" }], false);
+  assert.match(user.code, /KeynoteTable\.GetKeynoteTable/);
+  assert.equal(JSON.parse(String((user.params.parameters as string[])[0])).ops[0].key, "A.WAL_01");
+});
+
 test("FMC_TAG_Keynote is built from the Keynote Tag template with Key and Key+Text", () => {
   const spec = fs.readFileSync(path.join(root, "scripts", "kitbuild", "annotation", "tags_spec.py"), "utf8");
   const line = spec.split("\n").find((row) => row.includes('fam("FMC_TAG_Keynote"'));
