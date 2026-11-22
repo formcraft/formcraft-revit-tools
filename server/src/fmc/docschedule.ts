@@ -142,6 +142,29 @@ function asClock(value: unknown): DocClock | null {
   };
 }
 
+/**
+ * A workshared local with no clock is given changedAt = now, so the first managed sync has a time.
+ * An excluded document is left out. A clock that already has a change or a sync is left as it is.
+ */
+export function seedWorksharedClocks(
+  clocks: DocClock[],
+  open: Array<{ title?: string; path?: string; workshared?: boolean; family?: boolean }>,
+  now: number,
+  excluded: (doc: { title?: string; path?: string }) => boolean,
+): DocClock[] {
+  const out = clocks.map((row) => ({ ...row }));
+  for (const doc of open) {
+    if (doc.workshared !== true || doc.family === true) continue;
+    const name = (doc.title || doc.path || "").trim();
+    if (!name || excluded({ title: doc.title, path: doc.path })) continue;
+    const key = clockKey(name);
+    const row = out.find((item) => clockKey(item.document) === key);
+    if (!row) out.push({ document: doc.title || name, changedAt: now, lastSyncAt: null, lastSaveAt: null, lastError: null });
+    else if (row.changedAt == null && row.lastSyncAt == null) row.changedAt = now;
+  }
+  return out;
+}
+
 /** An open document the add-in says is modified gets a changedAt when the clock has none. */
 export function seedModified(clocks: DocClock[], open: Array<{ title?: string; path?: string; modified?: boolean }>, now: number): DocClock[] {
   const out = clocks.map((row) => ({ ...row }));

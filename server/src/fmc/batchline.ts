@@ -24,8 +24,8 @@ import { loadBatchLine, MAINTENANCE_REASON, readMaintenance, saveBatchLine, writ
 import { invalidateReads } from "./readcache.js";
 import { batchLease, documentTarget } from "./target.js";
 import { queueClient, queueSnapshots } from "./fairqueue.js";
-import { deferReason, isDocBusyMessage, loadSyncState, nextActionAt, orderedProjects, planTick, saveSyncState, seedModified, staggerOffsetMs, type DocClock } from "./docschedule.js";
-import { saveBlocked, saveSkipReason } from "./savepolicy.js";
+import { deferReason, isDocBusyMessage, loadSyncState, nextActionAt, orderedProjects, planTick, saveSyncState, seedModified, seedWorksharedClocks, staggerOffsetMs, type DocClock } from "./docschedule.js";
+import { excludedFromSync, saveBlocked, saveSkipReason } from "./savepolicy.js";
 import { dialogFor, inFlightJob, readRevitJobLines } from "./notidle.js";
 import { readInstances } from "./connect.js";
 
@@ -103,6 +103,16 @@ export interface BatchBoardOptions {
   loadClocks?: () => DocClock[];
   /** Writes those clocks. Production writes fmc_sync_state.json. */
   saveClocks?: (rows: DocClock[]) => void;
+  /**
+   * True when a Revit job is running or queued. Production reads the fair queue.
+   * A test board leaves this unset, so it never reads the live queue.
+   */
+  queueBusy?: () => boolean;
+  /**
+   * True when a modal dialog is open. Production reads the Revit job log.
+   * A test board leaves this unset, so it never reads the live log.
+   */
+  modalDialog?: () => boolean;
 }
 
 const defaultValidator: BatchReferenceValidator = () => ({ ok: true });
@@ -309,6 +319,8 @@ export class BatchBoard {
   private readonly persistLineFn: (tickets: StoredTicket[]) => void;
   private readonly loadClocksFn: () => DocClock[];
   private readonly saveClocksFn: (rows: DocClock[]) => void;
+  private readonly queueBusyFn: () => boolean;
+  private readonly modalDialogFn: () => boolean;
   private readonly startedAt: number;
   private lastDefer: string | null = null;
   /** Set while a hot-swap is draining. New leases stay queued. Active leases finish. */
@@ -348,6 +360,8 @@ export class BatchBoard {
     this.persistLineFn = opts.persistLine ?? (() => {});
     this.loadClocksFn = opts.loadClocks ?? (() => []);
     this.saveClocksFn = opts.saveClocks ?? (() => {});
+    this.queueBusyFn = opts.queueBusy ?? (() => false);
+    this.modalDialogFn = opts.modalDialog ?? (() => false);
     this.startedAt = this.now();
     for (const row of this.loadClocksFn()) this.rememberClock(row);
     if (opts.autoSweep) {
@@ -1245,15 +1259,31 @@ export class BatchBoard {
     }
   }
 
+  private visibleDocs(): Array<{ title: string; path: string; family: boolean; workshared: boolean; modified: boolean }> {
+    try {
+      return readInstances().flatMap((instance) => instance.documents ?? []).map((doc) => ({
+        title: doc.title, path: doc.path, family: doc.family === true, workshared: doc.workshared === true, modified: doc.modified === true,
+      }));
+    } catch {
+      return [];
+    }
+  }
+
+  /** Modified files, and every workshared local that is not in sync_exclude, get a clock. */
   private seedOpenChanges(): void {
-    const open = readInstances().flatMap((instance) => instance.documents ?? []);
-    const seeded = seedModified([...this.syncState.values()].map((row) => ({
+    const open = this.visibleDocs();
+    const cfg = loadConfig().config;
+    const settings = syncSettings(cfg);
+    let clocks = [...this.syncState.values()].map((row) => ({
       document: row.document, changedAt: row.changedAt, lastSyncAt: row.lastSyncAt, lastSaveAt: row.lastSaveAt, lastError: row.lastError,
-    })), open, this.now());
-    let changed = seeded.length !== this.syncState.size;
-    for (const row of seeded) {
+    }));
+    clocks = seedModified(clocks, open, this.now());
+    clocks = seedWorksharedClocks(clocks, open, this.now(), (doc) =>
+      excludedFromSync(doc, cfg) || syncSkip(doc.title ?? "", settings, doc.path ?? "") != null);
+    let changed = clocks.length !== this.syncState.size;
+    for (const row of clocks) {
       const prior = this.syncState.get(documentKey(row.document));
-      if (!prior || prior.changedAt !== row.changedAt) changed = true;
+      if (!prior || prior.changedAt !== row.changedAt || prior.lastSyncAt !== row.lastSyncAt) changed = true;
       this.rememberClock(row);
     }
     if (changed) this.persistClocks();
@@ -1262,11 +1292,13 @@ export class BatchBoard {
   /** Session-wide wait. The caller's own lease must already have been dropped. */
   sessionDefer(): string | null {
     let queueBusy = false;
-    try { queueBusy = queueSnapshots().some((row) => row.running != null || row.waiting > 0); } catch { queueBusy = false; }
+    let modalDialog = false;
+    try { queueBusy = this.queueBusyFn(); } catch { queueBusy = false; }
+    try { modalDialog = this.modalDialogFn(); } catch { modalDialog = false; }
     return deferReason({
       queueBusy,
       leasesHeld: this.holders.size,
-      modalDialog: modalDialogOpen(),
+      modalDialog,
       memoryPaused: this.memoryPausedFn(),
       docBusy: false,
     });
@@ -1312,8 +1344,11 @@ export class BatchBoard {
       row.document,
     );
     const saveAt = skip || !(saveInterval > 0) ? null : nextActionAt(row.lastSaveAt, this.startedAt, saveInterval, offset);
-    const pending = row.changedAt != null && (row.lastSyncAt == null || row.changedAt > row.lastSyncAt);
-    const syncAt = syncInterval > 0 && pending ? nextActionAt(row.lastSyncAt ?? row.changedAt, this.startedAt, syncInterval, offset) : null;
+    const syncExcluded = plan.excluded || excludedFromSync({ title: row.document });
+    const syncAnchor = row.lastSyncAt ?? row.changedAt;
+    const syncAt = syncInterval > 0 && !syncExcluded && syncAnchor != null
+      ? nextActionAt(syncAnchor, this.startedAt, syncInterval, offset)
+      : null;
     return {
       last_sync: plan.last_sync, last_sync_at: plan.last_sync, next_sync: iso(syncAt) ?? plan.next_sync, next_sync_at: iso(syncAt) ?? plan.next_sync,
       last_save_at: iso(row.lastSaveAt), next_save_at: iso(saveAt) ?? nextSave,
@@ -1322,6 +1357,7 @@ export class BatchBoard {
   }
 
   private syncRows(): Array<Record<string, unknown>> {
+    this.seedOpenChanges();
     const keys = new Map<string, string>();
     for (const [key, row] of this.syncState) keys.set(key, row.document);
     try {
@@ -1364,6 +1400,7 @@ export class BatchBoard {
 
   /** One save or one sync, if one is due and the session is not deferred. */
   async syncIdle(): Promise<void> {
+    this.seedOpenChanges();
     const deferred = this.sessionDefer();
     if (deferred) {
       this.lastDefer = deferred;
@@ -1519,6 +1556,10 @@ function productionBoard(opts: BatchBoardOptions): BatchBoard {
   const made = new BatchBoard({
     memoryPaused: () => memoryGate.leasesPaused(),
     memoryView: () => memoryGate.view() as unknown as Record<string, unknown>,
+    queueBusy: () => {
+      try { return queueSnapshots().some((row) => row.running != null || row.waiting > 0); } catch { return false; }
+    },
+    modalDialog: () => modalDialogOpen(),
     saveStep: (ctx) => import("./batchsave.js").then((mod) => mod.productionSaveStep(ctx)),
     syncStep: (ctx) => import("./batchsync.js").then((mod) => mod.productionSyncStep(ctx)),
     readMaintenance,

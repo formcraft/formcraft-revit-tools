@@ -23,7 +23,11 @@ function board(partial: ConstructorParameters<typeof BatchBoard>[0] = {}) {
   const clock = { t: 1_700_000_000_000 };
   const logs: string[] = [];
   const { now, ...rest } = partial;
-  const made = new BatchBoard({ idleMs: 120_000, maxMs: 1_800_000, autoSweep: false, log: (line) => logs.push(line), ...rest, now: now ?? (() => clock.t) });
+  const made = new BatchBoard({
+    idleMs: 120_000, maxMs: 1_800_000, autoSweep: false, log: (line) => logs.push(line),
+    queueBusy: () => false, modalDialog: () => false, memoryPaused: () => false,
+    ...rest, now: now ?? (() => clock.t),
+  });
   return { board: made, clock, logs };
 }
 
@@ -358,6 +362,7 @@ test("drain queues new work, and a restart restores the line with the active lea
   const clock = { t: 5_000 };
   const made = new BatchBoard({
     idleMs: 120_000, maxMs: 1_800_000, autoSweep: false, now: () => clock.t,
+    queueBusy: () => false, modalDialog: () => false, memoryPaused: () => false,
     persistLine: (rows) => saveBatchLine(rows, env),
     writeMaintenance: (reason) => writeMaintenance(reason, env),
     readMaintenance: () => readMaintenance(env),
@@ -375,6 +380,7 @@ test("drain queues new work, and a restart restores the line with the active lea
   assert.deepEqual(saved.map((row) => row.label), ["grids", "walls"]);
   const again = new BatchBoard({
     idleMs: 120_000, maxMs: 1_800_000, autoSweep: false, now: () => clock.t,
+    queueBusy: () => false, modalDialog: () => false, memoryPaused: () => false,
     readMaintenance: () => readMaintenance(env),
   });
   assert.equal(again.importLine(saved), 2);

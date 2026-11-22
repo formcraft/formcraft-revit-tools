@@ -3,8 +3,8 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { deferReason, loadSyncState, nextActionAt, pickOne, planTick, saveSyncState, seedModified, staggerOffsetMs, syncStatePath } from "./docschedule.js";
-import { saveBlocked, saveSkipReason } from "./savepolicy.js";
+import { deferReason, loadSyncState, nextActionAt, pickOne, planTick, saveSyncState, seedModified, seedWorksharedClocks, staggerOffsetMs, syncStatePath } from "./docschedule.js";
+import { excludedFromSync, saveBlocked, saveSkipReason } from "./savepolicy.js";
 import { imageDir, keptImagePath } from "./images.js";
 import { DEFAULT_CONFIG } from "./policy.js";
 
@@ -103,6 +103,26 @@ test("sync_exclude HEBERT HOSTELS means HEBERT HOSTELS_USER is never autosaved",
   });
   assert.equal(due?.document, "S-0001");
   assert.notEqual(due?.document, "HEBERT HOSTELS_USER");
+});
+
+test("a workshared local is seeded so the first sync has a time, and sync_exclude is not", () => {
+  const now = 1_700_000_000_000;
+  const cfg = { ...DEFAULT_CONFIG, sync_exclude: ["HEBERT HOSTELS"], save_exclude: [], protected_paths: [], protected_roots: [] };
+  const open = [
+    { title: "S-0001", path: "C:\\WIP\\S-0001.rvt", workshared: true },
+    { title: "HEBERT HOSTELS_USER", path: "C:\\U\\HEBERT HOSTELS_USER.rvt", workshared: true },
+    { title: "Door", path: "C:\\Fam\\Door.rfa", family: true, workshared: false },
+  ];
+  const clocks = seedWorksharedClocks([], open, now, (doc) => excludedFromSync(doc, cfg));
+  const structural = clocks.find((row) => row.document === "S-0001");
+  assert.equal(structural?.changedAt, now);
+  assert.equal(structural?.lastSyncAt, null);
+  assert.equal(clocks.some((row) => row.document.includes("HEBERT")), false);
+  assert.equal(clocks.some((row) => row.document === "Door"), false);
+  const interval = 15 * 60_000;
+  const at = nextActionAt(structural?.changedAt ?? null, now, interval, 0);
+  assert.equal(at, now + interval);
+  assert.match(new Date(at).toISOString(), /T/);
 });
 
 test("image output stays off D: and off the model folder", () => {

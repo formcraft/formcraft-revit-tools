@@ -119,6 +119,9 @@ test("a failed sync does not fail the batch, and the lease is already released",
   const made = new BatchBoard({
     autoSweep: false,
     log: () => {},
+    queueBusy: () => false,
+    modalDialog: () => false,
+    memoryPaused: () => false,
     syncStep: async () => {
       saw = true;
       assert.equal(made.activeHolder("Architecture"), null);

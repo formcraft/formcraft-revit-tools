@@ -54,6 +54,12 @@ export function saveSkipReason(doc: { title?: string; path?: string }, cfg: Guar
   return null;
 }
 
+/** True when sync_exclude names this document or the central it is a local of. */
+export function excludedFromSync(doc: { title?: string; path?: string }, cfg: GuardConfig = loadConfig().config): boolean {
+  const names = [doc.title?.trim() ?? "", doc.path?.trim() ?? ""].filter(Boolean);
+  return names.some((name) => listed(name, nameList(cfg.sync_exclude)));
+}
+
 /** Null when autosave may write this document. */
 export function saveBlocked(doc: { title?: string; path?: string }, cfg: GuardConfig = loadConfig().config): string | null {
   if (saveSkipReason(doc, cfg) == null) return null;
