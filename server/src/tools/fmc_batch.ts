@@ -20,6 +20,8 @@ export const FMC_BATCH_DESCRIPTION =
   "sync_exclude skips those documents, including the five HEBERT HOSTELS models when they are listed there. sync_documents, when set, is the only list that syncs. " +
   "A lease defers autosave and sync only for the document it holds. Other documents still save and sync. " +
   "The save and sync after release run only once that lease is dropped, and they are still recorded on that batch. " +
+  "release does not take a document name. Save and sync use the lease's own document title. A name with `_USER` removed is never substituted. " +
+  "When that title is not open and exactly one open document is the title plus `_USER`, the open local is used. " +
   "If that save or sync is deferred, it is retried on the next idle ticks until the sync succeeds. release reports batch_end_sync. " +
   "status shows last_save_at, next_save_at, last_sync_at, next_sync_at, last_error, excluded and defer_reason. " +
   "Autosave (auto_save_minutes, default 10) saves every open project locally, including a workshared local, and never writes the central file. " +

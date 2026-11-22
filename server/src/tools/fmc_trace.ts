@@ -22,6 +22,8 @@ import {
   type TraceSnapshot,
 } from "../fmc/trace.js";
 import { dropOwnedEdits, PHASE2_DEFAULTS, planFixes, refuseTraceWrite, type TraceEdit } from "../fmc/trace_phase2.js";
+import { copyTraceFile, flattenFindings, handoffDir, latestTraceFile, pageFindings } from "../fmc/tracereport.js";
+import { onDriveD } from "../fmc/clashscan.js";
 import { countSystems, editsForRecommendations, recommend, summariseCounts, summariseRecommendations } from "../fmc/trace_phase3.js";
 
 function reply(body: object, isError = false) {
@@ -38,7 +40,8 @@ export const FMC_TRACE_DESCRIPTION =
   "actions: checks (catalogue, no Revit), limits (tolerances and standards-bank keys, no Revit), " +
   "leak (one system, one source element, or every piping and duct system), continuity (one panel or every panel), " +
   "run (leak and continuity, or checks, in one Revit round-trip per document). " +
-  "domain: piping, duct or both. " +
+  "domain: piping, duct, both, conduit, tray, or electrical_containment (conduit and cable tray). " +
+  "Conduit and tray report open ends, connectors that are not connected, and near-misses. They are not piping systems, so FLOW-NO-SYSTEM is not raised for them. " +
   "The reply is pass/fail counts per check and a capped list of element ids with a problem code. " +
   "A DirectShape or other element that is not a family, pipe or duct is not cast. The reply includes skipped_non_family { count, ids } (ids capped at 50) so it is not dropped silently. " +
   "The full findings are a JSON file under %LOCALAPPDATA%\\Formcraft\\trace and the reply includes that path. " +
@@ -53,24 +56,32 @@ export const FMC_TRACE_DESCRIPTION =
   "missing: parts a working system should have (trap, waste, isolation, cleanout, vent, fitting, cap, source, rating, main, switch, earth, duct system, damper). " +
   "standards: PASS, FAIL, UNKNOWN or PROVISIONAL per element, and compliant, not compliant or incomplete data per system. " +
   "A PASS is only against a trace.* value in the standards bank. A missing key is PROVISIONAL and is not a pass. " +
-  "fix: a deterministic correction plan. dry_run defaults to true and returns the edits. dry_run false needs batch_lease and runs fmc_trace_apply, one transaction, " +
-  "skipping elements owned by someone else or not current. The transaction rolls back if the failure count rises. " +
-  "caps true is required before an end cap is planned. circuit is the circuit id for an unpowered device; a panel alone does not choose a circuit. " +
+  "fix: a deterministic correction plan. dry_run defaults to true and returns the edits, each with a code and a confidence. " +
+  "FLOW-OPEN-END is a cap (only when caps is true; otherwise it is listed as held) or a union or elbow to the nearest compatible end. " +
+  "FLOW-NOT-CONNECTED connects coincident connectors. FLOW-SIZE-MISMATCH inserts a transition. " +
+  "FLOW-NO-SYSTEM assigns the element to the one system it touches, or creates a piping system from the connector classification. " +
+  "A missing classification is not guessed. Pass ids to plan and apply only those elements. DirectShapes are skipped and reported. " +
+  "dry_run false needs batch_lease and runs fmc_trace_apply, one transaction, " +
+  "with one subtransaction per edit so one failure does not roll the others back before the score check. " +
+  "The transaction rolls back if the failure count rises. " +
+  "caps true is required before an end cap is applied. circuit is the circuit id for an unpowered device; a panel alone does not choose a circuit. " +
   "counts: a bill of quantities from that same snapshot (fixtures, fixture units, fittings, valves, traps, cleanouts, vents, pipe and duct length by size, terminals, dampers, circuits, loads, phases, spare ways when the panel stores them, cable length when modelled, orphans). " +
   "recommend: actionable items with a code, the element or system, the current value, the target, and the standards key. PROVISIONAL when the key is not in the bank. " +
   "fix recommendations takes those ids. A resize, a cap and a system assignment are applied. A split, a regrade, a cleanout and a valve stay advisory. " +
   "HEBERT HOSTELS, a central model, and protected_paths are refused. " +
   "Not run yet: duct_airflow, fitting_corner, earthing, tray_fill. " +
+  "report: page a saved findings file. No Revit call. offset, limit and codes filter the findings. copy_to copies the file under %LOCALAPPDATA%\\Formcraft or the HANDOFF folder, never D:. " +
   "Example: action leak, document F26901-FMC-ZZ-ZZ-M3-P-0001_USER. Example: action continuity, document F26901-FMC-ZZ-ZZ-M3-E-0001_USER.";
 
 const limit = (key: string) => z.number().optional().describe(`${key} override. PROVISIONAL when omitted.`);
 
 export const FMC_TRACE_SHAPE = {
-  action: z.enum(["checks", "limits", "leak", "continuity", "run", "missing", "standards", "counts", "recommend", "fix"]),
+  action: z.enum(["checks", "limits", "leak", "continuity", "run", "missing", "standards", "counts", "recommend", "fix", "report"]),
+  document: z.string().optional().default("").describe("Exact title or full path when more than one document is open."),
   checks: z.array(z.string()).optional().describe("run: check ids. Default leak and continuity. Phase 2 ids are skipped."),
   system: z.string().optional().default("").describe("leak: piping or duct system name, classification or element id. Empty checks every system."),
   source: z.string().optional().default("").describe("leak: element id to walk from. Empty uses each system's base equipment, or the largest connected part when a system has none."),
-  domain: z.enum(["piping", "duct", "both"]).optional().default("both"),
+  domain: z.enum(["piping", "duct", "both", "conduit", "tray", "electrical_containment"]).optional().default("both"),
   panel: z.string().optional().default("").describe("continuity: panel name or element id. Empty checks every panel. Devices on no circuit and circuits with no panel are still reported."),
   near_miss_mm: limit("near_miss_mm (default 50)"),
   touch_mm: limit("touch_mm (default 10)"),
@@ -85,6 +96,12 @@ export const FMC_TRACE_SHAPE = {
   circuit: z.string().optional().default("").describe("fix: element id of the circuit an unpowered device should join."),
   max_edits: z.number().int().min(1).max(100).optional().default(25).describe("fix: how many corrections one call may plan or apply."),
   recommendations: z.array(z.string()).optional().default([]).describe("fix: recommendation ids from fmc_trace recommend. Only the deterministic ones are edited."),
+  ids: z.array(z.number().int()).optional().describe("fix: apply only edits whose elements are all in this list. Omit it to plan every correction up to max_edits."),
+  path: z.string().optional().default("").describe("report: a saved findings file. Empty uses the latest file for document."),
+  offset: z.number().int().min(0).optional().default(0),
+  limit: z.number().int().min(1).max(500).optional().default(50),
+  codes: z.array(z.string()).optional().default([]).describe("report: keep these finding codes only."),
+  copy_to: z.string().optional().default("").describe("report: copy the file under %LOCALAPPDATA%\\Formcraft or HANDOFF. handoff uses the HANDOFF folder. Never D:."),
 };
 
 export type FmcTraceArgs = z.infer<z.ZodObject<typeof FMC_TRACE_SHAPE>>;
@@ -122,7 +139,27 @@ async function highlightTemporary(ids: number[]): Promise<{ applied: boolean; re
   }
 }
 
+function reportSaved(args: FmcTraceArgs) {
+  const dir = traceReportHostDir();
+  const file = args.path.trim() || latestTraceFile(dir, args.document) || "";
+  if (!file || !fs.existsSync(file)) return reply({ tool: "fmc_trace", read_only: true, action: "report", error: "No saved findings file." }, true);
+  if (onDriveD(file)) return reply({ tool: "fmc_trace", read_only: true, code: "FMC-CLASH-PATH", message: "Refusing to read a findings path on D:." }, true);
+  let body: unknown;
+  try { body = JSON.parse(fs.readFileSync(file, "utf8")); }
+  catch (error) { return reply({ tool: "fmc_trace", read_only: true, error: error instanceof Error ? error.message : String(error) }, true); }
+  const page = pageFindings(flattenFindings(body), { offset: args.offset, limit: args.limit, codes: args.codes });
+  let copy: string | undefined;
+  const target = args.copy_to.trim();
+  if (target) {
+    const dest = target.toLowerCase() === "handoff" ? handoffDir() : target;
+    try { copy = copyTraceFile(file, dest); }
+    catch (error) { return reply({ tool: "fmc_trace", read_only: true, code: "FMC-CLASH-PATH", message: error instanceof Error ? error.message : String(error), page }, true); }
+  }
+  return reply({ tool: "fmc_trace", read_only: true, action: "report", file, ...page, ...(copy ? { copy } : {}) });
+}
+
 export async function runFmcTrace(args: FmcTraceArgs) {
+  if (args.action === "report") return reportSaved(args);
   const bank = traceBank();
   const resolved = resolveTraceLimits(overrides(args), bank);
   if (!resolved.ok) return reply({ refused: true, read_only: true, reasons: [resolved.message] }, true);
@@ -218,8 +255,8 @@ async function fixTrace(args: FmcTraceArgs, limits: { values: { near_miss_mm: nu
   const named = args.recommendations ?? [];
   const advice = named.length ? editsForRecommendations(recommend(snapshot, { ...filterOf(args), bank }, limits), named) : null;
   const plan = advice
-    ? { edits: advice.edits.slice(0, args.max_edits), warnings: [...advice.advisory.map((item) => `${item.id} is advisory and was not edited`), ...advice.unknown.map((id) => `${id} is not a recommendation`)], rule: "Recommendations: a resize, a cap and a system assignment can be edited. The rest stay advisory.", capped: advice.edits.length > args.max_edits }
-    : planFixes(snapshot, limits, { caps: args.caps, circuit: args.circuit, max: args.max_edits });
+    ? { edits: advice.edits.slice(0, args.max_edits), held: [] as TraceEdit[], warnings: [...advice.advisory.map((item) => `${item.id} is advisory and was not edited`), ...advice.unknown.map((id) => `${id} is not a recommendation`)], rule: "Recommendations: a resize, a cap and a system assignment can be edited. The rest stay advisory.", capped: advice.edits.length > args.max_edits }
+    : planFixes(snapshot, limits, { caps: args.caps, circuit: args.circuit, max: args.max_edits, ids: args.ids, domain: args.domain });
   let skipped: Array<{ id: string; code: string; owner: string }> = [];
   try {
     const currency = await withRevitConnection((client) => client.sendRaw("fmc_elem_currency", { ids: plan.edits.flatMap((edit) => edit.ids) }, 60000)) as { elements?: Array<{ id: string; owner?: string; checkout?: string; updates?: string }> };
@@ -228,7 +265,7 @@ async function fixTrace(args: FmcTraceArgs, limits: { values: { near_miss_mm: nu
   const edits = dropOwnedEdits(plan.edits, skipped);
   if (args.dry_run !== false) {
     return reply(withSkippedNonFamily({
-      tool: "fmc_trace", dry_run: true, read_only: true, edits, skipped, warnings: plan.warnings, rule: plan.rule, capped: plan.capped,
+      tool: "fmc_trace", dry_run: true, read_only: true, edits, held: plan.held, skipped, warnings: plan.warnings, rule: plan.rule, capped: plan.capped,
       document: snapshot.resolved_document ?? { title: snapshot.model ?? "", path: "" },
       next: "Show this plan. Apply with dry_run false and batch_lease. caps and circuit stay as you set them.",
     }, snapshot));

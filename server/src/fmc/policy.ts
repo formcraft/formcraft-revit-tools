@@ -205,6 +205,10 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_phase_apply",
   // Joins and the envelope pressure test. Reads stay on fmc_joins. This command is the one transaction.
   "fmc_joins_apply",
+  // Power and lighting circuits. Reads stay on fmc_circuits. This command is the one transaction.
+  "fmc_circuits_apply",
+  // Conduit fittings, the size table and type fittings. Reads stay on fmc_conduit. One subtransaction per fitting.
+  "fmc_conduit_apply",
 ]);
 
 /**

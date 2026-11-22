@@ -681,7 +681,7 @@
     "feature": "Saved add-ons and bridge transaction safety",
     "status": "Built, Revit check due",
     "ref": "docs/ADDONS.md, #231",
-    "note": "KISIC gap plan steps 1-2, approved 19 Oct. Built: transactions not in a using refused (FMC-CODE-TX-USING), leaks rolled back and reported (FMC-CODE-TX-LEAK), FmcScript.Tx and CopyOptionsUseDestinationTypes; add-ons in resources/addons shipped with the server, fmc_scripts addon_list / addon_run / job and addon: automation steps; export_png_pdf, qa_orphans, strips_on_room_walls ported. Bodies compile-checked against RevitAPI; none run in Revit yet. Pane add-on buttons still to build Merged 19 Oct (#231)."
+    "note": "KISIC gap plan steps 1-2, approved 19 Oct. Built: transactions not in a using refused (FMC-CODE-TX-USING), leaks rolled back and reported (FMC-CODE-TX-LEAK), FmcScript.Tx and CopyOptionsUseDestinationTypes; add-ons in resources/addons shipped with the server, fmc_scripts addon_list / addon_run / job and addon: automation steps; export_png_pdf, qa_orphans, strips_on_room_walls ported. Bodies compile-checked against RevitAPI; none run in Revit yet. Pane add-on buttons still to build Merged 19 Oct (#231). A send_code reply includes output_json when the script result is a JSON object or a JSON string; the existing text stays."
   },
   {
     "id": "F77",
@@ -880,7 +880,7 @@
     "feature": "Systems flow tracer",
     "status": "Built, Revit check due",
     "ref": "fmc_trace",
-    "note": "Read-only leak test, continuity, missing parts, standards verdicts, counts and recommendations. limits, leak and continuity read tolerances from the bank with a per-field source. Aliases: trace.near_miss_tolerance, trace.voltage_drop_max, and trace.connection_tolerance (a scalar for touch and connected gap, or an object of the joint fields). A null alias is UNKNOWN and the labelled provisional default is still used. A null pipe capacity with capacity_FU_tool_default keeps the built-in size table as a PROVISIONAL tool default. Voltage-drop cells that are not a known cable size are reported as unmatched_cells. A provisional bank entry never PASSes. A draft or approved entry with a clause can. Vent distance is 300 mm from the trap outlet. Recommendations that resize, cap or assign a system can be passed to fix. Splits, regrades, cleanouts and valves stay advisory. fix with dry_run false needs a batch lease and rolls back if the failure count rises. HEBERT HOSTELS, centrals and protected paths are refused. Replies are capped; the JSON is under %LOCALAPPDATA%\\Formcraft\\trace. Needs a Revit check. The add-in needs a Revit restart; the server walk does not. A DirectShape or other non-family in an MEP category is skipped instead of cast to a family, and the reply includes skipped_non_family with a count and capped ids."
+    "note": "Read-only leak test, continuity, missing parts, standards verdicts, counts and recommendations. Domains include conduit, tray and electrical_containment (open ends, not connected, near-miss; FLOW-NO-SYSTEM is not raised for them). limits, leak and continuity read tolerances from the bank with a per-field source. Aliases: trace.near_miss_tolerance, trace.voltage_drop_max, and trace.connection_tolerance (a scalar for touch and connected gap, or an object of the joint fields). A null alias is UNKNOWN and the labelled provisional default is still used. A null pipe capacity with capacity_FU_tool_default keeps the built-in size table as a PROVISIONAL tool default. Voltage-drop cells that are not a known cable size are reported as unmatched_cells. A provisional bank entry never PASSes. A draft or approved entry with a clause can. Vent distance is 300 mm from the trap outlet. fix plans FLOW-OPEN-END, FLOW-NOT-CONNECTED, FLOW-SIZE-MISMATCH and FLOW-NO-SYSTEM with a confidence. Pass ids to apply only those elements. A cap needs caps true. A system is created only from a connector classification. DirectShapes are skipped. One transaction, one subtransaction per edit, rolled back if the failure count rises. Recommendations that resize, cap or assign a system can be passed to fix. Splits, regrades, cleanouts and valves stay advisory. fix with dry_run false needs a batch lease. HEBERT HOSTELS, centrals and protected paths are refused. Replies are capped; the JSON is under %LOCALAPPDATA%\\Formcraft\\trace. Needs a Revit check. The add-in needs a Revit restart; the server walk does not. A DirectShape or other non-family in an MEP category is skipped instead of cast to a family, and the reply includes skipped_non_family with a count and capped ids. report pages a saved findings file (offset, limit, codes) with no Revit call and can copy it under Formcraft or HANDOFF, never D:."
   },
   {
     "id": "F99",
@@ -908,5 +908,32 @@
     "status": "Built, Revit check due",
     "ref": "fmc_hw",
     "note": "One tool: scan, gpu_prefer, memory, free, advice, offload. The GPU cannot replace system RAM. The model, regeneration, transactions and the Revit API stay on the CPU. Video memory is for views. Scan lists GPUs (WMI, DXGI when the collector has it), RAM, page file, disks, CPU, Revit working set, private bytes and commit, which GPU Revit is on, and hardware acceleration. Cached at startup and shown on /health hw. gpu_prefer sets the Windows high-performance GPU for Revit.exe only with confirm:true and does not write Revit.ini. offload reports and, with confirm:true, writes hardware acceleration, anti-aliasing and optimize-view-navigation for the next Revit start. free closes non-active, non-pinned views beyond keep and never the last view. It does not save unless the existing autosave would. A local save does not clear the undo stack. Soft and hard tiers use ram_pause_free_mb and the 1.5× resume line. No new guard setting. Point, clash and ray samples run on the CPU unless an optional GPU library matches that result. The add-in builds without that library. Needs a Revit check. The add-in needs a Revit restart; the server works against an older add-in for the OS scan."
+  },
+  {
+    "id": "F102",
+    "area": "Engine",
+    "group": "Engineer",
+    "feature": "Power and lighting circuits",
+    "status": "Built, Revit check due",
+    "ref": "fmc_circuits",
+    "note": "plan, apply, panel, audit and limits. Groups unassigned lighting and power devices by room, then level, then kind. Lighting and sockets are never mixed. Names are {board}/{zone}-{type}{n}. Phases balance L1/L2/L3 and FMC_Phase is bound when it is missing. accept_no_supply and utility-fed panels may have no supply. non_board_ids are Panelboard part types treated as loads; others that look like an SPD or isolator are flagged. FMC-NO-CONNECTOR instead of Connector.IsConnected. Distribution target DS_415-240V_3Ph_4W. Single-phase finals at 240 V. Caps are trace.circuit.* plus trace.voltage_drop_pct and trace.phase_imbalance_max. A missing key is PROVISIONAL. dry_run defaults true. A write is fmc_circuits_apply, one transaction, one subtransaction per circuit, with batch_lease. Document is an exact title or path. HEBERT HOSTELS, centrals and protected paths are refused. JSON under %LOCALAPPDATA%\\Formcraft\\circuits. Needs a Revit check."
+  },
+  {
+    "id": "F103",
+    "area": "Engine",
+    "group": "Engineer",
+    "feature": "Conduit ends, size table and fittings",
+    "status": "Built, Revit check due",
+    "ref": "fmc_conduit",
+    "note": "scan, fix, sizes and fittings. Free ends pair with the nearest end within the trace tolerances: extend, union, elbow, transition, or a junction box FMC_E_ElecFixture_JunctionBox 75x75_Galv. Each fitting is its own subtransaction and a failure preprocessor drops a commit-time lookup failure so the rest is kept. sizes adds nominal, inside and outside diameters to ConduitSizeSettings and reports whether the type's elbow, union and transition are set. There is no separate routing-coverage API. resize_fallback uses the nearest table size and writes Comments 'nominal N mm PVC'. A missing family is FMC-NO-FITTING-TYPE. DirectShapes are skipped. dry_run defaults true. A write needs batch_lease. HEBERT HOSTELS, centrals and protected paths are refused. JSON under %LOCALAPPDATA%\\Formcraft\\conduit. Needs a Revit check."
+  },
+  {
+    "id": "F104",
+    "area": "Engine",
+    "group": "Coordinate",
+    "feature": "Low-RAM clash scan",
+    "status": "Built, Revit check due",
+    "ref": "fmc_clash",
+    "note": "Read-only scan. Category pairs across the document and its links. An empty pairs list uses the default set, including OST_PlumbingEquipment, OST_Site, OST_GenericModel and OST_SpecialityEquipment. link S uses a RevitLinkInstance in the host, transformed by GetTotalTransform (eight corners). The structural model does not have to be open. An unloaded link is FMC-LINK-NOT-LOADED. export_cache writes boxes and optional capped meshes under %LOCALAPPDATA%\\Formcraft\\clash\\cache and does not save the source or write on D:. source cache:<file or title> scans an open host against that file and reports STALE when the source file is newer. source import:<file> reads the documented millimetre schema (elements and openings) and converts it to that cache. Live boxes are internal feet times 304.8. Hits are hard, cleared_by_opening, join, hosted or clearance. centreline tests MEP centrelines. sleeves lists openings and sleeve families near a hit. Ids are kept; bounding boxes exist only for the live chunk. Exact solid intersection is optional and only for a box hit. Hits append to JSONL. The reply includes the peak working set when the process reports it. A bad category is FMC-CLASH-CATEGORY. No pictures. Needs a Revit check."
   }
 ]

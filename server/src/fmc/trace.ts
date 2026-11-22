@@ -244,7 +244,7 @@ export function withSkippedNonFamily<T extends object>(body: T, snapshot: TraceS
 export interface TraceFilter {
   system?: string;
   source?: string;
-  domain?: "piping" | "duct" | "both";
+  domain?: "piping" | "duct" | "both" | "conduit" | "tray" | "electrical_containment";
   panel?: string;
   /** Standards-bank rows for this call, keyed by trace.*. A number, null, or a table. */
   bank?: Record<string, TraceBankEntry>;
@@ -459,7 +459,14 @@ function norm(value: string): string {
 function domainWanted(filter: TraceFilter): string[] {
   if (filter.domain === "piping") return ["piping"];
   if (filter.domain === "duct") return ["hvac"];
+  if (filter.domain === "conduit") return ["conduit"];
+  if (filter.domain === "tray") return ["tray"];
+  if (filter.domain === "electrical_containment") return ["conduit", "tray"];
   return ["piping", "hvac"];
+}
+
+function containmentDomain(filter: TraceFilter): boolean {
+  return filter.domain === "conduit" || filter.domain === "tray" || filter.domain === "electrical_containment";
 }
 
 function systemDomainOk(domain: string, filter: TraceFilter): boolean {
@@ -897,14 +904,16 @@ export function runLeak(snapshot: TraceSnapshot, limits: ResolvedLimits, filter:
     }
   }
 
-  for (const element of prep.elements) {
-    if (!prep.scope.has(element.id)) continue;
-    if ((prep.membership.get(element.id) ?? []).length > 0) continue;
-    push(findings, seen, {
-      code: "FLOW-NO-SYSTEM",
-      id: element.id,
-      detail: `${element.kind || element.category || "element"} is on no piping or duct system`,
-    });
+  if (!containmentDomain(filter)) {
+    for (const element of prep.elements) {
+      if (!prep.scope.has(element.id)) continue;
+      if ((prep.membership.get(element.id) ?? []).length > 0) continue;
+      push(findings, seen, {
+        code: "FLOW-NO-SYSTEM",
+        id: element.id,
+        detail: `${element.kind || element.category || "element"} is on no piping or duct system`,
+      });
+    }
   }
 
   let reachableCount = 0;

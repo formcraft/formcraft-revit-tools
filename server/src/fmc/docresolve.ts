@@ -181,3 +181,55 @@ export function leaseCovers(held: string, doc: ResolvedDocument, sameFile: (held
   if (sameDocKey(key, doc.title) || sameDocKey(key, doc.path)) return true;
   return sameFile(key, doc.title) || sameFile(key, doc.path);
 }
+
+function fileTitleOf(value: string): string {
+  const file = value.split(/[\\/]/).pop() ?? value;
+  return file.replace(/\.(rvt|rfa|rte|rft)$/i, "");
+}
+
+/** True when one name is the other with a trailing `_USER` removed. */
+export function isUserSuffixPair(a: string, b: string): boolean {
+  const left = a.trim();
+  const right = b.trim();
+  if (!left || !right || sameDocKey(left, right)) return false;
+  const bare = (value: string) => fileTitleOf(value).replace(/_user$/i, "");
+  return sameDocKey(bare(left), fileTitleOf(right)) || sameDocKey(bare(right), fileTitleOf(left));
+}
+
+/**
+ * The document a call may name. When one of the two names is the other with `_USER` removed,
+ * the name that still has `_USER` wins. A stripped model number is not substituted for the local.
+ */
+export function preferUnstrippedDocument(target?: string, explicit?: string): string | undefined {
+  const outer = (target ?? "").trim();
+  const named = (explicit ?? "").trim();
+  if (outer && named && isUserSuffixPair(outer, named)) {
+    if (/_user$/i.test(fileTitleOf(outer))) return outer;
+    if (/_user$/i.test(fileTitleOf(named))) return named;
+  }
+  return outer || named || undefined;
+}
+
+/**
+ * The document release and sync may send to Revit.
+ * The lease title is kept. It is never rewritten by dropping `_USER`.
+ * When the lease title is not open and exactly one open document is that title plus `_USER`,
+ * that open local is used. A release call that omitted the document, or passed the model number
+ * without `_USER`, does not choose the name.
+ */
+export function resolveLeaseDocument(leaseTitle: string, open: Array<{ title?: string; path?: string }> = []): string {
+  const stored = leaseTitle.trim();
+  if (!stored) return stored;
+  const docs = open
+    .map((doc) => ({ title: (doc.title ?? "").trim(), path: (doc.path ?? "").trim() }))
+    .filter((doc) => doc.title || doc.path);
+  const exact = docs.find((doc) => sameDocKey(doc.title, stored) || sameDocKey(doc.path, stored) || sameDocKey(fileTitleOf(doc.path), stored) || sameDocKey(fileTitleOf(doc.title), stored));
+  if (exact) return exact.title || stored;
+  if (/_user$/i.test(fileTitleOf(stored))) return stored;
+  const promoted = docs.filter((doc) => {
+    const title = fileTitleOf(doc.title || doc.path);
+    return /_user$/i.test(title) && sameDocKey(title.replace(/_user$/i, ""), fileTitleOf(stored));
+  });
+  if (promoted.length === 1) return promoted[0].title || stored;
+  return stored;
+}

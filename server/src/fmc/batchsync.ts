@@ -231,11 +231,16 @@ export async function saveLocalOnly(document: string, send: SyncSend, reason: st
 /** Batch-end sync. An excluded document is saved locally and not synced. Never throws. */
 export async function productionSyncStep(ctx: SyncStepContext, now = Date.now()): Promise<SyncRun> {
   const { withRevitConnection } = await import("../utils/ConnectionManager.js");
+  const { resolveLeaseDocument } = await import("./docresolve.js");
+  const { readInstances } = await import("./connect.js");
   const cfg = loadConfig().config;
   const settings = syncSettings(cfg);
+  let open: Array<{ title?: string; path?: string }> = [];
+  try { open = readInstances().flatMap((instance) => instance.documents ?? []); } catch { open = []; }
+  const document = resolveLeaseDocument(ctx.document, open);
   let active: DocInfo | undefined;
   try {
-    const info = await withRevitConnection((client) => client.sendCommand("fmc_document_info", { document: ctx.document })) as { active?: DocInfo };
+    const info = await withRevitConnection((client) => client.sendCommand("fmc_document_info", { document })) as { active?: DocInfo };
     active = info?.active;
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
@@ -244,17 +249,17 @@ export async function productionSyncStep(ctx: SyncStepContext, now = Date.now())
   const batchEnd = ctx.batchEnd !== false;
   const plan = planSync(factsFor(active, cfg), {
     now, lastSyncAt: ctx.lastSyncAt, changedAt: ctx.changedAt ?? (batchEnd ? now : null), leaseHeld: false, batchEnd,
-  }, settings, ctx.document, active?.path ?? "");
+  }, settings, document, active?.path ?? "");
   if (plan.excluded) {
-    const blocked = saveBlocked({ title: active?.title ?? ctx.document, path: active?.path }, cfg);
+    const blocked = saveBlocked({ title: active?.title ?? document, path: active?.path }, cfg);
     if (blocked) return { ran: false, ok: true, synced: false, detail: `${plan.reason} ${blocked}` };
-    return saveLocalOnly(ctx.document, (command, params) => withRevitConnection((client) => client.sendCommand(command, params)), plan.reason);
+    return saveLocalOnly(document, (command, params) => withRevitConnection((client) => client.sendCommand(command, params)), plan.reason);
   }
   if (!plan.run) return { ran: false, ok: true, synced: false, detail: plan.reason };
   try {
-    return await runDocumentSync(ctx.document, (command, params) => withRevitConnection((client) => client.sendCommand(command, params)));
+    return await runDocumentSync(document, (command, params) => withRevitConnection((client) => client.sendCommand(command, params)));
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    return { ran: true, ok: true, synced: false, detail: `Sync did not finish for ${ctx.document}. The batch is not failed. ${message}`, error: message };
+    return { ran: true, ok: true, synced: false, detail: `Sync did not finish for ${document}. The batch is not failed. ${message}`, error: message };
   }
 }

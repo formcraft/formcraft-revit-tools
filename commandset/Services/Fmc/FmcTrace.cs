@@ -134,6 +134,8 @@ namespace RevitMCPCommandSet.Services.Fmc
             BuiltInCategory.OST_DuctCurves, BuiltInCategory.OST_FlexDuctCurves, BuiltInCategory.OST_DuctFitting,
             BuiltInCategory.OST_DuctAccessory, BuiltInCategory.OST_DuctTerminal, BuiltInCategory.OST_MechanicalEquipment,
             BuiltInCategory.OST_PlumbingEquipment,
+            BuiltInCategory.OST_Conduit, BuiltInCategory.OST_ConduitFitting,
+            BuiltInCategory.OST_CableTray, BuiltInCategory.OST_CableTrayFitting,
         };
 
         private static JObject CollectFlow(Document doc, CollectState state)
@@ -211,18 +213,21 @@ namespace RevitMCPCommandSet.Services.Fmc
                 if (found.Count == 0) return;
                 members.TryGetValue(element.Id.Value, out HashSet<long> onSystems);
                 var systemIds = onSystems == null ? new HashSet<long>() : new HashSet<long>(onSystems);
-                bool piping = false, hvac = false;
+                bool piping = false, hvac = false, conduit = false, tray = false;
                 foreach (JObject row in found.OfType<JObject>())
                 {
                     string domain = row.Value<string>("domain") ?? "";
                     if (domain == "piping") piping = true;
                     if (domain == "hvac") hvac = true;
+                    if (domain == "conduit") conduit = true;
+                    if (domain == "tray") tray = true;
                     long sid = row.Value<long?>("system_id") ?? 0;
                     if (sid != 0) systemIds.Add(sid);
                     connectors.Add(row);
                     if (connectors.Count >= Cap) { state.Truncated = true; break; }
                 }
-                elements.Add(ElementRow(element, piping && hvac ? "both" : hvac ? "hvac" : "piping", systemIds));
+                string elementDomain = piping && hvac ? "both" : hvac ? "hvac" : piping ? "piping" : tray && !conduit ? "tray" : conduit ? "conduit" : "piping";
+                elements.Add(ElementRow(element, elementDomain, systemIds));
             }
 
             foreach (Element element in new FilteredElementCollector(doc).WherePasses(new ElementMulticategoryFilter(FlowCategories)).WhereElementIsNotElementType())
@@ -416,7 +421,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             {
                 try
                 {
-                    if (connector.Domain != Domain.DomainPiping && connector.Domain != Domain.DomainHvac) continue;
+                    if (connector.Domain != Domain.DomainPiping && connector.Domain != Domain.DomainHvac && connector.Domain != Domain.DomainCableTrayConduit) continue;
                     // Layout nodes, logical connectors and super-system links are not pipe or duct joints.
                     if (connector.ConnectorType == ConnectorType.Logical || connector.ConnectorType == ConnectorType.Reference
                         || connector.ConnectorType == ConnectorType.Invalid || connector.ConnectorType == ConnectorType.NodeReference
@@ -426,7 +431,13 @@ namespace RevitMCPCommandSet.Services.Fmc
                     // Logical, reference and invalid connectors were skipped above.
                     bool curve = connector.ConnectorType == ConnectorType.Curve;
                     bool connected = false;
-                    try { connected = connector.IsConnected; } catch (Exception) { state.Skipped++; continue; }
+                    try { connected = connector.IsConnected; }
+                    catch (Exception)
+                    {
+                        // IsConnected throws on some connectors. Record the end as unreadable rather than dropping it.
+                        state.Skipped++;
+                        connected = false;
+                    }
                     string shape = "invalid";
                     double size = 0, height = 0;
                     try
@@ -469,7 +480,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     {
                         ["element_id"] = element.Id.Value,
                         ["index"] = connector.Id,
-                        ["domain"] = connector.Domain == Domain.DomainPiping ? "piping" : "hvac",
+                        ["domain"] = ConnectorDomain(element, connector),
                         ["origin"] = Point(connector.Origin),
                         ["direction"] = direction,
                         ["flow"] = flow,
@@ -490,6 +501,15 @@ namespace RevitMCPCommandSet.Services.Fmc
                 }
             }
             return rows;
+        }
+
+        private static string ConnectorDomain(Element element, Connector connector)
+        {
+            if (connector.Domain == Domain.DomainPiping) return "piping";
+            if (connector.Domain == Domain.DomainHvac) return "hvac";
+            long category = element?.Category?.Id.Value ?? 0;
+            if (category == (long)BuiltInCategory.OST_CableTray || category == (long)BuiltInCategory.OST_CableTrayFitting) return "tray";
+            return "conduit";
         }
 
         private static ConnectorManager Manager(Element element)
@@ -531,6 +551,9 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (category == (long)BuiltInCategory.OST_DuctCurves) return "duct";
             if (category == (long)BuiltInCategory.OST_FlexDuctCurves) return "flex_duct";
             if (category == (long)BuiltInCategory.OST_DuctTerminal) return "terminal";
+            if (category == (long)BuiltInCategory.OST_Conduit) return "conduit";
+            if (category == (long)BuiltInCategory.OST_CableTray) return "tray";
+            if (category == (long)BuiltInCategory.OST_ConduitFitting || category == (long)BuiltInCategory.OST_CableTrayFitting) return "fitting";
             if (category == (long)BuiltInCategory.OST_MechanicalEquipment || category == (long)BuiltInCategory.OST_PlumbingEquipment) return "equipment";
             if (element is MEPCurve) return "curve";
             return "other";

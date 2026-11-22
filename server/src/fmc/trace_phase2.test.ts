@@ -139,7 +139,7 @@ test("the fix plan connects an aligned pair, elbows a corner, resizes the smalle
     },
   };
   const plan = planFixes(snapshot, limits, {});
-  assert.ok(plan.edits.some((edit) => edit.op === "connect" && edit.a === 1 && edit.b === 2));
+  assert.ok(plan.edits.some((edit) => edit.op === "union" && edit.a === 1 && edit.b === 2 && edit.code === "FLOW-OPEN-END" && (edit.confidence ?? 0) >= 0.7));
   assert.ok(plan.edits.some((edit) => edit.op === "elbow"));
   const resize = plan.edits.find((edit) => edit.op === "resize");
   assert.equal(resize?.element_id, 3);
@@ -152,6 +152,32 @@ test("the fix plan connects an aligned pair, elbows a corner, resizes the smalle
   const few = planFixes(snapshot, limits, { max: 1 });
   assert.equal(few.edits.length, 1);
   assert.equal(few.capped, true);
+});
+
+test("flow fixes name a code and a confidence, and only the listed ids are kept", () => {
+  const snapshot: TraceSnapshot = {
+    flow: {
+      elements: [
+        { id: 1, kind: "pipe", system_ids: [] },
+        { id: 2, kind: "pipe", system_ids: [1] },
+        { id: 9, kind: "pipe", system_ids: [] },
+      ],
+      connectors: [
+        { element_id: 1, index: 0, domain: "piping", origin: [0, 0, 0], direction: [1, 0, 0], flow: "out", shape: "round", size_mm: 22, height_mm: 0, connected: false, type: "end", open_end: true, system_id: 0, system_class: "DomesticColdWater", refs: [] },
+        { element_id: 2, index: 0, domain: "piping", origin: [4, 0, 0], direction: [-1, 0, 0], flow: "in", shape: "round", size_mm: 22, height_mm: 0, connected: false, type: "end", open_end: true, system_id: 1, refs: [] },
+        { element_id: 9, index: 0, domain: "piping", origin: [400, 0, 0], direction: [1, 0, 0], flow: "out", shape: "round", size_mm: 22, height_mm: 0, connected: false, type: "end", open_end: true, system_id: 0, system_class: "Sanitary", refs: [] },
+      ],
+      systems: [{ id: 1, name: "Cold", domain: "piping", classification: "DomesticColdWater", element_ids: [2] }],
+    },
+  };
+  const plan = planFixes(snapshot, limits, { ids: [1, 2], caps: false });
+  assert.equal(plan.edits.some((edit) => edit.ids.includes(9)), false);
+  const connect = plan.edits.find((edit) => edit.op === "connect");
+  assert.equal(connect?.code, "FLOW-NOT-CONNECTED");
+  assert.ok((connect?.confidence ?? 0) >= 0.8);
+  const created = planFixes(snapshot, limits, { ids: [9] }).edits.find((edit) => edit.op === "create_system");
+  assert.equal(created?.classification, "Sanitary");
+  assert.equal(created?.code, "FLOW-NO-SYSTEM");
 });
 
 test("a circuit is joined only when its id is given, and owned elements drop out of the plan", () => {

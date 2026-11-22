@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 import { documentsMatch } from "./batchline.js";
 import { documentRequired } from "./fairqueue.js";
 import {
-  DOC_AMBIGUOUS, DOC_NOT_FOUND, DOC_REQUIRED, attachResolvedDocument, leaseCovers, resolvedDocumentFrom, resolveOpenDocument,
+  DOC_AMBIGUOUS, DOC_NOT_FOUND, DOC_REQUIRED, attachResolvedDocument, leaseCovers, preferUnstrippedDocument, resolvedDocumentFrom, resolveLeaseDocument, resolveOpenDocument,
 } from "./docresolve.js";
 import { shapeKeynoteResult } from "./keynote.js";
 import { formatCodeResult } from "../tools/send_code_to_revit.js";
@@ -81,6 +81,17 @@ test("a batch lease for another document does not cover the write", () => {
   assert.equal(leaseCovers(structural.path, structural, documentsMatch), true);
   assert.equal(leaseCovers("E-0001", structural, documentsMatch), false);
   assert.equal(leaseCovers(electrical.path, structural, documentsMatch), false);
+});
+
+test("a stripped _USER name never replaces the local title", () => {
+  const local = "F26901-FMC-ZZ-ZZ-M3-E-0001_USER";
+  const stripped = "F26901-FMC-ZZ-ZZ-M3-E-0001";
+  assert.equal(preferUnstrippedDocument(stripped, local), local);
+  assert.equal(preferUnstrippedDocument(local, stripped), local);
+  assert.equal(preferUnstrippedDocument(undefined, local), local);
+  assert.equal(resolveLeaseDocument(local, [{ title: local, path: "" }]), local);
+  assert.equal(resolveLeaseDocument(stripped, [{ title: local, path: "C:\\Users\\USER\\Documents\\" + local + ".rvt" }]), local);
+  assert.equal(resolveLeaseDocument(local, [{ title: stripped, path: "" }]), local);
 });
 
 test("ai_element_filter and undo resolve the named document in the add-in, not ActiveUIDocument", () => {
