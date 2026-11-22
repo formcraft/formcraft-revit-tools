@@ -7,6 +7,7 @@ import { hostTestKind, parseRecipe } from "../fmc/recipes.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { JobStillRunning } from "../utils/SocketClient.js";
 import { registerHost } from "./fmc_recipe.js";
+import { LEGEND_VIEW_FIELDS, runLegendViews, type LegendViewArgs } from "../fmc/legendrun.js";
 
 const win = path.win32;
 
@@ -27,19 +28,28 @@ function reply(body: object, isError = false) {
 }
 
 export const FMC_LEGEND_DESCRIPTION =
-  "Formcraft chain test (F-064 #6). chain: a role's chain-test project made from its template (FMC_<Role>_Template_v2.2.rte " +
+  "Formcraft legends. chain (F-064 #6): a role's chain-test project made from its template (FMC_<Role>_Template_v2.2.rte " +
     "in 06_Templates\\_Staging) with every staged family of the role (04_Families\\_Staging\\<Role>) loaded and one instance " +
     "of each type placed on the host the register gives (wall face, ceiling underside, or the level), keynote-tagged when " +
     "the template has a keynote tag, a keynote legend and a type schedule per category on a sheet. Saved to " +
     "04_Families\\_ChainTests\\FMC_ChainTest_<Role>.rvt (an older one goes to _Archive). A dry run (the default) lists what " +
-    "it would place. It shows each family loads, places, tags and schedules: Gate A's last Not checked line.";
+    "it would place. It shows each family loads, places, tags and schedules: Gate A's last Not checked line. " +
+    "seed, create_view and place are the legend-view tool. Revit cannot create a LegendComponent or a ViewLegend, so both copy a seed. " +
+    "seed is read-only and returns FMC-LEGEND-NO-SEED with the fix 'place one legend component by hand once' when none exist. " +
+    "create_view duplicates a seed legend (Duplicate or WithDetailing) and renames it, or copies one from another open document and reports it if Revit refuses. " +
+    "place copies the seed component into a grid, then sets LEGEND_COMPONENT, LEGEND_COMPONENT_VIEW and, for a wall, LEGEND_COMPONENT_LENGTH. " +
+    "Each component is its own SubTransaction. label is none, keynote or type_mark. No free text notes. If a tag cannot be placed, the type marks are returned for a schedule. " +
+    "dry_run defaults to true. A write needs batch_lease and references.kit, references.standards and references.rulebook, and is fmc_legend_apply, one transaction. " +
+    "document is required. The full JSON is under %LOCALAPPDATA%\\Formcraft\\legend. No pictures. " +
+    "Example: action seed, document F26901-FMC-ZZ-ZZ-M3-A-0002_USER.";
 
 export const FMC_LEGEND_SHAPE = {
-  action: z.enum(["chain"]),
-  role: z.string().min(1).max(3).describe("the role code, e.g. A, E, M, P"),
-  folder: z.string().optional().default("").describe("the staged families' folder (default <family_staging_root>\\<Role>)"),
-  template: z.string().optional().default("").describe("the project template (default the role's FMC_<Role>_Template_v2.2.rte)"),
+  action: z.enum(["chain", "seed", "create_view", "place"]),
+  role: z.string().max(3).optional().default("").describe("chain: the role code, e.g. A, E, M, P"),
+  folder: z.string().optional().default("").describe("chain: the staged families' folder (default <family_staging_root>\\<Role>)"),
+  template: z.string().optional().default("").describe("chain: the project template (default the role's FMC_<Role>_Template_v2.2.rte)"),
   dry_run: z.boolean().optional().default(true),
+  ...LEGEND_VIEW_FIELDS,
 };
 
 export type FmcLegendArgs = z.infer<z.ZodObject<typeof FMC_LEGEND_SHAPE>>;
@@ -58,10 +68,12 @@ export function chainTestsRoot(libraryRoots: string[], stagingRoot: string): str
   return libraryRoots.find((r) => /[\\/]_ChainTests[\\/]*$/i.test(r)) ?? win.join(win.dirname(stagingRoot.replace(/[\\/]+$/, "")), "_ChainTests");
 }
 
-export async function runFmcLegend(args: FmcLegendArgs) {
-  const { config } = loadConfig();
+export async function runFmcLegend(args: FmcLegendArgs, deps: { env?: NodeJS.ProcessEnv; guard?: GuardConfig; read?: (body: Record<string, unknown>) => Promise<unknown>; apply?: (body: Record<string, unknown>) => Promise<unknown>; reportDir?: string } = {}) {
+  if (args.action !== "chain") return runLegendViews(args as LegendViewArgs, deps);
+  const { config } = deps.guard ? { config: deps.guard } : loadConfig();
   const dry = args.dry_run !== false;
   const role = args.role.trim().toUpperCase();
+  if (!role) return reply({ refused: true, reasons: ["chain needs a role code, for example A or E"] }, true);
   try {
     const staging = expandEnv(config.family_staging_root);
     const folder = args.folder.trim() || win.join(staging, role);
