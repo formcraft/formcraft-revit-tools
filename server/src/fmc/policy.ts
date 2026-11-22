@@ -217,6 +217,14 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_details_apply",
   // A parameter or label on the family loaded in the project, or a project binding. The kit family file is not saved.
   "fmc_family_params_apply",
+  // Keynote placement: copy a linked seed into each plan and retarget the host. One transaction.
+  "fmc_keynote_place_apply",
+  // Sheet pair, arrange and park. One transaction. The register compare stays a read.
+  "fmc_sheets_layout_apply",
+  // View templates, filters and room colour fills. One transaction.
+  "fmc_viewstyle_apply",
+  // Dimension strings. One transaction, one subtransaction per string.
+  "fmc_dims_apply",
 ]);
 
 /**
@@ -250,6 +258,14 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_family_params",
   // Clear headroom. No transaction.
   "fmc_headroom",
+  // Keynote tags, hosts and plan views. No transaction.
+  "fmc_keynote_place",
+  // Sheet outlines, view sizes and sheet parameters. No transaction.
+  "fmc_sheets_layout",
+  // Existing templates, filters and room names. No transaction.
+  "fmc_viewstyle",
+  // Grids, exterior walls and openings in one view. No transaction.
+  "fmc_dims",
 ]);
 
 /**

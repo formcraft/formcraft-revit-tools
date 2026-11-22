@@ -6,6 +6,7 @@ import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { ModelSheet, compare, completeness, numberOk, parseRegister, planned } from "../fmc/sheets.js";
 import { readXlsx } from "../fmc/xlsx.js";
+import { FMC_SHEET_LAYOUT_FIELDS, runSheetLayout, type SheetLayoutArgs } from "./fmc_sheet_layout.js";
 
 const win = path.win32;
 
@@ -55,12 +56,24 @@ export const FMC_SHEETS_DESCRIPTION =
   "Formcraft sheets against the project's sheet register (FMC_Sheet_Register.xlsx or .csv: Number, Name, Role, Issue " +
     "sets). compare (read-only) lists the sheets the register plans for an issue set and roles, what is missing, extra " +
     "or named differently in the active model, and how complete each sheet is (views placed, title block fields filled). " +
-    "create makes the missing sheets with a title block; rename gives sheets the register's names. create and rename are " +
-    "dry runs unless dry_run is false and are refused on live projects. Sheet numbers come from the register, never typed.";
+    "create makes the missing sheets with a title block; rename gives sheets the register's names. " +
+    "pair places views on one sheet in the title block drawing area. arrange reflows the views on a sheet as grid, pair or stack. " +
+    "park sets a browser-organization parameter, or FMC_Sheet_Status, to Parked. " +
+    "create, rename, pair, arrange and park are dry runs unless dry_run is false. A layout write needs batch_lease and references. " +
+    "Sheet numbers come from the register, never typed. " +
+    "Example: action pair, document F26901-FMC-ZZ-ZZ-M3-A-0002_USER, sheet A-101, views [\"Level 1\",\"Level 2\"], dry_run true.";
 
 export const FMC_SHEETS_SHAPE = {
-  action: z.enum(["compare", "create", "rename"]),
-  register: z.string().describe("Absolute path of the project's sheet register (.xlsx or .csv)"),
+  action: z.enum(["compare", "create", "rename", "pair", "arrange", "park"]),
+  register: z.string().optional().default("").describe("Absolute path of the project's sheet register (.xlsx or .csv). Required for compare, create and rename."),
+  document: z.string().optional().default("").describe("Title or full path. Required for pair, arrange and park."),
+  sheet: FMC_SHEET_LAYOUT_FIELDS.sheet,
+  views: FMC_SHEET_LAYOUT_FIELDS.views,
+  layout: FMC_SHEET_LAYOUT_FIELDS.layout,
+  sheets: FMC_SHEET_LAYOUT_FIELDS.sheets,
+  target: FMC_SHEET_LAYOUT_FIELDS.target,
+  batch_lease: FMC_SHEET_LAYOUT_FIELDS.batch_lease,
+  references: FMC_SHEET_LAYOUT_FIELDS.references,
   issue_set: z.string().optional().default("PERMIT")
     .describe("The issue set; a sheet is in it when it is one of the sheet's sets (the register's PERMIT+TENDER+CONSTRUCTION is in PERMIT). Several (PERMIT+TENDER) take a sheet in any of them"),
   roles: z.array(z.string()).optional().default([]),
@@ -72,11 +85,14 @@ export const FMC_SHEETS_SHAPE = {
 
 export type FmcSheetsArgs = z.infer<z.ZodObject<typeof FMC_SHEETS_SHAPE>>;
 
-export async function runFmcSheets(args: FmcSheetsArgs) {
+export async function runFmcSheets(args: FmcSheetsArgs, io: Parameters<typeof runSheetLayout>[1] = {}) {
+  if (args.action === "pair" || args.action === "arrange" || args.action === "park") {
+    return runSheetLayout(args as SheetLayoutArgs, io);
+  }
   const { config } = loadConfig();
   const dry = args.dry_run !== false;
   try {
-    if (!fs.existsSync(args.register)) return reply({ refused: true, reasons: [`Sheet register not found: ${args.register}`] }, true);
+    if (!args.register.trim() || !fs.existsSync(args.register)) return reply({ refused: true, reasons: [`Sheet register not found: ${args.register}`] }, true);
     const reg = parseRegister(readRegisterFile(args.register));
     if (!reg.sheets.length) return reply({ refused: true, reasons: reg.problems.length ? reg.problems : ["The register lists no sheets"] }, true);
     const plan = planned(reg.sheets, args.issue_set, args.roles);
