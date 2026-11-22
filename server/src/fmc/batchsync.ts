@@ -163,6 +163,8 @@ export async function runDocumentSync(document: string, send: SyncSend, opts?: {
   sleep?: (ms: number) => Promise<void>;
   delays?: number[];
   record?: (kind: ConflictKind, detail: string) => void;
+  /** batch_end or timer. Direct syncs do not come through here. */
+  source?: "batch_end" | "timer";
 }): Promise<SyncRun> {
   const record = opts?.record ?? ((kind, detail) => appendConflict({ at: new Date().toISOString(), document, kind, detail, code: kind === "central_busy" ? "FMC-CENTRAL-BUSY" : undefined }));
   const busy = (message: string): SyncRun => {
@@ -180,7 +182,10 @@ export async function runDocumentSync(document: string, send: SyncSend, opts?: {
   }
   try {
     await send("fmc_revit_file", { action: "save", document, batch_sync: true });
-    await send("fmc_revit_file", { action: "sync", document, relinquish: true, comment: "Formcraft batch sync", batch_sync: true });
+    await send("fmc_revit_file", {
+      action: "sync", document, relinquish: true, comment: "Formcraft batch sync", batch_sync: true,
+      sync_source: opts?.source === "timer" ? "timer" : "batch_end",
+    });
     return { ran: true, ok: true, synced: true, detail: `Reloaded latest, saved the local file and synced ${document} with central (only elements and user worksets this user had checked out).` };
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
@@ -257,7 +262,9 @@ export async function productionSyncStep(ctx: SyncStepContext, now = Date.now())
   }
   if (!plan.run) return { ran: false, ok: true, synced: false, detail: plan.reason };
   try {
-    return await runDocumentSync(document, (command, params) => withRevitConnection((client) => client.sendCommand(command, params)));
+    return await runDocumentSync(document, (command, params) => withRevitConnection((client) => client.sendCommand(command, params)), {
+      source: batchEnd ? "batch_end" : "timer",
+    });
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     return { ran: true, ok: true, synced: false, detail: `Sync did not finish for ${document}. The batch is not failed. ${message}`, error: message };

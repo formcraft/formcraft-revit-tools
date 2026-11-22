@@ -19,6 +19,7 @@ import { isInitializeRequest } from "@modelcontextprotocol/sdk/types.js";
 import { BUILD_INFO_FILE, RUNNING_BUILD } from "./buildinfo.js";
 import { createFormcraftServer } from "./boot.js";
 import { HOST, ProbeVerdict, probePort, readInstances } from "./connect.js";
+import { pickBusyReason } from "./busyreason.js";
 import { dialogFor, inFlightJob, readRevitJobLines } from "./notidle.js";
 import { lastRegistration } from "../tools/register.js";
 import { queueClient, queueSnapshots } from "./fairqueue.js";
@@ -136,6 +137,8 @@ export interface HealthReport {
     pid: number; port: number; revit: string; build: string; answering: boolean;
     verdict: ProbeVerdict | "waiting_for_idle";
     busy: { job: string; command: string; since_s: number; dialog: string } | null;
+    /** Why this Revit is not taking the next call. Null when it is idle. */
+    busy_reason: string | null;
     documents: Array<{ title: string; path: string; active: boolean; family: boolean }>;
     resolved_document: { title: string; path: string } | null;
   }>;
@@ -143,6 +146,8 @@ export interface HealthReport {
   resolved_document: { title: string; path: string } | null;
   registration: { registered: number; skipped: number; failed: Array<{ file: string; error: string }> };
   queue: ReturnType<typeof queueSnapshots>;
+  /** The first instance that is not idle, in the same words a refused call uses. */
+  busy_reason: string | null;
   batches: ReturnType<ReturnType<typeof batchBoard>["snapshot"]>;
   /** Per open document: next_save_at, next_sync_at, last_save_at, last_sync_at, defer_reason. */
   schedule: unknown;
@@ -176,6 +181,7 @@ export function describeInstance(
     answering: probe === "ok",
     verdict: flight ? "waiting_for_idle" : probe,
     busy: flight ? { job: flight.job, command: flight.command, since_s: flight.age_s, dialog: flight ? dialog : "" } : null,
+    busy_reason: flight ? pickBusyReason({ dialog, tool: flight.command, age_s: flight.age_s, running: true }) : null,
     documents,
     resolved_document: choose.length === 1 ? { title: choose[0].title, path: choose[0].path } : null,
   };
@@ -206,6 +212,7 @@ export async function healthReport(listen: string, startedAt: number, env: NodeJ
     instances: rows,
     registration: { registered: reg.registered.length, skipped: reg.skipped.length, failed: reg.failed },
     queue: queueSnapshots(),
+    busy_reason: rows.map((row) => row.busy_reason).find((reason) => reason) ?? null,
     batches: batchBoard().snapshot(),
     schedule: batchBoard().snapshot().syncs,
     memory: memoryGate.view(),

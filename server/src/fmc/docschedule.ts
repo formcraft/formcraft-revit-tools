@@ -6,6 +6,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { RAM_BUSY, TX_BUSY, dialogBusyReason, jobBusyReason, leaseBusyReason, withBusy } from "./busyreason.js";
 
 const win = path.win32;
 
@@ -22,6 +23,12 @@ export interface DeferFacts {
   memoryPaused: boolean;
   /** The add-in says this document has an open transaction (FMC-DOC-BUSY). */
   docBusy: boolean;
+  /** Named when the caller knows them, so busy_reason is specific. */
+  tool?: string;
+  age_s?: number;
+  holder?: string;
+  document?: string;
+  dialog?: string;
 }
 
 /**
@@ -29,11 +36,11 @@ export interface DeferFacts {
  * leasesHeld and queueBusy are for this document only. A lease on another model does not defer it.
  */
 export function deferReason(facts: DeferFacts): string | null {
-  if (facts.queueBusy) return "A Revit job is running or queued on this document.";
-  if (facts.leasesHeld > 0) return "A batch lease is held on this document.";
-  if (facts.modalDialog) return "A modal dialog is open.";
-  if (facts.memoryPaused) return "Memory pause is active.";
-  if (facts.docBusy) return "The document has an open transaction or transaction group.";
+  if (facts.queueBusy) return withBusy("A Revit job is running or queued on this document.", jobBusyReason(facts.tool ?? "a command", facts.age_s ?? 0));
+  if (facts.leasesHeld > 0) return withBusy("A batch lease is held on this document.", leaseBusyReason(facts.holder ?? "the lease holder", facts.document ?? "this document"));
+  if (facts.modalDialog) return withBusy("A modal dialog is open.", dialogBusyReason(facts.dialog || "untitled"));
+  if (facts.memoryPaused) return withBusy("Memory pause is active.", RAM_BUSY);
+  if (facts.docBusy) return withBusy("The document has an open transaction or transaction group.", TX_BUSY);
   return null;
 }
 

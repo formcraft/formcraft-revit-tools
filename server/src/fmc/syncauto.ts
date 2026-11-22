@@ -132,6 +132,25 @@ export function recentDamage(dialogs: SyncDialog[], title: string, path: string,
  * Whether a direct sync may run now. Relinquish and the batch line's own sync are not judged here.
  * auto_approve_sync false means the old rule: a person approves, and nothing is written.
  */
+export type SyncSource = "direct" | "batch_end" | "timer";
+
+/** The same checks for a direct sync, a batch-end sync and the managed timer. */
+export function judgeAiSync(
+  source: SyncSource,
+  host: SyncHost,
+  ai: AiModellerConfig | null,
+  facts: SyncAutoFacts,
+): SyncAutoDecision {
+  const decision = judgeDirectSync("sync", false, host, ai, facts);
+  if (!decision.judged) return decision;
+  return { ...decision, reason: decision.approve ? `${decision.reason} (${source})` : decision.reason };
+}
+
+/** True when testing mode, auto_approve and auto_approve_sync are all on. The shipped default is off. */
+export function syncAutoInEffect(ai: AiModellerConfig | null | undefined): boolean {
+  return ai?.mode === "testing" && ai.auto_approve === true && ai.auto_approve_sync === true;
+}
+
 export function judgeDirectSync(
   action: string,
   batchSync: boolean,

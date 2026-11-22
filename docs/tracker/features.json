@@ -915,7 +915,7 @@
     "feature": "Power and lighting circuits",
     "status": "Built, Revit check due",
     "ref": "fmc_circuits",
-    "note": "plan, apply, panel, audit and limits. Groups unassigned lighting and power devices by room, then level, then kind. Lighting and sockets are never mixed. Names are {board}/{zone}-{type}{n}. Phases balance L1/L2/L3 and FMC_Phase is bound when it is missing. accept_no_supply and utility-fed panels may have no supply. non_board_ids are Panelboard part types treated as loads; others that look like an SPD or isolator are flagged. FMC-NO-CONNECTOR instead of Connector.IsConnected. Distribution target DS_415-240V_3Ph_4W. Single-phase finals at 240 V. Caps are trace.circuit.* plus trace.voltage_drop_pct and trace.phase_imbalance_max. A missing key is PROVISIONAL. dry_run defaults true. A write is fmc_circuits_apply, one transaction, one subtransaction per circuit, with batch_lease. Document is an exact title or path. HEBERT HOSTELS, centrals and protected paths are refused. JSON under %LOCALAPPDATA%\\Formcraft\\circuits. Needs a Revit check."
+    "note": "plan, apply, panel, audit and limits. Groups unassigned lighting and power devices by room, then level, then kind. Lighting and sockets are never mixed. Names are {board}/{zone}-{type}{n}. Phases balance L1/L2/L3 and FMC_Phase is bound when it is missing. A board is electrical equipment with Part Type Panelboard, Switchboard or Other Panel, or a panel-schedule MEP connector. A board family is not refused. A board with no distribution system is FMC-PANEL-NO-DISTRIBUTION and a dry-run plan that sets Distribution System. accept_no_supply and utility-fed panels may have no supply. non_board_ids are panel part types treated as loads; others that look like an SPD or isolator are flagged. FMC-NO-CONNECTOR instead of Connector.IsConnected. Distribution target DS_415-240V_3Ph_4W. Single-phase finals at 240 V. Caps are trace.circuit.* plus trace.voltage_drop_pct and trace.phase_imbalance_max. A missing key is PROVISIONAL. dry_run defaults true. A write is fmc_circuits_apply, one transaction, one subtransaction per circuit, with batch_lease. Document is an exact title or path. HEBERT HOSTELS, centrals and protected paths are refused. JSON under %LOCALAPPDATA%\\Formcraft\\circuits. Needs a Revit check."
   },
   {
     "id": "F103",
@@ -1024,5 +1024,32 @@
     "status": "Built, Revit check due",
     "ref": "fmc_pdf_review, docs/PDF_REVIEW.md",
     "note": "Rasterizes exported PDF pages to PNG under %LOCALAPPDATA%\\Formcraft\\images. Never D: and never beside the model. The renderer is pdftoppm, pdftocairo, Ghostscript, or FMC_PDFIUM. None of those is FMC-PDF-NO-RENDERER, and the text checks are still returned. Checks are a blank page, page size A0 to A4, and missing title-block text. dpi defaults to 110. dry_run defaults true and writes no PNG. The model is not changed, so there is no batch lease. Needs a Revit check only for the export that produces the PDF."
+  },
+  {
+    "id": "F115",
+    "area": "App",
+    "group": "Core",
+    "feature": "Queue list, cancel and a named busy reason",
+    "status": "Built, Revit check due",
+    "ref": "fmc_queue",
+    "note": "list shows queued and running jobs per instance with age, document, tool, lease holder and caller. cancel removes a queued job. A running job is FMC-JOB-RUNNING unless it is stale and Revit is idle. purge_stale drops queued jobs older than older_than_min. dry_run defaults true. A queued-only job older than a minute is not left in flight. Every wait or refusal carries busy_reason: a running job, a lease, a modal dialog, the RAM gate, an open transaction, or Revit not idle. /health includes busy_reason. Needs a Revit check."
+  },
+  {
+    "id": "F116",
+    "area": "App",
+    "group": "Core",
+    "feature": "Open and close models",
+    "status": "Built, Revit check due",
+    "ref": "fmc_docs",
+    "note": "list, open and close. A workshared central opens as a new local in Documents unless detach is set. worksets are all or last. close defaults to save false, refuses a dirty document unless save is true, and never closes the last document. Saves under protected_roots, save_exclude, or HEBERT HOSTELS_USER are refused. A workshared model is not saved. dry_run defaults true. A write needs batch_lease and is fmc_docs_apply on the API thread. Needs a Revit check."
+  },
+  {
+    "id": "F117",
+    "area": "App",
+    "group": "Core",
+    "feature": "Memory guard",
+    "status": "Built, Revit check due",
+    "ref": "fmc_memory",
+    "note": "status reports free MB, the Revit working set and open documents including families. free closes unmodified family documents and unmodified non-active non-workshared documents, then GC.Collect. The last document stays. Revit 2025 has no API to clear the undo stack. purge_unused runs PerformanceAdviser rules named unused or purge, with an optional category filter. dry_run defaults true. A write needs batch_lease and is fmc_memory_apply. The reply includes MB before and after. The pause stays 1024 MB and the resume line 1536 MB. Needs a Revit check."
   }
 ]

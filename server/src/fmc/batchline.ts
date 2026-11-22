@@ -893,7 +893,7 @@ export class BatchBoard {
       position = "You are not in line. Call fmc_batch request for this document.";
     }
     const idNote = holder.client === client ? ` Your lease is ${holder.id}.` : "";
-    return `[FMC-BATCH-LOCKED] ${holder.document} is held by ${who}. ${position}${idNote} Pass batch_lease on each model-changing call. Reads are still allowed.`;
+    return `[FMC-BATCH-LOCKED] ${holder.document} is held by ${who}. ${position}${idNote} Pass batch_lease on each model-changing call. Reads are still allowed. busy_reason: lease held by ${holder.bot} on doc ${holder.document}.`;
   }
 
   /**

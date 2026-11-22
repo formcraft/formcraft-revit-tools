@@ -225,6 +225,10 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_viewstyle_apply",
   // Dimension strings. One transaction, one subtransaction per string.
   "fmc_dims_apply",
+  // Open or close a document. List stays on fmc_docs. The last document is never closed.
+  "fmc_docs_apply",
+  // Close spare documents or purge unused elements. Status stays on fmc_memory.
+  "fmc_memory_apply",
 ]);
 
 /**
