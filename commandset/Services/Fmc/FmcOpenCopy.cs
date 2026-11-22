@@ -104,6 +104,9 @@ namespace RevitMCPCommandSet.Services.Fmc
                 string id = e.DialogId ?? "";
                 string message = e is TaskDialogShowingEventArgs task ? task.Message ?? "" : "";
                 dialogs.Add(new JObject { ["id"] = id, ["message"] = message });
+                // The session rule dismisses these two without saving or syncing. Cancelling the open here would
+                // throw after that dismiss, because the reminder text contains "save" or "synchron".
+                if (IsSessionReminder(id)) return;
                 string text = (id + " " + message).ToLowerInvariant();
                 bool upgrade = text.Contains("upgrade") || text.Contains("previous version") || text.Contains("earlier version");
                 bool dangerous = text.Contains("synchron") || text.Contains("relinquish") || text.Contains("save to central")
@@ -153,6 +156,18 @@ namespace RevitMCPCommandSet.Services.Fmc
             {
                 app.DialogBoxShowing -= OnDialog;
             }
+        }
+
+        /// <summary>
+        /// The periodic save and sync reminders. <see cref="RevitMCPCommandSet.Bridge.FmcDialogSession"/> dismisses them
+        /// without saving or synchronizing. The close-document dialog (Local Changes Not Synchronized) is not one of these.
+        /// </summary>
+        static bool IsSessionReminder(string dialogId)
+        {
+            string id = dialogId ?? "";
+            if (id.IndexOf("Project_Not_Saved_Recently", StringComparison.OrdinalIgnoreCase) >= 0) return true;
+            return id.IndexOf("Changes_Not_Synchronized_With_Central", StringComparison.OrdinalIgnoreCase) >= 0
+                && id.IndexOf("Local_Changes", StringComparison.OrdinalIgnoreCase) < 0;
         }
 
         /// <summary>Revit links on an open document: name, saved path, whether it is loaded. Nothing is reloaded.</summary>

@@ -11,6 +11,7 @@ import { currentClient, documentRequired } from "../fmc/fairqueue.js";
 import { admitBatchWrite } from "../fmc/batchline.js";
 import { aiGate } from "../fmc/aigate.js";
 import { retryWhileBusy } from "../fmc/busy.js";
+import { DialogBlockingError, blockingForJob } from "../fmc/dialogrules.js";
 import { wireNewLocal } from "../fmc/newlocal.js";
 import { wireGrids } from "../fmc/grids.js";
 import { memoryGate } from "../fmc/memory.js";
@@ -270,8 +271,15 @@ export class RevitClientConnection {
       const hit = takeCachedRead(command, params, doc);
       if (hit !== undefined) return wantsFull(params) ? hit : compactReply(hit);
     }
+    const pid = open?.pid;
     const run = () => retryWhileBusy(() => this.sendOnce(command, params, timeoutMs, long),
-      { command, ceilingMs: soft > 0 ? Math.min(soft, timeoutMs) : timeoutMs, heartbeatMs: (job) => lastHeartbeatMs(job) });
+      {
+        command, ceilingMs: soft > 0 ? Math.min(soft, timeoutMs) : timeoutMs, heartbeatMs: (job) => lastHeartbeatMs(job),
+        blocking: (job) => {
+          const hit = blockingForJob(job, process.env, pid);
+          return hit ? new DialogBlockingError(hit.dialog_id, hit.message, job) : null;
+        },
+      });
     const finish = (value: unknown) => {
       if (CACHED_READS[command]) putCachedRead(command, params, doc, value);
       invalidateIfWrite(command, named);
@@ -286,6 +294,10 @@ export class RevitClientConnection {
       await this.reopen();
       return finish(await run());
     }
+  }
+
+  private instancePid(): number | undefined {
+    return readInstances().find((instance) => instance.port === this.port)?.pid;
   }
 
   private sendOnce(command: string, params: any = {}, timeoutMs: number = 120000, long?: LongJobOptions): Promise<any> {
@@ -368,10 +380,12 @@ export class RevitClientConnection {
         if (soft > 0 && soft < timeoutMs) {
           setTimeout(() => {
             if (settled || !this.responseCallbacks.has(requestId)) return;
+            const blocked = blockingForJob(requestId, process.env, this.instancePid());
             settled = true;
             stillRunning = true;
             appendJobEvent({ job: requestId, event: "running", command, port: this.port, started });
-            reject(new JobStillRunning(requestId, command, Math.round(soft / 1000)));
+            if (blocked) reject(new DialogBlockingError(blocked.dialog_id, blocked.message, requestId));
+            else reject(new JobStillRunning(requestId, command, Math.round(soft / 1000)));
           }, soft);
         }
 
@@ -412,6 +426,8 @@ export class RevitClientConnection {
             }
             const now = Date.now();
             const hb = lastHeartbeatMs(requestId);
+            const blocked = blockingForJob(requestId, process.env, this.instancePid());
+            if (blocked) return fail(new DialogBlockingError(blocked.dialog_id, blocked.message, requestId).message);
             if (now - t0 >= long.ceilingMs)
               return fail(`[FMC-BRIDGE-CEILING] ${command} didn't finish in ${long.ceilingMs >= 60000 ? `${Math.round(long.ceilingMs / 60000)} min` : `${Math.round(long.ceilingMs / 1000)} s`} (job ${requestId}, ` +
                 (hb ? `last heartbeat ${Math.round((now - hb) / 1000)} s ago` : "no heartbeat from Revit") +

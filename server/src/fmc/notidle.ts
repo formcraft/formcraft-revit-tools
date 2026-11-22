@@ -5,6 +5,7 @@
  */
 import { spawnSync } from "node:child_process";
 import { jobFiles, readJsonLines } from "./jobs.js";
+import { blockingDialog, formatDialog, leftForPerson } from "./dialogrules.js";
 
 export const NOT_IDLE = "FMC-REVIT-NOT-IDLE";
 export const NOT_IDLE_HINT = "Revit is busy or waiting on a dialog or an active command; finish or cancel it in Revit; do not toggle AI or kill anything.";
@@ -24,6 +25,7 @@ export interface JobLine {
   started?: string;
   message?: string;
   dialog_id?: string;
+  answer?: string;
 }
 
 export interface InFlightJob {
@@ -67,15 +69,20 @@ export function readRevitJobLines(env: NodeJS.ProcessEnv = process.env): JobLine
   return readJsonLines(jobFiles(env).revit, 4000) as JobLine[];
 }
 
-/** The latest dialog line Revit wrote for this job, when the add-in recorded one. */
+/** The latest dialog left for a person on this job, named by id when the log has one. */
 export function dialogFromLog(lines: JobLine[], job: string): string {
-  let title = "";
+  let id = "";
+  let message = "";
+  let open = false;
   for (const e of lines) {
     if (e?.job !== job || e.event !== "dialog") continue;
-    const message = String(e.message ?? "").trim();
-    if (message) title = message;
+    if (leftForPerson(String(e.answer ?? ""))) {
+      id = String(e.dialog_id ?? "").trim();
+      message = String(e.message ?? "").trim();
+      open = true;
+    } else open = false;
   }
-  return title;
+  return open ? formatDialog(id, message) : "";
 }
 
 /** Age in words: "45 s" or "6 min". */
@@ -146,9 +153,11 @@ public static class FmcModal {
 }
 
 export function dialogFor(pid: number, job: string, env: NodeJS.ProcessEnv = process.env, lines?: JobLine[]): string {
-  const fromWindow = modalDialogTitle(pid);
-  if (fromWindow) return fromWindow;
-  return dialogFromLog(lines ?? readRevitJobLines(env), job);
+  const live = blockingDialog(env, { job, pid });
+  if (live.open && live.source === "add-in") return formatDialog(live.dialog_id, live.message);
+  const fromLog = dialogFromLog(lines ?? readRevitJobLines(env), job);
+  if (fromLog) return fromLog;
+  return modalDialogTitle(pid);
 }
 
 /** The job id in a JOB-RUNNING, BUSY or NOT-IDLE answer, when this build's own chunk is the one Revit still holds. */

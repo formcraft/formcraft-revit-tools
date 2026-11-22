@@ -20,9 +20,9 @@ namespace RevitMCPCommandSet.Bridge
     /// <list type="bullet">
         /// <item>failures in any transaction get <see cref="FmcFailures"/>: an allowlisted warning is deleted and listed,
         /// every other warning is left, and errors roll back. The allow list is dialogs.allow in fmc_guard.json.</item>
-        /// <item>Dialogs are answered only from that same allow list (Cancel on the save reminder, OK on duplicate types).
-        /// Delete, unjoin, overwrite, relinquish, save-as, upgrade, license, sign-in and corrupt-model prompts are never
-        /// answered. Each answer is a line in FMC_Jobs_Revit.jsonl. See docs/BRIDGE.md.</item>
+        /// <item>Dialogs are answered by <see cref="FmcDialogSession"/> from fmc_dialog_rules.json for the whole session.
+        /// Scope <c>always</c> also answers between jobs. Save, sync, relinquish, upgrade, recover and fatal or serious
+        /// errors are never answered. Each dialog is a line in FMC_Jobs_Revit.jsonl. See docs/BRIDGE.md.</item>
     /// </list>
     /// <para>The executing flag clears at Revit's next Idling (no add-in code runs then), so a person's own work in Revit
     /// never gets this handling.</para>
@@ -67,6 +67,7 @@ namespace RevitMCPCommandSet.Bridge
         public static void Enter(UIApplication app, string job)
         {
             Hook(app);
+            FmcDialogSession.Hook(app);
             job = job ?? "";
             bool sameJob = _executing && string.Equals(job, _current, StringComparison.Ordinal);
             if (!sameJob)
@@ -114,8 +115,8 @@ namespace RevitMCPCommandSet.Bridge
             try
             {
                 app.Application.FailuresProcessing += OnFailuresProcessing;
-                app.DialogBoxShowing += OnDialogBoxShowing;
                 app.Idling += OnIdling;
+                FmcDialogSession.Hook(app);
                 _hooked = true;
             }
             catch (Exception)
@@ -127,7 +128,9 @@ namespace RevitMCPCommandSet.Bridge
         private static void OnIdling(object sender, IdlingEventArgs e)
         {
             // Revit is idle: no AI handler is executing, so a person's own work never gets the AI's handling.
+            // A modal dialog also prevents Idling, so a dialog file still marked open has been dismissed.
             if (_executing) _executing = false;
+            FmcDialogSession.ClearIfIdle();
         }
 
         private static void OnFailuresProcessing(object sender, FailuresProcessingEventArgs e)
@@ -151,35 +154,11 @@ namespace RevitMCPCommandSet.Bridge
             }
         }
 
-        /// <summary>
-        /// Answers a dialog only when <see cref="DialogPolicy"/> allows it. The save reminder is closed with Cancel
-        /// (the model is not saved). Duplicate types get OK, which keeps the destination's types. Delete, unjoin,
-        /// overwrite, relinquish, save-as, upgrade, license, sign-in and corrupt-model prompts are never answered.
-        /// Every dialog is recorded, including the ones left for a person.
-        /// </summary>
-        private static void OnDialogBoxShowing(object sender, DialogBoxShowingEventArgs e)
+        /// <summary>One dialog line for the running job's result, and for FMC_Jobs_Revit.jsonl even between jobs.</summary>
+        public static void RecordDialog(JObject record)
         {
-            if (!_executing) return;
-            string id = e.DialogId ?? "";
-            string message = e is TaskDialogShowingEventArgs t ? t.Message ?? "" : e is MessageBoxShowingEventArgs m ? m.Message ?? "" : "";
-            string answer = "left for a person";
-            string lowId = id.ToLowerInvariant();
-            string lowText = (message ?? "").ToLowerInvariant();
-            // The unattended runner still refuses save, sync, recovery and error dialogs, on top of the hard deny.
-            bool runnerBlocks = DialogRules.Unattended && DialogRules.Never(lowId, lowText) && !IsSaveReminder(id, message);
-            if (!runnerBlocks)
-            {
-                int? result = DialogPolicy.DialogResult(id, message, out string rule);
-                if (result.HasValue)
-                {
-                    bool done = false;
-                    try { done = e.OverrideResult(result.Value); } catch (Exception) { done = false; }
-                    answer = done ? "answered: " + rule : "not answered: Revit refused the allowlist answer (" + rule + ")";
-                }
-            }
-            else answer = "left for a person (unattended test run: no rule answers it; the runner cancels the step)";
-            var record = new JObject { ["at"] = DateTime.UtcNow.ToString("o"), ["dialog_id"] = id, ["message"] = Trim(message, 400), ["answer"] = answer };
-            _dialogs.Add(record);
+            if (record == null) return;
+            if (_executing) _dialogs.Add(record);
             Log(_current, "dialog", record);
         }
 
