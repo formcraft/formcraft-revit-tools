@@ -44,7 +44,10 @@ export const FMC_TRACE_DESCRIPTION =
   "ELEC-NO-CIRCUIT, ELEC-NO-PANEL, ELEC-NO-SUPPLY, ELEC-VOLTAGE-MISMATCH, ELEC-EMPTY-CIRCUIT. " +
   "FLOW-NOT-CONNECTED is an open connector within touch_mm of another element's bounding box with no connector pair within near_miss_mm. " +
   "highlight: off (default), ids (capped id list only) or temporary (View.IsolateElementsTemporary on the active view when this document is already active; never saved; a background document is not activated). " +
-  "Tolerances are PROVISIONAL until the standards bank has trace.near_miss_mm, trace.touch_mm, trace.size_mismatch_mm, trace.direction_deg, trace.connected_gap_mm and trace.voltage_tol_v. " +
+  "Tolerances come from the standards bank through the same status model as the other trace.* keys. " +
+  "trace.near_miss_tolerance is an alias of trace.near_miss_mm, trace.voltage_drop_max is an alias of trace.voltage_drop_pct, " +
+  "and trace.connection_tolerance is a scalar for touch_mm and connected_gap_mm or an object of touch_mm, size_mismatch_mm, direction_deg, connected_gap_mm and voltage_tol_v. " +
+  "A missing key stays PROVISIONAL. A null alias is UNKNOWN and the labelled provisional default is still used. " +
   "missing: parts a working system should have (trap, waste, isolation, cleanout, vent, fitting, cap, source, rating, main, switch, earth, duct system, damper). " +
   "standards: PASS, FAIL, UNKNOWN or PROVISIONAL per element, and compliant, not compliant or incomplete data per system. " +
   "A PASS is only against a trace.* value in the standards bank. A missing key is PROVISIONAL and is not a pass. " +
@@ -118,12 +121,13 @@ async function highlightTemporary(ids: number[]): Promise<{ applied: boolean; re
 }
 
 export async function runFmcTrace(args: FmcTraceArgs) {
-  const resolved = resolveTraceLimits(overrides(args));
+  const bank = traceBank();
+  const resolved = resolveTraceLimits(overrides(args), bank);
   if (!resolved.ok) return reply({ refused: true, read_only: true, reasons: [resolved.message] }, true);
   if (args.action === "checks") return reply({ ...catalogue(), phase2_defaults: PHASE2_DEFAULTS, bank_shapes: TRACE_BANK_SHAPES, not_run: ["duct_airflow", "fitting_corner", "earthing", "tray_fill"] });
   if (args.action === "limits") return reply({ tool: "fmc_trace", read_only: true, limits: resolved.limits, standard_keys: catalogue().standard_keys, phase2_defaults: PHASE2_DEFAULTS, bank_shapes: TRACE_BANK_SHAPES, api_limits: catalogue().api_limits });
-  if (args.action === "counts" || args.action === "recommend") return countOrRecommend(args, resolved.limits);
-  if (args.action === "fix") return fixTrace(args, resolved.limits);
+  if (args.action === "counts" || args.action === "recommend") return countOrRecommend(args, resolved.limits, bank);
+  if (args.action === "fix") return fixTrace(args, resolved.limits, bank);
 
   const selection = selectChecks(args.action, args.checks);
   if (!selection.run.length) {
@@ -148,7 +152,7 @@ export async function runFmcTrace(args: FmcTraceArgs) {
     return reply({ tool: "fmc_trace", read_only: true, error: message }, true);
   }
   if (!snapshot || typeof snapshot !== "object") return reply({ tool: "fmc_trace", read_only: true, error: "fmc_trace returned no graph" }, true);
-  const filter = { ...filterOf(args), bank: traceBank() };
+  const filter = { ...filterOf(args), bank };
   const runs = traceFromSnapshot(snapshot, selection, resolved.limits, filter);
   const report = writeTraceReport(snapshot, runs, resolved.limits, filter);
   let highlightResult: { applied?: boolean; reason?: string } | undefined;
@@ -180,14 +184,14 @@ function traceBank(): TraceFilter["bank"] {
   }
 }
 
-async function countOrRecommend(args: FmcTraceArgs, limits: { values: { near_miss_mm: number; direction_deg: number; size_mismatch_mm: number; touch_mm: number; connected_gap_mm: number; voltage_tol_v: number } }) {
+async function countOrRecommend(args: FmcTraceArgs, limits: { values: { near_miss_mm: number; direction_deg: number; size_mismatch_mm: number; touch_mm: number; connected_gap_mm: number; voltage_tol_v: number } }, bank: TraceFilter["bank"]) {
   let snapshot: TraceSnapshot;
   try {
     snapshot = await withRevitConnection((client) => client.sendRaw("fmc_trace", { mode: "snapshot", checks: ["counts"] }, 300000)) as TraceSnapshot;
   } catch (error) {
     return reply({ tool: "fmc_trace", read_only: true, error: error instanceof Error ? error.message : String(error) }, true);
   }
-  const filter = { ...filterOf(args), bank: traceBank() };
+  const filter = { ...filterOf(args), bank };
   const counts = countSystems(snapshot);
   const items = args.action === "recommend" ? recommend(snapshot, filter, limits) : [];
   const report = writeJson(snapshot, args.action === "counts" ? { counts } : { counts, recommendations: items });
@@ -198,7 +202,7 @@ async function countOrRecommend(args: FmcTraceArgs, limits: { values: { near_mis
   });
 }
 
-async function fixTrace(args: FmcTraceArgs, limits: { values: { near_miss_mm: number; direction_deg: number; size_mismatch_mm: number; touch_mm: number; connected_gap_mm: number; voltage_tol_v: number } }) {
+async function fixTrace(args: FmcTraceArgs, limits: { values: { near_miss_mm: number; direction_deg: number; size_mismatch_mm: number; touch_mm: number; connected_gap_mm: number; voltage_tol_v: number } }, bank: TraceFilter["bank"]) {
   let snapshot: TraceSnapshot;
   try {
     snapshot = await withRevitConnection((client) => client.sendRaw("fmc_trace", { mode: "snapshot", checks: ["missing", "leak", "continuity"] }, 300000)) as TraceSnapshot;
@@ -209,7 +213,7 @@ async function fixTrace(args: FmcTraceArgs, limits: { values: { near_miss_mm: nu
   const refusal = refuseTraceWrite({ title: snapshot?.model, path: snapshot?.resolved_document?.path, is_central: snapshot?.is_central }, config.protected_paths ?? []);
   if (refusal) return reply({ tool: "fmc_trace", refused: true, reasons: [refusal] }, true);
   const named = args.recommendations ?? [];
-  const advice = named.length ? editsForRecommendations(recommend(snapshot, { ...filterOf(args), bank: traceBank() }, limits), named) : null;
+  const advice = named.length ? editsForRecommendations(recommend(snapshot, { ...filterOf(args), bank }, limits), named) : null;
   const plan = advice
     ? { edits: advice.edits.slice(0, args.max_edits), warnings: [...advice.advisory.map((item) => `${item.id} is advisory and was not edited`), ...advice.unknown.map((id) => `${id} is not a recommendation`)], rule: "Recommendations: a resize, a cap and a system assignment can be edited. The rest stay advisory.", capped: advice.edits.length > args.max_edits }
     : planFixes(snapshot, limits, { caps: args.caps, circuit: args.circuit, max: args.max_edits });

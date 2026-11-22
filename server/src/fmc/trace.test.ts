@@ -67,15 +67,125 @@ test("provisional limits stay provisional, a call wins, and a standards value fi
   assert.equal(called.limits.fields.find((field) => field.key === "trace.near_miss_mm")?.source, "call");
   assert.equal(called.limits.status, "PROVISIONAL");
 
-  const bank = resolveTraceLimits({}, (key) => (key.startsWith("trace.") ? 12 : undefined));
+  const drafted = (value: number) => ({ value, status: "draft", clause: "clause 2" });
+  const bank = resolveTraceLimits({}, {
+    "trace.near_miss_mm": drafted(40),
+    "trace.touch_mm": drafted(12),
+    "trace.size_mismatch_mm": drafted(12),
+    "trace.direction_deg": drafted(12),
+    "trace.connected_gap_mm": drafted(12),
+    "trace.voltage_tol_v": drafted(12),
+  });
   assert.equal(bank.ok, true);
   if (!bank.ok) return;
   assert.equal(bank.limits.status, "standards");
   assert.equal(bank.limits.values.direction_deg, 12);
+  assert.equal(bank.limits.fields.find((field) => field.key === "trace.direction_deg")?.source, "standards");
   assert.equal(bank.limits.kit_change, "");
 
   const bad = resolveTraceLimits({ touch_mm: -1 });
   assert.equal(bad.ok, false);
+});
+
+test("limits read bank aliases, and a null alias stays unknown on the provisional default", () => {
+  const drafted = { status: "draft" as const, clause: "joints" };
+  const aliased = resolveTraceLimits({}, {
+    "trace.near_miss_tolerance": { value: 80, ...drafted },
+    "trace.voltage_drop_max": { value: 3, ...drafted },
+    "trace.connection_tolerance": { value: { touch_mm: 8, size_mismatch_mm: null, direction_deg: 20, connected_gap_mm: 12, voltage_tol_v: 25 }, ...drafted },
+  });
+  assert.equal(aliased.ok, true);
+  if (!aliased.ok) return;
+  const near = aliased.limits.fields.find((field) => field.key === "trace.near_miss_mm");
+  assert.equal(near?.value, 80);
+  assert.equal(near?.source, "standards");
+  assert.equal(near?.alias_used, "trace.near_miss_tolerance");
+  const drop = aliased.limits.fields.find((field) => field.key === "trace.voltage_drop_pct");
+  assert.equal(drop?.value, 3);
+  assert.equal(drop?.alias_used, "trace.voltage_drop_max");
+  const touch = aliased.limits.fields.find((field) => field.key === "trace.touch_mm");
+  const gap = aliased.limits.fields.find((field) => field.key === "trace.connected_gap_mm");
+  const size = aliased.limits.fields.find((field) => field.key === "trace.size_mismatch_mm");
+  assert.equal(touch?.value, 8);
+  assert.equal(touch?.alias_used, "trace.connection_tolerance");
+  assert.equal(gap?.value, 12);
+  assert.equal(size?.source, "unknown");
+  assert.equal(size?.value, PROVISIONAL_LIMITS.size_mismatch_mm);
+  assert.equal(size?.status, "PROVISIONAL");
+  assert.match(size?.clause ?? "", /PROVISIONAL/);
+  assert.equal(aliased.limits.values.voltage_tol_v, 25);
+
+  const scalar = resolveTraceLimits({}, { "trace.connection_tolerance": { value: 9, ...drafted } });
+  assert.equal(scalar.ok, true);
+  if (!scalar.ok) return;
+  assert.equal(scalar.limits.values.touch_mm, 9);
+  assert.equal(scalar.limits.values.connected_gap_mm, 9);
+  assert.equal(scalar.limits.values.direction_deg, PROVISIONAL_LIMITS.direction_deg);
+  assert.equal(scalar.limits.fields.find((field) => field.key === "trace.direction_deg")?.alias_used, undefined);
+
+  const nulled = resolveTraceLimits({}, { "trace.near_miss_tolerance": { value: null, status: "approved", clause: "not set" } });
+  assert.equal(nulled.ok, true);
+  if (!nulled.ok) return;
+  const missing = nulled.limits.fields.find((field) => field.key === "trace.near_miss_mm");
+  assert.equal(missing?.source, "unknown");
+  assert.equal(missing?.value, PROVISIONAL_LIMITS.near_miss_mm);
+  assert.equal(missing?.alias_used, "trace.near_miss_tolerance");
+  assert.match(missing?.clause ?? "", /PROVISIONAL/);
+
+  const provisional = resolveTraceLimits({}, { "trace.near_miss_tolerance": { value: 40, status: "provisional", clause: "drafted" } });
+  assert.equal(provisional.ok, true);
+  if (!provisional.ok) return;
+  assert.equal(provisional.limits.fields.find((field) => field.key === "trace.near_miss_mm")?.source, "provisional");
+
+  const canonical = resolveTraceLimits({}, {
+    "trace.near_miss_mm": { value: 30, ...drafted },
+    "trace.near_miss_tolerance": { value: 80, ...drafted },
+  });
+  assert.equal(canonical.ok, true);
+  if (!canonical.ok) return;
+  const kept = canonical.limits.fields.find((field) => field.key === "trace.near_miss_mm");
+  assert.equal(kept?.value, 30);
+  assert.equal(kept?.alias_used, undefined);
+
+  const called = resolveTraceLimits({ near_miss_mm: 25 }, { "trace.near_miss_tolerance": { value: 80, ...drafted } });
+  assert.equal(called.ok, true);
+  if (!called.ok) return;
+  assert.equal(called.limits.values.near_miss_mm, 25);
+  assert.equal(called.limits.fields.find((field) => field.key === "trace.near_miss_mm")?.source, "call");
+});
+
+test("leak and continuity use the bank tolerance, including a connection_tolerance voltage", () => {
+  const apart: TraceSnapshot = {
+    flow: {
+      elements: [element({ id: 1 }), element({ id: 2 })],
+      connectors: [
+        connector({ element_id: 1, index: 0, origin: [0, 0, 0], direction: [1, 0, 0] }),
+        connector({ element_id: 2, index: 0, origin: [60, 0, 0], direction: [-1, 0, 0] }),
+      ],
+      systems: [],
+    },
+  };
+  const wide = resolveTraceLimits({}, { "trace.near_miss_tolerance": { value: 80, status: "draft", clause: "joints" } });
+  assert.equal(wide.ok, true);
+  if (!wide.ok) return;
+  assert.equal(runLeak(apart, wide.limits, {}).findings.some((finding) => finding.code === "FLOW-NEAR-MISS"), true);
+  assert.equal(runLeak(apart, limits(), {}).findings.some((finding) => finding.code === "FLOW-NEAR-MISS"), false);
+
+  const board: TraceSnapshot = {
+    electrical: {
+      panels: [{ id: 1, name: "DB", distribution: "DS_415", voltage: 415, has_supply: true }],
+      circuits: [{ id: 4, panel_id: 1, panel_name: "DB", number: "1", voltage: 230, poles: 1, element_ids: [8], distribution: "DS_240" }],
+      devices: [{ id: 8, category: "ElectricalFixtures", voltage: 250, poles: 1, power_connector: true, circuit_ids: [4] }],
+    },
+  };
+  assert.equal(runContinuity(board, limits(), {}).findings.some((finding) => finding.code === "ELEC-VOLTAGE-MISMATCH"), true);
+  const loose = resolveTraceLimits({}, {
+    "trace.connection_tolerance": { value: { voltage_tol_v: 25 }, status: "draft", clause: "joints" },
+  });
+  assert.equal(loose.ok, true);
+  if (!loose.ok) return;
+  assert.equal(loose.limits.fields.find((field) => field.key === "trace.voltage_tol_v")?.alias_used, "trace.connection_tolerance");
+  assert.equal(runContinuity(board, loose.limits, {}).findings.some((finding) => finding.code === "ELEC-VOLTAGE-MISMATCH"), false);
 });
 
 test("connector axes face each other within the provisional angle", () => {

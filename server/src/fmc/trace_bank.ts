@@ -19,6 +19,11 @@ export interface TraceBankEntry {
   short_term_pct?: number | null;
   /** Residual pressure in kPa when value is kg/cm². */
   kPa?: number | null;
+  /** Kept from the bank entry so a field check can see them. */
+  sources?: unknown;
+  applies_to?: unknown;
+  /** Present when pipe capacity is a tool list rather than a size table. The sizes are not inferred from it. */
+  capacity_FU_tool_default?: unknown;
 }
 
 export interface CitedLimit {
@@ -27,6 +32,12 @@ export interface CitedLimit {
   value: number | null;
   source: "standards" | "provisional" | "unknown";
   clause: string;
+  /** Set when the number came from a bank key other than `key`. */
+  alias_used?: string;
+  /** Extra text, such as a tool-default list that was not used as sizes. */
+  note?: string;
+  /** Table cells whose keys are not a known cable size. */
+  unmatched_cells?: string[];
 }
 
 /** The JSON shape Standards Bot should write for each trace.* key. */
@@ -153,6 +164,9 @@ export function traceEntriesFromStandards(standards: Record<string, unknown> | n
       unit: typeof row.unit === "string" ? row.unit : undefined,
       short_term_pct: typeof row.short_term_pct === "number" || row.short_term_pct === null ? row.short_term_pct as number | null : undefined,
       kPa: typeof row.kPa === "number" || row.kPa === null ? row.kPa as number | null : undefined,
+      ...("sources" in row ? { sources: row.sources } : {}),
+      ...("applies_to" in row ? { applies_to: row.applies_to } : {}),
+      ...("capacity_FU_tool_default" in row ? { capacity_FU_tool_default: row.capacity_FU_tool_default } : {}),
     };
   }
   return out;
@@ -180,7 +194,62 @@ function cited(key: string, value: number | null, entry: TraceBankEntry | undefi
   return { key, value, source: "provisional", clause: clause || "PROVISIONAL. The bank entry has no clause." };
 }
 
+/** Bank names that mean one of our keys. The canonical key wins when both are present. */
+const FIELD_ALIASES: Record<string, string> = {
+  "trace.near_miss_mm": "trace.near_miss_tolerance",
+  "trace.voltage_drop_pct": "trace.voltage_drop_max",
+};
+
+const CONNECTION_KEY = "trace.connection_tolerance";
+const CONNECTION_SCALAR_FIELDS = new Set(["touch_mm", "connected_gap_mm"]);
+const CONNECTION_OBJECT_FIELDS = new Set(["touch_mm", "size_mismatch_mm", "direction_deg", "connected_gap_mm", "voltage_tol_v"]);
+
+function citeAlias(canonical: string, alias: string, raw: unknown, entry: TraceBankEntry): CitedLimit {
+  if (raw == null) {
+    const fallback = SCALAR_DEFAULTS[canonical];
+    return {
+      key: canonical,
+      value: fallback ?? null,
+      source: "unknown",
+      clause: fallback == null ? "Bank value is null." : "Bank value is null. PROVISIONAL default used.",
+      alias_used: alias,
+    };
+  }
+  const cited = citeLimit(canonical, {
+    [canonical]: {
+      value: raw as TraceBankEntry["value"],
+      status: entry.status,
+      clause: entry.clause,
+      note: entry.note,
+      unit: entry.unit,
+      kPa: entry.kPa,
+      short_term_pct: entry.short_term_pct,
+    },
+  });
+  return { ...cited, key: canonical, alias_used: alias };
+}
+
+function connectionRaw(entry: TraceBankEntry, field: string): { applies: boolean; raw: unknown } {
+  const value = entry.value;
+  if (value != null && typeof value === "object" && !Array.isArray(value)) {
+    if (!Object.prototype.hasOwnProperty.call(value, field) || !CONNECTION_OBJECT_FIELDS.has(field)) return { applies: false, raw: undefined };
+    return { applies: true, raw: value[field] };
+  }
+  if (!CONNECTION_SCALAR_FIELDS.has(field)) return { applies: false, raw: undefined };
+  return { applies: true, raw: value };
+}
+
 export function citeLimit(key: string, bank?: Record<string, TraceBankEntry>): CitedLimit {
+  if (bank && !Object.prototype.hasOwnProperty.call(bank, key)) {
+    const alias = FIELD_ALIASES[key];
+    if (alias && Object.prototype.hasOwnProperty.call(bank, alias)) return citeAlias(key, alias, bank[alias].value, bank[alias]);
+    const field = key.startsWith("trace.") ? key.slice("trace.".length) : "";
+    const connection = bank[CONNECTION_KEY];
+    if (connection && field) {
+      const picked = connectionRaw(connection, field);
+      if (picked.applies) return citeAlias(key, CONNECTION_KEY, picked.raw, connection);
+    }
+  }
   const entry = bank?.[key];
   if (!entry) {
     const fallback = SCALAR_DEFAULTS[key];
@@ -210,6 +279,17 @@ export function citeLimit(key: string, bank?: Record<string, TraceBankEntry>): C
 export function citeCell(key: string, cell: string, bank?: Record<string, TraceBankEntry>): CitedLimit {
   const entry = bank?.[key];
   const fallback = TABLE_DEFAULTS[key]?.[cell];
+  if (entry && key === "trace.pipe_capacity_fu" && entry.value == null && Array.isArray(entry.capacity_FU_tool_default)) {
+    if (fallback == null) return { key, value: null, source: "unknown", clause: `No value for ${cell}.` };
+    const prior = [entry.note, entry.clause].filter((part): part is string => typeof part === "string" && part.trim().length > 0);
+    return {
+      key,
+      value: fallback,
+      source: "provisional",
+      clause: "PROVISIONAL (tool default).",
+      note: [`capacity_FU_tool_default: ${JSON.stringify(entry.capacity_FU_tool_default)}`, ...prior].join(" "),
+    };
+  }
   if (!entry || !isTable(entry.value)) {
     if (fallback == null) return { key, value: null, source: "unknown", clause: `No value for ${cell}.` };
     return { key, value: fallback, source: "provisional", clause: "PROVISIONAL default. Not in the standards bank." };
@@ -268,11 +348,21 @@ export function loadingUnits(name: string, bank?: Record<string, TraceBankEntry>
   return { units: limit.value, known: limit.value != null, key: "trace.supply_loading_units", limit };
 }
 
+/** Cells in the voltage-drop table that are not a known cable size (1.5, 2.5, 4, 6, 10, 16). */
+export function unmatchedCells(key: string, bank?: Record<string, TraceBankEntry>): string[] {
+  if (key !== "trace.voltage_drop_mV_per_A_m") return [];
+  const entry = bank?.[key];
+  if (!entry || !isTable(entry.value)) return [];
+  const known = new Set(Object.keys(TABLE_DEFAULTS[key] ?? {}));
+  return Object.keys(entry.value).filter((cell) => !known.has(cell));
+}
+
 export function voltageDropMv(areaMm2: number, bank?: Record<string, TraceBankEntry>): CitedLimit {
   const steps = ["1.5", "2.5", "4", "6", "10", "16"];
-  const cell = steps.find((step) => areaMm2 <= Number(step) + 0.01) ?? "16";
   const match = steps.reduce((best, step) => Math.abs(Number(step) - areaMm2) < Math.abs(Number(best) - areaMm2) ? step : best, steps[0]);
-  return citeCell("trace.voltage_drop_mV_per_A_m", match, bank);
+  const limit = citeCell("trace.voltage_drop_mV_per_A_m", match, bank);
+  const unmatched = unmatchedCells("trace.voltage_drop_mV_per_A_m", bank);
+  return unmatched.length ? { ...limit, unmatched_cells: unmatched } : limit;
 }
 
 export function phaseLimits(bank?: Record<string, TraceBankEntry>): { standing: CitedLimit; shortTerm: CitedLimit } {

@@ -50,9 +50,13 @@ export function resolve(kit: StandardsFile | null, project: Record<string, Stand
 /** The values a topic names: "stairs", "doors.internal", "ceiling height", "parapet". */
 export function lookup(all: Resolved[], topic?: string): Resolved[] {
   if (!topic?.trim()) return all;
-  const words = topic.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean).map((w) => w.replace(/s$/, ""));
-  const exact = all.filter((r) => r.key === topic.trim().toLowerCase());
+  const trimmed = topic.trim();
+  const exactCase = all.filter((r) => r.key === trimmed);
+  if (exactCase.length) return exactCase;
+  const folded = trimmed.toLowerCase();
+  const exact = all.filter((r) => r.key.toLowerCase() === folded);
   if (exact.length) return exact;
+  const words = folded.split(/[^a-z0-9]+/).filter(Boolean).map((w) => w.replace(/s$/, ""));
   return all.filter((r) => { const k = r.key.toLowerCase(); return words.every((w) => k.includes(w)); });
 }
 

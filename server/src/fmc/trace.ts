@@ -14,7 +14,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { MISSING_CHECK, REMAINING_PHASE2, STANDARDS_CHECKS, STANDARDS_IDS } from "./trace_phase2.js";
-import type { TraceBankEntry } from "./trace_bank.js";
+import { citeLimit, unmatchedCells, type TraceBankEntry } from "./trace_bank.js";
 
 export const LEAK_CODES = [
   "FLOW-OPEN-END",
@@ -58,21 +58,27 @@ export const PROVISIONAL_LIMITS: Record<LimitKey, number> = {
 };
 
 export interface LimitField {
+  /** Canonical key the check applies. */
   key: string;
   value: number;
-  source: "call" | "standards" | "provisional";
+  /** standards, provisional, unknown, or call when the request overrides the bank. */
+  source: "call" | "standards" | "provisional" | "unknown";
+  /** PROVISIONAL when the number is a labelled default, including a null alias that fell back. */
   status: "PROVISIONAL" | "standards" | "call";
+  /** Bank key that supplied the number when it is not `key`. */
+  alias_used?: string;
+  clause?: string;
 }
 
 export interface ResolvedLimits {
-  /** PROVISIONAL when any field is still a default. */
+  /** PROVISIONAL when any tolerance is still a default or an unknown alias. */
   status: "PROVISIONAL" | "standards" | "call";
   values: Record<LimitKey, number>;
   fields: LimitField[];
   kit_change: string;
+  /** Voltage-drop table cells that are not a known cable size. */
+  unmatched_cells?: Record<string, string[]>;
 }
-
-export type StandardsLookup = (key: string) => number | undefined;
 
 export interface TraceConnector {
   element_id: number;
@@ -295,7 +301,21 @@ export function lookupTraceStandard(rows: Array<{ key: string; value: unknown }>
   return value;
 }
 
-export function resolveTraceLimits(overrides: Partial<Record<LimitKey, number>> | null | undefined, lookup?: StandardsLookup): { ok: true; limits: ResolvedLimits } | { ok: false; message: string } {
+function fieldFromBank(canonical: string, bank: Record<string, TraceBankEntry> | undefined, fallback: number): LimitField {
+  const cited = citeLimit(canonical, bank);
+  const usable = cited.value != null && Number.isFinite(cited.value) && cited.value >= 0;
+  const source: LimitField["source"] = !usable || cited.source === "unknown" ? "unknown" : cited.source === "standards" ? "standards" : "provisional";
+  return {
+    key: canonical,
+    value: usable ? cited.value as number : fallback,
+    source: cited.source === "unknown" || !usable ? "unknown" : source,
+    status: cited.source === "standards" && usable ? "standards" : "PROVISIONAL",
+    ...(cited.alias_used ? { alias_used: cited.alias_used } : {}),
+    clause: cited.clause,
+  };
+}
+
+export function resolveTraceLimits(overrides: Partial<Record<LimitKey, number>> | null | undefined, bank?: Record<string, TraceBankEntry>): { ok: true; limits: ResolvedLimits } | { ok: false; message: string } {
   const values = { ...PROVISIONAL_LIMITS };
   const fields: LimitField[] = [];
   for (const key of Object.keys(PROVISIONAL_LIMITS) as LimitKey[]) {
@@ -307,24 +327,25 @@ export function resolveTraceLimits(overrides: Partial<Record<LimitKey, number>> 
       fields.push({ key: TRACE_STANDARD_KEYS[key], value: call, source: "call", status: "call" });
       continue;
     }
-    const fromBank = lookup?.(TRACE_STANDARD_KEYS[key]);
-    if (fromBank != null && Number.isFinite(fromBank) && fromBank >= 0) {
-      values[key] = fromBank;
-      fields.push({ key: TRACE_STANDARD_KEYS[key], value: fromBank, source: "standards", status: "standards" });
-      continue;
-    }
-    fields.push({ key: TRACE_STANDARD_KEYS[key], value: values[key], source: "provisional", status: "PROVISIONAL" });
+    const field = fieldFromBank(TRACE_STANDARD_KEYS[key], bank, PROVISIONAL_LIMITS[key]);
+    values[key] = field.value;
+    fields.push(field);
   }
-  const status = fields.some((field) => field.source === "provisional") ? "PROVISIONAL" : fields.every((field) => field.source === "call") ? "call" : "standards";
+  const drop = fieldFromBank("trace.voltage_drop_pct", bank, 4);
+  fields.push(drop);
+  const tolerances = fields.filter((field) => field.key !== "trace.voltage_drop_pct");
+  const status = tolerances.some((field) => field.source === "provisional" || field.source === "unknown")
+    ? "PROVISIONAL"
+    : tolerances.every((field) => field.source === "call") ? "call" : "standards";
+  const unmatched = unmatchedCells("trace.voltage_drop_mV_per_A_m", bank);
   return {
     ok: true,
     limits: {
       status,
       values,
       fields,
-      kit_change: fields.some((field) => field.source === "provisional")
-        ? "trace.* limits are not in the standards bank yet. Defaults are PROVISIONAL."
-        : "",
+      kit_change: status === "PROVISIONAL" ? "trace.* limits still include a PROVISIONAL default." : "",
+      ...(unmatched.length ? { unmatched_cells: { "trace.voltage_drop_mV_per_A_m": unmatched } } : {}),
     },
   };
 }

@@ -5,7 +5,7 @@
  */
 
 import type { CheckRun, TraceCheck, TraceConnector, TraceElement, TraceFilter, TraceFinding, TraceSnapshot, TraceSystem } from "./trace.js";
-import { citeCell, citeLimit as bankCite, deadLegLimitMm, fallLimit, loadingUnits, phaseLimits, pipeCapacity, voltageDropMv, type CitedLimit } from "./trace_bank.js";
+import { citeCell, citeLimit as bankCite, deadLegLimitMm, fallLimit, loadingUnits, phaseLimits, pipeCapacity, unmatchedCells, voltageDropMv, type CitedLimit } from "./trace_bank.js";
 export { PHASE2_DEFAULTS } from "./trace_bank.js";
 export type { CitedLimit };
 
@@ -437,8 +437,8 @@ function judge(measured: number | null, limit: CitedLimit, failsWhen: "above" | 
   const limitValue = limit.value;
   const bad = failsWhen === "above" ? measured > limitValue + 1e-9 : measured < limitValue - 1e-9;
   const placement = bad ? "outside" : "inside";
-  if (limit.source === "provisional") {
-    return { id, system, system_id: systemId, check, verdict: "PROVISIONAL", key: limit.key, clause: limit.clause, measured, limit: limit.value,     detail: `${placement} the provisional limit (${round(measured)} against ${round(limitValue)})` };
+  if (limit.source === "provisional" || limit.source === "unknown") {
+    return { id, system, system_id: systemId, check, verdict: "PROVISIONAL", key: limit.key, clause: limit.clause, measured, limit: limit.value, detail: `${placement} the provisional limit (${round(measured)} against ${round(limitValue)})` };
   }
   return { id, system, system_id: systemId, check, verdict: bad ? "FAIL" : "PASS", key: limit.key, clause: limit.clause, measured, limit: limitValue, detail: `${placement} ${limit.key} (${round(measured)} against ${round(limitValue)})` };
 }
@@ -448,9 +448,9 @@ function round(value: number): string {
   return String(Math.round(value * 1000) / 1000);
 }
 
-function standardsRun(id: string, title: string, verdicts: Verdict[], systems: TraceSystem[], checked: Record<string, number>): CheckRun {
+function standardsRun(id: string, title: string, verdicts: Verdict[], systems: TraceSystem[], checked: Record<string, number>, warnings: string[] = []): CheckRun {
   const findings = verdicts.map(verdictFinding).filter((item): item is TraceFinding => item != null);
-  return runOf({ id, title }, STANDARD_CODES, findings, checked, [], { systems: rollup(verdicts, systems) });
+  return runOf({ id, title }, STANDARD_CODES, findings, checked, warnings, { systems: rollup(verdicts, systems) });
 }
 
 function pipeSize(graph: Graph, id: number): number {
@@ -642,11 +642,13 @@ export function runVoltageDrop(snapshot: TraceSnapshot, _limits: unknown, filter
     }
     const percent = (mv.value * amps * length) / volts / 10;
     const bad = percent > dropLimit.value;
-    const source = dropLimit.source === "provisional" || mv.source === "provisional" ? "provisional" : dropLimit.source;
-    const clause = source === "provisional" ? mv.clause : dropLimit.clause;
-    verdicts.push({ id: circuit.id, system: circuit.panel_name, check: "voltage_drop", verdict: source === "provisional" ? "PROVISIONAL" : bad ? "FAIL" : "PASS", key: mv.key, clause, measured: percent, limit: dropLimit.value, detail: `${bad ? "outside" : "inside"} ${round(percent)}% against ${dropLimit.value}%` });
+    const held = dropLimit.source !== "standards" || mv.source !== "standards";
+    const clause = held ? mv.clause : dropLimit.clause;
+    verdicts.push({ id: circuit.id, system: circuit.panel_name, check: "voltage_drop", verdict: held ? "PROVISIONAL" : bad ? "FAIL" : "PASS", key: mv.key, clause, measured: percent, limit: dropLimit.value, detail: `${bad ? "outside" : "inside"} ${round(percent)}% against ${dropLimit.value}%` });
   }
-  return standardsRun("voltage_drop", "Voltage drop", verdicts, [], { circuits: verdicts.length });
+  const unmatched = unmatchedCells("trace.voltage_drop_mV_per_A_m", filter.bank as never);
+  const warnings = unmatched.length ? [`trace.voltage_drop_mV_per_A_m unmatched_cells: ${unmatched.join(", ")}`] : [];
+  return standardsRun("voltage_drop", "Voltage drop", verdicts, [], { circuits: verdicts.length }, warnings);
 }
 
 export function runOverload(snapshot: TraceSnapshot, _limits: unknown, filter: TraceFilter): CheckRun {

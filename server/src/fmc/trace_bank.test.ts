@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import type { TraceSnapshot } from "./trace.js";
-import { citeCell, citeLimit, deadLegLimitMm, fallLimit, phaseLimits, pipeCapacity, traceEntriesFromStandards, voltageDropMv } from "./trace_bank.js";
+import { resolveTraceLimits, type TraceSnapshot } from "./trace.js";
+import { citeCell, citeLimit, deadLegLimitMm, fallLimit, phaseLimits, pipeCapacity, traceEntriesFromStandards, unmatchedCells, voltageDropMv } from "./trace_bank.js";
 import { runDrainageFall, runVenting } from "./trace_phase2.js";
 
 const limits = { values: { near_miss_mm: 50, touch_mm: 10, size_mismatch_mm: 2, direction_deg: 15, connected_gap_mm: 15, voltage_tol_v: 15 } };
@@ -70,6 +70,44 @@ test("voltage drop is read per cable size and phase imbalance keeps the short-te
   assert.equal(pressure.value, 19.6);
   assert.equal(citeCell("trace.supply_loading_units", "wc_flush_valve").value, 4.32);
   assert.equal(citeCell("trace.supply_loading_units", "bath").value, 1.96);
+});
+
+test("the loader keeps note, sources and applies_to, and a null pipe capacity uses the tool list only as a note", () => {
+  const loaded = traceEntriesFromStandards({
+    "trace.pipe_capacity_fu": {
+      value: null,
+      status: "draft",
+      clause: "sizes later",
+      note: "from the draft",
+      sources: ["BS EN 12056"],
+      applies_to: "sanitary",
+      capacity_FU_tool_default: [99, 99, 99],
+    },
+  });
+  const entry = loaded["trace.pipe_capacity_fu"];
+  assert.deepEqual(entry.sources, ["BS EN 12056"]);
+  assert.equal(entry.applies_to, "sanitary");
+  assert.equal(entry.note, "from the draft");
+  assert.deepEqual(entry.capacity_FU_tool_default, [99, 99, 99]);
+  const capacity = pipeCapacity(32, loaded);
+  assert.equal(capacity.value, 6);
+  assert.equal(capacity.source, "provisional");
+  assert.match(capacity.clause, /PROVISIONAL \(tool default\)/);
+  assert.match(capacity.note ?? "", /\[99,99,99\]/);
+  assert.match(capacity.note ?? "", /from the draft/);
+});
+
+test("a voltage-drop cell that is not a known cable size is reported", () => {
+  const bank = { "trace.voltage_drop_mV_per_A_m": { value: { "1": 18, "1.5": 29 }, status: "draft" as const, clause: "cables" } };
+  assert.deepEqual(unmatchedCells("trace.voltage_drop_mV_per_A_m", bank), ["1"]);
+  const mv = voltageDropMv(1.5, bank);
+  assert.deepEqual(mv.unmatched_cells, ["1"]);
+  assert.equal(mv.value, 29);
+  assert.equal(mv.source, "standards");
+  const limits = resolveTraceLimits({}, bank);
+  assert.equal(limits.ok, true);
+  if (!limits.ok) return;
+  assert.deepEqual(limits.limits.unmatched_cells, { "trace.voltage_drop_mV_per_A_m": ["1"] });
 });
 
 test("a vent within 300 mm of the trap outlet can pass, and a provisional fall cannot", () => {
