@@ -64,6 +64,8 @@ export interface BusyWaitOptions {
   now?: () => number;
   sleep?: (ms: number) => Promise<void>;
   onWait?: (busy: BridgeBusy, waitedMs: number) => void;
+  /** When the busy job is held by a dialog a person must answer, the error to throw instead of retrying. */
+  blocking?: (job: string) => Error | null;
 }
 
 export function busyPollMs(env: NodeJS.ProcessEnv = process.env): number {
@@ -86,8 +88,11 @@ export async function retryWhileBusy<T>(send: () => Promise<T>, o: BusyWaitOptio
     try {
       return await send();
     } catch (e) {
+      if (e instanceof Error && (e as { code?: string }).code === "FMC-DIALOG-BLOCKING") throw e;
       const b = parseBusy(e);
       if (!b || e instanceof BridgeBusyError) throw e;
+      const blocking = o.blocking?.(b.job);
+      if (blocking) throw blocking;
       const t = now();
       if (!t0) t0 = t;
       const waited = t - t0;

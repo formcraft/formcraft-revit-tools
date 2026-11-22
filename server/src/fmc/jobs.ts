@@ -160,7 +160,10 @@ export function collectJobs(env: NodeJS.ProcessEnv = process.env): JobView[] {
       j.summary = `Still running in Revit: last heartbeat at ${j.revit.heartbeat_at} (this server stopped waiting at ${j.gave_up}; Revit keeps the answer)`;
     }
     else if (j.gave_up) { j.state = "no_answer"; j.summary = `No answer from Revit by ${j.gave_up}: Revit may still be busy, or blocked by a dialog`; }
-    else if (openDialog) { j.state = "waiting_for_dialog"; j.summary = `Revit shows a dialog waiting for a person: ${last.dialog_id} "${last.message}"`; }
+    else if (openDialog) {
+      j.state = "waiting_for_dialog";
+      j.summary = `[FMC-DIALOG-BLOCKING] Revit shows a dialog waiting for a person: ${last.dialog_id} "${last.message}". Do not retry this call. Tell a person.`;
+    }
     else {
       j.state = "running";
       j.summary = `Still running in Revit since ${j.revit?.running_since ?? j.started}` +

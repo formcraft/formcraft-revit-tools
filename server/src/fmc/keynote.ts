@@ -1,21 +1,14 @@
 /**
  * Keynote tags, a keynote legend, and placing a schedule on a sheet.
  *
- * Revit 2025's public API cannot do what Annotate > Keynote does. IndependentTag.Create leaves Key Source unset,
- * and Parameter.Set throws because KEY_SOURCE_PARAM is read-only in the API while the UI can still change it
- * (IsReadOnly true, UserModifiable true). The UI writes through Element.setParameterValue. Parameter.SetInternal
- * is that path and skips the API read-only check. A tag is kept only when Key Source reads back as Element,
- * Material or User; otherwise it is deleted in the same transaction. The installed add-in is not involved:
- * modify_model sends one fixed script through send_code_to_revit (one transaction, the same live-model lock,
- * batch lease and approval as any other write). A server hot-swap is enough.
- *
- * A blank tag is not a success. The key the tag will show is read before placement: KEYNOTE_PARAM on the
- * element type, then the instance, for keynote_element; the material keynote for keynote_material; the given
- * key for keynote_user. An empty key is not tagged (skipped_empty_keynote, id and type name). The key is
- * looked up in KeynoteTable.GetKeynoteTable. A type that shows Keynote Text is not placed when that key is
- * missing (key_not_in_table). After placement TagText is read. An empty TagText is kept and listed under
- * blank, with the tag id, so it is not reported as a shown keynote. When tag_type is omitted, a loaded
- * FMC_TAG_Keynote_v2 type Key Value is used, then the model's default keynote tag (M_Keynote Tag).
+ * Revit 2025's API does not create a linked keynote tag. IndependentTag.Create leaves TagText empty, Keynote Text
+ * empty and Key Source with no value. SetInternal("Element") reads back the word and changes nothing. Parameter.Set
+ * throws because the parameter is read-only. A probe tag is made in a sub-transaction and rolled back. If that tag
+ * is blank, nothing is placed and the answer is FMC-NO-API-KEYNOTE-LINK: Annotate > Keynote > Element, or Tag All
+ * Not Tagged with Keynote Tags, per view. keynote_retag posts that command (FMC-NEEDS-HUMAN). keynote_clone copies
+ * one linked tag and repoints it. keynote_audit lists blank keynote tags and does not delete them.
+ * The installed add-in is not involved for these ops: modify_model sends one fixed script through send_code_to_revit.
+ * A server hot-swap is enough, except the generic tag op in the add-in, which also refuses a keynote tag type.
  */
 import { screenScript } from "./scriptguard.js";
 
@@ -43,81 +36,73 @@ var batch = JObject.Parse(raw);
 bool dry = batch.Value<bool?>("dry_run") ?? false;
 var made = new List<List<long>>();
 var opsOut = new JArray();
-int knownElement = int.MinValue, knownMaterial = int.MinValue, knownUser = int.MinValue;
-string how = "";
 HashSet<string> tableKeys = null;
 string tableError = null;
 bool tableLoaded = false;
-BindingFlags hidden = BindingFlags.Instance | BindingFlags.NonPublic;
-var setInt = typeof(Parameter).GetMethod("SetInternal", hidden, null, new System.Type[] { typeof(int), typeof(bool).MakeByRefType() }, null);
-var setStr = typeof(Parameter).GetMethod("SetInternal", hidden, null, new System.Type[] { typeof(string), typeof(bool).MakeByRefType() }, null);
-var unlock = typeof(APIObject).GetMethod("set_IsReadOnlyInternal", hidden);
+const string NO_LINK = "FMC-NO-API-KEYNOTE-LINK";
+const string NEEDS_HUMAN = "FMC-NEEDS-HUMAN";
+const string LINK_HINT = "Annotate > Keynote > Element, or Tag All Not Tagged with Keynote Tags, in each view.";
 
-bool WriteBoxed(System.Reflection.MethodInfo method, Parameter p, object value)
-{
-    if (method == null || p == null) return false;
-    object[] args = new object[] { value, false };
-    try
-    {
-        object got = method.Invoke(p, args);
-        return got is bool ok && ok;
-    }
-    catch (System.Exception) { return false; }
-}
 string SourceText(Element tag)
 {
     Parameter p = tag.get_Parameter(BuiltInParameter.KEY_SOURCE_PARAM);
     return (p == null ? "" : p.AsValueString() ?? "").Trim();
 }
-bool Same(string shown, string want)
+bool Same(string have, string want)
 {
-    return string.Equals(shown, want, System.StringComparison.OrdinalIgnoreCase);
+    return string.Equals(have, want, System.StringComparison.OrdinalIgnoreCase);
 }
-bool SetSource(Element tag, string want, ref int known)
+bool TagTextEmpty(IndependentTag tag)
 {
-    Parameter p = tag.get_Parameter(BuiltInParameter.KEY_SOURCE_PARAM);
-    if (p == null) return false;
-    if (known != int.MinValue)
+    string tagText = "";
+    try { tagText = tag.TagText ?? ""; }
+    catch (System.Exception) { tagText = ""; }
+    return string.IsNullOrWhiteSpace(tagText);
+}
+bool KeynoteTextEmpty(IndependentTag tag)
+{
+    Parameter kt = tag.get_Parameter(BuiltInParameter.KEYNOTE_TEXT);
+    if (kt == null) kt = tag.LookupParameter("Keynote Text");
+    string keyText = kt == null ? "" : (kt.AsString() ?? kt.AsValueString() ?? "");
+    return string.IsNullOrWhiteSpace(keyText);
+}
+// A tag the API did not link: TagText and Keynote Text are both empty. The probe is rolled back.
+bool ProbeUnlinked(View view, FamilySymbol sym, Element sample, bool leader, TagOrientation orient)
+{
+    bool blank = true;
+    using (SubTransaction sub = new SubTransaction(document))
     {
-        WriteBoxed(setInt, p, known);
-        document.Regenerate();
-        if (Same(SourceText(tag), want)) { if (how == "") how = "SetInternal"; return true; }
-    }
-    if (WriteBoxed(setStr, p, want))
-    {
-        document.Regenerate();
-        if (Same(SourceText(tag), want))
+        sub.Start();
+        try
         {
-            known = p.AsInteger();
-            if (how == "") how = "SetInternal";
-            return true;
-        }
-    }
-    int[] order = want == "Material" ? new[] { 1, 2, 0, 3, -1 } : want == "User" ? new[] { 2, 3, 1, 0, -1 } : new[] { 0, 1, 2, 3, -1 };
-    foreach (int n in order)
-    {
-        if (!WriteBoxed(setInt, p, n)) continue;
-        document.Regenerate();
-        if (!Same(SourceText(tag), want)) continue;
-        known = n;
-        if (how == "") how = "SetInternal";
-        return true;
-    }
-    if (unlock != null)
-    {
-        try { unlock.Invoke(p, new object[] { false }); } catch (System.Exception) { }
-        foreach (int n in order)
-        {
-            try { if (!p.Set(n)) continue; }
-            catch (System.Exception) { continue; }
+            IndependentTag tag = IndependentTag.Create(document, sym.Id, view.Id, new Reference(sample), leader, orient, Where(sample));
             document.Regenerate();
-            if (!Same(SourceText(tag), want)) continue;
-            known = n;
-            if (how == "") how = "Set";
-            return true;
+            blank = TagTextEmpty(tag) && KeynoteTextEmpty(tag);
         }
+        catch (System.Exception) { blank = true; }
+        finally { sub.RollBack(); }
     }
-    return false;
+    return blank;
+}
+JArray ViewHosts()
+{
+    var views = new JArray();
+    foreach (JObject item in (batch["ops"] as JArray ?? new JArray()).OfType<JObject>())
+    {
+        if ((item.Value<string>("op") ?? "") != "tag") continue;
+        JArray idList = item["ids"] as JArray ?? new JArray();
+        views.Add(new JObject { ["view"] = item.Value<string>("view") ?? "", ["hosts"] = idList.Count });
+    }
+    return views;
+}
+JObject NoLink()
+{
+    return new JObject
+    {
+        ["applied"] = false, ["dry_run"] = dry, ["code"] = NO_LINK, ["placed"] = 0,
+        ["views"] = ViewHosts(), ["hint"] = LINK_HINT,
+        ["reason"] = "A keynote tag created through the API is not linked: TagText and Keynote Text stay empty, and Key Source cannot be set. Nothing was placed.",
+    };
 }
 string TextKey(Element e)
 {
@@ -322,14 +307,11 @@ bool WriteKey(Element tag, string key)
 {
     Parameter kv = tag.get_Parameter(BuiltInParameter.KEY_VALUE) ?? tag.get_Parameter(BuiltInParameter.KEYNOTE_NUMBER);
     if (kv == null) return false;
-    if (!WriteBoxed(setStr, kv, key))
-    {
-        try { if (!kv.Set(key)) return false; }
-        catch (System.Exception) { return false; }
-    }
+    try { if (!kv.Set(key)) return false; }
+    catch (System.Exception) { return false; }
     document.Regenerate();
-    string shown = kv.AsString() ?? "";
-    return string.Equals(shown.Trim(), key, System.StringComparison.OrdinalIgnoreCase);
+    string readBack = kv.AsString() ?? "";
+    return string.Equals(readBack.Trim(), key, System.StringComparison.OrdinalIgnoreCase);
 }
 string ShownKey(IndependentTag tag)
 {
@@ -346,12 +328,19 @@ foreach (JObject op in (batch["ops"] as JArray ?? new JArray()).OfType<JObject>(
     {
         string mode = op.Value<string>("mode") ?? "";
         string want = mode == "keynote_material" ? "Material" : mode == "keynote_user" ? "User" : "Element";
-        ref int known = ref knownElement;
-        if (want == "Material") known = ref knownMaterial;
-        else if (want == "User") known = ref knownUser;
         View view = ViewOf(op["view"]);
         FamilySymbol sym = TagSymbol(op.Value<string>("tag_type"));
         if (!sym.IsActive) sym.Activate();
+        Element sample = null;
+        foreach (JToken sampleToken in (op["ids"] as JArray ?? new JArray()))
+        {
+            Element sampleEl = ById(sampleToken);
+            if (sampleEl == null) continue;
+            sample = sampleEl;
+            break;
+        }
+        if (sample != null && ProbeUnlinked(view, sym, sample, op.Value<bool?>("leader") ?? true, (op.Value<string>("orientation") ?? "horizontal") == "vertical" ? TagOrientation.Vertical : TagOrientation.Horizontal))
+            return NoLink();
         bool leader = op.Value<bool?>("leader") ?? true;
         bool onePer = op.Value<bool?>("one_per_key") ?? true;
         TagOrientation orient = (op.Value<string>("orientation") ?? "horizontal") == "vertical" ? TagOrientation.Vertical : TagOrientation.Horizontal;
@@ -436,14 +425,6 @@ foreach (JObject op in (batch["ops"] as JArray ?? new JArray()).OfType<JObject>(
                 continue;
             }
             if (leader && nudge.GetLength() > 1e-9) tag.TagHeadPosition = tag.TagHeadPosition + nudge;
-            if (!SetSource(tag, want, ref known))
-            {
-                string after = SourceText(tag);
-                document.Delete(tag.Id);
-                string shown = after == "" ? "unset" : after;
-                skipped.Add(new JObject { ["id"] = id, ["key"] = key, ["reason"] = "Key Source stayed " + shown + ". Revit did not keep " + want });
-                continue;
-            }
             if (want == "User" && !WriteKey(tag, key))
             {
                 document.Delete(tag.Id);
@@ -451,39 +432,32 @@ foreach (JObject op in (batch["ops"] as JArray ?? new JArray()).OfType<JObject>(
                 continue;
             }
             document.Regenerate();
-            string tagText = "";
-            try { tagText = tag.TagText ?? ""; }
-            catch (System.Exception) { tagText = ""; }
-            bool textBlank = string.IsNullOrWhiteSpace(tagText);
-            if (textBlank)
+            if (TagTextEmpty(tag))
             {
-                blank.Add(new JObject
-                {
-                    ["id"] = id, ["tag_id"] = tag.Id.Value, ["key"] = key, ["type_name"] = typeName,
-                    ["tag_type"] = tagType, ["tag_text"] = "",
-                });
+                document.Delete(tag.Id);
+                blank.Add(new JObject { ["id"] = id, ["key"] = key, ["type_name"] = typeName, ["tag_type"] = tagType, ["reason"] = "blank_rolled_back" });
+                continue;
             }
             if (onePer) seen.Add(key);
             created.Add(tag.Id.Value);
         }
-        int shown = created.Count - blank.Count;
+        int shownCount = created.Count - blank.Count;
         var row = new JObject
         {
             ["op"] = opsOut.Count + 1, ["kind"] = "tag", ["mode"] = mode, ["view"] = view.Name,
             ["tag_type"] = tagType, ["key_source"] = want, ["shows_keynote_text"] = textKind != "none",
-            ["tagged"] = created.Count, ["shown"] = shown, ["created_ids"] = new JArray(created), ["skipped"] = skipped,
+            ["tagged"] = created.Count, ["shown"] = shownCount, ["created_ids"] = new JArray(created), ["skipped"] = skipped,
             ["skipped_empty_keynote"] = emptyKey, ["key_not_in_table"] = notInTable, ["blank"] = blank,
             ["counts"] = new JObject
             {
-                ["created"] = created.Count, ["skipped"] = skipped.Count, ["shown"] = shown,
+                ["created"] = created.Count, ["skipped"] = skipped.Count, ["shown"] = shownCount,
                 ["skipped_empty_keynote"] = emptyKey.Count, ["key_not_in_table"] = notInTable.Count, ["blank"] = blank.Count,
             },
         };
         if (textKind != "none" && tableLoaded && tableKeys == null)
             row["keynote_table"] = new JObject { ["read"] = false, ["reason"] = string.IsNullOrWhiteSpace(tableError) ? "the keynote table could not be read" : tableError };
         if (blank.Count > 0)
-            row["blank_note"] = "TagText was empty after placement. Those tags are in the model and are listed under blank. They are not shown keynotes.";
-        if (how != "") row["how"] = how;
+            row["blank_note"] = "TagText was empty after placement. Those tags were deleted in this transaction. Nothing blank was kept.";
         opsOut.Add(row);
         made.Add(created);
         continue;
@@ -533,6 +507,155 @@ foreach (JObject op in (batch["ops"] as JArray ?? new JArray()).OfType<JObject>(
         made.Add(created);
         continue;
     }
+    if (name == "keynote_audit")
+    {
+        var views = new JArray();
+        int blankTags = 0;
+        foreach (IndependentTag tag in new FilteredElementCollector(document).OfClass(typeof(IndependentTag)).Cast<IndependentTag>())
+        {
+            if (tag.Category == null || tag.Category.Id.Value != (long)BuiltInCategory.OST_KeynoteTags) continue;
+            if (!TagTextEmpty(tag)) continue;
+            View owner = document.GetElement(tag.OwnerViewId) as View;
+            string vname = owner == null ? "" : (owner.Name ?? "");
+            JObject groupRow = null;
+            foreach (JObject group in views.OfType<JObject>())
+            {
+                if (string.Equals(group.Value<string>("view"), vname, System.StringComparison.OrdinalIgnoreCase)) groupRow = group;
+            }
+            if (groupRow == null)
+            {
+                groupRow = new JObject { ["view"] = vname, ["count"] = 0, ["ids"] = new JArray() };
+                views.Add(groupRow);
+            }
+            JArray bucket = groupRow["ids"] as JArray;
+            bucket.Add(tag.Id.Value);
+            groupRow["count"] = bucket.Count;
+            blankTags++;
+        }
+        opsOut.Add(new JObject
+        {
+            ["op"] = opsOut.Count + 1, ["kind"] = "keynote_audit", ["views"] = views,
+            ["blank"] = blankTags, ["deleted"] = 0,
+            ["note"] = "Report only. Blank keynote tags were not deleted.",
+        });
+        made.Add(created);
+        continue;
+    }
+    if (name == "keynote_clone")
+    {
+        bool opDry = op.Value<bool?>("dry_run") ?? true;
+        Element seedEl = ById(op["seed"]);
+        IndependentTag seed = seedEl as IndependentTag;
+        if (seed == null) throw new InvalidOperationException("keynote_clone needs seed (the id of one linked keynote tag)");
+        if (TagTextEmpty(seed))
+            throw new InvalidOperationException("The seed tag has an empty TagText, so it is not a linked keynote. Make one with Annotate > Keynote > Element, then pass that tag. Nothing was copied.");
+        int linked = 0, blankBack = 0, failed = 0;
+        bool keeps = false;
+        var createdIds = new JArray();
+        var failedRows = new JArray();
+        JArray hostIds = op["ids"] as JArray ?? new JArray();
+        foreach (JToken t in hostIds)
+        {
+            Element hostEl = ById(t);
+            long hostId = hostEl != null ? hostEl.Id.Value : 0;
+            if (hostEl == null) { failed++; failedRows.Add(new JObject { ["id"] = t.ToString(), ["reason"] = "isn't in this model" }); continue; }
+            using (SubTransaction sub = new SubTransaction(document))
+            {
+                sub.Start();
+                try
+                {
+                    ICollection<ElementId> copies = ElementTransformUtils.CopyElement(document, seed.Id, XYZ.Zero);
+                    ElementId copyId = null;
+                    foreach (ElementId copied in copies) { copyId = copied; break; }
+                    IndependentTag copy = copyId == null ? null : document.GetElement(copyId) as IndependentTag;
+                    if (copy == null) { sub.RollBack(); failed++; failedRows.Add(new JObject { ["id"] = hostId, ["reason"] = "the copy was not a tag" }); continue; }
+                    IList<Reference> oldRefs = copy.GetTaggedReferences();
+                    if (oldRefs != null && oldRefs.Count > 0) copy.RemoveReferences(oldRefs);
+                    copy.AddReferences(new List<Reference> { new Reference(hostEl) });
+                    try { copy.TagHeadPosition = Where(hostEl); } catch (System.Exception) { }
+                    document.Regenerate();
+                    bool points = false;
+                    foreach (Reference r in copy.GetTaggedReferences())
+                        if (r != null && r.ElementId == hostEl.Id) points = true;
+                    if (points && !TagTextEmpty(copy))
+                    {
+                        keeps = true;
+                        linked++;
+                        if (opDry) sub.RollBack();
+                        else { sub.Commit(); createdIds.Add(copy.Id.Value); }
+                    }
+                    else { sub.RollBack(); blankBack++; }
+                }
+                catch (System.Exception ex)
+                {
+                    try { sub.RollBack(); } catch (System.Exception) { }
+                    failed++;
+                    failedRows.Add(new JObject { ["id"] = hostId, ["reason"] = ex.Message });
+                }
+            }
+        }
+        opsOut.Add(new JObject
+        {
+            ["op"] = opsOut.Count + 1, ["kind"] = "keynote_clone", ["dry_run"] = opDry,
+            ["seed"] = seed.Id.Value, ["keeps_link"] = keeps,
+            ["counts"] = new JObject { ["linked"] = linked, ["blank_rolled_back"] = blankBack, ["failed"] = failed },
+            ["created_ids"] = createdIds, ["failed"] = failedRows,
+            ["note"] = opDry ? "Dry run: copies were rolled back. Nothing was kept." : "A blank copy was rolled back. Only a tag whose TagText was not empty was kept.",
+        });
+        made.Add(created);
+        continue;
+    }
+    if (name == "keynote_retag")
+    {
+        bool exists = false;
+        try { exists = Enum.IsDefined(typeof(PostableCommand), "TagAllNotTagged"); }
+        catch (System.Exception) { exists = false; }
+        JArray viewTokens = op["views"] as JArray;
+        if (viewTokens == null && op["view"] != null) viewTokens = new JArray(op["view"]);
+        if (viewTokens == null || viewTokens.Count == 0) throw new InvalidOperationException("keynote_retag needs views (or view)");
+        bool assist = op.Value<bool?>("ui_assist") ?? true;
+        bool opDry = op.Value<bool?>("dry_run") ?? true;
+        var queue = new JArray();
+        View first = null;
+        foreach (JToken vt in viewTokens)
+        {
+            JToken viewToken = vt.Type == JTokenType.Object ? vt["view"] : vt;
+            View v = ViewOf(viewToken);
+            if (first == null) first = v;
+            int hosts = 0;
+            JArray per = vt.Type == JTokenType.Object ? vt["ids"] as JArray : null;
+            if (per != null) hosts = per.Count;
+            else if (vt.Type == JTokenType.Object && vt["hosts"] != null && vt["hosts"].Type != JTokenType.Null) hosts = vt.Value<int>("hosts");
+            else if (op["ids"] is JArray idList) hosts = idList.Count;
+            queue.Add(new JObject { ["view"] = v.Name, ["view_id"] = v.Id.Value, ["hosts"] = hosts });
+        }
+        bool ready = exists && assist && !opDry && first != null;
+        string activateError = "";
+        if (ready)
+        {
+            try
+            {
+                UIDocument ui = new UIDocument(document);
+                ui.Selection.SetElementIds(new List<ElementId>());
+                ui.ActiveView = first;
+            }
+            catch (System.Exception ex) { ready = false; activateError = ex.Message; }
+        }
+        opsOut.Add(new JObject
+        {
+            ["op"] = opsOut.Count + 1, ["kind"] = "keynote_retag", ["code"] = NEEDS_HUMAN,
+            ["command"] = "TagAllNotTagged", ["command_exists"] = exists, ["posted_ready"] = ready,
+            ["ui_assist"] = assist, ["dry_run"] = opDry, ["views"] = queue,
+            ["hint"] = "In the dialog, pick the Keynote Tags category and press OK. Call keynote_retag again for the next view.",
+            ["reason"] = !exists ? "This Revit has no Tag All Not Tagged command. Nothing was posted."
+                : !assist ? "ui_assist is false, so the command was not posted."
+                : opDry ? "Dry run: the view queue is ready. Set dry_run false and ui_assist true to open the first view and post Tag All Not Tagged."
+                : activateError != "" ? activateError
+                : "The first view is active and nothing is selected. Tag All Not Tagged will be posted. Pick Keynote Tags and press OK.",
+        });
+        made.Add(created);
+        continue;
+    }
     throw new InvalidOperationException(name + " is not a keynote batch op");
 }
 return new JObject
@@ -542,7 +665,7 @@ return new JObject
     ["ops"] = opsOut,
     ["note"] = dry
         ? "Dry run: the batch ran and was rolled back. Nothing was saved, synced or relinquished."
-        : "Key Source is written with Parameter.SetInternal because the public Set is read-only. A tag is kept only when Key Source reads back as Element, Material or User. An empty keynote is skipped_empty_keynote. A Keynote Text type whose key is missing from the keynote table is key_not_in_table and is not placed. TagText is read after placement. A blank TagText is listed under blank and is not a shown keynote.",
+        : "A probe tag is rolled back first. If TagText and Keynote Text are empty, nothing is placed (FMC-NO-API-KEYNOTE-LINK). A blank tag is deleted and is not kept. An empty keynote is skipped_empty_keynote. A Keynote Text type whose key is missing from the keynote table is key_not_in_table.",
 };
 `.trim();
 
@@ -552,10 +675,19 @@ export function isKeynoteMode(mode: unknown): mode is KeynoteMode {
   return typeof mode === "string" && (KEYNOTE_MODES as readonly string[]).includes(mode);
 }
 
+const KEYNOTE_OPS = ["keynote_legend", "place_schedule", "keynote_audit", "keynote_retag", "keynote_clone"] as const;
+
 export function isKeynoteOp(op: KeynoteOp | null | undefined): boolean {
   if (!op || typeof op !== "object") return false;
-  if (op.op === "keynote_legend" || op.op === "place_schedule") return true;
+  if ((KEYNOTE_OPS as readonly string[]).includes(op.op)) return true;
   return op.op === "tag" && isKeynoteMode(op.mode);
+}
+
+function opIsDry(op: KeynoteOp, batchDry: boolean): boolean {
+  if (batchDry) return true;
+  if (op.dry_run === false) return false;
+  if (op.op === "keynote_clone" || op.op === "keynote_retag" || op.op === "keynote_audit") return true;
+  return false;
 }
 
 function mentionsKeynote(op: KeynoteOp): boolean {
@@ -612,8 +744,20 @@ export function validateKeynoteOps(ops: KeynoteOp[]): string | null {
       if (op.schedule == null || String(op.schedule).trim() === "") return `${where}: place_schedule needs schedule`;
       const point = pointProblem(op.point_mm, where, "point_mm [x, y] on the sheet");
       if (point) return point;
+    } else if (op.op === "keynote_audit") {
+      /* report only */
+    } else if (op.op === "keynote_retag") {
+      const views = Array.isArray(op.views) ? op.views : op.view != null ? [op.view] : [];
+      if (views.length === 0) return `${where}: keynote_retag needs views (or view)`;
+      if (op.ui_assist != null && typeof op.ui_assist !== "boolean") return `${where}: ui_assist must be true or false`;
+    } else if (op.op === "keynote_clone") {
+      if (asId(op.seed) == null) return `${where}: keynote_clone needs seed (one linked keynote tag id)`;
+      const ids = Array.isArray(op.ids) ? op.ids : [];
+      if (ids.length === 0) return `${where}: keynote_clone needs ids (the hosts to retag)`;
+      if (ids.length > 2000) return `${where}: keynote_clone takes at most 2000 hosts; split the batch`;
+      if (ids.some((id) => asId(id) == null)) return `${where}: ids must be element ids`;
     } else {
-      return `${where}: ${op.op} cannot share a batch with keynote tagging. Put keynote_element, keynote_material, keynote_user, keynote_legend and place_schedule in their own modify_model call.`;
+      return `${where}: ${op.op} cannot share a batch with keynote tagging. Put keynote_element, keynote_material, keynote_user, keynote_legend, place_schedule, keynote_audit, keynote_retag and keynote_clone in their own modify_model call.`;
     }
   }
   return null;
@@ -636,6 +780,15 @@ export function keynoteSummaries(ops: KeynoteOp[], dryRun: boolean): string[] {
       const name = typeof op.name === "string" && op.name.trim() ? ` "${op.name.trim()}"` : "";
       return `${n} Keynote legend${name}${op.filtered_by_sheet ? ", filtered by sheet" : ""}.`;
     }
+    if (op.op === "keynote_audit") return `${n} List keynote tags whose TagText is empty, grouped by view. Nothing is deleted.`;
+    if (op.op === "keynote_retag") {
+      const views = Array.isArray(op.views) ? op.views.length : op.view != null ? 1 : 0;
+      return `${n} Tag All Not Tagged for ${views} view${views === 1 ? "" : "s"}. Pick Keynote Tags and press OK. Nothing is tagged by the API.`;
+    }
+    if (op.op === "keynote_clone") {
+      const count = Array.isArray(op.ids) ? op.ids.length : 0;
+      return `${n} Copy keynote tag ${op.seed} onto ${count} hosts, and roll back any copy whose TagText stays empty.`;
+    }
     const pt = Array.isArray(op.point_mm) ? op.point_mm.slice(0, 2).map((n) => Math.round(Number(n))).join(", ") : "?";
     return `${n} Place ${op.schedule} on sheet ${op.sheet} at (${pt}) mm.`;
   });
@@ -643,7 +796,7 @@ export function keynoteSummaries(ops: KeynoteOp[], dryRun: boolean): string[] {
   return lines;
 }
 
-function payloadOp(op: KeynoteOp): Record<string, unknown> {
+function payloadOp(op: KeynoteOp, batchDry: boolean): Record<string, unknown> {
   if (op.op === "tag") {
     const row: Record<string, unknown> = {
       op: "tag",
@@ -664,6 +817,14 @@ function payloadOp(op: KeynoteOp): Record<string, unknown> {
     if (typeof op.name === "string" && op.name.trim()) row.name = op.name.trim();
     return row;
   }
+  if (op.op === "keynote_audit") return { op: "keynote_audit", dry_run: true };
+  if (op.op === "keynote_retag") {
+    const views = Array.isArray(op.views) ? op.views : op.view != null ? [op.view] : [];
+    return { op: "keynote_retag", views, ui_assist: op.ui_assist !== false, dry_run: opIsDry(op, batchDry), ...(Array.isArray(op.ids) ? { ids: op.ids } : {}) };
+  }
+  if (op.op === "keynote_clone") {
+    return { op: "keynote_clone", seed: op.seed, ids: op.ids, dry_run: opIsDry(op, batchDry), ...(op.view != null ? { view: op.view } : {}) };
+  }
   return { op: "place_schedule", sheet: op.sheet, schedule: op.schedule, point_mm: op.point_mm };
 }
 
@@ -673,13 +834,19 @@ export function keynoteCall(ops: KeynoteOp[], dryRun: boolean, document?: string
   const problem = screenScript(code);
   if (problem) throw new Error(problem.message);
   const ids = ops.flatMap((op) => (Array.isArray(op.ids) ? op.ids : [])).filter((id) => typeof id === "number" || (typeof id === "string" && /^\d+$/.test(id)));
+  const writes = !dryRun && ops.some((op) => {
+    if (op.op === "keynote_audit" || op.op === "keynote_retag") return false;
+    if (op.op === "keynote_clone") return op.dry_run === false;
+    return true;
+  });
+  const posting = !dryRun && ops.some((op) => op.op === "keynote_retag" && op.ui_assist !== false && op.dry_run === false);
   const params: Record<string, unknown> = {
     code,
-    parameters: [JSON.stringify({ dry_run: dryRun, ops: ops.map(payloadOp) })],
-    usings: ["System.Reflection", "Newtonsoft.Json.Linq"],
-    transactionMode: dryRun ? "read_only" : "auto",
-    dry_run: dryRun,
-    purpose: "keynote tags, legend and place schedule",
+    parameters: [JSON.stringify({ dry_run: dryRun, ops: ops.map((op) => payloadOp(op, dryRun)) })],
+    usings: ["Newtonsoft.Json.Linq"],
+    transactionMode: writes ? "auto" : posting ? "none" : "read_only",
+    dry_run: dryRun || !writes,
+    purpose: "keynote tags, legend, audit, retag and clone",
     ...(ids.length ? { elementIds: ids.slice(0, 200) } : {}),
     ...(document ? { document } : {}),
   };
@@ -715,6 +882,21 @@ export function shapeKeynoteResult(response: unknown, dryRun: boolean): { body: 
       },
     };
   }
+  if (parsed?.code === "FMC-NO-API-KEYNOTE-LINK") {
+    return {
+      isError: true,
+      body: {
+        applied: false,
+        dry_run: dryRun,
+        code: "FMC-NO-API-KEYNOTE-LINK",
+        placed: 0,
+        reason: parsed.reason,
+        hint: parsed.hint,
+        views: parsed.views,
+        ...(stamped ? { document: stamped } : {}),
+      },
+    };
+  }
   const ops = Array.isArray(parsed?.ops) ? parsed.ops : [];
   const undo = typeof row.undoId === "string" && row.undoId ? row.undoId : undefined;
   return {
@@ -725,13 +907,14 @@ export function shapeKeynoteResult(response: unknown, dryRun: boolean): { body: 
       ...(undo ? { batch_id: undo, undo_id: undo } : {}),
       ops,
       note: typeof parsed?.note === "string" ? parsed.note : undefined,
+      ...(typeof parsed?.code === "string" ? { code: parsed.code } : {}),
       ...(stamped ? { document: stamped } : {}),
       ...(Array.isArray(row.warnings) && row.warnings.length ? { warnings: row.warnings } : {}),
     },
   };
 }
 
-const REFUSAL = "Put keynote_element, keynote_material, keynote_user, keynote_legend and place_schedule in their own modify_model call. They run through the code bridge so Key Source can be set without an add-in update. Other ops stay on the add-in.";
+const REFUSAL = "Put keynote_element, keynote_material, keynote_user, keynote_legend, place_schedule, keynote_audit, keynote_retag and keynote_clone in their own modify_model call. They run through the code bridge. Other ops stay on the add-in.";
 
 async function resolveSelect(op: KeynoteOp, send: SendCommand): Promise<KeynoteOp> {
   if (!op.select || typeof op.select !== "object" || Array.isArray(op.select)) return op;
@@ -774,7 +957,35 @@ export async function executeKeynoteBatch(
   if (problem) return { isError: true, body: { applied: false, reason: problem } };
   const call = keynoteCall(resolved, dryRun, document);
   const response = await send("send_code_to_revit", call.params);
-  return shapeKeynoteResult(response, dryRun);
+  const shaped = shapeKeynoteResult(response, dryRun);
+  if (shaped.isError) return shaped;
+  const done = Array.isArray(shaped.body.ops) ? shaped.body.ops as Array<Record<string, unknown>> : [];
+  const retag = done.find((op) => op.kind === "keynote_retag");
+  if (!retag) return shaped;
+  if (retag.posted_ready !== true || retag.command_exists !== true) {
+    return { isError: true, body: { ...shaped.body, applied: false, code: "FMC-NEEDS-HUMAN", posted: false, hint: retag.hint, views: retag.views, reason: retag.reason } };
+  }
+  let posted: unknown;
+  try { posted = await send("fmc_post_command", { command: "TagAllNotTagged", select_ids: [], ...(document ? { document } : {}) }); }
+  catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    return { isError: true, body: { ...shaped.body, applied: false, code: "FMC-NEEDS-HUMAN", posted: false, command: "TagAllNotTagged", views: retag.views, hint: retag.hint, reason: message } };
+  }
+  const started = asRecord(posted);
+  return {
+    isError: true,
+    body: {
+      ...shaped.body,
+      applied: false,
+      code: "FMC-NEEDS-HUMAN",
+      posted: true,
+      command: "TagAllNotTagged",
+      views: retag.views,
+      hint: retag.hint,
+      reason: "Tag All Not Tagged was posted. In the dialog, pick the Keynote Tags category and press OK. Call keynote_retag again for the next view in the queue.",
+      ...(started ? { started } : {}),
+    },
+  };
 }
 
 /** Approval text for the bridge script: the summary lines, not the C#. */

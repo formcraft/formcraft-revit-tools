@@ -1,7 +1,9 @@
+import fs from "node:fs";
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { executeKeynoteBatch } from "../fmc/keynote.js";
+import { decodeKeynoteFile, keynoteTableWarnings } from "../fmc/library.js";
 import { executePropertyLineBatch } from "../fmc/propertyline.js";
 import { documentTarget } from "../fmc/target.js";
 import { touchedIds, viewImage } from "./see_view.js";
@@ -10,11 +12,32 @@ function reply(body: unknown, isError = false) {
   return { content: [{ type: "text" as const, text: typeof body === "string" ? body : JSON.stringify(body, null, 2) }], isError };
 }
 
+/** keynote_file loads the table in Revit. An LF-only file comes back as one entry; say so on the answer. */
+function attachKeynoteFileWarnings(ops: Array<{ op?: string; path?: unknown }>, result: any): void {
+  if (!result || typeof result !== "object") return;
+  const seen = new Set<string>();
+  const rows = Array.isArray(result.ops) ? result.ops : [];
+  for (const row of rows) if (Array.isArray(row?.warnings)) for (const w of row.warnings) seen.add(String(w));
+  const notes: string[] = [];
+  for (const op of ops) {
+    if (op?.op !== "keynote_file" || typeof op.path !== "string" || !op.path.trim()) continue;
+    let text = "";
+    try { text = decodeKeynoteFile(fs.readFileSync(op.path)); }
+    catch { continue; }
+    const row = rows.find((item: any) => item?.kind === "keynote_file" && item?.keynotes === op.path);
+    const loaded = typeof row?.loaded === "number" && row.loaded >= 0 ? row.loaded : undefined;
+    for (const warning of keynoteTableWarnings(text, loaded)) if (!seen.has(warning)) { seen.add(warning); notes.push(warning); }
+  }
+  if (!notes.length) return;
+  const prev = Array.isArray(result.warnings) ? result.warnings.map(String) : [];
+  result.warnings = [...prev, ...notes];
+}
+
 export const MODEL_EDIT_OPS = ["copy", "rotate", "mirror", "join", "unjoin", "switch_join", "cut", "uncut", "pin", "unpin", "delete", "move", "set_param", "change_type", "attach", "duplicate_type", "create_roof",
   "create_railing", "create_stair", "room_separation", "opening", "shaft",
   "create_view", "duplicate_view", "set_view", "override", "hide", "unhide", "create_filter", "create_template", "apply_template",
   "create_sheet", "place_view", "open_view",
-  "detail_line", "model_line", "property_line", "property_line_verify", "property_line_tag", "filled_region", "masking_region", "text", "replace_text", "tag", "keynote_legend", "place_schedule", "spot_elevation", "spot_coordinate",
+  "detail_line", "model_line", "property_line", "property_line_verify", "property_line_tag", "filled_region", "masking_region", "text", "replace_text", "tag", "keynote_legend", "place_schedule", "keynote_audit", "keynote_retag", "keynote_clone", "spot_elevation", "spot_coordinate",
   "revision_cloud", "place_annotation", "color_fill_legend",
   "extrusion", "blend", "revolve", "sweep", "family_param", "family_type", "family_category", "reference_plane", "dimension",
   "save_family", "load_into_project",
@@ -95,18 +118,16 @@ export const MODIFY_MODEL_DESCRIPTION =
   "tag {view, ids | select, tag_type?, mode?: category|multi|material|keynote_element|keynote_material|keynote_user, leader? " +
   "(default true for a keynote mode), one_per_key? (default true for a keynote mode: one tag per distinct key already in the view " +
   "or made by this op), key? (the keynote code, required for keynote_user), offset_mm?, orientation?} " +
-  "keynote_element, keynote_material and keynote_user set Key Source to Element, Material or User, the same as Annotate > Keynote. " +
-  "When tag_type is omitted, a loaded FMC_TAG_Keynote_v2 type Key Value is used (that family also has Keynote Text); otherwise the model's " +
-  "default keynote tag, which on a metric template is M_Keynote Tag. Before tagging, the key that will display is read: KEYNOTE_PARAM on the " +
-  "element type, then the instance, for keynote_element; the material keynote for keynote_material; the given key for keynote_user. That key is " +
-  "checked in KeynoteTable.GetKeynoteTable. An empty keynote is not tagged and is listed as skipped_empty_keynote (id and type name). A tag type " +
-  "that shows Keynote Text is not placed when the key is missing from the table, and is listed as key_not_in_table. A type that shows the key and " +
-  "the text is still placed, and the missing key is still listed. A tag is kept only when Key Source reads back as that word; otherwise it is " +
-  "deleted and listed under skipped, with the reason. After placement, TagText is read. A blank TagText is kept and listed under blank " +
-  "(id, tag id, key, type name, tag type). shown counts only tags whose TagText was not empty. The answer is counts, created ids, skipped, skipped_empty_keynote, " +
-  "key_not_in_table and blank. No picture. These three modes, keynote_legend and place_schedule run through " +
-  "the code bridge (a server hot-swap; the add-in is unchanged) and must be their own batch. category, multi and material stay " +
-  "on the add-in, and rooms, spaces and areas still get their own tags. · " +
+  "keynote_element, keynote_material and keynote_user do not set Key Source. The API cannot link a keynote tag: a probe tag is rolled back, " +
+  "and if TagText and Keynote Text are empty the answer is FMC-NO-API-KEYNOTE-LINK and nothing is placed. Tag them with Annotate > Keynote > Element, " +
+  "or Tag All Not Tagged with Keynote Tags, per view. When tag_type is omitted, a loaded FMC_TAG_Keynote_v2 type Key Value is used; otherwise the model's " +
+  "default keynote tag (M_Keynote Tag). An empty keynote is skipped_empty_keynote. A Keynote Text type whose key is missing from the table is " +
+  "key_not_in_table and is not placed. A blank TagText is deleted, not kept. shown counts only tags whose TagText was not empty. " +
+  "keynote_retag {views | view, ui_assist? (default true), ids?} with dry_run false activates the first view, selects nothing, and posts Tag All Not Tagged " +
+  "(FMC-NEEDS-HUMAN) when that command exists. The answer lists the view queue. keynote_clone {seed, ids, dry_run? (default true)} copies one linked tag " +
+  "and repoints it; a blank copy is rolled back. keynote_audit lists keynote tags with an empty TagText, grouped by view, and deletes nothing. " +
+  "These ops run through the code bridge (a server hot-swap) and must be their own batch. category, multi and material stay on the add-in; a keynote tag " +
+  "type on that path is refused. Rooms, spaces and areas still get their own tags. · " +
   "keynote_legend {name?, filtered_by_sheet?} creates a keynote legend schedule. · " +
   "place_schedule {sheet, schedule, point_mm} places a schedule or legend on a sheet; point_mm is on the sheet. · " +
   "spot_elevation / spot_coordinate {view, id (floor, roof, toposolid...), point_mm, leader?} · " +
@@ -206,7 +227,7 @@ export const MODIFY_MODEL_DESCRIPTION =
 
 /** Ops whose result isn't something to look at in 3D (views, sheets, settings, files). */
 const NO_PICTURE = new Set(["delete", "set_param", "create_view", "duplicate_view", "set_view", "override", "hide", "unhide", "create_filter",
-  "create_template", "apply_template", "create_sheet", "place_view", "open_view", "text", "replace_text", "tag", "keynote_legend", "place_schedule", "revision", "create_schedule",
+  "create_template", "apply_template", "create_sheet", "place_view", "open_view", "text", "replace_text", "tag", "keynote_legend", "place_schedule", "keynote_audit", "keynote_retag", "keynote_clone", "revision", "create_schedule",
   "save_family", "load_into_project", "family_param", "family_type", "family_category", "create_material", "line_style", "line_pattern",
   "property_line", "property_line_verify", "property_line_tag",
   "fill_pattern", "object_style", "project_info", "project_units", "global_param", "associate_global", "coordinates", "acquire_coordinates",
@@ -216,7 +237,7 @@ const NO_PICTURE = new Set(["delete", "set_param", "create_view", "duplicate_vie
 
 /** Elements whose model bounding box is empty (grids, levels, reference planes, tags). A close-up cannot be framed. */
 const NO_EXTENT = new Set(["reference_plane", "dimension", "radial_dimension", "diameter_dimension", "align",
-  "spot_elevation", "spot_coordinate", "revision_cloud", "text", "replace_text", "tag", "keynote_legend", "place_schedule", "place_annotation",
+  "spot_elevation", "spot_coordinate", "revision_cloud", "text", "replace_text", "tag", "keynote_legend", "place_schedule", "keynote_audit", "keynote_retag", "keynote_clone", "place_annotation",
   "color_fill_legend", "detail_line", "multi_rebar_annotation"]);
 
 /** A picture is taken only when the caller asks. Default off. */
@@ -293,6 +314,7 @@ export function registerModifyModelTool(server: McpServer) {
           (command, params) => withRevitConnection((c) => c.sendCommand(command, params)));
         if (propertyLine) return reply(propertyLine.body, propertyLine.isError);
         const r = await withRevitConnection((c) => c.sendCommand("fmc_model_edit", { ops: args.ops, dry_run: args.dry_run, ...(args.why ? { why: args.why } : {}) }));
+        attachKeynoteFileWarnings(args.ops, r);
         const out = reply(r, r?.applied === false && !r?.dry_run) as { content: any[]; isError: boolean };
         // Owner 26 Oct: the AI sees what it did, so it can check its own work like a person glancing at the screen
         const ids = r?.applied ? touchedIds(args.ops as any[], r).filter((id) => !(r.ops ?? []).some((x: any) => (x.removed_ids ?? []).includes(id))) : [];

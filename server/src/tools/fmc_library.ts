@@ -7,7 +7,7 @@ import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../
 import { FamilySpec, SpParam, SpecFile, parseSharedParameters } from "../fmc/specs.js";
 import { DEFAULT_LIMIT, worstFamilies } from "../fmc/digest.js";
 import {
-  ScannedFamily, categoryTokens, checkFamily, nextKeynoteCode, parseKeynotes, searchKeynotes, standardName, summarise,
+  ScannedFamily, categoryTokens, checkFamily, decodeKeynoteFile, keynoteTableWarnings, nextKeynoteCode, parseKeynotes, searchKeynotes, standardName, summarise,
 } from "../fmc/library.js";
 
 const win = path.win32;
@@ -90,10 +90,16 @@ export async function runFmcLibrary(args: FmcLibraryArgs) {
 
       case "keynotes": {
         let all: ReturnType<typeof parseKeynotes> = [];
-        try { all = parseKeynotes(fs.readFileSync(expandEnv(config.keynote_file), "utf8")); }
+        let warnings: string[] = [];
+        try {
+          const text = decodeKeynoteFile(fs.readFileSync(expandEnv(config.keynote_file)));
+          all = parseKeynotes(text);
+          warnings = keynoteTableWarnings(text);
+        }
         catch { return reply({ refused: true, reasons: [`Keynote file not readable at ${config.keynote_file} (keynote_file in fmc_guard.json)`] }, true); }
         const groups = [...new Set(all.filter((x) => !x.parent).map((x) => x.code))];
         return reply({ file: config.keynote_file, count: all.length, groups, keynotes: searchKeynotes(all, args.query ?? ""),
+          ...(warnings.length ? { warnings } : {}),
           next_code: args.group ? nextKeynoteCode(all, args.group) : undefined });
       }
 

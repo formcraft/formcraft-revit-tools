@@ -20,6 +20,9 @@ test("dialog tier 1 never answers the destructive prompts, and the default allow
   const failures = fs.readFileSync(path.resolve(path.dirname(file), "FmcFailures.cs"), "utf8");
   assert.match(failures, /AllowWarning/);
   const job = fs.readFileSync(path.resolve(path.dirname(file), "FmcAiJob.cs"), "utf8");
-  assert.match(job, /DialogPolicy\.DialogResult/);
-  assert.match(job, /Log\(_current, "dialog"/);
+  assert.match(job, /FmcDialogSession\.Hook/);
+  assert.match(job, /RecordDialog/);
+  const session = fs.readFileSync(path.resolve(path.dirname(file), "FmcDialogSession.cs"), "utf8");
+  assert.match(session, /DialogBoxShowing/);
+  assert.equal(/fmc_guard/.test(session), false);
 });
