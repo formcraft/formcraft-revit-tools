@@ -4,7 +4,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { deferReason, loadSyncState, nextActionAt, pickOne, planTick, saveSyncState, seedModified, staggerOffsetMs, syncStatePath } from "./docschedule.js";
-import { saveBlocked } from "./savepolicy.js";
+import { saveBlocked, saveSkipReason } from "./savepolicy.js";
 import { imageDir, keptImagePath } from "./images.js";
 import { DEFAULT_CONFIG } from "./policy.js";
 
@@ -83,6 +83,26 @@ test("save_exclude matches like sync_exclude, and protected_paths is a prefix", 
   // The old check is protected_roots only. Empty matches nothing, so this WIP file is not protected.
   assert.equal(saveBlocked({ title: "S-0001", path: ogala }, { ...DEFAULT_CONFIG, protected_roots: [], protected_paths: [] }), null);
   assert.match(saveBlocked({ title: "S-0001", path: ogala }, { ...DEFAULT_CONFIG, protected_roots: ["D:\\Fomcraft"] }) ?? "", /protected path/);
+});
+
+test("sync_exclude HEBERT HOSTELS means HEBERT HOSTELS_USER is never autosaved", () => {
+  const cfg = { ...DEFAULT_CONFIG, sync_exclude: ["HEBERT HOSTELS"], save_exclude: [], protected_paths: [], protected_roots: [] };
+  const local = { title: "HEBERT HOSTELS_USER", path: "C:\\Users\\USER\\Documents\\HEBERT HOSTELS_USER.rvt" };
+  assert.equal(saveSkipReason(local, cfg), "excluded");
+  assert.match(saveBlocked(local, cfg) ?? "", /sync_exclude/);
+  assert.equal(saveBlocked({ title: "S-0001", path: "C:\\WIP\\S-0001.rvt" }, cfg), null);
+  const due = planTick({
+    now: 100_000,
+    startedAt: 0,
+    docs: [local, { title: "S-0001", path: "C:\\WIP\\S-0001.rvt" }],
+    clocks: [],
+    saveIntervalMs: 10_000,
+    syncIntervalMs: 0,
+    saveSkipped: (doc) => saveBlocked({ title: doc.title, path: doc.path }, cfg) != null,
+    syncSkipped: () => true,
+  });
+  assert.equal(due?.document, "S-0001");
+  assert.notEqual(due?.document, "HEBERT HOSTELS_USER");
 });
 
 test("image output stays off D: and off the model folder", () => {

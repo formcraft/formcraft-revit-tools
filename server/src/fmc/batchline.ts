@@ -25,7 +25,7 @@ import { invalidateReads } from "./readcache.js";
 import { batchLease, documentTarget } from "./target.js";
 import { queueClient, queueSnapshots } from "./fairqueue.js";
 import { deferReason, isDocBusyMessage, loadSyncState, nextActionAt, orderedProjects, planTick, saveSyncState, seedModified, staggerOffsetMs, type DocClock } from "./docschedule.js";
-import { saveBlocked } from "./savepolicy.js";
+import { saveBlocked, saveSkipReason } from "./savepolicy.js";
 import { dialogFor, inFlightJob, readRevitJobLines } from "./notidle.js";
 import { readInstances } from "./connect.js";
 
@@ -1289,7 +1289,7 @@ export class BatchBoard {
     this.emit(`sync ${document}: ${sync.detail}`);
   }
 
-  private syncFields(key: string): { last_sync: string | null; last_sync_at: string | null; next_sync: string | null; next_sync_at: string | null; last_save_at: string | null; next_save_at: string | null; last_error: string | null; excluded: boolean; defer_reason: string | null } {
+  private syncFields(key: string): { last_sync: string | null; last_sync_at: string | null; next_sync: string | null; next_sync_at: string | null; last_save_at: string | null; next_save_at: string | null; last_error: string | null; excluded: boolean; skip_reason: "excluded" | null; defer_reason: string | null } {
     const settings = syncSettings(loadConfig().config);
     const row = this.syncState.get(key);
     const iso = (t: number | null | undefined) => (t == null ? null : new Date(t).toISOString());
@@ -1300,21 +1300,24 @@ export class BatchBoard {
     const saveInterval = saveMinutes > 0 ? saveMinutes * 60_000 : 0;
     const syncInterval = settings.minutes > 0 ? settings.minutes * 60_000 : 0;
     const offset = staggerOffsetMs(index, count, Math.max(saveInterval, syncInterval));
-    const nextSave = saveInterval > 0 ? iso((row?.lastSaveAt == null ? this.startedAt : row.lastSaveAt) + (row?.lastSaveAt == null ? offset : saveInterval)) : null;
-    if (!row) return { last_sync: null, last_sync_at: null, next_sync: null, next_sync_at: null, last_save_at: null, next_save_at: nextSave, last_error: null, excluded: syncSkip(key, settings) != null, defer_reason: this.sessionDefer() };
+    const label = row?.document ?? this.names.get(key) ?? key;
+    const skip = saveSkipReason({ title: label });
+    const nextSave = skip || !(saveInterval > 0) ? null : iso((row?.lastSaveAt == null ? this.startedAt : row.lastSaveAt) + (row?.lastSaveAt == null ? offset : saveInterval));
+    const session = this.sessionDefer() ?? (isDocBusyMessage(this.lastDefer ?? undefined) ? this.lastDefer : null);
+    if (!row) return { last_sync: null, last_sync_at: null, next_sync: null, next_sync_at: null, last_save_at: null, next_save_at: nextSave, last_error: null, excluded: syncSkip(key, settings) != null || skip != null, skip_reason: skip, defer_reason: session ?? skip };
     const plan = planSync(
       { workshared: true, stopAi: false, aiOn: true },
       { now: this.now(), lastSyncAt: row.lastSyncAt, changedAt: row.changedAt, leaseHeld: this.holders.size > 0, batchEnd: false },
       settings,
       row.document,
     );
-    const saveAt = saveInterval > 0 ? nextActionAt(row.lastSaveAt, this.startedAt, saveInterval, offset) : null;
+    const saveAt = skip || !(saveInterval > 0) ? null : nextActionAt(row.lastSaveAt, this.startedAt, saveInterval, offset);
     const pending = row.changedAt != null && (row.lastSyncAt == null || row.changedAt > row.lastSyncAt);
     const syncAt = syncInterval > 0 && pending ? nextActionAt(row.lastSyncAt ?? row.changedAt, this.startedAt, syncInterval, offset) : null;
     return {
       last_sync: plan.last_sync, last_sync_at: plan.last_sync, next_sync: iso(syncAt) ?? plan.next_sync, next_sync_at: iso(syncAt) ?? plan.next_sync,
       last_save_at: iso(row.lastSaveAt), next_save_at: iso(saveAt) ?? nextSave,
-      last_error: row.lastError, excluded: plan.excluded, defer_reason: this.sessionDefer() ?? (isDocBusyMessage(this.lastDefer ?? undefined) ? this.lastDefer : null),
+      last_error: row.lastError, excluded: plan.excluded || skip != null, skip_reason: skip, defer_reason: session ?? skip,
     };
   }
 

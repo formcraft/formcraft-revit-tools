@@ -83,7 +83,8 @@ export interface GuardConfig {
    */
   sync_exclude?: string[];
   /**
-   * Titles or paths that never autosave. Matched like sync_exclude (title, path, or file name, without .rvt).
+   * Titles or paths that never autosave. Combined with sync_exclude and protected_paths.
+   * A listed title also covers its local (HEBERT HOSTELS covers HEBERT HOSTELS_USER).
    * The timer, the save after an AI command, and the batch-end save all skip these.
    */
   save_exclude?: string[];

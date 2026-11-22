@@ -22,7 +22,8 @@ export const FMC_BATCH_DESCRIPTION =
   "The save and sync after release run only once that lease is dropped, and they are still recorded on that batch. " +
   "status shows last_save_at, next_save_at, last_sync_at, next_sync_at, last_error, excluded and defer_reason. " +
   "Autosave (auto_save_minutes, default 10) saves every open project locally, including a workshared local, and never writes the central file. " +
-  "save_exclude skips titles or paths (matched like sync_exclude). protected_paths is a folder-prefix list autosave will not write under. " +
+  "Autosave skips save_exclude, sync_exclude and protected_paths. A sync_exclude title also covers its local, so HEBERT HOSTELS covers HEBERT HOSTELS_USER. " +
+  "protected_paths is a folder-prefix list autosave will not write under. " +
   "protected_roots is the same kind of prefix list and matches nothing while it is empty.";
 
 const shape = {

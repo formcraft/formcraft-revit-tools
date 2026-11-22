@@ -6,8 +6,9 @@
  * such as D:\Fomcraft\FMC_PROJECTS_27\THE OGALA RESIDENCE\01_WIP\S\....rvt is saved. It is not a title match
  * and not a search for "Fomcraft" inside a longer folder name.
  *
- * save_exclude is an exact title or path, matched the same way as sync_exclude.
- * protected_paths is an optional extra prefix list. Autosave refuses a file under either prefix list.
+ * Autosave skips save_exclude, sync_exclude and protected_paths together.
+ * A listed title also covers a local of that model: "HEBERT HOSTELS" matches "HEBERT HOSTELS_USER".
+ * protected_paths is a folder-prefix list. protected_roots is still checked as well.
  */
 import { loadConfig, type GuardConfig } from "./policy.js";
 import { underAny, protectedRoots } from "./opencopy.js";
@@ -24,23 +25,42 @@ function nameList(value: unknown): string[] {
   return value.map((item) => String(item).trim()).filter(Boolean);
 }
 
+/** Exact title or path, or a local whose name continues the listed title with _ or a space. */
 function listed(name: string, list: string[]): boolean {
   const key = documentKey(name);
-  return key.length > 0 && list.some((item) => documentKey(item) === key);
+  if (!key) return false;
+  return list.some((item) => {
+    const want = documentKey(item);
+    if (!want) return false;
+    if (want === key) return true;
+    const next = key[want.length];
+    return key.startsWith(want) && (next === "_" || next === " ");
+  });
 }
 
 function looksLikePath(value: string): boolean {
   return /^[a-zA-Z]:[\\/]/.test(value) || value.startsWith("\\\\");
 }
 
-/** Null when autosave may write this document. */
-export function saveBlocked(doc: { title?: string; path?: string }, cfg: GuardConfig = loadConfig().config): string | null {
+/** "excluded" when autosave must leave this document alone. Null when it may be saved. */
+export function saveSkipReason(doc: { title?: string; path?: string }, cfg: GuardConfig = loadConfig().config): "excluded" | null {
   const title = doc.title?.trim() ?? "";
   const file = doc.path?.trim() ?? "";
   const names = [title, file].filter(Boolean);
-  if (names.some((name) => listed(name, nameList(cfg.save_exclude)))) return "Excluded by save_exclude.";
+  if (names.some((name) => listed(name, [...nameList(cfg.save_exclude), ...nameList(cfg.sync_exclude)]))) return "excluded";
   const prefixes = [...nameList(cfg.protected_paths), ...protectedRoots(cfg)];
   const paths = names.filter(looksLikePath);
-  if (paths.some((item) => underAny(item, prefixes))) return "Under a protected path. Autosave does not write it.";
+  if (paths.some((item) => underAny(item, prefixes))) return "excluded";
   return null;
+}
+
+/** Null when autosave may write this document. */
+export function saveBlocked(doc: { title?: string; path?: string }, cfg: GuardConfig = loadConfig().config): string | null {
+  if (saveSkipReason(doc, cfg) == null) return null;
+  const title = doc.title?.trim() ?? "";
+  const file = doc.path?.trim() ?? "";
+  const names = [title, file].filter(Boolean);
+  if (names.some((name) => listed(name, nameList(cfg.sync_exclude)))) return "Excluded by sync_exclude.";
+  if (names.some((name) => listed(name, nameList(cfg.save_exclude)))) return "Excluded by save_exclude.";
+  return "Under a protected path. Autosave does not write it.";
 }
