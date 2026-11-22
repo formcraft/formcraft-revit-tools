@@ -157,7 +157,7 @@ const SESSION_COMMANDS = new Set(["fmc_selftest_facts", "fmc_document_info", "fm
 const CLOSED_PATH_COMMANDS = new Set([
   "fmc_doc_open", "fmc_create_document", "fmc_family_new", "fmc_open_copy", "fmc_document_info",
   "fmc_family_inspect", "fmc_family_scan", "fmc_family_bring_in", "fmc_family_host_test",
-  "fmc_qa_facts", "fmc_sheet_facts", "fmc_link_facts", "fmc_material_facts", "fmc_workshare_facts",
+  "fmc_qa_facts", "fmc_sheet_facts", "fmc_link_facts", "fmc_link_transmission", "fmc_material_facts", "fmc_workshare_facts",
   "fmc_build_facts", "fmc_annotation_facts", "fmc_missing_tags", "fmc_issue_facts", "fmc_issue_export",
   "fmc_analytical_export", "fmc_electrical_facts", "fmc_structural_facts", "fmc_mep_facts",
   "fmc_diagram_scan", "fmc_diagram_drawn", "fmc_find_elements",
