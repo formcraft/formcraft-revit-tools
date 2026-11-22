@@ -440,8 +440,8 @@ foreach (JObject op in (batch["ops"] as JArray ?? new JArray()).OfType<JObject>(
             {
                 string after = SourceText(tag);
                 document.Delete(tag.Id);
-                string shown = after == "" ? "unset" : after;
-                skipped.Add(new JObject { ["id"] = id, ["key"] = key, ["reason"] = "Key Source stayed " + shown + ". Revit did not keep " + want });
+                string shownSource = after == "" ? "unset" : after;
+                skipped.Add(new JObject { ["id"] = id, ["key"] = key, ["reason"] = "Key Source stayed " + shownSource + ". Revit did not keep " + want });
                 continue;
             }
             if (want == "User" && !WriteKey(tag, key))
@@ -466,16 +466,16 @@ foreach (JObject op in (batch["ops"] as JArray ?? new JArray()).OfType<JObject>(
             if (onePer) seen.Add(key);
             created.Add(tag.Id.Value);
         }
-        int shown = created.Count - blank.Count;
+        int shownCount = created.Count - blank.Count;
         var row = new JObject
         {
             ["op"] = opsOut.Count + 1, ["kind"] = "tag", ["mode"] = mode, ["view"] = view.Name,
             ["tag_type"] = tagType, ["key_source"] = want, ["shows_keynote_text"] = textKind != "none",
-            ["tagged"] = created.Count, ["shown"] = shown, ["created_ids"] = new JArray(created), ["skipped"] = skipped,
+            ["tagged"] = created.Count, ["shown"] = shownCount, ["created_ids"] = new JArray(created), ["skipped"] = skipped,
             ["skipped_empty_keynote"] = emptyKey, ["key_not_in_table"] = notInTable, ["blank"] = blank,
             ["counts"] = new JObject
             {
-                ["created"] = created.Count, ["skipped"] = skipped.Count, ["shown"] = shown,
+                ["created"] = created.Count, ["skipped"] = skipped.Count, ["shown"] = shownCount,
                 ["skipped_empty_keynote"] = emptyKey.Count, ["key_not_in_table"] = notInTable.Count, ["blank"] = blank.Count,
             },
         };
