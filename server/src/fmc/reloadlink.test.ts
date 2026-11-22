@@ -162,6 +162,13 @@ test("Loaded is a lie when the file is open as a host, the path differs, or the 
   assert.equal(linked.ok, false);
   assert.equal(linked.code, "FMC-LINK-OPEN-AS-HOST");
   assert.equal(classifyLinkLine("linked by shared coordinates, pinned").ok, true);
+
+  const sameCentral = judgeReload({ load_result: "SameCentralModelAsHost", status: "Loaded", path: central, link_open: false, link_document: null }, central, open);
+  assert.equal(sameCentral.ok, false);
+  assert.equal(sameCentral.code, "FMC-LINK-OPEN-AS-HOST");
+  assert.match(sameCentral.hint ?? "", /A-0002_USER/);
+  const sameModel = judgeReload({ load_result: "SameModelAsHost", status: "Unloaded", path: central }, central, open);
+  assert.equal(sameModel.code, "FMC-LINK-OPEN-AS-HOST");
 });
 
 test("the tool reply keeps load_result, status and path, and asks for the open model's central", async () => {

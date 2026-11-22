@@ -87,9 +87,14 @@ function compact(value: string): string {
   return value.toLowerCase().replace(/[^a-z]/g, "");
 }
 
-/** LinkLoadResult or LinkedFileStatus says the file, or its central, is already open as a host. */
+/**
+ * LinkLoadResult or LinkedFileStatus says the file, or its central, is already open as a host.
+ * Revit 2025 also returns SameModelAsHost and SameCentralModelAsHost. A filesystem copy of a
+ * workshared model still has the central identity, so SameCentralModelAsHost is the same failure.
+ */
 export function openAsHost(loadResult: string, status: string): boolean {
-  return compact(loadResult).includes("openashost") || compact(status).includes("openashost");
+  const text = compact(loadResult) + " " + compact(status);
+  return text.includes("openashost") || text.includes("samemodelashost") || text.includes("samecentralmodelashost");
 }
 
 /** The add-in sets link_open from GetLinkDocument. Absent means an older add-in, which cannot say. */
@@ -154,7 +159,7 @@ export function classifyLinkLine(text: string): { ok: boolean; code?: string; hi
     return {
       ok: false,
       code: "FMC-LINK-OPEN-AS-HOST",
-      hint: "The file or its central is open as a host document in this Revit. Close that local and link again.",
+      hint: "The file or its central is open as a host document in this Revit. fmc_links with on_blocked published_copy links a detached copy. This tool does not close the open document.",
     };
   }
   if (/^not linked/i.test(text.trim())) return { ok: false, code: "FMC-LINK-NOT-LOADED" };
@@ -171,5 +176,5 @@ export function openModelHint(requested: string, open: SessionDoc[]): string | u
   });
   if (!hits.length) return undefined;
   const names = hits.map((doc) => (doc.title || doc.path || "an open document").trim()).filter(Boolean);
-  return `Revit can't load a link to a model open in this session (${names.join(", ")}). Close it, or reload from a session where it isn't open.`;
+  return `Revit can't load a link to a model open in this session (${names.join(", ")}). Close it, or reload from a session where it isn't open. fmc_links action apply, link, repath or reload with on_blocked published_copy links a read-only copy instead, and does not close this document.`;
 }

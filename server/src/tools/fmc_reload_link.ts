@@ -12,7 +12,8 @@ export const FMC_RELOAD_LINK_DESCRIPTION =
   "send_code_to_revit cannot do this: even transactionMode none still opens a transaction group, and Revit 2025 refuses the reload while that phase is open. " +
   "A reply is success only when the link document is open and, if a path was given, that path is the one Revit has. " +
   "status Loaded is not enough. LinkOpenAsHost is FMC-LINK-OPEN-AS-HOST. A path that did not change is FMC-LINK-PATH-MISMATCH. " +
-  "A null link document, or any other status, is FMC-LINK-NOT-LOADED. The hint names the open document that blocks the load.";
+  "A null link document, or any other status, is FMC-LINK-NOT-LOADED. The hint names the open document that blocks the load. " +
+  "This is the strict reload (on_blocked fail). For a published-copy route that does not close the blocking document, use fmc_links action reload or apply with on_blocked published_copy.";
 
 const shape = {
   document: z.string().min(1).describe("Title or full path of the open project that holds the link. A family is refused."),

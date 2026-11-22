@@ -56,6 +56,10 @@ A logon task named **Formcraft MCP** (no admin) starts the service, restarts it 
 
 `fmc_reload_link` reloads one Revit link type. Pass `document` (a title or a full path) and `link_type_id`. Pass `path` to load that file; omit `path` to reload the link from its current location. Link instances stay where they are. It is a write: the batch lease and the live-model lock apply, and a family, a verification copy, a linked document and a protected original are refused. The reload itself is in the add-in, in a handler that opens no transaction. `send_code_to_revit` cannot do it: `transactionMode` none still opens a transaction group, and Revit 2025 refuses `LoadFrom` and `Reload` while that phase is open. The add-in installs when Revit is closed. The server tool is the check and the call.
 
+`fmc_reload_link` stays the strict reload: `LinkOpenAsHost`, `SameModelAsHost` and `SameCentralModelAsHost` are `FMC-LINK-OPEN-AS-HOST`. It does not close the blocking document. `fmc_links` is the one link tool around it (`audit`, `link`, `pin`, `reload`, `repath`, `unload`, `apply`, `offline`). `on_blocked` `published_copy` (the default on those write actions) links a read-only copy under `01_WIP\_LinkCopies` when the source is open as a host. A workshared source is a detached Save As, not a byte copy, because a byte copy keeps the central identity. The open model is not saved, synced, closed or activated. `dry_run` defaults to true. A closed `.rvt` is audited and its link paths edited only through TransmissionData, and only when the file is not a central, not open, and not under `protected_paths` or `save_exclude`.
+
+Server-side, so a restart of the service is enough: the plan, the path guards and the choice of published copy. Add-in DLL, installed when Revit is next opened: open-document audit (`type_id`), link, pin, reload, repath, unload, the detach Save As, and TransmissionData read/write.
+
 ## Several agents, one Revit
 
 Revit runs one API call at a time. The service accepts many clients and takes turns: one call from each waiting client, then the next, so one bot's batch does not sit in front of the others.

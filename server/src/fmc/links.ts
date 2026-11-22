@@ -12,6 +12,9 @@ const win = path.win32;
 
 export interface LinkFact {
   id: number; name: string; path: string; path_type: string; attachment: string; loaded: boolean; pinned: boolean; workset: string;
+  /** Revit link type id, when the add-in sent it. Reload, repath and unload need this, not the instance id. */
+  type_id?: number;
+  status?: string;
 }
 
 export interface LinkAudit { id: number; model: string; problems: string[]; state: "OK" | "Fix" }

@@ -33,9 +33,11 @@ namespace RevitMCPCommandSet.Services.Fmc
         {
             Result = new JObject();
             Error = "";
+            string before = FmcLinkGuard.Stamp(app);
             try
             {
-                using var target = FmcTarget.Resolve(app, Parameters, mayOpen: Action == "facts");
+                // Never open a closed file. Closed-file audits use fmc_link_transmission.
+                using var target = FmcTarget.Resolve(app, Parameters, mayOpen: false);
                 Document doc = target.Doc;
                 if (doc.IsFamilyDocument) throw new InvalidOperationException("Links live in a project model.");
                 switch (Action)
@@ -44,6 +46,13 @@ namespace RevitMCPCommandSet.Services.Fmc
                     case "add": Result = Add(doc); break;
                     case "pin": Result = Pin(doc); break;
                     default: Error = $"Unknown FMC link action '{Action}'"; break;
+                }
+                if (string.IsNullOrEmpty(Error))
+                {
+                    Result["active_unchanged"] = FmcLinkGuard.Stamp(app) == before;
+                    Result["resolved_document"] = FmcTarget.Resolved(doc);
+                    if (Result.Value<bool?>("active_unchanged") == false)
+                        Result["code"] = "FMC-LINK-ACTIVE-CHANGED";
                 }
             }
             catch (Exception ex)
@@ -89,16 +98,29 @@ namespace RevitMCPCommandSet.Services.Fmc
                     }
                 }
                 catch { /* a link without a file reference keeps empty values */ }
+                string status = "";
+                try { if (type != null) status = type.GetLinkedFileStatus().ToString(); } catch { /* status stays empty */ }
                 links.Add(new JObject
                 {
-                    ["id"] = inst.Id.Value, ["name"] = type?.Name ?? inst.Name, ["path"] = path, ["path_type"] = pathType,
-                    ["attachment"] = type?.AttachmentType.ToString() ?? "", ["loaded"] = type != null && RevitLinkType.IsLoaded(doc, type.Id),
+                    ["id"] = inst.Id.Value, ["type_id"] = type?.Id.Value ?? 0, ["name"] = type?.Name ?? inst.Name, ["path"] = path, ["path_type"] = pathType,
+                    ["attachment"] = type?.AttachmentType.ToString() ?? "", ["status"] = status,
+                    ["loaded"] = type != null && RevitLinkType.IsLoaded(doc, type.Id),
                     ["pinned"] = inst.Pinned,
                     ["workset"] = doc.IsWorkshared ? doc.GetWorksetTable().GetWorkset(inst.WorksetId)?.Name ?? "" : "",
                 });
             }
+            string central = "";
+            if (doc.IsWorkshared)
+            {
+                try
+                {
+                    ModelPath centralPath = doc.GetWorksharingCentralModelPath();
+                    if (centralPath != null) central = ModelPathUtils.ConvertModelPathToUserVisiblePath(centralPath);
+                }
+                catch { /* a local without a readable central keeps it empty */ }
+            }
             return new JObject { ["model"] = doc.Title + (doc.Title.EndsWith(".rvt", StringComparison.OrdinalIgnoreCase) ? "" : ".rvt"),
-                ["workshared"] = doc.IsWorkshared, ["coordinates"] = coords, ["links"] = links, ["worksets"] = new JArray(worksets) };
+                ["workshared"] = doc.IsWorkshared, ["central"] = central, ["coordinates"] = coords, ["links"] = links, ["worksets"] = new JArray(worksets) };
         }
 
         private JObject Add(Document doc)
@@ -115,8 +137,18 @@ namespace RevitMCPCommandSet.Services.Fmc
                     t.Start();
                     try
                     {
+                        if (doc.IsWorkshared && wanted.Length > 0 && !worksets.ContainsKey(wanted))
+                        {
+                            try
+                            {
+                                Workset created = Workset.Create(doc, wanted);
+                                worksets[wanted] = created.Id;
+                            }
+                            catch { /* the result still says the workset is missing */ }
+                        }
                         LinkLoadResult load = RevitLinkType.Create(doc, ModelPathUtils.ConvertUserVisiblePathToModelPath(path), new RevitLinkOptions(true));
-                        if (load.ElementId == ElementId.InvalidElementId) throw new InvalidOperationException(load.LoadResult.ToString());
+                        string loadName = load.LoadResult.ToString();
+                        if (load.ElementId == ElementId.InvalidElementId || loadName != "LinkLoaded") throw new InvalidOperationException(loadName);
                         var type = (RevitLinkType)doc.GetElement(load.ElementId);
                         type.AttachmentType = AttachmentType.Overlay;
                         RevitLinkInstance inst = RevitLinkInstance.Create(doc, load.ElementId, ImportPlacement.Shared);
@@ -128,7 +160,13 @@ namespace RevitMCPCommandSet.Services.Fmc
                         }
                         if (pin) inst.Pinned = true;
                         t.Commit();
-                        result["result"] = "linked by shared coordinates" + (pin ? ", pinned" : "") + (ws.Length > 0 ? ", on " + ws : doc.IsWorkshared ? ", workset " + wanted + " missing" : "");
+                        Document linked = null;
+                        try { linked = inst.GetLinkDocument(); } catch { linked = null; }
+                        result["type_id"] = type.Id.Value;
+                        if (linked == null)
+                            result["result"] = "not linked: " + loadName + " (link document is null)";
+                        else
+                            result["result"] = "linked by shared coordinates" + (pin ? ", pinned" : "") + (ws.Length > 0 ? ", on " + ws : doc.IsWorkshared ? ", workset " + wanted + " missing" : "");
                     }
                     catch (Exception e)
                     {
