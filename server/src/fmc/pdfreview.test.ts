@@ -5,7 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { z } from "zod";
 import { PdfDoc, PdfPage, A4_LANDSCAPE } from "./pdf.js";
-import { detectRenderer, matchPageSize, reviewPages, safeImageDir, type PageFact } from "./pdfreview.js";
+import { detectRenderer, inkFromOps, matchPageSize, pastBorder, reviewPages, safeImageDir, textOverlaps, type PageFact } from "./pdfreview.js";
 import { FMC_PDF_REVIEW_SHAPE, runFmcPdfReview, type FmcPdfReviewArgs } from "../tools/fmc_pdf_review.js";
 import { DEFAULT_CONFIG, type GuardConfig } from "./policy.js";
 import { runFmcPdfReview as runPdfReviewLive } from "../tools/fmc_pdf_review.js";
@@ -41,6 +41,37 @@ const pages: PageFact[] = [
     boxes: [{ x: 400, y: 400, w: 100, h: 12, text: "just a note in the middle" }],
   },
 ];
+
+test("layout flags ink past the border, overlapping text, an empty zone and fill without a renderer", () => {
+  const ink = inkFromOps([
+    { op: "rectangle", args: [2, 2, 20, 20] },
+    { op: "transform", args: [1, 0, 0, 1, 100, 100] },
+    { op: "rectangle", args: [0, 0, 30, 10] },
+  ]);
+  assert.equal(ink.length, 2);
+  assert.ok(ink[0].x < 10);
+  const page: PageFact = {
+    page: 1,
+    width_pt: 1190.55,
+    height_pt: 841.89,
+    text: "A A",
+    boxes: [
+      { x: 40, y: 400, w: 30, h: 12, text: "A" },
+      { x: 50, y: 400, w: 30, h: 12, text: "A" },
+    ],
+    ink,
+  };
+  assert.equal(pastBorder(page), true);
+  assert.equal(textOverlaps(page), 1);
+  const checks = reviewPages([page]);
+  assert.equal(checks[0].past_border, true);
+  assert.equal(checks[0].text_overlaps, 1);
+  assert.equal(checks[0].empty_drawing_zone, false);
+  assert.ok(checks[0].fill_pct > 0);
+  const empty = reviewPages([{ page: 2, width_pt: 1190.55, height_pt: 841.89, text: "", boxes: [], ink: [] }]);
+  assert.equal(empty[0].empty_drawing_zone, true);
+  assert.equal(empty[0].fill_pct, 0);
+});
 
 test("checks name a blank page, an A3 sheet and a missing title block", () => {
   assert.deepEqual(matchPageSize(1190.55, 841.89), { name: "A3", orientation: "landscape" });

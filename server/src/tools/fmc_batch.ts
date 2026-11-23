@@ -3,9 +3,13 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { currentClient } from "../fmc/fairqueue.js";
 import { BatchGateError, batchBoard } from "../fmc/batchline.js";
 import { MAINTENANCE_REASON } from "../fmc/batchstore.js";
+import { splitBatchFile } from "../fmc/batchsplit.js";
 
 export const FMC_BATCH_DESCRIPTION =
-  "The line for model-changing batches on one document. Several discipline bots share one Revit. request a lease, " +
+  "The line for model-changing batches. One document is the usual lease. documents lists every document one lease must hold: " +
+  "they are taken in document-key order, all of them or none, and released together. A batch_file whose ops name different documents " +
+  "is split into per-document sub-batches to run in that order, each with its own lease. split only reads the file. " +
+  "Several discipline bots share one Revit. request a lease, " +
   "wait until it is granted, then send that document's writes with batch_lease. heartbeat if you are not writing. " +
   "release with outcome ok or failed. A failure is not parked: the next request for the same label joins the tail, " +
   "with correction set to what you changed and different references. More than three attempts is marked struggling, " +
@@ -31,9 +35,11 @@ export const FMC_BATCH_DESCRIPTION =
   "phase is optional. It is stored on the lease and fmc_phase batch_check reads it when its own phase is omitted.";
 
 const shape = {
-  action: z.enum(["request", "status", "heartbeat", "release", "cancel", "wait", "drain", "resume", "reserve"]),
+  action: z.enum(["request", "status", "heartbeat", "release", "cancel", "wait", "drain", "resume", "reserve", "split"]),
   reason: z.string().max(200).optional().describe("drain: why grants are stopped. Default: maintenance: server update."),
   document: z.string().optional().describe("Title or full path of the open document this batch changes."),
+  documents: z.array(z.string()).optional().describe("request: every document this one lease holds, including document. Acquired in a fixed order, all or nothing, released together."),
+  batch_file: z.string().optional().describe("request or split: a JSON file of ops. Ops may set document. Several documents become sub-batches run in order, not one lease."),
   label: z.string().optional().describe("This batch's name. A retry of a failure sends the same label (and the same batch_id, if you set one)."),
   batch_id: z.string().optional().describe("Stable id for this unit of work. Defaults to label."),
   bot: z.string().optional().describe("Discipline bot name for the day's stats, for example structure. Defaults to label."),
@@ -62,9 +68,11 @@ function failed(error: unknown) {
 }
 
 export async function runFmcBatch(args: {
-  action: "request" | "status" | "heartbeat" | "release" | "cancel" | "wait" | "drain" | "resume" | "reserve";
+  action: "request" | "status" | "heartbeat" | "release" | "cancel" | "wait" | "drain" | "resume" | "reserve" | "split";
   reason?: string;
   document?: string;
+  documents?: string[];
+  batch_file?: string;
   label?: string;
   batch_id?: string;
   bot?: string;
@@ -80,9 +88,31 @@ export async function runFmcBatch(args: {
 }, client = currentClient()) {
   const board = batchBoard();
   try {
+    if (args.action === "split") {
+      if (!args.batch_file?.trim()) return reply({ ok: false, code: "FMC-BATCH-BAD", message: "[FMC-BATCH-BAD] split needs batch_file." }, true);
+      const plan = splitBatchFile(args.batch_file.trim());
+      return reply(plan, plan.ok === false);
+    }
     if (args.action === "request") {
-      return reply(await board.request({
+      let sequence: ReturnType<typeof splitBatchFile> | null = null;
+      if (args.batch_file?.trim()) {
+        sequence = splitBatchFile(args.batch_file.trim());
+        if (!sequence.ok) return reply(sequence, true);
+        if (sequence.mode === "sequence" && !(args.documents && args.documents.length)) {
+          return reply({
+            ok: true,
+            split: true,
+            mode: "sequence",
+            batch_id: sequence.batch_id,
+            documents: sequence.documents,
+            sub_batches: sequence.sub_batches.map((row) => ({ document: row.document, count: row.count, ops: row.ops })),
+            message: "Run these sub-batches in order. Request a lease for one document, release it, then request the next. A multi-document file is not one lease unless you pass documents.",
+          });
+        }
+      }
+      const granted = await board.request({
         document: args.document ?? "",
+        documents: args.documents,
         label: args.label ?? "",
         estOps: args.est_ops,
         batchId: args.batch_id,
@@ -91,7 +121,15 @@ export async function runFmcBatch(args: {
         correction: args.correction,
         phase: args.phase,
         client,
-      }));
+      });
+      if (sequence && sequence.ok) {
+        return reply({
+          ...granted,
+          split: sequence.mode === "sequence",
+          sub_batches: sequence.sub_batches.map((row) => ({ document: row.document, count: row.count })),
+        });
+      }
+      return reply(granted);
     }
     if (args.action === "reserve") {
       return reply(await board.reserve({

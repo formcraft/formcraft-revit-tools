@@ -221,6 +221,10 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_keynote_place_apply",
   // Sheet pair, arrange and park. One transaction. The register compare stays a read.
   "fmc_sheets_layout_apply",
+  // Drawing register: one transaction that filters PARKED sheets out of a sheet list.
+  "fmc_register_apply",
+  // Delete elements a recorded batch created, after sync. One transaction. Never another user's elements.
+  "fmc_batch_undo_apply",
   // View templates, filters and room colour fills. One transaction.
   "fmc_viewstyle_apply",
   // Dimension strings. One transaction, one subtransaction per string.
@@ -266,6 +270,10 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_keynote_place",
   // Sheet outlines, view sizes and sheet parameters. No transaction.
   "fmc_sheets_layout",
+  // Sheet list fields and filters. No transaction.
+  "fmc_register_read",
+  // Whether created ids still exist, are editable, and match a fingerprint. No transaction.
+  "fmc_batch_undo_read",
   // Existing templates, filters and room names. No transaction.
   "fmc_viewstyle",
   // Grids, exterior walls and openings in one view. No transaction.

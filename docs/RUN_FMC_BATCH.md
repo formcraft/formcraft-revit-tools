@@ -1,6 +1,6 @@
 # Run-FmcBatch library steps
 
-The no-AI runner `Run-FmcBatch.mjs` lives outside this repo. A step that runs a kit script is:
+The no-AI runner `Run-FmcBatch.mjs` lives outside this repo. `scripts/Run-FmcRunlog.mjs` sits next to it and summarises `RUN_ALL_log.txt` or a folder of result JSON. It is read-only. The same summary is `fmc_runlog`. A step that runs a kit script is:
 
 ```json
 {"tool":"library","id":"sheets","arguments":{"level":"01"},"background":true}

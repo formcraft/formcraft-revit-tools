@@ -9,8 +9,8 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import crypto from "node:crypto";
-import { batchBoard, documentsMatch, leaseHeldDocument } from "./batchline.js";
-import { leaseCovers } from "./docresolve.js";
+import { batchBoard, documentsMatch, leaseHeldDocuments } from "./batchline.js";
+import { leaseCoversAny } from "./docresolve.js";
 import { currentClient } from "./fairqueue.js";
 import { jobFiles } from "./jobs.js";
 
@@ -345,8 +345,11 @@ const live = new Map<string, ScriptJobQueue>();
 /** The process queue. Opening it marks a leftover running job interrupted. No file is written when the queue is empty and missing. */
 function productionHooks(env: NodeJS.ProcessEnv): Partial<QueueOptions> {
   return {
-    leaseHeld: (lease) => leaseHeldDocument(lease),
-    leaseCovers: (held, document) => leaseCovers(held, { title: document, path: document }, documentsMatch),
+    leaseHeld: (lease) => {
+      const docs = leaseHeldDocuments(lease);
+      return docs.length ? docs.join("\n") : undefined;
+    },
+    leaseCovers: (held, document) => leaseCoversAny(held.split("\n"), { title: document, path: document }, documentsMatch),
     onHeartbeat: (job) => {
       if (!job.batch_lease) return;
       batchBoard().heartbeat(job.batch_lease, job.client || currentClient());

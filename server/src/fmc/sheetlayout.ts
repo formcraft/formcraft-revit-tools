@@ -18,6 +18,7 @@ export const SHEET_FIX: Record<string, string> = {
   "FMC-SHEETS-SHEET": "That sheet was not found.",
   "FMC-SHEETS-PARK-PARAM": "No browser-organization parameter and no FMC_Sheet_Status parameter to set to Parked.",
   "FMC-SHEETS-LAYOUT": "layout is grid, pair or stack.",
+  "FMC-SHEETS-OVERFLOW": "A view does not fit the drawing area. Nothing was moved.",
 };
 
 export type SheetLayoutName = "grid" | "pair" | "stack";

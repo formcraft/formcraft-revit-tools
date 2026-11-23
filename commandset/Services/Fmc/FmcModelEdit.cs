@@ -130,7 +130,19 @@ namespace RevitMCPCommandSet.Services.Fmc
                 try { after.Add(a()); }
                 catch (Exception ex) { after.Add(new JObject { ["failed"] = ex.Message }); }
             }
+            var createdFlat = made.SelectMany(m => m).Select(x => x.Value).Distinct().ToList();
+            var createdRows = new JArray();
+            foreach (long id in createdFlat)
+            {
+                Element madeElement = doc.GetElement(new ElementId(id));
+                if (madeElement == null) continue;
+                BoundingBoxXYZ box = null;
+                try { box = madeElement.get_BoundingBox(null); } catch (Exception) { box = null; }
+                string fp = box == null ? "" : $"{Mm(box.Min.X)},{Mm(box.Min.Y)},{Mm(box.Min.Z)}|{Mm(box.Max.X)},{Mm(box.Max.Y)},{Mm(box.Max.Z)}";
+                createdRows.Add(new JObject { ["id"] = id, ["fingerprint"] = fp, ["category"] = madeElement.Category?.Name ?? "" });
+            }
             var done = new JObject { ["applied"] = true, ["batch_id"] = undoId, ["ops"] = results,
+                ["created_ids"] = new JArray(createdFlat), ["created"] = createdRows,
                 ["undo"] = $"undo_ai_batch {{batch_id: \"{undoId}\"}} takes the whole batch back (one Undo in Revit: \"{FmcUndo.Label}\")",
                 ["document"] = FmcTarget.DescribeState(doc) };
             if (after.Count > 0) done["after"] = after;

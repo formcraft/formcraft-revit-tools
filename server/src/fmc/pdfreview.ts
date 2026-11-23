@@ -24,12 +24,21 @@ export interface TextBox {
   text: string;
 }
 
+export interface InkBox {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
 export interface PageFact {
   page: number;
   width_pt: number;
   height_pt: number;
   text: string;
   boxes?: TextBox[];
+  /** Path bounds from pdf.js operators, in PDF points, origin at the lower left. */
+  ink?: InkBox[];
 }
 
 export interface PageCheck {
@@ -39,6 +48,10 @@ export interface PageCheck {
   width_pt: number;
   height_pt: number;
   missing_titleblock_text: boolean;
+  past_border: boolean;
+  text_overlaps: number;
+  empty_drawing_zone: boolean;
+  fill_pct: number;
   png?: string;
 }
 
@@ -86,6 +99,108 @@ export function titleblockMissing(page: PageFact): boolean {
   return !SHEET_NO.test(page.text);
 }
 
+const BORDER_PT = 10;
+
+function intersects(a: TextBox, b: TextBox): boolean {
+  return a.x < b.x + b.w - 0.2 && b.x < a.x + a.w - 0.2 && a.y < b.y + b.h - 0.2 && b.y < a.y + a.h - 0.2;
+}
+
+/** Ink or text closer to the media edge than the border, outside the drawing frame. */
+export function pastBorder(page: PageFact): boolean {
+  const boxes = [...(page.boxes ?? []), ...(page.ink ?? [])];
+  return boxes.some((box) => {
+    if (box.w <= 0 && box.h <= 0) return false;
+    const x1 = box.x + Math.max(box.w, 0);
+    const y1 = box.y + Math.max(box.h, 0);
+    return box.x < BORDER_PT - 0.1 || box.y < BORDER_PT - 0.1 || x1 > page.width_pt - BORDER_PT + 0.1 || y1 > page.height_pt - BORDER_PT + 0.1;
+  });
+}
+
+export function textOverlaps(page: PageFact): number {
+  const boxes = (page.boxes ?? []).filter((box) => box.text.trim() && box.w > 0 && box.h > 0);
+  let count = 0;
+  for (let i = 0; i < boxes.length; i++) {
+    for (let j = i + 1; j < boxes.length; j++) if (intersects(boxes[i], boxes[j])) count += 1;
+  }
+  return count;
+}
+
+/** The drawing zone is inside the border and outside the title-block band (bottom 18% or right 22%). */
+export function emptyDrawingZone(page: PageFact): boolean {
+  const x0 = BORDER_PT;
+  const y0 = Math.max(BORDER_PT, page.height_pt * 0.18);
+  const x1 = page.width_pt * 0.78;
+  const y1 = page.height_pt - BORDER_PT;
+  if (x1 <= x0 || y1 <= y0) return true;
+  const boxes = [...(page.boxes ?? []), ...(page.ink ?? [])];
+  return !boxes.some((box) => {
+    if (!("text" in box) || (box as TextBox).text === undefined || (box as TextBox).text.trim()) {
+      const cx = box.x + Math.max(box.w, 0) / 2;
+      const cy = box.y + Math.max(box.h, 0) / 2;
+      return cx >= x0 && cx <= x1 && cy >= y0 && cy <= y1;
+    }
+    return false;
+  });
+}
+
+/** Share of the page covered by text or ink, on a 20 by 20 grid. */
+export function fillPct(page: PageFact): number {
+  const cols = 20;
+  const rows = 20;
+  const boxes = [...(page.boxes ?? []), ...(page.ink ?? [])].filter((box) => box.w > 0 && box.h > 0);
+  if (!page.width_pt || !page.height_pt || !boxes.length) return 0;
+  let hit = 0;
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      const x0 = (col / cols) * page.width_pt;
+      const x1 = ((col + 1) / cols) * page.width_pt;
+      const y0 = (row / rows) * page.height_pt;
+      const y1 = ((row + 1) / rows) * page.height_pt;
+      if (boxes.some((box) => box.x < x1 && box.x + box.w > x0 && box.y < y1 && box.y + box.h > y0)) hit += 1;
+    }
+  }
+  return Math.round((hit / (cols * rows)) * 1000) / 10;
+}
+
+export interface DrawOp { op: string; args: number[] }
+
+/** Bounds of PDF path operators. save, restore and transform keep the current matrix. No raster is required. */
+export function inkFromOps(ops: DrawOp[]): InkBox[] {
+  let ctm = [1, 0, 0, 1, 0, 0];
+  const stack: number[][] = [];
+  const boxes: InkBox[] = [];
+  const apply = (x: number, y: number) => ({ x: ctm[0] * x + ctm[2] * y + ctm[4], y: ctm[1] * x + ctm[3] * y + ctm[5] });
+  const addBox = (x0: number, y0: number, x1: number, y1: number) => {
+    if (![x0, y0, x1, y1].every((n) => Number.isFinite(n))) return;
+    const minX = Math.min(x0, x1);
+    const minY = Math.min(y0, y1);
+    boxes.push({ x: minX, y: minY, w: Math.abs(x1 - x0), h: Math.abs(y1 - y0) });
+  };
+  for (const item of ops) {
+    const op = item.op;
+    const args = item.args;
+    if (op === "save") stack.push([...ctm]);
+    else if (op === "restore") ctm = stack.pop() ?? [1, 0, 0, 1, 0, 0];
+    else if (op === "transform" && args.length >= 6) {
+      const [a, b, c, d, e, f] = args;
+      const [A, B, C, D, E, F] = ctm;
+      ctm = [A * a + C * b, B * a + D * b, A * c + C * d, B * c + D * d, A * e + C * f + E, B * e + D * f + F];
+    } else if (op === "rectangle" && args.length >= 4) {
+      const p = apply(args[0], args[1]);
+      const q = apply(args[0] + args[2], args[1] + args[3]);
+      addBox(p.x, p.y, q.x, q.y);
+    } else if ((op === "moveTo" || op === "lineTo" || op === "curveTo") && args.length >= 2) {
+      const pairs: Array<[number, number]> = [];
+      for (let i = 0; i + 1 < args.length; i += 2) pairs.push([args[i], args[i + 1]]);
+      const pts = pairs.map(([x, y]) => apply(x, y));
+      const xs = pts.map((p) => p.x);
+      const ys = pts.map((p) => p.y);
+      addBox(Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys));
+    }
+  }
+  return boxes.filter((box) => box.w > 0 || box.h > 0);
+}
+
 export function reviewPages(pages: PageFact[]): PageCheck[] {
   return pages.map((page) => ({
     page: page.page,
@@ -94,6 +209,10 @@ export function reviewPages(pages: PageFact[]): PageCheck[] {
     width_pt: page.width_pt,
     height_pt: page.height_pt,
     missing_titleblock_text: titleblockMissing(page),
+    past_border: pastBorder(page),
+    text_overlaps: textOverlaps(page),
+    empty_drawing_zone: emptyDrawingZone(page),
+    fill_pct: fillPct(page),
   }));
 }
 

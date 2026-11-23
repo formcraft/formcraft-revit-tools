@@ -544,4 +544,34 @@ test("health last_sync and last_save follow the sync state file, and next_sync i
   assert.equal(row?.last_save, new Date(newer).toISOString());
   if (row?.next_sync) assert.ok(Date.parse(row.next_sync) > now);
 });
+
+test("one lease holds every named document or none, and another document still runs", async () => {
+  const { board: made } = board();
+  const multi = await made.request({
+    document: "Plumbing", documents: ["Electrical", "Plumbing"], label: "B09", client: "mep", bot: "mep", references,
+  });
+  assert.equal(multi.state, "granted");
+  assert.deepEqual(multi.documents, ["Electrical", "Plumbing"]);
+  const electrical = await made.request({ document: "Electrical", label: "lights", client: "e", bot: "e", references });
+  assert.equal(electrical.state, "queued");
+  const architecture = await made.request({ document: "Architecture", label: "walls", client: "a", bot: "a", references });
+  assert.equal(architecture.state, "granted");
+  const onP = made.admit("Plumbing", String(multi.lease), "mep");
+  const onE = made.admit("Electrical", String(multi.lease), "mep");
+  onP.finish();
+  onE.finish();
+  assert.throws(() => made.admit("Architecture", String(multi.lease), "mep"), /FMC-BATCH-LOCKED/);
+  const calls: string[] = [];
+  const synced = board({
+    saveStep: async (ctx) => { calls.push("save:" + ctx.document); return { ran: true, ok: true, detail: "saved" }; },
+    syncStep: async (ctx) => { calls.push("sync:" + ctx.document); return { ran: true, ok: true, synced: true, detail: "synced" }; },
+  }).board;
+  const held = await synced.request({ document: "Plumbing", documents: ["Electrical"], label: "B09b", client: "mep", bot: "mep", references });
+  const released = await synced.releaseWithCare(String(held.lease), "ok", "mep", "done");
+  assert.deepEqual(calls, ["save:Electrical", "sync:Electrical", "save:Plumbing", "sync:Plumbing"]);
+  assert.equal((released.batch_end_syncs as unknown[]).length, 2);
+  made.release(String(multi.lease), "ok", "mep", "done");
+  assert.equal(made.status(String(electrical.lease)).state, "granted");
+  assert.equal(made.status(String(architecture.lease)).state, "granted");
+});
 });

@@ -28,6 +28,11 @@ namespace RevitMCPCommandSet.Services.Fmc
                 using (FmcTarget target = FmcTarget.Resolve(app, Parameters, mayOpen: false))
                 {
                     Document doc = target.Doc;
+                    if (string.Equals(Parameters.Value<string>("action"), "pack", StringComparison.OrdinalIgnoreCase))
+                    {
+                        Result = ReadPack(doc);
+                        return;
+                    }
                     var wanted = new HashSet<string>(String.Equals(Parameters.Value<string>("action"), "park", StringComparison.OrdinalIgnoreCase)
                         ? Strings(Parameters["sheets"] as JArray)
                         : new[] { Parameters.Value<string>("sheet") ?? "" }, StringComparer.OrdinalIgnoreCase);
@@ -193,6 +198,73 @@ namespace RevitMCPCommandSet.Services.Fmc
                 throw new InvalidOperationException("The document is under a protected path.");
         }
 
+        private JObject ReadPack(Document doc)
+        {
+            ViewSheet sheet = FindSheet(doc, Parameters.Value<string>("sheet"));
+            if (sheet == null) throw new InvalidOperationException("[FMC-SHEETS-SHEET] That sheet was not found.");
+            Element title = new FilteredElementCollector(doc, sheet.Id).OfCategory(BuiltInCategory.OST_TitleBlocks).WhereElementIsNotElementType().FirstElement();
+            FamilyInstance instance = title as FamilyInstance;
+            string family = instance?.Symbol?.FamilyName ?? "";
+            var pars = new JObject();
+            foreach (string name in new[] { "FMC_Drawing_Width", "Drawing Width", "Drawing Area Width", "FMC_Drawing_Height", "Drawing Height", "Drawing Area Height", "FMC_Drawing_Left", "Drawing Origin X", "FMC_Drawing_Bottom", "Drawing Origin Y" })
+            {
+                Parameter parameter = title?.LookupParameter(name);
+                if (parameter != null && parameter.HasValue && parameter.StorageType == StorageType.Double)
+                    pars[name] = Math.Round(parameter.AsDouble() * 304.8, 1);
+            }
+            var onSheet = new JArray();
+            var others = new JArray();
+            foreach (Viewport viewport in new FilteredElementCollector(doc).OfClass(typeof(Viewport)).Cast<Viewport>())
+            {
+                if (doc.GetElement(viewport.ViewId) is not View view) continue;
+                string number = doc.GetElement(viewport.OwnerViewId) is ViewSheet host ? host.SheetNumber ?? "" : "";
+                double titleMm = 12;
+                try
+                {
+                    Outline label = viewport.GetLabelOutline();
+                    if (label != null) titleMm = Math.Max(0, Math.Round((label.MaximumPoint.Y - label.MinimumPoint.Y) * 304.8, 1));
+                }
+                catch (Exception) { titleMm = 12; }
+                double modelW = 200 * Math.Max(view.Scale, 1);
+                double modelH = 150 * Math.Max(view.Scale, 1);
+                try
+                {
+                    BoundingBoxXYZ crop = view.CropBox;
+                    if (crop != null)
+                    {
+                        modelW = Math.Round(Math.Abs(crop.Max.X - crop.Min.X) * 304.8, 1);
+                        modelH = Math.Round(Math.Abs(crop.Max.Y - crop.Min.Y) * 304.8, 1);
+                    }
+                }
+                catch (Exception) { }
+                var row = new JObject
+                {
+                    ["id"] = view.Id.Value.ToString(),
+                    ["name"] = view.Name ?? "",
+                    ["sheet"] = number,
+                    ["model_width_mm"] = modelW,
+                    ["model_height_mm"] = modelH,
+                    ["scale"] = view.Scale,
+                    ["title_mm"] = titleMm,
+                };
+                if (string.Equals(number, sheet.SheetNumber, StringComparison.OrdinalIgnoreCase)) onSheet.Add(row);
+                else others.Add(row);
+            }
+            return new JObject
+            {
+                ["read_only"] = true,
+                ["title"] = doc.Title ?? "",
+                ["path"] = doc.PathName ?? "",
+                ["is_central"] = FmcPhaseIds.IsCentral(doc),
+                ["family"] = family,
+                ["params"] = pars,
+                ["sheet"] = sheet.SheetNumber ?? "",
+                ["views"] = onSheet,
+                ["others"] = others,
+                ["resolved_document"] = FmcTarget.Resolved(doc),
+            };
+        }
+
         private void Place(Document doc, JArray done, JArray skipped)
         {
             ViewSheet sheet = FindSheet(doc, Parameters.Value<string>("sheet"));
@@ -211,12 +283,40 @@ namespace RevitMCPCommandSet.Services.Fmc
                     sub.Start();
                     try
                     {
-                        Viewport viewport = new FilteredElementCollector(doc, sheet.Id).OfClass(typeof(Viewport)).Cast<Viewport>().FirstOrDefault(item => item.ViewId == view.Id);
+                        int scale = op.Value<int?>("scale") ?? 0;
+                        if (scale > 0 && view.Scale != scale)
+                        {
+                            try { view.Scale = scale; }
+                            catch (Exception ex)
+                            {
+                                sub.RollBack();
+                                skipped.Add(new JObject { ["view_id"] = view.Id.Value.ToString(), ["code"] = "FMC-SHEETS-SCALE", ["reason"] = ex.Message });
+                                continue;
+                            }
+                        }
+                        Viewport taken = new FilteredElementCollector(doc).OfClass(typeof(Viewport)).Cast<Viewport>().FirstOrDefault(item => item.ViewId == view.Id);
+                        if (taken != null && taken.OwnerViewId != sheet.Id)
+                        {
+                            if (op.Value<bool?>("from_other_sheet") == true)
+                            {
+                                doc.Delete(taken.Id);
+                                doc.Regenerate();
+                                taken = null;
+                            }
+                            else
+                            {
+                                sub.RollBack();
+                                skipped.Add(new JObject { ["view_id"] = view.Id.Value.ToString(), ["code"] = "FMC-SHEETS-VIEW-TAKEN", ["reason"] = "The view is already on another sheet." });
+                                continue;
+                            }
+                        }
+                        Viewport viewport = taken ?? new FilteredElementCollector(doc, sheet.Id).OfClass(typeof(Viewport)).Cast<Viewport>().FirstOrDefault(item => item.ViewId == view.Id);
                         if (viewport != null)
                         {
+                            doc.Regenerate();
                             viewport.SetBoxCenter(at);
                             sub.Commit();
-                            done.Add(new JObject { ["view_id"] = view.Id.Value.ToString(), ["moved"] = true });
+                            done.Add(new JObject { ["view_id"] = view.Id.Value.ToString(), ["moved"] = true, ["scale"] = view.Scale });
                             continue;
                         }
                         if (view is ViewSchedule schedule)

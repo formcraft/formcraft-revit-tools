@@ -5,8 +5,8 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { configPath, loadConfig, type GuardConfig } from "../fmc/policy.js";
 import {
-  PDF_FIX, detectRenderer, pngName, renderWith, reviewPages, safeImageDir, selectPages,
-  type PageFact, type Renderer, type RenderRequest,
+  PDF_FIX, detectRenderer, inkFromOps, pngName, renderWith, reviewPages, safeImageDir, selectPages,
+  type DrawOp, type PageFact, type Renderer, type RenderRequest,
 } from "../fmc/pdfreview.js";
 
 function reply(body: object, isError = false) {
@@ -16,7 +16,9 @@ function reply(body: object, isError = false) {
 export const FMC_PDF_REVIEW_DESCRIPTION =
   "Rasterize an exported PDF and check the pages. PNGs go to %LOCALAPPDATA%\\Formcraft\\images (never D:, never beside the model). " +
   "The renderer is pdftoppm, pdftocairo, Ghostscript, or FMC_PDFIUM. None of those is FMC-PDF-NO-RENDERER and no PNG is written. " +
-  "Checks are blank page, page size (A0 to A4) and missing title-block text. dpi defaults to 110. pages is optional and 1-based. " +
+  "Checks are blank page, page size (A0 to A4), missing title-block text, ink past the border, overlapping text, an empty drawing zone and fill percent. " +
+  "Border, overlap, empty zone and fill use pdf.js text boxes and path operators. They do not need a raster renderer. " +
+  "dpi defaults to 110. pages is optional and 1-based. " +
   "dry_run defaults to true: the checks run and the PNG paths are named, and nothing is written. dry_run false writes the PNGs. " +
   "This does not change a Revit model, so it does not take a batch lease. " +
   "Example: pdf_path C:\\\\Jobs\\\\_Staging\\\\A-101.pdf, pages [1], dpi 110, dry_run true.";
@@ -43,6 +45,41 @@ function failed(error: unknown) {
   const message = error instanceof Error ? error.message : String(error);
   const code = message.match(/FMC-[A-Z0-9-]+/)?.[0] ?? "FMC-PDF";
   return reply({ tool: "fmc_pdf_review", refused: true, code, message, paths: [] }, true);
+}
+
+async function inkOfPage(pdfjs: { OPS?: Record<string, number> }, page: { getOperatorList: () => Promise<{ fnArray: ArrayLike<number>; argsArray: unknown[] }> }): Promise<PageFact["ink"]> {
+  try {
+    const list = await page.getOperatorList();
+    const names = new Map(Object.entries(pdfjs.OPS ?? {}).map(([name, code]) => [code, name]));
+    const draw: DrawOp[] = [];
+    const push = (op: string, args: number[]) => {
+      const name = op === "curveTo2" || op === "curveTo3" ? "curveTo" : op;
+      if (name === "save" || name === "restore" || name === "transform" || name === "moveTo" || name === "lineTo" || name === "curveTo" || name === "rectangle") {
+        draw.push({ op: name, args });
+      }
+    };
+    for (let i = 0; i < list.fnArray.length; i++) {
+      const name = names.get(list.fnArray[i]) ?? "";
+      const raw = list.argsArray[i];
+      if (name === "constructPath" && Array.isArray(raw) && raw.length >= 2) {
+        const pathOps = Array.from(raw[0] as ArrayLike<number>);
+        const nums = Array.from(raw[1] as ArrayLike<number>).map((value) => Number(value));
+        let cursor = 0;
+        for (const code of pathOps) {
+          const pathName = names.get(code) ?? "";
+          const count = pathName === "rectangle" ? 4 : pathName === "curveTo" ? 6 : pathName === "curveTo2" || pathName === "curveTo3" ? 4 : pathName === "moveTo" || pathName === "lineTo" ? 2 : 0;
+          if (!count) continue;
+          push(pathName, nums.slice(cursor, cursor + count));
+          cursor += count;
+        }
+        continue;
+      }
+      if (Array.isArray(raw)) push(name, raw.map((value) => Number(value)));
+    }
+    return inkFromOps(draw);
+  } catch {
+    return [];
+  }
 }
 
 async function readFacts(file: string): Promise<PageFact[]> {
@@ -76,6 +113,7 @@ async function readFacts(file: string): Promise<PageFact[]> {
         height_pt: view.height,
         text: boxes.map((box: { text: string }) => box.text).join(" "),
         boxes,
+        ink: await inkOfPage(pdfjs, page),
       });
       page.cleanup();
     }

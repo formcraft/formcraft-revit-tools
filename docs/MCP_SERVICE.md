@@ -75,6 +75,8 @@ An element owned by someone else in a workshared model is a row error (`owned by
 One bot, one discipline. Up to five documents can be open. A bot that does not hold the document keeps reading and prepares the next batch.
 
 1. `fmc_batch` `request` with `document`, `label` (this batch's name), `bot` (the discipline, for the day's stats), `est_ops`, and `references`. `phase` is optional and is stored on the lease for `fmc_phase` `batch_check`.
+   `documents` lists every model this one lease must hold. They are taken in document-key order, all of them or none, and released together. Save and sync at the end run once per document.
+   `batch_file` is a JSON file of ops. When those ops name more than one `document` and `documents` was not passed, the answer is a sequence of sub-batches. Run one, release it, then request the next. `split` only reads that file.
    `references` needs at least one id in each required category. The defaults are `kit` (a family or template id), `standards` (a standards-bank clause or design value) and `rulebook` (a rule id or a keynote ref such as `S.FND_01`). A missing category is `[FMC-BATCH-NOREFS]`.
 2. If the answer is `queued`, call `wait` with the lease and `timeout_s` of 60 or less, or poll `status`. When the lease is granted the service also sends `notifications/fmc/batch_granted` if the session has a stream.
 3. On every model-changing call pass `document` and `batch_lease` (the lease id). The lease is bound to this MCP session as well: another session that copies the id is refused with `[FMC-BATCH-LOCKED]`. Reads omit `batch_lease` and are never blocked.
