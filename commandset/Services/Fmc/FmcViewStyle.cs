@@ -237,7 +237,11 @@ namespace RevitMCPCommandSet.Services.Fmc
             }
         }
 
-        /// <summary>Returns FMC-VIEWSTYLE-SCHEME-PARAM when the scheme parameter cannot be confirmed. The subtransaction is rolled back.</summary>
+        /// <summary>
+        /// Revit 2025 has no ColorFillScheme.Create. Duplicate an existing Rooms scheme, then set ParameterDefinition
+        /// (the setter exists from 2022 and clears entries). FMC-VIEWSTYLE-NO-SCHEME when nothing can be duplicated.
+        /// FMC-VIEWSTYLE-SCHEME-PARAM when IsValidParameterDefinitionId is false or the setter throws.
+        /// </summary>
         private string RoomFill(Document doc, JArray done, JArray skipped)
         {
             JObject op = Ops().FirstOrDefault();
@@ -249,26 +253,44 @@ namespace RevitMCPCommandSet.Services.Fmc
                 sub.Start();
                 try
                 {
-                    ColorFillScheme scheme = new FilteredElementCollector(doc).OfClass(typeof(ColorFillScheme)).Cast<ColorFillScheme>()
-                        .FirstOrDefault(item => (item.Name ?? "").IndexOf(by, StringComparison.OrdinalIgnoreCase) >= 0);
+                    var schemes = new FilteredElementCollector(doc).OfClass(typeof(ColorFillScheme)).Cast<ColorFillScheme>()
+                        .Where(item => item.CategoryId != null && item.CategoryId.Value == (long)BuiltInCategory.OST_Rooms).ToList();
+                    string schemeName = op.Value<string>("scheme_name");
+                    if (string.IsNullOrWhiteSpace(schemeName)) schemeName = "FMC Rooms by " + by;
+                    ColorFillScheme scheme = schemes.FirstOrDefault(item => string.Equals(item.Name, schemeName, StringComparison.OrdinalIgnoreCase));
                     bool created = false;
                     if (scheme == null)
                     {
-                        // Revit 2025 has no ColorFillScheme.Create. A missing scheme is reported, not created.
+                        ColorFillScheme seed = schemes.FirstOrDefault();
+                        if (seed == null)
+                        {
+                            sub.RollBack();
+                            skipped.Add(new JObject
+                            {
+                                ["code"] = "FMC-VIEWSTYLE-NO-SCHEME",
+                                ["reason"] = "Revit 2025 has no ColorFillScheme.Create. Duplicate needs an existing Rooms colour scheme. This model has none.",
+                            });
+                            return "FMC-VIEWSTYLE-NO-SCHEME";
+                        }
+                        ElementId copyId = seed.Duplicate(schemeName);
+                        scheme = doc.GetElement(copyId) as ColorFillScheme;
+                        if (scheme == null) throw new InvalidOperationException("ColorFillScheme.Duplicate did not return a scheme.");
                         created = true;
                     }
-                    // A scheme this call just created has no public way to bind Department or Name.
-                    // Naming it is not binding it. Only a scheme that already exists for that parameter is filled.
-                    if (created || !SchemeMatches(scheme, by))
+                    try { scheme.Title = schemeName; } catch (Exception) { /* Title is optional; Name came from Duplicate */ }
+                    ElementId parameter = new ElementId(by == "Name" ? BuiltInParameter.ROOM_NAME : BuiltInParameter.ROOM_DEPARTMENT);
+                    if (!scheme.IsValidParameterDefinitionId(parameter))
                     {
                         sub.RollBack();
                         skipped.Add(new JObject
                         {
                             ["code"] = "FMC-VIEWSTYLE-SCHEME-PARAM",
-                            ["reason"] = "Revit can create a room colour scheme, and it cannot bind that scheme to " + by + ". No entry was written on the wrong parameter.",
+                            ["reason"] = "IsValidParameterDefinitionId refused " + (by == "Name" ? "ROOM_NAME" : "ROOM_DEPARTMENT") + " on this Rooms scheme. No entry was written.",
                         });
                         return "FMC-VIEWSTYLE-SCHEME-PARAM";
                     }
+                    if (scheme.ParameterDefinition == null || scheme.ParameterDefinition.Value != parameter.Value)
+                        scheme.ParameterDefinition = parameter;
                     ElementId solid = SolidFill(doc);
                     int added = 0;
                     foreach (JObject entry in (op["entries"] as JArray ?? new JArray()).OfType<JObject>())
@@ -286,31 +308,39 @@ namespace RevitMCPCommandSet.Services.Fmc
                     }
                     string viewName = op.Value<string>("view") ?? "";
                     View view = FindView(doc, viewName, false) ?? new FilteredElementCollector(doc).OfClass(typeof(ViewPlan)).Cast<ViewPlan>().FirstOrDefault(item => !item.IsTemplate && item.ViewType == ViewType.FloorPlan);
+                    string legendId = "";
                     if (view != null)
                     {
                         view.SetColorFillSchemeId(rooms, scheme.Id);
                         if (op.Value<bool?>("legend") != false)
                         {
-                            ColorFillLegend.Create(doc, view.Id, rooms, new XYZ(20 / 304.8, 20 / 304.8, 0));
+                            double paper = 20.0 / 304.8 * Math.Max(1, view.Scale);
+                            ColorFillLegend legend = ColorFillLegend.Create(doc, view.Id, rooms, new XYZ(paper, paper, 0));
+                            legendId = legend.Id.Value.ToString();
                         }
                     }
                     sub.Commit();
-                    done.Add(new JObject { ["scheme"] = scheme.Name, ["id"] = scheme.Id.Value.ToString(), ["created"] = created, ["entries"] = added, ["by"] = by });
+                    done.Add(new JObject
+                    {
+                        ["scheme"] = scheme.Name,
+                        ["id"] = scheme.Id.Value.ToString(),
+                        ["created"] = created,
+                        ["entries"] = added,
+                        ["by"] = by,
+                        ["parameter"] = by == "Name" ? "ROOM_NAME" : "ROOM_DEPARTMENT",
+                        ["legend_id"] = legendId,
+                        ["route"] = "duplicate",
+                    });
                     return "";
                 }
                 catch (Exception ex)
                 {
                     try { if (sub.HasStarted()) sub.RollBack(); } catch (Exception) { }
-                    skipped.Add(new JObject { ["code"] = "FMC-VIEWSTYLE-SCHEME-PARAM", ["reason"] = ex.Message });
-                    return "FMC-VIEWSTYLE-SCHEME-PARAM";
+                    string code = ex.Message.IndexOf("FMC-VIEWSTYLE-NO-SCHEME", StringComparison.Ordinal) >= 0 ? "FMC-VIEWSTYLE-NO-SCHEME" : "FMC-VIEWSTYLE-SCHEME-PARAM";
+                    skipped.Add(new JObject { ["code"] = code, ["reason"] = ex.Message });
+                    return code;
                 }
             }
-        }
-
-        /// <summary>True when an existing scheme is already named for the parameter. A scheme just created by the API is not.</summary>
-        private static bool SchemeMatches(ColorFillScheme scheme, string by)
-        {
-            return (scheme.Name ?? "").IndexOf(by, StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         private List<JObject> Ops() => (Parameters["ops"] as JArray ?? new JArray()).OfType<JObject>().ToList();

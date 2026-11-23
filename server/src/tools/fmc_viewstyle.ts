@@ -19,8 +19,9 @@ export const FMC_VIEWSTYLE_DESCRIPTION =
   "View templates, parameter filters and room colour fills from the kit spec 03_Master_Data/FMC_ViewStyle.json. " +
   "A missing kit file uses the sample under server/data, whose colours are PROVISIONAL and cannot PASS. " +
   "templates creates a view template from from_view and can apply it. filters creates a parameter filter and a colour override. " +
-  "room_fill builds a colour scheme by Department or Name and can place a legend. " +
-  "The colour-scheme API cannot bind the parameter: when it cannot, the result is FMC-VIEWSTYLE-SCHEME-PARAM and no entry is written on the wrong parameter. " +
+  "room_fill binds a Rooms colour scheme to Department or Name and can place a legend. " +
+  "Revit 2025 has no ColorFillScheme.Create. Apply duplicates an existing Rooms scheme, sets ParameterDefinition, adds entries, assigns the view, and places ColorFillLegend.Create. " +
+  "A model with no Rooms scheme is FMC-VIEWSTYLE-NO-SCHEME. A parameter the scheme rejects is FMC-VIEWSTYLE-SCHEME-PARAM. " +
   "dry_run defaults to true. A write is fmc_viewstyle_apply, one transaction, and needs batch_lease plus references.kit, references.standards and references.rulebook. " +
   "JSON under %LOCALAPPDATA%\\Formcraft\\viewstyle. No pictures. " +
   "Example: action room_fill, document F26901-FMC-ZZ-ZZ-M3-A-0002_USER, dry_run true.";

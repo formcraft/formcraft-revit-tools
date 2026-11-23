@@ -35,6 +35,8 @@ test("the sample spec is provisional and the plans name templates, filters and r
   assert.deepEqual((filters.ops[0] as { color: number[] }).color, [160, 160, 160]);
   const rooms = planRoomFill(loaded.spec, [{ department: "Ward" }, { department: "Extra" }]);
   assert.equal(rooms.op?.by, "Department");
+  assert.equal(rooms.op?.route, "duplicate");
+  assert.equal(rooms.op?.parameter, "ROOM_DEPARTMENT");
   assert.equal(rooms.provisional, true);
   assert.ok((rooms.op?.entries as Array<{ value: string }>).some((row) => row.value === "Ward"));
   assert.equal(rooms.op?.legend, true);

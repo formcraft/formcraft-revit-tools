@@ -987,7 +987,7 @@
     "feature": "Keynote placement from a seed",
     "status": "Built, Revit check due",
     "ref": "fmc_keynote_place, docs/KEYNOTE_PLACE.md",
-    "note": "Finds a linked keynote tag of type element, material or user in any view, or copies one from 02_Keynotes/Seeds/FMC_Keynote_Seed.rvt. Copies that seed into every target plan with CopyElements and retargets the host. The API still cannot create the keynote link: a blank copy is rolled back as FMC-NO-API-KEYNOTE-LINK. A missing kit file is FMC-KEYNOTE-SEED-MISSING. A refused copy is FMC-KEYNOTE-COPY-REFUSED. dry_run defaults true. A write is fmc_keynote_place_apply, one transaction, with batch_lease and references. JSON under %LOCALAPPDATA%\\Formcraft\\keynote. No pictures. Needs a Revit check."
+    "note": "Finds a linked keynote tag of type element, material or user in any view, or copies one from 02_Keynotes/Seeds/FMC_Keynote_Seed.rvt. Copies that seed into every target plan with CopyElements and retargets the host. one_per_key defaults true and keeps the element nearest the middle of each keynote value. leader defaults true and sits the head off the wall face. A head that overlaps an existing tag is shifted. The API still cannot create the keynote link: a blank copy is rolled back as FMC-NO-API-KEYNOTE-LINK. A missing kit file is FMC-KEYNOTE-SEED-MISSING. A refused copy is FMC-KEYNOTE-COPY-REFUSED. dry_run defaults true. A write is fmc_keynote_place_apply, one transaction, with batch_lease and references. JSON under %LOCALAPPDATA%\\Formcraft\\keynote. No pictures. Needs a Revit check."
   },
   {
     "id": "F111",
@@ -1005,7 +1005,7 @@
     "feature": "View templates, filters and room colour",
     "status": "Built, Revit check due",
     "ref": "fmc_viewstyle, docs/VIEWSTYLE.md, server/data/FMC_ViewStyle.json",
-    "note": "templates, filters and room_fill read 03_Master_Data/FMC_ViewStyle.json, or the sample under server/data when the kit file is missing. Sample colours are PROVISIONAL and cannot PASS. A template is created from a view. A filter is a parameter filter with a colour. room_fill adds entries only when a scheme already named for Department or Name exists. A scheme the API has just created cannot be bound, and the code is FMC-VIEWSTYLE-SCHEME-PARAM. dry_run defaults true. A write is fmc_viewstyle_apply, one transaction, with batch_lease and references. JSON under %LOCALAPPDATA%\\Formcraft\\viewstyle. No pictures. Needs a Revit check."
+    "note": "templates, filters and room_fill read 03_Master_Data/FMC_ViewStyle.json, or the sample under server/data when the kit file is missing. Sample colours are PROVISIONAL and cannot PASS. A template is created from a view. A filter is a parameter filter with a colour. room_fill duplicates an existing Rooms scheme (ColorFillScheme has no Create in 2025), sets ParameterDefinition to ROOM_NAME or ROOM_DEPARTMENT, adds entries, assigns the view and places ColorFillLegend.Create. No Rooms scheme is FMC-VIEWSTYLE-NO-SCHEME. A rejected parameter is FMC-VIEWSTYLE-SCHEME-PARAM. dry_run defaults true. A write is fmc_viewstyle_apply, one transaction, with batch_lease and references. JSON under %LOCALAPPDATA%\\Formcraft\\viewstyle. No pictures. Needs a Revit check."
   },
   {
     "id": "F113",
@@ -1014,7 +1014,7 @@
     "feature": "Dimension strings",
     "status": "Built, Revit check due",
     "ref": "fmc_dims auto, docs/DIMS.md",
-    "note": "auto plans strings along parallel grids and along exterior walls, with openings in the chain. Interior walls are skipped. chain defaults true. offset_mm defaults to 600. dry_run defaults true and returns the references. A write is fmc_dims_apply, one transaction, one subtransaction per string, with batch_lease and references. A missing reference is FMC-DIMS-NO-REFERENCE and that string is not created. JSON under %LOCALAPPDATA%\\Formcraft\\dims. No pictures. Needs a Revit check."
+    "note": "auto plans strings along parallel grids and along exterior walls, with openings in the chain. targets interior chains interior partitions and does not return FMC-DIMS-NOT-EXTERIOR for those walls. targets rooms places two clear dimensions per room between bounding wall faces. chain defaults true. offset_mm defaults to 600. dry_run defaults true and returns the references. A write is fmc_dims_apply, one transaction, one subtransaction per string, with batch_lease and references. A missing reference is FMC-DIMS-NO-REFERENCE and that string is not created. JSON under %LOCALAPPDATA%\\Formcraft\\dims. No pictures. Needs a Revit check."
   },
   {
     "id": "F114",
@@ -1051,5 +1051,23 @@
     "status": "Built, Revit check due",
     "ref": "fmc_memory",
     "note": "status reports free MB, the Revit working set and open documents including families. free closes unmodified family documents and unmodified non-active non-workshared documents, then GC.Collect. The last document stays. Revit 2025 has no API to clear the undo stack. purge_unused runs PerformanceAdviser rules named unused or purge, with an optional category filter. dry_run defaults true. A write needs batch_lease and is fmc_memory_apply. The reply includes MB before and after. The pause stays 1024 MB and the resume line 1536 MB. Needs a Revit check."
+  },
+  {
+    "id": "F118",
+    "area": "Engine",
+    "group": "Drawings",
+    "feature": "Door, window and room tags on issued plans",
+    "status": "Built, Revit check due",
+    "ref": "fmc_tags, docs/TAGS.md",
+    "note": "Tags untagged doors, windows and rooms on floor plans placed on issued sheets. No leaders. Linked doors use CreateLinkReference. Rooms use NewRoomTag with LinkElementId. A host collector and an OwnerViewId filter both return 0 for those cases, which is why a send_code script reported tags 0. Overlaps shift. dry_run defaults true. A write is fmc_tags_apply, one transaction, one subtransaction per tag, with batch_lease and references. JSON under %LOCALAPPDATA%\\Formcraft\\tags. No pictures. Needs a Revit check."
+  },
+  {
+    "id": "F119",
+    "area": "Engine",
+    "group": "Drawings",
+    "feature": "Keynote legend on plan sheets",
+    "status": "Built, Revit check due",
+    "ref": "fmc_keynote_legend, docs/KEYNOTE_LEGEND.md",
+    "note": "Creates one keynote legend, filters it by sheet, and places it on each plan sheet. The point is the title-block parameter FMC_Legend_Zone, or the kit zone inset from the lower right. keynote_legend and place_schedule are not keynote tags, so a for_each of either runs on the add-in. The sample zone is PROVISIONAL and cannot PASS. dry_run defaults true. A write is fmc_keynote_legend_apply, one transaction, with batch_lease and references. Returns the legend id and viewport ids. JSON under %LOCALAPPDATA%\\Formcraft\\keynote-legend. No pictures. Needs a Revit check."
   }
 ]

@@ -22,10 +22,13 @@ export const FMC_KEYNOTE_PLACE_DESCRIPTION =
   "so this tool finds a linked tag of the right type in any view, or copies one from the kit seed model " +
   "(02_Keynotes/Seeds/FMC_Keynote_Seed.rvt) with CopyElements, then copies that seed into every target view and retargets the host. " +
   "by is element, material or user. views is all_plans or a list of plan names. categories limits the hosts. " +
+  "one_per_key true (the default) keeps one tag per keynote value per view, on the element nearest the middle of that value. Hosts with an empty key are not collapsed. " +
+  "leader true (the default) puts the head off the wall face along the wall normal, past half the wall width, with a leader. " +
+  "A head that overlaps an existing tag box is shifted. If every offset overlaps, the host is FMC-KEYNOTE-OVERLAP and is not tagged. The answer includes counts. " +
   "dry_run defaults to true and returns the per-view plan. A write is fmc_keynote_place_apply, one transaction, one subtransaction per host, " +
   "and needs batch_lease plus references.kit, references.standards and references.rulebook. A blank copy is rolled back. " +
   "The full JSON is under %LOCALAPPDATA%\\Formcraft\\keynote. No pictures. " +
-  "Example: document F26901-FMC-ZZ-ZZ-M3-A-0002_USER, views all_plans, categories [\"Walls\",\"Doors\"], by element, dry_run true.";
+  "Example: document F26901-FMC-ZZ-ZZ-M3-A-0002_USER, views all_plans, categories [\"Walls\",\"Doors\"], by element, one_per_key true, leader true, dry_run true.";
 
 const refs = z.object({
   kit: z.array(z.string()).optional(),
@@ -38,6 +41,9 @@ export const FMC_KEYNOTE_PLACE_SHAPE = {
   views: z.union([z.literal("all_plans"), z.array(z.string())]).optional().default("all_plans"),
   categories: z.array(z.string()).optional().default([]),
   by: z.enum(["element", "material", "user"]),
+  one_per_key: z.boolean().optional().default(true),
+  leader: z.boolean().optional().default(true),
+  offset_mm: z.number().positive().optional().default(600),
   dry_run: z.boolean().optional().default(true),
   batch_lease: z.string().optional().default(""),
   references: refs,
@@ -115,7 +121,10 @@ export async function runFmcKeynotePlace(args: FmcKeynotePlaceArgs, io: KeynoteP
     if (!doc) return reply({ ...stamp(), refused: true, code: "FMC-DOC-NOT-FOUND", message: "The document was not in the read." }, true);
     const seedFile = keynoteSeedPath(kitRootOf(io));
     const exists = io.seedExists ? io.seedExists(seedFile) : (seedFile ? fs.existsSync(seedFile) : false);
-    const plan = planKeynotes(doc, { by, views: args.views, categories: args.categories, seedPath: seedFile, seedExists: exists });
+    const plan = planKeynotes(doc, {
+      by, views: args.views, categories: args.categories, seedPath: seedFile, seedExists: exists,
+      one_per_key: args.one_per_key !== false, leader: args.leader !== false, offset_mm: args.offset_mm,
+    });
     const report = writeKeynoteReport(env, { document: doc.title, by, plan }, io.reportDir);
     const dry = args.dry_run !== false;
     const summary = stamp({
@@ -126,8 +135,11 @@ export async function runFmcKeynotePlace(args: FmcKeynotePlaceArgs, io: KeynoteP
       by,
       seed: plan.seed,
       views: plan.views,
-      placed: plan.views.reduce((n, view) => n + view.placed.length, 0),
-      skipped: plan.views.reduce((n, view) => n + view.skipped.length, 0),
+      placed: plan.counts.placed,
+      skipped: plan.counts.skipped,
+      counts: plan.counts,
+      one_per_key: args.one_per_key !== false,
+      leader: args.leader !== false,
       ...(plan.code ? { code: plan.code, message: KEYNOTE_FIX[plan.code] ?? plan.seed.reason } : {}),
       report,
     });
@@ -151,7 +163,7 @@ export async function runFmcKeynotePlace(args: FmcKeynotePlaceArgs, io: KeynoteP
       views: plan.views.filter((view) => view.placed.length).map((view) => ({
         view_id: view.view_id,
         view: view.view,
-        hosts: view.placed.map((row) => row.host),
+        hosts: view.placed.map((row) => ({ host: row.host, leader: row.leader === true, ...(row.head_mm ? { head_mm: row.head_mm } : {}) })),
       })),
       protected_roots: roots,
       _protected_roots: roots,

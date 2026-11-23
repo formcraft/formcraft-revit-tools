@@ -22,6 +22,10 @@ With `categories` omitted, the read looks at walls, doors, windows, floors, ceil
 
 `views` may be a list of plan names instead of `all_plans`. A view that is not a plan is `FMC-KEYNOTE-VIEW`. A plan with nothing to tag is `FMC-KEYNOTE-NO-HOST`. A host that already has a linked tag of this type is skipped.
 
+`one_per_key` defaults to true. Hosts that share a non-empty keynote value in one view collapse to the element nearest the middle of that group. An empty key is not collapsed. The others are `FMC-KEYNOTE-ONE-PER-KEY`.
+
+`leader` defaults to true. On a wall the head sits off the wall face, along `Wall.Orientation`, by half the wall width plus `offset_mm` (default 600), and the tag leader is on. A head that overlaps an existing tag box is shifted. If every offset overlaps, the host is `FMC-KEYNOTE-OVERLAP`. The answer includes `counts`: hosts, placed, skipped, one_per_key, collision_moved, collision_blocked.
+
 Applying the same plan:
 
 ```json

@@ -52,6 +52,36 @@ test("grid chains are ordered, exterior walls carry openings, and interior walls
   assert.deepEqual(jambs.strings[0]?.references.map((ref) => ref.id), ["d1"]);
 });
 
+test("interior partitions chain across the run, and rooms get two clear dimensions", () => {
+  const partitions = [
+    { id: "p1", function: "interior", x0: 0, y0: 0, x1: 0, y1: 4000 },
+    { id: "p2", function: "interior", x0: 3000, y0: 0, x1: 3000, y1: 4000 },
+  ];
+  const interior = planDims({ walls: partitions, openings: [], targets: ["interior"], chain: true, offset_mm: 600 });
+  assert.equal(interior.skipped.some((row) => row.code === "FMC-DIMS-NOT-EXTERIOR"), false);
+  const chain = interior.strings.find((row) => row.kind === "interior");
+  assert.deepEqual(chain?.references.map((ref) => ref.id), ["p1", "p2"]);
+  assert.equal(chain?.references[0]?.role, "wall_side");
+  const withWalls = planDims({ walls, openings: [], targets: ["walls", "interior"], chain: true, offset_mm: 600 });
+  assert.equal(withWalls.skipped.some((row) => row.id === "w2" && row.code === "FMC-DIMS-NOT-EXTERIOR"), false);
+  const rooms = planDims({
+    walls: [], openings: [], targets: ["rooms"], chain: true, offset_mm: 600,
+    rooms: [{
+      id: "r1", name: "Bedroom", x: 1500, y: 2000,
+      bounds: [
+        { wall_id: "wl", side: "left", x: 0, y: 2000, nx: 1, ny: 0 },
+        { wall_id: "wr", side: "right", x: 3000, y: 2000, nx: -1, ny: 0 },
+        { wall_id: "wb", side: "bottom", x: 1500, y: 0, nx: 0, ny: 1 },
+        { wall_id: "wt", side: "top", x: 1500, y: 4000, nx: 0, ny: -1 },
+      ],
+    }],
+  });
+  assert.equal(rooms.strings.length, 2);
+  assert.ok(rooms.strings.every((row) => row.kind === "rooms"));
+  assert.deepEqual(rooms.strings[0]?.references.map((ref) => ref.role), ["room_side", "room_side"]);
+  assert.equal(rooms.skipped.some((row) => row.code === "FMC-DIMS-NOT-EXTERIOR"), false);
+});
+
 test("a dry run returns the references and does not apply", async () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-dims-"));
   const guard: GuardConfig = { ...DEFAULT_CONFIG };

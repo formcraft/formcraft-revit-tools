@@ -16,7 +16,8 @@ export const VIEWSTYLE_FIX: Record<string, string> = {
   "FMC-VIEWSTYLE-NAME-TAKEN": "A view template or filter with this name already exists. It is not replaced.",
   "FMC-VIEWSTYLE-NO-VIEW": "A template needs from_view, a view to turn into the template.",
   "FMC-VIEWSTYLE-FILTER": "A filter needs categories, one rule and a colour.",
-  "FMC-VIEWSTYLE-SCHEME-PARAM": "The API created a room colour scheme but cannot bind it to Department or Name. Entries were not invented on the wrong parameter.",
+  "FMC-VIEWSTYLE-SCHEME-PARAM": "ColorFillScheme.ParameterDefinition rejected Department or Name (IsValidParameterDefinitionId is false, or the setter threw). Entries were not written.",
+  "FMC-VIEWSTYLE-NO-SCHEME": "Revit 2025 has no ColorFillScheme.Create. Duplicate needs an existing Rooms colour scheme in the model. Make one Rooms scheme by hand, then run this again.",
   "FMC-VIEWSTYLE-ACTION": "action is templates, filters or room_fill.",
 };
 
@@ -236,7 +237,10 @@ export function planRoomFill(spec: ViewStyleSpec, rooms: Array<{ department?: st
       entries,
       status: provisional ? "PROVISIONAL" : (fill.status ?? ""),
       provisional,
-      parameter_note: "Revit’s colour-scheme API does not bind the scheme parameter. Apply reports FMC-VIEWSTYLE-SCHEME-PARAM when Department or Name cannot be selected.",
+      route: "duplicate",
+      scheme_name: `FMC Rooms by ${by}`,
+      parameter: by === "Name" ? "ROOM_NAME" : "ROOM_DEPARTMENT",
+      parameter_note: "Revit 2025 has no ColorFillScheme.Create. Apply duplicates an existing Rooms scheme (ColorFillScheme.Duplicate), sets ParameterDefinition to ROOM_NAME or ROOM_DEPARTMENT, adds one ColorFillSchemeEntry per value, assigns the scheme with SetColorFillSchemeId, and places ColorFillLegend.Create. A model with no Rooms scheme is FMC-VIEWSTYLE-NO-SCHEME. A parameter the scheme rejects is FMC-VIEWSTYLE-SCHEME-PARAM.",
     },
     skipped: [],
     provisional,

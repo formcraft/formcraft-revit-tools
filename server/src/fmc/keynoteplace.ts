@@ -19,6 +19,8 @@ export const KEYNOTE_FIX: Record<string, string> = {
   "FMC-KEYNOTE-NO-HOST": "That view has no element of the requested categories to tag.",
   "FMC-KEYNOTE-VIEW": "That view is not an open plan, or the name was not found.",
   "FMC-KEYNOTE-BY": "by is element, material or user.",
+  "FMC-KEYNOTE-ONE-PER-KEY": "Another element closer to the middle of this keynote value already carries the tag in this view.",
+  "FMC-KEYNOTE-OVERLAP": "The tag head overlaps an existing tag at every candidate offset.",
 };
 
 export type KeyBy = "element" | "material" | "user";
@@ -32,6 +34,10 @@ export interface KeynoteTagRow {
   key_source?: string;
   tag_type?: string;
   linked?: boolean;
+  min_x?: number;
+  min_y?: number;
+  max_x?: number;
+  max_y?: number;
 }
 
 export interface KeynoteHostRow {
@@ -39,6 +45,12 @@ export interface KeynoteHostRow {
   category?: string;
   view_id?: string;
   name?: string;
+  key?: string;
+  x?: number;
+  y?: number;
+  nx?: number;
+  ny?: number;
+  half_mm?: number;
 }
 
 export interface KeynoteViewRow {
@@ -70,6 +82,9 @@ export interface PlacementRow {
   category: string;
   seed_id?: string;
   route: "document" | "kit";
+  leader?: boolean;
+  head_mm?: [number, number];
+  moved?: boolean;
 }
 
 export interface SkipRow {
@@ -157,13 +172,92 @@ export function targetViews(views: KeynoteViewRow[], request: "all_plans" | stri
   return { found, missing };
 }
 
+const TAG_W = 900;
+const TAG_H = 450;
+const HEAD_OFFSETS: Array<[number, number]> = [
+  [0, 0], [600, 0], [-600, 0], [0, 600], [0, -600],
+  [600, 600], [-600, 600], [600, -600], [-600, -600],
+  [1200, 0], [-1200, 0],
+];
+
+interface Box { min_x: number; min_y: number; max_x: number; max_y: number }
+
+function boxesOverlap(a: Box, b: Box): boolean {
+  return a.min_x < b.max_x && a.max_x > b.min_x && a.min_y < b.max_y && a.max_y > b.min_y;
+}
+
+function tagBox(row: KeynoteTagRow): Box | null {
+  if ([row.min_x, row.min_y, row.max_x, row.max_y].some((n) => typeof n !== "number")) return null;
+  return { min_x: row.min_x as number, min_y: row.min_y as number, max_x: row.max_x as number, max_y: row.max_y as number };
+}
+
+/** One host per non-empty keynote value: the one nearest the group's centre. Empty keys stay, one each. */
+export function keepCentral(hosts: KeynoteHostRow[], onePerKey: boolean): { kept: KeynoteHostRow[]; dropped: KeynoteHostRow[] } {
+  if (!onePerKey) return { kept: hosts, dropped: [] };
+  const groups = new Map<string, KeynoteHostRow[]>();
+  const kept: KeynoteHostRow[] = [];
+  for (const host of hosts) {
+    const key = (host.key ?? "").trim();
+    if (!key) { kept.push(host); continue; }
+    const list = groups.get(key) ?? [];
+    list.push(host);
+    groups.set(key, list);
+  }
+  const dropped: KeynoteHostRow[] = [];
+  for (const list of groups.values()) {
+    const cx = list.reduce((n, host) => n + (host.x ?? 0), 0) / list.length;
+    const cy = list.reduce((n, host) => n + (host.y ?? 0), 0) / list.length;
+    const ordered = [...list].sort((a, b) => {
+      const da = ((a.x ?? 0) - cx) ** 2 + ((a.y ?? 0) - cy) ** 2;
+      const db = ((b.x ?? 0) - cx) ** 2 + ((b.y ?? 0) - cy) ** 2;
+      return da - db || String(a.id).localeCompare(String(b.id), undefined, { numeric: true });
+    });
+    kept.push(ordered[0]);
+    dropped.push(...ordered.slice(1));
+  }
+  return { kept, dropped };
+}
+
+function headFor(host: KeynoteHostRow, leader: boolean, offset: number, occupied: Box[]): { leader: boolean; head?: [number, number]; moved: boolean; box?: Box } | null {
+  const hasPoint = typeof host.x === "number" && typeof host.y === "number";
+  if (!hasPoint) return { leader: false, moved: false };
+  let bx = host.x as number;
+  let by = host.y as number;
+  let withLeader = false;
+  if (leader) {
+    const nx = host.nx ?? 0;
+    const ny = host.ny ?? 0;
+    const len = Math.hypot(nx, ny);
+    if (len > 1e-6) {
+      const dist = (host.half_mm ?? 0) + offset;
+      bx += (nx / len) * dist;
+      by += (ny / len) * dist;
+      withLeader = true;
+    }
+  }
+  if (!occupied.length && !withLeader) return { leader: false, moved: false };
+  for (let i = 0; i < HEAD_OFFSETS.length; i++) {
+    const x = bx + HEAD_OFFSETS[i][0];
+    const y = by + HEAD_OFFSETS[i][1];
+    const box = { min_x: x - TAG_W / 2, min_y: y - TAG_H / 2, max_x: x + TAG_W / 2, max_y: y + TAG_H / 2 };
+    if (occupied.some((have) => boxesOverlap(have, box))) continue;
+    const head: [number, number] = [Math.round(x * 10) / 10, Math.round(y * 10) / 10];
+    const moved = i > 0;
+    return { leader: withLeader, head: withLeader || moved ? head : undefined, moved, box };
+  }
+  return null;
+}
+
 export function planKeynotes(doc: KeynoteDoc, args: {
   by: KeyBy;
   views: "all_plans" | string[];
   categories: string[];
   seedPath: string;
   seedExists: boolean;
-}): { seed: SeedPlan; views: ViewPlan[]; code?: string } {
+  one_per_key?: boolean;
+  leader?: boolean;
+  offset_mm?: number;
+}): { seed: SeedPlan; views: ViewPlan[]; code?: string; counts: { hosts: number; placed: number; skipped: number; one_per_key: number; collision_moved: number; collision_blocked: number } } {
   const seedTag = pickSeed(doc.tags ?? [], args.by);
   const seed: SeedPlan = seedTag
     ? {
@@ -191,8 +285,12 @@ export function planKeynotes(doc: KeynoteDoc, args: {
     });
   }
   const hosts = doc.hosts ?? [];
+  const counts = { hosts: 0, placed: 0, skipped: 0, one_per_key: 0, collision_moved: 0, collision_blocked: 0 };
+  const leader = args.leader === true;
+  const offset = args.offset_mm ?? 600;
   for (const view of chosen.found) {
     const inView = hosts.filter((host) => (host.view_id ?? "") === view.id && catOk(host, args.categories));
+    counts.hosts += inView.length;
     const skipped: SkipRow[] = [];
     const placed: PlacementRow[] = [];
     if (seed.code) {
@@ -203,22 +301,49 @@ export function planKeynotes(doc: KeynoteDoc, args: {
       const already = new Set((doc.tags ?? [])
         .filter((tag) => (tag.view_id ?? "") === view.id && linked(tag) && sourceMatches(args.by, tag.key_source, tag.tag_type))
         .map((tag) => String(tag.host ?? "")));
+      const open: KeynoteHostRow[] = [];
       for (const host of inView) {
         if (already.has(String(host.id))) {
           skipped.push({ host: String(host.id), view: view.name, code: "FMC-KEYNOTE-ALREADY", reason: "This host already has a linked keynote of this type in the view." });
           continue;
         }
+        open.push(host);
+      }
+      const reduced = keepCentral(open, args.one_per_key === true);
+      counts.one_per_key += reduced.dropped.length;
+      for (const host of reduced.dropped) {
+        skipped.push({ host: String(host.id), view: view.name, code: "FMC-KEYNOTE-ONE-PER-KEY", reason: KEYNOTE_FIX["FMC-KEYNOTE-ONE-PER-KEY"] });
+      }
+      const occupied: Box[] = (doc.tags ?? [])
+        .filter((tag) => (tag.view_id ?? "") === view.id)
+        .map(tagBox)
+        .filter((box): box is Box => !!box);
+      for (const host of reduced.kept) {
+        const spot = headFor(host, leader, offset, occupied);
+        if (!spot) {
+          counts.collision_blocked += 1;
+          skipped.push({ host: String(host.id), view: view.name, code: "FMC-KEYNOTE-OVERLAP", reason: KEYNOTE_FIX["FMC-KEYNOTE-OVERLAP"] });
+          continue;
+        }
+        if (spot.moved) counts.collision_moved += 1;
+        if (spot.box) occupied.push(spot.box);
         placed.push({
           host: String(host.id),
           category: host.category ?? "",
           seed_id: seed.id,
           route: seed.route,
+          leader: spot.leader,
+          ...(spot.head ? { head_mm: spot.head } : {}),
+          ...(spot.moved ? { moved: true } : {}),
         });
       }
     }
+    counts.placed += placed.length;
+    counts.skipped += skipped.length;
     views.push({ view: view.name, view_id: view.id, placed, skipped });
   }
-  return { seed, views, ...(seed.code ? { code: seed.code } : {}) };
+  counts.skipped += chosen.missing.length;
+  return { seed, views, counts, ...(seed.code ? { code: seed.code } : {}) };
 }
 
 export function referenceProblems(refs: { kit?: string[]; standards?: string[]; rulebook?: string[] } | undefined): string | null {

@@ -12,13 +12,13 @@ export const DIMS_FIX: Record<string, string> = {
   "FMC-DIMS-VIEW": "fmc_dims needs view, a plan view name or id.",
   "FMC-BATCH-LOCKED": "A write needs batch_lease from fmc_batch request.",
   "FMC-DIMS-REFERENCES": "A write needs references.kit, references.standards and references.rulebook.",
-  "FMC-DIMS-TARGETS": "targets is grids, walls, openings, or a list of those.",
+  "FMC-DIMS-TARGETS": "targets is grids, walls, openings, interior, rooms, or a list of those.",
   "FMC-DIMS-NEED-PAIR": "A dimension string needs two references.",
   "FMC-DIMS-NO-REFERENCE": "Revit did not return a stable reference for that element.",
-  "FMC-DIMS-NOT-EXTERIOR": "Interior walls are not dimensioned by this tool.",
+  "FMC-DIMS-NOT-EXTERIOR": "Interior walls are not dimensioned unless targets includes interior.",
 };
 
-export type DimTarget = "grids" | "walls" | "openings";
+export type DimTarget = "grids" | "walls" | "openings" | "interior" | "rooms";
 
 export interface DimCurve {
   id: string;
@@ -40,12 +40,31 @@ export interface DimOpening {
 
 export interface DimRef {
   id: string;
-  role: "grid" | "wall_start" | "wall_end" | "opening";
+  role: "grid" | "wall_start" | "wall_end" | "opening" | "wall_side" | "room_side";
   name?: string;
+  nx?: number;
+  ny?: number;
+}
+
+export interface DimRoomBound {
+  wall_id: string;
+  side: "left" | "right" | "bottom" | "top";
+  x: number;
+  y: number;
+  nx: number;
+  ny: number;
+}
+
+export interface DimRoom {
+  id: string;
+  name?: string;
+  x: number;
+  y: number;
+  bounds: DimRoomBound[];
 }
 
 export interface DimStringPlan {
-  kind: DimTarget;
+  kind: DimTarget | "interior" | "rooms";
   chain: boolean;
   offset_mm: number;
   references: DimRef[];
@@ -169,6 +188,11 @@ export function isExterior(fn: string | undefined): boolean {
   return text === "exterior" || text === "1" || text === "wallfunction.exterior";
 }
 
+export function isInterior(fn: string | undefined): boolean {
+  const text = (fn ?? "").trim().toLowerCase();
+  return text === "interior" || text === "0" || text === "wallfunction.interior";
+}
+
 function along(curve: DimCurve, axis: Axis, x: number, y: number): number {
   return dot(x, y, axis.ux, axis.uy);
 }
@@ -191,9 +215,12 @@ function wallStrings(walls: DimCurve[], openings: DimOpening[], targets: Set<Dim
   const strings: DimStringPlan[] = [];
   const skipped: DimSkip[] = [];
   const exterior: DimCurve[] = [];
+  const wantsInterior = targets.has("interior");
   for (const wall of walls) {
     if (!isExterior(wall.function)) {
-      skipped.push({ id: wall.id, code: "FMC-DIMS-NOT-EXTERIOR", reason: DIMS_FIX["FMC-DIMS-NOT-EXTERIOR"] });
+      if (!wantsInterior || !isInterior(wall.function)) {
+        skipped.push({ id: wall.id, code: "FMC-DIMS-NOT-EXTERIOR", reason: DIMS_FIX["FMC-DIMS-NOT-EXTERIOR"] });
+      }
       continue;
     }
     exterior.push(wall);
@@ -234,10 +261,73 @@ function wallStrings(walls: DimCurve[], openings: DimOpening[], targets: Set<Dim
   return { strings, skipped };
 }
 
+/** Parallel interior partitions, one chain across the run, the same way grids are chained. */
+function interiorStrings(walls: DimCurve[], chain: boolean, offset: number): { strings: DimStringPlan[]; skipped: DimSkip[] } {
+  const strings: DimStringPlan[] = [];
+  const skipped: DimSkip[] = [];
+  const interior = walls.filter((wall) => isInterior(wall.function));
+  for (const group of groupParallel(interior)) {
+    const ordered = sortByNormal(group.items, group.axis);
+    if (ordered.length < 2) {
+      skipped.push({ id: ordered[0]?.id, code: "FMC-DIMS-NEED-PAIR", reason: DIMS_FIX["FMC-DIMS-NEED-PAIR"] });
+      continue;
+    }
+    const batches = chain ? [ordered] : ordered.slice(0, -1).map((item, i) => [item, ordered[i + 1]]);
+    for (const batch of batches) {
+      const s = batch.map((item) => dot((item.x0 + item.x1) / 2, (item.y0 + item.y1) / 2, group.axis.nx, group.axis.ny));
+      strings.push({
+        kind: "interior",
+        chain,
+        offset_mm: offset,
+        references: batch.map((item) => ({ id: item.id, role: "wall_side" as const, name: item.name, nx: r1(group.axis.nx), ny: r1(group.axis.ny) })),
+        line: lineFor(group.axis, stationOf(batch, group.axis, offset), Math.min(...s), Math.max(...s)),
+      });
+    }
+  }
+  return { strings, skipped };
+}
+
+function sideOf(bounds: DimRoomBound[], side: DimRoomBound["side"]): DimRoomBound | undefined {
+  return bounds.find((row) => row.side === side);
+}
+
+/** Two clear dimensions per room, between the bounding wall faces. */
+function roomStrings(rooms: DimRoom[], offset: number): { strings: DimStringPlan[]; skipped: DimSkip[] } {
+  const strings: DimStringPlan[] = [];
+  const skipped: DimSkip[] = [];
+  for (const room of rooms) {
+    if (!(room.bounds ?? []).length) {
+      skipped.push({ id: room.id, code: "FMC-DIMS-NEED-PAIR", reason: DIMS_FIX["FMC-DIMS-NEED-PAIR"] });
+      continue;
+    }
+    const pairs: Array<[DimRoomBound["side"], DimRoomBound["side"], "x" | "y"]> = [["left", "right", "y"], ["bottom", "top", "x"]];
+    for (const [a, b, across] of pairs) {
+      const first = sideOf(room.bounds ?? [], a);
+      const second = sideOf(room.bounds ?? [], b);
+      if (!first || !second) {
+        skipped.push({ id: room.id, code: "FMC-DIMS-NEED-PAIR", reason: DIMS_FIX["FMC-DIMS-NEED-PAIR"] });
+        continue;
+      }
+      const line = across === "y"
+        ? { x0: r1(first.x), y0: r1(room.y), x1: r1(second.x), y1: r1(room.y) }
+        : { x0: r1(room.x), y0: r1(first.y), x1: r1(room.x), y1: r1(second.y) };
+      strings.push({
+        kind: "rooms",
+        chain: false,
+        offset_mm: offset,
+        references: [first, second].map((bound) => ({ id: bound.wall_id, role: "room_side" as const, name: room.name, nx: bound.nx, ny: bound.ny })),
+        line,
+      });
+    }
+  }
+  return { strings, skipped };
+}
+
 export function planDims(input: {
   grids?: DimCurve[];
   walls?: DimCurve[];
   openings?: DimOpening[];
+  rooms?: DimRoom[];
   targets: DimTarget[];
   chain: boolean;
   offset_mm: number;
@@ -252,6 +342,16 @@ export function planDims(input: {
   }
   if (targets.has("walls") || targets.has("openings")) {
     const planned = wallStrings(input.walls ?? [], input.openings ?? [], targets, input.chain, input.offset_mm);
+    strings.push(...planned.strings);
+    skipped.push(...planned.skipped);
+  }
+  if (targets.has("interior")) {
+    const planned = interiorStrings(input.walls ?? [], input.chain, input.offset_mm);
+    strings.push(...planned.strings);
+    skipped.push(...planned.skipped);
+  }
+  if (targets.has("rooms")) {
+    const planned = roomStrings(input.rooms ?? [], input.offset_mm);
     strings.push(...planned.strings);
     skipped.push(...planned.skipped);
   }
