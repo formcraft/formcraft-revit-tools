@@ -70,7 +70,7 @@ An element owned by someone else in a workshared model is a row error (`owned by
 
 One bot, one discipline. Up to five documents can be open. A bot that does not hold the document keeps reading and prepares the next batch.
 
-1. `fmc_batch` `request` with `document`, `label` (this batch's name), `bot` (the discipline, for the day's stats), `est_ops`, and `references`.
+1. `fmc_batch` `request` with `document`, `label` (this batch's name), `bot` (the discipline, for the day's stats), `est_ops`, and `references`. `phase` is optional and is stored on the lease for `fmc_phase` `batch_check`.
    `references` needs at least one id in each required category. The defaults are `kit` (a family or template id), `standards` (a standards-bank clause or design value) and `rulebook` (a rule id or a keynote ref such as `S.FND_01`). A missing category is `[FMC-BATCH-NOREFS]`.
 2. If the answer is `queued`, call `wait` with the lease and `timeout_s` of 60 or less, or poll `status`. When the lease is granted the service also sends `notifications/fmc/batch_granted` if the session has a stream.
 3. On every model-changing call pass `document` and `batch_lease` (the lease id). The lease is bound to this MCP session as well: another session that copies the id is refused with `[FMC-BATCH-LOCKED]`. Reads omit `batch_lease` and are never blocked.
@@ -98,6 +98,14 @@ The batch line does not add its own switches. It reads `fmc_guard.json` → `ai_
 - **Auto-approve.** On only when `mode` is `testing` and `auto_approve` is true, the same test as the approval queue. It skips that queue for an ordinary model change. It does not skip references, keynotes (`fmc_replace`, Gate A), sync and relinquish, Stop AI, or the live-model lock. `fmc_queue` and `/health` show `approval` as `auto` or `manual`.
 
 `FMC_BATCH_IDLE_S`, `FMC_BATCH_MAX_S` and `FMC_BATCH_REQUIRED_REFS` override the lease timing and the reference categories. They are not the save or approval settings.
+
+## Phases and revisions (`fmc_phase`)
+
+`fmc_phase` is one tool. Every call names `document` (exact title or full path). A missing name is `FMC-DOC-REQUIRED`, no match is `FMC-DOC-NOT-FOUND`, and two matches is `FMC-DOC-AMBIGUOUS`. The active document is not a guess.
+
+`phases`, `audit`, `compare` of two phases, and every dry run read the model through `fmc_phase` (one call, no transaction). `compare` of two revisions reads `%APPDATA%\Formcraft\ledger\FMC_Revisions.jsonl` and does not call Revit. `batch_check`, `revision_open`, `revision_cloud`, `issue` and `unissue` with `dry_run` false go through `fmc_phase_apply`, one transaction, at most 50 operations, and need `batch_lease`. `dry_run` defaults to true. The tool does not save or sync. `save_exclude`, `sync_exclude`, `protected_paths` and `auto_save_minutes` are the guard settings that already exist. Elements another user owns, or that are not current, are skipped.
+
+`phase.*` and `revision.*` are read from `FMC_Standards_Building.json`. A missing key uses a provisional default and cannot PASS. A draft or approved entry with a clause can PASS. A null value is UNKNOWN.
 
 ## Roll back
 
