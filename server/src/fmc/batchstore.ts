@@ -24,6 +24,8 @@ export interface StoredTicket {
   reserved?: boolean;
   /** Phase the batch declared. fmc_phase batch_check reads it when its own phase is omitted. */
   phase?: string;
+  /** Every document when one lease covers more than the primary. Absent on a single-document line. */
+  documents?: string[];
 }
 
 export function maintenancePath(env: NodeJS.ProcessEnv = process.env): string {

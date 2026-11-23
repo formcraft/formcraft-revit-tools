@@ -9,8 +9,9 @@ import { batchLease, documentTarget, revitTarget } from "../fmc/target.js";
 import { portRefusal, readInstances } from "../fmc/connect.js";
 import { backoffMs, shouldRetryReset } from "../fmc/reconnect.js";
 import { currentClient, documentDecision } from "../fmc/fairqueue.js";
-import { admitBatchWrite, documentsMatch, leaseHeldDocument } from "../fmc/batchline.js";
-import { attachResolvedDocument, leaseCovers, preferUnstrippedDocument, resolveOpenDocument, type OpenDocRef } from "../fmc/docresolve.js";
+import { admitBatchWrite, documentsMatch, leaseHeldDocuments } from "../fmc/batchline.js";
+import { attachResolvedDocument, leaseCoversAny, preferUnstrippedDocument, resolveOpenDocument, type OpenDocRef } from "../fmc/docresolve.js";
+import { captureCreated } from "../fmc/createdlog.js";
 import { aiGate } from "../fmc/aigate.js";
 import { retryWhileBusy } from "../fmc/busy.js";
 import { DialogBlockingError, blockingForJob } from "../fmc/dialogrules.js";
@@ -191,9 +192,10 @@ export class RevitClientConnection {
         : documentTarget.getStore());
     const lease = batchLease.getStore();
     if (lease && decision.document) {
-      const held = leaseHeldDocument(lease);
-      if (held && !leaseCovers(held, decision.document, documentsMatch)) {
-        throw new Error(`[FMC-BATCH-LOCKED] Lease ${lease} is for ${held}, not ${decision.document.title || decision.document.path}. Refusing to write a different document. busy_reason: ${leaseBusyReason("the lease holder", held)}.`);
+      const held = leaseHeldDocuments(lease);
+      if (held.length && !leaseCoversAny(held, decision.document, documentsMatch)) {
+        const names = held.join(", ");
+        throw new Error(`[FMC-BATCH-LOCKED] Lease ${lease} is for ${names}, not ${decision.document.title || decision.document.path}. Refusing to write a different document. busy_reason: ${leaseBusyReason("the lease holder", names)}.`);
       }
     }
     // fmc_new_local keeps the batch lease on the caller's document title. The Revit `document` on that call is an open
@@ -208,6 +210,7 @@ export class RevitClientConnection {
       const screened = await this.screenOwnership(command, params, aimed);
       if (screened.stopped) return { ok: false, applied: false, skipped: screened.skipped };
       const result = await this.sendLocked(command, screened.params, timeoutMs, long);
+      try { captureCreated(screened.params, result, process.env, lease ?? ""); } catch { /* the created-id log never blocks the write */ }
       if (screened.skipped.length && result && typeof result === "object") {
         const prior = Array.isArray((result as { skipped?: unknown }).skipped) ? (result as { skipped: unknown[] }).skipped : [];
         return { ...(result as Record<string, unknown>), skipped: [...prior, ...screened.skipped] };

@@ -174,6 +174,22 @@ export function isScheduler(client: string, bot: string, names: string[]): boole
   return want.has(client.trim().toLowerCase()) || want.has(bot.trim().toLowerCase());
 }
 
+/** Unique document names in document-key order, so two batches lock the same set in the same order. */
+export function sortDocumentNames(names: string[]): string[] {
+  const seen = new Set<string>();
+  const rows: string[] = [];
+  for (const raw of names) {
+    const name = String(raw ?? "").trim();
+    if (!name) continue;
+    const key = documentKey(name);
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
+    rows.push(name);
+  }
+  rows.sort((a, b) => documentKey(a).localeCompare(documentKey(b)) || a.localeCompare(b));
+  return rows;
+}
+
 export function documentsMatch(held: string, asked: string | undefined): boolean {
   if (!asked || !asked.trim()) return false;
   const a = documentKey(held);
@@ -202,6 +218,10 @@ interface Ticket {
   id: string;
   document: string;
   key: string;
+  /** Every document this lease covers, sorted by document key. */
+  documents: string[];
+  /** documentKey of each name in documents, same order. */
+  keys: string[];
   label: string;
   batchId: string;
   bot: string;
@@ -292,6 +312,8 @@ interface DoneRow {
 
 export interface RequestInput {
   document: string;
+  /** Other documents this one lease must hold. Acquired with document, in document-key order, or not at all. */
+  documents?: string[];
   label: string;
   estOps?: number;
   batchId?: string;
@@ -423,7 +445,8 @@ export class BatchBoard {
 
   async request(input: RequestInput): Promise<Record<string, unknown>> {
     this.sweep();
-    const document = input.document?.trim() ?? "";
+    const documents = sortDocumentNames([input.document ?? "", ...(input.documents ?? [])]);
+    const document = documents[0] ?? "";
     const label = input.label?.trim() ?? "";
     if (!document || !label) {
       throw new BatchGateError("FMC-BATCH-BAD", "[FMC-BATCH-BAD] request needs document and label.");
@@ -448,9 +471,10 @@ export class BatchBoard {
       const text = verdict.message?.trim() || "The reference check refused this batch.";
       throw new BatchGateError("FMC-BATCH-NOREFS", text.startsWith("[FMC-") ? text : `[FMC-BATCH-NOREFS] ${text}`);
     }
-    const key = documentKey(document);
-    this.names.set(key, document);
-    const attemptKey = this.attemptKey(key, batchId);
+    const keys = documents.map((name) => documentKey(name));
+    const key = keys[0];
+    documents.forEach((name, index) => this.names.set(keys[index], name));
+    const attemptKey = this.attemptKey(keys.join("|"), batchId);
     const prior = this.attempts.get(attemptKey);
     if (prior && prior.failures > 0) {
       const note = (input.correction ?? "").trim();
@@ -460,14 +484,14 @@ export class BatchBoard {
           `It is not parked: change the kit, standards or rulebook ids and request again. Last error: ${prior.lastError}`);
       }
     }
-    const existing = [...this.tickets.values()].find((ticket) => ticket.key === key && ticket.batchId.toLowerCase() === batchId.toLowerCase());
+    const existing = [...this.tickets.values()].find((ticket) => this.sameKeys(ticket, keys) && ticket.batchId.toLowerCase() === batchId.toLowerCase());
     if (existing) {
       if (input.phase?.trim()) existing.phase = input.phase.trim();
       if (existing.reserved && existing.bot.toLowerCase() === bot.toLowerCase()) {
         existing.client = input.client;
         existing.reserved = false;
         const head = (this.lines.get(key) ?? [])[0];
-        if (existing.state !== "active" && head === existing.id && !this.grantsPaused(key)) this.grant(existing, false);
+        if (existing.state !== "active" && head === existing.id) this.settle(existing.id);
         this.persist();
         return this.ticketView(existing);
       }
@@ -482,7 +506,7 @@ export class BatchBoard {
     const attempt = (prior?.failures ?? 0) + 1;
     const ticket: Ticket = {
       id: randomUUID(),
-      document, key, label, batchId, bot, client: input.client,
+      document, key, documents, keys, label, batchId, bot, client: input.client,
       estOps: input.estOps && input.estOps > 0 ? Math.floor(input.estOps) : undefined,
       references: copyRefs(refs),
       referencesHash: referencesHash(refs),
@@ -503,11 +527,10 @@ export class BatchBoard {
     stat.lastLabel = label;
     stat.lastClient = input.client;
     if (attempt > 1) stat.retries += 1;
-    if (!this.grantsPaused(key)) this.grant(ticket, false);
-    else {
+    this.enqueue(ticket);
+    this.settle(ticket.id);
+    if (ticket.state !== "active") {
       const line = this.lines.get(key) ?? [];
-      line.push(ticket.id);
-      this.lines.set(key, line);
       if (this.maintenanceReason) this.emit(`${this.maintenanceReason}; queued ${this.where(ticket)} position ${line.length}`);
       else if (this.heldForMemory()) this.emit(`paused for memory; queued ${this.where(ticket)} position ${line.length}`);
       else this.emit(`queued ${this.where(ticket)} position ${line.length} attempt ${attempt}`);
@@ -541,7 +564,7 @@ export class BatchBoard {
     const existing = [...this.tickets.values()].find((ticket) => ticket.key === key && ticket.batchId.toLowerCase() === batchId.toLowerCase());
     if (existing) return this.ticketView(existing);
     const ticket: Ticket = {
-      id: randomUUID(), document, key, label, batchId, bot, client: bot,
+      id: randomUUID(), document, key, documents: [document], keys: [key], label, batchId, bot, client: bot,
       estOps: input.estOps && input.estOps > 0 ? Math.floor(input.estOps) : undefined,
       references: copyRefs(refs), referencesHash: referencesHash(refs), correction: "",
       phase: input.phase?.trim() || undefined,
@@ -603,22 +626,35 @@ export class BatchBoard {
     let finalOutcome = outcome;
     let text = outcome === "failed" ? (error?.trim() || summary?.trim() || "failed") : undefined;
     // The lease title, or the open `_USER` local of that title. Never a name with `_USER` removed.
-    const document = resolveLeaseDocument(ticket.document, this.visibleDocs());
+    // A multi-document lease saves and syncs each document after the leases are dropped together.
+    const cared = this.documentsOf(ticket).map((name) => ({ document: resolveLeaseDocument(name, this.visibleDocs()), key: documentKey(name) }));
+    const document = cared[0]?.document ?? ticket.document;
     let care: { save?: { ran: boolean; ok: boolean; detail: string }; sync?: { ran: boolean; detail: string; error?: string } } | undefined;
     let deferredNow: string | null = null;
     let batchEndSync: { status: "synced" | "deferred" | "skipped"; reason: string; pending: boolean } = {
       status: "skipped", reason: outcome === "ok" ? "No batch-end sync." : "The batch did not finish ok.", pending: false,
     };
+    const syncs: Array<{ document: string; batch_end_sync: { status: "synced" | "deferred" | "skipped"; reason: string; pending: boolean } }> = [];
     try {
     if (outcome === "ok" && (this.saveStep || this.syncStep)) {
-      if (this.holders.get(ticket.key) === ticket.id) this.holders.delete(ticket.key);
-      this.care.add(ticket.key);
-      const deferred = this.docDefer(ticket.key);
+      for (const row of cared) {
+        if (this.holders.get(row.key) === ticket.id) this.holders.delete(row.key);
+        this.care.add(row.key);
+      }
+      for (const row of cared) {
+      const document = row.document;
+      const docKey = row.key;
+      let careOne: { save?: { ran: boolean; ok: boolean; detail: string }; sync?: { ran: boolean; detail: string; error?: string } } | undefined;
+      let deferredNow: string | null = null;
+      let batchEndSync: { status: "synced" | "deferred" | "skipped"; reason: string; pending: boolean } = {
+        status: "skipped", reason: "No batch-end sync.", pending: false,
+      };
+      const deferred = this.docDefer(docKey);
       if (deferred) {
         deferredNow = deferred;
         this.noteDefer(document, deferred);
         this.markPendingBatchEnd(document);
-        care = { save: { ran: false, ok: true, detail: deferred }, sync: { ran: false, detail: deferred } };
+        careOne = { save: { ran: false, ok: true, detail: deferred }, sync: { ran: false, detail: deferred } };
         batchEndSync = { status: "deferred", reason: deferred, pending: true };
       } else if (this.saveStep) {
         let save: { ran: boolean; ok: boolean; detail: string };
@@ -632,10 +668,10 @@ export class BatchBoard {
           deferredNow = save.detail;
           this.noteDefer(document, save.detail);
           this.markPendingBatchEnd(document);
-          care = { save: { ran: false, ok: true, detail: save.detail }, sync: { ran: false, detail: save.detail } };
+          careOne = { save: { ran: false, ok: true, detail: save.detail }, sync: { ran: false, detail: save.detail } };
           batchEndSync = { status: "deferred", reason: save.detail, pending: true };
         } else {
-          care = { save, sync: { ran: false, detail: SYNC_NOT_RUN } };
+          careOne = { save, sync: { ran: false, detail: SYNC_NOT_RUN } };
           if (save.ran && save.ok) this.noteSave(document);
           if (save.ran && !save.ok) {
             finalOutcome = "failed";
@@ -643,14 +679,13 @@ export class BatchBoard {
           }
         }
       }
-    }
     if (finalOutcome === "ok" && this.syncStep && !deferredNow) {
       try {
         const sync = await documentTarget.run(document, () => this.syncStep!({
           document,
           label: ticket.label,
-          changedAt: this.syncState.get(ticket.key)?.changedAt ?? this.syncState.get(documentKey(document))?.changedAt ?? this.now(),
-          lastSyncAt: this.syncState.get(ticket.key)?.lastSyncAt ?? this.syncState.get(documentKey(document))?.lastSyncAt ?? null,
+          changedAt: this.syncState.get(docKey)?.changedAt ?? this.syncState.get(documentKey(document))?.changedAt ?? this.now(),
+          lastSyncAt: this.syncState.get(docKey)?.lastSyncAt ?? this.syncState.get(documentKey(document))?.lastSyncAt ?? null,
           batchEnd: true,
         }));
         if (sync.defer_reason || isDocBusyMessage(sync.detail) || isDocBusyMessage(sync.error)) {
@@ -658,15 +693,15 @@ export class BatchBoard {
           this.noteDefer(document, why);
           this.markPendingBatchEnd(document);
           const row = { ran: false, detail: sync.detail };
-          care = care ? { ...care, sync: row } : { sync: row };
+          careOne = careOne ? { ...careOne, sync: row } : { sync: row };
           batchEndSync = { status: "deferred", reason: why, pending: true };
         } else {
           this.applySync(document, sync);
           const row = { ran: sync.ran, detail: sync.detail, ...(sync.error ? { error: sync.error } : {}) };
-          care = care ? { ...care, sync: row } : { sync: row };
+          careOne = careOne ? { ...careOne, sync: row } : { sync: row };
           batchEndSync = sync.synced
             ? { status: "synced", reason: sync.detail, pending: false }
-            : { status: "skipped", reason: sync.detail, pending: this.isPendingBatchEnd(ticket.key) };
+            : { status: "skipped", reason: sync.detail, pending: this.isPendingBatchEnd(docKey) };
         }
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
@@ -674,25 +709,41 @@ export class BatchBoard {
           this.noteDefer(document, message);
           this.markPendingBatchEnd(document);
           const row = { ran: false, detail: message };
-          care = care ? { ...care, sync: row } : { sync: row };
+          careOne = careOne ? { ...careOne, sync: row } : { sync: row };
           batchEndSync = { status: "deferred", reason: message, pending: true };
         } else {
           this.applySync(document, { ran: true, ok: true, synced: false, detail: `Sync did not finish. The batch is not failed. ${message}`, error: message });
           this.markPendingBatchEnd(document);
           const row = { ran: true, detail: `Sync did not finish. The batch is not failed. ${message}`, error: message };
-          care = care ? { ...care, sync: row } : { sync: row };
+          careOne = careOne ? { ...careOne, sync: row } : { sync: row };
           batchEndSync = { status: "deferred", reason: message, pending: true };
         }
       }
     }
-    } finally {
-      this.care.delete(ticket.key);
+      if (finalOutcome !== "ok" && batchEndSync.status !== "deferred") {
+        batchEndSync = { status: "skipped", reason: text || "The batch did not finish ok.", pending: false };
+      }
+      syncs.push({ document, batch_end_sync: batchEndSync });
+      if (!care) care = careOne;
+      }
     }
-    if (finalOutcome !== "ok" && batchEndSync.status !== "deferred") {
+    } finally {
+      for (const row of cared) this.care.delete(row.key);
+    }
+    if (!syncs.length && finalOutcome !== "ok") {
       batchEndSync = { status: "skipped", reason: text || "The batch did not finish ok.", pending: false };
+    } else if (syncs[0]) {
+      batchEndSync = syncs[0].batch_end_sync;
     }
     const done = this.endActive(ticket, finalOutcome, "release", text, summary?.trim() ?? "", care);
-    return { ...done, document: ticket.document, sync_document: document, batch_end_sync: batchEndSync };
+    return {
+      ...done,
+      document: ticket.document,
+      ...(cared.length > 1 ? { documents: cared.map((row) => row.document) } : {}),
+      sync_document: document,
+      batch_end_sync: batchEndSync,
+      ...(syncs.length > 1 ? { batch_end_syncs: syncs } : {}),
+    };
   }
 
   /** A lease, a save still finishing, low memory, or a drain. The save itself is not a lease. */
@@ -705,9 +756,8 @@ export class BatchBoard {
     const ticket = this.tickets.get(lease);
     if (!ticket || ticket.client !== client) throw new BatchGateError("FMC-BATCH-BAD", "[FMC-BATCH-BAD] cancel needs a queued lease from this session.");
     if (ticket.state === "active") throw new BatchGateError("FMC-BATCH-BAD", "[FMC-BATCH-BAD] This lease is running. release it with outcome ok or failed.");
-    const line = this.lines.get(ticket.key) ?? [];
-    this.lines.set(ticket.key, line.filter((id) => id !== ticket.id));
-    if (ticket.ops > 0) this.markPendingBatchEnd(ticket.document);
+    this.unline(ticket);
+    if (ticket.ops > 0) for (const name of this.documentsOf(ticket)) this.markPendingBatchEnd(name);
     this.tickets.delete(ticket.id);
     this.rememberDone(ticket, { state: "done", outcome: "failed", end: "release", summary: "cancelled while queued", attempt: ticket.attempt, document: ticket.document, label: ticket.label, batch_id: ticket.batchId, bot: ticket.bot, ops: 0, references: ticket.references });
     this.wake(ticket.id);
@@ -723,8 +773,7 @@ export class BatchBoard {
       if (ticket.state === "active") {
         this.endActive(ticket, "failed", "disconnect", "Client disconnected while holding the lease. The model was not rolled back.");
       } else {
-        const line = this.lines.get(ticket.key) ?? [];
-        this.lines.set(ticket.key, line.filter((id) => id !== ticket.id));
+        this.unline(ticket);
         this.tickets.delete(ticket.id);
         this.rememberDone(ticket, {
           state: "done", outcome: "failed", end: "disconnect",
@@ -743,7 +792,7 @@ export class BatchBoard {
   sweep(at = this.now()): string[] {
     this.pullMaintenance();
     const expired: string[] = [];
-    for (const id of [...this.holders.values()]) {
+    for (const id of [...new Set(this.holders.values())]) {
       const ticket = this.tickets.get(id);
       if (!ticket || ticket.client === "fmc-sync") continue;
       const hard = at - (ticket.grantedAt ?? ticket.requestedAt) >= this.maxMs;
@@ -787,9 +836,15 @@ export class BatchBoard {
    */
   /** The document a lease was granted for, when this process still has that lease. */
   heldDocument(lease: string): string | undefined {
+    return this.heldDocuments(lease)[0];
+  }
+
+  /** Every document this lease covers. Empty when the lease is unknown. Includes a queued lease. */
+  heldDocuments(lease: string): string[] {
     const id = lease.trim();
-    if (!id) return undefined;
-    return this.tickets.get(id)?.document;
+    if (!id) return [];
+    const ticket = this.tickets.get(id);
+    return ticket ? this.documentsOf(ticket) : [];
   }
 
   admit(document: string | undefined, lease: string | undefined, client: string): { finish: () => void } {
@@ -869,9 +924,24 @@ export class BatchBoard {
     };
   }
 
+  private unline(ticket: Ticket): void {
+    for (const key of this.keysOf(ticket)) {
+      const line = (this.lines.get(key) ?? []).filter((id) => id !== ticket.id);
+      if (line.length) this.lines.set(key, line);
+      else this.lines.delete(key);
+    }
+  }
+
   private holderFor(document: string | undefined): Ticket | undefined {
-    const actives = [...this.holders.values()].map((id) => this.tickets.get(id)).filter((ticket): ticket is Ticket => !!ticket);
-    if (document && document.trim()) return actives.find((ticket) => documentsMatch(ticket.document, document));
+    const seen = new Set<string>();
+    const actives: Ticket[] = [];
+    for (const id of this.holders.values()) {
+      if (seen.has(id)) continue;
+      seen.add(id);
+      const ticket = this.tickets.get(id);
+      if (ticket) actives.push(ticket);
+    }
+    if (document && document.trim()) return actives.find((ticket) => this.documentsOf(ticket).some((name) => documentsMatch(name, document)));
     if (actives.length === 1) return actives[0];
     if (actives.length > 1) {
       throw new BatchGateError("FMC-BATCH-LOCKED",
@@ -919,13 +989,140 @@ export class BatchBoard {
     if (!reason) this.resumeGrants();
   }
 
+  private keysOf(ticket: Ticket): string[] {
+    return ticket.keys?.length ? ticket.keys : [ticket.key];
+  }
+
+  private documentsOf(ticket: Ticket): string[] {
+    return ticket.documents?.length ? ticket.documents : [ticket.document];
+  }
+
+  private sameKeys(ticket: Ticket, keys: string[]): boolean {
+    const have = this.keysOf(ticket);
+    return have.length === keys.length && have.every((key, index) => key === keys[index]);
+  }
+
+  private enqueue(ticket: Ticket): void {
+    const names = this.documentsOf(ticket);
+    this.keysOf(ticket).forEach((key, index) => {
+      this.names.set(key, names[index] ?? ticket.document);
+      const line = this.lines.get(key) ?? [];
+      if (!line.includes(ticket.id)) line.push(ticket.id);
+      this.lines.set(key, line);
+    });
+  }
+
+  /** True when this ticket is the head of every document it needs and none of those documents is held or in care. */
+  private ready(ticket: Ticket): boolean {
+    for (const key of this.keysOf(ticket)) {
+      if (this.care.has(key)) return false;
+      const holder = this.holders.get(key);
+      if (holder && holder !== ticket.id) return false;
+      if (holder === ticket.id) continue;
+      if ((this.lines.get(key) ?? [])[0] !== ticket.id) return false;
+    }
+    return this.keysOf(ticket).length > 0;
+  }
+
+  private canGrantNow(ticket: Ticket): boolean {
+    if (this.maintenanceReason || this.heldForMemory()) return false;
+    return this.ready(ticket);
+  }
+
+  /** The queue head this ticket is waiting on, when that wait is another queued ticket and not an active lease. */
+  private waitFor(ticket: Ticket): Ticket | null {
+    for (const key of this.keysOf(ticket)) {
+      if (this.holders.has(key) && this.holders.get(key) !== ticket.id) return null;
+      if (this.care.has(key)) return null;
+      const head = (this.lines.get(key) ?? [])[0];
+      if (head && head !== ticket.id) return this.tickets.get(head) ?? null;
+    }
+    return null;
+  }
+
+  private findCycle(start: Ticket): Ticket[] | null {
+    const chain: Ticket[] = [];
+    let current: Ticket | null = start;
+    const guard = new Set<string>();
+    while (current) {
+      const again = chain.indexOf(current);
+      if (again >= 0) return chain.slice(again);
+      if (guard.has(current.id)) return null;
+      guard.add(current.id);
+      chain.push(current);
+      current = this.waitFor(current);
+    }
+    return null;
+  }
+
+  /**
+   * A cycle of multi-document heads cannot move. The ticket whose first document key sorts first
+   * moves to the front of its own lines, and only past the other tickets in the cycle.
+   */
+  private breakCycles(): void {
+    const seen = new Set<string>();
+    for (const key of [...this.lines.keys()].sort()) {
+      const id = (this.lines.get(key) ?? [])[0];
+      if (!id || seen.has(id)) continue;
+      const head = this.tickets.get(id);
+      if (!head) continue;
+      seen.add(id);
+      if (this.ready(head)) continue;
+      const cycle = this.findCycle(head);
+      if (!cycle || cycle.length < 2) continue;
+      const winner = [...cycle].sort((a, b) => {
+        const ak = this.keysOf(a)[0] ?? "";
+        const bk = this.keysOf(b)[0] ?? "";
+        if (ak !== bk) return ak < bk ? -1 : 1;
+        if (a.requestedAt !== b.requestedAt) return a.requestedAt - b.requestedAt;
+        return a.id < b.id ? -1 : 1;
+      })[0];
+      const members = new Set(cycle.map((ticket) => ticket.id));
+      for (const docKey of this.keysOf(winner)) {
+        const line = [...(this.lines.get(docKey) ?? [])];
+        const index = line.indexOf(winner.id);
+        if (index <= 0) continue;
+        if (!line.slice(0, index).every((item) => members.has(item))) continue;
+        this.lines.set(docKey, [winner.id, ...line.filter((item) => item !== winner.id)]);
+      }
+    }
+  }
+
+  /** Grant every ready head. silentId is the request that is still in this call, so it does not notify itself. */
+  private settle(silentId?: string): void {
+    if (this.maintenanceReason || this.heldForMemory()) return;
+    for (let pass = 0; pass < 32; pass++) {
+      this.breakCycles();
+      let granted = false;
+      for (const key of [...this.lines.keys()].sort()) {
+        if (this.holders.has(key) || this.care.has(key)) continue;
+        const line = this.lines.get(key) ?? [];
+        while (line.length && !this.tickets.has(line[0])) line.shift();
+        if (!line.length) {
+          this.lines.delete(key);
+          continue;
+        }
+        this.lines.set(key, line);
+        const next = this.tickets.get(line[0]);
+        if (!next || !this.canGrantNow(next)) continue;
+        this.grant(next, next.id !== silentId);
+        granted = true;
+        break;
+      }
+      if (!granted) return;
+    }
+  }
+
   private grant(ticket: Ticket, notify: boolean): void {
     ticket.state = "active";
     ticket.grantedAt = this.now();
     ticket.lastBeat = ticket.grantedAt;
-    this.holders.set(ticket.key, ticket.id);
-    const line = this.lines.get(ticket.key) ?? [];
-    this.lines.set(ticket.key, line.filter((id) => id !== ticket.id));
+    for (const key of this.keysOf(ticket)) {
+      this.holders.set(key, ticket.id);
+      const line = (this.lines.get(key) ?? []).filter((id) => id !== ticket.id);
+      if (line.length) this.lines.set(key, line);
+      else this.lines.delete(key);
+    }
     this.emit(`granted ${this.where(ticket)} attempt ${ticket.attempt}`);
     if (notify) {
       const notice: GrantNotice = { client: ticket.client, lease: ticket.id, document: ticket.document, label: ticket.label, bot: ticket.bot, attempt: ticket.attempt };
@@ -956,17 +1153,7 @@ export class BatchBoard {
       for (const id of line) this.wake(id);
       return;
     }
-    const line = this.lines.get(key) ?? [];
-    while (line.length) {
-      const id = line.shift()!;
-      const next = this.tickets.get(id);
-      if (!next) continue;
-      this.lines.set(key, line);
-      this.grant(next, true);
-      return;
-    }
-    this.holders.delete(key);
-    this.lines.delete(key);
+    this.settle();
   }
 
   private endActive(ticket: Ticket, outcome: "ok" | "failed", end: BatchEnd, error?: string, summary = "", care?: { save?: { ran: boolean; ok: boolean; detail: string }; sync?: { ran: boolean; detail: string } }): Record<string, unknown> {
@@ -982,9 +1169,6 @@ export class BatchBoard {
       ...(care?.save ? { save: care.save } : {}),
       ...(care?.sync ? { sync: care.sync } : {}),
     };
-    const hist = this.history.get(ticket.key) ?? [];
-    hist.unshift(row);
-    this.history.set(ticket.key, hist.slice(0, HISTORY_LIMIT));
     const stat = this.botStat(ticket.bot);
     stat.finished += 1;
     stat.waitMs += wait;
@@ -994,14 +1178,15 @@ export class BatchBoard {
     stat.lastLabel = ticket.label;
     stat.lastClient = ticket.client;
     let help: CorrectionHelp | undefined;
+    const attemptDoc = this.keysOf(ticket).join("|");
     if (outcome === "ok") {
       stat.batches += 1;
-      this.attempts.delete(this.attemptKey(ticket.key, ticket.batchId));
+      this.attempts.delete(this.attemptKey(attemptDoc, ticket.batchId));
       this.emit(`released ok ${this.where(ticket)} ops ${ticket.ops} in ${duration}ms. Not rolled back.`);
     } else {
       stat.failures += 1;
       help = correctionHelp({ error: error || "failed", references: ticket.references, label: ticket.label, bot: ticket.bot });
-      const key = this.attemptKey(ticket.key, ticket.batchId);
+      const key = this.attemptKey(attemptDoc, ticket.batchId);
       const prior = this.attempts.get(key) ?? {
         failures: 0, lastError: "", referencesHash: ticket.referencesHash, lastCorrection: "", bot: ticket.bot,
         label: ticket.label, batchId: ticket.batchId, document: ticket.document, references: ticket.references,
@@ -1018,6 +1203,12 @@ export class BatchBoard {
     }
     if (help) row.correction = help;
     if (ticket.attempt > 3) row.struggling = true;
+    for (const docKey of this.keysOf(ticket)) {
+      const copy: HistoryRow = { ...row, document: this.names.get(docKey) ?? row.document, references: copyRefs(row.references) };
+      const hist = this.history.get(docKey) ?? [];
+      hist.unshift(copy);
+      this.history.set(docKey, hist.slice(0, HISTORY_LIMIT));
+    }
     const struggling = ticket.attempt > 3;
     const done: DoneRow = {
       state: "done", outcome, end, ...(error ? { error } : {}), summary, attempt: ticket.attempt, struggling,
@@ -1025,14 +1216,16 @@ export class BatchBoard {
       references: copyRefs(ticket.references), ...(help ? { correction: help } : {}),
     };
     this.rememberDone(ticket, done);
-    this.holders.delete(ticket.key);
+    for (const docKey of this.keysOf(ticket)) {
+      if (this.holders.get(docKey) === ticket.id) this.holders.delete(docKey);
+    }
     this.tickets.delete(ticket.id);
     if ((end === "expired" || end === "max_duration" || end === "disconnect") && ticket.ops > 0 && ticket.client !== "fmc-sync") {
-      this.markPendingBatchEnd(ticket.document);
+      for (const name of this.documentsOf(ticket)) this.markPendingBatchEnd(name);
     }
-    invalidateReads(ticket.document);
+    for (const name of this.documentsOf(ticket)) invalidateReads(name);
     this.wake(ticket.id);
-    this.promote(ticket.key);
+    this.settle();
     this.persist();
     return { ok: true, ...done, lease: ticket.id };
   }
@@ -1052,17 +1245,25 @@ export class BatchBoard {
   }
 
   private ticketView(ticket: Ticket): Record<string, unknown> {
-    const line = this.lines.get(ticket.key) ?? [];
-    const index = line.indexOf(ticket.id);
-    const position = ticket.state === "active" ? 0 : index + 1;
+    let position = 0;
+    let holder: Ticket | undefined;
+    if (ticket.state !== "active") {
+      position = 1;
+      for (const key of this.keysOf(ticket)) {
+        const index = (this.lines.get(key) ?? []).indexOf(ticket.id);
+        position = Math.max(position, index < 0 ? 1 : index + 1);
+        const holderId = this.holders.get(key);
+        if (holderId && holderId !== ticket.id) holder = this.tickets.get(holderId) ?? holder;
+      }
+    }
     const eta = ticket.state === "queued" ? this.eta(ticket.key, position) : { eta_hint_s: 0, eta_basis: "granted" };
-    const holderId = this.holders.get(ticket.key);
-    const holder = holderId ? this.tickets.get(holderId) : undefined;
+    const documents = this.documentsOf(ticket);
     return {
       ok: true,
       state: ticket.state === "active" ? "granted" : ticket.state,
       lease: ticket.id,
       document: ticket.document,
+      ...(documents.length > 1 ? { documents } : {}),
       label: ticket.label,
       batch_id: ticket.batchId,
       bot: ticket.bot,
@@ -1223,20 +1424,25 @@ export class BatchBoard {
    * Call resumeAfterRecovery once the documents are open again.
    */
   requeueForRecovery(document?: string): { requeued: Array<{ lease: string; document: string; label: string; position: number }> } {
-    const keys = document ? [documentKey(document)] : [...this.holders.keys()];
+    const wanted = document ? new Set([documentKey(document)]) : null;
+    const seen = new Set<string>();
     const requeued: Array<{ lease: string; document: string; label: string; position: number }> = [];
-    for (const key of keys) {
-      const id = this.holders.get(key);
-      if (!id) continue;
+    for (const [key, id] of [...this.holders.entries()]) {
+      if (wanted && !wanted.has(key)) continue;
+      if (seen.has(id)) continue;
       const ticket = this.tickets.get(id);
       if (!ticket || ticket.client === "fmc-sync") continue;
+      seen.add(id);
       ticket.state = "queued";
-      this.holders.delete(key);
-      const line = this.lines.get(key) ?? [];
-      line.push(ticket.id);
-      this.lines.set(key, line);
-      requeued.push({ lease: ticket.id, document: ticket.document, label: ticket.label, position: line.length });
-      this.emit(`requeued after recovery ${this.where(ticket)} at position ${line.length}. The model was not rolled back.`);
+      for (const docKey of this.keysOf(ticket)) {
+        if (this.holders.get(docKey) === id) this.holders.delete(docKey);
+        const line = this.lines.get(docKey) ?? [];
+        if (!line.includes(id)) line.push(id);
+        this.lines.set(docKey, line);
+      }
+      const position = (this.lines.get(ticket.key) ?? []).length;
+      requeued.push({ lease: ticket.id, document: ticket.document, label: ticket.label, position });
+      this.emit(`requeued after recovery ${this.where(ticket)} at position ${position}. The model was not rolled back.`);
       this.wake(ticket.id);
     }
     return { requeued };
@@ -1389,7 +1595,8 @@ export class BatchBoard {
   /** A write still inside this document's own lease. Another document's job does not count. */
   private docWritesInFlight(key: string): boolean {
     for (const ticket of this.tickets.values()) {
-      if (ticket.key === key && ticket.client !== "fmc-sync" && ticket.writesInFlight > 0) return true;
+      if (ticket.client === "fmc-sync" || ticket.writesInFlight <= 0) continue;
+      if (this.keysOf(ticket).includes(key)) return true;
     }
     return false;
   }
@@ -1521,7 +1728,7 @@ export class BatchBoard {
     const now = this.now();
     const id = `sync-${randomUUID()}`;
     const ticket: Ticket = {
-      id, document, key, label: "sync", batchId: "sync", bot: "sync", client: "fmc-sync",
+      id, document, key, documents: [document], keys: [key], label: "sync", batchId: "sync", bot: "sync", client: "fmc-sync",
       references: {}, referencesHash: "", correction: "", state: "active", attempt: 1,
       requestedAt: now, grantedAt: now, lastBeat: now, ops: 0, writesInFlight: 1,
     };
@@ -1615,20 +1822,25 @@ export class BatchBoard {
   importLine(tickets: StoredTicket[]): number {
     let n = 0;
     for (const row of tickets) {
-      if (this.tickets.has(row.id)) continue;
       const key = documentKey(row.document);
-      const ticket: Ticket = {
-        id: row.id, document: row.document, key, label: row.label, batchId: row.batchId, bot: row.bot, client: row.client,
-        estOps: row.estOps, references: copyRefs(row.references), referencesHash: referencesHash(row.references),
-        correction: row.correction ?? "", phase: row.phase?.trim() || undefined, reserved: row.reserved === true, state: "queued", attempt: row.attempt || 1,
-        requestedAt: row.requestedAt || this.now(), lastBeat: this.now(), ops: 0, writesInFlight: 0,
-      };
-      this.tickets.set(ticket.id, ticket);
+      if (!this.tickets.has(row.id)) {
+        const documents = sortDocumentNames(row.documents?.length ? row.documents : [row.document]);
+        const keys = documents.map((name) => documentKey(name));
+        const ticket: Ticket = {
+          id: row.id, document: documents[0] ?? row.document, key: keys[0] ?? key, documents, keys,
+          label: row.label, batchId: row.batchId, bot: row.bot, client: row.client,
+          estOps: row.estOps, references: copyRefs(row.references), referencesHash: referencesHash(row.references),
+          correction: row.correction ?? "", phase: row.phase?.trim() || undefined, reserved: row.reserved === true, state: "queued", attempt: row.attempt || 1,
+          requestedAt: row.requestedAt || this.now(), lastBeat: this.now(), ops: 0, writesInFlight: 0,
+        };
+        this.tickets.set(ticket.id, ticket);
+        documents.forEach((name, index) => this.names.set(keys[index], name));
+        n += 1;
+      }
       this.names.set(key, row.document);
       const line = this.lines.get(key) ?? [];
-      line.push(ticket.id);
+      if (!line.includes(row.id)) line.push(row.id);
       this.lines.set(key, line);
-      n += 1;
     }
     return n;
   }
@@ -1664,6 +1876,7 @@ export class BatchBoard {
           attempt: ticket.attempt, requestedAt: ticket.requestedAt, ...(ticket.estOps ? { estOps: ticket.estOps } : {}),
           ...(ticket.phase ? { phase: ticket.phase } : {}),
           ...(ticket.reserved ? { reserved: true } : {}),
+          ...(this.documentsOf(ticket).length > 1 ? { documents: this.documentsOf(ticket) } : {}),
         });
       }
     }
@@ -1782,9 +1995,14 @@ export function logBatchRestart(env: NodeJS.ProcessEnv = process.env): BatchBoar
  * Returns a finish() the caller runs when the Revit call returns, so a long write counts as liveness.
  */
 export function leaseHeldDocument(lease: string | undefined): string | undefined {
+  return leaseHeldDocuments(lease)[0];
+}
+
+/** Every document a lease covers. Empty when this process does not have that lease. */
+export function leaseHeldDocuments(lease: string | undefined): string[] {
   const id = (lease ?? "").trim();
-  if (!id) return undefined;
-  return batchBoard().heldDocument(id);
+  if (!id) return [];
+  return batchBoard().heldDocuments(id);
 }
 
 export function admitBatchWrite(command: string, document: string | undefined, lease: string | undefined, client: string): { finish: () => void } {

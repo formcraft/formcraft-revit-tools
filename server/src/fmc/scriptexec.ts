@@ -12,9 +12,9 @@ import { JobStillRunning } from "../utils/SocketClient.js";
 import { documentTarget, batchLease, revitTarget } from "./target.js";
 import { currentClient, documentDecision } from "./fairqueue.js";
 import { readInstances } from "./connect.js";
-import { leaseCovers, resolvedDocumentFrom, type ResolvedDocument } from "./docresolve.js";
+import { leaseCoversAny, resolvedDocumentFrom, type ResolvedDocument } from "./docresolve.js";
 import { inFlightJob, readRevitJobLines } from "./notidle.js";
-import { documentsMatch, batchBoard } from "./batchline.js";
+import { batchBoard, documentsMatch, leaseHeldDocuments } from "./batchline.js";
 import { jobResult, jobFiles } from "./jobs.js";
 import { loadConfig, type GuardConfig } from "./policy.js";
 import { waitWhileBusy } from "./batchstep.js";
@@ -183,9 +183,9 @@ function leaseProblem(mode: string, document: string): string | null {
   if (mode !== "apply") return null;
   const lease = (batchLease.getStore() ?? "").trim();
   if (!lease) return "[FMC-BATCH-LOCKED] mode apply needs batch_lease for this document.";
-  const held = (() => { try { return batchBoard().heldDocument(lease); } catch { return undefined; } })();
-  if (held && !leaseCovers(held, { title: document, path: document }, documentsMatch)) {
-    return `[FMC-BATCH-LOCKED] Lease ${lease} is for ${held}, not ${document}.`;
+  const held = (() => { try { return leaseHeldDocuments(lease); } catch { return []; } })();
+  if (held.length && !leaseCoversAny(held, { title: document, path: document }, documentsMatch)) {
+    return `[FMC-BATCH-LOCKED] Lease ${lease} is for ${held.join(", ")}, not ${document}.`;
   }
   return null;
 }

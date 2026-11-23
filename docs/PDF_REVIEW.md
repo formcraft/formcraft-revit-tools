@@ -13,6 +13,10 @@ Checks:
 - `blank` when the page has no text.
 - `page_size` is A0, A1, A2, A3 or A4, portrait or landscape, within 2 percent. Anything else is null.
 - `missing_titleblock_text` when no text sits in the bottom 18 percent or the right 22 percent of the page. Without positions, a page with no sheet number (`A-101`) is treated as missing the title block.
+- `past_border` when text or path ink sits closer than 10 pt to the media edge. Path bounds come from pdf.js operators (`transform`, `rectangle`, `moveTo`, `lineTo`, `curveTo`, `constructPath`). No raster is required.
+- `text_overlaps` counts pdf.js text-item boxes that intersect.
+- `empty_drawing_zone` when nothing sits inside the border and outside the title-block band.
+- `fill_pct` is the share of the page covered by those boxes, on a 20 by 20 grid.
 
 ## Check one export
 
@@ -27,6 +31,6 @@ Checks:
 
 ## API limits
 
-- pdf.js reads the text and the page size. It does not rasterize. Rasterizing needs Poppler, Ghostscript or pdfium.
+- pdf.js reads the text, the page size and the path operators. It does not rasterize. Rasterizing needs Poppler, Ghostscript or pdfium. The border, overlap, empty-zone and fill checks still run when no renderer is installed.
 - A PDF that cannot be opened is `FMC-PDF-READ`. A renderer that exits with an error is `FMC-PDF-RENDER` and no PNG is kept.
 - The check does not compare the drawing to the model. It does not decide that a title block is the Formcraft title block. It only looks for text in the title-block band.

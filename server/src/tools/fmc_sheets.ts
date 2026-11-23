@@ -7,6 +7,7 @@ import { GuardConfig, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { ModelSheet, compare, completeness, numberOk, parseRegister, planned } from "../fmc/sheets.js";
 import { readXlsx } from "../fmc/xlsx.js";
 import { FMC_SHEET_LAYOUT_FIELDS, runSheetLayout, type SheetLayoutArgs } from "./fmc_sheet_layout.js";
+import { runSheetPack, type SheetPackArgs } from "./fmc_sheet_pack.js";
 
 const win = path.win32;
 
@@ -59,12 +60,16 @@ export const FMC_SHEETS_DESCRIPTION =
     "create makes the missing sheets with a title block; rename gives sheets the register's names. " +
     "pair places views on one sheet in the title block drawing area. arrange reflows the views on a sheet as grid, pair or stack. " +
     "park sets a browser-organization parameter, or FMC_Sheet_Status, to Parked. " +
+    "pack arranges viewports in the FMC_TB_A0 or FMC_TB_A1 drawing area with no overlaps, at the largest standard scale that fits and is at least min_scale. " +
+    "pair_small proposes small views from other sheets. Overflow is reported in millimetres and apply is refused. " +
     "create, rename, pair, arrange and park are dry runs unless dry_run is false. A layout write needs batch_lease and references. " +
     "Sheet numbers come from the register, never typed. " +
     "Example: action pair, document F26901-FMC-ZZ-ZZ-M3-A-0002_USER, sheet A-101, views [\"Level 1\",\"Level 2\"], dry_run true.";
 
 export const FMC_SHEETS_SHAPE = {
-  action: z.enum(["compare", "create", "rename", "pair", "arrange", "park"]),
+  action: z.enum(["compare", "create", "rename", "pair", "arrange", "park", "pack"]),
+  min_scale: z.number().int().positive().optional().default(1).describe("pack: smallest scale denominator. 50 means 1:50 or coarser."),
+  pair_small: z.boolean().optional().default(true).describe("pack: propose small views from other sheets when they fit the leftover space."),
   register: z.string().optional().default("").describe("Absolute path of the project's sheet register (.xlsx or .csv). Required for compare, create and rename."),
   document: z.string().optional().default("").describe("Title or full path. Required for pair, arrange and park."),
   sheet: FMC_SHEET_LAYOUT_FIELDS.sheet,
@@ -86,6 +91,7 @@ export const FMC_SHEETS_SHAPE = {
 export type FmcSheetsArgs = z.infer<z.ZodObject<typeof FMC_SHEETS_SHAPE>>;
 
 export async function runFmcSheets(args: FmcSheetsArgs, io: Parameters<typeof runSheetLayout>[1] = {}) {
+  if (args.action === "pack") return runSheetPack(args as SheetPackArgs, io);
   if (args.action === "pair" || args.action === "arrange" || args.action === "park") {
     return runSheetLayout(args as SheetLayoutArgs, io);
   }

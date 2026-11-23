@@ -175,6 +175,12 @@ export function resolveOpenDocument(input: ResolveOpenInput): DocResolveResult {
  * The lease was taken on one document. A write resolved to another document does not borrow it.
  * Title, full path, or the same file name (the batch line's existing key) all count as the same document.
  */
+/** True when any name in the lease is this document. */
+export function leaseCoversAny(held: string | string[] | undefined, doc: ResolvedDocument, sameFile: (held: string, asked: string | undefined) => boolean): boolean {
+  const list = Array.isArray(held) ? held : held ? [held] : [];
+  return list.some((name) => leaseCovers(name, doc, sameFile));
+}
+
 export function leaseCovers(held: string, doc: ResolvedDocument, sameFile: (held: string, asked: string | undefined) => boolean): boolean {
   const key = held.trim();
   if (!key) return false;
