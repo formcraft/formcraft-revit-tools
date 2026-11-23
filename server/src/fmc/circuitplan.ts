@@ -47,6 +47,10 @@ export interface CircuitDevice {
   load_w?: number;
   voltage?: number;
   poles?: number;
+  /** Voltage read from the power connector. SelectPanel compares this with the panel distribution system. */
+  connector_voltage?: number;
+  /** Poles read from RBS_ELEC_NUMBER_OF_POLES. Connector has no poles property in Revit 2025. */
+  connector_poles?: number;
   has_connector?: boolean;
   system_type?: string;
   circuit_ids?: number[];
@@ -60,6 +64,13 @@ export interface CircuitDevice {
   is_board?: boolean;
   schedule_capable?: boolean;
   distribution?: string;
+  /** Line-to-line voltage of the panel DistributionSysType, in volts. */
+  voltage_ll?: number;
+  /** Line-to-ground voltage of the panel DistributionSysType, in volts. */
+  voltage_lg?: number;
+  /** ElectricalPhase name: ThreePhase, SinglePhase, or empty. */
+  phase?: string;
+  wires?: number;
 }
 
 export interface CircuitPanel {
@@ -71,6 +82,10 @@ export interface CircuitPanel {
   z?: number;
   distribution?: string;
   voltage?: number;
+  voltage_ll?: number;
+  voltage_lg?: number;
+  phase?: string;
+  wires?: number;
   has_supply?: boolean;
   utility_fed?: boolean;
   part_type?: string;
@@ -165,6 +180,31 @@ export interface CircuitSkip {
   detail: string;
 }
 
+/** One row per connector voltage and pole count that no panel can accept. */
+export interface CircuitMismatch {
+  code: "FMC-CIRCUIT-PANEL-MISMATCH";
+  voltage_v: number;
+  poles: number;
+  panel_id: number;
+  panel_name: string;
+  panel_voltage_ll: number;
+  panel_voltage_lg: number;
+  panel_phase: string;
+  count: number;
+  ids: number[];
+  families: string[];
+  detail: string;
+}
+
+/** Devices with no electrical connector, grouped so a family can be fixed once. */
+export interface NoConnectorFamily {
+  code: "FMC-NO-CONNECTOR";
+  family: string;
+  category: string;
+  count: number;
+  ids: number[];
+}
+
 export interface CircuitPlan {
   circuits: PlannedCircuit[];
   skipped: CircuitSkip[];
@@ -172,10 +212,13 @@ export interface CircuitPlan {
   caps: CircuitCap[];
   phase: { L1: number; L2: number; L3: number; imbalance_pct: number | null; limit_pct: number; provisional: boolean; clause: string };
   voltage_drop: CapField;
-  counts: { devices: number; planned: number; skipped: number; points: number };
+  counts: { devices: number; planned: number; skipped: number; points: number; no_connector: number; mismatched: number };
   rule: string;
   /** Boards that cannot take a circuit until Distribution System is set. The plan does not write it. */
   distribution_plans: DistributionFix[];
+  /** Groups SelectPanel would refuse because the distribution voltage or poles do not match the connector. */
+  mismatches: CircuitMismatch[];
+  no_connector_families: NoConnectorFamily[];
 }
 
 export interface AuditFinding {
@@ -268,14 +311,121 @@ function distance(a: CircuitDevice | CircuitPanel, b: CircuitPanel | CircuitDevi
   return Math.hypot(ax - bx, ay - by, az - bz) + level;
 }
 
-function pickPanel(device: CircuitDevice, panels: CircuitPanel[], named: string): CircuitPanel | null {
-  const boards = panels.filter((panel) => panel.is_board !== false);
-  if (!boards.length) return null;
-  const want = named.trim().toLowerCase();
-  if (want) {
-    return boards.find((panel) => panel.name.toLowerCase() === want || String(panel.id) === want) ?? null;
+function positive(value: unknown): number {
+  return typeof value === "number" && Number.isFinite(value) && value > 0 ? value : 0;
+}
+
+function phaseOf(value: string | undefined): "Single" | "Three" | "" {
+  const text = (value ?? "").toLowerCase();
+  if (/three|3\s*ph/.test(text)) return "Three";
+  if (/single|1\s*ph/.test(text)) return "Single";
+  return "";
+}
+
+/** Reads a distribution name such as DS_415-240V_3Ph_4W. The first number is line-to-line when it is the larger. */
+export function parseDistributionName(name: string): { ll: number; lg: number; phase: "Single" | "Three" | ""; wires: number } {
+  const text = name.trim();
+  const wiresMatch = /([234])\s*w/i.exec(text);
+  const wires = wiresMatch ? Number(wiresMatch[1]) : 0;
+  const named = phaseOf(text);
+  const pair = /(\d+(?:\.\d+)?)\s*[-/]\s*(\d+(?:\.\d+)?)/.exec(text);
+  if (pair) {
+    const a = Number(pair[1]);
+    const b = Number(pair[2]);
+    const ll = Math.max(a, b);
+    const lg = Math.min(a, b);
+    const phase = named || (ll > lg ? "Three" : "");
+    return { ll, lg, phase, wires: wires || (phase === "Three" ? 4 : 0) };
   }
-  return boards.reduce((best, panel) => distance(device, panel) < distance(device, best) ? panel : best);
+  const one = /(\d+(?:\.\d+)?)\s*v/i.exec(text);
+  if (one) {
+    const volts = Number(one[1]);
+    if (named === "Three") return { ll: volts, lg: 0, phase: "Three", wires: wires || 3 };
+    return { ll: 0, lg: volts, phase: named || "Single", wires: wires || 2 };
+  }
+  return { ll: 0, lg: 0, phase: named, wires };
+}
+
+export interface PanelSupply {
+  ll: number;
+  lg: number;
+  phase: "Single" | "Three" | "";
+  wires: number;
+  /** parameter: the snapshot read DistributionSysType. name: parsed. none: nothing to compare. */
+  source: "parameter" | "name" | "none";
+}
+
+export function panelSupply(panel: Pick<CircuitPanel, "distribution" | "voltage_ll" | "voltage_lg" | "phase" | "wires">): PanelSupply {
+  const parsed = parseDistributionName(panel.distribution ?? "");
+  const ll = positive(panel.voltage_ll) || parsed.ll;
+  const lg = positive(panel.voltage_lg) || parsed.lg;
+  const phase = phaseOf(panel.phase) || parsed.phase;
+  const wires = positive(panel.wires) || parsed.wires;
+  const fromParameter = positive(panel.voltage_ll) > 0 || positive(panel.voltage_lg) > 0 || phaseOf(panel.phase) !== "";
+  const source: PanelSupply["source"] = fromParameter ? "parameter" : (ll || lg || phase) ? "name" : "none";
+  return { ll, lg, phase, wires, source };
+}
+
+const VOLT_TOLERANCE = 15;
+
+export function deviceSupply(device: Pick<CircuitDevice, "voltage" | "poles" | "connector_voltage" | "connector_poles">): { voltage: number; poles: number } {
+  const voltage = positive(device.connector_voltage) || positive(device.voltage);
+  const poles = positive(device.connector_poles) || positive(device.poles) || 1;
+  return { voltage, poles: Math.max(1, Math.round(poles)) };
+}
+
+/**
+ * Revit 2025 ElectricalSystem.SelectPanel throws when the panel has no DistributionSysType, or when the
+ * circuit voltage and poles (taken from the device connectors) are not the distribution system's line-to-line
+ * or line-to-ground voltage. A 1-pole circuit needs line-to-ground. A 2-pole circuit needs line-to-line.
+ * A 3-pole circuit needs a three-phase system and line-to-line. A voltage of 0 was not read, so it is not a mismatch.
+ */
+export function circuitMatch(panel: CircuitPanel, voltage: number, poles: number): { ok: boolean; expected: number; detail: string } {
+  const supply = panelSupply(panel);
+  const name = panel.name || String(panel.id);
+  const described = `${name} is ${supply.ll || "?"} V line-to-line / ${supply.lg || "?"} V line-to-ground, ${supply.phase || "phase unknown"}${supply.wires ? `, ${supply.wires}-wire` : ""}`;
+  const device = `device connector is ${voltage || "?"} V, ${poles}-pole`;
+  if (!(panel.distribution ?? "").trim() && supply.source === "none") {
+    return { ok: false, expected: 0, detail: `${name} has no distribution system.` };
+  }
+  if (supply.source === "none") return { ok: true, expected: 0, detail: "" };
+  if (poles >= 3) {
+    if (supply.phase === "Single") {
+      return { ok: false, expected: supply.ll, detail: `FMC-CIRCUIT-PANEL-MISMATCH ${described}. ${device}. A single-phase panel cannot take a ${poles}-pole circuit. SelectPanel refuses: panel and circuit do not match.` };
+    }
+    if (!supply.ll) {
+      return { ok: false, expected: 0, detail: `FMC-CIRCUIT-PANEL-MISMATCH ${described}. ${device}. The distribution system has no line-to-line voltage for a ${poles}-pole circuit.` };
+    }
+    if (voltage > 0 && Math.abs(voltage - supply.ll) > VOLT_TOLERANCE) {
+      return { ok: false, expected: supply.ll, detail: `FMC-CIRCUIT-PANEL-MISMATCH ${described} vs ${device}. A ${poles}-pole circuit needs the line-to-line voltage (${supply.ll} V).` };
+    }
+    return { ok: true, expected: supply.ll, detail: "" };
+  }
+  if (poles === 2) {
+    const expected = supply.ll || supply.lg;
+    if (!expected) return { ok: false, expected: 0, detail: `FMC-CIRCUIT-PANEL-MISMATCH ${described}. ${device}. No line-to-line voltage for a 2-pole circuit.` };
+    if (voltage > 0 && Math.abs(voltage - expected) > VOLT_TOLERANCE) {
+      return { ok: false, expected, detail: `FMC-CIRCUIT-PANEL-MISMATCH ${described} vs ${device}. A 2-pole circuit needs ${expected} V.` };
+    }
+    return { ok: true, expected, detail: "" };
+  }
+  const expected = supply.lg || (supply.phase === "Single" ? supply.ll : 0);
+  if (!expected) {
+    return { ok: false, expected: 0, detail: `FMC-CIRCUIT-PANEL-MISMATCH ${described}. ${device}. The distribution system has no line-to-ground voltage for a 1-pole circuit.` };
+  }
+  if (voltage > 0 && Math.abs(voltage - expected) > VOLT_TOLERANCE) {
+    return { ok: false, expected, detail: `FMC-CIRCUIT-PANEL-MISMATCH ${described} vs ${device}. A 1-pole circuit needs the line-to-ground voltage (${expected} V).` };
+  }
+  return { ok: true, expected, detail: "" };
+}
+
+function nearestPanel(device: CircuitDevice, panels: CircuitPanel[]): CircuitPanel {
+  return panels.reduce((best, panel) => distance(device, panel) < distance(device, best) ? panel : best);
+}
+
+function familyOf(device: CircuitDevice): string {
+  const family = (device.family || device.type_name || device.name || "(no family)").trim();
+  return family || "(no family)";
 }
 
 export function formatCircuitName(pattern: string, board: string, zone: string, type: string, index: number): string {
@@ -301,6 +451,8 @@ interface Bucket {
   room: string;
   level: string;
   poles: number;
+  voltage: number;
+  unproven: boolean;
   panel: CircuitPanel;
   devices: CircuitDevice[];
 }
@@ -328,7 +480,8 @@ export function planCircuits(input: {
     if (input.panels.some((panel) => panel.id === device.id) || promoted.some((panel) => panel.id === device.id)) continue;
     promoted.push({
       id: device.id, name: device.name || device.mark || String(device.id), level: device.level, x: device.x, y: device.y, z: device.z,
-      distribution: device.distribution ?? "", voltage: device.voltage, is_board: true, part_type: device.part_type,
+      distribution: device.distribution ?? "", voltage: device.voltage, voltage_ll: device.voltage_ll, voltage_lg: device.voltage_lg,
+      phase: device.phase, wires: device.wires, is_board: true, part_type: device.part_type,
     });
   }
   const panels = [...input.panels, ...promoted];
@@ -339,7 +492,43 @@ export function planCircuits(input: {
     noted.add(panel.id);
     distribution_plans.push(distributionFix(panel, input.distribution ?? ""));
   };
+  for (const panel of input.panels) if (panel.is_board !== false) noteMissing(panel);
   const skipped: CircuitSkip[] = [];
+  const noConnector = new Map<string, NoConnectorFamily>();
+  const noteConnector = (device: CircuitDevice, detail: string) => {
+    skipped.push({ id: device.id, code: "FMC-NO-CONNECTOR", detail });
+    const family = familyOf(device);
+    const row = noConnector.get(family) ?? { code: "FMC-NO-CONNECTOR" as const, family, category: device.category ?? "", count: 0, ids: [] };
+    row.count += 1;
+    if (row.ids.length < 30) row.ids.push(device.id);
+    if (!row.category && device.category) row.category = device.category;
+    noConnector.set(family, row);
+  };
+  const mismatchGroups = new Map<string, CircuitMismatch>();
+  const noteMismatch = (panel: CircuitPanel, device: CircuitDevice, supply: { voltage: number; poles: number }, detail: string) => {
+    skipped.push({ id: device.id, code: "FMC-CIRCUIT-PANEL-MISMATCH", detail });
+    const key = `${panel.id}|${supply.poles}|${Math.round(supply.voltage)}`;
+    const supplyInfo = panelSupply(panel);
+    const row = mismatchGroups.get(key) ?? {
+      code: "FMC-CIRCUIT-PANEL-MISMATCH" as const,
+      voltage_v: supply.voltage,
+      poles: supply.poles,
+      panel_id: panel.id,
+      panel_name: panel.name,
+      panel_voltage_ll: supplyInfo.ll,
+      panel_voltage_lg: supplyInfo.lg,
+      panel_phase: supplyInfo.phase,
+      count: 0,
+      ids: [],
+      families: [],
+      detail,
+    };
+    row.count += 1;
+    if (row.ids.length < 30) row.ids.push(device.id);
+    const family = familyOf(device);
+    if (!row.families.includes(family) && row.families.length < 12) row.families.push(family);
+    mismatchGroups.set(key, row);
+  };
   const buckets = new Map<string, Bucket>();
   const switches: CircuitPlan["switches"] = [];
   const lightsByRoom = new Map<string, number[]>();
@@ -359,7 +548,7 @@ export function planCircuits(input: {
     }
     if ((device.circuit_ids ?? []).length > 0) continue;
     if (device.has_connector === false) {
-      skipped.push({ id: device.id, code: "FMC-NO-CONNECTOR", detail: `${device.name || device.family || device.id} has no electrical connector.` });
+      noteConnector(device, `${device.name || device.family || device.id} has no electrical connector.`);
       continue;
     }
     const system = powerType(device.system_type);
@@ -368,7 +557,7 @@ export function planCircuits(input: {
       continue;
     }
     if (system === "none" && device.has_connector !== true) {
-      skipped.push({ id: device.id, code: "FMC-NO-CONNECTOR", detail: `${device.name || device.id} has no power connector.` });
+      noteConnector(device, `${device.name || device.id} has no power connector.`);
       continue;
     }
     const kind = classifyDevice(device);
@@ -384,25 +573,68 @@ export function planCircuits(input: {
       skipped.push({ id: device.id, code: "FMC-UNCLASSIFIED", detail: `${device.name || device.category || device.id} is not lighting, a socket, an AC spur, a shower or a stair light.` });
       continue;
     }
-    const panel = pickPanel(device, panels, input.panel ?? "");
-    if (!panel) {
-      skipped.push({ id: device.id, code: "FMC-NO-PANEL", detail: input.panel ? `Panel ${input.panel} is not a board in this model.` : "No panel board to assign." });
+    const supply = deviceSupply(device);
+    const boards = panels.filter((item) => item.is_board !== false);
+    const named = (input.panel ?? "").trim().toLowerCase();
+    let panel: CircuitPanel | null = null;
+    let expected = 0;
+    let unproven = false;
+    if (!boards.length) {
+      skipped.push({ id: device.id, code: "FMC-NO-PANEL", detail: "No panel board to assign." });
       continue;
     }
-    if (!(panel.distribution ?? "").trim()) {
-      noteMissing(panel);
-      skipped.push({ id: device.id, code: "FMC-PANEL-NO-DISTRIBUTION", detail: `${panel.name} has no distribution system. ${DISTRIBUTION_HINT}` });
-      continue;
+    if (named) {
+      panel = boards.find((item) => item.name.toLowerCase() === named || String(item.id) === named) ?? null;
+      if (!panel) {
+        skipped.push({ id: device.id, code: "FMC-NO-PANEL", detail: `Panel ${input.panel} is not a board in this model.` });
+        continue;
+      }
+      if (!(panel.distribution ?? "").trim() && panelSupply(panel).source === "none") {
+        noteMissing(panel);
+        skipped.push({ id: device.id, code: "FMC-PANEL-NO-DISTRIBUTION", detail: `${panel.name} has no distribution system. ${DISTRIBUTION_HINT}` });
+        continue;
+      }
+      const match = circuitMatch(panel, supply.voltage, supply.poles);
+      if (!match.ok) {
+        noteMismatch(panel, device, supply, match.detail);
+        continue;
+      }
+      expected = match.expected;
+      unproven = panelSupply(panel).source === "none";
+    } else {
+      const compatible = boards.filter((item) => {
+        if (!(item.distribution ?? "").trim() && panelSupply(item).source === "none") return false;
+        return circuitMatch(item, supply.voltage, supply.poles).ok;
+      });
+      if (compatible.length) {
+        panel = nearestPanel(device, compatible);
+        const match = circuitMatch(panel, supply.voltage, supply.poles);
+        expected = match.expected;
+        unproven = panelSupply(panel).source === "none";
+      } else if (!boards.some((item) => (item.distribution ?? "").trim() || panelSupply(item).source !== "none")) {
+        const nearest = nearestPanel(device, boards);
+        noteMissing(nearest);
+        skipped.push({ id: device.id, code: "FMC-PANEL-NO-DISTRIBUTION", detail: `${nearest.name} has no distribution system. ${DISTRIBUTION_HINT}` });
+        continue;
+      } else {
+        const withSupply = boards.filter((item) => (item.distribution ?? "").trim() || panelSupply(item).source !== "none");
+        const nearest = nearestPanel(device, withSupply);
+        const match = circuitMatch(nearest, supply.voltage, supply.poles);
+        noteMismatch(nearest, device, supply, match.detail || `FMC-CIRCUIT-PANEL-MISMATCH ${nearest.name} does not match ${supply.voltage} V, ${supply.poles}-pole.`);
+        continue;
+      }
     }
+    if (!panel) continue;
     if (kind === "L" || kind === "STAIR") {
       const key = `${device.room ?? ""}|${device.level ?? ""}`;
       const list = lightsByRoom.get(key) ?? [];
       list.push(device.id);
       lightsByRoom.set(key, list);
     }
-    const poles = device.poles && device.poles > 0 ? device.poles : 1;
-    const key = `${kind}|${device.room_id ?? device.room ?? ""}|${device.level ?? ""}|${poles}|${panel.id}`;
-    const bucket = buckets.get(key) ?? { kind, room: device.room ?? "", level: device.level ?? "", poles, panel, devices: [] };
+    const poles = supply.poles;
+    const bucketVoltage = expected || Math.round(supply.voltage);
+    const key = `${kind}|${device.room_id ?? device.room ?? ""}|${device.level ?? ""}|${poles}|${bucketVoltage}|${panel.id}`;
+    const bucket = buckets.get(key) ?? { kind, room: device.room ?? "", level: device.level ?? "", poles, voltage: bucketVoltage, unproven, panel, devices: [] };
     bucket.devices.push(device);
     buckets.set(key, bucket);
   }
@@ -432,8 +664,12 @@ export function planCircuits(input: {
       if (cap.max_area_m2 && area > cap.max_area_m2.value) flags.push(`CIRCUIT-AREA room ${area} m2 is over ${cap.max_area_m2.value} m2`);
       const missing = current.filter((device) => loadOf(device, unit).missing).map((device) => device.id);
       if (missing.length) flags.push(`Load ${unit} missing on ${missing.join(", ")}. Those points are counted and not added to the load.`);
-      const volts = current.filter((device) => typeof device.voltage === "number" && Math.abs((device.voltage as number) - cap.voltage_v.value) > 15);
+      const volts = current.filter((device) => {
+        const seen = deviceSupply(device).voltage;
+        return seen > 0 && Math.abs(seen - cap.voltage_v.value) > VOLT_TOLERANCE;
+      });
       if (volts.length) flags.push(`Voltage is not ${cap.voltage_v.value} V on ${volts.map((device) => device.id).join(", ")}.`);
+      if (bucket.unproven) flags.push("Distribution voltage was not read. SelectPanel may still refuse this panel.");
       draft.push({
         name: formatCircuitName(pattern, bucket.panel.name, zoneOf(current[0]), bucket.kind, index),
         kind: bucket.kind,
@@ -449,7 +685,7 @@ export function planCircuits(input: {
         curve: cap.curve,
         cable_mm2: cap.cable_mm2.value,
         poles: bucket.poles,
-        voltage_v: cap.voltage_v.value,
+        voltage_v: bucket.voltage || cap.voltage_v.value,
         element_ids: current.map((device) => device.id),
         provisional: cap.provisional,
         flags,
@@ -499,13 +735,17 @@ export function planCircuits(input: {
     },
     voltage_drop: drop,
     distribution_plans,
+    mismatches: [...mismatchGroups.values()].sort((a, b) => a.panel_name.localeCompare(b.panel_name) || a.poles - b.poles || a.voltage_v - b.voltage_v),
+    no_connector_families: [...noConnector.values()].sort((a, b) => b.count - a.count || a.family.localeCompare(b.family)),
     counts: {
       devices: input.devices.length,
       planned: circuits.length,
       skipped: skipped.length,
       points: circuits.reduce((sum, circuit) => sum + circuit.points, 0),
+      no_connector: [...noConnector.values()].reduce((sum, row) => sum + row.count, 0),
+      mismatched: [...mismatchGroups.values()].reduce((sum, row) => sum + row.count, 0),
     },
-    rule: "Group by room, then level, then kind. Lighting and sockets are never on one circuit. Single-phase final circuits are 240 V. A missing standards key is PROVISIONAL.",
+    rule: "Group by room, then level, then kind, then connector voltage and poles. A circuit is assigned only to a panel whose distribution system can feed that voltage and pole count. Lighting and sockets are never on one circuit. A missing standards key is PROVISIONAL.",
   };
 }
 

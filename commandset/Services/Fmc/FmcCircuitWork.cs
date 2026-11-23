@@ -100,6 +100,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             string system = "";
             bool connector = false;
             double voltage = 0;
+            double connectorVoltage = 0;
             int poles = PolesOf(device);
             try
             {
@@ -110,7 +111,17 @@ namespace RevitMCPCommandSet.Services.Fmc
                     {
                         if (item.Domain != Domain.DomainElectrical) continue;
                         connector = true;
-                        system = item.ElectricalSystemType.ToString();
+                        ElectricalSystemType kind = item.ElectricalSystemType;
+                        bool power = kind == ElectricalSystemType.PowerCircuit || kind == ElectricalSystemType.PowerBalanced || kind == ElectricalSystemType.PowerUnBalanced;
+                        if (!power) continue;
+                        system = kind.ToString();
+                        try
+                        {
+                            // Connector.Voltage is the value SelectPanel compares. There is no poles property on Connector.
+                            double read = UnitUtils.ConvertFromInternalUnits(item.Voltage, UnitTypeId.Volts);
+                            if (read > connectorVoltage) connectorVoltage = Math.Round(read, 1);
+                        }
+                        catch (Exception) { /* a connector with no voltage */ }
                     }
                 }
             }
@@ -140,7 +151,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             try { room = device.Room; } catch (Exception) { /* not in a room */ }
             Level level = doc.GetElement(device.LevelId) as Level;
             XYZ point = (device.Location as LocationPoint)?.Point;
-            return new JObject
+            var row = new JObject
             {
                 ["id"] = device.Id.Value,
                 ["name"] = name,
@@ -154,8 +165,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                 ["part_type"] = part,
                 ["load_va"] = ParamDouble(device, BuiltInParameter.RBS_ELEC_APPARENT_LOAD),
                 ["load_w"] = ParamDouble(device, BuiltInParameter.RBS_ELEC_TRUE_LOAD),
-                ["voltage"] = Math.Round(voltage, 1),
-                ["poles"] = poles,
+                ["voltage"] = connectorVoltage > 0 ? connectorVoltage : Math.Round(voltage, 1),
+                ["connector_voltage"] = connectorVoltage,
+                ["poles"] = poles > 0 ? poles : 1,
+                ["connector_poles"] = poles,
                 ["has_connector"] = connector,
                 ["system_type"] = system,
                 ["circuit_ids"] = circuitIds,
@@ -170,6 +183,33 @@ namespace RevitMCPCommandSet.Services.Fmc
                 ["distribution"] = DistributionName(device),
                 ["has_supply"] = HasSupply(device),
             };
+            AddDistribution(device, row);
+            return row;
+        }
+
+        /// <summary>Line-to-line, line-to-ground, phase and wire count from DistributionSysType. Missing members stay unset.</summary>
+        internal static void AddDistribution(FamilyInstance device, JObject row)
+        {
+            try
+            {
+                Parameter parameter = device.get_Parameter(BuiltInParameter.RBS_FAMILY_CONTENT_DISTRIBUTION_SYSTEM)
+                    ?? device.Symbol?.get_Parameter(BuiltInParameter.RBS_FAMILY_CONTENT_DISTRIBUTION_SYSTEM);
+                if (parameter == null || parameter.StorageType != StorageType.ElementId) return;
+                if (device.Document.GetElement(parameter.AsElementId()) is not DistributionSysType system) return;
+                row["voltage_ll"] = VoltageOf(system.VoltageLineToLine);
+                row["voltage_lg"] = VoltageOf(system.VoltageLineToGround);
+                row["phase"] = system.ElectricalPhase.ToString();
+                row["wires"] = system.NumWires;
+                row["phase_config"] = system.PhaseConfiguration.ToString();
+            }
+            catch (Exception) { /* the parameter is absent on a device that is not a panel */ }
+        }
+
+        private static double VoltageOf(VoltageType type)
+        {
+            if (type == null) return 0;
+            try { return Math.Round(UnitUtils.ConvertFromInternalUnits(type.ActualValue, UnitTypeId.Volts), 1); }
+            catch (Exception) { return Math.Round(type.ActualValue, 1); }
         }
 
         private static JObject PanelFrom(JObject row)
@@ -179,6 +219,8 @@ namespace RevitMCPCommandSet.Services.Fmc
                 ["id"] = row["id"], ["name"] = row.Value<string>("name") ?? row.Value<string>("mark") ?? "",
                 ["level"] = row["level"], ["x"] = row["x"], ["y"] = row["y"], ["z"] = row["z"],
                 ["distribution"] = row["distribution"], ["voltage"] = row["voltage"],
+                ["voltage_ll"] = row["voltage_ll"], ["voltage_lg"] = row["voltage_lg"],
+                ["phase"] = row["phase"], ["wires"] = row["wires"],
                 ["has_supply"] = row["has_supply"], ["utility_fed"] = row["utility_fed"],
                 ["part_type"] = row["part_type"], ["is_board"] = true,
             };
@@ -412,7 +454,15 @@ namespace RevitMCPCommandSet.Services.Fmc
                 throw new InvalidOperationException("FMC-PANEL-NO-DISTRIBUTION is not this case. " + (panel.Symbol?.FamilyName ?? panel.Name) + " is not a panel: it needs Part Type Panelboard, Switchboard or Other Panel, or a panel-schedule connector.");
             if (string.IsNullOrWhiteSpace(FmcCircuitsHandler.DistributionName(panel)))
                 throw new InvalidOperationException("FMC-PANEL-NO-DISTRIBUTION " + (panel.Name ?? "") + " has no distribution system. Set the Distribution System parameter (RBS_FAMILY_CONTENT_DISTRIBUTION_SYSTEM).");
-            system.SelectPanel(panel);
+            string mismatch = PanelMismatch(panel, system);
+            if (!string.IsNullOrEmpty(mismatch)) throw new InvalidOperationException(mismatch);
+            try { system.SelectPanel(panel); }
+            catch (Exception ex)
+            {
+                string reason = PanelMismatch(panel, system);
+                if (string.IsNullOrEmpty(reason)) reason = "FMC-CIRCUIT-PANEL-MISMATCH " + (panel.Name ?? "") + " vs circuit " + CircuitVolts(system) + " V, " + CircuitPoles(system) + "-pole.";
+                throw new InvalidOperationException(reason + " Revit: " + ex.Message);
+            }
             string name = plan.Value<string>("name") ?? "";
             TrySet(system, BuiltInParameter.RBS_ELEC_CIRCUIT_NAME, name, "circuit name", unset);
             TrySet(system, BuiltInParameter.RBS_ELEC_CIRCUIT_NUMBER, plan.Value<string>("slot") ?? "", "circuit number", unset);
@@ -468,6 +518,58 @@ namespace RevitMCPCommandSet.Services.Fmc
                     unset.Add("FMC_Phase could not be bound to Electrical Circuits.");
             }
             catch (Exception ex) { unset.Add("FMC_Phase was not bound: " + ex.Message); }
+        }
+
+        private static double CircuitVolts(ElectricalSystem system)
+        {
+            try { return Math.Round(UnitUtils.ConvertFromInternalUnits(system.Voltage, UnitTypeId.Volts), 1); }
+            catch (Exception) { return 0; }
+        }
+
+        private static int CircuitPoles(ElectricalSystem system)
+        {
+            try { return system.PolesNumber; }
+            catch (Exception) { return 0; }
+        }
+
+        /// <summary>
+        /// The same check planning uses. SelectPanel throws "panel and circuit do not match" when the
+        /// distribution system voltage or phase cannot feed the circuit's connector voltage and poles.
+        /// Returns "" when the voltages were not read, so SelectPanel still runs and its own message is kept.
+        /// </summary>
+        private static string PanelMismatch(FamilyInstance panel, ElectricalSystem system)
+        {
+            var row = new JObject();
+            FmcCircuitsHandler.AddDistribution(panel, row);
+            double ll = row.Value<double?>("voltage_ll") ?? 0;
+            double lg = row.Value<double?>("voltage_lg") ?? 0;
+            string phase = row.Value<string>("phase") ?? "";
+            int wires = row.Value<int?>("wires") ?? 0;
+            double volts = CircuitVolts(system);
+            int poles = CircuitPoles(system);
+            if (ll <= 0 && lg <= 0) return "";
+            bool single = phase.IndexOf("Single", StringComparison.OrdinalIgnoreCase) >= 0;
+            string described = (panel.Name ?? "panel") + " is " + ll + " V line-to-line / " + lg + " V line-to-ground, " + (phase.Length > 0 ? phase : "phase unknown") + (wires > 0 ? ", " + wires + "-wire" : "");
+            string device = "circuit is " + volts + " V, " + (poles > 0 ? poles : 1) + "-pole";
+            int n = poles > 0 ? poles : 1;
+            if (n >= 3)
+            {
+                if (single) return "FMC-CIRCUIT-PANEL-MISMATCH " + described + " vs " + device + ". A single-phase panel cannot take a " + n + "-pole circuit.";
+                if (ll <= 0) return "FMC-CIRCUIT-PANEL-MISMATCH " + described + " vs " + device + ". No line-to-line voltage for a " + n + "-pole circuit.";
+                if (volts > 0 && Math.Abs(volts - ll) > 15) return "FMC-CIRCUIT-PANEL-MISMATCH " + described + " vs " + device + ". A " + n + "-pole circuit needs " + ll + " V line-to-line.";
+                return "";
+            }
+            if (n == 2)
+            {
+                double expected = ll > 0 ? ll : lg;
+                if (expected <= 0) return "FMC-CIRCUIT-PANEL-MISMATCH " + described + " vs " + device + ". No line-to-line voltage for a 2-pole circuit.";
+                if (volts > 0 && Math.Abs(volts - expected) > 15) return "FMC-CIRCUIT-PANEL-MISMATCH " + described + " vs " + device + ". A 2-pole circuit needs " + expected + " V.";
+                return "";
+            }
+            double one = lg > 0 ? lg : (single ? ll : 0);
+            if (one <= 0) return "FMC-CIRCUIT-PANEL-MISMATCH " + described + " vs " + device + ". No line-to-ground voltage for a 1-pole circuit.";
+            if (volts > 0 && Math.Abs(volts - one) > 15) return "FMC-CIRCUIT-PANEL-MISMATCH " + described + " vs " + device + ". A 1-pole circuit needs " + one + " V line-to-ground.";
+            return "";
         }
 
         private static FamilyInstance FindPanel(Document doc, string key)

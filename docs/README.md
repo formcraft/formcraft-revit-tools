@@ -14,6 +14,8 @@
 | `tools/fmc_docs.md` | Open a central as a local, and close a document |
 | `tools/fmc_memory.md` | Free memory by closing spare documents, and purge unused |
 | `tools/fmc_circuits.md` | Power and lighting circuits, including a board with no distribution system |
+| `tools/fmc_elec_diagrams.md` | Electrical single-line, power riser and earthing template |
+| `tools/fmc_plumb_diagrams.md` | Plumbing and drainage risers and schematics |
 | `DECISIONS.md` | Decisions D1–D8, open and closed |
 | `UI_KIT.md` | Tokens and styles (source of truth: `FmcTheme.xaml`) |
 | `SCREENS.md` | Every screen and its design board |

@@ -6,6 +6,10 @@ Power and lighting on a workshared local such as `F26901-FMC-ZZ-ZZ-M3-E-0001_USE
 
 A panel is electrical equipment whose part type is Panelboard, Switchboard or Other Panel, or whose family has a panel-schedule MEP connector (power balanced or unbalanced). A board family is accepted. When that board has no distribution system the reply is `FMC-PANEL-NO-DISTRIBUTION`, with the hint to set the Distribution System parameter and a dry-run plan that sets it. Nothing is written until `dry_run` is false and `batch_lease` is passed.
 
+Devices are grouped by connector voltage and poles, then matched to a panel whose distribution system can feed that circuit. A 1-pole circuit needs the line-to-ground voltage. A 2-pole circuit needs line-to-line. A 3-pole circuit needs a three-phase system and line-to-line. `ElectricalSystem.SelectPanel` throws when those do not match, or when the panel has no `DistributionSysType`. The plan reports that group as `FMC-CIRCUIT-PANEL-MISMATCH` with the panel line-to-line and line-to-ground voltage against the device connector, and does not send it to `SelectPanel`. Connector voltage is `Connector.Voltage`. Poles are `RBS_ELEC_NUMBER_OF_POLES` (Connector has no poles property). A distribution name such as `DS_415-240V_3Ph_4W` is read when the snapshot has not yet returned `voltage_ll` and `voltage_lg`.
+
+Families with no electrical connector are `FMC-NO-CONNECTOR`, grouped by family in `no_connector_families`, so one family edit covers every skipped instance. A board such as `TPN_T1` with an empty Distribution System still returns the dry-run plan that sets `RBS_FAMILY_CONTENT_DISTRIBUTION_SYSTEM`.
+
 ## plan
 
 ```json

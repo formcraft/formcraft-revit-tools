@@ -103,6 +103,61 @@ test("apply without a lease changes nothing", async () => {
   assert.equal(applied, false);
 });
 
+test("devices are grouped by connector voltage and poles, and a mismatch names the panel against the device", () => {
+  const mismatched = planCircuits({
+    devices: [
+      { ...light(1), voltage: 120, connector_voltage: 120, poles: 1, connector_poles: 1, family: "FMC_E_Downlight" },
+      { ...light(2), voltage: 120, connector_voltage: 120, poles: 1, connector_poles: 1, family: "FMC_E_Downlight" },
+    ],
+    panels: [panel],
+  });
+  assert.equal(mismatched.circuits.length, 0);
+  assert.equal(mismatched.mismatches.length, 1);
+  assert.equal(mismatched.mismatches[0].code, "FMC-CIRCUIT-PANEL-MISMATCH");
+  assert.equal(mismatched.mismatches[0].count, 2);
+  assert.equal(mismatched.mismatches[0].panel_voltage_ll, 415);
+  assert.equal(mismatched.mismatches[0].panel_voltage_lg, 240);
+  assert.match(mismatched.mismatches[0].detail, /415/);
+  assert.match(mismatched.mismatches[0].detail, /240/);
+  assert.match(mismatched.mismatches[0].detail, /120/);
+  assert.equal(mismatched.mismatches[0].families.includes("FMC_E_Downlight"), true);
+
+  const split = planCircuits({
+    devices: [
+      light(1),
+      { ...light(2), name: "Twin socket", category: "Electrical Fixtures", voltage: 415, poles: 3, connector_voltage: 415, connector_poles: 3 },
+    ],
+    panels: [panel],
+  });
+  assert.equal(split.circuits.length, 2);
+  assert.equal(split.circuits.filter((circuit) => circuit.poles === 1).length, 1);
+  assert.equal(split.circuits.filter((circuit) => circuit.poles === 3 && circuit.voltage_v === 415).length, 1);
+  assert.equal(split.mismatches.length, 0);
+});
+
+test("a board with no distribution system keeps its dry-run plan, and missing connectors are grouped by family", () => {
+  const bare = { id: 11, name: "TPN_T1", level: "Level 1", distribution: "", has_supply: false, is_board: true };
+  const planned = planCircuits({
+    devices: [
+      light(1),
+      { id: 21, family: "FMC_E_Downlight", category: "Lighting Fixtures", has_connector: false },
+      { id: 22, family: "FMC_E_Downlight", category: "Lighting Fixtures", has_connector: false },
+      { id: 23, family: "FMC_E_Socket", category: "Electrical Fixtures", has_connector: false },
+    ],
+    panels: [bare],
+    distribution: "DS_415-240V_3Ph_4W",
+  });
+  assert.equal(planned.circuits.length, 0);
+  assert.equal(planned.mismatches.length, 0);
+  assert.equal(planned.distribution_plans[0]?.panel, "TPN_T1");
+  assert.equal(planned.distribution_plans[0]?.plan[0]?.parameter, "Distribution System");
+  assert.equal(planned.distribution_plans[0]?.plan[0]?.value, "DS_415-240V_3Ph_4W");
+  const lights = planned.no_connector_families.find((row) => row.family === "FMC_E_Downlight");
+  assert.equal(lights?.count, 2);
+  assert.equal(planned.no_connector_families.find((row) => row.family === "FMC_E_Socket")?.count, 1);
+  assert.equal(planned.counts.no_connector, 3);
+});
+
 test("HEBERT HOSTELS is not written", async () => {
   const result = await runFmcCircuits({
     action: "apply", document: "HEBERT HOSTELS_USER", dry_run: false, batch_lease: "lease-1",

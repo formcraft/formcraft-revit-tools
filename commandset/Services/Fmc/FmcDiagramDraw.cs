@@ -147,6 +147,78 @@ namespace RevitMCPCommandSet.Services.Fmc
             return new JObject { ["dry_run"] = dry, ["views"] = results, ["warnings"] = new JArray(warnings) };
         }
 
+        /// <summary>
+        /// One transaction for every schematic view. A view Revit refuses rolls back only its subtransaction.
+        /// The document is not saved. A symbol that is not loaded is skipped; the lines and text in the spec still draw.
+        /// </summary>
+        public static JObject DrawOnce(Document doc, JObject spec)
+        {
+            var views = (spec["views"] as JArray ?? new JArray()).OfType<JObject>().ToList();
+            if (views.Count == 0) throw new InvalidOperationException("The draw spec has no views.");
+            var warnings = new List<string>();
+            void Warn(string message) { if (!warnings.Contains(message)) warnings.Add(message); }
+            Kit kit = LoadKit(doc);
+            var results = new JArray();
+            int made = 0;
+            using (var transaction = new Transaction(doc, "Formcraft schematic diagrams"))
+            {
+                var collector = new Collector();
+                FailureHandlingOptions options = transaction.GetFailureHandlingOptions();
+                options.SetFailuresPreprocessor(collector);
+                transaction.SetFailureHandlingOptions(options);
+                transaction.Start();
+                foreach (JObject view in views)
+                {
+                    string name = (view.Value<string>("name") ?? "").Trim();
+                    int scale = Math.Max(1, view.Value<int?>("scale") ?? 50);
+                    var row = new JObject
+                    {
+                        ["name"] = name, ["result"] = "skip", ["view_id"] = JValue.CreateNull(),
+                        ["symbols"] = 0, ["lines"] = 0, ["texts"] = 0, ["kept_by_hand"] = 0,
+                    };
+                    results.Add(row);
+                    if (name.Length == 0) { Warn("A view has no name; skipped."); continue; }
+                    using (var sub = new SubTransaction(doc))
+                    {
+                        sub.Start();
+                        try
+                        {
+                            JObject drawn = DrawView(doc, kit, view, name, scale, false, row, Warn);
+                            if (drawn == null)
+                            {
+                                sub.RollBack();
+                                continue;
+                            }
+                            sub.Commit();
+                            made++;
+                        }
+                        catch (Exception ex)
+                        {
+                            try { sub.RollBack(); } catch (Exception) { /* already closed */ }
+                            Warn(name + ": " + ex.Message);
+                            row["result"] = "skip";
+                            row["view_id"] = JValue.CreateNull();
+                            row["symbols"] = 0;
+                            row["lines"] = 0;
+                            row["texts"] = 0;
+                        }
+                    }
+                }
+                foreach (string warning in collector.Warnings) Warn("Revit: " + warning);
+                if (made == 0) transaction.RollBack();
+                else transaction.Commit();
+            }
+            return new JObject
+            {
+                ["applied"] = made > 0,
+                ["dry_run"] = false,
+                ["saved"] = false,
+                ["drawn"] = made,
+                ["views"] = results,
+                ["warnings"] = new JArray(warnings),
+            };
+        }
+
         private static Kit LoadKit(Document doc)
         {
             var kit = new Kit

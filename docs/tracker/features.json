@@ -915,7 +915,7 @@
     "feature": "Power and lighting circuits",
     "status": "Built, Revit check due",
     "ref": "fmc_circuits",
-    "note": "plan, apply, panel, audit and limits. Groups unassigned lighting and power devices by room, then level, then kind. Lighting and sockets are never mixed. Names are {board}/{zone}-{type}{n}. Phases balance L1/L2/L3 and FMC_Phase is bound when it is missing. A board is electrical equipment with Part Type Panelboard, Switchboard or Other Panel, or a panel-schedule MEP connector. A board family is not refused. A board with no distribution system is FMC-PANEL-NO-DISTRIBUTION and a dry-run plan that sets Distribution System. accept_no_supply and utility-fed panels may have no supply. non_board_ids are panel part types treated as loads; others that look like an SPD or isolator are flagged. FMC-NO-CONNECTOR instead of Connector.IsConnected. Distribution target DS_415-240V_3Ph_4W. Single-phase finals at 240 V. Caps are trace.circuit.* plus trace.voltage_drop_pct and trace.phase_imbalance_max. A missing key is PROVISIONAL. dry_run defaults true. A write is fmc_circuits_apply, one transaction, one subtransaction per circuit, with batch_lease. Document is an exact title or path. HEBERT HOSTELS, centrals and protected paths are refused. JSON under %LOCALAPPDATA%\\Formcraft\\circuits. Needs a Revit check."
+    "note": "plan, apply, panel, audit and limits. Groups unassigned lighting and power devices by room, then level, then kind. Lighting and sockets are never mixed. Names are {board}/{zone}-{type}{n}. Phases balance L1/L2/L3 and FMC_Phase is bound when it is missing. A board is electrical equipment with Part Type Panelboard, Switchboard or Other Panel, or a panel-schedule MEP connector. A board family is not refused. A board with no distribution system is FMC-PANEL-NO-DISTRIBUTION and a dry-run plan that sets Distribution System. accept_no_supply and utility-fed panels may have no supply. non_board_ids are panel part types treated as loads; others that look like an SPD or isolator are flagged. Devices are grouped by connector voltage and poles. A group SelectPanel would refuse is FMC-CIRCUIT-PANEL-MISMATCH and names the panel line-to-line and line-to-ground voltage against the device connector. FMC-NO-CONNECTOR is grouped by family. A board such as TPN_T1 with no distribution system still returns the dry-run plan that sets it. FMC-NO-CONNECTOR instead of Connector.IsConnected. Distribution target DS_415-240V_3Ph_4W. Single-phase finals at 240 V. Caps are trace.circuit.* plus trace.voltage_drop_pct and trace.phase_imbalance_max. A missing key is PROVISIONAL. dry_run defaults true. A write is fmc_circuits_apply, one transaction, one subtransaction per circuit, with batch_lease. Document is an exact title or path. HEBERT HOSTELS, centrals and protected paths are refused. JSON under %LOCALAPPDATA%\\Formcraft\\circuits. Needs a Revit check."
   },
   {
     "id": "F103",
@@ -1051,5 +1051,23 @@
     "status": "Built, Revit check due",
     "ref": "fmc_memory",
     "note": "status reports free MB, the Revit working set and open documents including families. free closes unmodified family documents and unmodified non-active non-workshared documents, then GC.Collect. The last document stays. Revit 2025 has no API to clear the undo stack. purge_unused runs PerformanceAdviser rules named unused or purge, with an optional category filter. dry_run defaults true. A write needs batch_lease and is fmc_memory_apply. The reply includes MB before and after. The pause stays 1024 MB and the resume line 1536 MB. Needs a Revit check."
+  },
+  {
+    "id": "F118",
+    "area": "Engine",
+    "group": "Engineer",
+    "feature": "Electrical single-line, power riser and earthing template",
+    "status": "Built, Revit check due",
+    "ref": "fmc_elec_diagrams, docs/tools/fmc_elec_diagrams.md",
+    "note": "plan, apply and limits for an open electrical model such as F26901-FMC-ZZ-ZZ-M3-E-0001_USER. Reads the panel and circuit graph fmc_trace uses, plus level and distribution voltage. Draws a single-line (boards, feeders, breaker number, rating, poles and load), a power riser per building, and an earthing template. riser bands or elevation (12 paper mm per metre of level height). A loaded FMC_DI_E_SLD_Board or FMC_DI_E_SLD_Breaker is placed. Otherwise lines and text. A missing rating or load is TBC. The earthing view does not size the electrode. dry_run defaults true. A write is fmc_elec_diagrams_apply, one transaction, one subtransaction per view, with batch_lease and kit, standards and rulebook references. The model is not saved. Needs a Revit check."
+  },
+  {
+    "id": "F119",
+    "area": "Engine",
+    "group": "Engineer",
+    "feature": "Plumbing and drainage risers and schematics",
+    "status": "Built, Revit check due",
+    "ref": "fmc_plumb_diagrams, docs/tools/fmc_plumb_diagrams.md",
+    "note": "plan, apply and limits for an open plumbing model such as F26901-FMC-ZZ-ZZ-M3-P-0001_USER. Reads piping-system membership the way fmc_trace does, without walking every connector. One riser and one schematic per system: stacks by level, branches, fixture counts, pipe sizes and vent stacks. riser bands or elevation. A loaded FMC_DI_P_Schematic is placed. Otherwise lines and text. A tiny 3D schematic is listed and left in place. A missing size is TBC. dry_run defaults true. A write is fmc_plumb_diagrams_apply, one transaction, one subtransaction per view, with batch_lease and references. The model is not saved. Needs a Revit check."
   }
 ]
