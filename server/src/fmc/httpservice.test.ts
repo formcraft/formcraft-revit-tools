@@ -38,8 +38,20 @@ test("the token file is readable by the owner only", () => {
 
 test("the service requires the bearer token, reports health, lists fmc_review, and the shim can reach it", { timeout: 180_000 }, async () => {
   const token = "test-token-not-logged";
-  const service = await startHttpService({ port: 0, token, allowEphemeral: true, watchStamp: false });
+  // Isolated tests start with an empty Formcraft tree, and an empty guard is not testing mode, so sync stays off.
+  // This test writes its own guard into that temp tree. It does not read a live fmc_guard.json.
+  const guard = path.join(process.env.APPDATA || os.tmpdir(), "Formcraft", "fmc_guard.json");
+  fs.mkdirSync(path.dirname(guard), { recursive: true });
+  fs.writeFileSync(guard, JSON.stringify({
+    ai_modeller: { on: true, mode: "testing", auto_approve: true },
+    sync_minutes: 15,
+    sync_on_batch_end: true,
+  }));
+  const previousGuard = process.env.FMC_GUARD_CONFIG;
+  process.env.FMC_GUARD_CONFIG = guard;
+  let service: Awaited<ReturnType<typeof startHttpService>> | undefined;
   try {
+    service = await startHttpService({ port: 0, token, allowEphemeral: true, watchStamp: false });
     const denied = await fetch(`http://127.0.0.1:${service.port}/health`);
     assert.equal(denied.status, 401);
     const wrong = await fetch(`http://127.0.0.1:${service.port}/health`, { headers: { Authorization: "Bearer no" } });
@@ -56,8 +68,7 @@ test("the service requires the bearer token, reports health, lists fmc_review, a
     assert.ok(Array.isArray(body.instances));
     const care = (body as { batches?: { approval?: string; sync?: string; approval_does_not_cover?: string[] } }).batches;
     assert.ok(care?.approval === "auto" || care?.approval === "manual");
-    // An empty isolated guard is not testing mode, so managed sync stays off. A testing guard reports managed.
-    assert.ok(care?.sync === "managed" || care?.sync === "off");
+    assert.equal(care?.sync, "managed");
     const memory = (body as { memory?: { pause_below_mb?: number; resume_above_mb?: number; free_mb?: number; paused?: boolean } }).memory;
     assert.equal(memory?.pause_below_mb, 1024);
     assert.equal(memory?.resume_above_mb, 1536);
@@ -101,6 +112,8 @@ test("the service requires the bearer token, reports health, lists fmc_review, a
     input.end();
     await Promise.race([bridged, new Promise((resolve) => setTimeout(resolve, 500))]);
   } finally {
-    await service.close();
+    if (previousGuard === undefined) delete process.env.FMC_GUARD_CONFIG;
+    else process.env.FMC_GUARD_CONFIG = previousGuard;
+    await service?.close();
   }
 });

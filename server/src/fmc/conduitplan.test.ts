@@ -23,6 +23,9 @@ test("free ends pair as extend, union, elbow or transition, and offset is only r
     end(8, [30, 300, 0], [-1, 0, 0], 25),
     end(9, [0, 400, 0], [1, 0, 0]),
     end(10, [20, 400, 40], [0, 0, 1]),
+    // Parallel and not co-linear. One elbow cannot join these, so they stay a report.
+    end(11, [0, 500, 0], [1, 0, 0]),
+    end(12, [30, 500, 40], [-1, 0, 0]),
   ];
   const paired = pairEnds(ends, limits);
   const op = (id: number) => paired.pairs.find((pair) => pair.a.element_id === id || pair.b.element_id === id)?.op;
@@ -31,6 +34,8 @@ test("free ends pair as extend, union, elbow or transition, and offset is only r
   assert.equal(op(5), "elbow");
   assert.equal(op(7), "transition");
   assert.equal(op(9), "report");
+  assert.equal(op(11), "report");
+  assert.equal(paired.pairs.find((pair) => pair.a.element_id === 11)?.alignment, "offset");
   assert.equal(paired.pairs.find((pair) => pair.a.element_id === 1)?.confidence, 0.9);
 });
 
