@@ -181,6 +181,32 @@ namespace RevitMCPCommandSet.Services.Fmc
                     created.Add(lg.Id);
                     return new JObject { ["legend"] = lg.Id.Value };
                 }
+                case "keynote_legend":
+                {
+                    // Not a keynote tag. A for_each of this op runs here, on the add-in, one legend per pass.
+                    ViewSchedule legend = ViewSchedule.CreateKeynoteLegend(doc);
+                    if (op["name"] != null && !string.IsNullOrWhiteSpace(op.Value<string>("name"))) legend.Name = op.Value<string>("name").Trim();
+                    if (op.Value<bool?>("filtered_by_sheet") == true)
+                    {
+                        if (!legend.Definition.IsValidCategoryForFilterBySheet())
+                            throw new InvalidOperationException("this keynote legend cannot be filtered by sheet");
+                        legend.Definition.IsFilteredBySheet = true;
+                    }
+                    created.Add(legend.Id);
+                    return new JObject { ["legend"] = legend.Id.Value, ["name"] = legend.Name, ["filtered_by_sheet"] = legend.Definition.IsFilteredBySheet };
+                }
+                case "place_schedule":
+                {
+                    // Places a legend or a schedule. Not a keynote tag, so a for_each of this op runs on the add-in.
+                    View sheetView = ViewOf(doc, op["sheet"], made);
+                    ViewSheet sheet = sheetView as ViewSheet ?? throw new InvalidOperationException((sheetView?.Name ?? "that view") + " isn't a sheet");
+                    View scheduleView = ViewOf(doc, op["schedule"], made);
+                    ViewSchedule schedule = scheduleView as ViewSchedule ?? throw new InvalidOperationException((scheduleView?.Name ?? "that view") + " isn't a schedule or legend");
+                    XYZ at = Vec(op["point_mm"], "place_schedule needs point_mm [x, y] on the sheet");
+                    ScheduleSheetInstance placed = ScheduleSheetInstance.Create(doc, sheet.Id, schedule.Id, at);
+                    created.Add(placed.Id);
+                    return new JObject { ["placed"] = placed.Id.Value, ["sheet"] = sheet.SheetNumber, ["schedule"] = schedule.Name };
+                }
                 default: return FamilyOp(doc, name, op, made, created);
             }
         }

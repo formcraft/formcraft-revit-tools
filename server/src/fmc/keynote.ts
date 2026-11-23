@@ -778,8 +778,17 @@ function opIsDry(op: KeynoteOp, batchDry: boolean): boolean {
   return false;
 }
 
+const NON_TAGGING = new Set(["keynote_legend", "place_schedule"]);
+
+/** keynote_legend and place_schedule create or place a legend. They are not keynote tags. */
+export function isTaggingKeynote(op: KeynoteOp | null | undefined): boolean {
+  if (!op || typeof op !== "object") return false;
+  if (NON_TAGGING.has(op.op)) return false;
+  return isKeynoteOp(op);
+}
+
 function mentionsKeynote(op: KeynoteOp): boolean {
-  if (isKeynoteOp(op)) return true;
+  if (isTaggingKeynote(op)) return true;
   if (op.op === "for_each" && Array.isArray(op.ops)) return op.ops.some((inner) => mentionsKeynote(inner as KeynoteOp));
   return false;
 }

@@ -19,6 +19,9 @@ test("a keynote batch is its own call; a mix and a for_each are refused before R
   assert.equal(classifyKeynoteBatch([{ op: "create_wall" }]), "model");
   assert.equal(classifyKeynoteBatch([tag, { op: "text", view: "A201", text: "note" }]), "mixed");
   assert.equal(classifyKeynoteBatch([{ op: "for_each", per: "room", ops: [tag] }]), "for_each");
+  assert.equal(classifyKeynoteBatch([{ op: "for_each", per: "sheet", ops: [{ op: "keynote_legend", name: "KN", filtered_by_sheet: true }] }]), "model");
+  assert.equal(classifyKeynoteBatch([{ op: "for_each", per: "sheet", ops: [{ op: "place_schedule", sheet: "A201", schedule: "KN", point_mm: [20, 280] }] }]), "model");
+  assert.equal(classifyKeynoteBatch([{ op: "keynote_legend", filtered_by_sheet: true }]), "keynote");
   const calls: string[] = [];
   const send = async (command: string) => { calls.push(command); return {}; };
   const mixed = await executeKeynoteBatch([tag, { op: "text" }], false, "Ogala", send);
@@ -26,6 +29,8 @@ test("a keynote batch is its own call; a mix and a for_each are refused before R
   assert.match(String(mixed?.body.reason), /their own modify_model call/);
   const each = await executeKeynoteBatch([{ op: "for_each", ops: [tag] }], false, "Ogala", send);
   assert.match(String(each?.body.reason), /for_each/);
+  const legendEach = await executeKeynoteBatch([{ op: "for_each", per: "sheet", ops: [{ op: "keynote_legend", filtered_by_sheet: true }] }], false, "Ogala", send);
+  assert.equal(legendEach, null);
   assert.equal(await executeKeynoteBatch([{ op: "create_wall" }], false, "Ogala", send), null);
   assert.deepEqual(calls, []);
 });

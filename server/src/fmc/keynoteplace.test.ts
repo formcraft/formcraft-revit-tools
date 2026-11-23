@@ -6,7 +6,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { z } from "zod";
 import { DEFAULT_CONFIG, READ_VIA_SEND_COMMAND, WRITE_COMMANDS, type GuardConfig } from "./policy.js";
-import { keynoteSeedPath, pickSeed, planKeynotes } from "./keynoteplace.js";
+import { keepCentral, keynoteSeedPath, pickSeed, planKeynotes } from "./keynoteplace.js";
 import { FMC_KEYNOTE_PLACE_SHAPE, runFmcKeynotePlace, type FmcKeynotePlaceArgs } from "../tools/fmc_keynote_place.js";
 
 function args(partial: Record<string, unknown>): FmcKeynotePlaceArgs {
@@ -65,6 +65,36 @@ test("no linked tag uses the kit seed, and a missing file is a precise code on e
   assert.equal(ready.seed.exists, true);
   assert.deepEqual(ready.views.find((view) => view.view === "Level 2")?.placed.map((row) => row.host), ["31"]);
   assert.equal(ready.views.find((view) => view.view === "Level 1")?.skipped[0]?.code, "FMC-KEYNOTE-NO-HOST");
+});
+
+test("one tag per keynote value sits on the central element, off the wall, clear of existing tags", () => {
+  const hosts = [
+    { id: "1", category: "Walls", view_id: "1", key: "A.WAL_01", x: 0, y: 0, nx: 0, ny: 1, half_mm: 100 },
+    { id: "2", category: "Walls", view_id: "1", key: "A.WAL_01", x: 1000, y: 0, nx: 0, ny: 1, half_mm: 100 },
+    { id: "4", category: "Walls", view_id: "1", key: "A.WAL_01", x: 4000, y: 0, nx: 0, ny: 1, half_mm: 100 },
+    { id: "3", category: "Walls", view_id: "1", key: "A.WAL_02", x: 1000, y: 5000, nx: 0, ny: 1, half_mm: 50 },
+  ];
+  const reduced = keepCentral(hosts, true);
+  assert.deepEqual(reduced.kept.map((row) => row.id).sort(), ["2", "3"]);
+  assert.deepEqual(reduced.dropped.map((row) => row.id).sort(), ["1", "4"]);
+  const crowded = {
+    ...doc,
+    hosts,
+    tags: [{
+      id: "9", view_id: "1", view: "Level 1", host: "99", key: "A.WAL_09", key_source: "Element", tag_type: "Keynote Tag : Element", linked: true,
+      min_x: 1800, min_y: 400, max_x: 2800, max_y: 1200,
+    }],
+  };
+  const plan = planKeynotes(crowded, { by: "element", views: ["Level 1"], categories: ["Walls"], seedPath: "Z:\\kit\\seed.rvt", seedExists: true, one_per_key: true, leader: true, offset_mm: 600 });
+  const level = plan.views.find((view) => view.view === "Level 1");
+  assert.equal(plan.counts.one_per_key, 2);
+  assert.ok(level?.skipped.some((row) => row.code === "FMC-KEYNOTE-ONE-PER-KEY" && row.host === "1"));
+  const central = level?.placed.find((row) => row.host === "2");
+  assert.equal(central?.leader, true);
+  assert.equal(central?.head_mm?.[0], 1000);
+  assert.equal(central?.head_mm?.[1], 700);
+  assert.equal(plan.counts.collision_moved >= 0, true);
+  assert.ok((plan.counts.placed + plan.counts.one_per_key + plan.counts.collision_blocked) >= 2);
 });
 
 test("dry run does not apply, and a write needs a lease and references", async () => {

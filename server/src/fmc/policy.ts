@@ -228,6 +228,10 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_viewstyle_apply",
   // Dimension strings. One transaction, one subtransaction per string.
   "fmc_dims_apply",
+  // Door, window and room tags. One transaction, one subtransaction per tag.
+  "fmc_tags_apply",
+  // One keynote legend placed on each sheet. One transaction.
+  "fmc_keynote_legend_apply",
   // Open or close a document. List stays on fmc_docs. The last document is never closed.
   "fmc_docs_apply",
   // Close spare documents or purge unused elements. Status stays on fmc_memory.
@@ -271,11 +275,15 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_sheets_layout",
   // Existing templates, filters and room names. No transaction.
   "fmc_viewstyle",
-  // Grids, exterior walls and openings in one view. No transaction.
+  // Grids, exterior walls, interior partitions, openings and rooms in one view. No transaction.
   "fmc_dims",
   // Electrical and plumbing diagram graphs. No transaction.
   "fmc_elec_diagrams",
   "fmc_plumb_diagrams",
+  // Floor plans on issued sheets, with linked doors and room tags. No transaction.
+  "fmc_tags",
+  // Sheets, title-block legend zone and an existing keynote legend. No transaction.
+  "fmc_keynote_legend",
 ]);
 
 /**

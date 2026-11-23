@@ -128,8 +128,8 @@ export const MODIFY_MODEL_DESCRIPTION =
   "and repoints it; a blank copy is rolled back. keynote_audit lists blank keynote tags by view and linked tags (TagText not empty: id, view, host, key, Key Source), with a seed for keynote_clone per tag type. If a type has no linked tag, seed is null and the hint is to make one via keynote_retag. It deletes nothing. " +
   "These ops run through the code bridge (a server hot-swap) and must be their own batch. category, multi and material stay on the add-in; a keynote tag " +
   "type on that path is refused. Rooms, spaces and areas still get their own tags. · " +
-  "keynote_legend {name?, filtered_by_sheet?} creates a keynote legend schedule. · " +
-  "place_schedule {sheet, schedule, point_mm} places a schedule or legend on a sheet; point_mm is on the sheet. · " +
+  "keynote_legend {name?, filtered_by_sheet?} creates a keynote legend schedule. It is not a keynote tag: a for_each of keynote_legend runs on the add-in. · " +
+  "place_schedule {sheet, schedule, point_mm} places a schedule or legend on a sheet; point_mm is on the sheet. It is not a keynote tag: a for_each of place_schedule runs on the add-in. · " +
   "spot_elevation / spot_coordinate {view, id (floor, roof, toposolid...), point_mm, leader?} · " +
   "revision_cloud {view, outline_mm, revision? (description or number; default the latest)} · " +
   "place_annotation {view, type_name (detail item, symbol or generic annotation), point_mm, rotation_deg?} · " +

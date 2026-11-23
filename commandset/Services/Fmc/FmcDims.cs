@@ -41,6 +41,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                         ["grids"] = Grids(doc, view),
                         ["walls"] = Walls(doc, view),
                         ["openings"] = Openings(doc, view),
+                        ["rooms"] = Rooms(doc, view),
                         ["resolved_document"] = FmcTarget.Resolved(doc),
                     };
                 }
@@ -89,6 +90,80 @@ namespace RevitMCPCommandSet.Services.Fmc
                 });
             }
             return rows;
+        }
+
+        private static JArray Rooms(Document doc, View view)
+        {
+            var rows = new JArray();
+            var options = new SpatialElementBoundaryOptions { SpatialElementBoundaryLocation = SpatialElementBoundaryLocation.Finish };
+            foreach (SpatialElement room in new FilteredElementCollector(doc, view.Id).OfCategory(BuiltInCategory.OST_Rooms).WhereElementIsNotElementType().Cast<SpatialElement>())
+            {
+                if (room.Area <= 0) continue;
+                try
+                {
+                XYZ loc = (room.Location as LocationPoint)?.Point ?? XYZ.Zero;
+                var bounds = new JArray();
+                IList<IList<BoundarySegment>> loops = room.GetBoundarySegments(options);
+                BoundarySegment left = null, right = null, bottom = null, top = null;
+                double leftX = double.MaxValue, rightX = double.MinValue, bottomY = double.MaxValue, topY = double.MinValue;
+                if (loops != null)
+                {
+                    foreach (IList<BoundarySegment> loop in loops)
+                    {
+                        foreach (BoundarySegment seg in loop)
+                        {
+                            Curve curve = seg.GetCurve();
+                            if (curve == null) continue;
+                            XYZ a = curve.GetEndPoint(0), b = curve.GetEndPoint(1), mid = curve.Evaluate(0.5, true);
+                            if (Math.Abs(b.Y - a.Y) >= Math.Abs(b.X - a.X))
+                            {
+                                if (mid.X < leftX) { leftX = mid.X; left = seg; }
+                                if (mid.X > rightX) { rightX = mid.X; right = seg; }
+                            }
+                            else
+                            {
+                                if (mid.Y < bottomY) { bottomY = mid.Y; bottom = seg; }
+                                if (mid.Y > topY) { topY = mid.Y; top = seg; }
+                            }
+                        }
+                    }
+                }
+                AddBound(bounds, left, "left", loc);
+                AddBound(bounds, right, "right", loc);
+                AddBound(bounds, bottom, "bottom", loc);
+                AddBound(bounds, top, "top", loc);
+                rows.Add(new JObject
+                {
+                    ["id"] = room.Id.Value.ToString(),
+                    ["name"] = room.get_Parameter(BuiltInParameter.ROOM_NAME)?.AsString() ?? "",
+                    ["x"] = Mm(loc.X),
+                    ["y"] = Mm(loc.Y),
+                    ["bounds"] = bounds,
+                });
+                }
+                catch (Exception) { /* a room with no boundary is omitted from this read */ }
+            }
+            return rows;
+        }
+
+        private static void AddBound(JArray bounds, BoundarySegment seg, string side, XYZ room)
+        {
+            if (seg == null || seg.ElementId == null || seg.ElementId == ElementId.InvalidElementId) return;
+            Curve curve = seg.GetCurve();
+            if (curve == null) return;
+            XYZ mid = curve.Evaluate(0.5, true);
+            XYZ toward = new XYZ(room.X - mid.X, room.Y - mid.Y, 0);
+            if (toward.GetLength() < 1e-9) toward = XYZ.BasisX;
+            toward = toward.Normalize();
+            bounds.Add(new JObject
+            {
+                ["wall_id"] = seg.ElementId.Value.ToString(),
+                ["side"] = side,
+                ["x"] = Mm(mid.X),
+                ["y"] = Mm(mid.Y),
+                ["nx"] = Math.Round(toward.X, 4),
+                ["ny"] = Math.Round(toward.Y, 4),
+            });
         }
 
         private static JObject CurveRow(string id, string name, XYZ a, XYZ b, string function) => new JObject
@@ -233,6 +308,12 @@ namespace RevitMCPCommandSet.Services.Fmc
                 if (face?.Reference != null) list.Add(face.Reference);
                 return list;
             }
+            if (element is Wall sideWall && (role == "wall_side" || role == "room_side"))
+            {
+                Reference face = SideFace(sideWall, view, item.Value<double?>("nx") ?? 0, item.Value<double?>("ny") ?? 0);
+                if (face != null) list.Add(face);
+                return list;
+            }
             if (element is FamilyInstance inst && role == "opening")
             {
                 IList<Reference> refs = inst.GetReferences(FamilyInstanceReferenceType.CenterLeftRight);
@@ -240,6 +321,29 @@ namespace RevitMCPCommandSet.Services.Fmc
                 if (refs != null) list.AddRange(refs.Where(reference => reference != null));
             }
             return list;
+        }
+
+        /// <summary>A long face (normal across the wall) whose normal best matches the requested direction.</summary>
+        private static Reference SideFace(Wall wall, View view, double nx, double ny)
+        {
+            XYZ want = new XYZ(nx, ny, 0);
+            if (want.GetLength() < 1e-6) want = wall.Orientation ?? XYZ.BasisX;
+            want = want.Normalize();
+            XYZ dir = ((wall.Location as LocationCurve)?.Curve as Line)?.Direction ?? XYZ.BasisX;
+            PlanarFace best = null;
+            double score = -2;
+            var options = new Options { ComputeReferences = true, View = view, IncludeNonVisibleObjects = true };
+            foreach (Solid solid in Solids(wall.get_Geometry(options)))
+            {
+                foreach (Face face in solid.Faces)
+                {
+                    if (face is not PlanarFace planar || planar.Reference == null) continue;
+                    if (Math.Abs(planar.FaceNormal.DotProduct(dir)) > 0.3) continue;
+                    double dot = planar.FaceNormal.DotProduct(want);
+                    if (dot > score) { score = dot; best = planar; }
+                }
+            }
+            return best?.Reference;
         }
 
         private static List<PlanarFace> EndFaces(Wall wall, View view)

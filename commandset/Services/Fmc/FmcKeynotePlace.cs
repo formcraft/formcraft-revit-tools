@@ -66,13 +66,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 {
                     foreach (Element host in new FilteredElementCollector(doc, view.Id).OfCategoryId(cat).WhereElementIsNotElementType())
                     {
-                        hosts.Add(new JObject
-                        {
-                            ["id"] = host.Id.Value.ToString(),
-                            ["category"] = host.Category?.Name ?? "",
-                            ["view_id"] = view.Id.Value.ToString(),
-                            ["name"] = host.Name ?? "",
-                        });
+                        hosts.Add(HostRow(host, view));
                     }
                 }
             }
@@ -88,7 +82,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 }
                 catch (Exception) { hostId = ""; }
                 Element type = doc.GetElement(tag.GetTypeId());
-                tags.Add(new JObject
+                var row = new JObject
                 {
                     ["id"] = tag.Id.Value.ToString(),
                     ["view_id"] = owner?.Id.Value.ToString() ?? "",
@@ -98,7 +92,16 @@ namespace RevitMCPCommandSet.Services.Fmc
                     ["key_source"] = SourceText(tag),
                     ["tag_type"] = type == null ? "" : type.Name,
                     ["linked"] = !TagTextEmpty(tag),
-                });
+                };
+                BoundingBoxXYZ box = owner == null ? null : tag.get_BoundingBox(owner);
+                if (box != null)
+                {
+                    row["min_x"] = Mm(box.Min.X);
+                    row["min_y"] = Mm(box.Min.Y);
+                    row["max_x"] = Mm(box.Max.X);
+                    row["max_y"] = Mm(box.Max.Y);
+                }
+                tags.Add(row);
             }
             return new JObject
             {
@@ -110,6 +113,43 @@ namespace RevitMCPCommandSet.Services.Fmc
                 ["hosts"] = hosts,
             };
         }
+
+        static JObject HostRow(Element host, View view)
+        {
+            var row = new JObject
+            {
+                ["id"] = host.Id.Value.ToString(),
+                ["category"] = host.Category?.Name ?? "",
+                ["view_id"] = view.Id.Value.ToString(),
+                ["name"] = host.Name ?? "",
+                ["key"] = host.get_Parameter(BuiltInParameter.KEYNOTE_PARAM)?.AsString() ?? "",
+            };
+            if (host is Wall wall && wall.Location is LocationCurve curve && curve.Curve is Line line)
+            {
+                XYZ mid = line.Evaluate(0.5, true);
+                XYZ normal = wall.Orientation ?? XYZ.BasisY;
+                row["x"] = Mm(mid.X);
+                row["y"] = Mm(mid.Y);
+                row["nx"] = Math.Round(normal.X, 4);
+                row["ny"] = Math.Round(normal.Y, 4);
+                row["half_mm"] = Mm(wall.Width * 0.5);
+            }
+            else
+            {
+                XYZ point = null;
+                if (host.Location is LocationPoint lp) point = lp.Point;
+                else if (host.Location is LocationCurve lc && lc.Curve != null) point = lc.Curve.Evaluate(0.5, true);
+                if (point == null)
+                {
+                    BoundingBoxXYZ box = host.get_BoundingBox(view);
+                    if (box != null) point = (box.Min + box.Max) * 0.5;
+                }
+                if (point != null) { row["x"] = Mm(point.X); row["y"] = Mm(point.Y); }
+            }
+            return row;
+        }
+
+        static double Mm(double feet) => Math.Round(feet * 304.8, 1);
 
         internal static bool IsPlan(View view)
         {
@@ -336,8 +376,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                 skipped.Add(new JObject { ["code"] = "FMC-KEYNOTE-VIEW", ["reason"] = "That view is not an open plan." });
                 return new JObject { ["view_id"] = viewOp.Value<string>("view_id"), ["view"] = viewOp.Value<string>("view"), ["placed"] = placed, ["skipped"] = skipped };
             }
-            foreach (string hostId in (viewOp["hosts"] as JArray ?? new JArray()).Select(token => token.ToString()))
+            foreach (JToken token in viewOp["hosts"] as JArray ?? new JArray())
             {
+                JObject extra = token as JObject;
+                string hostId = extra?.Value<string>("host") ?? token.ToString();
                 Element host = ById(doc, hostId);
                 if (host == null)
                 {
@@ -382,7 +424,19 @@ namespace RevitMCPCommandSet.Services.Fmc
                         IList<Reference> oldRefs = copy.GetTaggedReferences();
                         if (oldRefs != null && oldRefs.Count > 0) copy.RemoveReferences(oldRefs);
                         copy.AddReferences(new List<Reference> { new Reference(host) });
-                        try { copy.TagHeadPosition = Where(host); } catch (Exception) { /* the head stays where the copy landed */ }
+                        bool leader = extra?.Value<bool?>("leader") == true;
+                        JArray head = extra?["head_mm"] as JArray;
+                        try
+                        {
+                            if (head != null && head.Count >= 2)
+                            {
+                                XYZ at = new XYZ(head[0].Value<double>() / 304.8, head[1].Value<double>() / 304.8, Where(host).Z);
+                                copy.HasLeader = leader;
+                                copy.TagHeadPosition = at;
+                            }
+                            else copy.TagHeadPosition = Where(host);
+                        }
+                        catch (Exception) { /* the head stays where the copy landed */ }
                         doc.Regenerate();
                         bool points = false;
                         foreach (Reference reference in copy.GetTaggedReferences() ?? new List<Reference>())

@@ -5,21 +5,24 @@ import { batchLease } from "../fmc/target.js";
 import { saveBlocked } from "../fmc/savepolicy.js";
 import { configPath, loadConfig, type GuardConfig } from "../fmc/policy.js";
 import { protectedRoots } from "../fmc/opencopy.js";
-import { DIMS_FIX, planDims, referenceProblems, writeDimsReport, type DimCurve, type DimOpening, type DimTarget } from "../fmc/dims.js";
+import { DIMS_FIX, planDims, referenceProblems, writeDimsReport, type DimCurve, type DimOpening, type DimRoom, type DimTarget } from "../fmc/dims.js";
 
 function reply(body: object, isError = false) {
   return { content: [{ type: "text" as const, text: JSON.stringify(body) }], isError };
 }
 
 export const FMC_DIMS_DESCRIPTION =
-  "Dimension strings along grids and along exterior walls, with openings in the chain. " +
-  "action auto. targets is grids, walls, openings, or a list of those. chain true makes one string per run; false makes a string per adjacent pair. " +
+  "Dimension strings along grids, along exterior walls, across interior partitions, and across rooms. " +
+  "action auto. targets is grids, walls, openings, interior, rooms, or a list of those. " +
+  "interior chains parallel partitions along one line and does not return FMC-DIMS-NOT-EXTERIOR for those walls. " +
+  "rooms places two clear dimensions per room, between the bounding wall faces. " +
+  "chain true makes one string per run; false makes a string per adjacent pair. " +
   "offset_mm is how far the dimension line sits off the references (default 600). " +
   "dry_run defaults to true and returns the planned references and the dimension line. It does not create a dimension. " +
   "A write is fmc_dims_apply, one transaction, one subtransaction per string, and needs batch_lease plus references.kit, references.standards and references.rulebook. " +
-  "A missing reference is FMC-DIMS-NO-REFERENCE and that string is not created. Interior walls are skipped. " +
+  "A missing reference is FMC-DIMS-NO-REFERENCE and that string is not created. Exterior wall strings still skip interior walls. " +
   "JSON under %LOCALAPPDATA%\\Formcraft\\dims. No pictures. " +
-  "Example: action auto, document F26901-FMC-ZZ-ZZ-M3-A-0002_USER, view \"Level 1\", targets [\"grids\",\"walls\"], chain true, offset_mm 600, dry_run true.";
+  "Example: action auto, document F26901-FMC-ZZ-ZZ-M3-A-0002_USER, view \"Level 1\", targets [\"interior\",\"rooms\"], chain true, offset_mm 600, dry_run true.";
 
 const refs = z.object({
   kit: z.array(z.string()).optional(),
@@ -27,7 +30,7 @@ const refs = z.object({
   rulebook: z.array(z.string()).optional(),
 }).optional();
 
-const target = z.enum(["grids", "walls", "openings"]);
+const target = z.enum(["grids", "walls", "openings", "interior", "rooms"]);
 
 export const FMC_DIMS_SHAPE = {
   action: z.literal("auto").optional().default("auto"),
@@ -67,7 +70,7 @@ function stamp(extra: Record<string, unknown> = {}) {
     cites: {
       kit: "FMC-BIM-MAN-001 annotation",
       standards: "FMC-BIM-STD-002 dimensions",
-      rulebook: "Dimension strings follow grids and exterior walls. Interior walls are left alone.",
+      rulebook: "Grids and exterior walls, interior partitions chained across the run, and two clear dimensions per room.",
     },
     ...extra,
   };
@@ -97,6 +100,7 @@ export async function runFmcDims(args: FmcDimsArgs, io: DimsIo = {}) {
       grids: (Array.isArray(body.grids) ? body.grids : []).map(asCurve).filter((row): row is DimCurve => !!row),
       walls: (Array.isArray(body.walls) ? body.walls : []).map(asCurve).filter((row): row is DimCurve => !!row),
       openings: (Array.isArray(body.openings) ? body.openings : []) as DimOpening[],
+      rooms: (Array.isArray(body.rooms) ? body.rooms : []) as DimRoom[],
       targets,
       chain: args.chain !== false,
       offset_mm: args.offset_mm,

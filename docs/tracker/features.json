@@ -1069,5 +1069,23 @@
     "status": "Built, Revit check due",
     "ref": "fmc_plumb_diagrams, docs/tools/fmc_plumb_diagrams.md",
     "note": "plan, apply and limits for an open plumbing model such as F26901-FMC-ZZ-ZZ-M3-P-0001_USER. Reads piping-system membership the way fmc_trace does, without walking every connector. One riser and one schematic per system: stacks by level, branches, fixture counts, pipe sizes and vent stacks. riser bands or elevation. A loaded FMC_DI_P_Schematic is placed. Otherwise lines and text. A tiny 3D schematic is listed and left in place. A missing size is TBC. dry_run defaults true. A write is fmc_plumb_diagrams_apply, one transaction, one subtransaction per view, with batch_lease and references. The model is not saved. Needs a Revit check."
+  },
+  {
+    "id": "F120",
+    "area": "Engine",
+    "group": "Drawings",
+    "feature": "Door, window and room tags on issued plans",
+    "status": "Built, Revit check due",
+    "ref": "fmc_tags, docs/TAGS.md",
+    "note": "Tags untagged doors, windows and rooms on floor plans placed on issued sheets. No leaders. Linked doors use CreateLinkReference. Rooms use NewRoomTag with LinkElementId. A host collector and an OwnerViewId filter both return 0 for those cases, which is why a send_code script reported tags 0. Overlaps shift. dry_run defaults true. A write is fmc_tags_apply, one transaction, one subtransaction per tag, with batch_lease and references. JSON under %LOCALAPPDATA%\\Formcraft\\tags. No pictures. Needs a Revit check."
+  },
+  {
+    "id": "F121",
+    "area": "Engine",
+    "group": "Drawings",
+    "feature": "Keynote legend on plan sheets",
+    "status": "Built, Revit check due",
+    "ref": "fmc_keynote_legend, docs/KEYNOTE_LEGEND.md",
+    "note": "Creates one keynote legend, filters it by sheet, and places it on each plan sheet. The point is the title-block parameter FMC_Legend_Zone, or the kit zone inset from the lower right. keynote_legend and place_schedule are not keynote tags, so a for_each of either runs on the add-in. The sample zone is PROVISIONAL and cannot PASS. dry_run defaults true. A write is fmc_keynote_legend_apply, one transaction, with batch_lease and references. Returns the legend id and viewport ids. JSON under %LOCALAPPDATA%\\Formcraft\\keynote-legend. No pictures. Needs a Revit check."
   }
 ]
