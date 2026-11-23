@@ -117,8 +117,11 @@ namespace RevitMCPCommandSet.Services.Fmc
                         system = kind.ToString();
                         try
                         {
-                            // Connector.Voltage is the value SelectPanel compares. There is no poles property on Connector.
-                            double read = UnitUtils.ConvertFromInternalUnits(item.Voltage, UnitTypeId.Volts);
+                            // Revit 2025 has no Connector.Voltage. The connector's Voltage is exposed on the
+                            // instance as RBS_ELEC_VOLTAGE, which is what SelectPanel compares. No poles on Connector.
+                            Parameter connectorVolts = device.get_Parameter(BuiltInParameter.RBS_ELEC_VOLTAGE);
+                            if (connectorVolts == null || !connectorVolts.HasValue || connectorVolts.StorageType != StorageType.Double) continue;
+                            double read = UnitUtils.ConvertFromInternalUnits(connectorVolts.AsDouble(), UnitTypeId.Volts);
                             if (read > connectorVoltage) connectorVoltage = Math.Round(read, 1);
                         }
                         catch (Exception) { /* a connector with no voltage */ }
@@ -200,7 +203,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 row["voltage_lg"] = VoltageOf(system.VoltageLineToGround);
                 row["phase"] = system.ElectricalPhase.ToString();
                 row["wires"] = system.NumWires;
-                row["phase_config"] = system.PhaseConfiguration.ToString();
+                row["phase_config"] = system.ElectricalPhaseConfiguration.ToString();
             }
             catch (Exception) { /* the parameter is absent on a device that is not a panel */ }
         }

@@ -204,7 +204,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 }
                 catch (Exception)
                 {
-                    foreach (ElementId id in tag.GetTaggedLocalElementIds() ?? new List<ElementId>())
+                    foreach (ElementId id in tag.GetTaggedLocalElementIds() ?? new HashSet<ElementId>())
                         Remember(have, tagged, "", id.Value.ToString());
                 }
             }

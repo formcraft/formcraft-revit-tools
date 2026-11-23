@@ -164,5 +164,8 @@ test("apply without a lease changes nothing, and the commands are registered", a
   assert.match(circuitSource, /NumWires/);
   assert.match(circuitSource, /VoltageLineToLine/);
   assert.match(circuitSource, /VoltageLineToGround/);
-  assert.match(circuitSource, /Connector.Voltage/);
+  // Revit 2025 has no Connector.Voltage; the connector voltage is read from RBS_ELEC_VOLTAGE.
+  assert.match(circuitSource, /RBS_ELEC_VOLTAGE/);
+  assert.match(circuitSource, /ElectricalPhaseConfiguration/);
+  assert.equal(/item\.Voltage\b/.test(circuitSource), false);
 });

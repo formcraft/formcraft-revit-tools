@@ -30,7 +30,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     Document doc = target.Doc;
                     if (string.Equals(Parameters.Value<string>("action"), "pack", StringComparison.OrdinalIgnoreCase))
                     {
-                        Result = ReadPack(doc);
+                        Result = FmcSheetLayoutApplyHandler.ReadPack(doc, Parameters);
                         return;
                     }
                     var wanted = new HashSet<string>(String.Equals(Parameters.Value<string>("action"), "park", StringComparison.OrdinalIgnoreCase)
@@ -198,9 +198,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                 throw new InvalidOperationException("The document is under a protected path.");
         }
 
-        private JObject ReadPack(Document doc)
+        /// <summary>Read-only pack data. Static so the read handler can call it without a transaction.</summary>
+        internal static JObject ReadPack(Document doc, JObject parameters)
         {
-            ViewSheet sheet = FindSheet(doc, Parameters.Value<string>("sheet"));
+            ViewSheet sheet = FindSheet(doc, parameters?.Value<string>("sheet"));
             if (sheet == null) throw new InvalidOperationException("[FMC-SHEETS-SHEET] That sheet was not found.");
             Element title = new FilteredElementCollector(doc, sheet.Id).OfCategory(BuiltInCategory.OST_TitleBlocks).WhereElementIsNotElementType().FirstElement();
             FamilyInstance instance = title as FamilyInstance;
