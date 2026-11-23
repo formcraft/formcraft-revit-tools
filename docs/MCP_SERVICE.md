@@ -107,6 +107,16 @@ The batch line does not add its own switches. It reads `fmc_guard.json` → `ai_
 
 `phase.*` and `revision.*` are read from `FMC_Standards_Building.json`. A missing key uses a provisional default and cannot PASS. A draft or approved entry with a clause can PASS. A null value is UNKNOWN.
 
+## Joins and the envelope (`fmc_joins`)
+
+`fmc_joins` is one tool. Every model call names `document` (exact title or full path). A missing name is `FMC-DOC-REQUIRED`, no match is `FMC-DOC-NOT-FOUND`, and two matches is `FMC-DOC-AMBIGUOUS`. The active document is not a guess.
+
+`checks` and `limits` stay on the server. `audit`, `hosting`, `pressure_test`, `rooms` and a `fix` dry run each make one `fmc_joins` read. `fix` with `dry_run` false applies the ops from that plan through `fmc_joins_apply`, one transaction, at most 50 operations, and needs `batch_lease`. The tool does not save or sync. `save_exclude`, `sync_exclude` and `protected_paths` come from `fmc_guard.json`. Pinned elements, and elements another user owns or that are not current, are reported and not moved. Ownership is never taken.
+
+Collectors take a level, a category, a bounding box, a room, a space or element ids. An unscoped scan above `joins.scan_cap` is refused. The reply is counts and ids per finding code. The JSON file, and a PNG only when `images` is true, go under `%LOCALAPPDATA%\Formcraft\joins`.
+
+`joins.*` are read from `FMC_Standards_Building.json`. A missing key uses a labelled provisional default and cannot PASS. A draft or approved entry with a clause can PASS. A null status is UNKNOWN. A null value uses the labelled provisional default. A pressure-test sample with no leak is `SEALED` only against a key that can PASS. A capped or unfinished sample is `UNKNOWN`.
+
 ## Roll back
 
 The previous server folder is `%USERPROFILE%\mcp\revit-fmc\build.bak-<time>`. The updater copies it back when health fails. To go back by hand: stop the Formcraft MCP task, rename `build` away, rename the `.bak` folder to `build`, start the task. The add-in backup is `%APPDATA%\Autodesk\Revit\Addins\_FormcraftBackup`. Point Claude at `node ...\index.js` with no `--shim` to use stdio again.

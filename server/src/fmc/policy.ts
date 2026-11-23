@@ -183,6 +183,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_model_edit",
   // fmc_replace: a structural replacement preview. It runs only on an open_copy document and always rolls back.
   "fmc_replace",
+  // A Dynamo graph. Preview rolls the transaction group back. Apply keeps it. Inspect does not use this command.
+  "fmc_dynamo",
   // run_revit_command (owner 26 Oct): a built-in Revit command, which may act on the selection
   "fmc_post_command",
   // new_family (owner 26 Oct): a family file made from a template and opened
@@ -201,6 +203,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_grids_from_link",
   // Phases and revisions. Reads stay on fmc_phase. This command is the one transaction.
   "fmc_phase_apply",
+  // Joins and the envelope pressure test. Reads stay on fmc_joins. This command is the one transaction.
+  "fmc_joins_apply",
 ]);
 
 /**
@@ -222,6 +226,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_elem_currency",
   // Phases, filters, revisions and the compact element rows fmc_phase summarises. No transaction.
   "fmc_phase",
+  // Join audit, hosting, room closure and the envelope sample. No transaction.
+  "fmc_joins",
 ]);
 
 /**
