@@ -8,6 +8,10 @@ import { PdfDoc, PdfPage, A4_LANDSCAPE } from "./pdf.js";
 import { detectRenderer, matchPageSize, reviewPages, safeImageDir, type PageFact } from "./pdfreview.js";
 import { FMC_PDF_REVIEW_SHAPE, runFmcPdfReview, type FmcPdfReviewArgs } from "../tools/fmc_pdf_review.js";
 import { DEFAULT_CONFIG, type GuardConfig } from "./policy.js";
+import { runFmcPdfReview as runPdfReviewLive } from "../tools/fmc_pdf_review.js";
+import nodeFs from "node:fs";
+import nodeOs from "node:os";
+import nodePath from "node:path";
 
 function args(partial: Record<string, unknown>): FmcPdfReviewArgs {
   return z.object(FMC_PDF_REVIEW_SHAPE).parse(partial);
@@ -87,4 +91,34 @@ test("a missing renderer is FMC-PDF-NO-RENDERER and a dry run writes nothing", a
   assert.equal(detectRenderer(env, () => null), null);
   const image = safeImageDir({ image_dir: "D:\\shots" }, pdf, env);
   assert.ok(!image.toLowerCase().startsWith("d:"));
+});
+
+function tinyPdf(): Buffer {
+  const objs = [
+    "<< /Type /Catalog /Pages 2 0 R >>",
+    "<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+    "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>",
+    "", "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>",
+  ];
+  const stream = "BT /F1 12 Tf 500 40 Td (A-101 TEST) Tj ET";
+  objs[3] = "<< /Length " + stream.length + " >>\nstream\n" + stream + "\nendstream";
+  let out = "%PDF-1.4\n"; const offs: number[] = [];
+  objs.forEach((o, i) => { offs.push(out.length); out += (i + 1) + " 0 obj\n" + o + "\nendobj\n"; });
+  const xref = out.length;
+  out += "xref\n0 " + (objs.length + 1) + "\n0000000000 65535 f \n" + offs.map((n) => String(n).padStart(10, "0") + " 00000 n \n").join("");
+  out += "trailer\n<< /Size " + (objs.length + 1) + " /Root 1 0 R >>\nstartxref\n" + xref + "\n%%EOF\n";
+  return Buffer.from(out, "latin1");
+}
+
+test("fmc_pdf_review reads a real PDF with the shipped pdfjs (Windows path of import.meta.url, live test 23 Nov 2026)", async () => {
+  const dir = nodeFs.mkdtempSync(nodePath.join(nodeOs.tmpdir(), "fmc-pdf-"));
+  const file = nodePath.join(dir, "A-101.pdf");
+  nodeFs.writeFileSync(file, tinyPdf());
+  const env = { ...process.env, LOCALAPPDATA: dir };
+  const res = await runPdfReviewLive({ pdf_path: file, pages: [1], dpi: 110, dry_run: true }, { env, guard: {} as never, renderer: null });
+  const body = JSON.parse(res.content[0].text);
+  assert.notEqual(body.code, "FMC-PDF-READ", body.message);
+  assert.equal(body.dry_run, true);
+  assert.equal(body.checks.length, 1);
+  nodeFs.rmSync(dir, { recursive: true, force: true });
 });

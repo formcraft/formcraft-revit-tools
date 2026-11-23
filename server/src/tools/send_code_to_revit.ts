@@ -78,9 +78,11 @@ type SendCodeArgs = { code: string; parameters?: string[]; usings?: string[]; tr
  */
 export function outputJson(result: unknown): unknown | undefined {
   let value = result;
-  if (typeof value === "string") {
+  // The add-in JSON-encodes the script's return value, so a script that returns a JSON string arrives
+  // double-encoded ("\"{...}\""). Unwrap up to three string layers before giving up.
+  for (let depth = 0; depth < 3 && typeof value === "string"; depth++) {
     const text = value.trim();
-    if (!text.startsWith("{") && !text.startsWith("[")) return undefined;
+    if (!text.startsWith("{") && !text.startsWith("[") && !text.startsWith("\"")) return undefined;
     try { value = JSON.parse(text); } catch { return undefined; }
   }
   if (value !== null && typeof value === "object") return value;
@@ -121,7 +123,11 @@ export function formatCodeResult(response: any): { text: string; isError: boolea
     };
   }
   let result: unknown = response.result;
-  if (typeof result === "string") { try { result = JSON.parse(result); } catch { /* keep the text */ } }
+  for (let depth = 0; depth < 3 && typeof result === "string"; depth++) {
+    const text = result.trim();
+    if (depth > 0 && !text.startsWith("{") && !text.startsWith("[") && !text.startsWith("\"")) break;
+    try { result = JSON.parse(text); } catch { break; }
+  }
   const output_json = outputJson(response.result);
   return { isError: false, text: `Code execution successful (${times})\n` + JSON.stringify({ result, ...(output_json === undefined ? {} : { output_json }), ...extra }, null, 2), output_json };
 }

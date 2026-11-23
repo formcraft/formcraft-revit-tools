@@ -19,7 +19,7 @@ export const FMC_FAMILY_PARAMS_DESCRIPTION =
   "list reads parameters on one loaded family, or the loaded titleblock names when family is omitted. " +
   "add adds a parameter (name, type, group, shared, instance or type). shared defaults to true and the definition is taken from the kit shared parameter file by name and GUID. " +
   "A name that is not in that file is FMC-PARAM-NOT-IN-KIT, a kit change. No shared definition is created. " +
-  "label adds a label bound to that parameter with FamilyItemFactory.NewLabel, then LoadFamily back into the project with overwrite. " +
+  "label is refused with FMC-NO-API-LABEL: Revit 2025 has no API to create a label in a family, so the label is placed by hand once in the kit title block. It still checks that the parameter is on the family (FMC-PARAM-MISSING). " +
   "bind binds a kit shared parameter to project categories (instance or type). " +
   "dry_run defaults to true. A real change is fmc_family_params_apply, and needs batch_lease plus references.kit, references.standards and references.rulebook. " +
   "Pass document. A missing name is FMC-DOC-REQUIRED. The active document is not a guess. " +
@@ -187,6 +187,10 @@ export async function runFmcFamilyParams(args: FmcFamilyParamsArgs, io: FamilyPa
       edit: "EditFamily on the loaded family, then LoadFamily into the project with overwrite, then Close(false). The family file is not saved.",
     });
     if (guard.reason) return reply({ ...body, refused: true, code: "FMC-PARAM-GUARD", dry_run: true, read_only: true, message: guard.reason }, true);
+    if (args.action === "label") {
+      return reply({ ...body, refused: true, code: "FMC-NO-API-LABEL", read_only: true, dry_run: true, applied: false,
+        message: "[FMC-NO-API-LABEL] Revit 2025 has no API to create a label in a family (FamilyItemFactory.NewLabel does not exist). Place the label by hand once in the kit title block; the parameter itself can be added with action add and bound with action bind." }, true);
+    }
     if (planned.code === "FMC-PARAM-EXISTS") {
       return reply({ ...body, read_only: true, dry_run: true, applied: false, message: planned.message });
     }

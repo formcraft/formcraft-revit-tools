@@ -5,7 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { FairQueue, StillQueued } from "./fairqueue.js";
 import { inFlightJob } from "./notidle.js";
-import { decideCancel, jobIsStale, markRevitCancelled, rowFromRevit, selectStale, type QueueListRow } from "./queueops.js";
+import { queueBusyReason, decideCancel, jobIsStale, markRevitCancelled, rowFromRevit, selectStale, type QueueListRow } from "./queueops.js";
 import { findJob } from "./jobs.js";
 
 const row = (over: Partial<QueueListRow>): QueueListRow => ({
@@ -91,4 +91,15 @@ test("marking a stale revit job cancelled takes it out of the open list", () => 
   assert.equal(before.state, "queued");
   markRevitCancelled("abc123", "fmc_circuits", env);
   assert.equal(findJob("abc123", env)?.state, "cancelled");
+});
+
+test("a stale running log entry while Revit is idle does not make the queue busy (live test 23 Nov 2026)", () => {
+  const ghost = { job_id: "old", state: "running" as const, age_s: 1022517, document: "", tool: "send_code_to_revit", lease_holder: "", caller: "", instance: "port 8080", source: "revit" as const, stale: true, revit_idle: true, busy_reason: "job running send_code_to_revit for 1022517 s" };
+  const live = { ...ghost, job_id: "new", age_s: 12, stale: false, revit_idle: false, tool: "fmc_trace", busy_reason: "job running fmc_trace for 12 s" };
+  assert.equal(queueBusyReason([ghost]), null);
+  assert.equal(queueBusyReason([]), null);
+  assert.equal(queueBusyReason([ghost, live]), "job running fmc_trace for 12 s");
+  const unknown = decideCancel(null, queueBusyReason([ghost]));
+  assert.equal(unknown.code, "FMC-QUEUE-UNKNOWN");
+  assert.doesNotMatch(unknown.busy_reason, /not idle|1022517/);
 });

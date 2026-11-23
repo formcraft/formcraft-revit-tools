@@ -93,6 +93,38 @@ export function alignmentOf(a: number[], b: number[], directionDeg: number): "al
   return "offset";
 }
 
+/** Corner and aligned pairs must really meet: for a corner the two axes must (nearly) intersect at a point
+ * that lies ahead of both open ends, and for an aligned pair the axes must be (nearly) collinear.
+ * Anything else is an offset pair and is only reported. */
+export function endsMeet(a: ConduitEnd, b: ConduitEnd, alignment: "aligned" | "corner" | "offset", tolMm: number): boolean {
+  if (alignment === "offset") return false;
+  const p = a.origin, q = b.origin, u = a.direction, v = b.direction;
+  const ul = Math.hypot(u[0], u[1], u[2]);
+  const vl = Math.hypot(v[0], v[1], v[2]);
+  if (ul < 1e-9 || vl < 1e-9) return false;
+  const uu = [u[0] / ul, u[1] / ul, u[2] / ul];
+  const vv = [v[0] / vl, v[1] / vl, v[2] / vl];
+  const w = [q[0] - p[0], q[1] - p[1], q[2] - p[2]];
+  const dotp = (x: number[], y: number[]) => x[0] * y[0] + x[1] * y[1] + x[2] * y[2];
+  const tol = Math.max(tolMm, 1);
+  if (alignment === "aligned") {
+    const along = dotp(w, uu);
+    const lateral = Math.hypot(w[0] - along * uu[0], w[1] - along * uu[1], w[2] - along * uu[2]);
+    return lateral <= tol && along >= -tol;
+  }
+  const c = dotp(uu, vv);
+  const den = 1 - c * c;
+  if (den < 1e-9) return false;
+  const wu = dotp(w, uu);
+  const wv = dotp(w, vv);
+  const s = (wu - c * wv) / den;
+  const t = (c * wu - wv) / den;
+  const pa = [p[0] + s * uu[0], p[1] + s * uu[1], p[2] + s * uu[2]];
+  const pb = [q[0] + t * vv[0], q[1] + t * vv[1], q[2] + t * vv[2]];
+  const skew = Math.hypot(pa[0] - pb[0], pa[1] - pb[1], pa[2] - pb[2]);
+  return skew <= tol && s >= -tol && t >= -tol;
+}
+
 function keyOf(end: ConduitEnd): string {
   return `${end.element_id}:${end.index}`;
 }
@@ -126,7 +158,8 @@ export function pairEnds(ends: ConduitEnd[], limits: ConduitLimits, opts: { junc
     if (claimed.has(ak) || claimed.has(bk)) continue;
     claimed.add(ak);
     claimed.add(bk);
-    const alignment = alignmentOf(candidate.a.direction, candidate.b.direction, limits.direction_deg);
+    const axisAlignment = alignmentOf(candidate.a.direction, candidate.b.direction, limits.direction_deg);
+    const alignment = endsMeet(candidate.a, candidate.b, axisAlignment, limits.touch_mm) ? axisAlignment : "offset";
     const same = candidate.a.size_mm > 0 && candidate.b.size_mm > 0 && Math.abs(candidate.a.size_mm - candidate.b.size_mm) <= limits.size_mm;
     let op: ConduitPair["op"] = "report";
     let confidence = 0.4;
