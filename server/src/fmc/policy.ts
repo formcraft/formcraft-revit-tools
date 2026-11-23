@@ -207,6 +207,9 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_joins_apply",
   // Power and lighting circuits. Reads stay on fmc_circuits. This command is the one transaction.
   "fmc_circuits_apply",
+  // Electrical and plumbing drafting diagrams. Reads stay on fmc_elec_diagrams and fmc_plumb_diagrams.
+  "fmc_elec_diagrams_apply",
+  "fmc_plumb_diagrams_apply",
   // Conduit fittings, the size table and type fittings. Reads stay on fmc_conduit. One subtransaction per fitting.
   "fmc_conduit_apply",
   // True north: crop, scope box or a sheet north arrow. One transaction. Never SetProjectPosition.
@@ -270,6 +273,9 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_viewstyle",
   // Grids, exterior walls and openings in one view. No transaction.
   "fmc_dims",
+  // Electrical and plumbing diagram graphs. No transaction.
+  "fmc_elec_diagrams",
+  "fmc_plumb_diagrams",
 ]);
 
 /**

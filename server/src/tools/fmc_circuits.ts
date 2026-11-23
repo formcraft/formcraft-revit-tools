@@ -27,7 +27,9 @@ export const FMC_CIRCUITS_DESCRIPTION =
   "Phases are balanced across L1, L2 and L3. A panel in accept_no_supply, or marked utility-fed, may have no supply. " +
   "A board is electrical equipment whose part type is Panelboard, Switchboard or Other Panel, or whose family has a panel-schedule MEP connector (power balanced or unbalanced). " +
   "It is not refused for being a board family. When that board has no distribution system the reply is FMC-PANEL-NO-DISTRIBUTION, with a dry-run plan that sets the Distribution System parameter. " +
-  "non_board_ids are panel part types that are loads (SPD, isolator, pump control). Families with no electrical connector are FMC-NO-CONNECTOR, not a crash. " +
+  "Devices are grouped by connector voltage and poles and assigned only to a panel whose distribution system matches (1-pole uses line-to-ground, 2-pole and 3-pole use line-to-line, 3-pole needs three-phase). " +
+  "A group Revit would refuse in SelectPanel is FMC-CIRCUIT-PANEL-MISMATCH and names the panel line-to-line and line-to-ground voltage against the device connector. " +
+  "non_board_ids are panel part types that are loads (SPD, isolator, pump control). Families with no electrical connector are FMC-NO-CONNECTOR, grouped by family. " +
   "Assignment uses MEPModel.GetElectricalSystems, not Connector.IsConnected. Data, telephone and fire alarm are skipped. " +
   "Switch-to-luminaire groups are included when include_switches is true. " +
   "dry_run defaults to true. apply and panel with dry_run false need batch_lease. One Revit transaction, one subtransaction per circuit. " +
@@ -143,11 +145,18 @@ export async function runFmcCircuits(args: FmcCircuitsArgs, io: CircuitsIo = {})
   const ids = sampleIds(circuits.flatMap((circuit) => circuit.element_ids), args.sample_limit);
   const report = writeReport("circuits", args.action, { plan: { ...plan, circuits }, audit, snapshot: { model: snapshot.model, resolved_document: snapshot.resolved_document } }, io.env);
   const distribution_plans = plan.distribution_plans ?? [];
-  if ((args.action === "apply" || args.action === "panel") && distribution_plans.length > 0 && circuits.length === 0) {
+  const mismatches = plan.mismatches ?? [];
+  const no_connector_families = plan.no_connector_families ?? [];
+  if ((args.action === "apply" || args.action === "panel") && circuits.length === 0 && (distribution_plans.length > 0 || mismatches.length > 0)) {
+    const code = distribution_plans.length > 0 ? "FMC-PANEL-NO-DISTRIBUTION" : "FMC-CIRCUIT-PANEL-MISMATCH";
+    const message = code === "FMC-PANEL-NO-DISTRIBUTION"
+      ? `[FMC-PANEL-NO-DISTRIBUTION] ${distribution_plans[0].panel} has no distribution system.`
+      : `[FMC-CIRCUIT-PANEL-MISMATCH] ${mismatches[0].detail}`;
     return reply({
-      tool: "fmc_circuits", ok: false, code: "FMC-PANEL-NO-DISTRIBUTION", dry_run: true, read_only: true,
-      message: `[FMC-PANEL-NO-DISTRIBUTION] ${distribution_plans[0].panel} has no distribution system.`,
-      hint: DISTRIBUTION_HINT, distribution_plans, document: snapshot.resolved_document ?? { title: snapshot.model ?? args.document, path: "" },
+      tool: "fmc_circuits", ok: false, code, dry_run: true, read_only: true,
+      message, hint: code === "FMC-PANEL-NO-DISTRIBUTION" ? DISTRIBUTION_HINT : "Group the devices by connector voltage and poles, and use a panel whose distribution system matches. Nothing was changed.",
+      distribution_plans, mismatches, no_connector_families,
+      document: snapshot.resolved_document ?? { title: snapshot.model ?? args.document, path: "" },
       report,
     }, true);
   }
@@ -155,7 +164,7 @@ export async function runFmcCircuits(args: FmcCircuitsArgs, io: CircuitsIo = {})
     return reply({
       tool: "fmc_circuits", read_only: true, action: args.action, document: snapshot.resolved_document ?? { title: snapshot.model ?? args.document, path: "" },
       counts: plan.counts, circuits: circuits.map((circuit) => ({ name: circuit.name, kind: circuit.kind, panel: circuit.panel_name, phase: circuit.phase, slot: circuit.slot, points: circuit.points, load_w: circuit.load_w, ids: circuit.element_ids.slice(0, 20), flags: circuit.flags, provisional: circuit.provisional })),
-      skipped: plan.skipped.slice(0, args.sample_limit), switches: plan.switches.slice(0, args.sample_limit),
+      skipped: plan.skipped.slice(0, args.sample_limit), mismatches, no_connector_families, switches: plan.switches.slice(0, args.sample_limit),
       phase: plan.phase, audit: audit ? { counts: audit.counts, findings: audit.findings.slice(0, args.sample_limit), provisional: audit.provisional } : undefined,
       ids, report, distribution_plans, skipped_non_family: snapshot.skipped_non_family ?? { count: 0, ids: [] },
       rule: plan.rule,
@@ -170,7 +179,7 @@ export async function runFmcCircuits(args: FmcCircuitsArgs, io: CircuitsIo = {})
       circuits: args.action === "apply" ? circuits : undefined,
       panel: args.action === "panel" ? { id: args.panel, distribution: args.distribution, supply_from: args.supply_from, feeder: args.feeder, mains_a: args.mains_a, mains_type: args.mains_type } : undefined,
       counts: { circuits: circuits.length, points: circuits.reduce((sum, circuit) => sum + circuit.points, 0) },
-      ids, report, distribution_plans, provisional: plan.caps.some((cap) => cap.provisional),
+      ids, report, distribution_plans, mismatches, no_connector_families, provisional: plan.caps.some((cap) => cap.provisional),
       next: "Apply with dry_run false and batch_lease. That call is one transaction.",
     });
   }
