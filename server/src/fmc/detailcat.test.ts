@@ -6,7 +6,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { z } from "zod";
 import { DEFAULT_CONFIG, READ_VIA_SEND_COMMAND, WRITE_COMMANDS, type GuardConfig } from "./policy.js";
-import { loadCatalogue, planDetails, readBatchFile } from "./detailcat.js";
+import { appliedSummary, catalogueOk, filterDetails, latestDetailsReport, loadCatalogue, planDetails, readBatchFile, writeOrReuseDetailsReport } from "./detailcat.js";
 import { FMC_DETAILS_SHAPE, runFmcDetails, type FmcDetailsArgs } from "../tools/fmc_details.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
@@ -136,4 +136,92 @@ test("place apply sends the plan once, and a kit original or an unknown id is re
   const manifest = JSON.parse(fs.readFileSync(path.join(root, "command.json"), "utf8")) as { commands: Array<{ commandName: string }> };
   const names = new Set(manifest.commands.map((row) => row.commandName));
   assert.ok(names.has("fmc_details") && names.has("fmc_details_apply"));
+});
+
+test("P-fmc_details-01: an unreadable catalogue is catalogue_ok false, and an empty one is an error", async () => {
+  const io = kitDir();
+  const missingFolder = path.join(io.dir, "no-such-Details");
+  const empty = textOf(await runFmcDetails(args({ action: "list" }), { ...io, catalogueFolder: missingFolder }));
+  assert.equal(empty.catalogue_ok, false);
+  assert.equal(empty.count, 0);
+  assert.equal(empty.isError, true);
+  assert.match((empty.problems as string[])[0], /FMC-DETAILS-CATALOGUE/);
+  // a readable catalogue with one row whose source is missing is still ok, and not an error
+  const ok = textOf(await runFmcDetails(args({ action: "list" }), { ...io, catalogueFolder: io.dir }));
+  assert.equal(ok.catalogue_ok, true);
+  assert.equal(ok.isError, false);
+  assert.ok((ok.problems as string[]).some((p) => p.startsWith("FMC-DETAIL-SOURCE")));
+  // folder files but no FMC_Details.json: listed, catalogue_ok false, not an error (rows are usable)
+  fs.rmSync(path.join(io.dir, "FMC_Details.json"));
+  const noJson = textOf(await runFmcDetails(args({ action: "list" }), { ...io, catalogueFolder: io.dir }));
+  assert.equal(noJson.catalogue_ok, false);
+  assert.ok((noJson.count as number) >= 2);
+  assert.equal(noJson.isError, false);
+  assert.equal(catalogueOk(loadCatalogue(io.dir)), false);
+});
+
+test("P-fmc_details-02: list writes its report only when the list changed", async () => {
+  const io = kitDir();
+  const first = textOf(await runFmcDetails(args({ action: "list" }), { ...io, catalogueFolder: io.dir }));
+  const second = textOf(await runFmcDetails(args({ action: "list" }), { ...io, catalogueFolder: io.dir }));
+  assert.equal(first.report_reused, false);
+  assert.equal(second.report_reused, true);
+  assert.equal(second.report, first.report);
+  assert.equal(fs.readdirSync(io.reportDir).filter((n) => n.startsWith("details-list-")).length, 1);
+  fs.writeFileSync(path.join(io.dir, "D-A-003.rvt"), "");
+  const third = textOf(await runFmcDetails(args({ action: "list" }), { ...io, catalogueFolder: io.dir }));
+  assert.equal(third.report_reused, false);
+  assert.equal(fs.readdirSync(io.reportDir).filter((n) => n.startsWith("details-list-")).length, 2);
+  assert.equal(latestDetailsReport("list", io.reportDir), third.report);
+  assert.equal(writeOrReuseDetailsReport(io.env, "list", { x: 1 }, path.join(io.reportDir, "fresh")).reused, false);
+});
+
+test("list filters by kind and by words in the id or name, and keeps the total", async () => {
+  const io = kitDir();
+  const fam = textOf(await runFmcDetails(args({ action: "list", kind: "family" }), { ...io, catalogueFolder: io.dir }));
+  assert.deepEqual((fam.details as Array<{ id: string }>).map((d) => d.id), ["D-A-002"]);
+  assert.equal(fam.total, 3);
+  assert.deepEqual(fam.filter, { kind: "family" });
+  const head = textOf(await runFmcDetails(args({ action: "list", query: "window HEAD" }), { ...io, catalogueFolder: io.dir }));
+  assert.deepEqual((head.details as Array<{ id: string }>).map((d) => d.id), ["D-A-001"]);
+  const all = textOf(await runFmcDetails(args({ action: "list" }), { ...io, catalogueFolder: io.dir }));
+  assert.equal(all.total, undefined, "no filter: no total field, as before");
+  assert.equal(filterDetails(loadCatalogue(io.dir).details, {}).length, 3);
+});
+
+test("source_view chooses the source drafting view per call; the catalogue view stays the default", async () => {
+  const io = kitDir();
+  const cat = loadCatalogue(io.dir);
+  assert.equal(planDetails(cat, [{ detail_id: "D-A-001" }]).ops[0].view, "Head");
+  assert.equal(planDetails(cat, [{ detail_id: "D-A-001", source_view: "Sill" }]).ops[0].view, "Sill");
+  const batch = path.join(io.dir, "batch-sv.json");
+  fs.writeFileSync(batch, JSON.stringify({ details: [{ detail_id: "D-A-001", source_view: "Jamb" }] }));
+  assert.equal(readBatchFile(batch)[0].source_view, "Jamb");
+  const dry = textOf(await runFmcDetails(args({ action: "place", document: project.title, detail_id: "D-A-001", source_view: "Sill" }), {
+    ...io, catalogueFolder: io.dir, read: async () => project,
+  }));
+  assert.equal((dry.ops as Array<{ view: string }>)[0].view, "Sill");
+  const rows = textOf(await runFmcDetails(args({ action: "place", document: project.title, details: [{ detail_id: "D-A-001", source_view: "Jamb" }], source_view: "Sill" }), {
+    ...io, catalogueFolder: io.dir, read: async () => project,
+  }));
+  assert.equal((rows.ops as Array<{ view: string }>)[0].view, "Jamb", "a row's own source_view wins");
+});
+
+test("a real place returns per-detail status and created_ids from the add-in's reply", async () => {
+  const io = kitDir();
+  const applied = textOf(await runFmcDetails(args({
+    action: "place", document: project.title, detail_ids: ["D-A-001", "D-A-002"], dry_run: false, batch_lease: "lease-1",
+    references: { kit: ["FMC-BIM-MAN-001"], standards: ["FMC-BIM-STD-002"], rulebook: ["AI modeller copies details"] },
+  }), {
+    ...io, catalogueFolder: io.dir, read: async () => project,
+    apply: async () => ({ ok: true, placed: [{ detail_id: "D-A-001", view_id: "501", created_view: true }, { detail_id: "D-A-002", view_id: "502", created_view: false }],
+      skipped: [{ detail_id: "D-A-009", code: "FMC-DETAIL-EMPTY" }] }),
+  }));
+  assert.deepEqual(applied.created_ids, ["501"]);
+  assert.deepEqual(applied.status, [
+    { detail_id: "D-A-001", status: "created", view_id: "501" },
+    { detail_id: "D-A-002", status: "reused", view_id: "502" },
+    { detail_id: "D-A-009", status: "skipped", code: "FMC-DETAIL-EMPTY" },
+  ]);
+  assert.deepEqual(appliedSummary(undefined), { status: [], created_ids: [] });
 });

@@ -25,6 +25,8 @@ export interface DetailRequest {
   detail_id: string;
   view_name?: string;
   sheet?: string;
+  /** The drafting view to copy from, in a source with several. Overrides the catalogue's view for this call. */
+  source_view?: string;
 }
 
 export interface DetailOp {
@@ -193,7 +195,7 @@ export function planDetails(catalogue: Catalogue, requests: DetailRequest[]): { 
       name: entry.name,
       source: entry.source,
       kind: entry.kind,
-      view: entry.view,
+      view: (request.source_view ?? "").trim() || entry.view,
       view_name: viewNameFor(entry, request.view_name ?? ""),
       sheet: (request.sheet ?? "").trim() || entry.sheet,
       type_name: entry.type_name,
@@ -216,7 +218,7 @@ export function readBatchFile(file: string): DetailRequest[] {
       const item = row as Record<string, unknown>;
       const id = asText(item.detail_id) || asText(item.id);
       if (!id) continue;
-      out.push({ detail_id: id, view_name: asText(item.view_name), sheet: asText(item.sheet) });
+      out.push({ detail_id: id, view_name: asText(item.view_name), sheet: asText(item.sheet), source_view: asText(item.source_view) });
     }
   }
   return out;
@@ -253,4 +255,58 @@ export function writeDetailsReport(env: NodeJS.ProcessEnv, action: string, body:
   const file = path.join(dir, `details-${action}-${stamp}.json`);
   fs.writeFileSync(file, JSON.stringify(body, null, 2));
   return file;
+}
+
+/** The newest details-<action>-*.json in the folder, or "" (the names sort by their ISO stamp). */
+export function latestDetailsReport(action: string, dir: string): string {
+  let names: string[] = [];
+  try { names = fs.readdirSync(dir).filter((n) => n.startsWith(`details-${action}-`) && n.endsWith(".json")).sort(); } catch { return ""; }
+  return names.length ? path.join(dir, names[names.length - 1]) : "";
+}
+
+/**
+ * tool-research P-fmc_details-02: list wrote a new report on every call. This writes one only when the content
+ * differs from the newest report of the same action, and otherwise returns that file with reused true.
+ */
+export function writeOrReuseDetailsReport(env: NodeJS.ProcessEnv, action: string, body: unknown, dir = detailsDir(env)): { report: string; reused: boolean } {
+  const text = JSON.stringify(body, null, 2);
+  const last = latestDetailsReport(action, dir);
+  if (last) {
+    try { if (fs.readFileSync(last, "utf8") === text) return { report: last, reused: true }; } catch { /* unreadable: write a new one */ }
+  }
+  return { report: writeDetailsReport(env, action, body, dir), reused: false };
+}
+
+/**
+ * tool-research P-fmc_details-01: false when the catalogue itself could not be read (folder not set or missing,
+ * no FMC_Details.json, or the JSON did not parse). A missing source file of one row (FMC-DETAIL-SOURCE) does not count.
+ */
+export function catalogueOk(catalogue: Catalogue): boolean {
+  return !catalogue.problems.some((p) => p.startsWith("FMC-DETAILS-CATALOGUE:"));
+}
+
+export interface DetailFilter { kind?: "drafting" | "family"; query?: string }
+
+/** list filters: kind, and every word of query in the id or name (case-insensitive). */
+export function filterDetails(details: DetailEntry[], filter: DetailFilter): DetailEntry[] {
+  const words = (filter.query ?? "").toLowerCase().split(/\s+/).filter(Boolean);
+  return details.filter((row) => (!filter.kind || row.kind === filter.kind)
+    && words.every((w) => `${row.id} ${row.name}`.toLowerCase().includes(w)));
+}
+
+/** Per-detail status and the made view ids from the add-in's apply reply (placed[] and skipped[]). */
+export function appliedSummary(applied: unknown): { status: Array<{ detail_id: string; status: "created" | "reused" | "skipped"; view_id?: string; code?: string }>; created_ids: string[] } {
+  const a = (applied ?? {}) as { placed?: unknown; skipped?: unknown };
+  const placed = Array.isArray(a.placed) ? a.placed as Array<Record<string, unknown>> : [];
+  const skipped = Array.isArray(a.skipped) ? a.skipped as Array<Record<string, unknown>> : [];
+  const status: Array<{ detail_id: string; status: "created" | "reused" | "skipped"; view_id?: string; code?: string }> = [];
+  const created: string[] = [];
+  for (const row of placed) {
+    const made = row.created_view === true;
+    const id = String(row.view_id ?? "");
+    if (made && id) created.push(id);
+    status.push({ detail_id: String(row.detail_id ?? ""), status: made ? "created" : "reused", ...(id ? { view_id: id } : {}) });
+  }
+  for (const row of skipped) status.push({ detail_id: String(row.detail_id ?? ""), status: "skipped", ...(row.code ? { code: String(row.code) } : {}) });
+  return { status, created_ids: created };
 }
