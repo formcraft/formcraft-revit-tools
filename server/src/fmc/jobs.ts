@@ -184,9 +184,14 @@ export function collectJobs(env: NodeJS.ProcessEnv = process.env, now = Date.now
       j.summary = `Still running in Revit: last heartbeat at ${j.revit.heartbeat_at} (this server stopped waiting at ${j.gave_up}; Revit keeps the answer)`;
     }
     else if (j.gave_up && j.revit?.heartbeat_at && j.revit.heartbeat_at > j.gave_up) {
-      const quietMs = now - lastAliveMs(j);
-      j.state = "expired";
-      j.summary = `No heartbeat for ${Math.round(quietMs / 60000)} min (last at ${j.revit.heartbeat_at}): this running row is stale. Revit has probably finished or been closed. Check the model before running it again.`;
+      if (j.cancel_requested) {
+        j.state = "running";
+        j.summary = `Still running in Revit: last heartbeat at ${j.revit.heartbeat_at} (this server stopped waiting at ${j.gave_up}; Revit keeps the answer) (cancel requested)`;
+      } else {
+        const quietMs = now - lastAliveMs(j);
+        j.state = "expired";
+        j.summary = `No heartbeat for ${Math.round(quietMs / 60000)} min (last at ${j.revit.heartbeat_at}): this running row is stale. Revit has probably finished or been closed. Check the model before running it again.`;
+      }
     }
     else if (j.gave_up) { j.state = "no_answer"; j.summary = `No answer from Revit by ${j.gave_up}: Revit may still be busy, or blocked by a dialog`; }
     else if (openDialog) {
@@ -211,7 +216,8 @@ export function collectJobs(env: NodeJS.ProcessEnv = process.env, now = Date.now
     }
     else {
       const quietMs = now - lastAliveMs(j);
-      if (lastAliveMs(j) > 0 && quietMs > STALE_DIALOG_MS) {
+      // A cancel request is an explicit state: do not relabel it stale just because heartbeats have stopped (F65).
+      if (lastAliveMs(j) > 0 && quietMs > STALE_DIALOG_MS && !j.cancel_requested) {
         j.state = "expired";
         j.summary = `No heartbeat for ${Math.round(quietMs / 60000)} min (last sign ${j.revit?.heartbeat_at || j.revit?.running_since || j.started}): this running row is stale. Revit has probably finished or been closed. Check the model before running it again.`;
       } else {
