@@ -1,6 +1,6 @@
 # `fmc_directshape`: DirectShape volumes under a lease
 
-Gap proposal 25 (gap analysis canvas 55c7b2a5): DirectShape volumes for clearances, survey solids and IFC proxies.
+GAP-25 (gap analysis canvas 55c7b2a5): DirectShape volumes for clearances, survey solids and IFC proxies.
 Makes a DirectShape from a box or a straight extrusion of a flat polygon, only in a whitelisted category, under a batch
 lease. Nothing is saved or synced.
 
