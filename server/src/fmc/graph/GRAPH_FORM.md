@@ -22,13 +22,20 @@ Status: `spec` built (DT-29). Pane form (DT-30) is the next Builder 7 step; noth
   `GraphPlan.inputs_by_id` shape of Builder 6. Unknown or shared names and bad values are refused, never dropped.
 
 Jail: kit `05_Scripts/library`, `05_Scripts/Dynamo`, or `<project>\<D4 drafts_folder>` (default `00_Formcraft\Graphs`)
-where `<project>` is Builder 6 `projectRootOf` of the resolved target document. UNC, device, `..` and relative paths
-are refused first; then Builder 6 `jailCheck` (junctions and links followed) against the claimed root.
+where `<project>` is Builder 6 `projectRootOf` of the resolved target document. Every path-shape refusal is Builder 6
+`jailCheck` v1.2 (INTERFACES sec 11): device, UNC, `..`, relative without base, missing (mustExist), outside, and links
+or junctions leading out. Form keeps no pre-checks of its own; an unclaimed path is still put to `jailCheck` so a bad shape
+says why. Graph path inputs must exist too: for a new output file the pane asks for its existing folder.
 
-Modules used (INTERFACES-builder6.md v1.1): `decisions`, `hash`, `jail`, `lib` (lockCheck), `packages`, `allowlist`,
+Modules used (INTERFACES-builder6.md v1.2): `decisions`, `hash`, `jail`, `lib` (lockCheck), `packages`, `allowlist`,
 `plan` (runNeedsApproval), `scan`. No stub remains.
 
-## How the pane form (Check > Graphs) will use it
+## How the pane form (Check > Graphs) uses it
+
+The pane logic is `paneform.ts`, reached as `fmc_graph_form` actions through `fmc/cli.ts` (one appended case):
+`form` (controls), `bind` (pane text -> typed values -> `bindFormValues` -> the `fmc_dynamo` plan request), `approval`
+(the `fmc_graph_guard request_approval` call when a person is needed), `run_check` (person-decided, unused, unexpired,
+same `plan_hash`; it never claims: `graphRunGate` claims at run time). Never runs a graph or decides an approval.
 
 1. List graphs: `fmc_graph_lib {action:"list"}` (Builder 6).
 2. Pick one -> `fmc_graph_form spec` -> render `fields` by `widget`: `slider` (min/max/step), `number`, `checkbox`,
@@ -42,5 +49,4 @@ Modules used (INTERFACES-builder6.md v1.1): `decisions`, `hash`, `jail`, `lib` (
    (`graph_approve {id}` / `graph_refuse {id}`, never MCP). Run with `approval_id`. Staff runs are person runs.
 5. Cache by `spec_hash`; re-fetch when `graph.sha256` changes.
 
-Open: `fmc_graph_form` is not yet in `fmc/cli.ts` (the pane's `ServerCli` route). Add it with the pane step as one
-appended `case` (Builder 6 edits `cli.ts` too; additive only).
+Done: `case "fmc_graph_form"` is appended in `fmc/cli.ts` (approved by Builder 6) and in `testrun.ts` CLI_TOOLS.

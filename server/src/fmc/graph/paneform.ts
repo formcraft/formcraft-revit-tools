@@ -97,7 +97,10 @@ export function paneForm(spec: GraphFormSpec, opts: { documentOpen: boolean }): 
       rule: ruleOf(field),
       disabled: needsModel,
       disabled_why: needsModel ? "Open the model: this input is picked in Revit." : "",
-      hint: field.description,
+      // Builder 6 jail v1.2: path inputs must already exist; a new output file is given as its existing folder.
+      hint: control === "file" || control === "folder"
+        ? [field.description, "Must already exist inside the project; for a new output file, pick the folder it goes in."].filter(Boolean).join(" ")
+        : field.description,
     };
   });
   const banners: PaneForm["banners"] = [];

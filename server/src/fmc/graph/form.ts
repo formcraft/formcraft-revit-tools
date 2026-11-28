@@ -229,35 +229,29 @@ function claimedRoot(file: string, kit: string, documentPath: string, drafts: st
   return null;
 }
 
-/** Path shapes refused before any root is chosen: UNC and device paths, "..", relative paths. */
-function pathShapeProblem(file: string): string {
-  if (/^[\\/]{2}/.test(file)) return "is a network (UNC) or device path; use a local path inside the kit or the project.";
-  if (/(^|[\\/])\.\.([\\/]|$)/.test(file)) return "uses '..'.";
-  const p = pathOf(file);
-  if (!p.isAbsolute(file) || (p.sep === "\\" && !/^[A-Za-z]:[\\/]/.test(file))) return "is not an absolute local path.";
-  return "";
-}
-
 export function graphFormSpec(args: SpecArgs): SpecResult {
   const file = (args.file ?? "").trim();
   const env = args.env ?? process.env;
   const decisions = graphDecisions(args.cfg ?? null);
   if (!file) return { ok: false, code: "FMC-GRAPH-FORM-ARGS", message: "[FMC-GRAPH-FORM-ARGS] spec needs path, the .dyn file." };
   if (!/\.dyn$/i.test(file)) return { ok: false, code: "FMC-GRAPH-NOT-GRAPH", message: `[FMC-GRAPH-NOT-GRAPH] ${file} is not a Dynamo graph (.dyn). Custom nodes (.dyf) and scripts are not forms.` };
-  const shape = pathShapeProblem(file);
-  if (shape) return { ok: false, code: "FMC-GRAPH-JAIL", message: `[FMC-GRAPH-JAIL] ${file} ${shape}` };
   const kit = (args.kit ?? "").trim();
   const claimed = claimedRoot(file, kit, args.documentPath ?? "", decisions.drafts_folder);
-  if (!claimed) {
-    const project = projectRootOf(args.documentPath ?? "");
+  const project = projectRootOf(args.documentPath ?? "");
+  // Builder 6 jailCheck (v1.2) owns every path-shape refusal: device, UNC, '..', relative, missing, a link out.
+  // An unclaimed path is put to it too, so a bad shape says why rather than just "outside".
+  const roots = claimed ? [claimed.root] : [...(kit ? scriptRoots(kit) : []), ...(project ? [graphsDir(project, decisions.drafts_folder)] : [])];
+  const check = jailCheck(file, roots[0] ?? "");
+  if (!check.ok && (claimed || (check.reason !== "outside" && check.reason !== "no_root" && check.reason !== "missing"))) {
+    return { ok: false, code: check.code, message: check.message };
+  }
+  if (!claimed || !check.ok) {
     const where = [
       ...(kit ? scriptRoots(kit) : []),
       project ? graphsDir(project, decisions.drafts_folder) : `<project>\\${decisions.drafts_folder} (name the target document; the project is the folder above 01_WIP)`,
     ].join(" or ");
     return { ok: false, code: "FMC-GRAPH-JAIL", message: `[FMC-GRAPH-JAIL] ${file} is outside the graph folders (${where}).` };
   }
-  const check = jailCheck(file, claimed.root);
-  if (!check.ok) return { ok: false, code: check.code, message: check.message };
   let real: string;
   let raw: Buffer;
   try {

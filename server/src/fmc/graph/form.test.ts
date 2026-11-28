@@ -156,10 +156,11 @@ test("path escapes are refused: '..', UNC, device path, relative, junction or li
     for (const unc of ["\\\\server\\share\\05_Scripts\\Dynamo\\x.dyn", "//server/share/x.dyn", "\\\\?\\C:\\kit\\05_Scripts\\Dynamo\\x.dyn"]) {
       const r = graphFormSpec({ file: unc, kit: box.kit, documentPath: "", env: box.env });
       assert.equal(r.ok, false, unc);
-      if (!r.ok) { assert.equal(r.code, "FMC-GRAPH-JAIL"); assert.match(r.message, /UNC/); }
+      if (!r.ok) { assert.equal(r.code, "FMC-GRAPH-JAIL"); assert.match(r.message, /UNC|device path/); }
     }
     const rel = graphFormSpec({ file: "05_Scripts/Dynamo/form_inputs.dyn", kit: box.kit, documentPath: "", env: box.env });
     assert.equal(rel.ok, false);
+    if (!rel.ok) { assert.equal(rel.code, "FMC-GRAPH-JAIL"); assert.match(rel.message, /relative path/); }
     // A junction (Windows) or symlink (POSIX) inside the drafts folder that points outside the project.
     const outside = path.join(box.base, "outside");
     fs.mkdirSync(outside);
@@ -203,7 +204,8 @@ test("a non-graph is refused: wrong extension, not JSON, missing file", () => {
     if (!junk.ok) assert.equal(junk.code, "FMC-GRAPH-NOT-GRAPH");
     const missing = graphFormSpec({ file: path.join(box.dyn, "nope.dyn"), kit: box.kit, documentPath: "", env: box.env });
     assert.equal(missing.ok, false);
-    if (!missing.ok) assert.equal(missing.code, "FMC-GRAPH-READ");
+    // Builder 6 jailCheck v1.2 (mustExist): a missing graph is a jail refusal that says so.
+  if (!missing.ok) { assert.equal(missing.code, "FMC-GRAPH-JAIL"); assert.match(missing.message, /does not exist/); }
   } finally { box.done(); }
 });
 
