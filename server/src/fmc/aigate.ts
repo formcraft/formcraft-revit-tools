@@ -7,6 +7,7 @@ import { Names, elementNames, explain, namesWanted } from "./explain.js";
 import { approvalFor, claimApproval, enqueue, loadAiConfig, loadRulebook, loadState, logBatch, saveState, setResult, setStatus } from "./aiuse_io.js";
 import { batchBoard } from "./batchline.js";
 import { syncSettings } from "./batchsync.js";
+import { codeApproval } from "./codegate.js";
 import { currentClient } from "./fairqueue.js";
 import { memoryGate } from "./memory.js";
 import { batchLease } from "./target.js";
@@ -94,7 +95,12 @@ export async function aiGate(command: string, params: any, active: DocInfo | nul
     return { ok: true, reason: "", run: <T>(exec: () => Promise<T>) => exec() };
   }
   const elements = batchSize(params);
-  const approval = approvalFor(command, params, active.path, env);
+  // send_code_to_revit from the tool: the person's approval was checked and claimed by the tool's own gate
+  // (fmc/codegate.ts), bound to the full call; it counts here and is not claimed twice.
+  const personCode = command === "send_code_to_revit" ? codeApproval.getStore() : undefined;
+  const approval = personCode
+    ? { id: personCode.id, by: personCode.by, command, model: active.title, path: active.path, group: "code", elements, summary: command, created: "", status: "used" as const }
+    : approvalFor(command, params, active.path, env);
   // A direct sync may run now when auto_approve_sync is on. The same judge covers batch-end and the timer above.
   // Relinquish on its own still waits for a person. Every approval and every refusal of this path is logged.
   const directSync = fileAction === "sync" && params?.batch_sync !== true && !relinquishOthers;
@@ -140,7 +146,7 @@ export async function aiGate(command: string, params: any, active: DocInfo | nul
     ok: true, reason: "",
     run: async <T>(exec: () => Promise<T>): Promise<T> => {
       // One run per approval: claimed before Revit runs, so a timeout never leaves it open for a replay.
-      if (approval && !claimApproval(approval.id, env))
+      if (approval && !personCode && !claimApproval(approval.id, env))
         throw new Error(`Batch ${approval.id} has already run once for its approval: check the model (fmc_job status), then queue a new batch if more is needed.`);
       const autoItem = auto ? enqueue(command, params, active.path, active.title, v.group ?? "", elements, env, new Date(), await describe(command, params, send)) : null;
       if (autoItem) setStatus(autoItem.id, "used", "auto-approved (testing)", env);
