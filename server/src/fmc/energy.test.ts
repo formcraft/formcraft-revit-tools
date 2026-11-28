@@ -197,3 +197,114 @@ test("the tool is read-only, names the document, writes JSON and CSV, and the ad
   const commands = JSON.parse(fs.readFileSync(path.join(root, "command.json"), "utf8")) as { commands: Array<{ commandName: string }> };
   assert.ok(commands.commands.some((c) => c.commandName === "fmc_energy"));
 });
+
+const guard = {
+  write_roots: ["D:\\Jobs"], blocked_segments: ["03_published", "04_archive"], library_roots: [], template_roots: [], live_model_lock: true,
+} as unknown as import("./policy.js").GuardConfig;
+const docRead = (path: string, extra: Record<string, unknown> = {}) => async () => ({
+  resolved_document: { title: "F26901-FMC-ZZ-ZZ-M3-A-0001_USER", path }, path, is_model_in_cloud: false, notes: [], ...extra,
+});
+const rvtPath = "D:\\Jobs\\F26901\\01_WIP\\A\\F26901-FMC-ZZ-ZZ-M3-A-0001_USER.rvt";
+const gbxml = `<gbXML lengthUnit="Meters"><Campus id="c"><Building id="b"><Space id="s1"/></Building>
+<Surface id="su" surfaceType="ExteriorWall" constructionIdRef="k"><AdjacentSpaceId spaceIdRef="s1"/>
+<RectangularGeometry><Width>4</Width><Height>3</Height></RectangularGeometry></Surface></Campus><Construction id="k"/></gbXML>`;
+
+function tempEnv() {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-energy-modes-"));
+  return { ...process.env, APPDATA: dir, LOCALAPPDATA: dir, FMC_ENERGY_DIR: path.join(dir, "energy") } as NodeJS.ProcessEnv;
+}
+
+test("analytical mode is read-only and turns the report into findings", async () => {
+  let sent: Record<string, unknown> = {};
+  const body = textOf(await runFmcEnergy(args({ document: "A", mode: "analytical" }), {
+    env: tempEnv(), standards: null,
+    read: async (b) => { sent = b; return { resolved_document: { title: "A", path: rvtPath }, analytical: { model: { exists: true, spaces: 3, surfaces_no_space: 2 }, rooms: { placed: 3 } } }; },
+  }));
+  assert.deepEqual(sent.parts, ["analytical"]);
+  assert.equal(body.isError, false);
+  assert.equal(body.read_only, true);
+  assert.equal(body.transaction, false);
+  assert.equal(body.status, "WARN");
+  assert.deepEqual((body.findings as Array<{ code: string }>).map((f) => f.code), ["SURFACE_NO_SPACE"]);
+});
+
+test("export: dry run plans beside the .rvt; a real export sends fmc_energy_export and checks the new file; refusals", async () => {
+  const now = new Date(2026, 10, 28, 9, 5);
+  const planned = "D:\\Jobs\\F26901\\01_WIP\\A\\F26901-FMC-ZZ-ZZ-M3-A-0001_USER_gbXML_20261128-0905.xml";
+  let sends = 0;
+  const dry = textOf(await runFmcEnergy(args({ document: "A", mode: "export" }), {
+    env: tempEnv(), guard, now, exists: () => false, read: docRead(rvtPath), send: async () => { sends++; return {}; },
+  }));
+  assert.equal(dry.isError, false);
+  assert.equal(dry.dry_run, true);
+  assert.equal(dry.file, planned);
+  assert.equal(sends, 0);
+
+  let sent: Record<string, unknown> = {};
+  const real = textOf(await runFmcEnergy(args({ document: "A", mode: "export", dry_run: false }), {
+    env: tempEnv(), guard, now, exists: () => false, read: docRead(rvtPath),
+    send: async (b) => { sent = b; return { file: planned, transaction_used: "none", new_files: [planned], is_modified_after: false }; },
+    readFile: (f) => { assert.equal(f, planned); return gbxml; },
+  }));
+  assert.equal(real.isError, false);
+  assert.equal(sent.file_name, "F26901-FMC-ZZ-ZZ-M3-A-0001_USER_gbXML_20261128-0905");
+  assert.equal(sent.expected_folder, "D:\\Jobs\\F26901\\01_WIP\\A");
+  assert.equal(real.read_only, false);
+  assert.equal(real.saved, false);
+  assert.equal(real.file_written, true);
+  assert.equal((real.check as { status: string }).status, "PASS");
+
+  const moved = textOf(await runFmcEnergy(args({ document: "A", mode: "export", dry_run: false }), {
+    env: tempEnv(), guard, now, exists: () => false, read: docRead(rvtPath), send: async () => ({ file: "C:\\Windows\\x.xml" }), readFile: () => gbxml,
+  }));
+  assert.equal(moved.code, "FMC-ENERGY-PATH-MISMATCH");
+
+  const refusals: Array<[string, () => Promise<unknown>, string]> = [
+    ["unsaved", docRead(""), "FMC-ENERGY-UNSAVED"],
+    ["cloud flag", docRead(rvtPath, { is_model_in_cloud: true }), "FMC-ENERGY-CLOUD"],
+    ["cloud path", docRead("BIM 360://Hebert/A.rvt"), "FMC-ENERGY-CLOUD"],
+    ["CDE gate", docRead("D:\\Jobs\\F26901\\03_PUBLISHED\\A.rvt"), "FMC-ENERGY-WRITE-REFUSED"],
+    ["outside write roots", docRead("C:\\Temp\\A.rvt"), "FMC-ENERGY-WRITE-REFUSED"],
+  ];
+  for (const [label, read, code] of refusals) {
+    const r = textOf(await runFmcEnergy(args({ document: "A", mode: "export", dry_run: false }), {
+      env: tempEnv(), guard, now, exists: () => false, read, send: async () => { sends++; return {}; },
+    }));
+    assert.equal(r.isError, true, label);
+    assert.equal(r.code, code, label);
+  }
+  const exists = textOf(await runFmcEnergy(args({ document: "A", mode: "export", dry_run: false, file_name: "run1" }), {
+    env: tempEnv(), guard, now, exists: () => true, read: docRead(rvtPath), send: async () => { sends++; return {}; },
+  }));
+  assert.equal(exists.code, "FMC-ENERGY-EXISTS");
+  assert.equal(sends, 0);
+});
+
+test("check mode reads only a gbXML inside the project folder", async () => {
+  const ok = textOf(await runFmcEnergy(args({ document: "A", mode: "check", file: "run1.xml" }), {
+    env: tempEnv(), read: docRead(rvtPath), readFile: () => gbxml,
+  }));
+  assert.equal(ok.isError, false);
+  assert.equal(ok.read_only, true);
+  assert.equal(ok.file, "D:\\Jobs\\F26901\\01_WIP\\A\\run1.xml");
+  assert.equal((ok.check as { counts: { surface: number } }).counts.surface, 1);
+  const outside = textOf(await runFmcEnergy(args({ document: "A", mode: "check", file: "..\\..\\secret.xml" }), {
+    env: tempEnv(), read: docRead(rvtPath), readFile: () => { throw new Error("must not read"); },
+  }));
+  assert.equal(outside.code, "FMC-ENERGY-CHECK-PATH");
+});
+
+test("export is a model-changing command; the read and analytical add-in code starts no transaction; export never saves", () => {
+  assert.ok(WRITE_COMMANDS.has("fmc_energy_export"));
+  assert.equal(READ_VIA_SEND_COMMAND.has("fmc_energy_export"), false);
+  assert.ok(READ_VIA_SEND_COMMAND.has("fmc_energy"));
+  const commands = JSON.parse(fs.readFileSync(path.join(root, "command.json"), "utf8")) as { commands: Array<{ commandName: string }> };
+  assert.ok(commands.commands.some((c) => c.commandName === "fmc_energy_export"));
+  const analytical = fs.readFileSync(path.join(root, "commandset", "Services", "Fmc", "FmcEnergyAnalytical.cs"), "utf8");
+  for (const banned of ["new Transaction", "TransactionGroup", "SubTransaction", "RollBack", "EnergyAnalysisDetailModel.Create", "Export("]) assert.equal(analytical.includes(banned), false, banned);
+  const exporter = fs.readFileSync(path.join(root, "commandset", "Services", "Fmc", "FmcEnergyExport.cs"), "utf8");
+  for (const banned of [".Save(", "SaveAs(", "SynchronizeWithCentral", "Assimilate(", "group.Commit(", "File.Delete", "File.Copy", "File.Move", "WriteAllText"]) assert.equal(exporter.includes(banned), false, banned);
+  assert.ok(exporter.includes("group.RollBack()"));
+  assert.ok(exporter.includes("File.Exists(file)"));
+  assert.ok(exporter.includes("FMC-ENERGY-OUTSIDE"));
+});

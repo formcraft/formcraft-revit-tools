@@ -1,6 +1,17 @@
 # fmc_energy
 
-Read-only envelope energy check. There is no dry run and no transaction: nothing is created, no parameter is written, nothing is rolled back and no energy analysis model is made.
+Energy tool for manifest item GAP-23 (energy analytical model, gbXML export and check). Four modes:
+
+| Mode | What it does | Writes |
+| --- | --- | --- |
+| `envelope` (default) | Envelope U-values, UA and window-to-wall ratio check (below) | Nothing in the model; JSON and CSV report under `%LOCALAPPDATA%\Formcraft\energy` |
+| `analytical` | Energy settings and the energy analytical model report | Nothing in the model; JSON report |
+| `export` | gbXML file beside the open .rvt | One new `.xml` in the model's folder (`fmc_energy_export`, a model-changing command) |
+| `check` | Offline gbXML check of a file in the project folder | Nothing in the model; JSON report |
+
+## Envelope mode
+
+Read-only. There is no dry run and no transaction: nothing is created, no parameter is written, nothing is rolled back and no energy analysis model is made.
 
 The add-in reads the envelope of the named document:
 
@@ -45,4 +56,39 @@ The full JSON and a CSV of types are under `%LOCALAPPDATA%\Formcraft\energy`. Th
 }
 ```
 
-Not yet implemented (paused): analytical model report, gbXML export to project folder, gbXML check.
+## Analytical mode
+
+Read-only, no transaction. The energy analytical model is read when it exists and is never created here.
+
+- **Energy settings** (`EnergyDataSettings`, read by property name so a property a Revit version lacks is left out): analysis type (mode), building type, service type, construction class, export category and complexity, ground plane (with `ground_plane_missing`), project phase, resolutions and glazing defaults.
+- **Location**: place, latitude, longitude, time zone, elevation; the angle to true north and the shared position; the project base point and survey point (internal and shared, mm).
+- **Rooms and spaces**: placed, placed area m2, not placed, placed but not enclosed (area 0), and no level, with up to 20 ids each.
+- **Energy analytical model** (`EnergyAnalysisDetailModel.GetMainEnergyAnalysisDetailModel`): whether it exists, and when it does the counts of spaces, zones (when the API has them), surfaces by type, openings and shading surfaces; surfaces with no analytical space; interior surfaces (interior wall, ceiling, interior floor, air) with no space on the other side.
+- **Warnings**: Revit warnings about rooms, spaces, boundaries, levels or the energy model, counted, with the 15 most common texts.
+
+The server turns this into findings: `ROOM_NOT_PLACED`, `ROOM_UNBOUNDED`, `ROOM_NO_LEVEL`, the same for spaces, `GROUND_PLANE_MISSING`, `NO_LEVELS`, `NO_SPATIAL_ELEMENTS` (the analysis uses rooms or spaces and none are placed), `SURFACE_NO_SPACE`, `SURFACE_NO_ADJACENT_SPACE`, `MODEL_NO_SPACES` and `REVIT_WARNINGS`. Status is `OK`, `WARN` or `NO_MODEL`.
+
+## Export mode
+
+Writes one gbXML file with `Document.Export(folder, name, GBXMLExportOptions)`. It goes **only** into the folder that holds the open .rvt (the directory of `Document.PathName`):
+
+- The name is `<model>_gbXML_<yyyyMMdd-HHmm>.xml`, or `file_name` sanitised (letters, digits, `.`, `-`, `_`; separators, drive colons and `..` cannot survive). A default name that exists gets `-2` to `-20`; a given name that exists is refused (`FMC-ENERGY-EXISTS`). No file is ever overwritten, and the .rvt is never the target.
+- Refused: a document never saved (`FMC-ENERGY-UNSAVED`), a cloud or Revit Server model (`FMC-ENERGY-CLOUD`), a family or other non-.rvt (`FMC-ENERGY-NOT-PROJECT`), a resolved path that is not directly in the model's folder (`FMC-ENERGY-OUTSIDE`), a folder the guard does not allow writing in, such as a CDE gate folder or one outside `write_roots` (`FMC-ENERGY-WRITE-REFUSED`), and an open transaction (`FMC-DOC-BUSY`). The server plans the name and checks these rules; the add-in checks them again against Revit's own path.
+- `dry_run` defaults to true: it plans the file and checks the rules, and exports nothing.
+- The model is **never saved, synced or relinquished**. The export is tried with no transaction. Only if Revit refuses it outside a transaction is it run again inside a transaction group (creating the energy analytical model first when there is none, with spaces), and the group is always rolled back. The reply says which (`transaction_used`: `none` or `group_rolled_back`), whether a model was made for the export, and whether the document shows as modified afterwards.
+- `model_type`: `default` (Revit's setting), `spaces` or `building_elements`.
+- `check_after` (default true) runs the gbXML check on the new file.
+
+Policy: `fmc_energy` stays in `READ_VIA_SEND_COMMAND`. The export is a separate add-in command, `fmc_energy_export`, in `WRITE_COMMANDS`, because it writes a file and may open a transaction group. So the live-model lock, batch lease and memory gate apply to it like any other model-changing command: on a live project model the export is refused, and a person exports from Revit.
+
+## Check mode
+
+Offline (`server/src/fmc/gbxml.ts`, no Revit). `file` is a name or path that must resolve inside the project folder (subfolders allowed) and end in `.xml`; anything else is `FMC-ENERGY-CHECK-PATH`.
+
+- Counts: Campus, Building, Space, Zone, Surface, Opening, Construction, WindowType; surfaces by type; the file's length and area units.
+- Findings: `SURFACE_NO_ADJACENT_SPACE` (not shading), `ADJACENT_SPACE_MISSING` (a ref to a Space not in the file), `SURFACE_ZERO_AREA`, `OPENING_ZERO_AREA` (from the PolyLoop, else the rectangle), `CONSTRUCTION_REF_MISSING` and `CONSTRUCTION_NOT_DEFINED` (not shading or air).
+- Status: `PASS`, `FAIL`, `EMPTY` (no surfaces) or `INVALID` (no gbXML root).
+
+```json
+{ "document": "F26901-FMC-ZZ-ZZ-M3-A-0001_USER", "mode": "export", "dry_run": false, "model_type": "spaces" }
+```

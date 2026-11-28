@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Analysis;
 using Autodesk.Revit.UI;
@@ -38,6 +42,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                 using (FmcTarget target = FmcTarget.Resolve(app, Parameters, mayOpen: false))
                 {
                     Document doc = target.Doc;
+                    var parts = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                    foreach (JToken token in Parameters["parts"] as JArray ?? new JArray())
+                        if (!string.IsNullOrWhiteSpace(token.ToString())) parts.Add(token.ToString().Trim());
+                    bool envelope = parts.Count == 0 || parts.Contains("envelope");
                     var notes = new JArray();
                     var rows = new JArray();
                     var typeCache = new Dictionary<long, JObject>();
@@ -45,72 +53,75 @@ namespace RevitMCPCommandSet.Services.Fmc
                     bool cut = false;
                     int interiorWalls = 0, interiorInserts = 0, unhosted = 0;
 
-                    foreach (Wall wall in new FilteredElementCollector(doc).OfClass(typeof(Wall)).Cast<Wall>())
+                    if (envelope)
                     {
-                        if (rows.Count >= ElementCap) { cut = true; break; }
-                        WallType wt = wall.WallType;
-                        if (wt == null || wt.Kind == WallKind.Stacked) continue; // stacked members are read on their own
-                        if (wt.Function != WallFunction.Exterior) { interiorWalls++; continue; }
-                        string kind = wt.Kind == WallKind.Curtain ? "curtain_wall" : "wall";
-                        wallKinds[wall.Id.Value] = kind;
-                        JObject row = Base(doc, wall, kind, typeCache);
-                        row["area_m2"] = OrNull(Area(wall));
-                        row["normal"] = Vec(SafeOrientation(wall));
-                        rows.Add(row);
-                    }
-
-                    foreach (RoofBase roof in new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Roofs).WhereElementIsNotElementType().OfType<RoofBase>())
-                    {
-                        if (rows.Count >= ElementCap) { cut = true; break; }
-                        JObject row = Base(doc, roof, "roof", typeCache);
-                        row["area_m2"] = OrNull(Area(roof));
-                        row["normal"] = new JArray(0, 0, 1);
-                        rows.Add(row);
-                    }
-
-                    foreach (Floor floor in new FilteredElementCollector(doc).OfClass(typeof(Floor)).WhereElementIsNotElementType().Cast<Floor>())
-                    {
-                        if (rows.Count >= ElementCap) { cut = true; break; }
-                        JObject row = Base(doc, floor, "floor", typeCache);
-                        row["area_m2"] = OrNull(Area(floor));
-                        row["normal"] = new JArray(0, 0, -1);
-                        Level level = doc.GetElement(floor.LevelId) as Level;
-                        row["level"] = level?.Name ?? "";
-                        row["level_elevation_mm"] = level == null ? JValue.CreateNull() : (JToken)Round(level.Elevation * FeetToMm);
-                        rows.Add(row);
-                    }
-
-                    foreach (BuiltInCategory bic in new[] { BuiltInCategory.OST_Windows, BuiltInCategory.OST_Doors })
-                    {
-                        foreach (FamilyInstance fi in new FilteredElementCollector(doc).OfCategory(bic).WhereElementIsNotElementType().OfType<FamilyInstance>())
+                        foreach (Wall wall in new FilteredElementCollector(doc).OfClass(typeof(Wall)).Cast<Wall>())
                         {
                             if (rows.Count >= ElementCap) { cut = true; break; }
-                            Element host = fi.Host;
-                            string hostKind;
-                            XYZ normal;
-                            if (host is Wall hw)
-                            {
-                                if (!wallKinds.TryGetValue(hw.Id.Value, out hostKind)) { interiorInserts++; continue; }
-                                normal = SafeOrientation(hw);
-                            }
-                            else if (host is RoofBase) { hostKind = "roof"; normal = XYZ.BasisZ; }
-                            else { unhosted++; hostKind = ""; normal = SafeFacing(fi); }
-                            bool isDoor = bic == BuiltInCategory.OST_Doors;
-                            string kind = isDoor ? "door" : hostKind == "roof" ? "skylight" : "window";
-                            JObject row = Base(doc, fi, kind, typeCache);
-                            row["area_m2"] = OrNull(InsertArea(fi, isDoor));
-                            row["normal"] = Vec(normal);
-                            row["host_id"] = host == null ? "" : host.Id.Value.ToString();
-                            row["host_kind"] = hostKind;
+                            WallType wt = wall.WallType;
+                            if (wt == null || wt.Kind == WallKind.Stacked) continue; // stacked members are read on their own
+                            if (wt.Function != WallFunction.Exterior) { interiorWalls++; continue; }
+                            string kind = wt.Kind == WallKind.Curtain ? "curtain_wall" : "wall";
+                            wallKinds[wall.Id.Value] = kind;
+                            JObject row = Base(doc, wall, kind, typeCache);
+                            row["area_m2"] = OrNull(Area(wall));
+                            row["normal"] = Vec(SafeOrientation(wall));
                             rows.Add(row);
                         }
-                    }
 
-                    if (cut) notes.Add("The envelope list stopped at " + ElementCap + " elements.");
-                    if (interiorWalls > 0) notes.Add(interiorWalls + " walls whose type Function is not Exterior were left out.");
-                    if (interiorInserts > 0) notes.Add(interiorInserts + " windows or doors in non-exterior walls were left out.");
-                    if (unhosted > 0) notes.Add(unhosted + " windows or doors have no wall or roof host; their facing direction is used.");
-                    if (rows.Count == 0) notes.Add("No exterior walls, roofs, floors, windows or doors were found.");
+                        foreach (RoofBase roof in new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Roofs).WhereElementIsNotElementType().OfType<RoofBase>())
+                        {
+                            if (rows.Count >= ElementCap) { cut = true; break; }
+                            JObject row = Base(doc, roof, "roof", typeCache);
+                            row["area_m2"] = OrNull(Area(roof));
+                            row["normal"] = new JArray(0, 0, 1);
+                            rows.Add(row);
+                        }
+
+                        foreach (Floor floor in new FilteredElementCollector(doc).OfClass(typeof(Floor)).WhereElementIsNotElementType().Cast<Floor>())
+                        {
+                            if (rows.Count >= ElementCap) { cut = true; break; }
+                            JObject row = Base(doc, floor, "floor", typeCache);
+                            row["area_m2"] = OrNull(Area(floor));
+                            row["normal"] = new JArray(0, 0, -1);
+                            Level level = doc.GetElement(floor.LevelId) as Level;
+                            row["level"] = level?.Name ?? "";
+                            row["level_elevation_mm"] = level == null ? JValue.CreateNull() : (JToken)Round(level.Elevation * FeetToMm);
+                            rows.Add(row);
+                        }
+
+                        foreach (BuiltInCategory bic in new[] { BuiltInCategory.OST_Windows, BuiltInCategory.OST_Doors })
+                        {
+                            foreach (FamilyInstance fi in new FilteredElementCollector(doc).OfCategory(bic).WhereElementIsNotElementType().OfType<FamilyInstance>())
+                            {
+                                if (rows.Count >= ElementCap) { cut = true; break; }
+                                Element host = fi.Host;
+                                string hostKind;
+                                XYZ normal;
+                                if (host is Wall hw)
+                                {
+                                    if (!wallKinds.TryGetValue(hw.Id.Value, out hostKind)) { interiorInserts++; continue; }
+                                    normal = SafeOrientation(hw);
+                                }
+                                else if (host is RoofBase) { hostKind = "roof"; normal = XYZ.BasisZ; }
+                                else { unhosted++; hostKind = ""; normal = SafeFacing(fi); }
+                                bool isDoor = bic == BuiltInCategory.OST_Doors;
+                                string kind = isDoor ? "door" : hostKind == "roof" ? "skylight" : "window";
+                                JObject row = Base(doc, fi, kind, typeCache);
+                                row["area_m2"] = OrNull(InsertArea(fi, isDoor));
+                                row["normal"] = Vec(normal);
+                                row["host_id"] = host == null ? "" : host.Id.Value.ToString();
+                                row["host_kind"] = hostKind;
+                                rows.Add(row);
+                            }
+                        }
+
+                        if (cut) notes.Add("The envelope list stopped at " + ElementCap + " elements.");
+                        if (interiorWalls > 0) notes.Add(interiorWalls + " walls whose type Function is not Exterior were left out.");
+                        if (interiorInserts > 0) notes.Add(interiorInserts + " windows or doors in non-exterior walls were left out.");
+                        if (unhosted > 0) notes.Add(unhosted + " windows or doors have no wall or roof host; their facing direction is used.");
+                        if (rows.Count == 0) notes.Add("No exterior walls, roofs, floors, windows or doors were found.");
+                    }
 
                     Result = new JObject
                     {
@@ -123,7 +134,12 @@ namespace RevitMCPCommandSet.Services.Fmc
                         ["energy_settings"] = Settings(doc),
                         ["notes"] = notes,
                         ["elements"] = rows,
+                        ["path"] = doc.PathName ?? "",
+                        ["is_workshared"] = doc.IsWorkshared,
+                        ["is_model_in_cloud"] = InCloud(doc),
+                        ["is_modified"] = doc.IsModified,
                     };
+                    if (parts.Contains("analytical")) Result["analytical"] = FmcEnergyAnalytical.Report(doc);
                 }
             }
             catch (Exception ex) { Error = ex.Message; }
@@ -253,6 +269,12 @@ namespace RevitMCPCommandSet.Services.Fmc
             }
             catch (Exception) { }
             return s;
+        }
+
+        internal static bool InCloud(Document doc)
+        {
+            try { if (doc.IsModelInCloud) return true; } catch (Exception) { }
+            return !string.IsNullOrEmpty(doc.PathName) && FmcTarget.IsCloud(doc.PathName);
         }
 
         private static XYZ SafeOrientation(Wall wall)

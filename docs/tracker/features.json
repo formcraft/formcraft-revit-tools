@@ -1137,9 +1137,9 @@
     "id": "GAP-23",
     "area": "Engine",
     "group": "Energy",
-    "feature": "Envelope energy check: U-values, UA, window-to-wall ratio",
+    "feature": "Energy analytical model report, gbXML export and check, and the envelope U-value, UA and WWR check",
     "status": "Built, Revit check due",
-    "ref": "fmc_energy, docs/tools/fmc_energy.md",
-    "note": "Read-only. No dry run, no transaction and no energy analysis model. Reads exterior walls (type Function Exterior) and curtain walls, roofs, floors (lowest level by default), windows, skylights and exterior doors: net area, outward direction, level, and each type's U (Heat Transfer Coefficient, else thermal properties, else 1/R), SHGC and VLT, plus layers without a thermal asset and the angle to true north. The server lists types with U x A, the area-weighted mean U per class, fabric UA in W/K and the window-to-wall ratio overall and per N/E/S/W, and checks U per class, SHGC and WWR against limits from the call, else energy.max_* in the standards bank, else NO_LIMIT. A blank or 0 U is U_UNKNOWN and never guessed. JSON and CSV under %LOCALAPPDATA%\\Formcraft\\energy. Needs a Revit check."
+    "ref": "fmc_energy (modes envelope, analytical, export, check), fmc_energy_export, docs/tools/fmc_energy.md",
+    "note": "envelope: read-only U per type, UA and WWR checks (unchanged). analytical: read-only EnergyDataSettings (by property name), location and base points, whether the main EnergyAnalysisDetailModel exists with its spaces, zones, surfaces and openings, rooms and spaces not placed, unbounded or without a level, surfaces with no adjacent space, and Revit warnings; never creates the model. export: fmc_energy_export (WRITE_COMMANDS: live-model lock, batch lease) writes <model>_gbXML_<yyyyMMdd-HHmm>.xml or a sanitised name ONLY in the open .rvt's folder, refuses unsaved, cloud, non-.rvt, outside-folder, guard-refused and existing files, dry_run defaults true, never saves or syncs; if Revit needs a transaction the export runs in a TransactionGroup that is rolled back. check: offline gbXML counts (Campus, Building, Space, Surface, Opening) and findings (no AdjacentSpaceId, missing space refs, zero areas, missing or undefined constructions) for a file inside the project folder. Needs a Revit check."
   }
 ]
