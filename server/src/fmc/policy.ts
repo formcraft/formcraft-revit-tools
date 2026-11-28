@@ -301,6 +301,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_print_sets_read",
   // GAP-26 fmc_groups: types and instances (unused, nesting, text, mirrored facts). No transaction.
   "fmc_groups_audit",
+  // COBie-style asset register: facility, spaces, types, components and systems. No transaction; nothing is written.
+  "fmc_assets_read",
 ]);
 
 /**

@@ -414,15 +414,6 @@
     "note": "Trims follow Width/Height on path_planes, profile paths relative to the kit, Gate A checks that solids follow each size; Revit test next"
   },
   {
-    "id": "F64",
-    "area": "Engine",
-    "group": "Families",
-    "feature": "Recipe ops: arrays, parametric symbols, template clean-up, nested hardware",
-    "status": "Built, Revit check due",
-    "ref": "PR #142, F-026",
-    "note": "From the Ogala field review; LinearArray and symbol locks to confirm in Revit Unattended run TR-20261019-1528 (19 Oct): the QS03 sample batch built and gated in Revit again (scenario 03)."
-  },
-  {
     "id": "F47",
     "area": "Engine",
     "group": "Families",
@@ -574,6 +565,15 @@
     "status": "Built, Revit check due",
     "ref": "PR #136",
     "note": "Instructions, fmc_context tool, kit resources and prompts; any MCP app"
+  },
+  {
+    "id": "F64",
+    "area": "Engine",
+    "group": "Families",
+    "feature": "Recipe ops: arrays, parametric symbols, template clean-up, nested hardware",
+    "status": "Built, Revit check due",
+    "ref": "PR #142, F-026",
+    "note": "From the Ogala field review; LinearArray and symbol locks to confirm in Revit Unattended run TR-20261019-1528 (19 Oct): the QS03 sample batch built and gated in Revit again (scenario 03)."
   },
   {
     "id": "F65",
@@ -1159,5 +1159,14 @@
     "status": "Built",
     "ref": "fmc_release_package, docs/tools/fmc_release_package.md, server/src/fmc/releasepack.ts",
     "note": "Takes a generated family from staging to a release-ready package under <staging>\\_ReleasePackages\\<Role>\\<family>__<sha12>: checks name, staged file, Gate A (Pass, this family, not stale), recipe (checks clean), build record, size and the package place, then copies the family, recipe, gate and build files with a manifest.json of hashes and checks. dry_run defaults true; a real run needs confirm and the plan_id. It never publishes, never moves the staged file and never writes to the library, a library root, Revit add-ins or a project: release stays the Family Librarian's act in the pane."
+  },
+  {
+    "id": "F170",
+    "area": "Engine",
+    "group": "Handover",
+    "feature": "COBie-style asset register for handover (fmc_assets)",
+    "status": "Built, Revit check due",
+    "ref": "GAP-20, fmc_assets, fmc_assets_read, docs/ASSETS.md",
+    "note": "Canonical id: GAP-20 (whole-plugin gap analysis). The features.json id F170 is provisional and will be renumbered at merge; the schema here requires an F-number. Asset register for handover, COBie style, read-only, export to 03_Published. Tool fmc_assets; C# read command fmc_assets_read (no transaction, saves nothing, syncs nothing; READ_VIA_SEND_COMMAND). Five sheets with COBie 2.4 names (Facility, Space, Type, Component, System), not a certified COBie deliverable. Returns rows or CSV inline; no file is written. Status is PROVISIONAL, GAPS or READY; can_pass is always false. Family documents are refused. Kit 03_Master_Data/FMC_Assets.json; without it the built-in sample is PROVISIONAL. Needs a Revit check."
   }
 ]
