@@ -207,3 +207,24 @@ test("spec never writes: the kit folder is byte-for-byte the same afterwards", (
     assert.deepEqual(after, before);
   } finally { box.done(); }
 });
+
+test("fmc_graph_form tool: spec reply over the kit, refusal is an error reply, values bind", async () => {
+  const box = sandbox();
+  const saved = process.env.FMC_KIT;
+  process.env.FMC_KIT = box.kit;
+  try {
+    const { runFmcGraphForm } = await import("../../tools/fmc_graph_form.js");
+    const ok = await runFmcGraphForm({ action: "spec", path: path.join(box.dyn, "form_inputs.dyn"), kit_folder: "", values: { Count: 3 } });
+    assert.equal(ok.isError, false);
+    const body = JSON.parse(ok.content[0].text);
+    assert.equal(body.action, "spec");
+    assert.equal(body.binding.ok, true);
+    assert.deepEqual(body.binding.inputs_by_id, { a1000000000000000000000000000001: 3 });
+    const refused = await runFmcGraphForm({ action: "spec", path: "\\\\srv\\share\\x.dyn", kit_folder: "" });
+    assert.equal(refused.isError, true);
+    assert.equal(JSON.parse(refused.content[0].text).code, "FMC-GRAPH-JAIL");
+  } finally {
+    if (saved === undefined) delete process.env.FMC_KIT; else process.env.FMC_KIT = saved;
+    box.done();
+  }
+});
