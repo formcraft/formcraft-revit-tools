@@ -45,12 +45,17 @@ namespace RevitMCPCommandSet.Services.Fmc
         }
 
         /// <summary>What every reply says about one element: enough for the identity map and for Navisworks (id + model).</summary>
-        private static JObject Describe(Document doc, Element e) => new JObject
+        private static JObject Describe(Document doc, Element e)
         {
-            ["unique_id"] = e.UniqueId, ["element_id"] = e.Id.Value, ["category"] = e.Category?.Name ?? "",
-            ["name"] = e.Name ?? "", ["mark"] = e.get_Parameter(BuiltInParameter.ALL_MODEL_MARK)?.AsString() ?? "",
-            ["model"] = doc.Title, ["path"] = doc.PathName ?? "",
-        };
+            var o = new JObject
+            {
+                ["unique_id"] = e.UniqueId, ["element_id"] = e.Id.Value, ["category"] = e.Category?.Name ?? "",
+                ["name"] = e.Name ?? "", ["mark"] = e.get_Parameter(BuiltInParameter.ALL_MODEL_MARK)?.AsString() ?? "",
+                ["model"] = doc.Title, ["path"] = doc.PathName ?? "",
+            };
+            if (e is View view) o["view_type"] = view.ViewType.ToString();
+            return o;
+        }
 
         private JObject Get(UIApplication app)
         {

@@ -70,6 +70,33 @@ export function projectFolderWarnings(project: string, model: { title?: string; 
     ": empty tickets, tree or packages may mean the wrong folder, not that nothing names the element"];
 }
 
+export type SourceStatus = "read" | "missing" | "not searched";
+export interface SourceInfo { status: SourceStatus; path?: string; detail?: string }
+
+/**
+ * Which identity, review, tree, package and Navisworks files were looked for, so an empty list is not read as "not found"
+ * (Tool Research P-fmc_find-01).
+ */
+export function findSources(opts: {
+  project: string;
+  identityRoot: string;
+  navis: SourceStatus;
+  navisDetail?: string;
+  exists: (p: string) => boolean;
+}): Record<"identity" | "register" | "tree" | "packages" | "navisworks", SourceInfo> {
+  const looked = (p: string): SourceInfo => opts.exists(p) ? { status: "read", path: p } : { status: "missing", path: p };
+  const identity = identityFile(opts.identityRoot);
+  const register = opts.project ? win.join(opts.project, "01_WIP", "_Reviews", "FMC_Review_Register.json") : "";
+  const tree = opts.project ? win.join(opts.project, "01_WIP", "_Tree", "FMC_Recipe_Tree.json") : "";
+  return {
+    identity: looked(identity),
+    register: opts.project ? looked(register) : { status: "not searched", detail: "No project_folder: review tickets were not searched" },
+    tree: opts.project ? looked(tree) : { status: "not searched", detail: "No project_folder: the recipe tree was not searched" },
+    packages: looked(opts.identityRoot),
+    navisworks: { status: opts.navis, ...(opts.navisDetail ? { detail: opts.navisDetail } : {}) },
+  };
+}
+
 type FindNewArgs = "offset" | "categories" | "parameter" | "all_categories";
 type FindParsed = z.infer<z.ZodObject<typeof FMC_FIND_SHAPE>>;
 /** The newer find arguments are optional for callers that build args by hand (tests, flows). */
@@ -119,6 +146,7 @@ export async function runFmcFind(args: FmcFindArgs, deps?: FindDeps) {
   const entries = identityMatches(map, query);
   const noProject = project ? undefined : "No project_folder: review tickets and the recipe tree weren't searched";
 
+  const exists = d.exists ?? ((p) => fs.existsSync(p));
   if (args.action === "log") {
     const needles = needlesFor(query, entries);
     const reg = registerOf(project);
@@ -129,7 +157,8 @@ export async function runFmcFind(args: FmcFindArgs, deps?: FindDeps) {
       ...identityLines(entries),
     ];
     const t = mergeTimeline(lines, args.limit);
-    return reply({ query, needles, ...t, ...(noProject ? { note: noProject } : {}),
+    const sources = findSources({ project, identityRoot: d.identityRoot, navis: "not searched", navisDetail: "log reads files only", exists });
+    return reply({ query, needles, ...t, sources, ...(noProject ? { note: noProject } : {}),
       read_only: "From files only (the file log, exchange packages, the review register, the identity map); nothing changed" });
   }
 
@@ -158,8 +187,9 @@ export async function runFmcFind(args: FmcFindArgs, deps?: FindDeps) {
       };
     } catch (e) { revit = { error: msg(e) }; }
   }
-  // a UniqueId typed as the query, or one of the map's, names the same element as Revit's matches
+  // Search still uses the found ids; the reply's needles are the query's own (P-fmc_find-03: show matched ids once).
   const needles = needlesFor(query, entries, revitFound);
+  const shownNeedles = needlesFor(query, entries);
 
   // Navisworks: the items the Revit elements became (looked up, not selected), and every clash naming them
   let navisworks: Record<string, unknown> = { open: false, detail: "Navisworks with the Formcraft bridge isn't open (fmc_navis status)" };
@@ -180,13 +210,19 @@ export async function runFmcFind(args: FmcFindArgs, deps?: FindDeps) {
   const tickets = matchTickets(registerOf(project), needles);
   const tree = matchTree(treeOf(project), query);
   const packages = matchPackages(d.identityRoot, listPackages(d.identityRoot), needles);
-  const warnings = projectFolderWarnings(project, revitModel, d.exists ?? ((p) => fs.existsSync(p)));
+  const warnings = projectFolderWarnings(project, revitModel, exists);
+  const navisOpen = !!d.navis && !("open" in navisworks && navisworks.open === false) && !("error" in navisworks);
+  const sources = findSources({
+    project, identityRoot: d.identityRoot, exists,
+    navis: navisOpen ? "read" : "not searched",
+    navisDetail: navisOpen ? undefined : String((navisworks as { detail?: string; error?: string }).detail ?? (navisworks as { error?: string }).error ?? "Navisworks was not searched"),
+  });
   const count = (v: unknown) => (Array.isArray(v) ? v.length : 0);
   const summary = `${revitFound.length} Revit, ${count((navisworks as { items?: unknown }).items)} Navisworks, ${count((navisworks as { clashes?: unknown }).clashes)} clashes, ` +
     `${count(tickets)} tickets, ${count(tree)} tree nodes, ${count(packages)} packages, ${entries.length} identity entries`;
 
   return reply({
-    query, needles, summary,
+    query, needles: shownNeedles, summary, sources,
     identity: { file: identityFile(d.identityRoot), elements: entries.map((e) => ({ fmc: e.fmc, name: e.name, kind: e.kind, apps: e.apps })) },
     revit, navisworks, tickets, tree, packages,
     ...(warnings.length ? { warnings } : {}),

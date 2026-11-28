@@ -6,7 +6,7 @@ import path from "node:path";
 import { IdentityMap, exchangeRoot, link, saveIdentity, writePackage } from "./exchange.js";
 import { fileLogLines, identityMatches, matchClashes, matchTickets, matchTree, mentions, mergeTimeline, needlesFor, ticketWhy, wordRe } from "./find.js";
 import { csvLine } from "../fmc/policy.js";
-import { FindDeps, projectFolderWarnings, projectNumberOf, runFmcFind } from "../tools/fmc_find.js";
+import { FindDeps, findSources, projectFolderWarnings, projectNumberOf, runFmcFind } from "../tools/fmc_find.js";
 
 const win = path.win32;
 const MODEL = "F26001-FMC-ZZ-ZZ-M3-S-0001";
@@ -189,4 +189,33 @@ test("fmc_find: work plane grids are left out, filters and paging reach Revit, a
   assert.deepEqual(projectFolderWarnings("D:\\P\\F26902_TestHouse", { title: "F26902-FMC-ZZ-ZZ-M3-A-0002_USER", path: "C:\\L\\x.rvt" }, () => true), []);
   assert.deepEqual(projectFolderWarnings("D:\\P\\F26902_TestHouse", { title: "a", path: "D:\\P\\F26902_TestHouse\\01_WIP\\a.rvt" }, () => true), []);
   assert.match(projectFolderWarnings("D:\\Nope", null, () => false)[0], /does not exist/);
+});test("fmc_find: sources say which files were looked for, and needles list the query only once", async () => {
+  const { reports, root } = sampleProject();
+  const project = "D:\\Fomcraft\\FMC_PROJECTS_27\\F26902_TestHouse";
+  const exists = (p: string) => p === root || p.startsWith(root);
+  const src = findSources({ project, identityRoot: root, navis: "not searched", navisDetail: "Navisworks is not open", exists });
+  assert.equal(src.identity.status, "missing");
+  assert.ok(src.identity.path);
+  assert.equal(src.register.status, "missing");
+  assert.match(src.register.path!, /FMC_Review_Register\.json$/);
+  assert.equal(src.tree.status, "missing");
+  assert.match(src.tree.path!, /FMC_Recipe_Tree\.json$/);
+  assert.equal(src.packages.status, "read");
+  assert.equal(src.navisworks.status, "not searched");
+  const none = findSources({ project: "", identityRoot: root, navis: "not searched", exists: () => false });
+  assert.equal(none.register.status, "not searched");
+  assert.equal(none.tree.status, "not searched");
+
+  const deps: FindDeps = {
+    revit: async () => ({ model: "plumbing_USER", path: "C:\\M\\plumbing_USER.rvt", found: [
+      { unique_id: "lv", element_id: 694, category: "Levels", name: "Level 1", matched: "name" },
+    ], touching: [], truncated: false }),
+    navis: null, identityRoot: root, reportsDir: reports, exists,
+  };
+  const b = body(await runFmcFind({ action: "find", query: "Level 1", project_folder: project, partial: true, touching: false, limit: 5 }, deps));
+  assert.deepEqual(b.needles, { text: "Level 1", fmc: [], unique_ids: [], element_ids: [] });
+  assert.equal(b.revit.found[0].element_id, 694);
+  assert.equal(b.sources.identity.status, "missing");
+  assert.equal(b.sources.register.status, "missing");
+  assert.equal(b.sources.navisworks.status, "not searched");
 });
