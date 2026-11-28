@@ -1,127 +1,65 @@
 # fmc_mep_audit
 
-Read-only MEP connectivity and system audit. It opens **no transaction**, takes **no `batch_lease`**, and changes nothing. Builder 19 owns it. Its output feeds `fmc_calc` and Builder 8's `fmc_mep_size`.
+Read-only MEP connectivity and system audit. It opens **no transaction**, takes **no `batch_lease`**, and changes nothing. Builder 19 owns it.
 
-**Conduit and cable tray are not audited here.** `fmc_conduit scan` and `fmc_trace` (`domain` `conduit`, `tray` or `electrical_containment`) already report their open ends. The add-in never collects conduit or tray categories. If a conduit or tray row still arrives, the server drops it and counts it in `dropped_out_of_scope`.
+## Scope: what it adds to fmc_trace
 
-## What it checks
+`fmc_trace` already emits FLOW-OPEN-END, NOT-CONNECTED, NEAR-MISS, SIZE-MISMATCH, NO-SYSTEM, NO-SOURCE, ISLAND and the NO-FITTING, CAP, TRAP, VENT, WASTE, CLEANOUT and ISOLATION codes. `fmc_mep_audit` repeats none of them. It adds only:
 
-| Check | Revit API | Codes |
+1. **A cross-check of `fmc_trace`'s open_end** on piping and HVAC. `ConnectorManager.UnusedConnectors` lists open End connectors (`MEP-OPEN-*`, severity info; FLOW-OPEN-END stays the finding of record). `PlumbingUtils.HasOpenConnector` is checked both ways on pipe curves, fittings and accessories. Where the two APIs disagree, the element gets `MEP-XCHK-MISMATCH` (warning).
+2. **IsWellConnected** per piping and mechanical system (`MEP-SYS-NOT-WELL-CONNECTED`).
+3. **Systems with no BaseEquipment**, as a count plus ids (`summary.systems.no_base_equipment` and `no_base_equipment_ids`, code `MEP-SYS-NO-BASE-EQUIPMENT`). The wording is "no BaseEquipment set", never "no source".
+4. **Static pressure, PressureLossOfCriticalPath and the critical-path sections.** `GetCriticalPathSectionNumbers()` gives the sections in flow order. Each one is read with `MEPSystem.GetSectionByNumber`: `MEPSection.TotalPressureLoss`, `Flow`, `TotalCurveLength`, `Velocity`, `Roughness`, `TotalCoefficient`, `FixtureUnit`, its element ids, and the size of its first pipe or duct.
+5. **Fixture units** per piping system (`PipingSystem.GetFixtureUnits()`).
+
+`MEP-SYS-EMPTY`, `MEP-SYS-INVALID` and `MEP-SYS-CALC-UNAVAILABLE` explain why a system has no valid values.
+
+**Conduit and cable tray are not audited here.** `fmc_conduit scan` and `fmc_trace` (`domain` `conduit`, `tray` or `electrical_containment`) report their open ends. The add-in never collects conduit or tray categories, and the server drops any such row (`dropped_out_of_scope`).
+
+## Codes
+
+| Code | Severity | Meaning |
 |---|---|---|
-| Open End connectors on pipes, flex pipes, ducts, flex ducts, their fittings and accessories | `ConnectorManager.UnusedConnectors` with `Connector.IsConnected`; `PlumbingUtils.HasOpenConnector` as a cross-check on pipe curves, fittings and accessories (`plumbing_open`) | `MEP-OPEN-CURVE-END`, `MEP-OPEN-FITTING`, `MEP-OPEN-ACCESSORY` |
-| Open End connectors on mechanical equipment, plumbing fixtures, sprinklers and air terminals (piping and HVAC connectors only) | `FamilyInstance.MEPModel.ConnectorManager.UnusedConnectors` | `MEP-OPEN-EQUIPMENT`, `MEP-OPEN-FIXTURE`, `MEP-OPEN-TERMINAL` |
-| An open connector that belongs to no system | `Connector.MEPSystem` | `MEP-CONN-NO-SYSTEM` |
-| Systems that are not well connected | `PipingSystem.IsWellConnected`, `MechanicalSystem.IsWellConnected` | `MEP-SYS-NOT-WELL-CONNECTED` |
-| Systems with no base equipment | `MEPSystem.BaseEquipment` | `MEP-SYS-NO-BASE-EQUIPMENT` |
-| Empty or invalid systems | `MEPSystem.IsEmpty`, `MEPSystem.IsValid` | `MEP-SYS-EMPTY`, `MEP-SYS-INVALID` |
-| Flow, static pressure, critical-path pressure loss and fixture units per system | `GetFlow()`, `GetStaticPressure()`, `MEPSystem.PressureLossOfCriticalPath`, `MEPSystem.GetCriticalPathSectionNumbers()`, `PipingSystem.GetFixtureUnits()` | `MEP-SYS-CALC-UNAVAILABLE` when a value could not be read |
-
-Severities:
-
-- `error`: `MEP-OPEN-CURVE-END`, `MEP-OPEN-FITTING`, `MEP-OPEN-ACCESSORY`, `MEP-SYS-NOT-WELL-CONNECTED`.
-- `warning`: `MEP-OPEN-EQUIPMENT`, `MEP-OPEN-FIXTURE`, `MEP-OPEN-TERMINAL`, `MEP-SYS-INVALID`, `MEP-SYS-NO-BASE-EQUIPMENT`.
-- `info`: `MEP-CONN-NO-SYSTEM`, `MEP-SYS-EMPTY`, `MEP-SYS-CALC-UNAVAILABLE`.
-
-`MEP-SYS-NO-BASE-EQUIPMENT` is `info` for Sanitary, Vent, OtherPipe and the fire-protection classifications, because those systems usually end at a drain, a stack or a riser.
-
-Revit only gives valid calculated values on a well-connected system. On a system that is not well connected, flow, pressure and fixture units are not read and come back `null`. `calc_valid` is `false`, and the system gets `MEP-SYS-NOT-WELL-CONNECTED`, not a calc issue.
+| `MEP-OPEN-CURVE-END`, `MEP-OPEN-FITTING`, `MEP-OPEN-ACCESSORY` | info | UnusedConnectors: an open End connector on a pipe, duct or flex curve, a fitting or an accessory. Cross-check of FLOW-OPEN-END. |
+| `MEP-OPEN-EQUIPMENT`, `MEP-OPEN-FIXTURE`, `MEP-OPEN-TERMINAL` | info | The same on mechanical equipment, plumbing fixtures and sprinklers, or air terminals (piping and HVAC connectors only). |
+| `MEP-XCHK-MISMATCH` | warning | UnusedConnectors and HasOpenConnector disagree on a piping element. |
+| `MEP-SYS-NOT-WELL-CONNECTED` | error | IsWellConnected is false. Revit's calculated values are invalid. |
+| `MEP-SYS-NO-BASE-EQUIPMENT` | warning (info for Sanitary, Vent, OtherPipe and fire protection) | BaseEquipment is not set. |
+| `MEP-SYS-EMPTY` | info | The system has no components. |
+| `MEP-SYS-INVALID` | warning | IsValid is false. |
+| `MEP-SYS-CALC-UNAVAILABLE` | info | A calculated value threw on a well-connected system. `calc_notes` says which. |
 
 ## Arguments
 
 ```json
-{
-  "document": "F26901-FMC-ZZ-ZZ-M3-P-0001_USER",
-  "domain": "both",
-  "systems": [],
-  "levels": [],
-  "include_equipment": true,
-  "analysis": true,
-  "mode": "summary",
-  "max_results": 200
-}
+{ "document": "F26901-FMC-ZZ-ZZ-M3-P-0001_USER", "domain": "both", "systems": [], "levels": [],
+  "include_equipment": true, "analysis": true, "mode": "summary", "max_results": 200 }
 ```
 
 - `domain`: `piping`, `duct` or `both` (the default).
-- `systems`: system names (case-insensitive) or element ids.
-- `levels`: level names. An element uses its reference or host level. A system uses the levels of its members, up to 20.
-- `include_equipment`: set to `false` to audit only the network (curves, fittings and accessories).
-- `analysis`: set to `false` to skip flow, pressure and fixture units. This is faster on big models.
-- `mode`:
-  - `summary` (the default) gives counts, the `error` and `warning` issues, up to 20 ids per code in `sample_ids`, and only the systems that have an issue.
-  - `detail` gives every issue and every system.
-- `max_results`: caps `issues`, `systems` and `facts.mep_systems` (1 to 5000). The add-in also caps its raw snapshot at 20,000 open connectors and 5,000 systems (`source_truncated`).
+- `systems`: names (case-insensitive) or element ids.
+- `levels`: level names. An element uses its reference or host level. A system uses its members' levels (up to 20).
+- `include_equipment`: set to `false` to audit only the network.
+- `analysis`: set to `false` to skip flow, pressure, fixture units and the sections. This is faster on big models.
+- `mode`: `summary` (the default) gives counts, the error and warning issues, up to 20 ids per code in `sample_ids`, and only the systems with an issue. `detail` gives every issue and every system.
+- `max_results`: caps `issues`, `systems`, `mep_systems` and the id lists (1 to 5000). The add-in caps its raw snapshot at 20,000 open connectors, 5,000 systems, 100 sections per system and 50 element ids per section.
 
 ## Reply (`schema: "fmc_mep_audit/1"`)
 
-```json
-{
-  "tool": "fmc_mep_audit",
-  "schema": "fmc_mep_audit/1",
-  "read_only": true,
-  "document": { "title": "...", "path": "..." },
-  "filters": { "domain": "both", "systems": [], "levels": [], "include_equipment": true },
-  "mode": "summary",
-  "summary": {
-    "open_connectors": 12,
-    "open_connectors_by_kind": { "curve": 5, "fitting": 3, "equipment": 4 },
-    "issues": 20,
-    "by_code": { "MEP-OPEN-CURVE-END": 5 },
-    "by_severity": { "error": 9, "warning": 7, "info": 4 },
-    "systems": { "total": 8, "piping": 5, "duct": 3, "not_well_connected": 1, "no_base_equipment": 2, "empty": 0 },
-    "totals": { "fixture_units": 42 }
-  },
-  "issues": [
-    { "code": "MEP-OPEN-CURVE-END", "severity": "error", "domain": "piping", "element_id": 1, "connector_index": 1,
-      "system_id": 900, "system": "DCW 1", "level": "L01", "message": "..." }
-  ],
-  "issues_truncated": false,
-  "sample_ids": { "MEP-OPEN-CURVE-END": [1] },
-  "systems": [ "same rows as facts.mep_systems" ],
-  "systems_truncated": false,
-  "facts": {
-    "mep": { "model": "...", "pipe_systems": [{ "id": 900, "name": "DCW 1", "classification": "DomesticColdWater" }],
-             "counts": { "pipe_systems": 5, "duct_systems": 3, "open_connectors": 12 } },
-    "mep_systems": [
-      { "id": 900, "name": "DCW 1", "domain": "piping", "classification": "DomesticColdWater", "system_type": "Domestic Cold Water",
-        "is_well_connected": true, "base_equipment_id": 5000, "base_equipment_name": "...", "element_count": 120, "levels": ["L01"],
-        "flow_lps": 1.25, "static_pressure_pa": 1200.0, "critical_path_pressure_loss_pa": 800.0, "critical_path_sections": [1, 2, 3],
-        "fixture_units": 14, "calc_valid": true }
-    ]
-  },
-  "scanned": { "elements": 400, "connectors": 1600, "systems": 8 },
-  "source_truncated": { "connectors": false, "systems": false },
-  "dropped_out_of_scope": 0,
-  "skipped_non_family": { "count": 0, "ids": [] },
-  "excludes": "Conduit and cable tray are not audited here: ...",
-  "api_notes": ["..."]
-}
-```
+- `summary`: `open_connectors`, `open_connectors_by_kind`, `cross_check { of, unused_connectors, plumbing_open_elements, mismatches }`, `issues`, `by_code`, `by_severity`, `systems { total, piping, duct, not_well_connected, not_well_connected_ids, no_base_equipment, no_base_equipment_ids, empty }`, `totals { fixture_units }`.
+- `issues[]`: `{ code, severity, domain, element_id?, connector_index?, system_id, system, level, message }`, errors first.
+- `sample_ids` (summary mode only): ids per code.
+- `systems[]` and `mep_systems[]`: one row per system:
+  `{ id, name, domain, classification, system_type, is_well_connected, base_equipment_id, base_equipment_name, element_count, levels, flow_lps, static_pressure_pa, critical_path_pressure_loss_pa, critical_path_sections, critical_path[], fixture_units, calc_valid }`.
+  Each `critical_path[]` entry is `{ number, flow_lps, length_m, pressure_loss_pa, velocity_ms, fixture_units, element_count }`.
+- `scanned`, `source_truncated`, `dropped_out_of_scope`, `skipped_non_family`, `excludes`, `api_notes`.
 
-Units: flow is in L/s, pressures are in Pa, and fixture units have no unit. Fixture units are `null` on duct systems. `summary.totals.fixture_units` adds up only well-connected piping systems.
-
-### Feeding other tools
-
-- **`fmc_calc`**: `facts.mep` uses `MepFacts` field names (`model`, `pipe_systems[{id, name, classification}]`, `counts`). Merge it into the `mep` section of a `facts_file` (`{ mep, boards }`) next to the rooms and fixtures from `fmc_mep_facts`.
-- **`fmc_mep_size`** (Builder 8): read `facts.mep_systems`. Use a value only when `calc_valid` is `true`. Field names and units are stable within `fmc_mep_audit/1`. A breaking change gets a new schema version.
+Units: flow is in L/s, pressure in Pa, length in m, velocity in m/s and sizes in mm. Fixture units have no unit and are `null` on duct systems. Only rows with `calc_valid: true` (well connected) carry trustworthy values.
 
 ## API limits (Revit 2025)
 
-- `CriticalPathCollector` (`Autodesk.Revit.DB.Analysis`) needs an `MEPNetworkSegmentId` from the systems-analysis model, so it is not used. The critical path is `MEPSystem.PressureLossOfCriticalPath` plus `GetCriticalPathSectionNumbers()` (section numbers in flow order, up to 100). Per-section pressure drop is not read.
-- `GetFlow`, `GetStaticPressure` and `GetFixtureUnits` run Revit's own system calculation synchronously when called from an add-in. On a big model, `analysis: false` avoids that cost.
-- `PlumbingUtils.HasOpenConnector` covers only pipe curves, pipe fittings and pipe accessories. For ducts and equipment, `UnusedConnectors` is the only check.
-- Equipment often has optional connectors (for example a spare drain). Those are reported as `MEP-OPEN-EQUIPMENT` warnings, not errors.
-- Electrical and conduit/cable-tray connectors (`Domain.DomainElectrical`, `Domain.DomainCableTrayConduit`) are skipped on purpose.
-
-## Examples
-
-Piping only, level L01, full detail:
-
-```json
-{ "document": "P-0001_USER", "domain": "piping", "levels": ["L01"], "mode": "detail", "max_results": 500 }
-```
-
-One system, without calculations:
-
-```json
-{ "document": "M-0001_USER", "systems": ["SA 1"], "analysis": false }
-```
+- `CriticalPathCollector` (`Autodesk.Revit.DB.Analysis`) needs an `MEPNetworkSegmentId` from the systems-analysis model, so it is not used.
+- `GetFlow`, `GetStaticPressure`, `GetFixtureUnits` and the `MEPSection` values run Revit's system calculation synchronously when read from an add-in. Use `analysis: false` on big models.
+- `PlumbingUtils.HasOpenConnector` covers only pipe curves, pipe fittings and pipe accessories. For ducts and equipment there is no second API to cross-check against.
+- A section's size comes from its first pipe (inner diameter) or duct (diameter, or width and height). Flex curves and sections without a straight curve have no size.
+- Electrical and conduit/cable-tray connectors are skipped on purpose.

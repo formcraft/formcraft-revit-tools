@@ -12,9 +12,10 @@ namespace RevitMCPCommandSet.Services.Fmc
     /// <summary>
     /// fmc_mep_audit (Builder 19): read-only MEP connectivity and system audit. Opens no transaction and changes nothing.
     /// Open End connectors on pipe, duct, flex, fittings and accessories (ConnectorManager.UnusedConnectors, cross-checked
-    /// with PlumbingUtils.HasOpenConnector on piping) and on mechanical equipment, plumbing fixtures, sprinklers and air
-    /// terminals; one row per piping and mechanical system with IsWellConnected, BaseEquipment, flow, static pressure,
-    /// critical-path pressure loss and fixture units. Conduit and cable tray are left to fmc_conduit and fmc_trace.
+    /// both ways with PlumbingUtils.HasOpenConnector on piping) and on mechanical equipment, plumbing fixtures, sprinklers
+    /// and air terminals, as a cross-check of fmc_trace's open_end; one row per piping and mechanical system with
+    /// IsWellConnected, BaseEquipment, flow, static pressure, critical-path pressure loss with its MEPSection rows, and
+    /// fixture units. Conduit and cable tray are left to fmc_conduit and fmc_trace.
     /// The server (server/src/fmc/mepaudit.ts) classifies issues, summarises and caps.
     /// </summary>
     public class FmcMepAuditHandler : IExternalEventHandler, IWaitableExternalEventHandler
@@ -24,6 +25,7 @@ namespace RevitMCPCommandSet.Services.Fmc
         private const int SystemCap = 5000;
         private const int SectionCap = 100;
         private const int LevelCap = 20;
+        private const int SectionElementCap = 50;
         private readonly ManualResetEvent _done = new ManualResetEvent(false);
         public JObject Parameters { get; set; } = new JObject();
         public JObject Result { get; private set; } = new JObject();
@@ -78,6 +80,8 @@ namespace RevitMCPCommandSet.Services.Fmc
                     int elements = 0, connectorsSeen = 0;
                     bool connectorsTruncated = false;
                     var plumbingOpenCache = new Dictionary<long, bool?>();
+                    var withUnusedPipingEnd = new HashSet<long>();
+                    var plumbingOnly = new JArray();
                     foreach (Element element in new FilteredElementCollector(doc).WherePasses(new ElementMulticategoryFilter(categories)).WhereElementIsNotElementType())
                     {
                         if (element is not MEPCurve && element is not FamilyInstance)
@@ -92,6 +96,14 @@ namespace RevitMCPCommandSet.Services.Fmc
                         elements++;
                         string kind = Kind(element);
                         string level = null;
+                        bool pipingNetwork = piping && IsPipingNetwork(element) && (kind == "curve" || kind == "fitting" || kind == "accessory");
+                        if (pipingNetwork)
+                        {
+                            long key = element.Id.Value;
+                            bool? open0 = null;
+                            try { open0 = PlumbingUtils.HasOpenConnector(doc, element.Id); } catch (Exception) { open0 = null; }
+                            plumbingOpenCache[key] = open0;
+                        }
                         ConnectorSet unused;
                         try { unused = manager.UnusedConnectors; }
                         catch (Exception) { skipped.Add(element); continue; }
@@ -108,6 +120,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                                 bool connected = false;
                                 try { connected = connector.IsConnected; } catch (Exception) { connected = false; }
                                 if (connected) continue;
+                                if (connectorDomain == "piping") withUnusedPipingEnd.Add(element.Id.Value);
 
                                 MEPSystem system = null;
                                 try { system = connector.MEPSystem; } catch (Exception) { system = null; }
@@ -120,13 +133,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                                 bool? plumbingOpen = null;
                                 if (connectorDomain == "piping" && (kind == "curve" || kind == "fitting" || kind == "accessory"))
                                 {
-                                    long key = element.Id.Value;
-                                    if (!plumbingOpenCache.TryGetValue(key, out plumbingOpen))
-                                    {
-                                        try { plumbingOpen = PlumbingUtils.HasOpenConnector(doc, element.Id); }
-                                        catch (Exception) { plumbingOpen = null; }
-                                        plumbingOpenCache[key] = plumbingOpen;
-                                    }
+                                    plumbingOpenCache.TryGetValue(element.Id.Value, out plumbingOpen);
                                 }
 
                                 ElementId typeId = element.GetTypeId();
@@ -152,6 +159,25 @@ namespace RevitMCPCommandSet.Services.Fmc
                             catch (Exception) { skipped.Add(element); }
                         }
                         if (connectorsTruncated) break;
+                        if (pipingNetwork && plumbingOpenCache.TryGetValue(element.Id.Value, out bool? hasOpen) && hasOpen == true
+                            && !withUnusedPipingEnd.Contains(element.Id.Value) && plumbingOnly.Count < ConnectorCap)
+                        {
+                            level ??= LevelName(doc, element);
+                            if (levelFilter.Count == 0 || levelFilter.Contains(level.ToLowerInvariant()))
+                            {
+                                MEPSystem pipeSystem = null;
+                                try { pipeSystem = (element as MEPCurve)?.MEPSystem; } catch (Exception) { pipeSystem = null; }
+                                if (systemFilter.Count == 0 || Matches(systemFilter, pipeSystem?.Id.Value, pipeSystem?.Name))
+                                    plumbingOnly.Add(new JObject
+                                    {
+                                        ["element_id"] = element.Id.Value,
+                                        ["kind"] = kind,
+                                        ["level"] = level,
+                                        ["type_name"] = (doc.GetElement(element.GetTypeId()) as ElementType)?.Name ?? "",
+                                        ["system_name"] = pipeSystem?.Name ?? "",
+                                    });
+                            }
+                        }
                     }
 
                     // ---- systems ----
@@ -179,13 +205,14 @@ namespace RevitMCPCommandSet.Services.Fmc
                         catch (Exception ex) { notes.Add("System " + system.Id.Value + " not read: " + ex.Message); }
                     }
 
-                    notes.Add("CriticalPathCollector (Autodesk.Revit.DB.Analysis) needs an MEPNetworkSegmentId from the systems-analysis model and is not used; the critical path is MEPSystem.PressureLossOfCriticalPath and GetCriticalPathSectionNumbers.");
+                    notes.Add("CriticalPathCollector (Autodesk.Revit.DB.Analysis) needs an MEPNetworkSegmentId from the systems-analysis model and is not used; the critical path is MEPSystem.PressureLossOfCriticalPath, GetCriticalPathSectionNumbers and MEPSystem.GetSectionByNumber (MEPSection TotalPressureLoss, Flow, TotalCurveLength).");
                     notes.Add("Flow, static pressure and fixture units come from Revit's own system calculation (GetFlow, GetStaticPressure, GetFixtureUnits); they are only valid when the system is well connected.");
 
                     Result["model"] = doc.Title;
                     Result["resolved_document"] = FmcTarget.Resolved(doc);
                     Result["read_only"] = true;
                     Result["open_connectors"] = open;
+                    Result["plumbing_only_open"] = plumbingOnly;
                     Result["systems"] = systems;
                     Result["scanned"] = new JObject { ["elements"] = elements, ["connectors"] = connectorsSeen, ["systems"] = systemsSeen };
                     Result["truncated"] = new JObject { ["connectors"] = connectorsTruncated, ["systems"] = systemsTruncated };
@@ -235,6 +262,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             var notes = new JArray();
             double? flow = null, staticPressure = null, criticalLoss = null, fixtureUnits = null;
             var sections = new JArray();
+            var criticalPath = new JArray();
             if (!analysis) notes.Add("analysis off");
             else if (wellConnected != true) notes.Add("not well connected: calculated values not read");
             else
@@ -256,7 +284,13 @@ namespace RevitMCPCommandSet.Services.Fmc
                 try
                 {
                     IList<int> numbers = system.GetCriticalPathSectionNumbers();
-                    if (numbers != null) foreach (int n in numbers.Take(SectionCap)) sections.Add(n);
+                    if (numbers != null)
+                        foreach (int n in numbers.Take(SectionCap))
+                        {
+                            sections.Add(n);
+                            try { criticalPath.Add(SectionRow(doc, system, n)); }
+                            catch (Exception ex) { notes.Add("section " + n + ": " + ex.Message); }
+                        }
                 }
                 catch (Exception ex) { notes.Add("critical path sections: " + ex.Message); }
                 if (pipingSystem != null)
@@ -284,9 +318,82 @@ namespace RevitMCPCommandSet.Services.Fmc
                 ["static_pressure_pa"] = Num(staticPressure, 2),
                 ["critical_path_pressure_loss_pa"] = Num(criticalLoss, 2),
                 ["critical_path_sections"] = sections,
+                ["critical_path"] = criticalPath,
                 ["fixture_units"] = Num(fixtureUnits, 2),
                 ["calc_notes"] = notes,
             };
+        }
+
+        /// <summary>One MEPSection on the critical path, in SI units, with the size of its first pipe or duct.</summary>
+        private static JObject SectionRow(Document doc, MEPSystem system, int number)
+        {
+            MEPSection section = system.GetSectionByNumber(number);
+            var row = new JObject { ["number"] = number };
+            if (section == null) return row;
+            double? flow = null, length = null, loss = null, velocity = null, roughness = null, coefficient = null, units = null;
+            try { flow = UnitUtils.ConvertFromInternalUnits(section.Flow, UnitTypeId.LitersPerSecond); } catch (Exception) { }
+            try { length = UnitUtils.ConvertFromInternalUnits(section.TotalCurveLength, UnitTypeId.Meters); } catch (Exception) { }
+            try { loss = UnitUtils.ConvertFromInternalUnits(section.TotalPressureLoss, UnitTypeId.Pascals); } catch (Exception) { }
+            try { velocity = UnitUtils.ConvertFromInternalUnits(section.Velocity, UnitTypeId.MetersPerSecond); } catch (Exception) { }
+            try { roughness = UnitUtils.ConvertFromInternalUnits(section.Roughness, UnitTypeId.Millimeters); } catch (Exception) { }
+            try { coefficient = section.TotalCoefficient; } catch (Exception) { }
+            try { units = section.FixtureUnit; } catch (Exception) { }
+            row["flow_lps"] = Num(flow, 4);
+            row["length_m"] = Num(length, 3);
+            row["pressure_loss_pa"] = Num(loss, 2);
+            row["velocity_ms"] = Num(velocity, 3);
+            row["roughness_mm"] = Num(roughness, 4);
+            row["total_coefficient"] = Num(coefficient, 3);
+            row["fixture_units"] = Num(units, 2);
+            var ids = new JArray();
+            int count = 0;
+            try
+            {
+                foreach (ElementId id in section.GetElementIds())
+                {
+                    count++;
+                    if (ids.Count < SectionElementCap) ids.Add(id.Value);
+                    if (row["shape"] == null && doc.GetElement(id) is MEPCurve curve) AddCurveSize(row, curve);
+                }
+            }
+            catch (Exception) { /* membership unreadable */ }
+            row["element_count"] = count;
+            row["element_ids"] = ids;
+            return row;
+        }
+
+        private static void AddCurveSize(JObject row, MEPCurve curve)
+        {
+            try
+            {
+                double? Mm(BuiltInParameter p)
+                {
+                    Parameter value = curve.get_Parameter(p);
+                    if (value == null || !value.HasValue) return null;
+                    return Math.Round(UnitUtils.ConvertFromInternalUnits(value.AsDouble(), UnitTypeId.Millimeters), 1);
+                }
+                if (curve is Pipe)
+                {
+                    double? inner = Mm(BuiltInParameter.RBS_PIPE_INNER_DIAM_PARAM) ?? Mm(BuiltInParameter.RBS_PIPE_DIAMETER_PARAM);
+                    if (inner.HasValue) { row["shape"] = "round"; row["size_mm"] = inner.Value; }
+                    return;
+                }
+                if (curve is Duct)
+                {
+                    double? diameter = Mm(BuiltInParameter.RBS_CURVE_DIAMETER_PARAM);
+                    if (diameter.HasValue && diameter.Value > 0) { row["shape"] = "round"; row["size_mm"] = diameter.Value; return; }
+                    double? w = Mm(BuiltInParameter.RBS_CURVE_WIDTH_PARAM), h = Mm(BuiltInParameter.RBS_CURVE_HEIGHT_PARAM);
+                    if (w.HasValue && h.HasValue) { row["shape"] = "rect"; row["w_mm"] = w.Value; row["h_mm"] = h.Value; }
+                }
+            }
+            catch (Exception) { /* size unreadable: fmc_mep_size asks the engineer */ }
+        }
+
+        private static bool IsPipingNetwork(Element element)
+        {
+            long category = element.Category?.Id.Value ?? 0;
+            return category == (long)BuiltInCategory.OST_PipeCurves || category == (long)BuiltInCategory.OST_FlexPipeCurves
+                || category == (long)BuiltInCategory.OST_PipeFitting || category == (long)BuiltInCategory.OST_PipeAccessory;
         }
 
         private static JToken Num(double? value, int digits)

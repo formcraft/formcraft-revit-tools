@@ -1,13 +1,18 @@
 /**
  * fmc_mep_audit: offline logic. Read-only MEP connectivity and system audit (Builder 19).
  *
- * The add-in command (fmc_mep_audit, FmcMepAuditWork.cs) returns a raw snapshot: open connectors on pipe, duct,
- * their fittings and accessories, and on MEP equipment, fixtures and terminals; and one row per piping or mechanical
- * system with IsWellConnected, BaseEquipment, flow, static pressure, critical-path pressure loss and fixture units.
- * This module filters, classifies into issue codes, summarises, caps and shapes the reply. No Revit call, no writes.
+ * The add-in command (fmc_mep_audit, FmcMepAuditWork.cs) returns a raw snapshot. This module filters, classifies into
+ * issue codes, summarises, caps and shapes the reply. No Revit call, no writes.
  *
- * Conduit and cable tray are NOT audited here: fmc_conduit scan and fmc_trace (domain conduit, tray or
- * electrical_containment) already report their open ends. Any conduit/tray row the add-in sends is dropped.
+ * Scope (agreed with Builder 8, 28 Nov): fmc_trace already emits FLOW-OPEN-END, NOT-CONNECTED, NEAR-MISS, SIZE-MISMATCH,
+ * NO-SYSTEM, NO-SOURCE, ISLAND and the NO-FITTING/CAP/TRAP/VENT/WASTE/CLEANOUT/ISOLATION codes. fmc_mep_audit adds only:
+ *  - ConnectorManager.UnusedConnectors and PlumbingUtils.HasOpenConnector on piping and HVAC, as a CROSS-CHECK of
+ *    fmc_trace's open_end (MEP-OPEN-* rows are info; a disagreement between the two APIs is MEP-XCHK-MISMATCH);
+ *  - IsWellConnected per mechanical and piping system;
+ *  - systems with no BaseEquipment, as a count plus ids;
+ *  - PressureLossOfCriticalPath with the critical-path sections (MEPSection TotalPressureLoss, flow, length) and static pressure;
+ *  - fixture units per system.
+ * Conduit and cable tray are NOT audited here (fmc_conduit and fmc_trace). Any conduit/tray row the add-in sends is dropped.
  */
 
 export const MEP_AUDIT_SCHEMA = "fmc_mep_audit/1";
@@ -33,8 +38,35 @@ export interface OpenConnectorRow {
   width_mm?: number | null;
   height_mm?: number | null;
   origin_mm?: number[];
-  /** PlumbingUtils.HasOpenConnector on pipe curves, fittings and accessories; null when not asked or not piping. */
+  /** PlumbingUtils.HasOpenConnector on pipe curves, fittings and accessories; null when not piping or not readable. */
   plumbing_open?: boolean | null;
+}
+
+/** A piping network element where HasOpenConnector is true but UnusedConnectors found no open End connector. */
+export interface PlumbingOnlyOpenRow {
+  element_id: number;
+  kind: string;
+  level?: string;
+  type_name?: string;
+  system_name?: string;
+}
+
+/** One critical-path section (MEPSection), in flow order. Flow L/s, length m, loss Pa, velocity m/s, sizes mm. */
+export interface SectionRow {
+  number: number;
+  flow_lps: number | null;
+  length_m: number | null;
+  pressure_loss_pa: number | null;
+  velocity_ms?: number | null;
+  roughness_mm?: number | null;
+  total_coefficient?: number | null;
+  fixture_units?: number | null;
+  shape?: "round" | "rect" | null;
+  size_mm?: number | null;
+  w_mm?: number | null;
+  h_mm?: number | null;
+  element_count?: number | null;
+  element_ids?: number[];
 }
 
 /** One piping or mechanical system. Flow L/s, pressures Pa, fixture units unitless. null = not available. */
@@ -43,7 +75,7 @@ export interface SystemRow {
   name: string;
   domain: string; // piping | duct
   classification: string; // PipeSystemType / DuctSystemType name, e.g. DomesticColdWater, SupplyAir
-  system_type?: string; // the system type element name
+  system_type?: string;
   is_well_connected: boolean | null;
   is_valid?: boolean | null;
   is_empty?: boolean | null;
@@ -55,8 +87,8 @@ export interface SystemRow {
   static_pressure_pa?: number | null;
   critical_path_pressure_loss_pa?: number | null;
   critical_path_sections?: number[];
+  critical_path?: SectionRow[];
   fixture_units?: number | null;
-  /** Why a calculated value is missing (API threw, not well connected, analysis off). */
   calc_notes?: string[];
 }
 
@@ -65,6 +97,7 @@ export interface MepAuditSnapshot {
   resolved_document?: { title?: string; path?: string };
   read_only?: boolean;
   open_connectors?: OpenConnectorRow[];
+  plumbing_only_open?: PlumbingOnlyOpenRow[];
   systems?: SystemRow[];
   scanned?: { elements?: number; connectors?: number; systems?: number };
   truncated?: { connectors?: boolean; systems?: boolean };
@@ -74,8 +107,8 @@ export interface MepAuditSnapshot {
 
 export interface MepAuditFilters {
   domain: DomainFilter;
-  systems: string[]; // names (case-insensitive) or ids
-  levels: string[]; // level names (case-insensitive)
+  systems: string[];
+  levels: string[];
   include_equipment: boolean;
 }
 
@@ -91,7 +124,7 @@ export interface MepIssue {
   message: string;
 }
 
-/** Issue codes. Stable: other tools (fmc_mep_size, fmc_calc) and tests key on these. */
+/** Issue codes. Stable: other tools and tests key on these. None reuses an fmc_trace code or its wording. */
 export const MEP_CODES = {
   OPEN_CURVE_END: "MEP-OPEN-CURVE-END",
   OPEN_FITTING: "MEP-OPEN-FITTING",
@@ -99,7 +132,7 @@ export const MEP_CODES = {
   OPEN_EQUIPMENT: "MEP-OPEN-EQUIPMENT",
   OPEN_FIXTURE: "MEP-OPEN-FIXTURE",
   OPEN_TERMINAL: "MEP-OPEN-TERMINAL",
-  CONNECTOR_NO_SYSTEM: "MEP-CONN-NO-SYSTEM",
+  XCHK_MISMATCH: "MEP-XCHK-MISMATCH",
   SYS_NOT_WELL_CONNECTED: "MEP-SYS-NOT-WELL-CONNECTED",
   SYS_NO_BASE_EQUIPMENT: "MEP-SYS-NO-BASE-EQUIPMENT",
   SYS_EMPTY: "MEP-SYS-EMPTY",
@@ -107,14 +140,15 @@ export const MEP_CODES = {
   SYS_CALC_UNAVAILABLE: "MEP-SYS-CALC-UNAVAILABLE",
 } as const;
 
+/** MEP-OPEN-* are info: they cross-check fmc_trace's FLOW-OPEN-END, which stays the finding of record. */
 export const MEP_CODE_SEVERITY: Record<string, Severity> = {
-  [MEP_CODES.OPEN_CURVE_END]: "error",
-  [MEP_CODES.OPEN_FITTING]: "error",
-  [MEP_CODES.OPEN_ACCESSORY]: "error",
-  [MEP_CODES.OPEN_EQUIPMENT]: "warning",
-  [MEP_CODES.OPEN_FIXTURE]: "warning",
-  [MEP_CODES.OPEN_TERMINAL]: "warning",
-  [MEP_CODES.CONNECTOR_NO_SYSTEM]: "info",
+  [MEP_CODES.OPEN_CURVE_END]: "info",
+  [MEP_CODES.OPEN_FITTING]: "info",
+  [MEP_CODES.OPEN_ACCESSORY]: "info",
+  [MEP_CODES.OPEN_EQUIPMENT]: "info",
+  [MEP_CODES.OPEN_FIXTURE]: "info",
+  [MEP_CODES.OPEN_TERMINAL]: "info",
+  [MEP_CODES.XCHK_MISMATCH]: "warning",
   [MEP_CODES.SYS_NOT_WELL_CONNECTED]: "error",
   [MEP_CODES.SYS_NO_BASE_EQUIPMENT]: "warning",
   [MEP_CODES.SYS_EMPTY]: "info",
@@ -122,10 +156,9 @@ export const MEP_CODE_SEVERITY: Record<string, Severity> = {
   [MEP_CODES.SYS_CALC_UNAVAILABLE]: "info",
 };
 
-/**
- * Gravity, vent and fire systems usually have no BaseEquipment in Revit (they end at a drain, a stack or a riser).
- * For these a missing base is info, not a warning.
- */
+export const CROSS_CHECK_OF = "fmc_trace open_end (FLOW-OPEN-END)";
+
+/** Gravity, vent and fire systems usually have no BaseEquipment in Revit; there a missing base is info, not a warning. */
 const NO_BASE_EXPECTED = new Set(["sanitary", "vent", "fireprotectwet", "fireprotectdry", "fireprotectpreaction", "fireprotectother", "otherpipe"]);
 
 export const EXCLUDED_DOMAINS_NOTE =
@@ -137,7 +170,7 @@ export function normDomain(d: unknown): MepDomain | null {
   const v = norm(d);
   if (v === "piping" || v === "pipe" || v === "plumbing") return "piping";
   if (v === "duct" || v === "hvac" || v === "mechanical") return "duct";
-  return null; // conduit, tray, cabletrayconduit, electrical: out of scope
+  return null;
 }
 
 function domainOk(d: MepDomain, filter: DomainFilter) {
@@ -172,7 +205,6 @@ export function openConnectorCode(kind: string): string {
 
 const isEquipmentKind = (kind: string) => ["equipment", "fixture", "terminal"].includes(norm(kind));
 
-/** Connector rows kept after the domain, system, level and equipment filters. Conduit and tray are always dropped. */
 export function filterConnectors(rows: OpenConnectorRow[], filters: MepAuditFilters): Array<OpenConnectorRow & { domain: MepDomain }> {
   const out: Array<OpenConnectorRow & { domain: MepDomain }> = [];
   for (const row of rows ?? []) {
@@ -184,6 +216,11 @@ export function filterConnectors(rows: OpenConnectorRow[], filters: MepAuditFilt
     out.push({ ...row, domain: d });
   }
   return out;
+}
+
+export function filterPlumbingOnly(rows: PlumbingOnlyOpenRow[], filters: MepAuditFilters): PlumbingOnlyOpenRow[] {
+  if (!domainOk("piping", filters.domain)) return [];
+  return (rows ?? []).filter((r) => systemMatches(filters, null, r.system_name) && levelMatches(filters, r.level ? [r.level] : []));
 }
 
 export function filterSystems(rows: SystemRow[], filters: MepAuditFilters): Array<SystemRow & { domain: MepDomain }> {
@@ -198,21 +235,39 @@ export function filterSystems(rows: SystemRow[], filters: MepAuditFilters): Arra
   return out;
 }
 
-function connectorIssues(row: OpenConnectorRow & { domain: MepDomain }): MepIssue[] {
+function connectorIssue(row: OpenConnectorRow & { domain: MepDomain }): MepIssue {
   const code = openConnectorCode(String(row.kind));
   const what = norm(row.kind) === "curve" ? "end" : `${norm(row.kind) || "element"} connector`;
-  const issues: MepIssue[] = [{
+  return {
     code, severity: MEP_CODE_SEVERITY[code], domain: row.domain, element_id: row.element_id, connector_index: row.connector_index,
     system_id: row.system_id ?? null, system: row.system_name ?? "", level: row.level ?? "",
-    message: `Open ${row.domain} ${what} ${row.connector_index} on ${row.element_id}${row.type_name ? ` (${row.type_name})` : ""}.`,
-  }];
-  if (row.system_id == null && !row.system_name) {
-    issues.push({
-      code: MEP_CODES.CONNECTOR_NO_SYSTEM, severity: "info", domain: row.domain, element_id: row.element_id, connector_index: row.connector_index,
-      system_id: null, system: "", level: row.level ?? "", message: `Connector ${row.connector_index} on ${row.element_id} is in no ${row.domain} system.`,
+    message: `UnusedConnectors: ${row.domain} ${what} ${row.connector_index} on ${row.element_id} is open${row.type_name ? ` (${row.type_name})` : ""}. Cross-check of ${CROSS_CHECK_OF}.`,
+  };
+}
+
+/** Where UnusedConnectors and PlumbingUtils.HasOpenConnector disagree on a piping element. One issue per element. */
+export function crossCheckIssues(connectors: Array<OpenConnectorRow & { domain: MepDomain }>, plumbingOnly: PlumbingOnlyOpenRow[]): MepIssue[] {
+  const out: MepIssue[] = [];
+  const seen = new Set<number>();
+  for (const c of connectors) {
+    if (c.domain !== "piping" || c.plumbing_open !== false || seen.has(c.element_id)) continue;
+    seen.add(c.element_id);
+    out.push({
+      code: MEP_CODES.XCHK_MISMATCH, severity: "warning", domain: "piping", element_id: c.element_id, system_id: c.system_id ?? null,
+      system: c.system_name ?? "", level: c.level ?? "",
+      message: `UnusedConnectors reports an open end on ${c.element_id}, but PlumbingUtils.HasOpenConnector says it has none.`,
     });
   }
-  return issues;
+  for (const p of plumbingOnly) {
+    if (seen.has(p.element_id)) continue;
+    seen.add(p.element_id);
+    out.push({
+      code: MEP_CODES.XCHK_MISMATCH, severity: "warning", domain: "piping", element_id: p.element_id, system_id: null,
+      system: p.system_name ?? "", level: p.level ?? "",
+      message: `PlumbingUtils.HasOpenConnector reports an open piping connector on ${p.element_id}, but UnusedConnectors found no open End connector.`,
+    });
+  }
+  return out;
 }
 
 export function systemIssues(row: SystemRow & { domain: MepDomain }): MepIssue[] {
@@ -220,21 +275,19 @@ export function systemIssues(row: SystemRow & { domain: MepDomain }): MepIssue[]
   const out: MepIssue[] = [];
   if (row.is_empty === true) {
     out.push({ ...base, code: MEP_CODES.SYS_EMPTY, severity: "info", message: `System ${row.name} has no components.` });
-    return out; // nothing else is meaningful on an empty system
+    return out;
   }
   if (row.is_well_connected === false) {
-    out.push({ ...base, code: MEP_CODES.SYS_NOT_WELL_CONNECTED, severity: "error", message: `System ${row.name} is not well connected; its calculated values are invalid.` });
+    out.push({ ...base, code: MEP_CODES.SYS_NOT_WELL_CONNECTED, severity: "error", message: `System ${row.name} is not well connected (IsWellConnected false); its calculated values are invalid.` });
   }
   if (row.is_valid === false) {
-    out.push({ ...base, code: MEP_CODES.SYS_INVALID, severity: "warning", message: `Revit marks system ${row.name} as invalid.` });
+    out.push({ ...base, code: MEP_CODES.SYS_INVALID, severity: "warning", message: `Revit marks system ${row.name} as invalid (IsValid false).` });
   }
   if (row.base_equipment_id == null) {
     const expected = NO_BASE_EXPECTED.has(norm(row.classification));
     out.push({
       ...base, code: MEP_CODES.SYS_NO_BASE_EQUIPMENT, severity: expected ? "info" : "warning",
-      message: expected
-        ? `System ${row.name} (${row.classification}) has no base equipment, which is usual for this classification.`
-        : `System ${row.name} (${row.classification}) has no base equipment.`,
+      message: `System ${row.name} (${row.classification}) has no BaseEquipment set${expected ? "; usual for this classification" : ""}.`,
     });
   }
   const calcMissing = row.flow_lps == null || row.static_pressure_pa == null || row.critical_path_pressure_loss_pa == null
@@ -259,9 +312,21 @@ function countBy<T>(items: T[], key: (t: T) => string) {
   return out;
 }
 
-const round = (v: number | null | undefined, dp = 3) => (v == null || !Number.isFinite(v) ? null : Math.round(v * 10 ** dp) / 10 ** dp);
+export const round = (v: number | null | undefined, dp = 3) => (v == null || !Number.isFinite(v) ? null : Math.round(v * 10 ** dp) / 10 ** dp);
 
-/** The per-system block fmc_mep_size and fmc_calc read. One row per system, stable field names and units. */
+function sectionFact(s: SectionRow) {
+  return {
+    number: s.number,
+    flow_lps: round(s.flow_lps),
+    length_m: round(s.length_m),
+    pressure_loss_pa: round(s.pressure_loss_pa, 1),
+    velocity_ms: round(s.velocity_ms),
+    fixture_units: round(s.fixture_units, 2),
+    element_count: s.element_count ?? null,
+  };
+}
+
+/** The per-system row. One row per system, stable field names and units. */
 export function systemFact(row: SystemRow & { domain: MepDomain }) {
   return {
     id: row.id,
@@ -278,6 +343,7 @@ export function systemFact(row: SystemRow & { domain: MepDomain }) {
     static_pressure_pa: round(row.static_pressure_pa, 1),
     critical_path_pressure_loss_pa: round(row.critical_path_pressure_loss_pa, 1),
     critical_path_sections: row.critical_path_sections ?? [],
+    critical_path: (row.critical_path ?? []).map(sectionFact),
     fixture_units: row.domain === "piping" ? round(row.fixture_units, 2) : null,
     /** Values are only trusted when the system is well connected. */
     calc_valid: row.is_well_connected === true,
@@ -293,17 +359,25 @@ export interface MepAuditOptions extends MepAuditFilters {
 export function shapeMepAudit(snapshot: MepAuditSnapshot, opts: MepAuditOptions) {
   const filters: MepAuditFilters = { domain: opts.domain, systems: opts.systems, levels: opts.levels, include_equipment: opts.include_equipment };
   const connectors = filterConnectors(snapshot.open_connectors ?? [], filters);
+  const plumbingOnly = filterPlumbingOnly(snapshot.plumbing_only_open ?? [], filters);
   const systems = filterSystems(snapshot.systems ?? [], filters);
   const dropped = (snapshot.open_connectors ?? []).filter((r) => !normDomain(r.domain)).length;
 
-  const issues = sortIssues([...connectors.flatMap(connectorIssues), ...systems.flatMap(systemIssues)]);
+  const issues = sortIssues([...connectors.map(connectorIssue), ...crossCheckIssues(connectors, plumbingOnly), ...systems.flatMap(systemIssues)]);
   const cap = Math.max(1, Math.min(5000, Math.floor(opts.max_results || 200)));
   const facts = systems.map(systemFact);
+  const noBase = systems.filter((s) => s.base_equipment_id == null && s.is_empty !== true).map((s) => s.id);
 
   const bySeverity = countBy(issues, (i) => i.severity);
   const summary = {
     open_connectors: connectors.length,
     open_connectors_by_kind: countBy(connectors, (c) => norm(c.kind) || "unknown"),
+    cross_check: {
+      of: CROSS_CHECK_OF,
+      unused_connectors: connectors.length,
+      plumbing_open_elements: new Set(connectors.filter((c) => c.plumbing_open === true).map((c) => c.element_id)).size + plumbingOnly.length,
+      mismatches: issues.filter((i) => i.code === MEP_CODES.XCHK_MISMATCH).length,
+    },
     issues: issues.length,
     by_code: countBy(issues, (i) => i.code),
     by_severity: { error: bySeverity.error ?? 0, warning: bySeverity.warning ?? 0, info: bySeverity.info ?? 0 },
@@ -312,7 +386,9 @@ export function shapeMepAudit(snapshot: MepAuditSnapshot, opts: MepAuditOptions)
       piping: systems.filter((s) => s.domain === "piping").length,
       duct: systems.filter((s) => s.domain === "duct").length,
       not_well_connected: systems.filter((s) => s.is_well_connected === false).length,
-      no_base_equipment: systems.filter((s) => s.base_equipment_id == null && s.is_empty !== true).length,
+      not_well_connected_ids: systems.filter((s) => s.is_well_connected === false).map((s) => s.id).slice(0, cap),
+      no_base_equipment: noBase.length,
+      no_base_equipment_ids: noBase.slice(0, cap),
       empty: systems.filter((s) => s.is_empty === true).length,
     },
     totals: {
@@ -320,7 +396,6 @@ export function shapeMepAudit(snapshot: MepAuditSnapshot, opts: MepAuditOptions)
     },
   };
 
-  // summary: counts, a capped sample of ids per code, and only systems that have an issue; detail: every issue and system, capped.
   const detail = opts.mode === "detail";
   const sampleIds: Record<string, number[]> = {};
   if (!detail) {
@@ -348,15 +423,8 @@ export function shapeMepAudit(snapshot: MepAuditSnapshot, opts: MepAuditOptions)
     sample_ids: detail ? undefined : sampleIds,
     systems: systemRows.slice(0, cap),
     systems_truncated: systemRows.length > cap,
-    /** Feeds fmc_calc (merge facts.mep into a facts_file's mep section) and fmc_mep_size (facts.mep_systems). */
-    facts: {
-      mep: {
-        model: snapshot.model ?? snapshot.resolved_document?.title ?? "",
-        pipe_systems: facts.filter((s) => s.domain === "piping").map((s) => ({ id: s.id, name: s.name, classification: s.classification })),
-        counts: { pipe_systems: summary.systems.piping, duct_systems: summary.systems.duct, open_connectors: connectors.length },
-      },
-      mep_systems: facts.slice(0, cap),
-    },
+    /** Every filtered system, capped: the stable per-system block other tools read. */
+    mep_systems: facts.slice(0, cap),
     scanned: snapshot.scanned ?? {},
     source_truncated: { connectors: !!snapshot.truncated?.connectors, systems: !!snapshot.truncated?.systems },
     dropped_out_of_scope: dropped,

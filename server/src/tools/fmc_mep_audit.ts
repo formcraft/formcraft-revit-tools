@@ -9,17 +9,15 @@ function reply(body: object, isError = false) {
 
 export const FMC_MEP_AUDIT_DESCRIPTION =
   "Formcraft MEP connectivity and system audit (read-only: no transaction, no batch_lease, nothing is changed). " +
-  "Checks: open (unused) End connectors on pipes, ducts, flex pipe and duct, their fittings and accessories " +
-  "(ConnectorManager.UnusedConnectors, cross-checked with PlumbingUtils.HasOpenConnector on piping), and on mechanical " +
-  "equipment, plumbing fixtures, sprinklers and air terminals; IsWellConnected per piping and mechanical system; systems " +
-  "with no BaseEquipment (info for sanitary, vent and fire systems); empty or invalid systems; and per system flow (L/s), " +
-  "static pressure (Pa), critical-path pressure loss (Pa, MEPSystem.PressureLossOfCriticalPath with the section numbers) " +
-  "and fixture units (piping). Calculated values are only valid on a well-connected system (calc_valid). " +
-  "Filters: domain piping, duct or both; systems (names or ids); levels (names); include_equipment. mode summary " +
-  "(counts, error and warning issues, a sample of ids per code, systems with issues) or detail (every issue and system), " +
-  "both capped by max_results. Issue codes are MEP-OPEN-*, MEP-CONN-NO-SYSTEM and MEP-SYS-*. The facts block feeds " +
-  "fmc_calc (facts.mep merges into a facts_file mep section) and fmc_mep_size (facts.mep_systems). " +
-  EXCLUDED_DOMAINS_NOTE + " Pass document when more than one document is open.";
+  "It adds to fmc_trace, it does not repeat it: (1) a cross-check of fmc_trace's open_end on piping and HVAC: " +
+  "ConnectorManager.UnusedConnectors on pipes, ducts, flex, fittings, accessories, equipment, fixtures, sprinklers and " +
+  "terminals (MEP-OPEN-*, info) and PlumbingUtils.HasOpenConnector both ways on piping (MEP-XCHK-MISMATCH where they " +
+  "disagree); (2) IsWellConnected per piping and mechanical system; (3) systems with no BaseEquipment as a count plus ids; " +
+  "(4) per system static pressure (Pa), PressureLossOfCriticalPath (Pa) and the critical-path sections in flow order " +
+  "(MEPSection TotalPressureLoss, flow L/s, length m, velocity, size); (5) fixture units per piping system. Calculated values " +
+  "are only valid on a well-connected system (calc_valid). Filters: domain piping, duct or both; systems (names or ids); " +
+  "levels; include_equipment. mode summary (counts, error and warning issues, ids per code, systems with issues) or detail, " +
+  "capped by max_results. " + EXCLUDED_DOMAINS_NOTE + " Pass document when more than one document is open.";
 
 export const FMC_MEP_AUDIT_SHAPE = {
   document: z.string().optional().default("").describe("An open document's title or full path; required when more than one is open"),
