@@ -28,18 +28,21 @@ Video memory is for drawn views. It is not a substitute for system RAM. A full p
 
 ## Actions
 
-`dry_run` defaults to true for `gpu_prefer`, `free` and `offload`. `gpu_prefer` and `offload` also need `confirm:true` before they write, and `hw_host_writes` on for this PC (see Guard keys). A real `free` needs `confirm:true` and `document`, and goes through the batch lease, the live-model lock and the AI gate like any model change (`fmc_hw_free`). The bearer token is never printed.
+`dry_run` defaults to true for `gpu_prefer`, `free` and `offload`. A real `free`, `gpu_prefer` or `offload` needs `confirm:true` (`FMC-HW-CONFIRM` otherwise) and is refused while Stop AI is on. A real `free` needs `document`, this session's batch lease on it (`FMC-BATCH-LOCKED`), and goes through the live-model lock and the AI gate like any model change (`fmc_hw_free`). `gpu_prefer` and `offload` change a machine setting, not a model; with a Revit model open they still need `document` when two or more project documents are open (`FMC-DOC-REQUIRED`), the lease on it, and the live-model lock and AI gate on it (`fmc_hw_host`, a gate-only write that sends nothing to Revit).
 
-## Guard keys (`fmc_guard.json`)
+Each real `free`, `gpu_prefer` or `offload` also needs a person's approval in the pane (the approval queue): kind `hw_free` (the document, the close list of view ids and names, `keep`, `purge_undo`), `hw_gpu_prefer` (the exe and the registry value) or `hw_offload` (the `Revit.ini` path, its sha256, size and mtime, and the planned keys). The first real call queues the request and is refused with `FMC-HW-APPROVAL`; the person approves it; the next identical call runs. An approval is used once, only after the write succeeded, and expires after 30 minutes. A changed plan or a changed `Revit.ini` is a different request. Testing-mode auto-approve never approves these kinds, and `confirm:true` is not an approval. Dry runs create and use nothing.
 
-A person sets these for the PC. Both are off unless set to `true`.
+`offload` first copies `Revit.ini` to `Revit.ini.<yyyyMMdd-HHmmss>.bak` beside it (a bare `Revit.ini.bak` is never overwritten), then writes `Revit.ini.tmp` and renames it over the live file. A failed copy or replace is `FMC-HW-BACKUP` and leaves the live file as it was; a missing file or unset path is `FMC-HW`. The reply names the `.bak`. The bearer token is never printed.
+
+## Guard key (`fmc_guard.json`)
+
+A person sets this for the PC.
 
 | Key | Default | Effect |
 |---|---|---|
-| `hw_host_writes` | off | `gpu_prefer` (the Windows per-app GPU preference in the registry) and `offload` (the graphics keys in `Revit.ini`) change machine settings, not a model. Off, they are refused with `FMC-HW-PERSON` and nothing is written; a person can set the same values in Revit Options > Graphics or Windows Graphics settings. On, `offload` still keeps the old file as `Revit.ini.bak` before it writes. |
-| `hw_auto_free` | off | Lets the server run `free` by itself in the hard memory tier. Off, the hard tier never closes views on its own; a person runs `fmc_hw free`. |
+| `hw_auto_free` | on | `false` turns auto free off for this PC; then the hard tier never closes views on its own and a person runs `fmc_hw free`. |
 
-When `hw_auto_free` is on, the hard-tier free runs at most once a minute, only when Revit is idle and `ram_pause_free_mb` is above 0. It names each open document on its call, so two or more open documents do not stop it (P-fmc_hw-02). It closes only spare views (non-active, non-pinned, beyond 2 per document, never the last one) and adds no save. The result and the service log (`[FMC-HW-AUTOFREE]`) say how many documents were open and how many views were closed per document, and what was skipped.
+In the hard memory tier the server frees views by itself (auto free). It is a system action on the memory gate's internal hook, not an AI write: no lease, lock, AI gate, Stop AI, `confirm` or approval. It runs at most once a minute (the minute starts only after a successful free), only when Revit is idle and `ram_pause_free_mb` is above 0, never in the soft tier. `fmc_hw` is a session command, so two or more open documents do not stop it (P-fmc_hw-02). It closes only spare views (non-active, non-pinned, beyond 2 per document, never the last one; spare views in the active document too) and adds no save. Each run, and each failure after the snapshot, writes one `[FMC-HW-AUTO-FREE]` line on the service log (each closed view by document, name and id, `free_mb` before and after, and `documents_open`) and the same facts as `last_auto_free` on `/health` and `fmc_health`. An explicit `free` sets the memory pause only in the hard tier, so in the soft tier it still skips the document a person is working in.
 
 | Action | What it does |
 |---|---|
