@@ -16,7 +16,7 @@ export const FMC_MEMORY_DESCRIPTION =
   "free: close unmodified family documents and unmodified non-active non-workshared documents, then GC.Collect. " +
   "The last document stays open. Revit 2025 cannot clear the undo stack from the API. " +
   "purge_unused {document, only_categories}: PerformanceAdviser rules whose name contains unused or purge; only_categories limits the delete to those categories (categories is the old name, still read). " +
-  "status with document reports only that document. A real free with nothing to close is skipped. " +
+  "Its dry run lists the candidates read-only (count by category, first 200), nothing deleted. status with document reports only that document. A real free with nothing to close is skipped. " +
   "dry_run defaults to true. free and purge_unused with dry_run false need batch_lease. " +
   "The reply includes MB before and after. Revit calls stay on the API thread. " +
   "Example: {\"action\":\"free\",\"dry_run\":true}.";
@@ -33,6 +33,7 @@ const shape = {
 export type FmcMemoryArgs = z.infer<z.ZodObject<typeof shape>>;
 
 export interface MemoryIo {
+  candidates?: (body: Record<string, unknown>) => Promise<Record<string, unknown>>;
   status?: () => Promise<{ free_mb?: number; revit_working_set_mb?: number | null; documents?: MemoryDoc[] }>;
   apply?: (body: Record<string, unknown>) => Promise<Record<string, unknown>>;
   env?: NodeJS.ProcessEnv;
@@ -122,7 +123,14 @@ export async function runFmcMemory(args: FmcMemoryArgs, io: MemoryIo = {}) {
   const purge = planPurge(args.document, onlyCategories(args), args.dry_run !== false);
   if (!purge.document) return reply({ tool: "fmc_memory", refused: true, reasons: ["purge_unused needs document."] }, true);
   if (args.dry_run !== false) {
-    return reply({ tool: "fmc_memory", action: "purge_unused", ...purge, only_categories: purge.categories, ...thresholds, mb_before: before.free_mb, mb_after: before.free_mb, read_only: true });
+    let candidates: Record<string, unknown> | undefined;
+    let candidates_problem = "";
+    try {
+      const body = { action: "purge_candidates", document: purge.document, categories: purge.categories };
+      candidates = io.candidates ? await io.candidates(body) : io.status ? undefined : await withRevitConnection((client) => client.sendRaw("fmc_memory", body, 60000)) as Record<string, unknown>;
+    } catch (error) { candidates_problem = error instanceof Error ? error.message : String(error); }
+    return reply({ tool: "fmc_memory", action: "purge_unused", ...purge, only_categories: purge.categories, ...thresholds, mb_before: before.free_mb, mb_after: before.free_mb, read_only: true,
+      ...(candidates ? { candidates } : { candidates: null, candidates_problem: candidates_problem || "Not read (no Revit read in this call)." }) });
   }
   const lease = args.batch_lease.trim() || (batchLease.getStore() ?? "");
   if (!lease) return reply({ tool: "fmc_memory", refused: true, code: "FMC-BATCH-LOCKED", message: "[FMC-BATCH-LOCKED] purge_unused needs batch_lease. Nothing was deleted.", dry_run: true }, true);

@@ -45,7 +45,7 @@ test("purge_unused is a dry run until a lease is passed, and names the adviser",
   assert.equal(applied, false);
 });
 
-test("research 58: only_categories with the categories alias, free skipped when empty, status for one document", async () => {
+test("research 58: purge candidates read-only, only_categories with the categories alias, free skipped when empty, status for one document", async () => {
   const { onlyCategories, statusDocuments } = await import("../tools/fmc_memory.js");
   assert.deepEqual(onlyCategories({ only_categories: ["Doors"], categories: ["Walls"] }), ["Doors"]);
   assert.deepEqual(onlyCategories({ only_categories: [], categories: ["Walls"] }), ["Walls"]);
@@ -55,9 +55,14 @@ test("research 58: only_categories with the categories alias, free skipped when 
   assert.equal(status.found, true);
   assert.equal(status.documents.length, 1);
   assert.equal(status.open_documents, 2);
+  let asked: Record<string, unknown> | undefined;
   const dry = JSON.parse((await runFmcMemory({ action: "purge_unused", document: "E_USER", categories: ["Walls"], only_categories: ["Doors"], dry_run: true, batch_lease: "" }, {
     status: async () => ({ free_mb: 4000, revit_working_set_mb: 800, documents: [] }),
+    candidates: async (body) => { asked = body; return { read_only: true, candidates: 3, by_category: { Doors: 3 } }; },
   })).content[0].text);
+  assert.equal(asked?.action, "purge_candidates");
+  assert.deepEqual(asked?.categories, ["Doors"]);
+  assert.equal(dry.candidates.candidates, 3);
   assert.deepEqual(dry.only_categories, ["Doors"]);
   let applied = false;
   const free = JSON.parse((await runFmcMemory({ action: "free", document: "", categories: [], only_categories: [], dry_run: false, batch_lease: "lease-1" }, {

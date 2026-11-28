@@ -29,7 +29,9 @@ namespace RevitMCPCommandSet.Services.Fmc
             {
                 string action = (Parameters.Value<string>("action") ?? "status").Trim().ToLowerInvariant();
                 if (action == "free") Result = Free(app);
-                else if (action == "purge_unused") Result = Purge(app);
+                else if (action == "purge_unused") Result = Purge(app, true);
+                // Research 58: the same PerformanceAdviser read, nothing deleted (no transaction).
+                else if (action == "purge_candidates") Result = Purge(app, false);
                 else Result = Status(app);
             }
             catch (Exception ex) { Error = ex.Message; }
@@ -99,7 +101,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             };
         }
 
-        private JObject Purge(UIApplication app)
+        private JObject Purge(UIApplication app, bool delete)
         {
             using (FmcTarget target = FmcTarget.Resolve(app, Parameters, mayOpen: false))
             {
@@ -142,6 +144,28 @@ namespace RevitMCPCommandSet.Services.Fmc
                         if (names.Count > 0 && !names.Contains(category)) continue;
                         ids.Add(id);
                     }
+                }
+                if (!delete)
+                {
+                    var byCategory = new JObject();
+                    var rows = new JArray();
+                    foreach (ElementId id in ids)
+                    {
+                        Element element = doc.GetElement(id);
+                        string category = element?.Category?.Name ?? "";
+                        byCategory[category] = (byCategory.Value<int?>(category) ?? 0) + 1;
+                        if (rows.Count < 200) rows.Add(new JObject { ["id"] = id.Value, ["name"] = element?.Name ?? "", ["category"] = category });
+                    }
+                    return new JObject
+                    {
+                        ["read_only"] = true,
+                        ["document"] = doc.Title ?? "",
+                        ["candidates"] = ids.Count,
+                        ["by_category"] = byCategory,
+                        ["elements"] = rows,
+                        ["rules"] = rules.Count,
+                        ["saved"] = false,
+                    };
                 }
                 int deleted = 0;
                 if (ids.Count > 0)
