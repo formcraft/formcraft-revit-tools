@@ -42,16 +42,44 @@ export interface ConduitLimits {
   size_mm: number;
   direction_deg: number;
   provisional: boolean;
-  fields: Array<{ key: string; value: number; provisional: boolean; clause: string }>;
+  fields: Array<{ key: string; value: number; provisional: boolean; clause: string; alias_used?: string }>;
+}
+
+const CONNECTION_KEY = "trace.connection_tolerance";
+const NEAR_ALIAS: Record<string, string> = { "trace.near_miss_mm": "trace.near_miss_tolerance" };
+
+/**
+ * The bank entry that holds this key but has no number yet (P-fmc_conduit-02): the key itself, its alias, or the
+ * field of trace.connection_tolerance with the same name. null when the bank has no such entry at all.
+ */
+export function nullBankEntry(key: string, bank?: Record<string, TraceBankEntry>): string | null {
+  if (!bank) return null;
+  const has = (name: string) => Object.prototype.hasOwnProperty.call(bank, name);
+  if (has(key)) return bank[key]?.value == null ? key : null;
+  const alias = NEAR_ALIAS[key];
+  if (alias && has(alias)) return bank[alias]?.value == null ? alias : null;
+  if (has(CONNECTION_KEY)) {
+    const value = bank[CONNECTION_KEY]?.value as unknown;
+    const field = key.replace(/^trace\./, "");
+    if (value == null) return CONNECTION_KEY;
+    if (typeof value === "object" && !Array.isArray(value)) {
+      const row = value as Record<string, unknown>;
+      if (Object.prototype.hasOwnProperty.call(row, field) && row[field] == null) return `${CONNECTION_KEY}.${field}`;
+    }
+  }
+  return null;
 }
 
 function limit(key: string, fallback: number, bank?: Record<string, TraceBankEntry>, override?: number) {
   if (typeof override === "number" && Number.isFinite(override)) return { key, value: override, provisional: false, clause: "Passed on this call." };
   const cited = citeLimit(key, bank);
+  const alias = cited.alias_used ? { alias_used: cited.alias_used } : {};
   if (cited.value == null || cited.source !== "standards") {
-    return { key, value: cited.value ?? fallback, provisional: true, clause: cited.value == null ? `PROVISIONAL default ${fallback}. ${cited.clause}` : `PROVISIONAL. ${cited.clause}` };
+    const empty = nullBankEntry(key, bank);
+    const why = empty ? `The bank has ${empty} but its value is null (not set yet).` : cited.clause;
+    return { key, value: cited.value ?? fallback, provisional: true, ...alias, clause: cited.value == null || empty ? `PROVISIONAL default ${cited.value ?? fallback}. ${why}` : `PROVISIONAL. ${why}` };
   }
-  return { key, value: cited.value, provisional: false, clause: cited.clause };
+  return { key, value: cited.value, provisional: false, ...alias, clause: cited.clause };
 }
 
 export function conduitLimits(bank?: Record<string, TraceBankEntry>, overrides: Partial<Record<"near_mm" | "touch_mm" | "size_mm" | "direction_deg", number>> = {}): ConduitLimits {

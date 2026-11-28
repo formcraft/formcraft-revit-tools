@@ -24,7 +24,11 @@ export const FMC_CONDUIT_DESCRIPTION =
   "junction true places FMC_E_ElecFixture_JunctionBox 75x75_Galv when that family is loaded. " +
   "A missing fitting type is FMC-NO-FITTING-TYPE. DirectShapes are skipped. " +
   "dry_run false needs batch_lease. Pass document when more than one document is open. " +
-  "HEBERT HOSTELS, a central and protected_paths are refused. Tolerances are the trace.* keys. A missing key is PROVISIONAL. " +
+  "HEBERT HOSTELS, a central and protected_paths are refused. Tolerances are the bank keys trace.near_miss_mm (or trace.near_miss_tolerance), " +
+  "trace.touch_mm, trace.size_mismatch_mm and trace.direction_deg (or the same names inside trace.connection_tolerance). " +
+  "A missing key, or a key whose value is null, is PROVISIONAL and the clause says which. " +
+  "scan has counts (conduits, trays, fittings, end connectors read, connected and free ends); nothing_read true means nothing was there to check. " +
+  "A real fix lists created_ids. junction true warns when junction_family is not loaded. " +
   "The reply is counts and a capped id list. The full list is JSON under %LOCALAPPDATA%\\Formcraft\\conduit. No pictures. " +
   "Cable tray open ends are reported by fmc_trace domain tray. This tool fixes conduit, and tray when domain is tray or both.";
 
@@ -67,6 +71,32 @@ export interface ConduitSnapshot {
   fittings?: { elbow?: boolean; union?: boolean; tee?: boolean; cross?: boolean; transition?: boolean };
   fitting_types_loaded?: string[];
   skipped_non_family?: { count?: number; ids?: number[] };
+  counts?: Record<string, number>;
+}
+
+/** What the snapshot read (P-fmc_conduit-01). From the add-in when it reports counts, else from the free ends alone. */
+export function conduitCounts(snapshot: ConduitSnapshot): { counts: Record<string, number>; source: "add-in" | "ends only"; nothing_read: boolean } {
+  if (snapshot.counts && typeof snapshot.counts === "object") {
+    const c = snapshot.counts;
+    const elements = (c.conduits ?? 0) + (c.trays ?? 0) + (c.conduit_fittings ?? 0) + (c.tray_fittings ?? 0);
+    return { counts: { ...c }, source: "add-in", nothing_read: elements === 0 && (c.end_connectors_read ?? 0) === 0 };
+  }
+  const ends = snapshot.ends ?? [];
+  const curves = new Set(ends.filter((end) => end.kind === "curve").map((end) => end.element_id)).size;
+  const fittings = new Set(ends.filter((end) => end.kind !== "curve").map((end) => end.element_id)).size;
+  return { counts: { free_ends: ends.length, curves_with_free_ends: curves, fittings_with_free_ends: fittings }, source: "ends only", nothing_read: false };
+}
+
+/** A junction family label as the snapshot lists it ("Family Type"), matched without case. */
+export function junctionLoaded(family: string, loaded: string[] | undefined): boolean | null {
+  if (!loaded) return null;
+  const want = family.trim().toLowerCase();
+  return loaded.some((label) => label.trim().toLowerCase() === want || label.trim().toLowerCase().startsWith(want + " "));
+}
+
+export function createdIds(done: unknown): number[] {
+  if (!Array.isArray(done)) return [];
+  return done.map((row) => (row && typeof row === "object" ? Number((row as Record<string, unknown>).created_id) : NaN)).filter((id) => Number.isFinite(id) && id > 0);
 }
 
 export interface ConduitIo {
@@ -125,9 +155,16 @@ export async function runFmcConduit(args: FmcConduitArgs, io: ConduitIo = {}) {
   const coverage = (args.sizes ?? []).map((row) => ({ ...row, ...fittingCovered(row.nominal_mm, table, snapshot.fittings ?? {}), nearest: nearestSize(row.nominal_mm, table), comment: sizeComment(row.nominal_mm, args.comment_material) }));
   const sample = args.sample_limit;
   const report = writeReport("conduit", args.action, { limits, pairs: paired.pairs, free: paired.free.length, coverage, skipped: paired.skipped }, io.env);
+  const read = conduitCounts(snapshot);
+  const loadedJunction = args.junction ? junctionLoaded(args.junction_family, snapshot.fitting_types_loaded) : null;
+  const junctionWarning = loadedJunction === false
+    ? `[FMC-NO-FITTING-TYPE] ${args.junction_family} is not loaded in this document. Junction ops would fail. Load it first.`
+    : undefined;
   if (args.action === "scan") {
     return reply({
       tool: "fmc_conduit", read_only: true, action: "scan", document: snapshot.resolved_document ?? { title: snapshot.model ?? args.document, path: "" },
+      counts: read.counts, counts_source: read.source, nothing_read: read.nothing_read,
+      ...(read.nothing_read ? { message: `No ${args.domain === "both" ? "conduit or cable tray" : args.domain === "tray" ? "cable tray" : "conduit"} was read in this document, so there was nothing to check.` } : {}),
       limits, provisional: limits.provisional, free: paired.free.length, pairs: paired.pairs.length,
       sample: paired.pairs.slice(0, sample).map((pair) => ({ a: pair.a.element_id, b: pair.b.element_id, gap_mm: pair.gap_mm, alignment: pair.alignment, same_size: pair.same_size, op: pair.op, confidence: pair.confidence })),
       skipped: paired.skipped.slice(0, sample), ids: { count: paired.free.length, ids: paired.free.slice(0, sample).map((end) => end.element_id), capped: paired.free.length > sample },
@@ -148,6 +185,8 @@ export async function runFmcConduit(args: FmcConduitArgs, io: ConduitIo = {}) {
       op_count: ops.length,
       sizes: args.sizes, coverage, fittings: { elbow: args.elbow, union: args.union, tee: args.tee, cross: args.cross, transition: args.transition, type_name: args.type_name },
       junction_family: args.junction ? args.junction_family : undefined,
+      junction_warning: junctionWarning,
+      counts: read.counts,
       report,
       next: "Apply with dry_run false and batch_lease. Each fitting is its own subtransaction.",
     });
@@ -166,7 +205,10 @@ export async function runFmcConduit(args: FmcConduitArgs, io: ConduitIo = {}) {
   };
   try {
     const applied = (io.apply ? await io.apply(body) : await withRevitConnection((client) => client.sendCommand("fmc_conduit_apply", body, 300000))) as Record<string, unknown>;
-    return reply({ tool: "fmc_conduit", dry_run: false, ...applied, planned: ops.length, report, provisional: limits.provisional }, applied?.applied !== true);
+    return reply({
+      tool: "fmc_conduit", dry_run: false, ...applied, created_ids: createdIds(applied?.done), planned: ops.length, report, provisional: limits.provisional,
+      ...(junctionWarning ? { junction_warning: junctionWarning } : {}),
+    }, applied?.applied !== true);
   } catch (error) {
     return reply({ tool: "fmc_conduit", error: error instanceof Error ? error.message : String(error) }, true);
   }
