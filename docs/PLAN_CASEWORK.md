@@ -65,3 +65,33 @@ beyond kitchens (wardrobes, vanities, counters, labs), CNC DXF and workshop rule
   `run <id>: ...`. Pack files and the PDF carry no run id, so a re-run still sees "unchanged".
 - Replies after the standards are read have `standards_revision`: the kit file's own `revision`/`rev`/`version` label if it has one, the file's
   modified time and hash, the hash of the standards actually used, and `call_overrides`.
+
+## The rest of the casework spec (28 Nov, tools 1–25 batch)
+- **run_id handle.** Every call's inputs (run, units, standards, the last room read) are saved under its `run_id` in
+  `%APPDATA%\Formcraft\casework\runs` (or `FMC_CASEWORK_RUNS`), pruned after 30 days / 500 files; never beside the pack, so the
+  byte-for-byte "unchanged" check still holds. A call with `run_id` uses those inputs; anything it sends wins; `inputs_from` echoes the id.
+  `modules` goes over the run's modules.
+- **units_hash** (12 hex) in every reply after the standards are read.
+- **room** returns `run: {walls, modules: []}` ready for the next call (run_id plus modules); nothing is defaulted.
+- **Room-read cache.** check and place reuse the room read saved along the run_id chain when it is the same room and under
+  10 minutes old (`room_read: {from, at, age_s}` in the reply); `fresh_room: true` reads again. No hidden in-process cache.
+- **confirm.** pack, shop_drawings and remove refuse `dry_run=false` without `confirm=true`, before any write or Revit call; a saved
+  run never carries a confirm.
+- **remove.** New add-in command `fmc_casework_remove` (command.json, a write command behind the lock). It finds the casework whose
+  Comments carry `FMC:casework:<label>` (place's tag). The dry run (default) is read only (no transaction) and lists them; the real
+  run (dry_run=false, confirm=true) deletes them in one transaction (one Undo).
+- **Split for the 300-line rule.** `casework.ts` and `fmc_casework.ts` are barrels/dispatchers over casework_standards, _layout,
+  _parts, _cost, _fitted, _place_plan, _room, _shop, _shape, _tool, _actions, _revit, _store, _more; no behaviour change.
+- **Wardrobes and vanities.** `run.kind` kitchen (default, unchanged) | wardrobe | vanity; unit kinds wardrobe, vanity, basin (a
+  fixed unit like the sink). Straight runs: doors kept clear (windows too for wardrobes), modules fill, fillers at the end; the vanity
+  top is measured like a worktop. Sizes from the kit (`wardrobe.height/depth`, `vanity.height/depth`, `shelves.wardrobe/vanity`);
+  refused when missing. Wardrobes: full top, tall-door hinges, hanging rail (inner widths) and two brackets each; those rows appear
+  only when there are wardrobes, so kitchen packs are byte-identical.
+- **options.** Three layouts of one run: A largest units (as given), B even widths (the one module leaving least filler), C more
+  drawers (the kit's largest drawer set in base/vanity units up to 600) or, for wardrobes, narrow doors (modules up to 600). Each is
+  saved as `<run_id>-A/-B/-C` with its scores; the choice is the person's.
+- **bulk.** Up to 50 rooms (read through the read-only path) and/or `runs: [{label, run}]`; each gets its own saved run_id, a layout
+  and scores when `modules` are given, and totals. Read only: no pack, no place.
+- **Later / open.** CNC/DXF export (deferred). A free-text brief isn't parsed (options take a run). The kit has no Wardrobe, Vanity or
+  Basin types in FMC_I_Casework_KitchenUnit: place skips them with a kit request unless `type_for` names a type. remove is not yet
+  tried in live Revit. layoutRun, packAction and shopAction are over the hub's 40-line function rule.

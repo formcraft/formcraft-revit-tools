@@ -85,7 +85,7 @@ function fireHardListeners(): void {
 const HEAVY_COMMANDS = new Set([
   "send_code_to_revit", "fmc_new_local", "fmc_grids_from_link", "fmc_recipe_batch",
   "fmc_model_edit", "fmc_diagram_draw", "fmc_diagram_sheet", "fmc_room_build",
-  "fmc_casework_place", "fmc_casework_pack", "fmc_replace", "fmc_template_build",
+  "fmc_casework_place", "fmc_casework_pack", "fmc_casework_remove", "fmc_replace", "fmc_template_build",
   "fmc_build_families", "fmc_legend_chain",
   "fmc_dynamo", "fmc_script_run", "fmc_joins_apply",
 ]);

@@ -227,8 +227,8 @@ export interface ContextEngine { id: string; intent: Intent; tool: string; about
 export const CONTEXT_ENGINES: ContextEngine[] = [
   { id: "line_diagram", intent: "line_diagram", tool: "fmc_diagram", about: "single-lines, risers and schematics drawn from the model; missing values print TBC",
     calls: ['fmc_diagram {"action":"scan"}', 'fmc_diagram {"action":"plan"}', 'fmc_diagram {"action":"draw","dry_run":true}'], kit: ["03_Master_Data/FMC_Diagram_Symbols.json"] },
-  { id: "casework", intent: "casework", tool: "fmc_casework", about: "kitchen and joinery runs: units, parts, nesting, cut list, hardware, cost from the material library",
-    calls: ['fmc_casework {"action":"units", ...run}', 'fmc_casework {"action":"summary", ...}', 'fmc_casework {"action":"pack","dry_run":true}'], kit: ["03_Master_Data/FMC_Casework_Standards.json", "07_Materials/FMC_Materials.json"] },
+  { id: "casework", intent: "casework", tool: "fmc_casework", about: "kitchen, wardrobe and vanity runs: units, parts, nesting, cut list, hardware, cost from the material library; three layout options; many rooms at once",
+    calls: ['fmc_casework {"action":"units", ...run}', 'fmc_casework {"action":"summary", ...}', 'fmc_casework {"action":"options", ...run}', 'fmc_casework {"action":"pack","dry_run":true}'], kit: ["03_Master_Data/FMC_Casework_Standards.json", "07_Materials/FMC_Materials.json"] },
   { id: "ceiling", intent: "ceiling", tool: "fmc_ceiling", about: "ceiling designs, checks, set-out, quantities and BoQ from the kit's I.CLG keynotes and material prices",
     calls: ['fmc_ceiling {"action":"designs", ...}', 'fmc_ceiling {"action":"setout", ...}', 'fmc_ceiling {"action":"boq", ...}'], kit: ["03_Master_Data/FMC_Ceiling_Standard.json", "07_Materials/FMC_Materials.json"] },
 ];

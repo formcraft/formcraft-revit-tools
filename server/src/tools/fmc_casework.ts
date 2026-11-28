@@ -36,7 +36,16 @@ export const FMC_CASEWORK_DESCRIPTION =
     "request. Every reply carries a run_id (also in the file log row) and, once the standards are read, standards_revision " +
     "(the kit file's label and hash, the hash of the standards used, and whether the call changed them). shop_drawings " +
     "exports the PDF under a temporary name and swaps it in only when Revit reports the export done: then the old PDF moves " +
-    "to _Archive; if the export fails the current PDF is left exactly as it was. It never decides gas, electrical or structural items.";
+    "to _Archive; if the export fails the current PDF is left exactly as it was. " +
+    "run_id: pass an earlier reply's run_id instead of sending the run, units and standards again (what you send wins; " +
+    "saved in %APPDATA%, never beside the pack); room returns a ready run with modules blank (call again with run_id and " +
+    "modules); check and place reuse the room read of the run_id chain for 10 minutes (fresh_room to read again). Replies " +
+    "carry units_hash. pack, shop_drawings and remove need confirm=true with dry_run=false. remove: the units a label placed " +
+    "(dry run lists them and changes nothing; the real run deletes them in one Undo). run.kind wardrobe or vanity: straight " +
+    "runs of wardrobes, or vanities round fixed basins, sized by the kit's wardrobe/vanity standards (refused when missing). " +
+    "options: three layouts of a run (A largest units, B even widths, C more drawers or narrow doors), each saved as " +
+    "<run_id>-A/-B/-C; the choice is the person's. bulk: up to 50 rooms (read only) and/or labelled runs, each with its own " +
+    "run_id, laid out when modules are given, with totals. It never decides gas, electrical or structural items.";
 
 export async function runFmcCasework(args: FmcCaseworkArgs, io: CaseworkIo = {}) {
   const { config, problem } = io.config ?? loadConfig();
