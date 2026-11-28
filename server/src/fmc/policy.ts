@@ -172,7 +172,7 @@ export const WRITE_COMMANDS = new Set<string>([
   // LD5: the register sheets the diagrams go on (created or updated, the drawn views placed); same rule as the draw.
   "fmc_diagram_sheet",
   // Casework (CW2): units placed, and shop-drawing views, sheets and the cut-list schedule; the dry runs roll back.
-  "fmc_casework_place", "fmc_casework_pack",
+  "fmc_casework_place", "fmc_casework_pack", "fmc_assemblies_apply",
   // Ceilings (CL2, CL4): placing, replacing and the RCP sheet and set-out drawing; same rule as the line diagrams.
   "fmc_ceiling_place", "fmc_ceiling_edit", "fmc_ceiling_sheet",
   // schedule sets made or updated (F60)
