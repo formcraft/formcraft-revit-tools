@@ -125,7 +125,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             catch (Exception) { return null; }
         }
 
-        private static JObject RoutingRow(Document doc, MEPCurveType type)
+        internal static JObject RoutingRow(Document doc, MEPCurveType type)
         {
             var row = new JObject { ["id"] = type.Id.Value, ["name"] = type.Name, ["kind"] = type is DuctType ? "duct" : "pipe" };
             var groups = new JObject();
