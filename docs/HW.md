@@ -28,7 +28,18 @@ Video memory is for drawn views. It is not a substitute for system RAM. A full p
 
 ## Actions
 
-`dry_run` defaults to true for `gpu_prefer`, `free` and `offload`. `gpu_prefer` and `offload` also need `confirm:true` before they write. The bearer token is never printed. There is no new key in `fmc_guard.json`.
+`dry_run` defaults to true for `gpu_prefer`, `free` and `offload`. `gpu_prefer` and `offload` also need `confirm:true` before they write, and `hw_host_writes` on for this PC (see Guard keys). A real `free` needs `confirm:true` and `document`, and goes through the batch lease, the live-model lock and the AI gate like any model change (`fmc_hw_free`). The bearer token is never printed.
+
+## Guard keys (`fmc_guard.json`)
+
+A person sets these for the PC. Both are off unless set to `true`.
+
+| Key | Default | Effect |
+|---|---|---|
+| `hw_host_writes` | off | `gpu_prefer` (the Windows per-app GPU preference in the registry) and `offload` (the graphics keys in `Revit.ini`) change machine settings, not a model. Off, they are refused with `FMC-HW-PERSON` and nothing is written; a person can set the same values in Revit Options > Graphics or Windows Graphics settings. On, `offload` still keeps the old file as `Revit.ini.bak` before it writes. |
+| `hw_auto_free` | off | Lets the server run `free` by itself in the hard memory tier. Off, the hard tier never closes views on its own; a person runs `fmc_hw free`. |
+
+When `hw_auto_free` is on, the hard-tier free runs at most once a minute, only when Revit is idle and `ram_pause_free_mb` is above 0. It names each open document on its call, so two or more open documents do not stop it (P-fmc_hw-02). It closes only spare views (non-active, non-pinned, beyond 2 per document, never the last one) and adds no save. The result and the service log (`[FMC-HW-AUTOFREE]`) say how many documents were open and how many views were closed per document, and what was skipped.
 
 | Action | What it does |
 |---|---|
@@ -44,7 +55,7 @@ Video memory is for drawn views. It is not a substitute for system RAM. A full p
 Both tiers use `ram_pause_free_mb` (default 1024) and the resume line at 1.5× (1536). `0` turns the pause off.
 
 - **Soft** (`FMC-MEMORY-SOFT`). Free memory is between the two lines, and the hard latch is not on. Reads and small writes continue. Heavy writes, Dynamo and script jobs are queued, not failed. New batch leases wait.
-- **Hard** (`FMC-MEMORY-HARD`). Free memory is below 1024 MB. It stays hard until free memory is above 1536 MB, so a lease does not flap. Every model-changing call waits. Reads still run. When this tier is on and Revit is idle, `free` runs once a minute. It does not add a save.
+- **Hard** (`FMC-MEMORY-HARD`). Free memory is below 1024 MB. It stays hard until free memory is above 1536 MB, so a lease does not flap. Every model-changing call waits. Reads still run. When this tier is on, Revit is idle and `hw_auto_free` is true, `free` runs once a minute. It does not add a save.
 
 `/health` shows `memory.tier`, `memory.code` and `memory.reason`, and `hw` from the scan cached when the server starts.
 
