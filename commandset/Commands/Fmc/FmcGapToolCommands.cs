@@ -44,3 +44,24 @@ namespace RevitMCPCommandSet.Commands.Fmc
         }
     }
 }
+
+namespace RevitMCPCommandSet.Commands.Fmc
+{
+    public class FmcCadAuditCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcCadAuditHandler H => (FmcCadAuditHandler)Handler;
+        public FmcCadAuditCommand(UIApplication uiApp) : base(new FmcCadAuditHandler(), uiApp) { }
+        public override string CommandName => "fmc_cad_audit";
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                H.Parameters = parameters ?? new JObject();
+                if (!RaiseAndWaitForCompletion(900000)) throw new TimeoutException("fmc_cad_audit timed out");
+                if (!string.IsNullOrEmpty(H.Error)) throw new Exception("fmc_cad_audit: " + H.Error);
+                return H.Result;
+            }
+        }
+    }
+}

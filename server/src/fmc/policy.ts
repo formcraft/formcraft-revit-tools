@@ -299,6 +299,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_keynote_legend",
   // GAP-13: templates, filters, legends, revisions and sheets in two open documents. No transaction.
   "fmc_transfer_read",
+  // GAP-14: imported and linked CAD, CAD in families, import line styles and raster images. No transaction; families closed unsaved.
+  "fmc_cad_audit",
 ]);
 
 /**
