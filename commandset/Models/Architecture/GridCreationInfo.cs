@@ -98,6 +98,13 @@ public class GridCreationInfo
     public double YStartPosition { get; set; } = 0;
 
     /// <summary>
+    /// error (default): an existing or repeated name refuses the whole set before any grid is made.
+    /// rename: the old rule, A becomes A1, reported per grid.
+    /// </summary>
+    [JsonProperty("onDuplicate")]
+    public string OnDuplicate { get; set; } = "error";
+
+    /// <summary>
     /// Validates the grid creation parameters
     /// </summary>
     /// <param name="errorMessage">Error message if validation fails</param>

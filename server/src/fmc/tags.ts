@@ -26,7 +26,17 @@ export const TAGS_FIX: Record<string, string> = {
   "FMC-TAGS-OVERLAP": "Every candidate offset overlaps an existing tag. Nothing was placed on top of one.",
   "FMC-TAGS-UNPLACED": "The room is unplaced or not enclosed, so it has no point to tag.",
   "FMC-TAGS-NO-POINT": "The element has no plan point.",
+  "FMC-TAGS-KIT-TYPE-MISSING": "The kit names a tag type for this view scale, and that type is not loaded. Load it from the kit. Nothing falls back to another type.",
+  "FMC-TAGS-TOO-MANY-VIEWS": "More views than max_views. Split the call, or raise max_views.",
+  "FMC-TAGS-DUPLICATE": "The same element is listed twice for this view. It is tagged once.",
+  "FMC-TAGS-OUT-OF-CROP": "Every free spot for this tag is outside the view crop.",
+  "FMC-TAGS-BLANK": "The tag shows no text. The tagged parameter (Mark, Type Mark, Number or Name) is empty.",
+  "FMC-TAGS-MISSING": "The element has no tag in this view.",
+  "FMC-TAGS-SCALE-RULES": "The tag scale rules file could not be read. Fix it, or pass scale_rules_file.",
 };
+
+/** Which views a bulk call reaches. issued_sheets is the old rule and the default. */
+export type TagScope = "issued_sheets" | "any_sheet" | "any_plan";
 
 export type TagCategory = "Doors" | "Windows" | "Rooms";
 
@@ -39,6 +49,11 @@ export interface TagElement {
   link_name?: string;
   placed?: boolean;
   source?: "host" | "link";
+  /** Plan box of the element itself, mm. Optional: used to keep a tag off the element it does not tag. */
+  min_x?: number;
+  min_y?: number;
+  max_x?: number;
+  max_y?: number;
 }
 
 export interface TagMark {
@@ -55,6 +70,11 @@ export interface TagBox {
   min_y: number;
   max_x: number;
   max_y: number;
+  /** The text the tag shows, as Revit reports it (TagText). Empty or "?" is a blank tag. */
+  text?: string;
+  /** The element the tag reads, when known. */
+  element?: string;
+  category?: string;
 }
 
 export interface TagTypeRow {
@@ -81,6 +101,12 @@ export interface TagViewRow {
   view_type?: string;
   is_floor_plan?: boolean;
   sheet_ids?: string[];
+  /** View scale denominator: 100 is 1:100. Missing means 100. */
+  scale?: number;
+  /** Crop region in plan, mm. A tag is kept inside it when given. */
+  crop?: { min_x: number; min_y: number; max_x: number; max_y: number };
+  /** Other annotation boxes (text, dimensions, keynotes) a new tag must not sit on. */
+  obstacles?: TagBox[];
   elements?: TagElement[];
   tagged?: TagMark[];
   tags?: TagBox[];
@@ -115,6 +141,23 @@ export interface TagPlacement {
   tag_type: string;
   kind: "room" | "independent";
   source: "host" | "link";
+  /** True when the tag was shifted off its element point to clear another box. */
+  moved: boolean;
+  offset_mm: [number, number];
+  /** Where the tag type came from: the tag_types argument, the kit's scale rule, or the first loaded type. */
+  type_source: "argument" | "kit_scale" | "first";
+  scale: number;
+}
+
+/** One row per element in scope: nothing is skipped without a row. */
+export interface TagItem {
+  element: string;
+  link_id: string;
+  category: TagCategory;
+  status: "planned" | "skipped";
+  code?: string;
+  reason?: string;
+  tag_type?: string;
 }
 
 export interface TagSkip {
@@ -127,19 +170,52 @@ export interface TagSkip {
 export interface TagViewPlan {
   view: string;
   view_id: string;
+  scale: number;
   placed: TagPlacement[];
   skipped: TagSkip[];
+  items: TagItem[];
   why_zero: string[];
 }
 
+/** Kit rule: a tag type per category for a range of view scales. Kit data, never code (CLAUDE.md rule 7). */
+export interface TagScaleRule {
+  category: string;
+  /** Inclusive scale denominators. A rule with neither covers every scale. */
+  min_scale?: number;
+  max_scale?: number;
+  tag_type: string;
+}
+
+export interface TagScaleRules {
+  schema?: string;
+  status?: string;
+  rules?: TagScaleRule[];
+  /** Tag box on paper, mm, per category: [width, height]. Times the scale gives the model box. */
+  paper_box_mm?: Partial<Record<TagCategory, [number, number]>>;
+}
+
+export interface LoadedScaleRules {
+  rules: TagScaleRules | null;
+  path: string;
+  source: "file" | "kit" | "none";
+  provisional: boolean;
+}
+
 const CATEGORIES: TagCategory[] = ["Doors", "Windows", "Rooms"];
-const TAG_W = 900;
-const TAG_H = 450;
+/** Tag box on paper (mm) when the kit gives none: 9 x 4.5 mm, 900 x 450 at 1:100 as before. */
+const PAPER_W = 9;
+const PAPER_H = 4.5;
+const BASE_SCALE = 100;
+/** Candidate shifts at 1:100, nearest first. Scaled by the view scale. The first 13 are the old list. */
 const OFFSETS: Array<[number, number]> = [
   [0, 0], [600, 0], [-600, 0], [0, 600], [0, -600],
   [600, 600], [-600, 600], [600, -600], [-600, -600],
   [1200, 0], [-1200, 0], [0, 1200], [0, -1200],
+  [1200, 600], [-1200, 600], [1200, -600], [-1200, -600],
+  [1800, 0], [-1800, 0], [0, 1800], [0, -1800],
+  [1800, 1200], [-1800, 1200], [1800, -1200], [-1800, -1200],
 ];
+export const MAX_VIEWS_DEFAULT = 200;
 
 const r1 = (n: number) => Math.round(n * 10) / 10;
 
@@ -155,8 +231,39 @@ function overlap(a: TagBox, b: TagBox): boolean {
   return a.min_x < b.max_x && a.max_x > b.min_x && a.min_y < b.max_y && a.max_y > b.min_y;
 }
 
-function boxAt(x: number, y: number): TagBox {
-  return { min_x: x - TAG_W / 2, min_y: y - TAG_H / 2, max_x: x + TAG_W / 2, max_y: y + TAG_H / 2 };
+export function viewScale(view: { scale?: number }): number {
+  const s = Number(view.scale);
+  return Number.isFinite(s) && s > 0 ? s : BASE_SCALE;
+}
+
+/** Model-space tag size (mm) for a category at a view scale. Paper size from the kit, else 9 x 4.5 mm. */
+export function tagSize(scale: number, category: TagCategory, rules?: TagScaleRules | null): [number, number] {
+  const paper = rules?.paper_box_mm?.[category];
+  const w = Array.isArray(paper) && paper[0] > 0 ? paper[0] : PAPER_W;
+  const h = Array.isArray(paper) && paper[1] > 0 ? paper[1] : PAPER_H;
+  return [w * scale, h * scale];
+}
+
+function boxAt(x: number, y: number, size: [number, number] = [PAPER_W * BASE_SCALE, PAPER_H * BASE_SCALE]): TagBox {
+  return { min_x: x - size[0] / 2, min_y: y - size[1] / 2, max_x: x + size[0] / 2, max_y: y + size[1] / 2 };
+}
+
+/** The kit's tag type for a category at a scale, or null when no rule covers it. */
+export function kitTypeForScale(rules: TagScaleRules | null | undefined, category: TagCategory, scale: number): string | null {
+  for (const rule of rules?.rules ?? []) {
+    if (normCategory(rule.category) !== category || !rule.tag_type?.trim()) continue;
+    if (typeof rule.min_scale === "number" && scale < rule.min_scale) continue;
+    if (typeof rule.max_scale === "number" && scale > rule.max_scale) continue;
+    return rule.tag_type.trim();
+  }
+  return null;
+}
+
+/** True when a tag shows nothing: no text, only spaces, or Revit's "?" for an empty label. */
+export function isBlankTagText(text: string | undefined | null): boolean {
+  if (text == null) return false;
+  const t = String(text).replace(/\s+/g, "");
+  return t === "" || /^\?+$/.test(t);
 }
 
 /** Why a host-only IndependentTag script reports 0 while untagged doors are visible. */
@@ -194,16 +301,20 @@ function sheetByKey(sheets: TagSheetRow[], key: string): TagSheetRow | undefined
   return sheets.find((sheet) => sheet.id.toLowerCase() === name || (sheet.number ?? "").toLowerCase() === name || (sheet.name ?? "").toLowerCase() === name);
 }
 
-export function chooseViews(snapshot: TagSnapshot, request: "all_sheets" | string[]): { views: TagViewRow[]; skipped: TagSkip[] } {
+export function chooseViews(snapshot: TagSnapshot, request: "all_sheets" | string[], scope: TagScope = "issued_sheets", maxViews = MAX_VIEWS_DEFAULT): { views: TagViewRow[]; skipped: TagSkip[] } {
   const sheets = snapshot.sheets ?? [];
   const views = snapshot.views ?? [];
   const issued = issuedIds(sheets);
   const skipped: TagSkip[] = [];
   const chosen: TagViewRow[] = [];
   const seen = new Set<string>();
-  const take = (view: TagViewRow, sheetOk: boolean) => {
+  const onAnySheet = (view: TagViewRow) => (view.sheet_ids ?? []).length > 0;
+  const sheetRule = (view: TagViewRow, issuedOk: boolean) =>
+    scope === "any_plan" ? true : scope === "any_sheet" ? onAnySheet(view) : issuedOk;
+  const take = (view: TagViewRow, issuedOk: boolean) => {
     if (seen.has(view.id)) return;
     seen.add(view.id);
+    const sheetOk = sheetRule(view, issuedOk);
     if (view.is_floor_plan === false) {
       skipped.push({ view: view.name, code: "FMC-TAGS-NOT-PLAN", reason: TAGS_FIX["FMC-TAGS-NOT-PLAN"] });
       return;
@@ -217,6 +328,10 @@ export function chooseViews(snapshot: TagSnapshot, request: "all_sheets" | strin
       });
       return;
     }
+    if (chosen.length >= maxViews) {
+      skipped.push({ view: view.name, code: "FMC-TAGS-TOO-MANY-VIEWS", reason: TAGS_FIX["FMC-TAGS-TOO-MANY-VIEWS"] });
+      return;
+    }
     chosen.push(view);
   };
   if (request === "all_sheets") {
@@ -226,7 +341,7 @@ export function chooseViews(snapshot: TagSnapshot, request: "all_sheets" | strin
   for (const key of request) {
     const sheet = sheetByKey(sheets, key);
     if (sheet) {
-      if (sheet.issued !== true) {
+      if (sheet.issued !== true && scope === "issued_sheets") {
         skipped.push({ view: sheet.number || sheet.name || key, code: "FMC-TAGS-NOT-ISSUED", reason: TAGS_FIX["FMC-TAGS-NOT-ISSUED"] });
         continue;
       }
@@ -260,58 +375,100 @@ function taggedKey(id: string, linkId: string | undefined): string {
   return `${linkId ?? ""}:${id}`;
 }
 
-function freePoint(x: number, y: number, occupied: TagBox[]): { x: number; y: number; moved: boolean } | null {
+function insideCrop(box: TagBox, crop: TagViewRow["crop"]): boolean {
+  if (!crop) return true;
+  return box.min_x >= crop.min_x && box.max_x <= crop.max_x && box.min_y >= crop.min_y && box.max_y <= crop.max_y;
+}
+
+/**
+ * The nearest free spot for a tag: candidate shifts scaled by the view scale, tried nearest first. A spot is free when
+ * its box overlaps no existing tag, no tag placed earlier in this call, no obstacle, and stays inside the crop.
+ */
+export function freePoint(
+  x: number,
+  y: number,
+  occupied: TagBox[],
+  opts: { scale?: number; size?: [number, number]; crop?: TagViewRow["crop"] } = {},
+): { x: number; y: number; moved: boolean; offset: [number, number]; box: TagBox } | { blocked: "overlap" | "crop" } {
+  const k = (opts.scale ?? BASE_SCALE) / BASE_SCALE;
+  let cropOnly = true;
   for (let i = 0; i < OFFSETS.length; i++) {
-    const px = x + OFFSETS[i][0];
-    const py = y + OFFSETS[i][1];
-    const box = boxAt(px, py);
-    if (occupied.some((have) => overlap(have, box))) continue;
-    return { x: r1(px), y: r1(py), moved: i > 0 };
+    const dx = OFFSETS[i][0] * k;
+    const dy = OFFSETS[i][1] * k;
+    const px = r1(x + dx);
+    const py = r1(y + dy);
+    const box = boxAt(px, py, opts.size);
+    const inCrop = insideCrop(box, opts.crop);
+    const clear = !occupied.some((have) => overlap(have, box));
+    if (clear && inCrop) return { x: px, y: py, moved: i > 0, offset: [r1(dx), r1(dy)], box };
+    if (!clear) cropOnly = false;
+  }
+  return { blocked: cropOnly && opts.crop ? "crop" : "overlap" };
+}
+
+function elementBox(element: TagElement): TagBox | null {
+  if ([element.min_x, element.min_y, element.max_x, element.max_y].every((n) => typeof n === "number")) {
+    return { id: element.id, min_x: element.min_x!, min_y: element.min_y!, max_x: element.max_x!, max_y: element.max_y! };
   }
   return null;
 }
 
-export function planTags(snapshot: TagSnapshot, args: {
+export interface PlanTagsArgs {
   views: "all_sheets" | string[];
   categories: string[];
   tag_types?: Partial<Record<TagCategory, string>>;
-}): { views: TagViewPlan[]; skipped: TagSkip[]; placed: number; why_zero: string[] } {
-  const wanted = (args.categories.length ? args.categories : CATEGORIES).map(normCategory).filter((row): row is TagCategory => !!row);
-  const categories = wanted.length ? wanted : [...CATEGORIES];
-  const chosen = chooseViews(snapshot, args.views);
+  scope?: TagScope;
+  max_views?: number;
+  scale_rules?: TagScaleRules | null;
+  /** Keep tags off the boxes of other elements in the view (default true when the read gives element boxes). */
+  avoid_elements?: boolean;
+}
+
+function wantedCategories(list: string[]): TagCategory[] {
+  const wanted = (list.length ? list : CATEGORIES).map(normCategory).filter((row): row is TagCategory => !!row);
+  return wanted.length ? wanted : [...CATEGORIES];
+}
+
+export function planTags(snapshot: TagSnapshot, args: PlanTagsArgs): { views: TagViewPlan[]; skipped: TagSkip[]; placed: number; why_zero: string[]; items: number } {
+  const categories = wantedCategories(args.categories);
+  const chosen = chooseViews(snapshot, args.views, args.scope ?? "issued_sheets", args.max_views ?? MAX_VIEWS_DEFAULT);
   const plans: TagViewPlan[] = [];
   const why = new Set<string>();
+  const avoid = args.avoid_elements !== false;
   for (const view of chosen.views) {
+    const scale = viewScale(view);
     const have = new Set((view.tagged ?? []).map((mark) => taggedKey(mark.id, mark.link_id)));
-    const occupied: TagBox[] = [...(view.tags ?? [])];
+    const occupied: TagBox[] = [...(view.tags ?? []), ...(view.obstacles ?? [])];
     const placed: TagPlacement[] = [];
     const skipped: TagSkip[] = [];
-    for (const element of view.elements ?? []) {
+    const items: TagItem[] = [];
+    const listed = new Set<string>();
+    const inScope = (view.elements ?? []).filter((element) => {
       const category = normCategory(element.category);
-      if (!category || !categories.includes(category)) continue;
-      if (category === "Rooms" && element.placed === false) {
-        skipped.push({ element: element.id, view: view.name, code: "FMC-TAGS-UNPLACED", reason: TAGS_FIX["FMC-TAGS-UNPLACED"] });
-        continue;
-      }
-      if (have.has(taggedKey(element.id, element.link_id))) {
-        skipped.push({ element: element.id, view: view.name, code: "FMC-TAGS-ALREADY", reason: TAGS_FIX["FMC-TAGS-ALREADY"] });
-        continue;
-      }
-      if (typeof element.x !== "number" || typeof element.y !== "number") {
-        skipped.push({ element: element.id, view: view.name, code: "FMC-TAGS-NO-POINT", reason: TAGS_FIX["FMC-TAGS-NO-POINT"] });
-        continue;
-      }
-      const type = typeFor(snapshot.tag_types ?? [], category, args.tag_types?.[category]);
-      if (!type) {
-        skipped.push({ element: element.id, view: view.name, code: "FMC-TAGS-NO-TYPE", reason: TAGS_FIX["FMC-TAGS-NO-TYPE"] });
-        continue;
-      }
-      const spot = freePoint(element.x, element.y, occupied);
-      if (!spot) {
-        skipped.push({ element: element.id, view: view.name, code: "FMC-TAGS-OVERLAP", reason: TAGS_FIX["FMC-TAGS-OVERLAP"] });
-        continue;
-      }
-      occupied.push(boxAt(spot.x, spot.y));
+      return !!category && categories.includes(category);
+    });
+    const boxes = avoid ? inScope.map(elementBox) : [];
+    inScope.forEach((element, index) => {
+      const category = normCategory(element.category) as TagCategory;
+      const key = taggedKey(element.id, element.link_id);
+      const skip = (code: string) => {
+        skipped.push({ element: element.id, view: view.name, code, reason: TAGS_FIX[code] });
+        items.push({ element: element.id, link_id: element.link_id ?? "", category, status: "skipped", code, reason: TAGS_FIX[code] });
+      };
+      if (listed.has(key)) return skip("FMC-TAGS-DUPLICATE");
+      listed.add(key);
+      if (category === "Rooms" && element.placed === false) return skip("FMC-TAGS-UNPLACED");
+      if (have.has(key)) return skip("FMC-TAGS-ALREADY");
+      if (typeof element.x !== "number" || typeof element.y !== "number") return skip("FMC-TAGS-NO-POINT");
+      const explicit = args.tag_types?.[category];
+      const kitName = explicit && explicit.trim() ? null : kitTypeForScale(args.scale_rules, category, scale);
+      const type = typeFor(snapshot.tag_types ?? [], category, explicit && explicit.trim() ? explicit : kitName ?? undefined);
+      if (!type) return skip(kitName ? "FMC-TAGS-KIT-TYPE-MISSING" : "FMC-TAGS-NO-TYPE");
+      const size = tagSize(scale, category, args.scale_rules);
+      const others = boxes.filter((box, i): box is TagBox => !!box && i !== index);
+      const spot = freePoint(element.x, element.y, [...occupied, ...others], { scale, size, crop: view.crop });
+      if ("blocked" in spot) return skip(spot.blocked === "crop" ? "FMC-TAGS-OUT-OF-CROP" : "FMC-TAGS-OVERLAP");
+      occupied.push(spot.box);
       placed.push({
         element: element.id,
         category,
@@ -323,18 +480,105 @@ export function planTags(snapshot: TagSnapshot, args: {
         tag_type: type.name,
         kind: category === "Rooms" ? "room" : "independent",
         source: element.source === "link" || element.link_id ? "link" : "host",
+        moved: spot.moved,
+        offset_mm: spot.offset,
+        type_source: explicit && explicit.trim() ? "argument" : kitName ? "kit_scale" : "first",
+        scale,
       });
-    }
-    const untagged = (view.elements ?? []).filter((element) => {
-      const category = normCategory(element.category);
-      return !!category && categories.includes(category) && !have.has(taggedKey(element.id, element.link_id));
+      items.push({ element: element.id, link_id: element.link_id ?? "", category, status: "planned", tag_type: type.name });
     });
+    const untagged = inScope.filter((element) => !have.has(taggedKey(element.id, element.link_id)));
     const causes = placed.length === 0 && untagged.length > 0 ? tagsZeroCauses(view.diagnosis, 0) : [];
     for (const line of causes) why.add(line);
-    plans.push({ view: view.name, view_id: view.id, placed, skipped, why_zero: causes });
+    plans.push({ view: view.name, view_id: view.id, scale, placed, skipped, items, why_zero: causes });
   }
   const placed = plans.reduce((n, view) => n + view.placed.length, 0);
-  return { views: plans, skipped: chosen.skipped, placed, why_zero: [...why] };
+  const items = plans.reduce((n, view) => n + view.items.length, 0);
+  return { views: plans, skipped: chosen.skipped, placed, why_zero: [...why], items };
+}
+
+export interface TagAuditView {
+  view: string;
+  view_id: string;
+  scale: number;
+  missing: Array<{ element: string; link_id: string; category: TagCategory; code: "FMC-TAGS-MISSING" }>;
+  blank: Array<{ tag_id: string; kind: string; element: string; category: string; text: string; code: "FMC-TAGS-BLANK" }>;
+  tagged: number;
+  unplaced_rooms: string[];
+}
+
+/** Read-only audit: every element in scope with no tag, and every tag that shows no text. */
+export function auditTags(snapshot: TagSnapshot, args: Omit<PlanTagsArgs, "tag_types" | "scale_rules" | "avoid_elements">): {
+  views: TagAuditView[]; skipped: TagSkip[]; missing: number; blank: number; tagged: number;
+} {
+  const categories = wantedCategories(args.categories);
+  const chosen = chooseViews(snapshot, args.views, args.scope ?? "issued_sheets", args.max_views ?? MAX_VIEWS_DEFAULT);
+  const rows: TagAuditView[] = [];
+  for (const view of chosen.views) {
+    const have = new Set((view.tagged ?? []).map((mark) => taggedKey(mark.id, mark.link_id)));
+    const seen = new Set<string>();
+    const missing: TagAuditView["missing"] = [];
+    const unplaced: string[] = [];
+    let tagged = 0;
+    for (const element of view.elements ?? []) {
+      const category = normCategory(element.category);
+      if (!category || !categories.includes(category)) continue;
+      const key = taggedKey(element.id, element.link_id);
+      if (seen.has(key)) continue;
+      seen.add(key);
+      if (have.has(key)) { tagged++; continue; }
+      if (category === "Rooms" && element.placed === false) { unplaced.push(element.id); continue; }
+      missing.push({ element: element.id, link_id: element.link_id ?? "", category, code: "FMC-TAGS-MISSING" });
+    }
+    const blank: TagAuditView["blank"] = [];
+    for (const tag of view.tags ?? []) {
+      const category = normCategory(tag.category ?? (tag.kind === "room" ? "Rooms" : ""));
+      if (category && !categories.includes(category)) continue;
+      if (!isBlankTagText(tag.text)) continue;
+      blank.push({ tag_id: tag.id ?? "", kind: tag.kind ?? "", element: tag.element ?? "", category: category || (tag.category ?? ""), text: tag.text ?? "", code: "FMC-TAGS-BLANK" });
+    }
+    rows.push({ view: view.name, view_id: view.id, scale: viewScale(view), missing, blank, tagged, unplaced_rooms: unplaced });
+  }
+  return {
+    views: rows,
+    skipped: chosen.skipped,
+    missing: rows.reduce((n, row) => n + row.missing.length, 0),
+    blank: rows.reduce((n, row) => n + row.blank.length, 0),
+    tagged: rows.reduce((n, row) => n + row.tagged, 0),
+  };
+}
+
+/**
+ * Kit rules file: the named file (scale_rules_file or FMC_TAG_SCALE_FILE), then <kit>/03_Master_Data/FMC_TagScale.json.
+ * There is no built-in sample: tag types are kit data (CLAUDE.md rule 7). With no file the first loaded type is used
+ * and the reply says source none, which is a kit change request.
+ */
+export function loadTagScaleRules(opts: { file?: string; kitRoot?: string; env?: NodeJS.ProcessEnv; read?: (file: string) => string }): LoadedScaleRules {
+  const read = opts.read ?? ((file: string) => fs.readFileSync(file, "utf8"));
+  const named = (opts.file || opts.env?.FMC_TAG_SCALE_FILE || "").trim();
+  const kit = (opts.kitRoot ?? "").replace(/[\\/]+$/, "");
+  const winKit = /^[A-Za-z]:[\\/]|^\\\\/.test(kit) || (kit.includes("\\") && !kit.includes("/"));
+  const kitFile = kit ? (winKit ? path.win32 : path).join(kit, "03_Master_Data", "FMC_TagScale.json") : "";
+  const candidates: Array<{ file: string; source: LoadedScaleRules["source"] }> = [];
+  if (named) candidates.push({ file: named, source: "file" });
+  if (kitFile) candidates.push({ file: kitFile, source: "kit" });
+  for (const item of candidates) {
+    let raw: string;
+    try { raw = read(item.file); } catch {
+      if (item.source === "file") throw new Error(`[FMC-TAGS-SCALE-RULES] ${TAGS_FIX["FMC-TAGS-SCALE-RULES"]} (${item.file})`);
+      continue;
+    }
+    let rules: TagScaleRules;
+    try { rules = JSON.parse(raw.replace(/^\uFEFF/, "")) as TagScaleRules; } catch {
+      throw new Error(`[FMC-TAGS-SCALE-RULES] ${TAGS_FIX["FMC-TAGS-SCALE-RULES"]} (${item.file})`);
+    }
+    if (!rules || typeof rules !== "object" || (rules.rules != null && !Array.isArray(rules.rules))) {
+      throw new Error(`[FMC-TAGS-SCALE-RULES] ${TAGS_FIX["FMC-TAGS-SCALE-RULES"]} (${item.file})`);
+    }
+    const provisional = item.source !== "kit" || String(rules.status ?? "").toUpperCase() === "PROVISIONAL";
+    return { rules, path: item.file, source: item.source, provisional };
+  }
+  return { rules: null, path: "", source: "none", provisional: false };
 }
 
 export function referenceProblems(refs: { kit?: string[]; standards?: string[]; rulebook?: string[] } | undefined): string | null {

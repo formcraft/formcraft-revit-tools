@@ -25,7 +25,7 @@ namespace RevitMCPCommandSet.Services
         /// <summary>
         /// Execution result
         /// </summary>
-        public AIResult<List<GridCreationResult>> Result { get; private set; }
+        public AIItemsResult<List<GridCreationResult>> Result { get; private set; }
 
         /// <summary>
         /// Set parameters for grid creation
@@ -47,7 +47,7 @@ namespace RevitMCPCommandSet.Services
                 // Validate parameters
                 if (!Parameters.Validate(out string validationError))
                 {
-                    Result = new AIResult<List<GridCreationResult>>
+                    Result = new AIItemsResult<List<GridCreationResult>>
                     {
                         Success = false,
                         Message = $"Validation failed: {validationError}",
@@ -55,6 +55,7 @@ namespace RevitMCPCommandSet.Services
                     };
                     return;
                 }
+                var items = new List<Dictionary<string, object>>();
 
                 List<GridCreationResult> createdGrids = new List<GridCreationResult>();
 
@@ -64,6 +65,29 @@ namespace RevitMCPCommandSet.Services
                     .Cast<Grid>()
                     .Select(g => g.Name)
                     .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+                // No silent renames (tool research create_grid gap 5): with onDuplicate error, an existing or repeated
+                // name refuses the whole set before any grid is made, and every grid gets a row saying why.
+                bool rename = string.Equals(Parameters.OnDuplicate, "rename", StringComparison.OrdinalIgnoreCase);
+                var allLabels = FmcPlacementCore.GridLabels(Parameters.XCount, Parameters.XStartLabel, Parameters.XNamingStyle)
+                    .Concat(FmcPlacementCore.GridLabels(Parameters.YCount, Parameters.YStartLabel, Parameters.YNamingStyle)).ToList();
+                var clashes = FmcPlacementCore.Duplicates(allLabels, existingGridNames);
+                if (!rename && clashes.Count > 0)
+                {
+                    var byIndex = clashes.ToDictionary(c => c.Key, c => c.Value);
+                    for (int i = 0; i < allLabels.Count; i++)
+                        items.Add(byIndex.TryGetValue(i, out string why)
+                            ? FmcPlacementCore.Item(i, "failed", null, "FMC-GRID-DUPLICATE", why == "exists" ? "A grid with this name exists." : "The name is repeated in the request.", allLabels[i])
+                            : FmcPlacementCore.Item(i, "failed", null, "FMC-DATUM-BLOCKED", "Not made: another grid in the set has a duplicate name.", allLabels[i]));
+                    Result = new AIItemsResult<List<GridCreationResult>>
+                    {
+                        Success = false,
+                        Message = $"[FMC-GRID-DUPLICATE] {clashes.Count} grid name(s) exist or repeat: {string.Join(", ", clashes.Select(c => allLabels[c.Key]))}. No grid was made.",
+                        Response = new List<GridCreationResult>(),
+                        Items = items,
+                    };
+                    return;
+                }
 
                 using (Transaction trans = new Transaction(doc, "Create Grid System"))
                 {
@@ -76,7 +100,7 @@ namespace RevitMCPCommandSet.Services
                         Parameters.XStartPosition
                     );
 
-                    List<string> xLabels = GenerateLabels(
+                    List<string> xLabels = FmcPlacementCore.GridLabels(
                         Parameters.XCount,
                         Parameters.XStartLabel,
                         Parameters.XNamingStyle
@@ -132,7 +156,7 @@ namespace RevitMCPCommandSet.Services
                         Parameters.YStartPosition
                     );
 
-                    List<string> yLabels = GenerateLabels(
+                    List<string> yLabels = FmcPlacementCore.GridLabels(
                         Parameters.YCount,
                         Parameters.YStartLabel,
                         Parameters.YNamingStyle
@@ -183,6 +207,12 @@ namespace RevitMCPCommandSet.Services
 
                     trans.Commit();
                 }
+                for (int i = 0; i < createdGrids.Count; i++)
+                {
+                    GridCreationResult g = createdGrids[i];
+                    items.Add(FmcPlacementCore.Item(i, "created", g.ElementId, g.WasRenamed ? "FMC-GRID-RENAMED" : null,
+                        g.WasRenamed ? $"Renamed from {g.OriginalName} (on_duplicate rename)." : null, g.Name));
+                }
 
                 int renamedCount = createdGrids.Count(g => g.WasRenamed);
                 string message = $"Successfully created {createdGrids.Count} grids " +
@@ -193,20 +223,24 @@ namespace RevitMCPCommandSet.Services
                     message += $". {renamedCount} grid(s) were renamed to avoid duplicates.";
                 }
 
-                Result = new AIResult<List<GridCreationResult>>
+                Result = new AIItemsResult<List<GridCreationResult>>
                 {
                     Success = true,
                     Message = message,
-                    Response = createdGrids
+                    Response = createdGrids,
+                    Items = items,
                 };
             }
             catch (Exception ex)
             {
-                Result = new AIResult<List<GridCreationResult>>
+                // One transaction for the set: a failure rolls every grid back, so every grid is failed.
+                Result = new AIItemsResult<List<GridCreationResult>>
                 {
                     Success = false,
                     Message = $"Failed to create grids: {ex.Message}",
-                    Response = null
+                    Response = null,
+                    Items = Enumerable.Range(0, Math.Max(0, (Parameters?.XCount ?? 0) + (Parameters?.YCount ?? 0)))
+                        .Select(i => FmcPlacementCore.Item(i, "failed", null, "FMC-TOOL-FAILED", ex.Message)).ToList(),
                 };
                 RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Error", $"Failed to create grids: {ex.Message}");
             }
@@ -227,97 +261,6 @@ namespace RevitMCPCommandSet.Services
                 positions.Add(startPosition + (i * spacing));
             }
             return positions;
-        }
-
-        /// <summary>
-        /// Generate labels based on count, start label, and naming style
-        /// </summary>
-        private List<string> GenerateLabels(int count, string startLabel, string namingStyle)
-        {
-            List<string> labels = new List<string>();
-            // Night test 26 Oct: "TX1" came out as T and 1. A label ending in digits keeps its prefix and counts up
-            // (TX1, TX2, ...); a letter label with a prefix counts its last letter (GA, GB, ...).
-            var m = System.Text.RegularExpressions.Regex.Match(startLabel ?? "", @"^(.*?)(\d+)$");
-            if (m.Success)
-            {
-                int n = int.Parse(m.Groups[2].Value);
-                string pad = m.Groups[2].Value.StartsWith("0") ? new string('0', m.Groups[2].Value.Length) : "";
-                for (int i = 0; i < count; i++) labels.Add(m.Groups[1].Value + (n + i).ToString(pad.Length > 0 ? pad : "0"));
-                return labels;
-            }
-            if (namingStyle != "numeric" && (startLabel ?? "").Length > 1 && char.IsLetter(startLabel[startLabel.Length - 1]))
-            {
-                string prefix = startLabel.Substring(0, startLabel.Length - 1);
-                char last = char.ToUpper(startLabel[startLabel.Length - 1]);
-                for (int i = 0; i < count; i++) labels.Add(prefix + GenerateAlphabeticLabel(last, i));
-                return labels;
-            }
-
-            if (namingStyle == "numeric")
-            {
-                // Parse starting number from startLabel
-                if (!int.TryParse(startLabel, out int startNum))
-                {
-                    startNum = 1; // Default to 1 if parsing fails
-                }
-
-                for (int i = 0; i < count; i++)
-                {
-                    labels.Add((startNum + i).ToString());
-                }
-            }
-            else // alphabetic
-            {
-                // Convert startLabel to uppercase for consistency
-                string upperStart = startLabel.ToUpper();
-
-                // Get starting letter (use first character if multiple)
-                char startChar = upperStart.Length > 0 ? upperStart[0] : 'A';
-
-                // Ensure it's a letter, default to 'A' if not
-                if (!char.IsLetter(startChar))
-                {
-                    startChar = 'A';
-                }
-
-                for (int i = 0; i < count; i++)
-                {
-                    labels.Add(GenerateAlphabeticLabel(startChar, i));
-                }
-            }
-
-            return labels;
-        }
-
-        /// <summary>
-        /// Generate alphabetic label (A, B, C, ..., Z, AA, AB, ...)
-        /// </summary>
-        private string GenerateAlphabeticLabel(char startChar, int offset)
-        {
-            int charIndex = (startChar - 'A') + offset;
-
-            if (charIndex < 26)
-            {
-                // Single letter (A-Z)
-                return ((char)('A' + charIndex)).ToString();
-            }
-            else
-            {
-                // Multiple letters (AA, AB, ...)
-                string result = "";
-                int remaining = charIndex;
-
-                while (remaining >= 0)
-                {
-                    int mod = remaining % 26;
-                    result = ((char)('A' + mod)) + result;
-                    remaining = (remaining / 26) - 1;
-
-                    if (remaining < 0) break;
-                }
-
-                return result;
-            }
         }
 
         /// <summary>

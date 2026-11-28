@@ -2,10 +2,31 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { toolFailure } from "./failure.js";
+import { planGrids, type GridArgs, type OnDuplicate, type RelativeTo } from "../fmc/datum.js";
+import { DATUM_COMMON_SHAPE, runDatumTool, type DatumIo } from "./datum_common.js";
+
+export async function runCreateGrid(args: GridArgs & { document?: string; dry_run?: boolean; relative_to?: RelativeTo; on_duplicate?: OnDuplicate }, io?: DatumIo) {
+  const onDuplicate: OnDuplicate = args.on_duplicate === "rename" ? "rename" : "error";
+  const { document, dry_run, relative_to, on_duplicate: _d, ...grid } = args;
+  return runDatumTool({
+    tool: "create_grid",
+    command: "create_grid",
+    document,
+    dryRun: dry_run !== false,
+    relativeTo: relative_to ?? "project_base_point",
+    readBody: { grids: true },
+    plan: (snapshot, origin) => {
+      const plan = planGrids(grid as GridArgs, snapshot, origin, onDuplicate);
+      return { items: plan.items, errors: plan.errors, send: plan.params, sent: plan.items.map((row) => row.index) };
+    },
+    io,
+  });
+}
 
 export function registerCreateGridTool(server: McpServer) {
   server.tool(
     "create_grid",
+    "dry_run defaults to true: the names, positions and clashes are returned and nothing is written. Positions and extents are measured from the project base point unless relative_to is internal_origin. A name that exists, or repeats, is FMC-GRID-DUPLICATE and the whole call is refused (on_duplicate rename keeps the old A to A1 renaming, reported per grid). Every grid has one row in items. At most 200 lines per call. " +
     "Create a grid system in Revit with smart spacing generation. Supports both X-axis (vertical) and Y-axis (horizontal) grids with customizable naming styles (alphabetic A,B,C or numeric 1,2,3). All units are in millimeters (mm).",
     {
       xCount: z
@@ -70,43 +91,15 @@ export function registerCreateGridTool(server: McpServer) {
         .number()
         .default(0)
         .describe("Starting position for first Y-axis grid in mm"),
+      ...DATUM_COMMON_SHAPE,
+      dry_run: z.boolean().optional().default(true).describe("true (default): plan only, nothing is written."),
+      on_duplicate: z.enum(["error", "rename"]).optional().default("error").describe("error (default): an existing or repeated name refuses the call. rename: A becomes A1, reported."),
     },
-    async (args, extra) => {
-      const params = {
-        xCount: args.xCount,
-        xSpacing: args.xSpacing,
-        xStartLabel: args.xStartLabel,
-        xNamingStyle: args.xNamingStyle,
-        yCount: args.yCount,
-        ySpacing: args.ySpacing,
-        yStartLabel: args.yStartLabel,
-        yNamingStyle: args.yNamingStyle,
-        xExtentMin: args.xExtentMin,
-        xExtentMax: args.xExtentMax,
-        yExtentMin: args.yExtentMin,
-        yExtentMax: args.yExtentMax,
-        elevation: args.elevation,
-        xStartPosition: args.xStartPosition,
-        yStartPosition: args.yStartPosition,
-      };
-
+    async (args) => {
       try {
-        const response = await withRevitConnection(async (revitClient) => {
-          return await revitClient.sendCommand("create_grid", params);
-        });
-
-        return {
-          content: [
-            {
-              type: "text",
-              text: JSON.stringify(response, null, 2),
-            },
-          ],
-        };
+        return await runCreateGrid(args as Parameters<typeof runCreateGrid>[0]);
       } catch (error) {
-        return toolFailure(`Create grid failed: ${
-                error instanceof Error ? error.message : String(error)
-              }`);
+        return toolFailure(`Create grid failed: ${error instanceof Error ? error.message : String(error)}`);
       }
     }
   );
