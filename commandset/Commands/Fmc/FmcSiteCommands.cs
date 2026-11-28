@@ -46,4 +46,16 @@ namespace RevitMCPCommandSet.Commands.Fmc
         public FmcAvfApplyCommand(UIApplication uiApp) : base(new FmcAvfApplyHandler(), uiApp) { }
         public override string CommandName => "fmc_avf_apply";
     }
+
+    public class FmcSurveyCommand : FmcSiteCommandBase
+    {
+        public FmcSurveyCommand(UIApplication uiApp) : base(new FmcSurveyHandler(), uiApp) { }
+        public override string CommandName => "fmc_survey";
+    }
+
+    public class FmcSurveyApplyCommand : FmcSiteCommandBase
+    {
+        public FmcSurveyApplyCommand(UIApplication uiApp) : base(new FmcSurveyApplyHandler(), uiApp) { }
+        public override string CommandName => "fmc_survey_apply";
+    }
 }

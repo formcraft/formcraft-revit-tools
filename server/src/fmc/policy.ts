@@ -247,6 +247,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_sun_apply",
   // Analysis display: the display style and the view's style setting in one transaction, then transient AVF results.
   "fmc_avf_apply",
+  // A toposolid from survey points. One transaction. The dry run is server-side and sends nothing to this command.
+  "fmc_survey_apply",
 ]);
 
 /**
@@ -303,6 +305,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_sun",
   // Graphical views, their analysis results and the analysis display styles. No transaction.
   "fmc_avf",
+  // Toposolid types, levels, existing toposolids and the internal-to-shared matrix. No transaction.
+  "fmc_survey",
 ]);
 
 /**
