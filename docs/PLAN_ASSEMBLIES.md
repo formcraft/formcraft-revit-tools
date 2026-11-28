@@ -36,4 +36,4 @@ Every reply has `run_id` (`AS-<date>T<time>-<6 hex>`, also in the file log rows)
 - Not tried in live Revit: the read and apply commands compile against the R25 API; the parameter names used are
   SPACING_LAYOUT/LENGTH_VERT/HORIZ, AUTO_MULLION_INTERIOR/BORDER1/BORDER2_VERT/HORIZ, AUTO_PANEL_WALL, RailingType.TopRailHeight/TopRailType.
 - Railing balusters and posts, curtain wall offsets and joins, dashed pattern lines and filled-region types for the legend are not covered.
-- Not in the AI groups (AI mode refuses apply, like other new writes); not in the CLI tool list.
+- Not in the AI groups (AI mode refuses apply, like fmc_casework_place and pack: COMMAND_GROUPS has neither, and no test requires every write command there).
