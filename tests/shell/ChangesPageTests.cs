@@ -73,6 +73,37 @@ namespace Formcraft.Shell.Tests
         }
 
         [Test]
+
+        [Test]
+        public async Task The_page_never_counts_or_ranks_people()
+        {
+            var (names, text, counts) = Sta.Run(() =>
+            {
+                var (vm, _) = Pane();
+                var page = vm.Changes;
+                var prop = string.Join(",", page.GetType().GetProperties().Select(p => p.Name));
+                var bits = new System.Text.StringBuilder();
+                foreach (var g in page.Groups)
+                {
+                    bits.Append(g.Title).Append('\n');
+                    foreach (var item in g.Items)
+                    {
+                        bits.Append(item.GetType().Name).Append(' ');
+                        if (item is NoteSetting n) bits.Append(n.Text);
+                        if (item is ReadOnlySetting r) bits.Append(r.Label).Append(' ').Append(r.Value);
+                        if (item is ChoiceSetting c) bits.Append(c.Label);
+                        if (item is TableSetting tbl) bits.Append(string.Join(",", tbl.Columns ?? System.Array.Empty<string>()));
+                        bits.Append('\n');
+                    }
+                }
+                return (prop, bits.ToString(), page.Groups.Single(g => g.Title == "Timeline").Items.OfType<NoteSetting>().First().Text);
+            });
+            await Assert.That(names).DoesNotContain("ByUser").And.DoesNotContain("UserCount").And.DoesNotContain("Leaderboard").And.DoesNotContain("Ranking").And.DoesNotContain("Score").And.DoesNotContain("PerUser");
+            await Assert.That(text.ToLowerInvariant()).DoesNotContain("leaderboard").And.DoesNotContain("per-user").And.DoesNotContain("per user").And.DoesNotContain("by_user").And.DoesNotContain("sort by volume");
+            // A team total ("N changes") is allowed; a per-person count is not.
+            await Assert.That(counts).Contains("change");
+        }
+
         public async Task Today_is_the_local_calendar_day_converted_to_UTC()
         {
             var utc = new DateTime(2026, 11, 28, 8, 0, 0, DateTimeKind.Utc);

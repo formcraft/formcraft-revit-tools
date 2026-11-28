@@ -49,12 +49,22 @@ namespace RevitMCPCommandSet.Services.Fmc.ChangeFeed
                     var notes = new JArray();
 
                     string logDir = ChangeFeedLog.DefaultDir();
+                    var options = ChangeFeedOptions.Load();
+                    // Read only: Query/ReadWindow never write or prune. Memory is used when logging to disk is off.
                     FeedPage page = ChangeFeedLog.Query(logDir, FmcChangeFeed.Key(doc), afterSeq, limit);
+                    if (!options.Logging)
+                    {
+                        FeedPage mem = TryPluginMemory(FmcChangeFeed.Key(doc), afterSeq, limit);
+                        if (mem != null) page = MergePages(page, mem, afterSeq, limit);
+                        notes.Add(ChangeFeedOptions.DisabledNote());
+                    }
                     if (page.Gap) notes.Add($"Some journal entries after sequence {afterSeq} could not be read from the log.");
                     var since = ChangeFeedLog.ListeningSince(logDir);
                     var journal = new JObject
                     {
-                        ["listening"] = ChangeFeedLog.IsListening(logDir),
+                        ["listening"] = ChangeFeedLog.IsListening(logDir) || PluginHooked(),
+                        ["logging"] = options.Logging,
+                        ["retention_months"] = options.RetentionMonths,
                         ["since"] = since.HasValue ? since.Value.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffZ") : "",
                         ["log_dir"] = logDir,
                         ["last_seq"] = page.LastSeq,
@@ -91,6 +101,58 @@ namespace RevitMCPCommandSet.Services.Fmc.ChangeFeed
             {
                 _done.Set();
             }
+        }
+
+        /// <summary>The plugin's in-memory journal, reached by reflection so this command set never writes a file when logging is off. Null when the plugin is not loaded (offline tests).</summary>
+        private static FeedPage TryPluginMemory(string document, long afterSeq, int limit)
+        {
+            try
+            {
+                var t = Type.GetType("revit_mcp_plugin.Fmc.ChangeFeedSession, RevitMCPPlugin")
+                    ?? Type.GetType("revit_mcp_plugin.Fmc.ChangeFeedSession, revit_mcp_plugin");
+                var m = t?.GetMethod("QueryMemory", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+                if (m == null) return null;
+                return m.Invoke(null, new object[] { document, afterSeq, limit }) as FeedPage;
+            }
+            catch (Exception) { return null; }
+        }
+
+        private static bool PluginHooked()
+        {
+            try
+            {
+                var t = Type.GetType("revit_mcp_plugin.Fmc.ChangeFeedSession, RevitMCPPlugin")
+                    ?? Type.GetType("revit_mcp_plugin.Fmc.ChangeFeedSession, revit_mcp_plugin");
+                var p = t?.GetProperty("Hooked", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+                return p != null && p.GetValue(null) is bool b && b;
+            }
+            catch (Exception) { return false; }
+        }
+
+        /// <summary>Union of disk and memory pages, unique by seq, oldest first, still within limit. Read only.</summary>
+        private static FeedPage MergePages(FeedPage disk, FeedPage memory, long afterSeq, int limit)
+        {
+            var page = new FeedPage();
+            var seen = new System.Collections.Generic.HashSet<long>();
+            var all = new System.Collections.Generic.List<FeedEntry>();
+            if (disk?.Entries != null) all.AddRange(disk.Entries);
+            if (memory?.Entries != null) all.AddRange(memory.Entries);
+            all.Sort((a, b) => a.Seq.CompareTo(b.Seq) != 0 ? a.Seq.CompareTo(b.Seq) : a.AtUtc.CompareTo(b.AtUtc));
+            int take = Math.Max(1, Math.Min(FeedJournal.MaxPage, limit));
+            foreach (var e in all)
+            {
+                if (e == null || e.Seq <= afterSeq || !seen.Add(e.Seq)) continue;
+                if (page.Entries.Count == take) { page.More = true; break; }
+                page.Entries.Add(e);
+            }
+            long last = 0;
+            if (disk != null && disk.LastSeq > last) last = disk.LastSeq;
+            if (memory != null && memory.LastSeq > last) last = memory.LastSeq;
+            page.LastSeq = last;
+            page.NextAfterSeq = page.Entries.Count > 0 ? page.Entries[page.Entries.Count - 1].Seq : Math.Max(afterSeq, 0);
+            if (disk != null) { page.Gap = page.Gap || disk.Gap; page.Dropped += disk.Dropped; }
+            if (memory != null) { page.Gap = page.Gap || memory.Gap; page.Dropped += memory.Dropped; }
+            return page;
         }
 
         private static JObject VersionOf(Document doc)

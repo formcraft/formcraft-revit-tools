@@ -72,12 +72,15 @@ namespace Formcraft.Shell.Services
     {
         /// <summary>The log folder on this PC (%APPDATA%\Formcraft\ledger\model-changes), for the page to name it.</summary>
         string LogDir { get; }
+        /// <summary>False when the kit or %APPDATA%\Formcraft\config.json has turned the lasting log off. The in-memory journal may still be shown.</summary>
+        bool LoggingEnabled { get; }
         Task<IReadOnlyList<ChangeFeedRow>> ReadAsync(string document, string category, string user, DateTime? sinceUtc, DateTime? untilUtc, int cap);
     }
 
     /// <summary>Sample rows for the preview and tests: one morning in EAT, with a before/after Mark change.</summary>
     public sealed class MockChangeFeedTools : IChangeFeedTools
     {
+        public bool LoggingEnabled { get; set; } = true;
         public string LogDir { get; set; } = @"C:\Users\test\AppData\Roaming\Formcraft\ledger\model-changes";
         public List<ChangeFeedRow> Rows { get; } = Sample();
 

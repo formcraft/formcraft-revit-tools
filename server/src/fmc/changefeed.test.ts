@@ -228,6 +228,35 @@ test("the add-in side never syncs, saves, reloads latest, relinquishes, opens, c
   assert.match(read("plugin", "Fmc", "ChangeFeedSession.cs"), /DocumentChanged/);
 });
 
+test("the read path never writes a file or prunes the log", () => {
+  const files = [
+    ["commandset", "Services", "Fmc", "ChangeFeed", "FmcChangeFeedRead.cs"],
+    ["commandset", "Commands", "Fmc", "FmcChangeFeedReadCommand.cs"],
+    ["plugin", "Shell", "RevitChangeFeedTools.cs"],
+    ["shell", "Formcraft.Shell", "ViewModels", "ChangesPage.cs"],
+  ];
+  const write = [
+    /File\.Write/, /File\.Append/, /File\.Delete\s*\(/, /File\.Move\s*\(/, /File\.Copy\s*\(/, /File\.Create\s*\(/,
+    /FileMode\.Append/, /FileAccess\.Write/, /Directory\.CreateDirectory\s*\(/, /Directory\.Delete\s*\(/,
+    /ChangeFeedLog\.Append\s*\(/, /ChangeFeedLog\.PruneOlder\s*\(/, /ChangeFeedLog\.MarkListening\s*\(/, /\.PruneOlder\s*\(/,
+  ];
+  for (const f of files) {
+    const code = read(...f).split("\n").map((l) => l.replace(/\/\/.*$/, "")).join("\n");
+    for (const p of write) assert.doesNotMatch(code, p, `${f.join("/")} must not match ${p}`);
+  }
+});
+
+test("counts are by source and kind only, never per person", async () => {
+  const t = tmpEnv();
+  const body = parse(await runFmcChangeFeed(z.object(FMC_CHANGE_FEED_SHAPE).parse({ document: "F26901-FMC-ZZ-ZZ-M3-A-0002_USER", sources: [...DEFAULT_SOURCES] }), {
+    env: t.env, reportsDir: t.dir, now: () => now, revit: async () => revitReply,
+  }));
+  assert.deepEqual(Object.keys(body.counts).sort(), ["by_kind", "by_source"]);
+  assert.equal(body.counts.by_user, undefined);
+  assert.equal(body.counts.by_who, undefined);
+  assert.doesNotMatch(JSON.stringify(body.counts), /emlyn|cenk|leaderboard|ranking|by_user|by_who|per_user/);
+});
+
 test("the lasting JSONL log is read as revit entries, with zone-labeled times and before/after params", async () => {
   const t = tmpEnv();
   const dir = path.join(t.dir, "model-changes");

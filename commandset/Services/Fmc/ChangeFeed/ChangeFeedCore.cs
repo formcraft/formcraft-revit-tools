@@ -262,6 +262,38 @@ namespace RevitMCPCommandSet.Services.Fmc.ChangeFeed
             @"mayOpen\s*:\s*true",
         };
 
+        /// <summary>File writes and pruning: forbidden on the fmc_change_feed_read path (startup/logging may prune and append).</summary>
+        public static readonly string[] WriteForbidden =
+        {
+            @"File\.Write",
+            @"File\.Append",
+            @"File\.Delete\s*\(",
+            @"File\.Move\s*\(",
+            @"File\.Copy\s*\(",
+            @"File\.Create\s*\(",
+            @"File\.Replace\s*\(",
+            @"FileMode\.Append",
+            @"FileMode\.Create",
+            @"FileAccess\.Write",
+            @"Directory\.CreateDirectory\s*\(",
+            @"Directory\.Delete\s*\(",
+            @"new\s+StreamWriter\s*\(",
+            @"ChangeFeedLog\.Append\s*\(",
+            @"ChangeFeedLog\.PruneOlder\s*\(",
+            @"ChangeFeedLog\.MarkListening\s*\(",
+            @"ChangeFeedLog\.NextSeq\s*\(",
+            @"\.PruneOlder\s*\(",
+        };
+
+        public static List<string> WriteViolations(string source)
+        {
+            var found = new List<string>();
+            string text = StripLineComments(source ?? "");
+            foreach (string p in WriteForbidden)
+                if (Regex.IsMatch(text, p)) found.Add(p);
+            return found;
+        }
+
         /// <summary>The forbidden patterns found in one source text, line comments left out (they say what the feed never does).</summary>
         public static List<string> Violations(string source)
         {

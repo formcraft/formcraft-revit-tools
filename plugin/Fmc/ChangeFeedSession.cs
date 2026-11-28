@@ -34,11 +34,21 @@ namespace revit_mcp_plugin.Fmc
         private struct ElementHint { public string Category, Name, UniqueId; }
         private sealed class FillJob { public Document Doc; public FilteredElementCollector Coll; public FilteredElementIterator Walk; }
 
+        private static ChangeFeedOptions _options = ChangeFeedOptions.Defaults();
+
         public static bool Hooked { get { lock (L) return _hooked; } }
         public static string Dir { get { lock (L) return _dir; } }
+        public static ChangeFeedOptions Options { get { lock (L) return _options ?? ChangeFeedOptions.Defaults(); } }
+        public static bool LoggingEnabled { get { return Options.Logging; } }
 
-        /// <summary>Call once from OnStartup on Revit's UI thread.</summary>
-        public static void Hook(UIControlledApplication ui)
+        /// <summary>The in-memory journal page, for fmc_change_feed_read when logging to disk is off.</summary>
+        public static FeedPage QueryMemory(string document, long afterSeq, int limit)
+        {
+            lock (L) return Memory.Query(document, afterSeq, limit);
+        }
+
+        /// <summary>Call once from OnStartup on Revit's UI thread. kitFolder is the Formcraft kit (FMC_Kit.json in it), used only to read the change-feed options; it is never written.</summary>
+        public static void Hook(UIControlledApplication ui, Func<string> kitFolder = null)
         {
             if (ui == null) return;
             lock (L)
@@ -46,8 +56,10 @@ namespace revit_mcp_plugin.Fmc
                 if (_hooked) return;
                 try
                 {
+                    string kit = "";
+                    try { kit = kitFolder != null ? (kitFolder() ?? "") : ""; } catch (Exception) { kit = ""; }
+                    _options = ChangeFeedOptions.Load(kit);
                     _dir = ChangeFeedLog.DefaultDir();
-                    if (ChangeFeedLog.RefuseDir(_dir).Length > 0) return;
                     var app = ui.ControlledApplication;
                     app.DocumentOpened += OnOpened;
                     app.DocumentCreated += OnCreated;
@@ -60,7 +72,11 @@ namespace revit_mcp_plugin.Fmc
                     _hooked = true;
                     DateTime at = DateTime.UtcNow;
                     Memory.Started(at);
-                    ChangeFeedLog.MarkListening(_dir, at);
+                    if (_options.Logging && !string.IsNullOrEmpty(_dir) && ChangeFeedLog.RefuseDir(_dir).Length == 0)
+                    {
+                        ChangeFeedLog.MarkListening(_dir, at);
+                        ChangeFeedLog.PruneOlder(_dir, at, _options.RetentionMonths);
+                    }
                 }
                 catch (Exception) { /* the command then says it isn't listening */ }
             }
@@ -122,13 +138,13 @@ namespace revit_mcp_plugin.Fmc
         private static void OnOpened(object sender, DocumentOpenedEventArgs e)
         {
             Note(e.Document, "opened", "");
-            QueueFill(e.Document);
+            if (!ChangeFeedOptions.IsProtectedDocument(Key(e.Document), out _)) QueueFill(e.Document);
         }
 
         private static void OnCreated(object sender, DocumentCreatedEventArgs e)
         {
             Note(e.Document, "opened", "new document");
-            QueueFill(e.Document);
+            if (!ChangeFeedOptions.IsProtectedDocument(Key(e.Document), out _)) QueueFill(e.Document);
         }
 
         private static void OnSaved(object sender, DocumentSavedEventArgs e) => Note(e.Document, "saved", e.Status.ToString());
@@ -166,6 +182,14 @@ namespace revit_mcp_plugin.Fmc
                     ModifiedIds = modified.Take(FeedJournal.IdCap).Select(IdOf).ToList(),
                     DeletedIds = deleted.Take(FeedJournal.IdCap).Select(IdOf).ToList(),
                 };
+                if (ChangeFeedOptions.IsProtectedDocument(Key(doc), out string protectedWhy))
+                {
+                    entry.Elements = new List<ElementChange>();
+                    entry.ElementsTruncated = false;
+                    entry.TruncateReason = protectedWhy;
+                    Record(entry);
+                    return;
+                }
                 var details = new List<ElementChange>();
                 foreach (ElementId id in deleted)
                     details.Add(DescribeDeleted(Key(doc), IdOf(id)));
@@ -208,7 +232,8 @@ namespace revit_mcp_plugin.Fmc
                 Memory.Add(e);
                 dir = _dir;
             }
-            if (!string.IsNullOrEmpty(dir)) ChangeFeedLog.Append(dir, e);
+            if (LoggingEnabled && !string.IsNullOrEmpty(dir) && ChangeFeedLog.RefuseDir(dir).Length == 0)
+                ChangeFeedLog.Append(dir, e);
         }
 
         private static ElementChange DescribeDeleted(string docKey, long id)

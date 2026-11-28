@@ -115,6 +115,7 @@ namespace ChangeFeedCore.Tests
             new object[] { Path.Combine("commandset", "Commands", "Fmc", "FmcChangeFeedReadCommand.cs") },
             new object[] { Path.Combine("commandset", "Services", "Fmc", "ChangeFeed", "ChangeFeedLog.cs") },
             new object[] { Path.Combine("commandset", "Services", "Fmc", "ChangeFeed", "ChangeFeedParams.cs") },
+            new object[] { Path.Combine("commandset", "Services", "Fmc", "ChangeFeed", "ChangeFeedOptions.cs") },
             new object[] { Path.Combine("plugin", "Fmc", "ChangeFeedSession.cs") },
             new object[] { Path.Combine("plugin", "Shell", "RevitChangeFeedTools.cs") },
             new object[] { Path.Combine("shell", "Formcraft.Shell", "ViewModels", "ChangesPage.cs") },
@@ -138,7 +139,31 @@ namespace ChangeFeedCore.Tests
             Assert.Contains("[\"saved\"] = false", h);
             Assert.Contains("[\"synced\"] = false", h);
             Assert.Contains("[\"transaction\"] = false", h);
+            Assert.Empty(ReadOnlyContract.WriteViolations(h));
+            Assert.DoesNotContain("ChangeFeedLog.PruneOlder", h);
+            Assert.DoesNotContain("ChangeFeedLog.Append", h);
+            Assert.DoesNotContain("ChangeFeedLog.MarkListening", h);
         }
+
+        public static IEnumerable<object[]> ReadPathSources() => new[]
+        {
+            new object[] { Path.Combine("commandset", "Services", "Fmc", "ChangeFeed", "FmcChangeFeedRead.cs") },
+            new object[] { Path.Combine("commandset", "Commands", "Fmc", "FmcChangeFeedReadCommand.cs") },
+            new object[] { Path.Combine("plugin", "Shell", "RevitChangeFeedTools.cs") },
+            new object[] { Path.Combine("shell", "Formcraft.Shell", "ViewModels", "ChangesPage.cs") },
+        };
+
+        [Theory]
+        [MemberData(nameof(ReadPathSources))]
+        public void The_read_path_never_writes_a_file_or_prunes_the_log(string relative)
+        {
+            string file = Path.Combine(Repo(), relative);
+            Assert.True(File.Exists(file), file);
+            List<string> found = ReadOnlyContract.WriteViolations(File.ReadAllText(file));
+            Assert.True(found.Count == 0, relative + ": " + string.Join(", ", found));
+        }
+
+        
 
         [Theory]
         [InlineData("doc.SynchronizeWithCentral(opts, sync);")]

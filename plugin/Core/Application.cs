@@ -29,7 +29,13 @@ namespace revit_mcp_plugin.Core
             }
             catch (Exception) { /* the add-in works without it; Settings › Manage shows the switch either way */ }
             // F19 / F133: the lasting change log listens from startup (DocumentChanged, opens, saves, syncs). Read only.
-            try { ChangeFeedSession.Hook(application); } catch (Exception) { /* the command then says it isn't listening */ }
+            try
+            {
+                ChangeFeedSession.Hook(application, () =>
+                    Shell.ShellHost.Settings?.Get(global::Formcraft.Shell.Services.SettingKeys.KitFolder)
+                    ?? global::Formcraft.Shell.ViewModels.WelcomeViewModel.DefaultKitFolder);
+            }
+            catch (Exception) { /* the command then says it isn't listening */ }
             return Result.Succeeded;
         }
 

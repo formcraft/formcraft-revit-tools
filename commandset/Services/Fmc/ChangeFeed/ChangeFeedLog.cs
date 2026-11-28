@@ -302,6 +302,76 @@ namespace RevitMCPCommandSet.Services.Fmc.ChangeFeed
             return kept;
         }
 
+        /// <summary>The first day of the oldest month still kept (current month counts as one of the N months). Retention 0 or less means do not prune.</summary>
+        public static DateTime OldestKeptMonth(DateTime utcNow, int keepMonths)
+        {
+            if (keepMonths <= 0) return DateTime.MinValue;
+            DateTime u = utcNow.Kind == DateTimeKind.Utc ? utcNow : utcNow.ToUniversalTime();
+            var first = new DateTime(u.Year, u.Month, 1, 0, 0, 0, DateTimeKind.Utc);
+            return first.AddMonths(-(keepMonths - 1));
+        }
+
+        /// <summary>YYYY-MM from a monthly log file name (doc-YYYY-MM.jsonl or doc-YYYY-MM-partN.jsonl), or null.</summary>
+        public static DateTime? MonthOfFileName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name)) return null;
+            var m = Regex.Match(Path.GetFileName(name), @"-(\d{4})-(\d{2})(?:-part\d+)?\.jsonl$", RegexOptions.IgnoreCase);
+            if (!m.Success) return null;
+            int y = int.Parse(m.Groups[1].Value, CultureInfo.InvariantCulture);
+            int mo = int.Parse(m.Groups[2].Value, CultureInfo.InvariantCulture);
+            if (mo < 1 || mo > 12) return null;
+            return new DateTime(y, mo, 1, 0, 0, 0, DateTimeKind.Utc);
+        }
+
+        /// <summary>
+        /// Deletes monthly JSONL files in this log directory that are older than the retention window. Never deletes
+        /// a file outside the directory, a file whose name is not a monthly log, or anything when the directory is
+        /// refused (D:\Fomcraft, a model file). Returns how many files were removed. Call only from the startup or
+        /// logging path — never from fmc_change_feed_read or Query/ReadWindow.
+        /// </summary>
+        public static int PruneOlder(string dir, DateTime utcNow, int keepMonths)
+        {
+            if (keepMonths <= 0) return 0;
+            if (RefuseDir(dir).Length > 0) return 0;
+            string root;
+            try { root = Path.GetFullPath(dir.Trim()); }
+            catch { return 0; }
+            if (!Directory.Exists(root)) return 0;
+            DateTime oldest = OldestKeptMonth(utcNow, keepMonths);
+            int removed = 0;
+            string[] files;
+            try { files = Directory.GetFiles(root, "*.jsonl"); }
+            catch { return 0; }
+            foreach (string f in files)
+            {
+                DateTime? month = MonthOfFileName(f);
+                if (month == null || month.Value >= oldest) continue;
+                if (!IsInsideLogDir(root, f)) continue;
+                try
+                {
+                    File.Delete(f);
+                    removed++;
+                }
+                catch { /* a locked file is left; the next prune will try again */ }
+            }
+            return removed;
+        }
+
+        /// <summary>True only when file resolves to a path directly under dir (no escape through .. or a junction to the outside).</summary>
+        public static bool IsInsideLogDir(string dir, string file)
+        {
+            try
+            {
+                string root = Path.GetFullPath(dir.Trim());
+                string full = Path.GetFullPath(file);
+                string rootDir = Path.GetFullPath(Path.GetDirectoryName(full) ?? "");
+                if (!string.Equals(rootDir, root, StringComparison.OrdinalIgnoreCase)) return false;
+                string prefix = root.TrimEnd('\\', '/') + Path.DirectorySeparatorChar;
+                return full.StartsWith(prefix, StringComparison.OrdinalIgnoreCase);
+            }
+            catch { return false; }
+        }
+
         private static string ReadEnv(IDictionary<string, string> env, string name)
         {
             if (env != null && env.TryGetValue(name, out string v) && v != null) return v;

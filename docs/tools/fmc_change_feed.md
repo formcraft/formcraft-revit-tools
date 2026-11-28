@@ -90,3 +90,20 @@ entry). Times are stored in UTC (`at`) and labeled with the machine's time zone 
 The Formcraft pane (Check › Changes) shows the same log: a timeline with filters by document, category, user and time,
 and the before/after values for a picked row. The page is read-only and never syncs or saves.
 
+## Logging switch and retention
+
+Logging is **on** by default. It is set from the kit and from `%APPDATA%\Formcraft\config.json`, not from `fmc_guard.json`:
+
+- `<kit>\FMC_Config.json` or `<kit>\03_Master_Data\FMC_Change_Feed.json`
+- `%APPDATA%\Formcraft\config.json`
+
+Keys (flat or under a `change_feed` object): `change_feed_logging` (boolean, default true) and `change_feed_retention_months` (integer, default 12). `FMC_CHANGE_FEED_LOGGING`, `FMC_CHANGE_FEED_RETENTION_MONTHS` and `FMC_CHANGE_FEED_CONFIG` override these, for tests. When logging is off, no log files are written; the in-memory journal still works, and `fmc_change_feed_read` reports `journal.logging: false`.
+
+Monthly JSONL files older than the retention window are pruned only from the startup/logging path, and only inside the model-changes log directory. `fmc_change_feed_read` never writes a file and never prunes.
+
+## Protected models
+
+For **A-0001** (the document title or file name is exactly `A-0001`, with an optional `_USER` suffix and `.rvt`) and **HEBERT HOSTELS** (that phrase in the title or path, the same check as the existing never-save rule), before/after parameter values are not recorded. The entry still has the kind, the counts and the element ids, and a reason is given. A project model whose ISO name only ends in `-A-0001` (for example `F26901-…-M3-A-0001`) is not treated as A-0001.
+
+Counts in the feed and on Check › Changes are by source and kind, or a team total. They are never per person, and there is no ranking, score or leaderboard (rule 9). A user filter that shows entries, and the per-entry `by` (`ai` or `person`) tag, are allowed.
+

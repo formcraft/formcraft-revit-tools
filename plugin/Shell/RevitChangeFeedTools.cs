@@ -11,10 +11,24 @@ namespace revit_mcp_plugin.Shell
     public sealed class RevitChangeFeedTools : IChangeFeedTools
     {
         public string LogDir => ChangeFeedLog.DefaultDir();
+        public bool LoggingEnabled => ChangeFeedSession.Hooked ? ChangeFeedSession.LoggingEnabled : ChangeFeedOptions.Load().Logging;
 
         public Task<IReadOnlyList<ChangeFeedRow>> ReadAsync(string document, string category, string user, DateTime? sinceUtc, DateTime? untilUtc, int cap)
         {
             var src = ChangeFeedLog.ReadWindow(LogDir, document ?? "", sinceUtc, untilUtc, Math.Max(1, cap));
+            if (!LoggingEnabled && ChangeFeedSession.Hooked)
+            {
+                var mem = ChangeFeedSession.QueryMemory(document ?? "", 0, FeedJournal.MaxPage);
+                if (mem?.Entries != null)
+                {
+                    var seen = new HashSet<long>();
+                    foreach (var e in src) seen.Add(e.Seq);
+                    var merged = new List<FeedEntry>(src);
+                    foreach (var e in mem.Entries)
+                        if (e != null && seen.Add(e.Seq)) merged.Add(e);
+                    src = merged;
+                }
+            }
             var rows = new List<ChangeFeedRow>();
             foreach (var e in src)
             {

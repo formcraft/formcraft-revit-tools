@@ -148,9 +148,14 @@ namespace Formcraft.Shell.ViewModels
                 Groups.Add(new SettingsGroup("Before and after · " + _selected.AtLocal, items.ToArray()));
             }
 
-            Groups.Add(new SettingsGroup("About this log",
-                new NoteSetting("The log is a file on this PC, not inside the model. This page never syncs, saves, reloads latest or relinquishes. A person syncs in Revit.", ChipKind.Grey),
-                _messages));
+            var about = new List<SettingItem>
+            {
+                new NoteSetting("The log is a file on this PC, not inside the model. This page never syncs, saves, reloads latest or relinquishes. A person syncs in Revit. It never counts or ranks people (rule 9).", ChipKind.Grey),
+            };
+            if (!_tools.LoggingEnabled)
+                about.Add(new NoteSetting("Change-feed logging is disabled in the kit or %APPDATA%\Formcraft\config.json. No log files are being written. The in-memory journal is still shown.", ChipKind.Warn));
+            about.Add(_messages);
+            Groups.Add(new SettingsGroup("About this log", about.ToArray()));
         }
 
         private async Task Refresh()
