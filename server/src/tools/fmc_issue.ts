@@ -8,6 +8,7 @@ import { IssueException, IssueInput, IssueSheet, Revision, manifest, readiness, 
 import { neededParameters, qaFacts, runQa } from "../fmc/rules.js";
 import { parseRegister, planned } from "../fmc/sheets.js";
 import { readRulebooks } from "./fmc_qa.js";
+import { registerMissingBody, resolveRegister } from "../fmc/sheetregister.js";
 import { DEFAULT_FIELDS, csvRow, readRegisterFile } from "./fmc_sheets.js";
 
 const win = path.win32;
@@ -54,7 +55,7 @@ export const FMC_ISSUE_DESCRIPTION =
 
 export const FMC_ISSUE_SHAPE = {
   action: z.enum(["check", "except", "report", "issue"]),
-  register: z.string().optional().describe("Absolute path of the project's sheet register (.xlsx or .csv)"),
+  register: z.string().optional().describe("Absolute path of the project's sheet register (.xlsx or .csv). Left out: the kit's 03_Master_Data\\FMC_Sheet_Register.csv."),
   project_folder: z.string().optional().default(""),
   project_code: z.string().optional().default("PROJ"),
   originator: z.string().optional().default("FMC"),
@@ -75,8 +76,9 @@ export const FMC_ISSUE_SHAPE = {
 export type FmcIssueArgs = z.infer<z.ZodObject<typeof FMC_ISSUE_SHAPE>>;
 
 async function check(args: FmcIssueArgs, cfg: GuardConfig) {
-  if (!args.register || !fs.existsSync(args.register)) return { refused: [`Sheet register not found: ${args.register ?? "(none)"}`] };
-  const reg = parseRegister(readRegisterFile(args.register));
+  const found = resolveRegister(args.register, cfg);
+  if (!found.exists) { const body = registerMissingBody(found); return { refused: body.reasons, refusal: body }; }
+  const reg = parseRegister(readRegisterFile(found.file));
   if (!reg.sheets.length) return { refused: reg.problems.length ? reg.problems : ["The register lists no sheets"] };
   const plan = planned(reg.sheets, args.issue_set, args.disciplines);
   const input: IssueInput = {
@@ -95,7 +97,12 @@ async function check(args: FmcIssueArgs, cfg: GuardConfig) {
   const exFile = exceptionsFile(cfg, args.project_folder);
   const r = readiness(input, plan, model, qa.results, facts.links, (issueFacts?.revisions ?? []) as Revision[], readExceptions(exFile));
   const rulebooks = books.books.map((b) => `${b.name} v${b.version}`).join(", ") || "no rulebooks";
-  return { input, plan, model, readiness: r, facts, rulebooks, exceptions_file: exFile, problems: [...reg.problems, ...books.problems] };
+  const numbering = typeof issueFacts?.revision_numbering === "string" ? issueFacts.revision_numbering : "";
+  const notes = [
+    ...(numbering === "per_sheet" ? ["Revision numbering in this model is per sheet: each sheet's current revision is read with the per-sheet numbering (the highest sequence on that sheet), not the project's revision number."] : []),
+    ...(typeof issueFacts?.note === "string" && issueFacts.note ? [issueFacts.note] : []),
+  ];
+  return { input, plan, model, readiness: r, facts, rulebooks, exceptions_file: exFile, register: found.file, register_source: found.source, revision_numbering: numbering || undefined, notes, problems: [...reg.problems, ...books.problems] };
 }
 
 export async function runFmcIssue(args: FmcIssueArgs) {
@@ -115,14 +122,15 @@ export async function runFmcIssue(args: FmcIssueArgs) {
     }
 
     const c = await check(args, config);
-    if ("refused" in c) return reply({ refused: true, reasons: c.refused }, true);
+    if ("refused" in c) return reply("refusal" in c && c.refusal ? c.refusal : { refused: true, reasons: c.refused }, true);
     const r = c.readiness;
     const code = args.project_code.trim().toUpperCase() || "PROJ";
     const revision = c.input.company_revision || "REV";
 
     if (args.action === "check")
       return reply({ model: c.facts.model, issue_set: c.input.issue_set, purpose: c.input.purpose, company_revision: c.input.company_revision,
-        checked_against: c.rulebooks, exceptions_file: c.exceptions_file, ...r, problems: c.problems });
+        checked_against: c.rulebooks, exceptions_file: c.exceptions_file, register: c.register, register_source: c.register_source,
+        ...(c.revision_numbering ? { revision_numbering: c.revision_numbering } : {}), ...(c.notes.length ? { notes: c.notes } : {}), ...r, problems: c.problems });
 
     const report = readinessReport(code, c.input, r, c.rulebooks, new Date());
     if (args.action === "report") {

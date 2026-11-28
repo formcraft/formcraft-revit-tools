@@ -34,6 +34,8 @@ namespace RevitMCPCommandSet.Commands.Access
                 // 触发外部事件并等待完成
                 if (RaiseAndWaitForCompletion(60000)) // 60秒超时
                 {
+                    if (!string.IsNullOrEmpty(_handler.Error)) throw new InvalidOperationException(_handler.Error);
+                    if (_handler.ResultInfo == null) throw new InvalidOperationException("the read returned nothing");
                     return _handler.ResultInfo;
                 }
                 else
@@ -43,6 +45,8 @@ namespace RevitMCPCommandSet.Commands.Access
             }
             catch (Exception ex)
             {
+                // A coded refusal (FMC-DOC-NOT-FOUND, FMC-VIEW-NONE) keeps its code as the first thing in the message
+                if (ex.Message.StartsWith("[FMC-") && !ex.Message.StartsWith("[FMC-BRIDGE-TIMEOUT]")) throw new Exception(ex.Message);
                 throw new Exception($"[FMC-TOOL-FAILED] Reading the view's elements failed: {ex.Message}");
             }
         }

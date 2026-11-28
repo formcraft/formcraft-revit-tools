@@ -220,7 +220,8 @@ export const MODIFY_MODEL_DESCRIPTION =
   "bolts / anchors {ids (what they connect), corner1_mm, corner2_mm, x_dir?, y_dir?, spacing_x_mm?, spacing_y_mm?, diameter_mm?, grade?, " +
   "standard?, site?: shop|site} · weld {ids, point_mm | points_mm, thickness_mm?} · shorten {ids [beam], end: start|end, length_mm} · " +
   "notch {ids [beam], end, side?: top|bottom, length_mm, depth_mm} · corner_fillet {ids [plate], vertex, radius_mm}. " +
-  "dry_run true runs it and rolls back, answering what would change: do that first for deletes. Pinned elements and " +
+  "dry_run defaults to TRUE: a call without it runs the batch and rolls it back, answering what would change; pass dry_run false to apply " +
+  "(do the dry run first for deletes). Pinned elements and " +
   "elements another user owns are refused. Use get_element_geometry first to line new work up with existing elements, " +
   "and fmc_standards for any size, height or type no brief or recipe gives (it also finds the recipe to use). " +
   "A picture is not taken unless picture is true (snapshot true is the same switch). Elements with no extent are not pictured.";
@@ -253,6 +254,9 @@ export function batchHasExtent(ops: Array<{ op?: string }>): boolean {
   });
 }
 
+/** modify_model only changes the model when the caller says dry_run false. An omitted dry_run is a preview. */
+export const MODIFY_MODEL_DRY_RUN_DEFAULT = true;
+
 export const UNDO_AI_BATCH_DESCRIPTION =
   "Formcraft (owner 27 Oct): take back the AI's own work with Revit's Undo. batch_id (modify_model answers it; scripts answer " +
   "undo_id): that batch and any AI batches made after it; without it, the last count batches (default 1). It never undoes a " +
@@ -261,6 +265,21 @@ export const UNDO_AI_BATCH_DESCRIPTION =
   "active window in Revit; a sync with central or closing the model clears Revit's undo list.";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+/**
+ * What undo_ai_batch sends Revit. The call's document (the `document` argument, stripped by the target wrapper and kept in
+ * documentTarget) goes on every command of the call, status and the polls after an undo included, so Revit resolves the
+ * named document and never falls back to the active one. A call without a document sends none.
+ */
+export function undoParams(args: { action?: string; batch_id?: string; count?: number }, document?: string): Record<string, unknown> {
+  const doc = (document ?? "").trim();
+  return {
+    ...(args.action && args.action !== "status" ? { action: args.action } : {}),
+    ...(args.action !== "status" && args.batch_id ? { batch_id: args.batch_id } : {}),
+    ...(args.action !== "status" && args.count ? { count: args.count } : {}),
+    ...(doc ? { document: doc } : {}),
+  };
+}
 
 export function registerModifyModelTool(server: McpServer) {
   server.tool(
@@ -273,14 +292,15 @@ export function registerModifyModelTool(server: McpServer) {
     },
     async (args) => {
       try {
-        if (args.action === "status") return reply(await withRevitConnection((c) => c.sendCommand("fmc_undo_status", {})));
-        const r = await withRevitConnection((c) => c.sendCommand("fmc_undo", { action: args.action, ...(args.batch_id ? { batch_id: args.batch_id } : {}), ...(args.count ? { count: args.count } : {}) }));
+        const document = documentTarget.getStore();
+        if (args.action === "status") return reply(await withRevitConnection((c) => c.sendCommand("fmc_undo_status", undoParams({ action: "status" }, document))));
+        const r = await withRevitConnection((c) => c.sendCommand("fmc_undo", undoParams(args, document)));
         if (!r?.posted) return reply(r, !r?.queued && !r?.approval);
         // Revit runs each Undo once it is idle; the add-in posts the next after Revit reports the last
         let s: any;
         for (let i = 0; i < 60; i++) {
           await sleep(500);
-          s = await withRevitConnection((c) => c.sendCommand("fmc_undo_status", {}));
+          s = await withRevitConnection((c) => c.sendCommand("fmc_undo_status", undoParams({ action: "status" }, document)));
           if (!s?.undo_running) break;
         }
         const top = s?.undo_list?.[0];
@@ -300,7 +320,7 @@ export function registerModifyModelTool(server: McpServer) {
     MODIFY_MODEL_DESCRIPTION,
     {
       ops: z.array(z.object({ op: z.enum(MODEL_EDIT_OPS) }).passthrough()).min(1).describe("The edits, run in order"),
-      dry_run: z.boolean().optional().default(false).describe("Run and roll back: what would change, nothing changed"),
+      dry_run: z.boolean().optional().default(MODIFY_MODEL_DRY_RUN_DEFAULT).describe("Default true: run and roll back, what would change and nothing changed. Pass false to apply the batch for real."),
       why: z.string().max(1000).optional().describe("A sentence or two (up to 1000 characters) for the person approving: what this batch is for"),
       picture: z.boolean().optional().default(false).describe("Take a picture of the changed elements and return it with the answer. Default false. A picture is for a failed check or a founder's sign-off, not after every batch."),
       snapshot: z.boolean().optional().describe("Same switch as picture. Default off. Nothing is pictured unless picture or snapshot is true."),
@@ -423,7 +443,7 @@ export function registerModifyModelTool(server: McpServer) {
 
   server.tool(
     "get_element_geometry",
-    "Formcraft, read-only: elements' exact geometry in mm (owner 26 Oct): location line or point, level, bounding box, wall " +
+    "Formcraft, read-only: elements' exact geometry in mm (owner 26 Oct): location (location_mm: point or curve), level and level_elevation_mm, bounding box (bbox_mm), wall " +
       "width, height and top constraint, host, and the outline loops of floors, ceilings, roofs and rooms. Use it before " +
       "placing or editing, to line new work up exactly with what is there.",
     { ids: z.array(z.union([z.number(), z.string()])).min(1).max(200).describe("Element ids or unique ids") },

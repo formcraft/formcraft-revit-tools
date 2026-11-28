@@ -702,7 +702,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     if (e == null) { missing.Add(s); continue; }
                     list.Add(Geometry(doc, e));
                 }
-                Result = new JObject { ["model"] = doc.Title, ["path"] = doc.PathName ?? "", ["read_only"] = doc.IsDetached || doc.IsLinked || FmcVerifySession.Contains(doc), ["elements"] = list, ["missing"] = missing };
+                Result = new JObject { ["model"] = doc.Title, ["path"] = doc.PathName ?? "", ["read_only"] = true, ["document_read_only"] = doc.IsDetached || doc.IsLinked || FmcVerifySession.Contains(doc), ["units"] = "mm", ["elements"] = list, ["missing"] = missing };
             }
             catch (Exception e) { Error = e.Message; }
             finally { _done.Set(); }
@@ -716,10 +716,46 @@ namespace RevitMCPCommandSet.Services.Fmc
                 ["name"] = e is Room rm ? (rm.Number + " " + (rm.get_Parameter(BuiltInParameter.ROOM_NAME)?.AsString() ?? "")).Trim() : "",
                 ["level"] = doc.GetElement(e.LevelId)?.Name ?? "", ["pinned"] = e.Pinned,
             };
-            if (e.Location is LocationPoint lp) o["point_mm"] = P(lp.Point);
-            else if (e.Location is LocationCurve lc) { o["start_mm"] = P(lc.Curve.GetEndPoint(0)); o["end_mm"] = P(lc.Curve.GetEndPoint(1)); }
+            // location, level elevation and bounding box, all in mm. The flat fields stay for older callers.
+            try
+            {
+                if (e.Location is LocationPoint lp)
+                {
+                    o["point_mm"] = P(lp.Point);
+                    o["location_mm"] = new JObject { ["type"] = "point", ["point"] = P(lp.Point) };
+                }
+                else if (e.Location is LocationCurve lc && lc.Curve != null)
+                {
+                    if (lc.Curve.IsBound)
+                    {
+                        o["start_mm"] = P(lc.Curve.GetEndPoint(0)); o["end_mm"] = P(lc.Curve.GetEndPoint(1));
+                        o["location_mm"] = new JObject { ["type"] = "curve", ["start"] = P(lc.Curve.GetEndPoint(0)), ["end"] = P(lc.Curve.GetEndPoint(1)), ["length"] = Math.Round(lc.Curve.Length * 304.8, 1) };
+                    }
+                    else o["location_mm"] = new JObject { ["type"] = "unbound_curve" };
+                }
+                else o["location_mm"] = null;
+            }
+            catch (Exception) { o["location_mm"] = null; }
+            Level lvl = doc.GetElement(e.LevelId) as Level;
+            if (lvl == null)
+            {
+                // elements whose LevelId is unset still carry their level in a parameter (family instances, schedule level)
+                ElementId pl = e.get_Parameter(BuiltInParameter.FAMILY_LEVEL_PARAM)?.AsElementId() ?? e.get_Parameter(BuiltInParameter.SCHEDULE_LEVEL_PARAM)?.AsElementId() ?? ElementId.InvalidElementId;
+                lvl = doc.GetElement(pl) as Level;
+            }
+            if (lvl != null)
+            {
+                if (string.IsNullOrEmpty(o.Value<string>("level"))) o["level"] = lvl.Name;
+                o["level_elevation_mm"] = Math.Round(lvl.Elevation * 304.8, 1);
+            }
+            else o["level_elevation_mm"] = null;
             BoundingBoxXYZ bb = e.get_BoundingBox(null);
-            if (bb != null) { o["bbox_min_mm"] = P(bb.Min); o["bbox_max_mm"] = P(bb.Max); }
+            if (bb != null)
+            {
+                o["bbox_min_mm"] = P(bb.Min); o["bbox_max_mm"] = P(bb.Max);
+                o["bbox_mm"] = new JObject { ["min"] = P(bb.Min), ["max"] = P(bb.Max) };
+            }
+            else o["bbox_mm"] = null;
             if (e is Wall w)
             {
                 o["width_mm"] = Math.Round(w.Width * 304.8, 1);

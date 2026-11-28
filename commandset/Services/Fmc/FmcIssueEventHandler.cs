@@ -56,15 +56,51 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         public string GetName() => "FMC issue";
 
+        /// <summary>
+        /// True when the model numbers revisions per sheet. Revit's project-wide calls (ViewSheet.GetCurrentRevision,
+        /// Revision.RevisionNumber) are not valid then: they threw "This operation is not valid for when the revision
+        /// numbering is per sheet" and failed fmc_issue check on a per-sheet model.
+        /// </summary>
+        private static bool PerSheet(Document doc)
+        {
+            try { return RevisionSettings.GetRevisionSettings(doc).RevisionNumbering == RevisionNumbering.PerSheet; }
+            catch (Exception) { return false; }
+        }
+
+        private static string SafeNumber(Revision r, bool perSheet)
+        {
+            if (perSheet) return "";
+            try { return r.RevisionNumber ?? ""; } catch (Exception) { return ""; }
+        }
+
+        /// <summary>The sheet's current revision number: the project's when numbering is per project; per sheet, the revision with the highest sequence on that sheet, numbered by the sheet.</summary>
+        private static string CurrentRevisionNumber(Document doc, ViewSheet s, bool perSheet)
+        {
+            if (!perSheet)
+            {
+                try { return doc.GetElement(s.GetCurrentRevision()) is Revision r ? (r.RevisionNumber ?? "") : ""; }
+                catch (InvalidOperationException) { perSheet = true; } // the setting read wrong: use the per-sheet route below
+            }
+            Revision top = null;
+            foreach (ElementId id in s.GetAllRevisionIds())
+            {
+                if (!(doc.GetElement(id) is Revision r)) continue;
+                if (top == null || r.SequenceNumber > top.SequenceNumber) top = r;
+            }
+            if (top == null) return "";
+            try { return s.GetRevisionNumberOnSheet(top.Id) ?? ""; } catch (Exception) { return ""; }
+        }
+
         private static JObject Facts(Document doc)
         {
+            bool perSheet = PerSheet(doc);
             var revisions = new JArray();
             foreach (ElementId id in Revision.GetAllRevisionIds(doc))
             {
                 if (!(doc.GetElement(id) is Revision r)) continue;
                 revisions.Add(new JObject
                 {
-                    ["id"] = r.Id.Value, ["sequence"] = r.SequenceNumber, ["number"] = r.RevisionNumber ?? "", ["description"] = r.Description ?? "",
+                    ["id"] = r.Id.Value, ["sequence"] = r.SequenceNumber, ["number"] = SafeNumber(r, perSheet), ["description"] = r.Description ?? "",
                     ["date"] = r.RevisionDate ?? "", ["issued"] = r.Issued,
                 });
             }
@@ -73,10 +109,13 @@ namespace RevitMCPCommandSet.Services.Fmc
             {
                 if (s.IsPlaceholder) continue;
                 string current = "";
-                if (doc.GetElement(s.GetCurrentRevision()) is Revision r) current = r.RevisionNumber ?? "";
+                try { current = CurrentRevisionNumber(doc, s, perSheet); }
+                catch (Exception) { current = ""; } // one sheet Revit can't answer for never stops the read
                 sheets.Add(new JObject { ["id"] = s.Id.Value, ["number"] = s.SheetNumber, ["current_revision"] = current });
             }
-            return new JObject { ["model"] = doc.Title, ["revisions"] = revisions, ["sheets"] = sheets };
+            var result = new JObject { ["model"] = doc.Title, ["revision_numbering"] = perSheet ? "per_sheet" : "per_project", ["revisions"] = revisions, ["sheets"] = sheets };
+            if (perSheet) result["note"] = "Revision numbers are per sheet in this model: each revision's project number is blank, and a sheet's current_revision is its own highest-sequence revision as numbered on that sheet.";
+            return result;
         }
 
         private JObject Export(Document doc)

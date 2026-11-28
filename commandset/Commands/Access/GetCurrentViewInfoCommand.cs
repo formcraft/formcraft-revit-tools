@@ -29,6 +29,8 @@ namespace RevitMCPCommandSet.Commands.Access
             // 触发外部事件并等待完成
             if (RaiseAndWaitForCompletion(10000)) // 10秒超时
             {
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new InvalidOperationException(_handler.Error.StartsWith("[FMC-") ? _handler.Error : "[FMC-TOOL-FAILED] Reading the view information failed: " + _handler.Error);
+                if (_handler.ResultInfo == null) throw new InvalidOperationException("[FMC-TOOL-FAILED] Reading the view information returned nothing");
                 return _handler.ResultInfo;
             }
             else

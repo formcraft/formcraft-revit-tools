@@ -290,7 +290,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             Run("clashes", () => Clashes(doc, model));
             Run("blind_openings", () => Blind(doc, model));
             int total = r.Properties().Sum(p => p.Value.Value<int?>("count") ?? 0);
-            return new JObject { ["model"] = doc.Title, ["path"] = doc.PathName ?? "", ["read_only"] = doc.IsDetached || doc.IsLinked || FmcVerifySession.Contains(doc), ["level"] = Parameters["level"], ["problems"] = total, ["checks"] = r,
+            return new JObject { ["model"] = doc.Title, ["path"] = doc.PathName ?? "", ["read_only"] = true, ["document_read_only"] = doc.IsDetached || doc.IsLinked || FmcVerifySession.Contains(doc), ["level"] = Parameters["level"], ["problems"] = total, ["checks"] = r,
                 ["next"] = total == 0 ? "No problems found by these checks" : "Look at each with see_view ids [...]; fix with modify_model" };
         }
 
@@ -313,17 +313,40 @@ namespace RevitMCPCommandSet.Services.Fmc
             }));
         }
 
+        private static string Cell(XYZ p) => $"{Math.Round(p.X / Tol)}:{Math.Round(p.Y / Tol)}:{Math.Round(p.Z / Tol)}";
+
+        /// <summary>
+        /// Where a location curve is, as a text key. A bound curve is its two ends (either way round). An unbound curve (an
+        /// infinite line, a full circle: Project1 had one) has no ends, and GetEndPoint threw "The input curve is not
+        /// bound", which failed the whole duplicates check; it is keyed by what defines it instead. Null: no key.
+        /// </summary>
+        private static string CurveKey(Curve c)
+        {
+            if (c == null) return null;
+            if (c.IsBound)
+                return string.Join("|", new[] { c.GetEndPoint(0), c.GetEndPoint(1) }.Select(Cell).OrderBy(x => x));
+            if (c is Line l) return $"unbound-line:{Cell(l.Origin)}:{Math.Round(l.Direction.X, 3)}:{Math.Round(l.Direction.Y, 3)}:{Math.Round(l.Direction.Z, 3)}";
+            if (c is Arc a) return $"unbound-arc:{Cell(a.Center)}:{Math.Round(a.Radius / Tol)}:{Math.Round(Math.Abs(a.Normal.X), 3)}:{Math.Round(Math.Abs(a.Normal.Y), 3)}:{Math.Round(Math.Abs(a.Normal.Z), 3)}";
+            return null;
+        }
+
         private JObject Duplicates(List<Element> model)
         {
             // the same category and type at the same place (to 10 mm): a batch run twice, or a copy left behind
+            string BoxKey(Element e) => e.get_BoundingBox(null) is BoundingBoxXYZ b ? $"{Math.Round(b.Min.X / Tol)}:{Math.Round(b.Min.Y / Tol)}:{Math.Round(b.Max.X / Tol)}:{Math.Round(b.Max.Y / Tol)}:{Math.Round(b.Min.Z / Tol)}" : null;
             string Key(Element e)
             {
-                string at = e.Location switch
+                string at;
+                try
                 {
-                    LocationPoint lp => $"{Math.Round(lp.Point.X / Tol)}:{Math.Round(lp.Point.Y / Tol)}:{Math.Round(lp.Point.Z / Tol)}",
-                    LocationCurve lc => string.Join("|", new[] { lc.Curve.GetEndPoint(0), lc.Curve.GetEndPoint(1) }.Select(p => $"{Math.Round(p.X / Tol)}:{Math.Round(p.Y / Tol)}:{Math.Round(p.Z / Tol)}").OrderBy(s => s)),
-                    _ => e.get_BoundingBox(null) is BoundingBoxXYZ b ? $"{Math.Round(b.Min.X / Tol)}:{Math.Round(b.Min.Y / Tol)}:{Math.Round(b.Max.X / Tol)}:{Math.Round(b.Max.Y / Tol)}:{Math.Round(b.Min.Z / Tol)}" : null,
-                };
+                    at = e.Location switch
+                    {
+                        LocationPoint lp => Cell(lp.Point),
+                        LocationCurve lc => CurveKey(lc.Curve) ?? BoxKey(e),
+                        _ => BoxKey(e),
+                    };
+                }
+                catch (Exception) { at = null; } // one odd element is skipped; it never fails the check
                 return at == null ? null : $"{e.Category.Id.Value}/{e.GetTypeId().Value}/{e.LevelId.Value}/{at}";
             }
             return List(model.Where(e => !(e is Room)).GroupBy(Key).Where(g => g.Key != null && g.Count() > 1).Select(g => new JObject

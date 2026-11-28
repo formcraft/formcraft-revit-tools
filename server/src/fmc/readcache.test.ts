@@ -34,3 +34,33 @@ test("levels, types and views are cached until a write or a lease release; docum
   invalidateReads("Plumbing");
   assert.equal(takeCachedRead("get_current_view_info", {}, "Plumbing"), undefined);
 });
+
+test("get_available_family_types compact reply keeps ids, type names and family names (it was { count: 20, ids: [] })", () => {
+  const rows = [
+    { familyTypeId: 311, uniqueId: "u1", familyName: "Basic Wall", typeName: "Generic - 200mm", category: "Walls" },
+    { familyTypeId: 312, uniqueId: "u2", familyName: "M_Single-Flush", typeName: "0915 x 2134mm", category: "Doors" },
+  ];
+  const compact = compactReply(rows) as { count: number; ids: number[]; types: Array<Record<string, unknown>> };
+  assert.equal(compact.count, 2);
+  assert.deepEqual(compact.ids, [311, 312]);
+  assert.deepEqual(compact.types, [
+    { id: 311, name: "Generic - 200mm", family: "Basic Wall", category: "Walls" },
+    { id: 312, name: "0915 x 2134mm", family: "M_Single-Flush", category: "Doors" },
+  ]);
+  // PascalCase from the add-in, and rows inside a wrapper object
+  const pascal = compactReply({ Response: [{ FamilyTypeId: 7, FamilyName: "F", TypeName: "T", Category: "C" }] }) as { Response: { ids: number[]; types: unknown[] } };
+  assert.deepEqual(pascal.Response.ids, [7]);
+  assert.deepEqual(pascal.Response.types, [{ id: 7, name: "T", family: "F", category: "C" }]);
+});
+
+test("compact type reply is capped and says so; other arrays are unchanged", () => {
+  const many = Array.from({ length: 130 }, (_, i) => ({ familyTypeId: i + 1, familyName: "F", typeName: `T${i}` }));
+  const compact = compactReply(many) as { count: number; ids: number[]; types: unknown[]; truncated?: boolean };
+  assert.equal(compact.count, 130);
+  assert.equal(compact.types.length, 100);
+  assert.equal(compact.ids.length, 100);
+  assert.equal(compact.truncated, true);
+  assert.deepEqual(compactReply([{ id: 1, name: "GF" }, { id: 2, name: "FF" }]), { count: 2, ids: [1, 2] });
+  assert.deepEqual(compactReply([]), { count: 0, ids: [] });
+  assert.deepEqual(compactReply([{ typeName: "T" }, { id: 3 }]), { count: 2, ids: [3] }, "a mixed array is not a type list");
+});

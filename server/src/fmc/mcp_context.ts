@@ -155,7 +155,7 @@ export function registerContextPrompts(server: McpServer): string[] {
       `Work on ${model}${task ? `: ${task}` : ""}.\n` +
       `1. Pass revit: ${JSON.stringify(model)} on every Revit tool call; never use fmc_revit use.\n` +
       "2. fmc_selftest, fmc_ai status, then model_check; look at the top problems with see_view.\n" +
-      "3. Edit with modify_model's typed ops (code only where no op fits). Take sizes from fmc_standards. Fix the warnings each batch reports before the next.\n" +
+      "3. Edit with modify_model's typed ops (code only where no op fits; dry_run defaults to true, so pass dry_run false to apply). Take sizes from fmc_standards. Fix the warnings each batch reports before the next.\n" +
       "4. Keep going batch after batch while work remains; fmc_ai wait on any batch that waits for approval.\n" +
       "5. At the end: what you changed, what's left, and fmc_ai failures as a table (tool, op, exact reason)."));
   s.prompt("test-new-build", "Test the installed build's tools on a sandbox model, one by one, with a report",

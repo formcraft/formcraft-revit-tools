@@ -5,6 +5,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { loadConfig } from "../fmc/policy.js";
 import { kitPaths, recipeIndex } from "../fmc/context.js";
 import { formcraftDir } from "../fmc/aiuse_io.js";
+import { readOverridesFile, setOverride, STANDARDS_OVERRIDES_PARSE } from "../fmc/overrides.js";
 import { SourcesFile, StandardsFile, findRecipes, lookup, relatedStandards, resolve, sourcesView, suggestRecipe } from "../fmc/standards.js";
 
 const win = path.win32;
@@ -49,7 +50,12 @@ export function registerFmcStandardsTool(server: McpServer) {
         const kit = readJson<StandardsFile>(kitFile);
         const project = projectFolder(args.project_folder);
         const projFile = project ? win.join(project, "01_WIP", "FMC_Project_Standards.json") : "";
-        const proj = projFile ? readJson<Record<string, unknown>>(projFile) : null;
+        // A missing overrides file is "none yet"; one that does not parse is never read as empty (see fmc/overrides.ts)
+        const overrides = projFile ? readOverridesFile(projFile) : { state: "missing" as const };
+        const proj = overrides.state === "ok" ? overrides.data : null;
+        const overridesWarning = overrides.state === "unparseable"
+          ? { overrides_warning: { code: STANDARDS_OVERRIDES_PARSE, file: projFile, parse_error: overrides.error, message: "The project's overrides were NOT applied: the file does not parse. Kit values only. Fix the file; set refuses to write until it parses." } }
+          : {};
         const all = resolve(kit, proj, args.use);
         const where = { kit: kit ? kitFile : `missing: ${kitFile}`, project: projFile || "no project folder found" };
 
@@ -64,10 +70,9 @@ export function registerFmcStandardsTool(server: McpServer) {
         if (args.action === "set") {
           if (!projFile) return reply({ error: "No project folder: give project_folder (the folder holding 01_WIP)" }, true);
           if (!args.key || args.value === undefined) return reply({ error: "set needs key and value" }, true);
-          const next = { ...(proj ?? {}), [args.key]: { value: args.value, ...(args.note ? { note: args.note } : {}), status: "project" } };
-          fs.mkdirSync(win.dirname(projFile), { recursive: true });
-          fs.writeFileSync(projFile, JSON.stringify(next, null, 2));
-          return reply({ set: args.key, value: args.value, file: projFile });
+          const done = setOverride(projFile, args.key, args.value, args.note);
+          if (!done.ok) return reply(done.body, true);
+          return reply({ set: done.set, value: done.value, file: done.file });
         }
 
         if (args.action === "recipe") {
@@ -75,7 +80,7 @@ export function registerFmcStandardsTool(server: McpServer) {
           if (!words.trim()) return reply({ error: "recipe needs words, e.g. sliding door" }, true);
           const found = findRecipes(recipeIndex(k), words);
           const related = relatedStandards(all, words);
-          if (found.length && found[0].score >= 0.5) return reply({ found, standards: related, where });
+          if (found.length && found[0].score >= 0.5) return reply({ found, standards: related, where, ...overridesWarning });
           const s = suggestRecipe(words, args.discipline ?? "A");
           const request = { at: new Date().toISOString(), words, suggested: s.name, folder: s.folder, project };
           try { fs.mkdirSync(formcraftDir(), { recursive: true }); fs.appendFileSync(win.join(formcraftDir(), "recipe_requests.jsonl"), JSON.stringify(request) + "\n"); } catch { /* still answers */ }
@@ -84,12 +89,12 @@ export function registerFmcStandardsTool(server: McpServer) {
             write: { name: s.name + ".recipe.json", folder: win.join(win.dirname(k.recipesDir), s.folder), tool: "fmc_recipe check, then build" },
             standards: related,
             next: "No kit recipe fits. Build it from these standards now (new_family and modify_model's family ops, or a recipe with fmc_recipe), and say it was made without a kit recipe. The request is logged for the BIM Manager.",
-            where,
+            where, ...overridesWarning,
           });
         }
 
         const values = lookup(all, args.topic);
-        return reply({ use: args.use ?? null, count: values.length, values, where,
+        return reply({ use: args.use ?? null, count: values.length, values, where, ...overridesWarning,
           ...(values.some((v) => v.status === "proposed") ? { note: "proposed values are typical practice, not yet approved by the BIM Manager: tell the person when a design depends on one" } : {}) });
       } catch (e) {
         return reply({ error: e instanceof Error ? e.message : String(e) }, true);

@@ -314,7 +314,14 @@ namespace RevitMCPCommandSet.Commands.Fmc
         {
             lock (_lock)
             {
-                _handler.Parameters = new JObject { ["action"] = "status" };
+                // Keep the call's document (and the job/guard fields FmcTarget reads): a status that dropped them could not
+                // tell which of several open documents was meant and refused with FMC-DOC-REQUIRED. batch_id and count
+                // belong to undo; a status never takes them (a batch_id would make it refuse a batch of another document).
+                var p = parameters != null ? (JObject)parameters.DeepClone() : new JObject();
+                p.Remove("batch_id");
+                p.Remove("count");
+                p["action"] = "status";
+                _handler.Parameters = p;
                 if (!RaiseAndWaitForCompletion(60000)) throw new TimeoutException($"{CommandName} timed out");
                 if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
                 return _handler.Result;

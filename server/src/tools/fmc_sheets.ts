@@ -8,6 +8,7 @@ import { ModelSheet, compare, completeness, numberOk, parseRegister, planned } f
 import { readXlsx } from "../fmc/xlsx.js";
 import { FMC_SHEET_LAYOUT_FIELDS, runSheetLayout, type SheetLayoutArgs } from "./fmc_sheet_layout.js";
 import { runSheetPack, type SheetPackArgs } from "./fmc_sheet_pack.js";
+import { registerMissingBody, resolveRegister } from "../fmc/sheetregister.js";
 
 const win = path.win32;
 
@@ -70,7 +71,7 @@ export const FMC_SHEETS_SHAPE = {
   action: z.enum(["compare", "create", "rename", "pair", "arrange", "park", "pack"]),
   min_scale: z.number().int().positive().optional().default(1).describe("pack: smallest scale denominator. 50 means 1:50 or coarser."),
   pair_small: z.boolean().optional().default(true).describe("pack: propose small views from other sheets when they fit the leftover space."),
-  register: z.string().optional().default("").describe("Absolute path of the project's sheet register (.xlsx or .csv). Required for compare, create and rename."),
+  register: z.string().optional().default("").describe("Absolute path of the project's sheet register (.xlsx or .csv) for compare, create and rename. Left out: the kit's 03_Master_Data\\FMC_Sheet_Register.csv."),
   document: z.string().optional().default("").describe("Title or full path. Required for pair, arrange and park."),
   sheet: FMC_SHEET_LAYOUT_FIELDS.sheet,
   views: FMC_SHEET_LAYOUT_FIELDS.views,
@@ -98,8 +99,10 @@ export async function runFmcSheets(args: FmcSheetsArgs, io: Parameters<typeof ru
   const { config } = loadConfig();
   const dry = args.dry_run !== false;
   try {
-    if (!args.register.trim() || !fs.existsSync(args.register)) return reply({ refused: true, reasons: [`Sheet register not found: ${args.register}`] }, true);
-    const reg = parseRegister(readRegisterFile(args.register));
+    const found = resolveRegister(args.register, config);
+    if (!found.exists) return reply(registerMissingBody(found), true);
+    const registerFile = found.file;
+    const reg = parseRegister(readRegisterFile(registerFile));
     if (!reg.sheets.length) return reply({ refused: true, reasons: reg.problems.length ? reg.problems : ["The register lists no sheets"] }, true);
     const plan = planned(reg.sheets, args.issue_set, args.roles);
     const bad = plan.filter((p) => !numberOk(p.number)).map((p) => `${p.number} doesn't follow [Role]-[Series][Number]`);
@@ -114,7 +117,7 @@ export async function runFmcSheets(args: FmcSheetsArgs, io: Parameters<typeof ru
       const all = completeness(plan, model);
       const inModel = new Set(model.map((m) => m.number));
       const byStatus = all.reduce((a, c) => ({ ...a, [c.status]: (a[c.status] ?? 0) + 1 }), {} as Record<string, number>);
-      return reply({ model: facts?.model, register: args.register, planned: plan.length, in_model: model.length, differences: diffs,
+      return reply({ model: facts?.model, register: registerFile, register_source: found.source, planned: plan.length, in_model: model.length, differences: diffs,
         completeness: args.full ? all : all.filter((c) => inModel.has(c.number)), status_counts: byStatus,
         title_blocks: facts?.title_blocks ?? [], problems: [...reg.problems, ...bad] });
     }

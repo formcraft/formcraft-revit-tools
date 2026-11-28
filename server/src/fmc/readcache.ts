@@ -82,9 +82,39 @@ function idOf(value: unknown): string | number | null {
   return null;
 }
 
+/** A field by name, whatever the first letter's case (the add-in may answer PascalCase or camelCase). */
+function field(row: Record<string, unknown>, name: string): unknown {
+  return row[name] ?? row[name[0].toUpperCase() + name.slice(1)];
+}
+
+/** A family or system type row from get_available_family_types / fmc_type_facts: it names a type and its family. */
+function isTypeRow(value: unknown): value is Record<string, unknown> {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+  const row = value as Record<string, unknown>;
+  return typeof field(row, "typeName") === "string" && typeof field(row, "familyName") === "string";
+}
+
+/** Type rows in a compact reply: enough to pick a type (id, name, family, category) and nothing else. */
+export const COMPACT_TYPE_ROWS = 100;
+
 /** Counts and ids. Scalar fields stay so a lock or a save can still read title and path. */
 export function compactReply(value: unknown): unknown {
   if (Array.isArray(value)) {
+    // Type rows have no `id`: the old id lookup found nothing and the reply was { count: 20, ids: [] }. They keep their
+    // type id, type name, family name and category.
+    if (value.length > 0 && value.every(isTypeRow)) {
+      const rows = value as Array<Record<string, unknown>>;
+      const idFor = (r: Record<string, unknown>) => (field(r, "familyTypeId") ?? field(r, "id") ?? field(r, "typeId") ?? null) as string | number | null;
+      return {
+        count: rows.length,
+        ids: rows.map(idFor).filter((id) => id != null).slice(0, COMPACT_TYPE_ROWS),
+        types: rows.slice(0, COMPACT_TYPE_ROWS).map((r) => ({
+          id: idFor(r), name: field(r, "typeName"), family: field(r, "familyName"),
+          ...(typeof field(r, "category") === "string" ? { category: field(r, "category") } : {}),
+        })),
+        ...(rows.length > COMPACT_TYPE_ROWS ? { truncated: true, note: "Pass verbose: true, or a narrower categoryList or familyNameFilter, for the rest" } : {}),
+      };
+    }
     return { count: value.length, ids: value.map(idOf).filter((id) => id != null).slice(0, 40) };
   }
   if (!value || typeof value !== "object") return value;

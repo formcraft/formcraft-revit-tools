@@ -47,6 +47,8 @@ namespace RevitMCPCommandSet.Services
 
         // 执行结果
         public ViewElementsResult ResultInfo { get; private set; }
+        /// <summary>Set when the read failed. The command throws it: a failed read is not a null answer and not the last call's.</summary>
+        public string Error { get; private set; }
 
         // 状态同步对象
         public bool TaskCompleted { get; private set; }
@@ -72,10 +74,12 @@ namespace RevitMCPCommandSet.Services
 
         public void Execute(UIApplication app)
         {
+            ResultInfo = null;
+            Error = null;
             try
             {
                 var doc = FmcCallContext.Document(app);
-                var activeView = doc.ActiveView;
+                var activeView = FmcCallContext.ViewOf(app, doc);
 
 
                 // 合并所有类别
@@ -162,6 +166,8 @@ namespace RevitMCPCommandSet.Services
             }
             catch (Exception ex)
             {
+                ResultInfo = null;
+                Error = ex.Message;
                 RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Error", ex.Message);
             }
             finally
