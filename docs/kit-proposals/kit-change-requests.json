@@ -1,0 +1,100 @@
+{
+  "schema": "fmc-kit-change-requests/0.1",
+  "doc": "docs/kit-proposals/KIT_CHANGE_REQUEST_2026-11-28_MissingKitFiles.md",
+  "source": "C:\\Users\\USER\\agent-tools\\tool-research\\PROPOSALS_QUEUE.md kit section, 28 Nov 2026",
+  "note": "Templates only. Nothing here is written into the live kit (FMC_Kit_v2.2) or fmc_guard.json. The loader reports 'kit file missing, see <id>'.",
+  "requests": [
+    {
+      "id": "K-02",
+      "title": "Keynote seed model",
+      "target": "02_Keynotes\\Seeds\\FMC_Keynote_Seed.rvt",
+      "proposal": null,
+      "tools": [
+        "fmc_keynote_place"
+      ],
+      "loader": "Report FMC-KEYNOTE-SEED-MISSING and 'kit file missing, see K-02'. Do not invent a seed."
+    },
+    {
+      "id": "K-03",
+      "title": "Typical details folder and catalogue",
+      "target": "Details\\FMC_Details.json",
+      "also": [
+        "Details\\"
+      ],
+      "proposal": "docs/kit-proposals/FMC_Details.json",
+      "tools": [
+        "fmc_details"
+      ],
+      "loader": "A missing folder or catalogue is a clear miss with 'kit file missing, see K-03', not a silent pass."
+    },
+    {
+      "id": "K-04",
+      "title": "Script library index",
+      "target": "05_Scripts\\library\\index.json",
+      "proposal": "docs/kit-proposals/library-index.json",
+      "tools": [
+        "fmc_library"
+      ],
+      "loader": "list reports 'kit file missing, see K-04' instead of a bare ENOENT."
+    },
+    {
+      "id": "K-05",
+      "title": "Project templates layout",
+      "target": "06_Templates\\",
+      "also": [
+        "06_Templates\\_Staging\\"
+      ],
+      "proposal": null,
+      "tools": [
+        "fmc_template",
+        "fmc_selftest"
+      ],
+      "loader": "If .rte files sit only in _Staging, Warn and point at K-05. Emlyn decides: promote out of _Staging, or make the check read _Staging."
+    },
+    {
+      "id": "K-06",
+      "title": "Schedule sets",
+      "target": "03_Master_Data\\FMC_Schedule_Sets.json",
+      "proposal": "docs/kit-proposals/FMC_Schedule_Sets.json",
+      "tools": [
+        "fmc_schedules"
+      ],
+      "loader": "A missing set is 'kit file missing, see K-06'. Schema fmc-schedules/0.1 (docs/SCHEDULES.md)."
+    },
+    {
+      "id": "K-14",
+      "title": "Keynote legend spec",
+      "target": "03_Master_Data\\FMC_KeynoteLegend.json",
+      "proposal": "docs/kit-proposals/FMC_KeynoteLegend.json",
+      "tools": [
+        "fmc_keynote_legend"
+      ],
+      "loader": "Do not treat the server sample as the kit file. A missing kit file is 'kit file missing, see K-14' and stays PROVISIONAL."
+    },
+    {
+      "id": "CR-TagScale",
+      "title": "Tag scale table",
+      "target": "03_Master_Data\\FMC_TagScale.json",
+      "proposal": "docs/kit-proposals/FMC_TagScale.json",
+      "tools": [
+        "fmc_tags",
+        "fmc_annotate"
+      ],
+      "loader": "A missing file is 'kit file missing, see CR-TagScale'. No schema existed in the repo or the proposals queue; values are assumed until Emlyn sets them."
+    },
+    {
+      "id": "K-15",
+      "title": "Build parameters in test models, and sync_exclude spelling",
+      "target": "project templates / test models: bind FMC_Keynote_Code, FMC_Construction_Status, FMC_Trade_Package",
+      "also": [
+        "%APPDATA%\\Formcraft\\fmc_guard.json sync_exclude (HEBERT / HERBERT HOSTELS)"
+      ],
+      "proposal": "docs/kit-proposals/sync_exclude.proposed.json",
+      "tools": [
+        "fmc_build",
+        "fmc_batch"
+      ],
+      "loader": "If the three parameters are unbound, quantities does not pass: see K-15. If sync_exclude lists both HEBERT and HERBERT, Warn and see K-15. Do not write fmc_guard.json from the loader."
+    }
+  ]
+}

@@ -7,6 +7,7 @@ import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { configPath, expandEnv, loadConfig } from "../fmc/policy.js";
 import { label, notListening, readInstances, revitPort } from "../fmc/connect.js";
 import { AddinFacts, Line, PathProbe, aiRulebookLine, generalSwitchLine, rhinoRulebookLine, guardPaths, kitLayout, revitLines, runningBuildLine, summary } from "../fmc/selftest.js";
+import { kitCrLines } from "../fmc/kitcrs.js";
 import { loadRhinoRulebook } from "../hub/rhino.js";
 import { loadAiConfig, loadRulebook } from "../fmc/aiuse_io.js";
 import { BuildStamp, RUNNING_BUILD, diskBuild } from "../fmc/buildinfo.js";
@@ -73,6 +74,7 @@ export async function runFmcSelftest(args: FmcSelftestArgs) {
     generalSwitchLine(loadAiConfig(config), loadRulebook(config).book),
     rhinoRulebookLine(loadRhinoRulebook(expandEnv(config.rulebooks_dir))),
     ...kitLayout((facts?.kit_folder || args.kit_folder || "").trim(), probe),
+    ...kitCrLines((facts?.kit_folder || args.kit_folder || "").trim(), probe, config),
     // the engineering hub: each app, its connector and whether it is on (fmc_apps)
     ...appLines(appStatuses(realProbe(serverRoot()))),
   ];

@@ -1,0 +1,44 @@
+{
+  "schema": "fmc-schedules/0.1",
+  "name": "FMC schedule set (proposed)",
+  "revision": "P01",
+  "status": "proposed",
+  "kit_change_request": "K-06",
+  "note": "Illustrative only, from docs/SCHEDULES.md. The kit has no published set yet. Fields, filters and names are assumed until Emlyn confirms. FMC_Schedule_Folder (shared parameter on schedules) is a related kit request in SCHEDULES.md.",
+  "schedules": [
+    {
+      "name": "A_Door_Schedule",
+      "discipline": "A",
+      "category": "OST_Doors",
+      "fields": [
+        {
+          "name": "Mark"
+        },
+        {
+          "name": "FMC_Zone",
+          "heading": "Zone"
+        },
+        {
+          "name": "Count",
+          "total": true
+        }
+      ],
+      "filters": [
+        {
+          "field": "FMC_Zone",
+          "op": "equals",
+          "value": "Z1"
+        }
+      ],
+      "sort": [
+        {
+          "field": "Mark"
+        }
+      ],
+      "itemized": true,
+      "grand_totals": true,
+      "folder": "A Architecture",
+      "source_status": "assumed"
+    }
+  ]
+}

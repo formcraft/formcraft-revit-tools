@@ -8,6 +8,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { missingKitMessage } from "./kitcrs.js";
 
 export const LEGEND_FIX: Record<string, string> = {
   "FMC-DOC-REQUIRED": "fmc_keynote_legend needs document, a title or a full path. The active document is not a guess.",
@@ -39,6 +40,8 @@ export interface LoadedLegendSpec {
   path: string;
   source: "kit" | "sample" | "file";
   provisional: boolean;
+  /** Set when the kit file is missing and the server sample was used. */
+  kit_change_request?: string;
 }
 
 export interface LegendFrame {
@@ -108,7 +111,8 @@ export function loadLegendSpec(opts: {
     if (!exists(item.file)) continue;
     const spec = parseLegendSpec(read(item.file));
     const provisional = item.source !== "kit" || String(spec.status ?? "").toUpperCase() === "PROVISIONAL";
-    return { spec, path: item.file, source: item.source, provisional };
+    const kit_change_request = item.source === "kit" ? undefined : missingKitMessage("K-14", "The kit has no 03_Master_Data\\FMC_KeynoteLegend.json; the server sample is PROVISIONAL and cannot PASS");
+    return { spec, path: item.file, source: item.source, provisional, kit_change_request };
   }
   throw new Error(LEGEND_FIX["FMC-KEYNOTE-LEGEND-SPEC"]);
 }
