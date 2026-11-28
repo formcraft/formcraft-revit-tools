@@ -32,10 +32,14 @@ export const FMC_FLOW_DESCRIPTION =
     "dry_run is false (every step that has a dry run gets the run's value); vars give what the flow needs; a failing step " +
     "stops it and the run record says where. save: a project flow from steps (checked first). packages: the project's " +
     "exchange packages (every hand-over between apps, with checksums), newest first; verify checks one is unchanged. " +
-    "identity: the project's identity map (one Formcraft id per element, mapped to each app's id).";
+    "identity: the project's identity map (one Formcraft id per element, mapped to each app's id). " +
+    "runs: the run records (<exchange>\\Runs), newest first, with each run's result and where it stopped (flow narrows them); " +
+    "runs with run set to a record's id shows that record in full. Read-only.";
 
 export const FMC_FLOW_SHAPE = {
-  action: z.enum(["list", "show", "run", "save", "packages", "verify", "identity"]),
+  action: z.enum(["list", "show", "run", "save", "packages", "verify", "identity", "runs"]),
+  run: z.string().optional().default("").describe("runs: a run record's id (from runs) to show in full"),
+  limit: z.number().int().min(1).max(200).optional().default(20).describe("runs: how many records"),
   flow: z.string().optional().default("").describe("show, run: the flow's name; save: the new flow's name"),
   vars: z.record(z.string(), z.any()).optional().default({}).describe("run: the values the flow needs, e.g. { \"role\": \"A\" }"),
   steps: z.array(z.record(z.string(), z.any())).optional().describe("save: the steps, each { name, tool, args, real_only? }"),
@@ -47,7 +51,44 @@ export const FMC_FLOW_SHAPE = {
   dry_run: z.boolean().optional().default(true),
 };
 
-export type FmcFlowArgs = z.infer<z.ZodObject<typeof FMC_FLOW_SHAPE>>;
+type FlowParsed = z.infer<z.ZodObject<typeof FMC_FLOW_SHAPE>>;
+/** run and limit (the runs action) are optional for callers that build args by hand. */
+export type FmcFlowArgs = Omit<FlowParsed, "run" | "limit"> & Partial<Pick<FlowParsed, "run" | "limit">>;
+
+const RUN_ID = /^[A-Za-z0-9_-]{1,200}$/;
+
+/** The run records in <exchange>\Runs, newest first (Tool Research, fmc_flow: they were written but could not be listed). */
+export function listRuns(root: string, opts: { flow?: string; limit?: number } = {}): { runs: Array<Record<string, unknown>>; total: number; dir: string } {
+  const dir = win.join(root, "Runs");
+  let files: string[] = [];
+  try { files = fs.readdirSync(dir).filter((f) => f.endsWith(".json")); } catch { return { runs: [], total: 0, dir }; }
+  const rows: Array<Record<string, unknown>> = [];
+  for (const file of files) {
+    let rec: any = null;
+    try { rec = JSON.parse(fs.readFileSync(win.join(dir, file), "utf8").replace(/^\uFEFF/, "")); } catch { /* a torn record is listed by name */ }
+    const name = String(rec?.flow ?? "");
+    if (opts.flow && name !== opts.flow && !file.includes(`_${opts.flow}`)) continue;
+    rows.push({
+      id: file.replace(/\.json$/, ""), flow: name || null, dry_run: rec?.dry_run ?? /_dry\.json$/.test(file),
+      ok: rec?.ok ?? null, started: rec?.started ?? null, ended: rec?.ended ?? null,
+      ...(rec?.stopped_at ? { stopped_at: rec.stopped_at } : {}),
+      steps: Array.isArray(rec?.steps) ? rec.steps.length : null,
+      ...(rec ? {} : { problem: "the record could not be read" }),
+    });
+  }
+  rows.sort((a, b) => String(b.started ?? b.id).localeCompare(String(a.started ?? a.id)));
+  return { runs: rows.slice(0, opts.limit ?? 20), total: rows.length, dir };
+}
+
+/** One run record in full (cut at 30,000 characters), or null when there is none by that id. */
+export function readRun(root: string, id: string): { record: unknown; truncated: boolean; file: string } | null {
+  if (!RUN_ID.test(id)) return null;
+  const file = win.join(root, "Runs", `${id}.json`);
+  let text = "";
+  try { text = fs.readFileSync(file, "utf8").replace(/^\uFEFF/, ""); } catch { return null; }
+  if (text.length > 30000) return { record: text.slice(0, 30000), truncated: true, file };
+  try { return { record: JSON.parse(text), truncated: false, file }; } catch { return { record: text, truncated: false, file }; }
+}
 
 /** The project's flows (<exchange>\Flows\*.flow.json) and their problems. */
 function projectFlows(root: string): { flows: Flow[]; problems: string[] } {
@@ -98,6 +139,15 @@ export async function runFmcFlow(args: FmcFlowArgs) {
       return reply({ package: args.package, ...verifyPackage(root, args.package) });
     }
     if (args.action === "identity") return reply({ exchange: root, ...identityStats(loadIdentity(root)) });
+    if (args.action === "runs") {
+      const id = (args.run ?? "").trim();
+      if (id) {
+        const one = readRun(root, id);
+        if (!one) return reply({ refused: true, reasons: [`No run record "${id}" in ${win.join(root, "Runs")} (fmc_flow runs lists them)`] }, true);
+        return reply({ exchange: root, run: id, file: one.file, ...(one.truncated ? { truncated: true } : {}), record: one.record });
+      }
+      return reply({ exchange: root, ...listRuns(root, { flow: args.flow || undefined, limit: args.limit ?? 20 }), read_only: true });
+    }
 
     const own = projectFlows(root);
     const all = [...BUILTIN_FLOWS, ...own.flows];

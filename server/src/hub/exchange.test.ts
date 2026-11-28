@@ -5,6 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { counterpart, exchangeRoot, findFmc, identityStats, link, listPackages, loadIdentity, saveIdentity, verifyPackage, writePackage } from "./exchange.js";
 import { BUILTIN_FLOWS, FLOW, fill, runFlow } from "./flows.js";
+import { listRuns, readRun } from "../tools/fmc_flow.js";
 
 const tmp = () => fs.mkdtempSync(path.join(os.tmpdir(), "fmc-exchange-"));
 
@@ -97,4 +98,23 @@ test("Speed (owner 27 Oct): the reverse index finds 2,000 links without scanning
   // an entry added straight into the map (as clash review does) is still found
   map.entries["FMC-direct"] = { fmc: "FMC-direct", apps: { navisworks: { id: "GUID-1", at: "" } } };
   assert.equal(findFmc(map, "navisworks", "GUID-1"), "FMC-direct");
+});
+test("fmc_flow runs: run records are listed newest first, narrowed by flow, and one shows in full", () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-runs-"));
+  const dir = path.join(root, "Runs");
+  fs.mkdirSync(dir, { recursive: true });
+  const put = (id: string, rec: object | string) => fs.writeFileSync(path.join(dir, `${id}.json`), typeof rec === "string" ? rec : JSON.stringify(rec));
+  put("2026-11-28T06-00-00-000Z_health_dry", { flow: "health", dry_run: true, ok: true, steps: [{}, {}], started: "2026-11-28T06:00:00.000Z", ended: "2026-11-28T06:00:01.000Z" });
+  put("2026-11-28T07-00-00-000Z_legend_chain", { flow: "legend_chain", dry_run: false, ok: false, stopped_at: "chain", steps: [{}], started: "2026-11-28T07:00:00.000Z", ended: "2026-11-28T07:00:05.000Z" });
+  put("2026-11-28T05-00-00-000Z_broken", "{not json");
+  const all = listRuns(root);
+  assert.equal(all.total, 3);
+  assert.equal(all.runs[0].flow, "legend_chain");
+  assert.equal(all.runs[0].stopped_at, "chain");
+  assert.ok(all.runs.some((r) => r.problem));
+  assert.deepEqual(listRuns(root, { flow: "health" }).runs.map((r) => r.id), ["2026-11-28T06-00-00-000Z_health_dry"]);
+  assert.equal((readRun(root, "2026-11-28T06-00-00-000Z_health_dry")!.record as { ok: boolean }).ok, true);
+  assert.equal(readRun(root, "..\\..\\secret"), null);
+  assert.equal(readRun(root, "nope"), null);
+  assert.deepEqual(listRuns(path.join(root, "missing")).runs, []);
 });
