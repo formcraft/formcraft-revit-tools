@@ -148,7 +148,7 @@ test("record I/O, check, import and export stay inside the temp dirs", () => {
   assert.equal(fs.existsSync(path.join(dir, "unread-appdata")), false);
 
   const cfg = guard();
-  let record = mergeSnapshot(emptyRecord("Ogala", "2026-11-22T00:00:00Z"), snap("A-0001", 1000, 12, { name: "A/1", x: 5000 }), "all", "2026-11-22T00:00:00Z");
+  let record = mergeSnapshot(emptyRecord("Ogala", "2026-11-22T00:00:00Z"), snap("A-0003", 1000, 12, { name: "A/1", x: 5000 }), "all", "2026-11-22T00:00:00Z");
   record = mergeSnapshot(record, snap("S-0001", 1000, 12.2, { name: "B/1", x: 8000 }), "model", "2026-11-22T00:00:01Z");
   const plan = planRecordWrite(path.join(dir, "proj"), "Ogala", cfg, env);
   const wrote = writeRecordFiles(record, plan);
@@ -160,7 +160,7 @@ test("record I/O, check, import and export stay inside the temp dirs", () => {
   assert.equal(back.record?.objects["uid-1|D1"].id, 42);
   assert.ok(back.record?.families["FMC_Z_Marker"].reference_planes?.length);
 
-  const compared = checkModels(back.record!, "A-0001", "S-0001", tolerancesFrom(approved, "kit"));
+  const compared = checkModels(back.record!, "A-0003", "S-0001", tolerancesFrom(approved, "kit"));
   assert.equal(compared.items.length, 1);
   assert.equal(compared.summary.ids.length, 1);
   assert.ok(compared.items[0].delta_deg > 0.01);
@@ -183,7 +183,7 @@ test("record I/O, check, import and export stay inside the temp dirs", () => {
   const withJson = mergePoints(imported, jsonPoints, "2026-11-22T01:00:01Z");
   writeRecordFiles(withJson, plan);
 
-  const files = exportFiles(withJson, coordExportDir(env), "A-0001");
+  const files = exportFiles(withJson, coordExportDir(env), "A-0003");
   writeExport(files);
   const names = files.map((file) => file.name).sort();
   assert.deepEqual(names, ["Ogala-archicad.txt", "Ogala-blender.json", "Ogala-ifcmap.txt", "Ogala-navis.json", "Ogala-points.csv"]);
@@ -200,7 +200,7 @@ test("record I/O, check, import and export stay inside the temp dirs", () => {
   const table = fs.readFileSync(path.join(coordExportDir(env), "Ogala-points.csv"), "utf8");
   assert.match(table, /^name,X,Y,Z,rotation/m);
   assert.match(table, /CP-1,1000,2000,3,15/);
-  assert.equal(alignModelTarget(withJson, "survey", "S-0001", "A-0001")?.angle_deg, 12.2);
+  assert.equal(alignModelTarget(withJson, "survey", "S-0001", "A-0003")?.angle_deg, 12.2);
 });
 
 test("fmc_coord: document errors, dry run, one Revit call, and no live appdata", async () => {
@@ -211,7 +211,7 @@ test("fmc_coord: document errors, dry run, one Revit call, and no live appdata",
   const calls: Array<{ command: string; write: boolean; params: Record<string, unknown> }> = [];
   const revit = async (command: string, params: Record<string, unknown>, write: boolean) => {
     calls.push({ command, write, params });
-    const shot = snap("A-0001", 1000, 12, { name: "A/1", x: 5000 });
+    const shot = snap("A-0003", 1000, 12, { name: "A/1", x: 5000 });
     return { ...shot, resolved_document: shot.document, other: params.other ? snap("S-0001", 1000, 12, { name: "A/1", x: 5000 }) : undefined };
   };
 
@@ -219,16 +219,16 @@ test("fmc_coord: document errors, dry run, one Revit call, and no live appdata",
   assert.match(String(missing.error), /FMC-DOC-REQUIRED/);
   assert.equal(calls.length, 0);
 
-  const open = [{ title: "A-0001", path: "D:\\Jobs\\A-0001.rvt" }, { title: "A-0001", path: "D:\\Jobs\\copy\\A-0001.rvt" }];
+  const open = [{ title: "A-0003", path: "D:\\Jobs\\A-0003.rvt" }, { title: "A-0003", path: "D:\\Jobs\\copy\\A-0003.rvt" }];
   assert.match(documentRequired("fmc_coord_apply", open, undefined) ?? "", /FMC-DOC-REQUIRED/);
   assert.match(documentRequired("fmc_coord_apply", [{ title: "Only", path: "D:\\Jobs\\Only.rvt" }], undefined) ?? "", /FMC-DOC-REQUIRED/);
-  const ambiguous = body(await runFmcCoord(args({ action: "publish", document: "A-0001" }), { ...base, revit, open }));
+  const ambiguous = body(await runFmcCoord(args({ action: "publish", document: "A-0003" }), { ...base, revit, open }));
   assert.match(String(ambiguous.error), /FMC-DOC-AMBIGUOUS/);
-  const absent = body(await runFmcCoord(args({ action: "check", document: "Missing" }), { ...base, revit, open: [{ title: "A-0001", path: "D:\\a.rvt" }] }));
+  const absent = body(await runFmcCoord(args({ action: "check", document: "Missing" }), { ...base, revit, open: [{ title: "A-0003", path: "D:\\a.rvt" }] }));
   assert.match(String(absent.error), /FMC-DOC-NOT-FOUND/);
   assert.equal(calls.length, 0);
 
-  const dry = body(await runFmcCoord(args({ action: "publish", document: "A-0001", project: "Ogala", project_folder: path.join(dir, "proj"), level: "all" }), { ...base, revit }));
+  const dry = body(await runFmcCoord(args({ action: "publish", document: "A-0003", project: "Ogala", project_folder: path.join(dir, "proj"), level: "all" }), { ...base, revit }));
   assert.equal(dry.dry_run, true);
   assert.equal(calls.length, 1);
   assert.equal(calls[0].command, "fmc_coord_apply");
@@ -236,7 +236,7 @@ test("fmc_coord: document errors, dry run, one Revit call, and no live appdata",
   assert.equal(fs.existsSync(path.join(dir, "proj", "FMC_Coord.json")), false);
   assert.equal(fs.existsSync(path.join(dir, "unread-appdata")), false);
 
-  const published = body(await runFmcCoord(args({ action: "publish", document: "A-0001", project: "Ogala", project_folder: path.join(dir, "proj"), level: "all", dry_run: false }), { ...base, revit }));
+  const published = body(await runFmcCoord(args({ action: "publish", document: "A-0003", project: "Ogala", project_folder: path.join(dir, "proj"), level: "all", dry_run: false }), { ...base, revit }));
   assert.equal(published.dry_run, false);
   assert.equal(calls.length, 2);
   assert.equal(calls[1].write, false);
@@ -250,22 +250,22 @@ test("fmc_coord: document errors, dry run, one Revit call, and no live appdata",
   assert.equal((read.summary as { objects: number }).objects, 1);
   assert.equal(calls.length, 2);
 
-  const models = body(await runFmcCoord(args({ action: "check", project: "Ogala", project_folder: path.join(dir, "proj"), left: "A-0001", right: "A-0001" }), { ...base, revit }));
+  const models = body(await runFmcCoord(args({ action: "check", project: "Ogala", project_folder: path.join(dir, "proj"), left: "A-0003", right: "A-0003" }), { ...base, revit }));
   assert.equal(models.server_only, true);
   assert.equal((models.summary as { pass: number }).pass, 1);
   assert.equal(calls.length, 2);
 
-  const live = body(await runFmcCoord(args({ action: "check", document: "A-0001", project: "Ogala", project_folder: path.join(dir, "proj"), level: "all" }), { ...base, revit }));
+  const live = body(await runFmcCoord(args({ action: "check", document: "A-0003", project: "Ogala", project_folder: path.join(dir, "proj"), level: "all" }), { ...base, revit }));
   assert.equal((live.summary as { count: number }).count >= 1, true);
   assert.ok(Array.isArray((live.summary as { ids: string[] }).ids));
   assert.equal(calls.length, 3);
   assert.equal(calls[2].write, false);
 
-  const preview = body(await runFmcCoord(args({ action: "export", project: "Ogala", project_folder: path.join(dir, "proj"), document: "A-0001" }), { ...base, revit }));
+  const preview = body(await runFmcCoord(args({ action: "export", project: "Ogala", project_folder: path.join(dir, "proj"), document: "A-0003" }), { ...base, revit }));
   assert.equal(preview.dry_run, true);
   assert.equal(fs.existsSync(path.join(dir, "out")), false);
   assert.match(JSON.stringify(preview.files), /IFCMAPCONVERSION/);
-  const exported = body(await runFmcCoord(args({ action: "export", project: "Ogala", project_folder: path.join(dir, "proj"), document: "A-0001", dry_run: false }), { ...base, revit }));
+  const exported = body(await runFmcCoord(args({ action: "export", project: "Ogala", project_folder: path.join(dir, "proj"), document: "A-0003", dry_run: false }), { ...base, revit }));
   assert.equal(exported.dry_run, false);
   assert.match(fs.readFileSync(path.join(dir, "out", "Ogala-ifcmap.txt"), "utf8"), /IFCMAPCONVERSION/);
 
@@ -278,7 +278,7 @@ test("fmc_coord: document errors, dry run, one Revit call, and no live appdata",
   assert.equal(imported.imported, 1);
   assert.equal(calls.length, 3, "read, export and import do not call Revit");
 
-  const align = body(await runFmcCoord(args({ action: "align", document: "A-0001", project: "Ogala", project_folder: path.join(dir, "proj"), dry_run: false, level: "model" }), { ...base, revit }));
+  const align = body(await runFmcCoord(args({ action: "align", document: "A-0003", project: "Ogala", project_folder: path.join(dir, "proj"), dry_run: false, level: "model" }), { ...base, revit }));
   assert.equal(calls.length, 4);
   assert.equal(calls[3].write, true);
   assert.equal(calls[3].params.action, "align");
@@ -293,7 +293,7 @@ test("fmc_coord: document errors, dry run, one Revit call, and no live appdata",
   assert.match(String(refused.error), /sync_exclude/);
   assert.equal(calls.length, 0);
 
-  const placed = body(await runFmcCoord(args({ action: "place", document: "A-0001", project: "Ogala", project_folder: path.join(dir, "proj"), name: "A/1", family: "FMC_Z_Marker", dry_run: true }), { ...base, revit }));
+  const placed = body(await runFmcCoord(args({ action: "place", document: "A-0003", project: "Ogala", project_folder: path.join(dir, "proj"), name: "A/1", family: "FMC_Z_Marker", dry_run: true }), { ...base, revit }));
   assert.equal(placed.dry_run, true);
   assert.equal(calls.length, 1);
   assert.equal(calls[0].write, false);

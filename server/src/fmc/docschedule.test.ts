@@ -100,7 +100,11 @@ test("sync_exclude HEBERT HOSTELS means HEBERT HOSTELS_USER is never autosaved",
   const cfg = { ...DEFAULT_CONFIG, sync_exclude: ["HEBERT HOSTELS"], save_exclude: [], protected_paths: [], protected_roots: [] };
   const local = { title: "HEBERT HOSTELS_USER", path: "C:\\Users\\USER\\Documents\\HEBERT HOSTELS_USER.rvt" };
   assert.equal(saveSkipReason(local, cfg), "excluded");
-  assert.match(saveBlocked(local, cfg) ?? "", /sync_exclude/);
+  // RV-6: HEBERT HOSTELS is also on the forbidden-project floor, which answers first; a non-floor name shows sync_exclude.
+  assert.match(saveBlocked(local, cfg) ?? "", /Forbidden project \(HEBERT HOSTELS\)/);
+  const quiet = { ...cfg, sync_exclude: ["QUIET"] };
+  assert.equal(saveSkipReason({ title: "QUIET_USER", path: "C:\\Users\\USER\\Documents\\QUIET_USER.rvt" }, quiet), "excluded");
+  assert.match(saveBlocked({ title: "QUIET_USER", path: "C:\\Users\\USER\\Documents\\QUIET_USER.rvt" }, quiet) ?? "", /sync_exclude/);
   assert.equal(saveBlocked({ title: "S-0001", path: "C:\\WIP\\S-0001.rvt" }, cfg), null);
   const due = planTick({
     now: 100_000,

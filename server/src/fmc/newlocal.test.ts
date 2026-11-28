@@ -503,7 +503,7 @@ test("FromFile of the backup or the central is refused as a central; the open ho
   const full: AiModellerConfig = { on: true, stop: false, access: "full", mode: "testing", general: true, allow_code: true, projects: {}, levels: {} };
   const empty = { day: "", models: {} };
   const fromFile = (title: string, file: string) => ({ title, path: file, isFamily: false, isWorkshared: true, isActive: false });
-  const backup = fromFile("HEBERT HOSTELS ELECTRICAL_USER.rvt.bak-20261118-2", local + ".bak-20261118-2");
+  const backup = fromFile("F26001 ELECTRICAL_USER.rvt.bak-20261118-2", local + ".bak-20261118-2");
   const centralDoc = fromFile("central", central);
   for (const docInfo of [backup, centralDoc]) {
     const verdict = aiVerdict({ command: "fmc_new_local", doc: docInfo, elements: 0, approved: true }, cfg, book, full, empty);

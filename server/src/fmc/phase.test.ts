@@ -57,7 +57,7 @@ function element(partial: Record<string, unknown>) {
 
 function base(extra: Record<string, unknown> = {}) {
   return normalizeSnapshot({
-    resolved_document: { title: "A-0001", path: "D:\\Jobs\\_Staging\\A-0001.rvt" },
+    resolved_document: { title: "A-0003", path: "D:\\Jobs\\_Staging\\A-0003.rvt" },
     phases: [
       { id: "1", name: "Existing", sequence: 1 },
       { id: "2", name: "New Construction", sequence: 2 },
@@ -159,7 +159,7 @@ test("audit returns counts and ids for each finding, and a clean provisional mod
 
   const { env } = tempEnv();
   let reads = 0;
-  const reply = textOf(await runFmcPhase(args({ action: "audit", document: "A-0001" }), {
+  const reply = textOf(await runFmcPhase(args({ action: "audit", document: "A-0003" }), {
     env, bank: {},
     readSnapshot: async () => { reads += 1; return base(); },
   }));
@@ -172,7 +172,7 @@ test("audit returns counts and ids for each finding, and a clean provisional mod
 
 test("an approved bank with a clause can PASS a clean audit", async () => {
   const { env } = tempEnv();
-  const reply = textOf(await runFmcPhase(args({ action: "audit", document: "A-0001" }), {
+  const reply = textOf(await runFmcPhase(args({ action: "audit", document: "A-0003" }), {
     env, bank: approved,
     readSnapshot: async () => base(),
   }));
@@ -194,7 +194,7 @@ test("a missing document is FMC-DOC-REQUIRED and does not call Revit", async () 
 
 test("phases lists sequence and issued state", async () => {
   const { env } = tempEnv();
-  const reply = textOf(await runFmcPhase(args({ action: "phases", document: "A-0001" }), {
+  const reply = textOf(await runFmcPhase(args({ action: "phases", document: "A-0003" }), {
     env, bank: {}, readSnapshot: async () => base(),
   }));
   const phases = reply.phases as Array<{ name: string; sequence: number }>;
@@ -209,7 +209,7 @@ test("batch_check plans the phase fixes, defaults dry_run to true, and caps at 5
   const { env } = tempEnv();
   let applied = 0;
   const preview = textOf(await runFmcPhase(args({
-    action: "batch_check", document: "A-0001", phase: "New Construction", ids: ["201"], view: "Level 1",
+    action: "batch_check", document: "A-0003", phase: "New Construction", ids: ["201"], view: "Level 1",
   }), {
     env, bank: {},
     readSnapshot: async () => base({
@@ -227,13 +227,13 @@ test("batch_check plans the phase fixes, defaults dry_run to true, and caps at 5
   assert.ok(codes.includes("PHASE-VIEW-FILTER"));
 
   const refused = textOf(await runFmcPhase(args({
-    action: "batch_check", document: "A-0001", phase: "New Construction", ids: ["201"], dry_run: false,
+    action: "batch_check", document: "A-0003", phase: "New Construction", ids: ["201"], dry_run: false,
   }), { env, bank: {}, readSnapshot: async () => base({ elements: [element({ id: "201", created_phase_id: "1" })], views: [] }) }));
   assert.equal(refused.code, "FMC-BATCH-LOCKED");
 
   const ids = Array.from({ length: 51 }, (_, index) => String(index + 1));
   const capped = textOf(await runFmcPhase(args({
-    action: "batch_check", document: "A-0001", phase: "New Construction", ids, dry_run: false, batch_lease: "lease-1",
+    action: "batch_check", document: "A-0003", phase: "New Construction", ids, dry_run: false, batch_lease: "lease-1",
   }), {
     env, bank: {},
     readSnapshot: async () => base({ elements: [], views: [] }),
@@ -262,11 +262,11 @@ test("a write is refused for save_exclude, sync_exclude, protected_paths and HEB
   assert.match(String(hostel.message), /HEBERT HOSTELS/);
   const quiet = textOf(await run("QUIET", "D:\\Jobs\\_Staging\\QUIET.rvt"));
   assert.match(String(quiet.message), /sync_exclude/);
-  const live = textOf(await run("A-0001", "D:\\Live\\A-0001.rvt"));
+  const live = textOf(await run("A-0003", "D:\\Live\\A-0003.rvt"));
   assert.match(String(live.message), /protected/i);
   assert.equal(calls.length, 0);
 
-  const fixed = textOf(await run("A-0001", "D:\\Jobs\\_Staging\\A-0001.rvt"));
+  const fixed = textOf(await run("A-0003", "D:\\Jobs\\_Staging\\A-0003.rvt"));
   assert.equal(fixed.isError, false);
   assert.equal(calls.length, 1);
   const guard = fixed.guard as { auto_save_minutes: number; saved: boolean; synced: boolean };
@@ -293,7 +293,7 @@ test("fmc_batch stores phase and batch_check reads it from the lease", async () 
       memoryPaused: () => false,
     });
     const granted = await made.request({
-      document: "A-0001", label: "walls", client: "bot", phase: "New Construction",
+      document: "A-0003", label: "walls", client: "bot", phase: "New Construction",
       references: { kit: ["FMC_A_Wall"], standards: ["phase.new_work_name"], rulebook: ["A.WAL_01"] },
     });
     assert.equal(granted.phase, "New Construction");
@@ -307,7 +307,7 @@ test("fmc_batch stores phase and batch_check reads it from the lease", async () 
     assert.equal(restored.phaseOf(stored[0].id), "New Construction");
 
     const reply = textOf(await runFmcPhase(args({
-      action: "batch_check", document: "A-0001", batch_lease: String(granted.lease), ids: ["300"],
+      action: "batch_check", document: "A-0003", batch_lease: String(granted.lease), ids: ["300"],
     }), {
       env, bank: {},
       phaseOfLease: (lease) => made.phaseOf(lease),
@@ -327,20 +327,20 @@ test("revision compare is server-only and the cloud ledger stays in the temp dir
   appendRevisionLedger({
     at: "2026-11-22T00:00:00.000Z", tool: "fmc_phase", action: "revision_cloud", batch_id: "b1",
     revision_id: "20", revision_sequence: 1, revision_description: "First",
-    document: { title: "A-0001", path: "D:\\Jobs\\_Staging\\A-0001.rvt" },
+    document: { title: "A-0003", path: "D:\\Jobs\\_Staging\\A-0003.rvt" },
     element_ids: ["1", "2"], categories: { "1": "Walls", "2": "Walls" },
     clouds: [{ id: "9", view_id: "30", sheet_id: "40" }], issued: false,
   }, env);
   appendRevisionLedger({
     at: "2026-11-22T01:00:00.000Z", tool: "fmc_phase", action: "revision_cloud", batch_id: "b2",
     revision_id: "21", revision_sequence: 2, revision_description: "Second",
-    document: { title: "A-0001", path: "D:\\Jobs\\_Staging\\A-0001.rvt" },
+    document: { title: "A-0003", path: "D:\\Jobs\\_Staging\\A-0003.rvt" },
     element_ids: ["2", "3"], categories: { "2": "Walls", "3": "Doors" },
     clouds: [], issued: false,
   }, env);
   let reads = 0;
   const reply = textOf(await runFmcPhase(args({
-    action: "compare", by: "revision", document: "A-0001", from: "20", to: "21",
+    action: "compare", by: "revision", document: "A-0003", from: "20", to: "21",
   }), {
     env, bank: {},
     readSnapshot: async () => { reads += 1; return base(); },
@@ -374,14 +374,14 @@ test("revision compare is server-only and the cloud ledger stays in the temp dir
 test("revision clouds record batch, revision, elements and clouds, and a dry run does not", async () => {
   const { dir, env } = tempEnv();
   const dry = textOf(await runFmcPhase(args({
-    action: "revision_open", document: "A-0001", revision: "First", batch_id: "batch-7", ids: ["300"],
+    action: "revision_open", document: "A-0003", revision: "First", batch_id: "batch-7", ids: ["300"],
   }), { env, bank: {}, readSnapshot: async () => base() }));
   assert.equal(dry.dry_run, true);
   assert.equal(dry.attach, true);
   assert.equal(fs.existsSync(revisionLedgerPath(env)), false);
 
   const opened = textOf(await runFmcPhase(args({
-    action: "revision_open", document: "A-0001", description: "Wall move", batch_id: "batch-7", ids: ["300"],
+    action: "revision_open", document: "A-0003", description: "Wall move", batch_id: "batch-7", ids: ["300"],
     dry_run: false, batch_lease: "lease-1",
   }), {
     env, bank: {},
@@ -397,7 +397,7 @@ test("revision clouds record batch, revision, elements and clouds, and a dry run
   assert.ok(revisionLedgerPath(env).startsWith(dir));
 
   const clouded = textOf(await runFmcPhase(args({
-    action: "revision_cloud", document: "A-0001", revision: "20", batch_id: "batch-7", ids: ["300"],
+    action: "revision_cloud", document: "A-0003", revision: "20", batch_id: "batch-7", ids: ["300"],
     dry_run: false, batch_lease: "lease-1",
   }), {
     env, bank: {},
@@ -421,7 +421,7 @@ test("revision clouds record batch, revision, elements and clouds, and a dry run
 test("issue checks the titleblock and the schedule before it marks issued, and unissue rolls that back", async () => {
   const { env } = tempEnv();
   const blocked = textOf(await runFmcPhase(args({
-    action: "issue", document: "A-0001", sheet_set: "Issue", batch_lease: "lease-1",
+    action: "issue", document: "A-0003", sheet_set: "Issue", batch_lease: "lease-1",
   }), {
     env, bank: {},
     readSnapshot: async () => base({
@@ -432,7 +432,7 @@ test("issue checks the titleblock and the schedule before it marks issued, and u
   assert.equal(blocked.checks_ok, false);
   assert.equal(blocked.would_mark_issued, false);
   assert.equal(blocked.verdict, "FAIL");
-  const provisional = textOf(await runFmcPhase(args({ action: "issue", document: "A-0001", sheet_set: "Issue" }), {
+  const provisional = textOf(await runFmcPhase(args({ action: "issue", document: "A-0003", sheet_set: "Issue" }), {
     env, bank: {}, readSnapshot: async () => base(),
   }));
   assert.equal(provisional.checks_ok, true);
@@ -440,7 +440,7 @@ test("issue checks the titleblock and the schedule before it marks issued, and u
 
   let marked = false;
   const issued = textOf(await runFmcPhase(args({
-    action: "issue", document: "A-0001", sheet_set: "Issue", dry_run: false, batch_lease: "lease-1", batch_id: "issue-1",
+    action: "issue", document: "A-0003", sheet_set: "Issue", dry_run: false, batch_lease: "lease-1", batch_id: "issue-1",
   }), {
     env, bank: approved,
     readSnapshot: async () => base(),
@@ -456,7 +456,7 @@ test("issue checks the titleblock and the schedule before it marks issued, and u
   assert.equal((issued.applied as { issued: boolean }).issued, true);
 
   const rolled = textOf(await runFmcPhase(args({
-    action: "unissue", document: "A-0001", revision: "20", dry_run: false, batch_lease: "lease-1",
+    action: "unissue", document: "A-0003", revision: "20", dry_run: false, batch_lease: "lease-1",
   }), {
     env, bank: {},
     readSnapshot: async () => base(),
@@ -491,9 +491,9 @@ test("a Revit document error is returned as that FMC code", async () => {
   }));
   assert.equal(reply.code, "FMC-DOC-NOT-FOUND");
   assert.equal(reply.isError, true);
-  const ambiguous = textOf(await runFmcPhase(args({ action: "audit", document: "A-0001" }), {
+  const ambiguous = textOf(await runFmcPhase(args({ action: "audit", document: "A-0003" }), {
     bank: {},
-    readSnapshot: async () => { throw new Error("[FMC-DOC-AMBIGUOUS] \"A-0001\" matches 2 open documents."); },
+    readSnapshot: async () => { throw new Error("[FMC-DOC-AMBIGUOUS] \"A-0003\" matches 2 open documents."); },
   }));
   assert.equal(ambiguous.code, "FMC-DOC-AMBIGUOUS");
 });
