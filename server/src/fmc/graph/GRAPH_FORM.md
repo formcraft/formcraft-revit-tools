@@ -12,16 +12,21 @@ Status: `spec` built (DT-29). Pane form (DT-30) is the next Builder 7 step; noth
   `options: null`), `hint_path`, `needs_revit`, `path_like`, `description`.
 - `outputs[]`: Watch nodes and nodes set as output.
 - `has_python`, `python_nodes[]` (`from_string` for Python-from-string), `custom_nodes[]`, `packages[]` (from
-  `NodeLibraryDependencies`), `package_check` (`pending_builder6`), `lock` (`unknown` until Builder 6).
-- `approval.person_required_for`: `["preview","apply","offline"]` with Python, else `["apply","offline"]`.
-  Python always needs a person (hard-coded, `PYTHON_ALWAYS_NEEDS_PERSON`).
+  `NodeLibraryDependencies`), `package_check` (Builder 6 `checkPackages`, no folder hashes; `check_packages:false`
+  skips it), `lock` (Builder 6 `lockCheck` for kit graphs; `draft` for project drafts), `scan` (Builder 6
+  `scanGraphText`: findings, high, `scan_hash`), `python_policy` (D1).
+- `approval.person_required_for` / `kind_by_mode`: from Builder 6 `runNeedsApproval` per mode. Python or a package
+  DLL: all three modes (`graph_python`); otherwise `apply` and `offline`. `PYTHON_ALWAYS_NEEDS_PERSON` is hard-coded.
 - `spec_hash`: sha256 of `stableJson({graph_sha256, fields, outputs})`, for caching a rendered form.
 - `values` (optional): checked by `bindFormValues` and returned as `binding.inputs_by_id` (node GUID -> value), the
   `GraphPlan.inputs_by_id` shape of Builder 6. Unknown or shared names and bad values are refused, never dropped.
 
-Jail: kit `05_Scripts/library`, `05_Scripts/Dynamo`, or `<project>\00_Formcraft\Graphs` where `<project>` is the
-folder above `01_WIP` of the resolved target document. `..`, UNC, device and relative paths are refused; real paths are
-resolved (junctions and links followed) and must stay inside the real root.
+Jail: kit `05_Scripts/library`, `05_Scripts/Dynamo`, or `<project>\<D4 drafts_folder>` (default `00_Formcraft\Graphs`)
+where `<project>` is Builder 6 `projectRootOf` of the resolved target document. UNC, device, `..` and relative paths
+are refused first; then Builder 6 `jailCheck` (junctions and links followed) against the claimed root.
+
+Modules used (INTERFACES-builder6.md v1.1): `decisions`, `hash`, `jail`, `lib` (lockCheck), `packages`, `allowlist`,
+`plan` (runNeedsApproval), `scan`. No stub remains.
 
 ## How the pane form (Check > Graphs) will use it
 
@@ -37,5 +42,5 @@ resolved (junctions and links followed) and must stay inside the real root.
    (`graph_approve {id}` / `graph_refuse {id}`, never MCP). Run with `approval_id`. Staff runs are person runs.
 5. Cache by `spec_hash`; re-fetch when `graph.sha256` changes.
 
-Open: `fmc_graph_form` is not yet in `fmc/cli.ts` (the pane's `ServerCli` route). Add it with the pane step, after
-Builder 6's CLI changes land, to avoid a merge clash in `cli.ts`.
+Open: `fmc_graph_form` is not yet in `fmc/cli.ts` (the pane's `ServerCli` route). Add it with the pane step as one
+appended `case` (Builder 6 edits `cli.ts` too; additive only).

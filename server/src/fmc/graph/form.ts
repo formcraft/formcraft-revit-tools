@@ -6,13 +6,20 @@
  * A graph is read only from the kit (05_Scripts/library, 05_Scripts/Dynamo) or from the target document's drafts
  * folder <project>\00_Formcraft\Graphs (D4). The project is derived from the target document, never from the caller.
  *
+ * Uses Builder 6's guard and library modules (INTERFACES-builder6.md v1.1): jail, hash, scan, packages, lock, decisions.
  * Feeds the pane form (D6, Builder 7, later step): see GRAPH_FORM.md next to this file.
  */
 import fs from "node:fs";
 import { parseDyn, pathOf, scriptRoots, type DynInspect } from "../dynamo.js";
-import {
-  PYTHON_ALWAYS_NEEDS_PERSON, graphsDir, jailCheck, lockStatusPending, packageCheckPending, projectRootOf, sha256File, sha256Text, stableJson,
-} from "./todo_builder6.js";
+import type { GuardConfig } from "../policy.js";
+import { PYTHON_ALWAYS_NEEDS_PERSON, graphDecisions, type GraphDecisions } from "./decisions.js";
+import { sha256Text, stableJson } from "./hash.js";
+import { graphsDir, jailCheck, projectRootOf } from "./jail.js";
+import { lockCheck, type LockState } from "./lib.js";
+import { checkPackages, installedPackages, packageFolders, type PackageCheck } from "./packages.js";
+import { runNeedsApproval, type RunMode } from "./plan.js";
+import { readAllowlist } from "./allowlist.js";
+import { scanGraphText } from "./scan.js";
 
 export const FORM_SPEC_VERSION = 1 as const;
 
@@ -59,11 +66,17 @@ export interface GraphFormSpec {
   python_nodes: Array<{ id: string; name: string; engine: string; from_string: boolean }>;
   custom_nodes: string[];
   packages: FormPackage[];
-  package_check: ReturnType<typeof packageCheckPending>;
-  lock: ReturnType<typeof lockStatusPending>;
+  /** Builder 6 checkPackages (DT-26), without folder hashes. Null when skipped (check_packages:false). */
+  package_check: PackageCheck | null;
+  /** Kit lock state (Builder 6 lockCheck) for tier K; "draft" for a project draft. */
+  lock: LockState | "draft";
+  /** Builder 6 scan (DT-55): findings count and scan_hash; the code itself is shown by fmc_graph_guard scan. */
+  scan: { findings: number; high: number; scan_hash: string; rules_version: string };
+  /** D1 python_policy in force; "off" means a Python graph cannot run at all. */
+  python_policy: GraphDecisions["python_policy"];
   needs_revit: boolean;
   /** What a run of this graph will need. The spec asks nothing; plan and approval are fmc_dynamo / fmc_graph_guard. */
-  approval: { person_required_for: Array<"preview" | "apply" | "offline">; why: string[]; python_always_needs_person: true };
+  approval: { person_required_for: RunMode[]; kind_by_mode: Record<RunMode, string>; why: string[]; python_always_needs_person: true };
   /** sha256(stableJson({graph_sha256, fields, outputs})): the pane can cache a form by it. */
   spec_hash: string;
   warnings: string[];
@@ -193,46 +206,64 @@ export interface SpecArgs {
   kit: string;
   /** Full path of the target document, from the server's document resolution. "" when none: drafts are refused. */
   documentPath: string;
+  /** Guard config, for D1-D14 (drafts folder, python policy, packages). Defaults when absent. */
+  cfg?: GuardConfig | Record<string, unknown> | null;
+  env?: NodeJS.ProcessEnv;
+  /** Compare the graph's packages with the installed ones (read-only, D14). Default true. */
+  checkPackages?: boolean;
 }
 
 const MAX_GRAPH_BYTES = 20 * 1024 * 1024;
 
 /** Which jail root a path claims: a kit script folder, or the project drafts folder. */
-function claimedRoot(file: string, kit: string, documentPath: string): { root: string; tier: "K" | "P" } | null {
+function claimedRoot(file: string, kit: string, documentPath: string, drafts: string): { root: string; tier: "K" | "P" } | null {
   const p = pathOf(file);
   const lower = (s: string) => (p.sep === "\\" ? s.toLowerCase() : s);
   const norm = lower(p.normalize(file));
   const under = (root: string) => { const r = lower(p.normalize(root)).replace(/[\\/]+$/, ""); return norm.startsWith(r + p.sep); };
   if (kit.trim()) for (const root of scriptRoots(kit)) if (under(root)) return { root, tier: "K" };
   const project = projectRootOf(documentPath);
-  if (project && under(graphsDir(project))) return { root: graphsDir(project), tier: "P" };
+  if (project && under(graphsDir(project, drafts))) return { root: graphsDir(project, drafts), tier: "P" };
   return null;
+}
+
+/** Path shapes refused before any root is chosen: UNC and device paths, "..", relative paths. */
+function pathShapeProblem(file: string): string {
+  if (/^[\\/]{2}/.test(file)) return "is a network (UNC) or device path; use a local path inside the kit or the project.";
+  if (/(^|[\\/])\.\.([\\/]|$)/.test(file)) return "uses '..'.";
+  const p = pathOf(file);
+  if (!p.isAbsolute(file) || (p.sep === "\\" && !/^[A-Za-z]:[\\/]/.test(file))) return "is not an absolute local path.";
+  return "";
 }
 
 export function graphFormSpec(args: SpecArgs): SpecResult {
   const file = (args.file ?? "").trim();
+  const env = args.env ?? process.env;
+  const decisions = graphDecisions(args.cfg ?? null);
   if (!file) return { ok: false, code: "FMC-GRAPH-FORM-ARGS", message: "[FMC-GRAPH-FORM-ARGS] spec needs path, the .dyn file." };
   if (!/\.dyn$/i.test(file)) return { ok: false, code: "FMC-GRAPH-NOT-GRAPH", message: `[FMC-GRAPH-NOT-GRAPH] ${file} is not a Dynamo graph (.dyn). Custom nodes (.dyf) and scripts are not forms.` };
-  const claimed = claimedRoot(file, args.kit ?? "", args.documentPath ?? "");
-  const project = projectRootOf(args.documentPath ?? "");
-  const jailWhere = [
-    ...(args.kit?.trim() ? scriptRoots(args.kit) : []),
-    project ? graphsDir(project) : "<project>\\00_Formcraft\\Graphs (name the target document by full path)",
-  ].join(" or ");
-  // A ".." or UNC path is refused by jailCheck even when its text seems to sit under a root.
-  const check = jailCheck(file, claimed?.root ?? "");
-  if (!check.ok) {
-    // Path-shape refusals (UNC, "..", relative) speak for themselves; anything else outside every root names the roots.
-    const shape = /UNC|"\.\."|absolute local path/.test(check.message);
-    if (claimed || shape) return { ok: false, code: check.code, message: check.message };
-    return { ok: false, code: check.code, message: `[FMC-GRAPH-JAIL] ${file} is outside the graph folders (${jailWhere}).` };
+  const shape = pathShapeProblem(file);
+  if (shape) return { ok: false, code: "FMC-GRAPH-JAIL", message: `[FMC-GRAPH-JAIL] ${file} ${shape}` };
+  const kit = (args.kit ?? "").trim();
+  const claimed = claimedRoot(file, kit, args.documentPath ?? "", decisions.drafts_folder);
+  if (!claimed) {
+    const project = projectRootOf(args.documentPath ?? "");
+    const where = [
+      ...(kit ? scriptRoots(kit) : []),
+      project ? graphsDir(project, decisions.drafts_folder) : `<project>\\${decisions.drafts_folder} (name the target document; the project is the folder above 01_WIP)`,
+    ].join(" or ");
+    return { ok: false, code: "FMC-GRAPH-JAIL", message: `[FMC-GRAPH-JAIL] ${file} is outside the graph folders (${where}).` };
   }
+  const check = jailCheck(file, claimed.root);
+  if (!check.ok) return { ok: false, code: check.code, message: check.message };
+  let real: string;
   let raw: Buffer;
   try {
-    const stat = fs.statSync(check.real);
+    real = fs.realpathSync.native(check.real);
+    const stat = fs.statSync(real);
     if (!stat.isFile()) return { ok: false, code: "FMC-GRAPH-NOT-GRAPH", message: `[FMC-GRAPH-NOT-GRAPH] ${file} is not a file.` };
     if (stat.size > MAX_GRAPH_BYTES) return { ok: false, code: "FMC-GRAPH-NOT-GRAPH", message: `[FMC-GRAPH-NOT-GRAPH] ${file} is ${stat.size} bytes; the limit is ${MAX_GRAPH_BYTES}.` };
-    raw = fs.readFileSync(check.real);
+    raw = fs.readFileSync(real);
   } catch (error) {
     return { ok: false, code: "FMC-GRAPH-READ", message: `[FMC-GRAPH-READ] Can't read ${file}: ${error instanceof Error ? error.message : String(error)}` };
   }
@@ -249,13 +280,25 @@ export function graphFormSpec(args: SpecArgs): SpecResult {
   const inspected = parseDyn(file, body);
   const inspect: DynInspect | null = inspected.ok ? inspected.inspect : null;
   const form = formFromGraph(graph);
-  const sha256 = sha256File(check.real);
-  const hasPython = form.python.length > 0;
-  const why: string[] = [];
-  if (hasPython) why.push(`Python: ${form.python.length} node(s)${form.python.some((item) => item.from_string) ? ", including Python-from-string" : ""}. A person approves every run, every mode (hard rule).`);
-  why.push("Every apply needs a person's approval bound to plan_hash (D12).", "Every offline (DynamoCLI) run needs a person's approval.");
-  if (form.custom_nodes.length) form.warnings.push(`Custom nodes (${form.custom_nodes.length}) are not opened here; Python inside them is found by fmc_graph_guard.scan.`);
-  if (form.packages.length) form.warnings.push("Packages may ship DLLs; that counts as Python for approval. Checked by fmc_graph_guard.packages (Builder 6).");
+  const sha256 = sha256Text(raw);
+  const scan = scanGraphText(file, body, [], sha256);
+  let packageCheck: PackageCheck | null = null;
+  if (args.checkPackages !== false && inspect) {
+    const folders = packageFolders(env);
+    const allow = readAllowlist(env, decisions);
+    packageCheck = checkPackages(inspect, installedPackages(folders), folders, decisions, allow.packages, false);
+  }
+  const dll = (packageCheck?.dll_findings.length ?? 0) > 0;
+  const hasPython = form.python.length > 0 || scan.python;
+  const pythonLike = hasPython || dll;
+  const modes: RunMode[] = ["preview", "apply", "offline"];
+  const verdicts = modes.map((mode) => ({ mode, ...runNeedsApproval({ python: pythonLike, mode }) }));
+  const why = [...new Set(verdicts.flatMap((v) => v.why))];
+  if (hasPython && decisions.python_policy === "off") why.push("D1 python_policy is off: this graph will be refused (FMC-GRAPH-PYTHON-OFF).");
+  if (hasPython && decisions.python_policy === "signed_kit_only") why.push("D1 python_policy is signed_kit_only: it runs only when the kit lock matches.");
+  if (form.custom_nodes.length) form.warnings.push(`Custom nodes (${form.custom_nodes.length}) are not opened here; fmc_graph_guard scan reports them.`);
+  if (packageCheck && !packageCheck.ok) form.warnings.push(`Packages missing or older: ${[...packageCheck.missing, ...packageCheck.older].join(", ")}.`);
+  if (packageCheck?.not_allowed.length) form.warnings.push(`Packages not allowed (D3/allowlist): ${packageCheck.not_allowed.join(", ")}.`);
   const needsRevit = form.fields.some((field) => field.needs_revit) || inspect?.needs_revit === true;
   const fields = form.fields;
   const outputs = form.outputs;
@@ -263,19 +306,22 @@ export function graphFormSpec(args: SpecArgs): SpecResult {
     action: "spec",
     v: FORM_SPEC_VERSION,
     graph: {
-      file, real: check.real, name: text(graph.Name) || pathOf(file).basename(file, ".dyn"), uuid: text(graph.Uuid),
-      description: text(graph.Description), tier: claimed?.tier ?? "K", sha256,
+      file, real, name: text(graph.Name) || pathOf(file).basename(file, ".dyn"), uuid: text(graph.Uuid),
+      description: text(graph.Description), tier: claimed.tier, sha256,
     },
     fields, outputs,
     has_python: hasPython,
     python_nodes: form.python,
     custom_nodes: form.custom_nodes,
     packages: form.packages,
-    package_check: packageCheckPending(),
-    lock: lockStatusPending(),
+    package_check: packageCheck,
+    lock: claimed.tier === "K" ? lockCheck(kit, real, sha256) : "draft",
+    scan: { findings: scan.findings.length, high: scan.counts.high, scan_hash: scan.scan_hash, rules_version: scan.rules_version },
+    python_policy: decisions.python_policy,
     needs_revit: needsRevit,
     approval: {
-      person_required_for: hasPython ? ["preview", "apply", "offline"] : ["apply", "offline"],
+      person_required_for: verdicts.filter((v) => v.needed).map((v) => v.mode),
+      kind_by_mode: Object.fromEntries(verdicts.map((v) => [v.mode, v.kind])) as Record<RunMode, string>,
       why,
       python_always_needs_person: PYTHON_ALWAYS_NEEDS_PERSON,
     },

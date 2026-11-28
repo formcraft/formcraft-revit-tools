@@ -20,8 +20,8 @@ export const FMC_GRAPH_FORM_DESCRIPTION =
   "or a draft in <project>\\00_Formcraft\\Graphs of the target document (name document by title or full path; the project is the folder above 01_WIP). " +
   "Anything else, a '..' or network path, or a junction or link that leads out is FMC-GRAPH-JAIL. A file that is not Dynamo JSON is FMC-GRAPH-NOT-GRAPH. " +
   "Returns fields (id, name, kind, widget, default, slider min/max/step, dropdown options, file/folder pickers, element pickers marked needs_revit), " +
-  "outputs (Watch and output nodes), graph sha256, has_python, packages from NodeLibraryDependencies and what a run will need: " +
-  "a graph with Python needs a person's approval for every run (preview, apply, offline); every apply and offline run needs one too. " +
+  "outputs (Watch and output nodes), graph sha256, has_python, packages from NodeLibraryDependencies with the installed-package check, the kit lock state, the scan summary and what a run will need: " +
+  "a graph with Python (or a package DLL) needs a person's approval for every run (preview, apply, offline); every apply and offline run needs one too. " +
   "values (optional) checks form values given by input name or node id and returns inputs_by_id; unknown names are refused, not dropped. " +
   "To run, use fmc_dynamo; the form itself runs nothing.";
 
@@ -29,6 +29,7 @@ export const FMC_GRAPH_FORM_SHAPE = {
   action: z.enum(["spec"]),
   path: z.string().optional().default("").describe("spec: the .dyn file (kit 05_Scripts/library or 05_Scripts/Dynamo, or <project>\\00_Formcraft\\Graphs)"),
   values: z.record(z.unknown()).optional().describe("spec: form values by input name or node id, to check and bind. At most 50."),
+  check_packages: z.boolean().optional().default(true).describe("spec: compare the graph's packages with the installed ones (read-only). Default true."),
   kit_folder: z.string().optional().default("").describe("Kit root. Default: the folder above the guard's specs_path, or FMC_KIT."),
 };
 
@@ -43,7 +44,7 @@ export async function runFmcGraphForm(args: FmcGraphFormArgs) {
     if (!doc.ok) return reply(withResolved({ refused: true, code: doc.code, message: doc.message }, null), true);
     const big = inputTooLarge(args.values);
     if (big) return reply(withResolved({ refused: true, code: "FMC-SCRIPT-LIMIT", message: big }, doc.document), true);
-    const result = graphFormSpec({ file: args.path, kit, documentPath: doc.document?.path ?? "" });
+    const result = graphFormSpec({ file: args.path, kit, documentPath: doc.document?.path ?? "", cfg: config, env: process.env, checkPackages: args.check_packages });
     if (!result.ok) return reply(withResolved({ refused: true, code: result.code, message: result.message }, doc.document), true);
     if (!args.values) return reply(withResolved({ ...result.spec }, doc.document));
     const binding = bindFormValues(result.spec, args.values);
