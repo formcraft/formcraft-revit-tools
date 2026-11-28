@@ -29,6 +29,8 @@ import { callerFor, clientNameFromInitialize, rememberCaller, runAsCaller } from
 import { memoryGate } from "./memory.js";
 import { hwHealth } from "./hw.js";
 import { noteRestart } from "./scriptjobs.js";
+import { loadConfig } from "./policy.js";
+import { guardWarnings } from "./opencopy.js";
 
 const win = path.win32;
 
@@ -158,6 +160,8 @@ export interface HealthReport {
   coordination: ReturnType<typeof coordinationReport>;
   /** Background Dynamo and library script jobs. */
   jobs: { queued: number; running: number; last_finished: string | null };
+  /** Guard settings a person should fix, e.g. protected_roots not set (RV-6). */
+  guard_warnings: string[];
 }
 
 export function describeInstance(
@@ -219,6 +223,7 @@ export async function healthReport(listen: string, startedAt: number, env: NodeJ
     hw: hwHealth(),
     coordination: coordinationReport(env),
     jobs: noteRestart(env),
+    guard_warnings: (() => { try { return guardWarnings(loadConfig().config); } catch { return ["fmc_guard.json could not be read: the guard warnings are unknown."]; } })(),
   };
 }
 

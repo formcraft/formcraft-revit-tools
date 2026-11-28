@@ -58,8 +58,9 @@ export interface GuardConfig {
   family_max_mb?: number;
   /**
    * Original / live model roots. Write, save, sync, reload and relinquish are refused for any document under these
-   * paths. A verification copy must sit outside them. RV-6: empty or missing fails closed to PROTECTED_ROOTS_FLOOR
-   * (D:\Fomcraft, the originals tree on this PC); a person widens or moves it by naming the roots in the guard file.
+   * paths. A verification copy must sit outside them. Empty until a person names them (for example D:\Fomcraft).
+   * RV-6 (owner 28 Nov): empty or missing does not protect a whole tree, because the AI works in project folders under
+   * D:\Fomcraft; the forbidden-project floor (FORBIDDEN_PROJECTS_FLOOR) still applies, and /health and the log warn.
    */
   protected_roots: string[];
   /** Extra projects never written, saved or synced. Added to FORBIDDEN_PROJECTS_FLOOR; it can never remove a floor name. */
@@ -394,8 +395,6 @@ function segments(p: string): string[] {
   return norm(p).toLowerCase().split("\\").filter(Boolean);
 }
 
-/** RV-6: the protected originals when the guard file names no protected_roots (spelling as on this PC: D:\Fomcraft). */
-export const PROTECTED_ROOTS_FLOOR: readonly string[] = ["D:\\Fomcraft"];
 
 /** Projects no tool writes, saves or syncs, wherever they sit. Config forbidden_projects adds to it, never replaces it. */
 export const FORBIDDEN_PROJECTS_FLOOR: readonly string[] = ["A-0001", "HEBERT HOSTELS"];
