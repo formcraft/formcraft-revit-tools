@@ -85,7 +85,7 @@ export function apiFeetFor(item: PlaceItemPlan, scale: number): { x_ft: number; 
 }
 
 export function buildPlace(input: {
-  types: Array<{ id: string | number; category: string }>;
+  types: Array<{ id: string | number; category: string; view?: "front" | "back" }>;
   columns: number;
   spacing_x_mm: number;
   spacing_y_mm: number;

@@ -1123,5 +1123,41 @@
     "status": "Built, Revit check due",
     "ref": "fmc_file open_local, fmc_file close_local, fmc_open_local, fmc_close_local, fmc_close_local_apply, docs/tools/fmc_file.md",
     "note": "open_local opens a person's existing workshared local as the active document with UIApplication.OpenAndActivateDocument (activate=false uses OpenDocumentFile). worksets are all, last_viewed, none or a list of names. DoNotDetach; it never creates a new local, never synchronises, and refuses a central (FMC-FILE-CENTRAL-REFUSED), a missing file, a cloud, protected or live path, and worksets on a file that is not workshared. An already open local is only activated. close_local never syncs or relinquishes; it activates another open project first when the target is active, refuses the only open document (FMC-FILE-ONLY-DOC) and unsaved changes without confirm. save=true is a write (fmc_close_local_apply, in WRITE_COMMANDS: batch_lease, live-model lock, AI gate) and is refused for HEBERT HOSTELS, a protected original, a verification copy or a document never saved. dry_run defaults true. Opening a model in Revit stays a person's choice: the Revit check runs after install, dry run only."
+  },
+  {
+    "id": "F134",
+    "area": "Engine",
+    "group": "Families",
+    "feature": "Generate and bind a door or window for the legend schedule (fmc_generate_bind)",
+    "status": "Built, Revit check due",
+    "ref": "fmc_generate_bind, docs/tools/fmc_generate_bind.md, server/src/fmc/generatebind.ts, server/src/fmc/sinkoparams.ts, server/src/fmc/familyapproval.ts, server/src/fmc/familyapproval_pane.ts, server/src/fmc/forbidden.ts",
+    "note": "One call makes a door or window family (Metric Door.rft or Metric Window.rft): frame and leaf or glass locked to labelled planes, front and back legend geometry (plane-locked opening lines on Legend Front and Legend Back, the back dashed), and the eleven Sinko-style kit shared parameters bound as type parameters with GUIDs from the kit file, the area columns as formulas. It returns the legend-schedule rows and the fmc_legend placement for Elevation: Front and Elevation: Back (fmc_legend place takes view front or back). dry_run defaults true and writes nothing; a build needs confirm and the dry run's plan_id and runs the fmc_recipe build pipeline into staging with Gate A. Never loads into a project. The eleven names are defined in sinkoparams.ts until the owner confirms them. Needs a Revit check. F134 (renumbered from the local F126; FINAL APPROVED 2026-11-28 12:10 EAT): a first build (nothing staged under the name) needs only the dry run, confirm and plan_id; plan_id also covers the target, staging root, kit file, tool version and overwrite. Replacing a staged family is an overwrite, in fmc_recipe build and batch too (RC-3): overwrite true and a single-use family_overwrite approval bound to the path, the staged file's sha256 and the plan, 30 minutes (waiting_for_approval; a person approves in the pane, or testing mode with auto_approve issues it; auto_approve elsewhere does nothing), then the .rfa, backups, .recipe.json and .gate.json are copied to _Archive and verified, the approval used, then the build. A failed archive builds nothing and leaves the approval unused. protected_roots refuses only the named originals folders; the forbidden-project floor is A-0001 and HEBERT HOSTELS as whole words (A-00012 is not blocked). The eleven are provisional (owner not signed off). Offline tests FG-T01-T21 in familyapproval.test.ts."
+  },
+  {
+    "id": "F135",
+    "area": "Engine",
+    "group": "Families",
+    "feature": "Plane-locked polygon outlines and revolution profiles (G011)",
+    "status": "Built, Revit check due",
+    "ref": "fmc_doc / fmc_recipe extrusion outline_planes, revolution profile_planes and axis_planes; server/src/fmc/ops.ts planeLoopProblems; commandset/Services/Fmc/FmcDocPlaneLoop.cs, FmcPlaneLoopMath.cs; tests/planeloop",
+    "note": "L001 build plan 43 (L003-F368, L001-F20): an extrusion or void outline can be a closed loop of plane crossings (outline_planes) with each edge locked to its plane, so L, U and T shapes flex like rect; a revolution profile can be a loop of plane crossings (profile_planes) and its axis can follow two planes (axis_planes), so curved detail follows the type instead of being fixed at the first size. Sweep path_planes, the array op and extrusion start/end planes were already there. The server checks the loop (three corners or more, neighbours share exactly one plane, no two edges on one plane); the add-in builds the loop from the planes' crossings and fails the op when a lock can't be made. Needs a Revit check of the locks."
+  },
+  {
+    "id": "F136",
+    "area": "Engine",
+    "group": "Families",
+    "feature": "Recipe language ops set_line_weight, envelope, visibility_tier (N064: the generator recipe builds again)",
+    "status": "Built, Revit check due",
+    "ref": "server/src/fmc/recipelang.ts, commandset/Services/Fmc/FmcDocLanguage.cs, tests/recipes/healthcare/generator",
+    "note": "L001 N064 (L003-F509 'generator recipe broken'): the 6 Nov repaired FMC_E_EQ_Generator_Diesel_Standby recipe used three recipe-language ops this server refused (Invalid discriminator value). Ported from the formcraft plugin: set_line_weight (pens of a subcategory, FAM-044 judged on the last one), envelope (the Coarse box between four planes) and visibility_tier (Coarse/Medium/Fine for many solids). The products recipe added one kit material twice and fmc_parts.py now adds each kit material once. flex_test and type_catalogue are not ported."
+  },
+  {
+    "id": "F137",
+    "area": "Engine",
+    "group": "Families",
+    "feature": "Release package: a staged family prepared and validated for release (fmc_release_package)",
+    "status": "Built",
+    "ref": "fmc_release_package, docs/tools/fmc_release_package.md, server/src/fmc/releasepack.ts",
+    "note": "Takes a generated family from staging to a release-ready package under <staging>\\_ReleasePackages\\<Role>\\<family>__<sha12>: checks name, staged file, Gate A (Pass, this family, not stale), recipe (checks clean), build record, size and the package place, then copies the family, recipe, gate and build files with a manifest.json of hashes and checks. dry_run defaults true; a real run needs confirm and the plan_id. It never publishes, never moves the staged file and never writes to the library, a library root, Revit add-ins or a project: release stays the Family Librarian's act in the pane."
   }
 ]

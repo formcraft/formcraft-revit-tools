@@ -26,10 +26,15 @@ import { readDb } from "./fmc_material.js";
 import { batchId, planBatch, readBatchResults, recipeRevision } from "../fmc/recipebatch.js";
 import { localIso } from "../fmc/jobs.js";
 import { resolveMaterial } from "../fmc/materials.js";
+import { type ApprovalDeps, type FsLike, protectedRootVerdict, realFs, recipePlan, requireFamilyApproval } from "../fmc/familyapproval.js";
+import { forbiddenProject } from "../fmc/forbidden.js";
+import { SINKO_PARAMS } from "../fmc/sinkoparams.js";
 
 const win = path.win32;
 
-function log(cfg: GuardConfig, action: string, dryRun: boolean, target: string, result: string, detail: string) {
+type LogFn = (cfg: GuardConfig, action: string, dryRun: boolean, target: string, result: string, detail: string) => void;
+
+function logToFile(cfg: GuardConfig, action: string, dryRun: boolean, target: string, result: string, detail: string) {
   try {
     const dir = expandEnv(cfg.reports_dir);
     fs.mkdirSync(dir, { recursive: true });
@@ -73,7 +78,11 @@ export const FMC_RECIPE_DESCRIPTION =
     "an array, or a folder) checked first like check, then built in one Revit job one after another (apply, flex, the old " +
     "staged file archived, saved to staging with its recipe); a family staged from the same recipe revision with Gate A " +
     "passed is skipped unless rebuild names it; a dry run shows the plan; results go one line per family to " +
-    "<staging>\\_Batch\\<batch>.jsonl. batch_status reads them; batch_gate runs Gate A on what was built, as many as fit per call.";
+    "<staging>\\_Batch\\<batch>.jsonl. batch_status reads them; batch_gate runs Gate A on what was built, as many as fit per call. " +
+    "F134: replacing a staged family (build with overwrite, or a batch rebuild) needs a single-use family_overwrite approval bound to " +
+    "the path, the staged file's sha256 and the recipe (waiting_for_approval gives approval_id; a person approves it in the pane, or " +
+    "testing mode with auto_approve issues it), and the old files are copied to _Archive and checked before the build, in every mode. " +
+    "A first build needs no approval.";
 
 export const FMC_RECIPE_SHAPE = {
   action: z.enum(["check", "build", "gate", "cleanup", "batch", "batch_status", "batch_gate"]),
@@ -92,6 +101,9 @@ export const FMC_RECIPE_SHAPE = {
   max: z.number().int().min(0).optional().default(0).describe("batch: build at most this many this run (0: all)"),
   seconds: z.number().min(0).optional().default(0).describe("batch: stop starting new families after this many seconds (0: no limit)"),
   batch: z.string().optional().default("").describe("batch_status, batch_gate: the batch (B-yyyymmdd-hhmm); batch: a name to use"),
+  approval_id: z.string().optional().default("").describe("build: the family_overwrite approval for replacing a staged family (F134); a person approves it in the pane, or testing mode with auto_approve issues it"),
+  approval_ids: z.record(z.string(), z.string()).optional().default({}).describe("batch: family → its family_overwrite approval, for families already staged"),
+  plan_id: z.string().optional().default("").describe("build: the caller's plan_id (fmc_generate_bind), shown with the approval; an integrity label, never an approval"),
 };
 
 export type FmcRecipeArgs = z.infer<z.ZodObject<typeof FMC_RECIPE_SHAPE>>;
@@ -179,6 +191,18 @@ export function hostTestCeilingMs(env: NodeJS.ProcessEnv = process.env): number 
   return Number.isFinite(v) && v > 0 ? v : 15 * 60 * 1000;
 }
 
+/** F134 (O7): said by the dry run and Gate A until the owner signs off the eleven. */
+export const PROVISIONAL_NOTE = "parameter set is provisional (owner not signed off)";
+
+/** F134: where a family may be written: write_roots, the named originals in protected_roots, and the forbidden projects. */
+export function familyTargetVerdict(target: string, config: GuardConfig, opts: { checkName?: boolean } = {}) {
+  const where = checkWritePath(target, config, opts);
+  const reasons = [...where.reasons, ...protectedRootVerdict(target, config).reasons];
+  const project = forbiddenProject(target, config);
+  if (project) reasons.push(`A family is not written for ${project} (a protected project).`);
+  return { ok: reasons.length === 0, reasons };
+}
+
 export async function runGate(file: string, cfg: GuardConfig, flex: object | null = null) {
   const family = win.basename(file, ".rfa");
   const recipeFile = file.replace(/\.rfa$/i, ".recipe.json");
@@ -222,12 +246,28 @@ export async function runGate(file: string, cfg: GuardConfig, flex: object | nul
   const ref = readJson(file.replace(/\.rfa$/i, ".reference.json")) as Reference | null;
   const rbook = loadRhinoRulebook(expandEnv(cfg.rulebooks_dir)).book;
   gate.lines.push(referenceLine(ref, rbook), likenessLine(ref, readJson(file.replace(/\.rfa$/i, ".likeness.json")) as Likeness | null, rbook, "revit"));
+  // F134 (O7): the eleven Sinko-style parameters are provisional until the owner signs them off
+  const names = new Set((recipe?.ops ?? []).filter((o) => o.op === "add_shared_param").map((o) => String((o as { name?: string }).name ?? "")));
+  if (SINKO_PARAMS.every((p) => names.has(p.name)))
+    gate.lines.push({ check: "Sinko-style parameter set", state: "Not checked", detail: PROVISIONAL_NOTE });
   if (gate.lines.some((l) => l.state === "Fail")) gate.verdict = "Fail";
   // callers (the test runner) check these directly: hostTestError is "" when the host test ran fine or wasn't needed
   const result = { family, file, at: new Date().toISOString(), ...gate,
     hostFrom: registerHostText ? "register" : famHost ? "family" : "", hostKind: kind ?? "", hostTest, hostTestError };
   try { fs.writeFileSync(file.replace(/\.rfa$/i, ".gate.json"), JSON.stringify(result, null, 2)); } catch { /* the gate still answers */ }
   return result;
+}
+
+/** F134: what tests inject; the defaults are the real config, fs, builder and log. */
+export interface RecipeIo {
+  guard?: GuardConfig;
+  fs?: FsLike;
+  dictionary?: ReturnType<typeof parseSharedParameters> | null;
+  build?: typeof buildRecipe;
+  log?: LogFn;
+  approvals?: ApprovalDeps;
+  /** batch: the Revit job (default fmc_recipe_batch over the bridge). */
+  sendBatch?: (payload: Record<string, unknown>) => Promise<unknown>;
 }
 
 function readDictionary(config: GuardConfig) {
@@ -291,7 +331,9 @@ function batchFolder(config: GuardConfig) { return win.join(expandEnv(config.fam
  * (apply, flex, archive the old staged file, save with the recipe), one line per family in _Batch\<batch>.jsonl.
  * batch_status reads that file; batch_gate runs Gate A on what was built, as many as fit in one call each time.
  */
-async function runBatchAction(args: FmcRecipeArgs, config: GuardConfig, dry: boolean) {
+async function runBatchAction(args: FmcRecipeArgs, config: GuardConfig, dry: boolean, io: RecipeIo = {}) {
+  const log = io.log ?? logToFile;
+  const fsx = io.fs ?? realFs;
   const folder = batchFolder(config);
   if (args.action === "batch_status" || args.action === "batch_gate") {
     if (!args.batch.trim()) return reply({ refused: true, reasons: ["Name the batch (B-yyyymmdd-hhmm): fmc_recipe batch gives it"] }, true);
@@ -324,33 +366,56 @@ async function runBatchAction(args: FmcRecipeArgs, config: GuardConfig, dry: boo
   // batch: check every recipe, plan, and (not a dry run) build them in one Revit job
   const { recipes, problems } = batchRecipes(args);
   if (!recipes.length) return reply({ refused: true, reasons: problems.length ? problems : ["Give recipe_files or a folder of recipes"] }, true);
-  const dictionary = readDictionary(config);
+  const dictionary = io.dictionary !== undefined ? io.dictionary : readDictionary(config);
   const invalid: string[] = [...problems];
   const ready = new Map<string, { recipe: Recipe; prep: ReturnType<typeof prepareRecipe>; revision: string }>();
   for (const { recipe } of recipes) {
     const prep = prepareRecipe(recipe, config, dictionary);
     const stop = [...prep.errors, ...(roleOf(recipe.family) ? [] : [`${recipe.family} doesn't follow FMC_<Role>_<Token>_<Description>`]),
-      ...(checkWritePath(prep.target, config).ok ? [] : checkWritePath(prep.target, config).reasons)];
+      ...familyTargetVerdict(prep.target, config).reasons];
     if (stop.length) { invalid.push(`${recipe.family}: ${stop.slice(0, 3).join(" | ")}`); continue; }
     ready.set(recipe.family, { recipe, prep, revision: recipeRevision(recipe) });
   }
   const staged = (target: string) => {
-    if (!fs.existsSync(target)) return { exists: false };
+    if (!fsx.existsSync(target)) return { exists: false };
     let revision: string | null = null, verdict: string | null = null;
     try { const r = parseRecipe(fs.readFileSync(target.replace(/\.rfa$/i, ".recipe.json"), "utf8")).recipe; revision = r ? recipeRevision(r) : null; } catch { /* no recipe beside it */ }
     try { verdict = JSON.parse(fs.readFileSync(target.replace(/\.rfa$/i, ".gate.json"), "utf8")).verdict ?? null; } catch { /* never gated */ }
     return { exists: true, revision, verdict };
   };
   const plan = planBatch([...ready.values()].map((x) => ({ family: x.recipe.family, revision: x.revision, staged: staged(x.prep.target) })), args.rebuild);
-  const build = args.max > 0 ? plan.build.slice(0, args.max) : plan.build;
+  let build = args.max > 0 ? plan.build.slice(0, args.max) : plan.build;
   const id = args.batch.trim() || batchId();
   const resultsFile = win.join(folder, `${id}.jsonl`);
-  const ops = build.reduce((t, f) => t + ready.get(f)!.recipe.ops.length, 0);
-  const summary = { batch: id, recipes: recipes.length, to_build: build.length, skipped: plan.skip.length, invalid: invalid.length, ops,
-    build: build.slice(0, 60), skip: plan.skip.slice(0, 30), invalid_detail: invalid.slice(0, 30), results_file: resultsFile };
-  if (dry) return reply({ dry_run: true, ...summary, next: build.length ? "Run again with dry_run=false to build them in one Revit job" : "Nothing to build" });
-  if (!build.length) return reply({ ...summary, next: "Nothing to build: every recipe is staged and passed, or invalid" });
+  // F134 (RC-3): a rebuild of a family already staged is an overwrite: a family_overwrite approval each, archive first
+  const overwrites = build.filter((f) => fsx.existsSync(ready.get(f)!.prep.target));
+  const sum = (list: string[]) => ({ batch: id, recipes: recipes.length, to_build: list.length, skipped: plan.skip.length, invalid: invalid.length,
+    ops: list.reduce((t, f) => t + ready.get(f)!.recipe.ops.length, 0), build: list.slice(0, 60), skip: plan.skip.slice(0, 30),
+    invalid_detail: invalid.slice(0, 30), results_file: resultsFile, overwrites: overwrites.slice(0, 60) });
+  if (dry) return reply({ dry_run: true, ...sum(build), next: build.length ? "Run again with dry_run=false to build them in one Revit job" : "Nothing to build",
+    ...(overwrites.length ? { overwrite_note: `${overwrites.length} of these are already staged: a real run moves each one's old .rfa, backups, .recipe.json and .gate.json to _Archive first, and each needs a family_overwrite approval (approval_ids). This dry run consumed nothing.` } : {}) });
+  if (!build.length) return reply({ ...sum(build), next: "Nothing to build: every recipe is staged and passed, or invalid" });
   if (!checkWritePath(resultsFile, config, { checkName: false }).ok) return reply({ refused: true, reasons: checkWritePath(resultsFile, config, { checkName: false }).reasons }, true);
+  const waiting: Array<{ family: string; approval_id: string; expires_at: string }> = [];
+  const held: string[] = [];
+  const archived: Record<string, string[]> = {};
+  for (const family of overwrites) {
+    const { recipe, prep } = ready.get(family)!;
+    const g = requireFamilyApproval({ family, target: prep.target, plan: recipePlan(recipe, prep.target), overwrite: true,
+      approvalId: args.approval_ids[family], cfg: config, checkDest: (dest) => familyTargetVerdict(dest, config, { checkName: false }) },
+      fsx.existsSync(prep.target), { fs: fsx, ...io.approvals });
+    if (g.ok) { if (g.overwrite) archived[family] = g.archived.map((a) => a.to); continue; }
+    if (g.waiting) waiting.push({ family, approval_id: g.approval_id, expires_at: g.expires_at });
+    else held.push(`${family}: [${g.code}] ${g.reasons.join("; ")}`);
+  }
+  const stop = new Set([...waiting.map((w) => w.family), ...held.map((h) => h.split(":")[0])]);
+  build = build.filter((f) => !stop.has(f));
+  const approvals = { ...(waiting.length ? { waiting_for_approval: waiting } : {}), ...(held.length ? { refused_overwrites: held } : {}),
+    ...(Object.keys(archived).length ? { archived } : {}) };
+  if (!build.length) return reply({ ...sum(build), ...approvals, wrote: false,
+    next: waiting.length ? "Every family left to build is an overwrite waiting for its approval in the pane: call again with approval_ids" : "Nothing left to build" }, held.length > 0 && !waiting.length);
+  const ops = sum(build).ops;
+  const summary = { ...sum(build), ...approvals };
 
   // the manifest: every item with its ops resolved the way fmc_doc apply resolves them (family paths, kit materials)
   const items = build.map((family) => {
@@ -363,14 +428,15 @@ async function runBatchAction(args: FmcRecipeArgs, config: GuardConfig, dry: boo
     return { family, revision, template: prep.template, target: prep.target, archive_dir: win.join(win.dirname(prep.target), "_Archive"),
       ops: resolved, follow: followParams(recipe), recipe };
   });
-  fs.mkdirSync(folder, { recursive: true });
+  fsx.mkdirSync(folder, { recursive: true });
   const manifest = win.join(expandEnv(config.reports_dir), "Batches", `${id}.json`);
-  fs.mkdirSync(win.dirname(manifest), { recursive: true });
-  fs.writeFileSync(manifest, JSON.stringify({ batch: id, made: localIso(new Date().toISOString()), items }));
+  fsx.mkdirSync(win.dirname(manifest), { recursive: true });
+  fsx.writeFileSync(manifest, JSON.stringify({ batch: id, made: localIso(new Date().toISOString()), items }));
   log(config, "recipe_batch", false, resultsFile, "sent", `${build.length} families, ${ops} ops`);
   try {
-    const r = await withRevitConnection((c) => c.sendRaw("fmc_recipe_batch", { items_file: manifest, results_file: resultsFile,
-      shared_parameter_file: expandEnv(config.shared_parameter_file), max_seconds: args.seconds, max_backups: config.max_backups ?? 3 }, 12 * 60 * 60 * 1000));
+    const payload = { items_file: manifest, results_file: resultsFile,
+      shared_parameter_file: expandEnv(config.shared_parameter_file), max_seconds: args.seconds, max_backups: config.max_backups ?? 3 };
+    const r = io.sendBatch ? await io.sendBatch(payload) : await withRevitConnection((c) => c.sendRaw("fmc_recipe_batch", payload, 12 * 60 * 60 * 1000));
     return reply({ ...summary, revit: r, next: `fmc_recipe batch_gate batch=${id} runs Gate A on what was built (run it until nothing is left)` });
   } catch (e) {
     if (e instanceof JobStillRunning)
@@ -380,9 +446,11 @@ async function runBatchAction(args: FmcRecipeArgs, config: GuardConfig, dry: boo
   }
 }
 
-export async function runFmcRecipe(args: FmcRecipeArgs) {
-  const { config } = loadConfig();
+export async function runFmcRecipe(args: FmcRecipeArgs, io: RecipeIo = {}) {
+  const config = io.guard ?? loadConfig().config;
   const dry = args.dry_run !== false;
+  const log = io.log ?? logToFile;
+  const fsx = io.fs ?? realFs;
   try {
     if (args.action === "gate") {
       const file = args.file.trim();
@@ -399,24 +467,29 @@ export async function runFmcRecipe(args: FmcRecipeArgs) {
       return reply(r.body, r.isError);
     }
 
-    if (args.action === "batch" || args.action === "batch_status" || args.action === "batch_gate") return await runBatchAction(args, config, dry);
+    if (args.action === "batch" || args.action === "batch_status" || args.action === "batch_gate") return await runBatchAction(args, config, dry, io);
 
     // F-057: a recipe sent inline (from a chat with no folder on this PC) is kept in the reports folder and used like a file
+    // F134 (A12): the inline copy is written only when the build goes ahead (or for check), never by a refused build
     let recipeFile = args.recipe_file.trim();
+    let keepInline = () => {};
+    let parsedInline: ReturnType<typeof parseRecipe> | null = null;
     if (args.recipe && Object.keys(args.recipe).length) {
       const fam = String((args.recipe as Record<string, unknown>).family ?? "");
       if (!/^FMC_[A-Za-z0-9]+_[A-Za-z0-9]+_[A-Za-z0-9_]+$/.test(fam)) return reply({ refused: true, reasons: [`The inline recipe's family "${fam}" doesn't follow FMC_<Role>_<Token>_<Description>`] }, true);
       const dir = win.join(expandEnv(config.reports_dir), "Recipes");
-      fs.mkdirSync(dir, { recursive: true });
       recipeFile = win.join(dir, `${fam}.recipe.json`);
-      fs.writeFileSync(recipeFile, JSON.stringify(args.recipe, null, 2));
+      const text = JSON.stringify(args.recipe, null, 2);
+      parsedInline = parseRecipe(text);
+      keepInline = () => { fsx.mkdirSync(dir, { recursive: true }); fsx.writeFileSync(recipeFile, text); };
     }
-    const { recipe, problems } = readRecipe(recipeFile);
+    const { recipe, problems } = parsedInline ?? readRecipe(recipeFile);
     if (!recipe) return reply({ refused: true, reasons: problems }, true);
-    const { template, planes, errors, notes, families, target } = prepareRecipe(recipe, config, readDictionary(config));
+    const { template, planes, errors, notes, families, target } = prepareRecipe(recipe, config, io.dictionary !== undefined ? io.dictionary : readDictionary(config));
     const sources = Object.fromEntries(["verified", "EA", "assumed", "pending"].map((s) => [s, Object.entries(recipe.values).filter(([, v]) => v.source_status === s).map(([k]) => k)]));
     const shown = dropTemplateNotes(notes, planes.planes);
     if (args.action === "check") {
+      keepInline();
       const envelope = requestBytes("fmc_doc_apply", applyEnvelope("00000000", expandEnv(config.shared_parameter_file)));
       const bytes = envelope + Buffer.byteLength(JSON.stringify(families.ops), "utf8");
       const chunks = planChunks(families.ops, args.chunk_size, CHUNK_BYTES, envelope);
@@ -430,16 +503,37 @@ export async function runFmcRecipe(args: FmcRecipeArgs) {
     // build
     if (errors.length) return reply({ refused: true, reasons: errors }, true);
     if (!roleOf(recipe.family)) return reply({ refused: true, reasons: [`${recipe.family} doesn't follow FMC_<Role>_<Token>_<Description>`] }, true);
-    const where = checkWritePath(target, config);
-    if (!where.ok) return reply({ refused: true, reasons: where.reasons }, true);
-    if (fs.existsSync(target) && !args.overwrite) return reply({ refused: true, reasons: [`${target} exists: a person decides to overwrite (overwrite: true)`] }, true);
+    const where = familyTargetVerdict(target, config);
+    if (!where.ok) return reply({ refused: true, code: "FMC-GB-PATH", reasons: where.reasons, wrote: false }, true);
+    // F134 (GB-1, GB-2, RC-3): a first build goes ahead; an overwrite needs overwrite true, a bound single-use
+    // family_overwrite approval and the archive first, in every mode. A dry run consumes and archives nothing.
+    const existing = fsx.existsSync(target);
+    let overwrite: Record<string, unknown> = {};
+    if (existing && (dry || !args.overwrite)) {
+      if (!args.overwrite) return reply({ refused: true, code: "FMC-GB-EXISTS", wrote: false,
+        reasons: [`${target} exists: replacing it is an overwrite (overwrite: true and a family_overwrite approval; the old files go to _Archive first)`] }, true);
+      overwrite = { overwrite_note: `${target} exists: a real overwrite moves the old .rfa, its backups, .recipe.json and .gate.json to ${win.join(win.dirname(target), "_Archive")} first, and needs a family_overwrite approval. This dry run consumed nothing.` };
+    } else if (existing) {
+      const g = requireFamilyApproval({ family: recipe.family, target, plan: recipePlan(recipe, target), planLabel: args.plan_id.trim() || undefined,
+        overwrite: true, approvalId: args.approval_id, cfg: config, checkDest: (dest) => familyTargetVerdict(dest, config, { checkName: false }) },
+        fsx.existsSync(target), { fs: fsx, ...io.approvals });
+      if (!g.ok) {
+        log(config, "recipe_build", false, target, g.waiting ? "waiting for approval" : "refused", g.reasons.join(" | ").slice(0, 400));
+        return g.waiting
+          ? reply({ family: recipe.family, staging: target, waiting_for_approval: true, code: g.code, approval_id: g.approval_id, expires_at: g.expires_at, reasons: g.reasons, wrote: false })
+          : reply({ family: recipe.family, staging: target, refused: true, code: g.code, approval_id: g.approval_id, reasons: g.reasons, wrote: false }, true);
+      }
+      if (g.overwrite) overwrite = { approval: { id: g.approval.id, status: g.approval.status, auto: g.approval.auto === true, approved_by: g.approval.approved_by },
+        archived: g.archived.map((a) => ({ from: a.from, to: a.to, sha256: a.sha256 })) };
+    }
+    keepInline();
     const soft = softTimeoutMs();
-    const r = await buildRecipe(recipe, {
+    const r = await (io.build ?? buildRecipe)(recipe, {
       recipeFile, template, target, dry, overwrite: args.overwrite, stepwise: args.stepwise, chunkSize: args.chunk_size,
       resume: args.resume, reportsDir: expandEnv(config.reports_dir), sharedParameterFile: expandEnv(config.shared_parameter_file),
       notes: shown.notes, sources, ops: families.ops, follow: followParams(recipe),
     }, { doc: docCall, gate: (file, flex) => runGate(file, config, flex), budgetMs: soft > 0 ? Math.max(soft - 15000, 10000) : Infinity });
-    const b = r.body as Record<string, any>;
+    const b = { ...(r.body as Record<string, any>), ...overwrite };
     if (b.built || b.failed || b.dry_run) log(config, "recipe_build", dry, target, b.built ? b.gate?.verdict ?? "built" : b.failed ? "failed" : "dry run",
       b.failed ? `${b.failed_at?.text ?? ""} · ${b.ops_done}` : `${recipe.ops.length} ops${args.stepwise ? " stepwise" : ""}`);
     return reply(b, r.isError);

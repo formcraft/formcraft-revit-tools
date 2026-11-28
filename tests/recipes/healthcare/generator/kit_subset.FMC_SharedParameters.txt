@@ -1,0 +1,94 @@
+# This is a Revit shared parameter file.
+# Do not edit manually.
+*META	VERSION	MINVERSION
+META	2	1
+*GROUP	ID	NAME
+GROUP	1	FMC_01_Project_Governance
+GROUP	2	FMC_02_Title_Block
+GROUP	3	FMC_03_Cost_5D
+GROUP	4	FMC_04_Time_Procurement_4D
+GROUP	5	FMC_05_Classification_OpenBIM
+GROUP	6	FMC_06_Architecture_Interiors
+GROUP	7	FMC_07_Structure
+GROUP	8	FMC_08_Electrical
+GROUP	9	FMC_09_Lightning_Protection
+GROUP	10	FMC_10_Plumbing_Drainage
+GROUP	11	FMC_11_Mechanical_HVAC
+GROUP	12	FMC_12_Fire_Protection
+GROUP	13	FMC_13_Landscape
+GROUP	14	FMC_14_Civil
+GROUP	15	FMC_15_Sustainability_6D
+GROUP	16	FMC_16_Asset_7D
+GROUP	17	FMC_17_Element_Code_Keynote
+GROUP	18	FMC_18_QA_Information_Status
+GROUP	19	FMC_19_Fabrication
+GROUP	20	FMC_20_Logistics
+GROUP	21	FMC_21_Subcontract_Packages
+GROUP	22	FMC_22_Structural_Analysis_Results
+GROUP	23	FMC_23_Spaces
+GROUP	24	FMC_24_Wall_Assemblies
+GROUP	25	FMC_25_Doors_Windows
+GROUP	26	FMC_26_Floor_Assemblies
+GROUP	27	FMC_27_Ceiling_Roof_Assemblies
+GROUP	28	FMC_28_Foundations_Framing
+GROUP	29	FMC_29_Casework_Joinery
+GROUP	30	FMC_30_MEP_Fixtures_Equipment
+*PARAM	GUID	NAME	DATATYPE	DATACATEGORY	GROUP	VISIBLE	DESCRIPTION	USERMODIFIABLE	HIDEWHENNOVALUE
+PARAM	6f0f6197-4d1e-5601-afd7-98d436c0bd40	FMC_Cost_Unit	TEXT		3	1	Measurement unit: m, m2, m3, nr, kg, set, item	1	0
+PARAM	62f76d16-13cf-55e5-a826-96396f36ec5b	FMC_Unit_Rate	CURRENCY		3	1	Approved unit rate (UGX unless BEP says otherwise)	1	0
+PARAM	ae803153-5718-53c7-bb5a-a539c4b5f74f	FMC_Rate_Source_Date	TEXT		3	1	Rate source and effective date, e.g. RATES-2026Q3	1	0
+PARAM	371c8acf-5a21-5815-ab3e-2b70d7e00a97	FMC_Waste_Factor	NUMBER		3	1	Multiplier applied to measured quantity, e.g. 1.10 = 10%	1	0
+PARAM	288b6d81-85f0-5615-9828-c9f6620889f0	FMC_Measurement_Rule	TEXT		3	1	Measurement rule ID from the Measurement sheet	1	0
+PARAM	c8ed9837-11e6-5dda-a3be-7b94d0735fa0	FMC_Cost_Code_WBS	TEXT		3	1	WBS / cost code	1	0
+PARAM	f734cf2f-fdbb-5280-b56d-d4a79a408474	FMC_Labour_Rate	CURRENCY		3	1	Labour rate per unit (optional)	1	0
+PARAM	97190dec-e4ef-5d69-8f13-cdcf9ebcab54	FMC_Procurement_Status	TEXT		4	1	Specified / Tendered / Ordered / In Fabrication / In Transit / On Site / Installed / Commissioned	1	0
+PARAM	639b9358-a675-5932-8c19-3dc1552ab2c5	FMC_Construction_Status	TEXT		4	1	Not Started / In Progress / Complete / On Hold	1	0
+PARAM	12517656-7b11-510d-92b2-b4f0a36f6015	FMC_Task_ID	TEXT		4	1	Programme activity ID (P6 / MS Project)	1	0
+PARAM	dc0d41f2-5e20-5930-9ac1-214926cc10a4	FMC_Zone	TEXT		4	1	Construction zone / pour / sequence area	1	0
+PARAM	84b1df49-9a5d-5d73-a495-2734715266b0	FMC_Lead_Time_Weeks	INTEGER		4	1	Supplier lead time in weeks	1	0
+PARAM	46ad88a7-ef62-5723-9d72-83402d9092eb	FMC_PO_Reference	TEXT		4	1	Purchase order reference	1	0
+PARAM	604b9e35-27ac-524c-9e08-25f674a5a75c	FMC_Uniclass_Code	TEXT		5	1	Uniclass 2015 code (Ss or Pr table) from the release named in FMC_Classification_Version	1	0
+PARAM	42ac14fe-3a6a-5ded-9e29-63937760af92	FMC_Uniclass_Title	TEXT		5	1	Uniclass title text	1	0
+PARAM	bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7	IfcExportAs	TEXT		5	1	IFC entity override used by the Revit IFC exporter	1	0
+PARAM	261a6035-3f5a-58c0-a009-7faea1641174	IfcExportType	TEXT		5	1	IFC predefined type override used by the Revit IFC exporter	1	0
+PARAM	879ef0ea-61fa-5274-9881-915afd828153	FMC_Panel_ID	TEXT		8	1	Distribution board ID	1	0
+PARAM	1f352e44-006a-5146-87ea-a1da43245855	FMC_Cable_Spec	TEXT		8	1	Cable specification	1	0
+PARAM	0fe20834-bce9-5c3f-a498-96c0b6c61998	FMC_Earth_Resistance_Ohm	NUMBER		9	1	Measured earth resistance (ohm) - as-built	1	0
+PARAM	aa1c5aad-32f5-5ba3-8139-a49a5faba0dd	FMC_LPS_Class	TEXT		9	1	Lightning protection level / class per design	1	0
+PARAM	44835034-0592-5381-bec3-d5076c40966b	FMC_Fire_Compartment	TEXT		12	1	Fire compartment ID	1	0
+PARAM	b6c80b91-f090-57cb-b6e4-888fa83e25d2	FMC_Carbon_Factor	NUMBER		15	1	Embodied carbon factor kgCO2e per FMC_Cost_Unit (A1-A3 unless stated)	1	0
+PARAM	536d211b-e51c-5dbf-a426-f8b51316bd23	FMC_Carbon_Source	TEXT		15	1	Factor source and version (EPD no., ICE version)	1	0
+PARAM	91d421fb-1ae0-5707-a18f-15c385667a16	FMC_Recycled_Content_Pct	NUMBER		15	1	Recycled content %	1	0
+PARAM	b0a6d6de-9c9c-5462-b546-54ffe256a9ce	FMC_Supply_Distance_km	NUMBER		15	1	Distance from source to site, km	1	0
+PARAM	da8b0833-85d1-5621-903a-8d9fbef9089d	FMC_Asset_Tag	TEXT		16	1	Client asset tag (AIR naming)	1	0
+PARAM	d7588945-f14a-59c0-a35d-407cdc20d4cf	FMC_Serial_Number	TEXT		16	1	Manufacturer serial number (verified on site)	1	0
+PARAM	dc399f41-0c78-566b-bf6a-94cdba78e4fa	FMC_Manufacturer	TEXT		16	1	Manufacturer	1	0
+PARAM	3278e3b0-76e8-57ec-b892-1b3b75af7dce	FMC_Model_Number	TEXT		16	1	Model number	1	0
+PARAM	d21414d8-a409-5716-b95e-eae5708fba37	FMC_Install_Date	TEXT		16	1	Installation date YYYY-MM-DD	1	0
+PARAM	7c69adf7-5048-56d9-be69-67092685ee15	FMC_Warranty_End	TEXT		16	1	Warranty end date YYYY-MM-DD	1	0
+PARAM	63ed8a18-5433-5409-adcd-485640c84760	FMC_Maintenance_Interval_Months	INTEGER		16	1	Planned maintenance interval	1	0
+PARAM	a9ccd9dc-5900-5ce2-9908-08d779a83dfc	FMC_OM_Link	URL		16	1	Link to O&M document in the CDE	1	0
+PARAM	2d089b32-0589-516b-8952-9f6afad95971	FMC_Keynote_Code	TEXT		17	1	Formcraft element code X.YYY_ZZ (copied from the Keynote parameter by script)	1	0
+PARAM	54831722-135b-55ce-9f72-8835fdf4559a	FMC_Code_Description	TEXT		17	1	Description from the master data	1	0
+PARAM	c542b5b3-0499-5b76-8f3e-7e4f9073c793	FMC_Code_Group	TEXT		17	1	Parent group X.YYY	1	0
+PARAM	84b25013-48b4-543e-bf13-efc13a08e33f	FMC_Standard_Ref	TEXT		17	1	Verified Standards Register IDs (STD-xxxx); blank until verified	1	0
+PARAM	70578eec-025d-544c-b0cc-192fff949e7c	FMC_Local_Spec	TEXT		17	1	Local material / supply note	1	0
+PARAM	41535c02-53ca-59a9-a6ac-0908fe1f12b4	FMC_Data_Sync_Stamp	TEXT		17	1	Master data version and date written by the sync script	1	0
+PARAM	789bb22e-a3cf-5533-8d68-5109e6979bc8	FMC_Role_Code	TEXT		18	1	Owning role code (A, S, E ...); drives search sets	1	0
+PARAM	27c3be4d-9757-51ba-aa96-6c7a3a061025	FMC_Geometry_Stage	TEXT		18	1	G1-G5 geometry stage (Part 3.3)	1	0
+PARAM	9967de26-eeb2-5220-850e-c1cfa5444cab	FMC_QA_Status	TEXT		18	1	Unchecked / Checked / Issue Raised / Verified On Site	1	0
+PARAM	4154d0b6-20c8-50ce-8126-e1d66868d022	FMC_Author	TEXT		18	1	Initials of author (optional; worksharing history is the record)	1	0
+PARAM	0a9e6efe-a293-52de-b8f5-6e6f45549cc2	FMC_Prefabricated	YESNO		19	1	Made off site	1	0
+PARAM	c2c30e39-36a7-50f5-a463-955962bbd5e4	FMC_Delivery_Batch	TEXT		20	1	Delivery batch / consignment	1	0
+PARAM	2beb3f66-838e-5cf0-b625-85bef904a8c9	FMC_Laydown_Area	TEXT		20	1	Site laydown area ID	1	0
+PARAM	07be2441-4eba-5d30-b0f1-ffca129d25f8	FMC_Trade_Package	TEXT		21	1	Trade package code, e.g. PKG-03-MASONRY	1	0
+PARAM	116341a9-a803-502d-862d-9cde946a808a	FMC_Subcontractor_ID	TEXT		21	1	Subcontractor directory ID	1	0
+PARAM	699b3d82-b1d4-5258-b746-263d42bccd7c	FMC_Mounting_Height_mm	INTEGER		30	1	Mounting height to centre/underside per drawing convention	1	0
+PARAM	f1e5bf1d-3a44-5416-a962-710f69136c5e	FMC_Power_W	NUMBER		30	1	Rated power W	1	0
+PARAM	bc92b509-8c0f-5d24-bd83-ea5770c8c8d2	FMC_Power_W_2	NUMBER		30	1	Rated power W of a second circuit (e.g. jockey pump); kit change request 15 Oct, item 44	1	0
+PARAM	c6837dcb-e4b9-58d9-aa9d-bc967b1da939	FMC_Controller_ID	TEXT		11	1	Controller this device is wired to (its mark), or for a controller, its supervisor	1	0
+PARAM	778866fb-d081-5810-863f-5e03e18c3862	FMC_Point_Type	TEXT		11	1	Controls point type: AI, AO, DI or DO (from the controls engineer)	1	0
+PARAM	a62ce70b-dc43-5a8e-bf93-216e3f207150	FMC_Point_Signal	TEXT		11	1	Signal, e.g. 0-10 V, 4-20 mA, volt-free, pulse	1	0
+PARAM	7fea984b-290c-534d-b880-5c633888e7c6	FMC_Protocol	TEXT		11	1	Network protocol, e.g. BACnet/IP, BACnet MS/TP, Modbus RTU, KNX, DALI	1	0
+PARAM	f13a86dc-4d00-538f-a764-e39f91673a8f	FMC_IP_Rating	TEXT		30	1	Ingress protection rating	1	0
+PARAM	84dd2958-9179-588a-8069-1df161c8b4ee	FMC_Ways	INTEGER		8	1	Number of ways; drives arrays in enclosures such as FMC_E_EQ_MeterCabinet_nWay	1	0

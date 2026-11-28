@@ -58,7 +58,7 @@ export interface GuardConfig {
   family_max_mb?: number;
   /**
    * Original / live model roots. Write, save, sync, reload and relinquish are refused for any document under these
-   * paths. A verification copy must sit outside them. Empty until the guard file names them (for example D:\Fomcraft).
+   * paths. A verification copy must sit outside them. Empty until the guard file names them: the named originals folders only, never a whole drive or kit root. An empty list matches nothing.
    */
   protected_roots: string[];
   /**

@@ -73,9 +73,13 @@ export function knownLegendCategory(category: string): boolean {
   return HOSTS.has(category.trim().toLowerCase().replace(/\s+/g, ""));
 }
 
-/** Doors and windows face front. Walls, floors and roofs are a section. Ceilings use the ceiling plan. */
-export function directionFor(category: string): { name: LegendDirectionName; value: number } | null {
+/**
+ * Doors and windows face front, or back when asked (fmc_generate_bind's back legend). Walls, floors and roofs are a
+ * section. Ceilings use the ceiling plan.
+ */
+export function directionFor(category: string, view?: "front" | "back"): { name: LegendDirectionName; value: number } | null {
   const c = legendCategory(category);
+  if ((c === "door" || c === "window") && view === "back") return { name: "elevation_back", value: LEGEND_VIEW.elevation_back };
   if (c === "door" || c === "window") return { name: "elevation_front", value: LEGEND_VIEW.elevation_front };
   if (c === "wall" || c === "floor" || c === "roof") return { name: "section", value: LEGEND_VIEW.section };
   if (c === "ceiling") return { name: "ceiling_plan", value: LEGEND_VIEW.ceiling_plan };
@@ -122,7 +126,7 @@ export interface PlaceItemPlan {
 }
 
 export function placePlan(input: {
-  types: Array<{ id: string | number; category: string }>;
+  types: Array<{ id: string | number; category: string; view?: "front" | "back" }>;
   columns: number;
   spacing_x_mm: number;
   spacing_y_mm: number;
@@ -134,7 +138,7 @@ export function placePlan(input: {
   const rejected: Array<{ id: string; category: string; code: string; fix: string }> = [];
   for (const type of input.types) {
     const id = String(type.id);
-    const direction = directionFor(type.category);
+    const direction = directionFor(type.category, type.view);
     const params = paramOrder(type.category);
     if (!direction || !params.length) {
       rejected.push({

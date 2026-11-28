@@ -150,6 +150,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                 case "delete_template_element": return FmcDocRecipe.DeleteTemplateElement(doc, op);
                 case "set_default_size": return FmcDocRecipe.SetDefaultSize(doc, op);
                 case "set_type_image": return FmcDocInspect.SetTypeImage(doc, op);
+                // N064: the recipe-language ops (server: fmc/recipelang.ts expands envelope and visibility_tier first)
+                case "set_line_weight": return FmcDocLanguage.SetLineWeight(doc, op);
+                case "visibility_tier": return FmcDocLanguage.VisibilityTier(doc, op);
+                case "envelope": return FmcDocLanguage.Envelope(doc, op);
                 default: throw new InvalidOperationException("unknown op " + op.Value<string>("op"));
             }
         }

@@ -40,7 +40,7 @@ export function lightPathOps(ops: Op[], lp: LightPath): { ops: Op[]; values: Rec
     ...(glass ? [] : [{ op: "add_family_param", name: matParam, type: "Material", group: "Materials" }, { op: "add_material", name: "FMC_Glass_Clear", param: matParam }]),
   );
   for (const l of lp.lenses) {
-    const lens = ops.find((o) => o.op === "revolution" && o.name === l.solid && (o.axis ?? "z") === "z");
+    const lens = ops.find((o) => o.op === "revolution" && o.name === l.solid && (o.axis ?? "z") === "z" && Array.isArray(o.profile));
     if (!lens) { notes.push(`${l.solid}: no vertical lens revolution, no beam`); continue; }
     const r0 = Math.max(...(lens.profile as number[][]).map((p) => p[0]));
     const zs = (lens.profile as number[][]).map((p) => p[1]);

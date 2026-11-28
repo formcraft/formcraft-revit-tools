@@ -165,11 +165,18 @@ def compile_product(prod, kn_lookup=None):
         m = p.get('mat')
         if m and m not in used and not p.get('void'): used.append(m)
     title = lambda m: m.replace('_', ' ').title()
+    # N064 (28 Nov): two material keys on one kit material (the generator's "black" and "screen") made the same
+    # add_material twice, which fmc_recipe refuses; the second key's parts share the first key's Material parameter
+    matparam, added = {}, {}
     for m in used:
         kitname = mats[m]
         col = hexrgb(kit.get(kitname, {}).get('graphics', {}).get('shaded'))
         ops.append({"op": "add_subcategory", "name": title(m), "color": col, "line_weight_projection": 1})
         if kitname in kit or not kit:
+            if kitname in added:
+                matparam[m] = added[kitname]
+                continue
+            added[kitname] = matparam[m] = f"{title(m)} Material"
             ops += [{"op": "add_family_param", "name": f"{title(m)} Material", "type": "Material", "group": "Materials"},
                     {"op": "add_material", "name": kitname, "param": f"{title(m)} Material"}]
     ops.append({"op": "add_subcategory", "name": "Coarse Envelope", "color": [120, 130, 140], "line_weight_projection": 2})
@@ -185,7 +192,7 @@ def compile_product(prod, kn_lookup=None):
     ops += solid_ops({"n": "Coarse Envelope"}, dict(kind='plan', pts=rrect(env[0], env[1], env[3], env[4]), a=env[2], b=env[5]), 'Coarse Envelope', None, 'c')
     for p, g in geos:
         sub = title(p['mat']) if p.get('mat') else None
-        ops += solid_ops(p, g, sub, (title(p['mat']) + ' Material') if p.get('mat') and (mats[p['mat']] in kit or not kit) else None, p.get('lod', 'mf'))
+        ops += solid_ops(p, g, sub, matparam.get(p['mat']) if p.get('mat') else None, p.get('lod', 'mf'))
     for c in prod.get('clearances', []):
         g = norm(c); ops += solid_ops(c, g, c['sub'], None, 'cmf')
     # per-type geometry (17 Oct): a part with "only": [type, ...] shows only in those types, through a Yes/No type
