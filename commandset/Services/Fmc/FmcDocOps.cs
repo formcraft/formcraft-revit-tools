@@ -113,6 +113,7 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         private static (string Result, string Detail) Run(Document doc, JObject op)
         {
+            if (FmcDocFamB15.Handles(op.Value<string>("op"))) return FmcDocFamB15.Run(doc, op); // B15: fmc_fam_dim/visibility/material/category ops
             switch (op.Value<string>("op"))
             {
                 case "set_category": return SetCategory(doc, op);
