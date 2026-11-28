@@ -10,7 +10,7 @@ import { writeGuard } from "./opencopy.js";
 import { documentRequired } from "./fairqueue.js";
 import { explain } from "./explain.js";
 import {
-  CentralFile, MoveFs, NewLocalInput, NewLocalPlan, OpenDoc, PlanContext, moveBackup, newLocalScript, planNewLocal, runNewLocalSteps, scriptLiteralProblem, wireNewLocal,
+  CentralFile, MoveFs, NewLocalInput, NewLocalPlan, OpenDoc, PlanContext, moveBackup, newLocalProbeScript, newLocalScript, planNewLocal, restoreBackup, runNewLocalSteps, scriptLiteralProblem, wireNewLocal,
 } from "./newlocal.js";
 
 const cfg: GuardConfig = {
@@ -34,14 +34,14 @@ function input(partial: Partial<NewLocalInput> = {}): NewLocalInput {
 }
 
 function ctx(partial: Partial<PlanContext> = {}): PlanContext {
-  const architecture = doc({ title: "Architecture", path: local, isActive: false });
+  const architecture = doc({ title: "Architecture", path: local, isActive: false, modified: false, ownedWorksets: 0 });
   const sketch = doc({ title: "Sketch", path: "C:\\WIP\\Sketch.rvt", isWorkshared: false, centralPath: "", isActive: true });
   return {
     cfg, now, exists: (p) => p.toLowerCase() === central.toLowerCase(),
     docs: [architecture, sketch],
     centralFile,
-    holder: null,
-    caller: { client: "stdio", lease: "" },
+    holder: { lease: "mine", client: "stdio" },
+    caller: { client: "stdio", lease: "mine" },
     queueRunning: null,
     ...partial,
   };
@@ -397,7 +397,8 @@ test("a closed document is never the Revit document of a dry run or a real run",
       return { opened: params.path };
     },
   };
-  const args = { document: title, central: centralPath, local: localPath, dry_run: true };
+  const args = { document: title, central: centralPath, local: localPath, dry_run: true, batch_lease: "L1" };
+  Object.assign(io, { holder: () => ({ lease: "L1", client: "stdio" }) });
   const dry = await runFmcNewLocal(args, io);
   const dryText = dry.content[0].text;
   assert.match(dryText, /resume: document is closed/);
@@ -511,4 +512,72 @@ test("FromFile of the backup or the central is refused as a central; the open ho
   }
   const host = { title: "HEBERT HOSTELS_USER", path: "C:\\Users\\USER\\Documents\\HEBERT HOSTELS_USER.rvt", isFamily: false, isWorkshared: true, isLocal: true };
   assert.equal(aiVerdict({ command: "fmc_new_local", doc: host, elements: 0, approved: true }, cfg, book, full, empty).ok, true);
+});
+
+test("a real run needs the caller's lease; a dry run does not", () => {
+  const none = planNewLocal(input({ dry_run: false }), ctx({ holder: null, caller: { client: "stdio", lease: "" } }));
+  assert.equal(none.ok, false);
+  assert.match(none.reasons.join(" "), /needs the batch lease/);
+  const unheld = planNewLocal(input({ dry_run: false }), ctx({ holder: null, caller: { client: "stdio", lease: "made-up" } }));
+  assert.match(unheld.reasons.join(" "), /needs the batch lease/);
+  const dry = planNewLocal(input(), ctx({ holder: null, caller: { client: "stdio", lease: "" } }));
+  assert.equal(dry.ok, true, dry.reasons.join(" | "));
+  const held = planNewLocal(input({ dry_run: false }), ctx());
+  assert.equal(held.ok, true, held.reasons.join(" | "));
+});
+
+test("unsaved or unsynced changes refuse a real run unless discard_changes; the dry run reports them", () => {
+  const dirty = (partial: Partial<OpenDoc>) => ctx({ docs: [
+    doc({ title: "Architecture", path: local, isActive: false, modified: false, ownedWorksets: 0, ...partial }),
+    doc({ title: "Sketch", path: "C:\\WIP\\Sketch.rvt", isWorkshared: false, centralPath: "", isActive: true }),
+  ] });
+  const modified = planNewLocal(input({ dry_run: false }), dirty({ modified: true }));
+  assert.equal(modified.ok, false);
+  assert.match(modified.reasons.join(" "), /unsaved changes/);
+  const held = planNewLocal(input({ dry_run: false }), dirty({ ownedWorksets: 2 }));
+  assert.match(held.reasons.join(" "), /2 workset\(s\) still held/);
+  const unknown = planNewLocal(input({ dry_run: false }), dirty({ modified: undefined, ownedWorksets: undefined }));
+  assert.match(unknown.reasons.join(" "), /Could not read whether/);
+  const failedRead = planNewLocal(input({ dry_run: false }), dirty({ ownedWorksets: -1 }));
+  assert.match(failedRead.reasons.join(" "), /Could not read whether/);
+  const discard = planNewLocal(input({ dry_run: false, discard_changes: true }), dirty({ modified: true, ownedWorksets: 2 }));
+  assert.equal(discard.ok, true, discard.reasons.join(" | "));
+  const dry = planNewLocal(input(), dirty({ modified: true, ownedWorksets: 1 }));
+  assert.equal(dry.ok, true);
+  assert.equal(dry.modified, true);
+  assert.equal(dry.owned_worksets, 1);
+  assert.match(dry.backup_contains, /last saved state/);
+  const probe = newLocalProbeScript(central, local);
+  assert.match(probe, /docModified/);
+  assert.match(probe, /docOwnedWorksets/);
+  assert.match(probe, /IsEditable/);
+});
+
+test("the old local is put back when CreateNewLocal fails, and never over a partial new local", async () => {
+  const exists = (p: string) => [central, local].some((x) => x.toLowerCase() === p.toLowerCase());
+  const plan = planNewLocal(input({ dry_run: false }), ctx({ exists }));
+  assert.equal(plan.ok, true, plan.reasons.join(" | "));
+  const disk = memFs([local, central]);
+  const failing = async (command: string) => {
+    if (command === "fmc_new_local") throw new Error("CreateNewLocal: the central is busy");
+    return {};
+  };
+  const ran = await runNewLocalSteps(plan, failing, (p) => moveBackup(p, disk), (p) => restoreBackup(p, disk));
+  assert.equal(ran.ok, false);
+  assert.equal(ran.step, "create_local");
+  assert.equal(ran.restored, true);
+  assert.equal(disk.has(local), true);
+  assert.equal(disk.has(plan.backup), false);
+  assert.match(ran.message ?? "", /put back/);
+
+  const refused = await runNewLocalSteps(plan, async (command) => command === "fmc_new_local" ? { success: true, result: JSON.stringify({ ok: false, step: "open_local", message: "open failed" }) } : {},
+    (p) => moveBackup(p, disk), (p) => restoreBackup(p, disk));
+  assert.equal(refused.restored, true);
+  assert.equal(refused.step, "open_local");
+
+  // a partial new local at the path: the old one stays at the backup name, nothing deleted
+  const partial = memFs([plan.backup]);
+  const kept = restoreBackup(plan, { existsSync: (p) => partial.has(p) || p.toLowerCase() === local.toLowerCase(), renameSync: partial.renameSync });
+  assert.equal(kept.restored, false);
+  assert.match(kept.message, /nothing was deleted/);
 });

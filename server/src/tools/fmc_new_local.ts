@@ -13,7 +13,8 @@ import {
 
 export const FMC_NEW_LOCAL_DESCRIPTION =
   "Make a fresh workshared local from a central and open it, replacing an open local. Unsaved changes in that local " +
-  "are discarded. The old file and its Revit backup folder are renamed aside (never copied, never deleted); an existing backup is " +
+  "would be lost, so a real run refuses a local with unsaved changes or worksets still held unless discard_changes is true, and needs batch_lease. " +
+  "The old file and its Revit backup folder are renamed aside (never copied, never deleted) and put back if CreateNewLocal fails; an existing backup is " +
   "kept and the next name is -2, -3, and so on. If the local is already closed, the switch and close are skipped. The caller does not supply code. The switch, the close, and the " +
   "final activate go through the native file command fmc_revit_file. CreateNewLocal and the background open are one fixed " +
   "script. document is required (the active document is never assumed). dry_run defaults to true, lists those calls, and " +
@@ -28,6 +29,8 @@ export const FMC_NEW_LOCAL_SHAPE = {
   switch_to: z.string().min(1).optional().describe("Title of another open document to activate first when the local is on screen. Default: any other open project document. In resume mode the script binds to this document."),
   backup_suffix: z.string().min(1).max(64).optional().describe("Suffix on the renamed file. Default .bak-YYYYMMDD. The old local is moved, not copied. An existing backup is not overwritten."),
   dry_run: z.boolean().optional().default(true).describe("Validate and report the plan. Nothing is closed. Default true."),
+  batch_lease: z.string().optional().default("").describe("A real run needs the lease on document from fmc_batch request."),
+  discard_changes: z.boolean().optional().default(false).describe("A real run on a local with unsaved or unsynced changes is refused unless true, once the person accepts losing them."),
 };
 
 const NO_MODEL = /No open document|is not a local|is not a central|No other open project|switch_to /;
@@ -54,6 +57,7 @@ function docsFromInfo(info: Record<string, unknown>): OpenDoc[] {
       isActive: row.isActive === true,
       isDetached: row.isDetached === true,
       isLinked: row.isLinked === true,
+      ...(typeof row.isModified === "boolean" ? { modified: row.isModified } : {}),
     });
   }
   return docs;
@@ -68,6 +72,8 @@ function applyCentral(docs: OpenDoc[], body: Record<string, unknown>): CentralFi
     found.isDetached = body.docDetached === true;
     found.isFamily = body.docFamily === true;
     found.isActive = body.docActive === true;
+    if (typeof body.docModified === "boolean") found.modified = body.docModified;
+    if (typeof body.docOwnedWorksets === "number") found.ownedWorksets = body.docOwnedWorksets;
     if (body.docPath) found.path = String(body.docPath);
   }
   return {
@@ -82,6 +88,8 @@ export interface RevitIo {
   sendRaw(command: string, params: Record<string, unknown>): Promise<unknown>;
   sendCommand(command: string, params: Record<string, unknown>): Promise<unknown>;
   exists?: (p: string) => boolean;
+  /** Test hook: the lease board's holder of a document. */
+  holder?: (document: string) => { lease: string; client: string } | null;
 }
 
 /**
@@ -113,16 +121,19 @@ export async function runFmcNewLocal(args: NewLocalInput, io?: RevitIo) {
     ? io.sendCommand(command, params)
     : withRevitConnection((client) => client.sendCommand(command, params));
   const dry = args.dry_run !== false;
-  const caller = { lease: batchLease.getStore(), client: currentClient() };
+  const caller = { lease: (args.batch_lease ?? "").trim() || batchLease.getStore() || "", client: currentClient() };
   let queueRunning: { client: string; label: string } | null = null;
   let holder: { lease: string; client: string } | null = null;
+  const holderOf = io?.holder ?? ((d: string) => batchBoard().activeHolder(d));
   try {
-    holder = batchBoard().activeHolder(args.document);
-    const port = await currentPort();
-    const running = queueFor(port).snapshot().running;
-    if (running) queueRunning = { client: running.client, label: running.label };
+    holder = holderOf(args.document);
+    if (!io) {
+      const port = await currentPort();
+      const running = queueFor(port).snapshot().running;
+      if (running) queueRunning = { client: running.client, label: running.label };
+    }
   } catch {
-    holder = batchBoard().activeHolder(args.document);
+    holder = holderOf(args.document);
   }
 
   const assumed: CentralFile = { exists: exists(args.central), isWorkshared: true, isCentral: true, centralPath: args.central };
@@ -166,7 +177,9 @@ export async function runFmcNewLocal(args: NewLocalInput, io?: RevitIo) {
       dry_run: true, closes: false, resume: plan.resume, document: plan.document, central: plan.central, local: plan.local,
       active: plan.active, switch_to: plan.switch_to, switch_path: plan.switch_path, backup: plan.backup,
       backup_folder_from: plan.backup_folder_from || undefined, backup_folder_to: plan.backup_folder_to || undefined,
-      steps: plan.steps, calls: plan.calls, caveat: plan.caveat, next: "Run again with dry_run=false",
+      steps: plan.steps, calls: plan.calls, caveat: plan.caveat,
+      modified: plan.modified, owned_worksets: plan.owned_worksets, backup_contains: plan.backup_contains,
+      next: "Show the person the unsaved and unsynced state. Run again with dry_run=false and batch_lease (and discard_changes true only if they accept losing those changes)",
     });
   }
 
