@@ -8,7 +8,7 @@
  *
  *   node build/fmc/cli.js <command>        JSON arguments on stdin (none for specs and probe)
  *
- *   fmc_file | fmc_family | fmc_project | fmc_template | fmc_library | fmc_qa | fmc_material | fmc_sheets | fmc_annotate | fmc_issue | fmc_links | fmc_coord | fmc_phase | fmc_hw | fmc_joins | fmc_north | fmc_dynamo | fmc_script_run | fmc_selftest | fmc_workshare | fmc_review | fmc_report | fmc_doc | fmc_revit | fmc_brief | fmc_scripts | fmc_systems | fmc_build | fmc_ai | fmc_recipe | fmc_robot | fmc_navis | fmc_rhino | fmc_casework | fmc_ceiling | fmc_legend | fmc_apps | fmc_flow | fmc_tree | fmc_room | fmc_schedules | fmc_changes | fmc_select | fmc_find | fmc_testrun | fmc_balance | fmc_tables | fmc_powerbi | fmc_calc | fmc_diagram   run the tool with the same argument schema and defaults; prints the tool's JSON reply
+ *   fmc_file | fmc_family | fmc_project | fmc_template | fmc_library | fmc_qa | fmc_material | fmc_sheets | fmc_annotate | fmc_issue | fmc_links | fmc_coord | fmc_phase | fmc_hw | fmc_joins | fmc_north | fmc_dynamo | fmc_script_run | fmc_selftest | fmc_workshare | fmc_review | fmc_report | fmc_doc | fmc_revit | fmc_brief | fmc_scripts | fmc_systems | fmc_build | fmc_ai | fmc_recipe | fmc_robot | fmc_navis | fmc_rhino | fmc_casework | fmc_ceiling | fmc_legend | fmc_apps | fmc_flow | fmc_tree | fmc_room | fmc_schedules | fmc_changes | fmc_change_feed | fmc_select | fmc_find | fmc_testrun | fmc_balance | fmc_tables | fmc_powerbi | fmc_calc | fmc_diagram   run the tool with the same argument schema and defaults; prints the tool's JSON reply
  *   specs                   the families and the pilot set in FMC_Family_Specs.json, for the pane's family picker
  *   probe                   connects to Revit on port 8080 and reads the open documents (tests the whole chain)
  *   ask                     {question, history?}: asks Claude with the firm's API key; read-only Revit tools (fmc/ask.ts)
@@ -62,6 +62,7 @@ import { FMC_ROOM_SHAPE, runFmcRoom } from "../tools/fmc_room.js";
 import { FMC_TREE_SHAPE, runFmcTree } from "../tools/fmc_tree.js";
 import { FMC_SCHEDULES_SHAPE, runFmcSchedules } from "../tools/fmc_schedules.js";
 import { FMC_CHANGES_SHAPE, runFmcChanges } from "../tools/fmc_changes.js";
+import { FMC_CHANGE_FEED_SHAPE, runFmcChangeFeed } from "../tools/fmc_change_feed.js";
 import { FMC_FLOW_SHAPE, runFmcFlow } from "../tools/fmc_flow.js";
 import { FMC_SELECT_SHAPE, runFmcSelect } from "../tools/fmc_select.js";
 import { FMC_FIND_SHAPE, runFmcFind } from "../tools/fmc_find.js";
@@ -250,6 +251,8 @@ async function main() {
         return printReply(await runFmcSchedules(z.object(FMC_SCHEDULES_SHAPE).parse(input)));
       case "fmc_changes":
         return printReply(await runFmcChanges(z.object(FMC_CHANGES_SHAPE).parse(input)));
+      case "fmc_change_feed":
+        return printReply(await runFmcChangeFeed(z.object(FMC_CHANGE_FEED_SHAPE).parse(input)));
       case "fmc_select":
         return printReply(await runFmcSelect(z.object(FMC_SELECT_SHAPE).parse(input)));
       case "fmc_find":
@@ -293,7 +296,7 @@ async function main() {
         return print(askStatus(text, new Date(), process.env, !!readApiKey()), false);
       }
       default:
-        process.stderr.write("Usage: node build/fmc/cli.js <fmc_file|fmc_family|fmc_project|fmc_template|fmc_library|fmc_qa|fmc_material|fmc_sheets|fmc_annotate|fmc_issue|fmc_links|fmc_coord|fmc_phase|fmc_hw|fmc_joins|fmc_north|fmc_dynamo|fmc_script_run|fmc_selftest|fmc_workshare|fmc_review|fmc_report|fmc_doc|fmc_revit|fmc_brief|fmc_scripts|fmc_systems|fmc_build|fmc_ai|fmc_recipe|fmc_robot|fmc_navis|fmc_rhino|fmc_casework|fmc_ceiling|fmc_legend|fmc_apps|fmc_flow|fmc_tree|fmc_room|fmc_schedules|specs|probe|ask|ask_status|fmc_changes|fmc_select|fmc_find|fmc_testrun|fmc_balance|fmc_tables|fmc_powerbi|fmc_calc|fmc_diagram>  (JSON arguments on stdin)\n");
+        process.stderr.write("Usage: node build/fmc/cli.js <fmc_file|fmc_family|fmc_project|fmc_template|fmc_library|fmc_qa|fmc_material|fmc_sheets|fmc_annotate|fmc_issue|fmc_links|fmc_coord|fmc_phase|fmc_hw|fmc_joins|fmc_north|fmc_dynamo|fmc_script_run|fmc_selftest|fmc_workshare|fmc_review|fmc_report|fmc_doc|fmc_revit|fmc_brief|fmc_scripts|fmc_systems|fmc_build|fmc_ai|fmc_recipe|fmc_robot|fmc_navis|fmc_rhino|fmc_casework|fmc_ceiling|fmc_legend|fmc_apps|fmc_flow|fmc_tree|fmc_room|fmc_schedules|specs|probe|ask|ask_status|fmc_changes|fmc_change_feed|fmc_select|fmc_find|fmc_testrun|fmc_balance|fmc_tables|fmc_powerbi|fmc_calc|fmc_diagram>  (JSON arguments on stdin)\n");
         process.exit(2);
     }
   } catch (e) {

@@ -27,7 +27,7 @@ namespace Formcraft.Shell.Tests
         public async Task The_section_sits_under_Check_after_Scripts()
         {
             var check = Sta.Run(() => string.Join(",", Pane().Vm.Groups.Single(g => g.Name == "Check").Sections.Select(x => x.Name)));
-            await Assert.That(check).IsEqualTo("QA,Rules,Reports,Scripts,Automation");
+            await Assert.That(check).IsEqualTo("QA,Rules,Reports,Scripts,Automation,Changes");
         }
 
         [Test]

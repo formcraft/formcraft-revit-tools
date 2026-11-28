@@ -127,7 +127,7 @@ namespace Formcraft.Shell.ViewModels
                               IAnnotateTools? annotate = null, IIssueTools? issue = null, ILinkTools? links = null, IWorkshareTools? workshare = null, IReviewTools? review = null, IReportTools? reports = null,
                               IFlowTools? flow = null, IBriefTools? brief = null, IScriptTools? scripts = null, ISystemTools? systems = null, IBuildTools? build = null, IAskTools? ask = null, IAiTools? ai = null, IReleaseTools? release = null, IRobotTools? robot = null, ILiveDataService? liveData = null,
                               ICaseworkTools? casework = null, ICeilingTools? ceilings = null, IVoiceRecorder? recorder = null, IOptionsTools? options = null,
-                              IBalanceTools? balance = null)
+                              IBalanceTools? balance = null, IChangeFeedTools? changeFeed = null)
         {
             _licence = licence;
             _connection = connection;
@@ -187,6 +187,9 @@ namespace Formcraft.Shell.ViewModels
             // Check › Automation (F74): the balance between AI-written code and saved automation, and the move list.
             Automation = new AutomationPage(balance ?? new MockBalanceTools(), Project, settings, s => Status = s, ShowDialog);
             _hostSections["Automation"] = Automation;
+            // Check › Changes (F133): the lasting change record, with before/after values. Read only; never syncs.
+            Changes = new ChangesPage(changeFeed ?? new MockChangeFeedTools(), _document, settings, s => Status = s);
+            _hostSections["Changes"] = Changes;
             var systemTools = systems ?? new MockSystemTools();
             Systems = new SystemsPage(systemTools, Project, settings, s => Status = s, ShowDialog);
             _hostSections["Systems"] = Systems;
@@ -497,6 +500,8 @@ namespace Formcraft.Shell.ViewModels
 
         /// <summary>Check › Automation: AI code against saved automation, from the call ledger, and the move list (F74).</summary>
         public AutomationPage Automation { get; }
+        /// <summary>Check › Changes: the lasting change record, with before and after values. Read only; never syncs.</summary>
+        public ChangesPage Changes { get; }
 
         /// <summary>Engineer › Systems and Structural: honest capability status and read-only checks (U25).</summary>
         public SystemsPage Systems { get; }

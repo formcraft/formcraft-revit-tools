@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- F19: the change feed's Revit-free core (journal, paging, gaps, document matching) and its read-only contract, tested
+       offline. The contract test scans the add-in's change feed sources: no sync, save, reload latest, relinquish, checkout,
+       open, close or transaction. The Revit side is covered by the live recipes. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <IsPackable>false</IsPackable>
+    <RootNamespace>ChangeFeedCore.Tests</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\commandset\Services\Fmc\ChangeFeed\ChangeFeedCore.cs" Link="ChangeFeedCore.cs" />
+    <Compile Include="..\..\commandset\Services\Fmc\ChangeFeed\ChangeFeedLog.cs" Link="ChangeFeedLog.cs" />
+    <Compile Include="..\..\commandset\Services\Fmc\ChangeFeed\ChangeFeedParams.cs" Link="ChangeFeedParams.cs" />
+    <Compile Include="..\..\commandset\Services\Fmc\ChangeFeed\ChangeFeedOptions.cs" Link="ChangeFeedOptions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <!-- xunit v3 runs as its own exe: dotnet run, project tests/changefeed/ChangeFeedCore.Tests.csproj (CI: addin job) -->
+    <PackageReference Include="xunit.v3" Version="3.1.0" />
+  </ItemGroup>
+</Project>
