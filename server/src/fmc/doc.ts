@@ -92,3 +92,41 @@ export function buildReport(s: SessionRecord, saved: string, report: Record<stri
       dimensions: report.dimensions ?? 0, warnings: report.warnings ?? 0 },
   };
 }
+
+// ---------- research tool 36: the ledger checked against Revit ----------
+
+/** A ledger entry with whether Revit still holds it: true, false, or null when Revit wasn't asked or didn't answer. */
+export type ReconciledSession = SessionRecord & { in_revit: boolean | null };
+
+export interface Reconciled {
+  sessions: ReconciledSession[];
+  /** Ledger entries Revit no longer holds (closed, timed out, or Revit restarted). Empty when Revit didn't answer. */
+  not_in_revit: string[];
+  /** Sessions Revit holds that the ledger doesn't know (opened by another server process or before a ledger loss). */
+  revit_only: string[];
+  revit_checked: boolean;
+}
+
+/**
+ * Compares the server's ledger with the sessions Revit reports (fmc_doc_background's sessions[].session).
+ * revitSessions null means Revit wasn't reachable: every entry is in_revit null and nothing is called dead.
+ */
+export function reconcileLedger(ledger: Record<string, SessionRecord>, revitSessions: Array<{ session?: unknown }> | null): Reconciled {
+  const entries = Object.values(ledger);
+  if (revitSessions == null) return { sessions: entries.map((s) => ({ ...s, in_revit: null })), not_in_revit: [], revit_only: [], revit_checked: false };
+  const held = new Set(revitSessions.map((r) => String(r?.session ?? "").trim()).filter(Boolean));
+  const sessions = entries.map((s) => ({ ...s, in_revit: held.has(s.id) }));
+  const known = new Set(entries.map((s) => s.id));
+  return {
+    sessions,
+    not_in_revit: sessions.filter((s) => !s.in_revit).map((s) => s.id),
+    revit_only: [...held].filter((id) => !known.has(id)),
+    revit_checked: true,
+  };
+}
+
+/** The ledger without the entries Revit no longer holds (only after Revit answered). */
+export function pruneLedger(ledger: Record<string, SessionRecord>, dead: string[]): Record<string, SessionRecord> {
+  const drop = new Set(dead);
+  return Object.fromEntries(Object.entries(ledger).filter(([id]) => !drop.has(id)));
+}

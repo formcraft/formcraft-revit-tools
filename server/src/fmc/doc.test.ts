@@ -70,3 +70,73 @@ test("familyDocumentOf uses the opened .rfa path when the add-in has not yet ret
   assert.equal(familyDocumentOf(undefined, file), file);
   assert.equal(familyDocumentOf({ title: "Existing" }, "  "), "Existing");
 });
+
+// ---------- research tool 36: list checks the ledger against Revit ----------
+import fs from "node:fs";
+import os from "node:os";
+import nodePath from "node:path";
+import { pruneLedger, reconcileLedger, writeLedger, readLedger } from "./doc.js";
+import { runFmcDoc, FMC_DOC_SHAPE } from "../tools/fmc_doc.js";
+import { z } from "zod";
+
+const ledgerOf = () => ({
+  "65033519": { id: "65033519", source: "Metric Profile.rft", opened: "2026-11-26T08:00:00Z", ops: [] },
+  "a2": { id: "a2", source: "Metric Profile.rft", opened: "2026-11-26T08:05:00Z", ops: [] },
+  "live": { id: "live", source: "Generic.rft", opened: new Date().toISOString(), ops: [] },
+});
+
+test("reconcileLedger marks entries Revit no longer holds, and Revit-only sessions", () => {
+  const r = reconcileLedger(ledgerOf(), [{ session: "live" }, { session: "other" }, {}]);
+  assert.equal(r.revit_checked, true);
+  assert.deepEqual(r.sessions.map((s) => [s.id, s.in_revit]), [["65033519", false], ["a2", false], ["live", true]]);
+  assert.deepEqual(r.not_in_revit, ["65033519", "a2"]);
+  assert.deepEqual(r.revit_only, ["other"]);
+});
+
+test("reconcileLedger with no Revit answer calls nothing dead", () => {
+  const r = reconcileLedger(ledgerOf(), null);
+  assert.equal(r.revit_checked, false);
+  assert.deepEqual(r.not_in_revit, []);
+  assert.ok(r.sessions.every((s) => s.in_revit === null));
+  assert.deepEqual(Object.keys(pruneLedger(ledgerOf(), ["a2"])), ["65033519", "live"]);
+});
+
+const docArgs = (extra: Record<string, unknown>) => z.object(FMC_DOC_SHAPE).parse({ action: "list", ...extra });
+const tmpCfg = () => {
+  const dir = fs.mkdtempSync(nodePath.join(os.tmpdir(), "fmc-doc-ledger-"));
+  writeLedger(dir, ledgerOf());
+  return { dir, cfg: { ...cfg, reports_dir: dir } };
+};
+const bodyOf = (r: { content: Array<{ text: string }> }) => JSON.parse(r.content[0].text);
+
+test("fmc_doc list (live bug): ledger sessions Revit doesn't hold come back in_revit false", async () => {
+  const { dir, cfg: c } = tmpCfg();
+  const body = bodyOf(await runFmcDoc(docArgs({}), { config: c, background: async () => ({ ok: true, sessions: [{ session: "live" }], other_background: [] }) }));
+  assert.equal(body.revit_checked, true);
+  assert.deepEqual(body.not_in_revit, ["65033519", "a2"]);
+  assert.deepEqual(body.sessions.map((s: { id: string; in_revit: boolean }) => [s.id, s.in_revit]), [["65033519", false], ["a2", false], ["live", true]]);
+  assert.match(body.next, /2 ledger entries Revit no longer holds/);
+  assert.deepEqual(body.pruned, []);
+  assert.equal(Object.keys(readLedger(dir)).length, 3, "list without prune never writes the ledger");
+});
+
+test("fmc_doc list prune drops only the dead entries, and only after Revit answered", async () => {
+  const { dir, cfg: c } = tmpCfg();
+  const failed = bodyOf(await runFmcDoc(docArgs({ prune: true }), { config: c, background: async () => { throw new Error("no answer"); } }));
+  assert.equal(failed.revit_checked, false);
+  assert.match(failed.note, /Revit didn't answer/);
+  assert.equal(Object.keys(readLedger(dir)).length, 3, "no prune without Revit's answer");
+  const body = bodyOf(await runFmcDoc(docArgs({ prune: true }), { config: c, background: async () => ({ sessions: [{ session: "live" }] }) }));
+  assert.deepEqual(body.pruned, ["65033519", "a2"]);
+  assert.deepEqual(body.sessions.map((s: { id: string }) => s.id), ["live"]);
+  assert.deepEqual(Object.keys(readLedger(dir)), ["live"]);
+});
+
+test("fmc_doc list check_revit false reads the ledger only", async () => {
+  const { cfg: c } = tmpCfg();
+  let asked = false;
+  const body = bodyOf(await runFmcDoc(docArgs({ check_revit: false }), { config: c, background: async () => { asked = true; return {}; } }));
+  assert.equal(asked, false);
+  assert.equal(body.revit_checked, false);
+  assert.equal(body.sessions.length, 3);
+});

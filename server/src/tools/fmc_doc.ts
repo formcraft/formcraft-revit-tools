@@ -4,7 +4,7 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
-import { SessionRecord, buildReport, familyDocumentOf, idleLimit, markStale, openProblems, readLedger as readDocLedger, saveProblems, writeLedger as writeDocLedger } from "../fmc/doc.js";
+import { SessionRecord, buildReport, familyDocumentOf, idleLimit, markStale, openProblems, pruneLedger, readLedger as readDocLedger, reconcileLedger, saveProblems, writeLedger as writeDocLedger } from "../fmc/doc.js";
 import { BRIDGE_LIMIT_BYTES, applyEnvelope, isNoAnswer, isStillQueued, progressPath, readProgress, requestBytes, stoppedAt } from "../fmc/recipebuild.js";
 import { serverBuild } from "./fmc_selftest.js";
 import { OP, expandSkeletons, familyRoots, opsProblems, resolveFamilyPaths, splitProblems } from "../fmc/ops.js";
@@ -63,7 +63,8 @@ export const FMC_DOC_DESCRIPTION =
     "at a detail level (coarse, medium, fine or all three) and style (shaded, hidden, wireframe, realistic), with reference planes, " +
     "levels and dimensions hidden (F-055). save: to an .rfa in the write roots under a name " +
     "the naming rules accept, with <name>.build.json beside it. close: discards unsaved changes. background (read-only): the " +
-    "sessions Revit holds, which close may close, and other background family documents. list and background mark a " +
+    "sessions Revit holds, which close may close, and other background family documents. list also asks Revit (read-only) and marks each " +
+    "ledger entry in_revit true or false (null when Revit didn't answer), with not_in_revit and revit_only; prune true drops dead ledger entries. list and background mark a " +
     "session idle longer than the guard's session_idle_hours (default 12) as stale; fmc_recipe cleanup closes stale and " +
     "left-over sessions without saving (dry run first), never a document in a Revit window or one the person opened. " +
     "Never a project or workshared model. flex: every type regenerated in turn, constraint errors per type (nothing kept); with follow, each size parameter is also moved from its lowest to its highest value and every named solid reports whether it moved with it. apply: a batch of named ops (set_category, " +
@@ -85,21 +86,47 @@ export const FMC_DOC_SHAPE = {
   detail_level: z.enum(["coarse", "medium", "fine", "all"]).optional().default("fine").describe("screenshot: detail level; all gives one image per level"),
   style: z.enum(["shaded", "hidden", "wireframe", "realistic"]).optional().default("shaded").describe("screenshot: visual style"),
   views: z.array(z.enum(["3d", "front", "right", "plan"])).optional().default(["3d", "front", "plan"]).describe("screenshot: which views"),
+  check_revit: z.boolean().optional().default(true).describe("list: ask Revit which ledger sessions it still holds (read-only); false reads the ledger only"),
+  prune: z.boolean().optional().default(false).describe("list: drop ledger entries Revit no longer holds (only after Revit answered; the ledger file only, Revit is not touched)"),
 };
 
 export type FmcDocArgs = z.infer<z.ZodObject<typeof FMC_DOC_SHAPE>>;
 
-export async function runFmcDoc(args: FmcDocArgs) {
-  const { config } = loadConfig();
+/** Test seams; the tool itself uses the guard file and Revit. */
+export interface DocIo { config?: GuardConfig; background?: () => Promise<any> }
+
+export async function runFmcDoc(args: FmcDocArgs, io: DocIo = {}) {
+  const config = io.config ?? loadConfig().config;
   try {
     const ledger = readLedger(config);
     const limit = idleLimit(config);
     // F-046: each session with its idle time; stale ones are for fmc_recipe cleanup (dry run first)
     if (args.action === "list") {
-      const sessions = markStale(Object.values(ledger), new Date(), limit);
+      // research tool 36: the ledger outlives a Revit restart, so each entry says whether Revit still holds it (read-only ask)
+      let held: Array<{ session?: unknown }> | null = null;
+      let revitNote: string | undefined;
+      if (args.check_revit !== false) {
+        try {
+          const bg = await (io.background ? io.background() : withRevitConnection((c) => c.sendRaw("fmc_doc_background", {}, 20000)));
+          held = Array.isArray(bg?.sessions) ? bg.sessions : [];
+        } catch (error) {
+          revitNote = `Revit didn't answer (${error instanceof Error ? error.message : String(error)}); in_revit is null and nothing was pruned.`;
+        }
+      }
+      const rec = reconcileLedger(ledger, held);
+      let pruned: string[] = [];
+      if (args.prune && rec.revit_checked && rec.not_in_revit.length) {
+        writeLedger(config, pruneLedger(ledger, rec.not_in_revit));
+        pruned = rec.not_in_revit;
+      }
+      const sessions = markStale(rec.sessions.filter((s) => !pruned.includes(s.id)), new Date(), limit);
       const stale = sessions.filter((s) => s.stale).length;
-      return reply({ sessions, stale, stale_after_hours: limit,
-        next: stale ? `${stale} stale: fmc_doc background shows which Revit still holds; fmc_recipe cleanup closes them without saving (dry run first)` : undefined });
+      const dead = rec.not_in_revit.length - pruned.length;
+      const next = dead
+        ? `${dead} ledger entr${dead === 1 ? "y" : "ies"} Revit no longer holds: list with prune true drops them from the ledger (Revit is not touched)`
+        : stale ? `${stale} stale: fmc_doc background shows which Revit still holds; fmc_recipe cleanup closes them without saving (dry run first)` : undefined;
+      return reply({ sessions, stale, stale_after_hours: limit, revit_checked: rec.revit_checked, not_in_revit: rec.not_in_revit.filter((id) => !pruned.includes(id)),
+        revit_only: rec.revit_only, pruned, ...(revitNote ? { note: revitNote } : {}), next });
     }
     // F-040 (read-only): the sessions Revit holds (closable unless the person has the file open) and other background family documents
     if (args.action === "background") {
