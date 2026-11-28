@@ -45,6 +45,7 @@ export const JAIL = {
   NOROOT: "FMC-JAIL-NOROOT",
   FORBIDDEN: "FMC-JAIL-FORBIDDEN",
   PROTECTED: "FMC-JAIL-PROTECTED",
+  KITSTAGING: "FMC-JAIL-KITSTAGING",
 } as const;
 export type JailCode = typeof JAIL[keyof typeof JAIL];
 
@@ -338,6 +339,16 @@ export function jailCheck(kind: JailKind, raw: unknown, roots: JailRoots, cfg: P
     const sh = hit(key, roots.shared);
     if (sh) return { ok: false, code: JAIL.SHARED, resolved: c.path, root: sh.path, message: `[${JAIL.SHARED}] ${label}${c.path} is Formcraft shared state (${sh.path}): the AI may read it, never change it.` };
     const ro = hit(key, roots.readOnly) ?? hit(key, roots.bundled);
+    // Kit staging (<read-only root>\_Staging\...): refused while kit_staging_writes is off (the default; Q4 is open).
+    // A person turns it on in fmc_guard.json; then only that subfolder of a read_only_roots entry is writable.
+    if (ro && roots.readOnly.includes(ro)) {
+      const below = segmentsOf(c.path).slice(segmentsOf(ro.path).length);
+      if (below.length > 1 && below[0].toLowerCase() === "_staging") {
+        if ((cfg as { kit_staging_writes?: unknown }).kit_staging_writes === true) return { ok: true, resolved: c.path, root: ro.path, message: "" };
+        return { ok: false, code: JAIL.KITSTAGING, resolved: c.path, root: ro.path,
+          message: `[${JAIL.KITSTAGING}] ${label}${c.path} is kit staging: kit staging writes are off (kit_staging_writes in fmc_guard.json is false by default; Q4 is open). Nothing was written.` };
+      }
+    }
     if (ro) return { ok: false, code: JAIL.READONLY, resolved: c.path, root: ro.path, message: `[${JAIL.READONLY}] ${label}${c.path} is under a read-only root (${ro.path}): writes there are always refused.` };
     const pr = hit(key, roots.protectedRoots);
     if (pr) return { ok: false, code: JAIL.PROTECTED, resolved: c.path, root: pr.path, message: `[${JAIL.PROTECTED}] ${label}${c.path} is under protected_roots (${pr.path}): writes are refused.` };
