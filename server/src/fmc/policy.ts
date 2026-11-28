@@ -212,6 +212,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_plumb_diagrams_apply",
   // Conduit fittings, the size table and type fittings. Reads stay on fmc_conduit. One subtransaction per fitting.
   "fmc_conduit_apply",
+  // Pipes or ducts and their fittings from a route. One transaction, one subtransaction per piece and per fitting.
+  "fmc_mep_route_apply",
   // True north: crop, scope box or a sheet north arrow. One transaction. Never SetProjectPosition.
   "fmc_north_apply",
   // Legend views: duplicate a seed view or copy a seed component. One transaction. No text notes.
@@ -295,6 +297,10 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_tags",
   // Sheets, title-block legend zone and an existing keynote legend. No transaction.
   "fmc_keynote_legend",
+  // Duct and piping systems, system types and routing preferences (read only, never written). No transaction.
+  "fmc_mep_systems",
+  // The pipe or duct types with their routing rules (read only), system types and levels for a route. No transaction.
+  "fmc_mep_route",
 ]);
 
 /**
