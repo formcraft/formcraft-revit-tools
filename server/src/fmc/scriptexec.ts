@@ -251,6 +251,8 @@ export async function executeDynamo(args: {
 /** The plan fields a caller needs, without the package folder list. */
 export function planSummary(plan: GraphPlan): Record<string, unknown> {
   return {
+    graph: { id: plan.graph_id, path: plan.graph, sha256: plan.graph_sha256 },
+    inputs_by_id: plan.inputs_by_id,
     plan_hash: plan.plan_hash, graph_sha256: plan.graph_sha256, inputs_hash: plan.inputs_hash, input_binding: plan.input_binding,
     mode: plan.mode, document: plan.document, scan_hash: plan.scan_hash, allowlist_version: plan.allowlist_version, lock: plan.lock,
     python: plan.python, findings: plan.findings, needs_approval: plan.needs_approval, approval_why: plan.approval_why,

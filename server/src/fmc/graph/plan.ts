@@ -10,7 +10,7 @@ import { isInside } from "../policy.js";
 import { graphDecisions, PYTHON_ALWAYS_NEEDS_PERSON, APPLY_ALWAYS_NEEDS_PERSON, type GraphDecisions } from "./decisions.js";
 import { inputsHash, sha256File, sha256Text, stableJson } from "./hash.js";
 import { pathInputsOutsideJail, projectRootOf } from "./jail.js";
-import { lockCheck, type LockState } from "./lib.js";
+import { lockCheck, lockKey, type LockState } from "./lib.js";
 import { checkPackages, installedPackages, packageFolders, type PackageCheck } from "./packages.js";
 import { readAllowlist } from "./allowlist.js";
 import { scanGraph, type GraphScan } from "./scan.js";
@@ -20,6 +20,8 @@ export type RunMode = "preview" | "apply" | "offline";
 export interface GraphPlan {
   v: 1;
   graph: string;
+  /** v1.3: the kit lock key (path under the kit, lower case, "\\" separators), or the file name without .dyn outside the kit. */
+  graph_id: string;
   graph_sha256: string;
   deps_sha256: string;
   inputs_by_id: Record<string, unknown>;
@@ -64,6 +66,12 @@ export function bindInputsByName(inspect: Pick<DynInspect, "inputs">, inputs: Re
     else ambiguous.push(key);
   }
   return { ok: unknown.length === 0 && ambiguous.length === 0, by_id: byId, binding, unknown, ambiguous };
+}
+
+/** The kit lock key when the graph is in the kit, otherwise the file name without .dyn. */
+export function graphIdOf(file: string, kit: string): string {
+  if (kit && isInside(file, kit)) return lockKey(kit, file);
+  return (file.split(/[\\/]/).pop() ?? file).replace(/\.dyn$/i, "");
 }
 
 export function planHash(parts: Pick<GraphPlan, "v" | "graph_sha256" | "deps_sha256" | "inputs_hash" | "document" | "mode" | "scan_hash" | "allowlist_version">): string {
@@ -151,6 +159,7 @@ export function buildPlan(args: PlanArgs): PlanResult {
   const plan: GraphPlan = {
     ...base,
     graph: args.file,
+    graph_id: graphIdOf(args.file, args.kit),
     inputs_by_id: bound.by_id,
     input_binding: bound.binding,
     lock,

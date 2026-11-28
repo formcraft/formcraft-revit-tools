@@ -13,7 +13,7 @@ import { checkPackages, compareVersions, installedPackages } from "./packages.js
 import { jailCheck, pathInputsOutsideJail, projectRootOf, graphsDir } from "./jail.js";
 import { listGraphs, lockCheck, proposeLock, versionDraft } from "./lib.js";
 import { graphStepProblem } from "../../hub/flows.js";
-import { executeDynamo } from "../scriptexec.js";
+import { executeDynamo, planSummary } from "../scriptexec.js";
 import type { GuardConfig } from "../policy.js";
 
 function tmp(prefix: string): string {
@@ -146,6 +146,10 @@ test("plan: preview of a plain graph needs no approval; apply and offline do; pl
   assert.ok(changed.ok && changed.plan.plan_hash !== pv.plan.plan_hash);
   const unknown = buildPlan({ ...base, mode: "preview", inputs: { Levle: "L1" } });
   assert.equal(unknown.ok ? "" : unknown.code, "FMC-DYNAMO-INPUT");
+  // v1.3: the summary fmc_dynamo plan returns names the graph (id, path, hash) and the inputs by node id.
+  const sum = planSummary(pv.plan) as { graph: { id: string; path: string; sha256: string }; inputs_by_id: Record<string, unknown> };
+  assert.deepEqual(sum.graph, { id: "05_scripts\\dynamo\\g.dyn", path: file, sha256: pv.plan.graph_sha256 });
+  assert.deepEqual(sum.inputs_by_id, { "11111111-1111-4111-a111-111111111111": "L1" });
 });
 
 test("Python graphs always need a person: preview too, under any config; python_policy off refuses them", () => {
