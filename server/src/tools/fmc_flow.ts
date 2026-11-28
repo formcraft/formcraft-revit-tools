@@ -4,6 +4,8 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { BUILTIN_FLOWS, FLOW, Flow, runFlow } from "../hub/flows.js";
+import { readInstances } from "../fmc/connect.js";
+import { localIso } from "../fmc/jobs.js";
 import { exchangeRoot, identityStats, listPackages, loadIdentity, verifyPackage } from "../hub/exchange.js";
 import { recorded, startedByFrom } from "../fmc/ledger.js";
 
@@ -31,7 +33,8 @@ export const FMC_FLOW_DESCRIPTION =
     "the project's <project>\\01_WIP\\_Exchange\\Flows\\*.flow.json). show: one flow's steps. run: a flow, a dry run unless " +
     "dry_run is false (every step that has a dry run gets the run's value); vars give what the flow needs; a failing step " +
     "stops it and the run record says where. save: a project flow from steps (checked first). packages: the project's " +
-    "exchange packages (every hand-over between apps, with checksums), newest first; verify checks one is unchanged. " +
+    "exchange packages (every hand-over between apps, with checksums), newest first (the reply says N of M when more than 30 exist); verify checks one is unchanged. " +
+    "list and packages honour document (or project_folder) to pick the project's 01_WIP\\_Exchange; without either they use the machine-wide default and say so. " +
     "identity: the project's identity map (one Formcraft id per element, mapped to each app's id). " +
     "runs: the run records (<exchange>\\Runs), newest first, with each run's result and where it stopped (flow narrows them); " +
     "runs with run set to a record's id shows that record in full. Read-only.";
@@ -45,17 +48,64 @@ export const FMC_FLOW_SHAPE = {
   steps: z.array(z.record(z.string(), z.any())).optional().describe("save: the steps, each { name, tool, args, real_only? }"),
   description: z.string().optional().default(""),
   needs: z.array(z.string()).optional().default([]),
-  project_folder: z.string().optional().default("").describe("the project (its 01_WIP\\_Exchange); without one, <reports>\\Exchange"),
+  project_folder: z.string().optional().default("").describe("the project (its 01_WIP\\_Exchange); without one, document is used if it is a path under 01_WIP, else <reports>\\Exchange"),
+  document: z.string().optional().default("").describe("list, packages and the other file actions: the open model; its path (or a matching open document) selects the project's exchange when project_folder is empty"),
   package: z.string().optional().default("").describe("verify: the package id"),
   app: z.string().optional().default("").describe("packages: only those from or to this app"),
   dry_run: z.boolean().optional().default(true),
 };
 
 type FlowParsed = z.infer<z.ZodObject<typeof FMC_FLOW_SHAPE>>;
-/** run and limit (the runs action) are optional for callers that build args by hand. */
-export type FmcFlowArgs = Omit<FlowParsed, "run" | "limit"> & Partial<Pick<FlowParsed, "run" | "limit">>;
+/** run, limit and document are optional for callers that build args by hand. */
+export type FmcFlowArgs = Omit<FlowParsed, "run" | "limit" | "document"> & Partial<Pick<FlowParsed, "run" | "limit" | "document">>;
 
 const RUN_ID = /^[A-Za-z0-9_-]{1,200}$/;
+
+export type OpenDocRef = { title?: string; path?: string };
+
+/** The project folder above 01_WIP, or empty when the path is not under a project. */
+export function projectFolderFromPath(document: string): string {
+  const norm = document.replace(/\//g, "\\").trim();
+  if (!norm) return "";
+  const at = norm.toLowerCase().indexOf("\\01_wip\\");
+  if (at > 0) return norm.slice(0, at);
+  if (norm.toLowerCase().endsWith("\\01_wip")) return norm.slice(0, norm.lastIndexOf("\\"));
+  return "";
+}
+
+/**
+ * Which exchange root list and packages (and the other file actions) should read. project_folder wins; otherwise
+ * document, if it is a path under 01_WIP or matches an open model's path (Tool Research P-fmc_flow-01).
+ */
+export function resolveFlowRoot(opts: {
+  project_folder?: string;
+  document?: string;
+  reportsDir: string;
+  openDocs?: OpenDocRef[];
+}): { root: string; project_folder: string; scope: "project" | "machine-wide default"; notes: string[] } {
+  const notes: string[] = [];
+  const explicit = (opts.project_folder ?? "").trim();
+  const document = (opts.document ?? "").trim();
+  let folder = "";
+  if (explicit) folder = explicit;
+  else {
+    folder = projectFolderFromPath(document);
+    if (!folder && document) {
+      const q = document.replace(/\//g, "\\").toLowerCase();
+      const hit = (opts.openDocs ?? []).find((d) => {
+        const t = (d.title ?? "").toLowerCase();
+        const p = (d.path ?? "").replace(/\//g, "\\").toLowerCase();
+        return t === q || p === q || p.endsWith("\\" + q);
+      });
+      if (hit?.path) folder = projectFolderFromPath(hit.path);
+    }
+    if (!folder && document) {
+      notes.push(`document "${document}" did not resolve to a project folder (pass project_folder, or a document path under 01_WIP): project flows were not searched; this is the machine-wide default exchange.`);
+    }
+  }
+  if (!folder && !notes.length) notes.push("No project_folder: list and packages used the machine-wide default exchange; project flows were not searched.");
+  return { root: exchangeRoot(folder || undefined, opts.reportsDir), project_folder: folder, scope: folder ? "project" : "machine-wide default", notes };
+}
 
 /** The run records in <exchange>\Runs, newest first (Tool Research, fmc_flow: they were written but could not be listed). */
 export function listRuns(root: string, opts: { flow?: string; limit?: number } = {}): { runs: Array<Record<string, unknown>>; total: number; dir: string } {
@@ -126,13 +176,26 @@ async function acceptsDryRun(tool: string): Promise<boolean> {
   } catch { return false; }
 }
 
-export async function runFmcFlow(args: FmcFlowArgs) {
+export type FlowDeps = { openDocs?: OpenDocRef[]; reportsDir?: string };
+
+export async function runFmcFlow(args: FmcFlowArgs, deps: FlowDeps = {}) {
   const { config } = loadConfig();
-  const root = exchangeRoot(args.project_folder ? expandEnv(args.project_folder) : undefined, expandEnv(config.reports_dir));
+  const reportsDir = deps.reportsDir ?? expandEnv(config.reports_dir);
+  const openDocs = deps.openDocs ?? readInstances().flatMap((i) => i.documents.map((d) => ({ title: d.title, path: d.path })));
+  const resolved = resolveFlowRoot({ project_folder: args.project_folder ? expandEnv(args.project_folder) : "", document: args.document, reportsDir, openDocs });
+  const root = resolved.root;
+  const scope = { exchange: root, scope: resolved.scope, ...(resolved.project_folder ? { project_folder: resolved.project_folder } : {}), ...(resolved.notes.length ? { notes: resolved.notes } : {}) };
   try {
     if (args.action === "packages") {
       const p = listPackages(root, { app: args.app || undefined });
-      return reply({ exchange: root, packages: p.length, newest: p.slice(0, 30).map((m) => ({ id: m.id, from: m.from, to: m.to, what: m.what, files: m.files.length, created: m.created })) });
+      const shown = Math.min(p.length, 30);
+      return reply({
+        ...scope,
+        packages: p.length,
+        shown,
+        ...(p.length > shown ? { truncated: true, note: `${shown} of ${p.length}` } : {}),
+        newest: p.slice(0, 30).map((m) => ({ id: m.id, from: m.from, to: m.to, what: m.what, files: m.files.length, created: m.created, created_local: localIso(m.created) })),
+      });
     }
     if (args.action === "verify") {
       if (!args.package) return reply({ refused: true, reasons: ["Name the package (fmc_flow packages lists them)"] }, true);
@@ -152,7 +215,7 @@ export async function runFmcFlow(args: FmcFlowArgs) {
     const own = projectFlows(root);
     const all = [...BUILTIN_FLOWS, ...own.flows];
     if (args.action === "list")
-      return reply({ exchange: root, flows: all.map((f) => ({ name: f.name, description: f.description, needs: f.needs, steps: f.steps.length,
+      return reply({ ...scope, flows: all.map((f) => ({ name: f.name, description: f.description, needs: f.needs, steps: f.steps.length,
         from: BUILTIN_FLOWS.includes(f) ? "built in" : "project" })), problems: own.problems });
 
     if (args.action === "save") {
