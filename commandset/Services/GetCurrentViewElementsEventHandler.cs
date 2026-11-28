@@ -47,6 +47,7 @@ namespace RevitMCPCommandSet.Services
 
         // 执行结果
         public ViewElementsResult ResultInfo { get; private set; }
+        public string Error { get; private set; }
 
         // 状态同步对象
         public bool TaskCompleted { get; private set; }
@@ -72,6 +73,8 @@ namespace RevitMCPCommandSet.Services
 
         public void Execute(UIApplication app)
         {
+            ResultInfo = null;
+            Error = null;
             try
             {
                 var doc = FmcCallContext.Document(app);
@@ -91,34 +94,24 @@ namespace RevitMCPCommandSet.Services
                     allCategories.AddRange(_annotationCategoryList ?? new List<string>());
                 }
 
-                // 获取当前视图中的所有元素
-                var collector = new FilteredElementCollector(doc, activeView.Id)
-                    .WhereElementIsNotElementType();
-
-                // 获取所有元素
-                IList<Element> elements = collector.ToElements();
-
-                // 按类别筛选
+                // VE-4: unknown names are refused with the tokens that did not parse, and a requested
+                // filter never falls back to every category in the view.
+                List<string> categoriesApplied = null;
+                IList<Element> elements;
                 if (allCategories.Count > 0)
                 {
-                    // 转换字符串类别为枚举
-                    List<BuiltInCategory> builtInCategories = new List<BuiltInCategory>();
-                    foreach (string categoryName in allCategories)
-                    {
-                        if (Enum.TryParse(categoryName, out BuiltInCategory category))
-                        {
-                            builtInCategories.Add(category);
-                        }
-                    }
-                    // 如果成功解析了类别，则使用类别过滤器
-                    if (builtInCategories.Count > 0)
-                    {
-                        ElementMulticategoryFilter categoryFilter = new ElementMulticategoryFilter(builtInCategories);
-                        elements = new FilteredElementCollector(doc, activeView.Id)
-                            .WhereElementIsNotElementType()
-                            .WherePasses(categoryFilter)
-                            .ToElements();
-                    }
+                    var split = FmcReadShape.RequireKnownNames<BuiltInCategory>("get_current_view_elements", allCategories);
+                    categoriesApplied = split.Applied;
+                    elements = new FilteredElementCollector(doc, activeView.Id)
+                        .WhereElementIsNotElementType()
+                        .WherePasses(new ElementMulticategoryFilter(split.Parsed))
+                        .ToElements();
+                }
+                else
+                {
+                    elements = new FilteredElementCollector(doc, activeView.Id)
+                        .WhereElementIsNotElementType()
+                        .ToElements();
                 }
 
                 // 过滤隐藏的元素
@@ -157,11 +150,13 @@ namespace RevitMCPCommandSet.Services
                     ViewName = activeView.Name,
                     TotalElementsInView = new FilteredElementCollector(doc, activeView.Id).GetElementCount(),
                     FilteredElementCount = elementInfos.Count,
+                    CategoriesApplied = categoriesApplied,
                     Elements = elementInfos
                 };
             }
             catch (Exception ex)
             {
+                Error = ex.Message;
                 RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Error", ex.Message);
             }
             finally

@@ -57,6 +57,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             // ExportImage can make this document the active window. PutBack runs after the transaction
             // group rolls back, because switching back is refused while that group is open.
             var prior = FmcImageExport.Capture(app);
+            JObject reply = null;
             try {
             foreach (var old in Directory.GetFiles(dir, "*.png").Where(f => File.GetCreationTimeUtc(f) < DateTime.UtcNow.AddHours(-6))) { try { File.Delete(old); } catch (Exception) { } }
             string stem = Path.Combine(dir, "view_" + DateTime.Now.ToString("HHmmssfff"));
@@ -174,13 +175,22 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (Parameters.Value<bool?>("selection") == true && uidoc == null)
                 notes.Add("selection is only available when this document is the active window. The active window was not changed.");
             string file = Directory.GetFiles(dir, Path.GetFileName(stem) + "*.png").FirstOrDefault() ?? throw new InvalidOperationException("Revit made no image");
-            return new JObject
+            reply = new JObject
             {
                 ["file"] = file, ["view"] = viewName, ["title"] = doc.Title, ["path"] = doc.PathName ?? "",
                 ["document"] = FmcTarget.DescribeState(doc),
                 ["ids"] = new JArray(ids.Select(x => x.Value)), ["highlighted"] = highlight.Count, ["pixels"] = px, ["notes"] = notes,
             };
-            } finally { FmcImageExport.PutBack(app, prior); }
+            return reply;
+            } finally
+            {
+                FmcImageExport.PutBack(app, prior);
+                // SEE-2: the reply says what was active before the picture and what is active after the restore.
+                if (reply != null)
+                {
+                    try { reply["active_window"] = FmcImageExport.RestoreReport(app, prior); } catch (Exception) { /* report only */ }
+                }
+            }
         }
 
         private static BoundingBoxXYZ Union(Document doc, List<ElementId> ids)

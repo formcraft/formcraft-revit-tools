@@ -114,11 +114,14 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (tex4k.Count > 0) advice.Add($"{tex4k.Count} textures are 8 megapixels or more ({texMb:0} MB of textures in all): they only cost in Realistic and rendering, but there they are the main load.");
             if (missing.Count > 0) advice.Add($"{missing.Count} texture files are missing: Revit searches for them when it opens and renders. Fix the paths or add the folder in Options › Rendering.");
             if (patterned.Count > 0) advice.Add($"{patterned.Count} used materials draw a model surface pattern (brick, tile...): heavy in 3D. display_mode navigate hides surface patterns.");
-            if (unused.Count > 0 || unusedAssets > 0) advice.Add($"{unused.Count} materials and {unusedAssets} render appearances are unused: Purge Unused makes the file smaller and quicker to open.");
+            if (unused.Count > 0 || unusedAssets > 0) advice.Add($"{unused.Count} materials and {unusedAssets} render appearances are unused: Purge Unused (done by a person, or modify_model purge after approval) makes the file smaller and quicker to open. This report is read-only and has not purged anything.");
             if (dupes.Count > 0) advice.Add($"{dupes.Count} groups of materials look like copies of each other (same name, a number added).");
             if (fams.Count > 0 && (long)fams[0]["weight"] > 200000) advice.Add($"The heaviest family is {fams[0]["family"]} ({fams[0]["instances"]} placed, {fams[0]["faces_each"]} faces and {fams[0]["mesh_triangles_each"]} mesh triangles each): maker families like this slow every view, materials or not. Coarse detail or a lighter family helps.");
             if (cad.Count > 0) advice.Add($"{cad.Count} CAD files are imported (not linked) into the model.");
             advice.Add("Revit's own setting: Options › Graphics › Simplify display during view navigation.");
+            // MR-1: a skipped part is said in words, so texture_files 0 is not read as "no textures".
+            if (!textures) advice.Add("textures was false: texture files were not read, so texture_files, texture_mb, textures_8mp_plus and missing_textures are not counted (0 does not mean the model has no textures).");
+            if (!families) advice.Add("families was false: family weights were not read, so heaviest_families is empty by request.");
 
             return new JObject
             {
@@ -127,7 +130,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                     ["materials"] = mats.Count, ["used"] = mats.Count - unused.Count, ["unused"] = unused.Count, ["render_appearances"] = assets.Count, ["unused_appearances"] = unusedAssets,
                     ["texture_files"] = texSeen.Count, ["texture_mb"] = Math.Round(texMb, 1), ["textures_8mp_plus"] = tex4k.Count, ["missing_textures"] = missing.Count,
                     ["used_with_surface_pattern"] = patterned.Count, ["realistic_views"] = views.Count, ["cad_imports"] = cad.Count,
+                    // MR-1: which parts were read. texture_files is only a count when textures_checked is true.
+                    ["textures_checked"] = textures, ["families_checked"] = families,
                 },
+                ["read_only"] = true, ["purged"] = false,
                 ["advice"] = advice,
                 ["heaviest_materials"] = new JArray(heavy),
                 ["missing_textures"] = new JArray(missing.Take(limit)),

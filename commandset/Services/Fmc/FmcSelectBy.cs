@@ -48,7 +48,11 @@ namespace RevitMCPCommandSet.Services.Fmc
             int limit = p.Value<int?>("limit") ?? 500;
             return new JObject
             {
+                // SB-1: a query only. Selection.SetElementIds is never called; the person's selection is untouched.
+                ["selection_changed"] = false,
                 ["count"] = all.Count,
+                ["limit"] = limit,
+                ["truncated"] = all.Count > limit,
                 ["by_category"] = new JObject(all.GroupBy(e => e.Category?.Name ?? "(none)").OrderByDescending(g => g.Count()).Select(g => new JProperty(g.Key, g.Count()))),
                 ["ids"] = new JArray(all.Take(limit).Select(e => e.Id.Value)),
                 ["elements"] = new JArray(all.Take(Math.Min(limit, 100)).Select(e => new JObject

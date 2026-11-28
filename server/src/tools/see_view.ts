@@ -4,23 +4,32 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { loadConfig } from "../fmc/policy.js";
-import { imageDir, keptImagePath } from "../fmc/images.js";
+import { imageDir, saveTarget } from "../fmc/images.js";
 
 type Content = { type: "text"; text: string } | { type: "image"; data: string; mimeType: string };
 
 /** A view or a close-up of elements as an image the AI sees (owner 26 Oct: "the MCP tool has to take images"). */
 export async function viewImage(params: Record<string, unknown>): Promise<{ image?: Content; facts: any }> {
   const { save_to, ...rest } = params as Record<string, unknown> & { save_to?: string };
-  const dir = imageDir(loadConfig().config);
+  const config = loadConfig().config;
+  const dir = imageDir(config);
+  // SEE-1: a save_to that cannot be honoured is refused before Revit exports anything.
+  const keep = saveTarget(typeof save_to === "string" ? save_to : undefined, dir, config?.write_roots ?? []);
   const facts = await withRevitConnection((c) => c.sendCommand("fmc_view_image", { ...rest, image_dir: dir }));
-  const file = String(facts?.file ?? "");
+  let file = String(facts?.file ?? "");
   if (!file || !fs.existsSync(file)) return { facts };
-  // A kept picture stays in the image folder. Never beside the model and never on D:.
-  const target = keptImagePath(typeof save_to === "string" ? save_to : undefined, dir);
-  if (target && path.resolve(target) !== path.resolve(file)) {
-    fs.mkdirSync(path.dirname(target), { recursive: true });
-    fs.copyFileSync(file, target);
-    facts.saved_to = target;
+  // A kept picture is one file: the auto-named export is moved to save_to, not copied (SEE-1: two PNGs per call).
+  if (keep && path.resolve(keep.target) !== path.resolve(file)) {
+    fs.mkdirSync(path.dirname(keep.target), { recursive: true });
+    fs.copyFileSync(file, keep.target);
+    try { fs.unlinkSync(file); facts.auto_named_removed = file; } catch { /* the copy is kept; the auto-named file stays */ }
+    file = keep.target;
+    facts.file = file;
+  }
+  if (keep) {
+    facts.saved_to = keep.target;
+    facts.save_to_kept_as = keep.kept_as;
+    facts.save_to_note = keep.note;
   }
   const data = fs.readFileSync(file).toString("base64");
   return { image: { type: "image", data, mimeType: "image/png" }, facts };
@@ -41,7 +50,9 @@ export const SEE_VIEW_DESCRIPTION =
   "rest). select: a query in place of ids (modify_model's select: category, level, room, box, near, param...). box: a section box to look into (modify_model's BOX: room, level slice or cut_mm, cut_line_mm, slice, grow_mm, " +
   "top_mm...; with view, it boxes that 3D view, plan or section for this picture only). perspective true: a camera on the box " +
   "(from inside: standing in it at eye height; eye_mm + target_mm place the camera). save_to: a file name kept in the image " +
-  "folder (%LOCALAPPDATA%\\Formcraft\\images, or image_dir in fmc_guard.json). Never beside the model and never on D:. " +
+  "folder (%LOCALAPPDATA%\\Formcraft\\images, or image_dir in fmc_guard.json), or a full path inside that folder or an " +
+  "allowed write folder (write_roots); any other path is refused before the export. Only the save_to file is kept (no second " +
+  "auto-named copy); the answer has saved_to, save_to_kept_as (name | path) and save_to_note. Never beside the model and never on D:. " +
   "view: a plan, section, 3D view or sheet by name or id in the document you name " +
   "(with ids, those are highlighted in it). document: title or full path of an open model, including one that is not the " +
   "active window. The picture is fmc_view_image: ExportImage and SetOfViews. Revit can switch the active document " +
@@ -85,12 +96,14 @@ export function registerSeeViewTool(server: McpServer) {
 
   server.tool(
     "select_by",
-    "Formcraft (Ogala report), read-only: find elements with the same query modify_model's select takes: category (Walls " +
+    "Formcraft (Ogala report), read-only: find elements with the same query modify_model's select takes. A query only: it " +
+      "never changes the person's selection in Revit (selection_changed is always false). category (Walls " +
       "or OST_Walls, or a list), level, type_name and family (part of the name), comment (contains), mark, workset, phase " +
       "(created), view (visible in it; \"active\"), room (inside it), box (a section-box spec, inside? true), box_mm " +
       "[[x, y, z?], [x, y, z?]] (anything touching it), near {id | point_mm, within_mm}, hosted_by, host_of, param {name, " +
       "is: equals|contains|starts|gt|lt|empty|not_empty, value} (or a list), exclude, not {query}, types true; combine them. " +
-      "Gives the count by category, the ids (up to limit, default 500) and the first 100 with type and level. Try a query " +
+      "Gives count (every match), by_category, the ids (up to limit, default 500) and elements (the first min(limit, 100) with " +
+      "type and level), so count can be larger than the lists. Try a query " +
       "here before an edit uses it as select.",
     {
       category: z.union([z.string(), z.array(z.string())]).optional(), level: z.string().optional(), type_name: z.string().optional(), family: z.string().optional(),
@@ -142,8 +155,10 @@ export function registerSeeViewTool(server: McpServer) {
     "Formcraft (owner 27 Oct, a slow model), read-only: what makes the model heavy to draw. Materials with their texture " +
       "files (found or missing, pixels, MB), model surface patterns, unused and duplicate materials, unused render " +
       "appearances, views in Realistic, the heaviest families (faces and mesh triangles x instances), CAD imports, and " +
-      "advice in words. textures false skips reading the files, families false the families; limit per list (default 40). " +
-      "Then modify_model display_mode navigate | render switches the views; purge clears the unused.",
+      "advice in words. textures false skips reading the files (summary.textures_checked false: texture_files 0 is then not " +
+      "proof of no textures), families false the families (families_checked false); limit per list (default 40). This tool " +
+      "never purges or changes the model (read_only true, purged false). Then modify_model display_mode navigate | render " +
+      "switches the views; modify_model purge (a write, with approval) clears the unused.",
     {
       textures: z.boolean().optional(), families: z.boolean().optional(), limit: z.number().int().min(1).max(500).optional(),
     },
