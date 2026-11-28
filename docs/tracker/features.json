@@ -1123,5 +1123,14 @@
     "status": "Built, Revit check due",
     "ref": "fmc_file open_local, fmc_file close_local, fmc_open_local, fmc_close_local, fmc_close_local_apply, docs/tools/fmc_file.md",
     "note": "open_local opens a person's existing workshared local as the active document with UIApplication.OpenAndActivateDocument (activate=false uses OpenDocumentFile). worksets are all, last_viewed, none or a list of names. DoNotDetach; it never creates a new local, never synchronises, and refuses a central (FMC-FILE-CENTRAL-REFUSED), a missing file, a cloud, protected or live path, and worksets on a file that is not workshared. An already open local is only activated. close_local never syncs or relinquishes; it activates another open project first when the target is active, refuses the only open document (FMC-FILE-ONLY-DOC) and unsaved changes without confirm. save=true is a write (fmc_close_local_apply, in WRITE_COMMANDS: batch_lease, live-model lock, AI gate) and is refused for HEBERT HOSTELS, a protected original, a verification copy or a document never saved. dry_run defaults true. Opening a model in Revit stays a person's choice: the Revit check runs after install, dry run only."
+  },
+  {
+    "id": "F131",
+    "area": "Engine",
+    "group": "Handover",
+    "feature": "Handover package at each milestone (fmc_handover)",
+    "status": "Built, Revit check due",
+    "ref": "fmc_handover, fmc_handover_read, docs/HANDOVER.md",
+    "note": "L011-F24 / plan item 66. One zip per milestone: parameters/elements.csv, parameters/project_info.csv, reports/parameter_completeness.csv, named report_files, the saved .rvt only with include_model (workshared, cloud and HEBERT HOSTELS refused) and manifest.json with every file's size and SHA-256. COBie and IDS later. Read-only against the model (fmc_handover_read, no transaction). dry_run defaults true and returns plan_id; the write needs that plan_id and an output folder inside write_roots or reports_dir, and never overwrites. Kit 03_Master_Data/FMC_Handover.json; the sample is PROVISIONAL. Needs a Revit check."
   }
 ]
