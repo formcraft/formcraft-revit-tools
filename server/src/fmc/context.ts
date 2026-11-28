@@ -190,6 +190,15 @@ export function summariseRecipe(file: string): RecipeSummary | null {
   });
 }
 
+/** What each overview count counts (P-fmc_context-04), so a number that differs from another tool's is not read as a fault. */
+export const COUNT_NOTES: Record<string, string> = {
+  recipes: "family names with a *.recipe.json, 5 folders deep: kit Recipes, _Staging, repo",
+  staged_families: ".rfa names in each _Staging\\<folder>, all folders incl. _Archive",
+  released_families: ".rfa names in 04_Families\\<1-3 capital letters>",
+  family_specs: "entries in the spec file",
+  family_register: "entries in the register",
+};
+
 /** Folder listings kept 10 s, like the recipe index: a network kit folder is not listed on every call. */
 const FOLDER_MEMO_MS = 10_000;
 let familyMemo: { at: number; key: string; files: { staged: Map<string, string>; released: Map<string, string> } } | null = null;
@@ -564,6 +573,7 @@ export function overview(deps: ContextDeps) {
       rulebooks: books.length, templates: templateFiles(k).length,
       staged_families: files.staged.size, released_families: files.released.size,
     },
+    count_notes: { ...COUNT_NOTES, other_tools: "Other tools may skip folders, so their counts can differ" },
     missing: missing.length ? missing.map((m) => `${m}: not readable (a kit change request, or a path in fmc_guard.json)`) : undefined,
     rulebooks: books.map((b) => pbase(b, ".json").replace(/^FMC_Rulebook_/, "")),
     revit: docs.length ? docs : "No Revit with the AI connection on (Formcraft tab › Core › \"AI: off\" switches it on)",

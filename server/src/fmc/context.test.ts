@@ -166,6 +166,8 @@ test("overview: kit, counts, open documents, the project manifest, AI-use state 
   assert.equal(o.kit.version, "2.2");
   assert.equal(o.kit.revision, "r4");
   assert.equal(o.counts.family_specs, 44);
+  for (const key of ["recipes", "staged_families", "released_families"]) assert.equal(typeof o.count_notes[key], "string", key);
+  assert.equal(typeof o.counts.staged_families, "number", "counts stay plain numbers");
   assert.ok(o.counts.profile_recipes >= 7, "the kit fixture's seven, plus any in the repo's own recipe folders");
   assert.ok(o.counts.recipes > 7, "the repo's door and window recipes too");
   assert.equal(o.counts.design_movements, 4);
