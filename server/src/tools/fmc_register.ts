@@ -18,13 +18,16 @@ export const FMC_REGISTER_DESCRIPTION =
   "Parked sheets (FMC_Sheet_Status PARKED, or the browser parameter when that is the status) are filtered out with NotEqual PARKED and NotEqual Parked. " +
   "Fields are sheet number, sheet name, current revision and the status parameter. dry_run defaults to true and lists the changes. " +
   "Apply is fmc_register_apply, one transaction. It needs batch_lease and references.kit, references.standards and references.rulebook. " +
-  "A missing status parameter is FMC-REGISTER-STATUS and is not invented. " +
+  "A missing status parameter is FMC-REGISTER-STATUS and is not invented; that dry run says can_apply false and changes false. " +
+  "Every reply has ok and can_apply. counts {sheets, parked, shown} come first; the shown rows only with full true. " +
+  "Sheets without the status parameter, sheets with it empty, and a parameter not bound to Sheets are reported. " +
   "Example: document F26901-FMC-ZZ-ZZ-M3-A-0002_USER, schedule G100, dry_run true.";
 
 export const FMC_REGISTER_SHAPE = {
   document: z.string().optional().default(""),
   schedule: z.string().optional().default("G100"),
   dry_run: z.boolean().optional().default(true),
+  full: z.boolean().optional().default(false).describe("Return every shown sheet row (default: counts and parked rows only)"),
   batch_lease: z.string().optional().default(""),
   references: z.object({
     kit: z.array(z.string()).optional(),
@@ -67,6 +70,7 @@ function asSchedule(raw: unknown, name: string): ScheduleFact {
       return [{ field: String(row.field ?? ""), type: String(row.type ?? ""), value: String(row.value ?? "") }];
     }) : [],
     status_parameter: typeof schedule.status_parameter === "string" ? schedule.status_parameter : null,
+    status_bound_to_sheets: typeof schedule.status_bound_to_sheets === "boolean" ? schedule.status_bound_to_sheets : null,
   };
 }
 
@@ -84,6 +88,7 @@ function asSheets(raw: unknown): RegisterSheet[] {
       revision: String(row.revision ?? ""),
       status,
       parked: row.parked === true || sheetParked(status, browser),
+      ...(typeof row.has_status === "boolean" ? { has_status: row.has_status } : {}),
     }];
   });
 }
@@ -100,13 +105,25 @@ export async function runFmcRegister(args: FmcRegisterArgs, io: RegisterIo = {})
     if (raw && typeof raw === "object" && (raw as { exists?: boolean }).exists === false) fact.exists = false;
     const plan = planRegister(fact, asSheets(raw));
     const dry = args.dry_run !== false;
+    const canApply = !plan.code;
+    const { shown, ...rest } = plan;
     const summary = stamp({
+      ok: canApply,
+      can_apply: canApply,
       dry_run: dry,
       read_only: dry,
       document: args.document.trim(),
-      ...plan,
+      ...rest,
+      ...(args.full ? { shown } : {}),
     });
-    if (dry) return reply({ ...summary, next: "Apply with dry_run false, batch_lease, and references. That call is fmc_register_apply, one transaction." });
+    if (dry) {
+      return reply({
+        ...summary,
+        next: canApply
+          ? "Apply with dry_run false, batch_lease, and references. That call is fmc_register_apply, one transaction."
+          : "Nothing can be applied: add FMC_Sheet_Status (bound to Sheets) to the kit's shared parameters and the template, then run again.",
+      });
+    }
     if (plan.code) return reply({ ...summary, refused: true }, true);
     const lease = args.batch_lease.trim() || (batchLease.getStore() ?? "");
     if (!lease) return reply({ ...stamp(), refused: true, code: "FMC-BATCH-LOCKED", message: "[FMC-BATCH-LOCKED] This write needs batch_lease from fmc_batch request. Nothing was changed." }, true);
@@ -116,7 +133,8 @@ export async function runFmcRegister(args: FmcRegisterArgs, io: RegisterIo = {})
     const applied = io.apply
       ? await io.apply(applyBody)
       : await withRevitConnection((client) => client.sendCommand("fmc_register_apply", applyBody, 120000));
-    return reply({ ...summary, dry_run: false, read_only: false, applied });
+    const appliedOk = !!applied && typeof applied === "object" && (applied as { error?: unknown }).error === undefined;
+    return reply({ ...summary, ok: appliedOk, dry_run: false, read_only: false, applied });
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     return reply({ ...stamp(), refused: true, code: "FMC-REGISTER", message }, true);
