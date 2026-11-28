@@ -9,7 +9,7 @@ export const FMC_UI_DESCRIPTION =
   "Formcraft pane, for UI tests: read what the pane shows and steer it. Never changes the Revit model, so it works on " +
     "live models. Actions: get_state (screen, licence, group, section, settings tab, open dialog, state banner, footer, " +
     "connection, document, theme, and the groups and sections that can be opened); open_section (a section name such as " +
-    "\"QA\" or \"Setup › Templates\", or Connect, Settings, \"Settings › Flow\", Admin); set_mock_licence (test builds " +
+    "\"Engineer\" (names come from get_state's groups: today Setup, Drawings, Team, Engineer, Build, Ask; there is no QA group) or \"Setup › Templates\", or Connect, Settings, \"Settings › Flow\", Admin); set_mock_licence (test builds " +
     "only: preset signed_out, signed_in, online, offline or grace_over, and optional module statuses); screenshot_pane " +
     "(saves a PNG of the pane to the reports folder and returns its path); close_revit (test mode only, for an install: " +
     "exits Revit only when every open document is new and unchanged, never saves, otherwise refuses and names them).";
