@@ -274,10 +274,14 @@ export function writeDraft(projectRoot: string, name: string, text: string, draf
   if (!projectRoot) return { ok: false, code: "FMC-GRAPH-JAIL", message: "[FMC-GRAPH-JAIL] The target model is not in a project's 01_WIP, so there is no drafts folder. Name a project model with document." };
   const dir = pathOf(projectRoot).join(graphsDir(projectRoot, draftsFolder), "drafts");
   const safe = name.replace(/[^A-Za-z0-9 _.-]/g, "_").replace(/\.+/g, ".").replace(/^\.|\.$/g, "") || "graph";
+  // Confine the drafts folder before creating it (a junction above it must not lead out of the project).
+  const dirJail = jailCheck(dir, projectRoot, { mustExist: false });
+  if (!dirJail.ok) return dirJail;
   fs.mkdirSync(dir, { recursive: true });
   for (let n = 1; n < 1000; n++) {
     const file = pathOf(dir).join(dir, n === 1 ? `${safe}.dyn` : `${safe}-${n}.dyn`);
-    const jail = jailCheck(file, projectRoot);
+    // The only caller that passes mustExist:false: the draft does not exist yet; its resolved parent must be in the jail.
+    const jail = jailCheck(file, projectRoot, { mustExist: false });
     if (!jail.ok) return jail;
     try { fs.writeFileSync(file, text, { flag: "wx" }); return { ok: true, file }; }
     catch (error) { if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error; }

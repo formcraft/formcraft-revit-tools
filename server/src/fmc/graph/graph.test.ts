@@ -257,6 +257,7 @@ test("packages: missing, older, newer and ok against pkg.json; a package with a 
 test("jail: inside passes; '..', outside and a link that leaves the project are refused", () => {
   const root = tmp("b6proj-");
   fs.mkdirSync(path.join(root, "00_Formcraft"), { recursive: true });
+  fs.writeFileSync(path.join(root, "00_Formcraft", "a.dyn"), "{}");
   assert.equal(jailCheck(path.join(root, "00_Formcraft", "a.dyn"), root).ok, true);
   assert.equal(jailCheck(path.join(root, "..", "x.dyn"), root).ok, false);
   assert.equal(jailCheck(path.join(os.tmpdir(), "elsewhere.dyn"), root).ok, false);
@@ -313,4 +314,49 @@ test("flows: a graph apply, offline or library script step without approval_id i
   assert.match(String(graphStepProblem("fmc_scripts", { action: "graph_run", mode: "apply" })), /approval_id/);
   assert.equal(graphStepProblem("fmc_dynamo", { action: "run", mode: "apply", approval_id: "0123456789abcdef" }), null);
   assert.equal(graphStepProblem("fmc_selftest", {}), null);
+});
+
+// ---------- jail v1.2: every refusal is the jail's own job ----------
+test("jail v1.2: device, UNC, '..', relative-without-base, missing and link refusals; mustExist:false confines the parent", () => {
+  const root = tmp("b6proj12-");
+  const drafts = path.join(root, "00_Formcraft", "Graphs", "drafts");
+  fs.mkdirSync(drafts, { recursive: true });
+  fs.writeFileSync(path.join(drafts, "a.dyn"), "{}");
+  const reason = (r: ReturnType<typeof jailCheck>) => (r.ok ? "ok" : r.reason);
+  // device paths
+  assert.equal(reason(jailCheck("\\\\.\\C:\\P\\a.dyn", root)), "device");
+  assert.equal(reason(jailCheck("\\\\?\\C:\\P\\a.dyn", root)), "device");
+  assert.equal(reason(jailCheck("//./C:/P/a.dyn", root)), "device");
+  assert.equal(reason(jailCheck("//?/C:/P/a.dyn", root)), "device");
+  // UNC, even when the root itself looks like a share
+  assert.equal(reason(jailCheck("\\\\server\\share\\a.dyn", root)), "unc");
+  assert.equal(reason(jailCheck("//server/share/a.dyn", "//server/share")), "unc");
+  // any '..' segment, raw (not normalised away), in the file or the base
+  assert.equal(reason(jailCheck(`${drafts}/../drafts/a.dyn`, root)), "dotdot");
+  assert.equal(reason(jailCheck("..\\x.dyn", root, { base: drafts })), "dotdot");
+  assert.equal(reason(jailCheck("a.dyn", root, { base: `${drafts}/..` })), "dotdot");
+  // relative paths need an explicit absolute base
+  assert.equal(reason(jailCheck("a.dyn", root)), "relative");
+  assert.equal(reason(jailCheck("a.dyn", root, { base: "relative/base" })), "relative");
+  assert.equal(reason(jailCheck("a.dyn", root, { base: drafts })), "ok");
+  assert.equal(reason(jailCheck("a.dyn", root, { base: tmp("b6other-") })), "outside");
+  // mustExist defaults to true
+  assert.equal(reason(jailCheck(path.join(drafts, "new.dyn"), root)), "missing");
+  assert.equal(reason(jailCheck(path.join(drafts, "new.dyn"), root, { mustExist: false })), "ok");
+  assert.equal(reason(jailCheck(path.join(drafts, "deeper", "new.dyn"), root, { mustExist: false })), "ok");
+  // the root itself and outside paths
+  assert.equal(reason(jailCheck(root, root, { mustExist: false })), "outside");
+  assert.equal(reason(jailCheck(path.join(tmp("b6out12-"), "x.dyn"), root, { mustExist: false })), "outside");
+  // mustExist:false still confines the resolved parent: a link under the project that points out is refused
+  const outside = tmp("b6out12b-");
+  fs.symlinkSync(outside, path.join(root, "00_Formcraft", "Graphs", "esc"), "junction");
+  assert.equal(reason(jailCheck(path.join(root, "00_Formcraft", "Graphs", "esc", "new.dyn"), root, { mustExist: false })), "link");
+  assert.equal(reason(jailCheck(path.join(root, "00_Formcraft", "Graphs", "esc", "sub", "new.dyn"), root, { mustExist: false })), "link");
+  fs.writeFileSync(path.join(outside, "there.dyn"), "{}");
+  assert.equal(reason(jailCheck(path.join(root, "00_Formcraft", "Graphs", "esc", "there.dyn"), root)), "link");
+  // no root, empty
+  assert.equal(reason(jailCheck(path.join(drafts, "a.dyn"), "")), "no_root");
+  assert.equal(reason(jailCheck("  ", root)), "empty");
+  // path inputs: device and UNC values are refused like any other escape
+  assert.equal(pathInputsOutsideJail({ a: "\\\\?\\C:\\x.csv", b: "\\\\srv\\s\\x.csv", c: "/", d: "note" }, root).length, 2);
 });

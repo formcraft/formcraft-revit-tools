@@ -48,3 +48,16 @@ test("author: specs compile to Dynamo JSON that inspect and validate accept; tem
   assert.equal(writeDraft("", "Sum", g.text).ok, false);
 });
 
+
+test("author: writeDraft refuses a drafts folder that a junction or link leads out of the project", () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "b6wd-"));
+  const outside = fs.mkdtempSync(path.join(os.tmpdir(), "b6wdout-"));
+  fs.mkdirSync(path.join(root, "00_Formcraft"), { recursive: true });
+  fs.symlinkSync(outside, path.join(root, "00_Formcraft", "Graphs"), "junction");
+  const g = generateGraph({ name: "X", nodes: [{ key: "n", kind: "number", value: 1 }], wires: [] });
+  assert.ok(g.ok);
+  if (!g.ok) return;
+  const w = writeDraft(root, "X", g.text);
+  assert.equal(w.ok, false);
+  assert.equal(fs.readdirSync(outside).length, 0);
+});

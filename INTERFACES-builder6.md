@@ -1,6 +1,6 @@
 # INTERFACES-builder6.md: Dynamo graph tools contract (Builder 6)
 
-Contract version: **1.2** (28 Nov 2026, EAT; 1.1 and 1.2 only add, nothing removed or renamed; code interfaces unchanged since 1.1). Branch `builder6/dynamo-graph-tools` from `cf71214`.
+Contract version: **1.2** (28 Nov 2026, EAT). 1.1 only added fields. 1.2 hardens `jailCheck` (new optional third argument, stricter refusals), adds the BUILD.queue and load rules and a Known issues section. Branch `builder6/dynamo-graph-tools` from `cf71214`.
 Builder 7 (form, study, schedule, graph packs, pane) codes against this. If anything here changes, the version
 number goes up and the change is listed in "Change log" at the end. Server modules are TypeScript ESM under
 `server/src/fmc/graph/`; tools are under `server/src/tools/`.
@@ -25,9 +25,9 @@ Spec: Tool Research, `DYNAMO_TOOLS_PROPOSAL-2026-11-28.md` (rows DT-xx). Only Bu
 |---|---|
 | `fmc/graph/decisions.ts` | `PYTHON_ALWAYS_NEEDS_PERSON`, `GRAPH_DECISIONS_DEFAULT`, `graphDecisions(cfg): GraphDecisions`, `type GraphDecisions` |
 | `fmc/graph/hash.ts` | `sha256Text(s)`, `sha256File(file)`, `sha256Folder(dir)`, `stableJson(v)`, `inputsHash(inputs)` |
-| `fmc/graph/jail.ts` | `projectRootOf(docPath)`, `graphsDir(projectRoot)`, `jailCheck(file, root): {ok:true, real}\|{ok:false, code, message}`, `pathInputsOutsideJail(inputs, root): string[]` |
+| `fmc/graph/jail.ts` | `projectRootOf(docPath)`, `graphsDir(projectRoot)`, `jailCheck(file, root, opts?: {base?, mustExist?}): {ok:true, real}\|{ok:false, code:"FMC-GRAPH-JAIL", reason, message}` (v1.2, see section 11), `pathInputsOutsideJail(inputs, root): string[]`, `type JailOptions`, `type JailReason` |
 | `fmc/graph/approvals.ts` | `approvalsDir(env)`, `requestGraphApproval(req, env?, now?)`, `readGraphApproval(id, env?)`, `listGraphApprovals(filter?, env?)`, `decideGraphApproval(id, "approved"\|"refused", by, env?, now?)` (pane only), `claimGraphApproval(id, planHash, env?, now?)`, `type GraphApproval` |
-| `fmc/graph/plan.ts` | `buildPlan(args): {ok:true, plan: GraphPlan}\|{ok:false, code, message}`, `planHash(parts)`, `bindInputsByName(inspect, inputs)`, `runNeedsApproval(plan): {needed, why[]}`, `type GraphPlan` |
+| `fmc/graph/plan.ts` | `buildPlan(args): {ok:true, plan: GraphPlan}\|{ok:false, code, message}`, `planHash(parts)`, `bindInputsByName(inspect, inputs)` (the single name/id binder; see section 11), `runNeedsApproval(plan): {needed, why[]}`, `type GraphPlan` |
 | `fmc/graph/rungate.ts` | `graphRunGate(plan, approvalId, env?, now?): {ok:true, approval?}\|{ok:false, code, message, needs_approval?}` (used by `executeDynamo` and the python runner) |
 | `fmc/graph/scan.ts` | `scanGraph(file, opts?): GraphScan` (DT-55), `scanPythonCode(code): Finding[]` |
 | `fmc/graph/packages.ts` | `packageFolders(env)`, `installedPackages(folders)`, `checkPackages(inspect, installed): PackageCheck` (DT-26) |
@@ -165,6 +165,10 @@ Config: `fmc_guard.json` -> `graph_tools.decisions.<key>` overrides; `graphDecis
 - Acquire: create atomically with `[IO.File]::Open($lock,'CreateNew','Write','None')`; poll every 15 s.
 - Hold: refresh the timestamp every ~4 min while the content is still yours (stale, unrefreshed locks may be removed by Plugin Bot).
 - Release: delete the file only if its content starts with your owner tag.
+- Load rule (Plugin Bot, 19:50 EAT): before any npm install, test or build on crafty27, CPU must be under 85% and free RAM
+  at least 1.5 GB; wait (poll ~30 s) if not, and log each reading. Skip `npm ci` unless `server/package-lock.json` changed.
+  Run targeted tests only, not the full server suite. tsc and `dotnet build -c "Release R25"` run under the same check.
+- Every step that holds the lock releases it (and deletes the queue line) in a `finally`.
 - Builder 6 script: `C:\Users\USER\agent-tools\builder-6-dynamo-graph-tools\b6-qbuild.ps1` (queue-aware). The old lock-only
   `b6-build.ps1` was retired (renamed `b6-build.OLD-lockonly-DO-NOT-USE.txt`).
 
@@ -191,7 +195,22 @@ Config: `fmc_guard.json` -> `graph_tools.decisions.<key>` overrides; `graphDecis
   is read-only). With no project root (model not in 01_WIP) only the existing protected-path check applies.
 - Library python approvals: `request_approval` with `script_id`; plan_hash = sha256(stableJson({v:1, kind:"script_python", sha, ih, doc})).
 
+## 11. Jail hardening and input binding (v1.2)
+
+- `jailCheck(file, root, opts?)` covers every caller itself; callers do not pre-filter. It refuses, with `reason`:
+  `no_root`, `empty`, `device` (`\\.\` or `\\?\`, also `//./` and `//?/`), `unc` (any `\\server\share` or `//server/share`,
+  even when the root is a share), `dotdot` (any raw `..` segment, in `file` or `opts.base`), `relative` (relative `file`
+  with no absolute `opts.base`), `missing` (does not exist while `mustExist` is true), `outside` (outside `root`, or the
+  root itself), `link` (links or junctions resolve outside `root`).
+- `opts.mustExist` defaults to `true`. Only the author op's draft writer (`writeDraft` in `author.ts`) passes `false`;
+  then the nearest existing parent folder, links resolved, must still be inside the jail. `writeDraft` checks the drafts
+  folder before creating it, and each draft file before writing.
+- Effect for graph path inputs (`pathInputsOutsideJail`, used by `buildPlan`): a path input must now exist, so an output
+  file that does not exist yet is refused; pass an existing folder instead. Device and UNC inputs are refused.
+- `bindInputsByName(inspect, inputs)` in `plan.ts` is the single name/id binder for graph inputs (names or node ids to node
+  GUIDs; unknown or ambiguous names give `FMC-DYNAMO-INPUT`). Builder 7's `bindFormValues` layers form validation on top
+  and calls `bindInputsByName`; it does not bind names itself.
 ## Change log
 - v1 (28 Nov 2026): first version.
 - v1.1 (28 Nov 2026): additive GraphPlan fields; section 9 "As built".
-- v1.2 (28 Nov 2026 19:40 EAT): section 8 adds the BUILD.queue FIFO rule; new section 10 Known issues (double approval under the live-model lock). No code interface changes.
+- v1.2 (28 Nov 2026, 19:40-20:05 EAT): section 8 adds the BUILD.queue FIFO rule and the 19:50 load rule; section 10 Known issues (double approval under the live-model lock); section 11 jailCheck hardening (opts.base, opts.mustExist, reason) and the bindInputsByName / bindFormValues note.
