@@ -65,8 +65,13 @@ test("prints list the sheet's open items for review, solved ones as revised, wit
   assert.match(md, /- A: Swing reversed \(NAME A\)/);
 });
 
-test("RW-9/RW-13: a default project code, and the BCF size and type cap", async () => {
-  const { defaultProjectCode, bcfFileProblem, BCF_MAX_BYTES } = await import("./reviewhelp.js");
+test("RW-7/RW-9/RW-13: per-action help, a default project code, and the BCF size and type cap", async () => {
+  const { reviewHelp, REVIEW_ACTION_HELP, defaultProjectCode, bcfFileProblem, BCF_MAX_BYTES } = await import("./reviewhelp.js");
+  assert.equal(Object.keys(REVIEW_ACTION_HELP).length, 21);
+  const solveHelp = reviewHelp("solve") as { needs: string[]; does: string };
+  assert.ok(solveHelp.needs.includes("text"));
+  assert.match(solveHelp.does, /solution/);
+  assert.match(String((reviewHelp("nope") as { error: string }).error), /No action nope/);
   assert.deepEqual(defaultProjectCode("", "F26902_TestHouse"), { code: "F26902", source: "folder name" });
   assert.deepEqual(defaultProjectCode("", "F26902_TestHouse", "f26900"), { code: "F26900", source: "FMC_Project.json" });
   assert.equal(defaultProjectCode("abc", "x").code, "ABC");

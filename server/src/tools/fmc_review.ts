@@ -14,7 +14,7 @@ import { readDb } from "./fmc_material.js";
 import { applyProblems, applySteps, fixApplied, fixFailed, planHash } from "../fmc/applyfix.js";
 import { findRecipeElement } from "./fmc_room.js";
 import { FMC_TREE_SHAPE, runFmcTree } from "./fmc_tree.js";
-import { bcfFileProblem, defaultProjectCode } from "../fmc/reviewhelp.js";
+import { bcfFileProblem, defaultProjectCode, reviewHelp } from "../fmc/reviewhelp.js";
 import { createHash } from "node:crypto";
 
 const win = path.win32;
@@ -80,6 +80,7 @@ const line = (i: ReviewItem, today: string) => ({ id: i.id, title: i.title, lead
   status: shownStatus(i, today), disciplines: i.disciplines, answered: i.answers.map((a) => a.discipline) });
 
 export const FMC_REVIEW_DESCRIPTION =
+  "help (help_for: one action) returns the fields that action reads and what it writes; call it before an action you have not used. " +
   "Formcraft review register (MAN 10.5), kept in <project>\\01_WIP\\_Reviews\\FMC_Review_Register.json; it never changes " +
     "the model, so it works on live models. list (filter All, Open, My discipline, Overdue, Closed); item (one item in " +
     "full); raise (title, what is wrong, disciplines affected, lead discipline, one owner, priority, due date: default " +
@@ -107,7 +108,8 @@ export const FMC_REVIEW_DESCRIPTION =
     "element facts) and the ticket goes back to the raiser as Resolved to check.";
 
 export const FMC_REVIEW_SHAPE = {
-  action: z.enum(["list", "item", "raise", "answer", "solve", "check", "cloud", "print", "prints", "mark", "comment", "take", "queue", "bcf_export", "bcf_import", "plan_fix", "apply_fix", "show", "clashes", "transcribe", "whisper_setup"]),
+  action: z.enum(["help", "list", "item", "raise", "answer", "solve", "check", "cloud", "print", "prints", "mark", "comment", "take", "queue", "bcf_export", "bcf_import", "plan_fix", "apply_fix", "show", "clashes", "transcribe", "whisper_setup"]),
+  help_for: z.string().optional().default("").describe("help: the action to explain (empty: every action in one line)"),
   approved_by: z.string().optional().default("").describe("apply_fix: the person who said yes to the steps (never the AI)"),
   plan_hash: z.string().optional().default("").describe("apply_fix: the plan_hash from the dry run that person saw"),
   tree: z.enum(["ask", "adopt", "override"]).optional().default("ask")
@@ -165,6 +167,7 @@ export interface ReviewDeps { run?: Runner; download?: Downloader; whisperHome?:
 export async function runFmcReview(args: FmcReviewArgs, deps: ReviewDeps = {}) {
   const { config } = loadConfig();
   try {
+    if (args.action === "help") return reply(reviewHelp(args.help_for ?? ""));
     const home = deps.whisperHome ?? whisperHome();
     if (args.action === "whisper_setup") {
       const plan = setupPlan(home, args.model as WhisperModel);
