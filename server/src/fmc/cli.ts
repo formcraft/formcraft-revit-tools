@@ -40,6 +40,7 @@ import { FMC_HW_SHAPE, runFmcHw } from "../tools/fmc_hw.js";
 import { FMC_JOINS_SHAPE, runFmcJoins } from "../tools/fmc_joins.js";
 import { FMC_NORTH_SHAPE, runFmcNorth } from "../tools/fmc_north.js";
 import { FMC_DYNAMO_SHAPE, runFmcDynamo } from "../tools/fmc_dynamo.js";
+import { FMC_GRAPH_SHAPE, runFmcGraph } from "../tools/fmc_graph.js";
 import { FMC_GRAPH_LIB_SHAPE, runFmcGraphLib } from "../tools/fmc_graph_lib.js";
 import { FMC_GRAPH_GUARD_SHAPE, runFmcGraphGuard } from "../tools/fmc_graph_guard.js";
 import { decideGraphApproval, listGraphApprovals } from "./graph/approvals.js";
@@ -289,6 +290,8 @@ async function main() {
         const r = await paneAi(command, input as Record<string, unknown>, process.env.USERNAME || "unknown");
         return print(r, "error" in r);
       }
+      case "fmc_graph":
+        return printReply(await runFmcGraph(z.object(FMC_GRAPH_SHAPE).parse(input)));
       case "fmc_graph_lib":
         return printReply(await runFmcGraphLib(z.object(FMC_GRAPH_LIB_SHAPE).parse(input)));
       case "fmc_graph_guard":
@@ -310,7 +313,7 @@ async function main() {
         return print(askStatus(text, new Date(), process.env, !!readApiKey()), false);
       }
       default:
-        process.stderr.write("Usage: node build/fmc/cli.js <fmc_file|fmc_family|fmc_project|fmc_template|fmc_library|fmc_qa|fmc_material|fmc_sheets|fmc_annotate|fmc_issue|fmc_links|fmc_coord|fmc_phase|fmc_hw|fmc_joins|fmc_north|fmc_dynamo|fmc_script_run|fmc_selftest|fmc_workshare|fmc_review|fmc_report|fmc_doc|fmc_revit|fmc_brief|fmc_scripts|fmc_systems|fmc_build|fmc_ai|fmc_recipe|fmc_robot|fmc_navis|fmc_rhino|fmc_casework|fmc_ceiling|fmc_legend|fmc_apps|fmc_flow|fmc_tree|fmc_room|fmc_schedules|specs|probe|ask|ask_status|fmc_changes|fmc_select|fmc_find|fmc_testrun|fmc_balance|fmc_tables|fmc_powerbi|fmc_calc|fmc_diagram|fmc_graph_lib|fmc_graph_guard|graph_approvals|graph_approve|graph_refuse>  (JSON arguments on stdin)\n");
+        process.stderr.write("Usage: node build/fmc/cli.js <fmc_file|fmc_family|fmc_project|fmc_template|fmc_library|fmc_qa|fmc_material|fmc_sheets|fmc_annotate|fmc_issue|fmc_links|fmc_coord|fmc_phase|fmc_hw|fmc_joins|fmc_north|fmc_dynamo|fmc_script_run|fmc_selftest|fmc_workshare|fmc_review|fmc_report|fmc_doc|fmc_revit|fmc_brief|fmc_scripts|fmc_systems|fmc_build|fmc_ai|fmc_recipe|fmc_robot|fmc_navis|fmc_rhino|fmc_casework|fmc_ceiling|fmc_legend|fmc_apps|fmc_flow|fmc_tree|fmc_room|fmc_schedules|specs|probe|ask|ask_status|fmc_changes|fmc_select|fmc_find|fmc_testrun|fmc_balance|fmc_tables|fmc_powerbi|fmc_calc|fmc_diagram|fmc_graph|fmc_graph_lib|fmc_graph_guard|graph_approvals|graph_approve|graph_refuse>  (JSON arguments on stdin)\n");
         process.exit(2);
     }
   } catch (e) {
