@@ -409,6 +409,11 @@ test("the reply is counts and a capped id list; the JSON file keeps every findin
   assert.ok(report.includes("trace-"));
   assert.equal(summary.read_only, true);
   assert.equal(summary.limits_status, "PROVISIONAL");
+  // F98: nothing found against PROVISIONAL limits is PROVISIONAL, never pass true.
+  const empty = summarizeTrace([], { limits: resolved, skipped: [], unknown: [], sampleLimit: 2, highlight: "ids", report, snapshot });
+  assert.equal(empty.pass, false);
+  assert.equal(empty.status, "PROVISIONAL");
+  assert.equal(summary.status, "FAIL");
 });
 
 test("phase 2 standards checks run, and tray fill stays listed and not run", () => {
