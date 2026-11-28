@@ -214,7 +214,7 @@ test("fmc_casework: refuses without standards, packs only inside the write roots
     assert.deepEqual(dry.body.files.map((f: { action: string }) => f.action), ["new", "new", "new", "new", "new"]);
     assert.equal(fs.existsSync(folder), false, "a dry run writes nothing");
 
-    const done = await call({ ...base, dry_run: false });
+    const done = await call({ ...base, dry_run: false, confirm: true });
     assert.equal(done.body.done, true);
     const names = fs.readdirSync(folder).sort();
     assert.deepEqual(names, ["HA_Casework_K-01-Kitchen_BoQ.csv", "HA_Casework_K-01-Kitchen_CutList.csv", "HA_Casework_K-01-Kitchen_Hardware.csv", "HA_Casework_K-01-Kitchen_Nesting.csv", "HA_Casework_K-01-Kitchen_WorkshopPack.pdf"]);
@@ -223,11 +223,11 @@ test("fmc_casework: refuses without standards, packs only inside the write roots
     assert.equal(fs.readFileSync(path.join(folder, "HA_Casework_K-01-Kitchen_Nesting.csv"), "utf8").trim().split(/\r\n/).length, 121);
     assert.match(fs.readFileSync(path.join(folder, "HA_Casework_K-01-Kitchen_BoQ.csv"), "utf8"), /FMC_Board_MDF_Raw,3,sheet,,,price needed/);
 
-    const again = await call({ ...base, dry_run: false });
+    const again = await call({ ...base, dry_run: false, confirm: true });
     assert.deepEqual(again.body.files.map((f: { action: string }) => f.action), ["unchanged", "unchanged", "unchanged", "unchanged", "unchanged"]);
     assert.deepEqual(fs.readdirSync(folder).sort(), names, "same names, nothing new");
 
-    const changed = await call({ ...base, dry_run: false, run: { ...RUN, fronts: { K02: "3drawer", K08: "3drawer" } } });
+    const changed = await call({ ...base, dry_run: false, confirm: true, run: { ...RUN, fronts: { K02: "3drawer", K08: "3drawer" } } });
     assert.ok(changed.body.files.some((f: { action: string }) => /replace/.test(f.action)));
     assert.ok(fs.readdirSync(path.join(folder, "_Archive")).length > 0, "the old file is archived, not deleted");
 

@@ -55,6 +55,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     case "room": Result = Room(doc); break;
                     case "place": Result = Place(doc); break;
                     case "pack": Result = Pack(doc); break;
+                    case "remove": Result = Remove(doc); break;
                     default: Error = $"Unknown casework action '{Action}'"; break;
                 }
             }
@@ -164,6 +165,47 @@ namespace RevitMCPCommandSet.Services.Fmc
         {
             Parameter p = fi.get_Parameter(bip) ?? fi.Symbol?.get_Parameter(bip) ?? fi.LookupParameter("Width") ?? fi.Symbol?.LookupParameter("Width");
             return p != null && p.StorageType == StorageType.Double ? p.AsDouble() : 0;
+        }
+
+        // ---------------------------------------------------------------------------------------------------------
+        // remove
+
+        /// <summary>
+        /// The casework a label placed (Comments = its tag), listed; on a real run deleted in one transaction (one Undo).
+        /// The dry run only reads: no transaction is opened, so nothing in the model can change.
+        /// </summary>
+        private JObject Remove(Document doc)
+        {
+            bool dry = Parameters.Value<bool?>("dry_run") ?? true;
+            string tag = Parameters.Value<string>("tag") ?? "";
+            const string prefix = "FMC:casework:";
+            if (!tag.StartsWith(prefix, StringComparison.Ordinal) || tag.Length <= prefix.Length)
+                throw new InvalidOperationException("A removal needs the placement's tag (FMC:casework:<label>)");
+            List<FamilyInstance> found = new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Casework).WhereElementIsNotElementType()
+                .OfType<FamilyInstance>().Where(fi => fi.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS)?.AsString() == tag).ToList();
+            var list = new JArray(found.Select(fi => new JObject
+            {
+                ["id"] = fi.Id.Value, ["unique_id"] = fi.UniqueId, ["type"] = fi.Symbol?.Name ?? "",
+                ["mark"] = fi.LookupParameter("FMC_Assembly_Mark")?.AsString() ?? "",
+            }));
+            var failures = new FmcFailures();
+            int removed = 0;
+            if (!dry && found.Count > 0)
+            {
+                using (var t = new Transaction(doc, "Formcraft: remove casework " + tag))
+                {
+                    failures.Attach(t);
+                    t.Start();
+                    foreach (FamilyInstance fi in found) { doc.Delete(fi.Id); removed++; }
+                    t.Commit();
+                }
+                if (failures.RolledBack) removed = 0;
+            }
+            return new JObject
+            {
+                ["dry_run"] = dry, ["tag"] = tag, ["found"] = list, ["count"] = found.Count, ["removed"] = removed,
+                ["warnings"] = new JArray(failures.Warnings), ["errors"] = new JArray(failures.Errors), ["rolled_back"] = failures.RolledBack,
+            };
         }
 
         // ---------------------------------------------------------------------------------------------------------

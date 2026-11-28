@@ -51,4 +51,12 @@ namespace RevitMCPCommandSet.Commands.Fmc
         public override string CommandName => "fmc_casework_pack";
         protected override string Action => "pack";
     }
+
+    /// <summary>What a label placed, listed (dry run: read only, no transaction) or deleted in one Undo (behind the lock).</summary>
+    public class FmcCaseworkRemoveCommand : FmcCaseworkCommandBase
+    {
+        public FmcCaseworkRemoveCommand(UIApplication uiApp) : base(uiApp) { }
+        public override string CommandName => "fmc_casework_remove";
+        protected override string Action => "remove";
+    }
 }

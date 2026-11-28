@@ -9,7 +9,7 @@
  *   5 Hardware
  *   6 Cost with its sources: library prices only; "price needed" where the kit has none
  */
-import { Casework, CostLine, Standards, Unit, costs } from "./casework.js";
+import { Casework, CostLine, Standards, Unit, boxOf, costs } from "./casework.js";
 import { A4_LANDSCAPE, MM, PdfDoc, PdfPage, fit, textWidth } from "./pdf.js";
 
 const [PW, PH] = A4_LANDSCAPE;
@@ -97,7 +97,7 @@ export function wrap(text: string, size: number, width: number): string[] {
   return out.map((l) => fit(l, size, width));
 }
 
-const kindName: Record<string, string> = { corner: "Corner", base: "Base", sink: "Sink", tall: "Tall", wall: "Wall" };
+const kindName: Record<string, string> = { corner: "Corner", base: "Base", sink: "Sink", tall: "Tall", wall: "Wall", wardrobe: "Wardrobe", vanity: "Vanity", basin: "Basin" };
 function frontsName(f: string): string {
   if (f === "door") return "door";
   if (f === "2door") return "2 doors";
@@ -151,7 +151,7 @@ function elevations(w: Writer, p: PdfPackInput) {
   let x = M, rowH = 0;
   const gap = 28;
   for (const u of units) {
-    const box = u.kind === "wall" ? s.wall : u.kind === "tall" ? s.tall : s.base;
+    const box = boxOf(u, s);
     const legs = u.kind === "wall" ? 0 : s.plinth;
     const wpt = u.width * k, hpt = (box.height + legs) * k;
     const need = hpt + 40;
