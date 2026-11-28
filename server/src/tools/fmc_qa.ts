@@ -43,12 +43,17 @@ export function readRulebooks(dir: string): Rulebooks {
   return books;
 }
 
+import { compareWithLast, fixTool, pickRules, unlockOrder } from "../fmc/qafix.js";
+
 export const FMC_QA_DESCRIPTION =
   "Formcraft QA and rulebooks. rules lists every rule in the kit's rulebooks (severity, status, scope, test, fix hint, " +
     "version, why), the exceptions in force and the decisions. run checks the active model for a gate (wip_to_shared, " +
     "shared_to_published, weekly): it only reads, so it runs on live and shared models too; results are Fail, Warning, " +
     "Pass, Not applicable or Not checked per rule, with new/recurring/resolved against the last run and a saved report. " +
-    "select selects elements in Revit (the Zoom on a result). request records an approval or change request for the BIM Manager.";
+    "select selects elements in Revit (the Zoom on a result). request records an approval or change request for the BIM Manager. " +
+    "run takes rules [ids], book or severity to run only those rules (a picked run is not added to the trend history) and compare_with \"last\" " +
+    "to list fixed, still failing and new failures against the last full run. Each result needing attention names fix_tool where a Formcraft tool fixes it. " +
+    "unlock_order lists why rules were not checked, by Must rules each missing reader would unlock. A second run while one is going returns FMC-QA-BUSY.";
 
 export const FMC_QA_SHAPE = {
   action: z.enum(["rules", "run", "select", "request"]),
@@ -63,6 +68,10 @@ export const FMC_QA_SHAPE = {
     .describe("rules, run: summary (default: counts, the verdict, what needs attention, why rules weren't checked) or full (every rule or result)"),
   limit: z.number().int().min(1).max(500).optional().default(DEFAULT_LIMIT).describe("run summary: how many results needing attention to list"),
   stage: z.string().optional().describe("run: the project's RIBA stage (e.g. 3); kit rules for other stages show Not applicable"),
+  rules: z.array(z.string()).optional().describe("run: only these rule ids, e.g. [\"NAM-020\"]"),
+  book: z.string().optional().describe("run: only the rules of this rulebook (name or part of it)"),
+  only_severity: z.enum(["Must", "Should", "Advice"]).optional().describe("run: only rules of this severity"),
+  compare_with: z.enum(["last"]).optional().describe("run: compare the picked rules with the last full run"),
 };
 
 export type FmcQaArgs = z.infer<z.ZodObject<typeof FMC_QA_SHAPE>>;
@@ -99,9 +108,21 @@ export async function runFmcQa(args: FmcQaArgs) {
 
     // run: facts from Revit (read-only), checks from the kit
     if (!books.rules.length) return reply({ refused: true, reasons: books.problems.length ? books.problems : ["The kit's rulebooks have no rules"] }, true);
-    const facts = qaFacts(await withRevitConnection((c) => c.sendRaw("fmc_qa_facts", neededParameters(books.rules), 300000)));
+    const pick = pickRules(books, { rules: args.rules, book: args.book, severity: args.only_severity });
+    if (pick.picked && !pick.books.rules.length) return reply({ refused: true, reasons: [`No rule matches the pick${pick.unknown.length ? ` (unknown ids: ${pick.unknown.join(", ")})` : ""}`] }, true);
+    let rawFacts: unknown;
+    try {
+      rawFacts = await withRevitConnection((c) => c.sendRaw("fmc_qa_facts", neededParameters(pick.books.rules), 300000));
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      if (/FMC-QA-BUSY/.test(msg)) return reply({ busy: true, code: "FMC-QA-BUSY", message: msg, next: "Wait for the other QA call to finish, then run again." }, true);
+      throw error;
+    }
+    const facts = qaFacts(rawFacts);
     const today = new Date().toISOString().slice(0, 10);
-    const result = runQa(books, facts, args.gate, today, (args.stage ?? "").trim());
+    const result = runQa(pick.books, facts, args.gate, today, (args.stage ?? "").trim());
+    const byId = new Map(books.rules.map((r) => [r.id, r]));
+    const withFix = (r: { id: string }) => { const tool = fixTool(byId.get(r.id)); return tool ? { fix_tool: tool } : {}; };
     const failing = result.results.filter((x) => x.state === "Fail" || x.state === "Warning").map((x) => x.id);
 
     const historyFile = win.join(expandEnv(config.reports_dir), "FMC_QA_History.json");
@@ -109,11 +130,18 @@ export async function runFmcQa(args: FmcQaArgs) {
     try { history = JSON.parse(fs.readFileSync(historyFile, "utf8")); } catch { history = {}; }
     const key = `${facts.model}|${args.gate}`;
     const runs = history[key] ?? [];
-    const t = trend(runs.length ? runs[runs.length - 1].failing : null, failing);
-    runs.push({ at: new Date().toISOString(), failing });
-    history[key] = runs.slice(-20);
-    fs.mkdirSync(win.dirname(historyFile), { recursive: true });
-    fs.writeFileSync(historyFile, JSON.stringify(history, null, 2));
+    const lastFailing = runs.length ? runs[runs.length - 1].failing : null;
+    const t = trend(lastFailing, failing);
+    const compared = args.compare_with === "last" ? compareWithLast(lastFailing, failing, result.results.map((x) => x.id)) : undefined;
+    // A picked run is not a full run: it stays out of the history so the next full run's trend is still against a full run.
+    if (!pick.picked) {
+      runs.push({ at: new Date().toISOString(), failing });
+      history[key] = runs.slice(-20);
+      fs.mkdirSync(win.dirname(historyFile), { recursive: true });
+      fs.writeFileSync(historyFile, JSON.stringify(history, null, 2));
+    }
+    const pickedNote = pick.picked ? { picked: { rules: result.ran, ids: args.rules ?? [], book: args.book ?? "", severity: args.only_severity ?? "", unknown: pick.unknown,
+      note: "Only the picked rules ran: the verdict is for them, not the gate." } } : {};
 
     // The report goes in the project's 06_QA\Health when the guard allows it, otherwise in the reports folder.
     const stamp = new Date().toISOString().replace(/[-:]/g, "").replace("T", "-").slice(0, 13);
@@ -125,10 +153,14 @@ export async function runFmcQa(args: FmcQaArgs) {
     log(config, "qa_run", false, facts.model, "done", `${result.gate}: ${result.fail} fail, ${result.warning} warnings · ${report}`);
 
     const recent = runs.slice(-4).map((r) => ({ at: r.at, failing: r.failing.length }));
-    if (args.detail === "full") return reply({ ...result, trend: t, history: recent, report, rulebook_problems: books.problems });
+    const unlock_order = unlockOrder(result.results).slice(0, 15);
+    if (args.detail === "full") return reply({ ...result, results: result.results.map((x) => ({ ...x, ...withFix(x) })), ...pickedNote, ...(compared ? { compared } : {}),
+      unlock_order, trend: t, history: recent, report, rulebook_problems: books.problems });
     // F-009: counts, the verdict and what needs attention; every result is in the saved report.
     const { results, ...head } = result;
-    return reply({ ...head, ...qaDigest(results, args.limit), trend: t, history: recent, report, rulebook_problems: books.problems,
+    const digest = qaDigest(results, args.limit);
+    return reply({ ...head, ...pickedNote, ...(compared ? { compared } : {}), ...digest, attention: digest.attention.map((x) => ({ ...x, ...withFix(x) })),
+      unlock_order, trend: t, history: recent, report, rulebook_problems: books.problems,
       next: "detail: \"full\" returns every result (large); the saved report lists them all" });
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
