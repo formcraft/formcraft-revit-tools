@@ -1123,5 +1123,14 @@
     "status": "Built, Revit check due",
     "ref": "fmc_file open_local, fmc_file close_local, fmc_open_local, fmc_close_local, fmc_close_local_apply, docs/tools/fmc_file.md",
     "note": "open_local opens a person's existing workshared local as the active document with UIApplication.OpenAndActivateDocument (activate=false uses OpenDocumentFile). worksets are all, last_viewed, none or a list of names. DoNotDetach; it never creates a new local, never synchronises, and refuses a central (FMC-FILE-CENTRAL-REFUSED), a missing file, a cloud, protected or live path, and worksets on a file that is not workshared. An already open local is only activated. close_local never syncs or relinquishes; it activates another open project first when the target is active, refuses the only open document (FMC-FILE-ONLY-DOC) and unsaved changes without confirm. save=true is a write (fmc_close_local_apply, in WRITE_COMMANDS: batch_lease, live-model lock, AI gate) and is refused for HEBERT HOSTELS, a protected original, a verification copy or a document never saved. dry_run defaults true. Opening a model in Revit stays a person's choice: the Revit check runs after install, dry run only."
+  },
+  {
+    "id": "F126",
+    "area": "Model",
+    "group": "Core",
+    "feature": "Renumber doors, windows, rooms, sheets, views and grids by rule (fmc_numbering)",
+    "status": "Built, Revit check due",
+    "ref": "fmc_numbering, fmc_numbering_apply, docs/NUMBERING.md",
+    "note": "Doors and windows renumber Mark, rooms Room Number, sheets Sheet Number, views the Detail Number of each viewport (restarts on every sheet), grids Grid Name (vertical numeric, horizontal alphabetic). One row per element: old, new, rename, unchanged, skipped with a reason, or error. dry_run defaults true. Any duplicate resulting number is an error on every item that carries it and nothing is written. A write is fmc_numbering_apply: one transaction, all or nothing, old values re-checked (a stale plan rolls back), temporary names so swaps never collide, batch_lease and references, never saves or syncs, refused on a central model and HEBERT HOSTELS. The kit has no numbering table: prefixes D, W, A and the widths are labelled defaults that need confirmation (a kit change request). Offline tests only so far; needs a Revit check on a _Staging copy."
   }
 ]
