@@ -268,14 +268,43 @@ export function lightOps(a: LightArgs): Array<Record<string, unknown>> {
 
 // ---------- FE-05 fmc_fam_annotation ----------
 
-export const ANNOTATION_KINDS = ["tag", "annotation", "title_block", "detail_component"] as const;
+export const ANNOTATION_KINDS = ["tag", "annotation", "title_block", "detail_component", "keynote_tag"] as const;
 export type AnnotationKind = typeof ANNOTATION_KINDS[number];
 export const KIND_CATEGORY: Record<Exclude<AnnotationKind, "tag">, string> = {
-  annotation: "Generic Annotations", title_block: "Title Blocks", detail_component: "Detail Items",
+  annotation: "Generic Annotations", title_block: "Title Blocks", detail_component: "Detail Items", keynote_tag: "Keynote Tags",
 };
+// builder16: keynote tags read Revit's own keynote parameters (Key Value, Keynote Text; Keynote Number for user
+// keynotes), never kit shared parameters; the keynote table itself is the kit's and is loaded in the project.
+export const KEYNOTE_LABELS = ["Key Value", "Keynote Text", "Keynote Number"] as const;
+export const REPEAT_LAYOUTS = ["fixed_distance", "fixed_number", "maximum_spacing", "fill_available"] as const;
+/** A repeating detail type in a project uses a detail component; its spacing lives in that project type, not in the family. */
+export interface RepeatingDetail { layout: typeof REPEAT_LAYOUTS[number]; spacing_mm?: number; number?: number; inside?: boolean; rotation?: "none" | "across" }
+export interface RepeatPlan { project_type: string; detail: string; layout: string; spacing_mm?: number; number?: number; inside: boolean;
+  rotation: string; parameters: Record<string, string | number | boolean>; step: string }
+
+/** builder16: the repeating detail spacing plan for a detail component (a person, or a project tool, makes the type). */
+export function repeatPlan(r: RepeatingDetail, family: string): { plan: RepeatPlan | null; problems: string[] } {
+  const problems: string[] = [];
+  if ((r.layout === "fixed_distance" || r.layout === "maximum_spacing") && !(r.spacing_mm && r.spacing_mm > 0))
+    problems.push(`repeating_detail: layout ${r.layout} needs spacing_mm above 0`);
+  if (r.layout === "fixed_number" && !(r.number && r.number >= 2)) problems.push("repeating_detail: layout fixed_number needs number, 2 or more");
+  if (r.layout === "fill_available" && r.spacing_mm !== undefined) problems.push("repeating_detail: fill_available spaces by the component's width; leave spacing_mm out");
+  if (problems.length) return { plan: null, problems };
+  const name = family || "<this family>";
+  const params: Record<string, string | number | boolean> = { "Detail (REPEATING_DETAIL_ELEMENT)": name,
+    "Layout (REPEATING_DETAIL_LAYOUT)": r.layout.replace(/_/g, " "), "Inside (REPEATING_DETAIL_INSIDE)": r.inside ?? true,
+    "Detail Rotation (REPEATING_DETAIL_ROTATION)": r.rotation ?? "none" };
+  if (r.spacing_mm !== undefined) params["Spacing (REPEATING_DETAIL_SPACING), mm"] = r.spacing_mm;
+  if (r.number !== undefined) params["Number (REPEATING_DETAIL_NUMBER)"] = r.number;
+  return { problems, plan: { project_type: `${name} Repeating`, detail: name, layout: r.layout, ...(r.spacing_mm !== undefined ? { spacing_mm: r.spacing_mm } : {}),
+    ...(r.number !== undefined ? { number: r.number } : {}), inside: r.inside ?? true, rotation: r.rotation ?? "none", parameters: params,
+    step: "In the project, after this family is loaded through the F134 gate: duplicate a Repeating Detail type and set these values. " +
+      "Not done here: the family tools never open or change a project." } };
+}
 export const DRAW_OPS = ["detail_lines", "filled_region", "masking_region", "text_note", "symbolic_lines"] as const;
 
-export interface AnnotationArgs { kind: AnnotationKind; tag_category?: string; label_params?: string[]; draw?: Array<Record<string, unknown>> }
+export interface AnnotationArgs { kind: AnnotationKind; tag_category?: string; label_params?: string[]; draw?: Array<Record<string, unknown>>;
+  repeating_detail?: RepeatingDetail; family_name?: string }
 export interface LabelStep { param: string; in_dictionary: boolean; guid?: string; added: boolean; step: string }
 
 /**
@@ -283,9 +312,21 @@ export interface LabelStep { param: string; in_dictionary: boolean; guid?: strin
  * make a label), so each parameter is prepared (added from the kit dictionary where the family carries it) and checked.
  */
 export function annotationOps(a: AnnotationArgs, dictionary: Map<string, SpParam> | null):
-  { ops: Array<Record<string, unknown>>; problems: string[]; notes: string[]; label_plan: LabelStep[] } {
+  { ops: Array<Record<string, unknown>>; problems: string[]; notes: string[]; label_plan: LabelStep[]; repeat_plan?: RepeatPlan } {
   const ops: Array<Record<string, unknown>> = [], problems: string[] = [], notes: string[] = [];
   let category = "";
+  let repeat_plan: RepeatPlan | undefined;
+  if (a.kind === "keynote_tag") {
+    // builder16: a keynote tag labels Revit's keynote parameters; anything else is refused rather than half-made
+    const bad = (a.label_params ?? []).filter((n) => !(KEYNOTE_LABELS as readonly string[]).includes(n));
+    if (bad.length) problems.push(`A keynote tag labels ${KEYNOTE_LABELS.join(", ")} only, not ${bad.join(", ")}`);
+    if (a.tag_category) problems.push("A keynote tag's category is Keynote Tags; leave tag_category out");
+    if (!a.label_params?.length) a = { ...a, label_params: ["Key Value"] };
+  }
+  if (a.repeating_detail) {
+    if (a.kind !== "detail_component") problems.push("repeating_detail is for a detail_component family only");
+    else { const r = repeatPlan(a.repeating_detail, (a.family_name ?? "").trim()); problems.push(...r.problems); repeat_plan = r.plan ?? undefined; }
+  }
   if (a.kind === "tag") {
     const t = (a.tag_category ?? "").trim();
     if (!t) problems.push("A tag needs tag_category, e.g. Door Tags or Lighting Fixture Tags");
@@ -297,20 +338,25 @@ export function annotationOps(a: AnnotationArgs, dictionary: Map<string, SpParam
   const addable = a.kind === "annotation" || a.kind === "title_block";
   for (const n of a.label_params ?? []) {
     const sp = dictionary?.get(n);
-    const step = a.kind === "tag"
+    const step = a.kind === "keynote_tag"
+      ? `Place a label in the tag view and pick ${n} (Revit's keynote parameter, filled from the project's keynote table)`
+      : a.kind === "tag"
       ? `Place a label in the tag view and pick ${n} (it reads from the tagged element${sp ? ", a kit shared parameter" : ""})`
       : `Place a label in the family's view and pick ${n}`;
     if (addable && sp) ops.push({ op: "add_shared_param", name: sp.name, guid: sp.guid, instance: a.kind === "annotation" });
     label_plan.push({ param: n, in_dictionary: !!sp, ...(sp ? { guid: sp.guid } : {}), added: addable && !!sp, step });
   }
-  const missing = label_plan.filter((l) => !l.in_dictionary).map((l) => l.param);
+  const missing = a.kind === "keynote_tag" ? [] : label_plan.filter((l) => !l.in_dictionary).map((l) => l.param);
   if (missing.length) notes.push(`Not in the kit's shared parameter dictionary: ${missing.join(", ")} (a built-in parameter is fine for a tag label; anything else needs a kit parameter first)`);
   (a.draw ?? []).forEach((d, i) => {
     if (!(DRAW_OPS as readonly string[]).includes(String(d.op))) problems.push(`draw[${i}]: ${String(d.op)} isn't a drawing op (${DRAW_OPS.join(", ")})`);
     else ops.push(d.op === "symbolic_lines" ? d : { view: "annotation", ...d });
   });
-  if (a.kind === "detail_component") notes.push("A detail component draws in its plan view; repeating detail spacing is set in the project's repeating detail type, not here");
-  return { ops, problems, notes, label_plan };
+  if (a.kind === "detail_component") notes.push(repeat_plan
+    ? "A detail component draws in its plan view; repeat_plan holds the repeating detail type's values for the project (not set here)"
+    : "A detail component draws in its plan view; repeating detail spacing is set in the project's repeating detail type (pass repeating_detail for a repeat_plan)");
+  if (a.kind === "keynote_tag") notes.push("Keynote tags: the keynote table is the kit's (196 keynotes) and is set in the project; this family only shows the value");
+  return { ops, problems, notes, label_plan, ...(repeat_plan ? { repeat_plan } : {}) };
 }
 
 // ---------- the real io ----------

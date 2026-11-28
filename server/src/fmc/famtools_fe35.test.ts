@@ -4,7 +4,8 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { DEFAULT_CONFIG, GuardConfig } from "./policy.js";
 import { SpParam } from "./specs.js";
-import { FamIo, SPOT_DEFAULT, checkOps, lightOps, twoDOps } from "./famtools.js";
+import { FamIo, SPOT_DEFAULT, annotationOps, checkOps, lightOps, repeatPlan, twoDOps } from "./famtools.js";
+import { runFmcFamAnnotation } from "../tools/fmc_fam_annotation.js";
 import { runFmcFam2d } from "../tools/fmc_fam_2d.js";
 import { FMC_FAM_LIGHT_SHAPE, runFmcFamLight } from "../tools/fmc_fam_light.js";
 import { z } from "zod";
@@ -136,4 +137,57 @@ test("FE-04: no lumens at all is refused; lumens_by_type alone is enough", async
 test("FE-04: a light source in a batch that sets another category is refused", () => {
   const r = checkOps([...lightOps({ lumens: 800, ensure_category: false }).map((o) => o), { op: "set_category", name: "Furniture" }].reverse(), { config: cfg, dictionary });
   assert.ok(r.errors.some((e) => /Lighting Fixtures/.test(e)), r.errors.join("\n"));
+});
+
+// ---------- FE-05 fmc_fam_annotation ----------
+
+test("FE-05: a keynote tag is Keynote Tags with Key Value by default, and labels Revit's keynote parameters only", () => {
+  const k = annotationOps({ kind: "keynote_tag" }, dictionary);
+  assert.deepEqual(k.problems, []);
+  assert.deepEqual(k.ops, [{ op: "set_category", name: "Keynote Tags" }]);
+  assert.deepEqual(k.label_plan.map((l) => [l.param, l.added]), [["Key Value", false]]);
+  assert.ok(!k.notes.some((n) => /Not in the kit's shared parameter dictionary/.test(n)));
+  const both = annotationOps({ kind: "keynote_tag", label_params: ["Key Value", "Keynote Text"] }, dictionary);
+  assert.equal(both.label_plan.length, 2);
+  assert.ok(annotationOps({ kind: "keynote_tag", label_params: ["FMC_Mark"] }, dictionary).problems.length > 0);
+  assert.ok(annotationOps({ kind: "keynote_tag", tag_category: "Door Tags" }, dictionary).problems.length > 0);
+});
+
+test("FE-05: repeating detail spacing becomes a repeat_plan for the project type; bad layouts are refused", () => {
+  const ok = repeatPlan({ layout: "fixed_distance", spacing_mm: 600 }, "FMC_D_Blocking");
+  assert.deepEqual(ok.problems, []);
+  assert.equal(ok.plan!.spacing_mm, 600);
+  assert.equal(ok.plan!.parameters["Spacing (REPEATING_DETAIL_SPACING), mm"], 600);
+  assert.equal(ok.plan!.inside, true);
+  assert.match(ok.plan!.step, /never open or change a project/);
+  assert.ok(repeatPlan({ layout: "fixed_distance" }, "F").problems.length > 0);
+  assert.ok(repeatPlan({ layout: "fixed_number", number: 1 }, "F").problems.length > 0);
+  assert.ok(repeatPlan({ layout: "fill_available", spacing_mm: 10 }, "F").problems.length > 0);
+  assert.deepEqual(repeatPlan({ layout: "fixed_number", number: 5 }, "F").problems, []);
+  assert.ok(annotationOps({ kind: "annotation", repeating_detail: { layout: "fill_available" } }, dictionary).problems.length > 0);
+});
+
+test("FE-05: fmc_fam_annotation returns repeat_plan with the plan and sends no project op", async () => {
+  const { io, calls } = fakeIo();
+  const args = { ...COMMON, kind: "detail_component" as const, family_name: "FMC_D_Blocking",
+    repeating_detail: { layout: "maximum_spacing" as const, spacing_mm: 400 },
+    draw: [{ op: "detail_lines", name: "Block", view: "plan", points: SQ, closed: true }] };
+  const dry = body(await runFmcFamAnnotation(args, io));
+  assert.equal(dry.isError, false);
+  assert.equal(dry.repeat_plan.layout, "maximum_spacing");
+  assert.deepEqual(dry.planned_ops.map((o: { op: string }) => o.op), ["set_category", "detail_lines"]);
+  assert.equal(dry.planned_ops[0].name, "Detail Items");
+  const run = body(await runFmcFamAnnotation({ ...args, session: "S2" }, io));
+  assert.equal(run.repeat_plan.spacing_mm, 400);
+  assert.deepEqual(calls.map((c) => c.action), ["apply"]);
+});
+
+test("FE-05: a keynote tag runs through fmc_fam_annotation with its label plan", async () => {
+  const { io } = fakeIo();
+  const r = body(await runFmcFamAnnotation({ ...COMMON, kind: "keynote_tag", label_params: ["Keynote Text"],
+    draw: [{ op: "text_note", name: "Hint", text: "KN", at: [0, 0] }] }, io));
+  assert.equal(r.isError, false);
+  assert.deepEqual(r.planned_ops.map((o: { op: string }) => o.op), ["set_category", "text_note"]);
+  assert.equal(r.label_plan[0].param, "Keynote Text");
+  assert.equal(r.planned_ops[1].view, "annotation");
 });
