@@ -80,3 +80,49 @@ test("496 free ends are paired without holding more than the end list", () => {
   assert.equal(paired.pairs.length, 248);
   assert.ok(paired.pairs.every((pair) => pair.op === "extend"));
 });
+
+test("B6: fmc_conduit fails closed when the snapshot fails, and a real run needs the lease actually held", async () => {
+  const { DEFAULT_CONFIG } = await import("./policy.js");
+  const guardCfg = { ...DEFAULT_CONFIG, protected_roots: [], protected_paths: [], save_exclude: [], sync_exclude: [] };
+  const common = {
+    document: "F26901-FMC-ZZ-ZZ-M3-E-0001_USER", domain: "conduit", junction: false, junction_family: "", resize_fallback: false, comment_material: "PVC",
+    type_name: "", standard_name: "", sizes: [{ nominal_mm: 20 }], elbow: "", union: "", tee: "", cross: "", transition: "", sample_limit: 20,
+  } as any;
+  const snap = { model: "F26901-FMC-ZZ-ZZ-M3-E-0001_USER", resolved_document: { title: "F26901-FMC-ZZ-ZZ-M3-E-0001_USER", path: "C:\\WIP\\E.rvt" }, ends: [end(1, [0, 0, 0], [1, 0, 0]), end(2, [5, 0, 0], [-1, 0, 0])], sizes_mm: [20] };
+  for (const action of ["sizes", "fittings", "fix"]) {
+    let applied = false;
+    const r = await runFmcConduit({ ...common, action, dry_run: false, batch_lease: "L1" }, {
+      bank: {}, guard: guardCfg, holder: () => ({ lease: "L1", client: "c" }),
+      read: async () => { throw new Error("bridge down"); },
+      apply: async () => { applied = true; return { applied: true }; },
+    });
+    assert.equal(r.isError, true, action);
+    if (action !== "fix") assert.match(r.content[0].text, /FMC-CONDUIT-SNAPSHOT/);
+    assert.equal(applied, false, action);
+  }
+  // a snapshot that names no document is refused too
+  let appliedEmpty = false;
+  const empty = await runFmcConduit({ ...common, action: "sizes", dry_run: false, batch_lease: "L1" }, {
+    bank: {}, guard: guardCfg, holder: () => ({ lease: "L1", client: "c" }), read: async () => ({}), apply: async () => { appliedEmpty = true; return { applied: true }; },
+  });
+  assert.match(empty.content[0].text, /FMC-CONDUIT-SNAPSHOT/);
+  assert.equal(appliedEmpty, false);
+  // a non-empty lease that nobody holds, or another lease, is refused; the held lease applies
+  for (const [holder, ok] of [[null, false], [{ lease: "L2", client: "c" }, false], [{ lease: "L1", client: "c" }, true]] as const) {
+    let applied = false;
+    const r = await runFmcConduit({ ...common, action: "fix", dry_run: false, batch_lease: "L1" }, {
+      bank: {}, guard: guardCfg, holder: () => holder, read: async () => snap, apply: async () => { applied = true; return { applied: true }; },
+    });
+    assert.equal(applied, ok, JSON.stringify(holder));
+    if (!ok) assert.match(r.content[0].text, /FMC-BATCH-LOCKED/);
+  }
+  // the shared guard: the forbidden-project floor
+  let appliedForbidden = false;
+  const forbidden = await runFmcConduit({ ...common, document: "A-0001", action: "fix", dry_run: false, batch_lease: "L1" }, {
+    bank: {}, guard: guardCfg, holder: () => ({ lease: "L1", client: "c" }),
+    read: async () => ({ ...snap, model: "A-0001", resolved_document: { title: "A-0001", path: "D:\\Fomcraft\\A-0001\\A-0001.rvt" } }),
+    apply: async () => { appliedForbidden = true; return { applied: true }; },
+  });
+  assert.match(forbidden.content[0].text, /FMC-CONDUIT-GUARD/);
+  assert.equal(appliedForbidden, false);
+});

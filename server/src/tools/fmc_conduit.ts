@@ -6,6 +6,8 @@ import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { kitPaths } from "../fmc/context.js";
 import { loadConfig, type GuardConfig } from "../fmc/policy.js";
 import { batchLease } from "../fmc/target.js";
+import { batchBoard } from "../fmc/batchline.js";
+import { writeGuard } from "../fmc/opencopy.js";
 import { traceEntriesFromStandards, type TraceBankEntry } from "../fmc/trace_bank.js";
 import { conduitLimits, fittingCovered, JUNCTION_FAMILY, nearestSize, pairEnds, sizeComment, type ConduitEnd, type SizeRequest } from "../fmc/conduitplan.js";
 import { writeReport } from "../fmc/localreport.js";
@@ -75,6 +77,8 @@ export interface ConduitIo {
   bank?: Record<string, TraceBankEntry>;
   guard?: GuardConfig;
   env?: NodeJS.ProcessEnv;
+  /** Test hook: the lease board's holder of a document. */
+  holder?: (document: string) => { lease: string; client: string } | null;
 }
 
 function fail(code: string, message: string, hint: string) {
@@ -104,6 +108,9 @@ function guard(snapshot: ConduitSnapshot, io: ConduitIo, named = ""): string | n
     const norm = root.replace(/\//g, "\\").replace(/\\+$/, "").toLowerCase();
     if (norm && (pathName === norm || pathName.startsWith(norm + "\\"))) return `The document is under a protected path (${root}).`;
   }
+  // B6: the shared write guard too (protected_roots, the forbidden-project floor, save_exclude).
+  const shared = writeGuard({ title, path: file, isFamily: false, isWorkshared: snapshot.is_central === true, isActive: false } as any, "fmc_conduit_apply", { dry_run: false }, config);
+  if (!shared.ok) return shared.reasons.join(" ");
   return null;
 }
 
@@ -113,11 +120,15 @@ export async function runFmcConduit(args: FmcConduitArgs, io: ConduitIo = {}) {
   let snapshot: ConduitSnapshot = {};
   try {
       const body = { mode: "snapshot", document: args.document, domain: args.domain, type_name: args.type_name };
-      snapshot = (io.read ? await io.read(body) : await withRevitConnection((client) => client.sendRaw("fmc_conduit", body, 300000))) as ConduitSnapshot;
+      snapshot = ((io.read ? await io.read(body) : await withRevitConnection((client) => client.sendRaw("fmc_conduit", body, 300000))) ?? {}) as ConduitSnapshot;
   } catch (error) {
+    // B6: fail closed for every action. sizes and fittings used to carry on with an empty snapshot, so the guard saw
+    // no document (no central, no path) and the write went ahead.
+    const message = error instanceof Error ? error.message : String(error);
     if (args.action === "scan" || args.action === "fix") {
-      return reply({ tool: "fmc_conduit", read_only: true, error: error instanceof Error ? error.message : String(error) }, true);
+      return reply({ tool: "fmc_conduit", read_only: true, error: message }, true);
     }
+    return fail("FMC-CONDUIT-SNAPSHOT", `The model could not be read (${message}), so the guard cannot check it. Nothing was changed.`, "Check that the document is open and the add-in answers, then run again.");
   }
   const ends = (snapshot.ends ?? []).filter((end) => !args.ids || args.ids.includes(end.element_id));
   const paired = pairEnds(ends, limits, { junction: args.junction });
@@ -134,6 +145,8 @@ export async function runFmcConduit(args: FmcConduitArgs, io: ConduitIo = {}) {
       report, skipped_non_family: snapshot.skipped_non_family ?? { count: 0, ids: [] },
     });
   }
+  if (!(snapshot.resolved_document?.title || snapshot.resolved_document?.path || snapshot.model))
+    return fail("FMC-CONDUIT-SNAPSHOT", "The snapshot named no document, so the guard cannot check it. Nothing was changed.", "Pass document and run again.");
   const refusal = guard(snapshot, io, args.document);
   if (refusal) return fail("FMC-CONDUIT-GUARD", refusal, "This model is not written by fmc_conduit.");
   const ops = paired.pairs.filter((pair) => pair.op !== "report").map((pair) => ({
@@ -154,6 +167,15 @@ export async function runFmcConduit(args: FmcConduitArgs, io: ConduitIo = {}) {
   }
   const lease = args.batch_lease.trim() || (batchLease.getStore() ?? "");
   if (!lease) return fail("FMC-BATCH-LOCKED", "This write needs batch_lease from fmc_batch request. Nothing was changed.", "fmc_batch request, then pass batch_lease.");
+  // B6: a real lease check: the lease passed must be the one held on this document, not just a non-empty string.
+  const leaseDoc = snapshot.resolved_document?.path || snapshot.resolved_document?.title || snapshot.model || args.document;
+  let holder: { lease: string; client: string } | null = null;
+  try {
+    const holderOf = io.holder ?? ((d: string) => batchBoard().activeHolder(d));
+    holder = holderOf(leaseDoc) ?? (snapshot.resolved_document?.title ? holderOf(snapshot.resolved_document.title) : null);
+  } catch { holder = null; }
+  if (!holder || holder.lease !== lease)
+    return fail("FMC-BATCH-LOCKED", `${!holder ? `Nobody holds the lease on ${leaseDoc}.` : `Lease ${lease} is not the one held on ${leaseDoc}.`} Nothing was changed.`, "fmc_batch request on this document, then pass that batch_lease.");
   const missing = [args.elbow, args.union, args.tee, args.cross, args.transition].filter(Boolean).filter((name) => !(snapshot.fitting_types_loaded ?? []).some((loaded) => loaded.toLowerCase() === name.toLowerCase()));
   if (args.action === "fittings" && missing.length) {
     return fail("FMC-NO-FITTING-TYPE", `Not loaded: ${missing.join(", ")}.`, "Load the kit fitting families, then run fittings again.");
