@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { pollBackgroundJob, pollDelayMs, prepareLibraryStep, waitWhileBusy } from "./batchstep.js";
+import { libraryRunPreview, pollBackgroundJob, pollDelayMs, prepareLibraryStep, waitWhileBusy } from "./batchstep.js";
 import { validateManifest } from "./scriptlib.js";
 
 const manifest = validateManifest({
@@ -87,4 +87,27 @@ test("a not-idle Revit is waited on, not failed, and cancel stops the wait", asy
     sleep: async () => { throw new Error("should not sleep"); },
   });
   assert.equal(stopped, "cancelled");
+});
+
+test("fmc_library run: the top-level dry_run wins over arguments.mode apply", () => {
+  assert.equal(manifest.ok, true);
+  if (!manifest.ok) return;
+  // dry_run true, or anything but false (the schema default is true), with mode apply is refused, never applied
+  for (const dry of [true, undefined, "yes"]) {
+    const asked = libraryRunPreview(dry, { mode: "apply" });
+    assert.equal(asked.previewOnly, true);
+    assert.match(asked.conflict ?? "", /FMC-LIBRARY-DRY-RUN/);
+  }
+  assert.match(libraryRunPreview(true, { mode: " Apply " }).conflict ?? "", /dry_run:false/);
+  // a preview with any other mode is forced to preview
+  const plain = libraryRunPreview(true, { mode: "offline" });
+  assert.deepEqual(plain, { previewOnly: true, conflict: null });
+  const step = prepareLibraryStep({ tool: "library", id: "sheets", arguments: { mode: "offline" } }, manifest.manifest, { previewOnly: plain.previewOnly });
+  assert.equal(step.mode, "preview");
+  assert.equal(step.dry_run, true);
+  // only dry_run:false applies
+  const real = libraryRunPreview(false, { mode: "apply" });
+  assert.deepEqual(real, { previewOnly: false, conflict: null });
+  const applied = prepareLibraryStep({ tool: "library", id: "sheets", arguments: { mode: "apply" } }, manifest.manifest, { previewOnly: real.previewOnly });
+  assert.equal(applied.mode, "apply");
 });
