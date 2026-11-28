@@ -90,6 +90,10 @@ export interface PlumbElement {
   z0?: number;
   z1?: number;
   vertical?: boolean;
+  /** Pipe slope in percent (RBS_PIPE_SLOPE), when the add-in reads it. */
+  slope_pct?: number | null;
+  /** Pipe fixture units (RBS_PIPE_FIXTURE_UNITS_PARAM, cumulative along the run), when the add-in reads it. */
+  fixture_units?: number | null;
 }
 
 export interface View3dNote {
@@ -111,6 +115,56 @@ export interface DiagramPlan {
   warnings: string[];
   supersedes_3d: View3dNote[];
   counts: { views: number; items: number; panels: number; circuits: number; systems: number };
+  /** Plumbing only: which systems were drawn out of how many (PD-1). */
+  selection?: SystemSelection;
+  /** Plumbing only: per-system facts a plumbing connector can compare against (PD-6). */
+  connector_input?: PlumbConnectorInput;
+  /** One line for the top of the reply (PD-15). */
+  summary?: string;
+}
+
+export interface SystemPick {
+  /** System names (case-insensitive) or ids to draw. Empty draws every system, paged by offset and limit. */
+  systems?: string[];
+  offset?: number;
+  limit?: number;
+}
+
+export interface SystemSelection {
+  total: number;
+  drawn: number;
+  offset: number;
+  limit: number;
+  order: "name";
+  drawn_names: string[];
+  not_drawn: string[];
+  not_found: string[];
+}
+
+export interface PlumbConnectorSystem {
+  id: number;
+  name: string;
+  class: "water" | "drainage" | "vent" | "other";
+  stacks: number;
+  sizes_mm: number[];
+  fixtures: number;
+  fixture_units: number | null;
+  fall_pct: { min: number; max: number } | null;
+  levels: string[];
+}
+
+export interface PlumbConnectorInput {
+  schema: "fmc-plumb-connector-input/1";
+  systems: PlumbConnectorSystem[];
+  note: string;
+}
+
+/** Which discipline each DIAGRAM_API_LIMITS line is about, by index (PD-14). */
+const LIMIT_SCOPE: Array<"elec" | "plumb" | "both"> = ["elec", "elec", "elec", "both", "both", "elec", "plumb", "plumb", "both", "both"];
+
+/** The API limits that apply to one diagram tool; the plumbing tool no longer prints panel and pole notes. */
+export function diagramApiLimits(discipline: "elec" | "plumb"): string[] {
+  return DIAGRAM_API_LIMITS.filter((_, index) => (LIMIT_SCOPE[index] ?? "both") === "both" || LIMIT_SCOPE[index] === discipline);
 }
 
 export const DIAGRAM_API_LIMITS = [
@@ -411,6 +465,11 @@ function planPlumbSystem(system: PlumbSystem, elements: PlumbElement[], levels: 
   }
   const fixtureCount = mine.filter((element) => element.kind === "fixture").length;
   const sizes = [...new Set(mine.map((element) => element.size_mm ?? 0).filter((size) => size > 0))].sort((a, b) => a - b);
+  const drain = drainageFacts(mine);
+  if (kind === "drainage") {
+    notes.push(drain.fall ? `Fall ${drain.fall.min}-${drain.fall.max} % on horizontal pipes.` : "Fall TBC: no pipe slope was read.");
+    notes.push(drain.fixture_units !== null ? `Fixture units ${drain.fixture_units} (largest pipe value).` : "Fixture units TBC.");
+  }
   const equipment = mine.filter((element) => element.kind === "equipment").map((element) => element.name || String(element.id)).slice(0, 8);
   const schematic: DiagramItem[] = [
     text([16, 70], `${kind} schematic ${system.name}`, `system:${system.id}`),
@@ -420,6 +479,9 @@ function planPlumbSystem(system: PlumbSystem, elements: PlumbElement[], levels: 
     text([110, 52], `${fixtureCount} fixtures`, `system:${system.id}`),
     text([16, 28], sizes.length ? `sizes ${sizes.join(", ")} mm` : "sizes TBC", `system:${system.id}`),
   ];
+  if (kind === "drainage") {
+    schematic.push(text([16, 8], `${drain.fall ? `fall ${drain.fall.min}-${drain.fall.max} %` : "fall TBC"}  ${drain.fixture_units !== null ? `FU ${drain.fixture_units}` : "FU TBC"}`, `system:${system.id}`));
+  }
   if (equipment.length) schematic.push(text([16, 18], equipment.join(", "), `system:${system.id}`));
   if (superseded.length && kind !== "vent") {
     notes.push(`Replaces 3D schematic ${superseded.map((view) => view.name).join(", ")}. The 3D view is left in place.`);
@@ -431,20 +493,89 @@ function planPlumbSystem(system: PlumbSystem, elements: PlumbElement[], levels: 
   ];
 }
 
-export function planPlumbDiagrams(input: PlumbDiagramInput, style: RiserStyle = "bands"): DiagramPlan {
+/** Slope range of horizontal pipes and the largest pipe fixture-unit value (Revit accumulates them along the run). */
+export function drainageFacts(elements: PlumbElement[]): { fall: { min: number; max: number } | null; fixture_units: number | null } {
+  const slopes = elements.filter((element) => !element.vertical && typeof element.slope_pct === "number" && element.slope_pct > 0).map((element) => element.slope_pct as number);
+  const units = elements.map((element) => element.fixture_units).filter((value): value is number => typeof value === "number" && value > 0);
+  const round = (n: number) => Math.round(n * 100) / 100;
+  return {
+    fall: slopes.length ? { min: round(Math.min(...slopes)), max: round(Math.max(...slopes)) } : null,
+    fixture_units: units.length ? round(Math.max(...units)) : null,
+  };
+}
+
+/** Systems in name order, then picked by name or id, then paged (PD-1). The cap stays 16 views pairs per call. */
+export function pickSystems(systems: PlumbSystem[], pick: SystemPick = {}): { shown: PlumbSystem[]; selection: SystemSelection } {
+  const ordered = [...systems].sort((a, b) => (a.name || "").localeCompare(b.name || "", undefined, { numeric: true }) || a.id - b.id);
+  const wanted = (pick.systems ?? []).map((item) => String(item).trim()).filter(Boolean);
+  const notFound: string[] = [];
+  let pool = ordered;
+  if (wanted.length) {
+    const hit = (system: PlumbSystem, key: string) => String(system.id) === key || (system.name || "").toLowerCase() === key.toLowerCase();
+    for (const key of wanted) if (!ordered.some((system) => hit(system, key))) notFound.push(key);
+    pool = ordered.filter((system) => wanted.some((key) => hit(system, key)));
+  }
+  const offset = Math.max(0, Math.floor(pick.offset ?? 0));
+  const limit = Math.min(SYSTEM_CAP, Math.max(1, Math.floor(pick.limit ?? SYSTEM_CAP)));
+  const shown = pool.slice(offset, offset + limit);
+  const shownIds = new Set(shown.map((system) => system.id));
+  const notDrawn = pool.filter((system) => !shownIds.has(system.id)).map((system) => system.name || String(system.id));
+  return {
+    shown,
+    selection: {
+      total: systems.length, drawn: shown.length, offset, limit, order: "name",
+      drawn_names: shown.map((system) => system.name || String(system.id)),
+      not_drawn: notDrawn.slice(0, 40), not_found: notFound,
+    },
+  };
+}
+
+export function plumbConnectorInput(systems: PlumbSystem[], elements: PlumbElement[]): PlumbConnectorInput {
+  return {
+    schema: "fmc-plumb-connector-input/1",
+    systems: systems.map((system) => {
+      const mine = elements.filter((element) => (element.system_ids ?? []).includes(system.id));
+      const stacks = new Set(mine.filter((element) => element.vertical && (element.kind === "pipe" || element.kind === "flex_pipe" || !element.kind)).map(stackKey));
+      const drain = drainageFacts(mine);
+      return {
+        id: system.id,
+        name: system.name,
+        class: plumbClass(system),
+        stacks: stacks.size,
+        sizes_mm: [...new Set(mine.map((element) => element.size_mm ?? 0).filter((size) => size > 0))].sort((a, b) => a - b),
+        fixtures: mine.filter((element) => element.kind === "fixture").length,
+        fixture_units: drain.fixture_units,
+        fall_pct: drain.fall,
+        levels: [...new Set(mine.map((element) => element.level ?? "").filter(Boolean))].sort(),
+      };
+    }),
+    note: "No plumbing connector exists in this server yet; this block is the input it would compare against (PD-6).",
+  };
+}
+
+export function planPlumbDiagrams(input: PlumbDiagramInput, style: RiserStyle = "bands", pick: SystemPick = {}): DiagramPlan {
   const systems = (input.systems ?? []).filter((system) => !system.domain || system.domain === "piping");
   const warnings: string[] = [];
   const superseded = (input.views_3d ?? []).filter((view) => view.tiny !== false && /schematic|riser/i.test(view.name));
-  const shown = systems.slice(0, SYSTEM_CAP);
-  if (systems.length > SYSTEM_CAP) warnings.push(`${systems.length - SYSTEM_CAP} piping systems are not drawn.`);
+  const { shown, selection } = pickSystems(systems, pick);
+  if (selection.not_drawn.length) {
+    warnings.push(`${selection.not_drawn.length} piping system(s) are not drawn (at most ${SYSTEM_CAP} per call; use systems, offset or limit): ${selection.not_drawn.slice(0, 8).join(", ")}${selection.not_drawn.length > 8 ? ", ..." : ""}.`);
+  }
+  if (selection.not_found.length) warnings.push(`Not found: ${selection.not_found.join(", ")}.`);
   if (!shown.length) warnings.push("No piping systems were read.");
   const levels = input.levels ?? [];
-  const views = shown.flatMap((system) => planPlumbSystem(system, input.elements ?? [], levels, input.symbols, style, superseded));
+  const elements = input.elements ?? [];
+  const views = shown.flatMap((system) => planPlumbSystem(system, elements, levels, input.symbols, style, superseded));
+  const items = views.reduce((sum, view) => sum + view.items.length, 0);
+  const symbolLoaded = !!loadedSymbol(input.symbols, PLUMB_SYMBOL);
   return {
     views,
     warnings,
     supersedes_3d: superseded,
-    counts: { views: views.length, items: views.reduce((sum, view) => sum + view.items.length, 0), panels: 0, circuits: 0, systems: shown.length },
+    counts: { views: views.length, items, panels: 0, circuits: 0, systems: shown.length },
+    selection,
+    connector_input: plumbConnectorInput(shown, elements),
+    summary: `${shown.length} of ${systems.length} piping systems drawn; ${views.length} views, ${items} items; ${PLUMB_SYMBOL} ${symbolLoaded ? "loaded" : "not loaded (lines and text)"}${warnings.length ? `; ${warnings.length} warning(s)` : ""}.`,
   };
 }
 

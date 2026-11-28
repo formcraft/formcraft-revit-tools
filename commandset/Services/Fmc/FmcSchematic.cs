@@ -247,6 +247,18 @@ namespace RevitMCPCommandSet.Services.Fmc
                         size = Math.Round(UnitUtils.ConvertFromInternalUnits(diameter.AsDouble(), UnitTypeId.Millimeters), 1);
                 }
                 catch (Exception) { /* a fitting with no diameter */ }
+                double? slopePct = null;
+                double? fixtureUnits = null;
+                try
+                {
+                    Parameter slope = element.get_Parameter(BuiltInParameter.RBS_PIPE_SLOPE);
+                    if (slope != null && slope.HasValue && slope.StorageType == StorageType.Double)
+                        slopePct = Math.Round(slope.AsDouble() * 100.0, 3);
+                    Parameter units = element.get_Parameter(BuiltInParameter.RBS_PIPE_FIXTURE_UNITS_PARAM);
+                    if (units != null && units.HasValue && units.StorageType == StorageType.Double)
+                        fixtureUnits = Math.Round(units.AsDouble(), 2);
+                }
+                catch (Exception) { /* not a pipe */ }
                 elements.Add(new JObject
                 {
                     ["id"] = element.Id.Value,
@@ -261,6 +273,8 @@ namespace RevitMCPCommandSet.Services.Fmc
                     ["z0"] = z0,
                     ["z1"] = z1,
                     ["vertical"] = vertical,
+                    ["slope_pct"] = slopePct.HasValue ? (JToken)slopePct.Value : JValue.CreateNull(),
+                    ["fixture_units"] = fixtureUnits.HasValue ? (JToken)fixtureUnits.Value : JValue.CreateNull(),
                 });
             }
 
