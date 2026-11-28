@@ -126,6 +126,7 @@ test("tool: duct, critical_path and voltage_drop from the model, all read-only d
   const duct = parse(await runFmcMepSize(args({ action: "duct", segments: [{ id: "D1", kind: "duct", flow_l_s: 500 }], standard_sizes_mm: [355, 400], limits: { velocity_max_ms: 5 } }), { bank: {}, env }));
   assert.equal(duct.read_only, true);
   assert.match(duct.draft, /DRAFT/);
+  assert.equal(duct.engineer_signoff_required, true);
   assert.equal(duct.rows[0].values.proposed_size.value, 400);
   const cp = parse(await runFmcMepSize(args({ action: "critical_path", limits: { velocity_max_ms: 8, friction_max_pa_m: 2, roughness_mm: 0.15 }, segments: [
     { id: "r", kind: "duct", flow_l_s: 600, size_mm: 450, length_m: 10 },
@@ -144,6 +145,20 @@ test("tool: duct, critical_path and voltage_drop from the model, all read-only d
   const empty = parse(await runFmcMepSize(args({ action: "pressure" }), { bank: {}, env }));
   assert.equal(empty.summary.result, "no input");
   assert.equal(circuitsFromFacts({ circuits: [{ board: "", number: "1" }] })[0].id, "(no board)/1");
+});
+
+test("voltage_drop with no cable table is FMC-NO-CABLE-TABLE, and Revit is not even read", async () => {
+  let read = false;
+  const r = await runFmcMepSize(args({ action: "voltage_drop", from_model: true, circuits: [{ id: "DB1/1", voltage_v: 230, current_a: 10, length_m: 10 }] }), {
+    bank: {}, env, read: async () => { read = true; return {}; },
+  });
+  assert.equal(r.isError, true);
+  const body = parse(r);
+  assert.equal(body.code, "FMC-NO-CABLE-TABLE");
+  assert.equal(body.ok, false);
+  assert.equal(body.engineer_signoff_required, true);
+  assert.equal(read, false);
+  assert.ok(!("rows" in body), "no rows, so no invented values");
 });
 
 test("source scan: fmc_mep_size never uses sendRaw and sends only the read fmc_mep_facts", () => {

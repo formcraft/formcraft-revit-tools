@@ -1,6 +1,6 @@
 # fmc_mep_size
 
-Read-only MEP sizing preview. Nothing is written to the model. Every answer is a **draft for the engineer**: Formcraft does not size or sign (CLAUDE.md rule 5, `docs/MEP_CALCULATIONS.md`).
+Read-only MEP sizing preview (GAP-15). Nothing is written to the model, and the tool has no apply. Every answer is a **draft for the engineer** and carries `engineer_signoff_required: true`: Formcraft does not size or sign (CLAUDE.md rule 5, `docs/MEP_CALCULATIONS.md`).
 
 | Action | What |
 |---|---|
@@ -14,7 +14,7 @@ Read-only MEP sizing preview. Nothing is written to the model. Every answer is a
 - **Limits:** standards-bank keys `mep.duct_velocity_max_ms`, `mep.duct_friction_max_pa_m`, `mep.duct_roughness_mm`, `mep.pipe_velocity_max_ms`, `mep.pipe_friction_max_pa_m`, `mep.pipe_roughness_mm`, `trace.voltage_drop_pct` and `mep.voltage_drop_pct_lighting`, or `limits` on the call (tagged `engineer`).
   - A key that is missing is **TBC**. A tool default from `trace_bank.ts` is tagged `provisional:`.
   - The `mep.*` keys are new and are not in the bank yet. This is a kit change request.
-- **Size list and cable table:** these come only from the call (the type's size table, the kit or the engineer). The kit v2.2 has no mV/A/m table (CA-E-02 kit change request).
+- **Size list and cable table:** these come only from the call (the type's size table, the kit or the engineer). The kit v2.2 has no mV/A/m table (CA-E-02 kit change request), and there is no 2026 cable table yet. `voltage_drop` with no `cables` is the error `FMC-NO-CABLE-TABLE`, and no rows are returned.
 - **Fluid properties:** air and water at 20 °C (tagged `physics`), or `fluid` on the call.
 
 ## Example
@@ -32,6 +32,6 @@ Read-only MEP sizing preview. Nothing is written to the model. Every answer is a
 
 ## Not here
 
-- Writing sizes to the model needs an owner decision on rule 5. It would be a separate `fmc_mep_size_apply` on the `fmc_conduit` pattern: lease, live lock and gate, one SubTransaction per element.
+- Writing sizes to the model. Per GAP-15 there is no second sizing tool. Applying sizes would be a later, gated core step with an engineer sign-off flag, and it is not in this slice.
 - Size tables and routing preferences belong to `modify_model` (the system-type editor).
 - Connectivity findings belong to `fmc_trace` and `fmc_mep_audit`.

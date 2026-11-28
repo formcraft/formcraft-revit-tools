@@ -17,11 +17,12 @@ function reply(body: object, isError = false) {
 }
 
 export const FMC_MEP_SIZE_DESCRIPTION =
-  "Formcraft MEP sizing preview (read-only; nothing is written to the model). Every answer is a DRAFT for the engineer: Formcraft does not size or sign. " +
+  "Formcraft MEP sizing preview (read-only; nothing is written to the model, and this tool has no apply). Every answer is a DRAFT with " +
+  "engineer_signoff_required true: Formcraft does not size or sign. " +
   "Actions: duct and pipe (smallest size in standard_sizes_mm within the velocity and friction limits), pressure (per segment: velocity, " +
   "Darcy-Weisbach friction with Swamee-Jain, fitting loss from K factors, total), critical_path (pressure on a run tree given by upstream ids, " +
   "and the index run with the largest summed loss), voltage_drop (per circuit, VD = mV/A/m x I x L / 1000 against the limit, and the smallest " +
-  "cable in the cable table that passes; circuits from the call, or from Revit through fmc_mep_facts when from_model is true). " +
+  "cable in the cable table that passes; no cable table is FMC-NO-CABLE-TABLE, never an invented value; circuits from the call, or from Revit through fmc_mep_facts when from_model is true). " +
   "Limits come from the standards bank (mep.duct_velocity_max_ms, mep.duct_friction_max_pa_m, mep.duct_roughness_mm, the pipe equivalents, " +
   "trace.voltage_drop_pct, mep.voltage_drop_pct_lighting) or from limits on the call (tagged engineer). A missing limit is TBC, never a number " +
   "from code. The size list and the cable table (mV/A/m) must come from the kit, the type's size table or the engineer. " +
@@ -124,9 +125,14 @@ export async function runFmcMepSize(args: FmcMepSizeArgs, io: MepSizeIo = {}) {
   const fluidFor = (kind: "duct" | "pipe"): Fluid => args.fluid
     ? { name: kind === "duct" ? "air" : "water", ...args.fluid, source: "engineer" }
     : FLUIDS[kind === "duct" ? "air" : "water"];
-  const base = { tool: "fmc_mep_size", read_only: true, action: args.action, draft: DRAFT };
+  const base = { tool: "fmc_mep_size", read_only: true, action: args.action, draft: DRAFT, engineer_signoff_required: true as const };
 
   if (args.action === "voltage_drop") {
+    if (!args.cables.length) {
+      return reply({ ...base, ok: false, code: "FMC-NO-CABLE-TABLE",
+        message: "[FMC-NO-CABLE-TABLE] No cable table was supplied. Voltage drop needs mV/A/m by cable size from the kit or the engineer; none is invented.",
+        hint: "Pass cables [{ size_mm2, mv_a_m, rating_a?, spec?, source? }]. The kit v2.2 has no mV/A/m table (kit change request CA-E-02)." }, true);
+    }
     let circuits: CircuitIn[] = args.circuits as CircuitIn[];
     const notes: string[] = [];
     if (args.from_model) {
@@ -140,7 +146,6 @@ export async function runFmcMepSize(args: FmcMepSizeArgs, io: MepSizeIo = {}) {
     }
     const limits = mepLimits("pipe", bank, args.limits);
     const rows = circuits.map((c) => voltageDropRow(c, args.cables as CableRow[], limits));
-    if (!args.cables.length) notes.push("No cable table: every row is TBC. The kit has no mV/A/m table (kit change request CA-E-02).");
     const report = writeReport("mep_size", args.action, { limits: { vd_pct: limits.vd_pct, vd_pct_lighting: limits.vd_pct_lighting }, rows }, io.env);
     return reply({ ...base, limits: { vd_pct: limits.vd_pct, vd_pct_lighting: limits.vd_pct_lighting }, summary: summary(rows),
       rows: rows.slice(0, sample), capped: rows.length > sample, notes, report });
