@@ -40,7 +40,9 @@ namespace RevitMCPCommandSet.Commands.Access
                     // 触发外部事件并等待完成
                     if (RaiseAndWaitForCompletion(15000))
                     {
-                        return _handler.ResultElements;
+                        if (!string.IsNullOrEmpty(_handler.Error))
+                            throw new InvalidOperationException(_handler.Error);
+                        return _handler.Result;
                     }
                     else
                     {
