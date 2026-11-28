@@ -68,7 +68,7 @@ namespace Formcraft.Shell.Tests
             var start = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             for (var i = 0; i < 60000; i++)
                 sb.Append(start.AddMinutes(i).ToString("o")).Append(",fmc_qa.check,false,model-").Append(i)
-                  .Append(".rvt,ok,\"a detail, with a comma\r\nand a line break\",Pane\r\n");
+                  .Append(".rvt,ok,\"a detail, with a comma\nand a line break\",Pane\r\n"); // the writer keeps a detail's own \n as is
             var path = NewFile(sb.ToString());
             try
             {

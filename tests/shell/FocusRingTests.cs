@@ -77,6 +77,8 @@ namespace Formcraft.Shell.Tests
 
         private static bool IsFocusable(Style style)
         {
+            // A control's own Focusable default (DataGridColumnHeader: false) is registered in its static constructor.
+            System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(style.TargetType.TypeHandle);
             var setter = Setters(style).FirstOrDefault(s => s.Property == UIElement.FocusableProperty);
             if (setter != null) return !(setter.Value is bool b) || b;
             return UIElement.FocusableProperty.GetMetadata(style.TargetType).DefaultValue is bool d && d;
