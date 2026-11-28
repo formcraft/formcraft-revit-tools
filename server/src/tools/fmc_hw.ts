@@ -1,28 +1,32 @@
 import fs from "node:fs";
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { currentPort, withRevitConnection } from "../utils/ConnectionManager.js";
+import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { readInstances } from "../fmc/connect.js";
 import { inFlightJob, readRevitJobLines } from "../fmc/notidle.js";
 import { onMemoryHard } from "../fmc/memory.js";
 import {
   HONESTY, advise, applyGraphicsText, autoFreeIfHard, autosaveWouldSave, buildScan, dedicatedGpu,
   defaultIniPath, graphicsPlan, gpuPreferencePlan, loadGuard, memoryReport, planFree, primeHardwareScan,
-  readGraphics, runOffloadJobs, writeIniWithBackup, type HwIo, type OpenDoc,
+  readGraphics, runOffloadJobs, type HwIo, type OpenDoc,
 } from "../fmc/hw.js";
+import { batchLease } from "../fmc/target.js";
+import { documentsMatch, leaseHeldDocuments } from "../fmc/batchline.js";
+import { loadAiConfig } from "../fmc/aiuse_io.js";
+import { checkHwApproval, iniFacts, useHwApproval, writeIniAtomic, type HwApprovalKind, type HwBinding } from "../fmc/hwapproval.js";
 import { probeDirectMl, type GpuRunner } from "../fmc/hwgpu.js";
 
 export const FMC_HW_DESCRIPTION =
   "Formcraft hardware and memory. One tool. The GPU cannot replace system RAM, and the Revit API runs on the CPU. " +
   "Video memory is for views. The model database, regeneration and transactions stay on the CPU and in RAM. " +
   "actions: scan (GPUs, RAM, page file, disks, CPU, the Revit process, which GPU Revit is on, hardware acceleration; cached at startup and shown on /health hw), " +
-  "gpu_prefer (Windows high-performance GPU for Revit.exe; dry_run true unless you pass false; confirm:true to apply, and only when a person turned on hw_host_writes for this PC (FMC-HW-PERSON otherwise); next Revit start; never writes Revit.ini), " +
+  "gpu_prefer (Windows high-performance GPU for Revit.exe; dry_run true unless you pass false; a real change needs confirm:true and a person's hw_gpu_prefer approval in the pane (FMC-HW-APPROVAL otherwise); next Revit start; never writes Revit.ini), " +
   "memory (per-document estimate, working-set trend, open views, links, images, undo when known, and the soft or hard pause), " +
   "free (close non-active, non-pinned views beyond keep, drop plugin image buffers; a save only when the existing autosave would save; dry_run true by default; " +
-  "a real free needs confirm:true and document, and goes through the batch lease, the live-model lock and the AI gate like any model change), " +
+  "a real free needs confirm:true, document, this session's batch lease on it, and a person's hw_free approval, and goes through the live-model lock, the AI gate and Stop AI like any model change), " +
   "advice (a short list, each with the effect you should expect), " +
   "offload (report graphics settings and recommend hardware acceleration, the dedicated GPU, GPU anti-aliasing and optimize-view-navigation; " +
-  "apply those ini keys only with confirm:true and hw_host_writes on for this PC, keeping Revit.ini.bak, effective at the next Revit start; run point, clash and ray/voxel samples on the CPU, " +
+  "apply those ini keys only with confirm:true and a person's hw_offload approval, after a timestamped Revit.ini.<stamp>.bak and an atomic replace, effective at the next Revit start; run point, clash and ray/voxel samples on the CPU, " +
   "or on an optional GPU library when it matches the CPU). " +
   "Soft pause (FMC-MEMORY-SOFT) keeps reads and small writes and queues heavy writes, Dynamo and scripts. " +
   "Hard pause (FMC-MEMORY-HARD) waits on every model-changing call. Reads still run. Thresholds are the existing ram_pause_free_mb and its 1.5× resume line. " +
@@ -38,6 +42,7 @@ export const FMC_HW_SHAPE = {
   points: z.array(z.array(z.number())).max(200).optional().describe("offload: sample points, millimetres. Omitted: a built-in sample, not the open model."),
   boxes: z.array(z.array(z.number())).max(200).optional().describe("offload: axis-aligned boxes as six numbers, min then max."),
   rays: z.array(z.object({ origin: z.array(z.number()).length(3), direction: z.array(z.number()).length(3) })).max(50).optional(),
+  batch_lease: z.string().optional().default("").describe("Real free, gpu_prefer or offload with a Revit model open: this session's batch lease on the document."),
 };
 
 export type FmcHwArgs = {
@@ -50,21 +55,88 @@ export type FmcHwArgs = {
   points?: number[][];
   boxes?: number[][];
   rays?: Array<{ origin: number[]; direction: number[] }>;
+  batch_lease?: string;
 };
 
 function reply(body: unknown, isError = false) {
   return { content: [{ type: "text" as const, text: JSON.stringify(body) }], isError };
 }
 
-/** Registry and Revit.ini are machine settings: a person decides them (hw_host_writes), never an AI call on its own. */
-function hostWriteRefusal(io: HwIo, action: "gpu_prefer" | "offload"): Record<string, unknown> | null {
-  if (loadGuard(io).hw_host_writes === true) return null;
+/** FINAL 2.2 item 3: the Stop AI wording of aiuse.ts. A stopped switch refuses before anything changes. */
+const STOP_AI = "AI-assisted modeller: Stop AI is on: every AI change is refused until it is switched off.";
+
+function stopAiOn(io: HwIo): boolean {
+  if (io.stopAi) return io.stopAi();
+  try { return loadAiConfig(loadGuard(io), io.env ?? process.env)?.stop === true; } catch { return false; }
+}
+
+function stopRefusal(io: HwIo, action: string): Record<string, unknown> | null {
+  if (!stopAiOn(io)) return null;
+  return { tool: "fmc_hw", action, refused: true, code: "FMC-AI-STOP", dry_run: true, applied: false, message: `${STOP_AI} Nothing was changed.`, honesty: HONESTY };
+}
+
+const callerLease = (args: FmcHwArgs) => (args.batch_lease ?? "").trim() || (batchLease.getStore() ?? "").trim();
+
+/** FINAL 2.2 item 1: a real AI write needs this session's lease covering the document (FMC-BATCH-LOCKED wording). */
+function leaseRefusal(io: HwIo, args: FmcHwArgs, document: string): Record<string, unknown> | null {
+  const lease = callerLease(args);
+  const held = io.leaseDocuments ? io.leaseDocuments() : leaseHeldDocuments(lease);
+  if (held.some((name) => documentsMatch(name, document))) return null;
   return {
-    tool: "fmc_hw", action, refused: true, code: "FMC-HW-PERSON", dry_run: true, applied: false,
-    message: `${action} changes a machine setting (${action === "gpu_prefer" ? "the Windows GPU preference" : "Revit.ini"}), not a model, so a person decides it: ` +
-      "set it in Revit Options > Graphics or Windows Graphics settings, or a person turns on hw_host_writes in fmc_guard.json for this PC. Nothing was written.",
+    tool: "fmc_hw", action: args.action, refused: true, code: "FMC-BATCH-LOCKED", dry_run: true, applied: false,
+    message: `[FMC-BATCH-LOCKED] A real fmc_hw ${args.action} needs this session's batch lease on ${document} (fmc_batch begin, then pass batch_lease). ` +
+      (held.length ? `Lease ${lease} is for ${held.join(", ")}.` : "This session holds no lease on it.") + " Nothing was changed.",
     honesty: HONESTY,
   };
+}
+
+/** The gated write runs under the caller's lease so sendCommand's batch admission sees it. */
+function underLease<T>(args: FmcHwArgs, fn: () => Promise<T>): Promise<T> {
+  const lease = callerLease(args);
+  return lease ? batchLease.run(lease, fn) : fn();
+}
+
+function approvalRefusal(action: string, check: { id: string; message: string }, extra: Record<string, unknown> = {}): Record<string, unknown> {
+  return { tool: "fmc_hw", action, refused: true, code: "FMC-HW-APPROVAL", dry_run: true, applied: false, approval_id: check.id, message: check.message, ...extra, honesty: HONESTY };
+}
+
+function approve(kind: HwApprovalKind, binding: HwBinding, io: HwIo, now: number) {
+  return checkHwApproval(kind, binding, io.env ?? process.env, new Date(now));
+}
+
+/**
+ * gpu_prefer and offload write a machine setting, not a model (FINAL 2.2 item 2). With a Revit model open they still
+ * need a named document when two or more project documents are open, this session's lease on it, and the
+ * live-model lock and AI gate on it (fmc_hw_host: a gate-only write that sends nothing to Revit). With no Revit open
+ * there is no model to gate; Stop AI and the person's approval still apply.
+ */
+async function hostGate(io: HwIo, args: FmcHwArgs): Promise<Record<string, unknown> | null> {
+  const stop = stopRefusal(io, args.action);
+  if (stop) return stop;
+  let docs: OpenDoc[] = [];
+  if (io.revit) {
+    try {
+      const raw = await io.revit("memory", {}) as { documents?: OpenDoc[] };
+      docs = Array.isArray(raw?.documents) ? raw.documents : [];
+    } catch { docs = []; }
+  }
+  const projects = docs.filter((doc) => !doc.family);
+  const named = (args.document ?? "").trim();
+  if (!projects.length && !named) return null;
+  const target = named ? docs.find((doc) => sameDoc(doc, named)) : projects.length === 1 ? projects[0] : undefined;
+  if (!target) {
+    return {
+      tool: "fmc_hw", action: args.action, refused: true, code: "FMC-DOC-REQUIRED", dry_run: true, applied: false,
+      message: named ? `${named} is not open. Nothing was changed.` : "Several project documents are open. Pass document: one open document's title or path. Nothing was changed.",
+      open: docs.map((doc) => doc.path || doc.title), honesty: HONESTY,
+    };
+  }
+  const name = target.path || target.title;
+  const lease = leaseRefusal(io, args, name);
+  if (lease) return lease;
+  if (!io.revitWrite) throw new Error("[FMC-HW] No gated Revit write was given, so nothing was changed.");
+  await underLease(args, () => io.revitWrite!("fmc_hw_host", { document: name, host_action: args.action }));
+  return null;
 }
 
 const sameDoc = (doc: OpenDoc, name: string) => {
@@ -84,12 +156,8 @@ function defaultIo(over: HwIo = {}): HwIo {
   return {
     now: () => Date.now(),
     readIni: () => {
-      try { return fs.readFileSync(defaultIniPath(), "utf8"); } catch { return null; }
-    },
-    writeIni: (text) => {
-      const file = defaultIniPath();
-      if (!file) throw new Error("[FMC-HW] Revit.ini path is not set.");
-      writeIniWithBackup(file, text);
+      const file = over.iniPath ?? defaultIniPath(over.env);
+      try { return file ? fs.readFileSync(file, "utf8") : null; } catch { return null; }
     },
     revit: (action, body) => withRevitConnection((client) => client.sendRaw("fmc_hw", { action, ...body }, 120000)),
     revitWrite: (command, body) => withRevitConnection((client) => client.sendCommand(command, body, 120000)),
@@ -119,14 +187,24 @@ export async function runFmcHw(args: FmcHwArgs, io: HwIo = {}) {
       return reply({ tool: "fmc_hw", action: "advice", advice: advise(scan, now), honesty: HONESTY });
     }
     if (args.action === "gpu_prefer") {
-      if (args.dry_run === false && args.confirm === true) {
-        const stop = hostWriteRefusal(full, "gpu_prefer");
-        if (stop) return reply(stop, true);
-      }
       const scan = await buildScan(full, false);
-      const body = await gpuPreferencePlan(scan, full, { dry_run: args.dry_run !== false, confirm: args.confirm === true });
-      const refused = body.refused === true;
-      return reply({ tool: "fmc_hw", ...body, honesty: HONESTY }, refused);
+      const dry = args.dry_run !== false;
+      if (dry || args.confirm !== true) {
+        const body = await gpuPreferencePlan(scan, full, { dry_run: dry, confirm: args.confirm === true });
+        return reply({ tool: "fmc_hw", ...body, honesty: HONESTY }, body.refused === true);
+      }
+      const preview = await gpuPreferencePlan(scan, full, { dry_run: true, confirm: false });
+      const planned = preview.planned as { exe: string; value: string };
+      const gate = await hostGate(full, args);
+      if (gate) return reply({ ...gate, planned }, true);
+      const check = approve("hw_gpu_prefer", {
+        target: planned.exe, plan: { exe: planned.exe, value: planned.value },
+        model: "this PC: Windows GPU preference", details: [`Set ${planned.value} for ${planned.exe} (HKCU UserGpuPreferences).`],
+      }, full, now);
+      if (!check.ok) return reply(approvalRefusal("gpu_prefer", check, { planned }), true);
+      const body = await gpuPreferencePlan(scan, full, { dry_run: false, confirm: true });
+      useHwApproval(check.id, full.env ?? process.env, new Date(now));
+      return reply({ tool: "fmc_hw", ...body, approval: { id: check.id, by: check.by }, honesty: HONESTY });
     }
     if (args.action === "memory") {
       let docs: OpenDoc[] = [];
@@ -143,7 +221,8 @@ export async function runFmcHw(args: FmcHwArgs, io: HwIo = {}) {
     }
     if (args.action === "free") {
       const view = memoryReport();
-      const pause = view.tier === "hard" || view.tier === "soft" || view.paused === true;
+      // FINAL 3.3: soft is not a reason to set memory_pause; a soft-tier free still skips the active document.
+      const pause = view.tier === "hard" || view.paused === true;
       let docs: OpenDoc[] = [];
       if (full.revit) {
         try {
@@ -188,10 +267,24 @@ export async function runFmcHw(args: FmcHwArgs, io: HwIo = {}) {
       const name = target.path || target.title;
       const close = plan.close.filter((row) => row.document === name);
       const saves = plan.saves.filter((row) => row === name);
+      const stop = stopRefusal(full, "free");
+      if (stop) return reply(stop, true);
+      const lease = leaseRefusal(full, args, name);
+      if (lease) return reply(lease, true);
+      const keep = args.keep ?? 2;
+      const purge = args.purge_undo === true;
+      const check = approve("hw_free", {
+        target: name,
+        plan: { close: close.map((row) => ({ view_id: row.view_id, view: row.view })), saves, keep, purge_undo: purge },
+        model: target.title || name,
+        details: [`Close ${close.length} view${close.length === 1 ? "" : "s"} in ${name}: ${close.map((row) => `${row.view} (${row.view_id})`).join(", ") || "none"}.`, `keep ${keep}, purge_undo ${purge}`],
+      }, full, now);
+      if (!check.ok) return reply(approvalRefusal("free", check, { document: name, plan: { ...plan, close, saves } }), true);
       if (!full.revitWrite) throw new Error("[FMC-HW] No gated Revit write was given, so nothing was closed.");
       // fmc_hw_free is a write: batch lease, live-model lock and AI gate (it is exempt only from the memory hold).
-      const result = await full.revitWrite("fmc_hw_free", { document: name, dry_run: false, memory_pause: pause, keep: args.keep ?? 2, close, saves });
-      return reply({ tool: "fmc_hw", action: "free", dry_run: false, applied: true, document: name, memory: view, plan: { ...plan, close, saves }, result, honesty: HONESTY });
+      const result = await underLease(args, () => full.revitWrite!("fmc_hw_free", { document: name, dry_run: false, memory_pause: pause, keep, close, saves }));
+      useHwApproval(check.id, full.env ?? process.env, new Date(now));
+      return reply({ tool: "fmc_hw", action: "free", dry_run: false, applied: true, document: name, memory: view, plan: { ...plan, close, saves }, result, approval: { id: check.id, by: check.by }, honesty: HONESTY });
     }
     const scan = await buildScan(full, true);
     const ini = full.readIni ? full.readIni() : null;
@@ -215,20 +308,34 @@ export async function runFmcHw(args: FmcHwArgs, io: HwIo = {}) {
         honesty: HONESTY,
       }, true);
     }
-    if (!dry && args.confirm === true) {
-      const stop = hostWriteRefusal(full, "offload");
-      if (stop) return reply({ ...stop, graphics, planned_writes: plan.writes, recommended: plan.recommended }, true);
-    }
     let applied = false;
     let written: string[] = [];
-    if (!dry && args.confirm === true && ini != null && full.writeIni && plan.writes.length) {
-      full.writeIni(applyGraphicsText(ini, plan.writes));
+    let backup: string | null = null;
+    let approval: Record<string, unknown> | undefined;
+    if (!dry && args.confirm === true && plan.writes.length) {
+      const file = full.iniPath ?? defaultIniPath(full.env);
+      if (!file) throw new Error("[FMC-HW] Revit.ini path is not set. Nothing was written.");
+      const facts = iniFacts(file);
+      if (!facts || ini == null) throw new Error(`[FMC-HW] Revit.ini was not found (${file}). Nothing was written.`);
+      const gate = await hostGate(full, args);
+      if (gate) return reply({ ...gate, graphics, planned_writes: plan.writes, recommended: plan.recommended }, true);
+      const check = approve("hw_offload", {
+        target: file,
+        plan: { sha256: facts.sha256, size: facts.size, mtime: facts.mtime, writes: plan.writes.map((row) => ({ section: row.section, key: row.key, value: row.value })) },
+        model: "this PC: Revit.ini",
+        details: [`Write ${plan.writes.map((row) => `${row.section}/${row.key}=${row.value}`).join(", ")} to ${file}.`, `sha256 ${facts.sha256.slice(0, 12)}…, ${facts.size} bytes`],
+      }, full, now);
+      if (!check.ok) return reply(approvalRefusal("offload", check, { graphics, planned_writes: plan.writes, recommended: plan.recommended }), true);
+      backup = writeIniAtomic(file, applyGraphicsText(ini, plan.writes), new Date(now), full.iniFs).backup;
+      useHwApproval(check.id, full.env ?? process.env, new Date(now));
       applied = true;
+      approval = { id: check.id, by: check.by };
       written = plan.writes.map((row) => `${row.section}/${row.key}=${row.value}`);
     }
     return reply({
       tool: "fmc_hw", action: "offload", dry_run: dry, applied,
       graphics, planned_writes: plan.writes, recommended: plan.recommended, written,
+      ...(backup ? { backup } : {}), ...(approval ? { approval } : {}),
       takes_effect: "next Revit start. An open Revit may rewrite Revit.ini when it closes, so close Revit before relying on the file.",
       jobs: jobs.jobs.map((job) => ({
         ...job,
@@ -279,13 +386,7 @@ function hookAutoFree(): void {
   onMemoryHard(() => {
     void autoFreeIfHard({
       idle: revitIdle,
-      // The documents of the Revit this call goes to (P-fmc_hw-02): each auto-free call names one of them.
-      openDocuments: async () => {
-        try {
-          const port = await currentPort();
-          return (readInstances().find((instance) => instance.port === port)?.documents ?? []) as Array<{ title?: string; path?: string; family?: boolean }>;
-        } catch { return []; }
-      },
+      // System action (FINAL section 4): sendRaw on the session command fmc_hw, never the gated AI free path.
       revit: (action, body) => withRevitConnection((client) => client.sendRaw("fmc_hw", { action, ...body }, 120000)),
       savedAt: () => null,
     }).catch(() => { /* a missed free must not take down the server */ });
