@@ -1,6 +1,6 @@
 # INTERFACES-builder6.md: Dynamo graph tools contract (Builder 6)
 
-Contract version: **1** (28 Nov 2026, EAT). Branch `builder6/dynamo-graph-tools` from `cf71214`.
+Contract version: **1.1** (28 Nov 2026, EAT; 1.1 only adds fields, nothing removed or renamed). Branch `builder6/dynamo-graph-tools` from `cf71214`.
 Builder 7 (form, study, schedule, graph packs, pane) codes against this. If anything here changes, the version
 number goes up and the change is listed in "Change log" at the end. Server modules are TypeScript ESM under
 `server/src/fmc/graph/`; tools are under `server/src/tools/`.
@@ -54,6 +54,10 @@ interface GraphPlan {
   lock: "match" | "absent" | "mismatch" | "unlisted";
   python: boolean;          // python node, python-from-string node, or DLL package
   needs_approval: boolean; approval_why: string[];
+  // v1.1 additions:
+  input_binding: Array<{ given: string; id: string; name: string }>;
+  approval_kind: "graph_run" | "graph_python" | "graph_offline";
+  project_root: string; findings: number; packages: PackageCheck;
   plan_hash: string;
 }
 plan_hash = sha256(stableJson({ v, graph_sha256, deps_sha256, inputs_hash,
@@ -157,5 +161,22 @@ Config: `fmc_guard.json` -> `graph_tools.decisions.<key>` overrides; `graphDecis
 - Hold: long holders refresh the timestamp every ~4 min while their line is still theirs.
 - Release: delete the file only if its content starts with your owner tag.
 
+## 9. As built (v1.1)
+
+- Tools: `fmc_graph` (scaffold, generate, validate), `fmc_graph_lib` (list, version, lock), `fmc_graph_guard`
+  (packages, scan, allowlist, request_approval, approval_status, seal, status), `fmc_dynamo` new actions `plan`, `author`
+  and new arg `approval_id`; `fmc_script_run` new arg `approval_id`. CLI: the same tools plus `graph_approvals`,
+  `graph_approve`, `graph_refuse`.
+- `executeDynamo(args)` in `fmc/scriptexec.ts` takes `approvalId?`; `ScriptJob`/`SubmitInput` carry `approval_id?` and the
+  approval is claimed when the job runs, not when it is queued.
+- `fmc_dynamo` run sends the add-in `inputs` keyed by node GUID plus `input_names`, `graph_sha256`, `kit_root`,
+  `target_document`, `plan_hash`, `approval_id`. The add-in answers `inputs_set` and may refuse with
+  `FMC-DYNAMO-INPUT`, `FMC-DYNAMO-WRONG-DOCUMENT` or `[FMC-SCRIPT-ROOT]` (path or hash).
+- `hub/flows.ts` exports `graphStepProblem(tool, args)`.
+- Path inputs: when the target has a project root, a path input must be inside the project folder or the kit (the kit
+  is read-only). With no project root (model not in 01_WIP) only the existing protected-path check applies.
+- Library python approvals: `request_approval` with `script_id`; plan_hash = sha256(stableJson({v:1, kind:"script_python", sha, ih, doc})).
+
 ## Change log
 - v1 (28 Nov 2026): first version.
+- v1.1 (28 Nov 2026): additive GraphPlan fields; section 9 "As built".
