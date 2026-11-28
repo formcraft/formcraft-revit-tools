@@ -69,7 +69,9 @@ export function tempPathProblems(p: string, tempRoot: string, kind: (root: strin
   const c = canonicalPath(p);
   if (!c) return [`${p || "(empty)"} is not an absolute path`];
   if (isUncPath(c) || isNetworkLocation(c, kind)) return [`${c} is on a network share; the central temp folder must be a local disk`];
-  if (!isInsideDir(c, tempRoot)) return [`${c} is not inside the tool-owned temp root ${canonicalPath(tempRoot)}`];
+  const root = canonicalPath(tempRoot);
+  if (c.toLowerCase() === root.toLowerCase()) return [`${c} is the temp root itself; temp_path and throwaway_dir must be a strict subfolder of ${root}`];
+  if (!isInsideDir(c, tempRoot)) return [`${c} is not inside the tool-owned temp root ${root}`];
   return [];
 }
 

@@ -31,56 +31,24 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         private static List<string> Names(JToken t) => (t as JArray)?.Select(x => x.ToString().Trim()).Where(x => x.Length > 0).ToList() ?? new List<string>();
 
-        /// <summary>The only folder the add-in will build in or recursively delete: %LOCALAPPDATA%\Formcraft\central-temp.</summary>
-        public static string TempRoot()
-        {
-            string local = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            if (string.IsNullOrEmpty(local)) local = Path.GetTempPath();
-            return Path.GetFullPath(Path.Combine(local, "Formcraft", "central-temp"));
-        }
+        /// <summary>The only folder the add-in will build in or recursively delete: %LOCALAPPDATA%\\Formcraft\\central-temp.</summary>
+        public static string TempRoot() => FmcCentralPaths.TempRoot();
 
-        public static string Canonical(string path)
-        {
-            if (string.IsNullOrWhiteSpace(path)) return "";
-            try { return Path.GetFullPath(path).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar); }
-            catch (Exception) { return ""; }
-        }
+        public static string Canonical(string path) => FmcCentralPaths.Canonical(path);
 
-        public static bool IsUnc(string path)
-        {
-            string c = Canonical(path);
-            string raw = (path ?? "").Trim();
-            return c.StartsWith(@"\\", StringComparison.Ordinal) || raw.StartsWith(@"\\", StringComparison.Ordinal);
-        }
+        public static bool IsUnc(string path) => FmcCentralPaths.IsUnc(path);
 
-        public static bool IsNetwork(string path)
-        {
-            if (IsUnc(path)) return true;
-            string c = Canonical(path);
-            if (c.Length < 2 || c[1] != ':') return false;
-            try { return new DriveInfo(c.Substring(0, 2)).DriveType == DriveType.Network; }
-            catch (Exception) { return true; } // fail closed: an unreadable drive is not a safe temp
-        }
+        public static bool IsNetwork(string path) => FmcCentralPaths.IsNetwork(path);
 
-        public static bool IsUnder(string path, string root)
-        {
-            string c = Canonical(path), r = Canonical(root);
-            if (c.Length == 0 || r.Length == 0) return false;
-            return c.Equals(r, StringComparison.OrdinalIgnoreCase)
-                || c.StartsWith(r + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase);
-        }
+        public static bool IsUnder(string path, string root) => FmcCentralPaths.IsUnder(path, root);
 
-        /// <summary>A build or throwaway path must canonicalise to a local (non-UNC, non-network) folder inside TempRoot().</summary>
-        public static bool IsSafeTempPath(string path)
-        {
-            if (string.IsNullOrWhiteSpace(path) || IsUnc(path) || IsNetwork(path)) return false;
-            return IsUnder(path, TempRoot());
-        }
+        /// <summary>A build or throwaway path must canonicalise to a local (non-UNC, non-network) strict subfolder of TempRoot(), never the root itself.</summary>
+        public static bool IsSafeTempPath(string path) => FmcCentralPaths.IsSafeTempPath(path);
 
         private static void RequireSafeTemp(string path, string name)
         {
             if (!IsSafeTempPath(path))
-                throw Err("FMC-CENTRAL-TEMP", name + " must be a local folder inside " + TempRoot() + " (canonical path; not a UNC or a network drive). Got: " + path);
+                throw Err("FMC-CENTRAL-TEMP", name + " must be a local strict subfolder of " + TempRoot() + " (canonical path; not the temp root itself, not a UNC or a network drive). Got: " + path);
         }
 
         /// <summary>Recursive delete only of a folder inside the tool-owned temp root. Never the root itself, never a share.</summary>

@@ -101,6 +101,8 @@ test("tempPathProblems: only a local canonical path inside the temp root is allo
   const local = () => "local" as const;
   const net = () => "network" as const;
   assert.deepEqual(tempPathProblems(root + "\\job\\a.rvt", root, local), []);
+  assert.match(tempPathProblems(root, root, local).join(), /temp root itself|strict subfolder/);
+  assert.match(tempPathProblems(root + "\\", root, local).join(), /temp root itself|strict subfolder/);
   assert.match(tempPathProblems("\\\\srv\\bim\\t\\a.rvt", root, local).join(), /network share/);
   assert.match(tempPathProblems("Z:\\job\\a.rvt", root, net).join(), /network share/);
   assert.match(tempPathProblems("C:\\Windows\\Temp\\a.rvt", root, local).join(), /not inside the tool-owned temp root/);
