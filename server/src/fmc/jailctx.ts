@@ -50,3 +50,13 @@ export async function revitCentral(doc: string): Promise<string | undefined> {
   const central = (info as { active?: { centralPath?: unknown } })?.active?.centralPath;
   return typeof central === "string" && central.trim() ? central.trim() : undefined;
 }
+
+/** Each [param, kind, value] through the call's jail; the first refusal as the tool's reply, or null. Blank values are skipped. */
+export function jailArgs(tool: string, j: CallJail, args: Array<[string, JailKind, unknown]>) {
+  for (const [param, kind, value] of args) {
+    if (value === undefined || value === null || (typeof value === "string" && !value.trim())) continue;
+    const v = checkArg(j, kind, param, typeof value === "string" ? value.trim() : value);
+    if (!v.ok) return jailRefusal(tool, v);
+  }
+  return null;
+}

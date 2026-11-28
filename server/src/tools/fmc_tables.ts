@@ -5,6 +5,7 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, isInside, loadConfig } from "../fmc/policy.js";
 import { kitPaths } from "../fmc/context.js";
+import { callJail, jailArgs, revitCentral } from "../fmc/jailctx.js";
 import { parseSharedParameters } from "../fmc/specs.js";
 import { readXlsxSheets, writeXlsx } from "../fmc/xlsx.js";
 import {
@@ -139,6 +140,16 @@ function compareWorkbook(a: FmcTablesArgs, w: Where, sheets: Map<string, string[
 
 export async function runFmcTables(args: FmcTablesArgs) {
   const { config, problem } = loadConfig();
+  // Project-folder gate (TB-4): every path the caller names is resolved and checked against this document's jail
+  // before anything is read; the kit and standards are readable only through read_only_roots.
+  const writes = args.action === "export" || args.action === "import";
+  const refused = jailArgs("fmc_tables", await callJail({ cfg: config, central: revitCentral }), [
+    ["workbook", "read", args.workbook],
+    ["kit_folder", "read", args.kit_folder],
+    ["out_folder", writes ? "write" : "list", args.out_folder],
+    ["project_folder", writes ? "write" : "list", args.project_folder.trim() ? win.join(expandEnv(args.project_folder.trim()), "01_WIP", "_Tables") : ""],
+  ]);
+  if (refused) return refused;
   const w = where(config, args);
   const dry = args.dry_run !== false;
   try {
