@@ -39,7 +39,7 @@ const cols = (spec: string): ColumnDef[] => spec.trim().split(/\s+/).map((s) => 
 
 export const TABLES: TableDef[] = [
   { name: "Rooms", file: "FMC_Rooms.csv", description: "One row per room: the model's area (Revit, when it answered), the recipe tree's planned area and the brief's target.",
-    columns: cols("room_key room_number name level department model_area_m2:number planned_area_m2:number target_m2:number off_pct:number area_state unique_id fmc_id tree_node source"),
+    columns: cols("room_key room_number name level department model_area_m2:number planned_area_m2:number target_m2:number off_pct:number area_state unique_id fmc_id tree_node source model"),
     measures: [
       { name: "Rooms", expr: "COUNTROWS(Rooms)", format: "0", description: "Rooms in the table" },
       { name: "Rooms over target", expr: "CALCULATE(COUNTROWS(Rooms), Rooms[area_state] = \"Over\")", format: "0", description: "Rooms larger than their target area by more than the tolerance" },
@@ -48,7 +48,7 @@ export const TABLES: TableDef[] = [
       { name: "Target area m2", expr: "SUM(Rooms[target_m2])", format: "#,0.00", description: "Target area from the brief (FMC_Target_Area)" },
     ] },
   { name: "Quantities", file: "FMC_Quantities.csv", description: "Quantities by keynote code joined to the kit's codes (fmc_build). Quantities only: rates are the QS's and never exported.",
-    columns: cols("code description unit bill package category count:int qty:number why_no_qty"),
+    columns: cols("code description unit bill package category count:int qty:number why_no_qty model"),
     measures: [
       { name: "Quantity lines", expr: "COUNTROWS(Quantities)", format: "0", description: "Keynote codes with elements in the model" },
       { name: "Measured quantity", expr: "SUM(Quantities[qty])", format: "#,0.00", description: "The quantity in each code's own unit: slice by code or unit, never add units together" },
@@ -85,9 +85,73 @@ export const TABLES: TableDef[] = [
     ] },
   { name: "Identity", file: "FMC_Identity.csv", description: "The identity map: one Formcraft id per element, with its id in each app.",
     columns: cols("fmc_id kind name revit_id robot_id navisworks_id rhino_id"), measures: [] },
+  // PB-4: tables other tools drop in <Exchange>\Tables. SheetChecks is written by fmc_pdf_review record:true; the other
+  // three are PROVISIONAL schemas with no writer yet (fmc_phase, fmc_north), so they stay empty with a note until one exists.
+  { name: "SheetChecks", file: "FMC_SheetChecks.csv", description: "One row per PDF page reviewed by fmc_pdf_review (record true): verdict and each check.",
+    columns: cols("reviewed_at pdf page:int verdict blank page_size missing_titleblock_text past_border text_overlaps:int empty_drawing_zone fill_pct:number"),
+    measures: [
+      { name: "Pages checked", expr: "COUNTROWS(SheetChecks)", format: "0", description: "PDF pages reviewed" },
+      { name: "Pages to check", expr: "CALCULATE(COUNTROWS(SheetChecks), SheetChecks[verdict] = \"CHECK\")", format: "0", description: "Pages with at least one flag" },
+    ] },
+  { name: "Phases", file: "FMC_Phases.csv", description: "PROVISIONAL: phases and element counts per model, when a tool writes Exchange\\Tables\\FMC_Phases.csv.",
+    columns: cols("model phase sequence:int element_count:int recorded_at"), measures: [] },
+  { name: "Revisions", file: "FMC_Revisions.csv", description: "PROVISIONAL: sheet revisions per model, when a tool writes Exchange\\Tables\\FMC_Revisions.csv.",
+    columns: cols("model sheet_number revision revision_date description issued recorded_at"), measures: [] },
+  { name: "Coordinates", file: "FMC_Coordinates.csv", description: "PROVISIONAL: shared coordinates per model, when a tool writes Exchange\\Tables\\FMC_Coordinates.csv.",
+    columns: cols("model reference survey_e:number survey_n:number elevation_m:number true_north_deg:number state recorded_at"), measures: [] },
   { name: "Sources", file: "FMC_Sources.csv", description: "Where each table came from, how many rows, and why a table is empty.",
     columns: cols("table_name state rows:int note read_at"), measures: [] },
 ];
+
+/** Tables read from <Exchange>\Tables\<file> instead of an app (PB-4). */
+export const EXCHANGE_TABLES = ["SheetChecks", "Phases", "Revisions", "Coordinates"];
+
+/** Split CSV text into records (quotes, doubled quotes and CRLF handled). */
+export function parseCsv(text: string): string[][] {
+  const out: string[][] = [];
+  let row: string[] = [];
+  let cell = "";
+  let quoted = false;
+  const src = text.replace(/^\uFEFF/, "");
+  for (let i = 0; i < src.length; i++) {
+    const ch = src[i];
+    if (quoted) {
+      if (ch === '"' && src[i + 1] === '"') { cell += '"'; i++; }
+      else if (ch === '"') quoted = false;
+      else cell += ch;
+    } else if (ch === '"') quoted = true;
+    else if (ch === ",") { row.push(cell); cell = ""; }
+    else if (ch === "\n" || ch === "\r") {
+      if (ch === "\r" && src[i + 1] === "\n") i++;
+      row.push(cell); cell = "";
+      if (row.some((value) => value !== "")) out.push(row);
+      row = [];
+    } else cell += ch;
+  }
+  if (cell !== "" || row.length) { row.push(cell); if (row.some((value) => value !== "")) out.push(row); }
+  return out;
+}
+
+/** Rows of an Exchange table, kept to the table's own columns; numbers parsed where the column is a number. */
+export function exchangeTableRows(def: TableDef, text: string): Row[] {
+  const [head, ...body] = parseCsv(text);
+  if (!head) return [];
+  const index = new Map(head.map((name, i) => [name.trim(), i]));
+  return body.map((record) => Object.fromEntries(def.columns.map((c) => {
+    const at = index.get(c.name);
+    const raw = at === undefined ? "" : (record[at] ?? "").trim();
+    if (raw === "") return [c.name, null];
+    if (c.type === "int" || c.type === "number") { const n = Number(raw); return [c.name, Number.isFinite(n) ? n : null]; }
+    return [c.name, raw];
+  })));
+}
+
+/** One line for a build or plan (PB-14). */
+export function powerbiSummary(notes: SourceNote[], pbiRunning: boolean | null): string {
+  const count = (state: SourceNote["state"]) => notes.filter((n) => n.state === state).length;
+  const tail = pbiRunning === null ? "" : `; Power BI Desktop ${pbiRunning ? "running" : "not running"}`;
+  return `${notes.length} tables: ${count("read")} read, ${count("empty")} empty, ${count("not read")} not read${tail}.`;
+}
 
 export const table = (name: string): TableDef => {
   const t = TABLES.find((x) => x.name === name);
