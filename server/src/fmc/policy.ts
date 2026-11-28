@@ -299,6 +299,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_tags",
   // Sheets, title-block legend zone and an existing keynote legend. No transaction.
   "fmc_keynote_legend",
+  // fmc_exports (GAP-04): exports files, the model is not changed (IFC export is rolled back)
+  "fmc_exports_run",
 ]);
 
 /**
