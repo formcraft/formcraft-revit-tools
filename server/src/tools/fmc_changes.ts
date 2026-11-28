@@ -8,6 +8,7 @@ import { recipeRevision } from "../fmc/recipebatch.js";
 import { exchangeRoot, listPackages } from "../hub/exchange.js";
 import { Change, FamilyFact, TreeFact, familyChanges, flowChanges, treeChanges } from "../hub/changes.js";
 import { TREE, planTree } from "../tree/tree.js";
+import { isEvolveDir } from "../fmc/evolve.js";
 
 const win = path.win32;
 
@@ -32,15 +33,15 @@ export type FmcChangesArgs = z.infer<z.ZodObject<typeof FMC_CHANGES_SHAPE>>;
 
 const mtime = (f: string): number | undefined => { try { return fs.statSync(f).mtimeMs; } catch { return undefined; } };
 
-/** Every staged family with a recipe beside it (the archive, batch and Rhino folders left out). */
-function stagedRecipes(root: string): Array<{ rfa: string; recipe: Recipe }> {
+/** Every staged family with a recipe beside it (the archive, batch, Rhino, images, chain-test and evolve folders left out). */
+export function stagedRecipes(root: string): Array<{ rfa: string; recipe: Recipe }> {
   const out: Array<{ rfa: string; recipe: Recipe }> = [];
   const walk = (dir: string) => {
     let names: fs.Dirent[] = [];
     try { names = fs.readdirSync(dir, { withFileTypes: true }); } catch { return; }
     for (const d of names) {
       const p = win.join(dir, d.name);
-      if (d.isDirectory()) { if (!/^_(Archive|Batch|Rhino|Images|ChainTests)$/i.test(d.name)) walk(p); continue; }
+      if (d.isDirectory()) { if (!isEvolveDir(d.name) && !/^_(Archive|Batch|Rhino|Images|ChainTests)$/i.test(d.name)) walk(p); continue; }
       if (!/\.recipe\.json$/i.test(d.name)) continue;
       try { const r = parseRecipe(fs.readFileSync(p, "utf8")).recipe; if (r) out.push({ rfa: p.replace(/\.recipe\.json$/i, ".rfa"), recipe: r }); } catch { /* unreadable: skipped */ }
     }

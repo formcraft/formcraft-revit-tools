@@ -1,6 +1,6 @@
 # fmc_family_evolve
 
-Evolve an existing family (.rfa) in place: check it against five quality gates, propose the fixes as a dry run, and
+Evolve an existing family (.rfa) in place (tracker F127): check it against five quality gates, propose the fixes as a dry run, and
 make them only on a confirm, as a **new version** with a byte-for-byte backup of the original. The original is never
 written by default.
 
@@ -64,7 +64,7 @@ staging (library and write roots), not with a new name, and not when the file wa
 ## Rules it keeps
 
 Writes only inside the write roots and never into `02_Shared`, `03_Published`, `04_Archive`, `05_Incoming` or
-`04_Families\<Role>` (the new version goes to staging; a person releases it after Gate A). Nothing is deleted. Shared
+`04_Families\<Role>` (the new version goes to staging; a person releases it after Gate A). An _Evolve folder is never a staged family: the context index and fmc_changes leave it out. Nothing is deleted. Shared
 parameters come only from the kit's dictionary by GUID. No geometry is changed.
 
 ## Revit side

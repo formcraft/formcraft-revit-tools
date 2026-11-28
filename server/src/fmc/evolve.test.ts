@@ -1,16 +1,19 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import crypto from "node:crypto";
+import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import {
   EvolveFacts, EvolveKit, KEYNOTE_FORMAT, applyProblems, diffFacts, diffGates, evaluateGates, expectedAfter, flexRegressions, isUnnamedPlane,
-  normalizeKeynote, orderedOps, planVersions, positionalPlaneName, proposalToken, readVersions, suggestFamilyName,
+  isEvolveDir, normalizeKeynote, orderedOps, planVersions, positionalPlaneName, proposalToken, readVersions, suggestFamilyName, underEvolveFolder,
 } from "./evolve.js";
 import { KEYNOTE_RE } from "./replace.js";
 import { OP, opsProblems, splitProblems } from "./ops.js";
 import { EvolveIo, FMC_FAMILY_EVOLVE_SHAPE, registerFmcFamilyEvolveTool, runFmcFamilyEvolve } from "../tools/fmc_family_evolve.js";
 import { z } from "zod";
 import type { GuardConfig } from "./policy.js";
+import { stagedRecipes } from "../tools/fmc_changes.js";
 
 const win = path.win32;
 const STAGING = "Z:\\00_Standards\\04_Families\\_Staging";
@@ -260,6 +263,30 @@ test("readVersions reads vNNN folders, skips Revit's .0001 backups and other fol
   const v = readVersions([{ folder: "v002", files: ["F2.rfa", "F2.0001.rfa", "F2.evolve.json"] }, { folder: "v001", files: ["F.rfa"] }, { folder: "notes", files: ["a.rfa"] }, { folder: "v003", files: [] }],
     dir, new Map([["v001", { backup: true, sha256: "s1" }]]), () => "computed");
   assert.deepEqual(v.map((x) => [x.n, win.basename(x.file), x.sha256, x.backup]), [[1, "F.rfa", "s1", true], [2, "F2.rfa", "computed", false]]);
+});
+
+test("staging scanners recognise an _Evolve folder in any case, and a path under one", () => {
+  assert.equal(isEvolveDir("_Evolve"), true);
+  assert.equal(isEvolveDir(" _evolve "), true);
+  assert.equal(isEvolveDir("_Evolve_bak"), false);
+  assert.equal(isEvolveDir("Evolve"), false);
+  assert.equal(isEvolveDir(""), false);
+  assert.equal(underEvolveFolder(win.join(STAGING, "A", "_Evolve", "FMC_A_Door_SteelFanlight", "v001", "FMC_A_Door_SteelFanlight.rfa")), true);
+  assert.equal(underEvolveFolder(win.join(STAGING, "_Evolve", "x.rfa")), true);
+  assert.equal(underEvolveFolder(win.join(STAGING, "A", "FMC_A_Door_SteelFanlight.rfa")), false);
+  assert.equal(underEvolveFolder(win.join(STAGING, "A", "_Images", "preview.png")), false);
+});
+
+test("stagedRecipes walks staging but never a family or recipe under _Evolve", () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-evolve-scan-"));
+  const recipe = JSON.stringify({ schema: "fmc-recipe/0.1", family: "FMC_A_Door_X", template: "Metric Door.rft", ops: [{ op: "add_type", name: "900x2100_Std" }] });
+  const live = path.join(root, "A", "FMC_A_Door_X.recipe.json");
+  const decoy = path.join(root, "A", "_Evolve", "FMC_A_Door_X", "v002", "FMC_A_Door_X.recipe.json");
+  const sidecar = path.join(root, "A", "_Archive", "FMC_A_Door_Old.recipe.json");
+  for (const f of [live, decoy, sidecar]) { fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, recipe); }
+  const found = stagedRecipes(root).map((s) => s.recipe.family + ":" + path.relative(root, s.rfa).split(path.sep).join("/"));
+  assert.deepEqual(found, ["FMC_A_Door_X:A/FMC_A_Door_X.rfa"]);
+  fs.rmSync(root, { recursive: true, force: true });
 });
 
 test("apply refuses without a token, a stale or changed proposal, and an unknown fix id", () => {

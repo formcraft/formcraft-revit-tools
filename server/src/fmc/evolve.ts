@@ -1,5 +1,5 @@
 /**
- * fmc_family_evolve: evolve an existing family in place (owner GO, 28 Nov). Pure: the facts come from Revit through
+ * fmc_family_evolve: evolve an existing family in place (tracker F127; owner GO, 28 Nov). Pure: the facts come from Revit through
  * fmc_library inspect and fmc_doc (report, flex, apply dry run), the reference from the kit (FMC_Family_Specs.json,
  * FMC_SharedParameters.txt, FMC_Keynotes.txt). Nothing here touches a file.
  *
@@ -347,6 +347,15 @@ export interface VersionPlan {
 }
 
 export const EVOLVE_FOLDER = "_Evolve";
+/** A folder name the staging and library scanners leave out: evolve versions are history, not a family in staging (F127). */
+export function isEvolveDir(name: string): boolean {
+  return /^_Evolve$/i.test(String(name ?? "").trim());
+}
+/** True when a path has an _Evolve folder in it (a version tree, or a file inside one). */
+export function underEvolveFolder(file: string): boolean {
+  return file.replace(/\\/g, "/").split("/").some((s) => isEvolveDir(s));
+}
+
 export const vName = (n: number) => "v" + String(n).padStart(3, "0");
 
 /**

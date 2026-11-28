@@ -5,7 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { DEFAULT_CONFIG, GuardConfig } from "./policy.js";
-import { ContextDeps, classify, familyNamesIn, forTask, getItem, kitNoteFor, overview, words } from "./context.js";
+import { ContextDeps, classify, familyFiles, familyNamesIn, forTask, getItem, kitNoteFor, kitPaths, overview, recipeIndex, words } from "./context.js";
 import { FMC_INSTRUCTIONS, NUDGE, annotateResult, installContextNudges, registerContextPrompts, registerContextResources, serverOptions } from "./mcp_context.js";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -220,4 +220,25 @@ test("nudge: family- and material-making tools start with the line; others don't
   assert.match(saved.content![1].text!, /FMC_A_Door_AluSlidingFolding: the kit has a spec/);
   assert.deepEqual(familyNamesIn("FMC_A_Door_X.rfa and FMC_I_Casework_Vanity"), ["FMC_A_Door_X", "FMC_I_Casework_Vanity"]);
   assert.equal(kitNoteFor(["FMC_Not_A_Family"], deps), null);
+});
+test("F127: familyFiles and recipeIndex skip an _Evolve tree under staging", () => {
+  const { deps, root } = kit();
+  const staging = path.join(root, "04_Families", "_Staging");
+  const decoyDir = path.join(staging, "A", "_Evolve", "FMC_A_Door_FlushSingleLeaf", "v002");
+  fs.mkdirSync(decoyDir, { recursive: true });
+  fs.writeFileSync(path.join(decoyDir, "FMC_A_Door_FlushSingleLeaf.rfa"), "version-bytes");
+  fs.mkdirSync(path.join(staging, "_Evolve"), { recursive: true });
+  fs.writeFileSync(path.join(staging, "_Evolve", "FMC_A_Ghost.rfa"), "root-evolve");
+  const recipe = JSON.stringify({ schema: "fmc-recipe/0.1", family: "FMC_A_Door_EvolveDecoy", template: "Metric Door.rft", ops: [{ op: "add_type", name: "900_Std" }] });
+  fs.writeFileSync(path.join(decoyDir, "FMC_A_Door_EvolveDecoy.recipe.json"), recipe);
+  const k = kitPaths(deps.cfg, deps.extraRecipeDirs ?? []);
+  const files = familyFiles(k);
+  assert.equal(files.staged.get("FMC_A_Door_FlushSingleLeaf"), path.join(staging, "A", "FMC_A_Door_FlushSingleLeaf.rfa"));
+  assert.equal(files.staged.has("FMC_A_Ghost"), false);
+  assert.equal([...files.staged.values()].some((p) => p.includes("_Evolve")), false);
+  assert.equal(files.staged.size, 1);
+  const recipes = recipeIndex(k);
+  assert.equal(recipes.has("FMC_A_Door_EvolveDecoy"), false);
+  const o = overview(deps) as any;
+  assert.equal(o.counts.staged_families, 1);
 });
