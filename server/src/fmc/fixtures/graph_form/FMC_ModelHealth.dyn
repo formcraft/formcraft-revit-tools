@@ -1,0 +1,226 @@
+{
+  "Uuid": "17ed3f30-2bbe-4959-a036-4da19fa4ca9b",
+  "IsCustomNode": false,
+  "Description": "Formcraft kit v2.2 ModelHealth (Manual Part 14.2). Read-only to the model; writes one CSV to the output folder. Wraps 05_Scripts/Dynamo/FMC_ModelHealth.py.",
+  "Name": "FMC_ModelHealth",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "CoreNodeModels.Input.StringInput, CoreNodeModels",
+      "Id": "3da16cded28446d8879cf1eaea278b91",
+      "NodeType": "StringInputNode",
+      "InputValue": "C:\\Users\\USER\\agent-tools\\jobs\\health",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "20207cb836d74c098fdf757b86edd3ac",
+          "Name": "",
+          "Description": "String",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Creates a string."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.StringInput, CoreNodeModels",
+      "Id": "f3154b594e324d859953522e628c747a",
+      "NodeType": "StringInputNode",
+      "InputValue": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\03_Master_Data\\FMC_Master_Data.json",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "167f599e4ae54f01a22b637b13cb63c0",
+          "Name": "",
+          "Description": "String",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Creates a string."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.StringInput, CoreNodeModels",
+      "Id": "df446b0339b34e279edb8ec3658d3e58",
+      "NodeType": "StringInputNode",
+      "InputValue": "",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "6f2e946de2bd4903b0e0e41ea619aea6",
+          "Name": "",
+          "Description": "String",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Creates a string."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "Code": "# FMC_ModelHealth  -  Dynamo Python Script node (CPython3 / PythonNet3)\n# Formcraft kit v2.2  |  Manual Part 14.2\n#\n# Measures the model against the BEP thresholds and writes one CSV row per\n# metric with a Red / Amber / Green result. No single \"score\": each metric\n# stands on its own so a clean number cannot hide a critical failure.\n#\n# Inputs (mark \"Is Input\" for Dynamo Player):\n#   IN[0]  String - output folder (project 03_QA\\Health)\n#   IN[1]  String - full path to FMC_Master_Data.json\n#   IN[2]  String - expected survey point \"E,N,Elev\" in metres from the\n#                   coordinate record (Part 8), e.g. \"452310.250,36712.880,1190.000\"\n#                   or blank to only report the values\n# Output:\n#   OUT    [summary line, CSV path, rows]\n#\n# Written for Revit 2025 / 2026 with Dynamo 3.x. Not yet run on a Formcraft build:\n# validate on a copy before production (Manual Part 17 release gate).\n\nimport clr\nimport csv\nimport datetime\nimport json\nimport os\n\nclr.AddReference(\"RevitAPI\")\nfrom Autodesk.Revit.DB import (BasePoint, BuiltInCategory, BuiltInParameter, ElementMulticategoryFilter,\n                               FamilyInstance, FilteredElementCollector, ImportInstance, ModelPathUtils, RevitLinkInstance,\n                               UnitTypeId, UnitUtils, View, ViewSheet)\nfrom Autodesk.Revit.DB.Architecture import Room\n\nclr.AddReference(\"RevitServices\")\nfrom RevitServices.Persistence import DocumentManager\n\nimport System\nfrom System.Collections.Generic import List\n\ndoc = DocumentManager.Instance.CurrentDBDocument\nout_dir, json_path = IN[0], IN[1]\nexpected = IN[2] if len(IN) > 2 else \"\"\n\n# Thresholds: amber_at, red_at (higher = worse). Override per project in the BEP.\nLIMITS = {\n    \"Warnings (total)\": (100, 300),\n    \"Types in 5D categories without a Formcraft code\": (1, 20),\n    \"Types with a code not in master data\": (1, 1),\n    \"Unplaced or unbounded rooms\": (1, 5),\n    \"CAD imports (not links)\": (1, 1),\n    \"In-place families\": (5, 15),\n    \"Views not on sheets (excl. templates, schedules)\": (150, 400),\n    \"Survey point deviation from record (mm)\": (1, 10),\n    \"Placed types on default or generic names\": (1, 10),\n    \"Placed elements with no geometry stage\": (1, 50),\n    \"Walls and beams with off-millimetre lengths\": (1, 20),\n}\nGENERIC_WORDS = (\"generic\", \"default\")  # Revit out-of-the-box type names, e.g. \"Generic - 200mm\"\nQTO_BIC = [\"OST_Walls\", \"OST_Floors\", \"OST_Roofs\", \"OST_Ceilings\", \"OST_Doors\", \"OST_Windows\",\n           \"OST_StructuralColumns\", \"OST_StructuralFraming\", \"OST_StructuralFoundation\",\n           \"OST_Casework\", \"OST_GenericModel\", \"OST_PlumbingFixtures\", \"OST_PipeCurves\",\n           \"OST_DuctCurves\", \"OST_MechanicalEquipment\", \"OST_ElectricalEquipment\",\n           \"OST_ElectricalFixtures\", \"OST_LightingFixtures\", \"OST_CableTray\", \"OST_Conduit\",\n           \"OST_Sprinklers\", \"OST_SpecialityEquipment\", \"OST_Planting\"]\n\n\ndef rag(metric, value):\n    if metric not in LIMITS or value is None:\n        return \"INFO\"\n    amber, red = LIMITS[metric]\n    return \"RED\" if value >= red else (\"AMBER\" if value >= amber else \"GREEN\")\n\n\nrows = []\n\n\ndef add(metric, value, detail=\"\"):\n    rows.append([metric, value, rag(metric, value), detail])\n\n\nwith open(json_path, encoding=\"utf-8\") as fh:\n    master = json.load(fh)\ncodes = master[\"codes\"]\n\n# 1 warnings, grouped by text\nwarnings = doc.GetWarnings()\nby_text = {}\nfor w in warnings:\n    k = w.GetDescriptionText()\n    by_text[k] = by_text.get(k, 0) + 1\ntop = sorted(by_text.items(), key=lambda kv: -kv[1])[:5]\nadd(\"Warnings (total)\", warnings.Count, \" | \".join(\"{0} x{1}\".format(k[:60], v) for k, v in top))\n\n# 2 element codes on types\nbics = List[BuiltInCategory]()\nfor n in QTO_BIC:\n    b = getattr(BuiltInCategory, n, None)\n    if b is not None:\n        bics.Add(b)\nplaced_type_ids = set()\nplaced = (FilteredElementCollector(doc).WhereElementIsNotElementType()\n          .WherePasses(ElementMulticategoryFilter(bics)).ToElements())\nfor e in placed:\n    placed_type_ids.add(e.GetTypeId().ToString())\nno_code, bad_code, generic = 0, 0, []\nfor t in (FilteredElementCollector(doc).WhereElementIsElementType()\n          .WherePasses(ElementMulticategoryFilter(bics)).ToElements()):\n    if t.Id.ToString() not in placed_type_ids:\n        continue  # only types actually used\n    kp = t.get_Parameter(BuiltInParameter.KEYNOTE_PARAM)\n    key = (kp.AsString() or \"\").strip() if kp else \"\"\n    if not key:\n        no_code += 1\n    elif key not in codes:\n        bad_code += 1\n    tname = (t.get_Parameter(BuiltInParameter.SYMBOL_NAME_PARAM).AsString() or \"\") if \\\n        t.get_Parameter(BuiltInParameter.SYMBOL_NAME_PARAM) else \"\"\n    if any(w in tname.lower() for w in GENERIC_WORDS):\n        generic.append(tname)\nadd(\"Types in 5D categories without a Formcraft code\", no_code, \"placed types only\")\nadd(\"Types with a code not in master data\", bad_code)\nadd(\"Placed types on default or generic names\", len(generic), \" | \".join(sorted(set(generic))[:8]))\n\n# 2b modelling: geometry stage and off-millimetre lengths (Manual Part 9.5, 9.6)\nstage_guid = System.Guid(master[\"params\"][\"FMC_Geometry_Stage\"][\"guid\"]) if \"FMC_Geometry_Stage\" in master[\"params\"] else None\nno_stage, off_mm = 0, []\nfor e in placed:\n    if stage_guid is not None:\n        sp_ = e.get_Parameter(stage_guid)\n        if sp_ is not None and not (sp_.AsString() or \"\").strip():\n            no_stage += 1\n    bic = e.Category.BuiltInCategory if e.Category is not None else None  # Revit 2023+\n    if bic in (BuiltInCategory.OST_Walls, BuiltInCategory.OST_StructuralFraming):\n        lp = e.get_Parameter(BuiltInParameter.CURVE_ELEM_LENGTH)\n        if lp is not None and lp.HasValue:\n            mm = UnitUtils.ConvertFromInternalUnits(lp.AsDouble(), UnitTypeId.Millimeters)\n            if abs(mm - round(mm)) > 0.01:\n                off_mm.append(e.Id.ToString())\nadd(\"Placed elements with no geometry stage\", no_stage, \"FMC_Geometry_Stage blank\")\nadd(\"Walls and beams with off-millimetre lengths\", len(off_mm), \"ids: \" + \", \".join(off_mm[:10]))\n\n# 3 rooms\nrooms = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Rooms).ToElements()\nbad_rooms = sum(1 for r in rooms if isinstance(r, Room) and (r.Location is None or r.Area <= 0))\nadd(\"Unplaced or unbounded rooms\", bad_rooms, \"{0} rooms in model\".format(rooms.Count))\n\n# 4 imports, in-place families, links\nimports = [i for i in FilteredElementCollector(doc).OfClass(ImportInstance).ToElements() if not i.IsLinked]\nadd(\"CAD imports (not links)\", len(imports))\ninplace = sum(1 for f in FilteredElementCollector(doc).OfClass(FamilyInstance).ToElements()\n              if f.Symbol is not None and f.Symbol.Family.IsInPlace)\nadd(\"In-place families\", inplace)\nlinks = FilteredElementCollector(doc).OfClass(RevitLinkInstance).ToElements()\nadd(\"Revit links loaded\", sum(1 for l in links if l.GetLinkDocument() is not None),\n    \"{0} link instances\".format(links.Count))\n\n# 5 views not on sheets\non_sheets = set()\nfor s in FilteredElementCollector(doc).OfClass(ViewSheet).ToElements():\n    for vid in s.GetAllPlacedViews():\n        on_sheets.add(vid.ToString())\nloose = 0\nfor v in FilteredElementCollector(doc).OfClass(View).ToElements():\n    if v.IsTemplate or isinstance(v, ViewSheet) or not v.CanBePrinted:\n        continue\n    if v.ViewType.ToString() in (\"Schedule\", \"ProjectBrowser\", \"SystemBrowser\", \"Internal\", \"DrawingSheet\"):\n        continue\n    if v.Id.ToString() not in on_sheets:\n        loose += 1\nadd(\"Views not on sheets (excl. templates, schedules)\", loose)\n\n# 6 coordinates: survey point and project base point in shared coordinates (metres)\ndef to_m(v):\n    return UnitUtils.ConvertFromInternalUnits(v, UnitTypeId.Meters)\n\nsp = BasePoint.GetSurveyPoint(doc)\npbp = BasePoint.GetProjectBasePoint(doc)\nsp_shared = sp.SharedPosition\nadd(\"Survey point E,N,Elev (m)\", None, \"{0:.3f}, {1:.3f}, {2:.3f}\".format(\n    to_m(sp_shared.X), to_m(sp_shared.Y), to_m(sp_shared.Z)))\nadd(\"Project base point E,N,Elev (m)\", None, \"{0:.3f}, {1:.3f}, {2:.3f}\".format(\n    to_m(pbp.SharedPosition.X), to_m(pbp.SharedPosition.Y), to_m(pbp.SharedPosition.Z)))\nadd(\"Survey point pinned\", None, str(sp.Pinned))\nif expected:\n    try:\n        ex, ey, ez = [float(x) for x in expected.split(\",\")]\n        dev = max(abs(to_m(sp_shared.X) - ex), abs(to_m(sp_shared.Y) - ey), abs(to_m(sp_shared.Z) - ez)) * 1000.0\n        add(\"Survey point deviation from record (mm)\", round(dev, 1), \"record \" + expected)\n    except ValueError:\n        add(\"Survey point deviation from record (mm)\", None, \"could not read expected value\")\n\n# 7 file and worksharing\nadd(\"Workshared\", None, str(doc.IsWorkshared))\nif doc.IsWorkshared:\n    try:\n        central = ModelPathUtils.ConvertModelPathToUserVisiblePath(doc.GetWorksharingCentralModelPath())\n        add(\"Central model location\", None, central)\n    except Exception:\n        pass\nadd(\"Cloud model (Autodesk Docs)\", None, str(doc.IsModelInCloud))\nif doc.PathName and os.path.isfile(doc.PathName):\n    add(\"File size (MB)\", round(os.path.getsize(doc.PathName) / 1048576.0, 1))\n\nos.makedirs(out_dir, exist_ok=True)\npath = os.path.join(out_dir, \"{0}_Health_{1}.csv\".format(doc.Title.replace(\" \", \"_\"),\n                                                         datetime.datetime.now().strftime(\"%Y%m%d-%H%M\")))\nwith open(path, \"w\", newline=\"\", encoding=\"utf-8\") as fh:\n    w = csv.writer(fh)\n    w.writerow([\"Metric\", \"Value\", \"Result\", \"Detail\"])\n    w.writerows(rows)\n\nreds = sum(1 for r in rows if r[2] == \"RED\")\nambers = sum(1 for r in rows if r[2] == \"AMBER\")\nOUT = [\"{0} RED, {1} AMBER of {2} metrics\".format(reds, ambers, len(rows)), path, rows]\n",
+      "Engine": "CPython3",
+      "EngineName": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "1a26368db573400b840ae396dc2e7119",
+      "NodeType": "PythonScriptNode",
+      "Inputs": [
+        {
+          "Id": "33372047ad294c8fb02b751ec4b78ba5",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "6b07eb8a886640f0b219b18f2db5a04d",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "7cb822dedc5f475eafd1d06d9bfe7880",
+          "Name": "IN[2]",
+          "Description": "Input #2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "e7df6d4e6e26416da4ce9d82eae177ff",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "20207cb836d74c098fdf757b86edd3ac",
+      "End": "33372047ad294c8fb02b751ec4b78ba5",
+      "Id": "8cb5d8d6441b4f5bac47636ed0b2161f",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "167f599e4ae54f01a22b637b13cb63c0",
+      "End": "6b07eb8a886640f0b219b18f2db5a04d",
+      "Id": "a4e053fb309846ee93794a701ca4a91b",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "6f2e946de2bd4903b0e0e41ea619aea6",
+      "End": "7cb822dedc5f475eafd1d06d9bfe7880",
+      "Id": "07301f35657b4f5da0e785967e0b304b",
+      "IsHidden": "False"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Thumbnail": "",
+  "GraphDocumentationURL": null,
+  "ExtensionWorkspaceData": [],
+  "Author": "Formcraft",
+  "Linting": {
+    "activeLinter": "None",
+    "activeLinterId": "7b75fb44-43fd-4631-a878-29f4d5d8399a",
+    "warningCount": 0,
+    "errorCount": 0
+  },
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "3.3.0.6523",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "_Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "ConnectorPins": [],
+    "NodeViews": [
+      {
+        "Id": "3da16cded28446d8879cf1eaea278b91",
+        "Name": "Output folder (C: local, not D:)",
+        "IsSetAsInput": true,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 0.0,
+        "Y": 0.0
+      },
+      {
+        "Id": "f3154b594e324d859953522e628c747a",
+        "Name": "FMC_Master_Data.json path",
+        "IsSetAsInput": true,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 0.0,
+        "Y": 150.0
+      },
+      {
+        "Id": "df446b0339b34e279edb8ec3658d3e58",
+        "Name": "Expected survey point E,N,Elev (m) or blank",
+        "IsSetAsInput": true,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 0.0,
+        "Y": 300.0
+      },
+      {
+        "Id": "1a26368db573400b840ae396dc2e7119",
+        "Name": "FMC_ModelHealth",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": true,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 400.0,
+        "Y": 150.0
+      }
+    ],
+    "Annotations": [],
+    "X": 0.0,
+    "Y": 0.0,
+    "Zoom": 1.0
+  }
+}

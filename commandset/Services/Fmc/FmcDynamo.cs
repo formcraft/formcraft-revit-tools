@@ -53,8 +53,9 @@ namespace RevitMCPCommandSet.Services.Fmc
             using FmcTarget target = FmcTarget.Resolve(app, Parameters, mayOpen: false);
             Document doc = target.Doc;
             string path = (Parameters.Value<string>("path") ?? "").Trim();
-            if (!FmcDynamoHost.Approved(path))
-                throw new InvalidOperationException("[FMC-SCRIPT-ROOT] " + path + " is outside 05_Scripts\\library or 05_Scripts\\Dynamo.");
+            string notApproved = FmcDynamoHost.ApprovedReason(path, (Parameters.Value<string>("kit_root") ?? "").Trim(), (Parameters.Value<string>("graph_sha256") ?? "").Trim());
+            if (notApproved != null)
+                throw new InvalidOperationException("[FMC-SCRIPT-ROOT] " + notApproved + " Nothing ran.");
             string mode = (Parameters.Value<string>("mode") ?? "preview").Trim();
             bool preview = mode != "apply";
             string scriptJob = (Parameters.Value<string>("script_job") ?? "").Trim();
