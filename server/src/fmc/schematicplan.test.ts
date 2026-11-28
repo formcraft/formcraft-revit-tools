@@ -4,7 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { z } from "zod";
-import { READ_VIA_SEND_COMMAND, WRITE_COMMANDS } from "./policy.js";
+import { DEFAULT_CONFIG as DEFAULT_CONFIG_FOR_DIAGRAMS, READ_VIA_SEND_COMMAND, WRITE_COMMANDS } from "./policy.js";
 import {
   elecInputFromTrace, levelYs, planElecDiagrams, planPlumbDiagrams, plumbInputFromTrace,
   type ElecCircuit, type ElecPanel,
@@ -168,4 +168,45 @@ test("apply without a lease changes nothing, and the commands are registered", a
   assert.match(circuitSource, /RBS_ELEC_VOLTAGE/);
   assert.match(circuitSource, /ElectricalPhaseConfiguration/);
   assert.equal(/item\.Voltage\b/.test(circuitSource), false);
+});
+
+// ---------- research tool 39: include list, earthing skip, circuits not drawn, would_refuse ----------
+test("no panels: the earthing template is skipped unless include names it", () => {
+  const none = planElecDiagrams({ panels: [], circuits: [] });
+  assert.equal(none.views.length, 0);
+  assert.match(none.warnings.join(" "), /earthing template is not proposed/);
+  const asked = planElecDiagrams({ panels: [], circuits: [] }, "bands", { include: ["earthing"] });
+  assert.deepEqual(asked.views.map((v) => v.kind), ["e_earthing"]);
+});
+
+test("include picks the views", () => {
+  const sldOnly = planElecDiagrams({ panels: [mdb, db], circuits, levels }, "bands", { include: ["sld"] });
+  assert.deepEqual(sldOnly.views.map((v) => v.kind), ["e_sld"]);
+  const noEarth = planElecDiagrams({ panels: [mdb, db], circuits, levels }, "bands", { include: ["sld", "riser"] });
+  assert.deepEqual(noEarth.views.map((v) => v.kind).sort(), ["e_power_riser", "e_sld"]);
+});
+
+test("circuits on no read board are counted and warned, not silently dropped (live: 33 circuits, no ways)", () => {
+  const stray: ElecCircuit[] = [...circuits, { id: 20, number: "9", panel_id: 99, name: "Orphan" }, { id: 21, number: "10", panel_id: 0, name: "No panel" }];
+  const plan = planElecDiagrams({ panels: [mdb, db], circuits: stray, levels });
+  assert.equal(plan.counts.circuits_not_drawn, 2);
+  assert.match(plan.warnings.join(" "), /2 of 5 circuits are on no board that was read/);
+  const clean = planElecDiagrams({ panels: [mdb, db], circuits, levels });
+  assert.equal(clean.counts.circuits_not_drawn, 0);
+  assert.equal(clean.warnings.length, 0);
+});
+
+test("plan reports would_refuse for a protected model, and include flows from the tool", async () => {
+  const hostels = textOf(await runFmcElecDiagrams(elecArgs({ action: "plan", document: "HEBERT HOSTELS ELECTRICAL_USER", include: ["sld"] }), {
+    read: async () => ({ model: "HEBERT HOSTELS ELECTRICAL_USER", resolved_document: { title: "HEBERT HOSTELS ELECTRICAL_USER", path: "C:\\H.rvt" }, panels: [mdb], circuits, levels }),
+    guard: { ...DEFAULT_CONFIG_FOR_DIAGRAMS },
+  }));
+  assert.equal(hostels.isError, false);
+  assert.match(String(hostels.would_refuse), /HEBERT HOSTELS is not written by fmc_elec_diagrams/);
+  assert.deepEqual((hostels.views as Array<{ kind: string }>).map((v) => v.kind), ["e_sld"]);
+  const fine = textOf(await runFmcElecDiagrams(elecArgs({ action: "plan", document: "E_USER" }), {
+    read: async () => ({ model: "E_USER", resolved_document: { title: "E_USER", path: "C:\\WIP\\E.rvt" }, panels: [mdb], circuits, levels }),
+    guard: { ...DEFAULT_CONFIG_FOR_DIAGRAMS },
+  }));
+  assert.equal(fine.would_refuse, null);
 });

@@ -110,7 +110,7 @@ export interface DiagramPlan {
   views: DiagramView[];
   warnings: string[];
   supersedes_3d: View3dNote[];
-  counts: { views: number; items: number; panels: number; circuits: number; systems: number };
+  counts: { views: number; items: number; panels: number; circuits: number; systems: number; circuits_not_drawn?: number };
 }
 
 export const DIAGRAM_API_LIMITS = [
@@ -321,26 +321,45 @@ function planEarthing(): DiagramView {
   };
 }
 
-export function planElecDiagrams(input: ElecDiagramInput, style: RiserStyle = "bands"): DiagramPlan {
+/** Which electrical views to plan (research tool 39). */
+export type ElecViewPart = "sld" | "riser" | "earthing";
+export const ELEC_VIEW_PARTS: readonly ElecViewPart[] = ["sld", "riser", "earthing"];
+
+export interface ElecPlanOptions {
+  /** Views to plan. Default: all three, except the earthing template is skipped when no panels were read. Naming earthing here keeps it. */
+  include?: ElecViewPart[];
+}
+
+export function planElecDiagrams(input: ElecDiagramInput, style: RiserStyle = "bands", options: ElecPlanOptions = {}): DiagramPlan {
   const panels = input.panels ?? [];
   const circuits = input.circuits ?? [];
   const warnings: string[] = [];
   const views: DiagramView[] = [];
+  const asked = options.include?.length ? new Set(options.include) : null;
+  const wants = (part: ElecViewPart) => !asked || asked.has(part);
   if (!panels.length) warnings.push("No panels were read. The single-line and the riser are not drawn.");
+  const panelIds = new Set(panels.map((panel) => panel.id));
+  // research tool 39 (live: 33 circuits read, no way lines drawn): circuits on no read board are counted, not silently dropped
+  const orphans = circuits.filter((circuit) => !panelIds.has(circuit.panel_id));
+  if (orphans.length && wants("sld")) {
+    warnings.push(`${orphans.length} of ${circuits.length} circuits are on no board that was read, so they are not drawn on the single-line. Check each circuit's panel in Revit or fmc_trace.`);
+  }
   const buildings = [...new Set(panels.map(buildingOf))].sort();
   for (const building of buildings) {
     const mine = panels.filter((panel) => buildingOf(panel) === building);
     const ids = new Set(mine.map((panel) => panel.id));
-    views.push(planSld(mine, circuits.filter((circuit) => ids.has(circuit.panel_id)), input.symbols, building));
+    if (wants("sld")) views.push(planSld(mine, circuits.filter((circuit) => ids.has(circuit.panel_id)), input.symbols, building));
     const levels = levelRows(mine, (input.levels ?? []).filter((row) => !row.building || row.building === building));
-    views.push(planRiser(mine, levels, building, style));
+    if (wants("riser")) views.push(planRiser(mine, levels, building, style));
   }
-  views.push(planEarthing());
+  const earthingAsked = asked?.has("earthing") === true;
+  if (wants("earthing") && (panels.length || earthingAsked)) views.push(planEarthing());
+  else if (wants("earthing") && !panels.length) warnings.push("The earthing template is not proposed because no panels were read. Pass include [\"earthing\"] to plan it anyway.");
   return {
     views,
     warnings,
     supersedes_3d: [],
-    counts: { views: views.length, items: views.reduce((sum, view) => sum + view.items.length, 0), panels: panels.length, circuits: circuits.length, systems: 0 },
+    counts: { views: views.length, items: views.reduce((sum, view) => sum + view.items.length, 0), panels: panels.length, circuits: circuits.length, systems: 0, circuits_not_drawn: wants("sld") ? orphans.length : 0 },
   };
 }
 
