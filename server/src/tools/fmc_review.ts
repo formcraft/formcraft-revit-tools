@@ -14,6 +14,8 @@ import { readDb } from "./fmc_material.js";
 import { applyProblems, applySteps, fixApplied, fixFailed, planHash } from "../fmc/applyfix.js";
 import { findRecipeElement } from "./fmc_room.js";
 import { FMC_TREE_SHAPE, runFmcTree } from "./fmc_tree.js";
+import { bcfFileProblem, defaultProjectCode } from "../fmc/reviewhelp.js";
+import { createHash } from "node:crypto";
 
 const win = path.win32;
 
@@ -184,14 +186,20 @@ export async function runFmcReview(args: FmcReviewArgs, deps: ReviewDeps = {}) {
     if (!args.project_folder.trim()) return reply({ refused: true, reasons: ["Set the project folder: the review register lives in its 01_WIP"] }, true);
     const file = registerFile(args.project_folder.trim());
     const now = new Date(), today = now.toISOString().slice(0, 10);
-    const reg = load(file, args.project_code.trim().toUpperCase());
+    // RW-9: the code new ids use: given, else FMC_Project.json, else the folder name (as fmc_report).
+    let manifestCode = "";
+    try { manifestCode = String((JSON.parse(fs.readFileSync(win.join(args.project_folder.trim(), "01_WIP", "FMC_Project.json"), "utf8").replace(/^\uFEFF/, "")) as { code?: unknown }).code ?? ""); } catch { manifestCode = ""; }
+    const pc = defaultProjectCode(args.project_code, win.basename(args.project_folder.trim()), manifestCode);
+    const registerExists = fs.existsSync(file);
+    const reg = load(file, pc.code);
 
     if (args.action === "list") {
       const items = filterItems(reg, args.filter as Filter, args.my_disciplines, today);
-      return reply({ file, project: reg.project, filter: args.filter, count: items.length, total: reg.items.length,
+      return reply({ file, register_exists: registerExists, project: reg.project, project_source: registerExists && reg.project !== pc.code ? "register" : pc.source, filter: args.filter, count: items.length, total: reg.items.length,
         overdue: reg.items.filter((i) => shownStatus(i, today) === "Overdue").length,
         items: items.map((i) => args.full ? { ...i, shown_status: shownStatus(i, today) } : line(i, today)) });
     }
+    if (args.action === "item" && !registerExists) return reply({ refused: true, register_exists: false, reasons: [`No review register at ${file}`] }, true);
     if (args.action === "item") return reply({ item: { ...find(reg, args.id), shown_status: shownStatus(find(reg, args.id), today) } });
     if (args.action === "queue") {
       const q = queue(reg, args.to === "ai" ? { ai: true } : args.to === "discipline" ? { discipline: args.assignee } : { person: args.assignee || args.by });
@@ -311,6 +319,7 @@ export async function runFmcReview(args: FmcReviewArgs, deps: ReviewDeps = {}) {
       return reply({ done: true, test: args.test, added: r.added, skipped: r.skipped, next: "Open a ticket with show: Revit selects the elements and opens your review view on the clash" });
     }
     let item: ReviewItem;
+    let contextNote = "";
     if (args.action === "mark") {
       const q = { to: args.to, assignee: args.assignee, title: args.title, text: args.description || args.text, transcript: args.transcript,
         audio: args.audio ? "pending" : "", lead: args.lead, disciplines: args.disciplines, priority: args.priority, due: args.due.trim(),
@@ -354,7 +363,11 @@ export async function runFmcReview(args: FmcReviewArgs, deps: ReviewDeps = {}) {
       take(item, by, now);
     } else if (args.action === "raise") {
       let ctx: { model?: string; view?: string; sheet?: string; selected?: number[] } = {};
-      try { ctx = await withRevitConnection((c) => c.sendRaw("fmc_review_context", {}, 15000)); } catch { ctx = {}; }
+      try { ctx = await withRevitConnection((c) => c.sendRaw("fmc_review_context", {}, 15000)); } catch (error) {
+        ctx = {};
+        // RW-8: the context could not be read; the reply says so instead of a silent empty ticket.
+        contextNote = `context: none (Revit did not answer: ${error instanceof Error ? error.message : String(error)}). No model, view, sheet or elements are on the item${args.link_selection ? "; link_selection linked nothing" : ""}.`;
+      }
       const q = { title: args.title, description: args.description, disciplines: args.disciplines, lead: args.lead, owner: args.owner,
         priority: args.priority, due: args.due.trim(), raised_by: by, model: ctx.model ?? "", view: ctx.view ?? "",
         element_ids: args.link_selection ? (ctx.selected ?? []) : [], sheet: ctx.sheet ?? "" };
@@ -384,7 +397,8 @@ export async function runFmcReview(args: FmcReviewArgs, deps: ReviewDeps = {}) {
       if (fs.existsSync(folder) && fs.readdirSync(folder).length) return reply({ refused: true, reasons: [`${folder} already holds today's print; nothing is overwritten`] }, true);
       fs.mkdirSync(folder, { recursive: true });
       const file = `${sheet}_${args.kind === "For review" ? "ForReview" : "AsRevised"}_${today}`;
-      const e = await withRevitConnection((c) => c.sendRaw("fmc_issue_export", { folder, sheets: [{ id: target.id, file }] }, 300000));
+      // RW-11: the export goes through the command queue (busy rules, a queue entry), as a read: the model is not changed.
+      const e = await withRevitConnection((c) => c.sendCommand("fmc_issue_export", { folder, sheets: [{ id: target.id, file }] }, 300000));
       fs.writeFileSync(win.join(folder, file + "_items.md"), printList(`${sheet} ${target.name}`, args.kind, items, now));
       const pdf = ((e?.sheets ?? []) as Array<{ result: string }>)[0]?.result ?? "not exported";
       reg.prints = [...(reg.prints ?? []), { sheet, kind: args.kind, at: now.toISOString(), by, revision: "", items: items.map((i) => i.id), folder }];
@@ -401,6 +415,7 @@ export async function runFmcReview(args: FmcReviewArgs, deps: ReviewDeps = {}) {
     fs.writeFileSync(file, JSON.stringify(reg, null, 2));
     log(config, "review_" + args.action, file, "done", `${item.id} ${item.status}`);
     return reply({ done: true, item: { ...item, shown_status: shownStatus(item, today) }, file,
+      ...(contextNote ? { context: "none", warning: contextNote } : {}),
       next: args.action === "solve" ? "The raiser checks it: accept and close, or reopen" : undefined });
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
@@ -441,7 +456,12 @@ function bcf(args: FmcReviewArgs, reg: Register, file: string, config: GuardConf
   if (!args.file.trim()) return [{ refused: true, reasons: ["Name the .bcfzip to read (file)"] }, true];
   const src = expandEnv(args.file.trim());
   if (!fs.existsSync(src)) return [{ refused: true, reasons: [`No file at ${src}`] }, true];
-  const topics = fromBcf(fs.readFileSync(src));
+  // RW-13: a size and type cap, and every new ticket records the file it came from.
+  const sizeProblem = bcfFileProblem(src, fs.statSync(src).size);
+  if (sizeProblem) return [{ refused: true, reasons: [sizeProblem] }, true];
+  const raw = fs.readFileSync(src);
+  const sourceHash = createHash("sha256").update(raw).digest("hex").slice(0, 16);
+  const topics = fromBcf(raw);
   const known = new Set(reg.items.map((i) => i.guid).filter(Boolean));
   if (args.dry_run !== false)
     return [{ dry_run: true, file: src, topics: topics.length, new: topics.filter((t) => !known.has(t.guid)).map((t) => t.title), known: topics.filter((t) => known.has(t.guid)).length, next: "Run again with dry_run=false" }];
@@ -453,9 +473,13 @@ function bcf(args: FmcReviewArgs, reg: Register, file: string, config: GuardConf
     fs.writeFileSync(win.join(dir, "raised.png"), t.snapshot);
     return win.relative(reviews, win.join(dir, "raised.png"));
   });
+  for (const id of r.added) {
+    const item = reg.items.find((i) => i.id === id);
+    if (item) item.history.push({ at: now.toISOString(), by, what: `Imported from BCF ${win.basename(src)} (sha256 ${sourceHash})` });
+  }
   fs.writeFileSync(file, JSON.stringify(reg, null, 2));
   log(config, "review_bcf_import", src, "done", `${r.added.length} new, ${r.updated.length} updated (by ${by})`);
-  return [{ done: true, file: src, added: r.added, updated: r.updated }];
+  return [{ done: true, file: src, source_sha256: sourceHash, added: r.added, updated: r.updated }];
 }
 
 export function registerFmcReviewTool(server: McpServer) {
