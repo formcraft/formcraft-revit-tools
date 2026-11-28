@@ -14,7 +14,8 @@ export const FMC_HEALTH_DESCRIPTION =
   "ok is false when a warning is an error: a Revit not answering or held by a dialog, a hard memory pause, a sync error on an open document, " +
   "or a module that failed to register (server_ok covers registration alone). warnings[] says which. build_match is false when the server and the add-in were built from different commits. " +
   "summary:true returns only ok, warnings, builds, instances, memory, queue and open-document syncs (use it for a quick check; the full report is about 40 KB). " +
-  "document narrows instances and syncs to that model. A sync error for a document that is not open now is shown as stale_error, not a warning.";
+  "document narrows instances and syncs to that model. The sync list is shown once (open documents by default; closed ones are summarised as syncs_not_open). " +
+  "A sync error for a document that is not open now is shown as stale_error, not a warning. Managed sync off is a warning. An empty hardware block is status partial, not ready.";
 
 export const FMC_HEALTH_SHAPE = {
   summary: z.boolean().optional().default(false).describe("Short reply: ok, warnings, builds, instances, memory, queue, open-document syncs."),

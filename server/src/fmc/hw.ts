@@ -74,7 +74,7 @@ export interface RevitProcessMemory {
 }
 
 export interface HardwareScan {
-  status: "ready" | "pending";
+  status: "ready" | "pending" | "partial";
   cached_at: string | null;
   platform: string;
   gpus: GpuAdapter[];
@@ -149,8 +149,14 @@ export function hwHealth(): HardwareScan {
   return cache.scan;
 }
 
+/** Ready only when the scan has GPUs, page files or disks; the OS-only fallback is partial (P-fmc_health-04). */
+export function hardwareStatus(scan: { gpus?: unknown[]; page_files?: unknown[]; disks?: unknown[] }): "ready" | "partial" {
+  const empty = !(scan.gpus && scan.gpus.length) && !(scan.page_files && scan.page_files.length) && !(scan.disks && scan.disks.length);
+  return empty ? "partial" : "ready";
+}
+
 export function rememberScan(scan: HardwareScan, at = new Date().toISOString()): HardwareScan {
-  const stored = { ...scan, status: "ready" as const, cached_at: at };
+  const stored = { ...scan, status: hardwareStatus(scan), cached_at: at };
   cache.at = at;
   cache.scan = stored;
   return stored;
@@ -164,7 +170,7 @@ export function hostFromOs(): HostRaw {
     memory: { total_mb: Math.round(os.totalmem() / 1048576), free_mb: Math.round(os.freemem() / 1048576), source: "os" },
     pagefiles: [],
     disks: [],
-    cpu: { name: cpus[0]?.model ?? "", cores: cpus.length, logical: cpus.length },
+    cpu: { name: cpus[0]?.model ?? "", cores: 0, logical: cpus.length },
     processes: [],
     gpu_engines: [],
     video_memory: [],

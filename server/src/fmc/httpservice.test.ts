@@ -184,4 +184,16 @@ test("fmc_health: document narrows the reply and summary is short", async () => 
   const reply = await runFmcHealth({ summary: true }, async () => fakeHealth({ memory: { free_mb: 900, tier: "hard", paused: true } as unknown as HealthReport["memory"] }));
   assert.equal(reply.isError, false);
   assert.ok(reply.content[0].text.length < 2000);
+});test("fmc_health: the sync list is printed once, closed models are summarised, empty hw is partial, and sync off is a warning", () => {
+  const view = healthView(fakeHealth()) as Record<string, any>;
+  assert.equal("schedule" in view, false);
+  assert.deepEqual(view.batches.syncs.map((s: { document: string }) => s.document), ["plumbing_USER"]);
+  assert.equal(view.batches.syncs_not_open.count, 1);
+  assert.equal(view.batches.syncs_not_open.with_stale_error, 1);
+  assert.equal(view.hw.status, "partial");
+  const off = healthView(fakeHealth({ batches: { sync: "off", sync_minutes: 0, sync_on_batch_end: false, syncs: [{ document: "plumbing_USER", last_error: null }] } }));
+  assert.ok((off.warnings as Array<{ code: string }>).some((w) => w.code === "FMC-HEALTH-SYNC-OFF"));
+  assert.equal(off.ok, true);
+  const full = healthView(fakeHealth({ hw: { status: "ready", gpus: [{ name: "Quadro" }], page_files: [{ path: "C:\\pagefile.sys" }], disks: [{ drive: "C:" }] } as HealthReport["hw"] }));
+  assert.equal((full.hw as { status: string }).status, "ready");
 });

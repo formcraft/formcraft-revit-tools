@@ -5,7 +5,7 @@ import { runFmcHw } from "../tools/fmc_hw.js";
 import { backupIni, classifyGpu } from "./hw.js";
 import {
   advise, applyGraphicsText, autosaveWouldSave, graphicsPlan, parseDriverDate, parseHost,
-  planFree, primeHardwareScan, readGraphics, stripSecrets, upsertIni, type HostRaw,
+  planFree, primeHardwareScan, readGraphics, stripSecrets, upsertIni, hardwareStatus, hostFromOs, type HostRaw,
 } from "./hw.js";
 import { clashPairs, dispatchJob, rayHitsAabb, rayVoxelHits, type GpuRunner } from "./hwgpu.js";
 import { DEFAULT_CONFIG, type GuardConfig } from "./policy.js";
@@ -229,4 +229,10 @@ test("memory answers from the server's own state when Revit is slow", async () =
   assert.ok(["ok", "soft", "hard", "paused"].includes(body.state));
   const quick = JSON.parse((await runFmcHw({ action: "memory" }, { memoryBudgetMs: 2000, revit: async () => ({ documents: [] }) })).content[0].text);
   assert.ok(quick.stale === false || /Not asked/.test(String(quick.addin)));
+});test("an OS-only hardware scan is partial and does not call threads cores", () => {
+  const raw = hostFromOs();
+  assert.equal(raw.cpu?.cores, 0);
+  assert.ok((raw.cpu?.logical ?? 0) >= 1);
+  assert.equal(hardwareStatus({ gpus: [], page_files: [], disks: [] }), "partial");
+  assert.equal(hardwareStatus({ gpus: [{ name: "Quadro" }], page_files: [], disks: [] }), "ready");
 });

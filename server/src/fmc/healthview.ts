@@ -36,6 +36,14 @@ export function buildMatch(server: string, addins: string[]): boolean | null {
   return builds.every((b) => b.startsWith(running) || running.startsWith(b));
 }
 
+/** An OS-only or empty hardware block is not a finished scan (P-fmc_health-04). */
+export function hwBlockStatus(hw: { status?: string; gpus?: unknown[]; page_files?: unknown[]; disks?: unknown[] } | null | undefined): "ready" | "partial" | "pending" {
+  if (!hw) return "partial";
+  if (hw.status === "pending") return "pending";
+  const empty = !(hw.gpus && hw.gpus.length) && !(hw.page_files && hw.page_files.length) && !(hw.disks && hw.disks.length);
+  return empty ? "partial" : "ready";
+}
+
 function sameDocument(a: string, b: string): boolean {
   if (!a || !b) return false;
   return documentKey(a) === documentKey(b);
@@ -111,6 +119,12 @@ export function healthView(report: HealthReport, options: HealthViewOptions = {}
   }
   let warnings = healthWarnings({ ...report, instances }, syncs);
   if (doc) warnings = warnings.filter((w) => w.code !== "FMC-HEALTH-SYNC-ERROR" || sameDocument(w.document ?? "", doc));
+  if (String(batches.sync ?? "") === "off") {
+    warnings.push({
+      code: "FMC-HEALTH-SYNC-OFF", severity: "warn",
+      message: "Managed workshared sync is off (sync_minutes 0 and sync_on_batch_end false). Models will not sync on a schedule or at batch end.",
+    });
+  }
   const serverOk = report.registration.failed.length === 0;
   const ok = serverOk && !warnings.some((w) => w.severity === "error") && !documentNote;
   const head = {
@@ -138,16 +152,26 @@ export function healthView(report: HealthReport, options: HealthViewOptions = {}
       queue_waiting: ((report.queue ?? []) as unknown as Array<{ waiting?: number }>).reduce((n, q) => n + (Number(q?.waiting) || 0), 0),
       syncs: syncs.filter((row) => row.open).map((row) => ({ document: row.document, last_sync_at: row.last_sync_at ?? null, next_sync_at: row.next_sync_at ?? null, last_error: row.last_error ?? null })),
       jobs: report.jobs,
-      next: "summary:false returns the full report (batch line, coordination, hardware, schedule).",
+      next: "summary:false returns the full report (batch line, coordination, hardware).",
     };
   }
-  const { ok: _ok, ...rest } = report;
+  const { ok: _ok, schedule: _schedule, ...rest } = report;
+  const openSyncs = syncs.filter((row) => row.open);
+  const closedSyncs = syncs.filter((row) => !row.open);
   return {
     ...head,
     ...rest,
     resolved_document: resolved,
     instances,
-    batches: { ...batches, syncs },
-    schedule: syncs,
+    hw: report.hw ? { ...report.hw, status: hwBlockStatus(report.hw) } : report.hw,
+    batches: {
+      ...batches,
+      syncs: openSyncs,
+      ...(closedSyncs.length ? { syncs_not_open: {
+        count: closedSyncs.length,
+        with_stale_error: closedSyncs.filter((row) => row.stale_error != null && row.stale_error !== "").length,
+        documents: closedSyncs.slice(0, 8).map((row) => row.document),
+      } } : {}),
+    },
   };
 }
