@@ -35,6 +35,7 @@ export const FMC_SCRIPT_RUN_SHAPE = {
   label: z.string().optional().default(""),
   kit_folder: z.string().optional().default(""),
   batch_lease: z.string().optional(),
+  approval_id: z.string().optional().describe("run, submit: a person's approval (fmc_graph_guard request_approval). Needed for python scripts and for dynamo apply, offline or Python graphs."),
 };
 
 export type FmcScriptRunArgs = z.infer<z.ZodObject<typeof FMC_SCRIPT_RUN_SHAPE>>;
@@ -96,7 +97,7 @@ export async function runFmcScriptRun(args: FmcScriptRunArgs) {
       if (!found.queue) return found.error;
       const made = found.queue.submit({
         kind: "script", document: doc.document?.path || doc.document?.title || named,
-        mode, priority: args.priority, label: args.label, batch_lease: (args.batch_lease ?? batchLease.getStore() ?? "").trim(),
+        mode, priority: args.priority, label: args.label, batch_lease: (args.batch_lease ?? batchLease.getStore() ?? "").trim(), approval_id: args.approval_id,
         client: runnerClient(), revit_key: runnerKey(), script_id: args.id.trim(), inputs,
       });
       if (!made.ok) return reply(withResolved({ refused: true, code: made.code, message: made.message }, doc.document), true);
@@ -108,7 +109,7 @@ export async function runFmcScriptRun(args: FmcScriptRunArgs) {
       }));
       return reply(withResolved({ job_id: made.job_id, state: made.state, position: made.position, result_ref: queue.status(made.job_id)?.result_ref }, doc.document));
     }
-    const result = await executeScript({ id: args.id.trim(), mode, inputs, cfg: config, kit, allowFullScan: args.allow_full_scan }, {});
+    const result = await executeScript({ id: args.id.trim(), mode, inputs, cfg: config, kit, allowFullScan: args.allow_full_scan, approvalId: args.approval_id }, {});
     return reply(result, result.refused === true || result.success === false);
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);

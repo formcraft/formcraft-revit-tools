@@ -31,6 +31,8 @@ export interface ScriptJob {
   graph: string;
   script_id: string;
   inputs: unknown;
+  /** A person's graph approval id, claimed when the job runs (not when it is queued). */
+  approval_id?: string;
   created_at: string;
   started_at: string;
   finished_at: string;
@@ -54,6 +56,7 @@ export interface SubmitInput {
   graph?: string;
   script_id?: string;
   inputs?: unknown;
+  approval_id?: string;
 }
 
 export interface QueueOptions {
@@ -182,6 +185,7 @@ export class ScriptJobQueue {
       graph: (input.graph ?? "").trim(),
       script_id: (input.script_id ?? "").trim(),
       inputs: input.inputs ?? {},
+      ...(input.approval_id?.trim() ? { approval_id: input.approval_id.trim() } : {}),
       created_at: this.now(),
       started_at: "",
       finished_at: "",
