@@ -1125,6 +1125,24 @@
     "note": "open_local opens a person's existing workshared local as the active document with UIApplication.OpenAndActivateDocument (activate=false uses OpenDocumentFile). worksets are all, last_viewed, none or a list of names. DoNotDetach; it never creates a new local, never synchronises, and refuses a central (FMC-FILE-CENTRAL-REFUSED), a missing file, a cloud, protected or live path, and worksets on a file that is not workshared. An already open local is only activated. close_local never syncs or relinquishes; it activates another open project first when the target is active, refuses the only open document (FMC-FILE-ONLY-DOC) and unsaved changes without confirm. save=true is a write (fmc_close_local_apply, in WRITE_COMMANDS: batch_lease, live-model lock, AI gate) and is refused for HEBERT HOSTELS, a protected original, a verification copy or a document never saved. dry_run defaults true. Opening a model in Revit stays a person's choice: the Revit check runs after install, dry run only."
   },
   {
+    "id": "F126",
+    "area": "Engine",
+    "group": "Manage",
+    "feature": "Central model health (fmc_central_health)",
+    "status": "Built, Revit check due",
+    "ref": "fmc_central_health, docs/tools/fmc_central_health.md",
+    "note": "Read-and-plan only. Reports the central file size and growth over time (history file, record needs dry_run false), the backup folder (state, count, size), stale local copies, and borrowed worksets by owner, then plans a scheduled audit and compact. Every plan line is needs_person true: the tool never audits, compacts, syncs, relinquishes or deletes a backup, and reads file size and date only. Offline tests only so far; needs a Revit check on a staging central."
+  },
+  {
+    "id": "F127",
+    "area": "Engine",
+    "group": "Manage",
+    "feature": "Workshare owners (fmc_workshare_owners)",
+    "status": "Built, Revit check due",
+    "ref": "fmc_workshare_owners, fmc_workshare_facts, fmc_elem_currency, docs/tools/fmc_workshare_owners.md",
+    "note": "Read-only. Shows who owns each workset, and for named element ids whether you can edit them (checked out by another user, not current with central, workset owned by someone else, or free to borrow), and which planned operations someone else's ownership would block, with what a person should do. Sends only fmc_workshare_facts and fmc_elem_currency. Never relinquishes, syncs, saves or checks out, and never grants an editing request. Gaps: elements are checked one id at a time (no model-wide list of borrowed elements), the element workset must be passed in, and Revit 2025 cannot list editing requests. No add-in change. Offline tests only so far; needs a Revit check on a staging model with two users."
+  },
+  {
     "id": "F134",
     "area": "Engine",
     "group": "Families",
