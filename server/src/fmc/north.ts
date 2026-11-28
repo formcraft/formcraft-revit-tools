@@ -565,3 +565,31 @@ export function viewRotationRows(doc: NorthDoc, sample: number) {
 }
 
 export { NORTH_FIX, roleOf, viewRotationVsTrueNorthDeg };
+
+/**
+ * Research 61 (F105): a ready fmc_coord plan for compare's mismatches. The reference is the survey (S) model, else the
+ * architectural (A) one, else the first document; every document that disagrees with it gets a check and a model align,
+ * all dry runs. fmc_north never moves coordinates; fmc_coord does, after a person's yes.
+ */
+export function coordPlan(docs: Array<{ title: string; path?: string; role?: string }>, findings: Array<{ code: string; left: string; right: string; kind?: string; status?: string }>, role: (title: string) => string): { tool: "fmc_coord"; reference: string; steps: Array<Record<string, unknown>>; note: string } | null {
+  const bad = findings.filter((f) => f.kind === "documents" && (f.code === "FMC-NORTH-ANGLE-MISMATCH" || f.code === "FMC-NORTH-SURVEY-MISMATCH") && f.status !== "PASS");
+  if (!bad.length || !docs.length) return null;
+  const roleOfDoc = (d: { title: string; role?: string }) => (d.role || role(d.title) || "").toUpperCase();
+  const ref = docs.find((d) => roleOfDoc(d) === "S") ?? docs.find((d) => roleOfDoc(d) === "A") ?? docs[0];
+  const refKey = ref.path || ref.title;
+  const off = new Set<string>();
+  for (const f of bad) {
+    if (f.left === ref.title) off.add(f.right);
+    else if (f.right === ref.title) off.add(f.left);
+    else { off.add(f.left); off.add(f.right); }
+  }
+  const steps: Array<Record<string, unknown>> = [{ action: "publish", document: refKey, dry_run: true, why: `${ref.title} is the reference (${roleOfDoc(ref) || "first"} model)` }];
+  for (const title of off) {
+    const d = docs.find((x) => x.title === title);
+    if (!d || d.title === ref.title) continue;
+    const key = d.path || d.title;
+    steps.push({ action: "check", document: key, other: refKey });
+    steps.push({ action: "align", document: key, level: "model", target: "survey", dry_run: true });
+  }
+  return { tool: "fmc_coord", reference: ref.title, steps, note: "Every step is a dry run; a real align needs a person's yes. fmc_north only reports." };
+}
