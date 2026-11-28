@@ -59,6 +59,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                     case "flex": Result = FmcDocGeometry.Flex(Get().Doc, Parameters["follow"] as JArray, Parameters.Value<double?>("max_s") ?? FmcDocGeometry.DefaultFlexSeconds); break;
                     case "apply":
                         var s = Get();
+                        var applyOps = Parameters["ops"] as JArray ?? new JArray();
+                        // type_flex_matrix is a read on its own (always rolled back); a real delete needs a person's approval
+                        if (FmcFamEdit.IsFlexMatrix(applyOps)) { Result = FmcFamEdit.FlexMatrix(s.Doc, (JObject)applyOps[0]); break; }
+                        if (Parameters.Value<bool?>("dry_run") == false && FmcFamEdit.HasDelete(applyOps)) FmcFamEdit.ClaimPersonApproval(Parameters, applyOps);
                         Result = FmcDocOps.Apply(s.Doc, Parameters["ops"] as JArray ?? new JArray(), Parameters.Value<bool?>("dry_run") != false,
                             Parameters.Value<string>("shared_parameter_file") ?? "", FmcDocProgress.PathFor(Parameters.Value<string>("session") ?? ""));
                         break;
@@ -158,6 +162,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             r["warnings"] = doc.GetWarnings().Count;
             r["views"] = new JArray(new FilteredElementCollector(doc).OfClass(typeof(View)).Cast<View>().Where(v => !v.IsTemplate && v.CanBePrinted).Select(v => v.Name));
             try { FmcDocInspect.AddDetail(doc, r); } catch (Exception e) { r["detail_error"] = e.Message; }  // F-056
+            try { FmcFamEdit.AddReport(doc, r); } catch (Exception e) { r["famedit_error"] = e.Message; }  // fmc_fam_param / fmc_fam_ref list
             return r;
         }
 

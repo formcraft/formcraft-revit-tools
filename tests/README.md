@@ -3,6 +3,7 @@
 | Folder | What | Run |
 |---|---|---|
 | `commandset/` | Command set tests (carried) | `dotnet test tests/commandset` (needs Revit API references) |
+| `famedit/` | fmc_fam_param / fmc_fam_type / fmc_fam_ref Revit-free rules (delete gate, origin planes, renames, flex values) | `dotnet run --project tests/famedit/FmcFamEditRules.Tests.csproj` |
 | `fmc/` | Guard parity: the C# guard and the TypeScript policy agree | `dotnet run --project tests/fmc` |
 | `shell/` | Shell: theme (both colour sets, kit styles, contrast, embedded fonts), `ThemeService`. TUnit | `dotnet test --project tests/shell/Formcraft.Shell.Tests.csproj` (.NET 10 SDK), or run `Formcraft.Shell.Tests.exe` |
 | `../server` | Guard policy, CLI, Ask Claude tests | `cd server && npm test` |

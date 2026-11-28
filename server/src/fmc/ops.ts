@@ -229,7 +229,37 @@ export const OP = z.discriminatedUnion("op", [
   z.object({ op: z.literal("set_type_image"), name: z.string().min(1).describe("identity, e.g. Type image"),
     path: z.string().min(1).describe("a .png or .jpg in the kit's families folder, e.g. 04_Families\\_Staging\\<Role>\\_Images\\<family>.png"),
     type: z.string().optional().describe("one type; default: every type") }),
+  // Family editor tools (fmc_fam_param, fmc_fam_type, fmc_fam_ref; Plugin Bot 28 Nov, Emlyn 13:35 EAT): lifecycle ops on a
+  // family already built. param_remove, type_delete and plane_delete are person-gated (FAM_DELETE_OPS): a dry run gives
+  // the plan and a confirm token; the real run waits for a person's approval in the pane (fmc/famedit.ts).
+  z.object({ op: z.literal("param_rename"), name: z.string().min(1).describe("the family parameter's current name"),
+    new_name: z.string().min(1).describe("its new name (a kit shared parameter can't be renamed: its name comes from the dictionary)") }),
+  z.object({ op: z.literal("param_regroup"), name: z.string().min(1), group: z.enum(GROUPS).describe("the Properties group it shows under") }),
+  z.object({ op: z.literal("param_set_reporting"), name: z.string().min(1), on: z.boolean().describe("true: a reporting parameter (reads a dimension); false: a driving one") }),
+  z.object({ op: z.literal("param_set_formula"), name: z.string().min(1).describe("the parameter"),
+    formula: z.string().nullable().describe("the formula, or null (or \"\") to clear it") }),
+  z.object({ op: z.literal("param_remove"), name: z.string().min(1).describe("the family parameter to remove (person-gated)") }),
+  z.object({ op: z.literal("type_rename"), name: z.string().min(1).describe("the type's current name"), new_name: z.string().min(1) }),
+  z.object({ op: z.literal("type_flex_matrix"), name: z.string().default("flex matrix"),
+    params: z.array(z.string().min(1)).min(1).max(8).describe("the parameters to flex in every type"),
+    ranges: z.record(z.object({ low: z.number(), high: z.number(), steps: z.number().int().min(2).max(6).default(3) }))
+      .describe("per parameter: low and high (Length in mm, Angle in degrees, numbers as they are) and how many values from low to high (default 3)"),
+    types: z.array(z.string().min(1)).optional().describe("only these types (default: every type)") }),
+  z.object({ op: z.literal("type_delete"), name: z.string().min(1).describe("the type to delete (person-gated; never the last type)") }),
+  z.object({ op: z.literal("plane_rename"), name: z.string().default("").describe("the plane's name, or leave out and give id"),
+    id: z.number().int().positive().optional().describe("the plane's element id (fmc_fam_ref list shows it)"), new_name: z.string().min(1) }),
+  z.object({ op: z.literal("plane_move"), name: z.string().default(""), id: z.number().int().positive().optional(),
+    offset_mm: z.number().finite().describe("how far to move it along its own normal, mm (minus for the other way)") }),
+  z.object({ op: z.literal("plane_delete"), name: z.string().default(""), id: z.number().int().positive().optional()
+    .describe("the plane to delete (person-gated): never Center (Left/Right), Center (Front/Back) or a plane that defines the origin") }),
 ]);
+
+/** The ops that delete something from the family: a dry run shows the plan and a token; only a person's approval runs them. */
+export const FAM_DELETE_OPS: ReadonlySet<string> = new Set(["param_remove", "type_delete", "plane_delete"]);
+/** The template planes that hold the family's origin: never renamed, moved or deleted by a tool. */
+export const ORIGIN_PLANES: readonly string[] = ["Center (Left/Right)", "Center (Front/Back)", "Ref. Level"];
+/** A plane op's identity: its name, or #id. */
+export const planeKey = (o: { name?: string; id?: number }) => (o.name ?? "").trim() || (o.id !== undefined ? `#${o.id}` : "");
 export type Op = z.infer<typeof OP>;
 export const OPS = z.array(OP).min(1).max(500);
 
@@ -435,6 +465,7 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
   const solids = new Set<string>(), connectors = new Set<string>(), subcats = new Set<string>(), lines = new Set<string>(), families = new Set<string>(), nested = new Set<string>();
   const mayExist = (what: string, n: string) => `reference to ${what} "${n}" that isn't made earlier in this batch (it may exist in the file: then it's fine)`;
   const params = new Set<string>(), types = new Set<string>(), planes = new Set<string>(["Center (Left/Right)", "Center (Front/Back)", "Ref. Level"]);
+  const removedParams = new Set<string>(), deletedTypes = new Set<string>(), deletedPlanes = new Set<string>();
   const typedParam = (want: string) => (n: string, at: string) => {
     if (!params.has(n) && !TEMPLATE_SIZE_PARAMS.has(n)) p.push(`${at}: ${mayExist("parameter", n)}`);
     else if (paramTypes.has(n) && paramTypes.get(n) !== want) p.push(`${at}: "${n}" is ${paramTypes.get(n)}, not ${want}`);
@@ -444,8 +475,9 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
   const SOLID_OPS = new Set(["extrusion", "void_extrusion", "sweep", "void_sweep", "revolution", "blend", "import_part"]);
   let category: string | null = null;
   ops.forEach((o, i) => {
-    const at = `op ${i + 1} (${o.op} ${o.name})`;
-    const key = `${o.op}|${o.name.toLowerCase()}`;
+    const ident = o.op.startsWith("plane_") ? planeKey(o as { name?: string; id?: number }) : o.name;
+    const at = `op ${i + 1} (${o.op} ${ident})`;
+    const key = `${o.op}|${ident.toLowerCase()}`;
     if (seen.has(key)) p.push(`${at}: the same ${o.op} name twice in one batch`);
     seen.add(key);
     // F-064: two solids with one name (an extrusion and a sweep, say) fail half way through a build
@@ -498,6 +530,67 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
         }
         break;
       case "add_type": types.add(o.name); break;
+      // Family editor ops (famedit): checks the server can make without the file; Revit checks the rest
+      case "param_rename":
+        if (o.new_name === o.name) p.push(`${at}: the new name is the same as the old one`);
+        if (dictionary && [...dictionary.values()].some((x) => x.name === o.name))
+          p.push(`${at}: "${o.name}" is a kit shared parameter: its name comes from the dictionary and isn't renamed in a family`);
+        if (dictionary && [...dictionary.values()].some((x) => x.name === o.new_name))
+          p.push(`${at}: "${o.new_name}" is a kit shared parameter's name: add it with add_shared_param and its GUID instead`);
+        if (removedParams.has(o.name)) p.push(`${at}: "${o.name}" is removed earlier in this batch`);
+        if (paramTypes.has(o.name)) { paramTypes.set(o.new_name, paramTypes.get(o.name)!); paramTypes.delete(o.name); }
+        params.delete(o.name); params.add(o.new_name);
+        break;
+      case "param_regroup":
+      case "param_set_reporting":
+      case "param_set_formula":
+        if (removedParams.has(o.name)) p.push(`${at}: "${o.name}" is removed earlier in this batch`);
+        if (o.op === "param_set_formula" && o.formula !== null && o.formula.trim() === "" && o.formula.length > 0) p.push(`${at}: a blank formula: give null or "" to clear it`);
+        if (o.op === "param_set_reporting" && o.on && paramTypes.has(o.name) && !["Length", "Angle", "Area", "Volume", "Number"].includes(paramTypes.get(o.name)!))
+          p.push(`${at}: "${o.name}" is ${paramTypes.get(o.name)}: only a dimension-type parameter (Length, Angle...) can be reporting`);
+        break;
+      case "param_remove":
+        if (removedParams.has(o.name)) p.push(`${at}: "${o.name}" is removed twice`);
+        removedParams.add(o.name); params.delete(o.name);
+        break;
+      case "type_rename":
+        if (o.new_name === o.name) p.push(`${at}: the new name is the same as the old one`);
+        if (deletedTypes.has(o.name)) p.push(`${at}: type "${o.name}" is deleted earlier in this batch`);
+        types.delete(o.name); types.add(o.new_name);
+        break;
+      case "type_delete":
+        if (deletedTypes.has(o.name)) p.push(`${at}: type "${o.name}" is deleted twice`);
+        deletedTypes.add(o.name); types.delete(o.name);
+        break;
+      case "type_flex_matrix": {
+        if (ops.length > 1) p.push(`${at}: type_flex_matrix is a read (nothing is kept): send it on its own, not with other ops`);
+        for (const n of o.params) {
+          const r = o.ranges[n];
+          if (!r) p.push(`${at}: no range for "${n}" (ranges: { "${n}": { low, high } })`);
+          else if (!(r.high > r.low)) p.push(`${at}: "${n}" needs high above low`);
+        }
+        for (const n of Object.keys(o.ranges)) if (!o.params.includes(n)) p.push(`${at}: a range for "${n}", which isn't in params`);
+        const runs = (o.types?.length ?? 1) * o.params.reduce((s, n) => s + (o.ranges[n]?.steps ?? 3), 0);
+        if (runs > 200) p.push(`${at}: ${runs} regenerations per type list is too many for one call: flex fewer parameters or steps`);
+        break;
+      }
+      case "plane_rename":
+      case "plane_move":
+      case "plane_delete": {
+        const k = planeKey(o);
+        if (!k) { p.push(`${at}: name the plane (name) or give its id`); break; }
+        if ((o.name ?? "").trim() && o.id !== undefined) p.push(`${at}: give name or id, not both`);
+        if (ORIGIN_PLANES.includes(k)) p.push(`${at}: "${k}" holds the family's origin: a tool never renames, moves or deletes it`);
+        if (deletedPlanes.has(k)) p.push(`${at}: plane ${k} is deleted earlier in this batch`);
+        if (o.op === "plane_rename") {
+          if (o.new_name === k) p.push(`${at}: the new name is the same as the old one`);
+          if (ORIGIN_PLANES.includes(o.new_name)) p.push(`${at}: "${o.new_name}" is a template origin plane's name`);
+          planes.delete(k); planes.add(o.new_name);
+        }
+        if (o.op === "plane_move" && o.offset_mm === 0) p.push(`${at}: offset_mm 0 moves nothing`);
+        if (o.op === "plane_delete") { deletedPlanes.add(k); planes.delete(k); }
+        break;
+      }
       case "set_category": category = o.name; break;
       case "set_family_params":
         // a panel Part Type means something only on Electrical Equipment (Revit offers the Distribution System only there)
