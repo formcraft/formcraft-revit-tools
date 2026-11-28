@@ -23,6 +23,28 @@ export async function roomAction(ctx: Ctx): Promise<Reply> {
     next: `This run is saved: call again with run_id "${ctx.run_id}" and modules (the unit widths), plus a corner, sink and appliances on the walls if there are any; then lay out (units, summary) and check against the room` });
 }
 
+/**
+ * remove: what a label placed. The dry run (default) lists it through the read-only path and the add-in opens no
+ * transaction; the real run needs dry_run=false and confirm=true and goes through the lock (one Undo).
+ */
+export async function removeAction(ctx: Ctx): Promise<Reply> {
+  const { args, config, problem, dry, run_id, send, reply } = ctx;
+  const reasons: string[] = [];
+  if (problem && !dry) reasons.push(problem);
+  const label = packLabel(args.label);
+  if (!label) reasons.push("Name what to remove (label), e.g. K-01 Kitchen: the units that label placed");
+  const unconfirmed = needsConfirm(args, dry, "deletes the units this label placed from the model");
+  if (unconfirmed) reasons.push(unconfirmed);
+  if (reasons.length) return reply({ refused: true, reasons }, true);
+  const tag = `FMC:casework:${label}`;
+  const result = await send("fmc_casework_remove", { dry_run: dry, tag }, dry, 300000) as { count?: number; removed?: number; found?: unknown[]; rolled_back?: boolean };
+  const count = result?.count ?? 0;
+  log(config, dry, tag, dry ? "dry run" : "done", dry ? `${count} units found` : `${result?.removed ?? 0} of ${count} units removed`, "casework_remove", run_id);
+  return reply({ dry_run: dry, tag, found: count, ...(dry ? { will_remove: result?.found ?? [] } : { removed: result?.removed ?? 0 }), result,
+    next: dry ? (count ? "Show this to the person; once they say yes run again with dry_run=false and confirm=true (one Undo puts them back)" : "Nothing carries this label's tag")
+      : "Check the model; Undo in Revit puts them back" });
+}
+
 /** place: the units as the kit's family types, one Undo; a re-run replaces what the same label placed. */
 export async function placeAction(ctx: Ctx, p: Prepared): Promise<Reply> {
   const { args, config, problem, dry, run_id, send, reply } = ctx;

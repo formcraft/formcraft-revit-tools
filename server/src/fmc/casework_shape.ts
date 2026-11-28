@@ -38,7 +38,7 @@ const UNIT = z.object({
 });
 
 export const FMC_CASEWORK_SHAPE = {
-  action: z.enum(["units", "parts", "nest", "cutlist", "hardware", "summary", "pack", "room", "check", "place", "shop_drawings"]),
+  action: z.enum(["units", "parts", "nest", "cutlist", "hardware", "summary", "pack", "room", "check", "place", "shop_drawings", "remove"]),
   run: RUN.optional().describe("The run to lay out (or give units)"),
   units: z.array(UNIT).optional().describe("A unit list instead of a run (the unit editor's)"),
   standards: z.record(z.string(), z.unknown()).optional()

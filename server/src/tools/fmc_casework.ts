@@ -5,7 +5,7 @@ import { saveRun } from "../fmc/casework_store.js";
 import { FMC_CASEWORK_SHAPE, FmcCaseworkArgs } from "../fmc/casework_shape.js";
 import { CaseworkIo, Ctx, log, prepare, replyOf, resolveInputs } from "../fmc/casework_tool.js";
 import { checkAction, engineAction, packAction } from "../fmc/casework_actions.js";
-import { placeAction, roomAction, shopAction } from "../fmc/casework_revit.js";
+import { placeAction, removeAction, roomAction, shopAction } from "../fmc/casework_revit.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 
 // The tool is split for the hub's 300-line rule: schema (fmc/casework_shape.ts), plumbing (fmc/casework_tool.ts),
@@ -57,6 +57,8 @@ export async function runFmcCasework(args: FmcCaseworkArgs, io: CaseworkIo = {})
     ctx.entry = { ...ctx.entry, run: args.run, units: args.units, standards: args.standards, room_read: resolved.saved?.room_read };
     // room reading needs no standards: it gives the run's walls, which the person completes
     if (args.action === "room") return await roomAction(ctx);
+    // removing needs no standards either: only the label's tag
+    if (args.action === "remove") return await removeAction(ctx);
     const prep = prepare(args, config);
     if ("refused" in prep) return reply(prep.refused, true);
     const p = prep.ok;
@@ -71,7 +73,7 @@ export async function runFmcCasework(args: FmcCaseworkArgs, io: CaseworkIo = {})
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
     if (args.action === "pack") log(config, dry, args.project_folder, "error", msg, "casework_pack", run_id);
-    else if (args.action === "place" || args.action === "shop_drawings") log(config, dry, args.level || args.project_folder, "error", msg, `casework_${args.action}`, run_id);
+    else if (args.action === "place" || args.action === "shop_drawings" || args.action === "remove") log(config, dry, args.level || args.project_folder, "error", msg, `casework_${args.action}`, run_id);
     return reply({ error: msg }, true);
   } finally {
     // the inputs (and a room read) under this call's run id, for the next call's run_id
