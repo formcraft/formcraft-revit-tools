@@ -19,6 +19,8 @@ export const FMC_HEADROOM_DESCRIPTION =
   "Scans stairs, corridors and rooms in the host and in loaded links. Clear height is the distance from the walking surface up to the underside of a beam, duct, pipe or soffit. " +
   "A 3D view that already exists is used with ReferenceIntersector. Without one, bounding boxes are used and the reply says so. " +
   "min_clear_mm comes from headroom.min_clear_mm in the standards bank. A missing key is the provisional 2100 mm and cannot PASS. " +
+  "A call min_clear_mm below the bank's value is a what-if and cannot PASS (min_clear.below_bank). " +
+  "status NOT_CHECKED means no stair, corridor or room was found, so nothing was measured: never report that as clear. " +
   "levels limits the scan to those level names. sources is host, link, or both (the default). " +
   "Pass document. A missing name is FMC-DOC-REQUIRED. The active document is not a guess. " +
   "Hits return ids, a location in millimetres, and the clear height. The full JSON is under %LOCALAPPDATA%\\Formcraft\\headroom. No pictures. " +
@@ -27,7 +29,7 @@ export const FMC_HEADROOM_DESCRIPTION =
 export const FMC_HEADROOM_SHAPE = {
   document: z.string().optional().default("").describe("Title or full path of an open document. Required."),
   levels: z.array(z.string()).optional().default([]).describe("Level names. Empty scans every level."),
-  min_clear_mm: z.number().positive().optional().describe("Overrides the number. A missing standards key stays PROVISIONAL and cannot PASS."),
+  min_clear_mm: z.number().positive().optional().describe("Overrides the number. A missing standards key stays PROVISIONAL and cannot PASS. A value below the bank's is a what-if and cannot PASS."),
   sources: z.array(z.enum(["host", "link"])).optional().default(["host", "link"]),
   sample_limit: z.number().int().min(1).max(100).optional().default(50),
 };
@@ -97,7 +99,14 @@ export async function runFmcHeadroom(args: FmcHeadroomArgs, io: HeadroomIo = {})
     const zones = filterLevels(asZones(snapshot.zones), args.levels);
     const obstacles = asObstacles(snapshot.obstacles);
     const hits = headroomHits(zones, obstacles, cited.value, args.sources);
-    const status = verdict(hits.length, cited);
+    const status = verdict(hits.length, cited, zones.length);
+    const zoneKinds: Record<string, number> = {};
+    for (const zone of zones) zoneKinds[zone.kind] = (zoneKinds[zone.kind] ?? 0) + 1;
+    const notChecked = status === "NOT_CHECKED"
+      ? (args.levels.length && asZones(snapshot.zones).length
+        ? `No stair, corridor or room on the levels ${args.levels.join(", ")} (the model has ${asZones(snapshot.zones).length} on other levels). Nothing was measured.`
+        : "No stair, corridor or room was found in the host or the loaded links (corridors are rooms whose name or department names circulation). Nothing was measured: this is not a clear result.")
+      : undefined;
     const worst = hits.length ? hits[0].clear_mm : null;
     const resolved = (snapshot.resolved_document ?? {}) as { title?: string; path?: string };
     const fileBody = {
@@ -130,12 +139,14 @@ export async function runFmcHeadroom(args: FmcHeadroomArgs, io: HeadroomIo = {})
       min_clear: cited,
       bank_shape: HEADROOM_BANK_SHAPE,
       status,
-      can_pass: cited.can_pass,
+      ...(notChecked ? { message: `[FMC-HEADROOM-NO-ZONES] ${notChecked}` } : {}),
+      can_pass: cited.can_pass && status !== "NOT_CHECKED",
       method: fileBody.method,
       view3d: snapshot.view3d ?? null,
       notes: snapshot.notes ?? [],
       unloaded_links: snapshot.unloaded_links ?? [],
       zones: zones.length,
+      zone_kinds_found: zoneKinds,
       obstacles: obstacles.length,
       hit_count: hits.length,
       worst_mm: worst,

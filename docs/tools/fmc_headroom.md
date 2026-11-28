@@ -33,3 +33,9 @@ Bank shape, when the key is still missing:
   }
 }
 ```
+
+## Status values
+
+- `PASS` / `FAIL`: zones were scanned against an approved or draft bank entry with a clause.
+- `PROVISIONAL`: the bank has no usable `headroom.min_clear_mm`, or the call's `min_clear_mm` is below the bank value (`min_clear.below_bank: true`, a what-if). It cannot PASS.
+- `NOT_CHECKED` (`[FMC-HEADROOM-NO-ZONES]`): no stair, corridor or room was found, so nothing was measured. `zone_kinds_found` counts the zones by kind.
