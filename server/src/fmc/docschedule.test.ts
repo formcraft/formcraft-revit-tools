@@ -89,8 +89,10 @@ test("save_exclude matches like sync_exclude, and protected_paths is a prefix", 
   assert.equal(saveBlocked({ title: "Other", path: "C:\\WIP\\Other.rvt" }, cfg), null);
   assert.match(saveBlocked({ title: "F26901-FMC-ZZ-ZZ-M3-S-0001", path: "C:\\WIP\\X.rvt" }, cfg) ?? "", /save_exclude/);
   assert.match(saveBlocked({ title: "S-0001", path: ogala }, { ...DEFAULT_CONFIG, protected_paths: ["D:\\Fomcraft"], protected_roots: [] }) ?? "", /protected path/);
-  // The old check is protected_roots only. Empty matches nothing, so this WIP file is not protected.
-  assert.equal(saveBlocked({ title: "S-0001", path: ogala }, { ...DEFAULT_CONFIG, protected_roots: [], protected_paths: [] }), null);
+  // RV-6: empty protected_roots fails closed to D:\Fomcraft, so this file under the originals tree is not saved.
+  assert.match(saveBlocked({ title: "S-0001", path: ogala }, { ...DEFAULT_CONFIG, protected_roots: [], protected_paths: [] }) ?? "", /protected path/);
+  // A person who names other roots moves the protection; then this WIP file is saved.
+  assert.equal(saveBlocked({ title: "S-0001", path: ogala }, { ...DEFAULT_CONFIG, protected_roots: ["Z:\\Live"], protected_paths: [] }), null);
   assert.match(saveBlocked({ title: "S-0001", path: ogala }, { ...DEFAULT_CONFIG, protected_roots: ["D:\\Fomcraft"] }) ?? "", /protected path/);
 });
 

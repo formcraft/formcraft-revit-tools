@@ -58,9 +58,12 @@ export interface GuardConfig {
   family_max_mb?: number;
   /**
    * Original / live model roots. Write, save, sync, reload and relinquish are refused for any document under these
-   * paths. A verification copy must sit outside them. Empty until the guard file names them (for example D:\Fomcraft).
+   * paths. A verification copy must sit outside them. RV-6: empty or missing fails closed to PROTECTED_ROOTS_FLOOR
+   * (D:\Fomcraft, the originals tree on this PC); a person widens or moves it by naming the roots in the guard file.
    */
   protected_roots: string[];
+  /** Extra projects never written, saved or synced. Added to FORBIDDEN_PROJECTS_FLOOR; it can never remove a floor name. */
+  forbidden_projects?: string[];
   /**
    * Folders a verification copy may be written to. Empty means any path that is not a protected root and not a CDE
    * gate folder. When set, open_copy's copy_to must be inside one of them.
@@ -389,6 +392,55 @@ function norm(p: string): string {
 
 function segments(p: string): string[] {
   return norm(p).toLowerCase().split("\\").filter(Boolean);
+}
+
+/** RV-6: the protected originals when the guard file names no protected_roots (spelling as on this PC: D:\Fomcraft). */
+export const PROTECTED_ROOTS_FLOOR: readonly string[] = ["D:\\Fomcraft"];
+
+/** Projects no tool writes, saves or syncs, wherever they sit. Config forbidden_projects adds to it, never replaces it. */
+export const FORBIDDEN_PROJECTS_FLOOR: readonly string[] = ["A-0001", "HEBERT HOSTELS"];
+
+/** Upper case, every run of space, _, -, . and ~ becomes one space: HEBERT_HOSTELS, hebert-hostels and "Hebert  Hostels" match. */
+export function normaliseProjectText(text: string): string {
+  return text.toUpperCase().replace(/[\s_\-.~]+/g, " ").trim();
+}
+
+/** The floor plus the guard file's forbidden_projects. */
+export function forbiddenProjects(cfg?: Partial<GuardConfig> | null): string[] {
+  const extra = Array.isArray(cfg?.forbidden_projects)
+    ? cfg!.forbidden_projects.filter((x): x is string => typeof x === "string" && x.trim().length > 0)
+    : [];
+  return [...new Set([...FORBIDDEN_PROJECTS_FLOOR, ...extra.map((x) => x.trim())])];
+}
+
+function realPathOf(file: string): string {
+  try { return /^[a-zA-Z]:[\\/]|^\\\\/.test(file) && fs.existsSync(file) ? fs.realpathSync.native(file) : ""; } catch { return ""; }
+}
+
+/**
+ * The forbidden project a title or path names, or null. Each path segment (folder, file name) and the title is
+ * normalised. A name is a hit at the start of a segment (A-0001, A-0001-Legacy, A-00012, HEBERT HOSTELS_USER). A name
+ * without digits (HEBERT HOSTELS) is also a hit at any word start inside a segment. A code with digits is not matched
+ * inside a segment, because ISO 19650 model names carry role-number fields such as ...-M3-A-0001. An existing path is
+ * also checked by its real path (junction, subst drive, 8.3 name).
+ */
+export function forbiddenProject(text: string | undefined | null, cfg?: Partial<GuardConfig> | null): string | null {
+  const raw = (text ?? "").trim();
+  if (!raw) return null;
+  const names = forbiddenProjects(cfg).map((n) => ({ name: n, norm: normaliseProjectText(n), code: /\d/.test(n) }));
+  const candidates = [raw, realPathOf(raw)].filter(Boolean);
+  for (const candidate of candidates) {
+    for (const seg of candidate.split(/[\\/]+/)) {
+      const s = normaliseProjectText(seg.replace(/\.(rvt|rfa|rte|rft)$/i, ""));
+      if (!s) continue;
+      for (const n of names) {
+        if (!n.norm) continue;
+        if (s.startsWith(n.norm)) return n.name;
+        if (!n.code && (" " + s).includes(" " + n.norm)) return n.name;
+      }
+    }
+  }
+  return null;
 }
 
 /** True when target is root itself or inside root. "*" in root matches exactly one folder. */
