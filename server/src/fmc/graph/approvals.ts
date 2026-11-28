@@ -43,8 +43,30 @@ export interface ApprovalRequest {
   };
   findings?: number;
   reason?: string;
+  /** Ignored since v1.3: who asked is never taken from the caller. See `surface`. */
   requested_by?: string;
+  /** v1.3: "pane" only from the pane CLI's graph_request (the same trusted surface as graph_approve); anything else is "mcp". */
+  surface?: RequestSurface;
   ttl_minutes?: number;
+}
+
+export type RequestSurface = "mcp" | "pane";
+
+/** The OS user the pane runs as (never a caller-supplied string). Empty when it is missing, odd, or looks automated. */
+export function paneUser(env: NodeJS.ProcessEnv = process.env): string {
+  let user = "";
+  try { user = os.userInfo().username; } catch { user = ""; }
+  user = (user || env.USERNAME || env.USER || "").trim();
+  return /^[A-Za-z0-9._@ $-]{1,64}$/.test(user) && !/^auto/i.test(user) ? user : "";
+}
+
+/** requested_by for a request: "person:<OS user>" only from the pane surface, "ai" for every MCP or AI caller. */
+export function requesterFor(surface: RequestSurface | undefined, env: NodeJS.ProcessEnv = process.env): string {
+  if (surface === "pane") {
+    const user = paneUser(env);
+    if (user) return `person:${user}`;
+  }
+  return "ai";
 }
 
 export type ClaimResult = { ok: true; approval: GraphApproval } | { ok: false; code: string; message: string };
@@ -78,8 +100,12 @@ function expired(item: GraphApproval, now: Date): boolean {
 /** A pending approval for exactly this plan. Asking again for the same pending plan returns the same record. */
 export function requestGraphApproval(req: ApprovalRequest, env: NodeJS.ProcessEnv = process.env, now = new Date()): GraphApproval {
   const ttl = Math.max(1, Math.min(30, req.ttl_minutes ?? 30));
+  const requestedBy = requesterFor(req.surface, env);
   for (const old of listGraphApprovals({ status: "pending" }, env, now)) {
-    if (old.plan_hash === req.plan.plan_hash && old.kind === req.kind) return old;
+    if (old.plan_hash === req.plan.plan_hash && old.kind === req.kind) {
+      appendGraphRunLog({ event: "approval_requested", id: old.id, kind: old.kind, plan_hash: old.plan_hash, requested_by: requestedBy, recorded_requested_by: old.requested_by, reused: true }, env, now);
+      return old;
+    }
   }
   const item: GraphApproval = {
     id: crypto.randomBytes(8).toString("hex"),
@@ -96,11 +122,12 @@ export function requestGraphApproval(req: ApprovalRequest, env: NodeJS.ProcessEn
     python: req.plan.python,
     findings: req.findings ?? 0,
     reason: (req.reason ?? "").slice(0, 500),
-    requested_by: (req.requested_by ?? "ai").slice(0, 100),
+    requested_by: requestedBy,
     created_at: now.toISOString(),
     expires_at: new Date(now.getTime() + ttl * 60_000).toISOString(),
   };
   write(item, env);
+  appendGraphRunLog({ event: "approval_requested", id: item.id, kind: item.kind, plan_hash: item.plan_hash, graph: item.graph, mode: item.mode, requested_by: item.requested_by }, env, now);
   return item;
 }
 
@@ -138,6 +165,7 @@ export function decideGraphApproval(id: string, decision: "approved" | "refused"
   if (!who || /^auto/i.test(who)) return { ok: false, code: "FMC-GRAPH-APPROVAL-AUTO", message: "[FMC-GRAPH-APPROVAL-AUTO] A graph approval needs a named person." };
   const next: GraphApproval = { ...item, status: decision, decided_by: who.slice(0, 100), decided_at: now.toISOString() };
   write(next, env);
+  appendGraphRunLog({ event: `approval_${decision}`, id: next.id, kind: next.kind, plan_hash: next.plan_hash, requested_by: next.requested_by, decided_by: next.decided_by }, env, now);
   return { ok: true, approval: next };
 }
 

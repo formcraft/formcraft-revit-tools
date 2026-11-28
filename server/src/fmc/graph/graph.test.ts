@@ -3,9 +3,15 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { GRAPH_DECISIONS_DEFAULT, graphDecisions, PYTHON_ALWAYS_NEEDS_PERSON } from "./decisions.js";
 import { stableJson, sha256Text } from "./hash.js";
-import { claimGraphApproval, decideGraphApproval, listGraphApprovals, readGraphApproval, requestGraphApproval } from "./approvals.js";
+import { approvalsDir, claimGraphApproval, decideGraphApproval, listGraphApprovals, paneUser, readGraphApproval, requestGraphApproval, requesterFor } from "./approvals.js";
+import { FMC_GRAPH_GUARD_SHAPE } from "../../tools/fmc_graph_guard.js";
+import { z } from "zod";
+
+/** server/src, from build/fmc/graph (tests read source to prove which surfaces pass what). */
+const SRC_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..", "src");
 import { bindInputsByName, buildPlan, runNeedsApproval } from "./plan.js";
 import { graphRunGate } from "./rungate.js";
 import { scanGraphText, scanPythonCode } from "./scan.js";
@@ -363,4 +369,38 @@ test("jail v1.2: device, UNC, '..', relative-without-base, missing and link refu
   assert.equal(reason(jailCheck("  ", root)), "empty");
   // path inputs: device and UNC values are refused like any other escape
   assert.equal(pathInputsOutsideJail({ a: "\\\\?\\C:\\x.csv", b: "\\\\srv\\s\\x.csv", c: "/", d: "note" }, root).length, 2);
+});
+
+// ---------- requested_by is safe (v1.3) ----------
+test("approval requested_by: an AI or MCP caller is always \"ai\" and cannot spoof person:; only the pane surface records the OS user; the ledger names both", () => {
+  const env = envFor();
+  // A caller-supplied requested_by is ignored, whatever it says.
+  for (const spoof of ["person:mallory", "person:" + (paneUser(env) || "someone"), "Person:Admin", "pane"]) {
+    const a = requestGraphApproval({ kind: "graph_run", plan: fakePlan(sha256Text(spoof)), requested_by: spoof }, env);
+    assert.equal(a.requested_by, "ai", spoof);
+  }
+  // surface "mcp" (the MCP tool and the fmc_graph_guard CLI case) is "ai" too.
+  assert.equal(requestGraphApproval({ kind: "graph_run", plan: fakePlan(sha256Text("mcp")), surface: "mcp", requested_by: "person:x" }, env).requested_by, "ai");
+  assert.equal(requesterFor(undefined, env), "ai");
+  // The MCP tool's schema accepts requested_by but it never reaches the record: the tool passes no surface.
+  const parsed = z.object(FMC_GRAPH_GUARD_SHAPE).parse({ action: "request_approval", path: "K:\\g.dyn", requested_by: "person:mallory" });
+  assert.equal(parsed.requested_by, "person:mallory");
+  const guardSrc = fs.readFileSync(path.join(SRC_DIR, "tools", "fmc_graph_guard.ts"), "utf8");
+  assert.doesNotMatch(guardSrc, /requested_by:\s*args\.requested_by|requested_by:\s*\(?args/);
+  assert.match(guardSrc, /server\.tool\("fmc_graph_guard"[^\n]*\(args\) => runFmcGraphGuard\(args\)\)/);
+  // Only the pane CLI's graph_request passes the "pane" surface.
+  const cliSrc = fs.readFileSync(path.join(SRC_DIR, "fmc", "cli.ts"), "utf8");
+  const paneCalls = [...cliSrc.matchAll(/runFmcGraphGuard\([^\n]*"pane"\)/g)];
+  assert.equal(paneCalls.length, 1);
+  assert.match(cliSrc, /case "graph_request":\s*\n\s*return printReply\(await runFmcGraphGuard\([^\n]*"pane"\)\)/);
+  // The pane surface records person:<OS user> (never a caller string), and the ledger names who asked and who approved.
+  const user = paneUser(env);
+  const p = requestGraphApproval({ kind: "graph_run", plan: fakePlan(sha256Text("pane-surface")), surface: "pane", requested_by: "person:mallory" }, env);
+  assert.equal(p.requested_by, user ? `person:${user}` : "ai");
+  assert.notEqual(p.requested_by, "person:mallory");
+  const d = decideGraphApproval(p.id, "approved", "alice", env);
+  assert.ok(d.ok);
+  const log = fs.readFileSync(path.join(path.dirname(approvalsDir(env)), "graph_runs.jsonl"), "utf8").trim().split("\n").map((l) => JSON.parse(l)).filter((r) => r.id === p.id);
+  assert.ok(log.some((r) => r.event === "approval_requested" && r.requested_by === p.requested_by));
+  assert.ok(log.some((r) => r.event === "approval_approved" && r.requested_by === p.requested_by && r.decided_by === "alice"));
 });

@@ -9,7 +9,7 @@ import { buildPlan } from "../fmc/graph/plan.js";
 import { scanGraph } from "../fmc/graph/scan.js";
 import { checkPackages, installedPackages, packageFolders } from "../fmc/graph/packages.js";
 import { readAllowlist } from "../fmc/graph/allowlist.js";
-import { readGraphApproval, requestGraphApproval } from "../fmc/graph/approvals.js";
+import { readGraphApproval, requestGraphApproval, type RequestSurface } from "../fmc/graph/approvals.js";
 
 function reply(body: object, isError = false) {
   return { content: [{ type: "text" as const, text: JSON.stringify(body, null, 2) }], isError };
@@ -32,12 +32,14 @@ export const FMC_GRAPH_GUARD_SHAPE = {
   script_id: z.string().optional().default("").describe("request_approval: a library python script id instead of a graph"),
   reason: z.string().optional().default("").describe("request_approval: why, in a line the person reads"),
   approval_id: z.string().optional().default("").describe("approval_status, seal"),
+  requested_by: z.string().optional().describe("Ignored. A request from MCP or the AI is always recorded as requested_by \"ai\"; only a person in the pane is recorded as person:<user>."),
   kit_folder: z.string().optional().default(""),
 };
 
 export type FmcGraphGuardArgs = z.infer<z.ZodObject<typeof FMC_GRAPH_GUARD_SHAPE>>;
 
-export async function runFmcGraphGuard(args: FmcGraphGuardArgs) {
+/** `surface` is "pane" only from the pane CLI's graph_request; the MCP tool and the fmc_graph_guard CLI case use "mcp". */
+export async function runFmcGraphGuard(args: FmcGraphGuardArgs, surface: RequestSurface = "mcp") {
   const { config } = loadConfig();
   const decisions = graphDecisions(config);
   const kit = kitRootFrom(config, process.env, args.kit_folder);
@@ -67,7 +69,7 @@ export async function runFmcGraphGuard(args: FmcGraphGuardArgs) {
       const file = resolveEntry(kit, entry.manifest_path, entry.manifest.entry);
       if (!file.ok) return reply({ refused: true, code: "FMC-SCRIPT-ROOT", message: file.message }, true);
       const plan = scriptPythonPlan(file.file, args.inputs ?? {}, doc.document);
-      const item = requestGraphApproval({ kind: "script_python", plan, reason: args.reason, requested_by: "ai", ttl_minutes: decisions.approval_ttl_minutes });
+      const item = requestGraphApproval({ kind: "script_python", plan, reason: args.reason, surface, ttl_minutes: decisions.approval_ttl_minutes });
       return reply(withResolved({ action: "request_approval", approval_id: item.id, status: item.status, kind: item.kind, plan_hash: item.plan_hash, expires_at: item.expires_at,
         next: "A person approves or refuses it in the pane. Poll approval_status, then run fmc_script_run with approval_id." }, doc.document));
     }
@@ -105,9 +107,9 @@ export async function runFmcGraphGuard(args: FmcGraphGuardArgs) {
     if (!p.needs_approval) {
       return reply(withResolved({ action: "request_approval", needed: false, plan_hash: p.plan_hash, message: "This run needs no approval (a preview of a graph with no Python)." }, doc.document));
     }
-    const item = requestGraphApproval({ kind: p.approval_kind, plan: p, findings: p.findings, reason: args.reason, requested_by: "ai", ttl_minutes: decisions.approval_ttl_minutes });
+    const item = requestGraphApproval({ kind: p.approval_kind, plan: p, findings: p.findings, reason: args.reason, surface, ttl_minutes: decisions.approval_ttl_minutes });
     return reply(withResolved({
-      action: "request_approval", approval_id: item.id, status: item.status, kind: item.kind, plan_hash: item.plan_hash, expires_at: item.expires_at,
+      action: "request_approval", approval_id: item.id, status: item.status, kind: item.kind, plan_hash: item.plan_hash, expires_at: item.expires_at, requested_by: item.requested_by,
       why: p.approval_why, findings: p.findings,
       next: "A person approves or refuses it in the pane (never the AI). Poll fmc_graph_guard approval_status, then run fmc_dynamo with the same path, inputs and mode plus approval_id.",
     }, doc.document));

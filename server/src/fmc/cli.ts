@@ -301,6 +301,9 @@ async function main() {
         const status = typeof (input as { status?: unknown }).status === "string" ? (input as { status: string }).status : undefined;
         return print({ approvals: listGraphApprovals(status ? { status: status as "pending" } : {}) }, false);
       }
+      // v1.3: a person asks for an approval in the pane. requested_by is person:<OS user>, never a caller string.
+      case "graph_request":
+        return printReply(await runFmcGraphGuard(z.object(FMC_GRAPH_GUARD_SHAPE).parse({ ...(input as Record<string, unknown>), action: "request_approval" }), "pane"));
       case "graph_approve": case "graph_refuse": {
         const id = String((input as { id?: unknown }).id ?? "");
         const r = decideGraphApproval(id, command === "graph_approve" ? "approved" : "refused", process.env.USERNAME || "");
@@ -313,7 +316,7 @@ async function main() {
         return print(askStatus(text, new Date(), process.env, !!readApiKey()), false);
       }
       default:
-        process.stderr.write("Usage: node build/fmc/cli.js <fmc_file|fmc_family|fmc_project|fmc_template|fmc_library|fmc_qa|fmc_material|fmc_sheets|fmc_annotate|fmc_issue|fmc_links|fmc_coord|fmc_phase|fmc_hw|fmc_joins|fmc_north|fmc_dynamo|fmc_script_run|fmc_selftest|fmc_workshare|fmc_review|fmc_report|fmc_doc|fmc_revit|fmc_brief|fmc_scripts|fmc_systems|fmc_build|fmc_ai|fmc_recipe|fmc_robot|fmc_navis|fmc_rhino|fmc_casework|fmc_ceiling|fmc_legend|fmc_apps|fmc_flow|fmc_tree|fmc_room|fmc_schedules|specs|probe|ask|ask_status|fmc_changes|fmc_select|fmc_find|fmc_testrun|fmc_balance|fmc_tables|fmc_powerbi|fmc_calc|fmc_diagram|fmc_graph|fmc_graph_lib|fmc_graph_guard|graph_approvals|graph_approve|graph_refuse>  (JSON arguments on stdin)\n");
+        process.stderr.write("Usage: node build/fmc/cli.js <fmc_file|fmc_family|fmc_project|fmc_template|fmc_library|fmc_qa|fmc_material|fmc_sheets|fmc_annotate|fmc_issue|fmc_links|fmc_coord|fmc_phase|fmc_hw|fmc_joins|fmc_north|fmc_dynamo|fmc_script_run|fmc_selftest|fmc_workshare|fmc_review|fmc_report|fmc_doc|fmc_revit|fmc_brief|fmc_scripts|fmc_systems|fmc_build|fmc_ai|fmc_recipe|fmc_robot|fmc_navis|fmc_rhino|fmc_casework|fmc_ceiling|fmc_legend|fmc_apps|fmc_flow|fmc_tree|fmc_room|fmc_schedules|specs|probe|ask|ask_status|fmc_changes|fmc_select|fmc_find|fmc_testrun|fmc_balance|fmc_tables|fmc_powerbi|fmc_calc|fmc_diagram|fmc_graph|fmc_graph_lib|fmc_graph_guard|graph_approvals|graph_request|graph_approve|graph_refuse>  (JSON arguments on stdin)\n");
         process.exit(2);
     }
   } catch (e) {

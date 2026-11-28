@@ -31,7 +31,7 @@ export function graphRunGate(plan: Pick<GraphPlan, "plan_hash" | "needs_approval
   if (!claim.ok) return { ok: false, code: claim.code, message: `${claim.message} Nothing ran.`, plan_hash: plan.plan_hash };
   appendGraphRunLog({
     caller, graph: plan.graph, graph_sha256: plan.graph_sha256, plan_hash: plan.plan_hash, mode: plan.mode,
-    approval: claim.approval.id, approver: claim.approval.decided_by, python: plan.python,
+    event: "run", approval: claim.approval.id, requested_by: claim.approval.requested_by, approver: claim.approval.decided_by, python: plan.python,
   }, env, now);
   return { ok: true, approval: claim.approval };
 }
