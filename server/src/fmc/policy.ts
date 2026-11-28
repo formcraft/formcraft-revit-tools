@@ -295,6 +295,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_tags",
   // Sheets, title-block legend zone and an existing keynote legend. No transaction.
   "fmc_keynote_legend",
+  // The change ledger: start and stop register a read-only updater and an event hook, never a model change. No transaction.
+  "fmc_watch",
 ]);
 
 /**
