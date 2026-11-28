@@ -27,6 +27,8 @@ export interface DynPort {
   type: string;
   /** The value saved on the node. Null when the graph does not set one. */
   default_value: unknown;
+  /** v1.3: the node's own short type (e.g. Filename, Directory, IntegerSlider, DSModelElementSelection); "" when unknown. */
+  node_type?: string;
 }
 
 export interface DynPackage {
@@ -137,6 +139,7 @@ function mergePort(current: DynPort | undefined, next: DynPort): DynPort {
     name: realName(next.name) ? next.name : current.name,
     type: next.type && next.type !== "Node" ? next.type : current.type,
     default_value: next.default_value !== null && next.default_value !== undefined ? next.default_value : current.default_value,
+    node_type: next.node_type || current.node_type || "",
   };
 }
 
@@ -212,6 +215,7 @@ export function parseDyn(file: string, raw: string): { ok: true; inspect: DynIns
     name: sources.map((item) => text(item?.Name) || text(item?.NickName) || text(item?.Symbol)).find(realName) || fallbackName,
     type: portType(sources, "Node"),
     default_value: pickDefault(sources),
+    node_type: sources.map((item) => (item && (text(item.ConcreteType) || text(item.NodeType)) ? shortType(item) : "")).find((t) => t && t !== "Node") ?? "",
   });
   nodes.forEach((node, index) => {
     const id = nodeId(node, `node ${index + 1}`);

@@ -25,7 +25,9 @@ export interface GraphPlan {
   graph_sha256: string;
   deps_sha256: string;
   inputs_by_id: Record<string, unknown>;
-  input_binding: Array<{ given: string; id: string; name: string }>;
+  input_binding: BoundInput[];
+  /** v1.3: metadata for every marked input, by node id. */
+  input_meta: Record<string, InputMeta>;
   inputs_hash: string;
   document: { title: string; path: string; state: string };
   mode: RunMode;
@@ -44,7 +46,36 @@ export interface GraphPlan {
 
 export type PlanResult = { ok: true; plan: GraphPlan; scan: GraphScan; inspect: DynInspect } | { ok: false; code: string; message: string; reasons?: string[] };
 
-export interface BindResult { ok: boolean; by_id: Record<string, unknown>; binding: Array<{ given: string; id: string; name: string }>; unknown: string[]; ambiguous: string[] }
+/** v1.3 shared input metadata (the run gate and the jail depend on it). Widget kind, min/max/step and options are Builder 7's form layer. */
+export type ValueKind = "integer" | "decimal" | "string" | "bool";
+export interface InputMeta { id: string; name: string; type: string; is_path: boolean; needs_revit: boolean; value_kind: ValueKind }
+export interface BoundInput { given: string; id: string; name: string; is_path: boolean; needs_revit: boolean; value_kind: ValueKind }
+export interface BindResult { ok: boolean; by_id: Record<string, unknown>; binding: BoundInput[]; unknown: string[]; ambiguous: string[]; meta: Record<string, InputMeta> }
+
+const PATH_TYPE = /file\s*name|filename|file\s*path|filepath|directory|folder|fileobject|\bpath\b/i;
+const REVIT_TYPE = /selection|revit|element|categor|family|level|view|parameter|sheet|room|wall|floor|material|workset|phase/i;
+const INT_TYPE = /\bint(eger)?\b|integer|int32|int64|long|integerslider/i;
+const DEC_TYPE = /double|decimal|float|number|doubleslider|\bslider\b/i;
+const BOOL_TYPE = /bool/i;
+const ABS_PATH = /^[a-zA-Z]:[\\/]|^\\\\|^\/\/|^\/[^/]/;
+
+function kindOfValue(v: unknown): ValueKind | null {
+  if (typeof v === "boolean") return "bool";
+  if (typeof v === "number" && Number.isFinite(v)) return Number.isInteger(v) ? "integer" : "decimal";
+  if (typeof v === "string") return "string";
+  return null;
+}
+
+/** Metadata for one marked input: from the node type first, then its saved default, then the value given. */
+export function inputMeta(port: { id: string; name: string; type: string; default_value: unknown; node_type?: string }, given?: unknown): InputMeta {
+  // Dynamo saves Type "string" for a file or folder picker and "number" for an integer slider, so the node type counts too.
+  const t = [port.type ?? "", port.node_type ?? ""].filter(Boolean).join(" ");
+  const valueKind: ValueKind = BOOL_TYPE.test(t) ? "bool" : INT_TYPE.test(t) ? "integer" : DEC_TYPE.test(t) ? "decimal"
+    : PATH_TYPE.test(t) || REVIT_TYPE.test(t) || /string|text/i.test(t) ? "string"
+    : kindOfValue(port.default_value) ?? kindOfValue(given) ?? "string";
+  const isPath = PATH_TYPE.test(t) || [port.default_value, given].some((v) => typeof v === "string" && ABS_PATH.test(v.trim()));
+  return { id: port.id, name: port.name, type: t, is_path: isPath, needs_revit: REVIT_TYPE.test(t), value_kind: valueKind };
+}
 
 /**
  * Map each input to its node id. A key that is a node id of a marked input stays; otherwise the key must match exactly
@@ -53,19 +84,25 @@ export interface BindResult { ok: boolean; by_id: Record<string, unknown>; bindi
 export function bindInputsByName(inspect: Pick<DynInspect, "inputs">, inputs: Record<string, unknown>): BindResult {
   const byId: Record<string, unknown> = {};
   const binding: BindResult["binding"] = [];
+  const meta: Record<string, InputMeta> = {};
+  for (const p of inspect.inputs) meta[p.id] = inputMeta(p);
   const unknown: string[] = [];
   const ambiguous: string[] = [];
   const ids = new Map(inspect.inputs.map((p) => [p.id.toLowerCase(), p]));
   for (const [key, value] of Object.entries(inputs ?? {})) {
     const k = key.trim();
     const direct = ids.get(k.toLowerCase());
-    if (direct) { byId[direct.id] = value; binding.push({ given: key, id: direct.id, name: direct.name }); continue; }
+    if (direct) { byId[direct.id] = value; meta[direct.id] = inputMeta(direct, value); binding.push({ given: key, ...pick(meta[direct.id]) }); continue; }
     const hits = inspect.inputs.filter((p) => p.name.trim().toLowerCase() === k.toLowerCase());
-    if (hits.length === 1) { byId[hits[0].id] = value; binding.push({ given: key, id: hits[0].id, name: hits[0].name }); }
+    if (hits.length === 1) { byId[hits[0].id] = value; meta[hits[0].id] = inputMeta(hits[0], value); binding.push({ given: key, ...pick(meta[hits[0].id]) }); }
     else if (hits.length === 0) unknown.push(key);
     else ambiguous.push(key);
   }
-  return { ok: unknown.length === 0 && ambiguous.length === 0, by_id: byId, binding, unknown, ambiguous };
+  return { ok: unknown.length === 0 && ambiguous.length === 0, by_id: byId, binding, unknown, ambiguous, meta };
+}
+
+function pick(m: InputMeta): Omit<BoundInput, "given"> {
+  return { id: m.id, name: m.name, is_path: m.is_path, needs_revit: m.needs_revit, value_kind: m.value_kind };
 }
 
 /** The kit lock key when the graph is in the kit, otherwise the file name without .dyn. */
@@ -132,6 +169,11 @@ export function buildPlan(args: PlanArgs): PlanResult {
       const m = /\[FMC-GRAPH-JAIL\] (.+?) (uses|is|has|leaves)/.exec(msg);
       return !(m && args.kit && isInside(m[1], args.kit));
     });
+    // v1.3: an input the graph marks as a path (is_path) must be a full path too; a bare or relative name is refused.
+    for (const [id, value] of Object.entries(bound.by_id)) {
+      if (!bound.meta[id]?.is_path || typeof value !== "string" || !value.trim() || ABS_PATH.test(value.trim())) continue;
+      outside.push(`[FMC-GRAPH-JAIL] ${value} is a relative path for path input ${bound.meta[id].name}; give a full path inside the project folder.`);
+    }
     if (outside.length) return { ok: false, code: "FMC-GRAPH-JAIL", message: outside[0], reasons: outside };
   }
   const folders = args.packageDirs ?? packageFolders(env);
@@ -162,6 +204,7 @@ export function buildPlan(args: PlanArgs): PlanResult {
     graph_id: graphIdOf(args.file, args.kit),
     inputs_by_id: bound.by_id,
     input_binding: bound.binding,
+    input_meta: bound.meta,
     lock,
     python,
     needs_approval: need.needed,

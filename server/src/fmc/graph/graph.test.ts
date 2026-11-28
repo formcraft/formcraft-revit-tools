@@ -127,6 +127,36 @@ test("inputs bind by name to node ids; unknown and ambiguous names refuse; ids p
   assert.deepEqual(bad.ambiguous, ["Dup"]);
 });
 
+test("v1.3 binder metadata: is_path, needs_revit and value_kind from the node type, default and value", () => {
+  const inspect = { inputs: [
+    { id: "I", name: "Count", type: "IntegerSlider", default_value: 3 },
+    { id: "N", name: "Offset", type: "Number", default_value: 1.5 },
+    { id: "B", name: "Flag", type: "Boolean", default_value: true },
+    { id: "F", name: "Csv", type: "Filename", default_value: "" },
+    { id: "D", name: "Out", type: "Directory", default_value: null },
+    { id: "S", name: "Walls", type: "DSModelElementSelection", default_value: null },
+    { id: "C", name: "Cat", type: "Categories", default_value: null },
+    { id: "T", name: "Note", type: "String", default_value: "x" },
+    { id: "U", name: "Raw", type: "", default_value: 7 },
+    { id: "IS", name: "Steps", type: "number", node_type: "IntegerSlider", default_value: 2 },
+    { id: "FP", name: "Pick", type: "string", node_type: "Filename", default_value: "" },
+    { id: "P", name: "Where", type: "", default_value: "C:\\P\\a.csv" },
+  ] };
+  const r = bindInputsByName(inspect, { count: 4, Offset: 2, Flag: false, Csv: "D:\\Proj\\x.csv", Walls: "123", Note: "hi", Raw: 2.5 });
+  assert.equal(r.ok, true);
+  const m = r.meta;
+  assert.deepEqual([m.I.value_kind, m.N.value_kind, m.B.value_kind, m.T.value_kind, m.U.value_kind], ["integer", "decimal", "bool", "string", "integer"]);
+  assert.deepEqual([m.F.is_path, m.D.is_path, m.P.is_path, m.T.is_path, m.I.is_path], [true, true, true, false, false]);
+  assert.deepEqual([m.S.needs_revit, m.C.needs_revit, m.I.needs_revit, m.F.needs_revit], [true, true, false, false]);
+  assert.equal(m.S.value_kind, "string");
+  // Dynamo's own Inputs Type is "number" for an integer slider and "string" for a file picker; the node type decides.
+  assert.equal(m.IS.value_kind, "integer");
+  assert.deepEqual([m.FP.is_path, m.FP.value_kind], [true, "string"]);
+  assert.equal(Object.keys(m).length, inspect.inputs.length, "every marked input has metadata, set or not");
+  const csv = r.binding.find((b) => b.id === "F");
+  assert.deepEqual(csv, { given: "Csv", id: "F", name: "Csv", is_path: true, needs_revit: false, value_kind: "string" });
+});
+
 // ---------- plan and gate (R-7, X-05) ----------
 test("plan: preview of a plain graph needs no approval; apply and offline do; plan_hash follows inputs, mode and bytes", () => {
   const env = envFor();
@@ -403,4 +433,21 @@ test("approval requested_by: an AI or MCP caller is always \"ai\" and cannot spo
   const log = fs.readFileSync(path.join(path.dirname(approvalsDir(env)), "graph_runs.jsonl"), "utf8").trim().split("\n").map((l) => JSON.parse(l)).filter((r) => r.id === p.id);
   assert.ok(log.some((r) => r.event === "approval_requested" && r.requested_by === p.requested_by));
   assert.ok(log.some((r) => r.event === "approval_approved" && r.requested_by === p.requested_by && r.decided_by === "alice"));
+});
+
+test("v1.3 plan: an is_path input with a relative value is refused by the jail; a full path inside the project passes", () => {
+  const env = envFor();
+  const g = JSON.parse(dyn({ inputs: [{ id: "33333333-3333-4333-a333-333333333333", name: "Csv" }] }));
+  for (const n of g.Nodes) if (n.Id === "33333333-3333-4333-a333-333333333333") { n.ConcreteType = "CoreNodeModels.Input.Filename, CoreNodeModels"; n.NodeType = "ExtensionNode"; }
+  const kit = kitWith({ "05_Scripts/Dynamo/P.dyn": JSON.stringify(g) });
+  const file = path.join(kit, "05_Scripts", "Dynamo", "P.dyn");
+  const root = tmp("b6projp-");
+  fs.mkdirSync(path.join(root, "01_WIP"), { recursive: true });
+  fs.writeFileSync(path.join(root, "in.csv"), "a");
+  const document = { title: "M", path: path.join(root, "01_WIP", "M.rvt") };
+  const rel = buildPlan({ file, kit, cfg, env, document, mode: "preview", inputs: { Csv: "in.csv" } });
+  assert.equal(rel.ok ? "" : rel.code, "FMC-GRAPH-JAIL");
+  const full = buildPlan({ file, kit, cfg, env, document, mode: "preview", inputs: { Csv: path.join(root, "in.csv") } });
+  assert.equal(full.ok, true, full.ok ? "" : full.message);
+  if (full.ok) assert.equal(full.plan.input_meta["33333333-3333-4333-a333-333333333333"].is_path, true);
 });
