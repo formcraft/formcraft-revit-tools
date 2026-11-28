@@ -10,6 +10,12 @@ import {
   EVOLVE_FOLDER, EvolveFacts, EvolveKit, EvolveOptions, Evaluation, Fix, GateResult, ParamFact, PlaneFact, VersionEntry, applyProblems, diffFacts,
   diffGates, evaluateGates, expectedAfter, flexRegressions, orderedOps, planVersions, proposalToken, readVersions, vName,
 } from "../fmc/evolve.js";
+import { RefsIo, RepointPlan, gateProblems, indexFile, planRepoint, readNewVersion, repointToken, whereUsed, writeProblems } from "../fmc/evolve_refs.js";
+import { readInstances } from "../fmc/connect.js";
+import { loadAiConfig } from "../fmc/aiuse_io.js";
+import { currentClient } from "../fmc/fairqueue.js";
+import { batchLease } from "../fmc/target.js";
+import { leaseHeldDocuments } from "../fmc/batchline.js";
 import { runFmcDoc } from "./fmc_doc.js";
 import { runFmcLibrary } from "./fmc_library.js";
 
@@ -30,10 +36,17 @@ export const FMC_FAMILY_EVOLVE_DESCRIPTION =
   "that flexed before and fails now stops it: nothing saved), saves a NEW version vNNN\\<name>.rfa with its build report, re-runs the gates " +
   "and returns before/after and what changed. The original is never written; replace_original: true copies the new version over it only " +
   "after the backup is verified, and only for a file in staging. versions: the backups and versions of a family. Geometry, constraints " +
-  "and a shared parameter carrying another GUID are never decided by the tool: they are listed as needs_person.";
+  "and a shared parameter carrying another GUID are never decided by the tool: they are listed as needs_person. " +
+  "After an apply: repoint (file: the new version; a dry run unless dry_run is false) points the library index " +
+  "(<staging>\\_Evolve\\FMC_Evolve_Index.json) and any staging catalogue (*catalogue.json beside the family) at the new version; every older " +
+  "entry stays listed as superseded, nothing is deleted. It always includes the where-used plan. A real repoint needs the dry run's token, a " +
+  "held batch lease (batch_lease) and the AI gate (ai_modeller on, Stop AI off), and writes only in staging or the library roots. " +
+  "where_used (file: a family or its new version; project_folders: more projects to look in) is read only: the open and local projects whose " +
+  "plugin records (01_WIP _Tree, _Ceilings\\_Placed, _Casework, _Placed) name the family, with a reload plan for each. No project file is opened or written; " +
+  "the reload is a person's step. A-0001 and HEBERT HOSTELS are listed only, never acted on.";
 
 export const FMC_FAMILY_EVOLVE_SHAPE = {
-  action: z.enum(["check", "apply", "versions"]).default("check"),
+  action: z.enum(["check", "apply", "versions", "repoint", "where_used"]).default("check"),
   file: z.string().optional().default("").describe("check, versions: the family file (.rfa)"),
   token: z.string().optional().default("").describe("apply: the token check returned"),
   accept: z.array(z.string()).optional().describe("apply: the fix ids to make (default: every fix in the proposal)"),
@@ -46,6 +59,8 @@ export const FMC_FAMILY_EVOLVE_SHAPE = {
   follow: z.array(z.object({ param: z.string().min(1), low_mm: z.number(), high_mm: z.number(), stepped: z.boolean().optional() })).optional()
     .describe("check and apply: size parameters to flex from low to high, reporting which solids move with each"),
   replace_original: z.boolean().optional().default(false).describe("apply: after the backup is verified, copy the new version over the original (staging only)"),
+  project_folders: z.array(z.string()).optional().describe("repoint, where_used: project folders to look in besides those of the open documents"),
+  dry_run: z.boolean().optional().default(true).describe("repoint: true (the default) only plans; false writes the index and catalogues (needs the token, a batch lease and the AI gate)"),
 };
 
 export type FmcFamilyEvolveArgs = z.infer<z.ZodObject<typeof FMC_FAMILY_EVOLVE_SHAPE>>;
@@ -70,6 +85,8 @@ export interface EvolveIo {
   /** fmc_doc's answer (the body) for open, report, flex, apply, save, close. */
   doc(args: Record<string, unknown>): Promise<Record<string, any>>;
   log(action: string, target: string, result: string, detail: string): void;
+  /** repoint and where_used: what the lease, the AI gate, the open documents and folder listings say. Absent: those actions refuse. */
+  refs?: Pick<RefsIo, "files" | "dirs" | "openDocuments" | "lease" | "ai" | "client">;
 }
 
 const bodyOf = (r: { content?: Array<{ text?: string }> }) => { try { return JSON.parse(r?.content?.[0]?.text ?? "{}"); } catch { return {}; } };
@@ -105,6 +122,14 @@ export function defaultIo(): EvolveIo {
     kit: () => readKit(config),
     inspect: async (file) => bodyOf(await runFmcLibrary({ action: "inspect", path: file, overwrite: false, dry_run: true, document: file } as any)),
     doc: async (args) => bodyOf(await runFmcDoc({ ...DOC_DEFAULTS, ...args } as any)),
+    refs: {
+      files: (d) => { try { return fs.readdirSync(d, { withFileTypes: true }).filter((e) => e.isFile()).map((e) => e.name); } catch { return []; } },
+      dirs: (d) => { try { return fs.readdirSync(d, { withFileTypes: true }).filter((e) => e.isDirectory()).map((e) => e.name); } catch { return []; } },
+      openDocuments: () => readInstances().flatMap((i) => i.documents ?? []).map((d) => ({ title: d.title, path: d.path, workshared: d.workshared, family: d.family })),
+      lease: () => { const id = (batchLease.getStore() ?? "").trim(); return id ? { id, documents: leaseHeldDocuments(id) } : null; },
+      ai: () => { const ai = loadAiConfig(config); return ai ? { on: ai.on === true, stop: ai.stop === true } : null; },
+      client: () => currentClient(),
+    },
     log: (action, target, result, detail) => {
       try {
         const dir = expandEnv(config.reports_dir);
@@ -299,18 +324,109 @@ export async function runApply(a: FmcFamilyEvolveArgs, io: EvolveIo) {
       fixes: fixes.map((f) => f.id), ops, applied: { created: applied.created ?? 0, updated: applied.updated ?? 0, skipped: applied.skipped ?? 0 }, gates_before: p.gates, gates_after: evAfter.gates, diff, changed };
     io.writeText(plan.target.path.replace(/\.rfa$/i, ".evolve.json"), JSON.stringify(manifest, null, 2));
     io.log("evolve_apply", plan.target.path, "done", `${p.token} · ${ops.length} ops · ${diff.filter((d) => d.change === "fixed").length} gates fixed`);
+    const repoint = repointPreview(plan.target.path, io);
     return reply({
       applied: true, version: vName(plan.target.n), new_version: plan.target.path, backup: plan.backup.path, sha256: newSha, ...checks,
       ...(replaced ? { replace_original: replaced } : {}),
       ops: applied.ops ?? [], created: applied.created ?? 0, updated: applied.updated ?? 0, skipped: applied.skipped ?? 0,
       gates_before: p.gates, gates_after: evAfter.gates, diff, changed, needs_person: [...p.needs_person, ...evAfter.needs_person.filter((x) => !p!.needs_person.some((y) => y.detail === x.detail))],
       notes: after.notes,
+      ...(repoint ? { repoint } : {}),
       next: diff.some((d) => d.change === "regressed") ? "A gate got worse: compare gates_before and gates_after; the original and its backup are untouched"
-        : `Saved as a new version. The original is untouched; ${win.basename(plan.target.path)} goes through Gate A (fmc_recipe gate) before a person releases it`,
+        : `Saved as a new version. The original is untouched; ${win.basename(plan.target.path)} goes through Gate A (fmc_recipe gate) before a person releases it` +
+          (repoint ? `. Then repoint the library index to it: fmc_family_evolve { action: "repoint", file } (a dry run first)` : ""),
     });
   } finally {
     if (!saved) await io.doc({ action: "close", session });
   }
+}
+
+function refsOf(io: EvolveIo): RefsIo | null {
+  if (!io.refs) return null;
+  return { config: io.config, now: () => io.now(), exists: (p) => io.exists(p), sha256: (p) => io.sha256(p), readText: (p) => io.readText(p),
+    writeText: (p, t) => io.writeText(p, t), mkdir: (d) => io.mkdir(d), ...io.refs };
+}
+
+const planSummary = (plan: RepointPlan) => ({
+  index: { file: plan.index.file, change: plan.index.change, family: plan.index.family, current: plan.index.current, superseded: plan.index.superseded, added: plan.index.added.map((e) => ({ version: e.version, file: e.file, kind: e.kind })) },
+  catalogues: plan.catalogues.map((c) => ({ file: c.file, change: c.change, matched: c.matched, repointed: c.repointed, rows: c.rows })),
+});
+
+/** What a repoint would do, for apply's answer: read only, never throws. null when the add-in has no refs. */
+function repointPreview(newFile: string, io: EvolveIo): Record<string, unknown> | null {
+  try {
+    const r = refsOf(io);
+    if (!r) return null;
+    const plan = planRepoint(newFile, [], r);
+    if (!("version" in plan)) return { dry_run: true, problems: plan.problems };
+    return { dry_run: true, token: plan.problems.length ? "" : repointToken(plan), ...planSummary(plan), where_used_rows: plan.where_used.rows.length, problems: plan.problems };
+  } catch (e) { return { dry_run: true, error: e instanceof Error ? e.message : String(e) }; }
+}
+
+export function runWhereUsed(a: FmcFamilyEvolveArgs, io: EvolveIo) {
+  const r = refsOf(io);
+  if (!r) return reply({ refused: true, reasons: ["where_used isn't available in this build"] }, true);
+  const file = a.file.trim();
+  if (!file) return reply({ refused: true, reasons: ["where_used needs file: a family (.rfa) or its new version"] }, true);
+  const v = win.extname(file).toLowerCase() === ".rfa" ? readNewVersion(file, r).v : null;
+  const families = v ? [v.family, v.name] : [win.basename(file).replace(/\.rfa$/i, "")];
+  const wu = whereUsed([...new Set(families)], file, a.project_folders ?? [], r);
+  io.log("evolve_where_used", file, "done", `${wu.rows.length} rows · ${wu.files_read} records read`);
+  return reply({ ...wu, next: wu.rows.length ? "A person reloads each model from its plan; this tool never opens or writes a project file" : "No plugin record names this family in the projects looked at (see not_covered)" });
+}
+
+export function runRepoint(a: FmcFamilyEvolveArgs, io: EvolveIo) {
+  const r = refsOf(io);
+  if (!r) return reply({ refused: true, reasons: ["repoint isn't available in this build"] }, true);
+  const file = a.file.trim();
+  if (!file) return reply({ refused: true, reasons: ["repoint needs file: the new version (.rfa) that apply saved"] }, true);
+  const plan = planRepoint(file, a.project_folders ?? [], r);
+  if (!("version" in plan)) return reply({ refused: true, reasons: plan.problems }, true);
+  const token = repointToken(plan);
+  const summary = planSummary(plan);
+  const gate = gateProblems(r);
+  if (a.dry_run !== false) {
+    io.log("evolve_repoint_check", file, "done", `${token} · index ${plan.index.change} · ${plan.catalogues.filter((c) => c.change === "update").length} catalogues`);
+    return reply({
+      dry_run: true, family: plan.version.family, new_version: file, ...summary, where_used: plan.where_used, token: plan.problems.length ? "" : token,
+      apply_needs: gate, problems: plan.problems,
+      next: plan.problems.length ? `Can't repoint: ${plan.problems.join("; ")}`
+        : plan.index.change === "skip" && plan.catalogues.every((c) => c.change !== "update") ? "Nothing to repoint: the index and the catalogues already point at this version"
+        : `Run repoint with dry_run false, token ${token} and a batch_lease to write the index${plan.catalogues.some((c) => c.change === "update") ? " and the catalogues" : ""}. The reload in each model stays a person's step`,
+    });
+  }
+  // a real repoint: the token, then the lease and the AI gate, then only library and staging files
+  const reasons: string[] = [...plan.problems];
+  if (a.token.trim() !== token) reasons.push(a.token.trim() ? "The token is stale: the files changed since the dry run. Run repoint again as a dry run" : "A real repoint needs the token from the dry run");
+  reasons.push(...gate);
+  const idxProblems = plan.index.change === "skip" ? [] : writeProblems(plan.index.file, io.config);
+  reasons.push(...idxProblems);
+  if (reasons.length) return reply({ refused: true, reasons, written: [] }, true);
+  const lease = r.lease()!;
+  const now = io.now().toISOString();
+  const written: Array<{ file: string; what: string }> = [], skipped: Array<{ file: string; reason: string }> = [];
+  if (plan.index.change !== "skip") {
+    const next = JSON.parse(plan.indexText);
+    next.history = [...(next.history ?? []), { at: now, family: plan.version.family, version: plan.version.version, file: plan.version.file, token, lease: lease.id, client: r.client() }];
+    io.writeText(plan.index.file, JSON.stringify(next, null, 2));
+    written.push({ file: plan.index.file, what: "library index" });
+  }
+  for (const c of plan.catalogues) {
+    if (c.change !== "update" || c.text == null) continue;
+    const bad = writeProblems(c.file, io.config);
+    if (bad.length) { skipped.push({ file: c.file, reason: bad.join("; ") }); continue; }
+    const before = io.readText(c.file) ?? "";
+    io.writeText(c.file + "." + token + ".bak", before);
+    io.writeText(c.file, c.text);
+    written.push({ file: c.file, what: `catalogue (${c.repointed} row(s) repointed, the old ones kept as superseded; the previous file is ${win.basename(c.file)}.${token}.bak)` });
+  }
+  const verified = plan.index.change === "skip" ? true : (() => { try { return JSON.parse(io.readText(plan.index.file) ?? "{}").families?.[plan.version.family]?.entries?.some((e: any) => e.status === "current" && String(e.file).toLowerCase() === plan.version.file.toLowerCase()) === true; } catch { return false; } })();
+  io.log("evolve_repoint", file, verified ? "done" : "unverified", `${token} · lease ${lease.id} · ${written.length} written · ${skipped.length} skipped`);
+  return reply({
+    repointed: verified, family: plan.version.family, new_version: file, token, lease: lease.id, ...summary, written, skipped,
+    where_used_rows: plan.where_used.rows.length, where_used: plan.where_used, project_files_written: 0,
+    next: `The index and catalogues point at ${win.basename(file)}; older entries are kept as superseded. Reloading it into each model in where_used is a person's step`,
+  });
 }
 
 export function runVersions(a: FmcFamilyEvolveArgs, io: EvolveIo) {
@@ -326,6 +442,8 @@ export async function runFmcFamilyEvolve(args: FmcFamilyEvolveArgs, io: EvolveIo
   try {
     if (args.action === "apply") return await runApply(args, io);
     if (args.action === "versions") return runVersions(args, io);
+    if (args.action === "repoint") return runRepoint(args, io);
+    if (args.action === "where_used") return runWhereUsed(args, io);
     return await runCheck(args, io);
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
