@@ -62,6 +62,8 @@ namespace RevitMCPCommandSet.Services.Fmc
             // owner 27 Oct: for_each spreads into one op per room, level, element...; select becomes ids as each op runs
             ops = Expand(doc, ops, out List<int> written);
             bool dry = Parameters.Value<bool?>("dry_run") ?? false;
+            // System-type editor: plan_only reads and answers with no transaction at all (nothing changes, nothing is borrowed)
+            if (Parameters.Value<bool?>("plan_only") ?? false) return PlanOnly(doc, ops);
             bool readOnly = doc.IsDetached || doc.IsLinked || FmcVerifySession.Contains(doc) || FmcTarget.IsProtected(doc.PathName ?? "", FmcTarget.Roots(Parameters));
             if (!dry && readOnly)
                 throw new InvalidOperationException("This document is read-only (a verification copy, a link, or a protected original). dry_run true runs the batch and rolls it back; a real edit is refused. Nothing is saved, synced or relinquished.");
@@ -106,7 +108,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                     catch (Exception ex)
                     {
                         g.RollBack();
-                        return new JObject { ["applied"] = false, ["failed_op"] = i + 1, ["written_op"] = written[i] != i + 1 ? written[i] : (int?)null, ["kind"] = name, ["reason"] = ex.Message, ["note"] = "Nothing was changed: the whole batch is one step, or none" };
+                        var failedRow = new JObject { ["applied"] = false, ["failed_op"] = i + 1, ["written_op"] = written[i] != i + 1 ? written[i] : (int?)null, ["kind"] = name, ["reason"] = ex.Message, ["note"] = "Nothing was changed: the whole batch is one step, or none" };
+                        // System-type editor: every edit's row, the ones that worked and the ones that didn't
+                        if (ex is TypeItemsFailed typeFail) failedRow["items"] = typeFail.Items;
+                        return failedRow;
                     }
                 }
                 if (dry)
@@ -282,6 +287,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                 case "delete":
                 {
                     var ids = Targets(doc, op, made);
+                    // Deleting a type needs a person (28 Nov): delete never takes a type, whatever the batch says
+                    var types = ids.Where(x => doc.GetElement(x) is ElementType).Select(x => x.Value).ToList();
+                    if (types.Count > 0)
+                        throw new InvalidOperationException($"[{SystemTypes.TypeEditCore.CodeNeedsPerson}] {string.Join(", ", types)} {(types.Count == 1 ? "is a type" : "are types")}: deleting a type needs a person (Project Browser or Purge Unused in Revit). delete_type with plan_only lists what uses it.");
                     var deleted = doc.Delete(ids);
                     return new JObject { ["asked"] = ids.Count, ["removed"] = deleted.Count, ["removed_ids"] = new JArray(deleted.Select(x => x.Value)) };
                 }
@@ -330,28 +339,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                     return new JObject { ["attached"] = n, ["side"] = where.ToString() };
                 }
                 case "duplicate_type":
-                {
-                    ElementId src = Ref(doc, op["type"], made) ?? throw new InvalidOperationException("duplicate_type needs type (the source type's id)");
-                    ElementType source = doc.GetElement(src) as ElementType ?? throw new InvalidOperationException($"{src.Value} isn't a type");
-                    string newName = op.Value<string>("new_name") ?? throw new InvalidOperationException("duplicate_type needs new_name");
-                    ElementType t = source.Duplicate(newName);
-                    created.Add(t.Id);
-                    if (op["layers"] is JArray layers && t is HostObjAttributes host)
-                    {
-                        var list = layers.OfType<JObject>().Select(l => new CompoundStructureLayer(Ft(l.Value<double>("width_mm")),
-                            (MaterialFunctionAssignment)Enum.Parse(typeof(MaterialFunctionAssignment), l.Value<string>("function") ?? "Structure", true),
-                            MaterialId(doc, l.Value<string>("material")))).ToList();
-                        // Ogala report: a fresh structure has the wrong end caps for floors; edit the duplicate's own
-                        CompoundStructure cs = host.GetCompoundStructure() ?? CompoundStructure.CreateSimpleCompoundStructure(list);
-                        cs.SetLayers(list);
-                        int structural = list.FindIndex(l => l.Function == MaterialFunctionAssignment.Structure);
-                        if (structural >= 0) { try { cs.StructuralMaterialIndex = structural; } catch (Exception) { } }
-                        host.SetCompoundStructure(cs);
-                    }
-                    if (op["params"] is JObject ps)
-                        foreach (var kv in ps) SetParam(doc, t, kv.Key, ValueOp(kv.Value), true);
-                    return new JObject { ["type"] = newName };
-                }
+                case "edit_type":
+                case "delete_type":
+                    // The system-type editor (FmcModelTypes.cs): one engine for a duplicate and for an edit in place
+                    return TypeEdit(doc, name, op, made, created);
                 case "create_roof":
                 {
                     var pts = Points(op["outline_mm"], "create_roof needs outline_mm, a closed loop of [x, y]");
@@ -440,7 +431,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     created.Add(o.Id);
                     return new JObject { ["shaft"] = o.Id.Value };
                 }
-                default: return ViewOp(doc, name, op, made, created) ?? throw new InvalidOperationException($"{name} isn't an op (extrusion, blend, revolve, sweep, family_param, family_type, family_category, reference_plane, dimension, save_family, load_into_project, detail_line, model_line, filled_region, masking_region, text, replace_text, tag, spot_elevation, spot_coordinate, revision_cloud, place_annotation, color_fill_legend, create_view, duplicate_view, set_view, override, hide, unhide, create_filter, create_template, apply_template, create_sheet, place_view, open_view, copy, rotate, mirror, join, unjoin, switch_join, cut, uncut, pin, unpin, delete, move, set_param, change_type, attach, duplicate_type, create_roof, create_railing, create_stair, room_separation, opening, shaft)");
+                default: return ViewOp(doc, name, op, made, created) ?? throw new InvalidOperationException($"{name} isn't an op (extrusion, blend, revolve, sweep, family_param, family_type, family_category, reference_plane, dimension, save_family, load_into_project, edit_type, delete_type, detail_line, model_line, filled_region, masking_region, text, replace_text, tag, spot_elevation, spot_coordinate, revision_cloud, place_annotation, color_fill_legend, create_view, duplicate_view, set_view, override, hide, unhide, create_filter, create_template, apply_template, create_sheet, place_view, open_view, copy, rotate, mirror, join, unjoin, switch_join, cut, uncut, pin, unpin, delete, move, set_param, change_type, attach, duplicate_type, create_roof, create_railing, create_stair, room_separation, opening, shaft)");
             }
         }
 

@@ -10,6 +10,7 @@ import { syncSettings } from "./batchsync.js";
 import { currentClient } from "./fairqueue.js";
 import { memoryGate } from "./memory.js";
 import { batchLease } from "./target.js";
+import { deletesTypes } from "./systypes.js";
 import { appendSyncAutoLog, damagedNames, judgeAiSync, readDamageDialogs, syncAutoInEffect, type SyncSource } from "./syncauto.js";
 
 /**
@@ -28,6 +29,9 @@ export async function aiGate(command: string, params: any, active: DocInfo | nul
   const ai = loadAiConfig(cfg, env);
   // Not set up yet (no ai_modeller section): the person sees the plain line, never the lock's wording.
   if (!ai) return { ok: false, reason: "", user: NEVER[command] ? USER_LINE.admin(NEVER[command]) : USER_LINE.off };
+  // Deleting a type needs a person (28 Nov): a real delete_type never runs for the AI, whatever the switches say.
+  if (command === "fmc_model_edit" && deletesTypes(params))
+    return { ok: false, reason: "AI-assisted modeller: deleting a type needs a person (FMC-NEEDS-PERSON).", user: "Deleting a type needs a person: do it in Revit." };
   // Read-only code (owner 26 Oct): its transaction is always rolled back, so it needs no approval, only the code switch.
   const dryRun = command === "fmc_model_edit" && params?.dry_run === true;
   // fmc_replace always rolls the group back. It needs the copy's own AI switch (enable_copy), not an approval that would imply a commit.

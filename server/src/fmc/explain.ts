@@ -129,6 +129,8 @@ function op(o: P, n: Names, i: number): string[] {
     case "duplicate_type": return [`${h}New type "${o.new_name}" copied from ${typeName(n, o.type)}` +
       (Array.isArray(o.layers) ? `, layers ${o.layers.map((l: P) => `${l.material ?? "?"} ${mm(l.width_mm)}`).join(" + ")}` : "") +
       (o.params ? `, ${Object.entries(o.params).map(([k, v]) => `${k} ${v}`).join(", ")}` : "")];
+    case "edit_type": return [`${h}EDIT TYPE ${o.type != null ? typeName(n, o.type) : o.type_name} in place (every element of it changes): ${typeEdits(o)}`];
+    case "delete_type": return [`${h}Delete type ${o.type != null ? typeName(n, o.type) : o.type_name}: refused, a person deletes types`];
     case "create_roof": {
       const slopes = Array.isArray(o.slopes_deg) ? o.slopes_deg.map((s: number | null) => (s == null ? "end" : `${s}°`)).join(", ")
         : o.slope_deg != null ? `${o.slope_deg}° every edge` : "flat";
@@ -225,6 +227,15 @@ export function explain(command: string, params: unknown, names: Names = { types
   }
 }
 
+/** The edit groups of an edit_type op, for the person approving it. */
+export function typeEdits(o: P): string {
+  const groups = ["layers", "layer_edits", "core", "structural_layer", "wrapping", "params", "stair", "stair_run", "stair_landing", "routing", "segment_sizes", "fittings", "fitting_params"];
+  const parts = groups.filter((g) => o?.[g] != null).map((g) => (g === "layers" && Array.isArray(o.layers)
+    ? `layers ${o.layers.map((l: P) => `${l.material ?? "?"} ${mm(l.width_mm)}`).join(" + ")}`
+    : g === "params" ? Object.entries(o.params ?? {}).map(([k, v]) => `${k} ${v}`).join(", ") : g));
+  return parts.length ? parts.join("; ") : "nothing";
+}
+
 /** The type ids and element ids a batch names, to look up in Revit before it is queued. */
 export function namesWanted(params: unknown): { typeIds: number[]; elementIds: string[] } {
   const p = (params ?? {}) as P;
@@ -234,7 +245,7 @@ export function namesWanted(params: unknown): { typeIds: number[]; elementIds: s
     for (const x of Array.isArray(o?.ids) ? o.ids : []) if (!isRef(x)) elementIds.add(String(x));
     for (const k of ["target", "host", "id"]) if (o?.[k] != null && !isRef(o[k])) elementIds.add(String(o[k]));
     if (typeof o?.type_id === "number") typeIds.add(o.type_id);
-    if (o?.op === "duplicate_type" && o.type != null) typeIds.add(Number(o.type));
+    if (["duplicate_type", "edit_type", "delete_type"].includes(o?.op) && o.type != null && !isRef(o.type)) typeIds.add(Number(o.type));
   }
   for (const x of p.elementIds ?? p.data?.elementIds ?? p.select_ids ?? []) elementIds.add(String(x));
   return { typeIds: [...typeIds].slice(0, 100), elementIds: [...elementIds].slice(0, 200) };
