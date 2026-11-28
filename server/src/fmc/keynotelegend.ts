@@ -18,6 +18,8 @@ export const LEGEND_FIX: Record<string, string> = {
   "FMC-KEYNOTE-LEGEND-SHEET": "That sheet was not found.",
   "FMC-KEYNOTE-LEGEND-ROLE": "No sheet has that role.",
   "FMC-KEYNOTE-LEGEND-ALREADY": "That sheet already has this keynote legend.",
+  "FMC-KEYNOTE-LEGEND-NONE": "That sheet has no keynote legend to refresh or remove.",
+  "FMC-KEYNOTE-LEGEND-PLAN-ONLY": "refresh and remove are plan-only in this build: the add-in apply places new legends only. Move or delete the legend in Revit, or wait for the apply (it needs the plan hash, Builder 1).",
   "FMC-KEYNOTE-LEGEND-SAME-POINT": "Every planned sheet got the same point from the spec, not from a title-block parameter. Check the zone on one sheet before applying to all.",
   "FMC-KEYNOTE-LEGEND-FILTER": "This keynote legend cannot be filtered by sheet (IsValidCategoryForFilterBySheet is false). Nothing was placed.",
 };
@@ -167,6 +169,7 @@ export interface LegendPlacement {
 }
 
 export type ZoneCheck = "clear" | "overlaps" | "off_titleblock" | "not_checked";
+export type LegendAction = "place" | "refresh" | "remove";
 
 export function legendBox(x: number, y: number, spec: LegendSpec): LegendFrame {
   const w = spec.size_mm?.width ?? 150;
@@ -194,7 +197,7 @@ export function zoneCheck(sheet: LegendSheet, x: number, y: number, spec: Legend
   return { zone_check: "clear", overlaps: [] };
 }
 
-export function planLegend(sheets: LegendSheet[], spec: LegendSpec, request: { sheets?: string[]; role: string; filter_by_sheet: boolean }): {
+export function planLegend(sheets: LegendSheet[], spec: LegendSpec, request: { sheets?: string[]; role: string; filter_by_sheet: boolean; action?: LegendAction }): {
   name: string;
   filter_by_sheet: boolean;
   placements: LegendPlacement[];
@@ -206,7 +209,20 @@ export function planLegend(sheets: LegendSheet[], spec: LegendSpec, request: { s
   const skipped = [...chosen.skipped];
   for (const sheet of chosen.found) {
     if (sheet.has_legend) {
+      if (request.action === "refresh" || request.action === "remove") {
+        const at = request.action === "refresh" ? legendPoint(sheet, spec) : null;
+        const existing = (sheet.taken_mm ?? []).find((r) => r.kind === "this_legend");
+        if (at && !at.ok) { skipped.push({ sheet: sheet.number || sheet.name || sheet.id, code: at.code, reason: at.reason }); continue; }
+        const px = at && at.ok ? at.point.x : existing?.min_x ?? 0;
+        const py = at && at.ok ? at.point.y : existing?.max_y ?? 0;
+        placements.push({ sheet: sheet.name || sheet.number || sheet.id, sheet_id: sheet.id, number: sheet.number ?? "", x: px, y: py, source: at && at.ok ? at.point.source : "spec", ...(existing?.id ? { legend_id: existing.id } : {}), ...(request.action === "refresh" ? zoneCheck(sheet, px, py, spec) : {}) });
+        continue;
+      }
       skipped.push({ sheet: sheet.number || sheet.name || sheet.id, code: "FMC-KEYNOTE-LEGEND-ALREADY", reason: LEGEND_FIX["FMC-KEYNOTE-LEGEND-ALREADY"] });
+      continue;
+    }
+    if (request.action === "refresh" || request.action === "remove") {
+      skipped.push({ sheet: sheet.number || sheet.name || sheet.id, code: "FMC-KEYNOTE-LEGEND-NONE", reason: LEGEND_FIX["FMC-KEYNOTE-LEGEND-NONE"] });
       continue;
     }
     const point = legendPoint(sheet, spec);
