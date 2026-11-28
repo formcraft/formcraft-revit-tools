@@ -14,15 +14,17 @@ import {
 import { workshopPackPdf } from "../fmc/casework_pdf.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { csvRow } from "./fmc_sheets.js";
+import { StandardsRevision, finishExport, newRunId, standardsRevision, swapPlan } from "../fmc/casework_run.js";
 
 /** Native paths: on the pilot PC that is win32, and tests on other systems write real files. */
-function log(cfg: GuardConfig, dryRun: boolean, target: string, result: string, detail: string, action = "casework_pack") {
+/** The detail carries the run id ("run CW-...: ...") so a log row can be tied to the reply that made it. */
+function log(cfg: GuardConfig, dryRun: boolean, target: string, result: string, detail: string, action = "casework_pack", runId = "") {
   try {
     const dir = expandEnv(cfg.reports_dir);
     fs.mkdirSync(dir, { recursive: true });
     const file = path.join(dir, "FMC_MCP_FileLog.csv");
     if (!fs.existsSync(file)) fs.writeFileSync(file, csvLine(["timestamp", "action", "dry_run", "target", "result", "detail"]));
-    fs.appendFileSync(file, csvLine([new Date().toISOString(), action, dryRun, target, result, detail]));
+    fs.appendFileSync(file, csvLine([new Date().toISOString(), action, dryRun, target, result, runId ? `run ${runId}: ${detail}` : detail]));
   } catch {
     // logging must never block the work
   }
@@ -42,7 +44,7 @@ async function readRoom(room: string): Promise<RoomRead> {
   return await withRevitConnection((c) => c.sendRaw("fmc_casework_room", { room }, 120000)) as RoomRead;
 }
 
-function reply(body: object, isError = false) {
+function replyOf(body: object, isError = false) {
   return { content: [{ type: "text" as const, text: JSON.stringify(body, null, 2) }], isError };
 }
 
@@ -65,7 +67,10 @@ export const FMC_CASEWORK_DESCRIPTION =
     "Workshop standards (sizes, boards, construction and hardware rules) are design inputs: from the " +
     "kit's 03_Master_Data\\FMC_Casework_Standards.json when it exists, else from `standards`; nothing is defaulted. " +
     "Families, types, parameters and sheets come from the kit's register files; what the kit lacks is a kit change " +
-    "request. It never decides gas, electrical or structural items.";
+    "request. Every reply carries a run_id (also in the file log row) and, once the standards are read, standards_revision " +
+    "(the kit file's label and hash, the hash of the standards used, and whether the call changed them). shop_drawings " +
+    "exports the PDF under a temporary name and swaps it in only when Revit reports the export done: then the old PDF moves " +
+    "to _Archive; if the export fails the current PDF is left exactly as it was. It never decides gas, electrical or structural items.";
 
 const OPENING = z.object({ kind: z.enum(["window", "door"]), offset: z.number(), width: z.number().positive() });
 const FIXED = z.object({
@@ -146,6 +151,7 @@ interface Prepared {
   lib: Map<string, LibMaterial> | null;
   libProblem: string;
   requests: KitRequest[];
+  revision: StandardsRevision;
 }
 
 function prepare(args: FmcCaseworkArgs, config: GuardConfig): { ok: Prepared } | { refused: object } {
@@ -171,7 +177,9 @@ function prepare(args: FmcCaseworkArgs, config: GuardConfig): { ok: Prepared } |
   }
   const libFile = expandEnv(config.materials_file);
   const lib = (() => { const j = readJson(libFile); return j ? readLibrary(j) : null; })();
-  return { ok: { standards: s, from: kit ? (args.standards ? `${kitFile} with the call's values over it` : kitFile) : "the call (the kit has none)",
+  const from = kit ? (args.standards ? `${kitFile} with the call's values over it` : kitFile) : "the call (the kit has none)";
+  const revision = standardsRevision({ kitFile, kitJson: kit, effective: merged, from, callOverrides: !!args.standards && Object.keys(args.standards).length > 0 });
+  return { ok: { standards: s, from, revision,
     casework: compute(units, layout, s), lib, libProblem: lib ? "" : `The kit's material library isn't readable at ${libFile}`, requests } };
 }
 
@@ -227,8 +235,20 @@ async function checksFor(args: FmcCaseworkArgs, p: Prepared) {
     ...(unmatched.length ? [`Wall(s) ${unmatched.join(", ")} don't run along the room's boundary, so their window sills aren't checked`] : [])] };
 }
 
-export async function runFmcCasework(args: FmcCaseworkArgs) {
-  const { config, problem } = loadConfig();
+/** What a test can stand in for: the guard config, and the Revit call. */
+export interface CaseworkIo {
+  config?: { config: GuardConfig; problem: string };
+  revit?: (command: string, payload: object, dry: boolean, timeoutMs: number) => Promise<unknown>;
+}
+
+export async function runFmcCasework(args: FmcCaseworkArgs, io: CaseworkIo = {}) {
+  const { config, problem } = io.config ?? loadConfig();
+  /** One id per call: in every reply and every log row it writes */
+  const run_id = newRunId();
+  let standards_revision: StandardsRevision | undefined;
+  const send = io.revit ?? ((command: string, payload: object, dry: boolean, ms: number) =>
+    withRevitConnection((cl) => dry ? cl.sendRaw(command, payload, ms) : cl.sendCommand(command, payload, ms)));
+  const reply = (body: object, isError = false) => replyOf({ run_id, ...(standards_revision ? { standards_revision } : {}), ...body }, isError);
   const dry = args.dry_run !== false;
   try {
     // room reading needs no standards: it gives the run's walls, which the person completes
@@ -245,6 +265,7 @@ export async function runFmcCasework(args: FmcCaseworkArgs) {
     const prep = prepare(args, config);
     if ("refused" in prep) return reply(prep.refused, true);
     const p = prep.ok;
+    standards_revision = p.revision;
     const c = p.casework;
     const head = { standards_from: p.from, problems: c.problems, notes: c.layout.notes };
 
@@ -299,8 +320,8 @@ export async function runFmcCasework(args: FmcCaseworkArgs) {
           ops: plan.ops.map((o) => ({ mark: o.mark, type: o.type, width: o.width, at: o.at, facing: o.facing, params: o.params })), type_params: plan.type_params };
         const checks = dry && args.room.trim() ? await checksFor(args, p) : null;
         // the dry run places and rolls back, so it changes nothing and needs no lock; the real run goes through the lock
-        const result = await withRevitConnection((cl) => dry ? cl.sendRaw("fmc_casework_place", payload, 300000) : cl.sendCommand("fmc_casework_place", payload, 300000));
-        log(config, dry, args.level, dry ? "dry run" : "done", `${plan.ops.length} units of ${plan.family} (${tag})`, "casework_place");
+        const result = await send("fmc_casework_place", payload, dry, 300000);
+        log(config, dry, args.level, dry ? "dry run" : "done", `${plan.ops.length} units of ${plan.family} (${tag})`, "casework_place", run_id);
         return reply({ dry_run: dry, family: plan.family, will_place: plan.ops.map((o) => `${o.mark} ${o.type} ${o.width}`), type_params: plan.type_params,
           skipped: plan.skipped, notes: [...plan.notes, ...(widthParam ? [] : [`${plan.family} has no Width key parameter in the register, so the width isn't set`])],
           kit_requests, ...(checks ? { checks } : {}), result,
@@ -333,14 +354,19 @@ export async function runFmcCasework(args: FmcCaseworkArgs) {
         const names = packNames(code, args.label);
         const folder = args.project_folder.trim() ? path.join(args.project_folder.trim(), "01_WIP", "_Casework") : "";
         let exportTo: { folder: string; file: string } | null = null;
+        let swap: ReturnType<typeof swapPlan> | null = null;
         let action = "";
         if (folder) {
           for (const target of [path.join(folder, names.shop), path.join(folder, "_Archive", "x.pdf")]) {
             const v = checkWritePath(target, config, { checkName: false });
             if (!v.ok) return reply({ refused: true, reasons: v.reasons }, true);
           }
-          exportTo = { folder, file: names.shop.replace(/\.pdf$/i, "") };
-          action = fs.existsSync(path.join(folder, names.shop)) ? "replace (the old one moves to _Archive)" : "new";
+          // Revit exports under a temporary name beside the current PDF; the swap happens only after it reports success
+          swap = swapPlan(folder, names.shop, run_id, stamp());
+          const pv = checkWritePath(path.join(folder, `${swap.pendingBase}.pdf`), config, { checkName: false });
+          if (!pv.ok) return reply({ refused: true, reasons: pv.reasons }, true);
+          exportTo = { folder, file: swap.pendingBase };
+          action = fs.existsSync(path.join(folder, names.shop)) ? "replace (only after a successful export; the old one then moves to _Archive)" : "new";
         }
         const payload = {
           dry_run: dry, view_prefix: `CW ${packLabel(args.label)} `, scale: scales[0], margin_mm: margin, title_block: frame.title_block,
@@ -350,18 +376,24 @@ export async function runFmcCasework(args: FmcCaseworkArgs) {
           schedule: cut ? { name: "I11_Joinery_Cutlist", sheet: cut.number, sheet_name: cut.name, at: [frame.origin[0] + 5, frame.origin[1] + frame.area[1] - 5] } : null,
           export: dry ? null : exportTo,
         };
-        if (!dry && exportTo && action !== "new") {
-          const archive = path.join(folder, "_Archive");
-          fs.mkdirSync(archive, { recursive: true });
-          fs.renameSync(path.join(folder, names.shop), path.join(archive, `${stamp()}_${names.shop}`));
-        }
         if (!dry && exportTo) fs.mkdirSync(folder, { recursive: true });
-        const result = await withRevitConnection((cl) => dry ? cl.sendRaw("fmc_casework_pack", payload, 600000) : cl.sendCommand("fmc_casework_pack", payload, 600000));
-        log(config, dry, folder || rows.map((r) => r.n).join(", "), dry ? "dry run" : "done", `${layout.views.length} elevations on ${rows.length} sheet(s)`, "casework_shop");
+        let result: unknown;
+        let sendError: string | undefined;
+        try {
+          result = await send("fmc_casework_pack", payload, dry, 600000);
+        } catch (e) {
+          if (dry || !swap) throw e;
+          sendError = e instanceof Error ? e.message : String(e);
+        }
+        // the old PDF is archived only now, and only if the export succeeded; a failure leaves it exactly as it was
+        const exported = !dry && swap ? finishExport(swap, sendError !== undefined ? { error: sendError } : { result }) : null;
+        log(config, dry, folder || rows.map((r) => r.n).join(", "), dry ? "dry run" : "done", `${layout.views.length} elevations on ${rows.length} sheet(s)${exported ? `; pdf ${exported.state}${exported.reason ? ` (${exported.reason})` : ""}${exported.archived ? `; old pdf archived to ${exported.archived}` : ""}` : ""}`, "casework_shop", run_id);
+        if (exported?.state === "failed")
+          return reply({ error: `The PDF export failed (${exported.reason}); the current shop PDF was left in place`, pdf: { folder, file: names.shop, action: "left as it was", ...exported }, result }, true);
         return reply({ dry_run: dry, scale: `1:${scales[0]}`, title_block: `${frame.title_block.family} : ${frame.title_block.type}`,
           sheets: rows.map((r) => ({ number: r.row!.number, name: r.row!.name, views: layout.views.filter((v) => v.sheet === r.row!.number).map((v) => v.mark) })),
           schedule: cut ? `I11_Joinery_Cutlist on ${cut.number}` : "The sheet register names no sheet for I11_Joinery_Cutlist",
-          pdf: exportTo ? { folder, file: names.shop, action } : "No project folder, so the sheets aren't exported as PDF",
+          pdf: exportTo ? { folder, file: names.shop, action, ...(exported ? { export: exported } : {}) } : "No project folder, so the sheets aren't exported as PDF",
           result, next: dry ? "Show this to the person; run again with dry_run=false once they say yes" : "Make the workshop pack (pack): its PDF names these sheets" });
       }
       case "pack": {
@@ -388,7 +420,7 @@ export async function runFmcCasework(args: FmcCaseworkArgs) {
         const summary = { folder, files: plan, ...summaryOf(c), cost_total: cost.total, kit_requests: cost.kit_requests,
           shop_drawings: shop ?? "not made yet (shop_drawings, in Revit)" };
         if (dry) {
-          log(config, true, folder, "dry run", `${plan.length} files`);
+          log(config, true, folder, "dry run", `${plan.length} files`, "casework_pack", run_id);
           return reply({ dry_run: true, ...summary, next: "Run again with dry_run=false to write these files" });
         }
         fs.mkdirSync(folder, { recursive: true });
@@ -404,14 +436,14 @@ export async function runFmcCasework(args: FmcCaseworkArgs) {
           fs.writeFileSync(target, f.content);
         }
         const written = plan.filter((x) => x.action !== "unchanged").length;
-        log(config, false, folder, "done", `${written} written, ${plan.length - written} unchanged`);
+        log(config, false, folder, "done", `${written} written, ${plan.length - written} unchanged`, "casework_pack", run_id);
         return reply({ done: true, ...summary });
       }
     }
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
-    if (args.action === "pack") log(config, dry, args.project_folder, "error", msg);
-    else if (args.action === "place" || args.action === "shop_drawings") log(config, dry, args.level || args.project_folder, "error", msg, `casework_${args.action}`);
+    if (args.action === "pack") log(config, dry, args.project_folder, "error", msg, "casework_pack", run_id);
+    else if (args.action === "place" || args.action === "shop_drawings") log(config, dry, args.level || args.project_folder, "error", msg, `casework_${args.action}`, run_id);
     return reply({ error: msg }, true);
   }
 }
