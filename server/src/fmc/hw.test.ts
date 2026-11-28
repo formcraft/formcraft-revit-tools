@@ -11,6 +11,7 @@ import {
 } from "./hw.js";
 import { clashPairs, dispatchJob, rayHitsAabb, rayVoxelHits, type GpuRunner } from "./hwgpu.js";
 import { DEFAULT_CONFIG, WRITE_COMMANDS, type GuardConfig } from "./policy.js";
+import { resetAutoFreeThrottle } from "./hw.js";
 import { NEVER } from "./aiuse.js";
 import { MemoryGate, admitWrite, memoryLimits } from "./memory.js";
 
@@ -296,4 +297,52 @@ test("auto free stays off unless hw_auto_free is on", async () => {
   assert.equal(result.ran, false);
   assert.match(result.reason, /hw_auto_free/);
   assert.equal(called, false);
+});
+
+test("P-fmc_hw-02: with two or more documents open the hard-tier auto free still runs, names each document, and reports and logs it", async () => {
+  resetAutoFreeThrottle();
+  const views = (doc: string, n: number) => Array.from({ length: n }, (_, i) => ({ id: `${doc}-${i}`, name: `V${i}`, active: i === 0, pinned: false }));
+  const docs = [
+    { title: "A-0003", path: "C:\\WIP\\A-0003.rvt", active: true, person_working: true, open_views: views("a", 5) },
+    { title: "S-0003", path: "C:\\WIP\\S-0003.rvt", active: false, person_working: false, open_views: views("s", 4) },
+    { title: "M-0003", path: "C:\\WIP\\M-0003.rvt", active: false, person_working: false, open_views: views("m", 1) },
+  ];
+  const calls: Array<{ action: string; body: Record<string, unknown> }> = [];
+  const lines: string[] = [];
+  const result = await autoFreeIfHard({
+    config: { ...DEFAULT_CONFIG, hw_auto_free: true } as GuardConfig,
+    memoryView: () => ({ pause_below_mb: 1024, tier: "hard" }),
+    idle: () => true,
+    openDocuments: () => docs.map((d) => ({ title: d.title, path: d.path })),
+    log: (line) => lines.push(line),
+    revit: async (action, body) => {
+      calls.push({ action, body });
+      if (action === "memory") return { documents: docs };
+      const close = (body.close as Array<{ view_id: string }>) ?? [];
+      return { closed: close.map((row) => ({ document: body.document, view_id: row.view_id })), skipped: [] };
+    },
+  });
+  assert.equal(result.ran, true, result.reason);
+  assert.equal(result.documents_open, 3);
+  assert.match(result.reason, /3 documents were open/);
+  // every call names a document, so FMC-DOC-REQUIRED cannot stop it
+  for (const call of calls) assert.ok(typeof call.body.document === "string" && call.body.document, call.action);
+  const frees = calls.filter((c) => c.action === "free");
+  assert.deepEqual(frees.map((c) => c.body.document), ["C:\\WIP\\A-0003.rvt", "C:\\WIP\\S-0003.rvt"]);
+  for (const call of frees) {
+    assert.equal(call.body.dry_run, false);
+    assert.deepEqual(call.body.saves, []);
+    for (const row of call.body.close as Array<{ document: string }>) assert.equal(row.document, call.body.document);
+  }
+  assert.deepEqual(result.freed?.map((row) => [row.document, row.closed]), [["C:\\WIP\\A-0003.rvt", 3], ["C:\\WIP\\S-0003.rvt", 2]]);
+  assert.match(result.reason, /Closed 5 views/);
+  assert.equal(lines.length, 1);
+  assert.match(lines[0], /\[FMC-HW-AUTOFREE\].*3 documents were open.*Closed 5 views/);
+  // the opt-in is unchanged: off means nothing is read or closed, even with several documents open
+  resetAutoFreeThrottle();
+  calls.length = 0;
+  const off = await autoFreeIfHard({ config: { ...DEFAULT_CONFIG } as GuardConfig, memoryView: () => ({ pause_below_mb: 1024, tier: "hard" }), idle: () => true, openDocuments: () => docs, revit: async (a, b) => { calls.push({ action: a, body: b }); return {}; } });
+  assert.equal(off.ran, false);
+  assert.equal(calls.length, 0);
+  resetAutoFreeThrottle();
 });
