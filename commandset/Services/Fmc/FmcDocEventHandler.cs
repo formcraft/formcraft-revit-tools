@@ -152,6 +152,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 r["types"] = new JArray(fm.Types.Cast<FamilyType>().Select(t => t.Name).Where(n => !string.IsNullOrWhiteSpace(n)));
             }
             r["reference_planes"] = new JArray(new FilteredElementCollector(doc).OfClass(typeof(ReferencePlane)).Cast<ReferencePlane>().Select(p => p.Name));
+            try { r["reference_planes_detail"] = FmcDocPlanes.Describe(doc); } catch (Exception e) { r["reference_planes_detail_error"] = e.Message; }  // fmc_family_evolve
             r["solids"] = new FilteredElementCollector(doc).OfClass(typeof(GenericForm)).GetElementCount();
             r["connectors"] = new FilteredElementCollector(doc).OfClass(typeof(ConnectorElement)).GetElementCount();
             r["dimensions"] = new FilteredElementCollector(doc).OfClass(typeof(Dimension)).GetElementCount();

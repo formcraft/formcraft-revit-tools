@@ -124,6 +124,8 @@ jobs:
           dotnet-version: 8.0.x
       - name: Dialog rule engine tests
         run: dotnet run --project tests/dialogrules/DialogRuleEngine.Tests.csproj -c Release --nologo
+      - name: Family evolve rules tests
+        run: dotnet run --project tests/evolve/FmcEvolveRules.Tests.csproj -c Release --nologo
       - name: Build plugin and command set
         # One build process: in parallel, two projects can write the same TouchKit.Core.dll at once.
         # Compiler errors are also written as annotations, so they can be read through the API (job logs can't be

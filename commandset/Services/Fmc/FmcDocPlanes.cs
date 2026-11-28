@@ -16,6 +16,27 @@ namespace RevitMCPCommandSet.Services.Fmc
         private static double Mm(double v) => UnitUtils.ConvertToInternalUnits(v, UnitTypeId.Millimeters);
         private static double ToMm(double feet) => UnitUtils.ConvertFromInternalUnits(feet, UnitTypeId.Millimeters);
 
+        /// <summary>
+        /// fmc_family_evolve: every reference plane with its name, the axis it is square to (x, y, z, or "" at an angle) and
+        /// where it is along that axis (mm), as name_template_plane finds it, so an unnamed one can be named by position.
+        /// </summary>
+        public static JArray Describe(Document doc)
+        {
+            var arr = new JArray();
+            foreach (ReferencePlane p in new FilteredElementCollector(doc).OfClass(typeof(ReferencePlane)).Cast<ReferencePlane>())
+            {
+                XYZ n = p.Normal;
+                string axis = FmcEvolveRules.AxisOf(n.X, n.Y, n.Z);
+                XYZ dir = axis == "x" ? XYZ.BasisX : axis == "y" ? XYZ.BasisY : axis == "z" ? XYZ.BasisZ : null;
+                arr.Add(new JObject
+                {
+                    ["name"] = p.Name ?? "", ["axis"] = axis, ["unnamed"] = FmcEvolveRules.IsUnnamedPlane(p.Name),
+                    ["at_mm"] = dir == null ? 0 : FmcEvolveRules.Round1(ToMm(p.BubbleEnd.DotProduct(dir))),
+                });
+            }
+            return arr;
+        }
+
         public static (string, string) NameTemplatePlane(Document doc, JObject op)
         {
             string name = op.Value<string>("name") ?? throw new ArgumentException("name is needed");

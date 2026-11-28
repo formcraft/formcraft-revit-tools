@@ -16,6 +16,7 @@ import { parseSharedParameters, SpParam } from "./specs.js";
 import { Keynote, parseKeynotes } from "./library.js";
 import { parseRulebook as parseQaRulebook } from "./rules.js";
 import { parseConfig as parseAiConfig } from "./aiuse.js";
+import { isEvolveDir } from "./evolve.js";
 import type { RevitInstance } from "./connect.js";
 
 // ---------- paths: Windows paths on the PC, POSIX paths in tests ----------
@@ -155,7 +156,7 @@ export function recipeIndex(k: KitPaths): Map<string, string[]> {
   const walk = (dir: string, depth: number) => {
     for (const e of listDir(dir)) {
       const p = pj(dir, e.name);
-      if (e.isDirectory()) { if (depth < 4) walk(p, depth + 1); }
+      if (e.isDirectory()) { if (!isEvolveDir(e.name) && depth < 4) walk(p, depth + 1); }
       else if (/\.recipe\.json$/i.test(e.name)) {
         const fam = e.name.replace(/\.recipe\.json$/i, "");
         index.set(fam, [...(index.get(fam) ?? []), p]);
@@ -196,7 +197,7 @@ export function familyFiles(k: KitPaths): { staged: Map<string, string>; release
   const collect = (dir: string, into: Map<string, string>) => {
     for (const e of listDir(dir)) if (e.isFile() && /\.rfa$/i.test(e.name)) into.set(e.name.replace(/\.rfa$/i, ""), pj(dir, e.name));
   };
-  for (const e of listDir(k.stagingRoot)) if (e.isDirectory()) collect(pj(k.stagingRoot, e.name), staged);
+  for (const e of listDir(k.stagingRoot)) if (e.isDirectory() && !isEvolveDir(e.name)) collect(pj(k.stagingRoot, e.name), staged);
   for (const e of listDir(k.familiesRoot)) if (e.isDirectory() && /^[A-Z]{1,3}$/.test(e.name)) collect(pj(k.familiesRoot, e.name), released);
   return { staged, released };
 }
