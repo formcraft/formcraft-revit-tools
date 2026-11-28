@@ -34,6 +34,7 @@ export const FMC_LEGEND_DESCRIPTION =
     "the template has a keynote tag, a keynote legend and a type schedule per category on a sheet. Saved to " +
     "04_Families\\_ChainTests\\FMC_ChainTest_<Role>.rvt (an older one goes to _Archive). A dry run (the default) lists what " +
     "it would place. It shows each family loads, places, tags and schedules: Gate A's last Not checked line. " +
+    "list_chains is read-only: the chain-test projects already made (FMC_ChainTest_<Role>.rvt in _ChainTests and _Archive), with size, date and any result JSON beside them; role filters. " +
     "seed, create_view and place are the legend-view tool. Revit cannot create a LegendComponent or a ViewLegend, so both copy a seed. " +
     "seed is read-only and returns FMC-LEGEND-NO-SEED with the fix 'place one legend component by hand once' when none exist. " +
     "create_view duplicates a seed legend (Duplicate or WithDetailing) and renames it, or copies one from another open document and reports it if Revit refuses. " +
@@ -44,7 +45,7 @@ export const FMC_LEGEND_DESCRIPTION =
     "Example: action seed, document F26901-FMC-ZZ-ZZ-M3-A-0002_USER.";
 
 export const FMC_LEGEND_SHAPE = {
-  action: z.enum(["chain", "seed", "create_view", "place"]),
+  action: z.enum(["chain", "list_chains", "seed", "create_view", "place"]),
   role: z.string().max(3).optional().default("").describe("chain: the role code, e.g. A, E, M, P"),
   folder: z.string().optional().default("").describe("chain: the staged families' folder (default <family_staging_root>\\<Role>)"),
   template: z.string().optional().default("").describe("chain: the project template (default the role's FMC_<Role>_Template_v2.2.rte)"),
@@ -68,7 +69,39 @@ export function chainTestsRoot(libraryRoots: string[], stagingRoot: string): str
   return libraryRoots.find((r) => /[\\/]_ChainTests[\\/]*$/i.test(r)) ?? win.join(win.dirname(stagingRoot.replace(/[\\/]+$/, "")), "_ChainTests");
 }
 
+export interface ChainRow { role: string; file: string; archived: boolean; bytes: number; modified: string; result?: string }
+
+/** Research 54: the chain-test projects on disk, newest first. Reads the folder only; opens no model. */
+export function listChains(root: string, role = ""): ChainRow[] {
+  const rows: ChainRow[] = [];
+  const want = role.trim().toUpperCase();
+  for (const [dir, archived] of [[root, false], [win.join(root, "_Archive"), true]] as const) {
+    let names: string[] = [];
+    try { names = fs.readdirSync(dir); } catch { continue; }
+    for (const name of names) {
+      const m = /^FMC_ChainTest_([A-Za-z]{1,3})(?:[_.-].*)?\.rvt$/i.exec(name);
+      if (!m || /\.\d{4}\.rvt$/i.test(name)) continue;
+      if (want && m[1].toUpperCase() !== want) continue;
+      const file = win.join(dir, name);
+      let st: fs.Stats;
+      try { st = fs.statSync(file); } catch { continue; }
+      const side = file.replace(/\.rvt$/i, ".json");
+      rows.push({ role: m[1].toUpperCase(), file, archived, bytes: st.size, modified: st.mtime.toISOString(), ...(fs.existsSync(side) ? { result: side } : {}) });
+    }
+  }
+  return rows.sort((a, b) => b.modified.localeCompare(a.modified) || a.file.localeCompare(b.file));
+}
+
 export async function runFmcLegend(args: FmcLegendArgs, deps: { env?: NodeJS.ProcessEnv; guard?: GuardConfig; read?: (body: Record<string, unknown>) => Promise<unknown>; apply?: (body: Record<string, unknown>) => Promise<unknown>; reportDir?: string } = {}) {
+  if (args.action === "list_chains") {
+    const { config } = deps.guard ? { config: deps.guard } : loadConfig();
+    const root = chainTestsRoot((config.library_roots ?? []).map((r) => expandEnv(r)), expandEnv(config.family_staging_root));
+    const chains = listChains(root, args.role);
+    const current = chains.filter((row) => !row.archived);
+    return reply({ tool: "fmc_legend", action: "list_chains", read_only: true, saved: false, synced: false, images: [], root, exists: fs.existsSync(root), role: args.role.trim().toUpperCase() || "all",
+      summary: `${current.length} current and ${chains.length - current.length} archived chain-test project${chains.length === 1 ? "" : "s"}${args.role.trim() ? " for role " + args.role.trim().toUpperCase() : ""}.`, chains,
+      next: chains.length ? "Open a chain-test project in Revit to read its sheet, keynote legend and schedules." : "None yet: run action chain with dry_run true first." });
+  }
   if (args.action !== "chain") return runLegendViews(args as LegendViewArgs, deps);
   const { config } = deps.guard ? { config: deps.guard } : loadConfig();
   const dry = args.dry_run !== false;
