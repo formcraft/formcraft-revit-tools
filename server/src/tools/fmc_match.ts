@@ -15,7 +15,7 @@ function reply(body: object, isError = false) {
 }
 
 export const FMC_MATCH_DESCRIPTION =
-  "Formcraft match: copy the type, instance parameters and a view's graphic overrides from one source element to target elements of the SAME category, like pyRevit Match. " +
+  "Formcraft match (GAP-10): copy the type, instance parameters and a view's graphic overrides from one source element to target elements of the SAME category, like pyRevit Match. " +
   "Nothing is guessed: pass document (a title or full path; the active document is never used), source (element id) and targets (element ids, at most 200). " +
   "what is any of type, parameters, overrides (default type and parameters). overrides needs view (a view id) and copies that view's overrides for the source onto each target. " +
   "parameters narrows to those names; exclude_parameters leaves some out. Read-only and shared parameters are copied by their GUID, built-in ones by id; read-only, level, host, phase, workset, mark and family-and-type parameters are never copied. " +

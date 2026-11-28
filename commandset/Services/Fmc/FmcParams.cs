@@ -238,17 +238,26 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         private sealed class NoScope : IDisposable { public void Dispose() { } }
 
+        /// <summary>
+        /// Binds one kit shared parameter (GAP-11, co-owned with Kit Loader).
+        /// The ExternalDefinition comes only from the already-open kit shared parameter file.
+        /// No Guid.NewGuid, and no new ExternalDefinition, is created. A project parameter of the same
+        /// name with a different GUID (or one that is not shared) is refused.
+        /// </summary>
         private static void Bind(UIApplication app, Document doc, DefinitionFile definitions, JToken step)
         {
             string name = (step.Value<string>("name") ?? "").Trim();
-            string guid = (step.Value<string>("guid") ?? "").Trim();
-            ExternalDefinition definition = null;
-            foreach (DefinitionGroup group in definitions.Groups)
-            {
-                if (group.Definitions.get_Item(name) is ExternalDefinition found && string.Equals(found.GUID.ToString(), guid, StringComparison.OrdinalIgnoreCase)) { definition = found; break; }
-            }
+            string asked = (step.Value<string>("guid") ?? "").Trim();
+            ExternalDefinition definition = FindKitDefinition(definitions, name);
             if (definition == null)
-                throw new InvalidOperationException("[FMC-PARAM-NOT-IN-KIT] \"" + name + "\" is not in the kit shared parameter file with GUID " + guid + ". The GUID must match the kit. No definition was created.");
+                throw new InvalidOperationException("[FMC-PARAM-NOT-IN-KIT] \"" + name + "\" is not in the kit shared parameter file. The GUID must match the kit. No definition was created.");
+            // The only GUID used is the one on this kit-file definition.
+            string kitGuid = definition.GUID.ToString();
+            if (asked.Length == 0 || !string.Equals(asked, kitGuid, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException("[FMC-PARAM-GUID-MISMATCH] The plan GUID " + asked + " is not the kit GUID " + kitGuid + " for \"" + name + "\". Only the kit file's GUID is used. No definition was created.");
+            string existingGuid;
+            if (ProjectGuidByName(doc, name, out existingGuid) && !string.Equals(existingGuid, kitGuid, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException("[FMC-PARAM-GUID-MISMATCH] \"" + name + "\" is already a project parameter " + (existingGuid.Length > 0 ? ("with GUID " + existingGuid) : "that is not shared") + "; the kit GUID is " + kitGuid + ". The GUID must match the kit. A person must remove or rebind the old one. No definition was created.");
             CategorySet set = app.Application.Create.NewCategorySet();
             foreach (JToken c in step["categories"] as JArray ?? new JArray())
             {
@@ -266,6 +275,38 @@ namespace RevitMCPCommandSet.Services.Fmc
             BindingMap map = doc.ParameterBindings;
             bool ok = map.Contains(definition) ? map.ReInsert(definition, binding, group2) : map.Insert(definition, binding, group2);
             if (!ok) throw new InvalidOperationException("[FMC-PARAM-BIND] Revit did not bind " + name + ". A project parameter with that name may already exist.");
+        }
+
+        /// <summary>Looks up a shared parameter in the kit file by name only. Never creates a definition.</summary>
+        private static ExternalDefinition FindKitDefinition(DefinitionFile file, string name)
+        {
+            foreach (DefinitionGroup group in file.Groups)
+            {
+                if (group.Definitions.get_Item(name) is ExternalDefinition found) return found;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// True when a project parameter of this name is already bound. existingGuid is the bound shared GUID,
+        /// or empty when the bound parameter is not shared.
+        /// </summary>
+        private static bool ProjectGuidByName(Document doc, string name, out string existingGuid)
+        {
+            existingGuid = "";
+            var guidById = new Dictionary<long, string>();
+            foreach (SharedParameterElement shared in new FilteredElementCollector(doc).OfClass(typeof(SharedParameterElement)).Cast<SharedParameterElement>())
+                guidById[shared.Id.Value] = shared.GuidValue.ToString();
+            DefinitionBindingMapIterator it = doc.ParameterBindings.ForwardIterator();
+            while (it.MoveNext())
+            {
+                Definition definition = it.Key;
+                if (definition == null || !string.Equals(definition.Name, name, StringComparison.OrdinalIgnoreCase)) continue;
+                if (definition is InternalDefinition internalDef && guidById.TryGetValue(internalDef.Id.Value, out string g)) existingGuid = g;
+                else if (definition is ExternalDefinition external) existingGuid = external.GUID.ToString();
+                return true;
+            }
+            return false;
         }
     }
 }

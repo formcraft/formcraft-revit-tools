@@ -1,5 +1,7 @@
 /**
- * fmc_params (gap-analysis proposal 11): the project parameter manager. Pure planner and auditor.
+ * fmc_params (GAP-11): the project parameter manager. Pure planner and auditor. Co-owned with Kit Loader
+ * on the kit shared-parameter GUID rule: bind uses only the GUID read from the kit file, never creates a
+ * GUID or a new definition, and refuses when a project parameter of that name has a different GUID.
  * bind    kit shared parameters to categories (GUID must match the kit; the kit file is never edited)
  * audit   project parameter bindings against the kit shared parameter file (read-only)
  * copy    values from one parameter to another on elements of a category or an id list
@@ -90,6 +92,22 @@ function bad(code: string, message: string): BindPlan {
   return { ok: false, code, message: `[${code}] ${message}`, steps: [], preview: [], plan_hash: "" };
 }
 
+/**
+ * GAP-11 / Kit Loader GUID rule, used by planBind and mirrored in FmcParamsApplyHandler.Bind:
+ * the only GUID that may be written is kit.guid (read from the kit shared parameter file).
+ * A project parameter of the same name with a different GUID, or one that is not shared, is refused.
+ * No GUID is invented and no new shared definition is created.
+ */
+export function bindGuidFromKit(kit: SpParam, existing: Binding | undefined): { ok: true; guid: string } | { ok: false; code: string; message: string } {
+  if (existing && !(existing.guid && existing.guid.toLowerCase() === kit.guid.toLowerCase())) {
+    return {
+      ok: false, code: "FMC-PARAM-GUID-MISMATCH",
+      message: `[FMC-PARAM-GUID-MISMATCH] "${kit.name}" is already a project parameter ${existing.shared ? `with GUID ${existing.guid}` : "that is not shared"}; the kit GUID is ${kit.guid}. The GUID must match the kit. A person must remove or rebind the old one.`,
+    };
+  }
+  return { ok: true, guid: kit.guid };
+}
+
 export function planBind(input: { kit: Map<string, SpParam> | null; kitFile: string; names: string[]; categories: string[]; binding: "instance" | "type"; group: string; bound: Binding[] }): BindPlan {
   if (!input.kit) return bad("FMC-PARAM-FILE", `The kit shared parameter file is not readable at ${input.kitFile || "(not set)"}. Nothing was invented.`);
   const names = [...new Set(input.names.map((n) => n.trim()).filter(Boolean))];
@@ -104,18 +122,18 @@ export function planBind(input: { kit: Map<string, SpParam> | null; kitFile: str
     if (!k) return bad("FMC-PARAM-NOT-IN-KIT", `"${name}" is not in the kit shared parameter file. Kit change: add it to FMC_SharedParameters.txt. No definition was created.`);
     const same = input.bound.find((b) => b.name === name);
     const sameGuid = input.bound.find((b) => b.guid && b.guid.toLowerCase() === k.guid.toLowerCase());
-    if (same && !(same.guid && same.guid.toLowerCase() === k.guid.toLowerCase())) {
-      return bad("FMC-PARAM-GUID-MISMATCH", `"${name}" is already a project parameter ${same.shared ? `with GUID ${same.guid}` : "that is not shared"}; the kit GUID is ${k.guid}. The GUID must match the kit. A person must remove or rebind the old one.`);
-    }
+    const guidCheck = bindGuidFromKit(k, same);
+    if (!guidCheck.ok) return bad(guidCheck.code, guidCheck.message.replace(/^\[FMC-PARAM-GUID-MISMATCH\] /, ""));
+    // The step GUID is always k.guid from the kit file (guidCheck.guid), never invented.
     const have = sameGuid ?? same;
     if (have && have.binding !== input.binding) {
       return bad("FMC-PARAM-BINDING-KIND", `"${name}" is bound as ${have.binding}; a bind would change it to ${input.binding}. Revit forbids switching with data in place. Not done.`);
     }
     const merged = [...new Set([...(have?.categories ?? []), ...cats])];
     const added = merged.filter((c) => !(have?.categories ?? []).includes(c));
-    if (have && added.length === 0) { preview.push({ name, guid: k.guid, status: "already_bound", categories: merged }); continue; }
-    steps.push({ kind: "bind", name, guid: k.guid, binding: input.binding, categories: merged, group: input.group || "data", added_categories: added, existing: !!have });
-    preview.push({ name, guid: k.guid, datatype: k.datatype, status: have ? "add_categories" : "new_binding", binding: input.binding, added_categories: added, categories: merged });
+    if (have && added.length === 0) { preview.push({ name, guid: guidCheck.guid, status: "already_bound", categories: merged }); continue; }
+    steps.push({ kind: "bind", name, guid: guidCheck.guid, binding: input.binding, categories: merged, group: input.group || "data", added_categories: added, existing: !!have });
+    preview.push({ name, guid: guidCheck.guid, datatype: k.datatype, status: have ? "add_categories" : "new_binding", binding: input.binding, added_categories: added, categories: merged });
   }
   return { ok: true, code: "", message: "", steps, preview, plan_hash: paramsHash(steps, { action: "bind" }) };
 }

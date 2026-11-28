@@ -1,5 +1,5 @@
 /**
- * fmc_match (gap-analysis proposal 10): copy the type, instance parameters and view graphic overrides from one
+ * fmc_match (GAP-10): copy the type, instance parameters and view graphic overrides from one
  * element to others of the same category, like pyRevit Match. This file is the pure planner. The model is read and
  * written by the add-in (fmc_match, fmc_match_apply). A dry run returns the per-target diff and plan_hash; an apply
  * plans again and refuses when the hash differs, so a person's yes is tied to these very steps.

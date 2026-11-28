@@ -19,7 +19,7 @@ function reply(body: object, isError = false) {
 }
 
 export const FMC_PARAMS_DESCRIPTION =
-  "Formcraft project parameter manager. Pass document (a title or full path; the active document is never used). " +
+  "Formcraft project parameter manager (GAP-11, co-owned with Kit Loader on the kit GUID rule). Pass document (a title or full path; the active document is never used). " +
   "audit (read-only) compares the project's parameter bindings with the kit shared parameter file (read as UTF-8 or UTF-16): kit parameters not bound, a shared parameter whose GUID differs from the kit, one that is not in the kit, a project parameter that clashes with a kit name, a data type that differs. names narrows it. " +
   "bind binds kit shared parameters (names) to categories (built-in names such as OST_Walls) as instance or type. The GUID must match the kit; a name that is already a project parameter with another GUID is refused; categories are added to an existing binding, never removed. The kit file is never edited and Revit is pointed back at the person's own file afterwards. " +
   "copy copies the value of one parameter into another (from, to) on elements given by ids or by category (OST_ name); the same storage, or anything into text. An empty source leaves the target alone. " +

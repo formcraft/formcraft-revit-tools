@@ -1,6 +1,6 @@
 # fmc_match
 
-Copy the type, instance parameters and a view's graphic overrides from one source element to target elements, like pyRevit Match. Gap-analysis proposal 10.
+Copy the type, instance parameters and a view's graphic overrides from one source element to target elements, like pyRevit Match. Canonical id: **GAP-10**. (The features.json id F160 is provisional and will be renumbered at merge.)
 
 Same category only. A target in another category is refused in the diff and never changed. Pass `document` (a title or a full path); the active document is never used.
 

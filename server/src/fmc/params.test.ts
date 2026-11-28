@@ -5,7 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { z } from "zod";
 import { DEFAULT_CONFIG, READ_VIA_SEND_COMMAND, WRITE_COMMANDS, type GuardConfig } from "./policy.js";
-import { auditParams, parseCsv, planBind, planCopy, planFill, readKitShared, type Binding, type ValueRow } from "./params.js";
+import { auditParams, bindGuidFromKit, parseCsv, planBind, planCopy, planFill, readKitShared, type Binding, type ValueRow } from "./params.js";
 import { FMC_PARAMS_SHAPE, runFmcParams, type FmcParamsArgs } from "../tools/fmc_params.js";
 
 const KIT = [
@@ -74,6 +74,46 @@ test("bind plans from the kit GUID, adds categories, and refuses a GUID clash or
   assert.equal(planBind({ ...base, names: ["Status"], categories: [] }).code, "FMC-PARAM-CATEGORY");
   const fresh = planBind({ ...base, bound: [], names: ["Fire Rating"], categories: ["OST_Walls"] });
   assert.equal((fresh.steps[0] as { existing: boolean }).existing, false);
+});
+
+test("bind uses only the kit file GUID and refuses a project parameter whose GUID differs (GAP-11)", () => {
+  const kit = readKitShared(kitFile(false))!;
+  const status = kit.get("Status")!;
+  const clear = kit.get("Clear Height")!;
+  const fire = kit.get("Fire Rating")!;
+  const base = { kit, kitFile: "k", binding: "instance" as const, group: "data", bound };
+  // The planned GUID is exactly the kit file's GUID, never a new one.
+  const add = planBind({ ...base, names: ["Status"], categories: ["OST_Walls", "OST_Doors"] });
+  assert.equal(add.ok, true);
+  assert.equal((add.steps[0] as { guid: string }).guid, status.guid);
+  assert.equal((add.preview[0] as { guid: string }).guid, "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee");
+  const fresh = planBind({ ...base, bound: [], names: ["Fire Rating", "Status"], categories: ["OST_Walls"] });
+  assert.deepEqual(fresh.steps.map((s) => (s as { guid: string }).guid), [fire.guid, status.guid]);
+  assert.equal(fresh.steps.every((s) => [...kit.values()].some((k) => k.guid === (s as { guid: string }).guid)), true);
+  // Shared parameter already bound under this name with another GUID: refused, no step, no invented GUID.
+  const clash = planBind({ ...base, names: ["Clear Height"], categories: ["OST_Rooms"] });
+  assert.equal(clash.ok, false);
+  assert.equal(clash.code, "FMC-PARAM-GUID-MISMATCH");
+  assert.equal(clash.steps.length, 0);
+  assert.match(clash.message, /99999999-bbbb-cccc-dddd-eeeeeeeeeeee/);
+  assert.match(clash.message, /bbbbbbbb-bbbb-cccc-dddd-eeeeeeeeeeee/);
+  // A non-shared project parameter of a kit name is also a GUID mismatch (there is no kit GUID on it).
+  const notShared = planBind({ ...base, names: ["Fire Rating"], categories: ["OST_Doors"] });
+  assert.equal(notShared.code, "FMC-PARAM-GUID-MISMATCH");
+  assert.equal(notShared.steps.length, 0);
+  // The apply-time helper returns only the kit GUID, and refuses the same cases the C# Bind method refuses.
+  const ok = bindGuidFromKit(status, bound[0]);
+  assert.equal(ok.ok, true);
+  if (ok.ok) assert.equal(ok.guid, status.guid);
+  const badShared = bindGuidFromKit(clear, bound.find((b) => b.name === "Clear Height"));
+  assert.equal(badShared.ok, false);
+  if (!badShared.ok) assert.equal(badShared.code, "FMC-PARAM-GUID-MISMATCH");
+  const badLocal = bindGuidFromKit(fire, bound.find((b) => b.name === "Fire Rating"));
+  assert.equal(badLocal.ok, false);
+  // An existing binding with the kit GUID is accepted (categories may be added).
+  const same = bindGuidFromKit(status, { name: "Status", guid: status.guid.toUpperCase(), shared: true, datatype: "TEXT", binding: "instance", categories: [] });
+  assert.equal(same.ok, true);
+  if (same.ok) assert.equal(same.guid, status.guid);
 });
 
 const rows: ValueRow[] = [

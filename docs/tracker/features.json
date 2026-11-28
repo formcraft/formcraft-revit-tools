@@ -1130,8 +1130,8 @@
     "group": "Parameters",
     "feature": "Match type, parameters and overrides (fmc_match)",
     "status": "Built, Revit check due",
-    "ref": "fmc_match, fmc_match_apply, docs/tools/fmc_match.md",
-    "note": "Gap-analysis proposal 10. Copies the type, instance parameters and one view's graphic overrides from a source element to same-category targets (200 at most), like pyRevit Match. dry_run defaults true and returns a per-target diff and plan_hash; apply needs that plan_hash and batch_lease, plans again and refuses FMC-MATCH-PLAN-CHANGED. fmc_match_apply is in WRITE_COMMANDS: one transaction, any failure rolls back; HEBERT HOSTELS, central, protected and family documents and another user's elements are refused. Mark, level, host, phase, workset and type parameters are never copied. Needs a Revit check after install."
+    "ref": "GAP-10, fmc_match, fmc_match_apply, docs/tools/fmc_match.md",
+    "note": "Canonical id: GAP-10 (whole-plugin gap analysis, canvas 55c7b2a5). The features.json id F160 is provisional and will be renumbered at merge; the schema here requires an F-number. Copies the type, instance parameters and one view's graphic overrides from a source element to same-category targets (200 at most), like pyRevit Match. dry_run defaults true and returns a per-target diff and plan_hash; apply needs that plan_hash and batch_lease, plans again and refuses FMC-MATCH-PLAN-CHANGED. fmc_match_apply is in WRITE_COMMANDS: one transaction, any failure rolls back; HEBERT HOSTELS, central, protected and family documents and another user's elements are refused. Mark, level, host, phase, workset and type parameters are never copied. Needs a Revit check after install."
   },
   {
     "id": "F161",
@@ -1139,7 +1139,7 @@
     "group": "Parameters",
     "feature": "Project parameter manager (fmc_params)",
     "status": "Built, Revit check due",
-    "ref": "fmc_params, fmc_params_apply, docs/tools/fmc_params.md",
-    "note": "Gap-analysis proposal 11. audit compares project bindings with the kit shared parameter file (UTF-8 or UTF-16); bind binds kit shared parameters to categories with the kit GUID (categories only grow, the kit file is never edited); copy moves a value from one parameter to another; fill_csv fills values from a CSV by element id. Writes are dry run first with a preview and plan_hash; apply needs plan_hash and batch_lease and is one transaction. fmc_params_apply is in WRITE_COMMANDS. Needs a Revit check after install."
+    "ref": "GAP-11, fmc_params, fmc_params_apply, docs/tools/fmc_params.md",
+    "note": "Canonical id: GAP-11 (whole-plugin gap analysis, canvas 55c7b2a5). The features.json id F161 is provisional and will be renumbered at merge; the schema here requires an F-number. Co-owned with Kit Loader on the kit shared-parameter GUID rule: bind uses only the GUID read from the kit file, never creates a GUID or a new ExternalDefinition, and refuses when a project parameter of that name has a different GUID. audit compares project bindings with the kit file (UTF-8 or UTF-16); bind binds kit shared parameters to categories (categories only grow, the kit file is never edited); copy moves a value from one parameter to another; fill_csv fills values from a CSV by element id. Writes are dry run first with a preview and plan_hash; apply needs plan_hash and batch_lease and is one transaction. fmc_params_apply is in WRITE_COMMANDS. Needs a Revit check after install."
   }
 ]
