@@ -237,6 +237,45 @@ namespace Formcraft.Shell.Tests
         }
 
         [Test]
+        [Arguments("kitchen", "SECTIONS: Engineer › Casework (Model)")]
+        [Arguments("shop drawings", "SECTIONS: Engineer › Casework (Model)")]
+        [Arguments("RCP", "SECTIONS: Engineer › Ceilings (Model)")]
+        [Arguments("reflected ceiling", "SECTIONS: Engineer › Ceilings (Model)")]
+        [Arguments("tiles", "SECTIONS: Engineer › Ceilings (Model)")]
+        public async Task A_sections_own_words_find_it(string query, string expected)
+        {
+            var found = OnSta(() => new Pane().Find(query));
+
+            await Assert.That(found).StartsWith(expected);
+        }
+
+        [Test]
+        public async Task A_sections_words_go_with_it_when_its_part_is_off()
+        {
+            var (on, off) = OnSta(() =>
+            {
+                var p = new Pane();
+                var a = p.Find("kitchen");
+                p.Settings.SetPart("model.casework", false);
+                return (a, p.Find("kitchen"));
+            });
+
+            await Assert.That(on).Contains("Casework");
+            await Assert.That(off).DoesNotContain("Casework");
+        }
+
+        [Test]
+        public async Task Section_words_load_from_sections_json()
+        {
+            var registry = SectionRegistry.LoadEmbedded();
+            var casework = registry.Sections.Single(s => s.Name == "Casework").Words ?? new string[0];
+            var plain = registry.Sections.Single(s => s.Name == "Brief").Words;
+
+            await Assert.That(string.Join(",", casework)).IsEqualTo("kitchen,units,shop drawings");
+            await Assert.That(plain).IsNull();
+        }
+
+        [Test]
         public async Task Every_search_entry_opens_something_real()
         {
             var registry = SectionRegistry.LoadEmbedded();
