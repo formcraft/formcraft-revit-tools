@@ -243,6 +243,9 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_close_local_apply",
   // Close spare documents or purge unused elements. Status stays on fmc_memory.
   "fmc_memory_apply",
+  // Family editor tools (family documents only; the add-in refuses a project): nested swap/associate/reload, hosting
+  // converted in place, connectors set or added. One transaction each; the dry runs roll back.
+  "fmc_fam_nested_apply", "fmc_fam_hosting_apply", "fmc_fam_connector_apply",
 ]);
 
 /**
