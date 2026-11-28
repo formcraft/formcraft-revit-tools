@@ -70,6 +70,10 @@ export interface Fix {
   id: string; gate: EvolveGate; summary: string;
   ops: Array<Record<string, unknown>>;
   rename_to?: string;
+  /** Names in this fix that are the tool's placeholder, not a kit rule: a person should replace them (RP_X+450). */
+  provisional?: string[];
+  /** The kit rule the names come from, when they do (FAM-008). */
+  kit_rule?: string;
 }
 
 export interface Evaluation { gates: GateResult[]; fixes: Fix[]; needs_person: Array<{ gate: EvolveGate; detail: string }>; target_name: string; problems: string[] }
@@ -115,7 +119,26 @@ export function suggestFamilyName(name: string, category: string, specs?: { has(
   return null;
 }
 
-/** A plane name from its position, e.g. RP_X+450 or RP_Z-120.5. */
+/**
+ * What the kit defines for reference plane names (searched 28 Nov: kit rulebook FAM-008 "Name the planes Center (Left/Right),
+ * Front and Back, and mark them Strong" (STD 4.1), and docs/FAMILY_AUTHORING_STANDARD.md 1.2: Center (Left/Right),
+ * Center (Front/Back), Left, Right, Front, Back, Top, Bottom). It is a fixed vocabulary, not a positional scheme. Only the
+ * two centre planes follow from where a plane is: the origin planes, x = 0 and y = 0. Left, Right, Front, Back, Top and Bottom
+ * are design choices (which unnamed plane is the left one?) and are never derived from a position.
+ */
+export const KIT_PLANE_NAMES: ReadonlyArray<{ axis: "x" | "y"; at_mm: number; name: string; rule: string }> = [
+  { axis: "x", at_mm: 0, name: "Center (Left/Right)", rule: "FAM-008" },
+  { axis: "y", at_mm: 0, name: "Center (Front/Back)", rule: "FAM-008" },
+];
+/** The kit's name for an unnamed plane square to x or y at the origin (within 0.5 mm); null for any other plane. */
+export function kitPlaneName(p: { axis: string; at_mm: number }): string | null {
+  const hit = KIT_PLANE_NAMES.find((k) => k.axis === p.axis && Math.abs(k.at_mm - p.at_mm) <= 0.5);
+  return hit ? hit.name : null;
+}
+/** The words that mark an RP_ name as the tool's own: there is no kit rule for a position-based plane name. */
+export const PROVISIONAL_PLANE_NOTE = "RP_ names are provisional: the kit has no positional plane naming rule (FAM-008 names only Center (Left/Right), Center (Front/Back), Left, Right, Front, Back, Top, Bottom); the owner should define one";
+
+/** PROVISIONAL placeholder (no kit rule, see KIT_PLANE_NAMES): a plane name from its position, e.g. RP_X+450 or RP_Z-120.5. */
 export function positionalPlaneName(p: { axis: string; at_mm: number }): string {
   const mm = Math.round(p.at_mm * 10) / 10;
   return `RP_${p.axis.toUpperCase()}${mm >= 0 ? "+" : ""}${mm}`;
@@ -209,17 +232,29 @@ function planesGate(f: EvolveFacts, o: EvolveOptions, out: Evaluation) {
   const taken = new Set(planes.filter((p) => !isUnnamedPlane(p.name)).map((p) => p.name));
   const ops: Array<Record<string, unknown>> = [];
   const left: PlaneFact[] = [];
+  const provisional: string[] = [], kitNamed: string[] = [];
   for (const p of unnamed) {
     const given = (o.plane_names ?? []).find((g) => g.axis === p.axis && near(g.at_mm, p.at_mm));
-    const name = given?.name?.trim() || (o.auto_name_planes && p.axis ? positionalPlaneName(p) : "");
+    // a name the person gave wins; then the kit's own (the two centre planes); then, only if asked, the provisional RP_ placeholder
+    const candidates: Array<{ name: string; how: "given" | "kit" | "provisional" }> = [];
+    if (given?.name?.trim()) candidates.push({ name: given.name.trim(), how: "given" });
+    const kitName = p.axis ? kitPlaneName(p) : null;
+    if (kitName) candidates.push({ name: kitName, how: "kit" });
+    if (o.auto_name_planes && p.axis) candidates.push({ name: positionalPlaneName(p), how: "provisional" });
     // two unnamed planes at one spot can't be told apart by name_template_plane: a person names them
     const twin = unnamed.filter((q) => q !== p && q.axis === p.axis && near(q.at_mm, p.at_mm)).length > 0;
-    if (!name || !p.axis || twin || taken.has(name)) { left.push(p); continue; }
-    taken.add(name);
-    ops.push({ op: "name_template_plane", name, axis: p.axis, at_mm: Math.round(p.at_mm * 10) / 10 });
+    const pick = p.axis && !twin ? candidates.find((c) => !taken.has(c.name)) : undefined;
+    if (!pick) { left.push(p); continue; }
+    taken.add(pick.name);
+    if (pick.how === "provisional") provisional.push(pick.name);
+    if (pick.how === "kit") kitNamed.push(pick.name);
+    ops.push({ op: "name_template_plane", name: pick.name, axis: p.axis, at_mm: Math.round(p.at_mm * 10) / 10 });
   }
-  if (ops.length) out.fixes.push({ id: "reference_planes.name", gate: "reference_planes", summary: `Name ${ops.length} unnamed plane(s): ${ops.map((x) => `${x.name} (${x.axis} = ${x.at_mm} mm)`).join(", ")}`, ops });
-  for (const p of left) out.needs_person.push({ gate: "reference_planes", detail: `unnamed plane ${p.axis ? `square to ${p.axis} at ${Math.round(p.at_mm * 10) / 10} mm` : "at an angle"}: give its name in plane_names${p.axis ? ` (or auto_name_planes: ${positionalPlaneName(p)})` : ""}` });
+  if (ops.length) out.fixes.push({ id: "reference_planes.name", gate: "reference_planes",
+    summary: `Name ${ops.length} unnamed plane(s): ${ops.map((x) => `${x.name} (${x.axis} = ${x.at_mm} mm)`).join(", ")}` +
+      (kitNamed.length ? `; ${kitNamed.join(", ")} from the kit's FAM-008` : "") + (provisional.length ? `; ${PROVISIONAL_PLANE_NOTE}` : ""),
+    ops, ...(provisional.length ? { provisional } : {}), ...(kitNamed.length ? { kit_rule: "FAM-008" } : {}) });
+  for (const p of left) out.needs_person.push({ gate: "reference_planes", detail: `unnamed plane ${p.axis ? `square to ${p.axis} at ${Math.round(p.at_mm * 10) / 10} mm` : "at an angle"}: give its name in plane_names${p.axis ? ` (or auto_name_planes: ${positionalPlaneName(p)}, a provisional name: the kit has no rule for it)` : ""}` });
   const findings = unnamed.map((p) => `unnamed ${p.axis || "oblique"} plane at ${Math.round(p.at_mm * 10) / 10} mm`);
   out.gates.push({ gate: "reference_planes", state: unnamed.length ? "Fail" : dup.length ? "Warn" : planes.length ? "Pass" : "Not checked", findings,
     detail: unnamed.length ? `${unnamed.length} of ${planes.length} planes unnamed` : planes.length ? `${planes.length} planes, all named${dup.length ? `; duplicate names: ${dup.join(", ")}` : ""}` : "The family has no reference planes" });

@@ -15,7 +15,7 @@ and writes files, through an injectable IO so the whole flow is tested offline.
 |---|---|---|---|
 | naming | `FMC_[Role]_[CategoryToken]_[Description]` (or the kind's rule, or named in the register) | the new version takes `new_name`, or a close suggestion (`A_Door_steel fanlight` → `FMC_A_Door_SteelFanlight`) | a name too far from the rule |
 | shared_parameters | every kit parameter the spec (and `required_parameters`) names is in the file **by GUID** | `add_shared_param` for a missing one; `bind_shared_param` for a family parameter of that name | a parameter shared with another GUID (its values would go) |
-| reference_planes | no plane is blank or "Reference Plane" | `name_template_plane` from `plane_names` (axis, at_mm, name), or `auto_name_planes` (`RP_X+450`) | two unnamed planes at one spot, an angled plane |
+| reference_planes | no plane is blank or "Reference Plane" | `name_template_plane`: the kit's own names (FAM-008: an unnamed plane at x = 0 is `Center (Left/Right)`, at y = 0 `Center (Front/Back)`), then `plane_names` (axis, at_mm, name) from a person, or `auto_name_planes` (`RP_X+450`, **provisional**: see below) | two unnamed planes at one spot, an angled plane |
 | flex | every type regenerates; with `follow`, each size parameter moves and labelled dimensions keep their sides | none (geometry and constraints are never decided by a tool) | every failing type |
 | keynote | every type's Keynote is `X.YYY_ZZ` (Warn when the code isn't in the kit's keynote file) | `set_type_value Keynote` from `keynote` (one, or per type), or a near value normalised (`a.dor-01` → `A.DOR_01`) | a type with no keynote and none given |
 
@@ -77,3 +77,12 @@ parameters come only from the kit's dictionary by GUID. No geometry is changed.
 - `FmcEvolveRules` holds the Revit-free rules; `tests/evolve` tests them offline.
 
 Needs a Revit check: the ops and the save were tested with Revit mocked.
+
+## Reference plane names: what the kit defines
+
+Searched 28 Nov (repo docs and data, and `D:\Fomcraft\FMC_BIM_27\FMC_Kit_v2.2` rulebooks, manual, notes and master data, read only). The kit has a **fixed vocabulary**, not a positional scheme:
+
+- Rulebook `FAM-008` (STD 4.1, warning, auto-fix): "Name the planes Center (Left/Right), Front and Back, and mark them Strong."
+- `docs/FAMILY_AUTHORING_STANDARD.md` 1.2: Center (Left/Right), Center (Front/Back), Left, Right, Front, Back, Top, Bottom; construction-only planes are *Not a Reference*.
+
+So `fmc_family_evolve` names an unnamed plane square to x at 0 `Center (Left/Right)` and square to y at 0 `Center (Front/Back)` (the origin planes), by default. Left, Right, Front, Back, Top and Bottom depend on the design and are never guessed from a position. Any other unnamed plane has **no kit rule**: `auto_name_planes` gives it `RP_<axis><position mm>` as a **provisional** placeholder (the fix says so in its summary and `provisional` list). The owner should define a real rule, then `positionalPlaneName` is the one place to change. Not done: `FAM-008`'s "mark them Strong" (Is Reference) is not checked or set; the add-in's plane report doesn't carry it yet.

@@ -6,7 +6,7 @@ import os from "node:os";
 import path from "node:path";
 import {
   EvolveFacts, EvolveKit, KEYNOTE_FORMAT, applyProblems, diffFacts, diffGates, evaluateGates, expectedAfter, flexRegressions, isUnnamedPlane,
-  isEvolveDir, normalizeKeynote, orderedOps, planVersions, positionalPlaneName, proposalToken, readVersions, suggestFamilyName, underEvolveFolder,
+  KIT_PLANE_NAMES, PROVISIONAL_PLANE_NOTE, isEvolveDir, kitPlaneName, normalizeKeynote, orderedOps, planVersions, positionalPlaneName, proposalToken, readVersions, suggestFamilyName, underEvolveFolder,
 } from "./evolve.js";
 import { KEYNOTE_RE } from "./replace.js";
 import { OP, opsProblems, splitProblems } from "./ops.js";
@@ -161,6 +161,43 @@ test("reference planes: given names and positional names become name_template_pl
   const old = evaluateGates(facts({ reference_planes: ["Left", "Reference Plane"], reference_planes_detail: null }), kit());
   assert.equal(gate(old, "reference_planes").state, "Fail");
   assert.match(gate(old, "reference_planes").detail, /update the add-in/);
+});
+
+test("plane names: the kit's own (FAM-008) for the two centre planes, the RP_ placeholder only on request and marked provisional", () => {
+  assert.deepEqual(KIT_PLANE_NAMES.map((k) => k.name), ["Center (Left/Right)", "Center (Front/Back)"]);
+  assert.equal(kitPlaneName({ axis: "x", at_mm: 0 }), "Center (Left/Right)");
+  assert.equal(kitPlaneName({ axis: "y", at_mm: 0.4 }), "Center (Front/Back)");
+  assert.equal(kitPlaneName({ axis: "y", at_mm: 0.6 }), null);
+  assert.equal(kitPlaneName({ axis: "z", at_mm: 0 }), null, "z = 0 is Ref. Level, a level, not a named plane");
+  assert.equal(kitPlaneName({ axis: "x", at_mm: 450 }), null, "Left and Right are design choices: never derived from a position");
+  assert.equal(kitPlaneName({ axis: "", at_mm: 0 }), null);
+  // two unnamed centre planes: named by the kit with no flag, and the fix is not provisional
+  const centre = facts({ reference_planes_detail: [{ name: "", axis: "x", at_mm: 0 }, { name: "Reference Plane", axis: "y", at_mm: 0 }, { name: "Left", axis: "x", at_mm: -450 }] });
+  const k = evaluateGates(centre, kit(), {});
+  const fix = k.fixes.find((x) => x.id === "reference_planes.name")!;
+  assert.deepEqual(fix.ops.map((o) => o.name), ["Center (Left/Right)", "Center (Front/Back)"]);
+  assert.equal(fix.kit_rule, "FAM-008");
+  assert.equal(fix.provisional, undefined);
+  assert.doesNotMatch(fix.summary, /provisional/);
+  assert.equal(k.needs_person.filter((n) => n.gate === "reference_planes").length, 0);
+  // a placeholder name is marked provisional in the fix and its summary, and a kit name beside it is not
+  const mixed = facts({ reference_planes_detail: [{ name: "", axis: "x", at_mm: 0 }, { name: "", axis: "x", at_mm: 450 }] });
+  const m = evaluateGates(mixed, kit(), { auto_name_planes: true });
+  const mf = m.fixes.find((x) => x.id === "reference_planes.name")!;
+  assert.deepEqual(mf.ops.map((o) => o.name), ["Center (Left/Right)", "RP_X+450"]);
+  assert.deepEqual(mf.provisional, ["RP_X+450"]);
+  assert.match(mf.summary, new RegExp(PROVISIONAL_PLANE_NOTE.slice(0, 40)));
+  // without the flag the placeholder is only suggested, as provisional, never made
+  const off = evaluateGates(mixed, kit(), {});
+  assert.deepEqual(off.fixes.find((x) => x.id === "reference_planes.name")!.ops.map((o) => o.name), ["Center (Left/Right)"]);
+  assert.match(off.needs_person.find((n) => n.gate === "reference_planes")!.detail, /provisional/);
+  // the kit name is already in use: the unnamed centre plane falls to the placeholder (if asked), never a duplicate name
+  const used = facts({ reference_planes_detail: [{ name: "Center (Left/Right)", axis: "x", at_mm: 0 }, { name: "", axis: "x", at_mm: 0.2 }] });
+  assert.deepEqual(evaluateGates(used, kit(), {}).fixes.filter((x) => x.gate === "reference_planes"), []);
+  assert.deepEqual(evaluateGates(used, kit(), { auto_name_planes: true }).fixes.find((x) => x.gate === "reference_planes")!.ops.map((o) => o.name), ["RP_X+0.2"]);
+  // a name the person gives still wins over the kit's
+  const given = evaluateGates(centre, kit(), { plane_names: [{ axis: "x", at_mm: 0, name: "Origin LR" }] });
+  assert.deepEqual(given.fixes.find((x) => x.id === "reference_planes.name")!.ops.map((o) => o.name), ["Origin LR", "Center (Front/Back)"]);
 });
 
 test("flex: failing types fail and go to a person; a flex that didn't run is Not checked; regressions are found", () => {

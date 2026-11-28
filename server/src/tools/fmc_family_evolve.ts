@@ -41,7 +41,7 @@ export const FMC_FAMILY_EVOLVE_SHAPE = {
   keynote: z.union([z.string(), z.record(z.string())]).optional().describe("check: one keynote X.YYY_ZZ for every type, or { type: keynote }"),
   plane_names: z.array(z.object({ axis: z.enum(["x", "y", "z"]), at_mm: z.number(), name: z.string().min(1) })).optional()
     .describe("check: names for unnamed reference planes, by the axis they are square to and where they are (mm)"),
-  auto_name_planes: z.boolean().optional().default(false).describe("check: name every other unnamed plane by its position (RP_X+450)"),
+  auto_name_planes: z.boolean().optional().default(false).describe("check: name every other unnamed plane by its position (RP_X+450). PROVISIONAL: the kit has no positional naming rule. The kit's own names (FAM-008: an unnamed plane at x = 0 is Center (Left/Right), at y = 0 Center (Front/Back)) are proposed without this flag"),
   required_parameters: z.array(z.string()).optional().describe("check: kit shared parameters (by name) the family must carry beyond its spec"),
   follow: z.array(z.object({ param: z.string().min(1), low_mm: z.number(), high_mm: z.number(), stepped: z.boolean().optional() })).optional()
     .describe("check and apply: size parameters to flex from low to high, reporting which solids move with each"),
