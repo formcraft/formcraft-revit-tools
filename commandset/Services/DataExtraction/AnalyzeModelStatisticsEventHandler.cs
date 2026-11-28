@@ -141,7 +141,8 @@ namespace RevitMCPCommandSet.Services.DataExtraction
                     levelStats.Add(new LevelStatistics
                     {
                         LevelName = level.Name,
-                        Elevation = level.Elevation,
+                        ElevationMm = LevelStatistics.FeetToMm(level.Elevation),
+                        ProjectElevationMm = LevelStatistics.FeetToMm(level.ProjectElevation),
                         ElementCount = elementCount
                     });
                 }

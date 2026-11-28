@@ -347,7 +347,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 using (FmcTarget target = FmcTarget.Resolve(app, Parameters, mayOpen: false))
                 {
                     Document doc = target.Doc;
-                    Refuse(doc);
+                    Refuse(doc, Parameters);
                     string mode = (Parameters.Value<string>("mode") ?? "apply").Trim();
                     bool committed = false;
                     var created = new JArray();
@@ -374,7 +374,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                                     catch (Exception ex)
                                     {
                                         try { sub.RollBack(); } catch (Exception) { /* already closed */ }
-                                        failed.Add(new JObject { ["name"] = circuit.Value<string>("name") ?? "", ["error"] = ex.Message });
+                                        failed.Add(new JObject { ["name"] = circuit.Value<string>("name") ?? "", ["error"] = ex.Message, ["element_ids"] = circuit["element_ids"] ?? new JArray() });
                                     }
                                 }
                             }
@@ -404,6 +404,12 @@ namespace RevitMCPCommandSet.Services.Fmc
                     Result["applied"] = committed && (created.Count > 0 || (mode == "panel" && failed.Count == 0));
                     if (mode == "panel" && !attempted) Result["applied"] = committed;
                     Result["created"] = created;
+                    // The new circuits' ids, so fmc_batch_undo can remove this batch after a sync clears Revit's Undo.
+                    // Switch rows are not elements (Revit 2025 has no SwitchSystem) and are never listed here.
+                    var createdIds = new JArray();
+                    foreach (JObject row in created.OfType<JObject>())
+                        if (row.Value<string>("op") != "switch" && row["id"] != null && row["id"].Type == JTokenType.Integer) createdIds.Add(row["id"]);
+                    Result["created_ids"] = committed ? createdIds : new JArray();
                     Result["failed"] = failed;
                     Result["unset"] = unset;
                     Result["saved"] = false;
@@ -626,11 +632,18 @@ namespace RevitMCPCommandSet.Services.Fmc
             unset.Add(label + " has no writable parameter.");
         }
 
-        private static void Refuse(Document doc)
+        /// <summary>
+        /// The protected project names come from the server's guard config (protected_names, tool research 1-25). A call
+        /// that sends none (an older server, a direct call) keeps the earlier refusal of HEBERT HOSTELS.
+        /// </summary>
+        private static void Refuse(Document doc, JObject parameters)
         {
             string blob = (doc.Title ?? "") + " " + (doc.PathName ?? "");
-            if (Regex.IsMatch(blob, "hebert hostels", RegexOptions.IgnoreCase))
-                throw new InvalidOperationException("HEBERT HOSTELS is not written by fmc_circuits.");
+            var names = (parameters?["protected_names"] as JArray)?.Select(token => (token?.ToString() ?? "").Trim()).Where(name => name.Length > 0).ToList()
+                ?? new List<string> { "HEBERT HOSTELS" };
+            foreach (string name in names)
+                if (blob.IndexOf(name, StringComparison.OrdinalIgnoreCase) >= 0)
+                    throw new InvalidOperationException(name + " is a protected project (guard config protected_names) and is not written by fmc_circuits.");
             if (doc.IsWorkshared && !string.IsNullOrEmpty(doc.PathName))
             {
                 try

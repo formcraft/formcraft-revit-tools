@@ -93,6 +93,12 @@ export interface GuardConfig {
    * Empty matches nothing. protected_roots is still checked as well.
    */
   protected_paths?: string[];
+  /**
+   * Project names (title or path substrings, case-insensitive) that the circuit writer refuses. A name covers its
+   * locals. Set by a person in fmc_guard.json. The default keeps the earlier built-in refusal (HEBERT HOSTELS) until
+   * the guard file names its own list; an empty list in the file refuses no name.
+   */
+  protected_names?: string[];
   /** Folder for see_view and other screenshots. Default %LOCALAPPDATA%\\Formcraft\\images. Never D: and never beside a model. */
   image_dir?: string;
   /**
@@ -149,6 +155,7 @@ export const DEFAULT_CONFIG: GuardConfig = {
   session_idle_hours: 12,
   family_max_mb: 2,
   protected_roots: [],
+  protected_names: ["HEBERT HOSTELS"],
   copy_roots: [],
   ram_pause_free_mb: 1024,
   script_max_chars: 1_000_000,
@@ -365,6 +372,22 @@ function readConfig(file: string, reader: (p: string) => string): Loaded {
     // A broken config must never widen access: fall back to the deny-all defaults.
     return { config: { ...DEFAULT_CONFIG }, source: "defaults", problem: `Guard config ${file} is not valid JSON: every write is refused` };
   }
+}
+
+/** The protected project names from the guard config. Absent: the default list. Names are trimmed and blanks dropped. */
+export function protectedNames(config: Pick<GuardConfig, "protected_names"> | undefined): string[] {
+  const list = config && Array.isArray(config.protected_names) ? config.protected_names : DEFAULT_CONFIG.protected_names ?? [];
+  return list.map((name) => String(name ?? "").trim()).filter(Boolean);
+}
+
+/** The first protected name found in any of the texts (title, path, the named document), or null. */
+export function protectedNameHit(texts: string[], names: string[]): string | null {
+  const hay = texts.map((text) => String(text ?? "").toLowerCase());
+  for (const name of names) {
+    const want = name.toLowerCase();
+    if (hay.some((text) => text.includes(want))) return name;
+  }
+  return null;
 }
 
 export function expandEnv(p: string, env: NodeJS.ProcessEnv = process.env): string {

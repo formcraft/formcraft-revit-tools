@@ -7,6 +7,7 @@ import { GuardConfig, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { CALC_IDS, CalcResult, EngineerInputs, Facts, kitRequests, listCalcs, runCalcs } from "../fmc/calc/index.js";
 import { Tabs, kitWorkbookPath, readKitTabs } from "../fmc/calc/kit.js";
 import { DRAFT_HEADER, sheetCsv, sheetJson, sheetMarkdown, sheetPlan } from "../fmc/calc/sheet.js";
+import { BOARD_CALCS, BoardsRead, confirmProblem, heldIds, holdForBoards, sheetConfirmToken } from "../fmc/calc/boards.js";
 
 const win = path.win32;
 
@@ -33,7 +34,9 @@ export const FMC_CALC_DESCRIPTION =
     "Every value is tagged kit:<tab>!<cell>, model:<id>, engineer or TBC; a value the kit lacks is TBC, never invented " +
     "(demand factors only from the kit). list: the calcs, their inputs, what the kit gives and lacks, and the calcs the " +
     "kit leaves to another tool. run: results (summary or full). sheet: a calculation sheet per calc (Markdown, CSV, " +
-    "JSON) in <project>\\01_WIP\\<Role>\\_Calcs, dry run first. Every sheet is a draft the engineer checks and signs.";
+    "JSON) in <project>\\01_WIP\\<Role>\\_Calcs, dry run first; the dry run returns a confirm token and the write needs " +
+    "dry_run false with that confirm token (a changed plan needs a new dry run). When the boards (fmc_electrical_facts) are " +
+    "not read, CA-E-01 is held as TBC with the reason and its sheet is refused. Every sheet is a draft the engineer checks and signs.";
 
 export const FMC_CALC_SHAPE = {
   action: z.enum(["list", "run", "sheet"]),
@@ -49,6 +52,7 @@ export const FMC_CALC_SHAPE = {
   facts_file: z.string().optional().default("").describe("run/sheet: read the facts from this JSON ({ mep, boards }) instead of Revit"),
   detail: z.enum(["summary", "full"]).optional().default("summary").describe("run: summary (totals, failing rows and TBCs) or full (every row)"),
   dry_run: z.boolean().optional().default(true).describe("sheet: true (default) shows the files it would write"),
+  confirm: z.string().optional().default("").describe("sheet with dry_run false: the confirm token the dry run returned, after the person said yes"),
 };
 
 export type FmcCalcArgs = z.infer<z.ZodObject<typeof FMC_CALC_SHAPE>>;
@@ -56,17 +60,37 @@ export type FmcCalcArgs = z.infer<z.ZodObject<typeof FMC_CALC_SHAPE>>;
 const errText = (e: unknown) => (e instanceof Error ? e.message : String(e));
 
 /** Facts from a file, or from Revit: fmc_mep_facts (read-only) and the boards from fmc_electrical_facts. */
-async function readFacts(args: FmcCalcArgs): Promise<{ facts: Facts; notes: string[] }> {
+export interface CalcIo {
+  mep?: () => Promise<unknown>;
+  boards?: () => Promise<unknown>;
+}
+
+/**
+ * Facts from a file, or from Revit. boards_read says whether the boards were read: a failed fmc_electrical_facts, a
+ * reply without a boards list, or a facts file without a boards key is not read (the board calcs are then held as TBC).
+ */
+export async function readFacts(args: Pick<FmcCalcArgs, "facts_file">, io: CalcIo = {}): Promise<{ facts: Facts; notes: string[]; boards: BoardsRead }> {
   if (args.facts_file.trim()) {
     const j = JSON.parse(fs.readFileSync(args.facts_file.trim(), "utf8").replace(/^﻿/, ""));
-    return { facts: { mep: j.mep ?? {}, boards: j.boards ?? [] }, notes: [`Facts from ${args.facts_file.trim()}`] };
+    const has = Array.isArray(j.boards);
+    return {
+      facts: { mep: j.mep ?? {}, boards: has ? j.boards : [] }, notes: [`Facts from ${args.facts_file.trim()}`],
+      boards: has ? { read: true, reason: "" } : { read: false, reason: `the facts file ${args.facts_file.trim()} has no boards list` },
+    };
   }
-  const mep = await withRevitConnection((c) => c.sendCommand("fmc_mep_facts", {}, 300000));
+  const mep = await (io.mep ? io.mep() : withRevitConnection((c) => c.sendCommand("fmc_mep_facts", {}, 300000)));
   const notes: string[] = [];
   let boards: Facts["boards"] = [];
-  try { boards = ((await withRevitConnection((c) => c.sendRaw("fmc_electrical_facts", {}, 120000))) as any)?.boards ?? []; }
-  catch (e) { notes.push(`Boards not read (fmc_electrical_facts): ${errText(e)}`); }
-  return { facts: { mep: mep ?? {}, boards }, notes };
+  let read: BoardsRead = { read: true, reason: "" };
+  try {
+    const got = (await (io.boards ? io.boards() : withRevitConnection((c) => c.sendRaw("fmc_electrical_facts", {}, 120000)))) as any;
+    if (Array.isArray(got?.boards)) boards = got.boards;
+    else read = { read: false, reason: `fmc_electrical_facts replied without a boards list${got?.error ? ` (${String(got.error)})` : ""}` };
+  } catch (e) {
+    read = { read: false, reason: `fmc_electrical_facts failed: ${errText(e)}` };
+  }
+  if (!read.read) notes.push(`Boards not read: ${read.reason}. ${BOARD_CALCS.join(", ")} held as TBC.`);
+  return { facts: { mep: (mep ?? {}) as Facts["mep"], boards }, notes, boards: read };
 }
 
 function summary(r: CalcResult) {
@@ -77,7 +101,7 @@ function summary(r: CalcResult) {
   };
 }
 
-export async function runFmcCalc(args: FmcCalcArgs) {
+export async function runFmcCalc(args: FmcCalcArgs, io: CalcIo = {}) {
   const { config } = loadConfig();
   const kitFile = kitWorkbookPath(args.kit_folder, expandEnv(config.specs_path));
   let tabs: Tabs;
@@ -92,9 +116,10 @@ export async function runFmcCalc(args: FmcCalcArgs) {
   const unknownIds = args.calcs.map((c) => c.trim().toUpperCase()).filter((c) => !CALC_IDS.includes(c));
   if (unknownIds.length) return reply({ refused: true, reasons: [`Not a calc here: ${unknownIds.join(", ")} (fmc_calc list shows them)`] }, true);
   try {
-    const { facts, notes } = await readFacts(args);
+    const { facts, notes, boards } = await readFacts(args, io);
     const eng = args.inputs as EngineerInputs;
-    const { results } = runCalcs(args.calcs, facts, tabs, eng);
+    const results = holdForBoards(runCalcs(args.calcs, facts, tabs, eng).results, boards);
+    const held = heldIds(results);
     const model = String(facts.mep.model ?? "");
     const requests = kitRequests(results);
 
@@ -102,32 +127,51 @@ export async function runFmcCalc(args: FmcCalcArgs) {
       log(config, "calc_run", true, model, "done", results.map((r) => `${r.id} ${r.result}`).join("; "));
       return reply({
         model, kit: kitFile, header: DRAFT_HEADER, counts: facts.mep.counts ?? {}, notes,
+        boards_read: boards.read, held_for_boards: held.length ? held : undefined,
         results: args.detail === "full" ? results : results.map(summary),
         kit_change_requests: requests,
         next: "sheet writes each calc to 01_WIP\\<Role>\\_Calcs for the engineer; TBC items need the engineer or a kit change",
       });
     }
 
-    // sheet
+    // sheet: a board calc held for missing boards is never written as a sheet
+    if (held.length) {
+      return reply({ refused: true, code: "FMC-CALC-BOARDS-UNREAD", boards_read: false, held_for_boards: held,
+        reasons: [`Boards not read: ${boards.reason}. No sheet is written for ${held.join(", ")} until they are read.`],
+        next: `Retry when fmc_electrical_facts answers, or leave ${held.join(", ")} out of calcs.` }, true);
+    }
     const date = new Date().toISOString().slice(0, 10);
     const meta = { model, kit: kitFile, date, project: args.project_folder.trim() };
     const plans = results.map((r) => ({ r, plan: sheetPlan(args.project_folder, r, date, config, (p) => fs.existsSync(p)) }));
     const refused = plans.filter((p) => !p.plan.ok);
     if (refused.length) return reply({ refused: true, reasons: [...new Set(refused.flatMap((p) => p.plan.reasons))] }, true);
     const files = plans.map(({ r, plan }) => ({ calc: r.id, result: r.result, tbc: r.tbc.length, ...plan.files }));
+    const token = sheetConfirmToken(files, model, date);
     if (args.dry_run) {
       log(config, "calc_sheet", true, args.project_folder, "planned", files.map((f) => f.md).join("; "));
-      return reply({ dry_run: true, model, header: DRAFT_HEADER, files, kit_change_requests: requests, next: "say yes to write these sheets (dry_run false)" });
+      return reply({ dry_run: true, model, header: DRAFT_HEADER, files, kit_change_requests: requests, confirm_token: token,
+        next: `Show the person these files. When they say yes, call sheet with dry_run false and confirm "${token}".` });
     }
+    const problem = confirmProblem(args.confirm, token);
+    if (problem) return reply({ refused: true, code: "FMC-CALC-CONFIRM", reasons: [problem], next: "Run sheet with dry_run true, show the files, then confirm its token." }, true);
+    const results_by_calc: Array<{ calc: string; status: "written" | "failed"; md: string; error?: string }> = [];
     for (const { r, plan } of plans) {
-      fs.mkdirSync(win.dirname(plan.files.md), { recursive: true });
-      fs.writeFileSync(plan.files.md, sheetMarkdown(r, meta));
-      fs.writeFileSync(plan.files.csv, "﻿" + sheetCsv(r));
-      fs.writeFileSync(plan.files.json, sheetJson(r, meta));
-      log(config, "calc_sheet", false, plan.files.md, "written", `${r.id} ${r.result}, ${r.tbc.length} TBC`);
+      try {
+        fs.mkdirSync(win.dirname(plan.files.md), { recursive: true });
+        fs.writeFileSync(plan.files.md, sheetMarkdown(r, meta));
+        fs.writeFileSync(plan.files.csv, "﻿" + sheetCsv(r));
+        fs.writeFileSync(plan.files.json, sheetJson(r, meta));
+        log(config, "calc_sheet", false, plan.files.md, "written", `${r.id} ${r.result}, ${r.tbc.length} TBC`);
+        results_by_calc.push({ calc: r.id, status: "written", md: plan.files.md });
+      } catch (e) {
+        log(config, "calc_sheet", false, plan.files.md, "error", errText(e));
+        results_by_calc.push({ calc: r.id, status: "failed", md: plan.files.md, error: errText(e) });
+      }
     }
-    return reply({ dry_run: false, model, header: DRAFT_HEADER, written: files, kit_change_requests: requests,
-      next: "The engineer checks and signs each sheet; Formcraft does not size or sign" });
+    const failedSheets = results_by_calc.filter((row) => row.status === "failed").length;
+    return reply({ dry_run: false, model, header: DRAFT_HEADER, written: files.filter((f) => results_by_calc.some((row) => row.calc === f.calc && row.status === "written")),
+      results: results_by_calc, counts: { planned: plans.length, written: plans.length - failedSheets, failed: failedSheets }, kit_change_requests: requests,
+      next: "The engineer checks and signs each sheet; Formcraft does not size or sign" }, failedSheets > 0);
   } catch (error) {
     log(config, `calc_${args.action}`, args.dry_run, "", "error", errText(error));
     return reply({ error: errText(error) }, true);

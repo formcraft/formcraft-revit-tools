@@ -34,7 +34,7 @@ namespace RevitMCPCommandSet.Services
         /// <summary>
         /// 执行结果（传出数据）
         /// </summary>
-        public AIResult<List<object>> Result { get; private set; }
+        public AIFilterResult Result { get; private set; }
 
         /// <summary>
         /// 设置创建的参数
@@ -55,33 +55,47 @@ namespace RevitMCPCommandSet.Services
                 if (!FilterSetting.Validate(out string errorMessage))
                     throw new Exception(errorMessage);
                 // 获取指定条件元素的Id
-                var elementList = GetFilteredElements(doc, FilterSetting);
-                if (elementList == null || !elementList.Any())
-                    throw new Exception("No elements match the filter: check the filter settings");
-                // 过滤器最大个数限制
-                // Paging (owner 26 Oct): the total, this page, and the skip for the next page
-                string message = "";
-                int total = elementList.Count, skip = Math.Max(0, FilterSetting.Skip);
-                if (skip > 0) elementList = elementList.Skip(skip).ToList();
-                if (FilterSetting.MaxElements > 0 && elementList.Count > FilterSetting.MaxElements)
-                    elementList = elementList.Take(FilterSetting.MaxElements).ToList();
-                if (skip > 0 || skip + elementList.Count < total)
-                    message = $". {total} elements match; this page is {skip + 1}-{skip + elementList.Count}" +
-                        (skip + elementList.Count < total ? $"; the next page is skip {skip + elementList.Count}" : " (the last page)");
+                // Tool research 1-25: one order for every page (element id ascending, instances and types labelled by
+                // kind), so "after id a" is well defined for the cursor (FILTER_TOOL_SPEC 5.6). No match is zero rows.
+                var elementList = (GetFilteredElements(doc, FilterSetting) ?? new List<Element>())
+                    .Where(e => e != null).GroupBy(e => e.Id.Value).Select(g => g.First()).OrderBy(e => e.Id.Value).ToList();
+                int total = elementList.Count;
+                long afterId = FilterSetting.AfterId;
+                int skip = afterId >= 0 ? 0 : Math.Max(0, FilterSetting.Skip);
+                List<Element> rest = afterId >= 0 ? elementList.Where(e => e.Id.Value > afterId).ToList() : elementList.Skip(skip).ToList();
+                int from = total - rest.Count;
+                int size = FilterSetting.MaxElements > 0 ? FilterSetting.MaxElements : 50;
+                List<Element> page = rest.Take(size).ToList();
+                int remaining = rest.Count - page.Count;
 
                 // 获取指定Id元素的信息
-                elementInfoList = GetElementFullInfo(doc, elementList);
+                var skipped = new List<FilterSkip>();
+                elementInfoList = GetElementFullInfo(doc, page, skipped);
+                DocumentVersion version = Document.GetDocumentVersion(doc);
 
-                Result = new AIResult<List<object>>
+                string message = total == 0
+                    ? ". No elements match the filter"
+                    : $". {total} elements match; this page is {from + 1}-{from + page.Count}" + (remaining > 0 ? $"; {remaining} more (pass the cursor)" : " (the last page)");
+                if (skipped.Count > 0) message += $"; {skipped.Count} could not be read (see skipped)";
+                Result = new AIFilterResult
                 {
                     Success = true,
-                    Message = $"Read {elementInfoList.Count} elements; the details are in Response"+ message,
+                    Message = $"Read {elementInfoList.Count} elements; the details are in Response" + message,
                     Response = elementInfoList,
+                    Paging = new FilterPaging
+                    {
+                        Total = total, From = total == 0 ? 0 : from + 1, To = from + page.Count, Remaining = remaining,
+                        LastId = page.Count > 0 ? page[page.Count - 1].Id.Value : afterId,
+                        Order = "element_id",
+                        DocumentVersion = version?.VersionGUID.ToString() ?? "",
+                        Ids = page.Select(e => e.Id.Value).ToList(),
+                    },
+                    Skipped = skipped,
                 };
             }
             catch (Exception ex)
             {
-                Result = new AIResult<List<object>>
+                Result = new AIFilterResult
                 {
                     Success = false,
                     Message = $"[FMC-TOOL-FAILED] Reading the elements failed: {ex.Message}",
@@ -297,8 +311,28 @@ namespace RevitMCPCommandSet.Services
         /// </summary>
         public static List<object> GetElementFullInfo(Document doc, IList<Element> elementCollector)
         {
-            List<object> infoList = new List<object>();
+            return GetElementFullInfo(doc, elementCollector, null);
+        }
 
+        /// <summary>
+        /// Rows for the page. An element whose info could not be built is listed in skipped (INFO_FAILED) with its id,
+        /// category and kind, never dropped (tool research 1-25, FILTER_TOOL_SPEC 4.4).
+        /// </summary>
+        public static List<object> GetElementFullInfo(Document doc, IList<Element> elementCollector, List<FilterSkip> skipped)
+        {
+            List<object> infoList = new List<object>();
+            foreach (var element in elementCollector)
+            {
+                int before = infoList.Count;
+                try { AddElementInfo(doc, new List<Element> { element }, infoList); }
+                catch (Exception ex) { skipped?.Add(FilterSkip.Of(element, "INFO_FAILED", ex.Message)); continue; }
+                if (infoList.Count == before) skipped?.Add(FilterSkip.Of(element, "INFO_FAILED", "the element's info could not be built"));
+            }
+            return infoList;
+        }
+
+        private static void AddElementInfo(Document doc, IList<Element> elementCollector, List<object> infoList)
+        {
             // 获取并处理元素
             foreach (var element in elementCollector)
             {
@@ -379,7 +413,6 @@ namespace RevitMCPCommandSet.Services
                 }
             }
 
-            return infoList;
         }
 
         /// <summary>

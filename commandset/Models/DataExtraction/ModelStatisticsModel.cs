@@ -46,8 +46,16 @@ namespace RevitMCPCommandSet.Models.DataExtraction
         [JsonProperty("levelName")]
         public string LevelName { get; set; }
 
-        [JsonProperty("elevation")]
-        public double Elevation { get; set; }
+        /// <summary>Level.Elevation in millimetres (Revit's internal feet x 304.8, rounded to 0.1 mm). Tool research 1-25.</summary>
+        [JsonProperty("elevationMm")]
+        public double ElevationMm { get; set; }
+
+        /// <summary>Level.ProjectElevation (from the project base point) in millimetres.</summary>
+        [JsonProperty("projectElevationMm")]
+        public double ProjectElevationMm { get; set; }
+
+        /// <summary>Internal feet to millimetres, rounded to 0.1 mm.</summary>
+        public static double FeetToMm(double feet) => System.Math.Round(feet * 304.8, 1);
 
         [JsonProperty("elementCount")]
         public int ElementCount { get; set; }

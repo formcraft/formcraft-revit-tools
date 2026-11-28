@@ -117,6 +117,15 @@ public class AnalyzeModelStatisticsTests : RevitApiTest
     }
 
     [Test]
+    public async Task LevelStatistics_ElevationIsMillimetres()
+    {
+        // Tool research 1-25: the statistics report level elevations in mm, never Revit's internal feet.
+        await Assert.That(RevitMCPCommandSet.Models.DataExtraction.LevelStatistics.FeetToMm(10.0)).IsEqualTo(3048.0);
+        await Assert.That(RevitMCPCommandSet.Models.DataExtraction.LevelStatistics.FeetToMm(-1.0)).IsEqualTo(-304.8);
+        await Assert.That(RevitMCPCommandSet.Models.DataExtraction.LevelStatistics.FeetToMm(0.0)).IsEqualTo(0.0);
+    }
+
+    [Test]
     public async Task ViewCounting_ExcludesTemplates_CountCorrect()
     {
         var allViews = new FilteredElementCollector(_doc)
