@@ -62,12 +62,21 @@ export function readJsonLines(file: string, max = 3000): any[] {
   return out;
 }
 
-export type JobState = "queued" | "running" | "waiting_for_dialog" | "finished" | "failed" | "cancelled" | "no_answer";
+/**
+ * expired: the job's record ends at a dialog, but the dialog no longer holds it: it came between jobs, the same Revit
+ * finished other work after it, or the job has been silent (no heartbeat) for STALE_DIALOG_MS.
+ */
+export type JobState = "queued" | "running" | "waiting_for_dialog" | "finished" | "failed" | "cancelled" | "no_answer" | "expired";
+
+/** A dialog line with no heartbeat after it for this long is history, not a dialog waiting now. */
+export const STALE_DIALOG_MS = 30 * 60_000;
 
 export interface JobView {
   job: string;
   command: string;
   port?: number;
+  /** The Revit process that wrote the job's lines. */
+  pid?: number;
   started: string;
   state: JobState;
   /** One line a person can read. */
@@ -76,7 +85,8 @@ export interface JobView {
   revit?: { queued_at?: string; ahead?: number; running_since?: string; heartbeat_at?: string; finished?: string; ms?: number; ok?: boolean; error?: string };
   /** The same times in this PC's local time with its offset, for a person reading them beside other logs (F-064). */
   local?: { started?: string; heartbeat?: string; finished?: string; result?: string };
-  dialogs: Array<{ at: string; dialog_id: string; message: string; answer: string }>;
+  /** executing false: Revit showed it between jobs (the add-in names the last job it ran), so it did not block this one. */
+  dialogs: Array<{ at: string; dialog_id: string; message: string; answer: string; executing?: boolean }>;
   result_at?: string;
   has_result: boolean;
 }
@@ -92,9 +102,11 @@ function errorText(result: any): { code?: string; message?: string } | null {
 }
 
 /** Every job the three files know, newest first. Pure apart from reading the files. */
-export function collectJobs(env: NodeJS.ProcessEnv = process.env): JobView[] {
+export function collectJobs(env: NodeJS.ProcessEnv = process.env, now = Date.now()): JobView[] {
   const files = jobFiles(env);
   const jobs = new Map<string, Acc>();
+  /** Per Revit pid: when each job ended or left the queue there (proof Revit's API thread moved on). */
+  const progress = new Map<number, Array<{ job: string; at: string }>>();
   const get = (id: string, at: string, command = ""): Acc => {
     let j = jobs.get(id);
     if (!j) { j = { job: id, command, started: at, state: "running", summary: "", dialogs: [], has_result: false }; jobs.set(id, j); }
@@ -115,13 +127,19 @@ export function collectJobs(env: NodeJS.ProcessEnv = process.env): JobView[] {
     if (typeof e?.job !== "string" || !e.job) continue;
     const j = get(e.job, String(e.started ?? e.at ?? ""), e.command);
     j.revit ??= {};
+    if (typeof e.pid === "number") j.pid = e.pid;
+    if (typeof e.pid === "number" && (e.event === "finished" || (e.event === "running" && e.queued_ms !== undefined))) {
+      const list = progress.get(e.pid) ?? [];
+      list.push({ job: e.job, at: String(e.at ?? "") });
+      progress.set(e.pid, list);
+    }
     // a job that waited in the queue starts when its "running" line is written (it carries queued_ms), not when it arrived
     if (e.event === "running") j.revit.running_since = String(e.queued_ms !== undefined ? e.at : (e.started ?? e.at ?? ""));
     if (e.event === "queued") { j.revit.queued_at = String(e.at ?? ""); j.revit.ahead = Number(e.ahead ?? 1); }
     if (e.event === "heartbeat" || e.event === "running" || e.event === "queued") j.revit.heartbeat_at = String(e.at ?? "");
     if (e.event === "finished") Object.assign(j.revit, { finished: String(e.at ?? ""), ms: e.ms, ok: e.ok, error: e.error });
     if (e.event === "cancelled") j.revit_cancelled = String(e.at ?? "");
-    if (e.event === "dialog") j.dialogs.push({ at: String(e.at ?? ""), dialog_id: String(e.dialog_id ?? ""), message: String(e.message ?? ""), answer: String(e.answer ?? "") });
+    if (e.event === "dialog") j.dialogs.push({ at: String(e.at ?? ""), dialog_id: String(e.dialog_id ?? ""), message: String(e.message ?? ""), answer: String(e.answer ?? ""), ...(typeof e.executing === "boolean" ? { executing: e.executing } : {}) });
   }
   for (const e of readJsonLines(files.late)) {
     const id = typeof e?.job === "string" ? e.job : typeof e?.id === "string" ? e.id : "";
@@ -161,8 +179,24 @@ export function collectJobs(env: NodeJS.ProcessEnv = process.env): JobView[] {
     }
     else if (j.gave_up) { j.state = "no_answer"; j.summary = `No answer from Revit by ${j.gave_up}: Revit may still be busy, or blocked by a dialog`; }
     else if (openDialog) {
-      j.state = "waiting_for_dialog";
-      j.summary = `[FMC-DIALOG-BLOCKING] Revit shows a dialog waiting for a person: ${last.dialog_id} "${last.message}". Do not retry this call. Tell a person.`;
+      const dialogAt = Date.parse(last.at);
+      const beatAfter = !!j.revit?.heartbeat_at && j.revit.heartbeat_at > last.at;
+      const later = j.pid != null ? (progress.get(j.pid) ?? []).find((p) => p.job !== j.job && p.at > last.at) : undefined;
+      const quietMs = now - Math.max(Number.isFinite(dialogAt) ? dialogAt : 0, Date.parse(j.revit?.heartbeat_at ?? "") || 0);
+      const what = `${last.dialog_id} "${last.message}" (${last.at})`;
+      if (last.executing === false) {
+        j.state = "expired";
+        j.summary = `Revit showed the dialog ${what} between jobs, after this job's work: it did not block this job. If it is still open a person must answer it (fmc_health shows a blocking dialog).`;
+      } else if (later) {
+        j.state = "expired";
+        j.summary = `The dialog ${what} no longer holds Revit: the same Revit (pid ${j.pid}) ended job ${later.job} at ${later.at}. This job's answer was not recorded: check the model before running it again.`;
+      } else if (!beatAfter && quietMs > STALE_DIALOG_MS) {
+        j.state = "expired";
+        j.summary = `The dialog ${what} was recorded ${Math.round(quietMs / 60000)} min ago with no sign of the job since: it was probably answered, or Revit was closed. fmc_health shows whether a dialog blocks Revit now; check the model before running it again.`;
+      } else {
+        j.state = "waiting_for_dialog";
+        j.summary = `[FMC-DIALOG-BLOCKING] Revit shows a dialog waiting for a person: ${last.dialog_id} "${last.message}". Do not retry this call. Tell a person.`;
+      }
     }
     else {
       j.state = "running";
@@ -203,8 +237,14 @@ function view(j: Acc): JobView {
   return rest;
 }
 
-export function findJob(id: string, env: NodeJS.ProcessEnv = process.env): JobView | null {
-  return collectJobs(env).find((j) => j.job === id) ?? null;
+export function findJob(id: string, env: NodeJS.ProcessEnv = process.env, now = Date.now()): JobView | null {
+  return collectJobs(env, now).find((j) => j.job === id) ?? null;
+}
+
+/** When the job ended (result, Revit's finished line, or the server giving up), or undefined while it runs. */
+export function jobEnded(j: JobView): string | undefined {
+  if (j.state === "running" || j.state === "queued" || j.state === "waiting_for_dialog") return undefined;
+  return j.result_at || j.revit?.finished || undefined;
 }
 
 /** The job's final answer as the late-results file holds it, cut at `maxChars`. */

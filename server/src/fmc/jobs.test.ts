@@ -36,7 +36,8 @@ test("F-030/F-036: a job's state comes from the server's record, Revit's record 
   // An F-022 line from before jobs: no job field, the id is the job.
   line(f.late, { at: "2026-10-14T10:00:00Z", command: "fmc_doc", id: "999", result: { error: { message: "boom" } } });
 
-  const jobs = collectJobs(env);
+  // "now" a few minutes after the fixture: a dialog older than STALE_DIALOG_MS with no heartbeat is expired.
+  const jobs = collectJobs(env, Date.parse("2026-10-15T09:45:00Z"));
   const by = Object.fromEntries(jobs.map((j) => [j.job, j]));
   assert.equal(jobs[0].job, "444", "newest first");
   assert.equal(by["111"].state, "finished");
@@ -231,4 +232,55 @@ test("F-064: a command that arrives while another runs is queued in Revit, then 
   line(f.revit, { at: "2026-10-18T10:25:00Z", job: "901", command: "fmc_doc", event: "finished", ms: 1500000, ok: true });
   line(f.late, { at: "2026-10-18T10:25:00Z", job: "901", command: "fmc_doc", from: "revit", result: { result: { ok: true } } });
   assert.equal(findJob("901", env)!.state, "finished");
+});
+test("fmc_job: a dialog stops holding a job when it came between jobs, Revit moved on, or it went silent", () => {
+  const env = home();
+  const f = jobFiles(env);
+  // A: an old dialog with no heartbeat after it, nothing else from that Revit.
+  line(f.revit, { at: "2026-11-28T02:19:33Z", job: "A", event: "dialog", pid: 6, dialog_id: "TaskDialog_File_Name_In_Use", message: "in use", answer: "left for a person" });
+  // B: a dialog, then the same Revit finished another job.
+  line(f.revit, { at: "2026-11-28T05:20:24Z", job: "B", event: "dialog", pid: 7, dialog_id: "TaskDialog_Save_Changes_To_Local_File", message: "ownership", answer: "left for a person" });
+  line(f.revit, { at: "2026-11-28T05:33:40Z", job: "C", command: "fmc_document_info", event: "finished", pid: 7, ms: 35800, ok: true, started: "2026-11-28T05:33:04Z" });
+  // D: the add-in says it came between jobs.
+  line(f.revit, { at: "2026-11-28T05:50:00Z", job: "D", event: "dialog", pid: 8, executing: false, dialog_id: "Dialog_Revit_SheetTitle", message: "", answer: "left for a person" });
+  // E: a dialog with heartbeats after it is still waiting, however old.
+  line(f.revit, { at: "2026-11-28T03:00:00Z", job: "E", command: "fmc_revit_file", event: "running", pid: 9, started: "2026-11-28T02:59:40Z" });
+  line(f.revit, { at: "2026-11-28T03:00:05Z", job: "E", event: "dialog", pid: 9, dialog_id: "TaskDialog_Confirm_Create_New_Local", message: "create a local copy", answer: "left for a person" });
+  line(f.revit, { at: "2026-11-28T05:59:00Z", job: "E", command: "fmc_revit_file", event: "heartbeat", pid: 9, started: "2026-11-28T02:59:40Z" });
+  const now = Date.parse("2026-11-28T06:00:00Z");
+  const by = Object.fromEntries(collectJobs(env, now).map((j) => [j.job, j]));
+  assert.equal(by.A.state, "expired");
+  assert.match(by.A.summary, /min ago/);
+  assert.equal(by.B.state, "expired");
+  assert.match(by.B.summary, /ended job C/);
+  assert.equal(by.D.state, "expired");
+  assert.match(by.D.summary, /between jobs/);
+  assert.equal(by.E.state, "waiting_for_dialog");
+  assert.equal(by.E.pid, 9);
+  // A fresh dialog with no heartbeat yet still waits.
+  assert.equal(findJob("A", env, Date.parse("2026-11-28T02:25:00Z"))!.state, "waiting_for_dialog");
+});test("fmc_job: list filters by state, command and since, and result waits with wait_s", async () => {
+  const { runFmcJob } = await import("../tools/fmc_job.js");
+  const env = home();
+  const f = jobFiles(env);
+  line(f.revit, { at: "2026-11-28T05:33:40Z", job: "F1", command: "fmc_document_info", event: "finished", pid: 3, ms: 35800, ok: true, started: "2026-11-28T05:33:04Z" });
+  line(f.late, { at: "2026-11-28T05:33:40Z", command: "fmc_document_info", job: "F1", result: { result: { success: true } } });
+  line(f.server, { at: "2026-11-28T05:50:50Z", job: "R1", event: "running", command: "send_code_to_revit", started: "2026-11-28T05:50:00Z", port: 8080 });
+  const now = () => Date.parse("2026-11-28T05:55:00Z");
+  const text = async (a: object) => JSON.parse((await runFmcJob({ action: "list", job: "", limit: 20, confirm: false, command: "", since: "", wait_s: 0, ...a } as any, env, now)).content[0].text);
+  const running = await text({ state: "running" });
+  assert.deepEqual(running.jobs.map((j: { job: string }) => j.job), ["R1"]);
+  assert.equal(running.jobs[0].port, 8080);
+  assert.equal(running.matched, 1);
+  const finished = await text({ state: ["finished", "failed"], command: "document" });
+  assert.equal(finished.jobs[0].job, "F1");
+  assert.equal(finished.jobs[0].ended, "2026-11-28T05:33:40Z");
+  assert.equal(finished.jobs[0].pid, 3);
+  assert.equal(typeof finished.jobs[0].duration_s, "number");
+  assert.equal((await text({ since: "2026-11-28T05:40:00Z" })).jobs.length, 1);
+  assert.equal((await text({ since: "yesterday" })).refused, true);
+  setTimeout(() => line(f.late, { at: "2026-11-28T05:55:01Z", command: "send_code_to_revit", job: "R1", result: { result: { success: true, result: "7" } } }), 300);
+  const waited = await text({ action: "result", job: "R1", wait_s: 5 });
+  assert.equal(waited.ready, true);
+  assert.equal(waited.result.result.result, "7");
 });

@@ -159,7 +159,11 @@ namespace RevitMCPCommandSet.Bridge
         {
             if (record == null) return;
             if (_executing) _dialogs.Add(record);
-            Log(_current, "dialog", record);
+            // executing false: the dialog came between jobs and _current is only the last job run, so fmc_job must not
+            // show that job as waiting for it (Tool Research, fmc_job: four stuck jobs with no command).
+            var line = (JObject)record.DeepClone();
+            line["executing"] = _executing;
+            Log(_current, "dialog", line);
         }
 
         /// <summary>Writes one answered failure warning to FMC_Jobs_Revit.jsonl. The job id is the one executing now.</summary>
