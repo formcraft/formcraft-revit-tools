@@ -276,6 +276,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_family_params",
   // Clear headroom. No transaction.
   "fmc_headroom",
+  // MEP fabrication: the configuration, services, FabricationParts and their ancillaries. Read only, no transaction.
+  "fmc_fabrication",
   // Keynote tags, hosts and plan views. No transaction.
   "fmc_keynote_place",
   // Sheet outlines, view sizes and sheet parameters. No transaction.
