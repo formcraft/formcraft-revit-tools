@@ -76,3 +76,23 @@ test("the reply is created and skipped counts plus ids", async () => {
   assert.match(String(sent[0].code), /Grid\.Create/);
   assert.equal(sent[0].transactionMode, "auto");
 });
+test("a bound grid keeps its own two ends and vertical extents, and links lists the link instances", async () => {
+  const code = gridsScript(15, [], true);
+  assert.match(code, /line\.GetEndPoint\(0\)/);
+  assert.match(code, /SetVerticalExtents/);
+  assert.match(code, /length_mm/);
+  assert.match(code, /extents_kept = extentsKept/);
+  const listed = await runGridsFromLink({ action: "links", document: "plumbing_USER" }, async () => { throw new Error("no write path"); },
+    async (document) => ({ links: [
+      { id: 775979, name: "architectural.rvt", path: "C:\\M\\architectural.rvt", loaded: true, pinned: true, status: "Loaded" },
+      { id: 12, name: "old.rvt", path: "", loaded: false, pinned: false, status: "NotFound", document },
+    ] }));
+  const body = JSON.parse(listed.content[0].text);
+  assert.equal(body.read_only, true);
+  assert.deepEqual(body.links.map((l: { link: number }) => l.link), [775979, 12]);
+  assert.equal(body.links[0].loaded, true);
+  assert.match(body.next, /dry_run true first/);
+  const missing = await runGridsFromLink({ document: "plumbing_USER" });
+  assert.equal(missing.isError, true);
+  assert.match(missing.content[0].text, /link must be the element id/);
+});
