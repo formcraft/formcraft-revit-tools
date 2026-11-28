@@ -108,9 +108,11 @@ test("the XML parser keeps attributes, CDATA and nesting", () => {
 test("closest point on a triangle: inside, edge and corner", () => {
   const t = Float64Array.from([0, 0, 0, 1, 0, 0, 0, 1, 0]);
   const out = new Float64Array(3);
-  closestOnTriangle(0.2, 0.2, 5, t, 0, out); assert.deepEqual(Array.from(out), [0.2, 0.2, 0]);
-  closestOnTriangle(-1, -1, 0, t, 0, out); assert.deepEqual(Array.from(out), [0, 0, 0]);
-  closestOnTriangle(0.5, -1, 0, t, 0, out); assert.deepEqual(Array.from(out), [0.5, 0, 0]);
+  // compared to 1e-12: the barycentric maths gives 0.19999999999999998 for 0.2
+  const near = (want: number[]) => want.forEach((v, k) => assert.ok(Math.abs(out[k] - v) < 1e-12, `${Array.from(out)} vs ${want}`));
+  closestOnTriangle(0.2, 0.2, 5, t, 0, out); near([0.2, 0.2, 0]);
+  closestOnTriangle(-1, -1, 0, t, 0, out); near([0, 0, 0]);
+  closestOnTriangle(0.5, -1, 0, t, 0, out); near([0.5, 0, 0]);
 });
 
 test("the cube scan against the cube model: every face WITHIN; a face built 40 mm out is OFF by about -40 mm", () => {
