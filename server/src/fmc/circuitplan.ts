@@ -223,6 +223,8 @@ export interface CircuitPlan {
 
 export interface AuditFinding {
   code: string;
+  /** The code this finding had before it got its own (batch 8 P-01): kept one release so readers can match either. */
+  replaces?: string;
   id?: number;
   level?: string;
   category?: string;
@@ -817,7 +819,8 @@ export function auditCircuits(input: {
     if (!(panel.distribution ?? "").trim()) {
       findings.push({ code: "FMC-PANEL-NO-DISTRIBUTION", id: panel.id, detail: `${panel.name} has no distribution system. ${DISTRIBUTION_HINT}` });
     } else if (panel.distribution !== target) {
-      findings.push({ code: "ELEC-VOLTAGE-MISMATCH", id: panel.id, detail: `${panel.name} distribution is ${panel.distribution}. Target is ${target}. Replacing the family in place is out of scope.` });
+      // P-fmc_circuits-01: one meaning per code. This is a board whose distribution differs from the target.
+      findings.push({ code: "ELEC-DISTRIBUTION-TARGET", replaces: "ELEC-VOLTAGE-MISMATCH", id: panel.id, detail: `${panel.name} distribution is ${panel.distribution}. Target is ${target}. Replacing the family in place is out of scope.` });
     }
   }
   for (const circuit of input.circuits) {
@@ -831,7 +834,8 @@ export function auditCircuits(input: {
       findings.push({ code: "CIRCUIT-OVERLOAD", id: circuit.id, detail: `${circuit.name || circuit.id} load ${circuit.load_w} W is over ${cap.max_load_w.value} W.` });
     }
     if (typeof circuit.voltage === "number" && Math.abs(circuit.voltage - FINAL_VOLTAGE_V) > 15 && circuit.poles === 1) {
-      findings.push({ code: "ELEC-VOLTAGE-MISMATCH", id: circuit.id, detail: `${circuit.name || circuit.id} is ${circuit.voltage} V. Single-phase final circuits are ${FINAL_VOLTAGE_V} V.` });
+      // P-fmc_circuits-01: an existing circuit's voltage, not a board's distribution.
+      findings.push({ code: "ELEC-CIRCUIT-VOLTAGE", replaces: "ELEC-VOLTAGE-MISMATCH", id: circuit.id, detail: `${circuit.name || circuit.id} is ${circuit.voltage} V. Single-phase final circuits are ${FINAL_VOLTAGE_V} V.` });
     }
     if (cap && circuit.poles && circuit.poles !== cap.poles && kind !== "AC") {
       findings.push({ code: "ELEC-POLE-MISMATCH", id: circuit.id, detail: `${circuit.name || circuit.id} has ${circuit.poles} poles. The ${kind} cap is ${cap.poles}.` });

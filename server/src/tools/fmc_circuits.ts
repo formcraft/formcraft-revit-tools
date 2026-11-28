@@ -11,7 +11,61 @@ import {
   DISTRIBUTION_HINT, auditCircuits, circuitCaps, planCircuits, sampleIds, TARGET_DISTRIBUTION, voltageDropLimit,
   type CircuitDevice, type CircuitPanel, type ExistingCircuit,
 } from "../fmc/circuitplan.js";
-import { writeReport } from "../fmc/localreport.js";
+import { reportHostDir, writeReport } from "../fmc/localreport.js";
+
+/** What counts.mismatched counts, said in the reply (P-fmc_circuits-01): it is not the audit's voltage findings. */
+export const COUNTS_MEANING = {
+  mismatched: "Devices in groups no panel can feed at plan time because connector voltage or poles differ from the panel's distribution (the mismatches list). Existing circuits at the wrong voltage are audit findings ELEC-CIRCUIT-VOLTAGE, not counted here.",
+};
+
+/** P-fmc_circuits-02: said once at the top of a reply when any circuit cap fell back to its default. */
+export const CAPS_NOTE = "Circuit caps are PROVISIONAL defaults: the standards bank has no trace.circuit.* key for them. A provisional result is not a pass.";
+
+const REPORT_READ_MAX = 200_000;
+
+/** P-fmc_circuits-04: the report file's size, and how many reports the folder holds (none are deleted). */
+function reportFacts(file: string, env?: NodeJS.ProcessEnv): { report_bytes: number | null; report_folder: { files: number; bytes: number } } {
+  let bytes: number | null = null;
+  try { bytes = fs.statSync(file).size; } catch { bytes = null; }
+  let files = 0;
+  let total = 0;
+  try {
+    const dir = reportHostDir("circuits", env);
+    for (const name of fs.readdirSync(dir)) {
+      if (!name.endsWith(".json")) continue;
+      files += 1;
+      try { total += fs.statSync(path.join(dir, name)).size; } catch { /* a file that went away */ }
+    }
+  } catch { /* no folder yet */ }
+  return { report_bytes: bytes, report_folder: { files, bytes: total } };
+}
+
+/** action report: one report from the circuits folder (newest by default), read-only. */
+function readCircuitReport(name: string, env?: NodeJS.ProcessEnv) {
+  const dir = reportHostDir("circuits", env);
+  let pick = name.trim();
+  if (pick && (!/^[A-Za-z0-9_.-]+\.json$/.test(pick) || pick.includes(".."))) {
+    return reply({ tool: "fmc_circuits", read_only: true, action: "report", ok: false, code: "FMC-REPORT-NAME", message: "report_file is a file name from the circuits report folder (letters, digits, _ . -, ending .json). Nothing was read." }, true);
+  }
+  let names: string[] = [];
+  try { names = fs.readdirSync(dir).filter((file) => file.endsWith(".json")).sort(); } catch { names = []; }
+  if (!pick) pick = names.length ? names[names.length - 1] : "";
+  if (!pick || !names.includes(pick)) {
+    return reply({ tool: "fmc_circuits", read_only: true, action: "report", ok: false, code: "FMC-REPORT-MISSING", message: pick ? `${pick} is not in the circuits report folder.` : "No circuits report yet.", folder: dir, files: names.length }, true);
+  }
+  const file = path.join(dir, pick);
+  const text = fs.readFileSync(file, "utf8");
+  const truncated = text.length > REPORT_READ_MAX;
+  let body: unknown = null;
+  if (!truncated) {
+    try { body = JSON.parse(text); } catch { body = null; }
+  }
+  return reply({
+    tool: "fmc_circuits", read_only: true, action: "report", file, bytes: Buffer.byteLength(text), files_in_folder: names.length,
+    newest: names[names.length - 1], truncated, body,
+    ...(truncated ? { note: `The report is over ${REPORT_READ_MAX} characters; open the file to read it.` } : {}),
+  });
+}
 
 function reply(body: object, isError = false) {
   return { content: [{ type: "text" as const, text: JSON.stringify(body) }], isError };
@@ -35,11 +89,13 @@ export const FMC_CIRCUITS_DESCRIPTION =
   "dry_run defaults to true. apply and panel with dry_run false need batch_lease. One Revit transaction, one subtransaction per circuit. " +
   "Pass document (exact title or full path) when more than one document is open. " +
   "HEBERT HOSTELS, a central model and protected_paths are refused. Numeric caps come from trace.circuit.* keys. A missing key is PROVISIONAL and uses the stated default. " +
-  "The reply is counts and a capped id list. The full plan is JSON under %LOCALAPPDATA%\\Formcraft\\circuits. No pictures. " +
+  "The reply is counts and a capped id list (audit findings say total and truncated). The full plan is JSON under %LOCALAPPDATA%\\Formcraft\\circuits; action report reads one back (newest, or report_file). No pictures. " +
+  "Board distribution other than the target is ELEC-DISTRIBUTION-TARGET; an existing circuit at the wrong voltage is ELEC-CIRCUIT-VOLTAGE (both were ELEC-VOLTAGE-MISMATCH, kept as replaces). " +
   "Example document: F26901-FMC-ZZ-ZZ-M3-E-0001_USER.";
 
 const shape = {
-  action: z.enum(["plan", "apply", "panel", "audit", "limits"]),
+  action: z.enum(["plan", "apply", "panel", "audit", "limits", "report"]),
+  report_file: z.string().optional().describe("report: a file name from the circuits report folder. Empty reads the newest."),
   document: z.string().optional().default("").describe("Exact title or full path of the open document."),
   dry_run: z.boolean().optional().default(true),
   batch_lease: z.string().optional().default(""),
@@ -115,6 +171,7 @@ async function readSnapshot(args: FmcCircuitsArgs, io: CircuitsIo): Promise<Circ
 }
 
 export async function runFmcCircuits(args: FmcCircuitsArgs, io: CircuitsIo = {}) {
+  if (args.action === "report") return readCircuitReport(args.report_file ?? "", io.env);
   const bank = bankOf(io);
   if (args.action === "limits") {
     return reply({ tool: "fmc_circuits", read_only: true, caps: circuitCaps(bank), voltage_drop: voltageDropLimit(bank), distribution: args.distribution || TARGET_DISTRIBUTION, rule: "A missing key is PROVISIONAL. It is not a pass." });
@@ -144,6 +201,8 @@ export async function runFmcCircuits(args: FmcCircuitsArgs, io: CircuitsIo = {})
     : null;
   const ids = sampleIds(circuits.flatMap((circuit) => circuit.element_ids), args.sample_limit);
   const report = writeReport("circuits", args.action, { plan: { ...plan, circuits }, audit, snapshot: { model: snapshot.model, resolved_document: snapshot.resolved_document } }, io.env);
+  const facts = reportFacts(report, io.env);
+  const capsNote = plan.caps.some((cap) => cap.provisional) ? { caps_note: CAPS_NOTE } : {};
   const distribution_plans = plan.distribution_plans ?? [];
   const mismatches = plan.mismatches ?? [];
   const no_connector_families = plan.no_connector_families ?? [];
@@ -161,12 +220,17 @@ export async function runFmcCircuits(args: FmcCircuitsArgs, io: CircuitsIo = {})
     }, true);
   }
   if (args.action === "plan" || args.action === "audit") {
+    const limit = args.sample_limit;
     return reply({
-      tool: "fmc_circuits", read_only: true, action: args.action, document: snapshot.resolved_document ?? { title: snapshot.model ?? args.document, path: "" },
-      counts: plan.counts, circuits: circuits.map((circuit) => ({ name: circuit.name, kind: circuit.kind, panel: circuit.panel_name, phase: circuit.phase, slot: circuit.slot, points: circuit.points, load_w: circuit.load_w, ids: circuit.element_ids.slice(0, 20), flags: circuit.flags, provisional: circuit.provisional })),
+      tool: "fmc_circuits", read_only: true, action: args.action, ...capsNote, document: snapshot.resolved_document ?? { title: snapshot.model ?? args.document, path: "" },
+      counts: plan.counts, counts_meaning: COUNTS_MEANING, circuits: circuits.map((circuit) => ({ name: circuit.name, kind: circuit.kind, panel: circuit.panel_name, phase: circuit.phase, slot: circuit.slot, points: circuit.points, load_w: circuit.load_w, ids: circuit.element_ids.slice(0, 20), flags: circuit.flags, provisional: circuit.provisional })),
       skipped: plan.skipped.slice(0, args.sample_limit), mismatches, no_connector_families, switches: plan.switches.slice(0, args.sample_limit),
-      phase: plan.phase, audit: audit ? { counts: audit.counts, findings: audit.findings.slice(0, args.sample_limit), provisional: audit.provisional } : undefined,
-      ids, report, distribution_plans, skipped_non_family: snapshot.skipped_non_family ?? { count: 0, ids: [] },
+      phase: plan.phase,
+      audit: audit ? {
+        counts: audit.counts, findings: audit.findings.slice(0, limit), total: audit.findings.length, truncated: audit.findings.length > limit,
+        provisional: audit.provisional,
+      } : undefined,
+      ids, report, ...facts, distribution_plans, skipped_non_family: snapshot.skipped_non_family ?? { count: 0, ids: [] },
       rule: plan.rule,
     });
   }
@@ -174,12 +238,12 @@ export async function runFmcCircuits(args: FmcCircuitsArgs, io: CircuitsIo = {})
   if (refusal) return fail("FMC-CIRCUIT-GUARD", refusal, "This model is not written by fmc_circuits.");
   if (args.dry_run !== false) {
     return reply({
-      tool: "fmc_circuits", dry_run: true, read_only: true, action: args.action,
+      tool: "fmc_circuits", dry_run: true, read_only: true, action: args.action, ...capsNote,
       document: snapshot.resolved_document ?? { title: snapshot.model ?? "", path: "" },
       circuits: args.action === "apply" ? circuits : undefined,
       panel: args.action === "panel" ? { id: args.panel, distribution: args.distribution, supply_from: args.supply_from, feeder: args.feeder, mains_a: args.mains_a, mains_type: args.mains_type } : undefined,
       counts: { circuits: circuits.length, points: circuits.reduce((sum, circuit) => sum + circuit.points, 0) },
-      ids, report, distribution_plans, mismatches, no_connector_families, provisional: plan.caps.some((cap) => cap.provisional),
+      ids, report, ...facts, distribution_plans, mismatches, no_connector_families, provisional: plan.caps.some((cap) => cap.provisional),
       next: "Apply with dry_run false and batch_lease. That call is one transaction.",
     });
   }

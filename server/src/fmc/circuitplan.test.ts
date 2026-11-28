@@ -2,6 +2,9 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { auditCircuits, circuitCaps, formatCircuitName, planCircuits, type CircuitDevice, type CircuitPanel } from "./circuitplan.js";
 import { runFmcCircuits } from "../tools/fmc_circuits.js";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
 
 const panel: CircuitPanel = { id: 10, name: "DB-BQ", level: "Level 1", x: 0, y: 0, z: 0, distribution: "DS_415-240V_3Ph_4W", has_supply: true, is_board: true };
 
@@ -60,7 +63,9 @@ test("no connector, a suspect panelboard and a declared load are reported separa
     accept_no_supply: ["MDB-1"],
   });
   assert.equal(audit.findings.some((finding) => finding.id === 9 && finding.code === "ELEC-NO-SUPPLY"), false);
-  assert.equal(audit.findings.some((finding) => finding.id === 8 && finding.code === "ELEC-VOLTAGE-MISMATCH"), true);
+  assert.equal(audit.findings.some((finding) => finding.id === 8 && finding.code === "ELEC-DISTRIBUTION-TARGET" && finding.replaces === "ELEC-VOLTAGE-MISMATCH"), true);
+  assert.equal(audit.findings.some((finding) => finding.id === 4 && finding.code === "ELEC-CIRCUIT-VOLTAGE" && finding.replaces === "ELEC-VOLTAGE-MISMATCH"), true);
+  assert.equal(audit.findings.some((finding) => finding.code === "ELEC-VOLTAGE-MISMATCH"), false);
   assert.equal(audit.findings.some((finding) => finding.code === "CIRCUIT-OVERLOAD"), true);
   assert.equal(audit.findings.some((finding) => finding.id === 1 && finding.code === "FMC-NO-CONNECTOR"), true);
 });
@@ -169,4 +174,40 @@ test("HEBERT HOSTELS is not written", async () => {
   });
   assert.equal(result.isError, true);
   assert.match(result.content[0].text, /HEBERT HOSTELS/);
+});
+
+test("batch 8: the audit says its total and whether it was cut, what mismatched counts, that caps are defaults, and the report's size", async () => {
+  const env = { LOCALAPPDATA: fs.mkdtempSync(path.join(os.tmpdir(), "fmc-circuits-")) };
+  const old = (id: number) => ({ id, name: `old-${id}`, voltage: 120, poles: 1, kind: "L" as const, points: 2, load_w: 100 });
+  const result = await runFmcCircuits({
+    action: "audit", document: "electrical_USER", dry_run: true, batch_lease: "",
+    panel: "", pattern: "{board}/{zone}-{type}{n}", load_unit: "W", distribution: "DS_415-240V_3Ph_4W",
+    accept_no_supply: [], non_board_ids: [], include_switches: false, supply_from: "", feeder: "", mains_type: "", sample_limit: 2,
+  }, {
+    bank: {}, env,
+    read: async () => ({ model: "electrical_USER", devices: [], panels: [panel], circuits: [old(31), old(32), old(33)] }),
+  });
+  const body = JSON.parse(result.content[0].text);
+  assert.equal(result.isError, false);
+  assert.match(body.caps_note, /PROVISIONAL defaults/);
+  assert.match(body.counts_meaning.mismatched, /ELEC-CIRCUIT-VOLTAGE/);
+  assert.equal(body.audit.total, 3);
+  assert.equal(body.audit.truncated, true);
+  assert.equal(body.audit.findings.length, 2);
+  assert.ok(body.audit.findings.every((finding: { code: string }) => finding.code === "ELEC-CIRCUIT-VOLTAGE"));
+  assert.ok(body.report_bytes > 0);
+  assert.equal(body.report_folder.files, 1);
+
+  const read = await runFmcCircuits({ action: "report", report_file: "" } as never, { env });
+  const back = JSON.parse(read.content[0].text);
+  assert.equal(read.isError, false);
+  assert.equal(back.read_only, true);
+  assert.equal(back.file, body.report);
+  assert.equal(back.body.audit.findings.length, 3);
+
+  const bad = await runFmcCircuits({ action: "report", report_file: "..\\..\\fmc_guard.json" } as never, { env });
+  assert.equal(bad.isError, true);
+  assert.match(bad.content[0].text, /FMC-REPORT-NAME/);
+  const missing = await runFmcCircuits({ action: "report", report_file: "audit-none.json" } as never, { env });
+  assert.match(missing.content[0].text, /FMC-REPORT-MISSING/);
 });
