@@ -1,11 +1,12 @@
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
+import { toolFailure } from "./failure.js";
 
 export function registerGetMaterialQuantitiesTool(server: McpServer) {
   server.tool(
     "get_material_quantities",
-    "Calculate material quantities and takeoffs from the current Revit project. Returns detailed information about each material including name, class, area, volume, and element counts. Useful for cost estimation, material ordering, and sustainability analysis.",
+    "Calculate material quantities and takeoffs from the current Revit project. Returns detailed information about each material including name, class, area, volume, and element counts. Metric values are in areaM2 / totalAreaM2 (m²) and volumeM3 / totalVolumeM3 (m³); `units` names them. area and volume are Revit's internal ft² and ft³. Useful for cost estimation, material ordering, and sustainability analysis.",
     {
       categoryFilters: z
         .array(z.string())
@@ -37,16 +38,9 @@ export function registerGetMaterialQuantitiesTool(server: McpServer) {
           ],
         };
       } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `Get material quantities failed: ${
+        return toolFailure(`Get material quantities failed: ${
                 error instanceof Error ? error.message : String(error)
-              }`,
-            },
-          ],
-        };
+              }`);
       }
     }
   );

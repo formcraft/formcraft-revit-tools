@@ -91,6 +91,24 @@ export const FMC_TREE_SHAPE = {
 };
 export type FmcTreeArgs = z.infer<z.ZodObject<typeof FMC_TREE_SHAPE>>;
 
+export const TREE_NONE = "FMC-TREE-NONE";
+
+/** show, check, plan and the rest need a tree. With none, say how to make one, with the calls to copy. */
+export function noTreeBody(file: string, project: string) {
+  const p = JSON.stringify(project);
+  return {
+    refused: true,
+    code: TREE_NONE,
+    file,
+    reasons: [`[${TREE_NONE}] This project has no recipe tree yet (looked for ${file}). Create one first.`],
+    create: [
+      `a sample ICU bay to start from: fmc_tree {"action":"init","project_folder":${p},"dry_run":true}, then the same with "dry_run":false`,
+      `the whole building from the approved CIS: fmc_tree {"action":"brief","cis_file":"<approved CIS .json>","brief":{wall_type, wall_thickness, ceiling_type, ceiling_height, corridor_width},"project_folder":${p},"dry_run":true}, then "dry_run":false`,
+    ],
+    next: "Run init or brief (a dry run first), then show again. The tree is written to 01_WIP\\_Tree.",
+  };
+}
+
 export const treeFile = (project: string) => win.join(project, "01_WIP", "_Tree", "FMC_Recipe_Tree.json");
 const stateFile = (project: string) => win.join(project, "01_WIP", "_Tree", "FMC_Recipe_Tree.state.json");
 
@@ -158,7 +176,7 @@ export async function runFmcTree(args: FmcTreeArgs) {
       log(config, "tree_brief", false, file, "written", `${cis.project} ${cis.revision}: ${made.sizes.length} rooms`);
       return reply({ done: true, file, ...body, next: "fmc_tree check, plan, then build (families first, then each room)" });
     }
-    if (!fs.existsSync(file)) return reply({ refused: true, reasons: [`No tree yet: ${file} (fmc_tree init writes a sample, brief writes one from the CIS)`] }, true);
+    if (!fs.existsSync(file)) return reply(noTreeBody(file, project), true);
     const tree: Tree = TREE.parse(JSON.parse(fs.readFileSync(file, "utf8").replace(/^﻿/, "")));
     const last: BuiltState | null = fs.existsSync(state) ? JSON.parse(fs.readFileSync(state, "utf8")) : null;
 

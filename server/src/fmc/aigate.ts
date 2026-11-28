@@ -1,6 +1,18 @@
-import { DocInfo, GuardConfig } from "./policy.js";
-import { PLACEABLE, aiVerdict, batchSize, recordBatch } from "./aiuse.js";
-import { approvalFor, enqueue, loadAiConfig, loadRulebook, loadState, logBatch, saveState, setStatus } from "./aiuse_io.js";
+import fs from "node:fs";
+import { DocInfo, GuardConfig, loadConfig } from "./policy.js";
+import { protectedRoots } from "./opencopy.js";
+import { saveBlocked } from "./savepolicy.js";
+import { adminSession, lineBatchRefusal, lineTypeIds, type ResolvedTypes } from "./linecat.js";
+import { startedByFrom } from "./ledger.js";
+import { NEVER, PLACEABLE, USER_LINE, aiVerdict, batchSize, generalState, recordBatch } from "./aiuse.js";
+import { Names, elementNames, explain, namesWanted } from "./explain.js";
+import { approvalFor, claimApproval, enqueue, loadAiConfig, loadRulebook, loadState, logBatch, saveState, setResult, setStatus } from "./aiuse_io.js";
+import { batchBoard } from "./batchline.js";
+import { syncSettings } from "./batchsync.js";
+import { currentClient } from "./fairqueue.js";
+import { memoryGate } from "./memory.js";
+import { batchLease } from "./target.js";
+import { appendSyncAutoLog, damagedNames, judgeAiSync, readDamageDialogs, syncAutoInEffect, type SyncSource } from "./syncauto.js";
 
 /**
  * The live-model lock's one new case (AI-assisted modeller, Phase A). Called only after the lock has refused a
@@ -8,31 +20,134 @@ import { approvalFor, enqueue, loadAiConfig, loadRulebook, loadState, logBatch, 
  * logged; otherwise the lock's refusal stands, with the AI gate's reason added. A batch at "Fix with approval" goes to
  * the approval queue and runs only after the model's author approves it in the pane.
  */
-export interface Gate { ok: boolean; reason: string; run?: <T>(exec: () => Promise<T>) => Promise<T> }
+/** `user` is the plain line a person sees instead of the lock's wording (owner 26 Oct); `reason` is the detail. */
+export interface Gate { ok: boolean; reason: string; user?: string; run?: <T>(exec: () => Promise<T>) => Promise<T> }
 
-export async function aiGate(command: string, params: any, active: (DocInfo & { isLocal?: boolean }) | null | undefined, cfg: GuardConfig,
+export async function aiGate(command: string, params: any, active: DocInfo | null | undefined, cfg: GuardConfig,
   send: (command: string, params: object) => Promise<any>, env: NodeJS.ProcessEnv = process.env): Promise<Gate> {
   if (!active) return { ok: false, reason: "" };
   const { book } = loadRulebook(cfg);
   const ai = loadAiConfig(cfg, env);
-  if (!ai) return { ok: false, reason: "" }; // AI modelling isn't set up: the lock's refusal is the whole story
+  // Not set up yet (no ai_modeller section): the person sees the plain line, never the lock's wording.
+  if (!ai) return { ok: false, reason: "", user: NEVER[command] ? USER_LINE.admin(NEVER[command]) : USER_LINE.off };
+  // create_line_based_element: walls and ducts for everyone, structure for an admin only, anything else refused. Checked before
+  // the rulebook, so a missing rulebook never widens it. The type's own category counts, not only the item's claim.
+  if (command === "create_line_based_element") {
+    const items = (Array.isArray(params?.data) ? params.data : []) as Array<{ category?: unknown; typeId?: unknown }>;
+    const admin = (ai.access === "full" && generalState(ai, active.title, active.path) === "On") || adminSession(null, startedByFrom(env, "ai"));
+    let resolved: ResolvedTypes | undefined;
+    const ids = lineTypeIds(items);
+    if (ids.length) {
+      try {
+        const facts = await send("fmc_type_facts", { ids, _full: true });
+        resolved = new Map(((facts?.types ?? []) as Array<{ id: number; category?: string; found?: boolean }>).map((t) => [t.id, { found: t.found === true, category: String(t.category ?? "") }]));
+      } catch { /* the claimed category still decides */ }
+    }
+    const refusal = lineBatchRefusal(items, admin, resolved);
+    if (refusal) return { ok: false, reason: `AI-assisted modeller: ${refusal.message}`, user: refusal.message };
+  }
+  // Read-only code (owner 26 Oct): its transaction is always rolled back, so it needs no approval, only the code switch.
+  const dryRun = command === "fmc_model_edit" && params?.dry_run === true;
+  // fmc_replace always rolls the group back. It needs the copy's own AI switch (enable_copy), not an approval that would imply a commit.
+  const previewReplace = command === "fmc_replace";
+  // A Dynamo or library preview rolls back. It must not save, and it must not reach autoSave.
+  const previewScript = scriptPreview(command, params);
+  if ((command === "send_code_to_revit" && params?.transactionMode === "read_only") || dryRun || previewReplace || previewScript) {
+    if (ai.stop) return { ok: false, reason: "", user: USER_LINE.stopped };
+    if (!dryRun && !previewReplace && !previewScript && ai.allow_code !== true) return { ok: false, reason: "", user: USER_LINE.admin("running code: the admin's 'AI may run code' switch is off") };
+    if (generalState(ai, active.title, active.path) !== "On") return { ok: false, reason: "", user: USER_LINE.off };
+    return { ok: true, reason: "", run: <T>(exec: () => Promise<T>) => exec() };
+  }
+  // Relinquish of elements, including another user's, is never automatic. Sync may relinquish only what this user checked out.
+  const fileAction = command === "fmc_revit_file" ? String(params?.action ?? "") : "";
+  const relinquishOthers = params?.relinquish_others === true;
+  const syncFacts = () => {
+    const settings = syncSettings(cfg);
+    return {
+      now: Date.now(),
+      holder: batchBoard().activeHolder(active.path || active.title),
+      caller: { lease: batchLease.getStore() ?? "", client: currentClient() },
+      ramPaused: memoryGate.leasesPaused(),
+      dialogs: readDamageDialogs(env),
+      damaged: damagedNames(cfg, ai),
+      exclude: settings.exclude,
+      protectedRoots: protectedRoots(cfg),
+    };
+  };
+  const rememberSync = (source: SyncSource) => {
+    const item = enqueue(command, { action: "sync", document: active.path || active.title, sync_source: source }, active.path, active.title, "sync", 0, env, new Date(), ["auto-approved (sync)"]);
+    setStatus(item.id, "used", "auto-approved (sync)", env);
+    return item.id;
+  };
+  const runAutoSync = (source: SyncSource, reason: string): Gate => ({
+    ok: true, reason,
+    run: async <T>(exec: () => Promise<T>): Promise<T> => {
+      const id = rememberSync(source);
+      try {
+        const result = await exec();
+        setResult(id, "done", "auto-approved (sync)", env);
+        return result;
+      } catch (error) {
+        setResult(id, "failed", error instanceof Error ? error.message : String(error), env);
+        throw error;
+      }
+    },
+  });
+  // The batch line's own save, and its sync when auto_approve_sync is off (the shipped default).
+  // When the flag is on, batch-end and the managed timer use the same checks as a direct sync and are listed as auto-approved (sync).
+  if (params?.batch_sync === true && command === "fmc_revit_file" && ["save", "sync"].includes(fileAction) && !relinquishOthers) {
+    if (ai.stop) return { ok: false, reason: "Stop AI is on", user: USER_LINE.stopped };
+    if (generalState(ai, active.title, active.path) !== "On") return { ok: false, reason: "AI is off for this model", user: USER_LINE.off };
+    if (fileAction === "sync" && syncAutoInEffect(ai)) {
+      const source: SyncSource = params?.sync_source === "timer" ? "timer" : "batch_end";
+      const decision = judgeAiSync(source, active, ai, syncFacts());
+      appendSyncAutoLog(env, {
+        at: new Date().toISOString(), document: active.title, path: active.path, action: "sync", source,
+        decision: decision.approve ? "approved" : "refused", reason: decision.reason,
+        lease: batchLease.getStore() ?? "", client: currentClient(),
+      });
+      if (!decision.approve) return { ok: false, reason: decision.reason, user: decision.reason };
+      return runAutoSync(source, decision.reason);
+    }
+    return { ok: true, reason: "", run: <T>(exec: () => Promise<T>) => exec() };
+  }
   const elements = batchSize(params);
   const approval = approvalFor(command, params, active.path, env);
-  const v = aiVerdict({ command, doc: active, elements, approved: !!approval }, cfg, book, ai, loadState(env));
+  // A direct sync may run now when auto_approve_sync is on. The same judge covers batch-end and the timer above.
+  // Relinquish on its own still waits for a person. Every approval and every refusal of this path is logged.
+  const directSync = fileAction === "sync" && params?.batch_sync !== true && !relinquishOthers;
+  if (directSync) {
+    const decision = judgeAiSync("direct", active, ai, syncFacts());
+    if (decision.judged) {
+      appendSyncAutoLog(env, {
+        at: new Date().toISOString(), document: active.title, path: active.path, action: "sync", source: "direct",
+        decision: decision.approve ? "approved" : "refused", reason: decision.reason,
+        lease: batchLease.getStore() ?? "", client: currentClient(),
+      });
+    }
+    if (decision.approve) return runAutoSync("direct", decision.reason);
+  }
+  // Auto-approve (owner 26 Oct): testing mode only; the batch runs now and is still listed in Approvals.
+  // Relinquish, and a sync auto_approve_sync did not take, still wait for a person.
+  const shared = command === "fmc_revit_file" && ["sync", "relinquish"].includes(String(params?.action));
+  const auto = !approval && !shared && ai.mode === "testing" && ai.auto_approve === true;
+  const v = aiVerdict({ command, doc: active, elements, approved: !!approval || auto }, cfg, book, ai, loadState(env));
   if (!v.ok) {
     let reason = `AI-assisted modeller: ${v.reasons[0]}.`;
     if (v.needs_approval) {
-      const item = enqueue(command, params, active.path, active.title, v.group ?? "", elements, env);
-      reason += ` It is waiting in the approval queue as ${item.id}: once the author approves it, send the same batch again.`;
+      const item = enqueue(command, params, active.path, active.title, v.group ?? "", elements, env, new Date(), await describe(command, params, send));
+      reason += ` It is waiting in the approval queue as ${item.id}: call fmc_ai wait with id ${item.id} (don't end your turn); ` +
+        "approving runs it, then go on with your next batch.";
+      return { ok: false, reason, user: `${USER_LINE.approve} (batch ${item.id}; AI: call fmc_ai wait with id ${item.id}, then go on with your next batch)` };
     }
-    return { ok: false, reason };
+    return { ok: false, reason, user: v.user };
   }
 
   // Placing elements: Revit says each type's category first, so AI never places structure or anything outside the list.
   if (command === "create_point_based_element") {
     const ids = ((params?.data ?? []) as Array<{ typeId?: number }>).map((d) => d?.typeId);
     if (!ids.length || ids.some((x) => typeof x !== "number")) return { ok: false, reason: "AI-assisted modeller: every element to place needs its typeId, so its category can be checked." };
-    const facts = await send("fmc_type_facts", { ids });
+    const facts = await send("fmc_type_facts", { ids, _full: true });
     const types = (facts?.types ?? []) as Array<{ id: number; category: string; found: boolean }>;
     const bad = ids.filter((id) => { const t = types.find((x) => x.id === id); return !t?.found || !PLACEABLE.includes(t.category); });
     if (bad.length) return { ok: false, reason: `AI-assisted modeller: type ${bad.join(", ")} isn't a door, window, fixture, furniture, casework, equipment or generic model: AI may only place those.` };
@@ -42,10 +157,20 @@ export async function aiGate(command: string, params: any, active: (DocInfo & { 
   return {
     ok: true, reason: "",
     run: async <T>(exec: () => Promise<T>): Promise<T> => {
+      // One run per approval: claimed before Revit runs, so a timeout never leaves it open for a replay.
+      if (approval && !claimApproval(approval.id, env))
+        throw new Error(`Batch ${approval.id} has already run once for its approval: check the model (fmc_job status), then queue a new batch if more is needed.`);
+      const autoItem = auto ? enqueue(command, params, active.path, active.title, v.group ?? "", elements, env, new Date(), await describe(command, params, send)) : null;
+      if (autoItem) setStatus(autoItem.id, "used", "auto-approved (testing)", env);
       try {
         const r = await exec();
+        if (scriptCallSkipsAutoSave(command, params)) {
+          if (r && typeof r === "object") (r as Record<string, unknown>).auto_saved = false;
+        } else {
+          await autoSave(active, ai, send, r);
+        }
+        if (autoItem) setResult(autoItem.id, "done", `${autoItem.summary} · ${JSON.stringify(r ?? {}).slice(0, 4000)}`, env);
         if (book) saveState(recordBatch(loadState(env), active.path, elements, false, book), env);
-        if (approval) setStatus(approval.id, "used", approval.by ?? "", env);
         logBatch(cfg, { ...row, result: "done", detail: v.band ?? "" });
         return r;
       } catch (e) {
@@ -53,12 +178,83 @@ export async function aiGate(command: string, params: any, active: (DocInfo & { 
         if ((e as { code?: string })?.code === "FMC-JOB-RUNNING") {
           if (book) saveState(recordBatch(loadState(env), active.path, elements, false, book), env);
           logBatch(cfg, { ...row, result: "running", detail: `job ${(e as { job?: string }).job ?? ""}` });
+          if (autoItem) setResult(autoItem.id, "running", e instanceof Error ? e.message : String(e), env);
           throw e;
         }
+        if (autoItem) setResult(autoItem.id, "failed", e instanceof Error ? e.message : String(e), env);
         if (book) saveState(recordBatch(loadState(env), active.path, elements, true, book), env);
         logBatch(cfg, { ...row, result: "failed", detail: e instanceof Error ? e.message : String(e) });
         throw e;
       }
     },
   };
+}
+
+/** The approval's plain lines, with type and element names from Revit (best effort: ids when Revit can't say). */
+async function describe(command: string, params: object, send: (command: string, params: object) => Promise<any>): Promise<string[]> {
+  const want = namesWanted(params);
+  const names: Names = { types: {}, elements: {} };
+  try {
+    if (want.typeIds.length) for (const t of (await send("fmc_type_facts", { ids: want.typeIds, _full: true }))?.types ?? []) if (t?.name) names.types[String(t.id)] = t.name;
+  } catch { /* ids instead */ }
+  try {
+    if (want.elementIds.length) names.elements = elementNames((await send("fmc_element_geometry", { ids: want.elementIds }))?.elements ?? []);
+  } catch { /* ids instead */ }
+  return explain(command, params, names);
+}
+
+/**
+ * When a model was last saved: the file's own time on disk, so it counts across processes and sessions (owner 27 Oct:
+ * the old clock started with each server process, so scripts and fresh sessions never reached it and an afternoon's
+ * frame was lost when Revit crashed). null when the file can't be read (never saved): save now.
+ */
+export function savedAtOnDisk(file: string): number | null {
+  try { return fs.statSync(file).mtimeMs; } catch { return null; }
+}
+
+/**
+ * Owner 26 Oct: an afternoon of AI work existed only in an open Revit. After a change, the model saves itself when its
+ * file on disk is older than auto_save_minutes (testing default 10; 0 off). This path still skips a workshared model
+ * (the timed autosave saves that local file). Never a model in the background. save_exclude and protected_paths
+ * (and protected_roots) refuse the save. A failed save is reported on the result (auto_save_failed), never hidden.
+ *
+ * The protected-path check used to be only underAny(path, protected_roots). protected_roots defaults to [] and
+ * matches a path only when a listed prefix is the leading folders. An empty list matches nothing, which is why
+ * D:\Fomcraft\FMC_PROJECTS_27\THE OGALA RESIDENCE\01_WIP\S\F26901-FMC-ZZ-ZZ-M3-S-0001.rvt was saved.
+ */
+/** Preview, dry-run and apply of fmc_dynamo and fmc_script_run do not save. The timer and the batch-end sync still do. */
+export function scriptCallSkipsAutoSave(command: string, params: { mode?: unknown; dry_run?: unknown; transactionMode?: unknown; fmc_caller?: unknown } | null | undefined): boolean {
+  const mode = typeof params?.mode === "string" ? params.mode : "";
+  const caller = typeof params?.fmc_caller === "string" ? params.fmc_caller : "";
+  const tool = command === "fmc_dynamo" || command === "fmc_script_run" || caller === "fmc_dynamo" || caller === "fmc_script_run";
+  if (!tool) return false;
+  return mode === "preview" || mode === "apply" || mode === "offline" || params?.dry_run === true || params?.transactionMode === "read_only";
+}
+
+function scriptPreview(command: string, params: { mode?: unknown; dry_run?: unknown; transactionMode?: unknown; fmc_caller?: unknown } | null | undefined): boolean {
+  const mode = typeof params?.mode === "string" ? params.mode : "";
+  const caller = typeof params?.fmc_caller === "string" ? params.fmc_caller : "";
+  const named = command === "fmc_dynamo" || command === "fmc_script_run" || caller === "fmc_dynamo" || caller === "fmc_script_run";
+  if (!named) return false;
+  return mode === "preview" || mode === "offline" || params?.dry_run === true || params?.transactionMode === "read_only";
+}
+
+export async function autoSave(active: DocInfo & { isActive?: boolean }, ai: { mode?: string; auto_save_minutes?: number },
+  send: (command: string, params: object) => Promise<any>, result: unknown, now = Date.now(), savedAt: (file: string) => number | null = savedAtOnDisk): Promise<boolean> {
+  const minutes = ai.auto_save_minutes ?? (ai.mode === "testing" ? 10 : 0);
+  const blocked = saveBlocked({ title: active.title, path: active.path });
+  if (blocked) return false;
+  // A background copy, a detached copy, a link and a workshared model are never auto-saved here.
+  if (!(minutes > 0) || active.isWorkshared || active.isActive === false || !active.path || active.isDetached || active.isLinked || active.readOnly) return false;
+  const last = savedAt(active.path);
+  if (last !== null && now - last < minutes * 60_000) return false;
+  const out = result && typeof result === "object" ? (result as Record<string, unknown>) : null;
+  try {
+    await send("fmc_revit_file", { action: "save" });
+    if (out) out.auto_saved = new Date(now).toISOString();
+    return true;
+  } catch (e) {
+    if (out) out.auto_save_failed = `the model didn't save itself: ${e instanceof Error ? e.message : String(e)}; save it (revit_file save)`;
+    return false;
+  }
 }

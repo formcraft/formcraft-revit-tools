@@ -1,4116 +1,4130 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_I_Casework_NurseStation_Counter",
- "template": "Metric Generic Model.rft",
- "about": "Nurse station modelled as a generic product: HPL public fascia with joints and quartz transaction ledge with LED strip, lowered accessible section with knee space and hearing loop sign, staff worktop with grommets, cable tray and a power/data module, 3-drawer pedestal facing the staff, return leg with ledge, worktop and base unit with doors, stainless plinths, end panel. Geometry is drawn at the 3600x2400_L type; the other types share it until a parametric pass. Reference: query: casework nurse station counter casework hospital; images: https://www.google.com/search?tbm=isch&q=casework+nurse+station+counter+casework+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Casework"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Voltage",
-   "type": "Voltage",
-   "group": "Electrical"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Apparent Load",
-   "type": "ApparentPower",
-   "group": "ElectricalLoads"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Assembly_Mark",
-   "guid": "63266315-bb4d-5187-9224-35d20981c3d6",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carcass_Spec",
-   "guid": "c28e7161-7153-5158-8a2d-4ff17c6b96e0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Worktop_Spec",
-   "guid": "dbb29109-d7be-55a5-8c12-9aca51551dc3",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Design_Movement",
-   "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "3600x2400_L"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x2400_L/FMC_Cost_Unit",
-   "type": "3600x2400_L",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x2400_L/FMC_Geometry_Stage",
-   "type": "3600x2400_L",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x2400_L/IfcExportAs",
-   "type": "3600x2400_L",
-   "param": "IfcExportAs",
-   "value": "IfcFurniture"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x2400_L/Description",
-   "type": "3600x2400_L",
-   "param": "Description",
-   "value": "Nurse station counter, L-shaped 3600 x 2400"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x2400_L/Keynote",
-   "type": "3600x2400_L",
-   "param": "Keynote",
-   "value": "J.CNT_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x2400_L/FMC_Keynote_Code",
-   "type": "3600x2400_L",
-   "param": "FMC_Keynote_Code",
-   "value": "J.CNT_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x2400_L/FMC_Code_Description",
-   "type": "3600x2400_L",
-   "param": "FMC_Code_Description",
-   "value": "NurseStation Counter: Counter with low accessible section, cable management"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x2400_L/FMC_Code_Group",
-   "type": "3600x2400_L",
-   "param": "FMC_Code_Group",
-   "value": "J.CNT"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x2400_L/FMC_Role_Code",
-   "type": "3600x2400_L",
-   "param": "FMC_Role_Code",
-   "value": "I"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x2400_L/Voltage",
-   "type": "3600x2400_L",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x2400_L/Apparent Load",
-   "type": "3600x2400_L",
-   "param": "Apparent Load",
-   "value": 2000
-  },
-  {
-   "op": "add_type",
-   "name": "3600x2400_U"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x2400_U/FMC_Cost_Unit",
-   "type": "3600x2400_U",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x2400_U/FMC_Geometry_Stage",
-   "type": "3600x2400_U",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x2400_U/IfcExportAs",
-   "type": "3600x2400_U",
-   "param": "IfcExportAs",
-   "value": "IfcFurniture"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x2400_U/Description",
-   "type": "3600x2400_U",
-   "param": "Description",
-   "value": "Nurse station counter, U-shaped 3600 x 2400 x 2400"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x2400_U/Keynote",
-   "type": "3600x2400_U",
-   "param": "Keynote",
-   "value": "J.CNT_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x2400_U/FMC_Keynote_Code",
-   "type": "3600x2400_U",
-   "param": "FMC_Keynote_Code",
-   "value": "J.CNT_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x2400_U/FMC_Code_Description",
-   "type": "3600x2400_U",
-   "param": "FMC_Code_Description",
-   "value": "NurseStation Counter: Counter with low accessible section, cable management"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x2400_U/FMC_Code_Group",
-   "type": "3600x2400_U",
-   "param": "FMC_Code_Group",
-   "value": "J.CNT"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x2400_U/FMC_Role_Code",
-   "type": "3600x2400_U",
-   "param": "FMC_Role_Code",
-   "value": "I"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x2400_U/Voltage",
-   "type": "3600x2400_U",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600x2400_U/Apparent Load",
-   "type": "3600x2400_U",
-   "param": "Apparent Load",
-   "value": 2000
-  },
-  {
-   "op": "add_type",
-   "name": "3600_Straight"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600_Straight/FMC_Cost_Unit",
-   "type": "3600_Straight",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600_Straight/FMC_Geometry_Stage",
-   "type": "3600_Straight",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600_Straight/IfcExportAs",
-   "type": "3600_Straight",
-   "param": "IfcExportAs",
-   "value": "IfcFurniture"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600_Straight/Description",
-   "type": "3600_Straight",
-   "param": "Description",
-   "value": "Nurse station counter, straight 3600"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600_Straight/Keynote",
-   "type": "3600_Straight",
-   "param": "Keynote",
-   "value": "J.CNT_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600_Straight/FMC_Keynote_Code",
-   "type": "3600_Straight",
-   "param": "FMC_Keynote_Code",
-   "value": "J.CNT_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600_Straight/FMC_Code_Description",
-   "type": "3600_Straight",
-   "param": "FMC_Code_Description",
-   "value": "NurseStation Counter: Counter with low accessible section, cable management"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600_Straight/FMC_Code_Group",
-   "type": "3600_Straight",
-   "param": "FMC_Code_Group",
-   "value": "J.CNT"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600_Straight/FMC_Role_Code",
-   "type": "3600_Straight",
-   "param": "FMC_Role_Code",
-   "value": "I"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600_Straight/Voltage",
-   "type": "3600_Straight",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "3600_Straight/Apparent Load",
-   "type": "3600_Straight",
-   "param": "Apparent Load",
-   "value": 2000
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Front",
-   "color": [
-    217,
-    211,
-    199
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Front Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_Laminate_HPL",
-   "param": "Front Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Ledge",
-   "color": [
-    236,
-    234,
-    230
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Ledge Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Stone_Quartz_Engineered_White",
-   "param": "Ledge Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Plinth",
-   "color": [
-    180,
-    183,
-    186
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Plinth Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_StainlessSteel_Brushed",
-   "param": "Plinth Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Top",
-   "color": [
-    217,
-    211,
-    199
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Top Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_Laminate_HPL",
-   "param": "Top Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Led",
-   "color": [
-    58,
-    141,
-    255
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Led Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_LED_Blue",
-   "param": "Led Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Carc",
-   "color": [
-    245,
-    245,
-    243
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Carc Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Board_Melamine_White",
-   "param": "Carc Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Front2",
-   "color": [
-    245,
-    245,
-    243
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Front2 Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Board_Melamine_White",
-   "param": "Front2 Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Hdl",
-   "color": [
-    180,
-    183,
-    186
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Hdl Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_StainlessSteel_Brushed",
-   "param": "Hdl Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Steel",
-   "color": [
-    61,
-    70,
-    80
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Steel Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_SteelLTZ_Painted",
-   "param": "Steel Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Alu",
-   "color": [
-    192,
-    192,
-    192
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Alu Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Aluminium_Anodised_Silver",
-   "param": "Alu Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "White",
-   "color": [
-    242,
-    242,
-    238
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "White Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_White",
-   "param": "White Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Blue",
-   "color": [
-    47,
-    109,
-    181
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Blue Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Blue",
-   "param": "Blue Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -1800.0,
-     -900.0
-    ],
-    [
-     1880.0,
-     -900.0
-    ],
-    [
-     1880.0,
-     1600
-    ],
-    [
-     -1800.0,
-     1600
-    ]
-   ],
-   "start": 0,
-   "end": 1110
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Long Fascia",
-   "points": [
-    [
-     1796.0,
-     -800.0
-    ],
-    [
-     1797.53,
-     -799.7
-    ],
-    [
-     1798.83,
-     -798.83
-    ],
-    [
-     1799.7,
-     -797.53
-    ],
-    [
-     1800.0,
-     -796.0
-    ],
-    [
-     1800.0,
-     -764.0
-    ],
-    [
-     1799.7,
-     -762.47
-    ],
-    [
-     1798.83,
-     -761.17
-    ],
-    [
-     1797.53,
-     -760.3
-    ],
-    [
-     1796.0,
-     -760.0
-    ],
-    [
-     -896.0,
-     -760.0
-    ],
-    [
-     -897.53,
-     -760.3
-    ],
-    [
-     -898.83,
-     -761.17
-    ],
-    [
-     -899.7,
-     -762.47
-    ],
-    [
-     -900.0,
-     -764.0
-    ],
-    [
-     -900.0,
-     -796.0
-    ],
-    [
-     -899.7,
-     -797.53
-    ],
-    [
-     -898.83,
-     -798.83
-    ],
-    [
-     -897.53,
-     -799.7
-    ],
-    [
-     -896.0,
-     -800.0
-    ]
-   ],
-   "start": 100,
-   "end": 1080
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Long Fascia",
-   "subcategory": "Front"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Long Fascia",
-   "param": "Front Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Long Fascia",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Long Ledge",
-   "points": [
-    [
-     1790.0,
-     -880.0
-    ],
-    [
-     1793.83,
-     -879.24
-    ],
-    [
-     1797.07,
-     -877.07
-    ],
-    [
-     1799.24,
-     -873.83
-    ],
-    [
-     1800.0,
-     -870.0
-    ],
-    [
-     1800.0,
-     -570.0
-    ],
-    [
-     1799.24,
-     -566.17
-    ],
-    [
-     1797.07,
-     -562.93
-    ],
-    [
-     1793.83,
-     -560.76
-    ],
-    [
-     1790.0,
-     -560.0
-    ],
-    [
-     -890.0,
-     -560.0
-    ],
-    [
-     -893.83,
-     -560.76
-    ],
-    [
-     -897.07,
-     -562.93
-    ],
-    [
-     -899.24,
-     -566.17
-    ],
-    [
-     -900.0,
-     -570.0
-    ],
-    [
-     -900.0,
-     -870.0
-    ],
-    [
-     -899.24,
-     -873.83
-    ],
-    [
-     -897.07,
-     -877.07
-    ],
-    [
-     -893.83,
-     -879.24
-    ],
-    [
-     -890.0,
-     -880.0
-    ]
-   ],
-   "start": 1080,
-   "end": 1110
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Long Ledge",
-   "subcategory": "Ledge"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Long Ledge",
-   "param": "Ledge Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Long Ledge",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Long Plinth",
-   "points": [
-    [
-     -900,
-     -740
-    ],
-    [
-     1800,
-     -740
-    ],
-    [
-     1800,
-     -100
-    ],
-    [
-     -900,
-     -100
-    ]
-   ],
-   "start": 0,
-   "end": 100
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Long Plinth",
-   "subcategory": "Plinth"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Long Plinth",
-   "param": "Plinth Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Long Plinth",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Long Worktop",
-   "points": [
-    [
-     994.0,
-     -760.0
-    ],
-    [
-     996.3,
-     -759.54
-    ],
-    [
-     998.24,
-     -758.24
-    ],
-    [
-     999.54,
-     -756.3
-    ],
-    [
-     1000.0,
-     -754.0
-    ],
-    [
-     1000.0,
-     -6.0
-    ],
-    [
-     999.54,
-     -3.7
-    ],
-    [
-     998.24,
-     -1.76
-    ],
-    [
-     996.3,
-     -0.46
-    ],
-    [
-     994.0,
-     0.0
-    ],
-    [
-     -894.0,
-     0.0
-    ],
-    [
-     -896.3,
-     -0.46
-    ],
-    [
-     -898.24,
-     -1.76
-    ],
-    [
-     -899.54,
-     -3.7
-    ],
-    [
-     -900.0,
-     -6.0
-    ],
-    [
-     -900.0,
-     -754.0
-    ],
-    [
-     -899.54,
-     -756.3
-    ],
-    [
-     -898.24,
-     -758.24
-    ],
-    [
-     -896.3,
-     -759.54
-    ],
-    [
-     -894.0,
-     -760.0
-    ]
-   ],
-   "start": 710,
-   "end": 740
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Long Worktop",
-   "subcategory": "Top"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Long Worktop",
-   "param": "Top Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Long Worktop",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fascia Panel Joint 1",
-   "points": [
-    [
-     -2,
-     120
-    ],
-    [
-     2,
-     120
-    ],
-    [
-     2,
-     1060
-    ],
-    [
-     -2,
-     1060
-    ]
-   ],
-   "start": 800,
-   "end": 802,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fascia Panel Joint 1",
-   "subcategory": "Plinth"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fascia Panel Joint 1",
-   "param": "Plinth Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fascia Panel Joint 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fascia Panel Joint 2",
-   "points": [
-    [
-     898,
-     120
-    ],
-    [
-     902,
-     120
-    ],
-    [
-     902,
-     1060
-    ],
-    [
-     898,
-     1060
-    ]
-   ],
-   "start": 800,
-   "end": 802,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fascia Panel Joint 2",
-   "subcategory": "Plinth"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fascia Panel Joint 2",
-   "param": "Plinth Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fascia Panel Joint 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "LED Strip",
-   "points": [
-    [
-     -880,
-     1070
-    ],
-    [
-     1780,
-     1070
-    ],
-    [
-     1780,
-     1078
-    ],
-    [
-     -880,
-     1078
-    ]
-   ],
-   "start": 880,
-   "end": 890,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "LED Strip",
-   "subcategory": "Led"
-  },
-  {
-   "op": "set_material_param",
-   "name": "LED Strip",
-   "param": "Led Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "LED Strip",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pedestal",
-   "points": [
-    [
-     246.0,
-     -720.0
-    ],
-    [
-     247.53,
-     -719.7
-    ],
-    [
-     248.83,
-     -718.83
-    ],
-    [
-     249.7,
-     -717.53
-    ],
-    [
-     250.0,
-     -716.0
-    ],
-    [
-     250.0,
-     -104.0
-    ],
-    [
-     249.7,
-     -102.47
-    ],
-    [
-     248.83,
-     -101.17
-    ],
-    [
-     247.53,
-     -100.3
-    ],
-    [
-     246.0,
-     -100.0
-    ],
-    [
-     -246.0,
-     -100.0
-    ],
-    [
-     -247.53,
-     -100.3
-    ],
-    [
-     -248.83,
-     -101.17
-    ],
-    [
-     -249.7,
-     -102.47
-    ],
-    [
-     -250.0,
-     -104.0
-    ],
-    [
-     -250.0,
-     -716.0
-    ],
-    [
-     -249.7,
-     -717.53
-    ],
-    [
-     -248.83,
-     -718.83
-    ],
-    [
-     -247.53,
-     -719.7
-    ],
-    [
-     -246.0,
-     -720.0
-    ]
-   ],
-   "start": 100,
-   "end": 710
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pedestal",
-   "subcategory": "Carc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pedestal",
-   "param": "Carc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pedestal",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pedestal Drawer 1",
-   "points": [
-    [
-     242.0,
-     520.0
-    ],
-    [
-     243.15,
-     520.23
-    ],
-    [
-     244.12,
-     520.88
-    ],
-    [
-     244.77,
-     521.85
-    ],
-    [
-     245.0,
-     523.0
-    ],
-    [
-     245.0,
-     697.0
-    ],
-    [
-     244.77,
-     698.15
-    ],
-    [
-     244.12,
-     699.12
-    ],
-    [
-     243.15,
-     699.77
-    ],
-    [
-     242.0,
-     700.0
-    ],
-    [
-     -242.0,
-     700.0
-    ],
-    [
-     -243.15,
-     699.77
-    ],
-    [
-     -244.12,
-     699.12
-    ],
-    [
-     -244.77,
-     698.15
-    ],
-    [
-     -245.0,
-     697.0
-    ],
-    [
-     -245.0,
-     523.0
-    ],
-    [
-     -244.77,
-     521.85
-    ],
-    [
-     -244.12,
-     520.88
-    ],
-    [
-     -243.15,
-     520.23
-    ],
-    [
-     -242.0,
-     520.0
-    ]
-   ],
-   "start": 80,
-   "end": 100,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pedestal Drawer 1",
-   "subcategory": "Front2"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pedestal Drawer 1",
-   "param": "Front2 Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pedestal Drawer 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pedestal Drawer 2",
-   "points": [
-    [
-     242.0,
-     315.0
-    ],
-    [
-     243.15,
-     315.23
-    ],
-    [
-     244.12,
-     315.88
-    ],
-    [
-     244.77,
-     316.85
-    ],
-    [
-     245.0,
-     318.0
-    ],
-    [
-     245.0,
-     492.0
-    ],
-    [
-     244.77,
-     493.15
-    ],
-    [
-     244.12,
-     494.12
-    ],
-    [
-     243.15,
-     494.77
-    ],
-    [
-     242.0,
-     495.0
-    ],
-    [
-     -242.0,
-     495.0
-    ],
-    [
-     -243.15,
-     494.77
-    ],
-    [
-     -244.12,
-     494.12
-    ],
-    [
-     -244.77,
-     493.15
-    ],
-    [
-     -245.0,
-     492.0
-    ],
-    [
-     -245.0,
-     318.0
-    ],
-    [
-     -244.77,
-     316.85
-    ],
-    [
-     -244.12,
-     315.88
-    ],
-    [
-     -243.15,
-     315.23
-    ],
-    [
-     -242.0,
-     315.0
-    ]
-   ],
-   "start": 80,
-   "end": 100,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pedestal Drawer 2",
-   "subcategory": "Front2"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pedestal Drawer 2",
-   "param": "Front2 Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pedestal Drawer 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pedestal Drawer 3",
-   "points": [
-    [
-     242.0,
-     110.0
-    ],
-    [
-     243.15,
-     110.23
-    ],
-    [
-     244.12,
-     110.88
-    ],
-    [
-     244.77,
-     111.85
-    ],
-    [
-     245.0,
-     113.0
-    ],
-    [
-     245.0,
-     287.0
-    ],
-    [
-     244.77,
-     288.15
-    ],
-    [
-     244.12,
-     289.12
-    ],
-    [
-     243.15,
-     289.77
-    ],
-    [
-     242.0,
-     290.0
-    ],
-    [
-     -242.0,
-     290.0
-    ],
-    [
-     -243.15,
-     289.77
-    ],
-    [
-     -244.12,
-     289.12
-    ],
-    [
-     -244.77,
-     288.15
-    ],
-    [
-     -245.0,
-     287.0
-    ],
-    [
-     -245.0,
-     113.0
-    ],
-    [
-     -244.77,
-     111.85
-    ],
-    [
-     -244.12,
-     110.88
-    ],
-    [
-     -243.15,
-     110.23
-    ],
-    [
-     -242.0,
-     110.0
-    ]
-   ],
-   "start": 80,
-   "end": 100,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pedestal Drawer 3",
-   "subcategory": "Front2"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pedestal Drawer 3",
-   "param": "Front2 Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pedestal Drawer 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pedestal Drawer Handle 1",
-   "points": [
-    [
-     -69.0,
-     660.0
-    ],
-    [
-     -69.17,
-     661.29
-    ],
-    [
-     -69.67,
-     662.5
-    ],
-    [
-     -70.46,
-     663.54
-    ],
-    [
-     -71.5,
-     664.33
-    ],
-    [
-     -72.71,
-     664.83
-    ],
-    [
-     -74.0,
-     665.0
-    ],
-    [
-     -75.29,
-     664.83
-    ],
-    [
-     -76.5,
-     664.33
-    ],
-    [
-     -77.54,
-     663.54
-    ],
-    [
-     -78.33,
-     662.5
-    ],
-    [
-     -78.83,
-     661.29
-    ],
-    [
-     -79.0,
-     660.0
-    ],
-    [
-     -78.83,
-     658.71
-    ],
-    [
-     -78.33,
-     657.5
-    ],
-    [
-     -77.54,
-     656.46
-    ],
-    [
-     -76.5,
-     655.67
-    ],
-    [
-     -75.29,
-     655.17
-    ],
-    [
-     -74.0,
-     655.0
-    ],
-    [
-     -72.71,
-     655.17
-    ],
-    [
-     -71.5,
-     655.67
-    ],
-    [
-     -70.46,
-     656.46
-    ],
-    [
-     -69.67,
-     657.5
-    ],
-    [
-     -69.17,
-     658.71
-    ]
-   ],
-   "start": -60,
-   "end": 60,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pedestal Drawer Handle 1",
-   "subcategory": "Hdl"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pedestal Drawer Handle 1",
-   "param": "Hdl Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pedestal Drawer Handle 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pedestal Drawer Handle 2",
-   "points": [
-    [
-     -69.0,
-     455.0
-    ],
-    [
-     -69.17,
-     456.29
-    ],
-    [
-     -69.67,
-     457.5
-    ],
-    [
-     -70.46,
-     458.54
-    ],
-    [
-     -71.5,
-     459.33
-    ],
-    [
-     -72.71,
-     459.83
-    ],
-    [
-     -74.0,
-     460.0
-    ],
-    [
-     -75.29,
-     459.83
-    ],
-    [
-     -76.5,
-     459.33
-    ],
-    [
-     -77.54,
-     458.54
-    ],
-    [
-     -78.33,
-     457.5
-    ],
-    [
-     -78.83,
-     456.29
-    ],
-    [
-     -79.0,
-     455.0
-    ],
-    [
-     -78.83,
-     453.71
-    ],
-    [
-     -78.33,
-     452.5
-    ],
-    [
-     -77.54,
-     451.46
-    ],
-    [
-     -76.5,
-     450.67
-    ],
-    [
-     -75.29,
-     450.17
-    ],
-    [
-     -74.0,
-     450.0
-    ],
-    [
-     -72.71,
-     450.17
-    ],
-    [
-     -71.5,
-     450.67
-    ],
-    [
-     -70.46,
-     451.46
-    ],
-    [
-     -69.67,
-     452.5
-    ],
-    [
-     -69.17,
-     453.71
-    ]
-   ],
-   "start": -60,
-   "end": 60,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pedestal Drawer Handle 2",
-   "subcategory": "Hdl"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pedestal Drawer Handle 2",
-   "param": "Hdl Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pedestal Drawer Handle 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pedestal Drawer Handle 3",
-   "points": [
-    [
-     -69.0,
-     250.0
-    ],
-    [
-     -69.17,
-     251.29
-    ],
-    [
-     -69.67,
-     252.5
-    ],
-    [
-     -70.46,
-     253.54
-    ],
-    [
-     -71.5,
-     254.33
-    ],
-    [
-     -72.71,
-     254.83
-    ],
-    [
-     -74.0,
-     255.0
-    ],
-    [
-     -75.29,
-     254.83
-    ],
-    [
-     -76.5,
-     254.33
-    ],
-    [
-     -77.54,
-     253.54
-    ],
-    [
-     -78.33,
-     252.5
-    ],
-    [
-     -78.83,
-     251.29
-    ],
-    [
-     -79.0,
-     250.0
-    ],
-    [
-     -78.83,
-     248.71
-    ],
-    [
-     -78.33,
-     247.5
-    ],
-    [
-     -77.54,
-     246.46
-    ],
-    [
-     -76.5,
-     245.67
-    ],
-    [
-     -75.29,
-     245.17
-    ],
-    [
-     -74.0,
-     245.0
-    ],
-    [
-     -72.71,
-     245.17
-    ],
-    [
-     -71.5,
-     245.67
-    ],
-    [
-     -70.46,
-     246.46
-    ],
-    [
-     -69.67,
-     247.5
-    ],
-    [
-     -69.17,
-     248.71
-    ]
-   ],
-   "start": -60,
-   "end": 60,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pedestal Drawer Handle 3",
-   "subcategory": "Hdl"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pedestal Drawer Handle 3",
-   "param": "Hdl Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pedestal Drawer Handle 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cable Tray",
-   "points": [
-    [
-     -880,
-     -700
-    ],
-    [
-     1000,
-     -700
-    ],
-    [
-     1000,
-     -620
-    ],
-    [
-     -880,
-     -620
-    ]
-   ],
-   "start": 600,
-   "end": 660
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cable Tray",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cable Tray",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cable Tray",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grommet 1",
-   "points": [
-    [
-     -565.0,
-     -680.0
-    ],
-    [
-     -566.19,
-     -670.94
-    ],
-    [
-     -569.69,
-     -662.5
-    ],
-    [
-     -575.25,
-     -655.25
-    ],
-    [
-     -582.5,
-     -649.69
-    ],
-    [
-     -590.94,
-     -646.19
-    ],
-    [
-     -600.0,
-     -645.0
-    ],
-    [
-     -609.06,
-     -646.19
-    ],
-    [
-     -617.5,
-     -649.69
-    ],
-    [
-     -624.75,
-     -655.25
-    ],
-    [
-     -630.31,
-     -662.5
-    ],
-    [
-     -633.81,
-     -670.94
-    ],
-    [
-     -635.0,
-     -680.0
-    ],
-    [
-     -633.81,
-     -689.06
-    ],
-    [
-     -630.31,
-     -697.5
-    ],
-    [
-     -624.75,
-     -704.75
-    ],
-    [
-     -617.5,
-     -710.31
-    ],
-    [
-     -609.06,
-     -713.81
-    ],
-    [
-     -600.0,
-     -715.0
-    ],
-    [
-     -590.94,
-     -713.81
-    ],
-    [
-     -582.5,
-     -710.31
-    ],
-    [
-     -575.25,
-     -704.75
-    ],
-    [
-     -569.69,
-     -697.5
-    ],
-    [
-     -566.19,
-     -689.06
-    ]
-   ],
-   "start": 739,
-   "end": 742
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grommet 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grommet 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grommet 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grommet 2",
-   "points": [
-    [
-     -65.0,
-     -680.0
-    ],
-    [
-     -66.19,
-     -670.94
-    ],
-    [
-     -69.69,
-     -662.5
-    ],
-    [
-     -75.25,
-     -655.25
-    ],
-    [
-     -82.5,
-     -649.69
-    ],
-    [
-     -90.94,
-     -646.19
-    ],
-    [
-     -100.0,
-     -645.0
-    ],
-    [
-     -109.06,
-     -646.19
-    ],
-    [
-     -117.5,
-     -649.69
-    ],
-    [
-     -124.75,
-     -655.25
-    ],
-    [
-     -130.31,
-     -662.5
-    ],
-    [
-     -133.81,
-     -670.94
-    ],
-    [
-     -135.0,
-     -680.0
-    ],
-    [
-     -133.81,
-     -689.06
-    ],
-    [
-     -130.31,
-     -697.5
-    ],
-    [
-     -124.75,
-     -704.75
-    ],
-    [
-     -117.5,
-     -710.31
-    ],
-    [
-     -109.06,
-     -713.81
-    ],
-    [
-     -100.0,
-     -715.0
-    ],
-    [
-     -90.94,
-     -713.81
-    ],
-    [
-     -82.5,
-     -710.31
-    ],
-    [
-     -75.25,
-     -704.75
-    ],
-    [
-     -69.69,
-     -697.5
-    ],
-    [
-     -66.19,
-     -689.06
-    ]
-   ],
-   "start": 739,
-   "end": 742
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grommet 2",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grommet 2",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grommet 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grommet 3",
-   "points": [
-    [
-     435.0,
-     -680.0
-    ],
-    [
-     433.81,
-     -670.94
-    ],
-    [
-     430.31,
-     -662.5
-    ],
-    [
-     424.75,
-     -655.25
-    ],
-    [
-     417.5,
-     -649.69
-    ],
-    [
-     409.06,
-     -646.19
-    ],
-    [
-     400.0,
-     -645.0
-    ],
-    [
-     390.94,
-     -646.19
-    ],
-    [
-     382.5,
-     -649.69
-    ],
-    [
-     375.25,
-     -655.25
-    ],
-    [
-     369.69,
-     -662.5
-    ],
-    [
-     366.19,
-     -670.94
-    ],
-    [
-     365.0,
-     -680.0
-    ],
-    [
-     366.19,
-     -689.06
-    ],
-    [
-     369.69,
-     -697.5
-    ],
-    [
-     375.25,
-     -704.75
-    ],
-    [
-     382.5,
-     -710.31
-    ],
-    [
-     390.94,
-     -713.81
-    ],
-    [
-     400.0,
-     -715.0
-    ],
-    [
-     409.06,
-     -713.81
-    ],
-    [
-     417.5,
-     -710.31
-    ],
-    [
-     424.75,
-     -704.75
-    ],
-    [
-     430.31,
-     -697.5
-    ],
-    [
-     433.81,
-     -689.06
-    ]
-   ],
-   "start": 739,
-   "end": 742
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grommet 3",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grommet 3",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grommet 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grommet 4",
-   "points": [
-    [
-     935.0,
-     -680.0
-    ],
-    [
-     933.81,
-     -670.94
-    ],
-    [
-     930.31,
-     -662.5
-    ],
-    [
-     924.75,
-     -655.25
-    ],
-    [
-     917.5,
-     -649.69
-    ],
-    [
-     909.06,
-     -646.19
-    ],
-    [
-     900.0,
-     -645.0
-    ],
-    [
-     890.94,
-     -646.19
-    ],
-    [
-     882.5,
-     -649.69
-    ],
-    [
-     875.25,
-     -655.25
-    ],
-    [
-     869.69,
-     -662.5
-    ],
-    [
-     866.19,
-     -670.94
-    ],
-    [
-     865.0,
-     -680.0
-    ],
-    [
-     866.19,
-     -689.06
-    ],
-    [
-     869.69,
-     -697.5
-    ],
-    [
-     875.25,
-     -704.75
-    ],
-    [
-     882.5,
-     -710.31
-    ],
-    [
-     890.94,
-     -713.81
-    ],
-    [
-     900.0,
-     -715.0
-    ],
-    [
-     909.06,
-     -713.81
-    ],
-    [
-     917.5,
-     -710.31
-    ],
-    [
-     924.75,
-     -704.75
-    ],
-    [
-     930.31,
-     -697.5
-    ],
-    [
-     933.81,
-     -689.06
-    ]
-   ],
-   "start": 739,
-   "end": 742
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grommet 4",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grommet 4",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grommet 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Power Data Module",
-   "points": [
-    [
-     694.0,
-     -740.0
-    ],
-    [
-     696.3,
-     -739.54
-    ],
-    [
-     698.24,
-     -738.24
-    ],
-    [
-     699.54,
-     -736.3
-    ],
-    [
-     700.0,
-     -734.0
-    ],
-    [
-     700.0,
-     -666.0
-    ],
-    [
-     699.54,
-     -663.7
-    ],
-    [
-     698.24,
-     -661.76
-    ],
-    [
-     696.3,
-     -660.46
-    ],
-    [
-     694.0,
-     -660.0
-    ],
-    [
-     306.0,
-     -660.0
-    ],
-    [
-     303.7,
-     -660.46
-    ],
-    [
-     301.76,
-     -661.76
-    ],
-    [
-     300.46,
-     -663.7
-    ],
-    [
-     300.0,
-     -666.0
-    ],
-    [
-     300.0,
-     -734.0
-    ],
-    [
-     300.46,
-     -736.3
-    ],
-    [
-     301.76,
-     -738.24
-    ],
-    [
-     303.7,
-     -739.54
-    ],
-    [
-     306.0,
-     -740.0
-    ]
-   ],
-   "start": 742,
-   "end": 800
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Power Data Module",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Power Data Module",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Power Data Module",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Module Socket 1",
-   "points": [
-    [
-     320,
-     -662
-    ],
-    [
-     400,
-     -662
-    ],
-    [
-     400,
-     -660
-    ],
-    [
-     320,
-     -660
-    ]
-   ],
-   "start": 755,
-   "end": 790
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Module Socket 1",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Module Socket 1",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Module Socket 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Module Socket 2",
-   "points": [
-    [
-     415,
-     -662
-    ],
-    [
-     495,
-     -662
-    ],
-    [
-     495,
-     -660
-    ],
-    [
-     415,
-     -660
-    ]
-   ],
-   "start": 755,
-   "end": 790
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Module Socket 2",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Module Socket 2",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Module Socket 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Module Socket 3",
-   "points": [
-    [
-     510,
-     -662
-    ],
-    [
-     590,
-     -662
-    ],
-    [
-     590,
-     -660
-    ],
-    [
-     510,
-     -660
-    ]
-   ],
-   "start": 755,
-   "end": 790
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Module Socket 3",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Module Socket 3",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Module Socket 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Module Socket 4",
-   "points": [
-    [
-     605,
-     -662
-    ],
-    [
-     685,
-     -662
-    ],
-    [
-     685,
-     -660
-    ],
-    [
-     605,
-     -660
-    ]
-   ],
-   "start": 755,
-   "end": 790
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Module Socket 4",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Module Socket 4",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Module Socket 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Accessible Top",
-   "points": [
-    [
-     -910.0,
-     -900.0
-    ],
-    [
-     -906.17,
-     -899.24
-    ],
-    [
-     -902.93,
-     -897.07
-    ],
-    [
-     -900.76,
-     -893.83
-    ],
-    [
-     -900.0,
-     -890.0
-    ],
-    [
-     -900.0,
-     -10.0
-    ],
-    [
-     -900.76,
-     -6.17
-    ],
-    [
-     -902.93,
-     -2.93
-    ],
-    [
-     -906.17,
-     -0.76
-    ],
-    [
-     -910.0,
-     0.0
-    ],
-    [
-     -1790.0,
-     0.0
-    ],
-    [
-     -1793.83,
-     -0.76
-    ],
-    [
-     -1797.07,
-     -2.93
-    ],
-    [
-     -1799.24,
-     -6.17
-    ],
-    [
-     -1800.0,
-     -10.0
-    ],
-    [
-     -1800.0,
-     -890.0
-    ],
-    [
-     -1799.24,
-     -893.83
-    ],
-    [
-     -1797.07,
-     -897.07
-    ],
-    [
-     -1793.83,
-     -899.24
-    ],
-    [
-     -1790.0,
-     -900.0
-    ]
-   ],
-   "start": 730,
-   "end": 760
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Accessible Top",
-   "subcategory": "Ledge"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Accessible Top",
-   "param": "Ledge Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Accessible Top",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Accessible Leg Panel",
-   "points": [
-    [
-     -1800,
-     -880
-    ],
-    [
-     -1770,
-     -880
-    ],
-    [
-     -1770,
-     0
-    ],
-    [
-     -1800,
-     0
-    ]
-   ],
-   "start": 0,
-   "end": 730
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Accessible Leg Panel",
-   "subcategory": "Carc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Accessible Leg Panel",
-   "param": "Carc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Accessible Leg Panel",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Knee Space Back",
-   "points": [
-    [
-     -1770,
-     -120
-    ],
-    [
-     -900,
-     -120
-    ],
-    [
-     -900,
-     -100
-    ],
-    [
-     -1770,
-     -100
-    ]
-   ],
-   "start": 100,
-   "end": 730
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Knee Space Back",
-   "subcategory": "Carc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Knee Space Back",
-   "param": "Carc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Knee Space Back",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hearing Loop Sign",
-   "points": [
-    [
-     -766.0,
-     900.0
-    ],
-    [
-     -763.7,
-     900.46
-    ],
-    [
-     -761.76,
-     901.76
-    ],
-    [
-     -760.46,
-     903.7
-    ],
-    [
-     -760.0,
-     906.0
-    ],
-    [
-     -760.0,
-     974.0
-    ],
-    [
-     -760.46,
-     976.3
-    ],
-    [
-     -761.76,
-     978.24
-    ],
-    [
-     -763.7,
-     979.54
-    ],
-    [
-     -766.0,
-     980.0
-    ],
-    [
-     -854.0,
-     980.0
-    ],
-    [
-     -856.3,
-     979.54
-    ],
-    [
-     -858.24,
-     978.24
-    ],
-    [
-     -859.54,
-     976.3
-    ],
-    [
-     -860.0,
-     974.0
-    ],
-    [
-     -860.0,
-     906.0
-    ],
-    [
-     -859.54,
-     903.7
-    ],
-    [
-     -858.24,
-     901.76
-    ],
-    [
-     -856.3,
-     900.46
-    ],
-    [
-     -854.0,
-     900.0
-    ]
-   ],
-   "start": 800,
-   "end": 803,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hearing Loop Sign",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hearing Loop Sign",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hearing Loop Sign",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fascia Feature Band",
-   "points": [
-    [
-     -900,
-     820
-    ],
-    [
-     1800,
-     820
-    ],
-    [
-     1800,
-     860
-    ],
-    [
-     -900,
-     860
-    ]
-   ],
-   "start": 800,
-   "end": 803,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fascia Feature Band",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fascia Feature Band",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fascia Feature Band",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Return Feature Band",
-   "points": [
-    [
-     -760,
-     820
-    ],
-    [
-     1600,
-     820
-    ],
-    [
-     1600,
-     860
-    ],
-    [
-     -760,
-     860
-    ]
-   ],
-   "start": 1800,
-   "end": 1803,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Return Feature Band",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Return Feature Band",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Return Feature Band",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Return Fascia",
-   "points": [
-    [
-     1796.0,
-     -760.0
-    ],
-    [
-     1797.53,
-     -759.7
-    ],
-    [
-     1798.83,
-     -758.83
-    ],
-    [
-     1799.7,
-     -757.53
-    ],
-    [
-     1800.0,
-     -756.0
-    ],
-    [
-     1800.0,
-     1596.0
-    ],
-    [
-     1799.7,
-     1597.53
-    ],
-    [
-     1798.83,
-     1598.83
-    ],
-    [
-     1797.53,
-     1599.7
-    ],
-    [
-     1796.0,
-     1600.0
-    ],
-    [
-     1764.0,
-     1600.0
-    ],
-    [
-     1762.47,
-     1599.7
-    ],
-    [
-     1761.17,
-     1598.83
-    ],
-    [
-     1760.3,
-     1597.53
-    ],
-    [
-     1760.0,
-     1596.0
-    ],
-    [
-     1760.0,
-     -756.0
-    ],
-    [
-     1760.3,
-     -757.53
-    ],
-    [
-     1761.17,
-     -758.83
-    ],
-    [
-     1762.47,
-     -759.7
-    ],
-    [
-     1764.0,
-     -760.0
-    ]
-   ],
-   "start": 100,
-   "end": 1080
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Return Fascia",
-   "subcategory": "Front"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Return Fascia",
-   "param": "Front Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Return Fascia",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Return Ledge",
-   "points": [
-    [
-     1870.0,
-     -560.0
-    ],
-    [
-     1873.83,
-     -559.24
-    ],
-    [
-     1877.07,
-     -557.07
-    ],
-    [
-     1879.24,
-     -553.83
-    ],
-    [
-     1880.0,
-     -550.0
-    ],
-    [
-     1880.0,
-     1590.0
-    ],
-    [
-     1879.24,
-     1593.83
-    ],
-    [
-     1877.07,
-     1597.07
-    ],
-    [
-     1873.83,
-     1599.24
-    ],
-    [
-     1870.0,
-     1600.0
-    ],
-    [
-     1730.0,
-     1600.0
-    ],
-    [
-     1726.17,
-     1599.24
-    ],
-    [
-     1722.93,
-     1597.07
-    ],
-    [
-     1720.76,
-     1593.83
-    ],
-    [
-     1720.0,
-     1590.0
-    ],
-    [
-     1720.0,
-     -550.0
-    ],
-    [
-     1720.76,
-     -553.83
-    ],
-    [
-     1722.93,
-     -557.07
-    ],
-    [
-     1726.17,
-     -559.24
-    ],
-    [
-     1730.0,
-     -560.0
-    ]
-   ],
-   "start": 1080,
-   "end": 1110
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Return Ledge",
-   "subcategory": "Ledge"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Return Ledge",
-   "param": "Ledge Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Return Ledge",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Return Plinth",
-   "points": [
-    [
-     1100,
-     -100
-    ],
-    [
-     1740,
-     -100
-    ],
-    [
-     1740,
-     1550
-    ],
-    [
-     1100,
-     1550
-    ]
-   ],
-   "start": 0,
-   "end": 100
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Return Plinth",
-   "subcategory": "Plinth"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Return Plinth",
-   "param": "Plinth Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Return Plinth",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Return Worktop",
-   "points": [
-    [
-     1754.0,
-     -760.0
-    ],
-    [
-     1756.3,
-     -759.54
-    ],
-    [
-     1758.24,
-     -758.24
-    ],
-    [
-     1759.54,
-     -756.3
-    ],
-    [
-     1760.0,
-     -754.0
-    ],
-    [
-     1760.0,
-     1594.0
-    ],
-    [
-     1759.54,
-     1596.3
-    ],
-    [
-     1758.24,
-     1598.24
-    ],
-    [
-     1756.3,
-     1599.54
-    ],
-    [
-     1754.0,
-     1600.0
-    ],
-    [
-     1006.0,
-     1600.0
-    ],
-    [
-     1003.7,
-     1599.54
-    ],
-    [
-     1001.76,
-     1598.24
-    ],
-    [
-     1000.46,
-     1596.3
-    ],
-    [
-     1000.0,
-     1594.0
-    ],
-    [
-     1000.0,
-     -754.0
-    ],
-    [
-     1000.46,
-     -756.3
-    ],
-    [
-     1001.76,
-     -758.24
-    ],
-    [
-     1003.7,
-     -759.54
-    ],
-    [
-     1006.0,
-     -760.0
-    ]
-   ],
-   "start": 710,
-   "end": 740
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Return Worktop",
-   "subcategory": "Top"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Return Worktop",
-   "param": "Top Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Return Worktop",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Return Base Unit",
-   "points": [
-    [
-     1100,
-     200
-    ],
-    [
-     1740,
-     200
-    ],
-    [
-     1740,
-     1550
-    ],
-    [
-     1100,
-     1550
-    ]
-   ],
-   "start": 100,
-   "end": 710
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Return Base Unit",
-   "subcategory": "Carc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Return Base Unit",
-   "param": "Carc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Return Base Unit",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Return Door",
-   "points": [
-    [
-     203,
-     105
-    ],
-    [
-     1547,
-     105
-    ],
-    [
-     1547,
-     705
-    ],
-    [
-     203,
-     705
-    ]
-   ],
-   "start": 1080,
-   "end": 1100,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Return Door",
-   "subcategory": "Front2"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Return Door",
-   "param": "Front2 Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Return Door",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Return Door Joint",
-   "points": [
-    [
-     870,
-     110
-    ],
-    [
-     880,
-     110
-    ],
-    [
-     880,
-     700
-    ],
-    [
-     870,
-     700
-    ]
-   ],
-   "start": 1078,
-   "end": 1080,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Return Door Joint",
-   "subcategory": "Plinth"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Return Door Joint",
-   "param": "Plinth Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Return Door Joint",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Return Door Handle 1",
-   "points": [
-    [
-     1077.0,
-     830.0
-    ],
-    [
-     1076.83,
-     831.29
-    ],
-    [
-     1076.33,
-     832.5
-    ],
-    [
-     1075.54,
-     833.54
-    ],
-    [
-     1074.5,
-     834.33
-    ],
-    [
-     1073.29,
-     834.83
-    ],
-    [
-     1072.0,
-     835.0
-    ],
-    [
-     1070.71,
-     834.83
-    ],
-    [
-     1069.5,
-     834.33
-    ],
-    [
-     1068.46,
-     833.54
-    ],
-    [
-     1067.67,
-     832.5
-    ],
-    [
-     1067.17,
-     831.29
-    ],
-    [
-     1067.0,
-     830.0
-    ],
-    [
-     1067.17,
-     828.71
-    ],
-    [
-     1067.67,
-     827.5
-    ],
-    [
-     1068.46,
-     826.46
-    ],
-    [
-     1069.5,
-     825.67
-    ],
-    [
-     1070.71,
-     825.17
-    ],
-    [
-     1072.0,
-     825.0
-    ],
-    [
-     1073.29,
-     825.17
-    ],
-    [
-     1074.5,
-     825.67
-    ],
-    [
-     1075.54,
-     826.46
-    ],
-    [
-     1076.33,
-     827.5
-    ],
-    [
-     1076.83,
-     828.71
-    ]
-   ],
-   "start": 520,
-   "end": 680
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Return Door Handle 1",
-   "subcategory": "Hdl"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Return Door Handle 1",
-   "param": "Hdl Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Return Door Handle 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Return Door Handle 2",
-   "points": [
-    [
-     1077.0,
-     930.0
-    ],
-    [
-     1076.83,
-     931.29
-    ],
-    [
-     1076.33,
-     932.5
-    ],
-    [
-     1075.54,
-     933.54
-    ],
-    [
-     1074.5,
-     934.33
-    ],
-    [
-     1073.29,
-     934.83
-    ],
-    [
-     1072.0,
-     935.0
-    ],
-    [
-     1070.71,
-     934.83
-    ],
-    [
-     1069.5,
-     934.33
-    ],
-    [
-     1068.46,
-     933.54
-    ],
-    [
-     1067.67,
-     932.5
-    ],
-    [
-     1067.17,
-     931.29
-    ],
-    [
-     1067.0,
-     930.0
-    ],
-    [
-     1067.17,
-     928.71
-    ],
-    [
-     1067.67,
-     927.5
-    ],
-    [
-     1068.46,
-     926.46
-    ],
-    [
-     1069.5,
-     925.67
-    ],
-    [
-     1070.71,
-     925.17
-    ],
-    [
-     1072.0,
-     925.0
-    ],
-    [
-     1073.29,
-     925.17
-    ],
-    [
-     1074.5,
-     925.67
-    ],
-    [
-     1075.54,
-     926.46
-    ],
-    [
-     1076.33,
-     927.5
-    ],
-    [
-     1076.83,
-     928.71
-    ]
-   ],
-   "start": 520,
-   "end": 680
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Return Door Handle 2",
-   "subcategory": "Hdl"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Return Door Handle 2",
-   "param": "Hdl Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Return Door Handle 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "End Panel",
-   "points": [
-    [
-     -1800,
-     -800
-    ],
-    [
-     -1770,
-     -800
-    ],
-    [
-     -1770,
-     -100
-    ],
-    [
-     -1800,
-     -100
-    ]
-   ],
-   "start": 0,
-   "end": 760
-  },
-  {
-   "op": "set_subcategory",
-   "name": "End Panel",
-   "subcategory": "Carc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "End Panel",
-   "param": "Carc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "End Panel",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "Power",
-   "domain": "electrical",
-   "system": "PowerBalanced",
-   "solid": "Power Data Module",
-   "side": "bottom"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Voltage",
-   "connector": "Power",
-   "connector_param": "Voltage",
-   "param": "Voltage"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Apparent Load",
-   "connector": "Power",
-   "connector_param": "Apparent Load",
-   "param": "Apparent Load"
-  },
-  {
-   "op": "add_connector",
-   "name": "Data",
-   "domain": "electrical",
-   "system": "Data",
-   "solid": "Power Data Module",
-   "side": "back"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Data/Voltage",
-   "connector": "Data",
-   "connector_param": "Voltage",
-   "param": "Voltage"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Data/Apparent Load",
-   "connector": "Data",
-   "connector_param": "Apparent Load",
-   "param": "Apparent Load"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\I\\_Images\\FMC_I_Casework_NurseStation_Counter.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_I_Casework_NurseStation_Counter",
+  "template": "Metric Generic Model.rft",
+  "about": "Nurse station modelled as a generic product: HPL public fascia with joints and quartz transaction ledge with LED strip, lowered accessible section with knee space and hearing loop sign, staff worktop with grommets, cable tray and a power/data module, 3-drawer pedestal facing the staff, return leg with ledge, worktop and base unit with doors, stainless plinths, end panel. Geometry is drawn at the 3600x2400_L type; the other types share it until a parametric pass. Reference: query: casework nurse station counter casework hospital; images: https://www.google.com/search?tbm=isch&q=casework+nurse+station+counter+casework+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Casework"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Voltage",
+      "type": "Voltage",
+      "group": "Electrical"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Apparent Load",
+      "type": "ApparentPower",
+      "group": "ElectricalLoads"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Assembly_Mark",
+      "guid": "63266315-bb4d-5187-9224-35d20981c3d6",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carcass_Spec",
+      "guid": "c28e7161-7153-5158-8a2d-4ff17c6b96e0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Worktop_Spec",
+      "guid": "dbb29109-d7be-55a5-8c12-9aca51551dc3",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Design_Movement",
+      "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "3600x2400_L"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x2400_L/FMC_Cost_Unit",
+      "type": "3600x2400_L",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x2400_L/FMC_Geometry_Stage",
+      "type": "3600x2400_L",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x2400_L/IfcExportAs",
+      "type": "3600x2400_L",
+      "param": "IfcExportAs",
+      "value": "IfcFurniture"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x2400_L/Description",
+      "type": "3600x2400_L",
+      "param": "Description",
+      "value": "Nurse station counter, L-shaped 3600 x 2400"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x2400_L/Keynote",
+      "type": "3600x2400_L",
+      "param": "Keynote",
+      "value": "J.CNT_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x2400_L/FMC_Keynote_Code",
+      "type": "3600x2400_L",
+      "param": "FMC_Keynote_Code",
+      "value": "J.CNT_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x2400_L/FMC_Code_Description",
+      "type": "3600x2400_L",
+      "param": "FMC_Code_Description",
+      "value": "NurseStation Counter: Counter with low accessible section, cable management"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x2400_L/FMC_Code_Group",
+      "type": "3600x2400_L",
+      "param": "FMC_Code_Group",
+      "value": "J.CNT"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x2400_L/FMC_Role_Code",
+      "type": "3600x2400_L",
+      "param": "FMC_Role_Code",
+      "value": "I"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x2400_L/Voltage",
+      "type": "3600x2400_L",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x2400_L/Apparent Load",
+      "type": "3600x2400_L",
+      "param": "Apparent Load",
+      "value": 2000
+    },
+    {
+      "op": "add_type",
+      "name": "3600x2400_U"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x2400_U/FMC_Cost_Unit",
+      "type": "3600x2400_U",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x2400_U/FMC_Geometry_Stage",
+      "type": "3600x2400_U",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x2400_U/IfcExportAs",
+      "type": "3600x2400_U",
+      "param": "IfcExportAs",
+      "value": "IfcFurniture"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x2400_U/Description",
+      "type": "3600x2400_U",
+      "param": "Description",
+      "value": "Nurse station counter, U-shaped 3600 x 2400 x 2400"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x2400_U/Keynote",
+      "type": "3600x2400_U",
+      "param": "Keynote",
+      "value": "J.CNT_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x2400_U/FMC_Keynote_Code",
+      "type": "3600x2400_U",
+      "param": "FMC_Keynote_Code",
+      "value": "J.CNT_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x2400_U/FMC_Code_Description",
+      "type": "3600x2400_U",
+      "param": "FMC_Code_Description",
+      "value": "NurseStation Counter: Counter with low accessible section, cable management"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x2400_U/FMC_Code_Group",
+      "type": "3600x2400_U",
+      "param": "FMC_Code_Group",
+      "value": "J.CNT"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x2400_U/FMC_Role_Code",
+      "type": "3600x2400_U",
+      "param": "FMC_Role_Code",
+      "value": "I"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x2400_U/Voltage",
+      "type": "3600x2400_U",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600x2400_U/Apparent Load",
+      "type": "3600x2400_U",
+      "param": "Apparent Load",
+      "value": 2000
+    },
+    {
+      "op": "add_type",
+      "name": "3600_Straight"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600_Straight/FMC_Cost_Unit",
+      "type": "3600_Straight",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600_Straight/FMC_Geometry_Stage",
+      "type": "3600_Straight",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600_Straight/IfcExportAs",
+      "type": "3600_Straight",
+      "param": "IfcExportAs",
+      "value": "IfcFurniture"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600_Straight/Description",
+      "type": "3600_Straight",
+      "param": "Description",
+      "value": "Nurse station counter, straight 3600"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600_Straight/Keynote",
+      "type": "3600_Straight",
+      "param": "Keynote",
+      "value": "J.CNT_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600_Straight/FMC_Keynote_Code",
+      "type": "3600_Straight",
+      "param": "FMC_Keynote_Code",
+      "value": "J.CNT_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600_Straight/FMC_Code_Description",
+      "type": "3600_Straight",
+      "param": "FMC_Code_Description",
+      "value": "NurseStation Counter: Counter with low accessible section, cable management"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600_Straight/FMC_Code_Group",
+      "type": "3600_Straight",
+      "param": "FMC_Code_Group",
+      "value": "J.CNT"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600_Straight/FMC_Role_Code",
+      "type": "3600_Straight",
+      "param": "FMC_Role_Code",
+      "value": "I"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600_Straight/Voltage",
+      "type": "3600_Straight",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "3600_Straight/Apparent Load",
+      "type": "3600_Straight",
+      "param": "Apparent Load",
+      "value": 2000
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Front",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Front Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_Laminate_HPL",
+      "param": "Front Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Ledge",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Ledge Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Stone_Quartz_Engineered_White",
+      "param": "Ledge Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Plinth",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Plinth Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_StainlessSteel_Brushed",
+      "param": "Plinth Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Top",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Top Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_Laminate_HPL",
+      "param": "Top Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Led",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Led Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_LED_Blue",
+      "param": "Led Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Carc",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Carc Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Board_Melamine_White",
+      "param": "Carc Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Front2",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Front2 Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Board_Melamine_White",
+      "param": "Front2 Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Hdl",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Hdl Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_StainlessSteel_Brushed",
+      "param": "Hdl Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Steel",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Steel Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_SteelLTZ_Painted",
+      "param": "Steel Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Alu",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Alu Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Aluminium_Anodised_Silver",
+      "param": "Alu Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "White",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "White Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_White",
+      "param": "White Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Blue",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Blue Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Blue",
+      "param": "Blue Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -1800,
+          -900
+        ],
+        [
+          1880,
+          -900
+        ],
+        [
+          1880,
+          1600
+        ],
+        [
+          -1800,
+          1600
+        ]
+      ],
+      "start": 0,
+      "end": 1110
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Long Fascia",
+      "points": [
+        [
+          1796,
+          -800
+        ],
+        [
+          1797.53,
+          -799.7
+        ],
+        [
+          1798.83,
+          -798.83
+        ],
+        [
+          1799.7,
+          -797.53
+        ],
+        [
+          1800,
+          -796
+        ],
+        [
+          1800,
+          -764
+        ],
+        [
+          1799.7,
+          -762.47
+        ],
+        [
+          1798.83,
+          -761.17
+        ],
+        [
+          1797.53,
+          -760.3
+        ],
+        [
+          1796,
+          -760
+        ],
+        [
+          -896,
+          -760
+        ],
+        [
+          -897.53,
+          -760.3
+        ],
+        [
+          -898.83,
+          -761.17
+        ],
+        [
+          -899.7,
+          -762.47
+        ],
+        [
+          -900,
+          -764
+        ],
+        [
+          -900,
+          -796
+        ],
+        [
+          -899.7,
+          -797.53
+        ],
+        [
+          -898.83,
+          -798.83
+        ],
+        [
+          -897.53,
+          -799.7
+        ],
+        [
+          -896,
+          -800
+        ]
+      ],
+      "start": 100,
+      "end": 1080
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Long Fascia",
+      "subcategory": "Front"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Long Fascia",
+      "param": "Front Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Long Fascia",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Long Ledge",
+      "points": [
+        [
+          1790,
+          -880
+        ],
+        [
+          1793.83,
+          -879.24
+        ],
+        [
+          1797.07,
+          -877.07
+        ],
+        [
+          1799.24,
+          -873.83
+        ],
+        [
+          1800,
+          -870
+        ],
+        [
+          1800,
+          -570
+        ],
+        [
+          1799.24,
+          -566.17
+        ],
+        [
+          1797.07,
+          -562.93
+        ],
+        [
+          1793.83,
+          -560.76
+        ],
+        [
+          1790,
+          -560
+        ],
+        [
+          -890,
+          -560
+        ],
+        [
+          -893.83,
+          -560.76
+        ],
+        [
+          -897.07,
+          -562.93
+        ],
+        [
+          -899.24,
+          -566.17
+        ],
+        [
+          -900,
+          -570
+        ],
+        [
+          -900,
+          -870
+        ],
+        [
+          -899.24,
+          -873.83
+        ],
+        [
+          -897.07,
+          -877.07
+        ],
+        [
+          -893.83,
+          -879.24
+        ],
+        [
+          -890,
+          -880
+        ]
+      ],
+      "start": 1080,
+      "end": 1110
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Long Ledge",
+      "subcategory": "Ledge"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Long Ledge",
+      "param": "Ledge Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Long Ledge",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Long Plinth",
+      "points": [
+        [
+          -900,
+          -740
+        ],
+        [
+          1800,
+          -740
+        ],
+        [
+          1800,
+          -100
+        ],
+        [
+          -900,
+          -100
+        ]
+      ],
+      "start": 0,
+      "end": 100
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Long Plinth",
+      "subcategory": "Plinth"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Long Plinth",
+      "param": "Plinth Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Long Plinth",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Long Worktop",
+      "points": [
+        [
+          994,
+          -760
+        ],
+        [
+          996.3,
+          -759.54
+        ],
+        [
+          998.24,
+          -758.24
+        ],
+        [
+          999.54,
+          -756.3
+        ],
+        [
+          1000,
+          -754
+        ],
+        [
+          1000,
+          -6
+        ],
+        [
+          999.54,
+          -3.7
+        ],
+        [
+          998.24,
+          -1.76
+        ],
+        [
+          996.3,
+          -0.46
+        ],
+        [
+          994,
+          0
+        ],
+        [
+          -894,
+          0
+        ],
+        [
+          -896.3,
+          -0.46
+        ],
+        [
+          -898.24,
+          -1.76
+        ],
+        [
+          -899.54,
+          -3.7
+        ],
+        [
+          -900,
+          -6
+        ],
+        [
+          -900,
+          -754
+        ],
+        [
+          -899.54,
+          -756.3
+        ],
+        [
+          -898.24,
+          -758.24
+        ],
+        [
+          -896.3,
+          -759.54
+        ],
+        [
+          -894,
+          -760
+        ]
+      ],
+      "start": 710,
+      "end": 740
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Long Worktop",
+      "subcategory": "Top"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Long Worktop",
+      "param": "Top Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Long Worktop",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fascia Panel Joint 1",
+      "points": [
+        [
+          -2,
+          120
+        ],
+        [
+          2,
+          120
+        ],
+        [
+          2,
+          1060
+        ],
+        [
+          -2,
+          1060
+        ]
+      ],
+      "start": 800,
+      "end": 802,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fascia Panel Joint 1",
+      "subcategory": "Plinth"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fascia Panel Joint 1",
+      "param": "Plinth Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fascia Panel Joint 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fascia Panel Joint 2",
+      "points": [
+        [
+          898,
+          120
+        ],
+        [
+          902,
+          120
+        ],
+        [
+          902,
+          1060
+        ],
+        [
+          898,
+          1060
+        ]
+      ],
+      "start": 800,
+      "end": 802,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fascia Panel Joint 2",
+      "subcategory": "Plinth"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fascia Panel Joint 2",
+      "param": "Plinth Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fascia Panel Joint 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "LED Strip",
+      "points": [
+        [
+          -880,
+          1070
+        ],
+        [
+          1780,
+          1070
+        ],
+        [
+          1780,
+          1078
+        ],
+        [
+          -880,
+          1078
+        ]
+      ],
+      "start": 880,
+      "end": 890,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "LED Strip",
+      "subcategory": "Led"
+    },
+    {
+      "op": "set_material_param",
+      "name": "LED Strip",
+      "param": "Led Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "LED Strip",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pedestal",
+      "points": [
+        [
+          246,
+          -720
+        ],
+        [
+          247.53,
+          -719.7
+        ],
+        [
+          248.83,
+          -718.83
+        ],
+        [
+          249.7,
+          -717.53
+        ],
+        [
+          250,
+          -716
+        ],
+        [
+          250,
+          -104
+        ],
+        [
+          249.7,
+          -102.47
+        ],
+        [
+          248.83,
+          -101.17
+        ],
+        [
+          247.53,
+          -100.3
+        ],
+        [
+          246,
+          -100
+        ],
+        [
+          -246,
+          -100
+        ],
+        [
+          -247.53,
+          -100.3
+        ],
+        [
+          -248.83,
+          -101.17
+        ],
+        [
+          -249.7,
+          -102.47
+        ],
+        [
+          -250,
+          -104
+        ],
+        [
+          -250,
+          -716
+        ],
+        [
+          -249.7,
+          -717.53
+        ],
+        [
+          -248.83,
+          -718.83
+        ],
+        [
+          -247.53,
+          -719.7
+        ],
+        [
+          -246,
+          -720
+        ]
+      ],
+      "start": 100,
+      "end": 710
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pedestal",
+      "subcategory": "Carc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pedestal",
+      "param": "Carc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pedestal",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pedestal Drawer 1",
+      "points": [
+        [
+          242,
+          520
+        ],
+        [
+          243.15,
+          520.23
+        ],
+        [
+          244.12,
+          520.88
+        ],
+        [
+          244.77,
+          521.85
+        ],
+        [
+          245,
+          523
+        ],
+        [
+          245,
+          697
+        ],
+        [
+          244.77,
+          698.15
+        ],
+        [
+          244.12,
+          699.12
+        ],
+        [
+          243.15,
+          699.77
+        ],
+        [
+          242,
+          700
+        ],
+        [
+          -242,
+          700
+        ],
+        [
+          -243.15,
+          699.77
+        ],
+        [
+          -244.12,
+          699.12
+        ],
+        [
+          -244.77,
+          698.15
+        ],
+        [
+          -245,
+          697
+        ],
+        [
+          -245,
+          523
+        ],
+        [
+          -244.77,
+          521.85
+        ],
+        [
+          -244.12,
+          520.88
+        ],
+        [
+          -243.15,
+          520.23
+        ],
+        [
+          -242,
+          520
+        ]
+      ],
+      "start": 80,
+      "end": 100,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pedestal Drawer 1",
+      "subcategory": "Front2"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pedestal Drawer 1",
+      "param": "Front2 Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pedestal Drawer 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pedestal Drawer 2",
+      "points": [
+        [
+          242,
+          315
+        ],
+        [
+          243.15,
+          315.23
+        ],
+        [
+          244.12,
+          315.88
+        ],
+        [
+          244.77,
+          316.85
+        ],
+        [
+          245,
+          318
+        ],
+        [
+          245,
+          492
+        ],
+        [
+          244.77,
+          493.15
+        ],
+        [
+          244.12,
+          494.12
+        ],
+        [
+          243.15,
+          494.77
+        ],
+        [
+          242,
+          495
+        ],
+        [
+          -242,
+          495
+        ],
+        [
+          -243.15,
+          494.77
+        ],
+        [
+          -244.12,
+          494.12
+        ],
+        [
+          -244.77,
+          493.15
+        ],
+        [
+          -245,
+          492
+        ],
+        [
+          -245,
+          318
+        ],
+        [
+          -244.77,
+          316.85
+        ],
+        [
+          -244.12,
+          315.88
+        ],
+        [
+          -243.15,
+          315.23
+        ],
+        [
+          -242,
+          315
+        ]
+      ],
+      "start": 80,
+      "end": 100,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pedestal Drawer 2",
+      "subcategory": "Front2"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pedestal Drawer 2",
+      "param": "Front2 Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pedestal Drawer 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pedestal Drawer 3",
+      "points": [
+        [
+          242,
+          110
+        ],
+        [
+          243.15,
+          110.23
+        ],
+        [
+          244.12,
+          110.88
+        ],
+        [
+          244.77,
+          111.85
+        ],
+        [
+          245,
+          113
+        ],
+        [
+          245,
+          287
+        ],
+        [
+          244.77,
+          288.15
+        ],
+        [
+          244.12,
+          289.12
+        ],
+        [
+          243.15,
+          289.77
+        ],
+        [
+          242,
+          290
+        ],
+        [
+          -242,
+          290
+        ],
+        [
+          -243.15,
+          289.77
+        ],
+        [
+          -244.12,
+          289.12
+        ],
+        [
+          -244.77,
+          288.15
+        ],
+        [
+          -245,
+          287
+        ],
+        [
+          -245,
+          113
+        ],
+        [
+          -244.77,
+          111.85
+        ],
+        [
+          -244.12,
+          110.88
+        ],
+        [
+          -243.15,
+          110.23
+        ],
+        [
+          -242,
+          110
+        ]
+      ],
+      "start": 80,
+      "end": 100,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pedestal Drawer 3",
+      "subcategory": "Front2"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pedestal Drawer 3",
+      "param": "Front2 Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pedestal Drawer 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pedestal Drawer Handle 1",
+      "points": [
+        [
+          -69,
+          660
+        ],
+        [
+          -69.17,
+          661.29
+        ],
+        [
+          -69.67,
+          662.5
+        ],
+        [
+          -70.46,
+          663.54
+        ],
+        [
+          -71.5,
+          664.33
+        ],
+        [
+          -72.71,
+          664.83
+        ],
+        [
+          -74,
+          665
+        ],
+        [
+          -75.29,
+          664.83
+        ],
+        [
+          -76.5,
+          664.33
+        ],
+        [
+          -77.54,
+          663.54
+        ],
+        [
+          -78.33,
+          662.5
+        ],
+        [
+          -78.83,
+          661.29
+        ],
+        [
+          -79,
+          660
+        ],
+        [
+          -78.83,
+          658.71
+        ],
+        [
+          -78.33,
+          657.5
+        ],
+        [
+          -77.54,
+          656.46
+        ],
+        [
+          -76.5,
+          655.67
+        ],
+        [
+          -75.29,
+          655.17
+        ],
+        [
+          -74,
+          655
+        ],
+        [
+          -72.71,
+          655.17
+        ],
+        [
+          -71.5,
+          655.67
+        ],
+        [
+          -70.46,
+          656.46
+        ],
+        [
+          -69.67,
+          657.5
+        ],
+        [
+          -69.17,
+          658.71
+        ]
+      ],
+      "start": -60,
+      "end": 60,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pedestal Drawer Handle 1",
+      "subcategory": "Hdl"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pedestal Drawer Handle 1",
+      "param": "Hdl Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pedestal Drawer Handle 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pedestal Drawer Handle 2",
+      "points": [
+        [
+          -69,
+          455
+        ],
+        [
+          -69.17,
+          456.29
+        ],
+        [
+          -69.67,
+          457.5
+        ],
+        [
+          -70.46,
+          458.54
+        ],
+        [
+          -71.5,
+          459.33
+        ],
+        [
+          -72.71,
+          459.83
+        ],
+        [
+          -74,
+          460
+        ],
+        [
+          -75.29,
+          459.83
+        ],
+        [
+          -76.5,
+          459.33
+        ],
+        [
+          -77.54,
+          458.54
+        ],
+        [
+          -78.33,
+          457.5
+        ],
+        [
+          -78.83,
+          456.29
+        ],
+        [
+          -79,
+          455
+        ],
+        [
+          -78.83,
+          453.71
+        ],
+        [
+          -78.33,
+          452.5
+        ],
+        [
+          -77.54,
+          451.46
+        ],
+        [
+          -76.5,
+          450.67
+        ],
+        [
+          -75.29,
+          450.17
+        ],
+        [
+          -74,
+          450
+        ],
+        [
+          -72.71,
+          450.17
+        ],
+        [
+          -71.5,
+          450.67
+        ],
+        [
+          -70.46,
+          451.46
+        ],
+        [
+          -69.67,
+          452.5
+        ],
+        [
+          -69.17,
+          453.71
+        ]
+      ],
+      "start": -60,
+      "end": 60,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pedestal Drawer Handle 2",
+      "subcategory": "Hdl"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pedestal Drawer Handle 2",
+      "param": "Hdl Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pedestal Drawer Handle 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pedestal Drawer Handle 3",
+      "points": [
+        [
+          -69,
+          250
+        ],
+        [
+          -69.17,
+          251.29
+        ],
+        [
+          -69.67,
+          252.5
+        ],
+        [
+          -70.46,
+          253.54
+        ],
+        [
+          -71.5,
+          254.33
+        ],
+        [
+          -72.71,
+          254.83
+        ],
+        [
+          -74,
+          255
+        ],
+        [
+          -75.29,
+          254.83
+        ],
+        [
+          -76.5,
+          254.33
+        ],
+        [
+          -77.54,
+          253.54
+        ],
+        [
+          -78.33,
+          252.5
+        ],
+        [
+          -78.83,
+          251.29
+        ],
+        [
+          -79,
+          250
+        ],
+        [
+          -78.83,
+          248.71
+        ],
+        [
+          -78.33,
+          247.5
+        ],
+        [
+          -77.54,
+          246.46
+        ],
+        [
+          -76.5,
+          245.67
+        ],
+        [
+          -75.29,
+          245.17
+        ],
+        [
+          -74,
+          245
+        ],
+        [
+          -72.71,
+          245.17
+        ],
+        [
+          -71.5,
+          245.67
+        ],
+        [
+          -70.46,
+          246.46
+        ],
+        [
+          -69.67,
+          247.5
+        ],
+        [
+          -69.17,
+          248.71
+        ]
+      ],
+      "start": -60,
+      "end": 60,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pedestal Drawer Handle 3",
+      "subcategory": "Hdl"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pedestal Drawer Handle 3",
+      "param": "Hdl Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pedestal Drawer Handle 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cable Tray",
+      "points": [
+        [
+          -880,
+          -700
+        ],
+        [
+          1000,
+          -700
+        ],
+        [
+          1000,
+          -620
+        ],
+        [
+          -880,
+          -620
+        ]
+      ],
+      "start": 600,
+      "end": 660
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cable Tray",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cable Tray",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cable Tray",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grommet 1",
+      "points": [
+        [
+          -565,
+          -680
+        ],
+        [
+          -566.19,
+          -670.94
+        ],
+        [
+          -569.69,
+          -662.5
+        ],
+        [
+          -575.25,
+          -655.25
+        ],
+        [
+          -582.5,
+          -649.69
+        ],
+        [
+          -590.94,
+          -646.19
+        ],
+        [
+          -600,
+          -645
+        ],
+        [
+          -609.06,
+          -646.19
+        ],
+        [
+          -617.5,
+          -649.69
+        ],
+        [
+          -624.75,
+          -655.25
+        ],
+        [
+          -630.31,
+          -662.5
+        ],
+        [
+          -633.81,
+          -670.94
+        ],
+        [
+          -635,
+          -680
+        ],
+        [
+          -633.81,
+          -689.06
+        ],
+        [
+          -630.31,
+          -697.5
+        ],
+        [
+          -624.75,
+          -704.75
+        ],
+        [
+          -617.5,
+          -710.31
+        ],
+        [
+          -609.06,
+          -713.81
+        ],
+        [
+          -600,
+          -715
+        ],
+        [
+          -590.94,
+          -713.81
+        ],
+        [
+          -582.5,
+          -710.31
+        ],
+        [
+          -575.25,
+          -704.75
+        ],
+        [
+          -569.69,
+          -697.5
+        ],
+        [
+          -566.19,
+          -689.06
+        ]
+      ],
+      "start": 739,
+      "end": 742
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grommet 1",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grommet 1",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grommet 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grommet 2",
+      "points": [
+        [
+          -65,
+          -680
+        ],
+        [
+          -66.19,
+          -670.94
+        ],
+        [
+          -69.69,
+          -662.5
+        ],
+        [
+          -75.25,
+          -655.25
+        ],
+        [
+          -82.5,
+          -649.69
+        ],
+        [
+          -90.94,
+          -646.19
+        ],
+        [
+          -100,
+          -645
+        ],
+        [
+          -109.06,
+          -646.19
+        ],
+        [
+          -117.5,
+          -649.69
+        ],
+        [
+          -124.75,
+          -655.25
+        ],
+        [
+          -130.31,
+          -662.5
+        ],
+        [
+          -133.81,
+          -670.94
+        ],
+        [
+          -135,
+          -680
+        ],
+        [
+          -133.81,
+          -689.06
+        ],
+        [
+          -130.31,
+          -697.5
+        ],
+        [
+          -124.75,
+          -704.75
+        ],
+        [
+          -117.5,
+          -710.31
+        ],
+        [
+          -109.06,
+          -713.81
+        ],
+        [
+          -100,
+          -715
+        ],
+        [
+          -90.94,
+          -713.81
+        ],
+        [
+          -82.5,
+          -710.31
+        ],
+        [
+          -75.25,
+          -704.75
+        ],
+        [
+          -69.69,
+          -697.5
+        ],
+        [
+          -66.19,
+          -689.06
+        ]
+      ],
+      "start": 739,
+      "end": 742
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grommet 2",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grommet 2",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grommet 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grommet 3",
+      "points": [
+        [
+          435,
+          -680
+        ],
+        [
+          433.81,
+          -670.94
+        ],
+        [
+          430.31,
+          -662.5
+        ],
+        [
+          424.75,
+          -655.25
+        ],
+        [
+          417.5,
+          -649.69
+        ],
+        [
+          409.06,
+          -646.19
+        ],
+        [
+          400,
+          -645
+        ],
+        [
+          390.94,
+          -646.19
+        ],
+        [
+          382.5,
+          -649.69
+        ],
+        [
+          375.25,
+          -655.25
+        ],
+        [
+          369.69,
+          -662.5
+        ],
+        [
+          366.19,
+          -670.94
+        ],
+        [
+          365,
+          -680
+        ],
+        [
+          366.19,
+          -689.06
+        ],
+        [
+          369.69,
+          -697.5
+        ],
+        [
+          375.25,
+          -704.75
+        ],
+        [
+          382.5,
+          -710.31
+        ],
+        [
+          390.94,
+          -713.81
+        ],
+        [
+          400,
+          -715
+        ],
+        [
+          409.06,
+          -713.81
+        ],
+        [
+          417.5,
+          -710.31
+        ],
+        [
+          424.75,
+          -704.75
+        ],
+        [
+          430.31,
+          -697.5
+        ],
+        [
+          433.81,
+          -689.06
+        ]
+      ],
+      "start": 739,
+      "end": 742
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grommet 3",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grommet 3",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grommet 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grommet 4",
+      "points": [
+        [
+          935,
+          -680
+        ],
+        [
+          933.81,
+          -670.94
+        ],
+        [
+          930.31,
+          -662.5
+        ],
+        [
+          924.75,
+          -655.25
+        ],
+        [
+          917.5,
+          -649.69
+        ],
+        [
+          909.06,
+          -646.19
+        ],
+        [
+          900,
+          -645
+        ],
+        [
+          890.94,
+          -646.19
+        ],
+        [
+          882.5,
+          -649.69
+        ],
+        [
+          875.25,
+          -655.25
+        ],
+        [
+          869.69,
+          -662.5
+        ],
+        [
+          866.19,
+          -670.94
+        ],
+        [
+          865,
+          -680
+        ],
+        [
+          866.19,
+          -689.06
+        ],
+        [
+          869.69,
+          -697.5
+        ],
+        [
+          875.25,
+          -704.75
+        ],
+        [
+          882.5,
+          -710.31
+        ],
+        [
+          890.94,
+          -713.81
+        ],
+        [
+          900,
+          -715
+        ],
+        [
+          909.06,
+          -713.81
+        ],
+        [
+          917.5,
+          -710.31
+        ],
+        [
+          924.75,
+          -704.75
+        ],
+        [
+          930.31,
+          -697.5
+        ],
+        [
+          933.81,
+          -689.06
+        ]
+      ],
+      "start": 739,
+      "end": 742
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grommet 4",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grommet 4",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grommet 4",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Power Data Module",
+      "points": [
+        [
+          694,
+          -740
+        ],
+        [
+          696.3,
+          -739.54
+        ],
+        [
+          698.24,
+          -738.24
+        ],
+        [
+          699.54,
+          -736.3
+        ],
+        [
+          700,
+          -734
+        ],
+        [
+          700,
+          -666
+        ],
+        [
+          699.54,
+          -663.7
+        ],
+        [
+          698.24,
+          -661.76
+        ],
+        [
+          696.3,
+          -660.46
+        ],
+        [
+          694,
+          -660
+        ],
+        [
+          306,
+          -660
+        ],
+        [
+          303.7,
+          -660.46
+        ],
+        [
+          301.76,
+          -661.76
+        ],
+        [
+          300.46,
+          -663.7
+        ],
+        [
+          300,
+          -666
+        ],
+        [
+          300,
+          -734
+        ],
+        [
+          300.46,
+          -736.3
+        ],
+        [
+          301.76,
+          -738.24
+        ],
+        [
+          303.7,
+          -739.54
+        ],
+        [
+          306,
+          -740
+        ]
+      ],
+      "start": 742,
+      "end": 800
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Power Data Module",
+      "subcategory": "Alu"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Power Data Module",
+      "param": "Alu Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Power Data Module",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Module Socket 1",
+      "points": [
+        [
+          320,
+          -662
+        ],
+        [
+          400,
+          -662
+        ],
+        [
+          400,
+          -660
+        ],
+        [
+          320,
+          -660
+        ]
+      ],
+      "start": 755,
+      "end": 790
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Module Socket 1",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Module Socket 1",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Module Socket 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Module Socket 2",
+      "points": [
+        [
+          415,
+          -662
+        ],
+        [
+          495,
+          -662
+        ],
+        [
+          495,
+          -660
+        ],
+        [
+          415,
+          -660
+        ]
+      ],
+      "start": 755,
+      "end": 790
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Module Socket 2",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Module Socket 2",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Module Socket 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Module Socket 3",
+      "points": [
+        [
+          510,
+          -662
+        ],
+        [
+          590,
+          -662
+        ],
+        [
+          590,
+          -660
+        ],
+        [
+          510,
+          -660
+        ]
+      ],
+      "start": 755,
+      "end": 790
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Module Socket 3",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Module Socket 3",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Module Socket 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Module Socket 4",
+      "points": [
+        [
+          605,
+          -662
+        ],
+        [
+          685,
+          -662
+        ],
+        [
+          685,
+          -660
+        ],
+        [
+          605,
+          -660
+        ]
+      ],
+      "start": 755,
+      "end": 790
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Module Socket 4",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Module Socket 4",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Module Socket 4",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Accessible Top",
+      "points": [
+        [
+          -910,
+          -900
+        ],
+        [
+          -906.17,
+          -899.24
+        ],
+        [
+          -902.93,
+          -897.07
+        ],
+        [
+          -900.76,
+          -893.83
+        ],
+        [
+          -900,
+          -890
+        ],
+        [
+          -900,
+          -10
+        ],
+        [
+          -900.76,
+          -6.17
+        ],
+        [
+          -902.93,
+          -2.93
+        ],
+        [
+          -906.17,
+          -0.76
+        ],
+        [
+          -910,
+          0
+        ],
+        [
+          -1790,
+          0
+        ],
+        [
+          -1793.83,
+          -0.76
+        ],
+        [
+          -1797.07,
+          -2.93
+        ],
+        [
+          -1799.24,
+          -6.17
+        ],
+        [
+          -1800,
+          -10
+        ],
+        [
+          -1800,
+          -890
+        ],
+        [
+          -1799.24,
+          -893.83
+        ],
+        [
+          -1797.07,
+          -897.07
+        ],
+        [
+          -1793.83,
+          -899.24
+        ],
+        [
+          -1790,
+          -900
+        ]
+      ],
+      "start": 730,
+      "end": 760
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Accessible Top",
+      "subcategory": "Ledge"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Accessible Top",
+      "param": "Ledge Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Accessible Top",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Accessible Leg Panel",
+      "points": [
+        [
+          -1800,
+          -880
+        ],
+        [
+          -1770,
+          -880
+        ],
+        [
+          -1770,
+          0
+        ],
+        [
+          -1800,
+          0
+        ]
+      ],
+      "start": 0,
+      "end": 730
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Accessible Leg Panel",
+      "subcategory": "Carc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Accessible Leg Panel",
+      "param": "Carc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Accessible Leg Panel",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Knee Space Back",
+      "points": [
+        [
+          -1770,
+          -120
+        ],
+        [
+          -900,
+          -120
+        ],
+        [
+          -900,
+          -100
+        ],
+        [
+          -1770,
+          -100
+        ]
+      ],
+      "start": 100,
+      "end": 730
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Knee Space Back",
+      "subcategory": "Carc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Knee Space Back",
+      "param": "Carc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Knee Space Back",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hearing Loop Sign",
+      "points": [
+        [
+          -766,
+          900
+        ],
+        [
+          -763.7,
+          900.46
+        ],
+        [
+          -761.76,
+          901.76
+        ],
+        [
+          -760.46,
+          903.7
+        ],
+        [
+          -760,
+          906
+        ],
+        [
+          -760,
+          974
+        ],
+        [
+          -760.46,
+          976.3
+        ],
+        [
+          -761.76,
+          978.24
+        ],
+        [
+          -763.7,
+          979.54
+        ],
+        [
+          -766,
+          980
+        ],
+        [
+          -854,
+          980
+        ],
+        [
+          -856.3,
+          979.54
+        ],
+        [
+          -858.24,
+          978.24
+        ],
+        [
+          -859.54,
+          976.3
+        ],
+        [
+          -860,
+          974
+        ],
+        [
+          -860,
+          906
+        ],
+        [
+          -859.54,
+          903.7
+        ],
+        [
+          -858.24,
+          901.76
+        ],
+        [
+          -856.3,
+          900.46
+        ],
+        [
+          -854,
+          900
+        ]
+      ],
+      "start": 800,
+      "end": 803,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hearing Loop Sign",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hearing Loop Sign",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hearing Loop Sign",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fascia Feature Band",
+      "points": [
+        [
+          -900,
+          820
+        ],
+        [
+          1800,
+          820
+        ],
+        [
+          1800,
+          860
+        ],
+        [
+          -900,
+          860
+        ]
+      ],
+      "start": 800,
+      "end": 803,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fascia Feature Band",
+      "subcategory": "Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fascia Feature Band",
+      "param": "Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fascia Feature Band",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Return Feature Band",
+      "points": [
+        [
+          -760,
+          820
+        ],
+        [
+          1600,
+          820
+        ],
+        [
+          1600,
+          860
+        ],
+        [
+          -760,
+          860
+        ]
+      ],
+      "start": 1800,
+      "end": 1803,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Return Feature Band",
+      "subcategory": "Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Return Feature Band",
+      "param": "Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Return Feature Band",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Return Fascia",
+      "points": [
+        [
+          1796,
+          -760
+        ],
+        [
+          1797.53,
+          -759.7
+        ],
+        [
+          1798.83,
+          -758.83
+        ],
+        [
+          1799.7,
+          -757.53
+        ],
+        [
+          1800,
+          -756
+        ],
+        [
+          1800,
+          1596
+        ],
+        [
+          1799.7,
+          1597.53
+        ],
+        [
+          1798.83,
+          1598.83
+        ],
+        [
+          1797.53,
+          1599.7
+        ],
+        [
+          1796,
+          1600
+        ],
+        [
+          1764,
+          1600
+        ],
+        [
+          1762.47,
+          1599.7
+        ],
+        [
+          1761.17,
+          1598.83
+        ],
+        [
+          1760.3,
+          1597.53
+        ],
+        [
+          1760,
+          1596
+        ],
+        [
+          1760,
+          -756
+        ],
+        [
+          1760.3,
+          -757.53
+        ],
+        [
+          1761.17,
+          -758.83
+        ],
+        [
+          1762.47,
+          -759.7
+        ],
+        [
+          1764,
+          -760
+        ]
+      ],
+      "start": 100,
+      "end": 1080
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Return Fascia",
+      "subcategory": "Front"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Return Fascia",
+      "param": "Front Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Return Fascia",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Return Ledge",
+      "points": [
+        [
+          1870,
+          -560
+        ],
+        [
+          1873.83,
+          -559.24
+        ],
+        [
+          1877.07,
+          -557.07
+        ],
+        [
+          1879.24,
+          -553.83
+        ],
+        [
+          1880,
+          -550
+        ],
+        [
+          1880,
+          1590
+        ],
+        [
+          1879.24,
+          1593.83
+        ],
+        [
+          1877.07,
+          1597.07
+        ],
+        [
+          1873.83,
+          1599.24
+        ],
+        [
+          1870,
+          1600
+        ],
+        [
+          1730,
+          1600
+        ],
+        [
+          1726.17,
+          1599.24
+        ],
+        [
+          1722.93,
+          1597.07
+        ],
+        [
+          1720.76,
+          1593.83
+        ],
+        [
+          1720,
+          1590
+        ],
+        [
+          1720,
+          -550
+        ],
+        [
+          1720.76,
+          -553.83
+        ],
+        [
+          1722.93,
+          -557.07
+        ],
+        [
+          1726.17,
+          -559.24
+        ],
+        [
+          1730,
+          -560
+        ]
+      ],
+      "start": 1080,
+      "end": 1110
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Return Ledge",
+      "subcategory": "Ledge"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Return Ledge",
+      "param": "Ledge Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Return Ledge",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Return Plinth",
+      "points": [
+        [
+          1100,
+          -100
+        ],
+        [
+          1740,
+          -100
+        ],
+        [
+          1740,
+          1550
+        ],
+        [
+          1100,
+          1550
+        ]
+      ],
+      "start": 0,
+      "end": 100
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Return Plinth",
+      "subcategory": "Plinth"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Return Plinth",
+      "param": "Plinth Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Return Plinth",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Return Worktop",
+      "points": [
+        [
+          1754,
+          -760
+        ],
+        [
+          1756.3,
+          -759.54
+        ],
+        [
+          1758.24,
+          -758.24
+        ],
+        [
+          1759.54,
+          -756.3
+        ],
+        [
+          1760,
+          -754
+        ],
+        [
+          1760,
+          1594
+        ],
+        [
+          1759.54,
+          1596.3
+        ],
+        [
+          1758.24,
+          1598.24
+        ],
+        [
+          1756.3,
+          1599.54
+        ],
+        [
+          1754,
+          1600
+        ],
+        [
+          1006,
+          1600
+        ],
+        [
+          1003.7,
+          1599.54
+        ],
+        [
+          1001.76,
+          1598.24
+        ],
+        [
+          1000.46,
+          1596.3
+        ],
+        [
+          1000,
+          1594
+        ],
+        [
+          1000,
+          -754
+        ],
+        [
+          1000.46,
+          -756.3
+        ],
+        [
+          1001.76,
+          -758.24
+        ],
+        [
+          1003.7,
+          -759.54
+        ],
+        [
+          1006,
+          -760
+        ]
+      ],
+      "start": 710,
+      "end": 740
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Return Worktop",
+      "subcategory": "Top"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Return Worktop",
+      "param": "Top Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Return Worktop",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Return Base Unit",
+      "points": [
+        [
+          1100,
+          200
+        ],
+        [
+          1740,
+          200
+        ],
+        [
+          1740,
+          1550
+        ],
+        [
+          1100,
+          1550
+        ]
+      ],
+      "start": 100,
+      "end": 710
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Return Base Unit",
+      "subcategory": "Carc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Return Base Unit",
+      "param": "Carc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Return Base Unit",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Return Door",
+      "points": [
+        [
+          203,
+          105
+        ],
+        [
+          1547,
+          105
+        ],
+        [
+          1547,
+          705
+        ],
+        [
+          203,
+          705
+        ]
+      ],
+      "start": 1080,
+      "end": 1100,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Return Door",
+      "subcategory": "Front2"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Return Door",
+      "param": "Front2 Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Return Door",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Return Door Joint",
+      "points": [
+        [
+          870,
+          110
+        ],
+        [
+          880,
+          110
+        ],
+        [
+          880,
+          700
+        ],
+        [
+          870,
+          700
+        ]
+      ],
+      "start": 1078,
+      "end": 1080,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Return Door Joint",
+      "subcategory": "Plinth"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Return Door Joint",
+      "param": "Plinth Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Return Door Joint",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Return Door Handle 1",
+      "points": [
+        [
+          1077,
+          830
+        ],
+        [
+          1076.83,
+          831.29
+        ],
+        [
+          1076.33,
+          832.5
+        ],
+        [
+          1075.54,
+          833.54
+        ],
+        [
+          1074.5,
+          834.33
+        ],
+        [
+          1073.29,
+          834.83
+        ],
+        [
+          1072,
+          835
+        ],
+        [
+          1070.71,
+          834.83
+        ],
+        [
+          1069.5,
+          834.33
+        ],
+        [
+          1068.46,
+          833.54
+        ],
+        [
+          1067.67,
+          832.5
+        ],
+        [
+          1067.17,
+          831.29
+        ],
+        [
+          1067,
+          830
+        ],
+        [
+          1067.17,
+          828.71
+        ],
+        [
+          1067.67,
+          827.5
+        ],
+        [
+          1068.46,
+          826.46
+        ],
+        [
+          1069.5,
+          825.67
+        ],
+        [
+          1070.71,
+          825.17
+        ],
+        [
+          1072,
+          825
+        ],
+        [
+          1073.29,
+          825.17
+        ],
+        [
+          1074.5,
+          825.67
+        ],
+        [
+          1075.54,
+          826.46
+        ],
+        [
+          1076.33,
+          827.5
+        ],
+        [
+          1076.83,
+          828.71
+        ]
+      ],
+      "start": 520,
+      "end": 680
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Return Door Handle 1",
+      "subcategory": "Hdl"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Return Door Handle 1",
+      "param": "Hdl Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Return Door Handle 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Return Door Handle 2",
+      "points": [
+        [
+          1077,
+          930
+        ],
+        [
+          1076.83,
+          931.29
+        ],
+        [
+          1076.33,
+          932.5
+        ],
+        [
+          1075.54,
+          933.54
+        ],
+        [
+          1074.5,
+          934.33
+        ],
+        [
+          1073.29,
+          934.83
+        ],
+        [
+          1072,
+          935
+        ],
+        [
+          1070.71,
+          934.83
+        ],
+        [
+          1069.5,
+          934.33
+        ],
+        [
+          1068.46,
+          933.54
+        ],
+        [
+          1067.67,
+          932.5
+        ],
+        [
+          1067.17,
+          931.29
+        ],
+        [
+          1067,
+          930
+        ],
+        [
+          1067.17,
+          928.71
+        ],
+        [
+          1067.67,
+          927.5
+        ],
+        [
+          1068.46,
+          926.46
+        ],
+        [
+          1069.5,
+          925.67
+        ],
+        [
+          1070.71,
+          925.17
+        ],
+        [
+          1072,
+          925
+        ],
+        [
+          1073.29,
+          925.17
+        ],
+        [
+          1074.5,
+          925.67
+        ],
+        [
+          1075.54,
+          926.46
+        ],
+        [
+          1076.33,
+          927.5
+        ],
+        [
+          1076.83,
+          928.71
+        ]
+      ],
+      "start": 520,
+      "end": 680
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Return Door Handle 2",
+      "subcategory": "Hdl"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Return Door Handle 2",
+      "param": "Hdl Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Return Door Handle 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "End Panel",
+      "points": [
+        [
+          -1800,
+          -800
+        ],
+        [
+          -1770,
+          -800
+        ],
+        [
+          -1770,
+          -100
+        ],
+        [
+          -1800,
+          -100
+        ]
+      ],
+      "start": 0,
+      "end": 760
+    },
+    {
+      "op": "set_subcategory",
+      "name": "End Panel",
+      "subcategory": "Carc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "End Panel",
+      "param": "Carc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "End Panel",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "Power",
+      "domain": "electrical",
+      "system": "PowerBalanced",
+      "solid": "Power Data Module",
+      "side": "bottom"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Voltage",
+      "connector": "Power",
+      "connector_param": "Voltage",
+      "param": "Voltage"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Apparent Load",
+      "connector": "Power",
+      "connector_param": "Apparent Load",
+      "param": "Apparent Load"
+    },
+    {
+      "op": "add_connector",
+      "name": "Data",
+      "domain": "electrical",
+      "system": "Data",
+      "solid": "Power Data Module",
+      "side": "back"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Data/Voltage",
+      "connector": "Data",
+      "connector_param": "Voltage",
+      "param": "Voltage"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Data/Apparent Load",
+      "connector": "Data",
+      "connector_param": "Apparent Load",
+      "param": "Apparent Load"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\I\\_Images\\FMC_I_Casework_NurseStation_Counter.png"
+    }
+  ],
+  "values": {
+    "Staff worktop 740 mm, transaction ledge 1100 mm": {
+      "value": "740/1100",
+      "source_status": "assumed",
+      "source": "HBN 04-01 / typical nurse base"
+    },
+    "Accessible section 900 wide at 760 mm with knee space": {
+      "value": "900@760",
+      "source_status": "assumed",
+      "source": "BS 8300-2 / Approved Document M"
+    },
+    "Supply 240 V, 2000 VA (4 PCs, printer)": {
+      "value": 2000,
+      "source_status": "assumed",
+      "source": "typical nurse base"
+    }
   }
- ],
- "values": {
-  "Staff worktop 740 mm, transaction ledge 1100 mm": {
-   "value": "740/1100",
-   "source_status": "assumed",
-   "source": "HBN 04-01 / typical nurse base"
-  },
-  "Accessible section 900 wide at 760 mm with knee space": {
-   "value": "900@760",
-   "source_status": "assumed",
-   "source": "BS 8300-2 / Approved Document M"
-  },
-  "Supply 240 V, 2000 VA (4 PCs, printer)": {
-   "value": 2000,
-   "source_status": "assumed",
-   "source": "typical nurse base"
-  }
- }
 }

@@ -1,2085 +1,2090 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_M_AirTerminal_Diffuser_Linear_Slot",
- "template": "Metric Generic Model.rft",
- "about": "Modelled as a generic product: front and rear frame profiles, centre divider, end caps, dark slot throat with pattern controllers in both slots, plenum box with spigot and hanger lugs. Reference: query: diffuser linear slot air terminals hospital; images: https://www.google.com/search?tbm=isch&q=diffuser+linear+slot+air+terminals+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Air Terminals"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Airflow_Ls",
-   "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "1200_2Slot"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200_2Slot/FMC_Cost_Unit",
-   "type": "1200_2Slot",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200_2Slot/FMC_Geometry_Stage",
-   "type": "1200_2Slot",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200_2Slot/IfcExportAs",
-   "type": "1200_2Slot",
-   "param": "IfcExportAs",
-   "value": "IfcAirTerminal"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200_2Slot/Description",
-   "type": "1200_2Slot",
-   "param": "Description",
-   "value": "Linear slot diffuser 1200 to 1500 mm, 2 slot, white aluminium profiles with pattern controllers, insulated plenum with top spigot"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200_2Slot/Keynote",
-   "type": "1200_2Slot",
-   "param": "Keynote",
-   "value": "H.ATD_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200_2Slot/FMC_Keynote_Code",
-   "type": "1200_2Slot",
-   "param": "FMC_Keynote_Code",
-   "value": "H.ATD_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200_2Slot/FMC_Code_Description",
-   "type": "1200_2Slot",
-   "param": "FMC_Code_Description",
-   "value": "Diffuser Linear Slot: Linear slot"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200_2Slot/FMC_Code_Group",
-   "type": "1200_2Slot",
-   "param": "FMC_Code_Group",
-   "value": "H.ATD"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200_2Slot/FMC_Role_Code",
-   "type": "1200_2Slot",
-   "param": "FMC_Role_Code",
-   "value": "M"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200_2Slot/Default Elevation",
-   "type": "1200_2Slot",
-   "param": "Default Elevation",
-   "value": 2700
-  },
-  {
-   "op": "add_type",
-   "name": "1500_2Slot"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500_2Slot/FMC_Cost_Unit",
-   "type": "1500_2Slot",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500_2Slot/FMC_Geometry_Stage",
-   "type": "1500_2Slot",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500_2Slot/IfcExportAs",
-   "type": "1500_2Slot",
-   "param": "IfcExportAs",
-   "value": "IfcAirTerminal"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500_2Slot/Description",
-   "type": "1500_2Slot",
-   "param": "Description",
-   "value": "Linear slot diffuser 1200 to 1500 mm, 2 slot, white aluminium profiles with pattern controllers, insulated plenum with top spigot"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500_2Slot/Keynote",
-   "type": "1500_2Slot",
-   "param": "Keynote",
-   "value": "H.ATD_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500_2Slot/FMC_Keynote_Code",
-   "type": "1500_2Slot",
-   "param": "FMC_Keynote_Code",
-   "value": "H.ATD_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500_2Slot/FMC_Code_Description",
-   "type": "1500_2Slot",
-   "param": "FMC_Code_Description",
-   "value": "Diffuser Linear Slot: Linear slot"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500_2Slot/FMC_Code_Group",
-   "type": "1500_2Slot",
-   "param": "FMC_Code_Group",
-   "value": "H.ATD"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500_2Slot/FMC_Role_Code",
-   "type": "1500_2Slot",
-   "param": "FMC_Role_Code",
-   "value": "M"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500_2Slot/Default Elevation",
-   "type": "1500_2Slot",
-   "param": "Default Elevation",
-   "value": 2700
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Epw",
-   "color": [
-    237,
-    237,
-    232
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Epw Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Steel_EpoxyCoated_White",
-   "param": "Epw Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Mgrey",
-   "color": [
-    201,
-    205,
-    210
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Mgrey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_MedicalGrey",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Galv",
-   "color": [
-    183,
-    188,
-    192
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Galv Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Duct_Galvanised",
-   "param": "Galv Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -760,
-     -85
-    ],
-    [
-     760,
-     -85
-    ],
-    [
-     760,
-     75
-    ],
-    [
-     -760,
-     75
-    ]
-   ],
-   "start": -18,
-   "end": 350
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Frame Front",
-   "points": [
-    [
-     -750,
-     -75
-    ],
-    [
-     750,
-     -75
-    ],
-    [
-     750,
-     -55
-    ],
-    [
-     -750,
-     -55
-    ]
-   ],
-   "start": -15,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Frame Front",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Frame Front",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Frame Front",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Frame Rear",
-   "points": [
-    [
-     -750,
-     55
-    ],
-    [
-     750,
-     55
-    ],
-    [
-     750,
-     75
-    ],
-    [
-     -750,
-     75
-    ]
-   ],
-   "start": -15,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Frame Rear",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Frame Rear",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Frame Rear",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Divider",
-   "points": [
-    [
-     -750,
-     -8
-    ],
-    [
-     750,
-     -8
-    ],
-    [
-     750,
-     8
-    ],
-    [
-     -750,
-     8
-    ]
-   ],
-   "start": -18,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Divider",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Divider",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Divider",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "End Cap 1",
-   "points": [
-    [
-     -760,
-     -75
-    ],
-    [
-     -750,
-     -75
-    ],
-    [
-     -750,
-     75
-    ],
-    [
-     -760,
-     75
-    ]
-   ],
-   "start": -16,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "End Cap 1",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "End Cap 1",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "End Cap 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "End Cap 2",
-   "points": [
-    [
-     750,
-     -75
-    ],
-    [
-     760,
-     -75
-    ],
-    [
-     760,
-     75
-    ],
-    [
-     750,
-     75
-    ]
-   ],
-   "start": -16,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "End Cap 2",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "End Cap 2",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "End Cap 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Slot Throat",
-   "points": [
-    [
-     -750,
-     -55
-    ],
-    [
-     750,
-     -55
-    ],
-    [
-     750,
-     55
-    ],
-    [
-     -750,
-     55
-    ]
-   ],
-   "start": -6,
-   "end": -1
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Slot Throat",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Slot Throat",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Slot Throat",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Front 1",
-   "points": [
-    [
-     -735,
-     -50
-    ],
-    [
-     -705,
-     -50
-    ],
-    [
-     -705,
-     -14
-    ],
-    [
-     -735,
-     -14
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Front 1",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Front 1",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Front 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Front 2",
-   "points": [
-    [
-     -610,
-     -50
-    ],
-    [
-     -580,
-     -50
-    ],
-    [
-     -580,
-     -14
-    ],
-    [
-     -610,
-     -14
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Front 2",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Front 2",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Front 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Front 3",
-   "points": [
-    [
-     -485,
-     -50
-    ],
-    [
-     -455,
-     -50
-    ],
-    [
-     -455,
-     -14
-    ],
-    [
-     -485,
-     -14
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Front 3",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Front 3",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Front 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Front 4",
-   "points": [
-    [
-     -360,
-     -50
-    ],
-    [
-     -330,
-     -50
-    ],
-    [
-     -330,
-     -14
-    ],
-    [
-     -360,
-     -14
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Front 4",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Front 4",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Front 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Front 5",
-   "points": [
-    [
-     -235,
-     -50
-    ],
-    [
-     -205,
-     -50
-    ],
-    [
-     -205,
-     -14
-    ],
-    [
-     -235,
-     -14
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Front 5",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Front 5",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Front 5",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Front 6",
-   "points": [
-    [
-     -110,
-     -50
-    ],
-    [
-     -80,
-     -50
-    ],
-    [
-     -80,
-     -14
-    ],
-    [
-     -110,
-     -14
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Front 6",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Front 6",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Front 6",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Front 7",
-   "points": [
-    [
-     15,
-     -50
-    ],
-    [
-     45,
-     -50
-    ],
-    [
-     45,
-     -14
-    ],
-    [
-     15,
-     -14
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Front 7",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Front 7",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Front 7",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Front 8",
-   "points": [
-    [
-     140,
-     -50
-    ],
-    [
-     170,
-     -50
-    ],
-    [
-     170,
-     -14
-    ],
-    [
-     140,
-     -14
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Front 8",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Front 8",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Front 8",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Front 9",
-   "points": [
-    [
-     265,
-     -50
-    ],
-    [
-     295,
-     -50
-    ],
-    [
-     295,
-     -14
-    ],
-    [
-     265,
-     -14
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Front 9",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Front 9",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Front 9",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Front 10",
-   "points": [
-    [
-     390,
-     -50
-    ],
-    [
-     420,
-     -50
-    ],
-    [
-     420,
-     -14
-    ],
-    [
-     390,
-     -14
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Front 10",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Front 10",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Front 10",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Front 11",
-   "points": [
-    [
-     515,
-     -50
-    ],
-    [
-     545,
-     -50
-    ],
-    [
-     545,
-     -14
-    ],
-    [
-     515,
-     -14
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Front 11",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Front 11",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Front 11",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Front 12",
-   "points": [
-    [
-     640,
-     -50
-    ],
-    [
-     670,
-     -50
-    ],
-    [
-     670,
-     -14
-    ],
-    [
-     640,
-     -14
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Front 12",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Front 12",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Front 12",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Rear 1",
-   "points": [
-    [
-     -735,
-     14
-    ],
-    [
-     -705,
-     14
-    ],
-    [
-     -705,
-     50
-    ],
-    [
-     -735,
-     50
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Rear 1",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Rear 1",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Rear 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Rear 2",
-   "points": [
-    [
-     -610,
-     14
-    ],
-    [
-     -580,
-     14
-    ],
-    [
-     -580,
-     50
-    ],
-    [
-     -610,
-     50
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Rear 2",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Rear 2",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Rear 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Rear 3",
-   "points": [
-    [
-     -485,
-     14
-    ],
-    [
-     -455,
-     14
-    ],
-    [
-     -455,
-     50
-    ],
-    [
-     -485,
-     50
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Rear 3",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Rear 3",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Rear 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Rear 4",
-   "points": [
-    [
-     -360,
-     14
-    ],
-    [
-     -330,
-     14
-    ],
-    [
-     -330,
-     50
-    ],
-    [
-     -360,
-     50
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Rear 4",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Rear 4",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Rear 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Rear 5",
-   "points": [
-    [
-     -235,
-     14
-    ],
-    [
-     -205,
-     14
-    ],
-    [
-     -205,
-     50
-    ],
-    [
-     -235,
-     50
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Rear 5",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Rear 5",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Rear 5",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Rear 6",
-   "points": [
-    [
-     -110,
-     14
-    ],
-    [
-     -80,
-     14
-    ],
-    [
-     -80,
-     50
-    ],
-    [
-     -110,
-     50
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Rear 6",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Rear 6",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Rear 6",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Rear 7",
-   "points": [
-    [
-     15,
-     14
-    ],
-    [
-     45,
-     14
-    ],
-    [
-     45,
-     50
-    ],
-    [
-     15,
-     50
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Rear 7",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Rear 7",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Rear 7",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Rear 8",
-   "points": [
-    [
-     140,
-     14
-    ],
-    [
-     170,
-     14
-    ],
-    [
-     170,
-     50
-    ],
-    [
-     140,
-     50
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Rear 8",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Rear 8",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Rear 8",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Rear 9",
-   "points": [
-    [
-     265,
-     14
-    ],
-    [
-     295,
-     14
-    ],
-    [
-     295,
-     50
-    ],
-    [
-     265,
-     50
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Rear 9",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Rear 9",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Rear 9",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Rear 10",
-   "points": [
-    [
-     390,
-     14
-    ],
-    [
-     420,
-     14
-    ],
-    [
-     420,
-     50
-    ],
-    [
-     390,
-     50
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Rear 10",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Rear 10",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Rear 10",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Rear 11",
-   "points": [
-    [
-     515,
-     14
-    ],
-    [
-     545,
-     14
-    ],
-    [
-     545,
-     50
-    ],
-    [
-     515,
-     50
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Rear 11",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Rear 11",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Rear 11",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Rear 12",
-   "points": [
-    [
-     640,
-     14
-    ],
-    [
-     670,
-     14
-    ],
-    [
-     670,
-     50
-    ],
-    [
-     640,
-     50
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Rear 12",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Rear 12",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Rear 12",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Plenum Box",
-   "points": [
-    [
-     -60,
-     0
-    ],
-    [
-     60,
-     0
-    ],
-    [
-     75,
-     60
-    ],
-    [
-     75,
-     250
-    ],
-    [
-     -75,
-     250
-    ],
-    [
-     -75,
-     60
-    ]
-   ],
-   "start": -740,
-   "end": 740,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Plenum Box",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Plenum Box",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Plenum Box",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Spigot",
-   "points": [
-    [
-     62.5,
-     0.0
-    ],
-    [
-     60.37,
-     16.18
-    ],
-    [
-     54.13,
-     31.25
-    ],
-    [
-     44.19,
-     44.19
-    ],
-    [
-     31.25,
-     54.13
-    ],
-    [
-     16.18,
-     60.37
-    ],
-    [
-     0.0,
-     62.5
-    ],
-    [
-     -16.18,
-     60.37
-    ],
-    [
-     -31.25,
-     54.13
-    ],
-    [
-     -44.19,
-     44.19
-    ],
-    [
-     -54.13,
-     31.25
-    ],
-    [
-     -60.37,
-     16.18
-    ],
-    [
-     -62.5,
-     0.0
-    ],
-    [
-     -60.37,
-     -16.18
-    ],
-    [
-     -54.13,
-     -31.25
-    ],
-    [
-     -44.19,
-     -44.19
-    ],
-    [
-     -31.25,
-     -54.13
-    ],
-    [
-     -16.18,
-     -60.37
-    ],
-    [
-     -0.0,
-     -62.5
-    ],
-    [
-     16.18,
-     -60.37
-    ],
-    [
-     31.25,
-     -54.13
-    ],
-    [
-     44.19,
-     -44.19
-    ],
-    [
-     54.13,
-     -31.25
-    ],
-    [
-     60.37,
-     -16.18
-    ]
-   ],
-   "start": 250,
-   "end": 350
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Spigot",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Spigot",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Spigot",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Spigot Bead",
-   "profile": [
-    [
-     62,
-     290
-    ],
-    [
-     68,
-     290
-    ],
-    [
-     68,
-     300
-    ],
-    [
-     62,
-     300
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Spigot Bead",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Spigot Bead",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hanger Lug 1",
-   "points": [
-    [
-     -600,
-     -85
-    ],
-    [
-     -560,
-     -85
-    ],
-    [
-     -560,
-     -70
-    ],
-    [
-     -600,
-     -70
-    ]
-   ],
-   "start": 200,
-   "end": 240
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hanger Lug 1",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hanger Lug 1",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hanger Lug 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hanger Lug 2",
-   "points": [
-    [
-     560,
-     -85
-    ],
-    [
-     600,
-     -85
-    ],
-    [
-     600,
-     -70
-    ],
-    [
-     560,
-     -70
-    ]
-   ],
-   "start": 200,
-   "end": 240
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hanger Lug 2",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hanger Lug 2",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hanger Lug 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "Supply",
-   "domain": "duct",
-   "system": "SupplyAir",
-   "solid": "Spigot",
-   "side": "top",
-   "diameter": 125,
-   "flow": "In"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_AirTerminal_Diffuser_Linear_Slot.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_M_AirTerminal_Diffuser_Linear_Slot",
+  "template": "Metric Generic Model.rft",
+  "about": "Modelled as a generic product: front and rear frame profiles, centre divider, end caps, dark slot throat with pattern controllers in both slots, plenum box with spigot and hanger lugs. Reference: query: diffuser linear slot air terminals hospital; images: https://www.google.com/search?tbm=isch&q=diffuser+linear+slot+air+terminals+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Air Terminals"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Airflow_Ls",
+      "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "1200_2Slot"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200_2Slot/FMC_Cost_Unit",
+      "type": "1200_2Slot",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200_2Slot/FMC_Geometry_Stage",
+      "type": "1200_2Slot",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200_2Slot/IfcExportAs",
+      "type": "1200_2Slot",
+      "param": "IfcExportAs",
+      "value": "IfcAirTerminal"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200_2Slot/Description",
+      "type": "1200_2Slot",
+      "param": "Description",
+      "value": "Linear slot diffuser 1200 to 1500 mm, 2 slot, white aluminium profiles with pattern controllers, insulated plenum with top spigot"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200_2Slot/Keynote",
+      "type": "1200_2Slot",
+      "param": "Keynote",
+      "value": "H.ATD_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200_2Slot/FMC_Keynote_Code",
+      "type": "1200_2Slot",
+      "param": "FMC_Keynote_Code",
+      "value": "H.ATD_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200_2Slot/FMC_Code_Description",
+      "type": "1200_2Slot",
+      "param": "FMC_Code_Description",
+      "value": "Diffuser Linear Slot: Linear slot"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200_2Slot/FMC_Code_Group",
+      "type": "1200_2Slot",
+      "param": "FMC_Code_Group",
+      "value": "H.ATD"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200_2Slot/FMC_Role_Code",
+      "type": "1200_2Slot",
+      "param": "FMC_Role_Code",
+      "value": "M"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200_2Slot/Default Elevation",
+      "type": "1200_2Slot",
+      "param": "Default Elevation",
+      "value": 2700
+    },
+    {
+      "op": "add_type",
+      "name": "1500_2Slot"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500_2Slot/FMC_Cost_Unit",
+      "type": "1500_2Slot",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500_2Slot/FMC_Geometry_Stage",
+      "type": "1500_2Slot",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500_2Slot/IfcExportAs",
+      "type": "1500_2Slot",
+      "param": "IfcExportAs",
+      "value": "IfcAirTerminal"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500_2Slot/Description",
+      "type": "1500_2Slot",
+      "param": "Description",
+      "value": "Linear slot diffuser 1200 to 1500 mm, 2 slot, white aluminium profiles with pattern controllers, insulated plenum with top spigot"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500_2Slot/Keynote",
+      "type": "1500_2Slot",
+      "param": "Keynote",
+      "value": "H.ATD_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500_2Slot/FMC_Keynote_Code",
+      "type": "1500_2Slot",
+      "param": "FMC_Keynote_Code",
+      "value": "H.ATD_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500_2Slot/FMC_Code_Description",
+      "type": "1500_2Slot",
+      "param": "FMC_Code_Description",
+      "value": "Diffuser Linear Slot: Linear slot"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500_2Slot/FMC_Code_Group",
+      "type": "1500_2Slot",
+      "param": "FMC_Code_Group",
+      "value": "H.ATD"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500_2Slot/FMC_Role_Code",
+      "type": "1500_2Slot",
+      "param": "FMC_Role_Code",
+      "value": "M"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500_2Slot/Default Elevation",
+      "type": "1500_2Slot",
+      "param": "Default Elevation",
+      "value": 2700
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Epw",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Epw Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Steel_EpoxyCoated_White",
+      "param": "Epw Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Mgrey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Mgrey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_MedicalGrey",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Galv",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Galv Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Duct_Galvanised",
+      "param": "Galv Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -760,
+          -85
+        ],
+        [
+          760,
+          -85
+        ],
+        [
+          760,
+          75
+        ],
+        [
+          -760,
+          75
+        ]
+      ],
+      "start": -18,
+      "end": 350
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Frame Front",
+      "points": [
+        [
+          -750,
+          -75
+        ],
+        [
+          750,
+          -75
+        ],
+        [
+          750,
+          -55
+        ],
+        [
+          -750,
+          -55
+        ]
+      ],
+      "start": -15,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Frame Front",
+      "subcategory": "Epw"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Frame Front",
+      "param": "Epw Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Frame Front",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Frame Rear",
+      "points": [
+        [
+          -750,
+          55
+        ],
+        [
+          750,
+          55
+        ],
+        [
+          750,
+          75
+        ],
+        [
+          -750,
+          75
+        ]
+      ],
+      "start": -15,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Frame Rear",
+      "subcategory": "Epw"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Frame Rear",
+      "param": "Epw Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Frame Rear",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Divider",
+      "points": [
+        [
+          -750,
+          -8
+        ],
+        [
+          750,
+          -8
+        ],
+        [
+          750,
+          8
+        ],
+        [
+          -750,
+          8
+        ]
+      ],
+      "start": -18,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Divider",
+      "subcategory": "Epw"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Divider",
+      "param": "Epw Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Divider",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "End Cap 1",
+      "points": [
+        [
+          -760,
+          -75
+        ],
+        [
+          -750,
+          -75
+        ],
+        [
+          -750,
+          75
+        ],
+        [
+          -760,
+          75
+        ]
+      ],
+      "start": -16,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "End Cap 1",
+      "subcategory": "Epw"
+    },
+    {
+      "op": "set_material_param",
+      "name": "End Cap 1",
+      "param": "Epw Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "End Cap 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "End Cap 2",
+      "points": [
+        [
+          750,
+          -75
+        ],
+        [
+          760,
+          -75
+        ],
+        [
+          760,
+          75
+        ],
+        [
+          750,
+          75
+        ]
+      ],
+      "start": -16,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "End Cap 2",
+      "subcategory": "Epw"
+    },
+    {
+      "op": "set_material_param",
+      "name": "End Cap 2",
+      "param": "Epw Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "End Cap 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Slot Throat",
+      "points": [
+        [
+          -750,
+          -55
+        ],
+        [
+          750,
+          -55
+        ],
+        [
+          750,
+          55
+        ],
+        [
+          -750,
+          55
+        ]
+      ],
+      "start": -6,
+      "end": -1
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Slot Throat",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Slot Throat",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Slot Throat",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pattern Controller Front 1",
+      "points": [
+        [
+          -735,
+          -50
+        ],
+        [
+          -705,
+          -50
+        ],
+        [
+          -705,
+          -14
+        ],
+        [
+          -735,
+          -14
+        ]
+      ],
+      "start": -13,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pattern Controller Front 1",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pattern Controller Front 1",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pattern Controller Front 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pattern Controller Front 2",
+      "points": [
+        [
+          -610,
+          -50
+        ],
+        [
+          -580,
+          -50
+        ],
+        [
+          -580,
+          -14
+        ],
+        [
+          -610,
+          -14
+        ]
+      ],
+      "start": -13,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pattern Controller Front 2",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pattern Controller Front 2",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pattern Controller Front 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pattern Controller Front 3",
+      "points": [
+        [
+          -485,
+          -50
+        ],
+        [
+          -455,
+          -50
+        ],
+        [
+          -455,
+          -14
+        ],
+        [
+          -485,
+          -14
+        ]
+      ],
+      "start": -13,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pattern Controller Front 3",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pattern Controller Front 3",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pattern Controller Front 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pattern Controller Front 4",
+      "points": [
+        [
+          -360,
+          -50
+        ],
+        [
+          -330,
+          -50
+        ],
+        [
+          -330,
+          -14
+        ],
+        [
+          -360,
+          -14
+        ]
+      ],
+      "start": -13,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pattern Controller Front 4",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pattern Controller Front 4",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pattern Controller Front 4",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pattern Controller Front 5",
+      "points": [
+        [
+          -235,
+          -50
+        ],
+        [
+          -205,
+          -50
+        ],
+        [
+          -205,
+          -14
+        ],
+        [
+          -235,
+          -14
+        ]
+      ],
+      "start": -13,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pattern Controller Front 5",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pattern Controller Front 5",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pattern Controller Front 5",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pattern Controller Front 6",
+      "points": [
+        [
+          -110,
+          -50
+        ],
+        [
+          -80,
+          -50
+        ],
+        [
+          -80,
+          -14
+        ],
+        [
+          -110,
+          -14
+        ]
+      ],
+      "start": -13,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pattern Controller Front 6",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pattern Controller Front 6",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pattern Controller Front 6",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pattern Controller Front 7",
+      "points": [
+        [
+          15,
+          -50
+        ],
+        [
+          45,
+          -50
+        ],
+        [
+          45,
+          -14
+        ],
+        [
+          15,
+          -14
+        ]
+      ],
+      "start": -13,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pattern Controller Front 7",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pattern Controller Front 7",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pattern Controller Front 7",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pattern Controller Front 8",
+      "points": [
+        [
+          140,
+          -50
+        ],
+        [
+          170,
+          -50
+        ],
+        [
+          170,
+          -14
+        ],
+        [
+          140,
+          -14
+        ]
+      ],
+      "start": -13,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pattern Controller Front 8",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pattern Controller Front 8",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pattern Controller Front 8",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pattern Controller Front 9",
+      "points": [
+        [
+          265,
+          -50
+        ],
+        [
+          295,
+          -50
+        ],
+        [
+          295,
+          -14
+        ],
+        [
+          265,
+          -14
+        ]
+      ],
+      "start": -13,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pattern Controller Front 9",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pattern Controller Front 9",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pattern Controller Front 9",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pattern Controller Front 10",
+      "points": [
+        [
+          390,
+          -50
+        ],
+        [
+          420,
+          -50
+        ],
+        [
+          420,
+          -14
+        ],
+        [
+          390,
+          -14
+        ]
+      ],
+      "start": -13,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pattern Controller Front 10",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pattern Controller Front 10",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pattern Controller Front 10",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pattern Controller Front 11",
+      "points": [
+        [
+          515,
+          -50
+        ],
+        [
+          545,
+          -50
+        ],
+        [
+          545,
+          -14
+        ],
+        [
+          515,
+          -14
+        ]
+      ],
+      "start": -13,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pattern Controller Front 11",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pattern Controller Front 11",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pattern Controller Front 11",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pattern Controller Front 12",
+      "points": [
+        [
+          640,
+          -50
+        ],
+        [
+          670,
+          -50
+        ],
+        [
+          670,
+          -14
+        ],
+        [
+          640,
+          -14
+        ]
+      ],
+      "start": -13,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pattern Controller Front 12",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pattern Controller Front 12",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pattern Controller Front 12",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pattern Controller Rear 1",
+      "points": [
+        [
+          -735,
+          14
+        ],
+        [
+          -705,
+          14
+        ],
+        [
+          -705,
+          50
+        ],
+        [
+          -735,
+          50
+        ]
+      ],
+      "start": -13,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pattern Controller Rear 1",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pattern Controller Rear 1",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pattern Controller Rear 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pattern Controller Rear 2",
+      "points": [
+        [
+          -610,
+          14
+        ],
+        [
+          -580,
+          14
+        ],
+        [
+          -580,
+          50
+        ],
+        [
+          -610,
+          50
+        ]
+      ],
+      "start": -13,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pattern Controller Rear 2",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pattern Controller Rear 2",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pattern Controller Rear 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pattern Controller Rear 3",
+      "points": [
+        [
+          -485,
+          14
+        ],
+        [
+          -455,
+          14
+        ],
+        [
+          -455,
+          50
+        ],
+        [
+          -485,
+          50
+        ]
+      ],
+      "start": -13,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pattern Controller Rear 3",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pattern Controller Rear 3",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pattern Controller Rear 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pattern Controller Rear 4",
+      "points": [
+        [
+          -360,
+          14
+        ],
+        [
+          -330,
+          14
+        ],
+        [
+          -330,
+          50
+        ],
+        [
+          -360,
+          50
+        ]
+      ],
+      "start": -13,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pattern Controller Rear 4",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pattern Controller Rear 4",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pattern Controller Rear 4",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pattern Controller Rear 5",
+      "points": [
+        [
+          -235,
+          14
+        ],
+        [
+          -205,
+          14
+        ],
+        [
+          -205,
+          50
+        ],
+        [
+          -235,
+          50
+        ]
+      ],
+      "start": -13,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pattern Controller Rear 5",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pattern Controller Rear 5",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pattern Controller Rear 5",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pattern Controller Rear 6",
+      "points": [
+        [
+          -110,
+          14
+        ],
+        [
+          -80,
+          14
+        ],
+        [
+          -80,
+          50
+        ],
+        [
+          -110,
+          50
+        ]
+      ],
+      "start": -13,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pattern Controller Rear 6",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pattern Controller Rear 6",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pattern Controller Rear 6",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pattern Controller Rear 7",
+      "points": [
+        [
+          15,
+          14
+        ],
+        [
+          45,
+          14
+        ],
+        [
+          45,
+          50
+        ],
+        [
+          15,
+          50
+        ]
+      ],
+      "start": -13,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pattern Controller Rear 7",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pattern Controller Rear 7",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pattern Controller Rear 7",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pattern Controller Rear 8",
+      "points": [
+        [
+          140,
+          14
+        ],
+        [
+          170,
+          14
+        ],
+        [
+          170,
+          50
+        ],
+        [
+          140,
+          50
+        ]
+      ],
+      "start": -13,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pattern Controller Rear 8",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pattern Controller Rear 8",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pattern Controller Rear 8",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pattern Controller Rear 9",
+      "points": [
+        [
+          265,
+          14
+        ],
+        [
+          295,
+          14
+        ],
+        [
+          295,
+          50
+        ],
+        [
+          265,
+          50
+        ]
+      ],
+      "start": -13,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pattern Controller Rear 9",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pattern Controller Rear 9",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pattern Controller Rear 9",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pattern Controller Rear 10",
+      "points": [
+        [
+          390,
+          14
+        ],
+        [
+          420,
+          14
+        ],
+        [
+          420,
+          50
+        ],
+        [
+          390,
+          50
+        ]
+      ],
+      "start": -13,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pattern Controller Rear 10",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pattern Controller Rear 10",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pattern Controller Rear 10",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pattern Controller Rear 11",
+      "points": [
+        [
+          515,
+          14
+        ],
+        [
+          545,
+          14
+        ],
+        [
+          545,
+          50
+        ],
+        [
+          515,
+          50
+        ]
+      ],
+      "start": -13,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pattern Controller Rear 11",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pattern Controller Rear 11",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pattern Controller Rear 11",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pattern Controller Rear 12",
+      "points": [
+        [
+          640,
+          14
+        ],
+        [
+          670,
+          14
+        ],
+        [
+          670,
+          50
+        ],
+        [
+          640,
+          50
+        ]
+      ],
+      "start": -13,
+      "end": -6
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pattern Controller Rear 12",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pattern Controller Rear 12",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pattern Controller Rear 12",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Plenum Box",
+      "points": [
+        [
+          -60,
+          0
+        ],
+        [
+          60,
+          0
+        ],
+        [
+          75,
+          60
+        ],
+        [
+          75,
+          250
+        ],
+        [
+          -75,
+          250
+        ],
+        [
+          -75,
+          60
+        ]
+      ],
+      "start": -740,
+      "end": 740,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Plenum Box",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Plenum Box",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Plenum Box",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Spigot",
+      "points": [
+        [
+          62.5,
+          0
+        ],
+        [
+          60.37,
+          16.18
+        ],
+        [
+          54.13,
+          31.25
+        ],
+        [
+          44.19,
+          44.19
+        ],
+        [
+          31.25,
+          54.13
+        ],
+        [
+          16.18,
+          60.37
+        ],
+        [
+          0,
+          62.5
+        ],
+        [
+          -16.18,
+          60.37
+        ],
+        [
+          -31.25,
+          54.13
+        ],
+        [
+          -44.19,
+          44.19
+        ],
+        [
+          -54.13,
+          31.25
+        ],
+        [
+          -60.37,
+          16.18
+        ],
+        [
+          -62.5,
+          0
+        ],
+        [
+          -60.37,
+          -16.18
+        ],
+        [
+          -54.13,
+          -31.25
+        ],
+        [
+          -44.19,
+          -44.19
+        ],
+        [
+          -31.25,
+          -54.13
+        ],
+        [
+          -16.18,
+          -60.37
+        ],
+        [
+          0,
+          -62.5
+        ],
+        [
+          16.18,
+          -60.37
+        ],
+        [
+          31.25,
+          -54.13
+        ],
+        [
+          44.19,
+          -44.19
+        ],
+        [
+          54.13,
+          -31.25
+        ],
+        [
+          60.37,
+          -16.18
+        ]
+      ],
+      "start": 250,
+      "end": 350
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Spigot",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Spigot",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Spigot",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Spigot Bead",
+      "profile": [
+        [
+          62,
+          290
+        ],
+        [
+          68,
+          290
+        ],
+        [
+          68,
+          300
+        ],
+        [
+          62,
+          300
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Spigot Bead",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Spigot Bead",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hanger Lug 1",
+      "points": [
+        [
+          -600,
+          -85
+        ],
+        [
+          -560,
+          -85
+        ],
+        [
+          -560,
+          -70
+        ],
+        [
+          -600,
+          -70
+        ]
+      ],
+      "start": 200,
+      "end": 240
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hanger Lug 1",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hanger Lug 1",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hanger Lug 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hanger Lug 2",
+      "points": [
+        [
+          560,
+          -85
+        ],
+        [
+          600,
+          -85
+        ],
+        [
+          600,
+          -70
+        ],
+        [
+          560,
+          -70
+        ]
+      ],
+      "start": 200,
+      "end": 240
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hanger Lug 2",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hanger Lug 2",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hanger Lug 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "Supply",
+      "domain": "duct",
+      "system": "SupplyAir",
+      "solid": "Spigot",
+      "side": "top",
+      "diameter": 125,
+      "flow": "In"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_AirTerminal_Diffuser_Linear_Slot.png"
+    }
+  ],
+  "values": {
+    "Length 1200 / 1500 mm, face 150 mm": {
+      "value": "1200/1500x150",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Slot 20 mm x 2": {
+      "value": "2x20",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Spigot 125 mm": {
+      "value": 125,
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   }
- ],
- "values": {
-  "Length 1200 / 1500 mm, face 150 mm": {
-   "value": "1200/1500x150",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Slot 20 mm x 2": {
-   "value": "2x20",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Spigot 125 mm": {
-   "value": 125,
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- }
 }

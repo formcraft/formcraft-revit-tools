@@ -58,6 +58,7 @@ internal static class Program
         SyntaxTree tree = FmcScriptSource.Parse(FmcScriptSource.Build(code, usings));
         unguarded = FmcScriptSource.UnguardedTransactions(tree).Count;
         tree = FmcScriptSource.AddTracking(tree);
+        tree = FmcScriptSource.AddCancelChecks(tree);
         var compilation = CSharpCompilation.Create("AddonCheck_" + Guid.NewGuid().ToString("N"), new[] { tree }, references,
             new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
         using var ms = new MemoryStream();
@@ -96,6 +97,18 @@ internal static class Program
         }
         string message = FmcScriptSource.UsingMessage(new[] { new FmcScriptSource.TxUse { Line = 2, Type = "Transaction", Code = "new Transaction(document, \"leak\")" } });
         if (!message.Contains("line 2") || !message.Contains("FmcScript.Tx")) Fail("tx rule", "the refusal names neither the line nor FmcScript.Tx");
+
+        // Ogala night report: every loop gets a cancel check, and the script's line numbers stay
+        string loops = "int n = 0;\nfor (int i = 0; i < 3; i++) n++;\nforeach (var x in new[] { 1 }) { n += x; }\nwhile (n < 9) n++;\ndo { n--; } while (n > 5);\nreturn n;";
+        SyntaxTree checkedTree = FmcScriptSource.AddCancelChecks(FmcScriptSource.Parse(FmcScriptSource.Build(loops, FmcScriptSource.DefaultUsings)));
+        int checks = Regex.Matches(checkedTree.ToString(), "FmcScript.CancelPoint").Count;
+        var ret = checkedTree.GetRoot().DescendantNodes().OfType<Microsoft.CodeAnalysis.CSharp.Syntax.ReturnStatementSyntax>().First();
+        int retLine = ret.GetLocation().GetMappedLineSpan().StartLinePosition.Line + 1;
+        List<string> loopErrors = Compile(loops, FmcScriptSource.DefaultUsings.ToList(), references, out _);
+        if (checks != 4) Fail("cancel checks", $"{checks} cancel checks for 4 loops");
+        else if (retLine != 6) Fail("cancel checks", $"the return moved from line 6 to {retLine}");
+        else if (loopErrors.Count > 0) Fail("cancel checks", string.Join("; ", loopErrors));
+        else Console.WriteLine("ok    cancel checks: one per loop, lines kept");
     }
 
     private static void Fail(string what, string why)

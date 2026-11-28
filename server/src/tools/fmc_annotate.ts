@@ -4,7 +4,7 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
-import { AnnotationFacts, AnnotationStandard, checkAnnotation, parseStandard } from "../fmc/annotation.js";
+import { AnnotationFacts, AnnotationStandard, annotationVerdict, checkAnnotation, parseStandard } from "../fmc/annotation.js";
 
 const win = path.win32;
 
@@ -32,7 +32,7 @@ function readStandard(cfg: GuardConfig): AnnotationStandard | null {
 export const FMC_ANNOTATE_DESCRIPTION =
   "Formcraft annotation against the kit's annotation standard (FMC_Annotation_Standard.json: pens, line patterns, text " +
     "types, dimension styles, tag naming, symbols, colours). standard returns the standard. check (read-only) lists the " +
-    "model's text types, line patterns, dimension types and tag families outside the standard. missing_tags (read-only) " +
+    "model's text types, line patterns, dimension types and tag families outside the standard, and answers status (Pass, Fail, Proposed, Incomplete or Not checked: when the standard is unreadable every check is Not checked, the code is FMC-ANNOTATE-NOT-CHECKED and isError is true, never Pass). missing_tags (read-only) " +
     "counts untagged doors, windows, rooms and electrical fixtures in the current view or the views on the current sheet. " +
     "request records a proposed change to the standard for the BIM Manager.";
 
@@ -66,7 +66,11 @@ export async function runFmcAnnotate(args: FmcAnnotateArgs) {
         const facts = (await withRevitConnection((c) => c.sendRaw("fmc_annotation_facts", {}, 120000))) as AnnotationFacts;
         const checks = checkAnnotation(facts, standard);
         log(config, "annotation_check", facts.model, "done", checks.map((c) => `${c.check}: ${c.found}`).join(" | "));
-        return reply({ model: facts.model, checks, standard_problem: standard ? undefined : notReadable });
+        const verdict = annotationVerdict(checks);
+        return reply({
+          model: facts.model, status: verdict.status, ...(verdict.code ? { code: verdict.code, message: verdict.message } : {}),
+          checks, standard_problem: standard ? undefined : notReadable,
+        }, verdict.is_error);
       }
       case "missing_tags": {
         const r = await withRevitConnection((c) => c.sendRaw("fmc_missing_tags", { scope: args.scope }, 120000));

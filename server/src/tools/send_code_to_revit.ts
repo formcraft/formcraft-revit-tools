@@ -2,6 +2,7 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { JobStillRunning } from "../utils/SocketClient.js";
+import { resolvedDocumentFrom } from "../fmc/docresolve.js";
 
 /** Largest script accepted (characters). The add-in checks the same limit; docs/BRIDGE.md. */
 export const MAX_CODE_CHARS = 1_000_000;
@@ -9,16 +10,18 @@ export const MAX_CODE_CHARS = 1_000_000;
 const USING = /^(using\s+)?(static\s+)?([A-Za-z_]\w*\s*=\s*)?[A-Za-z_]\w*(\.[A-Za-z_]\w*)*\s*;?$/;
 
 const transactionModeSchema = z
-  .enum(["auto", "none"])
+  .enum(["auto", "none", "read_only"])
   .default("auto")
   .describe(
     "'auto' (default) wraps the script in one transaction with the default failures handling: Revit warnings are " +
       "deleted and listed in the result, an error rolls everything back and is reported. 'none' when the script opens " +
-      "its own transactions (use FmcScript.Run(document, name, () => {...}) for the same handling)."
+      "its own transactions (use FmcScript.Run(document, name, () => {...}) for the same handling). 'read_only' (owner 26 Oct) " +
+      "runs it in a transaction that is always rolled back: the model can't change, so it needs no approval; use it to read."
   );
 
 export const SEND_CODE_DESCRIPTION =
-  "Send C# code to Revit. The code is the body of `object Execute(Document document, object[] parameters)`: end it " +
+  "Send C# code to Revit. The code is the body of `object Execute(Document document, object[] parameters)`. " +
+    "`document` and `doc` are the call's resolved document, not whichever model is active. End it " +
     "with `return <value>;` (`return null;` when there is nothing to return). Namespaces always in scope: System, " +
     "System.Linq, System.Collections.Generic, System.Text, Autodesk.Revit.DB (+ .Architecture, .Structure), " +
     "Autodesk.Revit.UI and RevitMCPCommandSet.Bridge; add more with `usings`. Helpers: FmcScript.Mm(mm) → feet, " +
@@ -34,7 +37,13 @@ export const SEND_CODE_DESCRIPTION =
     "errors carry a code (FMC-CODE-COMPILE with line and column, FMC-CODE-RUNTIME with the exception's type, message and " +
     "script line, FMC-CODE-ROLLED-BACK with Revit's errors). A script still running after about 50 s answers " +
     "[FMC-JOB-RUNNING] with a job id: it has not failed; follow it with fmc_job, never send it again. Give a short `purpose`: " +
-    "repeated scripts are what Formcraft turns into tools next.";
+    "repeated scripts are what Formcraft turns into tools next. A script that calls itself, or a while(true) or for(;;) with no " +
+    "break, return or throw, is refused before it runs: a stack overflow cannot be caught and crashes Revit. " +
+    "Soft cap: do not walk every parameter of every element. A FilteredElementCollector with no OfCategory or OfClass, " +
+    "then Parameters, GetOrderedParameters or ParametersMap reading StorageType or AsValueString, is refused " +
+    "(FMC-SEND-CODE-UNSCOPED). That walk crashed Revit 2025.4 with an uncatchable AccessViolationException. " +
+    "Scope by category or class and read named parameters (LookupParameter or get_Parameter(BuiltInParameter)), in batches. " +
+    "allow_full_scan true is the only override.";
 
 export const SEND_CODE_SHAPE = {
   code: z
@@ -55,23 +64,57 @@ export const SEND_CODE_SHAPE = {
     .optional()
     .describe("A few words on what the code is for, e.g. \"export sheet PNGs\" or \"LED strips on room walls\". Recorded in the local call " +
       "ledger (never the code) so repeated scripts can be moved into a plugin tool (fmc_balance backlog)."),
+  allow_full_scan: z
+    .boolean()
+    .optional()
+    .describe("Override FMC-SEND-CODE-UNSCOPED. A full parameter scan of every element crashed Revit 2025.4. Leave this false and scope the collector."),
 };
 
-type SendCodeArgs = { code: string; parameters?: string[]; usings?: string[]; transactionMode?: "auto" | "none"; purpose?: string };
+type SendCodeArgs = { code: string; parameters?: string[]; usings?: string[]; transactionMode?: "auto" | "none" | "read_only"; purpose?: string; allow_full_scan?: boolean };
+
+/**
+ * A script result that is already an object, or a JSON string of an object or array, parsed once.
+ * Anything else stays out of output_json. The text reply is unchanged apart from this extra field.
+ */
+export function outputJson(result: unknown): unknown | undefined {
+  let value = result;
+  // The add-in JSON-encodes the script's return value, so a script that returns a JSON string arrives
+  // double-encoded ("\"{...}\""). Unwrap up to three string layers before giving up.
+  for (let depth = 0; depth < 3 && typeof value === "string"; depth++) {
+    const text = value.trim();
+    if (!text.startsWith("{") && !text.startsWith("[") && !text.startsWith("\"")) return undefined;
+    try { value = JSON.parse(text); } catch { return undefined; }
+  }
+  if (value !== null && typeof value === "object") return value;
+  return undefined;
+}
 
 /** The add-in's answer as text: the result, or the error with its code, and the times. */
-export function formatCodeResult(response: any): { text: string; isError: boolean } {
+export function formatCodeResult(response: any): { text: string; isError: boolean; output_json?: unknown } {
   if (!response || typeof response !== "object") return { text: `Code execution finished.\nResult: ${JSON.stringify(response)}`, isError: false };
   const times = `compile ${response.compileMs ?? "?"} ms, run ${response.runMs ?? "?"} ms`;
+  const resolved = resolvedDocumentFrom(response.resolved_document) ?? resolvedDocumentFrom(response.document);
   const extra = {
-    job: response.job, document: response.document, transaction: response.transaction,
+    job: response.job, document: response.document, ...(resolved ? { resolved_document: resolved } : {}), transaction: response.transaction,
+    undo_id: response.undoId || undefined,
     warnings: response.warnings?.length ? response.warnings : undefined,
     failures: response.failures?.length ? response.failures : undefined,
     dialogs: response.dialogs?.length ? response.dialogs : undefined,
     txLeak: response.txLeak?.length ? response.txLeak : undefined,
     documentBlocked: response.documentBlocked || undefined,
     note: response.note,
+    created_ids: response.createdIds?.length ? response.createdIds : undefined,
+    // Ogala night report: compile times grew to 74-133 s before an OutOfMemoryException; and a script that touched far
+    // more than it named
+    advice: [
+      (response.compileMs ?? 0) > 30000 ? "Compiling took over 30 s: Revit is short of memory. Save with fmc_save_project and ask the person to restart Revit before more scripts." : "",
+      (response.modifiedCount ?? 0) > 300 || (response.deletedIds?.length ?? 0) > 50 ? `This script changed ${response.modifiedCount ?? 0} and deleted ${response.deletedIds?.length ?? 0} elements: check that was meant (see_view, model_check).` : "",
+      /open transaction/i.test(String(response.errorMessage ?? "")) && /save/i.test(String(response.errorMessage ?? "") + String(response.error ?? "")) ? "Scripts can't save the model: use revit_file save." : "",
+    ].filter(Boolean),
+    deleted_ids: response.deletedIds?.length ? response.deletedIds : undefined,
+    modified: response.modifiedCount || undefined,
   };
+  if (!extra.advice.length) delete (extra as { advice?: string[] }).advice;
   if (response.success === false) {
     return {
       isError: true,
@@ -80,8 +123,13 @@ export function formatCodeResult(response: any): { text: string; isError: boolea
     };
   }
   let result: unknown = response.result;
-  if (typeof result === "string") { try { result = JSON.parse(result); } catch { /* keep the text */ } }
-  return { isError: false, text: `Code execution successful (${times})\n` + JSON.stringify({ result, ...extra }, null, 2) };
+  for (let depth = 0; depth < 3 && typeof result === "string"; depth++) {
+    const text = result.trim();
+    if (depth > 0 && !text.startsWith("{") && !text.startsWith("[") && !text.startsWith("\"")) break;
+    try { result = JSON.parse(text); } catch { break; }
+  }
+  const output_json = outputJson(response.result);
+  return { isError: false, text: `Code execution successful (${times})\n` + JSON.stringify({ result, ...(output_json === undefined ? {} : { output_json }), ...extra }, null, 2), output_json };
 }
 
 export async function runSendCode(args: SendCodeArgs) {
@@ -90,11 +138,12 @@ export async function runSendCode(args: SendCodeArgs) {
     parameters: args.parameters || [],
     usings: args.usings || [],
     transactionMode: args.transactionMode ?? "auto",
+    ...(args.allow_full_scan ? { allow_full_scan: true } : {}),
   };
   try {
     const response = await withRevitConnection(async (revitClient) => revitClient.sendCommand("send_code_to_revit", params));
-    const { text, isError } = formatCodeResult(response);
-    return { content: [{ type: "text" as const, text }], isError };
+    const { text, isError, output_json } = formatCodeResult(response);
+    return { content: [{ type: "text" as const, text }], isError, ...(output_json === undefined ? {} : { output_json }) };
   } catch (error) {
     if (error instanceof JobStillRunning) {
       return {

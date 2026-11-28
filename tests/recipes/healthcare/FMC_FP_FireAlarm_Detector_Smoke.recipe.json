@@ -1,261 +1,285 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_FP_FireAlarm_Detector_Smoke",
- "template": "Metric Generic Model.rft",
- "about": "Wave 1: smoke detector; fire-alarm connector and a 7.5 m coverage disc shown in plan only (BS 5839-1 basis).",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Fire Alarm Devices"
-  },
-  {
-   "op": "add_type",
-   "name": "Optical_Standard"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
-  },
-  {
-   "op": "set_type_value",
-   "name": "Optical_Standard/Keynote",
-   "type": "Optical_Standard",
-   "param": "Keynote",
-   "value": "V.FAL_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "Optical_Standard/FMC_Keynote_Code",
-   "type": "Optical_Standard",
-   "param": "FMC_Keynote_Code",
-   "value": "V.FAL_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "Optical_Standard/FMC_Cost_Unit",
-   "type": "Optical_Standard",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "Optical_Standard/FMC_Geometry_Stage",
-   "type": "Optical_Standard",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "Optical_Standard/IfcExportAs",
-   "type": "Optical_Standard",
-   "param": "IfcExportAs",
-   "value": "IfcSensor"
-  },
-  {
-   "op": "set_type_value",
-   "name": "Optical_Standard/Description",
-   "type": "Optical_Standard",
-   "param": "Description",
-   "value": "Optical smoke detector with base, addressable, ceiling mounted"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Base",
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Head",
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coverage",
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "line_weight_projection": 1
-  },
-  {
-   "op": "revolution",
-   "name": "Coarse Envelope",
-   "profile": [
-    [
-     0,
-     0
-    ],
-    [
-     50,
-     0
-    ],
-    [
-     50,
-     55
-    ],
-    [
-     0,
-     55
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "revolution",
-   "name": "Base",
-   "profile": [
-    [
-     0,
-     0
-    ],
-    [
-     52,
-     0
-    ],
-    [
-     52,
-     12
-    ],
-    [
-     0,
-     12
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "subcategory": "Base"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Head",
-   "profile": [
-    [
-     0,
-     12
-    ],
-    [
-     50,
-     12
-    ],
-    [
-     46,
-     45
-    ],
-    [
-     30,
-     55
-    ],
-    [
-     0,
-     55
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "subcategory": "Head"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Head",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Coverage",
-   "profile": [
-    [
-     0,
-     0
-    ],
-    [
-     7500,
-     0
-    ],
-    [
-     7500,
-     5
-    ],
-    [
-     0,
-     5
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "subcategory": "Coverage"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coverage",
-   "coarse": true,
-   "medium": true,
-   "fine": true,
-   "plan_rcp": true,
-   "front_back": false,
-   "left_right": false
-  },
-  {
-   "op": "add_connector",
-   "name": "Fire Alarm",
-   "domain": "electrical",
-   "system": "FireAlarm",
-   "solid": "Base",
-   "side": "bottom"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_FP_FireAlarm_Detector_Smoke",
+  "template": "Metric Generic Model.rft",
+  "about": "Wave 1: smoke detector; fire-alarm connector and a 7.5 m coverage disc shown in plan only (BS 5839-1 basis).",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Fire Alarm Devices"
+    },
+    {
+      "op": "add_type",
+      "name": "Optical_Standard"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+    },
+    {
+      "op": "set_type_value",
+      "name": "Optical_Standard/Keynote",
+      "type": "Optical_Standard",
+      "param": "Keynote",
+      "value": "V.FAL_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "Optical_Standard/FMC_Keynote_Code",
+      "type": "Optical_Standard",
+      "param": "FMC_Keynote_Code",
+      "value": "V.FAL_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "Optical_Standard/FMC_Cost_Unit",
+      "type": "Optical_Standard",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "Optical_Standard/FMC_Geometry_Stage",
+      "type": "Optical_Standard",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "Optical_Standard/IfcExportAs",
+      "type": "Optical_Standard",
+      "param": "IfcExportAs",
+      "value": "IfcSensor"
+    },
+    {
+      "op": "set_type_value",
+      "name": "Optical_Standard/Description",
+      "type": "Optical_Standard",
+      "param": "Description",
+      "value": "Optical smoke detector with base, addressable, ceiling mounted"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Base",
+      "line_weight_projection": 2,
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Head",
+      "line_weight_projection": 2,
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coverage",
+      "line_weight_projection": 2,
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "line_weight_projection": 3,
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_cut": 4
+    },
+    {
+      "op": "revolution",
+      "name": "Coarse Envelope",
+      "profile": [
+        [
+          0,
+          0
+        ],
+        [
+          50,
+          0
+        ],
+        [
+          50,
+          55
+        ],
+        [
+          0,
+          55
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "revolution",
+      "name": "Base",
+      "profile": [
+        [
+          0,
+          0
+        ],
+        [
+          52,
+          0
+        ],
+        [
+          52,
+          12
+        ],
+        [
+          0,
+          12
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "subcategory": "Base"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Base",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Head",
+      "profile": [
+        [
+          0,
+          12
+        ],
+        [
+          50,
+          12
+        ],
+        [
+          46,
+          45
+        ],
+        [
+          30,
+          55
+        ],
+        [
+          0,
+          55
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "subcategory": "Head"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Head",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Coverage",
+      "profile": [
+        [
+          0,
+          0
+        ],
+        [
+          7500,
+          0
+        ],
+        [
+          7500,
+          5
+        ],
+        [
+          0,
+          5
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "subcategory": "Coverage"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coverage",
+      "coarse": true,
+      "medium": true,
+      "fine": true,
+      "plan_rcp": true,
+      "front_back": false,
+      "left_right": false
+    },
+    {
+      "op": "add_connector",
+      "name": "Fire Alarm",
+      "domain": "electrical",
+      "system": "FireAlarm",
+      "solid": "Base",
+      "side": "bottom"
+    }
+  ],
+  "values": {
+    "Coverage radius 7500 mm": {
+      "value": "7500",
+      "source_status": "assumed",
+      "source": "BS 5839-1 point smoke detector, flat ceiling"
+    },
+    "Body 104 dia x 55 mm": {
+      "value": "104",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   }
- ],
- "values": {
-  "Coverage radius 7500 mm": {
-   "value": "7500",
-   "source_status": "assumed",
-   "source": "BS 5839-1 point smoke detector, flat ceiling"
-  },
-  "Body 104 dia x 55 mm": {
-   "value": "104",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- }
 }

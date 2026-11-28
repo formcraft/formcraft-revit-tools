@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using RevitMCPSDK.API.Base;
 using RevitMCPCommandSet.Models.Architecture;
 using RevitMCPCommandSet.Services.Architecture;
+using RevitMCPCommandSet.Services.Fmc;
 
 namespace RevitMCPCommandSet.Commands.Architecture
 {
@@ -36,11 +37,12 @@ namespace RevitMCPCommandSet.Commands.Architecture
                 if (data == null)
                     throw new ArgumentNullException(nameof(data), "No room data provided");
 
+                FmcCallContext.Begin(parameters);
                 // Set parameters for the event handler
                 _handler.SetParameters(data);
 
                 // Trigger external event and wait for completion
-                if (RaiseAndWaitForCompletion(15000)) // 15 second timeout
+                if (RaiseAndWaitForCompletion(300000)) // owner 26 Oct: big batches take Revit over 10 s; wait up to 5 min
                 {
                     return _handler.Result;
                 }

@@ -1,3177 +1,3187 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_P_PlumbingFixture_Sink_Plaster_Trap",
- "template": "Metric Generic Model.rft",
- "about": "Plaster sink modelled as a generic product: china sink (floor, walls, front roll) on brackets, waste into a plaster settlement drum with clamped lid and handle, outlet to the wall, cold and hot bib taps. Reference: query: sink plaster trap plumbing fixtures hospital; images: https://www.google.com/search?tbm=isch&q=sink+plaster+trap+plumbing+fixtures+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Plumbing Fixtures"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Pipe_System",
-   "guid": "19b06c84-7f51-563a-ac4a-ed9b4addfabc",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Discharge_Units",
-   "guid": "7aa955c0-3c0f-5f8c-a77b-9124e8d513eb",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Asset_Tag",
-   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Serial_Number",
-   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Install_Date",
-   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Warranty_End",
-   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Maintenance_Interval_Months",
-   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_OM_Link",
-   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Mounting_Height_mm",
-   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
-   "instance": true
-  },
-  {
-   "op": "add_type",
-   "name": "900_PlasterTrap"
-  },
-  {
-   "op": "set_type_value",
-   "name": "900_PlasterTrap/FMC_Cost_Unit",
-   "type": "900_PlasterTrap",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "900_PlasterTrap/FMC_Geometry_Stage",
-   "type": "900_PlasterTrap",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "900_PlasterTrap/IfcExportAs",
-   "type": "900_PlasterTrap",
-   "param": "IfcExportAs",
-   "value": "IfcSanitaryTerminal"
-  },
-  {
-   "op": "set_type_value",
-   "name": "900_PlasterTrap/Description",
-   "type": "900_PlasterTrap",
-   "param": "Description",
-   "value": "Plaster room sink 900 x 480 mm, vitreous china on cantilever brackets, floor-standing plaster settlement trap with clamped lid, bib taps"
-  },
-  {
-   "op": "set_type_value",
-   "name": "900_PlasterTrap/Keynote",
-   "type": "900_PlasterTrap",
-   "param": "Keynote",
-   "value": "P.SNK_06"
-  },
-  {
-   "op": "set_type_value",
-   "name": "900_PlasterTrap/FMC_Keynote_Code",
-   "type": "900_PlasterTrap",
-   "param": "FMC_Keynote_Code",
-   "value": "P.SNK_06"
-  },
-  {
-   "op": "set_type_value",
-   "name": "900_PlasterTrap/FMC_Code_Description",
-   "type": "900_PlasterTrap",
-   "param": "FMC_Code_Description",
-   "value": "Sink Plaster Trap: Plaster room sink with trap"
-  },
-  {
-   "op": "set_type_value",
-   "name": "900_PlasterTrap/FMC_Code_Group",
-   "type": "900_PlasterTrap",
-   "param": "FMC_Code_Group",
-   "value": "P.SNK"
-  },
-  {
-   "op": "set_type_value",
-   "name": "900_PlasterTrap/FMC_Role_Code",
-   "type": "900_PlasterTrap",
-   "param": "FMC_Role_Code",
-   "value": "P"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "China",
-   "color": [
-    255,
-    255,
-    255
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "China Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Ceramic_VitreousChina_White",
-   "param": "China Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Epoxy White",
-   "color": [
-    237,
-    237,
-    232
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Epoxy White Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Steel_EpoxyCoated_White",
-   "param": "Epoxy White Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Grey",
-   "color": [
-    154,
-    160,
-    166
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Grey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Grey",
-   "param": "Grey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "White",
-   "color": [
-    242,
-    242,
-    238
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "White Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_White",
-   "param": "White Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Stainless",
-   "color": [
-    180,
-    183,
-    186
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Stainless Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_StainlessSteel_Brushed",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Chrome",
-   "color": [
-    192,
-    195,
-    199
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Chrome Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Chrome_Polished",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Blue",
-   "color": [
-    47,
-    109,
-    181
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Blue Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Blue",
-   "param": "Blue Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Red",
-   "color": [
-    181,
-    18,
-    27
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Red Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_FireHoseReel_Red",
-   "param": "Red Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -452.0,
-     -485
-    ],
-    [
-     452.0,
-     -485
-    ],
-    [
-     452.0,
-     0.0
-    ],
-    [
-     -452.0,
-     0.0
-    ]
-   ],
-   "start": 0,
-   "end": 1090
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Sink Floor",
-   "points": [
-    [
-     420.0,
-     -480.0
-    ],
-    [
-     431.48,
-     -477.72
-    ],
-    [
-     441.21,
-     -471.21
-    ],
-    [
-     447.72,
-     -461.48
-    ],
-    [
-     450.0,
-     -450.0
-    ],
-    [
-     450.0,
-     -30.0
-    ],
-    [
-     447.72,
-     -18.52
-    ],
-    [
-     441.21,
-     -8.79
-    ],
-    [
-     431.48,
-     -2.28
-    ],
-    [
-     420.0,
-     0.0
-    ],
-    [
-     -420.0,
-     0.0
-    ],
-    [
-     -431.48,
-     -2.28
-    ],
-    [
-     -441.21,
-     -8.79
-    ],
-    [
-     -447.72,
-     -18.52
-    ],
-    [
-     -450.0,
-     -30.0
-    ],
-    [
-     -450.0,
-     -450.0
-    ],
-    [
-     -447.72,
-     -461.48
-    ],
-    [
-     -441.21,
-     -471.21
-    ],
-    [
-     -431.48,
-     -477.72
-    ],
-    [
-     -420.0,
-     -480.0
-    ]
-   ],
-   "start": 650,
-   "end": 690
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sink Floor",
-   "subcategory": "China"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sink Floor",
-   "param": "China Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sink Floor",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Sink Front",
-   "points": [
-    [
-     -450,
-     -480
-    ],
-    [
-     450,
-     -480
-    ],
-    [
-     450,
-     -440
-    ],
-    [
-     -450,
-     -440
-    ]
-   ],
-   "start": 690,
-   "end": 900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sink Front",
-   "subcategory": "China"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sink Front",
-   "param": "China Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sink Front",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Sink Back",
-   "points": [
-    [
-     -450,
-     -40
-    ],
-    [
-     450,
-     -40
-    ],
-    [
-     450,
-     0
-    ],
-    [
-     -450,
-     0
-    ]
-   ],
-   "start": 690,
-   "end": 900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sink Back",
-   "subcategory": "China"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sink Back",
-   "param": "China Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sink Back",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Sink End 1",
-   "points": [
-    [
-     -450,
-     -440
-    ],
-    [
-     -410,
-     -440
-    ],
-    [
-     -410,
-     -40
-    ],
-    [
-     -450,
-     -40
-    ]
-   ],
-   "start": 690,
-   "end": 900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sink End 1",
-   "subcategory": "China"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sink End 1",
-   "param": "China Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sink End 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Sink End 2",
-   "points": [
-    [
-     410,
-     -440
-    ],
-    [
-     450,
-     -440
-    ],
-    [
-     450,
-     -40
-    ],
-    [
-     410,
-     -40
-    ]
-   ],
-   "start": 690,
-   "end": 900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sink End 2",
-   "subcategory": "China"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sink End 2",
-   "param": "China Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sink End 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Front Roll",
-   "points": [
-    [
-     444.0,
-     880.0
-    ],
-    [
-     447.06,
-     880.61
-    ],
-    [
-     449.66,
-     882.34
-    ],
-    [
-     451.39,
-     884.94
-    ],
-    [
-     452.0,
-     888.0
-    ],
-    [
-     452.0,
-     894.0
-    ],
-    [
-     451.39,
-     897.06
-    ],
-    [
-     449.66,
-     899.66
-    ],
-    [
-     447.06,
-     901.39
-    ],
-    [
-     444.0,
-     902.0
-    ],
-    [
-     -444.0,
-     902.0
-    ],
-    [
-     -447.06,
-     901.39
-    ],
-    [
-     -449.66,
-     899.66
-    ],
-    [
-     -451.39,
-     897.06
-    ],
-    [
-     -452.0,
-     894.0
-    ],
-    [
-     -452.0,
-     888.0
-    ],
-    [
-     -451.39,
-     884.94
-    ],
-    [
-     -449.66,
-     882.34
-    ],
-    [
-     -447.06,
-     880.61
-    ],
-    [
-     -444.0,
-     880.0
-    ]
-   ],
-   "start": 470,
-   "end": 485,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Front Roll",
-   "subcategory": "China"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Front Roll",
-   "param": "China Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Front Roll",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cantilever Bracket 1",
-   "points": [
-    [
-     -420,
-     650
-    ],
-    [
-     0,
-     650
-    ],
-    [
-     0,
-     400
-    ]
-   ],
-   "start": -330,
-   "end": -318,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cantilever Bracket 1",
-   "subcategory": "Epoxy White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cantilever Bracket 1",
-   "param": "Epoxy White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cantilever Bracket 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cantilever Bracket 2",
-   "points": [
-    [
-     -420,
-     650
-    ],
-    [
-     0,
-     650
-    ],
-    [
-     0,
-     400
-    ]
-   ],
-   "start": 318,
-   "end": 330,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cantilever Bracket 2",
-   "subcategory": "Epoxy White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cantilever Bracket 2",
-   "param": "Epoxy White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cantilever Bracket 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Sink Waste Tail",
-   "points": [
-    [
-     25.0,
-     -250.0
-    ],
-    [
-     24.15,
-     -243.53
-    ],
-    [
-     21.65,
-     -237.5
-    ],
-    [
-     17.68,
-     -232.32
-    ],
-    [
-     12.5,
-     -228.35
-    ],
-    [
-     6.47,
-     -225.85
-    ],
-    [
-     0.0,
-     -225.0
-    ],
-    [
-     -6.47,
-     -225.85
-    ],
-    [
-     -12.5,
-     -228.35
-    ],
-    [
-     -17.68,
-     -232.32
-    ],
-    [
-     -21.65,
-     -237.5
-    ],
-    [
-     -24.15,
-     -243.53
-    ],
-    [
-     -25.0,
-     -250.0
-    ],
-    [
-     -24.15,
-     -256.47
-    ],
-    [
-     -21.65,
-     -262.5
-    ],
-    [
-     -17.68,
-     -267.68
-    ],
-    [
-     -12.5,
-     -271.65
-    ],
-    [
-     -6.47,
-     -274.15
-    ],
-    [
-     -0.0,
-     -275.0
-    ],
-    [
-     6.47,
-     -274.15
-    ],
-    [
-     12.5,
-     -271.65
-    ],
-    [
-     17.68,
-     -267.68
-    ],
-    [
-     21.65,
-     -262.5
-    ],
-    [
-     24.15,
-     -256.47
-    ]
-   ],
-   "start": 500,
-   "end": 650
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sink Waste Tail",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sink Waste Tail",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sink Waste Tail",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Plaster Trap Drum",
-   "profile": [
-    [
-     0,
-     0
-    ],
-    [
-     170,
-     0
-    ],
-    [
-     170,
-     380
-    ],
-    [
-     0,
-     380
-    ]
-   ],
-   "axis_at": [
-    0,
-    -250
-   ],
-   "axis": "z",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Plaster Trap Drum",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Plaster Trap Drum",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Trap Lid",
-   "profile": [
-    [
-     0,
-     380
-    ],
-    [
-     180,
-     380
-    ],
-    [
-     180,
-     410
-    ],
-    [
-     60,
-     430
-    ],
-    [
-     0,
-     430
-    ]
-   ],
-   "axis_at": [
-    0,
-    -250
-   ],
-   "axis": "z",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Trap Lid",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Trap Lid",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lid Clamp 1",
-   "points": [
-    [
-     -190,
-     -262
-    ],
-    [
-     -172,
-     -262
-    ],
-    [
-     -172,
-     -238
-    ],
-    [
-     -190,
-     -238
-    ]
-   ],
-   "start": 330,
-   "end": 420
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lid Clamp 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lid Clamp 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lid Clamp 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lid Clamp 2",
-   "points": [
-    [
-     172,
-     -262
-    ],
-    [
-     190,
-     -262
-    ],
-    [
-     190,
-     -238
-    ],
-    [
-     172,
-     -238
-    ]
-   ],
-   "start": 330,
-   "end": 420
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lid Clamp 2",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lid Clamp 2",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lid Clamp 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lid Handle",
-   "points": [
-    [
-     54.0,
-     -262.0
-    ],
-    [
-     56.3,
-     -261.54
-    ],
-    [
-     58.24,
-     -260.24
-    ],
-    [
-     59.54,
-     -258.3
-    ],
-    [
-     60.0,
-     -256.0
-    ],
-    [
-     60.0,
-     -244.0
-    ],
-    [
-     59.54,
-     -241.7
-    ],
-    [
-     58.24,
-     -239.76
-    ],
-    [
-     56.3,
-     -238.46
-    ],
-    [
-     54.0,
-     -238.0
-    ],
-    [
-     -54.0,
-     -238.0
-    ],
-    [
-     -56.3,
-     -238.46
-    ],
-    [
-     -58.24,
-     -239.76
-    ],
-    [
-     -59.54,
-     -241.7
-    ],
-    [
-     -60.0,
-     -244.0
-    ],
-    [
-     -60.0,
-     -256.0
-    ],
-    [
-     -59.54,
-     -258.3
-    ],
-    [
-     -58.24,
-     -260.24
-    ],
-    [
-     -56.3,
-     -261.54
-    ],
-    [
-     -54.0,
-     -262.0
-    ]
-   ],
-   "start": 430,
-   "end": 470
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lid Handle",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lid Handle",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lid Handle",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Trap Inlet",
-   "points": [
-    [
-     25.0,
-     -250.0
-    ],
-    [
-     24.15,
-     -243.53
-    ],
-    [
-     21.65,
-     -237.5
-    ],
-    [
-     17.68,
-     -232.32
-    ],
-    [
-     12.5,
-     -228.35
-    ],
-    [
-     6.47,
-     -225.85
-    ],
-    [
-     0.0,
-     -225.0
-    ],
-    [
-     -6.47,
-     -225.85
-    ],
-    [
-     -12.5,
-     -228.35
-    ],
-    [
-     -17.68,
-     -232.32
-    ],
-    [
-     -21.65,
-     -237.5
-    ],
-    [
-     -24.15,
-     -243.53
-    ],
-    [
-     -25.0,
-     -250.0
-    ],
-    [
-     -24.15,
-     -256.47
-    ],
-    [
-     -21.65,
-     -262.5
-    ],
-    [
-     -17.68,
-     -267.68
-    ],
-    [
-     -12.5,
-     -271.65
-    ],
-    [
-     -6.47,
-     -274.15
-    ],
-    [
-     -0.0,
-     -275.0
-    ],
-    [
-     6.47,
-     -274.15
-    ],
-    [
-     12.5,
-     -271.65
-    ],
-    [
-     17.68,
-     -267.68
-    ],
-    [
-     21.65,
-     -262.5
-    ],
-    [
-     24.15,
-     -256.47
-    ]
-   ],
-   "start": 430,
-   "end": 500
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Trap Inlet",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Trap Inlet",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Trap Inlet",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Trap Outlet",
-   "points": [
-    [
-     25.0,
-     300.0
-    ],
-    [
-     24.15,
-     306.47
-    ],
-    [
-     21.65,
-     312.5
-    ],
-    [
-     17.68,
-     317.68
-    ],
-    [
-     12.5,
-     321.65
-    ],
-    [
-     6.47,
-     324.15
-    ],
-    [
-     0.0,
-     325.0
-    ],
-    [
-     -6.47,
-     324.15
-    ],
-    [
-     -12.5,
-     321.65
-    ],
-    [
-     -17.68,
-     317.68
-    ],
-    [
-     -21.65,
-     312.5
-    ],
-    [
-     -24.15,
-     306.47
-    ],
-    [
-     -25.0,
-     300.0
-    ],
-    [
-     -24.15,
-     293.53
-    ],
-    [
-     -21.65,
-     287.5
-    ],
-    [
-     -17.68,
-     282.32
-    ],
-    [
-     -12.5,
-     278.35
-    ],
-    [
-     -6.47,
-     275.85
-    ],
-    [
-     -0.0,
-     275.0
-    ],
-    [
-     6.47,
-     275.85
-    ],
-    [
-     12.5,
-     278.35
-    ],
-    [
-     17.68,
-     282.32
-    ],
-    [
-     21.65,
-     287.5
-    ],
-    [
-     24.15,
-     293.53
-    ]
-   ],
-   "start": 0,
-   "end": 90,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Trap Outlet",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Trap Outlet",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Trap Outlet",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Waste Plug",
-   "points": [
-    [
-     30.0,
-     -250.0
-    ],
-    [
-     28.98,
-     -242.24
-    ],
-    [
-     25.98,
-     -235.0
-    ],
-    [
-     21.21,
-     -228.79
-    ],
-    [
-     15.0,
-     -224.02
-    ],
-    [
-     7.76,
-     -221.02
-    ],
-    [
-     0.0,
-     -220.0
-    ],
-    [
-     -7.76,
-     -221.02
-    ],
-    [
-     -15.0,
-     -224.02
-    ],
-    [
-     -21.21,
-     -228.79
-    ],
-    [
-     -25.98,
-     -235.0
-    ],
-    [
-     -28.98,
-     -242.24
-    ],
-    [
-     -30.0,
-     -250.0
-    ],
-    [
-     -28.98,
-     -257.76
-    ],
-    [
-     -25.98,
-     -265.0
-    ],
-    [
-     -21.21,
-     -271.21
-    ],
-    [
-     -15.0,
-     -275.98
-    ],
-    [
-     -7.76,
-     -278.98
-    ],
-    [
-     -0.0,
-     -280.0
-    ],
-    [
-     7.76,
-     -278.98
-    ],
-    [
-     15.0,
-     -275.98
-    ],
-    [
-     21.21,
-     -271.21
-    ],
-    [
-     25.98,
-     -265.0
-    ],
-    [
-     28.98,
-     -257.76
-    ]
-   ],
-   "start": 690,
-   "end": 692
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Waste Plug",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Waste Plug",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Waste Plug",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Waste Grid",
-   "profile": [
-    [
-     10.5,
-     692
-    ],
-    [
-     13.5,
-     692
-    ],
-    [
-     13.5,
-     693
-    ],
-    [
-     10.5,
-     693
-    ]
-   ],
-   "axis_at": [
-    0,
-    -250
-   ],
-   "axis": "z",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Waste Grid",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Waste Grid",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "void_extrusion",
-   "name": "Waste Hole",
-   "points": [
-    [
-     24.0,
-     -250.0
-    ],
-    [
-     23.18,
-     -243.79
-    ],
-    [
-     20.78,
-     -238.0
-    ],
-    [
-     16.97,
-     -233.03
-    ],
-    [
-     12.0,
-     -229.22
-    ],
-    [
-     6.21,
-     -226.82
-    ],
-    [
-     0.0,
-     -226.0
-    ],
-    [
-     -6.21,
-     -226.82
-    ],
-    [
-     -12.0,
-     -229.22
-    ],
-    [
-     -16.97,
-     -233.03
-    ],
-    [
-     -20.78,
-     -238.0
-    ],
-    [
-     -23.18,
-     -243.79
-    ],
-    [
-     -24.0,
-     -250.0
-    ],
-    [
-     -23.18,
-     -256.21
-    ],
-    [
-     -20.78,
-     -262.0
-    ],
-    [
-     -16.97,
-     -266.97
-    ],
-    [
-     -12.0,
-     -270.78
-    ],
-    [
-     -6.21,
-     -273.18
-    ],
-    [
-     -0.0,
-     -274.0
-    ],
-    [
-     6.21,
-     -273.18
-    ],
-    [
-     12.0,
-     -270.78
-    ],
-    [
-     16.97,
-     -266.97
-    ],
-    [
-     20.78,
-     -262.0
-    ],
-    [
-     23.18,
-     -256.21
-    ]
-   ],
-   "start": 660,
-   "end": 691
-  },
-  {
-   "op": "extrusion",
-   "name": "Cold Tap Flange",
-   "points": [
-    [
-     -124.0,
-     1050.0
-    ],
-    [
-     -124.89,
-     1056.73
-    ],
-    [
-     -127.48,
-     1063.0
-    ],
-    [
-     -131.62,
-     1068.38
-    ],
-    [
-     -137.0,
-     1072.52
-    ],
-    [
-     -143.27,
-     1075.11
-    ],
-    [
-     -150.0,
-     1076.0
-    ],
-    [
-     -156.73,
-     1075.11
-    ],
-    [
-     -163.0,
-     1072.52
-    ],
-    [
-     -168.38,
-     1068.38
-    ],
-    [
-     -172.52,
-     1063.0
-    ],
-    [
-     -175.11,
-     1056.73
-    ],
-    [
-     -176.0,
-     1050.0
-    ],
-    [
-     -175.11,
-     1043.27
-    ],
-    [
-     -172.52,
-     1037.0
-    ],
-    [
-     -168.38,
-     1031.62
-    ],
-    [
-     -163.0,
-     1027.48
-    ],
-    [
-     -156.73,
-     1024.89
-    ],
-    [
-     -150.0,
-     1024.0
-    ],
-    [
-     -143.27,
-     1024.89
-    ],
-    [
-     -137.0,
-     1027.48
-    ],
-    [
-     -131.62,
-     1031.62
-    ],
-    [
-     -127.48,
-     1037.0
-    ],
-    [
-     -124.89,
-     1043.27
-    ]
-   ],
-   "start": 0,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cold Tap Flange",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cold Tap Flange",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cold Tap Flange",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cold Tap Body",
-   "points": [
-    [
-     -135.0,
-     1050.0
-    ],
-    [
-     -135.51,
-     1053.88
-    ],
-    [
-     -137.01,
-     1057.5
-    ],
-    [
-     -139.39,
-     1060.61
-    ],
-    [
-     -142.5,
-     1062.99
-    ],
-    [
-     -146.12,
-     1064.49
-    ],
-    [
-     -150.0,
-     1065.0
-    ],
-    [
-     -153.88,
-     1064.49
-    ],
-    [
-     -157.5,
-     1062.99
-    ],
-    [
-     -160.61,
-     1060.61
-    ],
-    [
-     -162.99,
-     1057.5
-    ],
-    [
-     -164.49,
-     1053.88
-    ],
-    [
-     -165.0,
-     1050.0
-    ],
-    [
-     -164.49,
-     1046.12
-    ],
-    [
-     -162.99,
-     1042.5
-    ],
-    [
-     -160.61,
-     1039.39
-    ],
-    [
-     -157.5,
-     1037.01
-    ],
-    [
-     -153.88,
-     1035.51
-    ],
-    [
-     -150.0,
-     1035.0
-    ],
-    [
-     -146.12,
-     1035.51
-    ],
-    [
-     -142.5,
-     1037.01
-    ],
-    [
-     -139.39,
-     1039.39
-    ],
-    [
-     -137.01,
-     1042.5
-    ],
-    [
-     -135.51,
-     1046.12
-    ]
-   ],
-   "start": 6,
-   "end": 70,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cold Tap Body",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cold Tap Body",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cold Tap Body",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cold Tap Nose",
-   "points": [
-    [
-     -140.0,
-     -62.0
-    ],
-    [
-     -140.34,
-     -59.41
-    ],
-    [
-     -141.34,
-     -57.0
-    ],
-    [
-     -142.93,
-     -54.93
-    ],
-    [
-     -145.0,
-     -53.34
-    ],
-    [
-     -147.41,
-     -52.34
-    ],
-    [
-     -150.0,
-     -52.0
-    ],
-    [
-     -152.59,
-     -52.34
-    ],
-    [
-     -155.0,
-     -53.34
-    ],
-    [
-     -157.07,
-     -54.93
-    ],
-    [
-     -158.66,
-     -57.0
-    ],
-    [
-     -159.66,
-     -59.41
-    ],
-    [
-     -160.0,
-     -62.0
-    ],
-    [
-     -159.66,
-     -64.59
-    ],
-    [
-     -158.66,
-     -67.0
-    ],
-    [
-     -157.07,
-     -69.07
-    ],
-    [
-     -155.0,
-     -70.66
-    ],
-    [
-     -152.59,
-     -71.66
-    ],
-    [
-     -150.0,
-     -72.0
-    ],
-    [
-     -147.41,
-     -71.66
-    ],
-    [
-     -145.0,
-     -70.66
-    ],
-    [
-     -142.93,
-     -69.07
-    ],
-    [
-     -141.34,
-     -67.0
-    ],
-    [
-     -140.34,
-     -64.59
-    ]
-   ],
-   "start": 995,
-   "end": 1050
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cold Tap Nose",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cold Tap Nose",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cold Tap Nose",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cold Tap Headwork",
-   "points": [
-    [
-     -136.0,
-     -45.0
-    ],
-    [
-     -136.48,
-     -41.38
-    ],
-    [
-     -137.88,
-     -38.0
-    ],
-    [
-     -140.1,
-     -35.1
-    ],
-    [
-     -143.0,
-     -32.88
-    ],
-    [
-     -146.38,
-     -31.48
-    ],
-    [
-     -150.0,
-     -31.0
-    ],
-    [
-     -153.62,
-     -31.48
-    ],
-    [
-     -157.0,
-     -32.88
-    ],
-    [
-     -159.9,
-     -35.1
-    ],
-    [
-     -162.12,
-     -38.0
-    ],
-    [
-     -163.52,
-     -41.38
-    ],
-    [
-     -164.0,
-     -45.0
-    ],
-    [
-     -163.52,
-     -48.62
-    ],
-    [
-     -162.12,
-     -52.0
-    ],
-    [
-     -159.9,
-     -54.9
-    ],
-    [
-     -157.0,
-     -57.12
-    ],
-    [
-     -153.62,
-     -58.52
-    ],
-    [
-     -150.0,
-     -59.0
-    ],
-    [
-     -146.38,
-     -58.52
-    ],
-    [
-     -143.0,
-     -57.12
-    ],
-    [
-     -140.1,
-     -54.9
-    ],
-    [
-     -137.88,
-     -52.0
-    ],
-    [
-     -136.48,
-     -48.62
-    ]
-   ],
-   "start": 1050,
-   "end": 1080
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cold Tap Headwork",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cold Tap Headwork",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cold Tap Headwork",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cold Tap Lever",
-   "points": [
-    [
-     -147.0,
-     -110.0
-    ],
-    [
-     -145.85,
-     -109.77
-    ],
-    [
-     -144.88,
-     -109.12
-    ],
-    [
-     -144.23,
-     -108.15
-    ],
-    [
-     -144.0,
-     -107.0
-    ],
-    [
-     -144.0,
-     -43.0
-    ],
-    [
-     -144.23,
-     -41.85
-    ],
-    [
-     -144.88,
-     -40.88
-    ],
-    [
-     -145.85,
-     -40.23
-    ],
-    [
-     -147.0,
-     -40.0
-    ],
-    [
-     -153.0,
-     -40.0
-    ],
-    [
-     -154.15,
-     -40.23
-    ],
-    [
-     -155.12,
-     -40.88
-    ],
-    [
-     -155.77,
-     -41.85
-    ],
-    [
-     -156.0,
-     -43.0
-    ],
-    [
-     -156.0,
-     -107.0
-    ],
-    [
-     -155.77,
-     -108.15
-    ],
-    [
-     -155.12,
-     -109.12
-    ],
-    [
-     -154.15,
-     -109.77
-    ],
-    [
-     -153.0,
-     -110.0
-    ]
-   ],
-   "start": 1080,
-   "end": 1090
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cold Tap Lever",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cold Tap Lever",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cold Tap Lever",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hot Tap Flange",
-   "points": [
-    [
-     176.0,
-     1050.0
-    ],
-    [
-     175.11,
-     1056.73
-    ],
-    [
-     172.52,
-     1063.0
-    ],
-    [
-     168.38,
-     1068.38
-    ],
-    [
-     163.0,
-     1072.52
-    ],
-    [
-     156.73,
-     1075.11
-    ],
-    [
-     150.0,
-     1076.0
-    ],
-    [
-     143.27,
-     1075.11
-    ],
-    [
-     137.0,
-     1072.52
-    ],
-    [
-     131.62,
-     1068.38
-    ],
-    [
-     127.48,
-     1063.0
-    ],
-    [
-     124.89,
-     1056.73
-    ],
-    [
-     124.0,
-     1050.0
-    ],
-    [
-     124.89,
-     1043.27
-    ],
-    [
-     127.48,
-     1037.0
-    ],
-    [
-     131.62,
-     1031.62
-    ],
-    [
-     137.0,
-     1027.48
-    ],
-    [
-     143.27,
-     1024.89
-    ],
-    [
-     150.0,
-     1024.0
-    ],
-    [
-     156.73,
-     1024.89
-    ],
-    [
-     163.0,
-     1027.48
-    ],
-    [
-     168.38,
-     1031.62
-    ],
-    [
-     172.52,
-     1037.0
-    ],
-    [
-     175.11,
-     1043.27
-    ]
-   ],
-   "start": 0,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hot Tap Flange",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hot Tap Flange",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hot Tap Flange",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hot Tap Body",
-   "points": [
-    [
-     165.0,
-     1050.0
-    ],
-    [
-     164.49,
-     1053.88
-    ],
-    [
-     162.99,
-     1057.5
-    ],
-    [
-     160.61,
-     1060.61
-    ],
-    [
-     157.5,
-     1062.99
-    ],
-    [
-     153.88,
-     1064.49
-    ],
-    [
-     150.0,
-     1065.0
-    ],
-    [
-     146.12,
-     1064.49
-    ],
-    [
-     142.5,
-     1062.99
-    ],
-    [
-     139.39,
-     1060.61
-    ],
-    [
-     137.01,
-     1057.5
-    ],
-    [
-     135.51,
-     1053.88
-    ],
-    [
-     135.0,
-     1050.0
-    ],
-    [
-     135.51,
-     1046.12
-    ],
-    [
-     137.01,
-     1042.5
-    ],
-    [
-     139.39,
-     1039.39
-    ],
-    [
-     142.5,
-     1037.01
-    ],
-    [
-     146.12,
-     1035.51
-    ],
-    [
-     150.0,
-     1035.0
-    ],
-    [
-     153.88,
-     1035.51
-    ],
-    [
-     157.5,
-     1037.01
-    ],
-    [
-     160.61,
-     1039.39
-    ],
-    [
-     162.99,
-     1042.5
-    ],
-    [
-     164.49,
-     1046.12
-    ]
-   ],
-   "start": 6,
-   "end": 70,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hot Tap Body",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hot Tap Body",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hot Tap Body",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hot Tap Nose",
-   "points": [
-    [
-     160.0,
-     -62.0
-    ],
-    [
-     159.66,
-     -59.41
-    ],
-    [
-     158.66,
-     -57.0
-    ],
-    [
-     157.07,
-     -54.93
-    ],
-    [
-     155.0,
-     -53.34
-    ],
-    [
-     152.59,
-     -52.34
-    ],
-    [
-     150.0,
-     -52.0
-    ],
-    [
-     147.41,
-     -52.34
-    ],
-    [
-     145.0,
-     -53.34
-    ],
-    [
-     142.93,
-     -54.93
-    ],
-    [
-     141.34,
-     -57.0
-    ],
-    [
-     140.34,
-     -59.41
-    ],
-    [
-     140.0,
-     -62.0
-    ],
-    [
-     140.34,
-     -64.59
-    ],
-    [
-     141.34,
-     -67.0
-    ],
-    [
-     142.93,
-     -69.07
-    ],
-    [
-     145.0,
-     -70.66
-    ],
-    [
-     147.41,
-     -71.66
-    ],
-    [
-     150.0,
-     -72.0
-    ],
-    [
-     152.59,
-     -71.66
-    ],
-    [
-     155.0,
-     -70.66
-    ],
-    [
-     157.07,
-     -69.07
-    ],
-    [
-     158.66,
-     -67.0
-    ],
-    [
-     159.66,
-     -64.59
-    ]
-   ],
-   "start": 995,
-   "end": 1050
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hot Tap Nose",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hot Tap Nose",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hot Tap Nose",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hot Tap Headwork",
-   "points": [
-    [
-     164.0,
-     -45.0
-    ],
-    [
-     163.52,
-     -41.38
-    ],
-    [
-     162.12,
-     -38.0
-    ],
-    [
-     159.9,
-     -35.1
-    ],
-    [
-     157.0,
-     -32.88
-    ],
-    [
-     153.62,
-     -31.48
-    ],
-    [
-     150.0,
-     -31.0
-    ],
-    [
-     146.38,
-     -31.48
-    ],
-    [
-     143.0,
-     -32.88
-    ],
-    [
-     140.1,
-     -35.1
-    ],
-    [
-     137.88,
-     -38.0
-    ],
-    [
-     136.48,
-     -41.38
-    ],
-    [
-     136.0,
-     -45.0
-    ],
-    [
-     136.48,
-     -48.62
-    ],
-    [
-     137.88,
-     -52.0
-    ],
-    [
-     140.1,
-     -54.9
-    ],
-    [
-     143.0,
-     -57.12
-    ],
-    [
-     146.38,
-     -58.52
-    ],
-    [
-     150.0,
-     -59.0
-    ],
-    [
-     153.62,
-     -58.52
-    ],
-    [
-     157.0,
-     -57.12
-    ],
-    [
-     159.9,
-     -54.9
-    ],
-    [
-     162.12,
-     -52.0
-    ],
-    [
-     163.52,
-     -48.62
-    ]
-   ],
-   "start": 1050,
-   "end": 1080
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hot Tap Headwork",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hot Tap Headwork",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hot Tap Headwork",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hot Tap Lever",
-   "points": [
-    [
-     153.0,
-     -110.0
-    ],
-    [
-     154.15,
-     -109.77
-    ],
-    [
-     155.12,
-     -109.12
-    ],
-    [
-     155.77,
-     -108.15
-    ],
-    [
-     156.0,
-     -107.0
-    ],
-    [
-     156.0,
-     -43.0
-    ],
-    [
-     155.77,
-     -41.85
-    ],
-    [
-     155.12,
-     -40.88
-    ],
-    [
-     154.15,
-     -40.23
-    ],
-    [
-     153.0,
-     -40.0
-    ],
-    [
-     147.0,
-     -40.0
-    ],
-    [
-     145.85,
-     -40.23
-    ],
-    [
-     144.88,
-     -40.88
-    ],
-    [
-     144.23,
-     -41.85
-    ],
-    [
-     144.0,
-     -43.0
-    ],
-    [
-     144.0,
-     -107.0
-    ],
-    [
-     144.23,
-     -108.15
-    ],
-    [
-     144.88,
-     -109.12
-    ],
-    [
-     145.85,
-     -109.77
-    ],
-    [
-     147.0,
-     -110.0
-    ]
-   ],
-   "start": 1080,
-   "end": 1090
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hot Tap Lever",
-   "subcategory": "Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hot Tap Lever",
-   "param": "Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hot Tap Lever",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "CW",
-   "domain": "pipe",
-   "system": "DomesticColdWater",
-   "solid": "Cold Tap Body",
-   "side": "back",
-   "diameter": 15,
-   "flow": "In"
-  },
-  {
-   "op": "add_connector",
-   "name": "Waste",
-   "domain": "pipe",
-   "system": "Sanitary",
-   "solid": "Trap Outlet",
-   "side": "back",
-   "diameter": 50,
-   "flow": "Out"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_PlumbingFixture_Sink_Plaster_Trap.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_P_PlumbingFixture_Sink_Plaster_Trap",
+  "template": "Metric Generic Model.rft",
+  "about": "Plaster sink modelled as a generic product: china sink (floor, walls, front roll) on brackets, waste into a plaster settlement drum with clamped lid and handle, outlet to the wall, cold and hot bib taps. Reference: query: sink plaster trap plumbing fixtures hospital; images: https://www.google.com/search?tbm=isch&q=sink+plaster+trap+plumbing+fixtures+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Plumbing Fixtures"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Pipe_System",
+      "guid": "19b06c84-7f51-563a-ac4a-ed9b4addfabc",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Discharge_Units",
+      "guid": "7aa955c0-3c0f-5f8c-a77b-9124e8d513eb",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Asset_Tag",
+      "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Serial_Number",
+      "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Install_Date",
+      "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Warranty_End",
+      "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Maintenance_Interval_Months",
+      "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_OM_Link",
+      "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Mounting_Height_mm",
+      "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+      "instance": true
+    },
+    {
+      "op": "add_type",
+      "name": "900_PlasterTrap"
+    },
+    {
+      "op": "set_type_value",
+      "name": "900_PlasterTrap/FMC_Cost_Unit",
+      "type": "900_PlasterTrap",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "900_PlasterTrap/FMC_Geometry_Stage",
+      "type": "900_PlasterTrap",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "900_PlasterTrap/IfcExportAs",
+      "type": "900_PlasterTrap",
+      "param": "IfcExportAs",
+      "value": "IfcSanitaryTerminal"
+    },
+    {
+      "op": "set_type_value",
+      "name": "900_PlasterTrap/Description",
+      "type": "900_PlasterTrap",
+      "param": "Description",
+      "value": "Plaster room sink 900 x 480 mm, vitreous china on cantilever brackets, floor-standing plaster settlement trap with clamped lid, bib taps"
+    },
+    {
+      "op": "set_type_value",
+      "name": "900_PlasterTrap/Keynote",
+      "type": "900_PlasterTrap",
+      "param": "Keynote",
+      "value": "P.SNK_06"
+    },
+    {
+      "op": "set_type_value",
+      "name": "900_PlasterTrap/FMC_Keynote_Code",
+      "type": "900_PlasterTrap",
+      "param": "FMC_Keynote_Code",
+      "value": "P.SNK_06"
+    },
+    {
+      "op": "set_type_value",
+      "name": "900_PlasterTrap/FMC_Code_Description",
+      "type": "900_PlasterTrap",
+      "param": "FMC_Code_Description",
+      "value": "Sink Plaster Trap: Plaster room sink with trap"
+    },
+    {
+      "op": "set_type_value",
+      "name": "900_PlasterTrap/FMC_Code_Group",
+      "type": "900_PlasterTrap",
+      "param": "FMC_Code_Group",
+      "value": "P.SNK"
+    },
+    {
+      "op": "set_type_value",
+      "name": "900_PlasterTrap/FMC_Role_Code",
+      "type": "900_PlasterTrap",
+      "param": "FMC_Role_Code",
+      "value": "P"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "China",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "China Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Ceramic_VitreousChina_White",
+      "param": "China Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Epoxy White",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Epoxy White Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Steel_EpoxyCoated_White",
+      "param": "Epoxy White Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Grey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Grey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Grey",
+      "param": "Grey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "White",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "White Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_White",
+      "param": "White Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Stainless",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Stainless Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_StainlessSteel_Brushed",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Chrome",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Chrome Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Chrome_Polished",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Blue",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Blue Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Blue",
+      "param": "Blue Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Red",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Red Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_FireHoseReel_Red",
+      "param": "Red Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -452,
+          -485
+        ],
+        [
+          452,
+          -485
+        ],
+        [
+          452,
+          0
+        ],
+        [
+          -452,
+          0
+        ]
+      ],
+      "start": 0,
+      "end": 1090
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Sink Floor",
+      "points": [
+        [
+          420,
+          -480
+        ],
+        [
+          431.48,
+          -477.72
+        ],
+        [
+          441.21,
+          -471.21
+        ],
+        [
+          447.72,
+          -461.48
+        ],
+        [
+          450,
+          -450
+        ],
+        [
+          450,
+          -30
+        ],
+        [
+          447.72,
+          -18.52
+        ],
+        [
+          441.21,
+          -8.79
+        ],
+        [
+          431.48,
+          -2.28
+        ],
+        [
+          420,
+          0
+        ],
+        [
+          -420,
+          0
+        ],
+        [
+          -431.48,
+          -2.28
+        ],
+        [
+          -441.21,
+          -8.79
+        ],
+        [
+          -447.72,
+          -18.52
+        ],
+        [
+          -450,
+          -30
+        ],
+        [
+          -450,
+          -450
+        ],
+        [
+          -447.72,
+          -461.48
+        ],
+        [
+          -441.21,
+          -471.21
+        ],
+        [
+          -431.48,
+          -477.72
+        ],
+        [
+          -420,
+          -480
+        ]
+      ],
+      "start": 650,
+      "end": 690
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Sink Floor",
+      "subcategory": "China"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sink Floor",
+      "param": "China Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Sink Floor",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Sink Front",
+      "points": [
+        [
+          -450,
+          -480
+        ],
+        [
+          450,
+          -480
+        ],
+        [
+          450,
+          -440
+        ],
+        [
+          -450,
+          -440
+        ]
+      ],
+      "start": 690,
+      "end": 900
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Sink Front",
+      "subcategory": "China"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sink Front",
+      "param": "China Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Sink Front",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Sink Back",
+      "points": [
+        [
+          -450,
+          -40
+        ],
+        [
+          450,
+          -40
+        ],
+        [
+          450,
+          0
+        ],
+        [
+          -450,
+          0
+        ]
+      ],
+      "start": 690,
+      "end": 900
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Sink Back",
+      "subcategory": "China"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sink Back",
+      "param": "China Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Sink Back",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Sink End 1",
+      "points": [
+        [
+          -450,
+          -440
+        ],
+        [
+          -410,
+          -440
+        ],
+        [
+          -410,
+          -40
+        ],
+        [
+          -450,
+          -40
+        ]
+      ],
+      "start": 690,
+      "end": 900
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Sink End 1",
+      "subcategory": "China"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sink End 1",
+      "param": "China Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Sink End 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Sink End 2",
+      "points": [
+        [
+          410,
+          -440
+        ],
+        [
+          450,
+          -440
+        ],
+        [
+          450,
+          -40
+        ],
+        [
+          410,
+          -40
+        ]
+      ],
+      "start": 690,
+      "end": 900
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Sink End 2",
+      "subcategory": "China"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sink End 2",
+      "param": "China Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Sink End 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Front Roll",
+      "points": [
+        [
+          444,
+          880
+        ],
+        [
+          447.06,
+          880.61
+        ],
+        [
+          449.66,
+          882.34
+        ],
+        [
+          451.39,
+          884.94
+        ],
+        [
+          452,
+          888
+        ],
+        [
+          452,
+          894
+        ],
+        [
+          451.39,
+          897.06
+        ],
+        [
+          449.66,
+          899.66
+        ],
+        [
+          447.06,
+          901.39
+        ],
+        [
+          444,
+          902
+        ],
+        [
+          -444,
+          902
+        ],
+        [
+          -447.06,
+          901.39
+        ],
+        [
+          -449.66,
+          899.66
+        ],
+        [
+          -451.39,
+          897.06
+        ],
+        [
+          -452,
+          894
+        ],
+        [
+          -452,
+          888
+        ],
+        [
+          -451.39,
+          884.94
+        ],
+        [
+          -449.66,
+          882.34
+        ],
+        [
+          -447.06,
+          880.61
+        ],
+        [
+          -444,
+          880
+        ]
+      ],
+      "start": 470,
+      "end": 485,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Front Roll",
+      "subcategory": "China"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Front Roll",
+      "param": "China Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Front Roll",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cantilever Bracket 1",
+      "points": [
+        [
+          -420,
+          650
+        ],
+        [
+          0,
+          650
+        ],
+        [
+          0,
+          400
+        ]
+      ],
+      "start": -330,
+      "end": -318,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cantilever Bracket 1",
+      "subcategory": "Epoxy White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cantilever Bracket 1",
+      "param": "Epoxy White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cantilever Bracket 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cantilever Bracket 2",
+      "points": [
+        [
+          -420,
+          650
+        ],
+        [
+          0,
+          650
+        ],
+        [
+          0,
+          400
+        ]
+      ],
+      "start": 318,
+      "end": 330,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cantilever Bracket 2",
+      "subcategory": "Epoxy White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cantilever Bracket 2",
+      "param": "Epoxy White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cantilever Bracket 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Sink Waste Tail",
+      "points": [
+        [
+          25,
+          -250
+        ],
+        [
+          24.15,
+          -243.53
+        ],
+        [
+          21.65,
+          -237.5
+        ],
+        [
+          17.68,
+          -232.32
+        ],
+        [
+          12.5,
+          -228.35
+        ],
+        [
+          6.47,
+          -225.85
+        ],
+        [
+          0,
+          -225
+        ],
+        [
+          -6.47,
+          -225.85
+        ],
+        [
+          -12.5,
+          -228.35
+        ],
+        [
+          -17.68,
+          -232.32
+        ],
+        [
+          -21.65,
+          -237.5
+        ],
+        [
+          -24.15,
+          -243.53
+        ],
+        [
+          -25,
+          -250
+        ],
+        [
+          -24.15,
+          -256.47
+        ],
+        [
+          -21.65,
+          -262.5
+        ],
+        [
+          -17.68,
+          -267.68
+        ],
+        [
+          -12.5,
+          -271.65
+        ],
+        [
+          -6.47,
+          -274.15
+        ],
+        [
+          0,
+          -275
+        ],
+        [
+          6.47,
+          -274.15
+        ],
+        [
+          12.5,
+          -271.65
+        ],
+        [
+          17.68,
+          -267.68
+        ],
+        [
+          21.65,
+          -262.5
+        ],
+        [
+          24.15,
+          -256.47
+        ]
+      ],
+      "start": 500,
+      "end": 650
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Sink Waste Tail",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sink Waste Tail",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Sink Waste Tail",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Plaster Trap Drum",
+      "profile": [
+        [
+          0,
+          0
+        ],
+        [
+          170,
+          0
+        ],
+        [
+          170,
+          380
+        ],
+        [
+          0,
+          380
+        ]
+      ],
+      "axis_at": [
+        0,
+        -250
+      ],
+      "axis": "z",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Plaster Trap Drum",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Plaster Trap Drum",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Trap Lid",
+      "profile": [
+        [
+          0,
+          380
+        ],
+        [
+          180,
+          380
+        ],
+        [
+          180,
+          410
+        ],
+        [
+          60,
+          430
+        ],
+        [
+          0,
+          430
+        ]
+      ],
+      "axis_at": [
+        0,
+        -250
+      ],
+      "axis": "z",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Trap Lid",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Trap Lid",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Lid Clamp 1",
+      "points": [
+        [
+          -190,
+          -262
+        ],
+        [
+          -172,
+          -262
+        ],
+        [
+          -172,
+          -238
+        ],
+        [
+          -190,
+          -238
+        ]
+      ],
+      "start": 330,
+      "end": 420
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Lid Clamp 1",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lid Clamp 1",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Lid Clamp 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Lid Clamp 2",
+      "points": [
+        [
+          172,
+          -262
+        ],
+        [
+          190,
+          -262
+        ],
+        [
+          190,
+          -238
+        ],
+        [
+          172,
+          -238
+        ]
+      ],
+      "start": 330,
+      "end": 420
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Lid Clamp 2",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lid Clamp 2",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Lid Clamp 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Lid Handle",
+      "points": [
+        [
+          54,
+          -262
+        ],
+        [
+          56.3,
+          -261.54
+        ],
+        [
+          58.24,
+          -260.24
+        ],
+        [
+          59.54,
+          -258.3
+        ],
+        [
+          60,
+          -256
+        ],
+        [
+          60,
+          -244
+        ],
+        [
+          59.54,
+          -241.7
+        ],
+        [
+          58.24,
+          -239.76
+        ],
+        [
+          56.3,
+          -238.46
+        ],
+        [
+          54,
+          -238
+        ],
+        [
+          -54,
+          -238
+        ],
+        [
+          -56.3,
+          -238.46
+        ],
+        [
+          -58.24,
+          -239.76
+        ],
+        [
+          -59.54,
+          -241.7
+        ],
+        [
+          -60,
+          -244
+        ],
+        [
+          -60,
+          -256
+        ],
+        [
+          -59.54,
+          -258.3
+        ],
+        [
+          -58.24,
+          -260.24
+        ],
+        [
+          -56.3,
+          -261.54
+        ],
+        [
+          -54,
+          -262
+        ]
+      ],
+      "start": 430,
+      "end": 470
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Lid Handle",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lid Handle",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Lid Handle",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Trap Inlet",
+      "points": [
+        [
+          25,
+          -250
+        ],
+        [
+          24.15,
+          -243.53
+        ],
+        [
+          21.65,
+          -237.5
+        ],
+        [
+          17.68,
+          -232.32
+        ],
+        [
+          12.5,
+          -228.35
+        ],
+        [
+          6.47,
+          -225.85
+        ],
+        [
+          0,
+          -225
+        ],
+        [
+          -6.47,
+          -225.85
+        ],
+        [
+          -12.5,
+          -228.35
+        ],
+        [
+          -17.68,
+          -232.32
+        ],
+        [
+          -21.65,
+          -237.5
+        ],
+        [
+          -24.15,
+          -243.53
+        ],
+        [
+          -25,
+          -250
+        ],
+        [
+          -24.15,
+          -256.47
+        ],
+        [
+          -21.65,
+          -262.5
+        ],
+        [
+          -17.68,
+          -267.68
+        ],
+        [
+          -12.5,
+          -271.65
+        ],
+        [
+          -6.47,
+          -274.15
+        ],
+        [
+          0,
+          -275
+        ],
+        [
+          6.47,
+          -274.15
+        ],
+        [
+          12.5,
+          -271.65
+        ],
+        [
+          17.68,
+          -267.68
+        ],
+        [
+          21.65,
+          -262.5
+        ],
+        [
+          24.15,
+          -256.47
+        ]
+      ],
+      "start": 430,
+      "end": 500
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Trap Inlet",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Trap Inlet",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Trap Inlet",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Trap Outlet",
+      "points": [
+        [
+          25,
+          300
+        ],
+        [
+          24.15,
+          306.47
+        ],
+        [
+          21.65,
+          312.5
+        ],
+        [
+          17.68,
+          317.68
+        ],
+        [
+          12.5,
+          321.65
+        ],
+        [
+          6.47,
+          324.15
+        ],
+        [
+          0,
+          325
+        ],
+        [
+          -6.47,
+          324.15
+        ],
+        [
+          -12.5,
+          321.65
+        ],
+        [
+          -17.68,
+          317.68
+        ],
+        [
+          -21.65,
+          312.5
+        ],
+        [
+          -24.15,
+          306.47
+        ],
+        [
+          -25,
+          300
+        ],
+        [
+          -24.15,
+          293.53
+        ],
+        [
+          -21.65,
+          287.5
+        ],
+        [
+          -17.68,
+          282.32
+        ],
+        [
+          -12.5,
+          278.35
+        ],
+        [
+          -6.47,
+          275.85
+        ],
+        [
+          0,
+          275
+        ],
+        [
+          6.47,
+          275.85
+        ],
+        [
+          12.5,
+          278.35
+        ],
+        [
+          17.68,
+          282.32
+        ],
+        [
+          21.65,
+          287.5
+        ],
+        [
+          24.15,
+          293.53
+        ]
+      ],
+      "start": 0,
+      "end": 90,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Trap Outlet",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Trap Outlet",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Trap Outlet",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Waste Plug",
+      "points": [
+        [
+          30,
+          -250
+        ],
+        [
+          28.98,
+          -242.24
+        ],
+        [
+          25.98,
+          -235
+        ],
+        [
+          21.21,
+          -228.79
+        ],
+        [
+          15,
+          -224.02
+        ],
+        [
+          7.76,
+          -221.02
+        ],
+        [
+          0,
+          -220
+        ],
+        [
+          -7.76,
+          -221.02
+        ],
+        [
+          -15,
+          -224.02
+        ],
+        [
+          -21.21,
+          -228.79
+        ],
+        [
+          -25.98,
+          -235
+        ],
+        [
+          -28.98,
+          -242.24
+        ],
+        [
+          -30,
+          -250
+        ],
+        [
+          -28.98,
+          -257.76
+        ],
+        [
+          -25.98,
+          -265
+        ],
+        [
+          -21.21,
+          -271.21
+        ],
+        [
+          -15,
+          -275.98
+        ],
+        [
+          -7.76,
+          -278.98
+        ],
+        [
+          0,
+          -280
+        ],
+        [
+          7.76,
+          -278.98
+        ],
+        [
+          15,
+          -275.98
+        ],
+        [
+          21.21,
+          -271.21
+        ],
+        [
+          25.98,
+          -265
+        ],
+        [
+          28.98,
+          -257.76
+        ]
+      ],
+      "start": 690,
+      "end": 692
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Waste Plug",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Waste Plug",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Waste Plug",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Waste Grid",
+      "profile": [
+        [
+          10.5,
+          692
+        ],
+        [
+          13.5,
+          692
+        ],
+        [
+          13.5,
+          693
+        ],
+        [
+          10.5,
+          693
+        ]
+      ],
+      "axis_at": [
+        0,
+        -250
+      ],
+      "axis": "z",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Waste Grid",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Waste Grid",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "void_extrusion",
+      "name": "Waste Hole",
+      "points": [
+        [
+          24,
+          -250
+        ],
+        [
+          23.18,
+          -243.79
+        ],
+        [
+          20.78,
+          -238
+        ],
+        [
+          16.97,
+          -233.03
+        ],
+        [
+          12,
+          -229.22
+        ],
+        [
+          6.21,
+          -226.82
+        ],
+        [
+          0,
+          -226
+        ],
+        [
+          -6.21,
+          -226.82
+        ],
+        [
+          -12,
+          -229.22
+        ],
+        [
+          -16.97,
+          -233.03
+        ],
+        [
+          -20.78,
+          -238
+        ],
+        [
+          -23.18,
+          -243.79
+        ],
+        [
+          -24,
+          -250
+        ],
+        [
+          -23.18,
+          -256.21
+        ],
+        [
+          -20.78,
+          -262
+        ],
+        [
+          -16.97,
+          -266.97
+        ],
+        [
+          -12,
+          -270.78
+        ],
+        [
+          -6.21,
+          -273.18
+        ],
+        [
+          0,
+          -274
+        ],
+        [
+          6.21,
+          -273.18
+        ],
+        [
+          12,
+          -270.78
+        ],
+        [
+          16.97,
+          -266.97
+        ],
+        [
+          20.78,
+          -262
+        ],
+        [
+          23.18,
+          -256.21
+        ]
+      ],
+      "start": 660,
+      "end": 691
+    },
+    {
+      "op": "extrusion",
+      "name": "Cold Tap Flange",
+      "points": [
+        [
+          -124,
+          1050
+        ],
+        [
+          -124.89,
+          1056.73
+        ],
+        [
+          -127.48,
+          1063
+        ],
+        [
+          -131.62,
+          1068.38
+        ],
+        [
+          -137,
+          1072.52
+        ],
+        [
+          -143.27,
+          1075.11
+        ],
+        [
+          -150,
+          1076
+        ],
+        [
+          -156.73,
+          1075.11
+        ],
+        [
+          -163,
+          1072.52
+        ],
+        [
+          -168.38,
+          1068.38
+        ],
+        [
+          -172.52,
+          1063
+        ],
+        [
+          -175.11,
+          1056.73
+        ],
+        [
+          -176,
+          1050
+        ],
+        [
+          -175.11,
+          1043.27
+        ],
+        [
+          -172.52,
+          1037
+        ],
+        [
+          -168.38,
+          1031.62
+        ],
+        [
+          -163,
+          1027.48
+        ],
+        [
+          -156.73,
+          1024.89
+        ],
+        [
+          -150,
+          1024
+        ],
+        [
+          -143.27,
+          1024.89
+        ],
+        [
+          -137,
+          1027.48
+        ],
+        [
+          -131.62,
+          1031.62
+        ],
+        [
+          -127.48,
+          1037
+        ],
+        [
+          -124.89,
+          1043.27
+        ]
+      ],
+      "start": 0,
+      "end": 6,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cold Tap Flange",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cold Tap Flange",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cold Tap Flange",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cold Tap Body",
+      "points": [
+        [
+          -135,
+          1050
+        ],
+        [
+          -135.51,
+          1053.88
+        ],
+        [
+          -137.01,
+          1057.5
+        ],
+        [
+          -139.39,
+          1060.61
+        ],
+        [
+          -142.5,
+          1062.99
+        ],
+        [
+          -146.12,
+          1064.49
+        ],
+        [
+          -150,
+          1065
+        ],
+        [
+          -153.88,
+          1064.49
+        ],
+        [
+          -157.5,
+          1062.99
+        ],
+        [
+          -160.61,
+          1060.61
+        ],
+        [
+          -162.99,
+          1057.5
+        ],
+        [
+          -164.49,
+          1053.88
+        ],
+        [
+          -165,
+          1050
+        ],
+        [
+          -164.49,
+          1046.12
+        ],
+        [
+          -162.99,
+          1042.5
+        ],
+        [
+          -160.61,
+          1039.39
+        ],
+        [
+          -157.5,
+          1037.01
+        ],
+        [
+          -153.88,
+          1035.51
+        ],
+        [
+          -150,
+          1035
+        ],
+        [
+          -146.12,
+          1035.51
+        ],
+        [
+          -142.5,
+          1037.01
+        ],
+        [
+          -139.39,
+          1039.39
+        ],
+        [
+          -137.01,
+          1042.5
+        ],
+        [
+          -135.51,
+          1046.12
+        ]
+      ],
+      "start": 6,
+      "end": 70,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cold Tap Body",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cold Tap Body",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cold Tap Body",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cold Tap Nose",
+      "points": [
+        [
+          -140,
+          -62
+        ],
+        [
+          -140.34,
+          -59.41
+        ],
+        [
+          -141.34,
+          -57
+        ],
+        [
+          -142.93,
+          -54.93
+        ],
+        [
+          -145,
+          -53.34
+        ],
+        [
+          -147.41,
+          -52.34
+        ],
+        [
+          -150,
+          -52
+        ],
+        [
+          -152.59,
+          -52.34
+        ],
+        [
+          -155,
+          -53.34
+        ],
+        [
+          -157.07,
+          -54.93
+        ],
+        [
+          -158.66,
+          -57
+        ],
+        [
+          -159.66,
+          -59.41
+        ],
+        [
+          -160,
+          -62
+        ],
+        [
+          -159.66,
+          -64.59
+        ],
+        [
+          -158.66,
+          -67
+        ],
+        [
+          -157.07,
+          -69.07
+        ],
+        [
+          -155,
+          -70.66
+        ],
+        [
+          -152.59,
+          -71.66
+        ],
+        [
+          -150,
+          -72
+        ],
+        [
+          -147.41,
+          -71.66
+        ],
+        [
+          -145,
+          -70.66
+        ],
+        [
+          -142.93,
+          -69.07
+        ],
+        [
+          -141.34,
+          -67
+        ],
+        [
+          -140.34,
+          -64.59
+        ]
+      ],
+      "start": 995,
+      "end": 1050
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cold Tap Nose",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cold Tap Nose",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cold Tap Nose",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cold Tap Headwork",
+      "points": [
+        [
+          -136,
+          -45
+        ],
+        [
+          -136.48,
+          -41.38
+        ],
+        [
+          -137.88,
+          -38
+        ],
+        [
+          -140.1,
+          -35.1
+        ],
+        [
+          -143,
+          -32.88
+        ],
+        [
+          -146.38,
+          -31.48
+        ],
+        [
+          -150,
+          -31
+        ],
+        [
+          -153.62,
+          -31.48
+        ],
+        [
+          -157,
+          -32.88
+        ],
+        [
+          -159.9,
+          -35.1
+        ],
+        [
+          -162.12,
+          -38
+        ],
+        [
+          -163.52,
+          -41.38
+        ],
+        [
+          -164,
+          -45
+        ],
+        [
+          -163.52,
+          -48.62
+        ],
+        [
+          -162.12,
+          -52
+        ],
+        [
+          -159.9,
+          -54.9
+        ],
+        [
+          -157,
+          -57.12
+        ],
+        [
+          -153.62,
+          -58.52
+        ],
+        [
+          -150,
+          -59
+        ],
+        [
+          -146.38,
+          -58.52
+        ],
+        [
+          -143,
+          -57.12
+        ],
+        [
+          -140.1,
+          -54.9
+        ],
+        [
+          -137.88,
+          -52
+        ],
+        [
+          -136.48,
+          -48.62
+        ]
+      ],
+      "start": 1050,
+      "end": 1080
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cold Tap Headwork",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cold Tap Headwork",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cold Tap Headwork",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cold Tap Lever",
+      "points": [
+        [
+          -147,
+          -110
+        ],
+        [
+          -145.85,
+          -109.77
+        ],
+        [
+          -144.88,
+          -109.12
+        ],
+        [
+          -144.23,
+          -108.15
+        ],
+        [
+          -144,
+          -107
+        ],
+        [
+          -144,
+          -43
+        ],
+        [
+          -144.23,
+          -41.85
+        ],
+        [
+          -144.88,
+          -40.88
+        ],
+        [
+          -145.85,
+          -40.23
+        ],
+        [
+          -147,
+          -40
+        ],
+        [
+          -153,
+          -40
+        ],
+        [
+          -154.15,
+          -40.23
+        ],
+        [
+          -155.12,
+          -40.88
+        ],
+        [
+          -155.77,
+          -41.85
+        ],
+        [
+          -156,
+          -43
+        ],
+        [
+          -156,
+          -107
+        ],
+        [
+          -155.77,
+          -108.15
+        ],
+        [
+          -155.12,
+          -109.12
+        ],
+        [
+          -154.15,
+          -109.77
+        ],
+        [
+          -153,
+          -110
+        ]
+      ],
+      "start": 1080,
+      "end": 1090
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cold Tap Lever",
+      "subcategory": "Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cold Tap Lever",
+      "param": "Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cold Tap Lever",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hot Tap Flange",
+      "points": [
+        [
+          176,
+          1050
+        ],
+        [
+          175.11,
+          1056.73
+        ],
+        [
+          172.52,
+          1063
+        ],
+        [
+          168.38,
+          1068.38
+        ],
+        [
+          163,
+          1072.52
+        ],
+        [
+          156.73,
+          1075.11
+        ],
+        [
+          150,
+          1076
+        ],
+        [
+          143.27,
+          1075.11
+        ],
+        [
+          137,
+          1072.52
+        ],
+        [
+          131.62,
+          1068.38
+        ],
+        [
+          127.48,
+          1063
+        ],
+        [
+          124.89,
+          1056.73
+        ],
+        [
+          124,
+          1050
+        ],
+        [
+          124.89,
+          1043.27
+        ],
+        [
+          127.48,
+          1037
+        ],
+        [
+          131.62,
+          1031.62
+        ],
+        [
+          137,
+          1027.48
+        ],
+        [
+          143.27,
+          1024.89
+        ],
+        [
+          150,
+          1024
+        ],
+        [
+          156.73,
+          1024.89
+        ],
+        [
+          163,
+          1027.48
+        ],
+        [
+          168.38,
+          1031.62
+        ],
+        [
+          172.52,
+          1037
+        ],
+        [
+          175.11,
+          1043.27
+        ]
+      ],
+      "start": 0,
+      "end": 6,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hot Tap Flange",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hot Tap Flange",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hot Tap Flange",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hot Tap Body",
+      "points": [
+        [
+          165,
+          1050
+        ],
+        [
+          164.49,
+          1053.88
+        ],
+        [
+          162.99,
+          1057.5
+        ],
+        [
+          160.61,
+          1060.61
+        ],
+        [
+          157.5,
+          1062.99
+        ],
+        [
+          153.88,
+          1064.49
+        ],
+        [
+          150,
+          1065
+        ],
+        [
+          146.12,
+          1064.49
+        ],
+        [
+          142.5,
+          1062.99
+        ],
+        [
+          139.39,
+          1060.61
+        ],
+        [
+          137.01,
+          1057.5
+        ],
+        [
+          135.51,
+          1053.88
+        ],
+        [
+          135,
+          1050
+        ],
+        [
+          135.51,
+          1046.12
+        ],
+        [
+          137.01,
+          1042.5
+        ],
+        [
+          139.39,
+          1039.39
+        ],
+        [
+          142.5,
+          1037.01
+        ],
+        [
+          146.12,
+          1035.51
+        ],
+        [
+          150,
+          1035
+        ],
+        [
+          153.88,
+          1035.51
+        ],
+        [
+          157.5,
+          1037.01
+        ],
+        [
+          160.61,
+          1039.39
+        ],
+        [
+          162.99,
+          1042.5
+        ],
+        [
+          164.49,
+          1046.12
+        ]
+      ],
+      "start": 6,
+      "end": 70,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hot Tap Body",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hot Tap Body",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hot Tap Body",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hot Tap Nose",
+      "points": [
+        [
+          160,
+          -62
+        ],
+        [
+          159.66,
+          -59.41
+        ],
+        [
+          158.66,
+          -57
+        ],
+        [
+          157.07,
+          -54.93
+        ],
+        [
+          155,
+          -53.34
+        ],
+        [
+          152.59,
+          -52.34
+        ],
+        [
+          150,
+          -52
+        ],
+        [
+          147.41,
+          -52.34
+        ],
+        [
+          145,
+          -53.34
+        ],
+        [
+          142.93,
+          -54.93
+        ],
+        [
+          141.34,
+          -57
+        ],
+        [
+          140.34,
+          -59.41
+        ],
+        [
+          140,
+          -62
+        ],
+        [
+          140.34,
+          -64.59
+        ],
+        [
+          141.34,
+          -67
+        ],
+        [
+          142.93,
+          -69.07
+        ],
+        [
+          145,
+          -70.66
+        ],
+        [
+          147.41,
+          -71.66
+        ],
+        [
+          150,
+          -72
+        ],
+        [
+          152.59,
+          -71.66
+        ],
+        [
+          155,
+          -70.66
+        ],
+        [
+          157.07,
+          -69.07
+        ],
+        [
+          158.66,
+          -67
+        ],
+        [
+          159.66,
+          -64.59
+        ]
+      ],
+      "start": 995,
+      "end": 1050
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hot Tap Nose",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hot Tap Nose",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hot Tap Nose",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hot Tap Headwork",
+      "points": [
+        [
+          164,
+          -45
+        ],
+        [
+          163.52,
+          -41.38
+        ],
+        [
+          162.12,
+          -38
+        ],
+        [
+          159.9,
+          -35.1
+        ],
+        [
+          157,
+          -32.88
+        ],
+        [
+          153.62,
+          -31.48
+        ],
+        [
+          150,
+          -31
+        ],
+        [
+          146.38,
+          -31.48
+        ],
+        [
+          143,
+          -32.88
+        ],
+        [
+          140.1,
+          -35.1
+        ],
+        [
+          137.88,
+          -38
+        ],
+        [
+          136.48,
+          -41.38
+        ],
+        [
+          136,
+          -45
+        ],
+        [
+          136.48,
+          -48.62
+        ],
+        [
+          137.88,
+          -52
+        ],
+        [
+          140.1,
+          -54.9
+        ],
+        [
+          143,
+          -57.12
+        ],
+        [
+          146.38,
+          -58.52
+        ],
+        [
+          150,
+          -59
+        ],
+        [
+          153.62,
+          -58.52
+        ],
+        [
+          157,
+          -57.12
+        ],
+        [
+          159.9,
+          -54.9
+        ],
+        [
+          162.12,
+          -52
+        ],
+        [
+          163.52,
+          -48.62
+        ]
+      ],
+      "start": 1050,
+      "end": 1080
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hot Tap Headwork",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hot Tap Headwork",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hot Tap Headwork",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hot Tap Lever",
+      "points": [
+        [
+          153,
+          -110
+        ],
+        [
+          154.15,
+          -109.77
+        ],
+        [
+          155.12,
+          -109.12
+        ],
+        [
+          155.77,
+          -108.15
+        ],
+        [
+          156,
+          -107
+        ],
+        [
+          156,
+          -43
+        ],
+        [
+          155.77,
+          -41.85
+        ],
+        [
+          155.12,
+          -40.88
+        ],
+        [
+          154.15,
+          -40.23
+        ],
+        [
+          153,
+          -40
+        ],
+        [
+          147,
+          -40
+        ],
+        [
+          145.85,
+          -40.23
+        ],
+        [
+          144.88,
+          -40.88
+        ],
+        [
+          144.23,
+          -41.85
+        ],
+        [
+          144,
+          -43
+        ],
+        [
+          144,
+          -107
+        ],
+        [
+          144.23,
+          -108.15
+        ],
+        [
+          144.88,
+          -109.12
+        ],
+        [
+          145.85,
+          -109.77
+        ],
+        [
+          147,
+          -110
+        ]
+      ],
+      "start": 1080,
+      "end": 1090
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hot Tap Lever",
+      "subcategory": "Red"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hot Tap Lever",
+      "param": "Red Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hot Tap Lever",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "CW",
+      "domain": "pipe",
+      "system": "DomesticColdWater",
+      "solid": "Cold Tap Body",
+      "side": "back",
+      "diameter": 15,
+      "flow": "In"
+    },
+    {
+      "op": "add_connector",
+      "name": "Waste",
+      "domain": "pipe",
+      "system": "Sanitary",
+      "solid": "Trap Outlet",
+      "side": "back",
+      "diameter": 50,
+      "flow": "Out"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_PlumbingFixture_Sink_Plaster_Trap.png"
+    }
+  ],
+  "values": {
+    "Sink 900 x 480 x 250 mm": {
+      "value": "900x480x250",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Rim height 900 mm": {
+      "value": 900,
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Plaster trap 340 mm dia": {
+      "value": 340,
+      "source_status": "assumed",
+      "source": "typical plaster/sediment trap"
+    }
   }
- ],
- "values": {
-  "Sink 900 x 480 x 250 mm": {
-   "value": "900x480x250",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Rim height 900 mm": {
-   "value": 900,
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Plaster trap 340 mm dia": {
-   "value": 340,
-   "source_status": "assumed",
-   "source": "typical plaster/sediment trap"
-  }
- }
 }

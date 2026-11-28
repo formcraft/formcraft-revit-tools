@@ -4,6 +4,7 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { KitScript, STEPS, StepId, readDynamo, readPyRevit, readTool, stepSummary } from "../fmc/scripts.js";
+import { runFmcDynamo } from "./fmc_dynamo.js";
 import {
   AddonFile, AddonHeader, StepOutcome, addonCall, addonDir, addonStep, addonSummary, checkJob, jobResultFile, parseJob,
   readAddons, runJob, validateAddonParams,
@@ -79,7 +80,9 @@ export const FMC_SCRIPTS_DESCRIPTION =
     "order, stops at the first failure and saves results\\<job>_<date>.json in the reports folder (dry_run false in the " +
     "job is the yes). run runs an automation: Formcraft's read-only checks and the weekly report (selftest, qa, links, " +
     "workshare, annotate, review, report) and saved add-ons (\"addon:<name>\", parameters in addon_params, dry run " +
-    "unless dry_run false), stopping at the first that fails; each step is logged.";
+    "unless dry_run false), stopping at the first that fails; each step is logged. " +
+    "graph_run forwards to fmc_dynamo (inspect, status, run, submit, list, log, cancel). It is not a refusal. " +
+    "Pass dynamo_action and graph. A graph still has to sit in 05_Scripts/library or 05_Scripts/Dynamo.";
 
 const STEP = z.string().refine((s) => s in STEPS || addonStep(s) !== null, {
   message: `a step is one of ${Object.keys(STEPS).join(", ")} or "addon:<name>"`,
@@ -94,7 +97,7 @@ const JSONISH = z.union([z.record(z.unknown()), z.string()]);
     "stopping at the first that fails; each step is logged. No step changes the model.";
 
 export const FMC_SCRIPTS_SHAPE = {
-  action: z.enum(["list", "run", "addon_list", "addon_run", "job"]),
+  action: z.enum(["list", "run", "addon_list", "addon_run", "job", "graph_run"]),
   kit_folder: z.string().optional().default("").describe("list: the Formcraft kit folder"),
   name: z.string().optional().default("Automation").describe("run: the automation's name, for the log. addon_run: the add-on's name"),
   steps: z.array(STEP).optional().default([]).describe("run: the steps in order; \"addon:<name>\" runs a saved add-on"),
@@ -106,6 +109,15 @@ export const FMC_SCRIPTS_SHAPE = {
   dry_run: z.boolean().optional().default(true).describe("addon_run and add-on steps: true (default) rolls the model back; false after the person's yes"),
   job: z.union([z.record(z.unknown()), z.array(z.unknown())]).optional().describe("job: {name, dry_run, steps: [{addon, params}]} or the steps alone"),
   job_file: z.string().optional().default("").describe("job: a job file (JSON) instead of job"),
+  dynamo_action: z.enum(["inspect", "status", "run", "submit", "list", "log", "cancel"]).optional().describe("graph_run: the fmc_dynamo action. Default run."),
+  graph: z.string().optional().default("").describe("graph_run: the .dyn path"),
+  mode: z.enum(["preview", "apply", "offline"]).optional().describe("graph_run: preview, apply or offline"),
+  inputs: z.record(z.unknown()).optional().describe("graph_run: graph inputs"),
+  job_id: z.string().optional().default("").describe("graph_run: a background job id"),
+  tail: z.number().int().optional().describe("graph_run log: last lines"),
+  priority: z.number().int().optional().describe("graph_run submit: higher runs first"),
+  label: z.string().optional().default("").describe("graph_run submit: a short name"),
+  job_state: z.string().optional().default("").describe("graph_run list: a state filter"),
 };
 
 export type FmcScriptsArgs = z.infer<z.ZodObject<typeof FMC_SCRIPTS_SHAPE>>;
@@ -264,6 +276,21 @@ async function jobRun(args: FmcScriptsArgs, cfg: GuardConfig) {
 export async function runFmcScripts(args: FmcScriptsArgs) {
   const { config } = loadConfig();
   try {
+    if (args.action === "graph_run") {
+      return runFmcDynamo({
+        action: args.dynamo_action ?? "run",
+        path: args.graph,
+        inputs: args.inputs,
+        mode: args.mode,
+        dry_run: args.dry_run,
+        job_id: args.job_id,
+        tail: args.tail,
+        state: args.job_state,
+        priority: args.priority ?? 0,
+        label: args.label,
+        kit_folder: args.kit_folder,
+      });
+    }
     if (args.action === "list") {
       const kit = args.kit_folder.trim();
       if (!kit || !fs.existsSync(win.join(kit, "05_Scripts"))) return reply({ refused: true, reasons: [`No 05_Scripts in the kit folder: ${kit || "(not set)"}`] }, true);

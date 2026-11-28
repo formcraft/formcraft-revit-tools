@@ -8,7 +8,7 @@
  *
  *   node build/fmc/cli.js <command>        JSON arguments on stdin (none for specs and probe)
  *
- *   fmc_file | fmc_family | fmc_project | fmc_template | fmc_library | fmc_qa | fmc_material | fmc_sheets | fmc_annotate | fmc_issue | fmc_links | fmc_selftest | fmc_workshare | fmc_review | fmc_report | fmc_doc | fmc_revit | fmc_brief | fmc_scripts | fmc_systems | fmc_build | fmc_ai | fmc_recipe | fmc_robot | fmc_navis | fmc_rhino | fmc_casework | fmc_ceiling | fmc_legend | fmc_apps | fmc_flow | fmc_tree | fmc_room | fmc_schedules | fmc_changes | fmc_select | fmc_find | fmc_testrun | fmc_balance | fmc_tables | fmc_powerbi | fmc_calc | fmc_diagram   run the tool with the same argument schema and defaults; prints the tool's JSON reply
+ *   fmc_file | fmc_family | fmc_project | fmc_template | fmc_library | fmc_qa | fmc_material | fmc_sheets | fmc_annotate | fmc_issue | fmc_links | fmc_coord | fmc_phase | fmc_hw | fmc_joins | fmc_north | fmc_dynamo | fmc_script_run | fmc_selftest | fmc_workshare | fmc_review | fmc_report | fmc_doc | fmc_revit | fmc_brief | fmc_scripts | fmc_systems | fmc_build | fmc_ai | fmc_recipe | fmc_robot | fmc_navis | fmc_rhino | fmc_casework | fmc_ceiling | fmc_legend | fmc_apps | fmc_flow | fmc_tree | fmc_room | fmc_schedules | fmc_changes | fmc_select | fmc_find | fmc_testrun | fmc_balance | fmc_tables | fmc_powerbi | fmc_calc | fmc_diagram   run the tool with the same argument schema and defaults; prints the tool's JSON reply
  *   specs                   the families and the pilot set in FMC_Family_Specs.json, for the pane's family picker
  *   probe                   connects to Revit on port 8080 and reads the open documents (tests the whole chain)
  *   ask                     {question, history?}: asks Claude with the firm's API key; read-only Revit tools (fmc/ask.ts)
@@ -34,6 +34,13 @@ import { FMC_SHEETS_SHAPE, runFmcSheets } from "../tools/fmc_sheets.js";
 import { FMC_ANNOTATE_SHAPE, runFmcAnnotate } from "../tools/fmc_annotate.js";
 import { FMC_ISSUE_SHAPE, runFmcIssue } from "../tools/fmc_issue.js";
 import { FMC_LINKS_SHAPE, runFmcLinks } from "../tools/fmc_links.js";
+import { FMC_COORD_SHAPE, runFmcCoord } from "../tools/fmc_coord.js";
+import { FMC_PHASE_SHAPE, runFmcPhase } from "../tools/fmc_phase.js";
+import { FMC_HW_SHAPE, runFmcHw } from "../tools/fmc_hw.js";
+import { FMC_JOINS_SHAPE, runFmcJoins } from "../tools/fmc_joins.js";
+import { FMC_NORTH_SHAPE, runFmcNorth } from "../tools/fmc_north.js";
+import { FMC_DYNAMO_SHAPE, runFmcDynamo } from "../tools/fmc_dynamo.js";
+import { FMC_SCRIPT_RUN_SHAPE, runFmcScriptRun } from "../tools/fmc_script_run.js";
 import { FMC_SELFTEST_SHAPE, runFmcSelftest } from "../tools/fmc_selftest.js";
 import { FMC_WORKSHARE_SHAPE, runFmcWorkshare } from "../tools/fmc_workshare.js";
 import { FMC_REVIEW_SHAPE, runFmcReview } from "../tools/fmc_review.js";
@@ -71,7 +78,8 @@ import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { askLogFile, askStatus, readApiKey, runAsk } from "./ask.js";
 import { annotateInvalidOp } from "./buildinfo.js";
 
-type Reply = { content: Array<{ type: "text"; text: string }>; isError?: boolean };
+// a tool may also return pictures (fmc_ai inbox); the CLI prints its text
+type Reply = { content: Array<{ type: "text"; text: string } | { type: "image"; data: string; mimeType: string }>; isError?: boolean };
 
 /** F74: the command running now, recorded in the call ledger when it answers (never blocks or fails the command). */
 let pending: { tool: string; args: Record<string, unknown>; t0: number; at: Date } | null = null;
@@ -92,7 +100,8 @@ function print(body: unknown, failed: boolean): never {
 
 function printReply(r: Reply): never {
   record(!r.isError);
-  process.stdout.write((r.content[0]?.text ?? "{}") + "\n");
+  const text = r.content.find((c): c is { type: "text"; text: string } => c.type === "text");
+  process.stdout.write((text?.text ?? "{}") + "\n");
   process.exit(r.isError ? 1 : 0);
 }
 
@@ -172,6 +181,20 @@ async function main() {
         return printReply(await runFmcIssue(z.object(FMC_ISSUE_SHAPE).parse(input)));
       case "fmc_links":
         return printReply(await runFmcLinks(z.object(FMC_LINKS_SHAPE).parse(input)));
+      case "fmc_coord":
+        return printReply(await runFmcCoord(z.object(FMC_COORD_SHAPE).parse(input)));
+      case "fmc_phase":
+        return printReply(await runFmcPhase(z.object(FMC_PHASE_SHAPE).parse(input)));
+      case "fmc_hw":
+        return printReply(await runFmcHw(z.object(FMC_HW_SHAPE).parse(input)));
+      case "fmc_joins":
+        return printReply(await runFmcJoins(z.object(FMC_JOINS_SHAPE).parse(input)));
+      case "fmc_north":
+        return printReply(await runFmcNorth(z.object(FMC_NORTH_SHAPE).parse(input)));
+      case "fmc_dynamo":
+        return printReply(await runFmcDynamo(z.object(FMC_DYNAMO_SHAPE).parse(input)));
+      case "fmc_script_run":
+        return printReply(await runFmcScriptRun(z.object(FMC_SCRIPT_RUN_SHAPE).parse(input)));
       case "fmc_selftest":
         return printReply(await runFmcSelftest(z.object(FMC_SELFTEST_SHAPE).parse(input)));
       case "fmc_workshare":
@@ -259,8 +282,8 @@ async function main() {
         return print(r, "error" in r);
       }
       // The pane's AI commands: a person approves, rejects, resumes or sets the policy. Never MCP tools.
-      case "ai_approve": case "ai_reject": case "ai_resume": case "ai_config": {
-        const r = paneAi(command, input as Record<string, unknown>, process.env.USERNAME || "unknown");
+      case "ai_approve": case "ai_reject": case "ai_resume": case "ai_config": case "ai_general": case "ai_send": {
+        const r = await paneAi(command, input as Record<string, unknown>, process.env.USERNAME || "unknown");
         return print(r, "error" in r);
       }
       case "ask_status": {
@@ -270,7 +293,7 @@ async function main() {
         return print(askStatus(text, new Date(), process.env, !!readApiKey()), false);
       }
       default:
-        process.stderr.write("Usage: node build/fmc/cli.js <fmc_file|fmc_family|fmc_project|fmc_template|fmc_library|fmc_qa|fmc_material|fmc_sheets|fmc_annotate|fmc_issue|fmc_links|fmc_selftest|fmc_workshare|fmc_review|fmc_report|fmc_doc|fmc_revit|fmc_brief|fmc_scripts|fmc_systems|fmc_build|fmc_ai|fmc_recipe|fmc_robot|fmc_navis|fmc_rhino|fmc_casework|fmc_ceiling|fmc_legend|fmc_apps|fmc_flow|fmc_tree|fmc_room|fmc_schedules|specs|probe|ask|ask_status|fmc_changes|fmc_select|fmc_find|fmc_testrun|fmc_balance|fmc_tables|fmc_powerbi|fmc_calc|fmc_diagram>  (JSON arguments on stdin)\n");
+        process.stderr.write("Usage: node build/fmc/cli.js <fmc_file|fmc_family|fmc_project|fmc_template|fmc_library|fmc_qa|fmc_material|fmc_sheets|fmc_annotate|fmc_issue|fmc_links|fmc_coord|fmc_phase|fmc_hw|fmc_joins|fmc_north|fmc_dynamo|fmc_script_run|fmc_selftest|fmc_workshare|fmc_review|fmc_report|fmc_doc|fmc_revit|fmc_brief|fmc_scripts|fmc_systems|fmc_build|fmc_ai|fmc_recipe|fmc_robot|fmc_navis|fmc_rhino|fmc_casework|fmc_ceiling|fmc_legend|fmc_apps|fmc_flow|fmc_tree|fmc_room|fmc_schedules|specs|probe|ask|ask_status|fmc_changes|fmc_select|fmc_find|fmc_testrun|fmc_balance|fmc_tables|fmc_powerbi|fmc_calc|fmc_diagram>  (JSON arguments on stdin)\n");
         process.exit(2);
     }
   } catch (e) {

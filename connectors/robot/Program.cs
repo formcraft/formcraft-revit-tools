@@ -7,8 +7,9 @@ namespace Formcraft.Robot
 {
     /// <summary>
     /// fmc-robot.exe status | send | calculate | results, with JSON on stdin and JSON on stdout. Track R of
-    /// docs/PLAN_EXECUTION.md: Formcraft prepares and transfers; the engineer decides. It never sets loads beyond the
-    /// cases (and self-weight) the engineer named, never chooses a section or a design code, and never signs anything.
+    /// docs/PLAN_EXECUTION.md: Formcraft prepares and transfers; the engineer decides. It sets only the loads the caller
+    /// sends with each case (bar_loads, kN/m; owner 28 Oct: preliminary runs from the kit's takedown) and the combinations
+    /// it names, never chooses a section or a design code, and never signs anything.
     /// Robot's API works in SI units (m, N, N·m); the file it saves is the one the server's guard allowed.
     /// </summary>
     public static class Program
@@ -53,8 +54,16 @@ namespace Formcraft.Robot
         private static IRobotApplication App(bool show)
         {
             IRobotApplication app = new RobotApplication();
-            if (show) { app.Visible = 1; app.Interactive = 1; app.UserControl = true; }
+            // owner 28 Oct: Robot's own pop-ups (save changes?, warnings) blocked the runs: no dialogs while automating;
+            // Robot is handed back to the user (Interactive, UserControl) once the work is saved
+            app.Interactive = 0;
+            if (show) app.Visible = 1;
             return app;
+        }
+
+        private static void HandBack(IRobotApplication app)
+        {
+            try { app.Interactive = 1; app.UserControl = true; } catch (Exception) { }
         }
 
         // ---------- send: the analytical model as a new Robot project ----------
@@ -71,6 +80,8 @@ namespace Formcraft.Robot
 
             IRobotApplication app = App(show: true);
             IRobotProject project = app.Project;
+            // the previous project closes without the "save changes?" question (every run is saved to its own .rtd)
+            try { if (project.IsActive == 1) project.Close(); } catch (Exception) { }
             project.New(IRobotProjectType.I_PT_FRAME_3D);
             IRobotStructure st = project.Structure;
 
@@ -117,12 +128,49 @@ namespace Formcraft.Robot
                     rec.SetValue((short)IRobotDeadRecordValues.I_DRV_Z, -1);
                     rec.SetValue((short)IRobotDeadRecordValues.I_DRV_ENTIRE_STRUCTURE, 1);
                 }
-                made_cases.Add(new JObject { ["n"] = number, ["name"] = c.Value<string>("name"), ["self_weight"] = c.Value<bool?>("self_weight") == true });
+                // owner 28 Oct ("do the calc in Robot"): the case's bar loads when the server sends them (kN/m, down),
+                // one record per value so equal loads share a record
+                int loadsAdded = 0;
+                foreach (var g in (c["bar_loads"] as JArray ?? new JArray()).OfType<JObject>().GroupBy(l => Math.Round(l.Value<double>("w_kn_m"), 2)))
+                {
+                    int i = sc.Records.New(IRobotLoadRecordType.I_LRT_BAR_UNIFORM);
+                    IRobotLoadRecord rec = sc.Records.Get(i);
+                    rec.SetValue((short)IRobotBarUniformRecordValues.I_BURV_PZ, -g.Key * 1000);
+                    rec.Objects.FromText(string.Join(" ", g.Select(l => l.Value<int>("bar"))));
+                    loadsAdded += g.Count();
+                }
+                // node forces (kN; lateral storey forces of a seismic or wind case), one record per (fx, fy, fz)
+                foreach (var g in (c["node_loads"] as JArray ?? new JArray()).OfType<JObject>()
+                    .GroupBy(l => (Math.Round(l.Value<double?>("fx_kn") ?? 0, 2), Math.Round(l.Value<double?>("fy_kn") ?? 0, 2), Math.Round(l.Value<double?>("fz_kn") ?? 0, 2))))
+                {
+                    int i = sc.Records.New(IRobotLoadRecordType.I_LRT_NODE_FORCE);
+                    IRobotLoadRecord rec = sc.Records.Get(i);
+                    rec.SetValue((short)IRobotNodeForceRecordValues.I_NFRV_FX, g.Key.Item1 * 1000);
+                    rec.SetValue((short)IRobotNodeForceRecordValues.I_NFRV_FY, g.Key.Item2 * 1000);
+                    rec.SetValue((short)IRobotNodeForceRecordValues.I_NFRV_FZ, g.Key.Item3 * 1000);
+                    rec.Objects.FromText(string.Join(" ", g.Select(l => l.Value<int>("node"))));
+                    loadsAdded += g.Count();
+                }
+                made_cases.Add(new JObject { ["n"] = number, ["name"] = c.Value<string>("name"), ["self_weight"] = c.Value<bool?>("self_weight") == true, ["bar_loads"] = loadsAdded });
+                number++;
+            }
+            // combinations: {name, kind ULS|SLS, factors {case name: factor}}
+            foreach (JObject cb in (form["combinations"] as JArray ?? new JArray()).OfType<JObject>())
+            {
+                var kind = (cb.Value<string>("kind") ?? "ULS").ToUpperInvariant() == "SLS" ? IRobotCombinationType.I_CBT_SLS : IRobotCombinationType.I_CBT_ULS;
+                RobotCaseCombination comb = st.Cases.CreateCombination(number, cb.Value<string>("name") ?? ("Comb " + number), kind, IRobotCaseNature.I_CN_PERMANENT, IRobotCaseAnalizeType.I_CAT_COMB);
+                foreach (var kv in cb["factors"] as JObject ?? new JObject())
+                {
+                    var hit = made_cases.OfType<JObject>().FirstOrDefault(x => x.Value<string>("name") == kv.Key) ?? throw new ArgumentException($"combination {cb["name"]}: no case {kv.Key}");
+                    comb.CaseFactors.New(hit.Value<int>("n"), kv.Value!.Value<double>());
+                }
+                made_cases.Add(new JObject { ["n"] = number, ["name"] = cb.Value<string>("name"), ["combination"] = kind == IRobotCombinationType.I_CBT_SLS ? "SLS" : "ULS" });
                 number++;
             }
 
             Directory.CreateDirectory(Path.GetDirectoryName(rtd)!);
             project.SaveAs(rtd);
+            HandBack(app);
             return new JObject { ["rtd"] = rtd, ["nodes"] = (model["nodes"] as JArray)?.Count ?? 0, ["bars"] = bars, ["supports"] = supported.Count,
                 ["cases"] = made_cases, ["unresolved_sections"] = unresolved, ["next"] = "In Robot the engineer adds the loads, combinations and design code, then runs the analysis" };
         }
@@ -173,6 +221,7 @@ namespace Formcraft.Robot
         {
             IRobotApplication app = App(show);
             if (!File.Exists(rtd)) throw new FileNotFoundException("The Robot file isn't there: " + rtd);
+            try { if (app.Project.IsActive == 1) app.Project.Close(); } catch (Exception) { }
             app.Project.Open(rtd);
             return app.Project;
         }
@@ -185,7 +234,10 @@ namespace Formcraft.Robot
             IRobotProject project = Opened(rtd, show: true);
             int status = project.CalcEngine.Calculate();
             project.SaveAs(rtd);
-            return new JObject { ["rtd"] = rtd, ["calculated"] = status == 0, ["status"] = status };
+            HandBack(new RobotApplication());
+            // Calculate() returns a COM boolean: -1 is TRUE (calculated), 0 FALSE (owner 28 Oct: Robot's report showed a
+            // clean run while this said "not calculated")
+            return new JObject { ["rtd"] = rtd, ["calculated"] = status != 0, ["status"] = status };
         }
 
         // ---------- results: each bar's governing axial force and moment ----------
@@ -203,20 +255,35 @@ namespace Formcraft.Robot
             foreach (JObject b in (p["bars"] as JArray ?? new JArray()).OfType<JObject>())
             {
                 int n = b.Value<int>("n");
-                double nEd = 0, mEd = 0;
+                double nEd = 0, mEd = 0, myEd = 0, mzEd = 0, vEd = 0;
                 string nCase = "", mCase = "";
                 foreach (var (num, name) in cases)
-                    foreach (double at in new[] { 0.0, 0.5, 1.0 })
+                    foreach (double at in new[] { 0.0, 0.25, 0.5, 0.75, 1.0 })
                     {
                         IRobotBarForceData f;
                         try { f = forces.Value(n, num, at); } catch (Exception) { continue; }
                         double nx = Math.Abs(f.FX) / 1000, m = Math.Max(Math.Abs(f.MY), Math.Abs(f.MZ)) / 1000;
                         if (nx > nEd) { nEd = nx; nCase = name; }
                         if (m > mEd) { mEd = m; mCase = name; }
+                        myEd = Math.Max(myEd, Math.Abs(f.MY) / 1000); mzEd = Math.Max(mzEd, Math.Abs(f.MZ) / 1000);
+                        vEd = Math.Max(vEd, Math.Max(Math.Abs(f.FY), Math.Abs(f.FZ)) / 1000);
                     }
-                outBars.Add(new JObject { ["n"] = n, ["id"] = b["id"], ["ned_kn"] = Math.Round(nEd, 1), ["med_knm"] = Math.Round(mEd, 1), ["ned_case"] = nCase, ["med_case"] = mCase });
+                outBars.Add(new JObject { ["n"] = n, ["id"] = b["id"], ["ned_kn"] = Math.Round(nEd, 1), ["med_knm"] = Math.Round(mEd, 1), ["ned_case"] = nCase, ["med_case"] = mCase,
+                    ["my_knm"] = Math.Round(myEd, 1), ["mz_knm"] = Math.Round(mzEd, 1), ["ved_kn"] = Math.Round(vEd, 1) });
             }
-            return new JObject { ["rtd"] = rtd, ["cases"] = cases.Count, ["bars"] = outBars };
+            // node displacements (mm), largest horizontal per node over the cases asked (drift checks)
+            var outNodes = new JArray();
+            var want = (p["node_cases"] as JArray ?? new JArray()).Select(x => x.Value<string>()).ToHashSet();
+            foreach (int node in (p["nodes"] as JArray ?? new JArray()).Select(x => x.Value<int>()))
+            {
+                double ux = 0, uy = 0;
+                foreach (var (num, name) in cases.Where(c => want.Count == 0 || want.Contains(c.Name)))
+                {
+                    try { var d = st.Results.Nodes.Displacements.Value(node, num); ux = Math.Max(ux, Math.Abs(d.UX) * 1000); uy = Math.Max(uy, Math.Abs(d.UY) * 1000); } catch (Exception) { }
+                }
+                outNodes.Add(new JObject { ["node"] = node, ["ux_mm"] = Math.Round(ux, 2), ["uy_mm"] = Math.Round(uy, 2) });
+            }
+            return new JObject { ["rtd"] = rtd, ["cases"] = cases.Count, ["bars"] = outBars, ["nodes"] = outNodes };
         }
 
         // ---------- select, selection: one selection across the apps (X1 of the hub plan) ----------

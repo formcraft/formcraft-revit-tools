@@ -10,7 +10,7 @@ import { loadMatrix, matrixGrid, summarize } from "../fmc/mep_matrix.js";
 import { CIRCUIT, KitElectrical, circuitsPayload } from "../fmc/circuits.js";
 import { electrical } from "../fmc/templatekit.js";
 import { readXlsxSheets } from "../fmc/xlsx.js";
-import { kitWorkbookPath } from "../fmc/calc/kit.js";
+import { kitMasterDataPath, kitWorkbookPath } from "../fmc/calc/kit.js";
 
 const win = path.win32;
 
@@ -121,8 +121,8 @@ export async function runFmcSystems(args: FmcSystemsArgs) {
       extra = boards.map((b) => `- ${b.name}: ${b.connected_va} VA connected, ${b.demand_va} VA demand, ${b.circuits} circuits, fed by ${b.fed_by || "none"}${b.note ? ` (${b.note})` : ""}`);
       body = { model: facts?.model ?? "", boards, checks };
     } else {
-      const master = win.join(args.kit_folder.trim(), "03_Master_Data", "FMC_Master_Data.json");
-      if (!args.kit_folder.trim() || !fs.existsSync(master)) return reply({ refused: true, reasons: [`Kit master data not found: ${master}`] }, true);
+      const master = kitMasterDataPath(args.kit_folder, expandEnv(config.specs_path));
+      if (!fs.existsSync(master)) return reply({ refused: true, reasons: [`Kit master data not found: ${master}`] }, true);
       const { fields, not_in_kit } = structuralFields(kitParams(JSON.parse(fs.readFileSync(master, "utf8").replace(/^﻿/, ""))));
       const facts = await withRevitConnection((c) => c.sendRaw("fmc_structural_facts", { fields }, 300000));
       const checks = structuralChecks(facts);

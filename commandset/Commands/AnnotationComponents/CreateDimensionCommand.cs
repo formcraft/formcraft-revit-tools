@@ -26,6 +26,7 @@ using Newtonsoft.Json.Linq;
 using RevitMCPSDK.API.Base;
 using RevitMCPCommandSet.Models.Annotation;
 using RevitMCPCommandSet.Services.AnnotationComponents;
+using RevitMCPCommandSet.Services.Fmc;
 
 namespace RevitMCPCommandSet.Commands.AnnotationComponents;
 
@@ -66,11 +67,12 @@ public class CreateDimensionCommand : ExternalEventCommandBase
             if (dimensions == null || dimensions.Count == 0)
                 throw new ArgumentException("Dimension list cannot be empty");
 
+            FmcCallContext.Begin(parameters);
             // Set parameters and execute
             _handler.SetParameters(dimensions);
 
             // Raise event and wait for completion
-            if (RaiseAndWaitForCompletion(20000)) // 20 seconds timeout
+            if (RaiseAndWaitForCompletion(300000)) // owner 26 Oct: big batches take Revit over 10 s; wait up to 5 min
                 return _handler.Result;
             throw new TimeoutException("Dimension creation operation timed out");
         }

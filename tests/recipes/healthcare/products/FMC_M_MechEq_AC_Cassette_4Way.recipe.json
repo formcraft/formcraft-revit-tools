@@ -1,3023 +1,3032 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_M_MechEq_AC_Cassette_4Way",
- "template": "Metric Mechanical Equipment.rft",
- "about": "Modelled as a generic product: chassis above the ceiling (z > 0) on four hanger brackets, white panel below the ceiling with intake grille and slats, four outlet slots with louvre flaps, corner covers, signal receiver with LED, electrical box, drain socket and refrigerant tails. Reference: query: ac cassette 4way mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=ac+cassette+4way+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Mechanical Equipment"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Voltage",
-   "type": "Voltage",
-   "group": "Electrical"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Apparent Load",
-   "type": "ApparentPower",
-   "group": "ElectricalLoads"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cooling_Capacity_kW",
-   "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cooling_Capacity_BTUh",
-   "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Airflow_Ls",
-   "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Refrigerant",
-   "guid": "a46c59d0-d719-583b-99c0-074994d01603",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Asset_Tag",
-   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Serial_Number",
-   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Install_Date",
-   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Warranty_End",
-   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Maintenance_Interval_Months",
-   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_OM_Link",
-   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lift_Weight_kg",
-   "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Mounting_Height_mm",
-   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Power_W",
-   "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Power_W_2",
-   "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Controller_ID",
-   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Type",
-   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Signal",
-   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Protocol",
-   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Tank_Capacity_L",
-   "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "5.3kW_18kBTU"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5.3kW_18kBTU/FMC_Cost_Unit",
-   "type": "5.3kW_18kBTU",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5.3kW_18kBTU/FMC_Geometry_Stage",
-   "type": "5.3kW_18kBTU",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5.3kW_18kBTU/IfcExportAs",
-   "type": "5.3kW_18kBTU",
-   "param": "IfcExportAs",
-   "value": "IfcUnitaryEquipment"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5.3kW_18kBTU/Description",
-   "type": "5.3kW_18kBTU",
-   "param": "Description",
-   "value": "Ceiling cassette 4-way, 5.3 to 10.5 kW (18k to 36k BTU/h), 950 square white panel with four outlet slots and louvres, central intake grille"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5.3kW_18kBTU/Keynote",
-   "type": "5.3kW_18kBTU",
-   "param": "Keynote",
-   "value": "H.SPL_07"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5.3kW_18kBTU/FMC_Keynote_Code",
-   "type": "5.3kW_18kBTU",
-   "param": "FMC_Keynote_Code",
-   "value": "H.SPL_07"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5.3kW_18kBTU/FMC_Code_Description",
-   "type": "5.3kW_18kBTU",
-   "param": "FMC_Code_Description",
-   "value": "AC Cassette 4Way: Cassette indoor unit"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5.3kW_18kBTU/FMC_Code_Group",
-   "type": "5.3kW_18kBTU",
-   "param": "FMC_Code_Group",
-   "value": "H.SPL"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5.3kW_18kBTU/FMC_Role_Code",
-   "type": "5.3kW_18kBTU",
-   "param": "FMC_Role_Code",
-   "value": "M"
-  },
-  {
-   "op": "set_type_value",
-   "name": "5.3kW_18kBTU/Voltage",
-   "type": "5.3kW_18kBTU",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "5.3kW_18kBTU/Apparent Load",
-   "type": "5.3kW_18kBTU",
-   "param": "Apparent Load",
-   "value": 1700
-  },
-  {
-   "op": "set_type_value",
-   "name": "5.3kW_18kBTU/Default Elevation",
-   "type": "5.3kW_18kBTU",
-   "param": "Default Elevation",
-   "value": 2700
-  },
-  {
-   "op": "add_type",
-   "name": "7.0kW_24kBTU"
-  },
-  {
-   "op": "set_type_value",
-   "name": "7.0kW_24kBTU/FMC_Cost_Unit",
-   "type": "7.0kW_24kBTU",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "7.0kW_24kBTU/FMC_Geometry_Stage",
-   "type": "7.0kW_24kBTU",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "7.0kW_24kBTU/IfcExportAs",
-   "type": "7.0kW_24kBTU",
-   "param": "IfcExportAs",
-   "value": "IfcUnitaryEquipment"
-  },
-  {
-   "op": "set_type_value",
-   "name": "7.0kW_24kBTU/Description",
-   "type": "7.0kW_24kBTU",
-   "param": "Description",
-   "value": "Ceiling cassette 4-way, 5.3 to 10.5 kW (18k to 36k BTU/h), 950 square white panel with four outlet slots and louvres, central intake grille"
-  },
-  {
-   "op": "set_type_value",
-   "name": "7.0kW_24kBTU/Keynote",
-   "type": "7.0kW_24kBTU",
-   "param": "Keynote",
-   "value": "H.SPL_07"
-  },
-  {
-   "op": "set_type_value",
-   "name": "7.0kW_24kBTU/FMC_Keynote_Code",
-   "type": "7.0kW_24kBTU",
-   "param": "FMC_Keynote_Code",
-   "value": "H.SPL_07"
-  },
-  {
-   "op": "set_type_value",
-   "name": "7.0kW_24kBTU/FMC_Code_Description",
-   "type": "7.0kW_24kBTU",
-   "param": "FMC_Code_Description",
-   "value": "AC Cassette 4Way: Cassette indoor unit"
-  },
-  {
-   "op": "set_type_value",
-   "name": "7.0kW_24kBTU/FMC_Code_Group",
-   "type": "7.0kW_24kBTU",
-   "param": "FMC_Code_Group",
-   "value": "H.SPL"
-  },
-  {
-   "op": "set_type_value",
-   "name": "7.0kW_24kBTU/FMC_Role_Code",
-   "type": "7.0kW_24kBTU",
-   "param": "FMC_Role_Code",
-   "value": "M"
-  },
-  {
-   "op": "set_type_value",
-   "name": "7.0kW_24kBTU/Voltage",
-   "type": "7.0kW_24kBTU",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "7.0kW_24kBTU/Apparent Load",
-   "type": "7.0kW_24kBTU",
-   "param": "Apparent Load",
-   "value": 2300
-  },
-  {
-   "op": "set_type_value",
-   "name": "7.0kW_24kBTU/Default Elevation",
-   "type": "7.0kW_24kBTU",
-   "param": "Default Elevation",
-   "value": 2700
-  },
-  {
-   "op": "add_type",
-   "name": "10.5kW_36kBTU"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10.5kW_36kBTU/FMC_Cost_Unit",
-   "type": "10.5kW_36kBTU",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10.5kW_36kBTU/FMC_Geometry_Stage",
-   "type": "10.5kW_36kBTU",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10.5kW_36kBTU/IfcExportAs",
-   "type": "10.5kW_36kBTU",
-   "param": "IfcExportAs",
-   "value": "IfcUnitaryEquipment"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10.5kW_36kBTU/Description",
-   "type": "10.5kW_36kBTU",
-   "param": "Description",
-   "value": "Ceiling cassette 4-way, 5.3 to 10.5 kW (18k to 36k BTU/h), 950 square white panel with four outlet slots and louvres, central intake grille"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10.5kW_36kBTU/Keynote",
-   "type": "10.5kW_36kBTU",
-   "param": "Keynote",
-   "value": "H.SPL_07"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10.5kW_36kBTU/FMC_Keynote_Code",
-   "type": "10.5kW_36kBTU",
-   "param": "FMC_Keynote_Code",
-   "value": "H.SPL_07"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10.5kW_36kBTU/FMC_Code_Description",
-   "type": "10.5kW_36kBTU",
-   "param": "FMC_Code_Description",
-   "value": "AC Cassette 4Way: Cassette indoor unit"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10.5kW_36kBTU/FMC_Code_Group",
-   "type": "10.5kW_36kBTU",
-   "param": "FMC_Code_Group",
-   "value": "H.SPL"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10.5kW_36kBTU/FMC_Role_Code",
-   "type": "10.5kW_36kBTU",
-   "param": "FMC_Role_Code",
-   "value": "M"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10.5kW_36kBTU/Voltage",
-   "type": "10.5kW_36kBTU",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "10.5kW_36kBTU/Apparent Load",
-   "type": "10.5kW_36kBTU",
-   "param": "Apparent Load",
-   "value": 3600
-  },
-  {
-   "op": "set_type_value",
-   "name": "10.5kW_36kBTU/Default Elevation",
-   "type": "10.5kW_36kBTU",
-   "param": "Default Elevation",
-   "value": 2700
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Galv",
-   "color": [
-    183,
-    188,
-    192
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Galv Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Duct_Galvanised",
-   "param": "Galv Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "White",
-   "color": [
-    242,
-    242,
-    238
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "White Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_White",
-   "param": "White Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Mgrey",
-   "color": [
-    201,
-    205,
-    210
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Mgrey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_MedicalGrey",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Ledg",
-   "color": [
-    59,
-    209,
-    111
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Ledg Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_LED_Green",
-   "param": "Ledg Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Dark",
-   "color": [
-    61,
-    70,
-    80
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Dark Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_SteelLTZ_Painted",
-   "param": "Dark Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Grey",
-   "color": [
-    154,
-    160,
-    166
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Grey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Grey",
-   "param": "Grey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Copper",
-   "color": [
-    184,
-    115,
-    51
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Copper Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Copper_Pipe",
-   "param": "Copper Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -475.0,
-     -475.0
-    ],
-    [
-     475.0,
-     -475.0
-    ],
-    [
-     475.0,
-     475.0
-    ],
-    [
-     -475.0,
-     475.0
-    ]
-   ],
-   "start": -44,
-   "end": 250
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Chassis",
-   "points": [
-    [
-     400.0,
-     -420.0
-    ],
-    [
-     407.65,
-     -418.48
-    ],
-    [
-     414.14,
-     -414.14
-    ],
-    [
-     418.48,
-     -407.65
-    ],
-    [
-     420.0,
-     -400.0
-    ],
-    [
-     420.0,
-     400.0
-    ],
-    [
-     418.48,
-     407.65
-    ],
-    [
-     414.14,
-     414.14
-    ],
-    [
-     407.65,
-     418.48
-    ],
-    [
-     400.0,
-     420.0
-    ],
-    [
-     -400.0,
-     420.0
-    ],
-    [
-     -407.65,
-     418.48
-    ],
-    [
-     -414.14,
-     414.14
-    ],
-    [
-     -418.48,
-     407.65
-    ],
-    [
-     -420.0,
-     400.0
-    ],
-    [
-     -420.0,
-     -400.0
-    ],
-    [
-     -418.48,
-     -407.65
-    ],
-    [
-     -414.14,
-     -414.14
-    ],
-    [
-     -407.65,
-     -418.48
-    ],
-    [
-     -400.0,
-     -420.0
-    ]
-   ],
-   "start": 0,
-   "end": 250
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Chassis",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Chassis",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Chassis",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Panel",
-   "points": [
-    [
-     445.0,
-     -475.0
-    ],
-    [
-     456.48,
-     -472.72
-    ],
-    [
-     466.21,
-     -466.21
-    ],
-    [
-     472.72,
-     -456.48
-    ],
-    [
-     475.0,
-     -445.0
-    ],
-    [
-     475.0,
-     445.0
-    ],
-    [
-     472.72,
-     456.48
-    ],
-    [
-     466.21,
-     466.21
-    ],
-    [
-     456.48,
-     472.72
-    ],
-    [
-     445.0,
-     475.0
-    ],
-    [
-     -445.0,
-     475.0
-    ],
-    [
-     -456.48,
-     472.72
-    ],
-    [
-     -466.21,
-     466.21
-    ],
-    [
-     -472.72,
-     456.48
-    ],
-    [
-     -475.0,
-     445.0
-    ],
-    [
-     -475.0,
-     -445.0
-    ],
-    [
-     -472.72,
-     -456.48
-    ],
-    [
-     -466.21,
-     -466.21
-    ],
-    [
-     -456.48,
-     -472.72
-    ],
-    [
-     -445.0,
-     -475.0
-    ]
-   ],
-   "start": -35,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Panel",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Panel",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Panel",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Intake Grille",
-   "points": [
-    [
-     292.0,
-     -300.0
-    ],
-    [
-     295.06,
-     -299.39
-    ],
-    [
-     297.66,
-     -297.66
-    ],
-    [
-     299.39,
-     -295.06
-    ],
-    [
-     300.0,
-     -292.0
-    ],
-    [
-     300.0,
-     292.0
-    ],
-    [
-     299.39,
-     295.06
-    ],
-    [
-     297.66,
-     297.66
-    ],
-    [
-     295.06,
-     299.39
-    ],
-    [
-     292.0,
-     300.0
-    ],
-    [
-     -292.0,
-     300.0
-    ],
-    [
-     -295.06,
-     299.39
-    ],
-    [
-     -297.66,
-     297.66
-    ],
-    [
-     -299.39,
-     295.06
-    ],
-    [
-     -300.0,
-     292.0
-    ],
-    [
-     -300.0,
-     -292.0
-    ],
-    [
-     -299.39,
-     -295.06
-    ],
-    [
-     -297.66,
-     -297.66
-    ],
-    [
-     -295.06,
-     -299.39
-    ],
-    [
-     -292.0,
-     -300.0
-    ]
-   ],
-   "start": -37,
-   "end": -35
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Intake Grille",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Intake Grille",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Intake Grille",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Outlet Slot North",
-   "points": [
-    [
-     -300.0,
-     325.0
-    ],
-    [
-     300.0,
-     325.0
-    ],
-    [
-     300.0,
-     395.0
-    ],
-    [
-     -300.0,
-     395.0
-    ]
-   ],
-   "start": -36.5,
-   "end": -35
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Outlet Slot North",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Outlet Slot North",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Outlet Slot North",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Outlet Slot South",
-   "points": [
-    [
-     -300.0,
-     -395.0
-    ],
-    [
-     300.0,
-     -395.0
-    ],
-    [
-     300.0,
-     -325.0
-    ],
-    [
-     -300.0,
-     -325.0
-    ]
-   ],
-   "start": -36.5,
-   "end": -35
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Outlet Slot South",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Outlet Slot South",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Outlet Slot South",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Outlet Slot East",
-   "points": [
-    [
-     325.0,
-     -300.0
-    ],
-    [
-     395.0,
-     -300.0
-    ],
-    [
-     395.0,
-     300.0
-    ],
-    [
-     325.0,
-     300.0
-    ]
-   ],
-   "start": -36.5,
-   "end": -35
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Outlet Slot East",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Outlet Slot East",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Outlet Slot East",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Outlet Slot West",
-   "points": [
-    [
-     -395.0,
-     -300.0
-    ],
-    [
-     -325.0,
-     -300.0
-    ],
-    [
-     -325.0,
-     300.0
-    ],
-    [
-     -395.0,
-     300.0
-    ]
-   ],
-   "start": -36.5,
-   "end": -35
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Outlet Slot West",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Outlet Slot West",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Outlet Slot West",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Louvre Flap North",
-   "points": [
-    [
-     -290.0,
-     342.5
-    ],
-    [
-     290.0,
-     342.5
-    ],
-    [
-     290.0,
-     370.5
-    ],
-    [
-     -290.0,
-     370.5
-    ]
-   ],
-   "start": -44,
-   "end": -36.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Louvre Flap North",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Louvre Flap North",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Louvre Flap North",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Louvre Flap South",
-   "points": [
-    [
-     -290.0,
-     -370.5
-    ],
-    [
-     290.0,
-     -370.5
-    ],
-    [
-     290.0,
-     -342.5
-    ],
-    [
-     -290.0,
-     -342.5
-    ]
-   ],
-   "start": -44,
-   "end": -36.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Louvre Flap South",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Louvre Flap South",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Louvre Flap South",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Louvre Flap East",
-   "points": [
-    [
-     342.5,
-     -290.0
-    ],
-    [
-     370.5,
-     -290.0
-    ],
-    [
-     370.5,
-     290.0
-    ],
-    [
-     342.5,
-     290.0
-    ]
-   ],
-   "start": -44,
-   "end": -36.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Louvre Flap East",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Louvre Flap East",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Louvre Flap East",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Louvre Flap West",
-   "points": [
-    [
-     -370.5,
-     -290.0
-    ],
-    [
-     -342.5,
-     -290.0
-    ],
-    [
-     -342.5,
-     290.0
-    ],
-    [
-     -370.5,
-     290.0
-    ]
-   ],
-   "start": -44,
-   "end": -36.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Louvre Flap West",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Louvre Flap West",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Louvre Flap West",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slat 1",
-   "points": [
-    [
-     -294.0,
-     -294.0
-    ],
-    [
-     294.0,
-     -294.0
-    ],
-    [
-     294.0,
-     -288.0
-    ],
-    [
-     -294.0,
-     -288.0
-    ]
-   ],
-   "start": -39,
-   "end": -37
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slat 1",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slat 1",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slat 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slat 2",
-   "points": [
-    [
-     -294.0,
-     -249.3846153846154
-    ],
-    [
-     294.0,
-     -249.3846153846154
-    ],
-    [
-     294.0,
-     -243.3846153846154
-    ],
-    [
-     -294.0,
-     -243.3846153846154
-    ]
-   ],
-   "start": -39,
-   "end": -37
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slat 2",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slat 2",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slat 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slat 3",
-   "points": [
-    [
-     -294.0,
-     -204.76923076923077
-    ],
-    [
-     294.0,
-     -204.76923076923077
-    ],
-    [
-     294.0,
-     -198.76923076923077
-    ],
-    [
-     -294.0,
-     -198.76923076923077
-    ]
-   ],
-   "start": -39,
-   "end": -37
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slat 3",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slat 3",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slat 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slat 4",
-   "points": [
-    [
-     -294.0,
-     -160.15384615384616
-    ],
-    [
-     294.0,
-     -160.15384615384616
-    ],
-    [
-     294.0,
-     -154.15384615384616
-    ],
-    [
-     -294.0,
-     -154.15384615384616
-    ]
-   ],
-   "start": -39,
-   "end": -37
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slat 4",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slat 4",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slat 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slat 5",
-   "points": [
-    [
-     -294.0,
-     -115.53846153846155
-    ],
-    [
-     294.0,
-     -115.53846153846155
-    ],
-    [
-     294.0,
-     -109.53846153846155
-    ],
-    [
-     -294.0,
-     -109.53846153846155
-    ]
-   ],
-   "start": -39,
-   "end": -37
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slat 5",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slat 5",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slat 5",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slat 6",
-   "points": [
-    [
-     -294.0,
-     -70.92307692307693
-    ],
-    [
-     294.0,
-     -70.92307692307693
-    ],
-    [
-     294.0,
-     -64.92307692307693
-    ],
-    [
-     -294.0,
-     -64.92307692307693
-    ]
-   ],
-   "start": -39,
-   "end": -37
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slat 6",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slat 6",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slat 6",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slat 7",
-   "points": [
-    [
-     -294.0,
-     -26.30769230769232
-    ],
-    [
-     294.0,
-     -26.30769230769232
-    ],
-    [
-     294.0,
-     -20.30769230769232
-    ],
-    [
-     -294.0,
-     -20.30769230769232
-    ]
-   ],
-   "start": -39,
-   "end": -37
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slat 7",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slat 7",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slat 7",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slat 8",
-   "points": [
-    [
-     -294.0,
-     18.307692307692264
-    ],
-    [
-     294.0,
-     18.307692307692264
-    ],
-    [
-     294.0,
-     24.307692307692264
-    ],
-    [
-     -294.0,
-     24.307692307692264
-    ]
-   ],
-   "start": -39,
-   "end": -37
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slat 8",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slat 8",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slat 8",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slat 9",
-   "points": [
-    [
-     -294.0,
-     62.923076923076906
-    ],
-    [
-     294.0,
-     62.923076923076906
-    ],
-    [
-     294.0,
-     68.9230769230769
-    ],
-    [
-     -294.0,
-     68.9230769230769
-    ]
-   ],
-   "start": -39,
-   "end": -37
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slat 9",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slat 9",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slat 9",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slat 10",
-   "points": [
-    [
-     -294.0,
-     107.53846153846155
-    ],
-    [
-     294.0,
-     107.53846153846155
-    ],
-    [
-     294.0,
-     113.53846153846155
-    ],
-    [
-     -294.0,
-     113.53846153846155
-    ]
-   ],
-   "start": -39,
-   "end": -37
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slat 10",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slat 10",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slat 10",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slat 11",
-   "points": [
-    [
-     -294.0,
-     152.15384615384613
-    ],
-    [
-     294.0,
-     152.15384615384613
-    ],
-    [
-     294.0,
-     158.15384615384613
-    ],
-    [
-     -294.0,
-     158.15384615384613
-    ]
-   ],
-   "start": -39,
-   "end": -37
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slat 11",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slat 11",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slat 11",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slat 12",
-   "points": [
-    [
-     -294.0,
-     196.76923076923072
-    ],
-    [
-     294.0,
-     196.76923076923072
-    ],
-    [
-     294.0,
-     202.76923076923072
-    ],
-    [
-     -294.0,
-     202.76923076923072
-    ]
-   ],
-   "start": -39,
-   "end": -37
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slat 12",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slat 12",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slat 12",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slat 13",
-   "points": [
-    [
-     -294.0,
-     241.38461538461536
-    ],
-    [
-     294.0,
-     241.38461538461536
-    ],
-    [
-     294.0,
-     247.38461538461536
-    ],
-    [
-     -294.0,
-     247.38461538461536
-    ]
-   ],
-   "start": -39,
-   "end": -37
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slat 13",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slat 13",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slat 13",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grille Slat 14",
-   "points": [
-    [
-     -294.0,
-     286.0
-    ],
-    [
-     294.0,
-     286.0
-    ],
-    [
-     294.0,
-     292.0
-    ],
-    [
-     -294.0,
-     292.0
-    ]
-   ],
-   "start": -39,
-   "end": -37
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grille Slat 14",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grille Slat 14",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grille Slat 14",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Corner Cover Front 1",
-   "points": [
-    [
-     -467.0,
-     -467.0
-    ],
-    [
-     -404.0,
-     -467.0
-    ],
-    [
-     -404.0,
-     -404.0
-    ],
-    [
-     -467.0,
-     -404.0
-    ]
-   ],
-   "start": -37,
-   "end": -35
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Corner Cover Front 1",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Corner Cover Front 1",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Corner Cover Front 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Corner Cover Front 2",
-   "points": [
-    [
-     404.0,
-     -467.0
-    ],
-    [
-     467.0,
-     -467.0
-    ],
-    [
-     467.0,
-     -404.0
-    ],
-    [
-     404.0,
-     -404.0
-    ]
-   ],
-   "start": -37,
-   "end": -35
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Corner Cover Front 2",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Corner Cover Front 2",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Corner Cover Front 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Corner Cover Rear 1",
-   "points": [
-    [
-     -467.0,
-     404.0
-    ],
-    [
-     -404.0,
-     404.0
-    ],
-    [
-     -404.0,
-     467.0
-    ],
-    [
-     -467.0,
-     467.0
-    ]
-   ],
-   "start": -37,
-   "end": -35
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Corner Cover Rear 1",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Corner Cover Rear 1",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Corner Cover Rear 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Corner Cover Rear 2",
-   "points": [
-    [
-     404.0,
-     404.0
-    ],
-    [
-     467.0,
-     404.0
-    ],
-    [
-     467.0,
-     467.0
-    ],
-    [
-     404.0,
-     467.0
-    ]
-   ],
-   "start": -37,
-   "end": -35
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Corner Cover Rear 2",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Corner Cover Rear 2",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Corner Cover Rear 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Signal Receiver",
-   "points": [
-    [
-     405.0,
-     -461.0
-    ],
-    [
-     455.0,
-     -461.0
-    ],
-    [
-     455.0,
-     -441.0
-    ],
-    [
-     405.0,
-     -441.0
-    ]
-   ],
-   "start": -38,
-   "end": -35
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Signal Receiver",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Signal Receiver",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Signal Receiver",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Receiver LED",
-   "points": [
-    [
-     446.0,
-     -451.0
-    ],
-    [
-     445.9,
-     -450.22
-    ],
-    [
-     445.6,
-     -449.5
-    ],
-    [
-     445.12,
-     -448.88
-    ],
-    [
-     444.5,
-     -448.4
-    ],
-    [
-     443.78,
-     -448.1
-    ],
-    [
-     443.0,
-     -448.0
-    ],
-    [
-     442.22,
-     -448.1
-    ],
-    [
-     441.5,
-     -448.4
-    ],
-    [
-     440.88,
-     -448.88
-    ],
-    [
-     440.4,
-     -449.5
-    ],
-    [
-     440.1,
-     -450.22
-    ],
-    [
-     440.0,
-     -451.0
-    ],
-    [
-     440.1,
-     -451.78
-    ],
-    [
-     440.4,
-     -452.5
-    ],
-    [
-     440.88,
-     -453.12
-    ],
-    [
-     441.5,
-     -453.6
-    ],
-    [
-     442.22,
-     -453.9
-    ],
-    [
-     443.0,
-     -454.0
-    ],
-    [
-     443.78,
-     -453.9
-    ],
-    [
-     444.5,
-     -453.6
-    ],
-    [
-     445.12,
-     -453.12
-    ],
-    [
-     445.6,
-     -452.5
-    ],
-    [
-     445.9,
-     -451.78
-    ]
-   ],
-   "start": -39,
-   "end": -38
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Receiver LED",
-   "subcategory": "Ledg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Receiver LED",
-   "param": "Ledg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Receiver LED",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hanger Bracket Left 1",
-   "points": [
-    [
-     -460.0,
-     -360.0
-    ],
-    [
-     -420.0,
-     -360.0
-    ],
-    [
-     -420.0,
-     -300.0
-    ],
-    [
-     -460.0,
-     -300.0
-    ]
-   ],
-   "start": 180,
-   "end": 220
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hanger Bracket Left 1",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hanger Bracket Left 1",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hanger Bracket Left 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hanger Bracket Left 2",
-   "points": [
-    [
-     -460.0,
-     300.0
-    ],
-    [
-     -420.0,
-     300.0
-    ],
-    [
-     -420.0,
-     360.0
-    ],
-    [
-     -460.0,
-     360.0
-    ]
-   ],
-   "start": 180,
-   "end": 220
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hanger Bracket Left 2",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hanger Bracket Left 2",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hanger Bracket Left 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hanger Bracket Right 1",
-   "points": [
-    [
-     420.0,
-     -360.0
-    ],
-    [
-     460.0,
-     -360.0
-    ],
-    [
-     460.0,
-     -300.0
-    ],
-    [
-     420.0,
-     -300.0
-    ]
-   ],
-   "start": 180,
-   "end": 220
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hanger Bracket Right 1",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hanger Bracket Right 1",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hanger Bracket Right 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hanger Bracket Right 2",
-   "points": [
-    [
-     420.0,
-     300.0
-    ],
-    [
-     460.0,
-     300.0
-    ],
-    [
-     460.0,
-     360.0
-    ],
-    [
-     420.0,
-     360.0
-    ]
-   ],
-   "start": 180,
-   "end": 220
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hanger Bracket Right 2",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hanger Bracket Right 2",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hanger Bracket Right 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Electrical Box",
-   "points": [
-    [
-     -340.0,
-     -465.0
-    ],
-    [
-     -160.0,
-     -465.0
-    ],
-    [
-     -160.0,
-     -420.0
-    ],
-    [
-     -340.0,
-     -420.0
-    ]
-   ],
-   "start": 60,
-   "end": 200
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Electrical Box",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Electrical Box",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Electrical Box",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drain Socket",
-   "points": [
-    [
-     216.0,
-     170.0
-    ],
-    [
-     215.45,
-     174.14
-    ],
-    [
-     213.86,
-     178.0
-    ],
-    [
-     211.31,
-     181.31
-    ],
-    [
-     208.0,
-     183.86
-    ],
-    [
-     204.14,
-     185.45
-    ],
-    [
-     200.0,
-     186.0
-    ],
-    [
-     195.86,
-     185.45
-    ],
-    [
-     192.0,
-     183.86
-    ],
-    [
-     188.69,
-     181.31
-    ],
-    [
-     186.14,
-     178.0
-    ],
-    [
-     184.55,
-     174.14
-    ],
-    [
-     184.0,
-     170.0
-    ],
-    [
-     184.55,
-     165.86
-    ],
-    [
-     186.14,
-     162.0
-    ],
-    [
-     188.69,
-     158.69
-    ],
-    [
-     192.0,
-     156.14
-    ],
-    [
-     195.86,
-     154.55
-    ],
-    [
-     200.0,
-     154.0
-    ],
-    [
-     204.14,
-     154.55
-    ],
-    [
-     208.0,
-     156.14
-    ],
-    [
-     211.31,
-     158.69
-    ],
-    [
-     213.86,
-     162.0
-    ],
-    [
-     215.45,
-     165.86
-    ]
-   ],
-   "start": 420.0,
-   "end": 470.0,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drain Socket",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drain Socket",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drain Socket",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Liquid Line",
-   "points": [
-    [
-     -254.0,
-     140.0
-    ],
-    [
-     -254.2,
-     141.55
-    ],
-    [
-     -254.8,
-     143.0
-    ],
-    [
-     -255.76,
-     144.24
-    ],
-    [
-     -257.0,
-     145.2
-    ],
-    [
-     -258.45,
-     145.8
-    ],
-    [
-     -260.0,
-     146.0
-    ],
-    [
-     -261.55,
-     145.8
-    ],
-    [
-     -263.0,
-     145.2
-    ],
-    [
-     -264.24,
-     144.24
-    ],
-    [
-     -265.2,
-     143.0
-    ],
-    [
-     -265.8,
-     141.55
-    ],
-    [
-     -266.0,
-     140.0
-    ],
-    [
-     -265.8,
-     138.45
-    ],
-    [
-     -265.2,
-     137.0
-    ],
-    [
-     -264.24,
-     135.76
-    ],
-    [
-     -263.0,
-     134.8
-    ],
-    [
-     -261.55,
-     134.2
-    ],
-    [
-     -260.0,
-     134.0
-    ],
-    [
-     -258.45,
-     134.2
-    ],
-    [
-     -257.0,
-     134.8
-    ],
-    [
-     -255.76,
-     135.76
-    ],
-    [
-     -254.8,
-     137.0
-    ],
-    [
-     -254.2,
-     138.45
-    ]
-   ],
-   "start": 420.0,
-   "end": 470.0,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Liquid Line",
-   "subcategory": "Copper"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Liquid Line",
-   "param": "Copper Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Liquid Line",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Gas Line",
-   "points": [
-    [
-     -210.5,
-     140.0
-    ],
-    [
-     -210.82,
-     142.46
-    ],
-    [
-     -211.77,
-     144.75
-    ],
-    [
-     -213.28,
-     146.72
-    ],
-    [
-     -215.25,
-     148.23
-    ],
-    [
-     -217.54,
-     149.18
-    ],
-    [
-     -220.0,
-     149.5
-    ],
-    [
-     -222.46,
-     149.18
-    ],
-    [
-     -224.75,
-     148.23
-    ],
-    [
-     -226.72,
-     146.72
-    ],
-    [
-     -228.23,
-     144.75
-    ],
-    [
-     -229.18,
-     142.46
-    ],
-    [
-     -229.5,
-     140.0
-    ],
-    [
-     -229.18,
-     137.54
-    ],
-    [
-     -228.23,
-     135.25
-    ],
-    [
-     -226.72,
-     133.28
-    ],
-    [
-     -224.75,
-     131.77
-    ],
-    [
-     -222.46,
-     130.82
-    ],
-    [
-     -220.0,
-     130.5
-    ],
-    [
-     -217.54,
-     130.82
-    ],
-    [
-     -215.25,
-     131.77
-    ],
-    [
-     -213.28,
-     133.28
-    ],
-    [
-     -211.77,
-     135.25
-    ],
-    [
-     -210.82,
-     137.54
-    ]
-   ],
-   "start": 420.0,
-   "end": 470.0,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Gas Line",
-   "subcategory": "Copper"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Gas Line",
-   "param": "Copper Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Gas Line",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "Power",
-   "domain": "electrical",
-   "system": "PowerBalanced",
-   "solid": "Electrical Box",
-   "side": "front"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Voltage",
-   "connector": "Power",
-   "connector_param": "Voltage",
-   "param": "Voltage"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Apparent Load",
-   "connector": "Power",
-   "connector_param": "Apparent Load",
-   "param": "Apparent Load"
-  },
-  {
-   "op": "add_connector",
-   "name": "Condensate",
-   "domain": "pipe",
-   "system": "Sanitary",
-   "solid": "Drain Socket",
-   "side": "right",
-   "diameter": 40,
-   "flow": "Out"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_MechEq_AC_Cassette_4Way.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_M_MechEq_AC_Cassette_4Way",
+  "template": "Metric Mechanical Equipment.rft",
+  "about": "Modelled as a generic product: chassis above the ceiling (z > 0) on four hanger brackets, white panel below the ceiling with intake grille and slats, four outlet slots with louvre flaps, corner covers, signal receiver with LED, electrical box, drain socket and refrigerant tails. Reference: query: ac cassette 4way mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=ac+cassette+4way+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Mechanical Equipment"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Voltage",
+      "type": "Voltage",
+      "group": "Electrical"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Apparent Load",
+      "type": "ApparentPower",
+      "group": "ElectricalLoads"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cooling_Capacity_kW",
+      "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cooling_Capacity_BTUh",
+      "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Airflow_Ls",
+      "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Refrigerant",
+      "guid": "a46c59d0-d719-583b-99c0-074994d01603",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Asset_Tag",
+      "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Serial_Number",
+      "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Install_Date",
+      "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Warranty_End",
+      "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Maintenance_Interval_Months",
+      "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_OM_Link",
+      "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lift_Weight_kg",
+      "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Mounting_Height_mm",
+      "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Power_W",
+      "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Power_W_2",
+      "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Controller_ID",
+      "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Type",
+      "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Signal",
+      "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Protocol",
+      "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Tank_Capacity_L",
+      "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "5.3kW_18kBTU"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5.3kW_18kBTU/FMC_Cost_Unit",
+      "type": "5.3kW_18kBTU",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5.3kW_18kBTU/FMC_Geometry_Stage",
+      "type": "5.3kW_18kBTU",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5.3kW_18kBTU/IfcExportAs",
+      "type": "5.3kW_18kBTU",
+      "param": "IfcExportAs",
+      "value": "IfcUnitaryEquipment"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5.3kW_18kBTU/Description",
+      "type": "5.3kW_18kBTU",
+      "param": "Description",
+      "value": "Ceiling cassette 4-way, 5.3 to 10.5 kW (18k to 36k BTU/h), 950 square white panel with four outlet slots and louvres, central intake grille"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5.3kW_18kBTU/Keynote",
+      "type": "5.3kW_18kBTU",
+      "param": "Keynote",
+      "value": "H.SPL_07"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5.3kW_18kBTU/FMC_Keynote_Code",
+      "type": "5.3kW_18kBTU",
+      "param": "FMC_Keynote_Code",
+      "value": "H.SPL_07"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5.3kW_18kBTU/FMC_Code_Description",
+      "type": "5.3kW_18kBTU",
+      "param": "FMC_Code_Description",
+      "value": "AC Cassette 4Way: Cassette indoor unit"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5.3kW_18kBTU/FMC_Code_Group",
+      "type": "5.3kW_18kBTU",
+      "param": "FMC_Code_Group",
+      "value": "H.SPL"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5.3kW_18kBTU/FMC_Role_Code",
+      "type": "5.3kW_18kBTU",
+      "param": "FMC_Role_Code",
+      "value": "M"
+    },
+    {
+      "op": "set_type_value",
+      "name": "5.3kW_18kBTU/Voltage",
+      "type": "5.3kW_18kBTU",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "5.3kW_18kBTU/Apparent Load",
+      "type": "5.3kW_18kBTU",
+      "param": "Apparent Load",
+      "value": 1700
+    },
+    {
+      "op": "set_type_value",
+      "name": "5.3kW_18kBTU/Default Elevation",
+      "type": "5.3kW_18kBTU",
+      "param": "Default Elevation",
+      "value": 2700
+    },
+    {
+      "op": "add_type",
+      "name": "7.0kW_24kBTU"
+    },
+    {
+      "op": "set_type_value",
+      "name": "7.0kW_24kBTU/FMC_Cost_Unit",
+      "type": "7.0kW_24kBTU",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "7.0kW_24kBTU/FMC_Geometry_Stage",
+      "type": "7.0kW_24kBTU",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "7.0kW_24kBTU/IfcExportAs",
+      "type": "7.0kW_24kBTU",
+      "param": "IfcExportAs",
+      "value": "IfcUnitaryEquipment"
+    },
+    {
+      "op": "set_type_value",
+      "name": "7.0kW_24kBTU/Description",
+      "type": "7.0kW_24kBTU",
+      "param": "Description",
+      "value": "Ceiling cassette 4-way, 5.3 to 10.5 kW (18k to 36k BTU/h), 950 square white panel with four outlet slots and louvres, central intake grille"
+    },
+    {
+      "op": "set_type_value",
+      "name": "7.0kW_24kBTU/Keynote",
+      "type": "7.0kW_24kBTU",
+      "param": "Keynote",
+      "value": "H.SPL_07"
+    },
+    {
+      "op": "set_type_value",
+      "name": "7.0kW_24kBTU/FMC_Keynote_Code",
+      "type": "7.0kW_24kBTU",
+      "param": "FMC_Keynote_Code",
+      "value": "H.SPL_07"
+    },
+    {
+      "op": "set_type_value",
+      "name": "7.0kW_24kBTU/FMC_Code_Description",
+      "type": "7.0kW_24kBTU",
+      "param": "FMC_Code_Description",
+      "value": "AC Cassette 4Way: Cassette indoor unit"
+    },
+    {
+      "op": "set_type_value",
+      "name": "7.0kW_24kBTU/FMC_Code_Group",
+      "type": "7.0kW_24kBTU",
+      "param": "FMC_Code_Group",
+      "value": "H.SPL"
+    },
+    {
+      "op": "set_type_value",
+      "name": "7.0kW_24kBTU/FMC_Role_Code",
+      "type": "7.0kW_24kBTU",
+      "param": "FMC_Role_Code",
+      "value": "M"
+    },
+    {
+      "op": "set_type_value",
+      "name": "7.0kW_24kBTU/Voltage",
+      "type": "7.0kW_24kBTU",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "7.0kW_24kBTU/Apparent Load",
+      "type": "7.0kW_24kBTU",
+      "param": "Apparent Load",
+      "value": 2300
+    },
+    {
+      "op": "set_type_value",
+      "name": "7.0kW_24kBTU/Default Elevation",
+      "type": "7.0kW_24kBTU",
+      "param": "Default Elevation",
+      "value": 2700
+    },
+    {
+      "op": "add_type",
+      "name": "10.5kW_36kBTU"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10.5kW_36kBTU/FMC_Cost_Unit",
+      "type": "10.5kW_36kBTU",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10.5kW_36kBTU/FMC_Geometry_Stage",
+      "type": "10.5kW_36kBTU",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10.5kW_36kBTU/IfcExportAs",
+      "type": "10.5kW_36kBTU",
+      "param": "IfcExportAs",
+      "value": "IfcUnitaryEquipment"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10.5kW_36kBTU/Description",
+      "type": "10.5kW_36kBTU",
+      "param": "Description",
+      "value": "Ceiling cassette 4-way, 5.3 to 10.5 kW (18k to 36k BTU/h), 950 square white panel with four outlet slots and louvres, central intake grille"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10.5kW_36kBTU/Keynote",
+      "type": "10.5kW_36kBTU",
+      "param": "Keynote",
+      "value": "H.SPL_07"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10.5kW_36kBTU/FMC_Keynote_Code",
+      "type": "10.5kW_36kBTU",
+      "param": "FMC_Keynote_Code",
+      "value": "H.SPL_07"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10.5kW_36kBTU/FMC_Code_Description",
+      "type": "10.5kW_36kBTU",
+      "param": "FMC_Code_Description",
+      "value": "AC Cassette 4Way: Cassette indoor unit"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10.5kW_36kBTU/FMC_Code_Group",
+      "type": "10.5kW_36kBTU",
+      "param": "FMC_Code_Group",
+      "value": "H.SPL"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10.5kW_36kBTU/FMC_Role_Code",
+      "type": "10.5kW_36kBTU",
+      "param": "FMC_Role_Code",
+      "value": "M"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10.5kW_36kBTU/Voltage",
+      "type": "10.5kW_36kBTU",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "10.5kW_36kBTU/Apparent Load",
+      "type": "10.5kW_36kBTU",
+      "param": "Apparent Load",
+      "value": 3600
+    },
+    {
+      "op": "set_type_value",
+      "name": "10.5kW_36kBTU/Default Elevation",
+      "type": "10.5kW_36kBTU",
+      "param": "Default Elevation",
+      "value": 2700
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Galv",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Galv Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Duct_Galvanised",
+      "param": "Galv Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "White",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "White Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_White",
+      "param": "White Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Mgrey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Mgrey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_MedicalGrey",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Ledg",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Ledg Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_LED_Green",
+      "param": "Ledg Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Dark",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Dark Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_SteelLTZ_Painted",
+      "param": "Dark Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Grey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Grey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Grey",
+      "param": "Grey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Copper",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Copper Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Copper_Pipe",
+      "param": "Copper Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -475,
+          -475
+        ],
+        [
+          475,
+          -475
+        ],
+        [
+          475,
+          475
+        ],
+        [
+          -475,
+          475
+        ]
+      ],
+      "start": -44,
+      "end": 250
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Chassis",
+      "points": [
+        [
+          400,
+          -420
+        ],
+        [
+          407.65,
+          -418.48
+        ],
+        [
+          414.14,
+          -414.14
+        ],
+        [
+          418.48,
+          -407.65
+        ],
+        [
+          420,
+          -400
+        ],
+        [
+          420,
+          400
+        ],
+        [
+          418.48,
+          407.65
+        ],
+        [
+          414.14,
+          414.14
+        ],
+        [
+          407.65,
+          418.48
+        ],
+        [
+          400,
+          420
+        ],
+        [
+          -400,
+          420
+        ],
+        [
+          -407.65,
+          418.48
+        ],
+        [
+          -414.14,
+          414.14
+        ],
+        [
+          -418.48,
+          407.65
+        ],
+        [
+          -420,
+          400
+        ],
+        [
+          -420,
+          -400
+        ],
+        [
+          -418.48,
+          -407.65
+        ],
+        [
+          -414.14,
+          -414.14
+        ],
+        [
+          -407.65,
+          -418.48
+        ],
+        [
+          -400,
+          -420
+        ]
+      ],
+      "start": 0,
+      "end": 250
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Chassis",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Chassis",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Chassis",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Panel",
+      "points": [
+        [
+          445,
+          -475
+        ],
+        [
+          456.48,
+          -472.72
+        ],
+        [
+          466.21,
+          -466.21
+        ],
+        [
+          472.72,
+          -456.48
+        ],
+        [
+          475,
+          -445
+        ],
+        [
+          475,
+          445
+        ],
+        [
+          472.72,
+          456.48
+        ],
+        [
+          466.21,
+          466.21
+        ],
+        [
+          456.48,
+          472.72
+        ],
+        [
+          445,
+          475
+        ],
+        [
+          -445,
+          475
+        ],
+        [
+          -456.48,
+          472.72
+        ],
+        [
+          -466.21,
+          466.21
+        ],
+        [
+          -472.72,
+          456.48
+        ],
+        [
+          -475,
+          445
+        ],
+        [
+          -475,
+          -445
+        ],
+        [
+          -472.72,
+          -456.48
+        ],
+        [
+          -466.21,
+          -466.21
+        ],
+        [
+          -456.48,
+          -472.72
+        ],
+        [
+          -445,
+          -475
+        ]
+      ],
+      "start": -35,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Panel",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Panel",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Panel",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Intake Grille",
+      "points": [
+        [
+          292,
+          -300
+        ],
+        [
+          295.06,
+          -299.39
+        ],
+        [
+          297.66,
+          -297.66
+        ],
+        [
+          299.39,
+          -295.06
+        ],
+        [
+          300,
+          -292
+        ],
+        [
+          300,
+          292
+        ],
+        [
+          299.39,
+          295.06
+        ],
+        [
+          297.66,
+          297.66
+        ],
+        [
+          295.06,
+          299.39
+        ],
+        [
+          292,
+          300
+        ],
+        [
+          -292,
+          300
+        ],
+        [
+          -295.06,
+          299.39
+        ],
+        [
+          -297.66,
+          297.66
+        ],
+        [
+          -299.39,
+          295.06
+        ],
+        [
+          -300,
+          292
+        ],
+        [
+          -300,
+          -292
+        ],
+        [
+          -299.39,
+          -295.06
+        ],
+        [
+          -297.66,
+          -297.66
+        ],
+        [
+          -295.06,
+          -299.39
+        ],
+        [
+          -292,
+          -300
+        ]
+      ],
+      "start": -37,
+      "end": -35
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Intake Grille",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Intake Grille",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Intake Grille",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Outlet Slot North",
+      "points": [
+        [
+          -300,
+          325
+        ],
+        [
+          300,
+          325
+        ],
+        [
+          300,
+          395
+        ],
+        [
+          -300,
+          395
+        ]
+      ],
+      "start": -36.5,
+      "end": -35
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Outlet Slot North",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Outlet Slot North",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Outlet Slot North",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Outlet Slot South",
+      "points": [
+        [
+          -300,
+          -395
+        ],
+        [
+          300,
+          -395
+        ],
+        [
+          300,
+          -325
+        ],
+        [
+          -300,
+          -325
+        ]
+      ],
+      "start": -36.5,
+      "end": -35
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Outlet Slot South",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Outlet Slot South",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Outlet Slot South",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Outlet Slot East",
+      "points": [
+        [
+          325,
+          -300
+        ],
+        [
+          395,
+          -300
+        ],
+        [
+          395,
+          300
+        ],
+        [
+          325,
+          300
+        ]
+      ],
+      "start": -36.5,
+      "end": -35
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Outlet Slot East",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Outlet Slot East",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Outlet Slot East",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Outlet Slot West",
+      "points": [
+        [
+          -395,
+          -300
+        ],
+        [
+          -325,
+          -300
+        ],
+        [
+          -325,
+          300
+        ],
+        [
+          -395,
+          300
+        ]
+      ],
+      "start": -36.5,
+      "end": -35
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Outlet Slot West",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Outlet Slot West",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Outlet Slot West",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Louvre Flap North",
+      "points": [
+        [
+          -290,
+          342.5
+        ],
+        [
+          290,
+          342.5
+        ],
+        [
+          290,
+          370.5
+        ],
+        [
+          -290,
+          370.5
+        ]
+      ],
+      "start": -44,
+      "end": -36.5
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Louvre Flap North",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Louvre Flap North",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Louvre Flap North",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Louvre Flap South",
+      "points": [
+        [
+          -290,
+          -370.5
+        ],
+        [
+          290,
+          -370.5
+        ],
+        [
+          290,
+          -342.5
+        ],
+        [
+          -290,
+          -342.5
+        ]
+      ],
+      "start": -44,
+      "end": -36.5
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Louvre Flap South",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Louvre Flap South",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Louvre Flap South",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Louvre Flap East",
+      "points": [
+        [
+          342.5,
+          -290
+        ],
+        [
+          370.5,
+          -290
+        ],
+        [
+          370.5,
+          290
+        ],
+        [
+          342.5,
+          290
+        ]
+      ],
+      "start": -44,
+      "end": -36.5
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Louvre Flap East",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Louvre Flap East",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Louvre Flap East",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Louvre Flap West",
+      "points": [
+        [
+          -370.5,
+          -290
+        ],
+        [
+          -342.5,
+          -290
+        ],
+        [
+          -342.5,
+          290
+        ],
+        [
+          -370.5,
+          290
+        ]
+      ],
+      "start": -44,
+      "end": -36.5
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Louvre Flap West",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Louvre Flap West",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Louvre Flap West",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slat 1",
+      "points": [
+        [
+          -294,
+          -294
+        ],
+        [
+          294,
+          -294
+        ],
+        [
+          294,
+          -288
+        ],
+        [
+          -294,
+          -288
+        ]
+      ],
+      "start": -39,
+      "end": -37
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slat 1",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slat 1",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slat 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slat 2",
+      "points": [
+        [
+          -294,
+          -249.3846153846154
+        ],
+        [
+          294,
+          -249.3846153846154
+        ],
+        [
+          294,
+          -243.3846153846154
+        ],
+        [
+          -294,
+          -243.3846153846154
+        ]
+      ],
+      "start": -39,
+      "end": -37
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slat 2",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slat 2",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slat 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slat 3",
+      "points": [
+        [
+          -294,
+          -204.76923076923077
+        ],
+        [
+          294,
+          -204.76923076923077
+        ],
+        [
+          294,
+          -198.76923076923077
+        ],
+        [
+          -294,
+          -198.76923076923077
+        ]
+      ],
+      "start": -39,
+      "end": -37
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slat 3",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slat 3",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slat 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slat 4",
+      "points": [
+        [
+          -294,
+          -160.15384615384616
+        ],
+        [
+          294,
+          -160.15384615384616
+        ],
+        [
+          294,
+          -154.15384615384616
+        ],
+        [
+          -294,
+          -154.15384615384616
+        ]
+      ],
+      "start": -39,
+      "end": -37
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slat 4",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slat 4",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slat 4",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slat 5",
+      "points": [
+        [
+          -294,
+          -115.53846153846155
+        ],
+        [
+          294,
+          -115.53846153846155
+        ],
+        [
+          294,
+          -109.53846153846155
+        ],
+        [
+          -294,
+          -109.53846153846155
+        ]
+      ],
+      "start": -39,
+      "end": -37
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slat 5",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slat 5",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slat 5",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slat 6",
+      "points": [
+        [
+          -294,
+          -70.92307692307693
+        ],
+        [
+          294,
+          -70.92307692307693
+        ],
+        [
+          294,
+          -64.92307692307693
+        ],
+        [
+          -294,
+          -64.92307692307693
+        ]
+      ],
+      "start": -39,
+      "end": -37
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slat 6",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slat 6",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slat 6",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slat 7",
+      "points": [
+        [
+          -294,
+          -26.30769230769232
+        ],
+        [
+          294,
+          -26.30769230769232
+        ],
+        [
+          294,
+          -20.30769230769232
+        ],
+        [
+          -294,
+          -20.30769230769232
+        ]
+      ],
+      "start": -39,
+      "end": -37
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slat 7",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slat 7",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slat 7",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slat 8",
+      "points": [
+        [
+          -294,
+          18.307692307692264
+        ],
+        [
+          294,
+          18.307692307692264
+        ],
+        [
+          294,
+          24.307692307692264
+        ],
+        [
+          -294,
+          24.307692307692264
+        ]
+      ],
+      "start": -39,
+      "end": -37
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slat 8",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slat 8",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slat 8",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slat 9",
+      "points": [
+        [
+          -294,
+          62.923076923076906
+        ],
+        [
+          294,
+          62.923076923076906
+        ],
+        [
+          294,
+          68.9230769230769
+        ],
+        [
+          -294,
+          68.9230769230769
+        ]
+      ],
+      "start": -39,
+      "end": -37
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slat 9",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slat 9",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slat 9",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slat 10",
+      "points": [
+        [
+          -294,
+          107.53846153846155
+        ],
+        [
+          294,
+          107.53846153846155
+        ],
+        [
+          294,
+          113.53846153846155
+        ],
+        [
+          -294,
+          113.53846153846155
+        ]
+      ],
+      "start": -39,
+      "end": -37
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slat 10",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slat 10",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slat 10",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slat 11",
+      "points": [
+        [
+          -294,
+          152.15384615384613
+        ],
+        [
+          294,
+          152.15384615384613
+        ],
+        [
+          294,
+          158.15384615384613
+        ],
+        [
+          -294,
+          158.15384615384613
+        ]
+      ],
+      "start": -39,
+      "end": -37
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slat 11",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slat 11",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slat 11",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slat 12",
+      "points": [
+        [
+          -294,
+          196.76923076923072
+        ],
+        [
+          294,
+          196.76923076923072
+        ],
+        [
+          294,
+          202.76923076923072
+        ],
+        [
+          -294,
+          202.76923076923072
+        ]
+      ],
+      "start": -39,
+      "end": -37
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slat 12",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slat 12",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slat 12",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slat 13",
+      "points": [
+        [
+          -294,
+          241.38461538461536
+        ],
+        [
+          294,
+          241.38461538461536
+        ],
+        [
+          294,
+          247.38461538461536
+        ],
+        [
+          -294,
+          247.38461538461536
+        ]
+      ],
+      "start": -39,
+      "end": -37
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slat 13",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slat 13",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slat 13",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grille Slat 14",
+      "points": [
+        [
+          -294,
+          286
+        ],
+        [
+          294,
+          286
+        ],
+        [
+          294,
+          292
+        ],
+        [
+          -294,
+          292
+        ]
+      ],
+      "start": -39,
+      "end": -37
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grille Slat 14",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grille Slat 14",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grille Slat 14",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Corner Cover Front 1",
+      "points": [
+        [
+          -467,
+          -467
+        ],
+        [
+          -404,
+          -467
+        ],
+        [
+          -404,
+          -404
+        ],
+        [
+          -467,
+          -404
+        ]
+      ],
+      "start": -37,
+      "end": -35
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Corner Cover Front 1",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Corner Cover Front 1",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Corner Cover Front 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Corner Cover Front 2",
+      "points": [
+        [
+          404,
+          -467
+        ],
+        [
+          467,
+          -467
+        ],
+        [
+          467,
+          -404
+        ],
+        [
+          404,
+          -404
+        ]
+      ],
+      "start": -37,
+      "end": -35
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Corner Cover Front 2",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Corner Cover Front 2",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Corner Cover Front 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Corner Cover Rear 1",
+      "points": [
+        [
+          -467,
+          404
+        ],
+        [
+          -404,
+          404
+        ],
+        [
+          -404,
+          467
+        ],
+        [
+          -467,
+          467
+        ]
+      ],
+      "start": -37,
+      "end": -35
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Corner Cover Rear 1",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Corner Cover Rear 1",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Corner Cover Rear 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Corner Cover Rear 2",
+      "points": [
+        [
+          404,
+          404
+        ],
+        [
+          467,
+          404
+        ],
+        [
+          467,
+          467
+        ],
+        [
+          404,
+          467
+        ]
+      ],
+      "start": -37,
+      "end": -35
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Corner Cover Rear 2",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Corner Cover Rear 2",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Corner Cover Rear 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Signal Receiver",
+      "points": [
+        [
+          405,
+          -461
+        ],
+        [
+          455,
+          -461
+        ],
+        [
+          455,
+          -441
+        ],
+        [
+          405,
+          -441
+        ]
+      ],
+      "start": -38,
+      "end": -35
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Signal Receiver",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Signal Receiver",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Signal Receiver",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Receiver LED",
+      "points": [
+        [
+          446,
+          -451
+        ],
+        [
+          445.9,
+          -450.22
+        ],
+        [
+          445.6,
+          -449.5
+        ],
+        [
+          445.12,
+          -448.88
+        ],
+        [
+          444.5,
+          -448.4
+        ],
+        [
+          443.78,
+          -448.1
+        ],
+        [
+          443,
+          -448
+        ],
+        [
+          442.22,
+          -448.1
+        ],
+        [
+          441.5,
+          -448.4
+        ],
+        [
+          440.88,
+          -448.88
+        ],
+        [
+          440.4,
+          -449.5
+        ],
+        [
+          440.1,
+          -450.22
+        ],
+        [
+          440,
+          -451
+        ],
+        [
+          440.1,
+          -451.78
+        ],
+        [
+          440.4,
+          -452.5
+        ],
+        [
+          440.88,
+          -453.12
+        ],
+        [
+          441.5,
+          -453.6
+        ],
+        [
+          442.22,
+          -453.9
+        ],
+        [
+          443,
+          -454
+        ],
+        [
+          443.78,
+          -453.9
+        ],
+        [
+          444.5,
+          -453.6
+        ],
+        [
+          445.12,
+          -453.12
+        ],
+        [
+          445.6,
+          -452.5
+        ],
+        [
+          445.9,
+          -451.78
+        ]
+      ],
+      "start": -39,
+      "end": -38
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Receiver LED",
+      "subcategory": "Ledg"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Receiver LED",
+      "param": "Ledg Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Receiver LED",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hanger Bracket Left 1",
+      "points": [
+        [
+          -460,
+          -360
+        ],
+        [
+          -420,
+          -360
+        ],
+        [
+          -420,
+          -300
+        ],
+        [
+          -460,
+          -300
+        ]
+      ],
+      "start": 180,
+      "end": 220
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hanger Bracket Left 1",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hanger Bracket Left 1",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hanger Bracket Left 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hanger Bracket Left 2",
+      "points": [
+        [
+          -460,
+          300
+        ],
+        [
+          -420,
+          300
+        ],
+        [
+          -420,
+          360
+        ],
+        [
+          -460,
+          360
+        ]
+      ],
+      "start": 180,
+      "end": 220
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hanger Bracket Left 2",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hanger Bracket Left 2",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hanger Bracket Left 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hanger Bracket Right 1",
+      "points": [
+        [
+          420,
+          -360
+        ],
+        [
+          460,
+          -360
+        ],
+        [
+          460,
+          -300
+        ],
+        [
+          420,
+          -300
+        ]
+      ],
+      "start": 180,
+      "end": 220
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hanger Bracket Right 1",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hanger Bracket Right 1",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hanger Bracket Right 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hanger Bracket Right 2",
+      "points": [
+        [
+          420,
+          300
+        ],
+        [
+          460,
+          300
+        ],
+        [
+          460,
+          360
+        ],
+        [
+          420,
+          360
+        ]
+      ],
+      "start": 180,
+      "end": 220
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hanger Bracket Right 2",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hanger Bracket Right 2",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hanger Bracket Right 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Electrical Box",
+      "points": [
+        [
+          -340,
+          -465
+        ],
+        [
+          -160,
+          -465
+        ],
+        [
+          -160,
+          -420
+        ],
+        [
+          -340,
+          -420
+        ]
+      ],
+      "start": 60,
+      "end": 200
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Electrical Box",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Electrical Box",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Electrical Box",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Drain Socket",
+      "points": [
+        [
+          216,
+          170
+        ],
+        [
+          215.45,
+          174.14
+        ],
+        [
+          213.86,
+          178
+        ],
+        [
+          211.31,
+          181.31
+        ],
+        [
+          208,
+          183.86
+        ],
+        [
+          204.14,
+          185.45
+        ],
+        [
+          200,
+          186
+        ],
+        [
+          195.86,
+          185.45
+        ],
+        [
+          192,
+          183.86
+        ],
+        [
+          188.69,
+          181.31
+        ],
+        [
+          186.14,
+          178
+        ],
+        [
+          184.55,
+          174.14
+        ],
+        [
+          184,
+          170
+        ],
+        [
+          184.55,
+          165.86
+        ],
+        [
+          186.14,
+          162
+        ],
+        [
+          188.69,
+          158.69
+        ],
+        [
+          192,
+          156.14
+        ],
+        [
+          195.86,
+          154.55
+        ],
+        [
+          200,
+          154
+        ],
+        [
+          204.14,
+          154.55
+        ],
+        [
+          208,
+          156.14
+        ],
+        [
+          211.31,
+          158.69
+        ],
+        [
+          213.86,
+          162
+        ],
+        [
+          215.45,
+          165.86
+        ]
+      ],
+      "start": 420,
+      "end": 470,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Drain Socket",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Drain Socket",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Drain Socket",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Liquid Line",
+      "points": [
+        [
+          -254,
+          140
+        ],
+        [
+          -254.2,
+          141.55
+        ],
+        [
+          -254.8,
+          143
+        ],
+        [
+          -255.76,
+          144.24
+        ],
+        [
+          -257,
+          145.2
+        ],
+        [
+          -258.45,
+          145.8
+        ],
+        [
+          -260,
+          146
+        ],
+        [
+          -261.55,
+          145.8
+        ],
+        [
+          -263,
+          145.2
+        ],
+        [
+          -264.24,
+          144.24
+        ],
+        [
+          -265.2,
+          143
+        ],
+        [
+          -265.8,
+          141.55
+        ],
+        [
+          -266,
+          140
+        ],
+        [
+          -265.8,
+          138.45
+        ],
+        [
+          -265.2,
+          137
+        ],
+        [
+          -264.24,
+          135.76
+        ],
+        [
+          -263,
+          134.8
+        ],
+        [
+          -261.55,
+          134.2
+        ],
+        [
+          -260,
+          134
+        ],
+        [
+          -258.45,
+          134.2
+        ],
+        [
+          -257,
+          134.8
+        ],
+        [
+          -255.76,
+          135.76
+        ],
+        [
+          -254.8,
+          137
+        ],
+        [
+          -254.2,
+          138.45
+        ]
+      ],
+      "start": 420,
+      "end": 470,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Liquid Line",
+      "subcategory": "Copper"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Liquid Line",
+      "param": "Copper Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Liquid Line",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Gas Line",
+      "points": [
+        [
+          -210.5,
+          140
+        ],
+        [
+          -210.82,
+          142.46
+        ],
+        [
+          -211.77,
+          144.75
+        ],
+        [
+          -213.28,
+          146.72
+        ],
+        [
+          -215.25,
+          148.23
+        ],
+        [
+          -217.54,
+          149.18
+        ],
+        [
+          -220,
+          149.5
+        ],
+        [
+          -222.46,
+          149.18
+        ],
+        [
+          -224.75,
+          148.23
+        ],
+        [
+          -226.72,
+          146.72
+        ],
+        [
+          -228.23,
+          144.75
+        ],
+        [
+          -229.18,
+          142.46
+        ],
+        [
+          -229.5,
+          140
+        ],
+        [
+          -229.18,
+          137.54
+        ],
+        [
+          -228.23,
+          135.25
+        ],
+        [
+          -226.72,
+          133.28
+        ],
+        [
+          -224.75,
+          131.77
+        ],
+        [
+          -222.46,
+          130.82
+        ],
+        [
+          -220,
+          130.5
+        ],
+        [
+          -217.54,
+          130.82
+        ],
+        [
+          -215.25,
+          131.77
+        ],
+        [
+          -213.28,
+          133.28
+        ],
+        [
+          -211.77,
+          135.25
+        ],
+        [
+          -210.82,
+          137.54
+        ]
+      ],
+      "start": 420,
+      "end": 470,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Gas Line",
+      "subcategory": "Copper"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Gas Line",
+      "param": "Copper Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Gas Line",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "Power",
+      "domain": "electrical",
+      "system": "PowerBalanced",
+      "solid": "Electrical Box",
+      "side": "front"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Voltage",
+      "connector": "Power",
+      "connector_param": "Voltage",
+      "param": "Voltage"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Apparent Load",
+      "connector": "Power",
+      "connector_param": "Apparent Load",
+      "param": "Apparent Load"
+    },
+    {
+      "op": "add_connector",
+      "name": "Condensate",
+      "domain": "pipe",
+      "system": "Sanitary",
+      "solid": "Drain Socket",
+      "side": "right",
+      "diameter": 40,
+      "flow": "Out"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_MechEq_AC_Cassette_4Way.png"
+    }
+  ],
+  "values": {
+    "Panel 950 x 950 mm, body 840 x 840 x 250": {
+      "value": "950/840x250",
+      "source_status": "assumed",
+      "source": "typical 4-way cassette"
+    },
+    "Cooling 5.3 / 7.0 / 10.5 kW": {
+      "value": "5.3-10.5kW",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Load 1.7 / 2.3 / 3.6 kVA": {
+      "value": "1.7-3.6kVA",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Drain socket 32 mm to 40 mm waste": {
+      "value": 40,
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   }
- ],
- "values": {
-  "Panel 950 x 950 mm, body 840 x 840 x 250": {
-   "value": "950/840x250",
-   "source_status": "assumed",
-   "source": "typical 4-way cassette"
-  },
-  "Cooling 5.3 / 7.0 / 10.5 kW": {
-   "value": "5.3-10.5kW",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Load 1.7 / 2.3 / 3.6 kVA": {
-   "value": "1.7-3.6kVA",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Drain socket 32 mm to 40 mm waste": {
-   "value": 40,
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- }
 }

@@ -56,6 +56,84 @@ export interface GuardConfig {
   session_idle_hours: number;
   /** Gate A's family file size limit, MB (default 2; the owner may raise it for a while, e.g. for LOD 400 twins). */
   family_max_mb?: number;
+  /**
+   * Original / live model roots. Write, save, sync, reload and relinquish are refused for any document under these
+   * paths. A verification copy must sit outside them. Empty until the guard file names them (for example D:\Fomcraft).
+   */
+  protected_roots: string[];
+  /**
+   * Folders a verification copy may be written to. Empty means any path that is not a protected root and not a CDE
+   * gate folder. When set, open_copy's copy_to must be inside one of them.
+   */
+  copy_roots: string[];
+  /**
+   * Free physical memory, in MB, below which new batch leases and model-changing calls wait.
+   * They resume above 1.5× this value (1536 when this is 1024). 0 turns the pause off.
+   */
+  ram_pause_free_mb?: number;
+  /** Longest send_code_to_revit script, in characters. Default 1_000_000. */
+  script_max_chars?: number;
+  /** Minutes of changes between syncs of a workshared model. Default 15. 0 turns the timer off. */
+  sync_minutes?: number;
+  /** Sync a workshared model when a batch releases successfully. Default true. */
+  sync_on_batch_end?: boolean;
+  /**
+   * Document titles or paths that never sync. Matched with documentKey, so a title and that file's path are the same
+   * document. Batch-end sync and the timed sync both skip these.
+   */
+  sync_exclude?: string[];
+  /**
+   * Titles or paths that never autosave. Combined with sync_exclude and protected_paths.
+   * A listed title also covers its local (HEBERT HOSTELS covers HEBERT HOSTELS_USER).
+   * The timer, the save after an AI command, and the batch-end save all skip these.
+   */
+  save_exclude?: string[];
+  /**
+   * Folder prefixes autosave must not write under. Matched like protected_roots (a path segment prefix).
+   * Empty matches nothing. protected_roots is still checked as well.
+   */
+  protected_paths?: string[];
+  /** Folder for see_view and other screenshots. Default %LOCALAPPDATA%\\Formcraft\\images. Never D: and never beside a model. */
+  image_dir?: string;
+  /**
+   * Per-document allowlist. When set, only these titles or paths sync (again by documentKey).
+   * ["Structure"] is "sync only Structure". Omit it to sync every workshared document that is not excluded.
+   * A document on both lists is excluded.
+   */
+  sync_documents?: string[];
+  /**
+   * Titles or paths that must not be auto-synced. A person sets this after a damaged central.
+   * Matched like sync_exclude. A recent corrupt-on-sync dialog flags the document as well.
+   */
+  damaged_documents?: string[];
+  /**
+   * Who may reserve the next batch slot. Matched against the MCP client name and the bot field.
+   * Default is Hostel Building Bot. An empty list means nobody may reserve.
+   */
+  batch_schedulers?: string[];
+  /**
+   * Who may drain or resume the batch line besides a person at the pane or CLI: MCP client names (the name the client gave at
+   * initialize) or bot names proven by bot_identities. Default empty: an AI session never may. Set by a person only.
+   */
+  batch_admins?: string[];
+  /** Bot display name -> the MCP client names that may act as it. A bot name that is registered here, a scheduler or an admin is never self-declared. */
+  bot_identities?: Record<string, string[]>;
+  /**
+   * Dialogs and failure warnings an AI job may answer. allow is substrings of the dialog id or text.
+   * deny is extra text that must stay for a person. Delete, unjoin, overwrite, relinquish, save-as, upgrade,
+   * license, sign-in, corrupt-model and sync are never answered, even if they are in allow. Omit allow for the
+   * built-in short list (save reminder, duplicate types, duplicate mark).
+   */
+  dialogs?: { allow?: string[]; deny?: string[] };
+  /**
+   * Crash recovery. heartbeat_s is how long the plugin may stay silent before an instance is hung.
+   * documents, when set, is the list to reopen (the five HEBERT HOSTELS models: architecture, structural,
+   * electrical, plumbing, site). Empty means reopen whatever was open.
+   */
+  recovery?: {
+    heartbeat_s?: number;
+    documents?: Array<{ role?: string; title?: string; path: string; workshared?: boolean }>;
+  };
 }
 
 export const DEFAULT_CONFIG: GuardConfig = {
@@ -77,6 +155,17 @@ export const DEFAULT_CONFIG: GuardConfig = {
   clash_matrix_file: "Z:\\00_Standards\\08_Navisworks\\FMC_Clash_Matrix.json",
   session_idle_hours: 12,
   family_max_mb: 2,
+  protected_roots: [],
+  copy_roots: [],
+  ram_pause_free_mb: 1024,
+  script_max_chars: 1_000_000,
+  sync_minutes: 15,
+  sync_on_batch_end: true,
+  damaged_documents: [],
+  batch_schedulers: ["Hostel Building Bot"],
+  batch_admins: [],
+  bot_identities: {},
+  recovery: { heartbeat_s: 90, documents: [] },
 };
 
 /** Tools that change the model. They are refused on live project models. */
@@ -85,7 +174,7 @@ export const WRITE_COMMANDS = new Set<string>([
   "create_level", "create_grid", "create_room", "create_dimensions", "create_structural_framing_system",
   "operate_element", "delete_element", "color_splash", "tag_walls", "tag_rooms", "send_code_to_revit",
   "fmc_load_test_families", "fmc_material_assign", "fmc_material_purge", "fmc_sheet_create", "fmc_sheet_rename",
-  "fmc_link_add", "fmc_link_pin", "fmc_workset_create", "fmc_review_cloud", "fmc_brief_apply", "fmc_fea_write",
+  "fmc_link_add", "fmc_link_pin", "fmc_reload_link", "fmc_link_unload", "fmc_link_publish", "fmc_coord_apply", "fmc_workset_create", "fmc_review_cloud", "fmc_brief_apply", "fmc_fea_write",
   // Line diagrams (owner, 15 Oct): the tool draws only in new documents, _Staging and _ChainTests; in a live project a
   // person presses Generate in the pane.
   "fmc_diagram_draw",
@@ -99,8 +188,70 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_schedules_apply",
   // The recipe tree's room builds (T1) and Mark & Review's applied fixes (R6)
   "fmc_room_build", "fmc_element_apply",
+  // modify_model (owner 26 Oct): the AI edits like a person, every batch approved
+  "fmc_model_edit",
+  // fmc_replace: a structural replacement preview. It runs only on an open_copy document and always rolls back.
+  "fmc_replace",
+  // A Dynamo graph. Preview rolls the transaction group back. Apply keeps it. Inspect does not use this command.
+  "fmc_dynamo",
+  // run_revit_command (owner 26 Oct): a built-in Revit command, which may act on the selection
+  "fmc_post_command",
+  // new_family (owner 26 Oct): a family file made from a template and opened
+  "fmc_family_new",
+  // revit_file (owner 26 Oct): save, export, link, import, sync
+  "fmc_revit_file",
+  // undo_ai_batch (owner 27 Oct): Revit's Undo of the AI's own batches, never a person's work
+  "fmc_undo",
   // Circuits (KISIC 4.4): devices grouped into circuits on a board, the kit's distribution system set; the dry run rolls back
   "fmc_circuits_create",
+  // Systems flow tracer corrections. Reads stay on fmc_trace. This command is the one transaction.
+  "fmc_trace_apply",
+  // A fresh workshared local. The server sends a fixed script; the add-in command is still send_code_to_revit.
+  "fmc_new_local",
+  // Grids copied from a loaded link. The server sends a fixed script; the add-in command is still send_code_to_revit.
+  "fmc_grids_from_link",
+  // Phases and revisions. Reads stay on fmc_phase. This command is the one transaction.
+  "fmc_phase_apply",
+  // Joins and the envelope pressure test. Reads stay on fmc_joins. This command is the one transaction.
+  "fmc_joins_apply",
+  // Power and lighting circuits. Reads stay on fmc_circuits. This command is the one transaction.
+  "fmc_circuits_apply",
+  // Electrical and plumbing drafting diagrams. Reads stay on fmc_elec_diagrams and fmc_plumb_diagrams.
+  "fmc_elec_diagrams_apply",
+  "fmc_plumb_diagrams_apply",
+  // Conduit fittings, the size table and type fittings. Reads stay on fmc_conduit. One subtransaction per fitting.
+  "fmc_conduit_apply",
+  // True north: crop, scope box or a sheet north arrow. One transaction. Never SetProjectPosition.
+  "fmc_north_apply",
+  // Legend views: duplicate a seed view or copy a seed component. One transaction. No text notes.
+  "fmc_legend_apply",
+  // Kit typical details copied into a drafting view. One transaction. The kit file is not saved.
+  "fmc_details_apply",
+  // A parameter or label on the family loaded in the project, or a project binding. The kit family file is not saved.
+  "fmc_family_params_apply",
+  // Keynote placement: copy a linked seed into each plan and retarget the host. One transaction.
+  "fmc_keynote_place_apply",
+  // Sheet pair, arrange and park. One transaction. The register compare stays a read.
+  "fmc_sheets_layout_apply",
+  // Drawing register: one transaction that filters PARKED sheets out of a sheet list.
+  "fmc_register_apply",
+  // Delete elements a recorded batch created, after sync. One transaction. Never another user's elements.
+  "fmc_batch_undo_apply",
+  // View templates, filters and room colour fills. One transaction.
+  "fmc_viewstyle_apply",
+  // Dimension strings. One transaction, one subtransaction per string.
+  "fmc_dims_apply",
+  // Door, window and room tags. One transaction, one subtransaction per tag.
+  "fmc_tags_apply",
+  // One keynote legend placed on each sheet. One transaction.
+  "fmc_keynote_legend_apply",
+  // Open or close a document. List stays on fmc_docs. The last document is never closed.
+  "fmc_docs_apply",
+  // fmc_file close_local with save=true: saves the local file, then closes it. Never syncs. close_local without save and
+  // open_local are session commands (fmc_close_local, fmc_open_local), not model writes.
+  "fmc_close_local_apply",
+  // Close spare documents or purge unused elements. Status stays on fmc_memory.
+  "fmc_memory_apply",
 ]);
 
 /**
@@ -109,10 +260,74 @@ export const WRITE_COMMANDS = new Set<string>([
  */
 export const READ_VIA_SEND_COMMAND = new Set<string>([
   "ai_element_filter", "analyze_model_statistics", "export_room_data", "get_available_family_types", "get_current_view_elements", "fmc_diagram_scan", "get_current_view_info", "get_material_quantities",
-  "get_selected_elements", "say_hello", "fmc_mep_facts",
+  "get_selected_elements", "say_hello", "fmc_mep_facts", "fmc_element_geometry", "fmc_design_options", "fmc_list_commands", "fmc_view_image", "fmc_model_check", "fmc_select_by", "fmc_undo_status", "fmc_material_report",
+  // render_in_blender: a 3D view as FBX into the WIP render folder the server checked; the model is not changed
+  "fmc_scene_export",
+  // the structure's facts from the architecture model (owner 27 Oct)
+  "fmc_struct_facts",
   // LD5 Gate D: the drafting views holding items fmc_diagram drew, with their source keys (read-only)
   "fmc_diagram_drawn",
+  // batch auto-save reads the document before it decides whether the existing auto-save may run
+  "fmc_document_info",
+  // checkout status and central currency. Read-only. Never requests ownership.
+  "fmc_elem_currency",
+  // Phases, filters, revisions and the compact element rows fmc_phase summarises. No transaction.
+  "fmc_phase",
+  // Join audit, hosting, room closure and the envelope sample. No transaction.
+  "fmc_joins",
+  // True north, survey point, view orientation and grid angles. No transaction.
+  "fmc_north",
+  // Legend views and legend components. No transaction.
+  "fmc_legend_views",
+  // The open project a detail will be placed in. No copy.
+  "fmc_details",
+  // Parameters on a family already loaded in the project. The family file is closed without saving.
+  "fmc_family_params",
+  // Clear headroom. No transaction.
+  "fmc_headroom",
+  // Keynote tags, hosts and plan views. No transaction.
+  "fmc_keynote_place",
+  // Sheet outlines, view sizes and sheet parameters. No transaction.
+  "fmc_sheets_layout",
+  // Sheet list fields and filters. No transaction.
+  "fmc_register_read",
+  // Whether created ids still exist, are editable, and match a fingerprint. No transaction.
+  "fmc_batch_undo_read",
+  // Existing templates, filters and room names. No transaction.
+  "fmc_viewstyle",
+  // Grids, exterior walls, interior partitions, openings and rooms in one view. No transaction.
+  "fmc_dims",
+  // Electrical and plumbing diagram graphs. No transaction.
+  "fmc_elec_diagrams",
+  "fmc_plumb_diagrams",
+  // Floor plans on issued sheets, with linked doors and room tags. No transaction.
+  "fmc_tags",
+  // Sheets, title-block legend zone and an existing keynote legend. No transaction.
+  "fmc_keynote_legend",
 ]);
+
+/**
+ * What an AI call does, for the AI activity strip on Revit's ribbon (owner, 15 Oct). Sent with every call as
+ * _fmcActivity; the add-in removes it before the command runs (plugin/Core/SocketService.cs).
+ * "dryrun": the call asks for a dry run (dry_run true). "change": a model-changing command, or any call that turns a dry
+ * run off (dry_run false). "read": everything else. "person": a person's own click in the pane (callActivity).
+ */
+export type AiActivity = "change" | "dryrun" | "read" | "person";
+
+export function activityOf(command: string, params: unknown): AiActivity {
+  const dryRun = params && typeof params === "object" && !Array.isArray(params) ? (params as Record<string, unknown>).dry_run : undefined;
+  if (dryRun === true) return "dryrun";
+  if (dryRun === false || WRITE_COMMANDS.has(command)) return "change";
+  return "read";
+}
+
+/**
+ * The tag a call carries. The pane runs this server's CLI for a person's own clicks (plugin/Fmc/ServerCli.cs sets
+ * FMC_CALLER=pane), and those are "person": the strip shows AI work only. Ask Claude runs without it, so it shows.
+ */
+export function callActivity(command: string, params: unknown, env: NodeJS.ProcessEnv = process.env): AiActivity {
+  return env.FMC_CALLER === "pane" ? "person" : activityOf(command, params);
+}
 
 /** Commands that read or steer the Formcraft pane only. They never change the model, so they work on live models. */
 export const PANE_COMMANDS = new Set<string>(["fmc_ui"]);
@@ -126,9 +341,26 @@ export function configPath(env: NodeJS.ProcessEnv = process.env): string {
   return win.join(appData, "Formcraft", "fmc_guard.json");
 }
 
-export function loadConfig(file: string = configPath(), reader: (p: string) => string = (p) => fs.readFileSync(p, "utf8")): {
-  config: GuardConfig; source: string; problem?: string;
-} {
+type Loaded = { config: GuardConfig; source: string; problem?: string };
+const configCache = new Map<string, { stamp: string; loaded: Loaded }>();
+
+/**
+ * The guard config. Read from disk only when the file changed (owner 27 Oct, speed: it was read and parsed on every
+ * call, from 47 places): the file's size and change times are checked each time, so an edit is seen on the next call.
+ * Each caller gets its own copy. A missing or broken file is never cached, so it keeps failing closed.
+ */
+export function loadConfig(file: string = configPath(), reader?: (p: string) => string): Loaded {
+  if (reader) return readConfig(file, reader);
+  let stamp: string;
+  try { const s = fs.statSync(file); stamp = `${s.size}:${s.mtimeMs}:${s.ctimeMs}`; } catch { return readConfig(file, (p) => fs.readFileSync(p, "utf8")); }
+  const hit = configCache.get(file);
+  if (hit && hit.stamp === stamp) return structuredClone(hit.loaded);
+  const loaded = readConfig(file, (p) => fs.readFileSync(p, "utf8"));
+  if (loaded.source === file) configCache.set(file, { stamp, loaded: structuredClone(loaded) }); else configCache.delete(file);
+  return loaded;
+}
+
+function readConfig(file: string, reader: (p: string) => string): Loaded {
   let raw: string;
   try {
     raw = reader(file);
@@ -246,7 +478,18 @@ export function checkTemplatePath(template: string, cfg: GuardConfig): Verdict {
   return { ok: reasons.length === 0, reasons };
 }
 
-export interface DocInfo { title: string; path: string; isFamily: boolean; isWorkshared: boolean; isActive?: boolean }
+export interface DocInfo {
+  title: string;
+  path: string;
+  isFamily: boolean;
+  isWorkshared: boolean;
+  isActive?: boolean;
+  isDetached?: boolean;
+  isLinked?: boolean;
+  /** A verification copy or a link: real writes are refused. A modify_model dry run may still roll back on a copy. */
+  readOnly?: boolean;
+  isLocal?: boolean | null;
+}
 
 /** Live-model lock: may a model-changing tool run on the active document? */
 export function liveLockVerdict(active: DocInfo | null | undefined, cfg: GuardConfig): Verdict {

@@ -51,6 +51,10 @@ test("the target goes with every command to Revit, unless the command names its 
     void client.sendRaw("fmc_close_document", { document: "Project1" }, 5).catch(() => {});
   });
   void client.sendRaw("fmc_document_info", {}, 5).catch(() => {});
-  assert.deepEqual(sent.map((s) => s.params), [{ sheet: [], document: "Workbench" }, { document: "Project1" }, {}]);
+  // Every call also carries its _fmcActivity tag for the ribbon's AI activity strip (policy.ts callActivity).
+  const read = process.env.FMC_CALLER === "pane" ? "person" : "read";
+  assert.deepEqual(sent.map((s) => s.params), [
+    { sheet: [], document: "Workbench", _fmcActivity: read }, { document: "Project1", _fmcActivity: read }, { _fmcActivity: read },
+  ]);
   client.socket.destroy();
 });

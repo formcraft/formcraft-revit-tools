@@ -71,6 +71,10 @@ dotnet run --project shell/Formcraft.Shell.Preview
 Sign in with any email and password, then the code `123456`. Model shows as a trial and Build as not licensed,
 so the locked state is visible. All values are samples.
 
+## The safe project save
+
+`fmc_save_project` is the save to use for a project model. Pass `title` and `path`. It saves only when both match the open project, and it refuses a family document. The live-model lock and the batch lease apply. `revit_file` with `action` `save` does not check the title and the path, and it does not refuse a family.
+
 ## How work runs
 
 1. `/ui-next` plans the next step in `docs/UI_DEVELOPMENT.md` and waits for a yes.

@@ -59,6 +59,23 @@ export function parseCis(raw: string): { cis: Cis | null; problems: string[] } {
   return { cis, problems };
 }
 
+export const BRIEF_NOT_APPROVED = "FMC-BRIEF-NOT-APPROVED";
+
+/**
+ * Whether the CIS is approved. `approved` is true (or "true"), or the date it was approved (YYYY-MM-DD, as the sample CIS
+ * writes it). Missing, false, "no", "pending", "draft" or any other text is not approved. Only plan and a dry run read an
+ * unapproved CIS; creating anything from it (dry_run false) is refused.
+ */
+export function briefApproval(approved: unknown): { approved: boolean; code?: string; message?: string } {
+  const v = str(approved).toLowerCase();
+  const ok = v === "true" || (/^\d{4}-\d{2}-\d{2}(?:[t ][\d:.]+z?)?$/.test(v) && !Number.isNaN(Date.parse(v)));
+  if (ok) return { approved: true };
+  return {
+    approved: false, code: BRIEF_NOT_APPROVED,
+    message: `[${BRIEF_NOT_APPROVED}] The CIS is not approved (approved is ${v ? `"${v}"` : "missing"}; it must be true or the approval date). A plan and a dry run still read it; nothing is created from an unapproved brief.`,
+  };
+}
+
 export interface BriefPlan {
   levels: CisLevel[];
   project_info: Array<{ name: string; value: string }>;

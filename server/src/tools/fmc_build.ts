@@ -6,6 +6,7 @@ import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { kitParams } from "../fmc/brief.js";
 import { baselineOf, boq, kitCodes, statusLegend } from "../fmc/build.js";
+import { saveBaseline } from "../fmc/baselinesave.js";
 
 const win = path.win32;
 const CODE = "FMC_Keynote_Code", STATUS = "FMC_Construction_Status", PACKAGE = "FMC_Trade_Package";
@@ -40,12 +41,15 @@ export const FMC_BUILD_DESCRIPTION =
     "the code's unit (m2 area, m3 volume, m length, nr count), other units are left for the QS. Lists elements with no " +
     "code by category, codes the kit doesn't have, progress counts by FMC_Construction_Status and counts by " +
     "FMC_Trade_Package, and flags quantities that moved since the baseline. baseline: saves the current quantities as " +
-    "the baseline (the plugin's own file). Rates are never returned.";
+    "the baseline (the plugin's own file): a dry run by default (nothing written); dry_run false writes it; an existing baseline is " +
+    "replaced only with confirm true, and the old one is first copied to _Archive with a timestamp. Rates are never returned.";
 
 export const FMC_BUILD_SHAPE = {
   action: z.enum(["quantities", "baseline"]),
   kit_folder: z.string().describe("The Formcraft kit folder"),
   project_folder: z.string().optional().default("").describe("Where the baseline is kept (01_WIP\\_Build)"),
+  dry_run: z.boolean().optional().default(true).describe("baseline: default true, nothing is written; false writes the baseline"),
+  confirm: z.boolean().optional().default(false).describe("baseline: required (with dry_run false) to replace an existing baseline; the old one is archived first"),
 };
 
 export type FmcBuildArgs = z.infer<z.ZodObject<typeof FMC_BUILD_SHAPE>>;
@@ -69,11 +73,12 @@ export async function runFmcBuild(args: FmcBuildArgs) {
     const result = boq(facts, kitCodes(data), baseline?.quantities ?? null);
 
     if (args.action === "baseline") {
-      fs.mkdirSync(win.dirname(file), { recursive: true });
       const saved = new Date().toISOString();
-      fs.writeFileSync(file, JSON.stringify({ model, saved, quantities: baselineOf(result.items) }, null, 2));
-      log(config, "build_baseline", model, "saved", `${result.items.length} items · ${file}`);
-      return reply({ model, baseline: file, saved, items: result.items.length, next: "Later measures flag every quantity that moves from this baseline" });
+      const outcome = saveBaseline(file, JSON.stringify({ model, saved, quantities: baselineOf(result.items) }, null, 2), { dryRun: args.dry_run, confirm: args.confirm });
+      if (!outcome.ok) { log(config, "build_baseline", model, "refused", outcome.code ?? ""); return reply({ model, ...outcome, refused: true, reasons: [outcome.message] }, true); }
+      if (outcome.written) log(config, "build_baseline", model, outcome.archived ? "replaced" : "saved", `${result.items.length} items · ${file}${outcome.archived ? ` · old archived to ${outcome.archived}` : ""}`);
+      return reply({ model, baseline: file, ...(outcome.written ? { saved } : {}), items: result.items.length, ...outcome,
+        next: outcome.written ? "Later measures flag every quantity that moves from this baseline" : "Run again with dry_run false to write it (confirm true if it replaces an existing baseline)" });
     }
 
     return reply({

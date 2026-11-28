@@ -29,6 +29,7 @@ namespace RevitMCPCommandSet.Commands.Access
                     int? limit = parameters?["limit"]?.Value<int>();
 
                     // 设置查询参数
+                    _handler.Parameters = parameters ?? new JObject();
                     _handler.CategoryList = categoryList;
                     _handler.FamilyNameFilter = familyNameFilter;
                     _handler.Limit = limit;
@@ -36,6 +37,10 @@ namespace RevitMCPCommandSet.Commands.Access
                     // 触发外部事件并等待完成，最多等待15秒
                     if (RaiseAndWaitForCompletion(15000))
                     {
+                        if (!string.IsNullOrEmpty(_handler.Error))
+                            throw new InvalidOperationException(_handler.Error);
+                        if (_handler.ResultFamilyTypes == null)
+                            throw new InvalidOperationException("Reading the family types returned nothing");
                         return _handler.ResultFamilyTypes;
                     }
                     else

@@ -1,3 +1,5 @@
+import { readCopies } from "./aicopies.js";
+import { guardProtectedRoots, underAny } from "./opencopy.js";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -31,7 +33,13 @@ export function loadRulebook(cfg: GuardConfig): { book: AiRulebook | null; file:
 
 /** The ai_modeller section of fmc_guard.json, with Stop AI from the pane's switch file too. */
 export function loadAiConfig(cfg: GuardConfig, env: NodeJS.ProcessEnv = process.env): AiModellerConfig | null {
-  const ai = parseConfig((cfg as unknown as { ai_modeller?: unknown }).ai_modeller);
+  // The copies enable_copy turned On are in ai_copies.json (never in the guard file); a copy under a protected root is dropped.
+  const section = (cfg as unknown as { ai_modeller?: unknown }).ai_modeller;
+  const own = readCopies(env);
+  const protectedRoots = guardProtectedRoots(cfg);
+  const copies = Object.fromEntries(Object.entries(own).filter(([p]) => !underAny(p, protectedRoots)));
+  const base = section && typeof section === "object" ? section as Record<string, unknown> : {};
+  const ai = parseConfig(Object.keys(copies).length ? { ...base, copies: { ...((base.copies ?? {}) as object), ...copies } } : section);
   if (ai && fs.existsSync(win.join(formcraftDir(env), "ai_stop"))) ai.stop = true;
   return ai;
 }
@@ -50,6 +58,25 @@ export function saveState(s: AiState, env: NodeJS.ProcessEnv = process.env) {
 export interface QueueItem {
   id: string; command: string; model: string; path: string; group: string; elements: number; summary: string;
   created: string; status: "pending" | "approved" | "rejected" | "used"; by?: string; at?: string;
+  /** Owner 26 Oct: an approved batch runs from the pane; its outcome, for the person and the AI. */
+  result?: "done" | "failed" | "running"; detail?: string; ran_at?: string;
+  /** Owner 26 Oct: what approving lets AI do, in plain lines (fmc/explain.ts). */
+  details?: string[];
+}
+
+/** One queue item with its parameters (what the batch sends to Revit). */
+export function readItem(id: string, env: NodeJS.ProcessEnv = process.env): (QueueItem & { params?: unknown }) | null {
+  try { return JSON.parse(fs.readFileSync(queueFile(id.replace(/[^0-9a-f]/gi, ""), env), "utf8")); } catch { return null; }
+}
+
+/** Records how an approved batch went when the pane ran it. */
+export function setResult(id: string, result: "done" | "failed" | "running", detail: string, env: NodeJS.ProcessEnv = process.env, now = new Date()) {
+  const file = queueFile(id.replace(/[^0-9a-f]/gi, ""), env);
+  try {
+    const item = JSON.parse(fs.readFileSync(file, "utf8"));
+    item.result = result; item.detail = detail.slice(0, 500); item.ran_at = now.toISOString();
+    fs.writeFileSync(file, JSON.stringify(item, null, 2));
+  } catch { /* the log still has the run */ }
 }
 export const queueDir = (env: NodeJS.ProcessEnv = process.env) => win.join(formcraftDir(env), "ai_queue");
 const queueFile = (id: string, env: NodeJS.ProcessEnv) => win.join(queueDir(env), id + ".json");
@@ -64,11 +91,14 @@ export function readQueue(env: NodeJS.ProcessEnv = process.env): QueueItem[] {
 
 /** Queues a batch for approval (once: the same batch keeps its id). */
 export function enqueue(command: string, params: unknown, docPath: string, model: string, group: string, elements: number,
-  env: NodeJS.ProcessEnv = process.env, now = new Date()): QueueItem {
+  env: NodeJS.ProcessEnv = process.env, now = new Date(), details?: string[]): QueueItem {
   const id = batchKey(command, params, docPath);
   const file = queueFile(id, env);
-  try { const old = JSON.parse(fs.readFileSync(file, "utf8")) as QueueItem; if (old.status === "pending" || old.status === "approved") return old; } catch { /* new */ }
-  const item: QueueItem = { id, command, model, path: docPath, group, elements, summary: summarise(command, params), created: now.toISOString(), status: "pending" };
+  let again = false;
+  try { const old = JSON.parse(fs.readFileSync(file, "utf8")) as QueueItem; if (old.status === "pending" || old.status === "approved") return old; again = old.status === "used"; } catch { /* new */ }
+  // The same batch after it already ran: the person sees it would place everything a second time.
+  const summary = (again ? "AGAIN, this exact batch already ran once: " : "") + summarise(command, params);
+  const item: QueueItem = { id, command, model, path: docPath, group, elements, summary, created: now.toISOString(), status: "pending", ...(details ? { details } : {}) };
   fs.mkdirSync(queueDir(env), { recursive: true });
   fs.writeFileSync(file, JSON.stringify({ ...item, params }, null, 2));
   return item;
@@ -80,6 +110,21 @@ export function approvalFor(command: string, params: unknown, docPath: string, e
     const item = JSON.parse(fs.readFileSync(queueFile(batchKey(command, params, docPath), env), "utf8")) as QueueItem;
     return item.status === "approved" ? item : null;
   } catch { return null; }
+}
+
+/**
+ * Takes an approval for one run (owner 26 Oct: approved batches replayed 7-8 times after timeouts). It is marked used
+ * before Revit runs, so a resend or a second approve-run is refused even if the first run times out or fails.
+ */
+export function claimApproval(id: string, env: NodeJS.ProcessEnv = process.env, now = new Date()): boolean {
+  const file = queueFile(id.replace(/[^0-9a-f]/gi, ""), env);
+  try {
+    const item = JSON.parse(fs.readFileSync(file, "utf8"));
+    if (item.status !== "approved") return false;
+    item.status = "used"; item.at = now.toISOString();
+    fs.writeFileSync(file, JSON.stringify(item, null, 2));
+    return true;
+  } catch { return false; }
 }
 
 /** Marks an item; used by the pane (approve, reject) and after a run (used). Never offered as an MCP tool. */

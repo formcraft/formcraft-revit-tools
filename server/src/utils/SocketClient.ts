@@ -2,10 +2,26 @@ import * as net from "net";
 import fs from "fs";
 import path from "path";
 import { appendJobEvent, jobFiles, jobResult, lastHeartbeatMs } from "../fmc/jobs.js";
-import { WRITE_COMMANDS, liveLockVerdict, loadConfig } from "../fmc/policy.js";
-import { documentTarget } from "../fmc/target.js";
+import { WRITE_COMMANDS, callActivity, liveLockVerdict, loadConfig } from "../fmc/policy.js";
+import { protectedRoots, writeGuard } from "../fmc/opencopy.js";
+import { appendConflict, namedElementIds, splitCheckout, withoutIds, type CurrencyRow, type SkippedElement } from "../fmc/coordination.js";
+import { batchLease, documentTarget, revitTarget } from "../fmc/target.js";
+import { portRefusal, readInstances } from "../fmc/connect.js";
+import { backoffMs, shouldRetryReset } from "../fmc/reconnect.js";
+import { currentClient, documentDecision } from "../fmc/fairqueue.js";
+import { admitBatchWrite, documentsMatch, leaseHeldDocuments } from "../fmc/batchline.js";
+import { attachResolvedDocument, leaseCoversAny, preferUnstrippedDocument, resolveOpenDocument, type OpenDocRef } from "../fmc/docresolve.js";
+import { captureCreated } from "../fmc/createdlog.js";
 import { aiGate } from "../fmc/aigate.js";
 import { retryWhileBusy } from "../fmc/busy.js";
+import { DialogBlockingError, blockingForJob } from "../fmc/dialogrules.js";
+import { wireNewLocal } from "../fmc/newlocal.js";
+import { wireGrids } from "../fmc/grids.js";
+import { jobBusyReason, leaseBusyReason } from "../fmc/busyreason.js";
+import { admitWrite, memoryGate } from "../fmc/memory.js";
+import { screenScript, scriptLimit } from "../fmc/scriptguard.js";
+import { CACHED_READS, compactReply, invalidateIfWrite, putCachedRead, takeCachedRead, wantsFull } from "../fmc/readcache.js";
+import { stampAppliedDocument } from "../fmc/applieddoc.js";
 
 export class RevitClientConnection {
   host: string;
@@ -14,11 +30,15 @@ export class RevitClientConnection {
   isConnected: boolean = false;
   responseCallbacks: Map<string, (response: string) => void> = new Map();
   buffer: string = "";
+  /** After a reset, a read asks for the port again so a restarted Revit is found from its instance file. */
+  refreshPort: (() => Promise<number>) | null = null;
 
   constructor(host: string, port: number) {
     this.host = host;
     this.port = port;
     this.socket = new net.Socket();
+    // owner 27 Oct: decode as text on the socket, so a character split across two chunks (é, –, ×) is not broken
+    this.socket.setEncoding("utf8");
     this.setupSocketListeners();
   }
 
@@ -29,7 +49,7 @@ export class RevitClientConnection {
 
     this.socket.on("data", (data) => {
       // 将接收到的数据添加到缓冲区
-      const dataString = data.toString();
+      const dataString = typeof data === "string" ? data : data.toString();
       this.buffer += dataString;
 
       // 尝试解析完整的JSON响应
@@ -38,15 +58,52 @@ export class RevitClientConnection {
 
     this.socket.on("close", () => {
       this.isConnected = false;
+      // A probe that connects and then drops, with no JSON, ends the call here. Pending reads can be retried.
+      this.failPending(this.resetMessage());
     });
 
-    this.socket.on("error", (error) => {
-      console.error("RevitClientConnection error:", error);
+    this.socket.on("error", (error: NodeJS.ErrnoException) => {
       this.isConnected = false;
+      // ECONNRESET while a job is heartbeating is Revit not idle, not a half-closed listener.
+      const reset = error?.code === "ECONNRESET";
+      const message = reset ? this.resetMessage() : (error?.message || "The connection to Revit failed.");
+      if (reset) console.error(message);
+      else console.error("RevitClientConnection error:", error?.message || error);
+      if (reset) this.failPending(message);
     });
   }
 
+  /** ECONNRESET on this port. A heartbeating job is named; otherwise the listener really refused. */
+  private resetMessage(): string {
+    const owner = readInstances().find((instance) => instance.port === this.port);
+    return portRefusal(this.port, "reset", owner).message;
+  }
+
+  private failPending(message: string): void {
+    for (const [id, callback] of this.responseCallbacks) {
+      this.responseCallbacks.delete(id);
+      callback(JSON.stringify({ jsonrpc: "2.0", id, error: { code: -32000, message } }));
+    }
+  }
+
+  /** Drop the dead socket and open another. A restarted Revit may be on the port its instance file names now. */
+  private async reopen(): Promise<void> {
+    try { this.socket.removeAllListeners(); this.socket.destroy(); } catch { /* already closed */ }
+    if (this.refreshPort) {
+      try { this.port = await this.refreshPort(); } catch { /* the instance file did not move; retry the same port */ }
+    }
+    this.socket = new net.Socket();
+    this.socket.setEncoding("utf8");
+    this.isConnected = false;
+    this.buffer = "";
+    this.responseCallbacks.clear();
+    this.setupSocketListeners();
+  }
+
   private processBuffer(): void {
+    // owner 27 Oct, speed: a whole answer is one JSON object, so it ends with "}"; parsing the growing buffer after every
+    // chunk made a big answer (a material report, a model check) cost the square of its size
+    if (!/\}\s*$/.test(this.buffer.slice(-16))) return;
     try {
       // 尝试解析JSON
       const response = JSON.parse(this.buffer);
@@ -102,30 +159,155 @@ export class RevitClientConnection {
    * (server/src/fmc/policy.ts): they are refused when the active document is a live project model.
    * The lock fails closed: if the active document cannot be read, the command is not sent.
    */
-  public async sendCommand(command: string, params: any = {}, timeoutMs: number = 120000): Promise<any> {
-    if (WRITE_COMMANDS.has(command)) {
-      const { config } = loadConfig();
-      if (config.live_model_lock) {
-        let info: any;
-        try {
-          info = await this.sendRaw("fmc_document_info", {});
-        } catch (error) {
-          throw new Error(
-            "FMC live-model lock: could not read the active document, so the command was not sent. " +
-              "Is the Formcraft command set (fmc_document_info) installed? " +
-              (error instanceof Error ? error.message : String(error))
-          );
-        }
-        const verdict = liveLockVerdict(info?.active, config);
-        if (!verdict.ok) {
-          // The lock's one new case: the AI-assisted modeller, Off unless the kit rulebook and the BIM Manager allow it.
-          const gate = await aiGate(command, params, info?.active, config, (c, p) => this.sendRaw(c, p, 60000));
-          if (!gate.ok || !gate.run) throw new Error([...verdict.reasons, gate.reason].filter(Boolean).join(" "));
-          return gate.run(() => this.sendRaw(command, params, timeoutMs));
-        }
+  private openDocRefs(): OpenDocRef[] {
+    const open = readInstances().find((instance) => instance.port === this.port);
+    return (open?.documents ?? []).map((doc) => ({
+      title: doc.title ?? "",
+      path: doc.path ?? "",
+      family: doc.family === true,
+    }));
+  }
+
+  /** Exact title or path. A given document that is not open is refused here, before Revit can fall back to the active one. */
+  private decideDocument(command: string, params: any) {
+    const explicit = params && typeof params.document === "string" ? params.document : undefined;
+    const named = preferUnstrippedDocument(documentTarget.getStore(), explicit);
+    const str = (key: string) => (params && typeof params[key] === "string" ? params[key] as string : undefined);
+    return documentDecision(command, this.openDocRefs(), named, { kind: str("kind"), template: str("template"), file: str("file") });
+  }
+
+  public async sendCommand(command: string, params: any = {}, timeoutMs: number = 120000, long?: LongJobOptions): Promise<any> {
+    if (command === "send_code_to_revit" || command === "fmc_new_local" || command === "fmc_grids_from_link") {
+      const code = params && typeof params.code === "string" ? params.code : "";
+      const problem = screenScript(code, scriptLimit(), { allowFullScan: params?.allow_full_scan === true });
+      if (problem) throw new Error(problem.message);
+    }
+    if (!WRITE_COMMANDS.has(command)) return this.sendRaw(command, params, timeoutMs, long);
+    const decision = this.decideDocument(command, params);
+    if (!decision.ok) throw new Error(decision.message);
+    const aimed = decision.document
+      ? (decision.document.path || decision.document.title)
+      : (params && typeof params.document === "string" && params.document.trim()
+        ? params.document.trim()
+        : documentTarget.getStore());
+    const lease = batchLease.getStore();
+    if (lease && decision.document) {
+      const held = leaseHeldDocuments(lease);
+      if (held.length && !leaseCoversAny(held, decision.document, documentsMatch)) {
+        const names = held.join(", ");
+        throw new Error(`[FMC-BATCH-LOCKED] Lease ${lease} is for ${names}, not ${decision.document.title || decision.document.path}. Refusing to write a different document. busy_reason: ${leaseBusyReason("the lease holder", names)}.`);
       }
     }
-    return this.sendRaw(command, params, timeoutMs);
+    // fmc_new_local keeps the batch lease on the caller's document title. The Revit `document` on that call is an open
+    // file (or, for the lock read, the local's full path), which is not the lease key once the local is closed.
+    const leaseKey = params && typeof params._lease_document === "string" && params._lease_document.trim()
+      ? params._lease_document.trim()
+      : aimed;
+    // The lease check is the same write list as a reset retry: reads never take a lease.
+    const admission = admitBatchWrite(command, leaseKey, batchLease.getStore(), currentClient());
+    try {
+      await admitWrite(memoryGate, command, params, Math.min(120_000, Math.max(0, timeoutMs)));
+      const screened = await this.screenOwnership(command, params, aimed);
+      if (screened.stopped) return { ok: false, applied: false, skipped: screened.skipped };
+      const result = await this.sendLocked(command, screened.params, timeoutMs, long);
+      try { captureCreated(screened.params, result, process.env, lease ?? ""); } catch { /* the created-id log never blocks the write */ }
+      if (screened.skipped.length && result && typeof result === "object") {
+        const prior = Array.isArray((result as { skipped?: unknown }).skipped) ? (result as { skipped: unknown[] }).skipped : [];
+        return { ...(result as Record<string, unknown>), skipped: [...prior, ...screened.skipped] };
+      }
+      return result;
+    } finally {
+      admission.finish();
+    }
+  }
+
+  /** Drop elements another user owns, or that are not current. An older add-in has no currency command: the write still goes. */
+  private async screenOwnership(command: string, params: any, aimed: string | undefined): Promise<{ params: any; skipped: SkippedElement[]; stopped: boolean }> {
+    if (command === "fmc_revit_file" || command === "fmc_undo" || command === "fmc_new_local" || command === "fmc_elem_currency") {
+      return { params, skipped: [], stopped: false };
+    }
+    const ids = [...new Set(namedElementIds(params))];
+    const document = params && typeof params.document === "string" && params.document.trim() ? params.document.trim() : aimed;
+    if (!ids.length || !document) return { params, skipped: [], stopped: false };
+    let rows: CurrencyRow[] = [];
+    try {
+      const report = await this.sendRaw("fmc_elem_currency", { document, ids }, 20000) as { elements?: CurrencyRow[] };
+      rows = report?.elements ?? [];
+    } catch {
+      return { params, skipped: [], stopped: false };
+    }
+    const split = splitCheckout(ids, rows);
+    for (const row of split.skipped) {
+      appendConflict({
+        at: new Date().toISOString(), document, code: row.code,
+        kind: row.code === "FMC-ELEM-NOT-CURRENT" ? "not_current" : "owned_by_other",
+        detail: `${row.id} ${row.owner}`.trim(),
+      });
+    }
+    if (split.kept.length === 0) return { params, skipped: split.skipped, stopped: true };
+    return { params: withoutIds(params, split.skipped), skipped: split.skipped, stopped: false };
+  }
+
+  /** Live-model lock, then the socket. The batch lease was already checked. */
+  private async sendLocked(command: string, params: any = {}, timeoutMs: number = 120000, long?: LongJobOptions): Promise<any> {
+    // Owner 26 Oct: two chats share this server; with two Revits open a change must name its Revit, so neither
+    // chat can edit the other's model
+    const open = readInstances();
+    if (open.length > 1 && !revitTarget.getStore())
+      throw new Error(`${open.length} Revits are open: name the Revit this change is for with revit (its model's name, e.g. ` +
+        `${JSON.stringify(open.flatMap((i: any) => i.documents ?? []).map((d: any) => d?.title ?? d).filter(Boolean)[0] ?? "the model")}) on every call.`);
+    const aimed = params && typeof params.document === "string" && params.document.trim()
+      ? params.document.trim()
+      : documentTarget.getStore();
+    // fmc_new_local names a file that exists at this moment. CreateNewLocal uses the open host: the local was just moved aside.
+    const lockKey = params && typeof params._lock_document === "string" && params._lock_document.trim()
+      ? params._lock_document.trim()
+      : aimed;
+    const { config } = loadConfig();
+    let active: { title?: string; path?: string } | undefined;
+    const run = async () => {
+      // The gate saw fmc_new_local (the local being replaced). The add-in has no such command: the fixed script
+      // goes through send_code_to_revit, bound to the other open document so the transaction group is not on the local.
+      if (command === "fmc_new_local") {
+        const wire = wireNewLocal(params ?? {});
+        return stampAppliedDocument(await this.sendRaw(wire.command, wire.params, timeoutMs, long), active, params);
+      }
+      if (command === "fmc_grids_from_link") {
+        const wire = wireGrids(params ?? {});
+        return stampAppliedDocument(await this.sendRaw(wire.command, wire.params, timeoutMs, long), active, params);
+      }
+      return stampAppliedDocument(await this.sendRaw(command, params, timeoutMs, long), active, params);
+    };
+    if (config.live_model_lock) {
+      let info: any;
+      // The lock checks the document the change names, not whichever model is on screen.
+      try {
+        info = await this.sendRaw("fmc_document_info", lockKey ? { document: lockKey } : {});
+      } catch (error) {
+        throw new Error(
+          "FMC live-model lock: could not read the document" + (lockKey ? ` (${lockKey})` : "") + ", so the command was not sent. " +
+            "Is the Formcraft command set (fmc_document_info) installed? " +
+            (error instanceof Error ? error.message : String(error))
+        );
+      }
+      active = info?.active;
+      const guard = writeGuard(info?.active, command, params, config);
+      if (!guard.ok) throw new Error(guard.reasons.join(" "));
+      const verdict = liveLockVerdict(info?.active, config);
+      if (!verdict.ok) {
+        // The lock's one new case: the AI-assisted modeller, Off unless the kit rulebook and the BIM Manager allow it.
+        const gate = await aiGate(command, params, info?.active, config, (c, p) => this.sendRaw(c, p, 60000));
+        // A person sees one plain line (USER_LINE), never the lock's wording; fmc_ai status has the detail.
+        if (!gate.ok || !gate.run) throw new Error(gate.user ?? [...verdict.reasons, gate.reason].filter(Boolean).join(" "));
+        return gate.run(run);
+      }
+    } else {
+      try {
+        const info = await this.sendRaw("fmc_document_info", lockKey ? { document: lockKey } : {});
+        active = info?.active;
+      } catch { /* the write still runs; the reply names the file only when the document could be read */ }
+    }
+    return run();
   }
 
   /**
@@ -141,20 +323,78 @@ export class RevitClientConnection {
     return this.sendRaw(command, params, opts.ceilingMs, opts);
   }
 
-  public sendRaw(command: string, params: any = {}, timeoutMs: number = 120000, long?: LongJobOptions): Promise<any> {
+  public async sendRaw(command: string, params: any = {}, timeoutMs: number = 120000, long?: LongJobOptions): Promise<any> {
+    const explicit = params && typeof params.document === "string" ? params.document : undefined;
+    const named = preferUnstrippedDocument(documentTarget.getStore(), explicit);
+    const open = readInstances().find((instance) => instance.port === this.port);
+    const decision = this.decideDocument(command, params);
+    if (!decision.ok) throw new Error(decision.message);
+    if (decision.pin && decision.document && params && typeof params === "object" && !Array.isArray(params)) {
+      const pin = decision.document.path || decision.document.title;
+      if (pin) params = { ...params, document: pin };
+    }
     // F-072: an earlier command that outlived its wait still holds Revit, and the add-in says so at once
     // ([FMC-BRIDGE-BUSY]): wait and send again while that job's heartbeats are fresh, up to this call's own limit (the
     // answer limit, when the MCP server's is on), instead of failing
     const soft = softTimeoutMs();
-    return retryWhileBusy(() => this.sendOnce(command, params, timeoutMs, long),
-      { command, ceilingMs: soft > 0 ? Math.min(soft, timeoutMs) : timeoutMs, heartbeatMs: (job) => lastHeartbeatMs(job) });
+    const doc = decision.document?.path || decision.document?.title || named || "active";
+    if (CACHED_READS[command]) {
+      const hit = takeCachedRead(command, params, doc);
+      if (hit !== undefined) return attachResolvedDocument(wantsFull(params) ? hit : compactReply(hit), decision.document);
+    }
+    const pid = open?.pid;
+    const run = () => retryWhileBusy(() => this.sendOnce(command, params, timeoutMs, long),
+      {
+        command, ceilingMs: soft > 0 ? Math.min(soft, timeoutMs) : timeoutMs, heartbeatMs: (job) => lastHeartbeatMs(job),
+        blocking: (job) => {
+          const hit = blockingForJob(job, process.env, pid);
+          return hit ? new DialogBlockingError(hit.dialog_id, hit.message, job) : null;
+        },
+      });
+    const finish = (value: unknown) => {
+      if (CACHED_READS[command]) putCachedRead(command, params, doc, value);
+      invalidateIfWrite(command, named);
+      const body = CACHED_READS[command] && !wantsFull(params) ? compactReply(value) : value;
+      return attachResolvedDocument(body, decision.document);
+    };
+    try {
+      return finish(await run());
+    } catch (error) {
+      // One more try for a read. A write is not repeated: it may already have changed the model.
+      if (!shouldRetryReset(command, error, 0)) throw error;
+      await new Promise((resolve) => setTimeout(resolve, backoffMs(0)));
+      await this.reopen();
+      return finish(await run());
+    }
+  }
+
+  private instancePid(): number | undefined {
+    return readInstances().find((instance) => instance.port === this.port)?.pid;
   }
 
   private sendOnce(command: string, params: any = {}, timeoutMs: number = 120000, long?: LongJobOptions): Promise<any> {
     // The call's document target goes with every command (the live-model lock's document check included), unless the
     // command names its own document.
     const document = documentTarget.getStore();
-    if (document && params && typeof params === "object" && !Array.isArray(params) && !("document" in params)) params = { ...params, document };
+    if (params && typeof params === "object" && !Array.isArray(params)) {
+      if ("_lease_document" in params || "_lock_document" in params) {
+        const rest = { ...params };
+        delete rest._lease_document;
+        delete rest._lock_document;
+        params = rest;
+      }
+      const extra: Record<string, unknown> = {};
+      if (document && !("document" in params)) extra.document = document;
+      if (!("_protected_roots" in params)) {
+        try {
+          const roots = protectedRoots(loadConfig().config);
+          if (roots.length) extra._protected_roots = roots;
+        } catch { /* a missing guard still refuses writes */ }
+      }
+      if (Object.keys(extra).length) params = { ...params, ...extra };
+    }
+    // The AI activity strip: what this call does, for the ribbon's colour while it runs (policy.ts callActivity).
+    if (params && typeof params === "object" && !Array.isArray(params)) params = { ...params, _fmcActivity: callActivity(command, params) };
     return new Promise((resolve, reject) => {
       try {
         if (!this.isConnected) {
@@ -212,10 +452,12 @@ export class RevitClientConnection {
         if (soft > 0 && soft < timeoutMs) {
           setTimeout(() => {
             if (settled || !this.responseCallbacks.has(requestId)) return;
+            const blocked = blockingForJob(requestId, process.env, this.instancePid());
             settled = true;
             stillRunning = true;
             appendJobEvent({ job: requestId, event: "running", command, port: this.port, started });
-            reject(new JobStillRunning(requestId, command, Math.round(soft / 1000)));
+            if (blocked) reject(new DialogBlockingError(blocked.dialog_id, blocked.message, requestId));
+            else reject(new JobStillRunning(requestId, command, Math.round(soft / 1000)));
           }, soft);
         }
 
@@ -256,6 +498,8 @@ export class RevitClientConnection {
             }
             const now = Date.now();
             const hb = lastHeartbeatMs(requestId);
+            const blocked = blockingForJob(requestId, process.env, this.instancePid());
+            if (blocked) return fail(new DialogBlockingError(blocked.dialog_id, blocked.message, requestId).message);
             if (now - t0 >= long.ceilingMs)
               return fail(`[FMC-BRIDGE-CEILING] ${command} didn't finish in ${long.ceilingMs >= 60000 ? `${Math.round(long.ceilingMs / 60000)} min` : `${Math.round(long.ceilingMs / 1000)} s`} (job ${requestId}, ` +
                 (hb ? `last heartbeat ${Math.round((now - hb) / 1000)} s ago` : "no heartbeat from Revit") +
@@ -308,7 +552,8 @@ export class JobStillRunning extends Error {
     super(
       `[FMC-JOB-RUNNING] ${command} is still running in Revit after ${seconds} s (not failed). Job ${job}. ` +
         `Don't send it again: ask fmc_job status ${job}, then fmc_job result ${job} once it has finished ` +
-        `(fmc_job cancel ${job} asks Revit to stop it at its next check). The answer is also kept in ${lateResultsPath()}.`);
+        `(fmc_job cancel ${job} asks Revit to stop it at its next check). The answer is also kept in ${lateResultsPath()}. ` +
+        `busy_reason: ${jobBusyReason(command, seconds)}.`);
     this.name = "JobStillRunning";
   }
 }

@@ -80,6 +80,12 @@ States: `Open` → `Fixed – retest` → `Closed` (or back to `Open`), or `Answ
 
 ## Test runs
 
+### Owner report · 2026-10-26 · AI switch
+
+| Finding | What | State |
+|---|---|---|
+| (owner) | Users can't turn AI modelling on: `fmc_ai status` says "fmc_guard.json has no valid ai_modeller section", and per-group levels are too complex. | **Fixed – retest** (PR `feat/general-ai-switch`): the General AI switch, pane and ribbon. Retest: `fmc_selftest` (General AI switch line), switch On in a WIP model, one batch approved in the pane, then Stop AI. |
+
 ### Run 11 · 2026-10-18 · pilot PC · Revit 2025.4 · build `ea13407` · four detailed true-shape families
 
 Batch build of `_Staging\_Batch\batch_DET.json` (ICU bed, ceiling operating light, anaesthesia machine, neonatal
@@ -361,3 +367,43 @@ once F-003 (kit folder) and F-008 (ribbon tab) are cleared.
 Write tools (Start, New file, Create missing, Apply look), Settings and Admin pages, Flow (Touch, Section Box, Tag
 Tidy), Model panel buttons, Engineer › Systems and Structural, Setup › Families and Materials, Drawings › Annotate and
 Issue. These are first on the next run once F-001 to F-003 are cleared.
+
+## 26 Oct 2026: Ogala Residence AI report (build 9adf876), and what was fixed
+
+52 batches, 0 Revit warnings at the end. Fixed after the report (this branch): create_roof (uninitialised curve array;
+overhang by offsetting the outline and dropping the base), duplicate_type layers (edits the duplicate's own structure),
+create_stair (run paths from risers × tread at the base level's height; the type's own railings), move reports
+not_moved_in_z, regenerate after every op, code batches all or nothing in every transaction mode and they return
+created / deleted ids, dry runs need no approval, fmc_ai queue filters, usage counts queued calls apart from failures,
+the self-test waits for Revit after a restart, "why" up to 1000 characters. New ops: create_wall, create_floor and
+create_ceiling with holes, create_room, place_family (hosted on "$n"), rehost, edit_sketch, wall_profile; select_by.
+Already in later builds when the report was written: join and cut, see_view, model_check, auto-approve, no limits in
+testing. Open: the Claude app must restart after every install (server reload), attach on profile-edited walls (a Revit
+limit), design options can't be created (a Revit API limit). Kit items: docs/kit-proposals/KIT_CHANGE_REQUEST_2026-10-26_Ogala.md.
+
+## 27 Oct 2026: Ogala night report (Loops 7-10, build 402ff2e), and what was fixed
+
+Fixed in `fix/ogala-night-report`:
+- `create_roof`: an edge at 0° slope is now a flat edge. Before, Revit refused it.
+- `see_view` close-ups hide levels, grids, scope boxes, section boxes, cameras and similar markers, so the subject fills the picture.
+- `model_check` has a new `blind_openings` check: it finds doors and windows that don't cut their wall.
+- The document check waits 120 s instead of 15 s, so it survives an autosave.
+- `revit_file load_family` overwrites an already-loaded family by default (`overwrite: false` keeps the loaded one) and reports `unchanged` instead of failing.
+- `FMC_Profile_*` families are recognised as the kit's `_Profiles` class.
+- `send_code_to_revit` results now carry `advice` for slow compiles (Revit low on memory), scripts that change far more than expected, and scripts trying to save.
+
+Still open:
+- Kit items 7-9 in KIT_CHANGE_REQUEST_2026-10-26_Ogala.md.
+
+Closed on 27 Oct in `feat/section-boxes-undo` (the owner asked to fill every gap):
+- `undo_ai_batch`: undoes the AI's own batches with Revit's Undo (by `batch_id`, or the last `count`), never a person's work. `status` shows the undo list as the AI sees it; `redo` brings a batch back.
+- Section boxes everywhere: `modify_model` `section_box` (3D views, plan and section crops) and `box_views` (a boxed 3D view per room, level or element); `see_view` `box`, `perspective`, `from: inside`, `eye_mm`/`target_mm`, `save_to` (a perspective with a section box, kept as a file).
+- `site_floor`: a floor on a toposolid's surface that cuts it (Revit's excavation).
+- Calls wait out a save or a sync instead of timing out (the time Revit spends saving doesn't count).
+- A cancelled script stops at the next loop step (a cancel check is added to every loop); its changes roll back.
+- `mirror` keeps a door or window facing the same side of its wall (`keep_side: false` leaves Revit's result).
+
+## 27 Oct 2026: depth on every op, and the ribbon lights
+
+- The AI activity strip (the ribbon lights, 15 Oct) was in PR #139 and had never been merged, so no installed build had it. It is now in the stack (PR #283). To check it in Revit: the panel title bars turn orange while the AI changes the model, amber while a change waits for approval, and blue while it reads.
+- Every op got the same depth as the section box: `select`, `{select}` in place of one id, and `for_each`. The night test's `depth` group covers them.

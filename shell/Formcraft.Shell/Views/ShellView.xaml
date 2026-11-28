@@ -68,8 +68,8 @@
 
         <!-- Document banner: which model, and what the live-model lock allows -->
         <Border DockPanel.Dock="Top" BorderBrush="{DynamicResource Fmc.DividerBrush}" BorderThickness="0,1" Padding="10,6,10,8">
-          <c:FmcDocBanner Header="{Binding Document.Title}" Content="{Binding Document.LockText}" State="{Binding Document.State}"
-                          Compact="{Binding HasStateBanner}" ToolTip="{Binding Document.LockText}"/>
+          <c:FmcDocBanner Header="{Binding Document.Title}" Content="{Binding DocumentLine}" State="{Binding Document.State}"
+                          Compact="{Binding HasStateBanner}" ToolTip="{Binding DocumentLine}"/>
         </Border>
 
         <!-- State banner (board account/PaneStates): one state at a time, with its next step -->
@@ -107,6 +107,10 @@
           <!-- Admin (U07): admins only -->
           <local:AdminView DataContext="{Binding Admin}"
                            Visibility="{Binding DataContext.IsAdminOpen, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource Vis}}"/>
+
+          <!-- AI approvals (owner 26 Oct): everyone, from the header's "AI: N waiting" badge -->
+          <local:ApprovalsView DataContext="{Binding Approvals}"
+                               Visibility="{Binding DataContext.IsApprovalsOpen, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource Vis}}"/>
 
           <!-- Search results, in place of the body while there is a query (board core/UI_Palette) -->
           <parts:SearchView DataContext="{Binding Search}" Visibility="{Binding IsOpen, Converter={StaticResource Vis}}"/>

@@ -1,3045 +1,3057 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_E_EQ_Inverter_Solar",
- "template": "Metric Generic Model.rft",
- "about": "Inverter: wall bracket, body, front panel with display band, LCD and status/fault/comms LEDs, side and rear heatsink fins, vent grille with slats, DC isolator with red handle, DC connector row, AC and comms glands underneath. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: inverter solar electrical equipment hospital; images: https://www.google.com/search?tbm=isch&q=inverter+solar+electrical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Electrical Equipment"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Voltage",
-   "type": "Voltage",
-   "group": "Electrical"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Number of Poles",
-   "type": "NumberOfPoles",
-   "group": "Electrical"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Apparent Load",
-   "type": "ApparentPower",
-   "group": "ElectricalLoads"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
-  },
-  {
-   "op": "add_type",
-   "name": "10kW_3Ph"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kW_3Ph/FMC_Cost_Unit",
-   "type": "10kW_3Ph",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kW_3Ph/FMC_Geometry_Stage",
-   "type": "10kW_3Ph",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kW_3Ph/IfcExportAs",
-   "type": "10kW_3Ph",
-   "param": "IfcExportAs",
-   "value": "IfcElectricFlowTreatmentDevice"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kW_3Ph/Description",
-   "type": "10kW_3Ph",
-   "param": "Description",
-   "value": "Grid-tie / hybrid solar inverter, 3-phase, wall mounted 600 x 700 x 250, LCD, DC isolator, finned heatsink"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kW_3Ph/Keynote",
-   "type": "10kW_3Ph",
-   "param": "Keynote",
-   "value": "Z.INV_03"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kW_3Ph/FMC_Keynote_Code",
-   "type": "10kW_3Ph",
-   "param": "FMC_Keynote_Code",
-   "value": "Z.INV_03"
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kW_3Ph/Voltage",
-   "type": "10kW_3Ph",
-   "param": "Voltage",
-   "value": 415
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kW_3Ph/Apparent Load",
-   "type": "10kW_3Ph",
-   "param": "Apparent Load",
-   "value": 10000
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kW_3Ph/Number of Poles",
-   "type": "10kW_3Ph",
-   "param": "Number of Poles",
-   "value": 3
-  },
-  {
-   "op": "set_type_value",
-   "name": "10kW_3Ph/Default Elevation",
-   "type": "10kW_3Ph",
-   "param": "Default Elevation",
-   "value": 1000
-  },
-  {
-   "op": "add_type",
-   "name": "50kW_3Ph"
-  },
-  {
-   "op": "set_type_value",
-   "name": "50kW_3Ph/FMC_Cost_Unit",
-   "type": "50kW_3Ph",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "50kW_3Ph/FMC_Geometry_Stage",
-   "type": "50kW_3Ph",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "50kW_3Ph/IfcExportAs",
-   "type": "50kW_3Ph",
-   "param": "IfcExportAs",
-   "value": "IfcElectricFlowTreatmentDevice"
-  },
-  {
-   "op": "set_type_value",
-   "name": "50kW_3Ph/Description",
-   "type": "50kW_3Ph",
-   "param": "Description",
-   "value": "Grid-tie / hybrid solar inverter, 3-phase, wall mounted 600 x 700 x 250, LCD, DC isolator, finned heatsink"
-  },
-  {
-   "op": "set_type_value",
-   "name": "50kW_3Ph/Keynote",
-   "type": "50kW_3Ph",
-   "param": "Keynote",
-   "value": "Z.INV_03"
-  },
-  {
-   "op": "set_type_value",
-   "name": "50kW_3Ph/FMC_Keynote_Code",
-   "type": "50kW_3Ph",
-   "param": "FMC_Keynote_Code",
-   "value": "Z.INV_03"
-  },
-  {
-   "op": "set_type_value",
-   "name": "50kW_3Ph/Voltage",
-   "type": "50kW_3Ph",
-   "param": "Voltage",
-   "value": 415
-  },
-  {
-   "op": "set_type_value",
-   "name": "50kW_3Ph/Apparent Load",
-   "type": "50kW_3Ph",
-   "param": "Apparent Load",
-   "value": 50000
-  },
-  {
-   "op": "set_type_value",
-   "name": "50kW_3Ph/Number of Poles",
-   "type": "50kW_3Ph",
-   "param": "Number of Poles",
-   "value": 3
-  },
-  {
-   "op": "set_type_value",
-   "name": "50kW_3Ph/Default Elevation",
-   "type": "50kW_3Ph",
-   "param": "Default Elevation",
-   "value": 1000
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Steel",
-   "color": [
-    61,
-    70,
-    80
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Steel Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_SteelLTZ_Painted",
-   "param": "Steel Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "White",
-   "color": [
-    242,
-    242,
-    238
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "White Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_White",
-   "param": "White Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Mgrey",
-   "color": [
-    201,
-    205,
-    210
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Mgrey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_MedicalGrey",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Screen",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Screen Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Screen Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Green",
-   "color": [
-    59,
-    209,
-    111
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Green Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_LED_Green",
-   "param": "Green Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Red",
-   "color": [
-    229,
-    72,
-    77
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Red Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_LED_Red",
-   "param": "Red Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Ledblue",
-   "color": [
-    58,
-    141,
-    255
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Ledblue Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_LED_Blue",
-   "param": "Ledblue Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Alu",
-   "color": [
-    192,
-    192,
-    192
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Alu Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Aluminium_Anodised_Silver",
-   "param": "Alu Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Redabs",
-   "color": [
-    181,
-    18,
-    27
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Redabs Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_FireHoseReel_Red",
-   "param": "Redabs Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Grey",
-   "color": [
-    154,
-    160,
-    166
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Grey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Grey",
-   "param": "Grey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -322,
-     -260
-    ],
-    [
-     322,
-     -260
-    ],
-    [
-     322,
-     0
-    ],
-    [
-     -322,
-     0
-    ]
-   ],
-   "start": -40.0,
-   "end": 700
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Mounting Bracket",
-   "points": [
-    [
-     -250,
-     -15
-    ],
-    [
-     250,
-     -15
-    ],
-    [
-     250,
-     0
-    ],
-    [
-     -250,
-     0
-    ]
-   ],
-   "start": 150,
-   "end": 550
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mounting Bracket",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mounting Bracket",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mounting Bracket",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Body",
-   "points": [
-    [
-     280.0,
-     -250.0
-    ],
-    [
-     287.65,
-     -248.48
-    ],
-    [
-     294.14,
-     -244.14
-    ],
-    [
-     298.48,
-     -237.65
-    ],
-    [
-     300.0,
-     -230.0
-    ],
-    [
-     300.0,
-     -35.0
-    ],
-    [
-     298.48,
-     -27.35
-    ],
-    [
-     294.14,
-     -20.86
-    ],
-    [
-     287.65,
-     -16.52
-    ],
-    [
-     280.0,
-     -15.0
-    ],
-    [
-     -280.0,
-     -15.0
-    ],
-    [
-     -287.65,
-     -16.52
-    ],
-    [
-     -294.14,
-     -20.86
-    ],
-    [
-     -298.48,
-     -27.35
-    ],
-    [
-     -300.0,
-     -35.0
-    ],
-    [
-     -300.0,
-     -230.0
-    ],
-    [
-     -298.48,
-     -237.65
-    ],
-    [
-     -294.14,
-     -244.14
-    ],
-    [
-     -287.65,
-     -248.48
-    ],
-    [
-     -280.0,
-     -250.0
-    ]
-   ],
-   "start": 0,
-   "end": 700
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Body",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Body",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Body",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Front Panel",
-   "points": [
-    [
-     268.0,
-     380.0
-    ],
-    [
-     272.59,
-     380.91
-    ],
-    [
-     276.49,
-     383.51
-    ],
-    [
-     279.09,
-     387.41
-    ],
-    [
-     280.0,
-     392.0
-    ],
-    [
-     280.0,
-     668.0
-    ],
-    [
-     279.09,
-     672.59
-    ],
-    [
-     276.49,
-     676.49
-    ],
-    [
-     272.59,
-     679.09
-    ],
-    [
-     268.0,
-     680.0
-    ],
-    [
-     -268.0,
-     680.0
-    ],
-    [
-     -272.59,
-     679.09
-    ],
-    [
-     -276.49,
-     676.49
-    ],
-    [
-     -279.09,
-     672.59
-    ],
-    [
-     -280.0,
-     668.0
-    ],
-    [
-     -280.0,
-     392.0
-    ],
-    [
-     -279.09,
-     387.41
-    ],
-    [
-     -276.49,
-     383.51
-    ],
-    [
-     -272.59,
-     380.91
-    ],
-    [
-     -268.0,
-     380.0
-    ]
-   ],
-   "start": 250,
-   "end": 255,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Front Panel",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Front Panel",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Front Panel",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Display Band",
-   "points": [
-    [
-     190.0,
-     520.0
-    ],
-    [
-     193.83,
-     520.76
-    ],
-    [
-     197.07,
-     522.93
-    ],
-    [
-     199.24,
-     526.17
-    ],
-    [
-     200.0,
-     530.0
-    ],
-    [
-     200.0,
-     630.0
-    ],
-    [
-     199.24,
-     633.83
-    ],
-    [
-     197.07,
-     637.07
-    ],
-    [
-     193.83,
-     639.24
-    ],
-    [
-     190.0,
-     640.0
-    ],
-    [
-     -190.0,
-     640.0
-    ],
-    [
-     -193.83,
-     639.24
-    ],
-    [
-     -197.07,
-     637.07
-    ],
-    [
-     -199.24,
-     633.83
-    ],
-    [
-     -200.0,
-     630.0
-    ],
-    [
-     -200.0,
-     530.0
-    ],
-    [
-     -199.24,
-     526.17
-    ],
-    [
-     -197.07,
-     522.93
-    ],
-    [
-     -193.83,
-     520.76
-    ],
-    [
-     -190.0,
-     520.0
-    ]
-   ],
-   "start": 255,
-   "end": 258,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Display Band",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Display Band",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Display Band",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "LCD",
-   "points": [
-    [
-     27.0,
-     545.0
-    ],
-    [
-     28.15,
-     545.23
-    ],
-    [
-     29.12,
-     545.88
-    ],
-    [
-     29.77,
-     546.85
-    ],
-    [
-     30.0,
-     548.0
-    ],
-    [
-     30.0,
-     612.0
-    ],
-    [
-     29.77,
-     613.15
-    ],
-    [
-     29.12,
-     614.12
-    ],
-    [
-     28.15,
-     614.77
-    ],
-    [
-     27.0,
-     615.0
-    ],
-    [
-     -167.0,
-     615.0
-    ],
-    [
-     -168.15,
-     614.77
-    ],
-    [
-     -169.12,
-     614.12
-    ],
-    [
-     -169.77,
-     613.15
-    ],
-    [
-     -170.0,
-     612.0
-    ],
-    [
-     -170.0,
-     548.0
-    ],
-    [
-     -169.77,
-     546.85
-    ],
-    [
-     -169.12,
-     545.88
-    ],
-    [
-     -168.15,
-     545.23
-    ],
-    [
-     -167.0,
-     545.0
-    ]
-   ],
-   "start": 258,
-   "end": 260,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "LCD",
-   "subcategory": "Screen"
-  },
-  {
-   "op": "set_material_param",
-   "name": "LCD",
-   "param": "Screen Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "LCD",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Status LED",
-   "points": [
-    [
-     86.0,
-     600.0
-    ],
-    [
-     85.8,
-     601.55
-    ],
-    [
-     85.2,
-     603.0
-    ],
-    [
-     84.24,
-     604.24
-    ],
-    [
-     83.0,
-     605.2
-    ],
-    [
-     81.55,
-     605.8
-    ],
-    [
-     80.0,
-     606.0
-    ],
-    [
-     78.45,
-     605.8
-    ],
-    [
-     77.0,
-     605.2
-    ],
-    [
-     75.76,
-     604.24
-    ],
-    [
-     74.8,
-     603.0
-    ],
-    [
-     74.2,
-     601.55
-    ],
-    [
-     74.0,
-     600.0
-    ],
-    [
-     74.2,
-     598.45
-    ],
-    [
-     74.8,
-     597.0
-    ],
-    [
-     75.76,
-     595.76
-    ],
-    [
-     77.0,
-     594.8
-    ],
-    [
-     78.45,
-     594.2
-    ],
-    [
-     80.0,
-     594.0
-    ],
-    [
-     81.55,
-     594.2
-    ],
-    [
-     83.0,
-     594.8
-    ],
-    [
-     84.24,
-     595.76
-    ],
-    [
-     85.2,
-     597.0
-    ],
-    [
-     85.8,
-     598.45
-    ]
-   ],
-   "start": 258,
-   "end": 260,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Status LED",
-   "subcategory": "Green"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Status LED",
-   "param": "Green Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Status LED",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fault LED",
-   "points": [
-    [
-     126.0,
-     600.0
-    ],
-    [
-     125.8,
-     601.55
-    ],
-    [
-     125.2,
-     603.0
-    ],
-    [
-     124.24,
-     604.24
-    ],
-    [
-     123.0,
-     605.2
-    ],
-    [
-     121.55,
-     605.8
-    ],
-    [
-     120.0,
-     606.0
-    ],
-    [
-     118.45,
-     605.8
-    ],
-    [
-     117.0,
-     605.2
-    ],
-    [
-     115.76,
-     604.24
-    ],
-    [
-     114.8,
-     603.0
-    ],
-    [
-     114.2,
-     601.55
-    ],
-    [
-     114.0,
-     600.0
-    ],
-    [
-     114.2,
-     598.45
-    ],
-    [
-     114.8,
-     597.0
-    ],
-    [
-     115.76,
-     595.76
-    ],
-    [
-     117.0,
-     594.8
-    ],
-    [
-     118.45,
-     594.2
-    ],
-    [
-     120.0,
-     594.0
-    ],
-    [
-     121.55,
-     594.2
-    ],
-    [
-     123.0,
-     594.8
-    ],
-    [
-     124.24,
-     595.76
-    ],
-    [
-     125.2,
-     597.0
-    ],
-    [
-     125.8,
-     598.45
-    ]
-   ],
-   "start": 258,
-   "end": 260,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fault LED",
-   "subcategory": "Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fault LED",
-   "param": "Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fault LED",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Comms LED",
-   "points": [
-    [
-     166.0,
-     600.0
-    ],
-    [
-     165.8,
-     601.55
-    ],
-    [
-     165.2,
-     603.0
-    ],
-    [
-     164.24,
-     604.24
-    ],
-    [
-     163.0,
-     605.2
-    ],
-    [
-     161.55,
-     605.8
-    ],
-    [
-     160.0,
-     606.0
-    ],
-    [
-     158.45,
-     605.8
-    ],
-    [
-     157.0,
-     605.2
-    ],
-    [
-     155.76,
-     604.24
-    ],
-    [
-     154.8,
-     603.0
-    ],
-    [
-     154.2,
-     601.55
-    ],
-    [
-     154.0,
-     600.0
-    ],
-    [
-     154.2,
-     598.45
-    ],
-    [
-     154.8,
-     597.0
-    ],
-    [
-     155.76,
-     595.76
-    ],
-    [
-     157.0,
-     594.8
-    ],
-    [
-     158.45,
-     594.2
-    ],
-    [
-     160.0,
-     594.0
-    ],
-    [
-     161.55,
-     594.2
-    ],
-    [
-     163.0,
-     594.8
-    ],
-    [
-     164.24,
-     595.76
-    ],
-    [
-     165.2,
-     597.0
-    ],
-    [
-     165.8,
-     598.45
-    ]
-   ],
-   "start": 258,
-   "end": 260,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Comms LED",
-   "subcategory": "Ledblue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Comms LED",
-   "param": "Ledblue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Comms LED",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Heatsink Fin 1",
-   "points": [
-    [
-     -322,
-     60
-    ],
-    [
-     -300,
-     60
-    ],
-    [
-     -300,
-     640
-    ],
-    [
-     -322,
-     640
-    ]
-   ],
-   "start": 35,
-   "end": 230,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Heatsink Fin 1",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Heatsink Fin 1",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Heatsink Fin 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Heatsink Fin 2",
-   "points": [
-    [
-     300,
-     60
-    ],
-    [
-     322,
-     60
-    ],
-    [
-     322,
-     640
-    ],
-    [
-     300,
-     640
-    ]
-   ],
-   "start": 35,
-   "end": 230,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Heatsink Fin 2",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Heatsink Fin 2",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Heatsink Fin 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Heatsink Fin Back 1",
-   "points": [
-    [
-     -322,
-     -200
-    ],
-    [
-     322,
-     -200
-    ],
-    [
-     322,
-     -175
-    ],
-    [
-     -322,
-     -175
-    ]
-   ],
-   "start": 60,
-   "end": 640
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Heatsink Fin Back 1",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Heatsink Fin Back 1",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Heatsink Fin Back 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Heatsink Fin Back 2",
-   "points": [
-    [
-     -322,
-     -150
-    ],
-    [
-     322,
-     -150
-    ],
-    [
-     322,
-     -125
-    ],
-    [
-     -322,
-     -125
-    ]
-   ],
-   "start": 60,
-   "end": 640
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Heatsink Fin Back 2",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Heatsink Fin Back 2",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Heatsink Fin Back 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Heatsink Fin Back 3",
-   "points": [
-    [
-     -322,
-     -100
-    ],
-    [
-     322,
-     -100
-    ],
-    [
-     322,
-     -75
-    ],
-    [
-     -322,
-     -75
-    ]
-   ],
-   "start": 60,
-   "end": 640
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Heatsink Fin Back 3",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Heatsink Fin Back 3",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Heatsink Fin Back 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vent Grille",
-   "points": [
-    [
-     192.0,
-     80.0
-    ],
-    [
-     195.06,
-     80.61
-    ],
-    [
-     197.66,
-     82.34
-    ],
-    [
-     199.39,
-     84.94
-    ],
-    [
-     200.0,
-     88.0
-    ],
-    [
-     200.0,
-     212.0
-    ],
-    [
-     199.39,
-     215.06
-    ],
-    [
-     197.66,
-     217.66
-    ],
-    [
-     195.06,
-     219.39
-    ],
-    [
-     192.0,
-     220.0
-    ],
-    [
-     -192.0,
-     220.0
-    ],
-    [
-     -195.06,
-     219.39
-    ],
-    [
-     -197.66,
-     217.66
-    ],
-    [
-     -199.39,
-     215.06
-    ],
-    [
-     -200.0,
-     212.0
-    ],
-    [
-     -200.0,
-     88.0
-    ],
-    [
-     -199.39,
-     84.94
-    ],
-    [
-     -197.66,
-     82.34
-    ],
-    [
-     -195.06,
-     80.61
-    ],
-    [
-     -192.0,
-     80.0
-    ]
-   ],
-   "start": 250,
-   "end": 252,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vent Grille",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Grille",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Grille",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vent Slat 1",
-   "points": [
-    [
-     -195,
-     92
-    ],
-    [
-     195,
-     92
-    ],
-    [
-     195,
-     98
-    ],
-    [
-     -195,
-     98
-    ]
-   ],
-   "start": 252,
-   "end": 253,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vent Slat 1",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Slat 1",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Slat 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vent Slat 2",
-   "points": [
-    [
-     -195,
-     112
-    ],
-    [
-     195,
-     112
-    ],
-    [
-     195,
-     118
-    ],
-    [
-     -195,
-     118
-    ]
-   ],
-   "start": 252,
-   "end": 253,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vent Slat 2",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Slat 2",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Slat 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vent Slat 3",
-   "points": [
-    [
-     -195,
-     132
-    ],
-    [
-     195,
-     132
-    ],
-    [
-     195,
-     138
-    ],
-    [
-     -195,
-     138
-    ]
-   ],
-   "start": 252,
-   "end": 253,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vent Slat 3",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Slat 3",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Slat 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vent Slat 4",
-   "points": [
-    [
-     -195,
-     152
-    ],
-    [
-     195,
-     152
-    ],
-    [
-     195,
-     158
-    ],
-    [
-     -195,
-     158
-    ]
-   ],
-   "start": 252,
-   "end": 253,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vent Slat 4",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Slat 4",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Slat 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vent Slat 5",
-   "points": [
-    [
-     -195,
-     172
-    ],
-    [
-     195,
-     172
-    ],
-    [
-     195,
-     178
-    ],
-    [
-     -195,
-     178
-    ]
-   ],
-   "start": 252,
-   "end": 253,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vent Slat 5",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Slat 5",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Slat 5",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vent Slat 6",
-   "points": [
-    [
-     -195,
-     192
-    ],
-    [
-     195,
-     192
-    ],
-    [
-     195,
-     198
-    ],
-    [
-     -195,
-     198
-    ]
-   ],
-   "start": 252,
-   "end": 253,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vent Slat 6",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Slat 6",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Slat 6",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "DC Switch",
-   "profile": [
-    [
-     0,
-     0
-    ],
-    [
-     35,
-     0
-    ],
-    [
-     35,
-     -15
-    ],
-    [
-     0,
-     -15
-    ]
-   ],
-   "axis_at": [
-    200,
-    -150
-   ],
-   "axis": "z",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "DC Switch",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "DC Switch",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "DC Switch Handle",
-   "points": [
-    [
-     212.0,
-     -40.0
-    ],
-    [
-     213.15,
-     -39.77
-    ],
-    [
-     214.12,
-     -39.12
-    ],
-    [
-     214.77,
-     -38.15
-    ],
-    [
-     215.0,
-     -37.0
-    ],
-    [
-     215.0,
-     -18.0
-    ],
-    [
-     214.77,
-     -16.85
-    ],
-    [
-     214.12,
-     -15.88
-    ],
-    [
-     213.15,
-     -15.23
-    ],
-    [
-     212.0,
-     -15.0
-    ],
-    [
-     188.0,
-     -15.0
-    ],
-    [
-     186.85,
-     -15.23
-    ],
-    [
-     185.88,
-     -15.88
-    ],
-    [
-     185.23,
-     -16.85
-    ],
-    [
-     185.0,
-     -18.0
-    ],
-    [
-     185.0,
-     -37.0
-    ],
-    [
-     185.23,
-     -38.15
-    ],
-    [
-     185.88,
-     -39.12
-    ],
-    [
-     186.85,
-     -39.77
-    ],
-    [
-     188.0,
-     -40.0
-    ]
-   ],
-   "start": 125,
-   "end": 175,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "DC Switch Handle",
-   "subcategory": "Redabs"
-  },
-  {
-   "op": "set_material_param",
-   "name": "DC Switch Handle",
-   "param": "Redabs Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "DC Switch Handle",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "DC Connector 1",
-   "points": [
-    [
-     -211.0,
-     -150.0
-    ],
-    [
-     -211.31,
-     -147.67
-    ],
-    [
-     -212.21,
-     -145.5
-    ],
-    [
-     -213.64,
-     -143.64
-    ],
-    [
-     -215.5,
-     -142.21
-    ],
-    [
-     -217.67,
-     -141.31
-    ],
-    [
-     -220.0,
-     -141.0
-    ],
-    [
-     -222.33,
-     -141.31
-    ],
-    [
-     -224.5,
-     -142.21
-    ],
-    [
-     -226.36,
-     -143.64
-    ],
-    [
-     -227.79,
-     -145.5
-    ],
-    [
-     -228.69,
-     -147.67
-    ],
-    [
-     -229.0,
-     -150.0
-    ],
-    [
-     -228.69,
-     -152.33
-    ],
-    [
-     -227.79,
-     -154.5
-    ],
-    [
-     -226.36,
-     -156.36
-    ],
-    [
-     -224.5,
-     -157.79
-    ],
-    [
-     -222.33,
-     -158.69
-    ],
-    [
-     -220.0,
-     -159.0
-    ],
-    [
-     -217.67,
-     -158.69
-    ],
-    [
-     -215.5,
-     -157.79
-    ],
-    [
-     -213.64,
-     -156.36
-    ],
-    [
-     -212.21,
-     -154.5
-    ],
-    [
-     -211.31,
-     -152.33
-    ]
-   ],
-   "start": -30,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "DC Connector 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "DC Connector 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "DC Connector 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "DC Connector 2",
-   "points": [
-    [
-     -171.0,
-     -150.0
-    ],
-    [
-     -171.31,
-     -147.67
-    ],
-    [
-     -172.21,
-     -145.5
-    ],
-    [
-     -173.64,
-     -143.64
-    ],
-    [
-     -175.5,
-     -142.21
-    ],
-    [
-     -177.67,
-     -141.31
-    ],
-    [
-     -180.0,
-     -141.0
-    ],
-    [
-     -182.33,
-     -141.31
-    ],
-    [
-     -184.5,
-     -142.21
-    ],
-    [
-     -186.36,
-     -143.64
-    ],
-    [
-     -187.79,
-     -145.5
-    ],
-    [
-     -188.69,
-     -147.67
-    ],
-    [
-     -189.0,
-     -150.0
-    ],
-    [
-     -188.69,
-     -152.33
-    ],
-    [
-     -187.79,
-     -154.5
-    ],
-    [
-     -186.36,
-     -156.36
-    ],
-    [
-     -184.5,
-     -157.79
-    ],
-    [
-     -182.33,
-     -158.69
-    ],
-    [
-     -180.0,
-     -159.0
-    ],
-    [
-     -177.67,
-     -158.69
-    ],
-    [
-     -175.5,
-     -157.79
-    ],
-    [
-     -173.64,
-     -156.36
-    ],
-    [
-     -172.21,
-     -154.5
-    ],
-    [
-     -171.31,
-     -152.33
-    ]
-   ],
-   "start": -30,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "DC Connector 2",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "DC Connector 2",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "DC Connector 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "DC Connector 3",
-   "points": [
-    [
-     -131.0,
-     -150.0
-    ],
-    [
-     -131.31,
-     -147.67
-    ],
-    [
-     -132.21,
-     -145.5
-    ],
-    [
-     -133.64,
-     -143.64
-    ],
-    [
-     -135.5,
-     -142.21
-    ],
-    [
-     -137.67,
-     -141.31
-    ],
-    [
-     -140.0,
-     -141.0
-    ],
-    [
-     -142.33,
-     -141.31
-    ],
-    [
-     -144.5,
-     -142.21
-    ],
-    [
-     -146.36,
-     -143.64
-    ],
-    [
-     -147.79,
-     -145.5
-    ],
-    [
-     -148.69,
-     -147.67
-    ],
-    [
-     -149.0,
-     -150.0
-    ],
-    [
-     -148.69,
-     -152.33
-    ],
-    [
-     -147.79,
-     -154.5
-    ],
-    [
-     -146.36,
-     -156.36
-    ],
-    [
-     -144.5,
-     -157.79
-    ],
-    [
-     -142.33,
-     -158.69
-    ],
-    [
-     -140.0,
-     -159.0
-    ],
-    [
-     -137.67,
-     -158.69
-    ],
-    [
-     -135.5,
-     -157.79
-    ],
-    [
-     -133.64,
-     -156.36
-    ],
-    [
-     -132.21,
-     -154.5
-    ],
-    [
-     -131.31,
-     -152.33
-    ]
-   ],
-   "start": -30,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "DC Connector 3",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "DC Connector 3",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "DC Connector 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "DC Connector 4",
-   "points": [
-    [
-     -91.0,
-     -150.0
-    ],
-    [
-     -91.31,
-     -147.67
-    ],
-    [
-     -92.21,
-     -145.5
-    ],
-    [
-     -93.64,
-     -143.64
-    ],
-    [
-     -95.5,
-     -142.21
-    ],
-    [
-     -97.67,
-     -141.31
-    ],
-    [
-     -100.0,
-     -141.0
-    ],
-    [
-     -102.33,
-     -141.31
-    ],
-    [
-     -104.5,
-     -142.21
-    ],
-    [
-     -106.36,
-     -143.64
-    ],
-    [
-     -107.79,
-     -145.5
-    ],
-    [
-     -108.69,
-     -147.67
-    ],
-    [
-     -109.0,
-     -150.0
-    ],
-    [
-     -108.69,
-     -152.33
-    ],
-    [
-     -107.79,
-     -154.5
-    ],
-    [
-     -106.36,
-     -156.36
-    ],
-    [
-     -104.5,
-     -157.79
-    ],
-    [
-     -102.33,
-     -158.69
-    ],
-    [
-     -100.0,
-     -159.0
-    ],
-    [
-     -97.67,
-     -158.69
-    ],
-    [
-     -95.5,
-     -157.79
-    ],
-    [
-     -93.64,
-     -156.36
-    ],
-    [
-     -92.21,
-     -154.5
-    ],
-    [
-     -91.31,
-     -152.33
-    ]
-   ],
-   "start": -30,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "DC Connector 4",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "DC Connector 4",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "DC Connector 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "DC Connector 5",
-   "points": [
-    [
-     -51.0,
-     -150.0
-    ],
-    [
-     -51.31,
-     -147.67
-    ],
-    [
-     -52.21,
-     -145.5
-    ],
-    [
-     -53.64,
-     -143.64
-    ],
-    [
-     -55.5,
-     -142.21
-    ],
-    [
-     -57.67,
-     -141.31
-    ],
-    [
-     -60.0,
-     -141.0
-    ],
-    [
-     -62.33,
-     -141.31
-    ],
-    [
-     -64.5,
-     -142.21
-    ],
-    [
-     -66.36,
-     -143.64
-    ],
-    [
-     -67.79,
-     -145.5
-    ],
-    [
-     -68.69,
-     -147.67
-    ],
-    [
-     -69.0,
-     -150.0
-    ],
-    [
-     -68.69,
-     -152.33
-    ],
-    [
-     -67.79,
-     -154.5
-    ],
-    [
-     -66.36,
-     -156.36
-    ],
-    [
-     -64.5,
-     -157.79
-    ],
-    [
-     -62.33,
-     -158.69
-    ],
-    [
-     -60.0,
-     -159.0
-    ],
-    [
-     -57.67,
-     -158.69
-    ],
-    [
-     -55.5,
-     -157.79
-    ],
-    [
-     -53.64,
-     -156.36
-    ],
-    [
-     -52.21,
-     -154.5
-    ],
-    [
-     -51.31,
-     -152.33
-    ]
-   ],
-   "start": -30,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "DC Connector 5",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "DC Connector 5",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "DC Connector 5",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "DC Connector 6",
-   "points": [
-    [
-     -11.0,
-     -150.0
-    ],
-    [
-     -11.31,
-     -147.67
-    ],
-    [
-     -12.21,
-     -145.5
-    ],
-    [
-     -13.64,
-     -143.64
-    ],
-    [
-     -15.5,
-     -142.21
-    ],
-    [
-     -17.67,
-     -141.31
-    ],
-    [
-     -20.0,
-     -141.0
-    ],
-    [
-     -22.33,
-     -141.31
-    ],
-    [
-     -24.5,
-     -142.21
-    ],
-    [
-     -26.36,
-     -143.64
-    ],
-    [
-     -27.79,
-     -145.5
-    ],
-    [
-     -28.69,
-     -147.67
-    ],
-    [
-     -29.0,
-     -150.0
-    ],
-    [
-     -28.69,
-     -152.33
-    ],
-    [
-     -27.79,
-     -154.5
-    ],
-    [
-     -26.36,
-     -156.36
-    ],
-    [
-     -24.5,
-     -157.79
-    ],
-    [
-     -22.33,
-     -158.69
-    ],
-    [
-     -20.0,
-     -159.0
-    ],
-    [
-     -17.67,
-     -158.69
-    ],
-    [
-     -15.5,
-     -157.79
-    ],
-    [
-     -13.64,
-     -156.36
-    ],
-    [
-     -12.21,
-     -154.5
-    ],
-    [
-     -11.31,
-     -152.33
-    ]
-   ],
-   "start": -30,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "DC Connector 6",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "DC Connector 6",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "DC Connector 6",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "AC Gland",
-   "points": [
-    [
-     96.0,
-     -150.0
-    ],
-    [
-     95.45,
-     -145.86
-    ],
-    [
-     93.86,
-     -142.0
-    ],
-    [
-     91.31,
-     -138.69
-    ],
-    [
-     88.0,
-     -136.14
-    ],
-    [
-     84.14,
-     -134.55
-    ],
-    [
-     80.0,
-     -134.0
-    ],
-    [
-     75.86,
-     -134.55
-    ],
-    [
-     72.0,
-     -136.14
-    ],
-    [
-     68.69,
-     -138.69
-    ],
-    [
-     66.14,
-     -142.0
-    ],
-    [
-     64.55,
-     -145.86
-    ],
-    [
-     64.0,
-     -150.0
-    ],
-    [
-     64.55,
-     -154.14
-    ],
-    [
-     66.14,
-     -158.0
-    ],
-    [
-     68.69,
-     -161.31
-    ],
-    [
-     72.0,
-     -163.86
-    ],
-    [
-     75.86,
-     -165.45
-    ],
-    [
-     80.0,
-     -166.0
-    ],
-    [
-     84.14,
-     -165.45
-    ],
-    [
-     88.0,
-     -163.86
-    ],
-    [
-     91.31,
-     -161.31
-    ],
-    [
-     93.86,
-     -158.0
-    ],
-    [
-     95.45,
-     -154.14
-    ]
-   ],
-   "start": -25,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "AC Gland",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "AC Gland",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "AC Gland",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Comms Gland",
-   "points": [
-    [
-     140.0,
-     -150.0
-    ],
-    [
-     139.66,
-     -147.41
-    ],
-    [
-     138.66,
-     -145.0
-    ],
-    [
-     137.07,
-     -142.93
-    ],
-    [
-     135.0,
-     -141.34
-    ],
-    [
-     132.59,
-     -140.34
-    ],
-    [
-     130.0,
-     -140.0
-    ],
-    [
-     127.41,
-     -140.34
-    ],
-    [
-     125.0,
-     -141.34
-    ],
-    [
-     122.93,
-     -142.93
-    ],
-    [
-     121.34,
-     -145.0
-    ],
-    [
-     120.34,
-     -147.41
-    ],
-    [
-     120.0,
-     -150.0
-    ],
-    [
-     120.34,
-     -152.59
-    ],
-    [
-     121.34,
-     -155.0
-    ],
-    [
-     122.93,
-     -157.07
-    ],
-    [
-     125.0,
-     -158.66
-    ],
-    [
-     127.41,
-     -159.66
-    ],
-    [
-     130.0,
-     -160.0
-    ],
-    [
-     132.59,
-     -159.66
-    ],
-    [
-     135.0,
-     -158.66
-    ],
-    [
-     137.07,
-     -157.07
-    ],
-    [
-     138.66,
-     -155.0
-    ],
-    [
-     139.66,
-     -152.59
-    ]
-   ],
-   "start": -20,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Comms Gland",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Comms Gland",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Comms Gland",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "AC Out",
-   "domain": "electrical",
-   "system": "PowerBalanced",
-   "solid": "AC Gland",
-   "side": "bottom"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "AC Out/Voltage",
-   "connector": "AC Out",
-   "connector_param": "Voltage",
-   "param": "Voltage"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "AC Out/Number of Poles",
-   "connector": "AC Out",
-   "connector_param": "Number of Poles",
-   "param": "Number of Poles"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "AC Out/Apparent Load",
-   "connector": "AC Out",
-   "connector_param": "Apparent Load",
-   "param": "Apparent Load"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\E\\_Images\\FMC_E_EQ_Inverter_Solar.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_E_EQ_Inverter_Solar",
+  "template": "Metric Generic Model.rft",
+  "about": "Inverter: wall bracket, body, front panel with display band, LCD and status/fault/comms LEDs, side and rear heatsink fins, vent grille with slats, DC isolator with red handle, DC connector row, AC and comms glands underneath. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: inverter solar electrical equipment hospital; images: https://www.google.com/search?tbm=isch&q=inverter+solar+electrical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Electrical Equipment"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Voltage",
+      "type": "Voltage",
+      "group": "Electrical"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Number of Poles",
+      "type": "NumberOfPoles",
+      "group": "Electrical"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Apparent Load",
+      "type": "ApparentPower",
+      "group": "ElectricalLoads"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+    },
+    {
+      "op": "add_type",
+      "name": "10kW_3Ph"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kW_3Ph/FMC_Cost_Unit",
+      "type": "10kW_3Ph",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kW_3Ph/FMC_Geometry_Stage",
+      "type": "10kW_3Ph",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kW_3Ph/IfcExportAs",
+      "type": "10kW_3Ph",
+      "param": "IfcExportAs",
+      "value": "IfcElectricFlowTreatmentDevice"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kW_3Ph/Description",
+      "type": "10kW_3Ph",
+      "param": "Description",
+      "value": "Grid-tie / hybrid solar inverter, 3-phase, wall mounted 600 x 700 x 250, LCD, DC isolator, finned heatsink"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kW_3Ph/Keynote",
+      "type": "10kW_3Ph",
+      "param": "Keynote",
+      "value": "Z.INV_03"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kW_3Ph/FMC_Keynote_Code",
+      "type": "10kW_3Ph",
+      "param": "FMC_Keynote_Code",
+      "value": "Z.INV_03"
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kW_3Ph/Voltage",
+      "type": "10kW_3Ph",
+      "param": "Voltage",
+      "value": 415
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kW_3Ph/Apparent Load",
+      "type": "10kW_3Ph",
+      "param": "Apparent Load",
+      "value": 10000
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kW_3Ph/Number of Poles",
+      "type": "10kW_3Ph",
+      "param": "Number of Poles",
+      "value": 3
+    },
+    {
+      "op": "set_type_value",
+      "name": "10kW_3Ph/Default Elevation",
+      "type": "10kW_3Ph",
+      "param": "Default Elevation",
+      "value": 1000
+    },
+    {
+      "op": "add_type",
+      "name": "50kW_3Ph"
+    },
+    {
+      "op": "set_type_value",
+      "name": "50kW_3Ph/FMC_Cost_Unit",
+      "type": "50kW_3Ph",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "50kW_3Ph/FMC_Geometry_Stage",
+      "type": "50kW_3Ph",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "50kW_3Ph/IfcExportAs",
+      "type": "50kW_3Ph",
+      "param": "IfcExportAs",
+      "value": "IfcElectricFlowTreatmentDevice"
+    },
+    {
+      "op": "set_type_value",
+      "name": "50kW_3Ph/Description",
+      "type": "50kW_3Ph",
+      "param": "Description",
+      "value": "Grid-tie / hybrid solar inverter, 3-phase, wall mounted 600 x 700 x 250, LCD, DC isolator, finned heatsink"
+    },
+    {
+      "op": "set_type_value",
+      "name": "50kW_3Ph/Keynote",
+      "type": "50kW_3Ph",
+      "param": "Keynote",
+      "value": "Z.INV_03"
+    },
+    {
+      "op": "set_type_value",
+      "name": "50kW_3Ph/FMC_Keynote_Code",
+      "type": "50kW_3Ph",
+      "param": "FMC_Keynote_Code",
+      "value": "Z.INV_03"
+    },
+    {
+      "op": "set_type_value",
+      "name": "50kW_3Ph/Voltage",
+      "type": "50kW_3Ph",
+      "param": "Voltage",
+      "value": 415
+    },
+    {
+      "op": "set_type_value",
+      "name": "50kW_3Ph/Apparent Load",
+      "type": "50kW_3Ph",
+      "param": "Apparent Load",
+      "value": 50000
+    },
+    {
+      "op": "set_type_value",
+      "name": "50kW_3Ph/Number of Poles",
+      "type": "50kW_3Ph",
+      "param": "Number of Poles",
+      "value": 3
+    },
+    {
+      "op": "set_type_value",
+      "name": "50kW_3Ph/Default Elevation",
+      "type": "50kW_3Ph",
+      "param": "Default Elevation",
+      "value": 1000
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Steel",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Steel Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_SteelLTZ_Painted",
+      "param": "Steel Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "White",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "White Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_White",
+      "param": "White Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Mgrey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Mgrey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_MedicalGrey",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Screen",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Screen Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Screen Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Green",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Green Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_LED_Green",
+      "param": "Green Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Red",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Red Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_LED_Red",
+      "param": "Red Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Ledblue",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Ledblue Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_LED_Blue",
+      "param": "Ledblue Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Alu",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Alu Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Aluminium_Anodised_Silver",
+      "param": "Alu Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Redabs",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Redabs Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_FireHoseReel_Red",
+      "param": "Redabs Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Grey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Grey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Grey",
+      "param": "Grey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -322,
+          -260
+        ],
+        [
+          322,
+          -260
+        ],
+        [
+          322,
+          0
+        ],
+        [
+          -322,
+          0
+        ]
+      ],
+      "start": -40,
+      "end": 700
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Mounting Bracket",
+      "points": [
+        [
+          -250,
+          -15
+        ],
+        [
+          250,
+          -15
+        ],
+        [
+          250,
+          0
+        ],
+        [
+          -250,
+          0
+        ]
+      ],
+      "start": 150,
+      "end": 550
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Mounting Bracket",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Mounting Bracket",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Mounting Bracket",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Body",
+      "points": [
+        [
+          280,
+          -250
+        ],
+        [
+          287.65,
+          -248.48
+        ],
+        [
+          294.14,
+          -244.14
+        ],
+        [
+          298.48,
+          -237.65
+        ],
+        [
+          300,
+          -230
+        ],
+        [
+          300,
+          -35
+        ],
+        [
+          298.48,
+          -27.35
+        ],
+        [
+          294.14,
+          -20.86
+        ],
+        [
+          287.65,
+          -16.52
+        ],
+        [
+          280,
+          -15
+        ],
+        [
+          -280,
+          -15
+        ],
+        [
+          -287.65,
+          -16.52
+        ],
+        [
+          -294.14,
+          -20.86
+        ],
+        [
+          -298.48,
+          -27.35
+        ],
+        [
+          -300,
+          -35
+        ],
+        [
+          -300,
+          -230
+        ],
+        [
+          -298.48,
+          -237.65
+        ],
+        [
+          -294.14,
+          -244.14
+        ],
+        [
+          -287.65,
+          -248.48
+        ],
+        [
+          -280,
+          -250
+        ]
+      ],
+      "start": 0,
+      "end": 700
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Body",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Body",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Body",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Front Panel",
+      "points": [
+        [
+          268,
+          380
+        ],
+        [
+          272.59,
+          380.91
+        ],
+        [
+          276.49,
+          383.51
+        ],
+        [
+          279.09,
+          387.41
+        ],
+        [
+          280,
+          392
+        ],
+        [
+          280,
+          668
+        ],
+        [
+          279.09,
+          672.59
+        ],
+        [
+          276.49,
+          676.49
+        ],
+        [
+          272.59,
+          679.09
+        ],
+        [
+          268,
+          680
+        ],
+        [
+          -268,
+          680
+        ],
+        [
+          -272.59,
+          679.09
+        ],
+        [
+          -276.49,
+          676.49
+        ],
+        [
+          -279.09,
+          672.59
+        ],
+        [
+          -280,
+          668
+        ],
+        [
+          -280,
+          392
+        ],
+        [
+          -279.09,
+          387.41
+        ],
+        [
+          -276.49,
+          383.51
+        ],
+        [
+          -272.59,
+          380.91
+        ],
+        [
+          -268,
+          380
+        ]
+      ],
+      "start": 250,
+      "end": 255,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Front Panel",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Front Panel",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Front Panel",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Display Band",
+      "points": [
+        [
+          190,
+          520
+        ],
+        [
+          193.83,
+          520.76
+        ],
+        [
+          197.07,
+          522.93
+        ],
+        [
+          199.24,
+          526.17
+        ],
+        [
+          200,
+          530
+        ],
+        [
+          200,
+          630
+        ],
+        [
+          199.24,
+          633.83
+        ],
+        [
+          197.07,
+          637.07
+        ],
+        [
+          193.83,
+          639.24
+        ],
+        [
+          190,
+          640
+        ],
+        [
+          -190,
+          640
+        ],
+        [
+          -193.83,
+          639.24
+        ],
+        [
+          -197.07,
+          637.07
+        ],
+        [
+          -199.24,
+          633.83
+        ],
+        [
+          -200,
+          630
+        ],
+        [
+          -200,
+          530
+        ],
+        [
+          -199.24,
+          526.17
+        ],
+        [
+          -197.07,
+          522.93
+        ],
+        [
+          -193.83,
+          520.76
+        ],
+        [
+          -190,
+          520
+        ]
+      ],
+      "start": 255,
+      "end": 258,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Display Band",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Display Band",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Display Band",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "LCD",
+      "points": [
+        [
+          27,
+          545
+        ],
+        [
+          28.15,
+          545.23
+        ],
+        [
+          29.12,
+          545.88
+        ],
+        [
+          29.77,
+          546.85
+        ],
+        [
+          30,
+          548
+        ],
+        [
+          30,
+          612
+        ],
+        [
+          29.77,
+          613.15
+        ],
+        [
+          29.12,
+          614.12
+        ],
+        [
+          28.15,
+          614.77
+        ],
+        [
+          27,
+          615
+        ],
+        [
+          -167,
+          615
+        ],
+        [
+          -168.15,
+          614.77
+        ],
+        [
+          -169.12,
+          614.12
+        ],
+        [
+          -169.77,
+          613.15
+        ],
+        [
+          -170,
+          612
+        ],
+        [
+          -170,
+          548
+        ],
+        [
+          -169.77,
+          546.85
+        ],
+        [
+          -169.12,
+          545.88
+        ],
+        [
+          -168.15,
+          545.23
+        ],
+        [
+          -167,
+          545
+        ]
+      ],
+      "start": 258,
+      "end": 260,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "LCD",
+      "subcategory": "Screen"
+    },
+    {
+      "op": "set_material_param",
+      "name": "LCD",
+      "param": "Screen Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "LCD",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Status LED",
+      "points": [
+        [
+          86,
+          600
+        ],
+        [
+          85.8,
+          601.55
+        ],
+        [
+          85.2,
+          603
+        ],
+        [
+          84.24,
+          604.24
+        ],
+        [
+          83,
+          605.2
+        ],
+        [
+          81.55,
+          605.8
+        ],
+        [
+          80,
+          606
+        ],
+        [
+          78.45,
+          605.8
+        ],
+        [
+          77,
+          605.2
+        ],
+        [
+          75.76,
+          604.24
+        ],
+        [
+          74.8,
+          603
+        ],
+        [
+          74.2,
+          601.55
+        ],
+        [
+          74,
+          600
+        ],
+        [
+          74.2,
+          598.45
+        ],
+        [
+          74.8,
+          597
+        ],
+        [
+          75.76,
+          595.76
+        ],
+        [
+          77,
+          594.8
+        ],
+        [
+          78.45,
+          594.2
+        ],
+        [
+          80,
+          594
+        ],
+        [
+          81.55,
+          594.2
+        ],
+        [
+          83,
+          594.8
+        ],
+        [
+          84.24,
+          595.76
+        ],
+        [
+          85.2,
+          597
+        ],
+        [
+          85.8,
+          598.45
+        ]
+      ],
+      "start": 258,
+      "end": 260,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Status LED",
+      "subcategory": "Green"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Status LED",
+      "param": "Green Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Status LED",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fault LED",
+      "points": [
+        [
+          126,
+          600
+        ],
+        [
+          125.8,
+          601.55
+        ],
+        [
+          125.2,
+          603
+        ],
+        [
+          124.24,
+          604.24
+        ],
+        [
+          123,
+          605.2
+        ],
+        [
+          121.55,
+          605.8
+        ],
+        [
+          120,
+          606
+        ],
+        [
+          118.45,
+          605.8
+        ],
+        [
+          117,
+          605.2
+        ],
+        [
+          115.76,
+          604.24
+        ],
+        [
+          114.8,
+          603
+        ],
+        [
+          114.2,
+          601.55
+        ],
+        [
+          114,
+          600
+        ],
+        [
+          114.2,
+          598.45
+        ],
+        [
+          114.8,
+          597
+        ],
+        [
+          115.76,
+          595.76
+        ],
+        [
+          117,
+          594.8
+        ],
+        [
+          118.45,
+          594.2
+        ],
+        [
+          120,
+          594
+        ],
+        [
+          121.55,
+          594.2
+        ],
+        [
+          123,
+          594.8
+        ],
+        [
+          124.24,
+          595.76
+        ],
+        [
+          125.2,
+          597
+        ],
+        [
+          125.8,
+          598.45
+        ]
+      ],
+      "start": 258,
+      "end": 260,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fault LED",
+      "subcategory": "Red"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fault LED",
+      "param": "Red Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fault LED",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Comms LED",
+      "points": [
+        [
+          166,
+          600
+        ],
+        [
+          165.8,
+          601.55
+        ],
+        [
+          165.2,
+          603
+        ],
+        [
+          164.24,
+          604.24
+        ],
+        [
+          163,
+          605.2
+        ],
+        [
+          161.55,
+          605.8
+        ],
+        [
+          160,
+          606
+        ],
+        [
+          158.45,
+          605.8
+        ],
+        [
+          157,
+          605.2
+        ],
+        [
+          155.76,
+          604.24
+        ],
+        [
+          154.8,
+          603
+        ],
+        [
+          154.2,
+          601.55
+        ],
+        [
+          154,
+          600
+        ],
+        [
+          154.2,
+          598.45
+        ],
+        [
+          154.8,
+          597
+        ],
+        [
+          155.76,
+          595.76
+        ],
+        [
+          157,
+          594.8
+        ],
+        [
+          158.45,
+          594.2
+        ],
+        [
+          160,
+          594
+        ],
+        [
+          161.55,
+          594.2
+        ],
+        [
+          163,
+          594.8
+        ],
+        [
+          164.24,
+          595.76
+        ],
+        [
+          165.2,
+          597
+        ],
+        [
+          165.8,
+          598.45
+        ]
+      ],
+      "start": 258,
+      "end": 260,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Comms LED",
+      "subcategory": "Ledblue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Comms LED",
+      "param": "Ledblue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Comms LED",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Heatsink Fin 1",
+      "points": [
+        [
+          -322,
+          60
+        ],
+        [
+          -300,
+          60
+        ],
+        [
+          -300,
+          640
+        ],
+        [
+          -322,
+          640
+        ]
+      ],
+      "start": 35,
+      "end": 230,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Heatsink Fin 1",
+      "subcategory": "Alu"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Heatsink Fin 1",
+      "param": "Alu Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Heatsink Fin 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Heatsink Fin 2",
+      "points": [
+        [
+          300,
+          60
+        ],
+        [
+          322,
+          60
+        ],
+        [
+          322,
+          640
+        ],
+        [
+          300,
+          640
+        ]
+      ],
+      "start": 35,
+      "end": 230,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Heatsink Fin 2",
+      "subcategory": "Alu"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Heatsink Fin 2",
+      "param": "Alu Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Heatsink Fin 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Heatsink Fin Back 1",
+      "points": [
+        [
+          -322,
+          -200
+        ],
+        [
+          322,
+          -200
+        ],
+        [
+          322,
+          -175
+        ],
+        [
+          -322,
+          -175
+        ]
+      ],
+      "start": 60,
+      "end": 640
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Heatsink Fin Back 1",
+      "subcategory": "Alu"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Heatsink Fin Back 1",
+      "param": "Alu Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Heatsink Fin Back 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Heatsink Fin Back 2",
+      "points": [
+        [
+          -322,
+          -150
+        ],
+        [
+          322,
+          -150
+        ],
+        [
+          322,
+          -125
+        ],
+        [
+          -322,
+          -125
+        ]
+      ],
+      "start": 60,
+      "end": 640
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Heatsink Fin Back 2",
+      "subcategory": "Alu"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Heatsink Fin Back 2",
+      "param": "Alu Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Heatsink Fin Back 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Heatsink Fin Back 3",
+      "points": [
+        [
+          -322,
+          -100
+        ],
+        [
+          322,
+          -100
+        ],
+        [
+          322,
+          -75
+        ],
+        [
+          -322,
+          -75
+        ]
+      ],
+      "start": 60,
+      "end": 640
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Heatsink Fin Back 3",
+      "subcategory": "Alu"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Heatsink Fin Back 3",
+      "param": "Alu Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Heatsink Fin Back 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vent Grille",
+      "points": [
+        [
+          192,
+          80
+        ],
+        [
+          195.06,
+          80.61
+        ],
+        [
+          197.66,
+          82.34
+        ],
+        [
+          199.39,
+          84.94
+        ],
+        [
+          200,
+          88
+        ],
+        [
+          200,
+          212
+        ],
+        [
+          199.39,
+          215.06
+        ],
+        [
+          197.66,
+          217.66
+        ],
+        [
+          195.06,
+          219.39
+        ],
+        [
+          192,
+          220
+        ],
+        [
+          -192,
+          220
+        ],
+        [
+          -195.06,
+          219.39
+        ],
+        [
+          -197.66,
+          217.66
+        ],
+        [
+          -199.39,
+          215.06
+        ],
+        [
+          -200,
+          212
+        ],
+        [
+          -200,
+          88
+        ],
+        [
+          -199.39,
+          84.94
+        ],
+        [
+          -197.66,
+          82.34
+        ],
+        [
+          -195.06,
+          80.61
+        ],
+        [
+          -192,
+          80
+        ]
+      ],
+      "start": 250,
+      "end": 252,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vent Grille",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Grille",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vent Grille",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vent Slat 1",
+      "points": [
+        [
+          -195,
+          92
+        ],
+        [
+          195,
+          92
+        ],
+        [
+          195,
+          98
+        ],
+        [
+          -195,
+          98
+        ]
+      ],
+      "start": 252,
+      "end": 253,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vent Slat 1",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Slat 1",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vent Slat 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vent Slat 2",
+      "points": [
+        [
+          -195,
+          112
+        ],
+        [
+          195,
+          112
+        ],
+        [
+          195,
+          118
+        ],
+        [
+          -195,
+          118
+        ]
+      ],
+      "start": 252,
+      "end": 253,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vent Slat 2",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Slat 2",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vent Slat 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vent Slat 3",
+      "points": [
+        [
+          -195,
+          132
+        ],
+        [
+          195,
+          132
+        ],
+        [
+          195,
+          138
+        ],
+        [
+          -195,
+          138
+        ]
+      ],
+      "start": 252,
+      "end": 253,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vent Slat 3",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Slat 3",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vent Slat 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vent Slat 4",
+      "points": [
+        [
+          -195,
+          152
+        ],
+        [
+          195,
+          152
+        ],
+        [
+          195,
+          158
+        ],
+        [
+          -195,
+          158
+        ]
+      ],
+      "start": 252,
+      "end": 253,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vent Slat 4",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Slat 4",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vent Slat 4",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vent Slat 5",
+      "points": [
+        [
+          -195,
+          172
+        ],
+        [
+          195,
+          172
+        ],
+        [
+          195,
+          178
+        ],
+        [
+          -195,
+          178
+        ]
+      ],
+      "start": 252,
+      "end": 253,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vent Slat 5",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Slat 5",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vent Slat 5",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vent Slat 6",
+      "points": [
+        [
+          -195,
+          192
+        ],
+        [
+          195,
+          192
+        ],
+        [
+          195,
+          198
+        ],
+        [
+          -195,
+          198
+        ]
+      ],
+      "start": 252,
+      "end": 253,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vent Slat 6",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Slat 6",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vent Slat 6",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "DC Switch",
+      "profile": [
+        [
+          0,
+          0
+        ],
+        [
+          35,
+          0
+        ],
+        [
+          35,
+          -15
+        ],
+        [
+          0,
+          -15
+        ]
+      ],
+      "axis_at": [
+        200,
+        -150
+      ],
+      "axis": "z",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "DC Switch",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "DC Switch",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "DC Switch Handle",
+      "points": [
+        [
+          212,
+          -40
+        ],
+        [
+          213.15,
+          -39.77
+        ],
+        [
+          214.12,
+          -39.12
+        ],
+        [
+          214.77,
+          -38.15
+        ],
+        [
+          215,
+          -37
+        ],
+        [
+          215,
+          -18
+        ],
+        [
+          214.77,
+          -16.85
+        ],
+        [
+          214.12,
+          -15.88
+        ],
+        [
+          213.15,
+          -15.23
+        ],
+        [
+          212,
+          -15
+        ],
+        [
+          188,
+          -15
+        ],
+        [
+          186.85,
+          -15.23
+        ],
+        [
+          185.88,
+          -15.88
+        ],
+        [
+          185.23,
+          -16.85
+        ],
+        [
+          185,
+          -18
+        ],
+        [
+          185,
+          -37
+        ],
+        [
+          185.23,
+          -38.15
+        ],
+        [
+          185.88,
+          -39.12
+        ],
+        [
+          186.85,
+          -39.77
+        ],
+        [
+          188,
+          -40
+        ]
+      ],
+      "start": 125,
+      "end": 175,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "DC Switch Handle",
+      "subcategory": "Redabs"
+    },
+    {
+      "op": "set_material_param",
+      "name": "DC Switch Handle",
+      "param": "Redabs Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "DC Switch Handle",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "DC Connector 1",
+      "points": [
+        [
+          -211,
+          -150
+        ],
+        [
+          -211.31,
+          -147.67
+        ],
+        [
+          -212.21,
+          -145.5
+        ],
+        [
+          -213.64,
+          -143.64
+        ],
+        [
+          -215.5,
+          -142.21
+        ],
+        [
+          -217.67,
+          -141.31
+        ],
+        [
+          -220,
+          -141
+        ],
+        [
+          -222.33,
+          -141.31
+        ],
+        [
+          -224.5,
+          -142.21
+        ],
+        [
+          -226.36,
+          -143.64
+        ],
+        [
+          -227.79,
+          -145.5
+        ],
+        [
+          -228.69,
+          -147.67
+        ],
+        [
+          -229,
+          -150
+        ],
+        [
+          -228.69,
+          -152.33
+        ],
+        [
+          -227.79,
+          -154.5
+        ],
+        [
+          -226.36,
+          -156.36
+        ],
+        [
+          -224.5,
+          -157.79
+        ],
+        [
+          -222.33,
+          -158.69
+        ],
+        [
+          -220,
+          -159
+        ],
+        [
+          -217.67,
+          -158.69
+        ],
+        [
+          -215.5,
+          -157.79
+        ],
+        [
+          -213.64,
+          -156.36
+        ],
+        [
+          -212.21,
+          -154.5
+        ],
+        [
+          -211.31,
+          -152.33
+        ]
+      ],
+      "start": -30,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "DC Connector 1",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "DC Connector 1",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "DC Connector 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "DC Connector 2",
+      "points": [
+        [
+          -171,
+          -150
+        ],
+        [
+          -171.31,
+          -147.67
+        ],
+        [
+          -172.21,
+          -145.5
+        ],
+        [
+          -173.64,
+          -143.64
+        ],
+        [
+          -175.5,
+          -142.21
+        ],
+        [
+          -177.67,
+          -141.31
+        ],
+        [
+          -180,
+          -141
+        ],
+        [
+          -182.33,
+          -141.31
+        ],
+        [
+          -184.5,
+          -142.21
+        ],
+        [
+          -186.36,
+          -143.64
+        ],
+        [
+          -187.79,
+          -145.5
+        ],
+        [
+          -188.69,
+          -147.67
+        ],
+        [
+          -189,
+          -150
+        ],
+        [
+          -188.69,
+          -152.33
+        ],
+        [
+          -187.79,
+          -154.5
+        ],
+        [
+          -186.36,
+          -156.36
+        ],
+        [
+          -184.5,
+          -157.79
+        ],
+        [
+          -182.33,
+          -158.69
+        ],
+        [
+          -180,
+          -159
+        ],
+        [
+          -177.67,
+          -158.69
+        ],
+        [
+          -175.5,
+          -157.79
+        ],
+        [
+          -173.64,
+          -156.36
+        ],
+        [
+          -172.21,
+          -154.5
+        ],
+        [
+          -171.31,
+          -152.33
+        ]
+      ],
+      "start": -30,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "DC Connector 2",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "DC Connector 2",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "DC Connector 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "DC Connector 3",
+      "points": [
+        [
+          -131,
+          -150
+        ],
+        [
+          -131.31,
+          -147.67
+        ],
+        [
+          -132.21,
+          -145.5
+        ],
+        [
+          -133.64,
+          -143.64
+        ],
+        [
+          -135.5,
+          -142.21
+        ],
+        [
+          -137.67,
+          -141.31
+        ],
+        [
+          -140,
+          -141
+        ],
+        [
+          -142.33,
+          -141.31
+        ],
+        [
+          -144.5,
+          -142.21
+        ],
+        [
+          -146.36,
+          -143.64
+        ],
+        [
+          -147.79,
+          -145.5
+        ],
+        [
+          -148.69,
+          -147.67
+        ],
+        [
+          -149,
+          -150
+        ],
+        [
+          -148.69,
+          -152.33
+        ],
+        [
+          -147.79,
+          -154.5
+        ],
+        [
+          -146.36,
+          -156.36
+        ],
+        [
+          -144.5,
+          -157.79
+        ],
+        [
+          -142.33,
+          -158.69
+        ],
+        [
+          -140,
+          -159
+        ],
+        [
+          -137.67,
+          -158.69
+        ],
+        [
+          -135.5,
+          -157.79
+        ],
+        [
+          -133.64,
+          -156.36
+        ],
+        [
+          -132.21,
+          -154.5
+        ],
+        [
+          -131.31,
+          -152.33
+        ]
+      ],
+      "start": -30,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "DC Connector 3",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "DC Connector 3",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "DC Connector 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "DC Connector 4",
+      "points": [
+        [
+          -91,
+          -150
+        ],
+        [
+          -91.31,
+          -147.67
+        ],
+        [
+          -92.21,
+          -145.5
+        ],
+        [
+          -93.64,
+          -143.64
+        ],
+        [
+          -95.5,
+          -142.21
+        ],
+        [
+          -97.67,
+          -141.31
+        ],
+        [
+          -100,
+          -141
+        ],
+        [
+          -102.33,
+          -141.31
+        ],
+        [
+          -104.5,
+          -142.21
+        ],
+        [
+          -106.36,
+          -143.64
+        ],
+        [
+          -107.79,
+          -145.5
+        ],
+        [
+          -108.69,
+          -147.67
+        ],
+        [
+          -109,
+          -150
+        ],
+        [
+          -108.69,
+          -152.33
+        ],
+        [
+          -107.79,
+          -154.5
+        ],
+        [
+          -106.36,
+          -156.36
+        ],
+        [
+          -104.5,
+          -157.79
+        ],
+        [
+          -102.33,
+          -158.69
+        ],
+        [
+          -100,
+          -159
+        ],
+        [
+          -97.67,
+          -158.69
+        ],
+        [
+          -95.5,
+          -157.79
+        ],
+        [
+          -93.64,
+          -156.36
+        ],
+        [
+          -92.21,
+          -154.5
+        ],
+        [
+          -91.31,
+          -152.33
+        ]
+      ],
+      "start": -30,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "DC Connector 4",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "DC Connector 4",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "DC Connector 4",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "DC Connector 5",
+      "points": [
+        [
+          -51,
+          -150
+        ],
+        [
+          -51.31,
+          -147.67
+        ],
+        [
+          -52.21,
+          -145.5
+        ],
+        [
+          -53.64,
+          -143.64
+        ],
+        [
+          -55.5,
+          -142.21
+        ],
+        [
+          -57.67,
+          -141.31
+        ],
+        [
+          -60,
+          -141
+        ],
+        [
+          -62.33,
+          -141.31
+        ],
+        [
+          -64.5,
+          -142.21
+        ],
+        [
+          -66.36,
+          -143.64
+        ],
+        [
+          -67.79,
+          -145.5
+        ],
+        [
+          -68.69,
+          -147.67
+        ],
+        [
+          -69,
+          -150
+        ],
+        [
+          -68.69,
+          -152.33
+        ],
+        [
+          -67.79,
+          -154.5
+        ],
+        [
+          -66.36,
+          -156.36
+        ],
+        [
+          -64.5,
+          -157.79
+        ],
+        [
+          -62.33,
+          -158.69
+        ],
+        [
+          -60,
+          -159
+        ],
+        [
+          -57.67,
+          -158.69
+        ],
+        [
+          -55.5,
+          -157.79
+        ],
+        [
+          -53.64,
+          -156.36
+        ],
+        [
+          -52.21,
+          -154.5
+        ],
+        [
+          -51.31,
+          -152.33
+        ]
+      ],
+      "start": -30,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "DC Connector 5",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "DC Connector 5",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "DC Connector 5",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "DC Connector 6",
+      "points": [
+        [
+          -11,
+          -150
+        ],
+        [
+          -11.31,
+          -147.67
+        ],
+        [
+          -12.21,
+          -145.5
+        ],
+        [
+          -13.64,
+          -143.64
+        ],
+        [
+          -15.5,
+          -142.21
+        ],
+        [
+          -17.67,
+          -141.31
+        ],
+        [
+          -20,
+          -141
+        ],
+        [
+          -22.33,
+          -141.31
+        ],
+        [
+          -24.5,
+          -142.21
+        ],
+        [
+          -26.36,
+          -143.64
+        ],
+        [
+          -27.79,
+          -145.5
+        ],
+        [
+          -28.69,
+          -147.67
+        ],
+        [
+          -29,
+          -150
+        ],
+        [
+          -28.69,
+          -152.33
+        ],
+        [
+          -27.79,
+          -154.5
+        ],
+        [
+          -26.36,
+          -156.36
+        ],
+        [
+          -24.5,
+          -157.79
+        ],
+        [
+          -22.33,
+          -158.69
+        ],
+        [
+          -20,
+          -159
+        ],
+        [
+          -17.67,
+          -158.69
+        ],
+        [
+          -15.5,
+          -157.79
+        ],
+        [
+          -13.64,
+          -156.36
+        ],
+        [
+          -12.21,
+          -154.5
+        ],
+        [
+          -11.31,
+          -152.33
+        ]
+      ],
+      "start": -30,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "DC Connector 6",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "DC Connector 6",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "DC Connector 6",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "AC Gland",
+      "points": [
+        [
+          96,
+          -150
+        ],
+        [
+          95.45,
+          -145.86
+        ],
+        [
+          93.86,
+          -142
+        ],
+        [
+          91.31,
+          -138.69
+        ],
+        [
+          88,
+          -136.14
+        ],
+        [
+          84.14,
+          -134.55
+        ],
+        [
+          80,
+          -134
+        ],
+        [
+          75.86,
+          -134.55
+        ],
+        [
+          72,
+          -136.14
+        ],
+        [
+          68.69,
+          -138.69
+        ],
+        [
+          66.14,
+          -142
+        ],
+        [
+          64.55,
+          -145.86
+        ],
+        [
+          64,
+          -150
+        ],
+        [
+          64.55,
+          -154.14
+        ],
+        [
+          66.14,
+          -158
+        ],
+        [
+          68.69,
+          -161.31
+        ],
+        [
+          72,
+          -163.86
+        ],
+        [
+          75.86,
+          -165.45
+        ],
+        [
+          80,
+          -166
+        ],
+        [
+          84.14,
+          -165.45
+        ],
+        [
+          88,
+          -163.86
+        ],
+        [
+          91.31,
+          -161.31
+        ],
+        [
+          93.86,
+          -158
+        ],
+        [
+          95.45,
+          -154.14
+        ]
+      ],
+      "start": -25,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "AC Gland",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "AC Gland",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "AC Gland",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Comms Gland",
+      "points": [
+        [
+          140,
+          -150
+        ],
+        [
+          139.66,
+          -147.41
+        ],
+        [
+          138.66,
+          -145
+        ],
+        [
+          137.07,
+          -142.93
+        ],
+        [
+          135,
+          -141.34
+        ],
+        [
+          132.59,
+          -140.34
+        ],
+        [
+          130,
+          -140
+        ],
+        [
+          127.41,
+          -140.34
+        ],
+        [
+          125,
+          -141.34
+        ],
+        [
+          122.93,
+          -142.93
+        ],
+        [
+          121.34,
+          -145
+        ],
+        [
+          120.34,
+          -147.41
+        ],
+        [
+          120,
+          -150
+        ],
+        [
+          120.34,
+          -152.59
+        ],
+        [
+          121.34,
+          -155
+        ],
+        [
+          122.93,
+          -157.07
+        ],
+        [
+          125,
+          -158.66
+        ],
+        [
+          127.41,
+          -159.66
+        ],
+        [
+          130,
+          -160
+        ],
+        [
+          132.59,
+          -159.66
+        ],
+        [
+          135,
+          -158.66
+        ],
+        [
+          137.07,
+          -157.07
+        ],
+        [
+          138.66,
+          -155
+        ],
+        [
+          139.66,
+          -152.59
+        ]
+      ],
+      "start": -20,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Comms Gland",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Comms Gland",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Comms Gland",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "AC Out",
+      "domain": "electrical",
+      "system": "PowerBalanced",
+      "solid": "AC Gland",
+      "side": "bottom"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "AC Out/Voltage",
+      "connector": "AC Out",
+      "connector_param": "Voltage",
+      "param": "Voltage"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "AC Out/Number of Poles",
+      "connector": "AC Out",
+      "connector_param": "Number of Poles",
+      "param": "Number of Poles"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "AC Out/Apparent Load",
+      "connector": "AC Out",
+      "connector_param": "Apparent Load",
+      "param": "Apparent Load"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\E\\_Images\\FMC_E_EQ_Inverter_Solar.png"
+    }
+  ],
+  "values": {
+    "Body 600 x 700 x 250 mm": {
+      "value": "600x700x250",
+      "source_status": "assumed",
+      "source": "typical 10-50 kW string inverter; 50 kW body larger, supplier GA"
+    },
+    "Output 10 / 50 kW, 415 V": {
+      "value": "kW",
+      "source_status": "assumed",
+      "source": "type name"
+    },
+    "Bottom at 1000 mm, 500 mm free space above and below": {
+      "value": 1000,
+      "source_status": "assumed",
+      "source": "inverter installation practice"
+    }
   }
- ],
- "values": {
-  "Body 600 x 700 x 250 mm": {
-   "value": "600x700x250",
-   "source_status": "assumed",
-   "source": "typical 10-50 kW string inverter; 50 kW body larger, supplier GA"
-  },
-  "Output 10 / 50 kW, 415 V": {
-   "value": "kW",
-   "source_status": "assumed",
-   "source": "type name"
-  },
-  "Bottom at 1000 mm, 500 mm free space above and below": {
-   "value": 1000,
-   "source_status": "assumed",
-   "source": "inverter installation practice"
-  }
- }
 }

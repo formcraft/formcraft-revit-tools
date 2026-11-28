@@ -125,6 +125,20 @@ export function aiRulebookLine(r: { book: unknown; file: string; section: string
   };
 }
 
+/**
+ * Owner 26 Oct: "General AI switch: section present / state". The guard's ai_modeller section (created by the switch on
+ * first use), the switch's state firm-wide and per project, Stop AI, and whether the kit rulebook has the general block.
+ */
+export function generalSwitchLine(ai: { general?: boolean; stop: boolean; projects: Record<string, { general?: boolean }> } | null,
+  book: { general?: { groups: string[] } } | null): Line {
+  const check = "General AI switch";
+  if (!book?.general) return { area: "AI", check, state: "Warn", detail: "The kit rulebook has no general block, so the switch can't turn AI on (a kit change request: FMC_Rulebook_AIUse.json \"general\")." };
+  if (!ai) return { area: "AI", check, state: "Info", detail: "Section missing: AI is off everywhere. The AI switch creates it (safe defaults) the first time someone uses it." };
+  const on = Object.entries(ai.projects ?? {}).filter(([, p]) => p?.general === true).map(([k]) => k);
+  const state = ai.stop ? "Stopped (Stop AI is on)" : `firm ${ai.general ? "On" : "Off"}; On for ${on.length ? on.join(", ") : "no project"}`;
+  return { area: "AI", check, state: ai.stop ? "Warn" : "Pass", detail: `Section present · ${state} · covers ${book.general.groups.join(", ")}` };
+}
+
 /** Owner 20 Oct: the Rhino rulebook. Without it no Rhino part passes and no family made from a picture can be judged. */
 export function rhinoRulebookLine(r: { book: { version: string } | null; file: string; problems: string[] }): Line {
   if (r.book) return { area: "Kit", check: "Rhino rulebook", state: "Pass", detail: `Read ${r.file} v${r.book.version}` };

@@ -1,3437 +1,3444 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_I_MedEq_Table_Operating",
- "template": "Metric Generic Model.rft",
- "about": "OT table modelled as a generic product: stainless base with floor-lock pads, column with upper shroud, top frame with head, back, seat and split leg pads, accessory side rails with standoffs, section joints, armboard with clamp, anaesthesia screen frame, handset, base control panel. Tilt and rotation by angle parameters are a later step (record note). Reference: query: table operating medical equipment hospital; images: https://www.google.com/search?tbm=isch&q=table+operating+medical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Medical Equipment"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Voltage",
-   "type": "Voltage",
-   "group": "Electrical"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Apparent Load",
-   "type": "ApparentPower",
-   "group": "ElectricalLoads"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Earth_Resistance_Ohm",
-   "guid": "0fe20834-bce9-5c3f-a498-96c0b6c61998",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_LPS_Class",
-   "guid": "aa1c5aad-32f5-5ba3-8139-a49a5faba0dd",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Asset_Tag",
-   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Serial_Number",
-   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Install_Date",
-   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Warranty_End",
-   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Maintenance_Interval_Months",
-   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_OM_Link",
-   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Controller_ID",
-   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Type",
-   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Signal",
-   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Protocol",
-   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_LP_Part",
-   "guid": "7358e31e-0924-5ef8-9e82-c11bf9ad7160",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Extinguisher_Rating",
-   "guid": "59ff9559-a353-5172-9793-e70bce8154c9",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Hose_Length_m",
-   "guid": "38ed9a83-2f51-56d9-930f-4fab315adbb5",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Sign_Code",
-   "guid": "308bad99-638f-5312-920b-abcd5888e7f3",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Design_Movement",
-   "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
-   "instance": true
-  },
-  {
-   "op": "add_type",
-   "name": "2000x550_Electric"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2000x550_Electric/FMC_Cost_Unit",
-   "type": "2000x550_Electric",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2000x550_Electric/FMC_Geometry_Stage",
-   "type": "2000x550_Electric",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2000x550_Electric/IfcExportAs",
-   "type": "2000x550_Electric",
-   "param": "IfcExportAs",
-   "value": "IfcMedicalDevice"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2000x550_Electric/Description",
-   "type": "2000x550_Electric",
-   "param": "Description",
-   "value": "Electro-hydraulic operating table, 2000 x 550 top, 5 sections (head, back, seat, split legs), stainless column and base, accessory side rails, armboard, anaesthesia screen frame"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2000x550_Electric/Keynote",
-   "type": "2000x550_Electric",
-   "param": "Keynote",
-   "value": "Z.MEQ_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2000x550_Electric/FMC_Keynote_Code",
-   "type": "2000x550_Electric",
-   "param": "FMC_Keynote_Code",
-   "value": "Z.MEQ_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2000x550_Electric/FMC_Code_Description",
-   "type": "2000x550_Electric",
-   "param": "FMC_Code_Description",
-   "value": "Table Operating: Operating table with column and base"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2000x550_Electric/FMC_Code_Group",
-   "type": "2000x550_Electric",
-   "param": "FMC_Code_Group",
-   "value": "Z.MEQ"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2000x550_Electric/FMC_Role_Code",
-   "type": "2000x550_Electric",
-   "param": "FMC_Role_Code",
-   "value": "I"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2000x550_Electric/Voltage",
-   "type": "2000x550_Electric",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "2000x550_Electric/Apparent Load",
-   "type": "2000x550_Electric",
-   "param": "Apparent Load",
-   "value": 1000
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Ss",
-   "color": [
-    180,
-    183,
-    186
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Ss Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_StainlessSteel_Brushed",
-   "param": "Ss Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Rubber",
-   "color": [
-    32,
-    32,
-    32
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Rubber Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Rubber_Black",
-   "param": "Rubber Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Mgrey",
-   "color": [
-    201,
-    205,
-    210
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Mgrey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_MedicalGrey",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Dark",
-   "color": [
-    61,
-    70,
-    80
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Dark Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_SteelLTZ_Painted",
-   "param": "Dark Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Grey",
-   "color": [
-    154,
-    160,
-    166
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Grey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Grey",
-   "param": "Grey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "White",
-   "color": [
-    242,
-    242,
-    238
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "White Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_White",
-   "param": "White Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -1000.0,
-     -800
-    ],
-    [
-     1000.0,
-     -800
-    ],
-    [
-     1000.0,
-     290
-    ],
-    [
-     -1000.0,
-     290
-    ]
-   ],
-   "start": 0,
-   "end": 1362.0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Base",
-   "points": [
-    [
-     290.0,
-     -270.0
-    ],
-    [
-     316.79,
-     -264.67
-    ],
-    [
-     339.5,
-     -249.5
-    ],
-    [
-     354.67,
-     -226.79
-    ],
-    [
-     360.0,
-     -200.0
-    ],
-    [
-     360.0,
-     200.0
-    ],
-    [
-     354.67,
-     226.79
-    ],
-    [
-     339.5,
-     249.5
-    ],
-    [
-     316.79,
-     264.67
-    ],
-    [
-     290.0,
-     270.0
-    ],
-    [
-     -490.0,
-     270.0
-    ],
-    [
-     -516.79,
-     264.67
-    ],
-    [
-     -539.5,
-     249.5
-    ],
-    [
-     -554.67,
-     226.79
-    ],
-    [
-     -560.0,
-     200.0
-    ],
-    [
-     -560.0,
-     -200.0
-    ],
-    [
-     -554.67,
-     -226.79
-    ],
-    [
-     -539.5,
-     -249.5
-    ],
-    [
-     -516.79,
-     -264.67
-    ],
-    [
-     -490.0,
-     -270.0
-    ]
-   ],
-   "start": 15,
-   "end": 160
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Floor Lock Pad 1",
-   "points": [
-    [
-     -520,
-     -230
-    ],
-    [
-     -440,
-     -230
-    ],
-    [
-     -440,
-     -150
-    ],
-    [
-     -520,
-     -150
-    ]
-   ],
-   "start": 0,
-   "end": 15
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Floor Lock Pad 1",
-   "subcategory": "Rubber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Floor Lock Pad 1",
-   "param": "Rubber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Floor Lock Pad 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Floor Lock Pad 2",
-   "points": [
-    [
-     280,
-     -230
-    ],
-    [
-     360,
-     -230
-    ],
-    [
-     360,
-     -150
-    ],
-    [
-     280,
-     -150
-    ]
-   ],
-   "start": 0,
-   "end": 15
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Floor Lock Pad 2",
-   "subcategory": "Rubber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Floor Lock Pad 2",
-   "param": "Rubber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Floor Lock Pad 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Floor Lock Pad Back 1",
-   "points": [
-    [
-     -520,
-     150
-    ],
-    [
-     -440,
-     150
-    ],
-    [
-     -440,
-     230
-    ],
-    [
-     -520,
-     230
-    ]
-   ],
-   "start": 0,
-   "end": 15
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Floor Lock Pad Back 1",
-   "subcategory": "Rubber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Floor Lock Pad Back 1",
-   "param": "Rubber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Floor Lock Pad Back 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Floor Lock Pad Back 2",
-   "points": [
-    [
-     280,
-     150
-    ],
-    [
-     360,
-     150
-    ],
-    [
-     360,
-     230
-    ],
-    [
-     280,
-     230
-    ]
-   ],
-   "start": 0,
-   "end": 15
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Floor Lock Pad Back 2",
-   "subcategory": "Rubber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Floor Lock Pad Back 2",
-   "param": "Rubber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Floor Lock Pad Back 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Column",
-   "points": [
-    [
-     80.0,
-     -160.0
-    ],
-    [
-     95.31,
-     -156.96
-    ],
-    [
-     108.28,
-     -148.28
-    ],
-    [
-     116.96,
-     -135.31
-    ],
-    [
-     120.0,
-     -120.0
-    ],
-    [
-     120.0,
-     120.0
-    ],
-    [
-     116.96,
-     135.31
-    ],
-    [
-     108.28,
-     148.28
-    ],
-    [
-     95.31,
-     156.96
-    ],
-    [
-     80.0,
-     160.0
-    ],
-    [
-     -180.0,
-     160.0
-    ],
-    [
-     -195.31,
-     156.96
-    ],
-    [
-     -208.28,
-     148.28
-    ],
-    [
-     -216.96,
-     135.31
-    ],
-    [
-     -220.0,
-     120.0
-    ],
-    [
-     -220.0,
-     -120.0
-    ],
-    [
-     -216.96,
-     -135.31
-    ],
-    [
-     -208.28,
-     -148.28
-    ],
-    [
-     -195.31,
-     -156.96
-    ],
-    [
-     -180.0,
-     -160.0
-    ]
-   ],
-   "start": 160,
-   "end": 650
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Column",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Column",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Column",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Column Upper",
-   "points": [
-    [
-     70.0,
-     -140.0
-    ],
-    [
-     81.48,
-     -137.72
-    ],
-    [
-     91.21,
-     -131.21
-    ],
-    [
-     97.72,
-     -121.48
-    ],
-    [
-     100.0,
-     -110.0
-    ],
-    [
-     100.0,
-     110.0
-    ],
-    [
-     97.72,
-     121.48
-    ],
-    [
-     91.21,
-     131.21
-    ],
-    [
-     81.48,
-     137.72
-    ],
-    [
-     70.0,
-     140.0
-    ],
-    [
-     -170.0,
-     140.0
-    ],
-    [
-     -181.48,
-     137.72
-    ],
-    [
-     -191.21,
-     131.21
-    ],
-    [
-     -197.72,
-     121.48
-    ],
-    [
-     -200.0,
-     110.0
-    ],
-    [
-     -200.0,
-     -110.0
-    ],
-    [
-     -197.72,
-     -121.48
-    ],
-    [
-     -191.21,
-     -131.21
-    ],
-    [
-     -181.48,
-     -137.72
-    ],
-    [
-     -170.0,
-     -140.0
-    ]
-   ],
-   "start": 650,
-   "end": 760
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Column Upper",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Column Upper",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Column Upper",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Top Frame",
-   "points": [
-    [
-     990.0,
-     -250.0
-    ],
-    [
-     993.83,
-     -249.24
-    ],
-    [
-     997.07,
-     -247.07
-    ],
-    [
-     999.24,
-     -243.83
-    ],
-    [
-     1000.0,
-     -240.0
-    ],
-    [
-     1000.0,
-     240.0
-    ],
-    [
-     999.24,
-     243.83
-    ],
-    [
-     997.07,
-     247.07
-    ],
-    [
-     993.83,
-     249.24
-    ],
-    [
-     990.0,
-     250.0
-    ],
-    [
-     -760.0,
-     250.0
-    ],
-    [
-     -763.83,
-     249.24
-    ],
-    [
-     -767.07,
-     247.07
-    ],
-    [
-     -769.24,
-     243.83
-    ],
-    [
-     -770.0,
-     240.0
-    ],
-    [
-     -770.0,
-     -240.0
-    ],
-    [
-     -769.24,
-     -243.83
-    ],
-    [
-     -767.07,
-     -247.07
-    ],
-    [
-     -763.83,
-     -249.24
-    ],
-    [
-     -760.0,
-     -250.0
-    ]
-   ],
-   "start": 760,
-   "end": 800
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Top Frame",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Top Frame",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Top Frame",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Head Frame",
-   "points": [
-    [
-     -790.0,
-     -140.0
-    ],
-    [
-     -786.17,
-     -139.24
-    ],
-    [
-     -782.93,
-     -137.07
-    ],
-    [
-     -780.76,
-     -133.83
-    ],
-    [
-     -780.0,
-     -130.0
-    ],
-    [
-     -780.0,
-     130.0
-    ],
-    [
-     -780.76,
-     133.83
-    ],
-    [
-     -782.93,
-     137.07
-    ],
-    [
-     -786.17,
-     139.24
-    ],
-    [
-     -790.0,
-     140.0
-    ],
-    [
-     -990.0,
-     140.0
-    ],
-    [
-     -993.83,
-     139.24
-    ],
-    [
-     -997.07,
-     137.07
-    ],
-    [
-     -999.24,
-     133.83
-    ],
-    [
-     -1000.0,
-     130.0
-    ],
-    [
-     -1000.0,
-     -130.0
-    ],
-    [
-     -999.24,
-     -133.83
-    ],
-    [
-     -997.07,
-     -137.07
-    ],
-    [
-     -993.83,
-     -139.24
-    ],
-    [
-     -990.0,
-     -140.0
-    ]
-   ],
-   "start": 760,
-   "end": 800
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Head Frame",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Head Frame",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Head Frame",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Head Pad",
-   "points": [
-    [
-     -805.0,
-     800.0
-    ],
-    [
-     -795.43,
-     801.9
-    ],
-    [
-     -787.32,
-     807.32
-    ],
-    [
-     -781.9,
-     815.43
-    ],
-    [
-     -780.0,
-     825.0
-    ],
-    [
-     -780.0,
-     845.0
-    ],
-    [
-     -781.9,
-     854.57
-    ],
-    [
-     -787.32,
-     862.68
-    ],
-    [
-     -795.43,
-     868.1
-    ],
-    [
-     -805.0,
-     870.0
-    ],
-    [
-     -975.0,
-     870.0
-    ],
-    [
-     -984.57,
-     868.1
-    ],
-    [
-     -992.68,
-     862.68
-    ],
-    [
-     -998.1,
-     854.57
-    ],
-    [
-     -1000.0,
-     845.0
-    ],
-    [
-     -1000.0,
-     825.0
-    ],
-    [
-     -998.1,
-     815.43
-    ],
-    [
-     -992.68,
-     807.32
-    ],
-    [
-     -984.57,
-     801.9
-    ],
-    [
-     -975.0,
-     800.0
-    ]
-   ],
-   "start": -150,
-   "end": 150,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Head Pad",
-   "subcategory": "Rubber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Head Pad",
-   "param": "Rubber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Head Pad",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Back Pad",
-   "points": [
-    [
-     -145.0,
-     800.0
-    ],
-    [
-     -135.43,
-     801.9
-    ],
-    [
-     -127.32,
-     807.32
-    ],
-    [
-     -121.9,
-     815.43
-    ],
-    [
-     -120.0,
-     825.0
-    ],
-    [
-     -120.0,
-     845.0
-    ],
-    [
-     -121.9,
-     854.57
-    ],
-    [
-     -127.32,
-     862.68
-    ],
-    [
-     -135.43,
-     868.1
-    ],
-    [
-     -145.0,
-     870.0
-    ],
-    [
-     -745.0,
-     870.0
-    ],
-    [
-     -754.57,
-     868.1
-    ],
-    [
-     -762.68,
-     862.68
-    ],
-    [
-     -768.1,
-     854.57
-    ],
-    [
-     -770.0,
-     845.0
-    ],
-    [
-     -770.0,
-     825.0
-    ],
-    [
-     -768.1,
-     815.43
-    ],
-    [
-     -762.68,
-     807.32
-    ],
-    [
-     -754.57,
-     801.9
-    ],
-    [
-     -745.0,
-     800.0
-    ]
-   ],
-   "start": -255,
-   "end": 255,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Back Pad",
-   "subcategory": "Rubber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Back Pad",
-   "param": "Rubber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Back Pad",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Seat Pad",
-   "points": [
-    [
-     355.0,
-     800.0
-    ],
-    [
-     364.57,
-     801.9
-    ],
-    [
-     372.68,
-     807.32
-    ],
-    [
-     378.1,
-     815.43
-    ],
-    [
-     380.0,
-     825.0
-    ],
-    [
-     380.0,
-     845.0
-    ],
-    [
-     378.1,
-     854.57
-    ],
-    [
-     372.68,
-     862.68
-    ],
-    [
-     364.57,
-     868.1
-    ],
-    [
-     355.0,
-     870.0
-    ],
-    [
-     -85.0,
-     870.0
-    ],
-    [
-     -94.57,
-     868.1
-    ],
-    [
-     -102.68,
-     862.68
-    ],
-    [
-     -108.1,
-     854.57
-    ],
-    [
-     -110.0,
-     845.0
-    ],
-    [
-     -110.0,
-     825.0
-    ],
-    [
-     -108.1,
-     815.43
-    ],
-    [
-     -102.68,
-     807.32
-    ],
-    [
-     -94.57,
-     801.9
-    ],
-    [
-     -85.0,
-     800.0
-    ]
-   ],
-   "start": -255,
-   "end": 255,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Seat Pad",
-   "subcategory": "Rubber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Seat Pad",
-   "param": "Rubber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Seat Pad",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leg Pad Left",
-   "points": [
-    [
-     975.0,
-     800.0
-    ],
-    [
-     984.57,
-     801.9
-    ],
-    [
-     992.68,
-     807.32
-    ],
-    [
-     998.1,
-     815.43
-    ],
-    [
-     1000.0,
-     825.0
-    ],
-    [
-     1000.0,
-     845.0
-    ],
-    [
-     998.1,
-     854.57
-    ],
-    [
-     992.68,
-     862.68
-    ],
-    [
-     984.57,
-     868.1
-    ],
-    [
-     975.0,
-     870.0
-    ],
-    [
-     415.0,
-     870.0
-    ],
-    [
-     405.43,
-     868.1
-    ],
-    [
-     397.32,
-     862.68
-    ],
-    [
-     391.9,
-     854.57
-    ],
-    [
-     390.0,
-     845.0
-    ],
-    [
-     390.0,
-     825.0
-    ],
-    [
-     391.9,
-     815.43
-    ],
-    [
-     397.32,
-     807.32
-    ],
-    [
-     405.43,
-     801.9
-    ],
-    [
-     415.0,
-     800.0
-    ]
-   ],
-   "start": 5,
-   "end": 255,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leg Pad Left",
-   "subcategory": "Rubber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leg Pad Left",
-   "param": "Rubber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leg Pad Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leg Pad Right",
-   "points": [
-    [
-     975.0,
-     800.0
-    ],
-    [
-     984.57,
-     801.9
-    ],
-    [
-     992.68,
-     807.32
-    ],
-    [
-     998.1,
-     815.43
-    ],
-    [
-     1000.0,
-     825.0
-    ],
-    [
-     1000.0,
-     845.0
-    ],
-    [
-     998.1,
-     854.57
-    ],
-    [
-     992.68,
-     862.68
-    ],
-    [
-     984.57,
-     868.1
-    ],
-    [
-     975.0,
-     870.0
-    ],
-    [
-     415.0,
-     870.0
-    ],
-    [
-     405.43,
-     868.1
-    ],
-    [
-     397.32,
-     862.68
-    ],
-    [
-     391.9,
-     854.57
-    ],
-    [
-     390.0,
-     845.0
-    ],
-    [
-     390.0,
-     825.0
-    ],
-    [
-     391.9,
-     815.43
-    ],
-    [
-     397.32,
-     807.32
-    ],
-    [
-     405.43,
-     801.9
-    ],
-    [
-     415.0,
-     800.0
-    ]
-   ],
-   "start": -255,
-   "end": -5,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leg Pad Right",
-   "subcategory": "Rubber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leg Pad Right",
-   "param": "Rubber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leg Pad Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Side Rail 1",
-   "points": [
-    [
-     996.0,
-     770.0
-    ],
-    [
-     997.53,
-     770.3
-    ],
-    [
-     998.83,
-     771.17
-    ],
-    [
-     999.7,
-     772.47
-    ],
-    [
-     1000.0,
-     774.0
-    ],
-    [
-     1000.0,
-     791.0
-    ],
-    [
-     999.7,
-     792.53
-    ],
-    [
-     998.83,
-     793.83
-    ],
-    [
-     997.53,
-     794.7
-    ],
-    [
-     996.0,
-     795.0
-    ],
-    [
-     -766.0,
-     795.0
-    ],
-    [
-     -767.53,
-     794.7
-    ],
-    [
-     -768.83,
-     793.83
-    ],
-    [
-     -769.7,
-     792.53
-    ],
-    [
-     -770.0,
-     791.0
-    ],
-    [
-     -770.0,
-     774.0
-    ],
-    [
-     -769.7,
-     772.47
-    ],
-    [
-     -768.83,
-     771.17
-    ],
-    [
-     -767.53,
-     770.3
-    ],
-    [
-     -766.0,
-     770.0
-    ]
-   ],
-   "start": 258,
-   "end": 268,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Side Rail 1",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Side Rail 1",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Side Rail 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Side Rail 2",
-   "points": [
-    [
-     996.0,
-     770.0
-    ],
-    [
-     997.53,
-     770.3
-    ],
-    [
-     998.83,
-     771.17
-    ],
-    [
-     999.7,
-     772.47
-    ],
-    [
-     1000.0,
-     774.0
-    ],
-    [
-     1000.0,
-     791.0
-    ],
-    [
-     999.7,
-     792.53
-    ],
-    [
-     998.83,
-     793.83
-    ],
-    [
-     997.53,
-     794.7
-    ],
-    [
-     996.0,
-     795.0
-    ],
-    [
-     -766.0,
-     795.0
-    ],
-    [
-     -767.53,
-     794.7
-    ],
-    [
-     -768.83,
-     793.83
-    ],
-    [
-     -769.7,
-     792.53
-    ],
-    [
-     -770.0,
-     791.0
-    ],
-    [
-     -770.0,
-     774.0
-    ],
-    [
-     -769.7,
-     772.47
-    ],
-    [
-     -768.83,
-     771.17
-    ],
-    [
-     -767.53,
-     770.3
-    ],
-    [
-     -766.0,
-     770.0
-    ]
-   ],
-   "start": -268,
-   "end": -258,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Side Rail 2",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Side Rail 2",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Side Rail 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rail Standoff 1",
-   "points": [
-    [
-     -700,
-     -260
-    ],
-    [
-     -680,
-     -260
-    ],
-    [
-     -680,
-     -250
-    ],
-    [
-     -700,
-     -250
-    ]
-   ],
-   "start": 775,
-   "end": 790
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rail Standoff 1",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail Standoff 1",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail Standoff 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rail Standoff 2",
-   "points": [
-    [
-     -380,
-     -260
-    ],
-    [
-     -360,
-     -260
-    ],
-    [
-     -360,
-     -250
-    ],
-    [
-     -380,
-     -250
-    ]
-   ],
-   "start": 775,
-   "end": 790
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rail Standoff 2",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail Standoff 2",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail Standoff 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rail Standoff 3",
-   "points": [
-    [
-     -60,
-     -260
-    ],
-    [
-     -40,
-     -260
-    ],
-    [
-     -40,
-     -250
-    ],
-    [
-     -60,
-     -250
-    ]
-   ],
-   "start": 775,
-   "end": 790
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rail Standoff 3",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail Standoff 3",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail Standoff 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rail Standoff 4",
-   "points": [
-    [
-     260,
-     -260
-    ],
-    [
-     280,
-     -260
-    ],
-    [
-     280,
-     -250
-    ],
-    [
-     260,
-     -250
-    ]
-   ],
-   "start": 775,
-   "end": 790
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rail Standoff 4",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail Standoff 4",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail Standoff 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rail Standoff 5",
-   "points": [
-    [
-     580,
-     -260
-    ],
-    [
-     600,
-     -260
-    ],
-    [
-     600,
-     -250
-    ],
-    [
-     580,
-     -250
-    ]
-   ],
-   "start": 775,
-   "end": 790
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rail Standoff 5",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail Standoff 5",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail Standoff 5",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rail Standoff 6",
-   "points": [
-    [
-     900,
-     -260
-    ],
-    [
-     920,
-     -260
-    ],
-    [
-     920,
-     -250
-    ],
-    [
-     900,
-     -250
-    ]
-   ],
-   "start": 775,
-   "end": 790
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rail Standoff 6",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail Standoff 6",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail Standoff 6",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Section Joint 1",
-   "points": [
-    [
-     -125,
-     -262
-    ],
-    [
-     -110,
-     -262
-    ],
-    [
-     -110,
-     262
-    ],
-    [
-     -125,
-     262
-    ]
-   ],
-   "start": 770,
-   "end": 800
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Section Joint 1",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Section Joint 1",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Section Joint 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Section Joint 2",
-   "points": [
-    [
-     385,
-     -262
-    ],
-    [
-     400,
-     -262
-    ],
-    [
-     400,
-     262
-    ],
-    [
-     385,
-     262
-    ]
-   ],
-   "start": 770,
-   "end": 800
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Section Joint 2",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Section Joint 2",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Section Joint 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Armboard Clamp",
-   "points": [
-    [
-     -560,
-     -290
-    ],
-    [
-     -480,
-     -290
-    ],
-    [
-     -480,
-     -255
-    ],
-    [
-     -560,
-     -255
-    ]
-   ],
-   "start": 760,
-   "end": 810
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Armboard Clamp",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Armboard Clamp",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Armboard Clamp",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Armboard Frame",
-   "points": [
-    [
-     -450.0,
-     -790.0
-    ],
-    [
-     -442.35,
-     -788.48
-    ],
-    [
-     -435.86,
-     -784.14
-    ],
-    [
-     -431.52,
-     -777.65
-    ],
-    [
-     -430.0,
-     -770.0
-    ],
-    [
-     -430.0,
-     -310.0
-    ],
-    [
-     -431.52,
-     -302.35
-    ],
-    [
-     -435.86,
-     -295.86
-    ],
-    [
-     -442.35,
-     -291.52
-    ],
-    [
-     -450.0,
-     -290.0
-    ],
-    [
-     -550.0,
-     -290.0
-    ],
-    [
-     -557.65,
-     -291.52
-    ],
-    [
-     -564.14,
-     -295.86
-    ],
-    [
-     -568.48,
-     -302.35
-    ],
-    [
-     -570.0,
-     -310.0
-    ],
-    [
-     -570.0,
-     -770.0
-    ],
-    [
-     -568.48,
-     -777.65
-    ],
-    [
-     -564.14,
-     -784.14
-    ],
-    [
-     -557.65,
-     -788.48
-    ],
-    [
-     -550.0,
-     -790.0
-    ]
-   ],
-   "start": 790,
-   "end": 805
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Armboard Frame",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Armboard Frame",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Armboard Frame",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Armboard Pad",
-   "points": [
-    [
-     -445.0,
-     805.0
-    ],
-    [
-     -435.43,
-     806.9
-    ],
-    [
-     -427.32,
-     812.32
-    ],
-    [
-     -421.9,
-     820.43
-    ],
-    [
-     -420.0,
-     830.0
-    ],
-    [
-     -420.0,
-     840.0
-    ],
-    [
-     -421.9,
-     849.57
-    ],
-    [
-     -427.32,
-     857.68
-    ],
-    [
-     -435.43,
-     863.1
-    ],
-    [
-     -445.0,
-     865.0
-    ],
-    [
-     -555.0,
-     865.0
-    ],
-    [
-     -564.57,
-     863.1
-    ],
-    [
-     -572.68,
-     857.68
-    ],
-    [
-     -578.1,
-     849.57
-    ],
-    [
-     -580.0,
-     840.0
-    ],
-    [
-     -580.0,
-     830.0
-    ],
-    [
-     -578.1,
-     820.43
-    ],
-    [
-     -572.68,
-     812.32
-    ],
-    [
-     -564.57,
-     806.9
-    ],
-    [
-     -555.0,
-     805.0
-    ]
-   ],
-   "start": 290,
-   "end": 800,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Armboard Pad",
-   "subcategory": "Rubber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Armboard Pad",
-   "param": "Rubber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Armboard Pad",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Screen Post 1",
-   "points": [
-    [
-     -748.0,
-     -275.0
-    ],
-    [
-     -748.41,
-     -271.89
-    ],
-    [
-     -749.61,
-     -269.0
-    ],
-    [
-     -751.51,
-     -266.51
-    ],
-    [
-     -754.0,
-     -264.61
-    ],
-    [
-     -756.89,
-     -263.41
-    ],
-    [
-     -760.0,
-     -263.0
-    ],
-    [
-     -763.11,
-     -263.41
-    ],
-    [
-     -766.0,
-     -264.61
-    ],
-    [
-     -768.49,
-     -266.51
-    ],
-    [
-     -770.39,
-     -269.0
-    ],
-    [
-     -771.59,
-     -271.89
-    ],
-    [
-     -772.0,
-     -275.0
-    ],
-    [
-     -771.59,
-     -278.11
-    ],
-    [
-     -770.39,
-     -281.0
-    ],
-    [
-     -768.49,
-     -283.49
-    ],
-    [
-     -766.0,
-     -285.39
-    ],
-    [
-     -763.11,
-     -286.59
-    ],
-    [
-     -760.0,
-     -287.0
-    ],
-    [
-     -756.89,
-     -286.59
-    ],
-    [
-     -754.0,
-     -285.39
-    ],
-    [
-     -751.51,
-     -283.49
-    ],
-    [
-     -749.61,
-     -281.0
-    ],
-    [
-     -748.41,
-     -278.11
-    ]
-   ],
-   "start": 780,
-   "end": 1350
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Screen Post 1",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Screen Post 1",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Screen Post 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Screen Post 2",
-   "points": [
-    [
-     -748.0,
-     275.0
-    ],
-    [
-     -748.41,
-     278.11
-    ],
-    [
-     -749.61,
-     281.0
-    ],
-    [
-     -751.51,
-     283.49
-    ],
-    [
-     -754.0,
-     285.39
-    ],
-    [
-     -756.89,
-     286.59
-    ],
-    [
-     -760.0,
-     287.0
-    ],
-    [
-     -763.11,
-     286.59
-    ],
-    [
-     -766.0,
-     285.39
-    ],
-    [
-     -768.49,
-     283.49
-    ],
-    [
-     -770.39,
-     281.0
-    ],
-    [
-     -771.59,
-     278.11
-    ],
-    [
-     -772.0,
-     275.0
-    ],
-    [
-     -771.59,
-     271.89
-    ],
-    [
-     -770.39,
-     269.0
-    ],
-    [
-     -768.49,
-     266.51
-    ],
-    [
-     -766.0,
-     264.61
-    ],
-    [
-     -763.11,
-     263.41
-    ],
-    [
-     -760.0,
-     263.0
-    ],
-    [
-     -756.89,
-     263.41
-    ],
-    [
-     -754.0,
-     264.61
-    ],
-    [
-     -751.51,
-     266.51
-    ],
-    [
-     -749.61,
-     269.0
-    ],
-    [
-     -748.41,
-     271.89
-    ]
-   ],
-   "start": 780,
-   "end": 1350
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Screen Post 2",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Screen Post 2",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Screen Post 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Anaesthesia Screen Bar",
-   "points": [
-    [
-     -748.0,
-     1350.0
-    ],
-    [
-     -748.41,
-     1353.11
-    ],
-    [
-     -749.61,
-     1356.0
-    ],
-    [
-     -751.51,
-     1358.49
-    ],
-    [
-     -754.0,
-     1360.39
-    ],
-    [
-     -756.89,
-     1361.59
-    ],
-    [
-     -760.0,
-     1362.0
-    ],
-    [
-     -763.11,
-     1361.59
-    ],
-    [
-     -766.0,
-     1360.39
-    ],
-    [
-     -768.49,
-     1358.49
-    ],
-    [
-     -770.39,
-     1356.0
-    ],
-    [
-     -771.59,
-     1353.11
-    ],
-    [
-     -772.0,
-     1350.0
-    ],
-    [
-     -771.59,
-     1346.89
-    ],
-    [
-     -770.39,
-     1344.0
-    ],
-    [
-     -768.49,
-     1341.51
-    ],
-    [
-     -766.0,
-     1339.61
-    ],
-    [
-     -763.11,
-     1338.41
-    ],
-    [
-     -760.0,
-     1338.0
-    ],
-    [
-     -756.89,
-     1338.41
-    ],
-    [
-     -754.0,
-     1339.61
-    ],
-    [
-     -751.51,
-     1341.51
-    ],
-    [
-     -749.61,
-     1344.0
-    ],
-    [
-     -748.41,
-     1346.89
-    ]
-   ],
-   "start": -275,
-   "end": 275,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Anaesthesia Screen Bar",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Anaesthesia Screen Bar",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Anaesthesia Screen Bar",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Screen Clamp 1",
-   "points": [
-    [
-     -785,
-     -290
-    ],
-    [
-     -735,
-     -290
-    ],
-    [
-     -735,
-     -262
-    ],
-    [
-     -785,
-     -262
-    ]
-   ],
-   "start": 765,
-   "end": 805
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Screen Clamp 1",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Screen Clamp 1",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Screen Clamp 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Screen Clamp 2",
-   "points": [
-    [
-     -785,
-     262
-    ],
-    [
-     -735,
-     262
-    ],
-    [
-     -735,
-     290
-    ],
-    [
-     -785,
-     290
-    ]
-   ],
-   "start": 765,
-   "end": 805
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Screen Clamp 2",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Screen Clamp 2",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Screen Clamp 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Handset",
-   "points": [
-    [
-     252.0,
-     560.0
-    ],
-    [
-     258.89,
-     561.37
-    ],
-    [
-     264.73,
-     565.27
-    ],
-    [
-     268.63,
-     571.11
-    ],
-    [
-     270.0,
-     578.0
-    ],
-    [
-     270.0,
-     712.0
-    ],
-    [
-     268.63,
-     718.89
-    ],
-    [
-     264.73,
-     724.73
-    ],
-    [
-     258.89,
-     728.63
-    ],
-    [
-     252.0,
-     730.0
-    ],
-    [
-     218.0,
-     730.0
-    ],
-    [
-     211.11,
-     728.63
-    ],
-    [
-     205.27,
-     724.73
-    ],
-    [
-     201.37,
-     718.89
-    ],
-    [
-     200.0,
-     712.0
-    ],
-    [
-     200.0,
-     578.0
-    ],
-    [
-     201.37,
-     571.11
-    ],
-    [
-     205.27,
-     565.27
-    ],
-    [
-     211.11,
-     561.37
-    ],
-    [
-     218.0,
-     560.0
-    ]
-   ],
-   "start": -282,
-   "end": -262,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Handset",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Handset",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Handset",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Handset Keys",
-   "points": [
-    [
-     254.0,
-     590.0
-    ],
-    [
-     256.3,
-     590.46
-    ],
-    [
-     258.24,
-     591.76
-    ],
-    [
-     259.54,
-     593.7
-    ],
-    [
-     260.0,
-     596.0
-    ],
-    [
-     260.0,
-     704.0
-    ],
-    [
-     259.54,
-     706.3
-    ],
-    [
-     258.24,
-     708.24
-    ],
-    [
-     256.3,
-     709.54
-    ],
-    [
-     254.0,
-     710.0
-    ],
-    [
-     216.0,
-     710.0
-    ],
-    [
-     213.7,
-     709.54
-    ],
-    [
-     211.76,
-     708.24
-    ],
-    [
-     210.46,
-     706.3
-    ],
-    [
-     210.0,
-     704.0
-    ],
-    [
-     210.0,
-     596.0
-    ],
-    [
-     210.46,
-     593.7
-    ],
-    [
-     211.76,
-     591.76
-    ],
-    [
-     213.7,
-     590.46
-    ],
-    [
-     216.0,
-     590.0
-    ]
-   ],
-   "start": -284,
-   "end": -282,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Handset Keys",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Handset Keys",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Handset Keys",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Base Control Panel",
-   "points": [
-    [
-     142.0,
-     60.0
-    ],
-    [
-     145.06,
-     60.61
-    ],
-    [
-     147.66,
-     62.34
-    ],
-    [
-     149.39,
-     64.94
-    ],
-    [
-     150.0,
-     68.0
-    ],
-    [
-     150.0,
-     122.0
-    ],
-    [
-     149.39,
-     125.06
-    ],
-    [
-     147.66,
-     127.66
-    ],
-    [
-     145.06,
-     129.39
-    ],
-    [
-     142.0,
-     130.0
-    ],
-    [
-     -92.0,
-     130.0
-    ],
-    [
-     -95.06,
-     129.39
-    ],
-    [
-     -97.66,
-     127.66
-    ],
-    [
-     -99.39,
-     125.06
-    ],
-    [
-     -100.0,
-     122.0
-    ],
-    [
-     -100.0,
-     68.0
-    ],
-    [
-     -99.39,
-     64.94
-    ],
-    [
-     -97.66,
-     62.34
-    ],
-    [
-     -95.06,
-     60.61
-    ],
-    [
-     -92.0,
-     60.0
-    ]
-   ],
-   "start": 270,
-   "end": 273,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Control Panel",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Control Panel",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Control Panel",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "Power",
-   "domain": "electrical",
-   "system": "PowerBalanced",
-   "solid": "Base",
-   "side": "bottom"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Voltage",
-   "connector": "Power",
-   "connector_param": "Voltage",
-   "param": "Voltage"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Apparent Load",
-   "connector": "Power",
-   "connector_param": "Apparent Load",
-   "param": "Apparent Load"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\I\\_Images\\FMC_I_MedEq_Table_Operating.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_I_MedEq_Table_Operating",
+  "template": "Metric Generic Model.rft",
+  "about": "OT table modelled as a generic product: stainless base with floor-lock pads, column with upper shroud, top frame with head, back, seat and split leg pads, accessory side rails with standoffs, section joints, armboard with clamp, anaesthesia screen frame, handset, base control panel. Tilt and rotation by angle parameters are a later step (record note). Reference: query: table operating medical equipment hospital; images: https://www.google.com/search?tbm=isch&q=table+operating+medical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Medical Equipment"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Voltage",
+      "type": "Voltage",
+      "group": "Electrical"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Apparent Load",
+      "type": "ApparentPower",
+      "group": "ElectricalLoads"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Earth_Resistance_Ohm",
+      "guid": "0fe20834-bce9-5c3f-a498-96c0b6c61998",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_LPS_Class",
+      "guid": "aa1c5aad-32f5-5ba3-8139-a49a5faba0dd",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Asset_Tag",
+      "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Serial_Number",
+      "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Install_Date",
+      "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Warranty_End",
+      "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Maintenance_Interval_Months",
+      "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_OM_Link",
+      "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Controller_ID",
+      "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Type",
+      "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Signal",
+      "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Protocol",
+      "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_LP_Part",
+      "guid": "7358e31e-0924-5ef8-9e82-c11bf9ad7160",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Extinguisher_Rating",
+      "guid": "59ff9559-a353-5172-9793-e70bce8154c9",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Hose_Length_m",
+      "guid": "38ed9a83-2f51-56d9-930f-4fab315adbb5",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Sign_Code",
+      "guid": "308bad99-638f-5312-920b-abcd5888e7f3",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Design_Movement",
+      "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
+      "instance": true
+    },
+    {
+      "op": "add_type",
+      "name": "2000x550_Electric"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2000x550_Electric/FMC_Cost_Unit",
+      "type": "2000x550_Electric",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2000x550_Electric/FMC_Geometry_Stage",
+      "type": "2000x550_Electric",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2000x550_Electric/IfcExportAs",
+      "type": "2000x550_Electric",
+      "param": "IfcExportAs",
+      "value": "IfcMedicalDevice"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2000x550_Electric/Description",
+      "type": "2000x550_Electric",
+      "param": "Description",
+      "value": "Electro-hydraulic operating table, 2000 x 550 top, 5 sections (head, back, seat, split legs), stainless column and base, accessory side rails, armboard, anaesthesia screen frame"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2000x550_Electric/Keynote",
+      "type": "2000x550_Electric",
+      "param": "Keynote",
+      "value": "Z.MEQ_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2000x550_Electric/FMC_Keynote_Code",
+      "type": "2000x550_Electric",
+      "param": "FMC_Keynote_Code",
+      "value": "Z.MEQ_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2000x550_Electric/FMC_Code_Description",
+      "type": "2000x550_Electric",
+      "param": "FMC_Code_Description",
+      "value": "Table Operating: Operating table with column and base"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2000x550_Electric/FMC_Code_Group",
+      "type": "2000x550_Electric",
+      "param": "FMC_Code_Group",
+      "value": "Z.MEQ"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2000x550_Electric/FMC_Role_Code",
+      "type": "2000x550_Electric",
+      "param": "FMC_Role_Code",
+      "value": "I"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2000x550_Electric/Voltage",
+      "type": "2000x550_Electric",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "2000x550_Electric/Apparent Load",
+      "type": "2000x550_Electric",
+      "param": "Apparent Load",
+      "value": 1000
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Ss",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Ss Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_StainlessSteel_Brushed",
+      "param": "Ss Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Rubber",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Rubber Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Rubber_Black",
+      "param": "Rubber Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Mgrey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Mgrey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_MedicalGrey",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Dark",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Dark Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_SteelLTZ_Painted",
+      "param": "Dark Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Grey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Grey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Grey",
+      "param": "Grey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "White",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "White Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_White",
+      "param": "White Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -1000,
+          -800
+        ],
+        [
+          1000,
+          -800
+        ],
+        [
+          1000,
+          290
+        ],
+        [
+          -1000,
+          290
+        ]
+      ],
+      "start": 0,
+      "end": 1362
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Base",
+      "points": [
+        [
+          290,
+          -270
+        ],
+        [
+          316.79,
+          -264.67
+        ],
+        [
+          339.5,
+          -249.5
+        ],
+        [
+          354.67,
+          -226.79
+        ],
+        [
+          360,
+          -200
+        ],
+        [
+          360,
+          200
+        ],
+        [
+          354.67,
+          226.79
+        ],
+        [
+          339.5,
+          249.5
+        ],
+        [
+          316.79,
+          264.67
+        ],
+        [
+          290,
+          270
+        ],
+        [
+          -490,
+          270
+        ],
+        [
+          -516.79,
+          264.67
+        ],
+        [
+          -539.5,
+          249.5
+        ],
+        [
+          -554.67,
+          226.79
+        ],
+        [
+          -560,
+          200
+        ],
+        [
+          -560,
+          -200
+        ],
+        [
+          -554.67,
+          -226.79
+        ],
+        [
+          -539.5,
+          -249.5
+        ],
+        [
+          -516.79,
+          -264.67
+        ],
+        [
+          -490,
+          -270
+        ]
+      ],
+      "start": 15,
+      "end": 160
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Base",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Base",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Base",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Floor Lock Pad 1",
+      "points": [
+        [
+          -520,
+          -230
+        ],
+        [
+          -440,
+          -230
+        ],
+        [
+          -440,
+          -150
+        ],
+        [
+          -520,
+          -150
+        ]
+      ],
+      "start": 0,
+      "end": 15
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Floor Lock Pad 1",
+      "subcategory": "Rubber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Floor Lock Pad 1",
+      "param": "Rubber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Floor Lock Pad 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Floor Lock Pad 2",
+      "points": [
+        [
+          280,
+          -230
+        ],
+        [
+          360,
+          -230
+        ],
+        [
+          360,
+          -150
+        ],
+        [
+          280,
+          -150
+        ]
+      ],
+      "start": 0,
+      "end": 15
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Floor Lock Pad 2",
+      "subcategory": "Rubber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Floor Lock Pad 2",
+      "param": "Rubber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Floor Lock Pad 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Floor Lock Pad Back 1",
+      "points": [
+        [
+          -520,
+          150
+        ],
+        [
+          -440,
+          150
+        ],
+        [
+          -440,
+          230
+        ],
+        [
+          -520,
+          230
+        ]
+      ],
+      "start": 0,
+      "end": 15
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Floor Lock Pad Back 1",
+      "subcategory": "Rubber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Floor Lock Pad Back 1",
+      "param": "Rubber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Floor Lock Pad Back 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Floor Lock Pad Back 2",
+      "points": [
+        [
+          280,
+          150
+        ],
+        [
+          360,
+          150
+        ],
+        [
+          360,
+          230
+        ],
+        [
+          280,
+          230
+        ]
+      ],
+      "start": 0,
+      "end": 15
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Floor Lock Pad Back 2",
+      "subcategory": "Rubber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Floor Lock Pad Back 2",
+      "param": "Rubber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Floor Lock Pad Back 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Column",
+      "points": [
+        [
+          80,
+          -160
+        ],
+        [
+          95.31,
+          -156.96
+        ],
+        [
+          108.28,
+          -148.28
+        ],
+        [
+          116.96,
+          -135.31
+        ],
+        [
+          120,
+          -120
+        ],
+        [
+          120,
+          120
+        ],
+        [
+          116.96,
+          135.31
+        ],
+        [
+          108.28,
+          148.28
+        ],
+        [
+          95.31,
+          156.96
+        ],
+        [
+          80,
+          160
+        ],
+        [
+          -180,
+          160
+        ],
+        [
+          -195.31,
+          156.96
+        ],
+        [
+          -208.28,
+          148.28
+        ],
+        [
+          -216.96,
+          135.31
+        ],
+        [
+          -220,
+          120
+        ],
+        [
+          -220,
+          -120
+        ],
+        [
+          -216.96,
+          -135.31
+        ],
+        [
+          -208.28,
+          -148.28
+        ],
+        [
+          -195.31,
+          -156.96
+        ],
+        [
+          -180,
+          -160
+        ]
+      ],
+      "start": 160,
+      "end": 650
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Column",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Column",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Column",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Column Upper",
+      "points": [
+        [
+          70,
+          -140
+        ],
+        [
+          81.48,
+          -137.72
+        ],
+        [
+          91.21,
+          -131.21
+        ],
+        [
+          97.72,
+          -121.48
+        ],
+        [
+          100,
+          -110
+        ],
+        [
+          100,
+          110
+        ],
+        [
+          97.72,
+          121.48
+        ],
+        [
+          91.21,
+          131.21
+        ],
+        [
+          81.48,
+          137.72
+        ],
+        [
+          70,
+          140
+        ],
+        [
+          -170,
+          140
+        ],
+        [
+          -181.48,
+          137.72
+        ],
+        [
+          -191.21,
+          131.21
+        ],
+        [
+          -197.72,
+          121.48
+        ],
+        [
+          -200,
+          110
+        ],
+        [
+          -200,
+          -110
+        ],
+        [
+          -197.72,
+          -121.48
+        ],
+        [
+          -191.21,
+          -131.21
+        ],
+        [
+          -181.48,
+          -137.72
+        ],
+        [
+          -170,
+          -140
+        ]
+      ],
+      "start": 650,
+      "end": 760
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Column Upper",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Column Upper",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Column Upper",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Top Frame",
+      "points": [
+        [
+          990,
+          -250
+        ],
+        [
+          993.83,
+          -249.24
+        ],
+        [
+          997.07,
+          -247.07
+        ],
+        [
+          999.24,
+          -243.83
+        ],
+        [
+          1000,
+          -240
+        ],
+        [
+          1000,
+          240
+        ],
+        [
+          999.24,
+          243.83
+        ],
+        [
+          997.07,
+          247.07
+        ],
+        [
+          993.83,
+          249.24
+        ],
+        [
+          990,
+          250
+        ],
+        [
+          -760,
+          250
+        ],
+        [
+          -763.83,
+          249.24
+        ],
+        [
+          -767.07,
+          247.07
+        ],
+        [
+          -769.24,
+          243.83
+        ],
+        [
+          -770,
+          240
+        ],
+        [
+          -770,
+          -240
+        ],
+        [
+          -769.24,
+          -243.83
+        ],
+        [
+          -767.07,
+          -247.07
+        ],
+        [
+          -763.83,
+          -249.24
+        ],
+        [
+          -760,
+          -250
+        ]
+      ],
+      "start": 760,
+      "end": 800
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Top Frame",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Top Frame",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Top Frame",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Head Frame",
+      "points": [
+        [
+          -790,
+          -140
+        ],
+        [
+          -786.17,
+          -139.24
+        ],
+        [
+          -782.93,
+          -137.07
+        ],
+        [
+          -780.76,
+          -133.83
+        ],
+        [
+          -780,
+          -130
+        ],
+        [
+          -780,
+          130
+        ],
+        [
+          -780.76,
+          133.83
+        ],
+        [
+          -782.93,
+          137.07
+        ],
+        [
+          -786.17,
+          139.24
+        ],
+        [
+          -790,
+          140
+        ],
+        [
+          -990,
+          140
+        ],
+        [
+          -993.83,
+          139.24
+        ],
+        [
+          -997.07,
+          137.07
+        ],
+        [
+          -999.24,
+          133.83
+        ],
+        [
+          -1000,
+          130
+        ],
+        [
+          -1000,
+          -130
+        ],
+        [
+          -999.24,
+          -133.83
+        ],
+        [
+          -997.07,
+          -137.07
+        ],
+        [
+          -993.83,
+          -139.24
+        ],
+        [
+          -990,
+          -140
+        ]
+      ],
+      "start": 760,
+      "end": 800
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Head Frame",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Head Frame",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Head Frame",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Head Pad",
+      "points": [
+        [
+          -805,
+          800
+        ],
+        [
+          -795.43,
+          801.9
+        ],
+        [
+          -787.32,
+          807.32
+        ],
+        [
+          -781.9,
+          815.43
+        ],
+        [
+          -780,
+          825
+        ],
+        [
+          -780,
+          845
+        ],
+        [
+          -781.9,
+          854.57
+        ],
+        [
+          -787.32,
+          862.68
+        ],
+        [
+          -795.43,
+          868.1
+        ],
+        [
+          -805,
+          870
+        ],
+        [
+          -975,
+          870
+        ],
+        [
+          -984.57,
+          868.1
+        ],
+        [
+          -992.68,
+          862.68
+        ],
+        [
+          -998.1,
+          854.57
+        ],
+        [
+          -1000,
+          845
+        ],
+        [
+          -1000,
+          825
+        ],
+        [
+          -998.1,
+          815.43
+        ],
+        [
+          -992.68,
+          807.32
+        ],
+        [
+          -984.57,
+          801.9
+        ],
+        [
+          -975,
+          800
+        ]
+      ],
+      "start": -150,
+      "end": 150,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Head Pad",
+      "subcategory": "Rubber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Head Pad",
+      "param": "Rubber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Head Pad",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Back Pad",
+      "points": [
+        [
+          -145,
+          800
+        ],
+        [
+          -135.43,
+          801.9
+        ],
+        [
+          -127.32,
+          807.32
+        ],
+        [
+          -121.9,
+          815.43
+        ],
+        [
+          -120,
+          825
+        ],
+        [
+          -120,
+          845
+        ],
+        [
+          -121.9,
+          854.57
+        ],
+        [
+          -127.32,
+          862.68
+        ],
+        [
+          -135.43,
+          868.1
+        ],
+        [
+          -145,
+          870
+        ],
+        [
+          -745,
+          870
+        ],
+        [
+          -754.57,
+          868.1
+        ],
+        [
+          -762.68,
+          862.68
+        ],
+        [
+          -768.1,
+          854.57
+        ],
+        [
+          -770,
+          845
+        ],
+        [
+          -770,
+          825
+        ],
+        [
+          -768.1,
+          815.43
+        ],
+        [
+          -762.68,
+          807.32
+        ],
+        [
+          -754.57,
+          801.9
+        ],
+        [
+          -745,
+          800
+        ]
+      ],
+      "start": -255,
+      "end": 255,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Back Pad",
+      "subcategory": "Rubber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Back Pad",
+      "param": "Rubber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Back Pad",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Seat Pad",
+      "points": [
+        [
+          355,
+          800
+        ],
+        [
+          364.57,
+          801.9
+        ],
+        [
+          372.68,
+          807.32
+        ],
+        [
+          378.1,
+          815.43
+        ],
+        [
+          380,
+          825
+        ],
+        [
+          380,
+          845
+        ],
+        [
+          378.1,
+          854.57
+        ],
+        [
+          372.68,
+          862.68
+        ],
+        [
+          364.57,
+          868.1
+        ],
+        [
+          355,
+          870
+        ],
+        [
+          -85,
+          870
+        ],
+        [
+          -94.57,
+          868.1
+        ],
+        [
+          -102.68,
+          862.68
+        ],
+        [
+          -108.1,
+          854.57
+        ],
+        [
+          -110,
+          845
+        ],
+        [
+          -110,
+          825
+        ],
+        [
+          -108.1,
+          815.43
+        ],
+        [
+          -102.68,
+          807.32
+        ],
+        [
+          -94.57,
+          801.9
+        ],
+        [
+          -85,
+          800
+        ]
+      ],
+      "start": -255,
+      "end": 255,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Seat Pad",
+      "subcategory": "Rubber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Seat Pad",
+      "param": "Rubber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Seat Pad",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Leg Pad Left",
+      "points": [
+        [
+          975,
+          800
+        ],
+        [
+          984.57,
+          801.9
+        ],
+        [
+          992.68,
+          807.32
+        ],
+        [
+          998.1,
+          815.43
+        ],
+        [
+          1000,
+          825
+        ],
+        [
+          1000,
+          845
+        ],
+        [
+          998.1,
+          854.57
+        ],
+        [
+          992.68,
+          862.68
+        ],
+        [
+          984.57,
+          868.1
+        ],
+        [
+          975,
+          870
+        ],
+        [
+          415,
+          870
+        ],
+        [
+          405.43,
+          868.1
+        ],
+        [
+          397.32,
+          862.68
+        ],
+        [
+          391.9,
+          854.57
+        ],
+        [
+          390,
+          845
+        ],
+        [
+          390,
+          825
+        ],
+        [
+          391.9,
+          815.43
+        ],
+        [
+          397.32,
+          807.32
+        ],
+        [
+          405.43,
+          801.9
+        ],
+        [
+          415,
+          800
+        ]
+      ],
+      "start": 5,
+      "end": 255,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Leg Pad Left",
+      "subcategory": "Rubber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Leg Pad Left",
+      "param": "Rubber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Leg Pad Left",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Leg Pad Right",
+      "points": [
+        [
+          975,
+          800
+        ],
+        [
+          984.57,
+          801.9
+        ],
+        [
+          992.68,
+          807.32
+        ],
+        [
+          998.1,
+          815.43
+        ],
+        [
+          1000,
+          825
+        ],
+        [
+          1000,
+          845
+        ],
+        [
+          998.1,
+          854.57
+        ],
+        [
+          992.68,
+          862.68
+        ],
+        [
+          984.57,
+          868.1
+        ],
+        [
+          975,
+          870
+        ],
+        [
+          415,
+          870
+        ],
+        [
+          405.43,
+          868.1
+        ],
+        [
+          397.32,
+          862.68
+        ],
+        [
+          391.9,
+          854.57
+        ],
+        [
+          390,
+          845
+        ],
+        [
+          390,
+          825
+        ],
+        [
+          391.9,
+          815.43
+        ],
+        [
+          397.32,
+          807.32
+        ],
+        [
+          405.43,
+          801.9
+        ],
+        [
+          415,
+          800
+        ]
+      ],
+      "start": -255,
+      "end": -5,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Leg Pad Right",
+      "subcategory": "Rubber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Leg Pad Right",
+      "param": "Rubber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Leg Pad Right",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Side Rail 1",
+      "points": [
+        [
+          996,
+          770
+        ],
+        [
+          997.53,
+          770.3
+        ],
+        [
+          998.83,
+          771.17
+        ],
+        [
+          999.7,
+          772.47
+        ],
+        [
+          1000,
+          774
+        ],
+        [
+          1000,
+          791
+        ],
+        [
+          999.7,
+          792.53
+        ],
+        [
+          998.83,
+          793.83
+        ],
+        [
+          997.53,
+          794.7
+        ],
+        [
+          996,
+          795
+        ],
+        [
+          -766,
+          795
+        ],
+        [
+          -767.53,
+          794.7
+        ],
+        [
+          -768.83,
+          793.83
+        ],
+        [
+          -769.7,
+          792.53
+        ],
+        [
+          -770,
+          791
+        ],
+        [
+          -770,
+          774
+        ],
+        [
+          -769.7,
+          772.47
+        ],
+        [
+          -768.83,
+          771.17
+        ],
+        [
+          -767.53,
+          770.3
+        ],
+        [
+          -766,
+          770
+        ]
+      ],
+      "start": 258,
+      "end": 268,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Side Rail 1",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Side Rail 1",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Side Rail 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Side Rail 2",
+      "points": [
+        [
+          996,
+          770
+        ],
+        [
+          997.53,
+          770.3
+        ],
+        [
+          998.83,
+          771.17
+        ],
+        [
+          999.7,
+          772.47
+        ],
+        [
+          1000,
+          774
+        ],
+        [
+          1000,
+          791
+        ],
+        [
+          999.7,
+          792.53
+        ],
+        [
+          998.83,
+          793.83
+        ],
+        [
+          997.53,
+          794.7
+        ],
+        [
+          996,
+          795
+        ],
+        [
+          -766,
+          795
+        ],
+        [
+          -767.53,
+          794.7
+        ],
+        [
+          -768.83,
+          793.83
+        ],
+        [
+          -769.7,
+          792.53
+        ],
+        [
+          -770,
+          791
+        ],
+        [
+          -770,
+          774
+        ],
+        [
+          -769.7,
+          772.47
+        ],
+        [
+          -768.83,
+          771.17
+        ],
+        [
+          -767.53,
+          770.3
+        ],
+        [
+          -766,
+          770
+        ]
+      ],
+      "start": -268,
+      "end": -258,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Side Rail 2",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Side Rail 2",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Side Rail 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rail Standoff 1",
+      "points": [
+        [
+          -700,
+          -260
+        ],
+        [
+          -680,
+          -260
+        ],
+        [
+          -680,
+          -250
+        ],
+        [
+          -700,
+          -250
+        ]
+      ],
+      "start": 775,
+      "end": 790
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rail Standoff 1",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rail Standoff 1",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rail Standoff 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rail Standoff 2",
+      "points": [
+        [
+          -380,
+          -260
+        ],
+        [
+          -360,
+          -260
+        ],
+        [
+          -360,
+          -250
+        ],
+        [
+          -380,
+          -250
+        ]
+      ],
+      "start": 775,
+      "end": 790
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rail Standoff 2",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rail Standoff 2",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rail Standoff 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rail Standoff 3",
+      "points": [
+        [
+          -60,
+          -260
+        ],
+        [
+          -40,
+          -260
+        ],
+        [
+          -40,
+          -250
+        ],
+        [
+          -60,
+          -250
+        ]
+      ],
+      "start": 775,
+      "end": 790
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rail Standoff 3",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rail Standoff 3",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rail Standoff 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rail Standoff 4",
+      "points": [
+        [
+          260,
+          -260
+        ],
+        [
+          280,
+          -260
+        ],
+        [
+          280,
+          -250
+        ],
+        [
+          260,
+          -250
+        ]
+      ],
+      "start": 775,
+      "end": 790
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rail Standoff 4",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rail Standoff 4",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rail Standoff 4",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rail Standoff 5",
+      "points": [
+        [
+          580,
+          -260
+        ],
+        [
+          600,
+          -260
+        ],
+        [
+          600,
+          -250
+        ],
+        [
+          580,
+          -250
+        ]
+      ],
+      "start": 775,
+      "end": 790
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rail Standoff 5",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rail Standoff 5",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rail Standoff 5",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rail Standoff 6",
+      "points": [
+        [
+          900,
+          -260
+        ],
+        [
+          920,
+          -260
+        ],
+        [
+          920,
+          -250
+        ],
+        [
+          900,
+          -250
+        ]
+      ],
+      "start": 775,
+      "end": 790
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rail Standoff 6",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rail Standoff 6",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rail Standoff 6",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Section Joint 1",
+      "points": [
+        [
+          -125,
+          -262
+        ],
+        [
+          -110,
+          -262
+        ],
+        [
+          -110,
+          262
+        ],
+        [
+          -125,
+          262
+        ]
+      ],
+      "start": 770,
+      "end": 800
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Section Joint 1",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Section Joint 1",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Section Joint 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Section Joint 2",
+      "points": [
+        [
+          385,
+          -262
+        ],
+        [
+          400,
+          -262
+        ],
+        [
+          400,
+          262
+        ],
+        [
+          385,
+          262
+        ]
+      ],
+      "start": 770,
+      "end": 800
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Section Joint 2",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Section Joint 2",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Section Joint 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Armboard Clamp",
+      "points": [
+        [
+          -560,
+          -290
+        ],
+        [
+          -480,
+          -290
+        ],
+        [
+          -480,
+          -255
+        ],
+        [
+          -560,
+          -255
+        ]
+      ],
+      "start": 760,
+      "end": 810
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Armboard Clamp",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Armboard Clamp",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Armboard Clamp",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Armboard Frame",
+      "points": [
+        [
+          -450,
+          -790
+        ],
+        [
+          -442.35,
+          -788.48
+        ],
+        [
+          -435.86,
+          -784.14
+        ],
+        [
+          -431.52,
+          -777.65
+        ],
+        [
+          -430,
+          -770
+        ],
+        [
+          -430,
+          -310
+        ],
+        [
+          -431.52,
+          -302.35
+        ],
+        [
+          -435.86,
+          -295.86
+        ],
+        [
+          -442.35,
+          -291.52
+        ],
+        [
+          -450,
+          -290
+        ],
+        [
+          -550,
+          -290
+        ],
+        [
+          -557.65,
+          -291.52
+        ],
+        [
+          -564.14,
+          -295.86
+        ],
+        [
+          -568.48,
+          -302.35
+        ],
+        [
+          -570,
+          -310
+        ],
+        [
+          -570,
+          -770
+        ],
+        [
+          -568.48,
+          -777.65
+        ],
+        [
+          -564.14,
+          -784.14
+        ],
+        [
+          -557.65,
+          -788.48
+        ],
+        [
+          -550,
+          -790
+        ]
+      ],
+      "start": 790,
+      "end": 805
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Armboard Frame",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Armboard Frame",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Armboard Frame",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Armboard Pad",
+      "points": [
+        [
+          -445,
+          805
+        ],
+        [
+          -435.43,
+          806.9
+        ],
+        [
+          -427.32,
+          812.32
+        ],
+        [
+          -421.9,
+          820.43
+        ],
+        [
+          -420,
+          830
+        ],
+        [
+          -420,
+          840
+        ],
+        [
+          -421.9,
+          849.57
+        ],
+        [
+          -427.32,
+          857.68
+        ],
+        [
+          -435.43,
+          863.1
+        ],
+        [
+          -445,
+          865
+        ],
+        [
+          -555,
+          865
+        ],
+        [
+          -564.57,
+          863.1
+        ],
+        [
+          -572.68,
+          857.68
+        ],
+        [
+          -578.1,
+          849.57
+        ],
+        [
+          -580,
+          840
+        ],
+        [
+          -580,
+          830
+        ],
+        [
+          -578.1,
+          820.43
+        ],
+        [
+          -572.68,
+          812.32
+        ],
+        [
+          -564.57,
+          806.9
+        ],
+        [
+          -555,
+          805
+        ]
+      ],
+      "start": 290,
+      "end": 800,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Armboard Pad",
+      "subcategory": "Rubber"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Armboard Pad",
+      "param": "Rubber Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Armboard Pad",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Screen Post 1",
+      "points": [
+        [
+          -748,
+          -275
+        ],
+        [
+          -748.41,
+          -271.89
+        ],
+        [
+          -749.61,
+          -269
+        ],
+        [
+          -751.51,
+          -266.51
+        ],
+        [
+          -754,
+          -264.61
+        ],
+        [
+          -756.89,
+          -263.41
+        ],
+        [
+          -760,
+          -263
+        ],
+        [
+          -763.11,
+          -263.41
+        ],
+        [
+          -766,
+          -264.61
+        ],
+        [
+          -768.49,
+          -266.51
+        ],
+        [
+          -770.39,
+          -269
+        ],
+        [
+          -771.59,
+          -271.89
+        ],
+        [
+          -772,
+          -275
+        ],
+        [
+          -771.59,
+          -278.11
+        ],
+        [
+          -770.39,
+          -281
+        ],
+        [
+          -768.49,
+          -283.49
+        ],
+        [
+          -766,
+          -285.39
+        ],
+        [
+          -763.11,
+          -286.59
+        ],
+        [
+          -760,
+          -287
+        ],
+        [
+          -756.89,
+          -286.59
+        ],
+        [
+          -754,
+          -285.39
+        ],
+        [
+          -751.51,
+          -283.49
+        ],
+        [
+          -749.61,
+          -281
+        ],
+        [
+          -748.41,
+          -278.11
+        ]
+      ],
+      "start": 780,
+      "end": 1350
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Screen Post 1",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Screen Post 1",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Screen Post 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Screen Post 2",
+      "points": [
+        [
+          -748,
+          275
+        ],
+        [
+          -748.41,
+          278.11
+        ],
+        [
+          -749.61,
+          281
+        ],
+        [
+          -751.51,
+          283.49
+        ],
+        [
+          -754,
+          285.39
+        ],
+        [
+          -756.89,
+          286.59
+        ],
+        [
+          -760,
+          287
+        ],
+        [
+          -763.11,
+          286.59
+        ],
+        [
+          -766,
+          285.39
+        ],
+        [
+          -768.49,
+          283.49
+        ],
+        [
+          -770.39,
+          281
+        ],
+        [
+          -771.59,
+          278.11
+        ],
+        [
+          -772,
+          275
+        ],
+        [
+          -771.59,
+          271.89
+        ],
+        [
+          -770.39,
+          269
+        ],
+        [
+          -768.49,
+          266.51
+        ],
+        [
+          -766,
+          264.61
+        ],
+        [
+          -763.11,
+          263.41
+        ],
+        [
+          -760,
+          263
+        ],
+        [
+          -756.89,
+          263.41
+        ],
+        [
+          -754,
+          264.61
+        ],
+        [
+          -751.51,
+          266.51
+        ],
+        [
+          -749.61,
+          269
+        ],
+        [
+          -748.41,
+          271.89
+        ]
+      ],
+      "start": 780,
+      "end": 1350
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Screen Post 2",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Screen Post 2",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Screen Post 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Anaesthesia Screen Bar",
+      "points": [
+        [
+          -748,
+          1350
+        ],
+        [
+          -748.41,
+          1353.11
+        ],
+        [
+          -749.61,
+          1356
+        ],
+        [
+          -751.51,
+          1358.49
+        ],
+        [
+          -754,
+          1360.39
+        ],
+        [
+          -756.89,
+          1361.59
+        ],
+        [
+          -760,
+          1362
+        ],
+        [
+          -763.11,
+          1361.59
+        ],
+        [
+          -766,
+          1360.39
+        ],
+        [
+          -768.49,
+          1358.49
+        ],
+        [
+          -770.39,
+          1356
+        ],
+        [
+          -771.59,
+          1353.11
+        ],
+        [
+          -772,
+          1350
+        ],
+        [
+          -771.59,
+          1346.89
+        ],
+        [
+          -770.39,
+          1344
+        ],
+        [
+          -768.49,
+          1341.51
+        ],
+        [
+          -766,
+          1339.61
+        ],
+        [
+          -763.11,
+          1338.41
+        ],
+        [
+          -760,
+          1338
+        ],
+        [
+          -756.89,
+          1338.41
+        ],
+        [
+          -754,
+          1339.61
+        ],
+        [
+          -751.51,
+          1341.51
+        ],
+        [
+          -749.61,
+          1344
+        ],
+        [
+          -748.41,
+          1346.89
+        ]
+      ],
+      "start": -275,
+      "end": 275,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Anaesthesia Screen Bar",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Anaesthesia Screen Bar",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Anaesthesia Screen Bar",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Screen Clamp 1",
+      "points": [
+        [
+          -785,
+          -290
+        ],
+        [
+          -735,
+          -290
+        ],
+        [
+          -735,
+          -262
+        ],
+        [
+          -785,
+          -262
+        ]
+      ],
+      "start": 765,
+      "end": 805
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Screen Clamp 1",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Screen Clamp 1",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Screen Clamp 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Screen Clamp 2",
+      "points": [
+        [
+          -785,
+          262
+        ],
+        [
+          -735,
+          262
+        ],
+        [
+          -735,
+          290
+        ],
+        [
+          -785,
+          290
+        ]
+      ],
+      "start": 765,
+      "end": 805
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Screen Clamp 2",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Screen Clamp 2",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Screen Clamp 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Handset",
+      "points": [
+        [
+          252,
+          560
+        ],
+        [
+          258.89,
+          561.37
+        ],
+        [
+          264.73,
+          565.27
+        ],
+        [
+          268.63,
+          571.11
+        ],
+        [
+          270,
+          578
+        ],
+        [
+          270,
+          712
+        ],
+        [
+          268.63,
+          718.89
+        ],
+        [
+          264.73,
+          724.73
+        ],
+        [
+          258.89,
+          728.63
+        ],
+        [
+          252,
+          730
+        ],
+        [
+          218,
+          730
+        ],
+        [
+          211.11,
+          728.63
+        ],
+        [
+          205.27,
+          724.73
+        ],
+        [
+          201.37,
+          718.89
+        ],
+        [
+          200,
+          712
+        ],
+        [
+          200,
+          578
+        ],
+        [
+          201.37,
+          571.11
+        ],
+        [
+          205.27,
+          565.27
+        ],
+        [
+          211.11,
+          561.37
+        ],
+        [
+          218,
+          560
+        ]
+      ],
+      "start": -282,
+      "end": -262,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Handset",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Handset",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Handset",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Handset Keys",
+      "points": [
+        [
+          254,
+          590
+        ],
+        [
+          256.3,
+          590.46
+        ],
+        [
+          258.24,
+          591.76
+        ],
+        [
+          259.54,
+          593.7
+        ],
+        [
+          260,
+          596
+        ],
+        [
+          260,
+          704
+        ],
+        [
+          259.54,
+          706.3
+        ],
+        [
+          258.24,
+          708.24
+        ],
+        [
+          256.3,
+          709.54
+        ],
+        [
+          254,
+          710
+        ],
+        [
+          216,
+          710
+        ],
+        [
+          213.7,
+          709.54
+        ],
+        [
+          211.76,
+          708.24
+        ],
+        [
+          210.46,
+          706.3
+        ],
+        [
+          210,
+          704
+        ],
+        [
+          210,
+          596
+        ],
+        [
+          210.46,
+          593.7
+        ],
+        [
+          211.76,
+          591.76
+        ],
+        [
+          213.7,
+          590.46
+        ],
+        [
+          216,
+          590
+        ]
+      ],
+      "start": -284,
+      "end": -282,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Handset Keys",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Handset Keys",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Handset Keys",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Base Control Panel",
+      "points": [
+        [
+          142,
+          60
+        ],
+        [
+          145.06,
+          60.61
+        ],
+        [
+          147.66,
+          62.34
+        ],
+        [
+          149.39,
+          64.94
+        ],
+        [
+          150,
+          68
+        ],
+        [
+          150,
+          122
+        ],
+        [
+          149.39,
+          125.06
+        ],
+        [
+          147.66,
+          127.66
+        ],
+        [
+          145.06,
+          129.39
+        ],
+        [
+          142,
+          130
+        ],
+        [
+          -92,
+          130
+        ],
+        [
+          -95.06,
+          129.39
+        ],
+        [
+          -97.66,
+          127.66
+        ],
+        [
+          -99.39,
+          125.06
+        ],
+        [
+          -100,
+          122
+        ],
+        [
+          -100,
+          68
+        ],
+        [
+          -99.39,
+          64.94
+        ],
+        [
+          -97.66,
+          62.34
+        ],
+        [
+          -95.06,
+          60.61
+        ],
+        [
+          -92,
+          60
+        ]
+      ],
+      "start": 270,
+      "end": 273,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Base Control Panel",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Base Control Panel",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Base Control Panel",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "Power",
+      "domain": "electrical",
+      "system": "PowerBalanced",
+      "solid": "Base",
+      "side": "bottom"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Voltage",
+      "connector": "Power",
+      "connector_param": "Voltage",
+      "param": "Voltage"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Apparent Load",
+      "connector": "Power",
+      "connector_param": "Apparent Load",
+      "param": "Apparent Load"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\I\\_Images\\FMC_I_MedEq_Table_Operating.png"
+    }
+  ],
+  "values": {
+    "Top 2000 x 550 mm": {
+      "value": "2000x550",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Height 650 to 1050 mm": {
+      "value": "650-1050",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Trendelenburg +/-30 deg, lateral tilt +/-20 deg": {
+      "value": "30/20",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Power 1000 VA": {
+      "value": 1000,
+      "source_status": "assumed",
+      "source": "typical electro-hydraulic OT table"
+    }
   }
- ],
- "values": {
-  "Top 2000 x 550 mm": {
-   "value": "2000x550",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Height 650 to 1050 mm": {
-   "value": "650-1050",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Trendelenburg +/-30 deg, lateral tilt +/-20 deg": {
-   "value": "30/20",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Power 1000 VA": {
-   "value": 1000,
-   "source_status": "assumed",
-   "source": "typical electro-hydraulic OT table"
-  }
- }
 }

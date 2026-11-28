@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readDynamo, readPyRevit, readTool, stepSummary } from "./scripts.js";
+import { GRAPH_RUN_FORWARDS_TO, readDynamo, readPyRevit, readTool, stepSummary } from "./scripts.js";
 
 const dyn = [
   "# FMC_ModelHealth  -  Dynamo Python Script node (CPython3 / PythonNet3)",
@@ -15,6 +15,10 @@ const dyn = [
   "# Written for Revit 2025 / 2026 with Dynamo 3.x. Not yet run on a Formcraft build:",
   "import clr",
 ].join("\n");
+
+test("graph_run forwards to fmc_dynamo instead of refusing every graph", () => {
+  assert.equal(GRAPH_RUN_FORWARDS_TO, "fmc_dynamo");
+});
 
 test("a Dynamo node is read from its own header: name, what it does, inputs, status", () => {
   const s = readDynamo("K:\\05_Scripts\\Dynamo\\FMC_ModelHealth.py", dyn);

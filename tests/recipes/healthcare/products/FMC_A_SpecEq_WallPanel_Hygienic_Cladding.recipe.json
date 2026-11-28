@@ -1,748 +1,751 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_A_SpecEq_WallPanel_Hygienic_Cladding",
- "template": "Metric Generic Model.rft",
- "about": "Cladding modelled as a generic product: sheet panel, coved skirting former with fillet and floor turn-up, top capping, welded joints both edges. Reference: query: wall panel hygienic cladding specialty equipment hospital; images: https://www.google.com/search?tbm=isch&q=wall+panel+hygienic+cladding+specialty+equipment+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Specialty Equipment"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
-  },
-  {
-   "op": "add_type",
-   "name": "1200x2700_PVC"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x2700_PVC/FMC_Cost_Unit",
-   "type": "1200x2700_PVC",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x2700_PVC/FMC_Geometry_Stage",
-   "type": "1200x2700_PVC",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x2700_PVC/IfcExportAs",
-   "type": "1200x2700_PVC",
-   "param": "IfcExportAs",
-   "value": "IfcCovering"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x2700_PVC/Description",
-   "type": "1200x2700_PVC",
-   "param": "Description",
-   "value": "Hygienic PVC wall cladding 1200 x 2700 mm, welded joints, coved"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x2700_PVC/Keynote",
-   "type": "1200x2700_PVC",
-   "param": "Keynote",
-   "value": "I.HYG_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x2700_PVC/FMC_Keynote_Code",
-   "type": "1200x2700_PVC",
-   "param": "FMC_Keynote_Code",
-   "value": "I.HYG_00"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Cladding",
-   "color": [
-    245,
-    245,
-    245
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Cladding Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_PVCCeiling_Panel",
-   "param": "Cladding Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Mgrey",
-   "color": [
-    201,
-    205,
-    210
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Mgrey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_MedicalGrey",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -602,
-     -160
-    ],
-    [
-     602,
-     -160
-    ],
-    [
-     602,
-     0
-    ],
-    [
-     -602,
-     0
-    ]
-   ],
-   "start": 0.0,
-   "end": 2712
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Panel",
-   "points": [
-    [
-     -600,
-     100
-    ],
-    [
-     600,
-     100
-    ],
-    [
-     600,
-     2700
-    ],
-    [
-     -600,
-     2700
-    ]
-   ],
-   "start": 0,
-   "end": 3,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Panel",
-   "subcategory": "Cladding"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Panel",
-   "param": "Cladding Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Panel",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cove Segment 1",
-   "points": [
-    [
-     0.0,
-     100.0
-    ],
-    [
-     -3.41,
-     74.12
-    ],
-    [
-     -6.31,
-     74.89
-    ],
-    [
-     -3.0,
-     100.0
-    ]
-   ],
-   "start": -600,
-   "end": 600,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cove Segment 1",
-   "subcategory": "Cladding"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cove Segment 1",
-   "param": "Cladding Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cove Segment 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cove Segment 2",
-   "points": [
-    [
-     -3.41,
-     74.12
-    ],
-    [
-     -13.4,
-     50.0
-    ],
-    [
-     -16.0,
-     51.5
-    ],
-    [
-     -6.31,
-     74.89
-    ]
-   ],
-   "start": -600,
-   "end": 600,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cove Segment 2",
-   "subcategory": "Cladding"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cove Segment 2",
-   "param": "Cladding Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cove Segment 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cove Segment 3",
-   "points": [
-    [
-     -13.4,
-     50.0
-    ],
-    [
-     -29.29,
-     29.29
-    ],
-    [
-     -31.41,
-     31.41
-    ],
-    [
-     -16.0,
-     51.5
-    ]
-   ],
-   "start": -600,
-   "end": 600,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cove Segment 3",
-   "subcategory": "Cladding"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cove Segment 3",
-   "param": "Cladding Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cove Segment 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cove Segment 4",
-   "points": [
-    [
-     -29.29,
-     29.29
-    ],
-    [
-     -50.0,
-     13.4
-    ],
-    [
-     -51.5,
-     16.0
-    ],
-    [
-     -31.41,
-     31.41
-    ]
-   ],
-   "start": -600,
-   "end": 600,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cove Segment 4",
-   "subcategory": "Cladding"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cove Segment 4",
-   "param": "Cladding Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cove Segment 4",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cove Segment 5",
-   "points": [
-    [
-     -50.0,
-     13.4
-    ],
-    [
-     -74.12,
-     3.41
-    ],
-    [
-     -74.89,
-     6.31
-    ],
-    [
-     -51.5,
-     16.0
-    ]
-   ],
-   "start": -600,
-   "end": 600,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cove Segment 5",
-   "subcategory": "Cladding"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cove Segment 5",
-   "param": "Cladding Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cove Segment 5",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cove Segment 6",
-   "points": [
-    [
-     -74.12,
-     3.41
-    ],
-    [
-     -100.0,
-     0.0
-    ],
-    [
-     -100.0,
-     3.0
-    ],
-    [
-     -74.89,
-     6.31
-    ]
-   ],
-   "start": -600,
-   "end": 600,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cove Segment 6",
-   "subcategory": "Cladding"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cove Segment 6",
-   "param": "Cladding Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cove Segment 6",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cove Fillet",
-   "points": [
-    [
-     0,
-     0
-    ],
-    [
-     0,
-     40
-    ],
-    [
-     -12,
-     22
-    ],
-    [
-     -40,
-     0
-    ]
-   ],
-   "start": -600,
-   "end": 600,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cove Fillet",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cove Fillet",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cove Fillet",
-   "coarse": false,
-   "medium": true,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Floor Flange",
-   "points": [
-    [
-     -100,
-     0
-    ],
-    [
-     -160,
-     0
-    ],
-    [
-     -160,
-     3
-    ],
-    [
-     -100,
-     3
-    ]
-   ],
-   "start": -600,
-   "end": 600,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Floor Flange",
-   "subcategory": "Cladding"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Floor Flange",
-   "param": "Cladding Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Floor Flange",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Top Capping",
-   "points": [
-    [
-     0,
-     2690
-    ],
-    [
-     -8,
-     2690
-    ],
-    [
-     -8,
-     2700
-    ],
-    [
-     -5,
-     2712
-    ],
-    [
-     0,
-     2712
-    ]
-   ],
-   "start": -600,
-   "end": 600,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Top Capping",
-   "subcategory": "Cladding"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Top Capping",
-   "param": "Cladding Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Top Capping",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Weld Joint 1",
-   "points": [
-    [
-     -602,
-     100
-    ],
-    [
-     -598,
-     100
-    ],
-    [
-     -598,
-     2700
-    ],
-    [
-     -602,
-     2700
-    ]
-   ],
-   "start": 3,
-   "end": 4,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Weld Joint 1",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Weld Joint 1",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Weld Joint 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Weld Joint 2",
-   "points": [
-    [
-     598,
-     100
-    ],
-    [
-     602,
-     100
-    ],
-    [
-     602,
-     2700
-    ],
-    [
-     598,
-     2700
-    ]
-   ],
-   "start": 3,
-   "end": 4,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Weld Joint 2",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Weld Joint 2",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Weld Joint 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Seam Line",
-   "points": [
-    [
-     -602,
-     2690
-    ],
-    [
-     602,
-     2690
-    ],
-    [
-     602,
-     2700
-    ],
-    [
-     -602,
-     2700
-    ]
-   ],
-   "start": 3,
-   "end": 3.4,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Seam Line",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Seam Line",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Seam Line",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\A\\_Images\\FMC_A_SpecEq_WallPanel_Hygienic_Cladding.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_A_SpecEq_WallPanel_Hygienic_Cladding",
+  "template": "Metric Generic Model.rft",
+  "about": "Cladding modelled as a generic product: sheet panel, coved skirting former with fillet and floor turn-up, top capping, welded joints both edges. Reference: query: wall panel hygienic cladding specialty equipment hospital; images: https://www.google.com/search?tbm=isch&q=wall+panel+hygienic+cladding+specialty+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Specialty Equipment"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+    },
+    {
+      "op": "add_type",
+      "name": "1200x2700_PVC"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x2700_PVC/FMC_Cost_Unit",
+      "type": "1200x2700_PVC",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x2700_PVC/FMC_Geometry_Stage",
+      "type": "1200x2700_PVC",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x2700_PVC/IfcExportAs",
+      "type": "1200x2700_PVC",
+      "param": "IfcExportAs",
+      "value": "IfcCovering"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x2700_PVC/Description",
+      "type": "1200x2700_PVC",
+      "param": "Description",
+      "value": "Hygienic PVC wall cladding 1200 x 2700 mm, welded joints, coved"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x2700_PVC/Keynote",
+      "type": "1200x2700_PVC",
+      "param": "Keynote",
+      "value": "I.HYG_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x2700_PVC/FMC_Keynote_Code",
+      "type": "1200x2700_PVC",
+      "param": "FMC_Keynote_Code",
+      "value": "I.HYG_00"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Cladding",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Cladding Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_PVCCeiling_Panel",
+      "param": "Cladding Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Mgrey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Mgrey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_MedicalGrey",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -602,
+          -160
+        ],
+        [
+          602,
+          -160
+        ],
+        [
+          602,
+          0
+        ],
+        [
+          -602,
+          0
+        ]
+      ],
+      "start": 0,
+      "end": 2712
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Panel",
+      "points": [
+        [
+          -600,
+          100
+        ],
+        [
+          600,
+          100
+        ],
+        [
+          600,
+          2700
+        ],
+        [
+          -600,
+          2700
+        ]
+      ],
+      "start": 0,
+      "end": 3,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Panel",
+      "subcategory": "Cladding"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Panel",
+      "param": "Cladding Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Panel",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cove Segment 1",
+      "points": [
+        [
+          0,
+          100
+        ],
+        [
+          -3.41,
+          74.12
+        ],
+        [
+          -6.31,
+          74.89
+        ],
+        [
+          -3,
+          100
+        ]
+      ],
+      "start": -600,
+      "end": 600,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cove Segment 1",
+      "subcategory": "Cladding"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cove Segment 1",
+      "param": "Cladding Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cove Segment 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cove Segment 2",
+      "points": [
+        [
+          -3.41,
+          74.12
+        ],
+        [
+          -13.4,
+          50
+        ],
+        [
+          -16,
+          51.5
+        ],
+        [
+          -6.31,
+          74.89
+        ]
+      ],
+      "start": -600,
+      "end": 600,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cove Segment 2",
+      "subcategory": "Cladding"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cove Segment 2",
+      "param": "Cladding Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cove Segment 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cove Segment 3",
+      "points": [
+        [
+          -13.4,
+          50
+        ],
+        [
+          -29.29,
+          29.29
+        ],
+        [
+          -31.41,
+          31.41
+        ],
+        [
+          -16,
+          51.5
+        ]
+      ],
+      "start": -600,
+      "end": 600,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cove Segment 3",
+      "subcategory": "Cladding"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cove Segment 3",
+      "param": "Cladding Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cove Segment 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cove Segment 4",
+      "points": [
+        [
+          -29.29,
+          29.29
+        ],
+        [
+          -50,
+          13.4
+        ],
+        [
+          -51.5,
+          16
+        ],
+        [
+          -31.41,
+          31.41
+        ]
+      ],
+      "start": -600,
+      "end": 600,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cove Segment 4",
+      "subcategory": "Cladding"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cove Segment 4",
+      "param": "Cladding Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cove Segment 4",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cove Segment 5",
+      "points": [
+        [
+          -50,
+          13.4
+        ],
+        [
+          -74.12,
+          3.41
+        ],
+        [
+          -74.89,
+          6.31
+        ],
+        [
+          -51.5,
+          16
+        ]
+      ],
+      "start": -600,
+      "end": 600,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cove Segment 5",
+      "subcategory": "Cladding"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cove Segment 5",
+      "param": "Cladding Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cove Segment 5",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cove Segment 6",
+      "points": [
+        [
+          -74.12,
+          3.41
+        ],
+        [
+          -100,
+          0
+        ],
+        [
+          -100,
+          3
+        ],
+        [
+          -74.89,
+          6.31
+        ]
+      ],
+      "start": -600,
+      "end": 600,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cove Segment 6",
+      "subcategory": "Cladding"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cove Segment 6",
+      "param": "Cladding Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cove Segment 6",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cove Fillet",
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          40
+        ],
+        [
+          -12,
+          22
+        ],
+        [
+          -40,
+          0
+        ]
+      ],
+      "start": -600,
+      "end": 600,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cove Fillet",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cove Fillet",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cove Fillet",
+      "coarse": false,
+      "medium": true,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Floor Flange",
+      "points": [
+        [
+          -100,
+          0
+        ],
+        [
+          -160,
+          0
+        ],
+        [
+          -160,
+          3
+        ],
+        [
+          -100,
+          3
+        ]
+      ],
+      "start": -600,
+      "end": 600,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Floor Flange",
+      "subcategory": "Cladding"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Floor Flange",
+      "param": "Cladding Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Floor Flange",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Top Capping",
+      "points": [
+        [
+          0,
+          2690
+        ],
+        [
+          -8,
+          2690
+        ],
+        [
+          -8,
+          2700
+        ],
+        [
+          -5,
+          2712
+        ],
+        [
+          0,
+          2712
+        ]
+      ],
+      "start": -600,
+      "end": 600,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Top Capping",
+      "subcategory": "Cladding"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Top Capping",
+      "param": "Cladding Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Top Capping",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Weld Joint 1",
+      "points": [
+        [
+          -602,
+          100
+        ],
+        [
+          -598,
+          100
+        ],
+        [
+          -598,
+          2700
+        ],
+        [
+          -602,
+          2700
+        ]
+      ],
+      "start": 3,
+      "end": 4,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Weld Joint 1",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Weld Joint 1",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Weld Joint 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Weld Joint 2",
+      "points": [
+        [
+          598,
+          100
+        ],
+        [
+          602,
+          100
+        ],
+        [
+          602,
+          2700
+        ],
+        [
+          598,
+          2700
+        ]
+      ],
+      "start": 3,
+      "end": 4,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Weld Joint 2",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Weld Joint 2",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Weld Joint 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Seam Line",
+      "points": [
+        [
+          -602,
+          2690
+        ],
+        [
+          602,
+          2690
+        ],
+        [
+          602,
+          2700
+        ],
+        [
+          -602,
+          2700
+        ]
+      ],
+      "start": 3,
+      "end": 3.4,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Seam Line",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Seam Line",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Seam Line",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\A\\_Images\\FMC_A_SpecEq_WallPanel_Hygienic_Cladding.png"
+    }
+  ],
+  "values": {
+    "Panel 1200 x 2700 x 2.5 mm": {
+      "value": "1200x2700x2.5",
+      "source_status": "assumed",
+      "source": "typical hygienic sheet size"
+    },
+    "Coved junction 100 mm radius former": {
+      "value": 100,
+      "source_status": "assumed",
+      "source": "HBN 00-10 Part B"
+    },
+    "Fire Class B-s1,d0": {
+      "value": "B-s1,d0",
+      "source_status": "assumed",
+      "source": "HTM 05-02"
+    }
   }
- ],
- "values": {
-  "Panel 1200 x 2700 x 2.5 mm": {
-   "value": "1200x2700x2.5",
-   "source_status": "assumed",
-   "source": "typical hygienic sheet size"
-  },
-  "Coved junction 100 mm radius former": {
-   "value": 100,
-   "source_status": "assumed",
-   "source": "HBN 00-10 Part B"
-  },
-  "Fire Class B-s1,d0": {
-   "value": "B-s1,d0",
-   "source_status": "assumed",
-   "source": "HTM 05-02"
-  }
- }
 }

@@ -83,3 +83,25 @@ export function checkAnnotation(f: AnnotationFacts, s: AnnotationStandard | null
   add("Tags not FMC_TAG_[Role]_[Subject]", f.tag_families.filter((t) => !tagRe.test(t.name)));
   return out;
 }
+
+export const ANNOTATE_NOT_CHECKED = "FMC-ANNOTATE-NOT-CHECKED";
+export const ANNOTATE_INCOMPLETE = "FMC-ANNOTATE-INCOMPLETE";
+
+export interface AnnotationVerdict { status: "Pass" | "Fail" | "Proposed" | "Not checked" | "Incomplete"; code?: string; message?: string; is_error: boolean }
+
+/**
+ * The one answer for a check run. A check that could not run is not a pass: when every check is "Not checked" (the
+ * annotation standard is unreadable) the run is "Not checked" with a code and is an error, never Pass. Some unchecked with
+ * no failure is "Incomplete". A failure wins over everything.
+ */
+export function annotationVerdict(checks: AnnotationCheck[]): AnnotationVerdict {
+  if (checks.length === 0) return { status: "Not checked", code: ANNOTATE_NOT_CHECKED, message: `[${ANNOTATE_NOT_CHECKED}] No annotation check ran.`, is_error: true };
+  const unchecked = checks.filter((c) => c.state === "Not checked");
+  if (unchecked.length === checks.length)
+    return { status: "Not checked", code: ANNOTATE_NOT_CHECKED, message: `[${ANNOTATE_NOT_CHECKED}] Every check came back Not checked, so nothing was verified: ${unchecked[0].items[0] ?? "the standard could not be read"}. This is not a pass.`, is_error: true };
+  if (checks.some((c) => c.state === "Fail")) return { status: "Fail", is_error: false };
+  if (unchecked.length)
+    return { status: "Incomplete", code: ANNOTATE_INCOMPLETE, message: `[${ANNOTATE_INCOMPLETE}] ${unchecked.length} of ${checks.length} checks were Not checked: ${unchecked.map((c) => c.check).join("; ")}. The rest passed or are proposed.`, is_error: false };
+  if (checks.some((c) => c.state === "Proposed")) return { status: "Proposed", is_error: false };
+  return { status: "Pass", is_error: false };
+}

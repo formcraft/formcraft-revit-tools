@@ -10,6 +10,12 @@ export const revitTarget = new AsyncLocalStorage<string | undefined>();
  */
 export const documentTarget = new AsyncLocalStorage<string | undefined>();
 
+/**
+ * The batch lease of the tool call running now. Writes must present this id, and it must belong to this MCP session.
+ * Unset on reads and on calls that are not part of a batch.
+ */
+export const batchLease = new AsyncLocalStorage<string | undefined>();
+
 /** The default target chosen with fmc_revit use (lives as long as the MCP server). */
 let chosen: string | undefined;
 export const getChosen = () => chosen;

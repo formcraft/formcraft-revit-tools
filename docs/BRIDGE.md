@@ -114,25 +114,39 @@ The other upstream tools' messages are English too, with `[FMC-BRIDGE-TIMEOUT]` 
 ## Failures and dialogs (F-032)
 
 An AI job is "executing" from the moment its handler starts work (`FmcAiJob.Enter`: `FmcTarget.Resolve` for every
-Formcraft handler, send_code itself, and the upstream model-changing handlers) until Revit next goes idle. Only then:
+Formcraft handler, send_code itself, and the upstream model-changing handlers) until Revit next goes idle. Failure
+handling applies only then. Dialog rules with scope `always` also apply between jobs:
 
 - **Failures.** Transactions send_code and `FmcScript.Run` open carry `FmcFailures`. For any other transaction without a
-  preprocessor that handled its failures, the add-in's `FailuresProcessing` handler does the same: **warnings are
-  deleted and listed** in the result (e.g. "Elements have duplicate 'Mark' values", "Highlighted walls overlap"), and
-  **errors roll the transaction back** with their text (e.g. "Can't keep elements joined") instead of opening Revit's
-  error dialog. An error is never resolved by Revit's default resolution behind the person's back.
-- **Dialogs** (`DialogBoxShowing`):
+  preprocessor that handled its failures, the add-in's `FailuresProcessing` handler does the same: a warning is
+  **deleted and listed** only when `dialogs.allow` names it (the default names duplicate Mark values). Every other
+  warning is left. **Errors and document corruption roll the transaction back** and are never resolved.
+- **Dialogs** (`DialogBoxShowing`) for the whole session, from `%APPDATA%\Formcraft\fmc_dialog_rules.json`
+  (created with the defaults when it is missing; reloaded when the file changes). This file is not `fmc_guard.json`.
+  A rule matches the dialog id, and optionally a message regex and the active document. Scope `always` also answers
+  between jobs. Scope `ai_jobs` answers only while a job runs. Failure warnings still use `dialogs.allow` in the guard.
 
-| Dialog | Answer | Why |
+| Dialog | Answer | Scope |
 |---|---|---|
-| "Project Not Saved Recently" (the save reminder; matched by an id containing *save* with *remind*, *recent* or *periodic*, or by the English text "not saved recently") | Closed with **Cancel**: the model is **not saved** | Rule 6: a tool never saves. If Revit refuses Cancel, the reminder stays for a person and the job shows `waiting_for_dialog`. |
-| Every other dialog | **Not answered**: left for a person | Recorded with its id and text in the job's `dialogs` and in `FMC_Jobs_Revit.jsonl`, so `fmc_job status` says what Revit waits for. |
+| `Dialog_Revit_AccessingFile` | Logged only | always |
+| `TaskDialog_Project_Not_Saved_Recently` | CommandLink3 (1003), "Do not save the project" | always |
+| `TaskDialog_Changes_Not_Synchronized_With_Central` | CommandLink3 (1003), "Do not synchronize" | always |
+| `Dialog_Revit_DocWarnDialog` | OK | ai_jobs |
+| `Dialog_Revit_PasteSimilarSymbolsPaste` | OK, the destination's types are kept | ai_jobs |
+| `Dialog_Revit_ExtendedErrorDialog` | Cancel | ai_jobs |
+| `Dialog_Revit_SelectElement` | Cancel | ai_jobs |
+| Save, sync, relinquish, upgrade, recover, fatal or serious errors, including `Save_File`, `RevitSaveOptions`, `PartitionsSaveToCentral`, `Worksets_Errors` and `Changes_Not_Saved` | **Not answered**: left for a person | never, and a JSON rule cannot override it |
+
+A dialog left for a person while a call is waiting is `[FMC-DIALOG-BLOCKING]` with the dialog id and text. The add-in
+also writes `fmc_dialog_open.json` while one is up. `fmc_dialog_rules` lists the rules, the counts and that dialog.
+`fmc_dialogs` still reads the guard's failure-warning lists. An older add-in does not write the open file; the server
+uses the job log.
 
 - **The command set's own notices.** The upstream tools used to open a modal TaskDialog when they failed. They now record
   the notice with the job (`FmcAiJob.Notice`) and never show it; the error is in the tool's result.
 
-Outside an AI job (a person working in Revit) none of this applies: Revit's own dialogs and failure handling are
-unchanged.
+Outside an AI job, failure handling is unchanged. Dialog rules with scope `always` still answer (the save and sync
+reminders). Every other dialog stays for the person.
 
 ## For other tools
 

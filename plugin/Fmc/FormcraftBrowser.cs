@@ -78,10 +78,21 @@ namespace revit_mcp_plugin.Fmc
                     IsActive = active != null && d.Equals(active),
                 });
             }
-            if (docs.Count == _lastDocs.Count && docs.Zip(_lastDocs, (a, b) => a.SameAs(b)).All(x => x)) return;
-            _lastDocs = docs;
-            if (SocketService.Instance.IsRunning) InstanceRegistry.Documents(docs);
-            DocumentsChanged?.Invoke(docs);
+            bool changed = docs.Count != _lastDocs.Count || !docs.Zip(_lastDocs, (a, b) => a.SameAs(b)).All(x => x);
+            if (changed)
+            {
+                _lastDocs = docs;
+                DocumentsChanged?.Invoke(docs);
+            }
+            // The listener can die without a document change. The file's port is the socket that is accepting, or the
+            // file is removed. A document refresh must not write a port this process no longer holds.
+            SocketService service = SocketService.Instance;
+            if (service.IsRunning && service.Port > 0)
+            {
+                if (changed || InstanceRegistry.PublishedPort != service.Port)
+                    InstanceRegistry.Documents(docs, service.Port, service.Generation);
+            }
+            else InstanceRegistry.Remove();
         }
 
         public static void RequestToggleService() => _serviceEvent?.Raise();

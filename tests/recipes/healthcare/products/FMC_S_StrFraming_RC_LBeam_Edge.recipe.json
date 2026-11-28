@@ -1,943 +1,946 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_S_StrFraming_RC_LBeam_Edge",
- "template": "Metric Generic Model.rft",
- "about": "Edge L-beam: web at the slab edge (outer face toward -y), slab flange inward, chamfered soffit, drip nib and tie-hole plugs (Fine). Shown 4000 long. Reference: query: str framing rc lbeam edge structural framing hospital; images: https://www.google.com/search?tbm=isch&q=str+framing+rc+lbeam+edge+structural+framing+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Structural Framing"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Curing_Days",
-   "guid": "33575e52-4390-562b-ae33-79cfb8763a86",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Concrete_Grade",
-   "guid": "9d0024a8-a7b4-52c5-9a19-54701506e804",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Steel_Grade",
-   "guid": "d06222d0-07d6-5663-a7c4-a4e890b2c03f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Timber_Grade",
-   "guid": "b3e69a2f-fae9-5ecb-9cc7-c1094c669498",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rebar_Ratio_kg_m3",
-   "guid": "293f58cb-42b0-53a4-8e7c-86c4ca9fac39",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Exposure_Class",
-   "guid": "a77fe04e-fd3a-51de-b34c-d3b808af5916",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Formwork_Type",
-   "guid": "c7110bef-8d3e-5198-b729-1e9664a2f20f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Assembly_Mark",
-   "guid": "63266315-bb4d-5187-9224-35d20981c3d6",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lift_Weight_kg",
-   "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_FEA_NEd_kN",
-   "guid": "82797174-7d95-51e7-8b4c-dab3f933f323",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_FEA_MEd_kNm",
-   "guid": "942dde65-4c14-57d5-9c22-0fa86eb80a44",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_FEA_Utilisation",
-   "guid": "15c508ea-aa97-5d96-9a4c-22e2a1478eff",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_FEA_Run_Ref",
-   "guid": "588a69ec-2914-52f0-b627-633aea9bfbbb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_FEA_Approval_Ref",
-   "guid": "33b0427b-a395-5f9d-acca-0e36401d2456",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Member_Mark",
-   "guid": "31bc3197-1635-5d0a-be71-8658456cb6dc",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "230x600_Edge"
-  },
-  {
-   "op": "set_type_value",
-   "name": "230x600_Edge/FMC_Cost_Unit",
-   "type": "230x600_Edge",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "230x600_Edge/FMC_Geometry_Stage",
-   "type": "230x600_Edge",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "230x600_Edge/IfcExportAs",
-   "type": "230x600_Edge",
-   "param": "IfcExportAs",
-   "value": "IfcBeam"
-  },
-  {
-   "op": "set_type_value",
-   "name": "230x600_Edge/Description",
-   "type": "230x600_Edge",
-   "param": "Description",
-   "value": "Reinforced concrete edge L-beam: downstand at the slab edge with the integral slab flange, drip nib on the outer soffit"
-  },
-  {
-   "op": "set_type_value",
-   "name": "230x600_Edge/Keynote",
-   "type": "230x600_Edge",
-   "param": "Keynote",
-   "value": "C.COL_07"
-  },
-  {
-   "op": "set_type_value",
-   "name": "230x600_Edge/FMC_Keynote_Code",
-   "type": "230x600_Edge",
-   "param": "FMC_Keynote_Code",
-   "value": "C.COL_07"
-  },
-  {
-   "op": "set_type_value",
-   "name": "230x600_Edge/FMC_Code_Description",
-   "type": "230x600_Edge",
-   "param": "FMC_Code_Description",
-   "value": "RC LBeam Edge: Edge L-beam"
-  },
-  {
-   "op": "set_type_value",
-   "name": "230x600_Edge/FMC_Code_Group",
-   "type": "230x600_Edge",
-   "param": "FMC_Code_Group",
-   "value": "C.COL"
-  },
-  {
-   "op": "set_type_value",
-   "name": "230x600_Edge/FMC_Role_Code",
-   "type": "230x600_Edge",
-   "param": "FMC_Role_Code",
-   "value": "S"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Conc",
-   "color": [
-    177,
-    175,
-    168
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Conc Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Concrete_C30",
-   "param": "Conc Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Mortar",
-   "color": [
-    168,
-    164,
-    156
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Mortar Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Masonry_Mortar_1to4",
-   "param": "Mortar Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -2000.0,
-     -116
-    ],
-    [
-     2000.0,
-     -116
-    ],
-    [
-     2000.0,
-     700
-    ],
-    [
-     -2000.0,
-     700
-    ]
-   ],
-   "start": -615,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Beam",
-   "points": [
-    [
-     -115,
-     0
-    ],
-    [
-     -115,
-     -580
-    ],
-    [
-     -95,
-     -600
-    ],
-    [
-     95,
-     -600
-    ],
-    [
-     115,
-     -580
-    ],
-    [
-     115,
-     -150
-    ]
-   ],
-   "start": -2000.0,
-   "end": 2000.0,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Beam",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Beam",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Beam",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Beam Part 2",
-   "points": [
-    [
-     -115,
-     0
-    ],
-    [
-     115,
-     -150
-    ],
-    [
-     700,
-     -150
-    ],
-    [
-     700,
-     0
-    ]
-   ],
-   "start": -2000.0,
-   "end": 2000.0,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Beam Part 2",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Beam Part 2",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Beam Part 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drip Nib",
-   "points": [
-    [
-     -115,
-     -600
-    ],
-    [
-     -95,
-     -600
-    ],
-    [
-     -95,
-     -615
-    ],
-    [
-     -115,
-     -615
-    ]
-   ],
-   "start": -2000.0,
-   "end": 2000.0,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drip Nib",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drip Nib",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drip Nib",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Tie Hole Plug 1",
-   "points": [
-    [
-     -1488.0,
-     -375.0
-    ],
-    [
-     -1489.61,
-     -369.0
-    ],
-    [
-     -1494.0,
-     -364.61
-    ],
-    [
-     -1500.0,
-     -363.0
-    ],
-    [
-     -1506.0,
-     -364.61
-    ],
-    [
-     -1510.39,
-     -369.0
-    ],
-    [
-     -1512.0,
-     -375.0
-    ],
-    [
-     -1510.39,
-     -381.0
-    ],
-    [
-     -1506.0,
-     -385.39
-    ],
-    [
-     -1500.0,
-     -387.0
-    ],
-    [
-     -1494.0,
-     -385.39
-    ],
-    [
-     -1489.61,
-     -381.0
-    ]
-   ],
-   "start": 110,
-   "end": 116,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Tie Hole Plug 1",
-   "subcategory": "Mortar"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Tie Hole Plug 1",
-   "param": "Mortar Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Tie Hole Plug 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Tie Hole Plug 2",
-   "points": [
-    [
-     -488.0,
-     -375.0
-    ],
-    [
-     -489.61,
-     -369.0
-    ],
-    [
-     -494.0,
-     -364.61
-    ],
-    [
-     -500.0,
-     -363.0
-    ],
-    [
-     -506.0,
-     -364.61
-    ],
-    [
-     -510.39,
-     -369.0
-    ],
-    [
-     -512.0,
-     -375.0
-    ],
-    [
-     -510.39,
-     -381.0
-    ],
-    [
-     -506.0,
-     -385.39
-    ],
-    [
-     -500.0,
-     -387.0
-    ],
-    [
-     -494.0,
-     -385.39
-    ],
-    [
-     -489.61,
-     -381.0
-    ]
-   ],
-   "start": 110,
-   "end": 116,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Tie Hole Plug 2",
-   "subcategory": "Mortar"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Tie Hole Plug 2",
-   "param": "Mortar Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Tie Hole Plug 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Tie Hole Plug 3",
-   "points": [
-    [
-     512.0,
-     -375.0
-    ],
-    [
-     510.39,
-     -369.0
-    ],
-    [
-     506.0,
-     -364.61
-    ],
-    [
-     500.0,
-     -363.0
-    ],
-    [
-     494.0,
-     -364.61
-    ],
-    [
-     489.61,
-     -369.0
-    ],
-    [
-     488.0,
-     -375.0
-    ],
-    [
-     489.61,
-     -381.0
-    ],
-    [
-     494.0,
-     -385.39
-    ],
-    [
-     500.0,
-     -387.0
-    ],
-    [
-     506.0,
-     -385.39
-    ],
-    [
-     510.39,
-     -381.0
-    ]
-   ],
-   "start": 110,
-   "end": 116,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Tie Hole Plug 3",
-   "subcategory": "Mortar"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Tie Hole Plug 3",
-   "param": "Mortar Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Tie Hole Plug 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Tie Hole Plug 4",
-   "points": [
-    [
-     1512.0,
-     -375.0
-    ],
-    [
-     1510.39,
-     -369.0
-    ],
-    [
-     1506.0,
-     -364.61
-    ],
-    [
-     1500.0,
-     -363.0
-    ],
-    [
-     1494.0,
-     -364.61
-    ],
-    [
-     1489.61,
-     -369.0
-    ],
-    [
-     1488.0,
-     -375.0
-    ],
-    [
-     1489.61,
-     -381.0
-    ],
-    [
-     1494.0,
-     -385.39
-    ],
-    [
-     1500.0,
-     -387.0
-    ],
-    [
-     1506.0,
-     -385.39
-    ],
-    [
-     1510.39,
-     -381.0
-    ]
-   ],
-   "start": 110,
-   "end": 116,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Tie Hole Plug 4",
-   "subcategory": "Mortar"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Tie Hole Plug 4",
-   "param": "Mortar Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Tie Hole Plug 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\S\\_Images\\FMC_S_StrFraming_RC_LBeam_Edge.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_S_StrFraming_RC_LBeam_Edge",
+  "template": "Metric Generic Model.rft",
+  "about": "Edge L-beam: web at the slab edge (outer face toward -y), slab flange inward, chamfered soffit, drip nib and tie-hole plugs (Fine). Shown 4000 long. Reference: query: str framing rc lbeam edge structural framing hospital; images: https://www.google.com/search?tbm=isch&q=str+framing+rc+lbeam+edge+structural+framing+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Structural Framing"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Curing_Days",
+      "guid": "33575e52-4390-562b-ae33-79cfb8763a86",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Concrete_Grade",
+      "guid": "9d0024a8-a7b4-52c5-9a19-54701506e804",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Steel_Grade",
+      "guid": "d06222d0-07d6-5663-a7c4-a4e890b2c03f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Timber_Grade",
+      "guid": "b3e69a2f-fae9-5ecb-9cc7-c1094c669498",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rebar_Ratio_kg_m3",
+      "guid": "293f58cb-42b0-53a4-8e7c-86c4ca9fac39",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Exposure_Class",
+      "guid": "a77fe04e-fd3a-51de-b34c-d3b808af5916",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Formwork_Type",
+      "guid": "c7110bef-8d3e-5198-b729-1e9664a2f20f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Assembly_Mark",
+      "guid": "63266315-bb4d-5187-9224-35d20981c3d6",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lift_Weight_kg",
+      "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_FEA_NEd_kN",
+      "guid": "82797174-7d95-51e7-8b4c-dab3f933f323",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_FEA_MEd_kNm",
+      "guid": "942dde65-4c14-57d5-9c22-0fa86eb80a44",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_FEA_Utilisation",
+      "guid": "15c508ea-aa97-5d96-9a4c-22e2a1478eff",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_FEA_Run_Ref",
+      "guid": "588a69ec-2914-52f0-b627-633aea9bfbbb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_FEA_Approval_Ref",
+      "guid": "33b0427b-a395-5f9d-acca-0e36401d2456",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Member_Mark",
+      "guid": "31bc3197-1635-5d0a-be71-8658456cb6dc",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "230x600_Edge"
+    },
+    {
+      "op": "set_type_value",
+      "name": "230x600_Edge/FMC_Cost_Unit",
+      "type": "230x600_Edge",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "230x600_Edge/FMC_Geometry_Stage",
+      "type": "230x600_Edge",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "230x600_Edge/IfcExportAs",
+      "type": "230x600_Edge",
+      "param": "IfcExportAs",
+      "value": "IfcBeam"
+    },
+    {
+      "op": "set_type_value",
+      "name": "230x600_Edge/Description",
+      "type": "230x600_Edge",
+      "param": "Description",
+      "value": "Reinforced concrete edge L-beam: downstand at the slab edge with the integral slab flange, drip nib on the outer soffit"
+    },
+    {
+      "op": "set_type_value",
+      "name": "230x600_Edge/Keynote",
+      "type": "230x600_Edge",
+      "param": "Keynote",
+      "value": "C.COL_07"
+    },
+    {
+      "op": "set_type_value",
+      "name": "230x600_Edge/FMC_Keynote_Code",
+      "type": "230x600_Edge",
+      "param": "FMC_Keynote_Code",
+      "value": "C.COL_07"
+    },
+    {
+      "op": "set_type_value",
+      "name": "230x600_Edge/FMC_Code_Description",
+      "type": "230x600_Edge",
+      "param": "FMC_Code_Description",
+      "value": "RC LBeam Edge: Edge L-beam"
+    },
+    {
+      "op": "set_type_value",
+      "name": "230x600_Edge/FMC_Code_Group",
+      "type": "230x600_Edge",
+      "param": "FMC_Code_Group",
+      "value": "C.COL"
+    },
+    {
+      "op": "set_type_value",
+      "name": "230x600_Edge/FMC_Role_Code",
+      "type": "230x600_Edge",
+      "param": "FMC_Role_Code",
+      "value": "S"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Conc",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Conc Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Concrete_C30",
+      "param": "Conc Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Mortar",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Mortar Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Masonry_Mortar_1to4",
+      "param": "Mortar Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -2000,
+          -116
+        ],
+        [
+          2000,
+          -116
+        ],
+        [
+          2000,
+          700
+        ],
+        [
+          -2000,
+          700
+        ]
+      ],
+      "start": -615,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Beam",
+      "points": [
+        [
+          -115,
+          0
+        ],
+        [
+          -115,
+          -580
+        ],
+        [
+          -95,
+          -600
+        ],
+        [
+          95,
+          -600
+        ],
+        [
+          115,
+          -580
+        ],
+        [
+          115,
+          -150
+        ]
+      ],
+      "start": -2000,
+      "end": 2000,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Beam",
+      "subcategory": "Conc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Beam",
+      "param": "Conc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Beam",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Beam Part 2",
+      "points": [
+        [
+          -115,
+          0
+        ],
+        [
+          115,
+          -150
+        ],
+        [
+          700,
+          -150
+        ],
+        [
+          700,
+          0
+        ]
+      ],
+      "start": -2000,
+      "end": 2000,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Beam Part 2",
+      "subcategory": "Conc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Beam Part 2",
+      "param": "Conc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Beam Part 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Drip Nib",
+      "points": [
+        [
+          -115,
+          -600
+        ],
+        [
+          -95,
+          -600
+        ],
+        [
+          -95,
+          -615
+        ],
+        [
+          -115,
+          -615
+        ]
+      ],
+      "start": -2000,
+      "end": 2000,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Drip Nib",
+      "subcategory": "Conc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Drip Nib",
+      "param": "Conc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Drip Nib",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Tie Hole Plug 1",
+      "points": [
+        [
+          -1488,
+          -375
+        ],
+        [
+          -1489.61,
+          -369
+        ],
+        [
+          -1494,
+          -364.61
+        ],
+        [
+          -1500,
+          -363
+        ],
+        [
+          -1506,
+          -364.61
+        ],
+        [
+          -1510.39,
+          -369
+        ],
+        [
+          -1512,
+          -375
+        ],
+        [
+          -1510.39,
+          -381
+        ],
+        [
+          -1506,
+          -385.39
+        ],
+        [
+          -1500,
+          -387
+        ],
+        [
+          -1494,
+          -385.39
+        ],
+        [
+          -1489.61,
+          -381
+        ]
+      ],
+      "start": 110,
+      "end": 116,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Tie Hole Plug 1",
+      "subcategory": "Mortar"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Tie Hole Plug 1",
+      "param": "Mortar Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Tie Hole Plug 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Tie Hole Plug 2",
+      "points": [
+        [
+          -488,
+          -375
+        ],
+        [
+          -489.61,
+          -369
+        ],
+        [
+          -494,
+          -364.61
+        ],
+        [
+          -500,
+          -363
+        ],
+        [
+          -506,
+          -364.61
+        ],
+        [
+          -510.39,
+          -369
+        ],
+        [
+          -512,
+          -375
+        ],
+        [
+          -510.39,
+          -381
+        ],
+        [
+          -506,
+          -385.39
+        ],
+        [
+          -500,
+          -387
+        ],
+        [
+          -494,
+          -385.39
+        ],
+        [
+          -489.61,
+          -381
+        ]
+      ],
+      "start": 110,
+      "end": 116,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Tie Hole Plug 2",
+      "subcategory": "Mortar"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Tie Hole Plug 2",
+      "param": "Mortar Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Tie Hole Plug 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Tie Hole Plug 3",
+      "points": [
+        [
+          512,
+          -375
+        ],
+        [
+          510.39,
+          -369
+        ],
+        [
+          506,
+          -364.61
+        ],
+        [
+          500,
+          -363
+        ],
+        [
+          494,
+          -364.61
+        ],
+        [
+          489.61,
+          -369
+        ],
+        [
+          488,
+          -375
+        ],
+        [
+          489.61,
+          -381
+        ],
+        [
+          494,
+          -385.39
+        ],
+        [
+          500,
+          -387
+        ],
+        [
+          506,
+          -385.39
+        ],
+        [
+          510.39,
+          -381
+        ]
+      ],
+      "start": 110,
+      "end": 116,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Tie Hole Plug 3",
+      "subcategory": "Mortar"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Tie Hole Plug 3",
+      "param": "Mortar Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Tie Hole Plug 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Tie Hole Plug 4",
+      "points": [
+        [
+          1512,
+          -375
+        ],
+        [
+          1510.39,
+          -369
+        ],
+        [
+          1506,
+          -364.61
+        ],
+        [
+          1500,
+          -363
+        ],
+        [
+          1494,
+          -364.61
+        ],
+        [
+          1489.61,
+          -369
+        ],
+        [
+          1488,
+          -375
+        ],
+        [
+          1489.61,
+          -381
+        ],
+        [
+          1494,
+          -385.39
+        ],
+        [
+          1500,
+          -387
+        ],
+        [
+          1506,
+          -385.39
+        ],
+        [
+          1510.39,
+          -381
+        ]
+      ],
+      "start": 110,
+      "end": 116,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Tie Hole Plug 4",
+      "subcategory": "Mortar"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Tie Hole Plug 4",
+      "param": "Mortar Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Tie Hole Plug 4",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\S\\_Images\\FMC_S_StrFraming_RC_LBeam_Edge.png"
+    }
+  ],
+  "values": {
+    "Downstand 230 x 600 mm": {
+      "value": "230x600",
+      "source_status": "assumed",
+      "source": "typical size, engineer to confirm"
+    },
+    "Slab flange 150 x 585 mm": {
+      "value": "150x585",
+      "source_status": "assumed",
+      "source": "typical size, engineer to confirm; flange width per BS EN 1992 effective width"
+    },
+    "Drip nib 15 mm": {
+      "value": 15,
+      "source_status": "assumed",
+      "source": "typical edge detail"
+    }
   }
- ],
- "values": {
-  "Downstand 230 x 600 mm": {
-   "value": "230x600",
-   "source_status": "assumed",
-   "source": "typical size, engineer to confirm"
-  },
-  "Slab flange 150 x 585 mm": {
-   "value": "150x585",
-   "source_status": "assumed",
-   "source": "typical size, engineer to confirm; flange width per BS EN 1992 effective width"
-  },
-  "Drip nib 15 mm": {
-   "value": 15,
-   "source_status": "assumed",
-   "source": "typical edge detail"
-  }
- }
 }

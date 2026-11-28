@@ -1,1320 +1,1326 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_E_SecurityDevice_CCTV_Camera_Bullet",
- "template": "Metric Generic Model.rft",
- "about": "Bullet camera: round wall base, arm, ball joint and bracket, cylindrical body, sun shield, front ring and glass with lens and IR LEDs, cable tail. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: security device cctv camera bullet security devices hospital; images: https://www.google.com/search?tbm=isch&q=security+device+cctv+camera+bullet+security+devices+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Security Devices"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
-  },
-  {
-   "op": "add_type",
-   "name": "80x280_Wall"
-  },
-  {
-   "op": "set_type_value",
-   "name": "80x280_Wall/FMC_Cost_Unit",
-   "type": "80x280_Wall",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "80x280_Wall/FMC_Geometry_Stage",
-   "type": "80x280_Wall",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "80x280_Wall/IfcExportAs",
-   "type": "80x280_Wall",
-   "param": "IfcExportAs",
-   "value": "IfcSensor"
-  },
-  {
-   "op": "set_type_value",
-   "name": "80x280_Wall/Description",
-   "type": "80x280_Wall",
-   "param": "Description",
-   "value": "IP bullet camera, wall mounted on bracket with sun shield and IR"
-  },
-  {
-   "op": "set_type_value",
-   "name": "80x280_Wall/Keynote",
-   "type": "80x280_Wall",
-   "param": "Keynote",
-   "value": "E.ICT_06"
-  },
-  {
-   "op": "set_type_value",
-   "name": "80x280_Wall/FMC_Keynote_Code",
-   "type": "80x280_Wall",
-   "param": "FMC_Keynote_Code",
-   "value": "E.ICT_06"
-  },
-  {
-   "op": "set_type_value",
-   "name": "80x280_Wall/Default Elevation",
-   "type": "80x280_Wall",
-   "param": "Default Elevation",
-   "value": 2700
-  },
-  {
-   "op": "add_subcategory",
-   "name": "White",
-   "color": [
-    242,
-    242,
-    238
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "White Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_White",
-   "param": "White Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Grey",
-   "color": [
-    154,
-    160,
-    166
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Grey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Grey",
-   "param": "Grey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Screen",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Screen Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Screen Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Red",
-   "color": [
-    229,
-    72,
-    77
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Red Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_LED_Red",
-   "param": "Red Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -50,
-     -290.0
-    ],
-    [
-     50,
-     -290.0
-    ],
-    [
-     50,
-     0
-    ],
-    [
-     -50,
-     0
-    ]
-   ],
-   "start": -50,
-   "end": 86
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "revolution",
-   "name": "Wall Base",
-   "profile": [
-    [
-     0,
-     0
-    ],
-    [
-     50,
-     0
-    ],
-    [
-     50,
-     12
-    ],
-    [
-     20,
-     20
-    ],
-    [
-     0,
-     20
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "y",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Wall Base",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Wall Base",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Arm",
-   "points": [
-    [
-     12.0,
-     0.0
-    ],
-    [
-     11.59,
-     3.11
-    ],
-    [
-     10.39,
-     6.0
-    ],
-    [
-     8.49,
-     8.49
-    ],
-    [
-     6.0,
-     10.39
-    ],
-    [
-     3.11,
-     11.59
-    ],
-    [
-     0.0,
-     12.0
-    ],
-    [
-     -3.11,
-     11.59
-    ],
-    [
-     -6.0,
-     10.39
-    ],
-    [
-     -8.49,
-     8.49
-    ],
-    [
-     -10.39,
-     6.0
-    ],
-    [
-     -11.59,
-     3.11
-    ],
-    [
-     -12.0,
-     0.0
-    ],
-    [
-     -11.59,
-     -3.11
-    ],
-    [
-     -10.39,
-     -6.0
-    ],
-    [
-     -8.49,
-     -8.49
-    ],
-    [
-     -6.0,
-     -10.39
-    ],
-    [
-     -3.11,
-     -11.59
-    ],
-    [
-     -0.0,
-     -12.0
-    ],
-    [
-     3.11,
-     -11.59
-    ],
-    [
-     6.0,
-     -10.39
-    ],
-    [
-     8.49,
-     -8.49
-    ],
-    [
-     10.39,
-     -6.0
-    ],
-    [
-     11.59,
-     -3.11
-    ]
-   ],
-   "start": 20,
-   "end": 80,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Arm",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Arm",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Arm",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Ball Joint",
-   "profile": [
-    [
-     0,
-     70
-    ],
-    [
-     14,
-     72
-    ],
-    [
-     18,
-     80
-    ],
-    [
-     14,
-     88
-    ],
-    [
-     0,
-     90
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "y",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Ball Joint",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Ball Joint",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bracket",
-   "points": [
-    [
-     10.0,
-     -88.0
-    ],
-    [
-     9.66,
-     -85.41
-    ],
-    [
-     8.66,
-     -83.0
-    ],
-    [
-     7.07,
-     -80.93
-    ],
-    [
-     5.0,
-     -79.34
-    ],
-    [
-     2.59,
-     -78.34
-    ],
-    [
-     0.0,
-     -78.0
-    ],
-    [
-     -2.59,
-     -78.34
-    ],
-    [
-     -5.0,
-     -79.34
-    ],
-    [
-     -7.07,
-     -80.93
-    ],
-    [
-     -8.66,
-     -83.0
-    ],
-    [
-     -9.66,
-     -85.41
-    ],
-    [
-     -10.0,
-     -88.0
-    ],
-    [
-     -9.66,
-     -90.59
-    ],
-    [
-     -8.66,
-     -93.0
-    ],
-    [
-     -7.07,
-     -95.07
-    ],
-    [
-     -5.0,
-     -96.66
-    ],
-    [
-     -2.59,
-     -97.66
-    ],
-    [
-     -0.0,
-     -98.0
-    ],
-    [
-     2.59,
-     -97.66
-    ],
-    [
-     5.0,
-     -96.66
-    ],
-    [
-     7.07,
-     -95.07
-    ],
-    [
-     8.66,
-     -93.0
-    ],
-    [
-     9.66,
-     -90.59
-    ]
-   ],
-   "start": 0,
-   "end": 30
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bracket",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bracket",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bracket",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Body",
-   "points": [
-    [
-     40.0,
-     40.0
-    ],
-    [
-     38.64,
-     50.35
-    ],
-    [
-     34.64,
-     60.0
-    ],
-    [
-     28.28,
-     68.28
-    ],
-    [
-     20.0,
-     74.64
-    ],
-    [
-     10.35,
-     78.64
-    ],
-    [
-     0.0,
-     80.0
-    ],
-    [
-     -10.35,
-     78.64
-    ],
-    [
-     -20.0,
-     74.64
-    ],
-    [
-     -28.28,
-     68.28
-    ],
-    [
-     -34.64,
-     60.0
-    ],
-    [
-     -38.64,
-     50.35
-    ],
-    [
-     -40.0,
-     40.0
-    ],
-    [
-     -38.64,
-     29.65
-    ],
-    [
-     -34.64,
-     20.0
-    ],
-    [
-     -28.28,
-     11.72
-    ],
-    [
-     -20.0,
-     5.36
-    ],
-    [
-     -10.35,
-     1.36
-    ],
-    [
-     -0.0,
-     0.0
-    ],
-    [
-     10.35,
-     1.36
-    ],
-    [
-     20.0,
-     5.36
-    ],
-    [
-     28.28,
-     11.72
-    ],
-    [
-     34.64,
-     20.0
-    ],
-    [
-     38.64,
-     29.65
-    ]
-   ],
-   "start": 60,
-   "end": 260,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Body",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Body",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Body",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Sun Shield",
-   "points": [
-    [
-     38.0,
-     -290.0
-    ],
-    [
-     41.06,
-     -289.39
-    ],
-    [
-     43.66,
-     -287.66
-    ],
-    [
-     45.39,
-     -285.06
-    ],
-    [
-     46.0,
-     -282.0
-    ],
-    [
-     46.0,
-     -68.0
-    ],
-    [
-     45.39,
-     -64.94
-    ],
-    [
-     43.66,
-     -62.34
-    ],
-    [
-     41.06,
-     -60.61
-    ],
-    [
-     38.0,
-     -60.0
-    ],
-    [
-     -38.0,
-     -60.0
-    ],
-    [
-     -41.06,
-     -60.61
-    ],
-    [
-     -43.66,
-     -62.34
-    ],
-    [
-     -45.39,
-     -64.94
-    ],
-    [
-     -46.0,
-     -68.0
-    ],
-    [
-     -46.0,
-     -282.0
-    ],
-    [
-     -45.39,
-     -285.06
-    ],
-    [
-     -43.66,
-     -287.66
-    ],
-    [
-     -41.06,
-     -289.39
-    ],
-    [
-     -38.0,
-     -290.0
-    ]
-   ],
-   "start": 70,
-   "end": 86
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sun Shield",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sun Shield",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sun Shield",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Front Ring",
-   "profile": [
-    [
-     34,
-     260
-    ],
-    [
-     40,
-     260
-    ],
-    [
-     40,
-     265
-    ],
-    [
-     34,
-     265
-    ]
-   ],
-   "axis_at": [
-    0,
-    40
-   ],
-   "axis": "y",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Front Ring",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Front Ring",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Front Glass",
-   "profile": [
-    [
-     0,
-     260
-    ],
-    [
-     34,
-     260
-    ],
-    [
-     34,
-     261
-    ],
-    [
-     0,
-     261
-    ]
-   ],
-   "axis_at": [
-    0,
-    40
-   ],
-   "axis": "y",
-   "subcategory": "Screen"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Front Glass",
-   "param": "Screen Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Front Glass",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Lens",
-   "profile": [
-    [
-     0,
-     261
-    ],
-    [
-     12,
-     261
-    ],
-    [
-     12,
-     262
-    ],
-    [
-     0,
-     262
-    ]
-   ],
-   "axis_at": [
-    0,
-    40
-   ],
-   "axis": "y",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lens",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lens",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "IR LED 1",
-   "points": [
-    [
-     -18.0,
-     40.0
-    ],
-    [
-     -18.14,
-     41.04
-    ],
-    [
-     -18.54,
-     42.0
-    ],
-    [
-     -19.17,
-     42.83
-    ],
-    [
-     -20.0,
-     43.46
-    ],
-    [
-     -20.96,
-     43.86
-    ],
-    [
-     -22.0,
-     44.0
-    ],
-    [
-     -23.04,
-     43.86
-    ],
-    [
-     -24.0,
-     43.46
-    ],
-    [
-     -24.83,
-     42.83
-    ],
-    [
-     -25.46,
-     42.0
-    ],
-    [
-     -25.86,
-     41.04
-    ],
-    [
-     -26.0,
-     40.0
-    ],
-    [
-     -25.86,
-     38.96
-    ],
-    [
-     -25.46,
-     38.0
-    ],
-    [
-     -24.83,
-     37.17
-    ],
-    [
-     -24.0,
-     36.54
-    ],
-    [
-     -23.04,
-     36.14
-    ],
-    [
-     -22.0,
-     36.0
-    ],
-    [
-     -20.96,
-     36.14
-    ],
-    [
-     -20.0,
-     36.54
-    ],
-    [
-     -19.17,
-     37.17
-    ],
-    [
-     -18.54,
-     38.0
-    ],
-    [
-     -18.14,
-     38.96
-    ]
-   ],
-   "start": 261,
-   "end": 262,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "IR LED 1",
-   "subcategory": "Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "IR LED 1",
-   "param": "Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "IR LED 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "IR LED 2",
-   "points": [
-    [
-     26.0,
-     40.0
-    ],
-    [
-     25.86,
-     41.04
-    ],
-    [
-     25.46,
-     42.0
-    ],
-    [
-     24.83,
-     42.83
-    ],
-    [
-     24.0,
-     43.46
-    ],
-    [
-     23.04,
-     43.86
-    ],
-    [
-     22.0,
-     44.0
-    ],
-    [
-     20.96,
-     43.86
-    ],
-    [
-     20.0,
-     43.46
-    ],
-    [
-     19.17,
-     42.83
-    ],
-    [
-     18.54,
-     42.0
-    ],
-    [
-     18.14,
-     41.04
-    ],
-    [
-     18.0,
-     40.0
-    ],
-    [
-     18.14,
-     38.96
-    ],
-    [
-     18.54,
-     38.0
-    ],
-    [
-     19.17,
-     37.17
-    ],
-    [
-     20.0,
-     36.54
-    ],
-    [
-     20.96,
-     36.14
-    ],
-    [
-     22.0,
-     36.0
-    ],
-    [
-     23.04,
-     36.14
-    ],
-    [
-     24.0,
-     36.54
-    ],
-    [
-     24.83,
-     37.17
-    ],
-    [
-     25.46,
-     38.0
-    ],
-    [
-     25.86,
-     38.96
-    ]
-   ],
-   "start": 261,
-   "end": 262,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "IR LED 2",
-   "subcategory": "Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "IR LED 2",
-   "param": "Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "IR LED 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cable Tail",
-   "points": [
-    [
-     4.0,
-     10.0
-    ],
-    [
-     3.86,
-     11.04
-    ],
-    [
-     3.46,
-     12.0
-    ],
-    [
-     2.83,
-     12.83
-    ],
-    [
-     2.0,
-     13.46
-    ],
-    [
-     1.04,
-     13.86
-    ],
-    [
-     0.0,
-     14.0
-    ],
-    [
-     -1.04,
-     13.86
-    ],
-    [
-     -2.0,
-     13.46
-    ],
-    [
-     -2.83,
-     12.83
-    ],
-    [
-     -3.46,
-     12.0
-    ],
-    [
-     -3.86,
-     11.04
-    ],
-    [
-     -4.0,
-     10.0
-    ],
-    [
-     -3.86,
-     8.96
-    ],
-    [
-     -3.46,
-     8.0
-    ],
-    [
-     -2.83,
-     7.17
-    ],
-    [
-     -2.0,
-     6.54
-    ],
-    [
-     -1.04,
-     6.14
-    ],
-    [
-     -0.0,
-     6.0
-    ],
-    [
-     1.04,
-     6.14
-    ],
-    [
-     2.0,
-     6.54
-    ],
-    [
-     2.83,
-     7.17
-    ],
-    [
-     3.46,
-     8.0
-    ],
-    [
-     3.86,
-     8.96
-    ]
-   ],
-   "start": 60,
-   "end": 80,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cable Tail",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cable Tail",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cable Tail",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "Security",
-   "domain": "electrical",
-   "system": "Security",
-   "solid": "Wall Base",
-   "side": "back"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\E\\_Images\\FMC_E_SecurityDevice_CCTV_Camera_Bullet.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_E_SecurityDevice_CCTV_Camera_Bullet",
+  "template": "Metric Generic Model.rft",
+  "about": "Bullet camera: round wall base, arm, ball joint and bracket, cylindrical body, sun shield, front ring and glass with lens and IR LEDs, cable tail. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: security device cctv camera bullet security devices hospital; images: https://www.google.com/search?tbm=isch&q=security+device+cctv+camera+bullet+security+devices+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Security Devices"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+    },
+    {
+      "op": "add_type",
+      "name": "80x280_Wall"
+    },
+    {
+      "op": "set_type_value",
+      "name": "80x280_Wall/FMC_Cost_Unit",
+      "type": "80x280_Wall",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "80x280_Wall/FMC_Geometry_Stage",
+      "type": "80x280_Wall",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "80x280_Wall/IfcExportAs",
+      "type": "80x280_Wall",
+      "param": "IfcExportAs",
+      "value": "IfcSensor"
+    },
+    {
+      "op": "set_type_value",
+      "name": "80x280_Wall/Description",
+      "type": "80x280_Wall",
+      "param": "Description",
+      "value": "IP bullet camera, wall mounted on bracket with sun shield and IR"
+    },
+    {
+      "op": "set_type_value",
+      "name": "80x280_Wall/Keynote",
+      "type": "80x280_Wall",
+      "param": "Keynote",
+      "value": "E.ICT_06"
+    },
+    {
+      "op": "set_type_value",
+      "name": "80x280_Wall/FMC_Keynote_Code",
+      "type": "80x280_Wall",
+      "param": "FMC_Keynote_Code",
+      "value": "E.ICT_06"
+    },
+    {
+      "op": "set_type_value",
+      "name": "80x280_Wall/Default Elevation",
+      "type": "80x280_Wall",
+      "param": "Default Elevation",
+      "value": 2700
+    },
+    {
+      "op": "add_subcategory",
+      "name": "White",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "White Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_White",
+      "param": "White Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Grey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Grey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Grey",
+      "param": "Grey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Screen",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Screen Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Screen Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Red",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Red Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_LED_Red",
+      "param": "Red Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -50,
+          -290
+        ],
+        [
+          50,
+          -290
+        ],
+        [
+          50,
+          0
+        ],
+        [
+          -50,
+          0
+        ]
+      ],
+      "start": -50,
+      "end": 86
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "revolution",
+      "name": "Wall Base",
+      "profile": [
+        [
+          0,
+          0
+        ],
+        [
+          50,
+          0
+        ],
+        [
+          50,
+          12
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          0,
+          20
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "y",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Wall Base",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Wall Base",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Arm",
+      "points": [
+        [
+          12,
+          0
+        ],
+        [
+          11.59,
+          3.11
+        ],
+        [
+          10.39,
+          6
+        ],
+        [
+          8.49,
+          8.49
+        ],
+        [
+          6,
+          10.39
+        ],
+        [
+          3.11,
+          11.59
+        ],
+        [
+          0,
+          12
+        ],
+        [
+          -3.11,
+          11.59
+        ],
+        [
+          -6,
+          10.39
+        ],
+        [
+          -8.49,
+          8.49
+        ],
+        [
+          -10.39,
+          6
+        ],
+        [
+          -11.59,
+          3.11
+        ],
+        [
+          -12,
+          0
+        ],
+        [
+          -11.59,
+          -3.11
+        ],
+        [
+          -10.39,
+          -6
+        ],
+        [
+          -8.49,
+          -8.49
+        ],
+        [
+          -6,
+          -10.39
+        ],
+        [
+          -3.11,
+          -11.59
+        ],
+        [
+          0,
+          -12
+        ],
+        [
+          3.11,
+          -11.59
+        ],
+        [
+          6,
+          -10.39
+        ],
+        [
+          8.49,
+          -8.49
+        ],
+        [
+          10.39,
+          -6
+        ],
+        [
+          11.59,
+          -3.11
+        ]
+      ],
+      "start": 20,
+      "end": 80,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Arm",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Arm",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Arm",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Ball Joint",
+      "profile": [
+        [
+          0,
+          70
+        ],
+        [
+          14,
+          72
+        ],
+        [
+          18,
+          80
+        ],
+        [
+          14,
+          88
+        ],
+        [
+          0,
+          90
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "y",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Ball Joint",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Ball Joint",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bracket",
+      "points": [
+        [
+          10,
+          -88
+        ],
+        [
+          9.66,
+          -85.41
+        ],
+        [
+          8.66,
+          -83
+        ],
+        [
+          7.07,
+          -80.93
+        ],
+        [
+          5,
+          -79.34
+        ],
+        [
+          2.59,
+          -78.34
+        ],
+        [
+          0,
+          -78
+        ],
+        [
+          -2.59,
+          -78.34
+        ],
+        [
+          -5,
+          -79.34
+        ],
+        [
+          -7.07,
+          -80.93
+        ],
+        [
+          -8.66,
+          -83
+        ],
+        [
+          -9.66,
+          -85.41
+        ],
+        [
+          -10,
+          -88
+        ],
+        [
+          -9.66,
+          -90.59
+        ],
+        [
+          -8.66,
+          -93
+        ],
+        [
+          -7.07,
+          -95.07
+        ],
+        [
+          -5,
+          -96.66
+        ],
+        [
+          -2.59,
+          -97.66
+        ],
+        [
+          0,
+          -98
+        ],
+        [
+          2.59,
+          -97.66
+        ],
+        [
+          5,
+          -96.66
+        ],
+        [
+          7.07,
+          -95.07
+        ],
+        [
+          8.66,
+          -93
+        ],
+        [
+          9.66,
+          -90.59
+        ]
+      ],
+      "start": 0,
+      "end": 30
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bracket",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bracket",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bracket",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Body",
+      "points": [
+        [
+          40,
+          40
+        ],
+        [
+          38.64,
+          50.35
+        ],
+        [
+          34.64,
+          60
+        ],
+        [
+          28.28,
+          68.28
+        ],
+        [
+          20,
+          74.64
+        ],
+        [
+          10.35,
+          78.64
+        ],
+        [
+          0,
+          80
+        ],
+        [
+          -10.35,
+          78.64
+        ],
+        [
+          -20,
+          74.64
+        ],
+        [
+          -28.28,
+          68.28
+        ],
+        [
+          -34.64,
+          60
+        ],
+        [
+          -38.64,
+          50.35
+        ],
+        [
+          -40,
+          40
+        ],
+        [
+          -38.64,
+          29.65
+        ],
+        [
+          -34.64,
+          20
+        ],
+        [
+          -28.28,
+          11.72
+        ],
+        [
+          -20,
+          5.36
+        ],
+        [
+          -10.35,
+          1.36
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          10.35,
+          1.36
+        ],
+        [
+          20,
+          5.36
+        ],
+        [
+          28.28,
+          11.72
+        ],
+        [
+          34.64,
+          20
+        ],
+        [
+          38.64,
+          29.65
+        ]
+      ],
+      "start": 60,
+      "end": 260,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Body",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Body",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Body",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Sun Shield",
+      "points": [
+        [
+          38,
+          -290
+        ],
+        [
+          41.06,
+          -289.39
+        ],
+        [
+          43.66,
+          -287.66
+        ],
+        [
+          45.39,
+          -285.06
+        ],
+        [
+          46,
+          -282
+        ],
+        [
+          46,
+          -68
+        ],
+        [
+          45.39,
+          -64.94
+        ],
+        [
+          43.66,
+          -62.34
+        ],
+        [
+          41.06,
+          -60.61
+        ],
+        [
+          38,
+          -60
+        ],
+        [
+          -38,
+          -60
+        ],
+        [
+          -41.06,
+          -60.61
+        ],
+        [
+          -43.66,
+          -62.34
+        ],
+        [
+          -45.39,
+          -64.94
+        ],
+        [
+          -46,
+          -68
+        ],
+        [
+          -46,
+          -282
+        ],
+        [
+          -45.39,
+          -285.06
+        ],
+        [
+          -43.66,
+          -287.66
+        ],
+        [
+          -41.06,
+          -289.39
+        ],
+        [
+          -38,
+          -290
+        ]
+      ],
+      "start": 70,
+      "end": 86
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Sun Shield",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sun Shield",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Sun Shield",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Front Ring",
+      "profile": [
+        [
+          34,
+          260
+        ],
+        [
+          40,
+          260
+        ],
+        [
+          40,
+          265
+        ],
+        [
+          34,
+          265
+        ]
+      ],
+      "axis_at": [
+        0,
+        40
+      ],
+      "axis": "y",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Front Ring",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Front Ring",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Front Glass",
+      "profile": [
+        [
+          0,
+          260
+        ],
+        [
+          34,
+          260
+        ],
+        [
+          34,
+          261
+        ],
+        [
+          0,
+          261
+        ]
+      ],
+      "axis_at": [
+        0,
+        40
+      ],
+      "axis": "y",
+      "subcategory": "Screen"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Front Glass",
+      "param": "Screen Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Front Glass",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Lens",
+      "profile": [
+        [
+          0,
+          261
+        ],
+        [
+          12,
+          261
+        ],
+        [
+          12,
+          262
+        ],
+        [
+          0,
+          262
+        ]
+      ],
+      "axis_at": [
+        0,
+        40
+      ],
+      "axis": "y",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lens",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Lens",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "IR LED 1",
+      "points": [
+        [
+          -18,
+          40
+        ],
+        [
+          -18.14,
+          41.04
+        ],
+        [
+          -18.54,
+          42
+        ],
+        [
+          -19.17,
+          42.83
+        ],
+        [
+          -20,
+          43.46
+        ],
+        [
+          -20.96,
+          43.86
+        ],
+        [
+          -22,
+          44
+        ],
+        [
+          -23.04,
+          43.86
+        ],
+        [
+          -24,
+          43.46
+        ],
+        [
+          -24.83,
+          42.83
+        ],
+        [
+          -25.46,
+          42
+        ],
+        [
+          -25.86,
+          41.04
+        ],
+        [
+          -26,
+          40
+        ],
+        [
+          -25.86,
+          38.96
+        ],
+        [
+          -25.46,
+          38
+        ],
+        [
+          -24.83,
+          37.17
+        ],
+        [
+          -24,
+          36.54
+        ],
+        [
+          -23.04,
+          36.14
+        ],
+        [
+          -22,
+          36
+        ],
+        [
+          -20.96,
+          36.14
+        ],
+        [
+          -20,
+          36.54
+        ],
+        [
+          -19.17,
+          37.17
+        ],
+        [
+          -18.54,
+          38
+        ],
+        [
+          -18.14,
+          38.96
+        ]
+      ],
+      "start": 261,
+      "end": 262,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "IR LED 1",
+      "subcategory": "Red"
+    },
+    {
+      "op": "set_material_param",
+      "name": "IR LED 1",
+      "param": "Red Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "IR LED 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "IR LED 2",
+      "points": [
+        [
+          26,
+          40
+        ],
+        [
+          25.86,
+          41.04
+        ],
+        [
+          25.46,
+          42
+        ],
+        [
+          24.83,
+          42.83
+        ],
+        [
+          24,
+          43.46
+        ],
+        [
+          23.04,
+          43.86
+        ],
+        [
+          22,
+          44
+        ],
+        [
+          20.96,
+          43.86
+        ],
+        [
+          20,
+          43.46
+        ],
+        [
+          19.17,
+          42.83
+        ],
+        [
+          18.54,
+          42
+        ],
+        [
+          18.14,
+          41.04
+        ],
+        [
+          18,
+          40
+        ],
+        [
+          18.14,
+          38.96
+        ],
+        [
+          18.54,
+          38
+        ],
+        [
+          19.17,
+          37.17
+        ],
+        [
+          20,
+          36.54
+        ],
+        [
+          20.96,
+          36.14
+        ],
+        [
+          22,
+          36
+        ],
+        [
+          23.04,
+          36.14
+        ],
+        [
+          24,
+          36.54
+        ],
+        [
+          24.83,
+          37.17
+        ],
+        [
+          25.46,
+          38
+        ],
+        [
+          25.86,
+          38.96
+        ]
+      ],
+      "start": 261,
+      "end": 262,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "IR LED 2",
+      "subcategory": "Red"
+    },
+    {
+      "op": "set_material_param",
+      "name": "IR LED 2",
+      "param": "Red Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "IR LED 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cable Tail",
+      "points": [
+        [
+          4,
+          10
+        ],
+        [
+          3.86,
+          11.04
+        ],
+        [
+          3.46,
+          12
+        ],
+        [
+          2.83,
+          12.83
+        ],
+        [
+          2,
+          13.46
+        ],
+        [
+          1.04,
+          13.86
+        ],
+        [
+          0,
+          14
+        ],
+        [
+          -1.04,
+          13.86
+        ],
+        [
+          -2,
+          13.46
+        ],
+        [
+          -2.83,
+          12.83
+        ],
+        [
+          -3.46,
+          12
+        ],
+        [
+          -3.86,
+          11.04
+        ],
+        [
+          -4,
+          10
+        ],
+        [
+          -3.86,
+          8.96
+        ],
+        [
+          -3.46,
+          8
+        ],
+        [
+          -2.83,
+          7.17
+        ],
+        [
+          -2,
+          6.54
+        ],
+        [
+          -1.04,
+          6.14
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          1.04,
+          6.14
+        ],
+        [
+          2,
+          6.54
+        ],
+        [
+          2.83,
+          7.17
+        ],
+        [
+          3.46,
+          8
+        ],
+        [
+          3.86,
+          8.96
+        ]
+      ],
+      "start": 60,
+      "end": 80,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cable Tail",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cable Tail",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cable Tail",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "Security",
+      "domain": "electrical",
+      "system": "Security",
+      "solid": "Wall Base",
+      "side": "back"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\E\\_Images\\FMC_E_SecurityDevice_CCTV_Camera_Bullet.png"
+    }
+  ],
+  "values": {
+    "Body 80 dia x 280 mm, sun shield": {
+      "value": "80x280",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "4 MP, IR 50 m, IP67, PoE": {
+      "value": "4MP IP67",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Height 2700-3000 mm": {
+      "value": 2700,
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   }
- ],
- "values": {
-  "Body 80 dia x 280 mm, sun shield": {
-   "value": "80x280",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "4 MP, IR 50 m, IP67, PoE": {
-   "value": "4MP IP67",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Height 2700-3000 mm": {
-   "value": 2700,
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- }
 }

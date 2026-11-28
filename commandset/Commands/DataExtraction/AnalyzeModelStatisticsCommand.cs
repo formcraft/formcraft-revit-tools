@@ -23,7 +23,8 @@ namespace RevitMCPCommandSet.Commands.DataExtraction
                 // Parse parameters
                 bool includeDetailedTypes = parameters?["includeDetailedTypes"]?.Value<bool>() ?? true;
 
-                // Set parameters
+                // Set parameters. A named document that is not open is refused; the active document is not substituted.
+                _handler.Parameters = parameters ?? new JObject();
                 _handler.SetParameters(includeDetailedTypes);
 
                 // Execute and wait

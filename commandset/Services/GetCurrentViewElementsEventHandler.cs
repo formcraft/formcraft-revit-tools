@@ -1,5 +1,6 @@
 using Autodesk.Revit.UI;
 using RevitMCPCommandSet.Models.Common;
+using RevitMCPCommandSet.Services.Fmc;
 using RevitMCPSDK.API.Interfaces;
 
 namespace RevitMCPCommandSet.Services
@@ -46,6 +47,8 @@ namespace RevitMCPCommandSet.Services
 
         // 执行结果
         public ViewElementsResult ResultInfo { get; private set; }
+        /// <summary>Set when the read failed. The command throws it: a failed read is not a null answer and not the last call's.</summary>
+        public string Error { get; private set; }
 
         // 状态同步对象
         public bool TaskCompleted { get; private set; }
@@ -66,16 +69,17 @@ namespace RevitMCPCommandSet.Services
         public bool WaitForCompletion(int timeoutMilliseconds = 10000)
         {
             _resetEvent.Reset();
-            return _resetEvent.WaitOne(timeoutMilliseconds);
+            return FmcBusy.Wait(_resetEvent, timeoutMilliseconds);
         }
 
         public void Execute(UIApplication app)
         {
+            ResultInfo = null;
+            Error = null;
             try
             {
-                var uiDoc = app.ActiveUIDocument;
-                var doc = uiDoc.Document;
-                var activeView = doc.ActiveView;
+                var doc = FmcCallContext.Document(app);
+                var activeView = FmcCallContext.ViewOf(app, doc);
 
 
                 // 合并所有类别
@@ -162,6 +166,8 @@ namespace RevitMCPCommandSet.Services
             }
             catch (Exception ex)
             {
+                ResultInfo = null;
+                Error = ex.Message;
                 RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Error", ex.Message);
             }
             finally

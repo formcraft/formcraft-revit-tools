@@ -23,6 +23,18 @@ export function kitWorkbookPath(kitFolder: string, specsPath: string): string {
   return kitFolder.trim() ? win.join(kitFolder.trim(), "03_Master_Data", KIT_WORKBOOK) : win.join(win.dirname(specsPath), KIT_WORKBOOK);
 }
 
+export const KIT_MASTER_DATA = "FMC_Master_Data.json";
+
+/**
+ * The kit's master data: <kit>\03_Master_Data\FMC_Master_Data.json, or beside the guard's specs file (which sits in
+ * 03_Master_Data) when no kit_folder is given, the same default as the kit workbook. fmc_systems structural, fmc_build,
+ * fmc_schedules and fmc_brief refused with "Kit master data not found: 03_Master_Data\\FMC_Master_Data.json" unless
+ * kit_folder was passed, although the file was there.
+ */
+export function kitMasterDataPath(kitFolder: string, specsPath: string): string {
+  return kitFolder.trim() ? win.join(kitFolder.trim(), "03_Master_Data", KIT_MASTER_DATA) : win.join(win.dirname(specsPath), KIT_MASTER_DATA);
+}
+
 export function readKitTabs(file: string): Tabs {
   return readXlsxSheets(fs.readFileSync(file), { rowNumbers: true });
 }

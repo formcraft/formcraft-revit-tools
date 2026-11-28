@@ -290,14 +290,29 @@ namespace Formcraft.Shell.ViewModels
 
             var head = new List<SettingItem>();
             if (!p.Ok) head.Add(new NoteSetting(p.Message, ChipKind.Bad));
-            if (!p.GuardSection) head.Add(new NoteSetting("Not set up: fmc_guard.json has no ai_modeller section, so AI modelling is Off. Saving the policy here creates it.", ChipKind.Warn));
+            groups.Add(new SettingsGroup("General AI switch",
+                new NoteSetting(p.GeneralLine + (p.Project.Length > 0 ? " Project " + p.Project + "." : ""), p.General == "On" ? ChipKind.Good : p.General == "Stopped" ? ChipKind.Bad : ChipKind.Info),
+                new NoteSetting("The one switch users see (top of the pane, and AI switch on the ribbon). On: AI may model in the open WIP model, every batch waits for one-click approval, the limits apply. Deleting, purging, running code, links and worksets stay with admins. The settings below are Advanced.", ChipKind.Grey)));
+
+            // Owner 11 Nov 2026: one button turns testing mode on and off (ai_modeller.mode testing or strict).
+            groups.Add(new SettingsGroup("Testing mode",
+                new NoteSetting(p.Testing
+                    ? "Testing mode is on." + (p.AutoApprove ? " AI changes run without waiting for approval." : " Changes still wait for approval (auto-approve is off).") + " Models save every 10 minutes, and workshared models sync with central every 15 minutes and after each batch."
+                    : "Testing mode is off. Every AI change waits for approval, and a person saves and syncs.",
+                    p.Testing ? ChipKind.Warn : ChipKind.Good),
+                new NoteSetting("For trying the AI on test models. Stop AI, the live-model lock and the AI switch still apply in testing mode.", ChipKind.Grey),
+                new ButtonsSetting("", new[] { p.Testing
+                    ? new SettingButton("Turn testing mode off", new RelayCommand(() => AskTesting(false)), primary: true)
+                    : new SettingButton("Turn testing mode on", new RelayCommand(() => AskTesting(true))) })));
+
+            if (!p.GuardSection) head.Add(new NoteSetting("Not set up: fmc_guard.json has no ai_modeller section yet. The AI switch creates it the first time anyone uses it.", ChipKind.Info));
             if (p.Rulebook.Length == 0)
                 head.Add(new NoteSetting("The kit has no FMC_Rulebook_AIUse yet. AI modelling stays Off until the BIM Manager adds it through a kit change request (a proposal is in docs/kit-proposals).", ChipKind.Warn));
             if (p.Stop) head.Add(new NoteSetting("Stop AI is on: every AI change is refused.", ChipKind.Bad));
             head.Add(new ToggleSetting(store, "ai.on", "AI modelling (firm-wide switch)", false, "Off refuses every AI change, whatever the levels say. Only admins change it."));
             head.Add(new TextSetting("Involvement level, 0–100%", _aiDraft.Get("ai.involvement") ?? "20", "20", store: store, key: "ai.involvement",
                 hint: "1–20 Assist · 21–50 Co-model · 51–80 Lead · 81–100 Full (bands from the kit rulebook)"));
-            groups.Add(new SettingsGroup("AI modelling", head.ToArray()));
+            groups.Add(new SettingsGroup("Advanced · involvement (admins)", head.ToArray()));
 
             var levels = new List<SettingItem>();
             foreach (var g in p.Groups)
@@ -309,7 +324,7 @@ namespace Formcraft.Shell.ViewModels
             if (p.Groups.Count == 0) levels.Add(new NoteSetting("The groups come from the kit rulebook.", ChipKind.Grey));
             levels.Add(new ButtonsSetting("", new[] { new SettingButton("Save policy", new RelayCommand(AskSave), primary: true) }));
             levels.Add(_aiMessages);
-            groups.Add(new SettingsGroup("Operation groups · level each", levels.ToArray()));
+            groups.Add(new SettingsGroup("Advanced · operation groups, level each (admins)", levels.ToArray()));
 
             var waiting = new List<SettingItem>();
             var pending = _queue.Where(q => q.Status == "pending").ToList();
@@ -331,8 +346,8 @@ namespace Formcraft.Shell.ViewModels
                     ? new SettingButton("Resume AI", new AsyncCommand(() => StopAi(false), _status), primary: true)
                     : new SettingButton("Stop AI", new AsyncCommand(() => StopAi(true), _status)) })));
 
-            groups.Add(new SettingsGroup("Never, at any level",
-                new NoteSetting("Structure, grids, levels and coordinates; central, shared or published models; sync, issue and signatures; deleting what AI didn't make; loads, sizes and demand factors. "
+            groups.Add(new SettingsGroup("Admins only, always",
+                new NoteSetting("Deleting, purging, running arbitrary code, links and coordinates, workset setup and structural framing; central, shared or published models; sync, issue and signatures; loads, sizes and demand factors. "
                                 + (p.Limits.Length > 0 ? "Limits: " + p.Limits + ". " : "")
                                 + "The AI log counts work per model, never per person (Manual 14.5).", ChipKind.Warn)));
             return groups;
@@ -370,6 +385,20 @@ namespace Formcraft.Shell.ViewModels
             _aiMessages.Show(r.Messages);
             _status(r.Messages.FirstOrDefault()?.Text ?? "");
             await LoadAi();
+        }
+
+        private void AskTesting(bool on)
+        {
+            string what = on
+                ? "AI changes run without waiting for approval (when auto-approve is set), models save every 10 minutes, and workshared models sync with central every 15 minutes and after each batch. It applies to every open model at once."
+                : "Every AI change waits for approval again, and a person saves and syncs. It applies to every open model at once.";
+            _ask(new DialogViewModel(on ? "Turn testing mode on?" : "Turn testing mode off?", what, on ? "Turn on" : "Turn off", async () =>
+            {
+                var r = await _ai.SetTestingAsync(on);
+                _aiMessages.Show(r.Messages);
+                _status(r.Messages.FirstOrDefault()?.Text ?? "");
+                await LoadAi();
+            }));
         }
 
         private async Task StopAi(bool stop)

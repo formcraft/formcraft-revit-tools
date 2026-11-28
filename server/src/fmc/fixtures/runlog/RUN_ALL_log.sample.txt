@@ -1,0 +1,215 @@
+==== B03_A_door_window_room_tags Mon 11/23/2026  1:21:09.40 
+Server 16d28e8+site(2ef99c4)  idle
+Batch  runner-A-tags on F26901-FMC-ZZ-ZZ-M3-A-0002_USER
+Lease  11206bac-064d-42f1-a093-a9f6540c5e04
+Preview:
+  -> send_code_to_revit
+[
+  {
+    "tool": "send_code_to_revit",
+    "result": {
+      "text": "Code execution successful (compile 3819 ms, run 2399 ms)\n{\"result\":\"DRY tags 0\"}"
+    }
+  }
+]
+Apply:
+  -> send_code_to_revit
+[
+  {
+    "tool": "send_code_to_revit",
+    "result": {
+      "text": "Code execution successful (compile 3819 ms, run 2399 ms)\n{\"result\":\"APPLY tags 0\"}"
+    }
+  }
+]
+Verify:
+  -> fmc_health
+[
+  {
+    "tool": "fmc_health",
+    "result": {
+      "ok": true,
+      "build": "16d28e8+site(2ef99c4)",
+      "server": {
+        "commit": "16d28e8+site(2ef99c4)"
+      },
+      "addin": [
+        "16d28e8"
+      ],
+      "uptime_s": 16362
+    }
+  }
+]
+Result log: C:\Jobs\batches\B03_A_door_window_room_tags.result-20261123-012501.json
+
+==== B02_E_keynote_tags_and_legend Mon 11/23/2026  1:22:09.40 
+Server 16d28e8+site(2ef99c4)  idle
+Batch  runner-E-keynotes-plugin on F26901-FMC-ZZ-ZZ-M3-E-0001_USER
+Lease  4bc15424-6582-4ec7-a036-175962b069ef
+Preview:
+  -> modify_model
+[
+  {
+    "tool": "modify_model",
+    "result": {
+      "applied": false,
+      "dry_run": true,
+      "ops": [
+        {
+          "op": 1,
+          "kind": "keynote_audit",
+          "views": [],
+          "blank": 0
+        },
+        {
+          "op": 2,
+          "kind": "keynote_audit",
+          "views": [
+            {
+              "view": "L1",
+              "count": 3
+            }
+          ],
+          "blank": 1
+        }
+      ]
+    }
+  }
+]
+Apply:
+  -> modify_model
+[
+  {
+    "tool": "modify_model",
+    "result": {
+      "applied": false,
+      "reason": "A for_each that tags keynotes is not run on this path. Nothing was changed."
+    }
+  }
+]
+Verify:
+  -> modify_model
+[
+  {
+    "tool": "modify_model",
+    "result": {
+      "applied": false,
+      "dry_run": true,
+      "ops": [
+        {
+          "op": 1,
+          "kind": "keynote_audit",
+          "views": []
+        }
+      ]
+    }
+  }
+]
+Result log: C:\Jobs\batches\B02_E_keynote_tags_and_legend.result-20261123-012502.json
+
+==== D1_A_dims_plans Mon 11/23/2026  1:23:09.40 
+Server 16d28e8+site(2ef99c4)  idle
+Batch  runner-A-dims on F26901-FMC-ZZ-ZZ-M3-A-0002_USER
+Lease  0c1d2e3f-0000-4000-8000-000000000001
+Preview:
+  -> modify_model
+[
+  {
+    "tool": "modify_model",
+    "result": {
+      "applied": false,
+      "dry_run": true,
+      "ops": [
+        {
+          "op": 1,
+          "kind": "create_dimensions"
+        },
+        {
+          "op": 2,
+          "kind": "create_dimensions"
+        }
+      ]
+    }
+  }
+]
+Apply:
+  -> modify_model
+[
+  {
+    "tool": "modify_model",
+    "result": {
+      "applied": true,
+      "batch_id": "01ee05",
+      "ops": [
+        {
+          "op": 1,
+          "kind": "create_dimensions",
+          "created_ids": [
+            1
+          ]
+        },
+        {
+          "op": 2,
+          "kind": "create_dimensions",
+          "error": "[FMC-DIMS-NO-WALLS] No exterior walls in the view."
+        }
+      ]
+    }
+  }
+]
+Verify:
+  -> fmc_health
+[
+  {
+    "tool": "fmc_health",
+    "result": {
+      "ok": true,
+      "build": "16d28e8+site(2ef99c4)",
+      "server": {
+        "commit": "16d28e8+site(2ef99c4)"
+      },
+      "addin": [
+        "16d28e8"
+      ],
+      "uptime_s": 16362
+    }
+  }
+]
+Result log: C:\Jobs\batches\D1_A_dims_plans.result-20261123-012503.json
+
+==== B09_export_PDFs_v2 Mon 11/23/2026  1:24:09.40 
+Server 16d28e8+site(2ef99c4)  idle
+Batch  runner-export-pdfs on F26901-FMC-ZZ-ZZ-M3-A-0002_USER
+Lease  5c3fba0b-5a4d-4d60-ba2c-a9c1b5ce4066
+Preview:
+  -> fmc_health
+[
+  {
+    "tool": "fmc_health",
+    "result": {
+      "ok": true,
+      "build": "16d28e8+site(2ef99c4)",
+      "server": {
+        "commit": "16d28e8+site(2ef99c4)"
+      },
+      "addin": [
+        "16d28e8"
+      ],
+      "uptime_s": 16362
+    }
+  }
+]
+Apply:
+  -> revit_file
+[
+  {
+    "tool": "revit_file",
+    "result": {
+      "text": "revit_file: [FMC-JOB-RUNNING] fmc_revit_file is still running in Revit after 50 s (not failed). Job 1795386463350796225."
+    }
+  }
+]
+Verify:
+Result log: C:\Jobs\batches\B09_export_PDFs_v2.result-20261123-012504.json
+
+DONE Mon 11/23/2026  1:29:32.24 

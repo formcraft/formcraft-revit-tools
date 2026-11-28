@@ -28,7 +28,7 @@ namespace RevitMCPCommandSet.Services.Fmc
         public bool WaitForCompletion(int timeoutMilliseconds = 10000)
         {
             _resetEvent.Reset();
-            return _resetEvent.WaitOne(timeoutMilliseconds);
+            return FmcBusy.Wait(_resetEvent, timeoutMilliseconds);
         }
 
         public void Execute(UIApplication app)
@@ -43,6 +43,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                     case "create": Result = Create(app); break;
                     case "save_as": Result = SaveAs(app); break;
                     case "close": Result = Close(app); break;
+                    case "open_copy": Result = FmcOpenCopy.Open(app, Parameters); break;
+                    case "open_local": Result = FmcOpenLocal.Open(app, Parameters); break;
+                    case "close_local": Result = FmcOpenLocal.Close(app, Parameters, false); break;
+                    case "close_local_apply": Result = FmcOpenLocal.Close(app, Parameters, true); break;
                     default: Error = $"Unknown FMC file action '{Action}'"; break;
                 }
             }
@@ -68,6 +72,9 @@ namespace RevitMCPCommandSet.Services.Fmc
                 ["isWorkshared"] = d.IsWorkshared,
                 ["isModified"] = d.IsModified,
                 ["isActive"] = active != null && d.Equals(active),
+                ["isDetached"] = d.IsDetached,
+                ["isLinked"] = d.IsLinked,
+                ["readOnly"] = d.IsLinked || d.IsDetached || FmcVerifySession.Contains(d),
                 // A person's local copy of a workshared model (not the central): the only workshared file the
                 // AI-assisted modeller may change. Null when it isn't workshared.
                 ["isLocal"] = d.IsWorkshared ? (JToken)IsLocalCopy(d) : null,
@@ -97,19 +104,26 @@ namespace RevitMCPCommandSet.Services.Fmc
             Document active = app.ActiveUIDocument?.Document;
             var docs = new JArray();
             Document named = null;
+            int matches = 0;
             target = (target ?? "").Trim();
             foreach (Document d in app.Application.Documents)
             {
                 if (d.IsLinked) continue;
                 docs.Add(Describe(d, active));
-                if (target.Length > 0 && named == null && FmcTarget.Same(d, target)) named = d;
+                if (target.Length > 0 && FmcTarget.Same(d, target)) { matches++; named = d; }
             }
+            if (matches > 1)
+                throw new InvalidOperationException($"[FMC-DOC-AMBIGUOUS] \"{target}\" matches {matches} open documents. Pass the full path. Refusing to use the active document.");
             JObject subject = target.Length == 0 ? (active != null ? Describe(active, active) : null)
                 : named != null ? Describe(named, active)
                 : File.Exists(target) ? FromFile(target) : null;
             // the subject's levels, lowest first, so a caller (a test scenario) can name one the model really has
             Document subjectDoc = target.Length == 0 ? active : named;
-            if (subject != null && subjectDoc != null && !subjectDoc.IsFamilyDocument) subject["levels"] = FmcLevels.List(subjectDoc);
+            if (subject != null && subjectDoc != null && !subjectDoc.IsFamilyDocument)
+            {
+                subject["levels"] = FmcLevels.List(subjectDoc);
+                subject["links"] = FmcOpenCopy.Links(subjectDoc);
+            }
             return new JObject
             {
                 ["active"] = subject,
@@ -133,15 +147,19 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         private static Document Find(UIApplication app, string key)
         {
-            if (string.IsNullOrWhiteSpace(key)) throw new ArgumentException("document is required");
+            if (string.IsNullOrWhiteSpace(key)) throw new ArgumentException("[FMC-DOC-REQUIRED] document is required. Refusing to use the active document.");
+            Document found = null;
+            int matches = 0;
             foreach (Document d in app.Application.Documents)
             {
                 if (d.IsLinked) continue;
-                if (string.Equals(d.Title, key, StringComparison.OrdinalIgnoreCase)) return d;
-                if (!string.IsNullOrEmpty(d.PathName) &&
-                    string.Equals(Path.GetFullPath(d.PathName), Path.GetFullPath(key), StringComparison.OrdinalIgnoreCase)) return d;
+                if (!FmcTarget.Same(d, key)) continue;
+                matches++;
+                found = d;
             }
-            throw new InvalidOperationException($"Document not open: {key}");
+            if (matches > 1) throw new InvalidOperationException($"[FMC-DOC-AMBIGUOUS] \"{key}\" matches {matches} open documents. Pass the full path. Refusing to use the active document.");
+            if (matches == 0) throw new InvalidOperationException($"[FMC-DOC-NOT-FOUND] No open document has title or path \"{key}\". Refusing to use the active document.");
+            return found;
         }
 
         private SaveAsOptions Options()
@@ -235,15 +253,22 @@ namespace RevitMCPCommandSet.Services.Fmc
         {
             Document doc = Find(app, Parameters["document"]?.Value<string>());
             bool save = Parameters["save"]?.Value<bool>() ?? false;
+            if (Parameters.Value<bool?>("verification_copy") == true) save = false;
             Document active = app.ActiveUIDocument?.Document;
             if (active != null && doc.Equals(active))
                 throw new InvalidOperationException(
                     $"{doc.Title} is the active document. The Revit API cannot close it: switch to another view or document first.");
+            if (save && (doc.IsDetached || doc.IsLinked || FmcVerifySession.Contains(doc)))
+                throw new InvalidOperationException($"{doc.Title} is a verification copy or a link. It is closed only without saving.");
+            if (save && FmcTarget.IsProtected(doc.PathName, FmcTarget.Roots(Parameters)))
+                throw new InvalidOperationException($"{doc.Title} is a protected original. It is not saved by a tool.");
             if (save && doc.IsWorkshared)
                 throw new InvalidOperationException($"{doc.Title} is workshared. Synchronise with central in Revit instead of saving.");
             string title = doc.Title;
+            string path = doc.PathName ?? "";
             bool closed = doc.Close(save);
-            return new JObject { ["closed"] = closed, ["title"] = title, ["saved"] = save };
+            if (!save) FmcVerifySession.ForgetPath(path);
+            return new JObject { ["closed"] = closed, ["title"] = title, ["path"] = path, ["saved"] = save, ["synced"] = false, ["relinquished"] = false };
         }
     }
 }

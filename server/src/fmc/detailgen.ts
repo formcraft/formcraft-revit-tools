@@ -39,7 +39,7 @@ export function componentHead(category: string, subcategory: string, materialPar
   return [
     { op: "set_category", name: category },
     { op: "delete_template_element", name: "Template solids", kind: "solid" },
-    { op: "add_subcategory", name: subcategory, line_weight_projection: 1 },
+    { op: "add_subcategory", name: subcategory, color: [0, 0, 0], line_weight_projection: 2, line_weight_cut: 4 },
     { op: "add_family_param", name: materialParam, type: "Material", group: "Materials" },
     { op: "add_material", name: material, param: materialParam },
     { op: "add_ref_plane", name: "Face", from: [-500, 0], to: [500, 0], is_reference: "Back" },
@@ -197,7 +197,7 @@ export interface DetailResult { recipe: RecipeLike; components: string[]; notes:
 // ---- the Coarse envelope (F-071; owner's rule F70, 18 Oct: one family, three levels) ------------------------------
 
 /** The kit's envelope subcategory, as the product recipes (pgen) draw it. */
-export const ENVELOPE_SUBCATEGORY = { op: "add_subcategory", name: "Coarse Envelope", color: [120, 130, 140], line_weight_projection: 2 };
+export const ENVELOPE_SUBCATEGORY = { op: "add_subcategory", name: "Coarse Envelope", color: [0, 0, 0], line_weight_projection: 3, line_weight_cut: 4 };
 const SOLID_OPS = new Set(["extrusion", "revolution", "sweep", "blend"]);
 
 /** Where each of the recipe's own reference planes sits: plan lines with a fixed x or y, elevation lines with a fixed height. */

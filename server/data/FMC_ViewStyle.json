@@ -1,0 +1,46 @@
+{
+  "version": "sample",
+  "status": "PROVISIONAL",
+  "note": "Sample only. Colours are PROVISIONAL and cannot PASS. A kit file at 03_Master_Data/FMC_ViewStyle.json replaces this file. Do not treat these colours as the Formcraft standard.",
+  "templates": [
+    {
+      "name": "FMC_A_Plan",
+      "from_view": "Level 1",
+      "scale": 100,
+      "detail_level": "Fine",
+      "discipline": "Architectural",
+      "apply_to": [],
+      "status": "PROVISIONAL"
+    }
+  ],
+  "filters": [
+    {
+      "name": "FMC_Existing",
+      "categories": ["Walls"],
+      "rules": [{ "parameter": "Phase Created", "evaluator": "equals", "value": "Existing" }],
+      "color": [160, 160, 160],
+      "apply_to": [],
+      "status": "PROVISIONAL"
+    },
+    {
+      "name": "FMC_New",
+      "categories": ["Walls"],
+      "rules": [{ "parameter": "Phase Created", "evaluator": "equals", "value": "New Construction" }],
+      "color": [80, 120, 180],
+      "apply_to": [],
+      "status": "PROVISIONAL"
+    }
+  ],
+  "room_fill": {
+    "by": "Department",
+    "legend": true,
+    "view": "",
+    "status": "PROVISIONAL",
+    "entries": [
+      { "value": "Ward", "color": [186, 214, 232], "status": "PROVISIONAL" },
+      { "value": "Theatre", "color": [232, 196, 196], "status": "PROVISIONAL" },
+      { "value": "Plant", "color": [210, 210, 210], "status": "PROVISIONAL" },
+      { "value": "Circulation", "color": [230, 220, 180], "status": "PROVISIONAL" }
+    ]
+  }
+}

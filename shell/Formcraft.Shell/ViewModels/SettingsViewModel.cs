@@ -173,6 +173,27 @@ namespace Formcraft.Shell.ViewModels
         }
 
         // ---------- General (core/PaneSettings) ----------
+        /// <summary>
+        /// The AI activity strip (owner, 15 Oct): while an AI app works in this Revit, the panel title bars on every ribbon
+        /// tab take a colour per state. The add-in reads these keys (plugin/Shell/AiRibbonStrip.cs).
+        /// </summary>
+        private SettingItem[] AiStrip()
+        {
+            var items = new List<SettingItem>
+            {
+                new ToggleSetting(_store, AiStripSettings.Key, "Colour the ribbon while AI works", true,
+                    "Panel title bars on every ribbon tab change colour; Revit's own colours come back when the AI stops."),
+            };
+            foreach (var s in AiStripSettings.States)
+            {
+                items.Add(new ToggleSetting(_store, AiStripSettings.OnKey(s.Id), s.Label, true));
+                items.Add(new ChoiceSetting(_store, AiStripSettings.ColourKey(s.Id), "Colour · " + s.Id, AiStripSettings.ColourNames,
+                    fallback: AiStripSettings.ColourNames.ToList().IndexOf(s.Colour), dropdown: true));
+            }
+            items.Add(new NoteSetting("Only AI apps connected over MCP set the strip; your own clicks in the pane never do. Waiting clears when the next AI call starts or after 10 minutes."));
+            return items.ToArray();
+        }
+
         private IReadOnlyList<SettingsGroup> General()
         {
             var a = _licence.Current.Account;
@@ -206,6 +227,7 @@ namespace Formcraft.Shell.ViewModels
                     new ReadOnlySetting("Widest", "560 px", "Below 400 px the pane switches to its compact layout; above 560 px the content stops growing so lines stay readable."),
                     new ToggleSetting(_store, "general.tour", "Show the first-run tour again", false),
                     new NoteSetting("Which parts of each module show in the pane is set in that module's tab, or with its parts switch on the ribbon.")),
+                new SettingsGroup("General · AI activity strip", AiStrip()),
                 new SettingsGroup("General · start-of-day card and notifications",
                     new ToggleSetting(_store, "general.card", "Show the card when I open a model", true),
                     new MultiSetting(_store, "general.tellme", "Tell me when",
