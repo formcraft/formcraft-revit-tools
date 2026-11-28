@@ -295,6 +295,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_tags",
   // Sheets, title-block legend zone and an existing keynote legend. No transaction.
   "fmc_keynote_legend",
+  // Point cloud against model: element meshes in metres and linked point clouds. No transaction.
+  "fmc_pointcloud_read",
 ]);
 
 /**

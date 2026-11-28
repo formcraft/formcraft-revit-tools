@@ -1123,5 +1123,14 @@
     "status": "Built, Revit check due",
     "ref": "fmc_file open_local, fmc_file close_local, fmc_open_local, fmc_close_local, fmc_close_local_apply, docs/tools/fmc_file.md",
     "note": "open_local opens a person's existing workshared local as the active document with UIApplication.OpenAndActivateDocument (activate=false uses OpenDocumentFile). worksets are all, last_viewed, none or a list of names. DoNotDetach; it never creates a new local, never synchronises, and refuses a central (FMC-FILE-CENTRAL-REFUSED), a missing file, a cloud, protected or live path, and worksets on a file that is not workshared. An already open local is only activated. close_local never syncs or relinquishes; it activates another open project first when the target is active, refuses the only open document (FMC-FILE-ONLY-DOC) and unsaved changes without confirm. save=true is a write (fmc_close_local_apply, in WRITE_COMMANDS: batch_lease, live-model lock, AI gate) and is refused for HEBERT HOSTELS, a protected original, a verification copy or a document never saved. dry_run defaults true. Opening a model in Revit stays a person's choice: the Revit check runs after install, dry run only."
+  },
+  {
+    "id": "F132",
+    "area": "Engine",
+    "group": "Survey",
+    "feature": "Point cloud against model (fmc_pointcloud)",
+    "status": "Built, Revit check due",
+    "ref": "fmc_pointcloud, fmc_pointcloud_read, docs/POINTCLOUD.md",
+    "note": "L011-F25 / plan item 61. Reads E57 (cartesian or spherical, Float/Integer/ScaledInteger, pose applied) and LAS 1.0-1.4 with a built-in reader, no new dependency; LAZ is detected and refused (decompress to LAS first). fmc_pointcloud_read (no transaction) gives element meshes in metres in shared or internal coordinates. Optional offset, then ICP (yaw + translation by default) rejected beyond max_shift_m / max_rotation_deg. Per element: points, signed mean, p95, max, mean shift and WITHIN / OFF / NO-COVERAGE. dry_run defaults true and writes nothing; dry_run false writes a CSV and JSON in an allowed folder, never overwriting. Kit 03_Master_Data/FMC_PointCloud.json; the sample is PROVISIONAL. Needs a Revit check."
   }
 ]
