@@ -133,7 +133,7 @@ test("H3 federate: a dry run plans and writes nothing; the real run appends, arc
   const b = bridge({
     navis_info: () => ({ file: "", models: [{ file: path.win32.join(pf, "02_Shared", "S", `${S}.nwc`), source: "" }] }),
     navis_append: (p) => ({ files: p.files.map((f: string) => ({ file: f, result: p.dry_run ? "would append" : "appended" })) }),
-    navis_save_as: (p) => ({ saved: true, file: p.file }),
+    navis_save_as: (p) => { touch(p.file); return { saved: true, file: p.file }; },
   });
   const dry = body(await runFmcNavis(parse({ action: "federate", project_folder: pf }), { ...b.deps, config }));
   assert.equal(dry.dry_run, true);
@@ -146,9 +146,11 @@ test("H3 federate: a dry run plans and writes nothing; the real run appends, arc
 
   const done = body(await runFmcNavis(parse({ action: "federate", project_folder: pf, dry_run: false }), { ...b.deps, config }));
   assert.equal(done.done, true);
-  assert.ok(!fs.existsSync(out), "the old .nwf went to _Archive");
-  assert.equal(fs.readdirSync(path.join(path.dirname(out), "_Archive")).length, 1);
-  assert.equal(b.calls.filter((c) => c.method === "navis_save_as")[0].params.file, out);
+  assert.ok(fs.existsSync(out), "research 59: the new .nwf is in place");
+  assert.equal(fs.readdirSync(path.join(path.dirname(out), "_Archive")).length, 1, "the old .nwf went to _Archive");
+  assert.match(b.calls.filter((c) => c.method === "navis_save_as")[0].params.file, /\.saving-\d+\.nwf$/, "research 59: saved first under a new name, before the archive");
+  assert.equal(done.saved.file, out);
+  assert.deepEqual(fs.readdirSync(path.dirname(out)).filter((n) => /saving/.test(n)), []);
   assert.equal(listPackages(exchangeRoot(pf, config.reports_dir))[0].what, "federation");
 });
 
@@ -167,8 +169,10 @@ test("H3 clash tests: no kit matrix is a kit change request; a named matrix make
     navis_clash_tests: () => ({ tests: [{ name: "FMC S-M · S vs M (hard 10 mm)" }, { name: "Structure vs Ducts" }] }),
     navis_clash_run: (p) => ({ tests: p.tests.map((n: string) => ({ test: n, result: p.dry_run ? "would run" : "ran" })) }),
   });
-  const none = body(await runFmcNavis(parse({ action: "clash_create" }), { ...b.deps, config }));
-  assert.match(none.reasons[0], /kit change request/);
+  // research 59: without a kit matrix the shipped proposal plans (dry run); a real run still needs the kit's or a named matrix
+  const none = body(await runFmcNavis(parse({ action: "clash_create", dry_run: false }), { ...b.deps, config }));
+  assert.equal(none.code, "FMC-NAVIS-MATRIX-PROVISIONAL");
+  assert.match(none.reasons[0], /CLASH_MATRIX\.md/);
 
   const dry = body(await runFmcNavis(parse({ action: "clash_create", matrix: SAMPLE, tests: ["S-M", "DUP-A"] }), { ...b.deps, config }));
   assert.equal(dry.dry_run, true);
@@ -278,4 +282,34 @@ test("H3 clash_status: only named results, only with a person's yes on the plan 
   assert.equal(real.author, "J. Mukasa");
   assert.match(real.comment, /Accepted: sleeve \(J\. Mukasa, via Formcraft\)/);
   assert.equal(statusHash("t", ["b", "a"], "Resolved", ""), statusHash("T", ["a", "b"], "resolved", ""));
+});
+
+test("research 59: shipped matrix proposal, open dry run, viewpoints, and the off stand-in", async () => {
+  const { matrixSource, loadMatrix, navisOffStub } = await import("../tools/fmc_navis.js");
+  const src = matrixSource("", "Z:\\none\\FMC_Clash_Matrix.json", () => false);
+  assert.equal(src.source, "proposal");
+  assert.equal(src.provisional, true);
+  assert.deepEqual(loadMatrix(src.file).problems, []);
+  assert.equal(matrixSource("", "Z:\\kit.json", () => true).source, "kit");
+  const { config } = setup();
+  const m = body(await runFmcNavis(parse({ action: "matrix" }), { state: () => null, config }));
+  assert.equal(m.provisional, true);
+  assert.ok(m.tests.length > 0);
+  const dir = tmp();
+  const nwf = path.join(dir, "fed.nwf");
+  touch(nwf);
+  const b = bridge({ navis_info: () => ({ file: "C:\\old.nwf", models: [] }), navis_viewpoints: () => ({ viewpoints: [{ name: "Level 1", folder: "" }], count: 1 }) });
+  const open = body(await runFmcNavis(parse({ action: "open", file: nwf }), { ...b.deps, config }));
+  assert.equal(open.dry_run, true);
+  assert.equal(open.replaces, "C:\\old.nwf");
+  assert.ok(!b.calls.some((c) => c.method === "navis_open"), "a dry run never opens");
+  const bad = await runFmcNavis(parse({ action: "open", file: path.join(dir, "x.rvt") }), { ...b.deps, config });
+  assert.equal(bad.isError, true);
+  const vps = body(await runFmcNavis(parse({ action: "viewpoints" }), { ...b.deps, config }));
+  assert.equal(vps.read_only, true);
+  assert.equal(vps.count, 1);
+  const tools: Array<{ name: string; run: () => Promise<{ content: Array<{ text: string }> }> }> = [];
+  navisOffStub({ tool: (name: string, _d: string, _s: object, run: () => Promise<{ content: Array<{ text: string }> }>) => { tools.push({ name, run }); } } as any, "off for the test");
+  assert.equal(tools[0].name, "fmc_navis");
+  assert.equal(JSON.parse((await tools[0].run()).content[0].text).navisworks, "off");
 });

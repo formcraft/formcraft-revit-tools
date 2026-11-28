@@ -107,3 +107,14 @@ test("owner 20 Oct: the Rhino rules come from the kit's rulebook; without it not
   assert.match(missing.problems[0], /No FMC_Rulebook_Rhino\.json/);
   assert.ok(loadRhinoRulebook(PROPOSALS).book);
 });
+
+test("RH-6/RH-11: the rulebook state is always known, and a bad name or part is refused before Rhino is asked", async () => {
+  const { rhinoPreChecks, rulebookStatus } = await import("./rhino.js");
+  const missing = rulebookStatus({ book: null, file: "C:\\kit\\rhino.json", problems: ["not found"] });
+  assert.equal(missing.ok, false);
+  assert.match(missing.note ?? "", /no part can pass/);
+  assert.match(rhinoPreChecks("check", "Bad Name", []).join(" "), /isn't a kit family name/);
+  assert.deepEqual(rhinoPreChecks("status", "Bad Name", []), []);
+  assert.match(rhinoPreChecks("part", "FMC_A_Door_X", []).join(" "), /Give the parts/);
+  assert.match(rhinoPreChecks("part", "FMC_A_Door_X", [{ name: "1bad" }]).join(" "), /part 1:/);
+});

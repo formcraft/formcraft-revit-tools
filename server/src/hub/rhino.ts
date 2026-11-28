@@ -182,3 +182,25 @@ export function rhinoPaths(stagingRoot: string, family: string, view = "iso") {
     render: path.win32.join(dir, view === "iso" ? `${family}_3d.png` : `${family}_3d_${view}.png`),
   };
 }
+
+/** RH-6: the rulebook's state for every status reply, Rhino open or not. */
+export function rulebookStatus(rules: { book: RhinoRulebook | null; file: string; problems: string[] }): { ok: boolean; file: string; version?: string; problems?: string[]; note?: string } {
+  if (rules.book) return { ok: true, file: rules.file, version: String((rules.book as { version?: unknown }).version ?? "") };
+  return { ok: false, file: rules.file, problems: rules.problems, note: "Without the kit's Rhino rulebook no part can pass check or export_parts." };
+}
+
+/** RH-11: the checks that need no Rhino, run first so a bad name or part list is reported even with Rhino closed. */
+export function rhinoPreChecks(action: string, family: string, parts: unknown[]): string[] {
+  const reasons: string[] = [];
+  if (action === "status") return reasons;
+  const nameProblem = familyNameProblem(family);
+  if (nameProblem) reasons.push(nameProblem);
+  if (action === "part") {
+    if (!parts.length) reasons.push("Give the parts to build");
+    parts.forEach((p, i) => {
+      const r = RHINO_PART.safeParse(p);
+      if (!r.success) reasons.push(`part ${i + 1}: ${r.error.issues.map((q) => `${q.path.join(".")} ${q.message}`).join("; ")}`);
+    });
+  }
+  return reasons;
+}

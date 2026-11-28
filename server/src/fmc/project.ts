@@ -32,9 +32,80 @@ export interface ProjectInput {
   stage?: string;
   issue_set?: string;
   standard?: string;
+  /** PJ-5: several models, each with its own volume, level, type and number. Overrides roles when given. */
+  models?: ModelSpec[];
+  /** PJ-3: a role with no template named takes the kit's newest FMC_<Role>_Template (else FMC_Base_Template) from template_roots. */
+  templates_from_kit?: boolean;
+  /** PJ-3: a template found only in _Staging is used only when this is true. */
+  allow_staging?: boolean;
 }
 
-export interface PlannedModel { role: string; name: string; path: string; template: string }
+export interface ModelSpec { role: string; volume?: string; level?: string; type?: string; number?: number }
+
+export interface PlannedModel { role: string; name: string; path: string; template: string; template_source?: "given" | "kit" | "kit_base" | "none" }
+
+export interface KitTemplate { role: string; version: string; path: string; staging: boolean }
+
+const TEMPLATE_NAME = /^FMC_([A-Za-z0-9]+)_Template(?:_v(\d+(?:\.\d+)*))?\.rte$/i;
+
+/** The kit's project templates under the template roots: the root, 06_Templates and their _Staging folders (PJ-3). */
+export function findKitTemplates(roots: string[], reader: FolderReader): KitTemplate[] {
+  const out: KitTemplate[] = [];
+  const seen = new Set<string>();
+  for (const rootDir of roots.map((r) => expandEnv(r)).filter(Boolean)) {
+    const dirs = [rootDir, win.join(rootDir, "_Staging"), win.join(rootDir, "06_Templates"), win.join(rootDir, "06_Templates", "_Staging")];
+    for (const dir of dirs) {
+      if (!reader.exists(dir) || !reader.isDirectory(dir)) continue;
+      for (const name of reader.list(dir)) {
+        const m = TEMPLATE_NAME.exec(name);
+        if (!m) continue;
+        const full = win.join(dir, name);
+        if (seen.has(full.toLowerCase())) continue;
+        seen.add(full.toLowerCase());
+        out.push({ role: m[1].toUpperCase(), version: m[2] ?? "", path: full, staging: /\\_staging(\\|$)/i.test(dir) });
+      }
+    }
+  }
+  return out;
+}
+
+function versionKey(v: string): number[] { return v ? v.split(".").map((n) => Number(n) || 0) : [0]; }
+function newer(a: string, b: string): number {
+  const x = versionKey(a); const y = versionKey(b);
+  for (let i = 0; i < Math.max(x.length, y.length); i++) if ((x[i] ?? 0) !== (y[i] ?? 0)) return (x[i] ?? 0) - (y[i] ?? 0);
+  return 0;
+}
+
+/** The role's newest released template, else FMC_Base_Template; staging copies only when allowed. */
+export function pickKitTemplate(list: KitTemplate[], role: string, allowStaging = false): { template: KitTemplate | null; source: "kit" | "kit_base" | "none"; note: string } {
+  const pick = (want: string) => {
+    const mine = list.filter((t) => t.role === want);
+    const released = mine.filter((t) => !t.staging).sort((a, b) => newer(b.version, a.version));
+    const staged = mine.filter((t) => t.staging).sort((a, b) => newer(b.version, a.version));
+    return { best: released[0] ?? (allowStaging ? staged[0] : undefined) ?? null, stagedOnly: !released.length && staged.length > 0 };
+  };
+  const own = pick(role.toUpperCase());
+  if (own.best) return { template: own.best, source: "kit", note: own.best.staging ? "from _Staging (allow_staging true)" : "released" };
+  const base = pick("BASE");
+  if (base.best) return { template: base.best, source: "kit_base", note: `no FMC_${role}_Template; FMC_Base_Template used${base.best.staging ? " from _Staging" : ""}` };
+  const staged = own.stagedOnly || base.stagedOnly;
+  return { template: null, source: "none", note: staged ? `FMC_${role}_Template is only in _Staging: pass allow_staging true to use it` : `no FMC_${role}_Template or FMC_Base_Template under the template roots` };
+}
+
+/** Revit's own Project Information fields (set by name on every template). */
+export const REVIT_PROJECT_INFO = ["Project Name", "Project Number", "Client Name", "Project Address", "Project Status", "Project Issue Date", "Organization Name", "Organization Description", "Building Name", "Author"];
+
+/** PJ-6: which details keys are Revit's, which are the kit's, and which neither knows (they would be reported missing after the run). */
+export function detailsCheck(details: Record<string, string>, kitNames: string[] | null): { revit: string[]; kit: string[]; unknown: string[]; kit_list: "read" | "not found" } {
+  const revit: string[] = []; const kit: string[] = []; const unknown: string[] = [];
+  const kitSet = new Set((kitNames ?? []).map((n) => n.toLowerCase()));
+  for (const key of Object.keys(details ?? {})) {
+    if (REVIT_PROJECT_INFO.some((n) => n.toLowerCase() === key.toLowerCase())) revit.push(key);
+    else if (kitSet.has(key.toLowerCase())) kit.push(key);
+    else unknown.push(key);
+  }
+  return { revit, kit, unknown, kit_list: kitNames ? "read" : "not found" };
+}
 
 export interface ProjectPlan {
   ok: boolean;
@@ -82,6 +153,10 @@ export function treeFolders(kitTree: string[] | null, roles: string[]): string[]
 }
 
 export function planProject(input: ProjectInput, cfg: GuardConfig, fs: FolderReader, now: Date = new Date(), kitTree: string[] | null = null): ProjectPlan {
+  const specs: ModelSpec[] = (input.models ?? []).length
+    ? (input.models ?? []).map((m) => ({ ...m, role: (m.role ?? "").trim().toUpperCase() })).filter((m) => m.role)
+    : [];
+  const kitList = input.templates_from_kit ? findKitTemplates(cfg.template_roots ?? [], fs) : [];
   const reasons: string[] = [];
   const folder = win.normalize(expandEnv(input.project_folder ?? "")).replace(/[\\/]+$/, "");
   const code = (input.code ?? "").trim().toUpperCase();
@@ -89,7 +164,7 @@ export function planProject(input: ProjectInput, cfg: GuardConfig, fs: FolderRea
   const volume = (input.volume ?? "").trim().toUpperCase();
   const level = (input.level ?? "").trim().toUpperCase();
   const type = (input.type ?? "").trim().toUpperCase();
-  const roles = [...new Set((input.roles ?? []).map((r) => r.trim().toUpperCase()).filter(Boolean))];
+  const roles = specs.length ? [...new Set(specs.map((m) => m.role))] : [...new Set((input.roles ?? []).map((r) => r.trim().toUpperCase()).filter(Boolean))];
 
   if (!folder || !win.isAbsolute(folder)) reasons.push("Choose the project folder (an absolute path you created)");
   else if (!fs.exists(folder) || !fs.isDirectory(folder))
@@ -111,20 +186,42 @@ export function planProject(input: ProjectInput, cfg: GuardConfig, fs: FolderRea
   if (folder) {
     folders.push(...PROJECT_FOLDERS.map((f) => win.join(folder, f)));
     folders.push(...treeFolders(kitTree, roles).map((f) => win.join(folder, f)));
-    for (const role of roles) {
+    const each: ModelSpec[] = specs.length ? specs : roles.map((role) => ({ role }));
+    const names = new Set<string>();
+    for (const spec of each) {
+      const role = spec.role;
+      const v = (spec.volume ?? volume).trim().toUpperCase();
+      const l = (spec.level ?? level).trim().toUpperCase();
+      const t = (spec.type ?? type).trim().toUpperCase();
+      const number = Math.max(1, Math.floor(spec.number ?? 1));
+      if (specs.length) {
+        if (!/^[A-Z0-9]{2}$/.test(v)) reasons.push(`${role}: volume "${v}" must be 2 characters`);
+        if (!/^[A-Z0-9]{2}$/.test(l)) reasons.push(`${role}: level "${l}" must be 2 characters`);
+        if (!TYPE_CODES.includes(t)) reasons.push(`${role}: type "${t}" is not in Manual 4.2`);
+        if (number > 9999) reasons.push(`${role}: number ${number} is more than 4 digits`);
+      }
       folders.push(win.join(folder, "01_WIP", role), win.join(folder, "01_WIP", role, "Families"));
-      const name = modelName(code, originator, volume, level, type, role);
+      const name = modelName(code, originator, v, l, t, role, number);
+      if (names.has(name.toLowerCase())) reasons.push(`${name} is listed twice: give each model its own volume, level, type or number`);
+      names.add(name.toLowerCase());
       const target = win.join(folder, "01_WIP", role, name);
-      const template = (input.templates ?? {})[role] ?? "";
-      if (!template) reasons.push(`No template for role ${role}: the kit has no FMC_${role}_Template or FMC_Base_Template in 06_Templates`);
-      else {
+      let template = (input.templates ?? {})[role] ?? "";
+      let source: PlannedModel["template_source"] = template ? "given" : "none";
+      if (!template && input.templates_from_kit) {
+        const found = pickKitTemplate(kitList, role, input.allow_staging === true);
+        if (found.template) { template = found.template.path; source = found.source; }
+        else reasons.push(`No template for role ${role}: ${found.note}`);
+      }
+      if (!template) {
+        if (!input.templates_from_kit) reasons.push(`No template for role ${role}: name one in templates, or set templates_from_kit true to take the kit's FMC_${role}_Template_v*.rte (or FMC_Base_Template)`);
+      } else {
         reasons.push(...checkTemplatePath(template, cfg).reasons.map((x) => `${role}: ${x}`));
         if (win.extname(template).toLowerCase() !== ".rte") reasons.push(`${role}: a project model is made from a .rte template`);
         else if (!fs.exists(template)) reasons.push(`${role}: template not found: ${template}`);
       }
       // Path and name rules exactly as fmc_file applies them (01_WIP is a write root; the name follows Manual 4.1).
       reasons.push(...checkWritePath(target, cfg).reasons.map((x) => `${name}: ${x}`));
-      models.push({ role, name, path: target, template });
+      models.push({ role, name, path: target, template, template_source: source });
     }
   }
 

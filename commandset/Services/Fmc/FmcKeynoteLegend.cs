@@ -88,6 +88,26 @@ namespace RevitMCPCommandSet.Services.Fmc
                         ["max_y"] = Mm(box.Max.Y),
                     };
                 }
+                // Research 52: what already sits on the sheet (viewports and schedules), so the plan can test the legend zone.
+                var taken = new JArray();
+                foreach (ElementId id in sheet.GetAllViewports())
+                {
+                    if (!(doc.GetElement(id) is Viewport viewport)) continue;
+                    try
+                    {
+                        Outline o = viewport.GetBoxOutline();
+                        taken.Add(new JObject { ["id"] = id.Value.ToString(), ["kind"] = "viewport", ["min_x"] = Mm(o.MinimumPoint.X), ["min_y"] = Mm(o.MinimumPoint.Y), ["max_x"] = Mm(o.MaximumPoint.X), ["max_y"] = Mm(o.MaximumPoint.Y) });
+                    }
+                    catch (Exception) { }
+                }
+                foreach (ScheduleSheetInstance placed in new FilteredElementCollector(doc, sheet.Id).OfClass(typeof(ScheduleSheetInstance)).Cast<ScheduleSheetInstance>())
+                {
+                    if (placed.IsTitleblockRevisionSchedule) continue;
+                    BoundingBoxXYZ pb = placed.get_BoundingBox(sheet);
+                    if (pb == null) continue;
+                    taken.Add(new JObject { ["id"] = placed.Id.Value.ToString(), ["kind"] = placed.ScheduleId == legendId ? "this_legend" : "schedule", ["min_x"] = Mm(pb.Min.X), ["min_y"] = Mm(pb.Min.Y), ["max_x"] = Mm(pb.Max.X), ["max_y"] = Mm(pb.Max.Y) });
+                }
+                row["taken_mm"] = taken;
                 if (title != null && TryZone(title, out double x, out double y))
                 {
                     row["legend_x_mm"] = x;

@@ -14,7 +14,7 @@
 import { createHash } from "node:crypto";
 import path from "node:path";
 import { DOC_AMBIGUOUS, DOC_NOT_FOUND, DOC_REQUIRED, matchesOpenDoc, resolveOpenDocument, type OpenDocRef } from "./docresolve.js";
-import { LinkFact, auditLinks, candidates, linkProblems, roleOf, type LinkAudit } from "./links.js";
+import { LinkFact, auditLinks, candidates, inShared, linkProblems, roleOf, type LinkAudit } from "./links.js";
 import { classifyLinkLine, judgeReload, openModelHint, planReloadLink, type SessionDoc } from "./reloadlink.js";
 import { checkWritePath, type GuardConfig } from "./policy.js";
 import { protectedRoots, samePath, underAny } from "./opencopy.js";
@@ -56,6 +56,8 @@ export interface LinkManageArgs {
   path?: string;
   copy_folder?: string;
   edits?: LinkEdit[];
+  /** audit: return a ready link_set for apply that fixes the Fix rows (research 56). */
+  suggest?: boolean;
 }
 
 export interface LinkIo {
@@ -255,6 +257,74 @@ function annotateBlocked(rows: LinkAudit[], links: LinkFact[], open: SessionDoc[
     const problems = [...row.problems, `open as host (${blocker.title || blocker.path})`];
     return { ...row, problems, state: "Fix" };
   });
+}
+
+function normPath(p: string): string {
+  return p.trim().replace(/\//g, "\\").toLowerCase();
+}
+
+function stem(p: string): string {
+  return win.basename(p.trim()).replace(/\.rvt$/i, "").toLowerCase();
+}
+
+/** Research 56: the open model that a link's file name points at, when the link is a different file (a copy elsewhere). */
+export function notTheOpenModel(link: LinkFact, open: SessionDoc[], host?: SessionDoc): SessionDoc | undefined {
+  if (!link.path) return undefined;
+  const want = stem(link.path);
+  const at = normPath(link.path);
+  for (const doc of open) {
+    if (doc.isLinked || doc.isFamily || doc.family) continue;
+    if (host && sameSession(doc, host)) continue;
+    const title = (doc.title ?? "").replace(/\.rvt$/i, "").toLowerCase();
+    const names = new Set([title, doc.path ? stem(doc.path) : "", doc.central ? stem(doc.central) : "", doc.central ? title.replace(/_[^_]+$/, "") : ""].filter(Boolean));
+    if (!names.has(want)) continue;
+    if ((doc.path && normPath(doc.path) === at) || (doc.central && normPath(doc.central) === at)) continue;
+    return doc;
+  }
+  return undefined;
+}
+
+export interface CoordRow { model: string; coordinates: Record<string, unknown> }
+
+/**
+ * Research 56: do these models agree on shared coordinates? The angle to true north and the CRS must match. Where each
+ * internal origin sits in shared coordinates is reported, not judged: an origin offset (8.4 m in the live architectural
+ * model) is normal when the survey points agree.
+ */
+export function coordinatesAgree(rows: CoordRow[]): { agree: boolean; line: string; angles: Array<{ model: string; angle_deg: number | null; crs: string }>; origins: Array<{ model: string; easting_mm: number | null; northing_mm: number | null }>; next?: string } {
+  const num = (v: unknown) => (typeof v === "number" && Number.isFinite(v) ? v : null);
+  const angles = rows.map((r) => ({ model: r.model, angle_deg: num(r.coordinates.angle_deg), crs: String(r.coordinates.crs ?? "").trim() }));
+  const origins = rows.map((r) => ({ model: r.model, easting_mm: num(r.coordinates.easting_mm), northing_mm: num(r.coordinates.northing_mm) }));
+  const known = angles.filter((a) => a.angle_deg != null);
+  const spread = known.length ? Math.max(...known.map((a) => a.angle_deg as number)) - Math.min(...known.map((a) => a.angle_deg as number)) : 0;
+  const crs = new Set(angles.map((a) => a.crs).filter(Boolean));
+  const agree = known.length === rows.length && spread <= 0.01 && crs.size <= 1;
+  const far = origins.filter((o) => o.easting_mm != null && o.northing_mm != null).map((o) => Math.hypot(o.easting_mm as number, o.northing_mm as number));
+  const offset = far.length ? Math.max(...far) : 0;
+  const note = offset > 1 ? `; internal origins differ by up to ${(offset / 1000).toFixed(1)} m, which is normal and not flagged` : "";
+  const line = agree
+    ? `Coordinates agree across ${rows.length} models: angle ${known[0]?.angle_deg ?? 0} deg${crs.size ? ", CRS " + [...crs][0] : ""}${note}.`
+    : known.length < rows.length
+      ? `Coordinates not checked for ${rows.length - known.length} of ${rows.length} models (no angle in the read).`
+      : `Coordinates do not agree: angles spread ${spread.toFixed(2)} deg${crs.size > 1 ? ", CRS " + [...crs].join(" / ") : ""}.`;
+  return { agree, line, angles, origins, ...(agree ? {} : { next: "fmc_coord: publish a record from the survey model and align to it. fmc_links never moves coordinates." }) };
+}
+
+/** Research 56: the link_set that apply needs to fix the audit's Fix rows: the 02_Shared copy of the same model when one is listed. */
+export function suggestLinkSet(host: SessionDoc, links: LinkFact[], audit: LinkAudit[], shared: string[]): { action: "apply"; documents: string[]; link_set: LinkSetItem[]; notes: string[]; dry_run: true } {
+  const link_set: LinkSetItem[] = [];
+  const notes: string[] = [];
+  audit.forEach((row, index) => {
+    const link = links[index];
+    if (row.state !== "Fix" || !link) return;
+    const want = stem(link.path || link.name);
+    const copy = shared.find((f) => stem(f) === want || stem(f).replace(/_[^_]+$/, "") === want);
+    const source = copy ?? link.path;
+    if (!source) { notes.push(`${row.model}: no file path; link it again by hand`); return; }
+    if (!copy && !inShared(source)) notes.push(`${row.model}: no copy of it in link_from (02_Shared); the set keeps the current file`);
+    if (!link_set.some((item) => normPath(item.path) === normPath(source))) link_set.push({ path: source, role: linkRole(source) || undefined });
+  });
+  return { action: "apply", documents: [hostKey(host)], link_set, notes, dry_run: true };
 }
 
 function guardParams(cfg: GuardConfig): Record<string, unknown> {
@@ -624,10 +694,26 @@ export async function runLinkPlan(args: LinkManageArgs, io: LinkIo, cfg: GuardCo
     const facts = await io.facts(hostKey(host.doc));
     const links = asLinks(facts.links);
     const worksets = Array.isArray(facts.worksets) ? facts.worksets.map(String) : [];
-    const audit = annotateBlocked(auditLinks(links, !!facts.workshared, worksets), links, open, host.doc);
+    const audit = annotateBlocked(auditLinks(links, !!facts.workshared, worksets), links, open, host.doc).map((row, index) => {
+      const other = links[index] ? notTheOpenModel(links[index], open, host.doc) : undefined;
+      return other ? { ...row, problems: [...row.problems, `linked copy is not the open model ${other.title || other.path} (${links[index].path})`], state: "Fix" as const } : row;
+    });
     const folder = (args.link_from ?? "").trim();
     const model = String(facts.model ?? `${host.doc.title ?? ""}.rvt`);
     const found = folder && io.listModels ? candidates(io.listModels(folder), links, model) : [];
+    const extra = (args.documents ?? []).map((item) => item.trim()).filter(Boolean);
+    let coordinates_check: ReturnType<typeof coordinatesAgree> | undefined;
+    if (extra.length) {
+      const rows: CoordRow[] = [{ model, coordinates: (facts.coordinates ?? {}) as Record<string, unknown> }];
+      for (const name of extra) {
+        const other = resolveHost(name, open, false);
+        if (!other.ok || !other.doc || sameSession(other.doc, host.doc)) continue;
+        const more = await io.facts(hostKey(other.doc));
+        rows.push({ model: String(more.model ?? other.doc.title ?? name), coordinates: (more.coordinates ?? {}) as Record<string, unknown> });
+      }
+      coordinates_check = coordinatesAgree(rows);
+    }
+    const suggested = args.suggest ? suggestLinkSet(host.doc, links, audit, found.map((row) => row.path)) : undefined;
     return {
       body: {
         ok: true,
@@ -639,6 +725,8 @@ export async function runLinkPlan(args: LinkManageArgs, io: LinkIo, cfg: GuardCo
         to_fix: audit.filter((row) => row.state === "Fix").length,
         link_from: folder,
         candidates: found,
+        ...(coordinates_check ? { coordinates_check } : {}),
+        ...(suggested ? { suggested } : {}),
         link_from_problem: folder && !io.exists(folder) ? `Folder not found: ${folder}` : "",
         resolved_document: docStamp(host.doc),
         source: "open",

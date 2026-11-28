@@ -85,6 +85,16 @@ export function checkForm(raw: unknown): { form: EngineerForm | null; problems: 
 }
 
 /** FEA-yyyymmdd-hhmm, in local time: the run's name, its folder files and the value of FMC_FEA_Run_Ref. */
+/** RB-6: a run name no earlier run uses: FEA-yyyymmdd-hhmm, then -2, -3 … when that minute is taken (json or rtd). */
+export function uniqueRunRef(taken: (run: string) => boolean, d = new Date()): string {
+  const base = runRef(d);
+  if (!taken(base)) return base;
+  for (let k = 2; k < 1000; k++) if (!taken(`${base}-${k}`)) return `${base}-${k}`;
+  throw new Error(`Too many runs named ${base}`);
+}
+
+export const RUN_NAME = /^FEA-\d{8}-\d{4}(-\d+)?$/;
+
 export function runRef(d = new Date()): string {
   const p = (n: number) => String(n).padStart(2, "0");
   return `FEA-${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}`;

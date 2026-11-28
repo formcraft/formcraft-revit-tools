@@ -158,6 +158,26 @@ export function probePort(host: string, port: number, timeoutMs = 400): Promise<
   });
 }
 
+/**
+ * RE-4: which Revits a name points at, by the first rule that hits: the exact title, a title prefix, a title substring,
+ * then a path substring (a folder name). The rule is returned so a reply can say how the name matched.
+ */
+export function matchInstances(name: string, instances: RevitInstance[]): { hits: RevitInstance[]; rule: "title" | "title_prefix" | "title_contains" | "path_contains" | "none" } {
+  const q = name.trim().toLowerCase();
+  if (!q) return { hits: [], rule: "none" };
+  const rules: Array<["title" | "title_prefix" | "title_contains" | "path_contains", (d: RevitInstance["documents"][number]) => boolean]> = [
+    ["title", (d) => d.title.toLowerCase() === q],
+    ["title_prefix", (d) => d.title.toLowerCase().startsWith(q)],
+    ["title_contains", (d) => d.title.toLowerCase().includes(q)],
+    ["path_contains", (d) => (d.path ?? "").toLowerCase().includes(q)],
+  ];
+  for (const [rule, test] of rules) {
+    const hits = instances.filter((i) => i.documents.some(test));
+    if (hits.length) return { hits, rule };
+  }
+  return { hits: [], rule: "none" };
+}
+
 export function resolvePort(target: string | undefined, instances: RevitInstance[], env: NodeJS.ProcessEnv, chosen: string | undefined, check?: PortCheck): number {
   const pick = (t: string): number => {
     const q = t.trim().toLowerCase();
@@ -168,7 +188,7 @@ export function resolvePort(target: string | undefined, instances: RevitInstance
       if (n >= 1024 && n < 65536 && !instances.length) return n; // a port with no registry (an older add-in)
       throw new Error(`No open Revit has pid or port ${t}. Open: ${instances.map(label).join("; ") || "none"}`);
     }
-    const hits = instances.filter((i) => i.documents.some((d) => d.title.toLowerCase().includes(q) || d.path.toLowerCase().includes(q)));
+    const { hits } = matchInstances(q, instances);
     if (hits.length === 1) return hits[0].port;
     if (hits.length > 1) throw new Error(`"${t}" matches ${hits.length} Revits: ${hits.map(label).join("; ")}. Use the pid or port.`);
     throw new Error(`No open Revit has a document matching "${t}". Open: ${instances.map(label).join("; ") || "none"}`);

@@ -32,8 +32,37 @@ namespace Formcraft.Navis
                 // X1, one selection: NavisSelection.cs
                 case "navis_select": return NavisSelection.Select(doc, p);
                 case "navis_selection": return NavisSelection.Selection(doc, p);
+                // Research 59: saved viewpoints (read) and open a file (the server asks with dry_run false only).
+                case "navis_viewpoints": return Viewpoints(doc);
+                case "navis_open": return Open(doc, p);
                 default: throw new ArgumentException($"Unknown command '{method}': use navis_info, navis_clash_tests, navis_clash_results or navis_search_sets");
             }
+        }
+
+        public static JObject Viewpoints(Document doc)
+        {
+            var rows = new JArray();
+            void Walk(IEnumerable<SavedItem> items, string folder)
+            {
+                foreach (SavedItem item in items)
+                {
+                    if (item is GroupItem group) Walk(group.Children, folder.Length > 0 ? folder + "/" + item.DisplayName : item.DisplayName);
+                    else if (item is SavedViewpoint) rows.Add(new JObject { ["name"] = item.DisplayName, ["folder"] = folder, ["guid"] = item.Guid.ToString() });
+                }
+            }
+            Walk(doc.SavedViewpoints.Value, "");
+            return new JObject { ["file"] = doc.FileName ?? "", ["viewpoints"] = rows, ["count"] = rows.Count };
+        }
+
+        public static JObject Open(Document doc, JObject p)
+        {
+            string file = p.Value<string>("file") ?? "";
+            string ext = System.IO.Path.GetExtension(file).ToLowerInvariant();
+            if (!System.IO.Path.IsPathRooted(file) || (ext != ".nwf" && ext != ".nwd" && ext != ".nwc") || !System.IO.File.Exists(file))
+                return new JObject { ["opened"] = false, ["file"] = file, ["refused"] = "An existing .nwf, .nwd or .nwc with a full path" };
+            if (p.Value<bool?>("dry_run") ?? true) return new JObject { ["dry_run"] = true, ["would_open"] = file, ["replaces"] = doc.FileName ?? "" };
+            bool ok = doc.TryOpenFile(file);
+            return new JObject { ["dry_run"] = false, ["opened"] = ok, ["file"] = file };
         }
 
         /// <summary>

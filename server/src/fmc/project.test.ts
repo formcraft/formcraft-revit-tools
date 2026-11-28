@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { DEFAULT_CONFIG, GuardConfig } from "./policy.js";
-import { FolderReader, ProjectInput, codeProblems, modelName, planProject, projectInfo } from "./project.js";
+import { FolderReader, ProjectInput, codeProblems, detailsCheck, findKitTemplates, modelName, pickKitTemplate, planProject, projectInfo } from "./project.js";
 
 const cfg: GuardConfig = {
   ...DEFAULT_CONFIG,
@@ -84,4 +84,33 @@ test("F-019: the tree comes from the kit's PST-002, roles expanded, later folder
   assert.ok(plan.folders.includes("Z:\\Projects\\F26001\\06_QA\\Health"));
   assert.equal((plan.manifest as any).tree, "kit rulebook PST-002");
   assert.deepEqual(treeFolders(null, ["A"]), []);
+});
+
+test("PJ-3/PJ-5/PJ-6: kit templates are found by role, several models per role are named, details keys are sorted", () => {
+  const root = "Z:\\00_Standards\\06_Templates";
+  const staging = root + "\\_Staging";
+  const reader = disk({ "Z:\\Projects\\F26001": [], [root]: ["FMC_A_Template_v2.1.rte", "FMC_A_Template_v2.2.rte", "FMC_Base_Template_v2.2.rte", "_Staging", "notes.txt"], [staging]: ["FMC_E_Template_v2.2.rte", "FMC_A_Template_v3.0.rte"] },
+    [root + "\\FMC_A_Template_v2.2.rte", root + "\\FMC_Base_Template_v2.2.rte", staging + "\\FMC_E_Template_v2.2.rte"]);
+  const list = findKitTemplates([root], reader);
+  assert.equal(list.length, 5);
+  assert.equal(pickKitTemplate(list, "A").template?.version, "2.2");
+  assert.equal(pickKitTemplate(list, "A", true).template?.version, "2.2", "a released template wins over a newer staging copy");
+  assert.equal(pickKitTemplate(list, "S").source, "kit_base");
+  const e = pickKitTemplate(list.filter((t) => t.role !== "BASE"), "E");
+  assert.equal(e.template, null);
+  assert.match(e.note, /only in _Staging/);
+  assert.equal(pickKitTemplate(list.filter((t) => t.role !== "BASE"), "E", true).template?.staging, true);
+
+  const plan = planProject(input({ templates: {}, templates_from_kit: true, roles: [], models: [{ role: "A", volume: "V1", level: "00" }, { role: "A", volume: "V1", level: "01" }, { role: "S" }] }), cfg, reader);
+  assert.deepEqual(plan.reasons, []);
+  assert.deepEqual(plan.models.map((m) => m.name), ["F26001-FMC-V1-00-M3-A-0001.rvt", "F26001-FMC-V1-01-M3-A-0001.rvt", "F26001-FMC-ZZ-ZZ-M3-S-0001.rvt"]);
+  assert.equal(plan.models[2].template_source, "kit_base");
+  const twice = planProject(input({ models: [{ role: "A" }, { role: "A" }] }), cfg, reader);
+  assert.match(twice.reasons.join(" "), /listed twice/);
+  const none = planProject(input({ templates: {} }), cfg, reader);
+  assert.match(none.reasons.join(" "), /templates_from_kit/);
+
+  const check = detailsCheck({ "Client Name": "X", FMC_District: "Kampala", Colour: "red" }, ["FMC_District"]);
+  assert.deepEqual(check, { revit: ["Client Name"], kit: ["FMC_District"], unknown: ["Colour"], kit_list: "read" });
+  assert.equal(detailsCheck({}, null).kit_list, "not found");
 });

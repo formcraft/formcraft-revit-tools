@@ -307,7 +307,8 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (wall.Location is not LocationCurve location || location.Curve is not Line line) return n;
             foreach (Wall other in walls)
             {
-                if (n >= max || other.Id.Value == wall.Id.Value) continue;
+                // P-fmc_joins-03: each parallel pair once (the lower id reads it), not (A,B) and (B,A).
+                if (n >= max || other.Id.Value <= wall.Id.Value) continue;
                 if (other.Location is not LocationCurve otherLocation || otherLocation.Curve is not Line otherLine) continue;
                 if (Math.Abs(Math.Abs(line.Direction.DotProduct(otherLine.Direction)) - 1) > 1e-3) continue;
                 double face = line.Distance(otherLine.GetEndPoint(0)) - Half(wall) - Half(other);

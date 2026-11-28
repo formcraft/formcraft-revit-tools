@@ -51,7 +51,32 @@ export const SECTIONS: Record<Kind, string[]> = {
 };
 
 export interface Row { section: string; key: string; value: string | number }
-export interface Built { title: string; markdown: string; rows: Row[]; left_out: string[] }
+export interface Built {
+  title: string; markdown: string; rows: Row[]; left_out: string[];
+  /** RT-3: sections the disciplines filter applied to, and the ones it could not. */
+  disciplines?: { filtered: string[]; not_filtered: string[] };
+  /** RT-4: QA models counted for this project and the ones left out. */
+  qa_models?: { counted: string[]; left_out: string[] };
+  /** RT-7: exceptions whose until is neither a date nor a revision code. */
+  invalid_until?: Array<{ sheet: string; item: string; until: string }>;
+}
+
+/** RT-3: the discipline (role) field of a container name: Project-Originator-Volume-Level-Type-Role-Number. "" when not named that way. */
+export function modelDiscipline(model: string): string {
+  const parts = model.replace(/\.rvt$/i, "").replace(/_[^_-]*$/, "").split("-");
+  return parts.length >= 7 ? parts[5].toUpperCase() : "";
+}
+
+/** RT-7: when an exception stops being in force. A real date, a revision code (C03, P01), empty, or invalid. */
+export function untilState(until: string, today: string): "in_force" | "expired" | "invalid" {
+  const u = until.trim();
+  if (!u) return "in_force";
+  if (/^[A-Z]{1,2}\d{1,3}$/i.test(u)) return "in_force";
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(u)) return "invalid";
+  const d = new Date(`${u}T00:00:00Z`);
+  if (Number.isNaN(d.getTime()) || d.toISOString().slice(0, 10) !== u) return "invalid";
+  return u >= today ? "in_force" : "expired";
+}
 
 export function buildReport(kind: Kind, src: Sources, opts: { project: string; period: Period; audience: Audience; disciplines: string[]; today: string }): Built {
   const from = periodStart(opts.period, opts.today, src.issues);
@@ -71,7 +96,11 @@ export function buildReport(kind: Kind, src: Sources, opts: { project: string; p
   const items = (src.reviews?.items ?? []).filter((i) => !disc.size || i.disciplines.some((d) => disc.has(d)));
   const open = items.filter((i) => i.status !== "Closed");
   const late = items.filter((i) => overdue(i, opts.today));
-  const syncs = src.syncs.filter((s) => inPeriod(s.at, from));
+  // RT-3: QA and Syncs follow the filter when the model name carries a role; other sections cannot and say so.
+  const discOk = (model: string) => { if (!disc.size) return true; const d = modelDiscipline(model); return !d || disc.has(d); };
+  const syncs = src.syncs.filter((s) => inPeriod(s.at, from) && discOk(s.model));
+  const invalidUntil: NonNullable<Built["invalid_until"]> = [];
+  let qaModels: Built["qa_models"];
   const issues = src.issues.filter((i) => inPeriod(i.date, from));
 
   for (const section of sections) {
@@ -87,7 +116,11 @@ export function buildReport(kind: Kind, src: Sources, opts: { project: string; p
     }
     if (section === "QA") {
       md.push("## QA (latest run per model and gate)", "");
-      const keys = Object.keys(src.qa).filter((k) => !opts.project || k.toUpperCase().startsWith(opts.project.toUpperCase()));
+      const all = Object.keys(src.qa);
+      const keys = all.filter((k) => (!opts.project || k.toUpperCase().startsWith(opts.project.toUpperCase())) && discOk(k.split("|")[0]));
+      const modelsOf = (ks: string[]) => [...new Set(ks.map((k) => k.split("|")[0]))].sort();
+      const counted = modelsOf(keys);
+      qaModels = { counted, left_out: modelsOf(all).filter((m) => !counted.includes(m)) };
       if (!keys.length) md.push("No QA runs saved for this project yet.");
       else {
         md.push("| Model | Gate | Last run | Failing | Since the run before |", "|---|---|---|---|---|");
@@ -101,6 +134,7 @@ export function buildReport(kind: Kind, src: Sources, opts: { project: string; p
           add("QA", `${model} ${gate} failing`, last.failing.length);
         }
       }
+      if (qaModels.left_out.length && !client) md.push("", `Models left out (not ${opts.project}${disc.size ? " or another discipline" : ""}): ${qaModels.left_out.join(", ")}.`);
       md.push("", "Source: FMC_QA_History.json (each run's report is in the QA folder).", "");
     }
     if (section === "Reviews") {
@@ -136,16 +170,20 @@ export function buildReport(kind: Kind, src: Sources, opts: { project: string; p
     }
     if (section === "Exceptions") {
       md.push("## Approved exceptions in force", "");
-      const live = src.exceptions.filter((e) => !e.until || !/^\d{4}-\d{2}-\d{2}$/.test(e.until) || e.until >= opts.today);
+      const live = src.exceptions.filter((e) => untilState(e.until, opts.today) === "in_force");
+      for (const e of src.exceptions) if (untilState(e.until, opts.today) === "invalid") invalidUntil.push({ sheet: e.sheet, item: e.item, until: e.until });
       if (!live.length) md.push("None.");
       else {
         md.push(client ? "| Sheet | Item | Why | Until |" : "| Sheet | Item | Why | Approved by | Until |", client ? "|---|---|---|---|" : "|---|---|---|---|---|");
         for (const e of live) md.push(client ? `| ${e.sheet} | ${e.item} | ${e.why} | ${e.until} |` : `| ${e.sheet} | ${e.item} | ${e.why} | ${e.approved_by} | ${e.until} |`);
         if (client) leftOut.push("Approvers' names");
       }
+      if (invalidUntil.length) md.push("", `Not counted (invalid until date): ${invalidUntil.map((e) => `${e.sheet} ${e.item} "${e.until}"`).join("; ")}.`);
       add("Exceptions", "in force", live.length);
+      if (invalidUntil.length) add("Exceptions", "invalid until", invalidUntil.length);
       md.push("");
     }
+    if (section === "Automation balance" && !src.balance && !client) md.push("## Automation balance", "", `No balance for ${opts.project || "this project"}: the call ledger names none of its calls.`, "");
     if (section === "Automation balance" && src.balance) {
       // How much work still runs as AI-written code: internal, like the activity log.
       if (client) leftOut.push("Automation balance (internal)");
@@ -170,7 +208,10 @@ export function buildReport(kind: Kind, src: Sources, opts: { project: string; p
     }
   }
   if (leftOut.length) md.push(`_Left out for the client: ${[...new Set(leftOut)].join(", ")}._`, "");
-  return { title, markdown: md.join("\n"), rows, left_out: [...new Set(leftOut)] };
+  const discSections = new Set(["Reviews", "QA", "Syncs", "Summary"]);
+  const disciplines = disc.size ? { filtered: sections.filter((s) => discSections.has(s)), not_filtered: sections.filter((s) => !discSections.has(s)) } : undefined;
+  if (disciplines?.not_filtered.length) md.push(`_The disciplines filter does not apply to: ${disciplines.not_filtered.join(", ")}._`, "");
+  return { title, markdown: md.join("\n"), rows, left_out: [...new Set(leftOut)], disciplines, qa_models: qaModels, invalid_until: invalidUntil.length ? invalidUntil : undefined };
 }
 
 /** Tidy CSV (section, key, value) for Power BI. */

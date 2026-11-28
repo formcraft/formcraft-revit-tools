@@ -72,6 +72,13 @@ namespace RevitMCPCommandSet.Services.Fmc
                 }
                 var walls = new Dictionary<string, Wall>();
                 var into = new Dictionary<string, XYZ> { ["south"] = XYZ.BasisY, ["east"] = -XYZ.BasisX, ["north"] = -XYZ.BasisY, ["west"] = XYZ.BasisX };
+            // RM-6: a turned room's walls face into the room along the turned directions
+            double turn = (Parameters.Value<double?>("rotation_deg") ?? 0) * Math.PI / 180;
+            if (Math.Abs(turn) > 1e-9)
+            {
+                Transform rot = Transform.CreateRotation(XYZ.BasisZ, turn);
+                foreach (string side in into.Keys.ToList()) into[side] = rot.OfVector(into[side]);
+            }
                 Ceiling ceiling = null;
                 foreach (JObject o in ops.Where(x => x.Value<string>("op") == "wall"))
                 {
@@ -130,6 +137,12 @@ namespace RevitMCPCommandSet.Services.Fmc
                         if (!ok) notes.Add($"room {room.Number}: {kv.Name} not set");
                     }
                     Made(room, o);
+                }
+                // RM-4: strict (the default) rolls back a room with any failed element: no walls without the bed
+                if ((Parameters.Value<bool?>("strict") ?? true) && notes.Count > 0)
+                {
+                    t.RollBack();
+                    return new JObject { ["rolled_back"] = true, ["made"] = new JArray(), ["elements"] = new JArray(), ["removed"] = 0, ["loaded"] = new JArray(), ["notes"] = notes };
                 }
                 foreach (Element e in made) e.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS)?.Set("FMC:" + node);
                 t.Commit();

@@ -7,7 +7,7 @@ import { batchLease } from "./target.js";
 import { loadConfig, type GuardConfig } from "./policy.js";
 import { writeReport } from "./localreport.js";
 import {
-  DIAGRAM_API_LIMITS, elecInputFromTrace, planElecDiagrams, planPlumbDiagrams, plumbInputFromTrace,
+  diagramApiLimits, elecInputFromTrace, planElecDiagrams, planPlumbDiagrams, plumbInputFromTrace,
   type DiagramPlan, type DiagramView, type ElecDiagramInput, type PlumbDiagramInput, type RiserStyle,
 } from "./schematicplan.js";
 import type { TraceSnapshot } from "./trace.js";
@@ -23,6 +23,10 @@ export interface DiagramArgs {
   batch_lease: string;
   riser: RiserStyle;
   references?: { kit?: string[]; standards?: string[]; rulebook?: string[] };
+  /** Plumbing only (PD-1): system names or ids, and paging. */
+  systems?: string[];
+  offset?: number;
+  limit?: number;
 }
 
 export interface DiagramIo {
@@ -73,19 +77,19 @@ function summarise(view: DiagramView) {
   };
 }
 
-function planOf(tool: DiagramTool, snapshot: Record<string, unknown>, style: RiserStyle): DiagramPlan {
+function planOf(tool: DiagramTool, snapshot: Record<string, unknown>, style: RiserStyle, args?: DiagramArgs): DiagramPlan {
   if (tool.discipline === "elec") {
     const input = Array.isArray(snapshot.panels) ? snapshot as ElecDiagramInput : elecInputFromTrace(snapshot as TraceSnapshot);
     return planElecDiagrams(input, style);
   }
   const input = Array.isArray(snapshot.systems) ? snapshot as PlumbDiagramInput : plumbInputFromTrace(snapshot as TraceSnapshot);
-  return planPlumbDiagrams(input, style);
+  return planPlumbDiagrams(input, style, { systems: args?.systems, offset: args?.offset, limit: args?.limit });
 }
 
 export async function runDiagramTool(tool: DiagramTool, args: DiagramArgs, io: DiagramIo = {}) {
   if (args.action === "limits") {
     return reply({
-      tool: tool.tool, read_only: true, action: "limits", api_limits: DIAGRAM_API_LIMITS,
+      tool: tool.tool, read_only: true, action: "limits", api_limits: diagramApiLimits(tool.discipline),
       symbols: ["FMC_DI_E_SLD_Board", "FMC_DI_E_SLD_Breaker", "FMC_DI_P_Schematic"],
       riser: ["bands", "elevation"],
       rule: "dry_run defaults to true. apply with dry_run false is one transaction and needs batch_lease and references.",
@@ -104,20 +108,23 @@ export async function runDiagramTool(tool: DiagramTool, args: DiagramArgs, io: D
   if (!snapshot || typeof snapshot !== "object") {
     return reply({ tool: tool.tool, read_only: true, error: `${tool.tool} returned no graph.` }, true);
   }
-  const plan = planOf(tool, snapshot, args.riser);
+  const plan = planOf(tool, snapshot, args.riser, args);
   const resolved = (snapshot.resolved_document ?? {}) as { title?: string; path?: string };
   const document = { title: String(resolved.title || snapshot.model || args.document), path: String(resolved.path || "") };
   const report = writeReport(tool.discipline === "elec" ? "elec-diagrams" : "plumb-diagrams", args.action, { plan, document }, io.env);
   const body = {
     tool: tool.tool,
     action: args.action,
+    ...(plan.summary ? { summary: plan.summary } : {}),
     document,
     riser: args.riser,
     counts: plan.counts,
+    ...(plan.selection ? { selection: plan.selection } : {}),
     views: plan.views.map(summarise),
     warnings: plan.warnings,
     supersedes_3d: plan.supersedes_3d,
-    api_limits: DIAGRAM_API_LIMITS,
+    api_limits: diagramApiLimits(tool.discipline),
+    ...(plan.connector_input ? { connector_input: plan.connector_input } : {}),
     report,
     cites: {
       kit: "Generic annotation and detail items FMC_DI_E_SLD_* and FMC_DI_P_Schematic, when loaded. Otherwise lines and text.",

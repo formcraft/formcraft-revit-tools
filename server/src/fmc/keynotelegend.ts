@@ -18,6 +18,9 @@ export const LEGEND_FIX: Record<string, string> = {
   "FMC-KEYNOTE-LEGEND-SHEET": "That sheet was not found.",
   "FMC-KEYNOTE-LEGEND-ROLE": "No sheet has that role.",
   "FMC-KEYNOTE-LEGEND-ALREADY": "That sheet already has this keynote legend.",
+  "FMC-KEYNOTE-LEGEND-NONE": "That sheet has no keynote legend to refresh or remove.",
+  "FMC-KEYNOTE-LEGEND-PLAN-ONLY": "refresh and remove are plan-only in this build: the add-in apply places new legends only. Move or delete the legend in Revit, or wait for the apply (it needs the plan hash, Builder 1).",
+  "FMC-KEYNOTE-LEGEND-SAME-POINT": "Every planned sheet got the same point from the spec, not from a title-block parameter. Check the zone on one sheet before applying to all.",
   "FMC-KEYNOTE-LEGEND-FILTER": "This keynote legend cannot be filtered by sheet (IsValidCategoryForFilterBySheet is false). Nothing was placed.",
 };
 
@@ -29,6 +32,8 @@ export interface LegendZoneSpec {
 
 export interface LegendSpec {
   status?: string;
+  /** Research 52: the legend's expected size for the zone check (top-left at the point, as ScheduleSheetInstance.Create places it). */
+  size_mm?: { width?: number; height?: number };
   name?: string;
   filter_by_sheet?: boolean;
   zone?: LegendZoneSpec;
@@ -58,6 +63,8 @@ export interface LegendSheet {
   legend_y_mm?: number;
   legend_source?: string;
   has_legend?: boolean;
+  /** Viewports and schedules already on the sheet, millimetres (add-in read, research 52). */
+  taken_mm?: Array<LegendFrame & { id?: string; kind?: string }>;
 }
 
 export interface LegendPoint {
@@ -154,9 +161,43 @@ export interface LegendPlacement {
   x: number;
   y: number;
   source: "param" | "spec";
+  /** clear, overlaps, off_titleblock or not_checked (no outlines from the add-in). */
+  zone_check?: ZoneCheck;
+  overlaps?: string[];
+  legend_id?: string;
+  fit_point?: { x: number; y: number };
 }
 
-export function planLegend(sheets: LegendSheet[], spec: LegendSpec, request: { sheets?: string[]; role: string; filter_by_sheet: boolean }): {
+export type ZoneCheck = "clear" | "overlaps" | "off_titleblock" | "not_checked";
+export type LegendAction = "place" | "refresh" | "remove";
+
+export function legendBox(x: number, y: number, spec: LegendSpec): LegendFrame {
+  const w = spec.size_mm?.width ?? 150;
+  const h = spec.size_mm?.height ?? 100;
+  return { min_x: x, max_x: x + w, min_y: y - h, max_y: y };
+}
+
+function hits(a: LegendFrame, b: LegendFrame): boolean {
+  return a.min_x < b.max_x && b.min_x < a.max_x && a.min_y < b.max_y && b.min_y < a.max_y;
+}
+
+/** Research 52: does the legend box at the point stay on the title block and clear of viewports and other schedules? */
+export function zoneCheck(sheet: LegendSheet, x: number, y: number, spec: LegendSpec): { zone_check: ZoneCheck; overlaps: string[]; fit_point?: { x: number; y: number } } {
+  if (!Array.isArray(sheet.taken_mm)) return { zone_check: "not_checked", overlaps: [] };
+  const box = legendBox(x, y, spec);
+  const tb = sheet.titleblock_mm;
+  const overlaps = sheet.taken_mm.filter((r) => r.kind !== "this_legend" && hits(box, r)).map((r) => `${r.kind ?? "item"} ${r.id ?? ""}`.trim());
+  if (overlaps.length) return { zone_check: "overlaps", overlaps };
+  if (tb && (box.min_x < tb.min_x || box.max_x > tb.max_x || box.min_y < tb.min_y || box.max_y > tb.max_y)) {
+    // The point is the legend's top-left (ScheduleSheetInstance.Create); the spec inset is from the lower right, so a point at the inset hangs off the frame.
+    const zone = spec.zone ?? {};
+    const fit = { x: r1(tb.max_x - (zone.inset_right_mm ?? 30) - (box.max_x - box.min_x)), y: r1(tb.min_y + (zone.inset_bottom_mm ?? 30) + (box.max_y - box.min_y)) };
+    return { zone_check: "off_titleblock", overlaps: [], fit_point: fit };
+  }
+  return { zone_check: "clear", overlaps: [] };
+}
+
+export function planLegend(sheets: LegendSheet[], spec: LegendSpec, request: { sheets?: string[]; role: string; filter_by_sheet: boolean; action?: LegendAction }): {
   name: string;
   filter_by_sheet: boolean;
   placements: LegendPlacement[];
@@ -168,7 +209,20 @@ export function planLegend(sheets: LegendSheet[], spec: LegendSpec, request: { s
   const skipped = [...chosen.skipped];
   for (const sheet of chosen.found) {
     if (sheet.has_legend) {
+      if (request.action === "refresh" || request.action === "remove") {
+        const at = request.action === "refresh" ? legendPoint(sheet, spec) : null;
+        const existing = (sheet.taken_mm ?? []).find((r) => r.kind === "this_legend");
+        if (at && !at.ok) { skipped.push({ sheet: sheet.number || sheet.name || sheet.id, code: at.code, reason: at.reason }); continue; }
+        const px = at && at.ok ? at.point.x : existing?.min_x ?? 0;
+        const py = at && at.ok ? at.point.y : existing?.max_y ?? 0;
+        placements.push({ sheet: sheet.name || sheet.number || sheet.id, sheet_id: sheet.id, number: sheet.number ?? "", x: px, y: py, source: at && at.ok ? at.point.source : "spec", ...(existing?.id ? { legend_id: existing.id } : {}), ...(request.action === "refresh" ? zoneCheck(sheet, px, py, spec) : {}) });
+        continue;
+      }
       skipped.push({ sheet: sheet.number || sheet.name || sheet.id, code: "FMC-KEYNOTE-LEGEND-ALREADY", reason: LEGEND_FIX["FMC-KEYNOTE-LEGEND-ALREADY"] });
+      continue;
+    }
+    if (request.action === "refresh" || request.action === "remove") {
+      skipped.push({ sheet: sheet.number || sheet.name || sheet.id, code: "FMC-KEYNOTE-LEGEND-NONE", reason: LEGEND_FIX["FMC-KEYNOTE-LEGEND-NONE"] });
       continue;
     }
     const point = legendPoint(sheet, spec);
@@ -183,6 +237,7 @@ export function planLegend(sheets: LegendSheet[], spec: LegendSpec, request: { s
       x: point.point.x,
       y: point.point.y,
       source: point.point.source,
+      ...zoneCheck(sheet, point.point.x, point.point.y, spec),
     });
   }
   return { name, filter_by_sheet: request.filter_by_sheet, placements, skipped };
@@ -209,4 +264,11 @@ export function writeLegendReport(env: NodeJS.ProcessEnv, body: unknown, dir = l
   const file = path.join(dir, `keynote-legend-${stamp}.json`);
   fs.writeFileSync(file, JSON.stringify(body, null, 2));
   return file;
+}
+
+/** P-fmc_keynote_legend-01: why a plan is PROVISIONAL and cannot PASS, in one line the bot can repeat. */
+export function legendSpecNote(source: "kit" | "sample" | "file", provisional: boolean): string {
+  if (source === "sample") return "The spec is the provisional sample: the kit file 03_Master_Data/FMC_KeynoteLegend.json is not on disk (K-14). The plan is usable for a look, but it cannot PASS (can_pass false) until the kit file exists.";
+  if (provisional) return `The ${source} spec is still marked provisional, so the plan cannot PASS (can_pass false) until the spec is approved.`;
+  return `The spec is the ${source} file; the plan can PASS.`;
 }

@@ -8,6 +8,7 @@ import { configPath, loadConfig, type GuardConfig } from "../fmc/policy.js";
 import { protectedRoots } from "../fmc/opencopy.js";
 import {
   LEGEND_FIX, loadLegendSpec, planLegend, referenceProblems, writeLegendReport, type LegendSheet,
+  legendSpecNote,
 } from "../fmc/keynotelegend.js";
 
 function reply(body: object, isError = false) {
@@ -16,6 +17,10 @@ function reply(body: object, isError = false) {
 
 export const FMC_KEYNOTE_LEGEND_DESCRIPTION =
   "Create the FMC keynote legend, filter it by sheet, and place it on each sheet. " +
+  "The dry run is plan-only: one Revit read and no transaction (read_only true, plan_only true); it writes only the local JSON report, so it is safe on any model. " +
+  "spec_source sample means the kit legend file is missing: status is PROVISIONAL and can_pass false, with status_reason saying why. " +
+  "action place (default) plans new legends; refresh plans moving an existing legend to the zone and remove plans taking it off; both are plan-only in this build (a write is refused). " +
+  "Each planned point has zone_check: clear, overlaps (a viewport or schedule is under the legend box, size_mm in the spec), off_titleblock or not_checked. " +
   "sheets is a list of sheet numbers or names. With sheets omitted, role (default plan) selects the sheets. " +
   "filter_by_sheet defaults to true. The point is the title-block parameter FMC_Legend_Zone (text x,y millimetres) or FMC_Legend_X and FMC_Legend_Y. " +
   "Without that parameter the point is the kit zone: inset from the lower right of the title block (03_Master_Data/FMC_KeynoteLegend.json, or the provisional sample). " +
@@ -31,6 +36,7 @@ const refs = z.object({
 
 export const FMC_KEYNOTE_LEGEND_SHAPE = {
   document: z.string().optional().default(""),
+  action: z.enum(["place", "refresh", "remove"]).optional().default("place"),
   sheets: z.array(z.string()).optional(),
   role: z.string().optional().default("plan"),
   filter_by_sheet: z.boolean().optional().default(true),
@@ -106,25 +112,35 @@ export async function runFmcKeynoteLegend(args: FmcKeynoteLegendArgs, io: Keynot
       sheets: args.sheets,
       role: args.role,
       filter_by_sheet: args.filter_by_sheet !== false,
+      action: args.action,
     });
     const provisional = loaded.provisional;
     const report = writeLegendReport(env, { document: doc.title, spec: loaded.path, plan }, io.reportDir);
     const dry = args.dry_run !== false;
+    const fromSpec = plan.placements.filter((row) => row.source === "spec");
+    const samePoint = fromSpec.length > 1 && new Set(fromSpec.map((row) => `${row.x},${row.y}`)).size === 1;
+    const zoneProblems = plan.placements.filter((row) => row.zone_check === "overlaps" || row.zone_check === "off_titleblock").length;
     const summary = stamp({
       dry_run: dry,
       read_only: dry,
+      plan_only: dry,
+      transaction: false,
+      action: args.action,
+      zone: { problems: zoneProblems, size_mm: loaded.spec.size_mm ?? { width: 150, height: 100 }, ...(samePoint ? { same_point: { code: "FMC-KEYNOTE-LEGEND-SAME-POINT", sheets: fromSpec.length, message: LEGEND_FIX["FMC-KEYNOTE-LEGEND-SAME-POINT"] } } : {}) },
       document: doc.title,
       spec: loaded.path,
       spec_source: loaded.source,
       provisional,
       status: provisional ? "PROVISIONAL" : "PASS",
       can_pass: !provisional,
+      status_reason: legendSpecNote(loaded.source, provisional),
       legend: { name: plan.name, filter_by_sheet: plan.filter_by_sheet },
       sheets: plan.placements,
       skipped: plan.skipped,
       report,
     });
-    if (dry) return reply({ ...summary, next: "Nothing was placed. Apply with dry_run false, batch_lease, and references. That call is fmc_keynote_legend_apply, one transaction." });
+    if (dry) return reply({ ...summary, next: args.action === "place" ? "Nothing was placed. Apply with dry_run false, batch_lease, and references. That call is fmc_keynote_legend_apply, one transaction." : "Nothing was changed. refresh and remove are plan-only in this build." });
+    if (args.action !== "place") return reply({ ...stamp(), refused: true, code: "FMC-KEYNOTE-LEGEND-PLAN-ONLY", message: LEGEND_FIX["FMC-KEYNOTE-LEGEND-PLAN-ONLY"], plan: plan.placements }, true);
     const blob = `${doc.title} ${doc.path}`;
     if (/hebert hostels/i.test(blob) || doc.is_central) return reply({ ...stamp(), refused: true, code: "FMC-KEYNOTE-LEGEND-GUARD", message: "HEBERT HOSTELS and a central model are not written by fmc_keynote_legend." }, true);
     const loadedCfg = io.guard ? { config: io.guard, problem: undefined as string | undefined } : loadConfig(configPath(env));

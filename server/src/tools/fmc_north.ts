@@ -9,7 +9,7 @@ import { saveBlocked } from "../fmc/savepolicy.js";
 import { configPath, loadConfig, type GuardConfig } from "../fmc/policy.js";
 import { protectedRoots } from "../fmc/opencopy.js";
 import {
-  capFindings, compareSnapshot, gridSetsOf, normalizeNorth, planAlign, planArrows, prepareDoc,
+  capFindings, compareSnapshot, coordPlan, gridSetsOf, normalizeNorth, planAlign, planArrows, prepareDoc,
   referenceProblems, resolveNorthTolerances, viewRotationRows, writeNorthReport, type NorthDoc, type NorthSnapshot,
 } from "../fmc/north.js";
 import { NORTH_FIX, roleOf } from "../fmc/northmath.js";
@@ -24,7 +24,7 @@ export const FMC_NORTH_DESCRIPTION =
   "audit reads each named document, or every open project when all_open is true: project-north to true-north angle in degrees " +
   "(ProjectLocation.GetProjectPosition at the internal origin), the active site, shared east/north/elevation, the survey point and the project base point, " +
   "each view's Project North or True North setting, and each grid set's dominant angle. " +
-  "compare checks open A, E, P and S models, or the documents you list, against north.tol_deg and north.tol_mm " +
+  "compare checks open A, E, P and S models, or the documents you list, against north.tol_deg and north.tol_mm; on a mismatch it adds coord_plan, a ready fmc_coord plan (publish from the S or A model, then check and align each other model, all dry runs) " +
   "(else coord.tol_deg and coord.tol_mm; else the provisional 0.01 deg and 1 mm, which cannot PASS). " +
   "A linked instance is compared with GetTotalTransform against shared coordinates. Mismatches use FMC-NORTH-ANGLE-MISMATCH and FMC-NORTH-SURVEY-MISMATCH. " +
   "align_views rotates plan views square to a grid set by the crop region or a scope box. It does not change project north. dry_run defaults to true. " +
@@ -228,6 +228,7 @@ export async function runFmcNorth(args: FmcNorthArgs, io: NorthIo = {}) {
           status: compared.status,
           agree: compared.status !== "FAIL",
           findings: capFindings(compared.findings, sample),
+          ...((() => { const plan = coordPlan(summaryDocs, compared.findings, roleOf); return plan ? { coord_plan: plan } : {}; })()),
         } : {}),
         report,
         count: docs.length,

@@ -13,7 +13,7 @@ import {
   type JoinsBankEntry,
 } from "../fmc/joins_bank.js";
 import {
-  auditFindings, auditKeys, catalogue, hasScope, hostingFindings, hostKeys, joinsDir,
+  auditFindings, auditKeys, catalogue, dedupePairs, notChecked, hasScope, hostingFindings, hostKeys, joinsDir,
   normalizeSnapshot, overallVerdict, planFixes, pressureResult, resolveJoinsLimits,
   roomFindings, roomKeys, standardsFor, summarizeFindings, writeJoinsReport,
   type JoinsFinding, type JoinsSnapshot, type JoinsValues, type ResolvedLimits,
@@ -238,8 +238,16 @@ function stamp(snapshot: JoinsSnapshot, extra: Record<string, unknown>, askedIma
     skipped_non_family: snapshot.skipped_non_family,
     images: imagesOf(snapshot, askedImages),
     active_unchanged: snapshot.active_unchanged !== false,
-    bank_shapes: JOINS_BANK_SHAPES,
     ...extra,
+  };
+}
+
+/** Research 51: 0 elements gives NOT_CHECKED with the reason, never PROVISIONAL or PASS. */
+function notCheckedBody(action: string) {
+  return {
+    verdict: "NOT_CHECKED",
+    pass: false,
+    verdict_reason: `The ${action} read found 0 elements in scope, so nothing was checked. Check the document, level, category or ids.`,
   };
 }
 
@@ -249,6 +257,11 @@ function summarized(findings: JoinsFinding[], citedKeys: string[], limits: Resol
     findings: summarizeFindings(findings, sample),
     verdict: overallVerdict(findings, standards),
     pass: overallVerdict(findings, standards) === "PASS",
+    // P-fmc_joins-02: say when the findings are advisory because their limits are not in the standards bank yet.
+    advisory: findings.filter((item) => item.verdict === "PROVISIONAL").length,
+    ...(findings.some((item) => item.verdict === "PROVISIONAL")
+      ? { verdict_reason: `${findings.filter((item) => item.verdict === "PROVISIONAL").length} finding(s) are against PROVISIONAL limits (not in the standards bank, K-25): advisory, not FAIL, until the keys are draft or approved.` }
+      : {}),
     standards,
     counts: {
       findings: findings.length,
@@ -310,12 +323,15 @@ function readReply(args: FmcJoinsArgs, snapshot: JoinsSnapshot, limits: Resolved
   if (args.action === "audit") {
     const findings = auditFindings(snapshot, limits);
     const body = summarized(findings, auditKeys(), limits, sample);
+    const pairCheck = dedupePairs(snapshot.pairs);
+    if (notChecked(snapshot)) Object.assign(body, notCheckedBody("audit"));
     const file = report(io, "audit", { ...body, items: findings, resolved_document: snapshot.resolved_document });
-    return reply(stamp(snapshot, { action: "audit", scoped: snapshot.scoped === true || hasScope(args), partial: snapshot.partial === true, element_count: snapshot.element_count, report: file, ...body }, args.images));
+    return reply(stamp(snapshot, { action: "audit", scoped: snapshot.scoped === true || hasScope(args), partial: snapshot.partial === true, element_count: snapshot.element_count, pairs: { listed: snapshot.pairs.length, unique: pairCheck.pairs.length, duplicates_dropped: pairCheck.duplicates }, report: file, ...body }, args.images));
   }
   if (args.action === "hosting") {
     const findings = hostingFindings(snapshot, limits, args.category);
     const body = summarized(findings, hostKeys(), limits, sample);
+    if (notChecked(snapshot)) Object.assign(body, notCheckedBody("hosting"));
     const file = report(io, "hosting", { ...body, items: findings, resolved_document: snapshot.resolved_document });
     return reply(stamp(snapshot, { action: "hosting", category: args.category, report: file, ...body }, args.images));
   }

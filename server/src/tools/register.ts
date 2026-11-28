@@ -196,6 +196,10 @@ export async function registerTools(server: McpServer): Promise<RegistrationRepo
       console.error(`注册工具 ${file} 时出错:`, error);
     }
   }
+  // Research 59: Navisworks switched off: a small stand-in explains why fmc_navis is missing.
+  if (appOff.has("fmc_navis") && !registered.includes("fmc_navis")) {
+    try { (await import("./fmc_navis.js")).navisOffStub(server, "The hub switched Navisworks off (not installed on this PC, or switched off in fmc_apps)."); } catch { /* the stand-in is optional */ }
+  }
   lastRegistration = { registered, skipped, failed };
   if (failed.length) {
     throw new Error("Tool registration failed (" + failed.length + "):\n" + failed.map((f) => `${f.file}: ${f.error}`).join("\n"));

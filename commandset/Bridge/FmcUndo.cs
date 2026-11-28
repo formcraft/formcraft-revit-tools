@@ -205,12 +205,12 @@ namespace RevitMCPCommandSet
         }
 
         /// <summary>Plans and posts the undo of the top AI batches (count) or down to batch_id. Refuses a person's work.</summary>
-        public static JObject Undo(UIApplication app, Document doc, string batchId, int count)
+        public static JObject Undo(UIApplication app, Document doc, string batchId, int count, bool dryRun = false)
         {
             lock (L)
             {
                 if (!_hooked) throw new InvalidOperationException("The undo list is followed from the AI's first change after Revit starts; nothing is known yet");
-                if (_planDoc != null) throw new InvalidOperationException("An undo is still running: check with undo_ai_batch status");
+                if (_planDoc != null && !dryRun) throw new InvalidOperationException("An undo is still running: check with undo_ai_batch status");
                 if (app.ActiveUIDocument?.Document == null || !app.ActiveUIDocument.Document.Equals(doc)) throw new InvalidOperationException($"Revit undoes in the active model: make {doc.Title} the active window first");
                 if (doc.IsModifiable) throw new InvalidOperationException("Revit is in the middle of an edit");
                 var u = Of(Undos, Key(doc));
@@ -237,6 +237,13 @@ namespace RevitMCPCommandSet
                 }
                 if (!string.IsNullOrEmpty(batchId) && !plan.Any(c => c[0].Id == batchId))
                     throw new InvalidOperationException($"Batch {batchId} isn't on Revit's undo list for {doc.Title} (see undo_ai_batch status)");
+                // UB-2: the dry run returns the same plan (after the same person's-work refusal) and posts nothing.
+                if (dryRun)
+                    return new JObject
+                    {
+                        ["dry_run"] = true, ["posted"] = false,
+                        ["undoing"] = new JArray(plan.Select(c => new JObject { ["id"] = c[0].Id, ["label"] = c[0].Label, ["at"] = c[0].At.ToString("HH:mm:ss") })),
+                    };
                 _planDoc = Key(doc); _planLeft.Clear(); _planDone.Clear(); _planStop = "";
                 _planLeft.AddRange(plan.Select(c => c[0].Id));
                 PostNext(app);
@@ -320,7 +327,13 @@ namespace RevitMCPCommandSet.Services.Fmc
                     {
                         case "undo": Result = FmcUndo.Undo(app, doc, batchId, Parameters.Value<int?>("count") ?? 1); break;
                         case "redo": Result = FmcUndo.Redo(app, doc); break;
-                        default: Result = FmcUndo.Status(doc); break;
+                        // UB-2: status with plan true is the undo dry run (same plan and person's-work refusal, nothing posted).
+                        // It rides on status so an older add-in that does not know it answers with plain status, never an undo.
+                        default:
+                            Result = Parameters.Value<bool?>("plan") == true
+                                ? FmcUndo.Undo(app, doc, batchId, Parameters.Value<int?>("count") ?? 1, dryRun: true)
+                                : FmcUndo.Status(doc);
+                            break;
                     }
                     Result["resolved_document"] = FmcTarget.Resolved(doc);
                 }

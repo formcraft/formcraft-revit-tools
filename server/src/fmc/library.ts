@@ -13,6 +13,8 @@ export type CheckState = "pass" | "fail" | "na";
 export interface FamilyCheck { check: string; state: CheckState; detail: string; fixable: boolean; applies?: boolean }
 export interface FamilyVerdict {
   name: string; category: string; from: string; score: number;
+  /** Research 55: fmc (an FMC_ family) or vendor (stock Autodesk or third-party content, not meant to follow the FMC rule). */
+  origin?: FamilyOrigin;
   state: "Compliant" | "Fixable" | "Needs a person"; checks: FamilyCheck[]; next: string;
 }
 
@@ -95,6 +97,13 @@ export function requiredParameters(name: string, specs: Map<string, FamilySpec>,
   return spec.shared_parameters.map((p) => kit.get(p.name)).filter((p): p is SpParam => !!p);
 }
 
+export type FamilyOrigin = "fmc" | "vendor";
+
+/** Research 55: an FMC family's name starts FMC_; anything else loaded in a project is stock or vendor content. */
+export function familyOrigin(name: string): FamilyOrigin {
+  return /^FMC_/i.test(name.trim()) ? "fmc" : "vendor";
+}
+
 export function checkFamily(f: ScannedFamily, specs: Map<string, FamilySpec>, kit: Map<string, SpParam>, from = "Loaded"): FamilyVerdict {
   const checks: FamilyCheck[] = [];
   const kind = familyKind(f.category, f.name);
@@ -148,12 +157,14 @@ export function checkFamily(f: ScannedFamily, specs: Map<string, FamilySpec>, ki
   const next = state === "Compliant" ? "Nothing: it meets the Families rulebook"
     : state === "Fixable" ? "Bring it in again: rename, add the kit's parameters and set the keynote in one pass"
     : failed.find((c) => !c.fixable)?.detail ?? checks.find((c) => c.state === "na")?.detail ?? "A person decides";
-  return { name: f.name, category: f.category, from, score, state, checks, next };
+  return { name: f.name, category: f.category, from, score, state, checks, next, origin: familyOrigin(f.name) };
 }
 
 export function summarise(verdicts: FamilyVerdict[]) {
   return {
     scanned: verdicts.length,
+    fmc: verdicts.filter((v) => (v.origin ?? familyOrigin(v.name)) === "fmc").length,
+    vendor: verdicts.filter((v) => (v.origin ?? familyOrigin(v.name)) === "vendor").length,
     compliant: verdicts.filter((v) => v.state === "Compliant").length,
     fixable: verdicts.filter((v) => v.state === "Fixable").length,
     need_a_person: verdicts.filter((v) => v.state === "Needs a person").length,

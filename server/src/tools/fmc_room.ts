@@ -4,7 +4,7 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
-import { ROOM, Op, planRoom, resolveRoomFamilies, roomFamilies } from "../tree/room.js";
+import { ROOM, Op, planRoom, resolveRoomFamilies, roomFamilies, roomSchemaProblems } from "../tree/room.js";
 import { familyRoots } from "../fmc/ops.js";
 import { Edit, LiveFacts, Snapshot, findEdits, opKeys, snapshot } from "../tree/drift.js";
 
@@ -42,6 +42,8 @@ export const FMC_ROOM_SHAPE = {
   node: z.string().optional().default("").describe("build, edits: the tree node (or a name) the elements belong to"),
   room: ROOM.optional().describe("plan, build: the room"),
   keep: z.array(z.string()).optional().default([]).describe("build: keys of elements a person owns (overrides): left as they are"),
+  strict: z.boolean().optional().default(true).describe("build: true (default) rolls the whole room back when any element fails (done false, notes); false keeps a partial room and says partial true"),
+  unique_ids: z.array(z.string()).optional().default([]).describe("edits: for a node built before snapshots, the elements to compare (from the record's made list)"),
   design_option: z.string().optional().default("").describe("build: the Revit design option to build into (it must be the active one; options, O3); its own record, so the main model's room is never replaced"),
   project_folder: z.string().optional().default("").describe("build, edits: where the record of what was made is kept"),
   dry_run: z.boolean().optional().default(true),
@@ -82,10 +84,17 @@ async function liveFacts(uids: string[]): Promise<Map<string, LiveFacts | null>>
 }
 
 /** What people changed by hand in a room node since its build (T3). */
-export async function roomEdits(project: string, node: string): Promise<{ record: RoomRecord; edits: Edit[] }> {
+export async function roomEdits(project: string, node: string, uniqueIds: string[] = []): Promise<{ record: RoomRecord; edits: Edit[]; baseline?: string }> {
   const record = readRoomRecord(project, node);
   if (!record) throw new Error(`No build recorded for ${node} (fmc_room build records it)`);
-  if (!record.elements?.length) throw new Error(`${node} was built before elements were recorded with snapshots: build it once more`);
+  if (!record.elements?.length) {
+    // RM-10: no snapshots. A rebuild would replace hand-edited elements, so offer a look at the made ids instead.
+    if (!uniqueIds.length) throw new Error(`${node} was built before elements were recorded with snapshots. A rebuild replaces every element it made, hand edits included. ` +
+      `To see which still exist without rebuilding, call edits with unique_ids from the record's made list (${record.made.length} ids).`);
+    const live = await liveFacts(uniqueIds);
+    const deleted = uniqueIds.filter((u) => !live.get(u));
+    return { record, edits: deleted.map((u): Edit => ({ unique_id: u, key: "", kind: "deleted" })), baseline: "no snapshots: only deletions can be found" };
+  }
   const live = await liveFacts(record.elements.map((e) => e.unique_id));
   return { record, edits: findEdits(record.elements, live, new Set(record.keep ?? [])) };
 }
@@ -115,11 +124,13 @@ export async function runFmcRoom(args: FmcRoomArgs) {
   try {
     if (args.action === "edits") {
       if (!args.node.trim() || !args.project_folder.trim()) return reply({ refused: true, reasons: ["Name the node and the project folder"] }, true);
-      const { record, edits } = await roomEdits(args.project_folder, args.node);
-      return reply({ node: args.node, built_at: record.built_at, elements: record.elements!.length, kept: record.keep ?? [], edits,
+      const { record, edits, baseline } = await roomEdits(args.project_folder, args.node, args.unique_ids);
+      return reply({ node: args.node, built_at: record.built_at, elements: record.elements?.length ?? args.unique_ids.length, kept: record.keep ?? [], edits, ...(baseline ? { baseline } : {}),
         next: edits.length ? "For each edit, fmc_tree adopt (the recipe takes it) or override (the element stays the person's)" : "No hand edits since the build" });
     }
     if (!args.room) return reply({ refused: true, reasons: ["Give the room"] }, true);
+    const schema = roomSchemaProblems(args.room);
+    if (schema.length) return reply({ refused: true, problems: schema, reasons: ["The room does not match the recipe schema", ...schema] }, true);
     const plan = planRoom(args.room);
     if (args.action === "plan") return reply({ room: args.room.name, ops: plan.ops.length, problems: plan.problems, warnings: plan.warnings, plan: plan.ops });
     if (plan.problems.length) return reply({ refused: true, reasons: ["The room's plan has problems: fix the recipe first", ...plan.problems] }, true);
@@ -149,8 +160,13 @@ export async function runFmcRoom(args: FmcRoomArgs) {
         warnings: plan.warnings, plan: ops, next: "Run again with dry_run=false in the WIP model" });
     }
     // the write goes through the live-model lock (sendCommand); the command removes what it made last time, then builds
-    const r = await withRevitConnection((c) => c.sendCommand("fmc_room_build", { node: args.node, level: args.room!.level, ops, replace, design_option: args.design_option.trim(),
+    const r = await withRevitConnection((c) => c.sendCommand("fmc_room_build", { node: args.node, level: args.room!.level, ops, replace, design_option: args.design_option.trim(), strict: args.strict !== false, rotation_deg: args.room!.rotation_deg ?? 0,
       families: famFiles.files.map((f) => ({ family: f.family, path: f.path })), searched: famFiles.searched }, 300000)) as Record<string, any>;
+    // RM-4: a strict build that hit a failure was rolled back in Revit; nothing is recorded.
+    if (r.rolled_back) {
+      log(config, "room_build", false, args.node, "rolled back", (r.notes ?? []).join("; "));
+      return reply({ done: false, rolled_back: true, node: args.node, notes: r.notes ?? [], next: "Fix what the notes name (or build with strict false to keep a partial room)" }, true);
+    }
     const made: Array<{ unique_id: string; key: string }> = r.elements ?? (r.made ?? []).map((u: string) => ({ unique_id: u, key: "" }));
     // snapshots of what was made, and of the kept elements as they are now, so the next look finds only new edits
     let elements: Snapshot[] = [];
@@ -164,7 +180,7 @@ export async function runFmcRoom(args: FmcRoomArgs) {
     fs.writeFileSync(record, JSON.stringify(rec, null, 2));
     const loaded: Array<{ family: string; path: string }> = r.loaded ?? [];
     log(config, "room_build", false, args.node, "built", `${made.length} elements, ${(r.removed ?? 0)} replaced, ${kept.length} kept, ${loaded.length} families loaded`);
-    return reply({ done: true, node: args.node, made: made.length, removed: r.removed ?? 0, kept: kept.length, loaded, notes: r.notes ?? [], record });
+    return reply({ done: true, partial: (r.notes ?? []).length > 0, node: args.node, made: made.length, removed: r.removed ?? 0, kept: kept.length, loaded, notes: r.notes ?? [], record });
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
     log(config, "room_" + args.action, args.dry_run, args.node || args.room?.name || "", "error", msg);

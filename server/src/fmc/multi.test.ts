@@ -55,3 +55,25 @@ test("every tool gets revit; the tool never sees it, and the call runs with it a
   assert.deepEqual(seen, { x: 1 });
   assert.equal(target, "F26002");
 });
+
+test("RE-4: an exact title wins over a substring, and a folder name only matches when no title does", async () => {
+  const { matchInstances } = await import("./connect.js");
+  const P = inst(300, 8082, ["plumbing"], "2026-10-14T12:00:00Z");
+  const Q = inst(400, 8083, ["plumbing_USER"], "2026-10-14T13:00:00Z");
+  assert.deepEqual(matchInstances("plumbing", [P, Q]).hits.map((i) => i.pid), [300]);
+  assert.equal(matchInstances("plumbing", [P, Q]).rule, "title");
+  assert.equal(resolvePort("plumbing", [P, Q], env, undefined), 8082);
+  assert.equal(matchInstances("projects", [A]).rule, "path_contains");
+});
+
+test("RE-2/RE-5/RE-8: list rows carry user, updated, build match and the revit value", async () => {
+  const { instanceRow, buildMatch, NO_REVIT_NOTE } = await import("../tools/fmc_revit.js");
+  const row = instanceRow({ ...A, build: "cf71214" }, "cfc56f5+local", Date.parse("2026-10-14T10:01:00Z"));
+  assert.equal(row.build_match, false);
+  assert.equal(row.revit_arg, "100");
+  assert.equal(row.updated_age_s, 60);
+  assert.equal(row.documents[0].path, "Z:\\Projects\\F26001-FMC-ZZ-ZZ-M3-A-0001.rvt");
+  assert.equal(buildMatch("abc1234", "abc1234+local"), true);
+  assert.equal(buildMatch("", "abc"), null);
+  assert.match(NO_REVIT_NOTE, /AI is off/);
+});

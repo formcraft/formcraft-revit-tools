@@ -74,7 +74,8 @@ export function resolveMaterial(m: DbMaterial, materialsFile: string, exists: (p
   };
 }
 
-export function searchMaterials(db: MaterialDb, cls: string, query: string, limit = 200): DbMaterial[] {
+/** Research 57: no silent cap; a caller that wants fewer passes limit. */
+export function searchMaterials(db: MaterialDb, cls: string, query: string, limit = Number.POSITIVE_INFINITY): DbMaterial[] {
   const q = query.trim().toLowerCase();
   return db.materials.filter((m) => (!cls || cls === "All" || m.class === cls) &&
     (!q || m.name.toLowerCase().includes(q) || m.keynote.toLowerCase().includes(q) || m.sub.toLowerCase().includes(q))).slice(0, limit);
@@ -110,4 +111,66 @@ export function auditMaterials(model: ModelMaterial[], db: MaterialDb | null, ex
     { check: "Unused materials", found: unused.length, result: level(unused.length, "Info"), ...pick(unused) },
     { check: "Names not FMC_ standard", found: nonStandard.length, result: level(nonStandard.length, "Warn"), ...pick(nonStandard) },
   ];
+}
+
+/** Research 57: one row per material that is off-library, with every reason, so a name is counted once (not in the database and not FMC_ named overlap). */
+export interface MaterialFinding { id: number; name: string; reasons: string[]; survivor?: string }
+
+export function mergedFindings(model: ModelMaterial[], db: MaterialDb | null, exists: (path: string) => boolean): MaterialFinding[] {
+  const inDb = new Set((db?.materials ?? []).map((m) => m.name));
+  const names = new Set(model.map((m) => m.name));
+  const out: MaterialFinding[] = [];
+  for (const m of model) {
+    const reasons: string[] = [];
+    if (db && !inDb.has(m.name)) reasons.push("not in the database");
+    if (!/^FMC_[A-Za-z]+_[A-Za-z0-9]/.test(m.name)) reasons.push("name not FMC_");
+    const dup = duplicateOf(m.name, names);
+    if (dup) reasons.push(`duplicate of ${dup}`);
+    if (m.textures.some((t) => t && !exists(t))) reasons.push("broken texture path");
+    if (reasons.length) out.push({ id: m.id, name: m.name, reasons, ...(dup ? { survivor: dup } : {}) });
+  }
+  return out;
+}
+
+export function auditSummary(model: ModelMaterial[], checks: AuditCheck[], findings: MaterialFinding[]): string {
+  const fails = checks.filter((c) => c.result === "Fail").map((c) => `${c.check.toLowerCase()} ${c.found}`);
+  const offLibrary = findings.filter((f) => f.reasons.includes("not in the database") || f.reasons.includes("name not FMC_")).length;
+  return `${model.length} materials: ${offLibrary} off-library (counted once), ${findings.filter((f) => f.survivor).length} duplicates${fails.length ? ", fail: " + fails.join(", ") : ""}, ${model.filter((m) => !m.used).length} unused.`;
+}
+
+function tokens(name: string): string[] {
+  return name.toLowerCase().replace(/^fmc_/, "").split(/[^a-z0-9]+/).filter((t) => t.length > 2 && !/^\d+$/.test(t));
+}
+
+/** Research 57: which database material each off-library model material could map to (from/to given, or the best token match). Plan only. */
+export function planMaterialMap(model: ModelMaterial[], db: MaterialDb, from?: string, to?: string): Array<{ id: number; from: string; to: string | null; how: "given" | "name match" | "none"; candidates: string[] }> {
+  const inDb = new Set(db.materials.map((m) => m.name));
+  const rows = model.filter((m) => !inDb.has(m.name) && (!from || m.name === from));
+  return rows.map((m) => {
+    if (to) return { id: m.id, from: m.name, to: inDb.has(to) ? to : null, how: inDb.has(to) ? "given" as const : "none" as const, candidates: [] };
+    const want = tokens(m.name.replace(/\s*\(\d+\)$/, ""));
+    const scored = db.materials.map((d) => ({ name: d.name, score: tokens(d.name + " " + d.class + " " + d.sub).filter((t) => want.includes(t)).length }))
+      .filter((x) => x.score > 0).sort((a, b) => b.score - a.score || a.name.localeCompare(b.name));
+    const top = scored.filter((x) => x.score === scored[0]?.score).map((x) => x.name);
+    return { id: m.id, from: m.name, to: top.length === 1 ? top[0] : null, how: top.length === 1 ? "name match" as const : "none" as const, candidates: top.slice(0, 5) };
+  });
+}
+
+/** Research 57: where each broken texture should point: the database material's own map, else a kit Textures file with the same name. Plan only. */
+export function planTextureRepair(model: ModelMaterial[], db: MaterialDb | null, materialsFile: string, exists: (p: string) => boolean, kitTextures: string[]): Array<{ id: number; material: string; broken: string; to: string | null; how: "database map" | "same file name" | "none" }> {
+  const win = path.win32;
+  const byName = new Map((db?.materials ?? []).map((m) => [m.name, m]));
+  const out: Array<{ id: number; material: string; broken: string; to: string | null; how: "database map" | "same file name" | "none" }> = [];
+  for (const m of model) {
+    for (const t of m.textures) {
+      if (!t || exists(t)) continue;
+      const base = win.basename(t).toLowerCase();
+      const kit = byName.get(m.name);
+      const own = kit ? resolveMaterial(kit, materialsFile, exists).material.maps.find((x) => x.found && win.basename(x.path).toLowerCase() === base) ?? resolveMaterial(kit, materialsFile, exists).material.maps.find((x) => x.found) : undefined;
+      if (own) { out.push({ id: m.id, material: m.name, broken: t, to: own.path, how: "database map" }); continue; }
+      const same = kitTextures.find((f) => win.basename(f).toLowerCase() === base);
+      out.push({ id: m.id, material: m.name, broken: t, to: same ?? null, how: same ? "same file name" : "none" });
+    }
+  }
+  return out;
 }

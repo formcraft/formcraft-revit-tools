@@ -91,3 +91,38 @@ test("the legend read is not a write and the apply is", () => {
   const names = new Set(manifest.commands.map((row) => row.commandName));
   assert.ok(names.has("fmc_keynote_legend") && names.has("fmc_keynote_legend_apply"));
 });
+
+test("research 52: plan-only wording, refresh and remove plans, zone check and same-point note", async () => {
+  const { FMC_KEYNOTE_LEGEND_DESCRIPTION } = await import("../tools/fmc_keynote_legend.js");
+  assert.match(FMC_KEYNOTE_LEGEND_DESCRIPTION, /plan-only: one Revit read and no transaction/);
+  assert.equal(FMC_KEYNOTE_LEGEND_SHAPE.action.parse(undefined), "place");
+  const { zoneCheck } = await import("./keynotelegend.js");
+  const spec = { name: "FMC Keynotes", size_mm: { width: 100, height: 50 }, zone: { inset_right_mm: 30, inset_bottom_mm: 30 } };
+  const frame = { min_x: 0, min_y: 0, max_x: 800, max_y: 560 };
+  const busy: LegendSheet = { id: "b", number: "A110", role: "plan", has_legend: false, titleblock_mm: frame, legend_x_mm: 600, legend_y_mm: 200, taken_mm: [{ id: "v1", kind: "viewport", min_x: 550, min_y: 100, max_x: 700, max_y: 300 }] };
+  const free: LegendSheet = { id: "f", number: "A111", role: "plan", has_legend: false, titleblock_mm: frame, legend_x_mm: 100, legend_y_mm: 500, taken_mm: [] };
+  const edge: LegendSheet = { id: "e", number: "A112", role: "plan", has_legend: false, titleblock_mm: frame, taken_mm: [] };
+  const old: LegendSheet = { id: "o", number: "A113", role: "plan", has_legend: false, titleblock_mm: frame };
+  assert.equal(zoneCheck(busy, 600, 200, spec).zone_check, "overlaps");
+  assert.deepEqual(zoneCheck(busy, 600, 200, spec).overlaps, ["viewport v1"]);
+  assert.equal(zoneCheck(free, 100, 500, spec).zone_check, "clear");
+  const hang = zoneCheck(edge, 770, 30, spec);
+  assert.equal(hang.zone_check, "off_titleblock");
+  assert.deepEqual(hang.fit_point, { x: 670, y: 80 });
+  assert.equal(zoneCheck(old, 100, 500, spec).zone_check, "not_checked");
+  const placed = planLegend([busy, free, edge], spec, { role: "plan", filter_by_sheet: true });
+  assert.deepEqual(placed.placements.map((row) => row.zone_check), ["overlaps", "clear", "off_titleblock"]);
+  const withLegend: LegendSheet = { id: "w", number: "A114", role: "plan", has_legend: true, titleblock_mm: frame, taken_mm: [{ id: "L9", kind: "this_legend", min_x: 10, min_y: 10, max_x: 110, max_y: 60 }] };
+  const refresh = planLegend([withLegend, free], spec, { role: "plan", filter_by_sheet: true, action: "refresh" });
+  assert.deepEqual(refresh.placements.map((row) => [row.number, row.legend_id, row.zone_check]), [["A114", "L9", "off_titleblock"]]);
+  assert.ok(refresh.skipped.some((row) => row.sheet === "A111" && row.code === "FMC-KEYNOTE-LEGEND-NONE"));
+  const remove = planLegend([withLegend], spec, { role: "plan", filter_by_sheet: true, action: "remove" });
+  assert.deepEqual(remove.placements.map((row) => [row.legend_id, row.x, row.y, row.zone_check]), [["L9", 10, 60, undefined]]);
+});
+
+test("P-fmc_keynote_legend-01: the sample spec says why it cannot pass", async () => {
+  const { legendSpecNote } = await import("./keynotelegend.js");
+  assert.match(legendSpecNote("sample", true), /K-14/);
+  assert.match(legendSpecNote("sample", true), /can_pass false/);
+  assert.match(legendSpecNote("kit", false), /can PASS/);
+});

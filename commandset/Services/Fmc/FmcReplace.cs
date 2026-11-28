@@ -103,9 +103,13 @@ namespace RevitMCPCommandSet.Services.Fmc
                 failures.SetClearAfterRollback(true);
                 tx.SetFailureHandlingOptions(failures);
 
+                // RP-3: a time budget so a big batch stops cleanly with not_run rows instead of holding Revit to the 600 s timeout.
+                double budgetS = Math.Max(10, Math.Min(540, parameters.Value<double?>("time_budget_s") ?? 300));
+                var clock = System.Diagnostics.Stopwatch.StartNew();
                 foreach (Row row in rows)
                 {
                     if (parentDead) { Skip(row, "create", "The preview transaction stopped after an earlier row."); continue; }
+                    if (clock.Elapsed.TotalSeconds > budgetS) { Skip(row, "create", $"Time budget of {budgetS:0} s used up before this row. Run it in a smaller batch."); continue; }
                     try { CreateAndVerify(doc, rows, row, tolerance, createdIds); }
                     catch (Exception ex) { parentDead = !Alive(tx); Fail(row, "create", ex.Message); }
                 }
@@ -231,7 +235,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 if (!other.CreateOk) throw new InvalidOperationException($"depends_on {dep}, which did not pass create. This row was not created.");
             }
             foreach (long id in row.OldIds)
-                if (doc.GetElement(new ElementId(id)) == null) throw new InvalidOperationException($"Old id {id} is not in this document.");
+                if (doc.GetElement(new ElementId(id)) == null) throw new InvalidOperationException($"Old id {id} is not in this document. Ids come from a read of this copy, not from the description's examples.");
             if (!KeynoteRe.IsMatch(row.Keynote)) throw new InvalidOperationException($"Keynote {row.Keynote} is not X.YYY_ZZ (one letter, a dot, three letters or digits, an underscore, two letters or digits). Example: S.FND_01.");
 
             using (var sub = new SubTransaction(doc))

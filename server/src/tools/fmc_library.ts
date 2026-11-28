@@ -15,6 +15,31 @@ import { prepareLibraryStep } from "../fmc/batchstep.js";
 import { runFmcDynamo } from "./fmc_dynamo.js";
 import { runFmcScriptRun } from "./fmc_script_run.js";
 import { namedDocument } from "../fmc/scriptexec.js";
+import { fileURLToPath } from "node:url";
+import { familyOrigin, type FamilyVerdict } from "../fmc/library.js";
+
+const here = path.dirname(fileURLToPath(import.meta.url));
+
+/** Research 55 (K-04): the empty index that ships in build/data/library, shown when the kit has none. */
+export function sampleLibraryIndex(): string {
+  for (const f of [path.resolve(here, "..", "data", "library", "index.json"), path.resolve(here, "..", "..", "data", "library", "index.json")]) if (fs.existsSync(f)) return f;
+  return "";
+}
+
+/** list when the kit's index.json is missing: not set up, not an error. */
+export function libraryNotSetUp(loaded: { folder: string; index: string; entries: unknown[]; problems: string[] }, exists: (f: string) => boolean = fs.existsSync) {
+  if (loaded.entries.length || exists(loaded.index)) return null;
+  return { status: "NOT_SET_UP", code: "FMC-LIBRARY-NOT-SET-UP", message: `The script library is not set up (kit item K-04): there is no index.json at ${loaded.index}. Nothing to validate or run.`, folder: loaded.folder, index: loaded.index, sample_index: sampleLibraryIndex(), scripts: [], resolved_document: null };
+}
+
+/** scan scope and summary line (research 55). */
+export function scopeScan(verdicts: FamilyVerdict[], scope: "all" | "fmc_only") {
+  const kept = scope === "fmc_only" ? verdicts.filter((v) => (v.origin ?? familyOrigin(v.name)) === "fmc") : verdicts;
+  const fmc = verdicts.filter((v) => (v.origin ?? familyOrigin(v.name)) === "fmc");
+  const ok = fmc.filter((v) => v.state === "Compliant").length;
+  const line = `${verdicts.length} families; ${fmc.length} are FMC families, ${ok} of them compliant; ${verdicts.length - fmc.length} are stock or vendor families, not expected to follow the FMC rule${scope === "fmc_only" ? " (left out: scope fmc_only)" : ""}.`;
+  return { kept, line };
+}
 
 const win = path.win32;
 
@@ -54,7 +79,8 @@ export const FMC_LIBRARY_DESCRIPTION =
     "and type names; each gets a score and Compliant, Fixable or Needs a person. inspect: the same for an outside .rfa, " +
     "plus file size and imported CAD, and a proposed standard name. bring_in: saves an outside family to library " +
     "staging under its standard name with the kit's parameters and a keynote; a dry run unless dry_run is false. " +
-    "parameters and keynotes search the kit's files; keynote_request records a new keynote for the BIM Manager.";
+    "parameters and keynotes search the kit's files; keynote_request records a new keynote for the BIM Manager: dry_run true (the default) shows the code and any same-text request, dry_run false appends the row. " +
+    "list returns status NOT_SET_UP (kit item K-04) when the kit has no index.json. scan marks each family origin fmc or vendor (stock or third-party, not expected to follow the FMC rule); scope fmc_only leaves vendor families out.";
 
 export const FMC_LIBRARY_SHAPE = {
   action: z.enum(["scan", "inspect", "bring_in", "parameters", "keynotes", "keynote_request", "list", "validate", "run"]),
@@ -75,6 +101,7 @@ export const FMC_LIBRARY_SHAPE = {
   dry_run: z.boolean().optional().default(true),
   detail: z.enum(["summary", "full"]).optional().default("summary")
     .describe("scan: summary (default: counts and the worst families, each with what it fails) or full (every family and check)"),
+  scope: z.enum(["all", "fmc_only"]).optional().default("all").describe("scan: all (default) or fmc_only (leave stock and vendor families out)"),
   limit: z.number().int().min(1).max(500).optional().default(DEFAULT_LIMIT).describe("scan summary: how many of the worst families to list"),
 };
 
@@ -95,7 +122,10 @@ async function runScriptLibrary(args: FmcLibraryArgs) {
   const kit = kitRootFrom(config, process.env, "");
   if (args.action === "list") {
     const loaded = loadLibrary(kit);
+    const notSetUp = libraryNotSetUp(loaded);
+    if (notSetUp) return reply(notSetUp);
     return reply({
+      status: loaded.entries.length ? "OK" : "EMPTY",
       folder: loaded.folder, index: loaded.index, problems: loaded.problems,
       scripts: loaded.entries.map((entry) => ({
         id: entry.id, manifest: entry.manifest_path, runner: entry.manifest?.runner,
@@ -150,11 +180,13 @@ export async function runFmcLibrary(args: FmcLibraryArgs) {
     switch (args.action) {
       case "scan": {
         const r = await withRevitConnection((c) => c.sendRaw("fmc_family_scan", {}, 300000));
-        const verdicts = ((r?.families ?? []) as ScannedFamily[]).map((f) => checkFamily(f, k.specMap, k.kit));
+        const all = ((r?.families ?? []) as ScannedFamily[]).map((f) => checkFamily(f, k.specMap, k.kit));
+        const scoped = scopeScan(all, args.scope ?? "all");
+        const verdicts = scoped.kept;
         log(config, "family_scan", false, r?.document ?? "", "done", `${verdicts.length} families`);
-        if (args.detail === "full") return reply({ document: r?.document, summary: summarise(verdicts), families: verdicts, kit_problems: k.problems });
+        if (args.detail === "full") return reply({ document: r?.document, line: scoped.line, summary: summarise(verdicts), families: verdicts, kit_problems: k.problems });
         // F-009: a summary by default, so a scan fits an AI caller's context.
-        return reply({ document: r?.document, summary: summarise(verdicts), worst: worstFamilies(verdicts, args.limit),
+        return reply({ document: r?.document, line: scoped.line, summary: summarise(verdicts), worst: worstFamilies(verdicts, args.limit),
           more: Math.max(0, verdicts.filter((v) => v.state !== "Compliant").length - args.limit),
           next: "detail: \"full\" lists every family and check (large); the pane's Setup › Families shows them all", kit_problems: k.problems });
       }
@@ -186,6 +218,11 @@ export async function runFmcLibrary(args: FmcLibraryArgs) {
         try { all = parseKeynotes(fs.readFileSync(expandEnv(config.keynote_file), "utf8")); } catch { /* the code is still proposed */ }
         const code = nextKeynoteCode(all, args.group);
         const file = win.join(expandEnv(config.reports_dir), "FMC_Keynote_Requests.csv");
+        const want = args.text!.trim().toLowerCase();
+        let earlier: string[] = [];
+        try { earlier = fs.readFileSync(file, "utf8").split(/\r?\n/).filter((line) => line.toLowerCase().includes(want)); } catch { /* no requests yet */ }
+        const sameText = all.filter((x) => x.description.trim().toLowerCase() === want).map((x) => x.code);
+        if (args.dry_run !== false) return reply({ dry_run: true, would_request: code, group: args.group, text: args.text!.trim(), file, same_text_in_kit: sameText, same_text_requested: earlier.length, next: "Nothing was written. Run again with dry_run false to append the request for the BIM Manager." });
         fs.mkdirSync(win.dirname(file), { recursive: true });
         if (!fs.existsSync(file)) fs.writeFileSync(file, csvLine(["timestamp", "code", "description", "parent", "status"]));
         fs.appendFileSync(file, csvLine([new Date().toISOString(), code, args.text!.trim(), args.group, "requested"]));

@@ -26,7 +26,7 @@ test("free closes unmodified families and spare projects, and keeps the last doc
 
 test("purge_unused is a dry run until a lease is passed, and names the adviser", async () => {
   const dry = await runFmcMemory({
-    action: "purge_unused", document: "E_USER", categories: ["Electrical Equipment"], dry_run: true, batch_lease: "",
+    action: "purge_unused", document: "E_USER", categories: ["Electrical Equipment"], only_categories: [], dry_run: true, batch_lease: "",
   }, { status: async () => ({ free_mb: 4000, revit_working_set_mb: 800, documents: [] }) });
   assert.match(dry.content[0].text, /PerformanceAdviser/);
   assert.match(dry.content[0].text, /mb_before":4000/);
@@ -35,12 +35,40 @@ test("purge_unused is a dry run until a lease is passed, and names the adviser",
   assert.equal(plan.dry_run, true);
   let applied = false;
   const write = await runFmcMemory({
-    action: "free", document: "", categories: [], dry_run: false, batch_lease: "",
+    action: "free", document: "", categories: [], only_categories: [], dry_run: false, batch_lease: "",
   }, {
     status: async () => ({ free_mb: 2000, revit_working_set_mb: 900, documents: [{ title: "Door", path: "C:\\Door.rfa", family: true, modified: false }, { title: "Host", path: "C:\\Host.rvt", active: true }] }),
     apply: async () => { applied = true; return { closed: ["Door"] }; },
   });
   assert.equal(write.isError, true);
   assert.match(write.content[0].text, /FMC-BATCH-LOCKED/);
+  assert.equal(applied, false);
+});
+
+test("research 58: purge candidates read-only, only_categories with the categories alias, free skipped when empty, status for one document", async () => {
+  const { onlyCategories, statusDocuments } = await import("../tools/fmc_memory.js");
+  assert.deepEqual(onlyCategories({ only_categories: ["Doors"], categories: ["Walls"] }), ["Doors"]);
+  assert.deepEqual(onlyCategories({ only_categories: [], categories: ["Walls"] }), ["Walls"]);
+  const docs = [{ title: "plumbing_USER", path: "D:\\W\\plumbing_USER.rvt", active: true, workshared: true }, { title: "electrical_USER", path: "D:\\W\\electrical_USER.rvt", workshared: true }];
+  assert.deepEqual(statusDocuments(docs, "electrical_user").map((d) => d.title), ["electrical_USER"]);
+  const status = JSON.parse((await runFmcMemory({ action: "status", document: "electrical_USER", categories: [], only_categories: [], dry_run: true, batch_lease: "" }, { status: async () => ({ free_mb: 2816, revit_working_set_mb: 1035, documents: docs }) })).content[0].text);
+  assert.equal(status.found, true);
+  assert.equal(status.documents.length, 1);
+  assert.equal(status.open_documents, 2);
+  let asked: Record<string, unknown> | undefined;
+  const dry = JSON.parse((await runFmcMemory({ action: "purge_unused", document: "E_USER", categories: ["Walls"], only_categories: ["Doors"], dry_run: true, batch_lease: "" }, {
+    status: async () => ({ free_mb: 4000, revit_working_set_mb: 800, documents: [] }),
+    candidates: async (body) => { asked = body; return { read_only: true, candidates: 3, by_category: { Doors: 3 } }; },
+  })).content[0].text);
+  assert.equal(asked?.action, "purge_candidates");
+  assert.deepEqual(asked?.categories, ["Doors"]);
+  assert.equal(dry.candidates.candidates, 3);
+  assert.deepEqual(dry.only_categories, ["Doors"]);
+  let applied = false;
+  const free = JSON.parse((await runFmcMemory({ action: "free", document: "", categories: [], only_categories: [], dry_run: false, batch_lease: "lease-1" }, {
+    status: async () => ({ free_mb: 2000, revit_working_set_mb: 900, documents: docs }),
+    apply: async () => { applied = true; return {}; },
+  })).content[0].text);
+  assert.equal(free.skipped, true);
   assert.equal(applied, false);
 });

@@ -114,7 +114,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (tex4k.Count > 0) advice.Add($"{tex4k.Count} textures are 8 megapixels or more ({texMb:0} MB of textures in all): they only cost in Realistic and rendering, but there they are the main load.");
             if (missing.Count > 0) advice.Add($"{missing.Count} texture files are missing: Revit searches for them when it opens and renders. Fix the paths or add the folder in Options › Rendering.");
             if (patterned.Count > 0) advice.Add($"{patterned.Count} used materials draw a model surface pattern (brick, tile...): heavy in 3D. display_mode navigate hides surface patterns.");
-            if (unused.Count > 0 || unusedAssets > 0) advice.Add($"{unused.Count} materials and {unusedAssets} render appearances are unused: Purge Unused makes the file smaller and quicker to open.");
+            if (unused.Count > 0 || unusedAssets > 0) advice.Add($"{unused.Count} materials and {unusedAssets} render appearances are unused: a person can run Purge Unused in Revit to make the file smaller and quicker to open (this report is read-only and purges nothing).");
             if (dupes.Count > 0) advice.Add($"{dupes.Count} groups of materials look like copies of each other (same name, a number added).");
             if (fams.Count > 0 && (long)fams[0]["weight"] > 200000) advice.Add($"The heaviest family is {fams[0]["family"]} ({fams[0]["instances"]} placed, {fams[0]["faces_each"]} faces and {fams[0]["mesh_triangles_each"]} mesh triangles each): maker families like this slow every view, materials or not. Coarse detail or a lighter family helps.");
             if (cad.Count > 0) advice.Add($"{cad.Count} CAD files are imported (not linked) into the model.");
@@ -125,7 +125,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                 ["summary"] = new JObject
                 {
                     ["materials"] = mats.Count, ["used"] = mats.Count - unused.Count, ["unused"] = unused.Count, ["render_appearances"] = assets.Count, ["unused_appearances"] = unusedAssets,
-                    ["texture_files"] = texSeen.Count, ["texture_mb"] = Math.Round(texMb, 1), ["textures_8mp_plus"] = tex4k.Count, ["missing_textures"] = missing.Count,
+                    // P-material_report-01: with textures false the files were not read, so the counts are null, not 0.
+                    ["textures_read"] = textures, ["families_read"] = families,
+                    ["texture_files"] = textures ? (JToken)texSeen.Count : JValue.CreateNull(), ["texture_mb"] = textures ? (JToken)Math.Round(texMb, 1) : JValue.CreateNull(),
+                    ["textures_8mp_plus"] = textures ? (JToken)tex4k.Count : JValue.CreateNull(), ["missing_textures"] = textures ? (JToken)missing.Count : JValue.CreateNull(),
                     ["used_with_surface_pattern"] = patterned.Count, ["realistic_views"] = views.Count, ["cad_imports"] = cad.Count,
                 },
                 ["advice"] = advice,

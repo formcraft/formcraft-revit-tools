@@ -89,3 +89,44 @@ test("a keynote table with LF line endings warns, and a short load warns when th
   assert.equal(keynoteTableWarnings(decodeKeynoteFile(utf16)).length, 0);
   assert.equal(parseKeynotes(decodeKeynoteFile(utf16)).length, 4);
 });
+
+test("research 55: vendor class, not-set-up library, scan scope line, keynote_request dry run", async () => {
+  const fs = await import("node:fs");
+  const os = await import("node:os");
+  const path = await import("node:path");
+  const { z } = await import("zod");
+  const lib = await import("./library.js");
+  const tool = await import("../tools/fmc_library.js");
+  assert.equal(lib.familyOrigin("FMC_E_Socket_Double"), "fmc");
+  assert.equal(lib.familyOrigin("A1 metric"), "vendor");
+  const fam = (name: string) => lib.checkFamily({ name, category: "Furniture", types: [{ name: "600_Std", keynote: "A.1" }], shared_guids: [] }, new Map(), new Map());
+  const verdicts = [fam("FMC_A_Furn_Desk"), fam("Baluster - Square"), fam("Area Tag")];
+  assert.equal(verdicts[1].origin, "vendor");
+  const summary = lib.summarise(verdicts);
+  assert.equal(summary.fmc, 1);
+  assert.equal(summary.vendor, 2);
+  const scoped = tool.scopeScan(verdicts, "fmc_only");
+  assert.equal(scoped.kept.length, 1);
+  assert.match(scoped.line, /^3 families; 1 are FMC families, 0 of them compliant; 2 are stock or vendor families/);
+  const none = tool.libraryNotSetUp({ folder: "Z:\\k\\05_Scripts\\library", index: "Z:\\k\\05_Scripts\\library\\index.json", entries: [], problems: ["Can't read ...: ENOENT"] }, () => false);
+  assert.equal(none?.status, "NOT_SET_UP");
+  assert.equal(none?.code, "FMC-LIBRARY-NOT-SET-UP");
+  assert.doesNotMatch(none?.message ?? "", /ENOENT/);
+  assert.equal(tool.libraryNotSetUp({ folder: "f", index: "f\\index.json", entries: [], problems: [] }, () => true), null);
+  const sample = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1")), "..", "..", "data", "library", "index.json");
+  assert.deepEqual(JSON.parse(fs.readFileSync(sample, "utf8")).scripts, []);
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "lib55-"));
+  const guardFile = path.join(dir, "fmc_guard.json");
+  fs.writeFileSync(guardFile, JSON.stringify({ reports_dir: dir, keynote_file: path.join(dir, "none.txt") }));
+  const before = process.env.FMC_GUARD_CONFIG;
+  process.env.FMC_GUARD_CONFIG = guardFile;
+  try {
+    const out = JSON.parse((await tool.runFmcLibrary(z.object(tool.FMC_LIBRARY_SHAPE).parse({ action: "keynote_request", group: "E.SOC", text: "Socket, double" }))).content[0].text);
+    assert.equal(out.dry_run, true);
+    assert.equal(out.same_text_requested, 0);
+    assert.equal(fs.existsSync(path.join(dir, "FMC_Keynote_Requests.csv")), false);
+  } finally {
+    if (before === undefined) delete process.env.FMC_GUARD_CONFIG; else process.env.FMC_GUARD_CONFIG = before;
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});

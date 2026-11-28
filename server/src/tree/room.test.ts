@@ -37,3 +37,19 @@ test("T1: the checks: an opening that doesn't fit, an item outside, a clearance 
   assert.ok(p.problems.some((x) => /Bed: its 1200 mm clearance reaches 3550 mm into a 3000 mm room/.test(x)));
   assert.ok(p.problems.some((x) => /ceiling at 3400 is at or above the structure/.test(x)));
 });
+
+test("RM-6/RM-8: a turned room turns every op about its origin, and a bad room is problems, not a raw error", async () => {
+  const { planRoom, rotateOps, roomSchemaProblems } = await import("./room.js");
+  const base = { name: "Bay", level: "Level 1", origin_mm: [1000, 2000], width: 4000, depth: 3000, height: 2700, walls: { type: "W", thickness: 100 } };
+  const flat = planRoom(base);
+  const turned = planRoom({ ...base, rotation_deg: 90 });
+  assert.equal(flat.problems.length, turned.problems.length);
+  const roomFlat = flat.ops.find((o) => o.op === "room") as { at: number[] };
+  const roomTurned = turned.ops.find((o) => o.op === "room") as { at: number[] };
+  assert.deepEqual(roomFlat.at, [3000, 3500]);
+  assert.deepEqual(roomTurned.at, [-500, 4000]);
+  assert.equal(rotateOps(flat.ops, [0, 0], 0), flat.ops);
+  const bad = roomSchemaProblems({ ...base, width: -1 });
+  assert.ok(bad.some((line) => line.startsWith("room.width")));
+  assert.ok(planRoom({ ...base, width: -1 }).problems.length > 0);
+});

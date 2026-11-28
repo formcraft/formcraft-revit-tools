@@ -208,3 +208,16 @@ test("north arrows report an unmatched viewport, and the add-in never sets proje
   const names = new Set(manifest.commands.map((row) => row.commandName));
   assert.ok(names.has("fmc_north") && names.has("fmc_north_apply"));
 });
+
+test("research 61: compare mismatches come with a ready fmc_coord plan, all dry runs", async () => {
+  const { coordPlan } = await import("./north.js");
+  const docs = [{ title: "A-model", path: "C:\\WIP\\A.rvt", role: "A" }, { title: "S-model", path: "C:\\WIP\\S.rvt", role: "S" }, { title: "M-model", path: "C:\\WIP\\M.rvt", role: "M" }];
+  const plan = coordPlan(docs, [
+    { code: "FMC-NORTH-SURVEY-MISMATCH", left: "A-model", right: "M-model", kind: "documents", status: "FAIL" },
+    { code: "FMC-NORTH-SURVEY-MISMATCH", left: "S-model", right: "M-model", kind: "documents", status: "FAIL" },
+  ], () => "");
+  assert.equal(plan?.reference, "S-model");
+  assert.deepEqual(plan?.steps.map((s) => [s.action, s.document]), [["publish", "C:\\WIP\\S.rvt"], ["check", "C:\\WIP\\A.rvt"], ["align", "C:\\WIP\\A.rvt"], ["check", "C:\\WIP\\M.rvt"], ["align", "C:\\WIP\\M.rvt"]]);
+  assert.ok(plan?.steps.filter((s) => s.action !== "check").every((s) => s.dry_run === true));
+  assert.equal(coordPlan(docs, [], () => ""), null);
+});

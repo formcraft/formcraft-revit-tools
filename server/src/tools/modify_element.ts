@@ -258,9 +258,16 @@ export const UNDO_AI_BATCH_DESCRIPTION =
   "undo_id): that batch and any AI batches made after it; without it, the last count batches (default 1). It never undoes a " +
   "person's work: if a person changed the model after the batch, it refuses and says what is on top. action status: Revit's undo " +
   "list as the AI sees it (the AI's batches and a person's changes); redo: the batch the last undo took back. The model must be the " +
-  "active window in Revit; a sync with central or closing the model clears Revit's undo list.";
+  "active window in Revit; a sync with central or closing the model clears Revit's undo list. " +
+  "dry_run true (undo only) returns the batches that would be undone (undoing: id, label, time) and posts nothing; it refuses a person's work the same way.";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+/** UB-2: shape the dry run; an older add-in answers plain status (no undoing list), which is said, not passed off as a plan. */
+export function undoPlanReply(plan: any) {
+  if (plan && Array.isArray(plan.undoing)) return { ...plan, dry_run: true, posted: false, next: "Run again without dry_run to undo these batches." };
+  return { dry_run: true, posted: false, plan_supported: false, message: "This add-in build cannot preview an undo; here is the undo list instead. Nothing was undone.", status: plan ?? null };
+}
 
 export function registerModifyModelTool(server: McpServer) {
   server.tool(
@@ -270,10 +277,16 @@ export function registerModifyModelTool(server: McpServer) {
       action: z.enum(["undo", "redo", "status"]).optional().default("undo"),
       batch_id: z.string().max(40).optional(),
       count: z.number().int().min(1).max(20).optional(),
+      dry_run: z.boolean().optional().default(false).describe("undo: list what would be undone and post nothing (UB-2)"),
     },
     async (args) => {
       try {
         if (args.action === "status") return reply(await withRevitConnection((c) => c.sendCommand("fmc_undo_status", {})));
+        if (args.action === "undo" && args.dry_run) {
+          // UB-2: the plan only, as status with plan true; an add-in without the dry run answers plain status, never an undo.
+          const plan = await withRevitConnection((c) => c.sendCommand("fmc_undo_status", { plan: true, ...(args.batch_id ? { batch_id: args.batch_id } : {}), ...(args.count ? { count: args.count } : {}) }));
+          return reply(undoPlanReply(plan));
+        }
         const r = await withRevitConnection((c) => c.sendCommand("fmc_undo", { action: args.action, ...(args.batch_id ? { batch_id: args.batch_id } : {}), ...(args.count ? { count: args.count } : {}) }));
         if (!r?.posted) return reply(r, !r?.queued && !r?.approval);
         // Revit runs each Undo once it is idle; the add-in posts the next after Revit reports the last

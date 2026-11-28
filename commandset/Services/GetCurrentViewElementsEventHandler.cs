@@ -119,6 +119,11 @@ namespace RevitMCPCommandSet.Services
                             .WherePasses(categoryFilter)
                             .ToElements();
                     }
+                    else
+                    {
+                        // VE-4: categories were asked for and none parsed: return nothing, never the whole view.
+                        elements = new List<Element>();
+                    }
                 }
 
                 // 过滤隐藏的元素

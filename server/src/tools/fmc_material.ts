@@ -4,7 +4,7 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
-import { MaterialDb, ModelMaterial, auditMaterials, parseMaterialDb, resolveMaterial, searchMaterials } from "../fmc/materials.js";
+import { MaterialDb, ModelMaterial, auditMaterials, auditSummary, mergedFindings, parseMaterialDb, planMaterialMap, planTextureRepair, resolveMaterial, searchMaterials } from "../fmc/materials.js";
 
 const win = path.win32;
 
@@ -36,10 +36,13 @@ export const FMC_MATERIAL_DESCRIPTION =
     "the database, duplicates, broken texture paths, unused, names not FMC_ standard. assign gives types a database " +
     "material (selected elements' types, every type in a category, or type name contains …) on a finish layer, the type " +
     "material or a family Finish parameter; purge removes unused materials. assign and purge are dry runs unless " +
-    "dry_run is false, change no geometry, and are refused on live projects. request records a new material for the BIM Manager.";
+    "dry_run is false, change no geometry, and are refused on live projects. request records a new material for the BIM Manager. " +
+    "database lists every match (no 200 cap; limit to trim). audit adds summary (one line) and findings (each off-library material once, with every reason and the duplicate's survivor). " +
+    "map (from, to, or a name match) and repair_textures (database map or a kit Textures file of the same name) are read-only plans in this build. " +
+    "updates reads the version without marking it seen; acknowledge true marks it seen.";
 
 export const FMC_MATERIAL_SHAPE = {
-  action: z.enum(["database", "audit", "assign", "purge", "request", "updates"]),
+  action: z.enum(["database", "audit", "assign", "purge", "request", "updates", "map", "repair_textures"]),
   class: z.string().optional(),
   query: z.string().optional(),
   material: z.string().optional().describe("assign: database material name"),
@@ -49,6 +52,10 @@ export const FMC_MATERIAL_SHAPE = {
   parameter: z.enum(["finish_layer", "type_material", "family_finish"]).optional().default("finish_layer"),
   name: z.string().optional().describe("request: proposed material name"),
   text: z.string().optional().describe("request: class, supplier and why"),
+  from: z.string().optional().describe("map: the model material (default every material not in the database)"),
+  to: z.string().optional().describe("map: the database material"),
+  limit: z.number().int().min(1).optional().describe("database: at most this many rows (default all)"),
+  acknowledge: z.boolean().optional().default(false).describe("updates: mark this version as seen"),
   dry_run: z.boolean().optional().default(true),
 };
 
@@ -62,17 +69,23 @@ export async function runFmcMaterial(args: FmcMaterialArgs) {
     switch (args.action) {
       case "database":
         if (!db) return reply({ refused: true, reasons: [`Material database not readable at ${config.materials_file} (materials_file in fmc_guard.json)`] }, true);
-        return reply({ file: config.materials_file, version: db.version, count: db.materials.length, classes: db.classes,
-          materials: searchMaterials(db, args.class ?? "All", args.query ?? "").map(({ description, ...m }) => m), problems: db.problems });
+      {
+        const all = searchMaterials(db, args.class ?? "All", args.query ?? "");
+        const listed = args.limit ? all.slice(0, args.limit) : all;
+        return reply({ file: config.materials_file, version: db.version, count: db.materials.length, classes: db.classes, matched: all.length, more: all.length - listed.length,
+          materials: listed.map(({ description, ...m }) => m), problems: db.problems });
+      }
 
       case "updates": {
         if (!db) return reply({ refused: true, reasons: [`Material database not readable at ${config.materials_file}`] }, true);
         const seenFile = win.join(expandEnv(config.reports_dir), "FMC_Materials_seen.json");
         let seen = "";
         try { seen = JSON.parse(fs.readFileSync(seenFile, "utf8")).version ?? ""; } catch { seen = ""; }
-        fs.mkdirSync(win.dirname(seenFile), { recursive: true });
-        fs.writeFileSync(seenFile, JSON.stringify({ version: db.version, at: new Date().toISOString() }));
-        return reply({ version: db.version, previous: seen, changed: seen !== "" && seen !== db.version });
+        if (args.acknowledge) {
+          fs.mkdirSync(win.dirname(seenFile), { recursive: true });
+          fs.writeFileSync(seenFile, JSON.stringify({ version: db.version, at: new Date().toISOString() }));
+        }
+        return reply({ version: db.version, previous: seen, changed: seen !== "" && seen !== db.version, acknowledged: args.acknowledge === true });
       }
 
       case "request": {
@@ -89,7 +102,27 @@ export async function runFmcMaterial(args: FmcMaterialArgs) {
         const facts = await withRevitConnection((c) => c.sendRaw("fmc_material_facts", {}, 300000));
         const checks = auditMaterials((facts?.materials ?? []) as ModelMaterial[], db, (p) => fs.existsSync(p));
         log(config, "material_audit", false, facts?.model ?? "", "done", checks.map((c) => `${c.check}: ${c.found}`).join(" | "));
-        return reply({ model: facts?.model, checks, database_problem: db ? undefined : `Material database not readable at ${config.materials_file}` });
+        const model = (facts?.materials ?? []) as ModelMaterial[];
+        const findings = mergedFindings(model, db, (p) => fs.existsSync(p));
+        return reply({ model: facts?.model, summary: auditSummary(model, checks, findings), checks, findings, database_problem: db ? undefined : `Material database not readable at ${config.materials_file}` });
+      }
+
+      case "map":
+      case "repair_textures": {
+        if (!db && args.action === "map") return reply({ refused: true, reasons: [`Material database not readable at ${config.materials_file}`] }, true);
+        if (!dry) return reply({ refused: true, code: "FMC-MATERIAL-PLAN-ONLY", reasons: [`${args.action} is a read-only plan in this build: rename or re-point in Revit, or use assign for a database material.`] }, true);
+        const facts = await withRevitConnection((c) => c.sendRaw("fmc_material_facts", {}, 300000));
+        const model = (facts?.materials ?? []) as ModelMaterial[];
+        if (args.action === "map") {
+          const plan = planMaterialMap(model, db!, args.from, args.to);
+          return reply({ dry_run: true, read_only: true, model: facts?.model, plan, matched: plan.filter((r) => r.to).length, unmatched: plan.filter((r) => !r.to).length, next: "A person checks each row; assign puts a database material on types." });
+        }
+        const file = expandEnv(config.materials_file);
+        const texDir = win.join(win.dirname(file), "Textures");
+        let kitTextures: string[] = [];
+        try { kitTextures = fs.readdirSync(texDir).map((f) => win.join(texDir, f)); } catch { /* no Textures folder: database maps only */ }
+        const plan = planTextureRepair(model, db, file, (p) => fs.existsSync(p), kitTextures);
+        return reply({ dry_run: true, read_only: true, model: facts?.model, textures: texDir, plan, fixable: plan.filter((r) => r.to).length, not_found: plan.filter((r) => !r.to).length });
       }
 
       case "assign": {

@@ -71,6 +71,30 @@ export function planReloadLink(args: ReloadLinkArgs, host: LinkHost | null | und
   return { ok: true, params: path ? { document: named, link_type_id: id, path } : { document: named, link_type_id: id } };
 }
 
+/** RL-3: a reload that moved or dropped instances is not a success, whatever the load result. */
+export function judgePositions(result: Record<string, unknown>, verdict: ReloadVerdict): ReloadVerdict {
+  const before = typeof result.instances === "number" ? result.instances : null;
+  const after = typeof result.instances_after === "number" ? result.instances_after : null;
+  const moved = result.positions_kept === false;
+  const dropped = before !== null && after !== null && after < before;
+  if (!moved && !dropped) return { ...verdict, positions_kept: result.positions_kept === true ? true : verdict.positions_kept };
+  return {
+    ...verdict,
+    ok: false,
+    code: verdict.ok ? "FMC-LINK-MOVED" : verdict.code,
+    message: `${dropped ? `${before! - after!} of ${before} link instance(s) are gone after the reload` : "A link instance moved during the reload"}.${verdict.ok ? "" : ` ${verdict.message ?? ""}`}`,
+    positions_kept: false,
+  };
+}
+
+/** RL-4: only the open documents that could be the link (same file stem as the path asked for) are asked for their central. */
+export function mayBeTheLink(doc: SessionDoc, linkPath: string): boolean {
+  const stem = (linkPath.split(/[\\/]/).pop() ?? "").replace(/\.rvt$/i, "").replace(/(_central|_detached)$/i, "").trim().toLowerCase();
+  if (!stem) return true;
+  const name = `${doc.title ?? ""} ${(doc.path ?? "").split(/[\\/]/).pop() ?? ""}`.toLowerCase();
+  return name.includes(stem);
+}
+
 export interface ReloadVerdict {
   ok: boolean;
   code?: string;
@@ -81,6 +105,8 @@ export interface ReloadVerdict {
   reported_status?: string;
   /** Set after a LoadFrom. False when the path Revit reports is not the path that was requested. */
   path_matches?: boolean;
+  /** RL-3 */
+  positions_kept?: boolean;
 }
 
 function compact(value: string): string {

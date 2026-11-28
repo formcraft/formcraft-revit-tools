@@ -15,6 +15,7 @@ import { treeQuantities } from "../tree/building.js";
 import { appStatuses, realProbe } from "../hub/apps.js";
 import { exchangeRoot, listPackages, loadIdentity, writePackage } from "../hub/exchange.js";
 import {
+  EXCHANGE_TABLES, exchangeTableRows, powerbiSummary, table as tableDef,
   DATA_DIR, PROJECT, Row, SourceNote, TABLES, clashRows, dataFiles, dataFolderOf, gatewayStatus, identityRows, modelFiles, qaRows, quantityRows,
   readme, roomRows, sourceRows, structuralRows, ticketRows, RevitRoom,
 } from "../hub/powerbi.js";
@@ -50,7 +51,10 @@ export const FMC_POWERBI_DESCRIPTION =
     "stable PowerBI\\latest folder Power BI points at. plan: the tables and what each will read (read-only). build: reads " +
     "every source (Revit, Navisworks only when they answer; otherwise the table is empty with a note, never guessed), a " +
     "dry run first. status: the newest package and whether Power BI Desktop is running. gateway: Microsoft's Power BI " +
-    "Modeling MCP server (not set up). Quantities only, never rates; tickets by discipline, never by person.";
+    "Modeling MCP server (not set up). Quantities only, never rates; tickets by discipline, never by person. " +
+    "document names the open Revit model the live reads use (with several models open, name it); documents [] reads several models into one " +
+    "package, with a model column on Rooms, Quantities and QA. SheetChecks (from fmc_pdf_review record), Phases, Revisions and Coordinates are read " +
+    "from <Exchange>\\Tables when a tool has written them (the last three have no writer yet). Every reply has a summary line and each table its freshness.";
 
 export const FMC_POWERBI_SHAPE = {
   action: z.enum(["plan", "build", "status", "gateway"]),
@@ -63,6 +67,8 @@ export const FMC_POWERBI_SHAPE = {
   stage: z.string().optional().describe("build: the project's RIBA stage, for QA"),
   tolerance_pct: z.number().min(0).max(100).optional().default(10).describe("Rooms over or under their target area by more than this"),
   clash_limit: z.number().int().min(1).max(2000).optional().default(2000).describe("build: at most this many clashes per test"),
+  document: z.string().optional().default("").describe("build: the open Revit model to read (title or full path). With several models open, name it"),
+  documents: z.array(z.string()).optional().default([]).describe("build: several open models in one package; overrides document"),
   refresh_model: z.boolean().optional().default(false)
     .describe("build: also replace the PBIP model and report in the latest folder (the old ones are archived first). By default a model already there is kept, with the person's edits"),
 };
@@ -72,7 +78,7 @@ export type FmcPowerbiArgs = z.infer<z.ZodObject<typeof FMC_POWERBI_SHAPE>>;
 const readJson = (file: string): any => JSON.parse(fs.readFileSync(file, "utf8").replace(/^﻿/, ""));
 const errText = (e: unknown) => (e instanceof Error ? e.message : String(e));
 
-interface Gathered { rows: Record<string, Row[]>; notes: SourceNote[] }
+interface Gathered { rows: Record<string, Row[]>; notes: SourceNote[]; freshness: Record<string, string | null>; warnings: string[] }
 
 /** The newest Robot results package and its run's bars (from the revit → robot package of the same run). */
 function robotResults(root: string): { run: string; rows: FeaRow[]; bars: Array<{ n: number; id: number }> | null; pkg: string } | null {
@@ -108,6 +114,11 @@ async function gather(args: FmcPowerbiArgs, config: GuardConfig, project: string
   const nav = readState();
   const navisUp = !!nav && processAlive(nav.pid);
   const why = live ? "" : skipped;
+  const docs = [...new Set((args.documents?.length ? args.documents : [args.document ?? ""]).map((d) => d.trim()))];
+  const warnings: string[] = [];
+  if (live && revitUp && docs.length === 1 && !docs[0]) warnings.push("No document named: the Revit reads go to whichever model the connection resolves. Name document when several models are open.");
+  const withDoc = (body: Record<string, unknown>, doc: string) => (doc ? { ...body, document: doc } : body);
+  const docLabel = (doc: string) => (doc ? ` [${doc}]` : "");
 
   // the register
   let reg: Register | null = null;
@@ -125,41 +136,62 @@ async function gather(args: FmcPowerbiArgs, config: GuardConfig, project: string
   let treeNote = "no recipe tree";
   try { if (tf && fs.existsSync(tf)) { treeRows = treeQuantities(TREE.parse(readJson(tf)), args.tolerance_pct).rows; treeNote = `the recipe tree (${treeRows.length} rooms)`; } }
   catch (e) { treeNote = `the recipe tree couldn't be read: ${errText(e)}`; }
-  let revitRooms: RevitRoom[] | null = null;
   let revitNote = live ? (revitUp ? "" : "Revit isn't running") : `Revit ${revitUp ? "is running" : "isn't running"}${why}`;
-  if (live && revitUp) {
-    try {
-      const r = await withRevitConnection((c) => c.sendCommand("export_room_data", { includeUnplacedRooms: false, includeNotEnclosedRooms: false }, 120000)) as any;
-      const list = r?.rooms ?? r?.result?.rooms;
-      if (Array.isArray(list)) { revitRooms = list; revitNote = `Revit's rooms (${list.length})`; } else revitNote = `Revit answered without rooms: ${r?.message ?? "no message"}`;
-    } catch (e) { revitNote = `Revit didn't answer: ${errText(e)}`; }
+  rows.Rooms = [];
+  const roomNotes: string[] = [];
+  for (const doc of docs) {
+    let revitRooms: RevitRoom[] | null = null;
+    let docNote = revitNote;
+    if (live && revitUp) {
+      try {
+        const r = await withRevitConnection((c) => c.sendCommand("export_room_data", withDoc({ includeUnplacedRooms: false, includeNotEnclosedRooms: false }, doc), 120000)) as any;
+        const list = r?.rooms ?? r?.result?.rooms;
+        if (Array.isArray(list)) { revitRooms = list; docNote = `Revit's rooms (${list.length})${docLabel(doc)}`; } else docNote = `Revit answered without rooms${docLabel(doc)}: ${r?.message ?? "no message"}`;
+      } catch (e) { docNote = `Revit didn't answer${docLabel(doc)}: ${errText(e)}`; }
+    }
+    // The tree's planned rooms are added once, with the first model.
+    const tree = doc === docs[0] ? treeRows : [];
+    rows.Rooms.push(...roomRows({ revit: revitRooms, tree, identity, tolerancePct: args.tolerance_pct }).map((row) => ({ ...row, model: doc || null })));
+    roomNotes.push(docNote);
   }
-  rows.Rooms = roomRows({ revit: revitRooms, tree: treeRows, identity, tolerancePct: args.tolerance_pct });
+  revitNote = roomNotes.filter(Boolean).join("; ") || revitNote;
   note("Rooms", rows.Rooms.length ? "read" : "empty", `${revitNote}; ${treeNote}`);
 
   // QA and quantities: Revit only
   if (live && revitUp) {
-    try {
-      const books = readRulebooks(config.rulebooks_dir);
-      if (!books.rules.length) throw new Error(books.problems[0] ?? "the kit's rulebooks have no rules");
-      const facts = qaFacts(await withRevitConnection((c) => c.sendRaw("fmc_qa_facts", neededParameters(books.rules), 300000)));
-      const qa = runQa(books, facts, args.gate, today, (args.stage ?? "").trim());
-      rows.QA = qaRows(qa.results, args.gate, facts.model);
-      note("QA", "read", `QA run on ${facts.model}, gate ${args.gate} (read-only)`);
-    } catch (e) { rows.QA = []; note("QA", "not read", `QA not run: ${errText(e)}`); }
-    try {
-      const master = kitMaster(args, config);
-      if (!fs.existsSync(master)) throw new Error(`kit master data not found: ${master}`);
-      const data = readJson(master);
-      const params = kitParams(data);
-      const [CODE, STATUS, PACKAGE] = ["FMC_Keynote_Code", "FMC_Construction_Status", "FMC_Trade_Package"];
-      const missing = [CODE, STATUS, PACKAGE].filter((p) => !params[p]);
-      if (missing.length) throw new Error(`the kit has no ${missing.join(", ")}`);
-      const categories = [...new Set([...params[CODE].categories, ...params[STATUS].categories])];
-      const facts = await withRevitConnection((c) => c.sendRaw("fmc_build_facts", { code_param: CODE, status_param: STATUS, package_param: PACKAGE, categories }, 300000));
-      rows.Quantities = quantityRows(boq(facts, kitCodes(data), null).items);
-      note("Quantities", "read", `Quantities by keynote code from ${String((facts as any)?.model ?? "the model")} (no rates)`);
-    } catch (e) { rows.Quantities = []; note("Quantities", "not read", `Quantities not read: ${errText(e)}`); }
+    rows.QA = []; rows.Quantities = [];
+    const qaRead: string[] = []; const qaFailed: string[] = [];
+    const qtyRead: string[] = []; const qtyFailed: string[] = [];
+    for (const doc of docs) {
+      try {
+        const books = readRulebooks(config.rulebooks_dir);
+        if (!books.rules.length) throw new Error(books.problems[0] ?? "the kit's rulebooks have no rules");
+        const needed = neededParameters(books.rules) as unknown as Record<string, unknown>;
+        const facts = qaFacts(await withRevitConnection((c) => c.sendRaw("fmc_qa_facts", withDoc(needed, doc) as never, 300000)));
+        const qa = runQa(books, facts, args.gate, today, (args.stage ?? "").trim());
+        const found = qaRows(qa.results, args.gate, facts.model);
+        rows.QA.push(...(docs.length > 1 ? found.map((row) => ({ ...row, finding_key: `${facts.model}|${row.finding_key}` })) : found));
+        qaRead.push(facts.model);
+      } catch (e) { qaFailed.push(`QA not run${docLabel(doc)}: ${errText(e)}`); }
+      try {
+        const master = kitMaster(args, config);
+        if (!fs.existsSync(master)) throw new Error(`kit master data not found: ${master}`);
+        const data = readJson(master);
+        const params = kitParams(data);
+        const [CODE, STATUS, PACKAGE] = ["FMC_Keynote_Code", "FMC_Construction_Status", "FMC_Trade_Package"];
+        const missing = [CODE, STATUS, PACKAGE].filter((p) => !params[p]);
+        if (missing.length) throw new Error(`the kit has no ${missing.join(", ")}`);
+        const categories = [...new Set([...params[CODE].categories, ...params[STATUS].categories])];
+        const facts = await withRevitConnection((c) => c.sendRaw("fmc_build_facts", withDoc({ code_param: CODE, status_param: STATUS, package_param: PACKAGE, categories }, doc), 300000));
+        const model = String((facts as any)?.model ?? (doc || "the model"));
+        rows.Quantities.push(...quantityRows(boq(facts, kitCodes(data), null).items).map((row) => ({ ...row, model })));
+        qtyRead.push(model);
+      } catch (e) { qtyFailed.push(`Quantities not read${docLabel(doc)}: ${errText(e)}`); }
+    }
+    if (qaRead.length) note("QA", "read", `QA run on ${qaRead.join(", ")}, gate ${args.gate} (read-only)${qaFailed.length ? `; ${qaFailed.join("; ")}` : ""}`);
+    else note("QA", "not read", qaFailed.join("; "));
+    if (qtyRead.length) note("Quantities", "read", `Quantities by keynote code from ${qtyRead.join(", ")} (no rates)${qtyFailed.length ? `; ${qtyFailed.join("; ")}` : ""}`);
+    else note("Quantities", "not read", qtyFailed.join("; "));
   } else {
     rows.QA = []; rows.Quantities = [];
     note("QA", "not read", `Needs Revit: ${revitNote}`);
@@ -190,8 +222,29 @@ async function gather(args: FmcPowerbiArgs, config: GuardConfig, project: string
 
   rows.Identity = identityRows(identity);
   note("Identity", rows.Identity.length ? "read" : "empty", rows.Identity.length ? "The identity map FMC_Identity.json" : "The identity map is empty");
-  rows.Sources = sourceRows(notes, rows, new Date().toISOString());
-  return { rows, notes };
+
+  // PB-4: tables other tools leave in <Exchange>\Tables
+  const freshness: Record<string, string | null> = {};
+  for (const name of EXCHANGE_TABLES) {
+    const def = tableDef(name);
+    const file = win.join(root, "Tables", def.file);
+    try {
+      if (fs.existsSync(file)) {
+        rows[name] = exchangeTableRows(def, fs.readFileSync(file, "utf8"));
+        freshness[name] = fs.statSync(file).mtime.toISOString();
+        note(name, rows[name].length ? "read" : "empty", `${file}`);
+      } else {
+        rows[name] = [];
+        freshness[name] = null;
+        note(name, "empty", name === "SheetChecks" ? `No ${file} yet (fmc_pdf_review with record true, dry_run false)` : `No ${file}: no tool writes this table yet (PROVISIONAL)`);
+      }
+    } catch (e) { rows[name] = []; freshness[name] = null; note(name, "not read", `${file}: ${errText(e)}`); }
+  }
+  const readAt = new Date().toISOString();
+  for (const n of notes) if (!(n.table in freshness)) freshness[n.table] = n.state === "read" ? readAt : null;
+  if (docs.some(Boolean)) note("Sources", "read", `Revit documents: ${docs.filter(Boolean).join(", ")}`);
+  rows.Sources = sourceRows(notes, rows, readAt);
+  return { rows, notes, freshness, warnings };
 }
 
 function writeFiles(dir: string, files: Array<{ name: string; text: string }>) {
@@ -225,9 +278,9 @@ export async function runFmcPowerbi(args: FmcPowerbiArgs) {
 
     if (args.action === "plan") {
       const g = await gather(args, config, project, root, false);
-      return reply({ exchange: root, latest, tables: TABLES.map((t) => {
+      return reply({ summary: powerbiSummary(g.notes.filter((n) => n.table !== "Sources"), null), exchange: root, latest, tables: TABLES.map((t) => {
         const n = g.notes.find((x) => x.table === t.name);
-        return { table: t.name, file: `${DATA_DIR}\\${t.file}`, columns: t.columns.map((c) => c.name), rows_now: g.rows[t.name]?.length ?? 0, source: n?.note ?? "", measures: t.measures.map((m) => m.name) };
+        return { table: t.name, file: `${DATA_DIR}\\${t.file}`, columns: t.columns.map((c) => c.name), rows_now: g.rows[t.name]?.length ?? 0, source: n?.note ?? "", freshness: g.freshness[t.name] ?? null, measures: t.measures.map((m) => m.name) };
       }), next: "fmc_powerbi build reads Revit and Navisworks when they answer (a dry run first)" });
     }
 
@@ -235,12 +288,13 @@ export async function runFmcPowerbi(args: FmcPowerbiArgs) {
     if (!project) return reply({ refused: true, reasons: ["Name the project folder: the data model goes in its 01_WIP\\_Exchange"] }, true);
     const reasons = [win.join(root, "Packages", "x.csv"), win.join(latest, "x.csv")].flatMap((p) => checkWritePath(p, config, { checkName: false }).reasons);
     const g = await gather(args, config, project, root, args.live, " (live=false: files only)");
-    const tables = TABLES.map((t) => ({ table: t.name, rows: g.rows[t.name]?.length ?? 0, note: g.notes.find((n) => n.table === t.name)?.note ?? "" }));
+    const tables = TABLES.map((t) => ({ table: t.name, rows: g.rows[t.name]?.length ?? 0, note: g.notes.find((n) => n.table === t.name)?.note ?? "", freshness: g.freshness[t.name] ?? null }));
     const pbiRunning = appStatuses(realProbe(serverRoot())).find((s) => s.id === "powerbi")!.running;
+    const summary = powerbiSummary(g.notes.filter((n) => n.table !== "Sources"), pbiRunning);
     const modelThere = fs.existsSync(win.join(latest, `${PROJECT}.pbip`));
     const model = !modelThere ? "written (first time)" : args.refresh_model ? "replaced (the old one archived first)" : "kept (a person's edits stay; refresh_model=true replaces it)";
     if (args.dry_run) {
-      return reply({ dry_run: true, exchange: root, would_write: { package: win.join(root, "Packages", `<time>_hub-powerbi_Project_data_model`), latest }, tables, latest_model: model,
+      return reply({ summary, warnings: g.warnings.length ? g.warnings : undefined, dry_run: true, exchange: root, would_write: { package: win.join(root, "Packages", `<time>_hub-powerbi_Project_data_model`), latest }, tables, latest_model: model,
         power_bi_desktop_running: pbiRunning, refused: reasons.length ? reasons : undefined,
         next: reasons.length ? "Fix the write folders first (write_roots in fmc_guard.json)" : "Run again with dry_run=false" });
     }
@@ -264,7 +318,7 @@ export async function runFmcPowerbi(args: FmcPowerbiArgs) {
     writeFiles(latest, [...data, { name: "README.txt", text: readme(dataFolderOf(latest), built) }]);
     if (!modelThere || args.refresh_model) writeFiles(latest, modelFiles(dataFolderOf(latest)));
     log(config, "powerbi_build", false, pkg.dir, "written", tables.map((t) => `${t.table} ${t.rows}`).join("; "));
-    return reply({ done: true, package: pkg.dir, latest, latest_model: model, archived: archived || undefined, tables,
+    return reply({ summary, warnings: g.warnings.length ? g.warnings : undefined, done: true, package: pkg.dir, latest, latest_model: model, archived: archived || undefined, tables,
       power_bi_desktop_running: pbiRunning,
       next: pbiRunning ? "In Power BI Desktop: Refresh (Home › Refresh)" : `Open ${win.join(latest, `${PROJECT}.pbip`)} in Power BI Desktop, then Refresh` });
   } catch (e) {

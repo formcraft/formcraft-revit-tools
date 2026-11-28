@@ -52,6 +52,8 @@ export interface PageCheck {
   text_overlaps: number;
   empty_drawing_zone: boolean;
   fill_pct: number;
+  /** Path or image ink was found (pdf.js operators). A page with ink and no text is not blank (PR-6). */
+  has_ink?: boolean;
   png?: string;
 }
 
@@ -116,11 +118,13 @@ export function pastBorder(page: PageFact): boolean {
   });
 }
 
+/** Pairs of overlapping text boxes. Sort by x and sweep, so a dense sheet is not n squared (PR-20). */
 export function textOverlaps(page: PageFact): number {
-  const boxes = (page.boxes ?? []).filter((box) => box.text.trim() && box.w > 0 && box.h > 0);
+  const boxes = (page.boxes ?? []).filter((box) => box.text.trim() && box.w > 0 && box.h > 0).sort((a, b) => a.x - b.x);
   let count = 0;
   for (let i = 0; i < boxes.length; i++) {
-    for (let j = i + 1; j < boxes.length; j++) if (intersects(boxes[i], boxes[j])) count += 1;
+    const right = boxes[i].x + boxes[i].w - 0.2;
+    for (let j = i + 1; j < boxes.length && boxes[j].x < right; j++) if (intersects(boxes[i], boxes[j])) count += 1;
   }
   return count;
 }
@@ -179,7 +183,13 @@ export function inkFromOps(ops: DrawOp[]): InkBox[] {
   for (const item of ops) {
     const op = item.op;
     const args = item.args;
-    if (op === "save") stack.push([...ctm]);
+    if (op === "bounds" && args.length >= 4) {
+      // pdf.js 6 constructPath carries the path's own min/max box; images are the unit square. Transform all four corners.
+      const corners = [apply(args[0], args[1]), apply(args[2], args[1]), apply(args[0], args[3]), apply(args[2], args[3])];
+      const xs = corners.map((p) => p.x);
+      const ys = corners.map((p) => p.y);
+      addBox(Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys));
+    } else if (op === "save") stack.push([...ctm]);
     else if (op === "restore") ctm = stack.pop() ?? [1, 0, 0, 1, 0, 0];
     else if (op === "transform" && args.length >= 6) {
       const [a, b, c, d, e, f] = args;
@@ -204,7 +214,8 @@ export function inkFromOps(ops: DrawOp[]): InkBox[] {
 export function reviewPages(pages: PageFact[]): PageCheck[] {
   return pages.map((page) => ({
     page: page.page,
-    blank: page.text.trim().length === 0,
+    blank: page.text.trim().length === 0 && !(page.ink ?? []).length,
+    has_ink: (page.ink ?? []).length > 0,
     page_size: matchPageSize(page.width_pt, page.height_pt),
     width_pt: page.width_pt,
     height_pt: page.height_pt,
@@ -278,13 +289,15 @@ export function renderWith(request: RenderRequest): { ok: boolean; files: string
   const files: string[] = [];
   if (request.renderer.kind === "pdftoppm" || request.renderer.kind === "pdftocairo") {
     const prefix = path.win32.join(request.dir, `.fmc-pdf-${process.pid}`);
-    const args = ["-png", "-r", String(request.dpi)];
-    if (request.pages.length) {
-      args.push("-f", String(Math.min(...request.pages)), "-l", String(Math.max(...request.pages)));
+    // One call per run of consecutive pages, so pages [1, 50] renders two pages, not fifty (PR-15).
+    const runs = request.pages.length ? pageRuns(request.pages) : [null];
+    for (const run of runs) {
+      const args = ["-png", "-r", String(request.dpi)];
+      if (run) args.push("-f", String(run[0]), "-l", String(run[1]));
+      args.push(request.pdf, prefix);
+      const result = spawnSync(request.renderer.command, args, { encoding: "utf8" });
+      if (result.status !== 0) return { ok: false, files: [], error: (result.stderr || result.stdout || "renderer failed").slice(0, 500) };
     }
-    args.push(request.pdf, prefix);
-    const result = spawnSync(request.renderer.command, args, { encoding: "utf8" });
-    if (result.status !== 0) return { ok: false, files: [], error: (result.stderr || result.stdout || "renderer failed").slice(0, 500) };
     const want = new Set(request.pages);
     const produced = fs.readdirSync(request.dir).filter((name) => name.startsWith(path.win32.basename(prefix)) && name.endsWith(".png"));
     for (const name of produced) {
@@ -316,6 +329,74 @@ export function renderWith(request: RenderRequest): { ok: boolean; files: string
     files.push(dest);
   }
   return { ok: true, files };
+}
+
+/** Consecutive runs of page numbers, e.g. [1, 2, 3, 50] gives [[1, 3], [50, 50]]. */
+export function pageRuns(pages: number[]): Array<[number, number]> {
+  const sorted = [...new Set(pages)].filter((n) => Number.isInteger(n) && n > 0).sort((a, b) => a - b);
+  const runs: Array<[number, number]> = [];
+  for (const n of sorted) {
+    const last = runs[runs.length - 1];
+    if (last && n === last[1] + 1) last[1] = n;
+    else runs.push([n, n]);
+  }
+  return runs;
+}
+
+/** Requested pages that the PDF does not have (PR-13). */
+export function pagesNotFound(pageCount: number, requested?: number[]): number[] {
+  return [...new Set(requested ?? [])].filter((n) => n < 1 || n > pageCount).sort((a, b) => a - b);
+}
+
+export interface PdfSummary {
+  verdict: "OK" | "CHECK" | "NO_PAGES";
+  line: string;
+  pages: number;
+  blank: number[];
+  past_border: number[];
+  text_overlaps: number[];
+  missing_titleblock_text: number[];
+  empty_drawing_zone: number[];
+  unknown_size: number[];
+  pages_not_found: number[];
+}
+
+/** One line and a verdict for the whole review (PR-18). CHECK means at least one page needs a look. */
+export function summarisePdf(checks: PageCheck[], notFound: number[] = []): PdfSummary {
+  const pick = (test: (row: PageCheck) => boolean) => checks.filter(test).map((row) => row.page);
+  const s = {
+    pages: checks.length,
+    blank: pick((row) => row.blank),
+    past_border: pick((row) => row.past_border),
+    text_overlaps: pick((row) => row.text_overlaps > 0),
+    missing_titleblock_text: pick((row) => row.missing_titleblock_text),
+    empty_drawing_zone: pick((row) => !row.blank && row.empty_drawing_zone),
+    unknown_size: pick((row) => !row.page_size),
+    pages_not_found: [...notFound],
+  };
+  const flagged = new Set([...s.blank, ...s.past_border, ...s.text_overlaps, ...s.missing_titleblock_text, ...s.empty_drawing_zone, ...s.unknown_size]);
+  const verdict: PdfSummary["verdict"] = !checks.length ? "NO_PAGES" : flagged.size || notFound.length ? "CHECK" : "OK";
+  const parts = [
+    `${checks.length} page(s) checked`,
+    s.blank.length ? `blank ${s.blank.join(",")}` : "",
+    s.past_border.length ? `past border ${s.past_border.join(",")}` : "",
+    s.text_overlaps.length ? `text overlaps ${s.text_overlaps.join(",")}` : "",
+    s.missing_titleblock_text.length ? `no title-block text ${s.missing_titleblock_text.join(",")}` : "",
+    s.empty_drawing_zone.length ? `empty drawing zone ${s.empty_drawing_zone.join(",")}` : "",
+    s.unknown_size.length ? `not A0-A4 ${s.unknown_size.join(",")}` : "",
+    notFound.length ? `not in the PDF ${notFound.join(",")}` : "",
+  ].filter(Boolean);
+  return { verdict, line: `${verdict}: ${parts.join("; ")}.`, ...s };
+}
+
+export const SHEET_CHECKS_HEADER = ["reviewed_at", "pdf", "page", "verdict", "blank", "page_size", "missing_titleblock_text", "past_border", "text_overlaps", "empty_drawing_zone", "fill_pct"];
+
+/** Rows for the SheetChecks table (one per page) that fmc_powerbi can read from the Exchange folder (PR-23). */
+export function sheetCheckRows(pdf: string, checks: PageCheck[], at: string): Array<Array<string | number | boolean>> {
+  return checks.map((row) => {
+    const flagged = row.blank || row.past_border || row.text_overlaps > 0 || row.missing_titleblock_text || (!row.blank && row.empty_drawing_zone) || !row.page_size;
+    return [at, path.win32.basename(pdf), row.page, flagged ? "CHECK" : "OK", row.blank, row.page_size ? `${row.page_size.name} ${row.page_size.orientation}` : "", row.missing_titleblock_text, row.past_border, row.text_overlaps, row.empty_drawing_zone, row.fill_pct];
+  });
 }
 
 export function selectPages(all: PageFact[], requested?: number[]): PageFact[] {

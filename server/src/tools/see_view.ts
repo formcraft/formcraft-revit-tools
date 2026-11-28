@@ -21,9 +21,22 @@ export async function viewImage(params: Record<string, unknown>): Promise<{ imag
     fs.mkdirSync(path.dirname(target), { recursive: true });
     fs.copyFileSync(file, target);
     facts.saved_to = target;
+    const note = saveToNote(String(save_to ?? ""), target, file);
+    if (note) facts.save_to_note = note;
   }
   const data = fs.readFileSync(file).toString("base64");
   return { image: { type: "image", data, mimeType: "image/png" }, facts };
+}
+
+/** P-see_view-01: say where the picture really went: save_to keeps only the file name, and the auto-named export stays too. */
+export function saveToNote(saveTo: string, target: string, exported: string): string | null {
+  const raw = saveTo.trim();
+  if (!raw) return null;
+  const folder = path.win32.dirname(raw);
+  const parts: string[] = [];
+  if (folder && folder !== ".") parts.push(`save_to's folder (${folder}) was not used: pictures are kept in the image folder, as ${target}.`);
+  if (exported && path.resolve(exported) !== path.resolve(target)) parts.push(`Revit's own export also stays at ${exported}.`);
+  return parts.length ? parts.join(" ") : null;
 }
 
 /** The ids a modify_model answer made or touched, for its after-picture. */
@@ -91,7 +104,7 @@ export function registerSeeViewTool(server: McpServer) {
       "[[x, y, z?], [x, y, z?]] (anything touching it), near {id | point_mm, within_mm}, hosted_by, host_of, param {name, " +
       "is: equals|contains|starts|gt|lt|empty|not_empty, value} (or a list), exclude, not {query}, types true; combine them. " +
       "Gives the count by category, the ids (up to limit, default 500) and the first 100 with type and level. Try a query " +
-      "here before an edit uses it as select.",
+      "here before an edit uses it as select. It only queries: Revit's selection is not changed. count is every match; the id lists stop at limit.",
     {
       category: z.union([z.string(), z.array(z.string())]).optional(), level: z.string().optional(), type_name: z.string().optional(), family: z.string().optional(),
       comment: z.string().optional(), mark: z.string().optional(), workset: z.string().optional(), phase: z.string().optional(),

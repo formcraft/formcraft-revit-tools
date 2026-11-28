@@ -290,3 +290,32 @@ test("the tool text tells a bot the actions, and the add-in refuses the unsafe p
   for (const name of ["fmc_link_publish", "fmc_link_unload", "fmc_link_transmission", "fmc_reload_link"])
     assert.ok(manifest.commands.some((row) => row.commandName === name), name);
 });
+
+test("research 56: suggested link_set, coordinates agree line (origin offset not flagged), and a same-name copy that is not the open model", async () => {
+  const { coordinatesAgree, notTheOpenModel, suggestLinkSet } = await import("./linkmanage.js");
+  const agree = coordinatesAgree([
+    { model: "architectural_USER.rvt", coordinates: { angle_deg: 0, easting_mm: -7358, northing_mm: 4152, crs: "" } },
+    { model: "plumbing_USER.rvt", coordinates: { angle_deg: 0, easting_mm: 0, northing_mm: 0, crs: "" } },
+  ]);
+  assert.equal(agree.agree, true);
+  assert.match(agree.line, /^Coordinates agree across 2 models: angle 0 deg; internal origins differ by up to 8\.4 m, which is normal and not flagged\.$/);
+  const off = coordinatesAgree([{ model: "a", coordinates: { angle_deg: 0 } }, { model: "b", coordinates: { angle_deg: 12.5 } }]);
+  assert.equal(off.agree, false);
+  assert.match(String(off.next), /fmc_coord/);
+  const copy = { id: 7, name: "A-0002.rvt", path: "C:\\FORMCRAFT WORKSHARE\\old\\A-0002.rvt", path_type: "Absolute", attachment: "Overlay", loaded: true, pinned: true, workset: "LINK ARCH" };
+  assert.equal(notTheOpenModel(copy, open, open[2])?.title, "A-0002_USER");
+  assert.equal(notTheOpenModel({ ...copy, path: centralA }, open, open[2]), undefined);
+  const { io } = harness();
+  const facts = io.facts;
+  io.facts = async (document) => ({ ...(await facts(document)), links: document === plumb ? [copy] : [], coordinates: { angle_deg: 0, easting_mm: document === arch ? -7358 : 0, northing_mm: 0 } });
+  io.listModels = () => ["D:\\Ogala\\02_Shared\\A-0002.rvt"];
+  const ran = await runLinkPlan({ action: "audit", document: "P-0001_USER", documents: ["A-0002_USER"], link_from: "D:\\Ogala\\02_Shared", suggest: true }, io, cfg);
+  assert.equal(ran.isError, false);
+  const row = (ran.body.audit as Array<{ problems: string[]; state: string }>)[0];
+  assert.equal(row.state, "Fix");
+  assert.ok(row.problems.some((p) => /linked copy is not the open model A-0002_USER/.test(p)));
+  const suggested = ran.body.suggested as ReturnType<typeof suggestLinkSet>;
+  assert.deepEqual(suggested.link_set.map((item) => item.path), ["D:\\Ogala\\02_Shared\\A-0002.rvt"]);
+  assert.deepEqual(suggested.documents, [plumb]);
+  assert.equal((ran.body.coordinates_check as { agree: boolean }).agree, true);
+});

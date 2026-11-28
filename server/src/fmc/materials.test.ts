@@ -68,3 +68,24 @@ test("a kit material resolves to absolute texture paths beside the database; a m
 test("without the database the audit says so instead of flagging everything", () => {
   assert.equal(auditMaterials([{ id: 1, name: "X", used: true, textures: [] }], null, () => true)[0].result, "Info");
 });
+
+test("research 57: no 200 cap, merged findings with survivor, summary line, map and texture repair plans", async () => {
+  const m = await import("./materials.js");
+  const big = m.parseMaterialDb({ materials: Array.from({ length: 225 }, (_, i) => ({ name: `FMC_Test_M${i}`, class: "Test" })) });
+  assert.equal(m.searchMaterials(big, "All", "").length, 225);
+  const exists = (p: string) => p.startsWith("Z:\\kit\\");
+  const model = [
+    { id: 1, name: "FMC_Tile_Porcelain_600", used: true, textures: ["C:\\gone\\tile_porc_600_col.jpg"] },
+    { id: 2, name: "Concrete", used: true, textures: [] },
+    { id: 3, name: "Concrete (1)", used: false, textures: ["C:\\gone\\old.jpg"] },
+  ];
+  const findings = m.mergedFindings(model, db, exists);
+  assert.deepEqual(findings.map((f) => [f.name, f.reasons.length, f.survivor ?? ""]), [["FMC_Tile_Porcelain_600", 1, ""], ["Concrete", 2, ""], ["Concrete (1)", 4, "Concrete"]]);
+  const checks = auditMaterials(model, db, exists);
+  assert.equal(m.auditSummary(model, checks, findings), "3 materials: 2 off-library (counted once), 1 duplicates, fail: broken texture paths 2, 1 unused.");
+  const map = m.planMaterialMap(model, db);
+  assert.deepEqual(map.map((r) => [r.from, r.to, r.how]), [["Concrete", "FMC_Concrete_C25-30", "name match"], ["Concrete (1)", "FMC_Concrete_C25-30", "name match"]]);
+  assert.equal(m.planMaterialMap(model, db, "Concrete", "Nope")[0].to, null);
+  const tex = m.planTextureRepair(model, db, "Z:\\kit\\FMC_Materials.json", exists, ["Z:\\kit\\Textures\\old.jpg"]);
+  assert.deepEqual(tex.map((r) => [r.material, r.to, r.how]), [["FMC_Tile_Porcelain_600", "Z:\\kit\\tile_porc_600_col.jpg", "database map"], ["Concrete (1)", "Z:\\kit\\Textures\\old.jpg", "same file name"]]);
+});
