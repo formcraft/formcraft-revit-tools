@@ -33,7 +33,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 using (FmcTarget target = FmcTarget.Resolve(app, Parameters, mayOpen: false))
                 {
                     Document doc = target.Doc;
-                    Result = Read(doc);
+                    Result = Read(doc, WantsRooms(Parameters));
                     Result["resolved_document"] = FmcTarget.Resolved(doc);
                 }
             }
@@ -41,7 +41,16 @@ namespace RevitMCPCommandSet.Services.Fmc
             finally { _done.Set(); }
         }
 
-        internal static JObject Read(Document doc)
+        /// <summary>Room tags are read only when Rooms is among the categories asked for. No categories means all of them.</summary>
+        internal static bool WantsRooms(JObject parameters)
+        {
+            JToken categories = parameters?["categories"];
+            if (categories is JArray list && list.Count > 0)
+                return list.Any(item => string.Equals(item?.ToString()?.Trim(), "Rooms", StringComparison.OrdinalIgnoreCase));
+            return true;
+        }
+
+        internal static JObject Read(Document doc, bool wantRooms = true)
         {
             var sheets = new JArray();
             var onSheet = new Dictionary<long, List<string>>();
@@ -82,7 +91,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     ["is_floor_plan"] = plan,
                     ["sheet_ids"] = new JArray(onSheet.TryGetValue(view.Id.Value, out List<string> ids) ? ids : new List<string>()),
                 };
-                if (plan) FillPlan(doc, view, row);
+                if (plan) FillPlan(doc, view, row, wantRooms);
                 views.Add(row);
             }
             return new JObject
@@ -97,7 +106,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             };
         }
 
-        static void FillPlan(Document doc, View view, JObject row)
+        static void FillPlan(Document doc, View view, JObject row, bool wantRooms)
         {
             var elements = new JArray();
             var tagged = new JArray();
@@ -111,7 +120,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             CollectHost(doc, view, BuiltInCategory.OST_Windows, "Windows", elements, ref windowsView);
             CollectHost(doc, view, BuiltInCategory.OST_Rooms, "Rooms", elements, ref roomsView);
             CollectLinks(doc, view, elements, ref doorsLink, ref windowsLink, ref roomsLink);
-            CollectTags(doc, view, have, tagged, tags);
+            CollectTags(doc, view, have, tagged, tags, wantRooms);
             row["elements"] = elements;
             row["tagged"] = tagged;
             row["tags"] = tags;
@@ -192,7 +201,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             }
         }
 
-        static void CollectTags(Document doc, View view, HashSet<string> have, JArray tagged, JArray tags)
+        static void CollectTags(Document doc, View view, HashSet<string> have, JArray tagged, JArray tags, bool wantRooms)
         {
             foreach (IndependentTag tag in new FilteredElementCollector(doc, view.Id).OfClass(typeof(IndependentTag)).Cast<IndependentTag>())
             {
@@ -208,7 +217,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                         Remember(have, tagged, "", id.Value.ToString());
                 }
             }
-            var roomTags = new FilteredElementCollector(doc, view.Id).OfClass(typeof(RoomTag)).Cast<RoomTag>().ToList();
+            if (!wantRooms) return;
+            // Revit 2025 rejects OfClass(typeof(RoomTag)): the filterable class is SpatialElementTag (RoomTag, AreaTag, SpaceTag).
+            // Keep the room tags only. AreaTag and SpaceTag are not tags this tool places or checks.
+            var roomTags = new FilteredElementCollector(doc, view.Id).OfClass(typeof(SpatialElementTag)).OfType<RoomTag>().ToList();
             foreach (RoomTag tag in roomTags)
             {
                 AddBox(tag, view, tags, "room");

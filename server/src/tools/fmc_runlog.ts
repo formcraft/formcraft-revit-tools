@@ -13,6 +13,7 @@ function reply(body: object, isError = false) {
 export const FMC_RUNLOG_DESCRIPTION =
   "Summarise a Run-FmcBatch log. path is RUN_ALL_log.txt, a result JSON file, or a folder of those. " +
   "The reply is one line per batch: batch id, ops, ok, failed, and FMC codes. Read-only. It does not change a model and does not take a lease. " +
+  "A log section (\"==== job\", Batch label on document, Preview/Apply/Verify) is one batch; an op is one item of a reply's ops array or one tool call, and skipped counts replies that changed nothing. " +
   "The same summary is scripts/Run-FmcRunlog.mjs, which sits next to Run-FmcBatch.mjs. " +
   "Example: path C:\\\\Jobs\\\\_Staging\\\\RUN_ALL_log.txt.";
 

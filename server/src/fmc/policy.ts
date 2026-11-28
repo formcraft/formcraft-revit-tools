@@ -238,6 +238,9 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_keynote_legend_apply",
   // Open or close a document. List stays on fmc_docs. The last document is never closed.
   "fmc_docs_apply",
+  // fmc_file close_local with save=true: saves the local file, then closes it. Never syncs. close_local without save and
+  // open_local are session commands (fmc_close_local, fmc_open_local), not model writes.
+  "fmc_close_local_apply",
   // Close spare documents or purge unused elements. Status stays on fmc_memory.
   "fmc_memory_apply",
 ]);
