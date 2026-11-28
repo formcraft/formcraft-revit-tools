@@ -291,3 +291,62 @@ export function offlineDecision(inspect: DynInspect): { ok: true } | { ok: false
     message: `[FMC-DYNAMO-NEEDS-REVIT] This graph uses Revit (${names}). Offline DynamoCLI runs only graphs with no Revit nodes and no Python that references Revit. Revit was not launched.`,
   };
 }
+
+// ---------- research tool 38: the approved graphs, so a bot needn't know a path ----------
+
+export interface GraphRow {
+  file: string;
+  root: "library" | "Dynamo";
+  name: string;
+  inputs: string[];
+  outputs: number;
+  python_nodes: number;
+  needs_revit: boolean;
+  /** Set when the file could not be read as a graph; the row is still listed. */
+  error?: string;
+}
+
+export const GRAPH_LIST_CAP = 200;
+const GRAPH_DEPTH = 6;
+
+/**
+ * Every .dyn under the two approved kit folders (05_Scripts/library and 05_Scripts/Dynamo), read with parseDyn.
+ * Read-only: no Revit, no Dynamo. query filters by file or graph name (case-insensitive). At most `cap` rows.
+ */
+export function listGraphs(kit: string, opts: { query?: string; cap?: number; read?: (file: string) => string } = {}): { roots: string[]; graphs: GraphRow[]; total: number; truncated: boolean; missing_roots: string[] } {
+  const p = pathOf(kit);
+  const roots = scriptRoots(kit);
+  const read = opts.read ?? ((file: string) => fs.readFileSync(file, "utf8"));
+  const cap = Math.max(1, Math.min(opts.cap ?? GRAPH_LIST_CAP, GRAPH_LIST_CAP));
+  const query = (opts.query ?? "").trim().toLowerCase();
+  const files: Array<{ file: string; root: "library" | "Dynamo" }> = [];
+  const missing: string[] = [];
+  const walk = (dir: string, root: "library" | "Dynamo", depth: number) => {
+    let entries: fs.Dirent[];
+    try { entries = fs.readdirSync(dir, { withFileTypes: true }); } catch { if (depth === 0) missing.push(dir); return; }
+    for (const entry of entries.sort((a, b) => a.name.localeCompare(b.name))) {
+      const full = p.join(dir, entry.name);
+      if (entry.isDirectory() && depth < GRAPH_DEPTH) walk(full, root, depth + 1);
+      else if (entry.isFile() && /\.dyn$/i.test(entry.name)) files.push({ file: full, root });
+    }
+  };
+  roots.forEach((dir, i) => walk(dir, i === 0 ? "library" : "Dynamo", 0));
+  const rows: GraphRow[] = [];
+  let total = 0;
+  for (const { file, root } of files) {
+    let row: GraphRow;
+    try {
+      const parsed = parseDyn(file, read(file));
+      row = parsed.ok
+        ? { file, root, name: parsed.inspect.name, inputs: parsed.inspect.inputs.map((i) => i.name), outputs: parsed.inspect.outputs.length,
+            python_nodes: parsed.inspect.python_nodes.length, needs_revit: parsed.inspect.needs_revit || parsed.inspect.revit_nodes }
+        : { file, root, name: p.basename(file, p.extname(file)), inputs: [], outputs: 0, python_nodes: 0, needs_revit: false, error: parsed.message };
+    } catch (error) {
+      row = { file, root, name: p.basename(file, p.extname(file)), inputs: [], outputs: 0, python_nodes: 0, needs_revit: false, error: error instanceof Error ? error.message : String(error) };
+    }
+    if (query && !`${p.basename(file)} ${row.name}`.toLowerCase().includes(query)) continue;
+    total += 1;
+    if (rows.length < cap) rows.push(row);
+  }
+  return { roots, graphs: rows, total, truncated: total > rows.length, missing_roots: missing };
+}
