@@ -268,6 +268,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_joins",
   // True north, survey point, view orientation and grid angles. No transaction.
   "fmc_north",
+  // Why elements are or are not visible in a view: reads view settings and element facts only. No transaction, nothing hidden or changed.
+  "fmc_visibility",
   // Legend views and legend components. No transaction.
   "fmc_legend_views",
   // The open project a detail will be placed in. No copy.
