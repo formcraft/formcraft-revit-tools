@@ -1,0 +1,32 @@
+{
+  "about": "Shared by server/src/fmc/datum.test.ts and tests/placementcore (C#, no Revit). The grid labels, duplicate names and blank tag text must agree on both sides.",
+  "labels": [
+    { "count": 3, "start": "A", "style": "alphabetic", "want": ["A", "B", "C"] },
+    { "count": 3, "start": "1", "style": "numeric", "want": ["1", "2", "3"] },
+    { "count": 3, "start": "TX1", "style": "alphabetic", "want": ["TX1", "TX2", "TX3"] },
+    { "count": 3, "start": "09", "style": "numeric", "want": ["09", "10", "11"] },
+    { "count": 3, "start": "GA", "style": "alphabetic", "want": ["GA", "GB", "GC"] },
+    { "count": 3, "start": "Y", "style": "alphabetic", "want": ["Y", "Z", "AA"] },
+    { "count": 2, "start": "x", "style": "numeric", "want": ["1", "2"] },
+    { "count": 2, "start": "", "style": "alphabetic", "want": ["A", "B"] },
+    { "count": 2, "start": "3", "style": "alphabetic", "want": ["3", "4"] }
+  ],
+  "duplicates": [
+    { "requested": ["A", "B", "C"], "existing": ["b"], "want": [[1, "exists"]] },
+    { "requested": ["1", "2", "1"], "existing": [], "want": [[2, "repeated"]] },
+    { "requested": ["Level 1", "Level 2"], "existing": ["Level 3"], "want": [] },
+    { "requested": ["", " "], "existing": [""], "want": [] }
+  ],
+  "unique": [
+    { "base": "A", "existing": ["A", "A1"], "want": "A2" },
+    { "base": "B", "existing": ["A"], "want": "B" }
+  ],
+  "blank": [
+    { "text": "", "want": true },
+    { "text": "   ", "want": true },
+    { "text": "?", "want": true },
+    { "text": "??", "want": true },
+    { "text": "D-01", "want": false },
+    { "text": null, "want": false }
+  ]
+}

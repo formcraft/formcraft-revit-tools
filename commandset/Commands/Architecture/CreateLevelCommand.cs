@@ -38,6 +38,7 @@ namespace RevitMCPCommandSet.Commands.Architecture
                     throw new ArgumentNullException(nameof(data), "No level data provided");
 
                 FmcCallContext.Begin(parameters);
+                _handler.OnDuplicate = parameters.Value<string>("onDuplicate") ?? "error";
                 // Set parameters for the event handler
                 _handler.SetParameters(data);
 

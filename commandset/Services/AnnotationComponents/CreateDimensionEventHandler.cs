@@ -53,7 +53,7 @@ public class CreateDimensionEventHandler : IExternalEventHandler, IWaitableExter
     /// <summary>
     ///     Result of the execution
     /// </summary>
-    public AIResult<List<long>> Result { get; private set; }
+    public AIItemsResult<List<long>> Result { get; private set; }
 
     #endregion
 
@@ -81,10 +81,15 @@ public class CreateDimensionEventHandler : IExternalEventHandler, IWaitableExter
         try
         {
             var createdDimensionIds = new List<long>();
+            // One row per dimension (tool research create_dimensions gaps 2 and 12): created with its id, or failed with
+            // a code. A failure no longer throws the ids of the ones before it away, and nothing commits empty.
+            var items = new List<Dictionary<string, object>>();
+            int index = -1;
 
             // Process each dimension in the list
             foreach (var dimInfo in DimensionsToCreate)
             {
+                index++;
                 // Get active view or specified view
                 View view = null;
                 if (dimInfo.ViewId > 0)
@@ -93,6 +98,11 @@ public class CreateDimensionEventHandler : IExternalEventHandler, IWaitableExter
                     view = element as View;
                 }
 
+                if (view == null && dimInfo.ViewId > 0)
+                {
+                    items.Add(RevitMCPCommandSet.Services.Fmc.FmcPlacementCore.Item(index, "failed", null, "FMC-DIM-VIEW", "That view is not in the model."));
+                    continue;
+                }
                 if (view == null)
                 {
                     view = Doc.ActiveView;
@@ -192,30 +202,40 @@ public class CreateDimensionEventHandler : IExternalEventHandler, IWaitableExter
                             ApplyDimensionParameters(dimension, dimInfo);
 
                             createdDimensionIds.Add(dimension.Id.GetValue());
+                            transaction.Commit();
+                            items.Add(RevitMCPCommandSet.Services.Fmc.FmcPlacementCore.Item(index, "created", dimension.Id.GetValue()));
                         }
-
-                        transaction.Commit();
+                        else
+                        {
+                            transaction.RollBack();
+                            items.Add(RevitMCPCommandSet.Services.Fmc.FmcPlacementCore.Item(index, "failed", null, "FMC-DIM-NO-REFS",
+                                "Two references were not found. Give the elementIds of two walls or instances, or move the points onto them."));
+                        }
                     }
-                    catch
+                    catch (Exception itemError)
                     {
-                        transaction.RollBack();
-                        throw;
+                        if (transaction.HasStarted() && !transaction.HasEnded()) transaction.RollBack();
+                        items.Add(RevitMCPCommandSet.Services.Fmc.FmcPlacementCore.Item(index, "failed", null, "FMC-DIM-FAILED", itemError.Message));
                     }
                 }
             }
 
             // Set successful result
-            Result = new AIResult<List<long>>
+            int failedCount = items.Count(row => (string)row["status"] == "failed");
+            Result = new AIItemsResult<List<long>>
             {
-                Success = true,
-                Message = $"Successfully created {createdDimensionIds.Count} dimensions. ElementIds saved in Response.",
-                Response = createdDimensionIds
+                Success = failedCount == 0,
+                Message = failedCount == 0
+                    ? $"Successfully created {createdDimensionIds.Count} dimensions. ElementIds saved in Response."
+                    : $"Created {createdDimensionIds.Count} of {DimensionsToCreate.Count} dimensions; {failedCount} failed (see Items).",
+                Response = createdDimensionIds,
+                Items = items,
             };
         }
         catch (Exception ex)
         {
             // Set error result
-            Result = new AIResult<List<long>>
+            Result = new AIItemsResult<List<long>>
             {
                 Success = false,
                 Message = $"Error creating dimensions: {ex.Message}",

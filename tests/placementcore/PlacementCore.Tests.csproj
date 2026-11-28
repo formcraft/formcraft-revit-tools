@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <!-- Runs commandset/Services/Fmc/FmcPlacementCore.cs (compiled as is, no Revit) against
+         server/src/fmc/fixtures/placement_cases.json, the cases server/src/fmc/datum.test.ts runs, so the add-in and the
+         server agree on grid labels, duplicate names and blank tags. `dotnet run -c Release`; exit code 0 is a pass. -->
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>disable</Nullable>
+        <ImplicitUsings>disable</ImplicitUsings>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="..\..\commandset\Services\Fmc\FmcPlacementCore.cs" Link="FmcPlacementCore.cs"/>
+        <None Include="..\..\server\src\fmc\fixtures\placement_cases.json" Link="placement_cases.json" CopyToOutputDirectory="PreserveNewest"/>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+    </ItemGroup>
+</Project>

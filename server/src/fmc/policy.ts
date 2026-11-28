@@ -293,6 +293,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_plumb_diagrams",
   // Floor plans on issued sheets, with linked doors and room tags. No transaction.
   "fmc_tags",
+  // Base point, grid and level names, views and instances for the grid, level, dimension and placement dry runs. No transaction.
+  "fmc_datum_read",
   // Sheets, title-block legend zone and an existing keynote legend. No transaction.
   "fmc_keynote_legend",
 ]);
