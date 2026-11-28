@@ -13,6 +13,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { canonical, insideKey, sharedStateFolders } from "./jail.js";
 
 const win = path.win32;
 
@@ -61,6 +62,13 @@ export interface GuardConfig {
    * paths. A verification copy must sit outside them. Empty until the guard file names them (for example D:\Fomcraft).
    */
   protected_roots: string[];
+  /**
+   * Project-folder gate (Emlyn 28 Nov 2026, approvals 12:49 and 13:12 EAT): the kit and standards folders. Tools may
+   * read, list and open inside them; writes there are always refused (kit staging included until a person names an
+   * explicit write exception). Empty until the BIM Manager names them, so kit and standards paths outside the project
+   * are refused by the jail (fmc/jail.ts) until then. Never supplied by a caller.
+   */
+  read_only_roots?: string[];
   /**
    * Folders a verification copy may be written to. Empty means any path that is not a protected root and not a CDE
    * gate folder. When set, open_copy's copy_to must be inside one of them.
@@ -149,6 +157,7 @@ export const DEFAULT_CONFIG: GuardConfig = {
   session_idle_hours: 12,
   family_max_mb: 2,
   protected_roots: [],
+  read_only_roots: [],
   copy_roots: [],
   ram_pause_free_mb: 1024,
   script_max_chars: 1_000_000,
@@ -439,6 +448,10 @@ export function checkWritePath(target: string, cfg: GuardConfig, opts: { checkNa
   const segs = segments(target);
   const blocked = cfg.blocked_segments.map((s) => s.toLowerCase()).filter((s) => segs.includes(s));
   if (blocked.length) reasons.push(`Writing into ${blocked.join(", ")} is a CDE gate with a named approver, not a tool action (Manual 7.5)`);
+  // Project-folder gate: checkWritePath must not stay a second, weaker write path. read_only_roots (kit, standards)
+  // and Formcraft's shared state are never written by a tool, whatever write_roots says. Canonical compare (realpath).
+  const gate = gateWriteRefusal(target, cfg);
+  if (gate) reasons.push(gate);
   if (!cfg.write_roots.some((r) => isInside(target, r))) {
     reasons.push(cfg.write_roots.length
       ? `Not inside an allowed write folder: ${cfg.write_roots.join("; ")}`
@@ -455,6 +468,18 @@ export function checkWritePath(target: string, cfg: GuardConfig, opts: { checkNa
     }
   }
   return { ok: reasons.length === 0, reasons };
+}
+
+/** The read-only-root or shared-state refusal for a write, or "" (fail closed: a path that can't be resolved is refused). */
+export function gateWriteRefusal(target: string, cfg: Partial<GuardConfig>, env: NodeJS.ProcessEnv = process.env): string {
+  const c = canonical(target, undefined, env);
+  if (!c.ok) return `[FMC-JAIL-BADPATH] ${c.problem}: ${target}`;
+  const under = (roots: string[]) => roots.find((r) => { const rc = canonical(r, undefined, env); return rc.ok && insideKey(c.key, rc.key); });
+  const shared = under(sharedStateFolders(env));
+  if (shared) return `[FMC-JAIL-SHARED] ${c.path} is Formcraft shared state (${shared}): the AI may read it, never change it`;
+  const ro = under(Array.isArray(cfg.read_only_roots) ? cfg.read_only_roots.filter((r) => typeof r === "string" && r.trim()) : []);
+  if (ro) return `[FMC-JAIL-READONLY] ${c.path} is under read_only_roots (${ro}): writes there are always refused`;
+  return "";
 }
 
 export function checkTemplatePath(template: string, cfg: GuardConfig): Verdict {

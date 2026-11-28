@@ -305,7 +305,8 @@ test("fmc_tables: export and import write only to staging, never the kit; the im
     assert.ok(!fs.existsSync(staging));
     const into = await call({ action: "export", table: "family_register", out_folder: master, dry_run: false });
     assert.equal(into.isError, true);
-    assert.match(into.body.reasons.join(" "), /Never into the kit's 03_Master_Data/);
+    // the project-folder gate refuses it first now (no project folder for this call; the kit is never a write root)
+    assert.match(into.body.reasons?.join(" ") ?? JSON.stringify(into.body), /Never into the kit's 03_Master_Data|FMC-JAIL-(NOROOT|READONLY|OUTSIDE)/);
     const ex = await call({ action: "export", table: "family_register", dry_run: false });
     assert.equal(ex.body.done, true);
     const wbFile = ex.body.written as string;

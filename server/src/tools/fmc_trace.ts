@@ -22,7 +22,9 @@ import {
   type TraceSnapshot,
 } from "../fmc/trace.js";
 import { dropOwnedEdits, PHASE2_DEFAULTS, planFixes, refuseTraceWrite, type TraceEdit } from "../fmc/trace_phase2.js";
-import { copyTraceFile, flattenFindings, handoffDir, latestTraceFile, pageFindings } from "../fmc/tracereport.js";
+import { flattenFindings, handoffDir, latestTraceFile, pageFindings } from "../fmc/tracereport.js";
+import { callJail, checkArg, jailRefusal, revitCentral } from "../fmc/jailctx.js";
+import { JailError, jail } from "../fmc/jail.js";
 import { onDriveD } from "../fmc/clashscan.js";
 import { countSystems, editsForRecommendations, recommend, summariseCounts, summariseRecommendations } from "../fmc/trace_phase3.js";
 
@@ -139,8 +141,15 @@ async function highlightTemporary(ids: number[]): Promise<{ applied: boolean; re
   }
 }
 
-function reportSaved(args: FmcTraceArgs) {
+async function reportSaved(args: FmcTraceArgs) {
   const dir = traceReportHostDir();
+  // Project-folder gate: path (read) and copy_to (write) go through the jail. The old prefix check (copyAllowed) was
+  // not normalised; a copy into %LOCALAPPDATA%\Formcraft is shared state now, so it is refused like any write there.
+  const j = await callJail({ central: revitCentral });
+  if (args.path.trim()) {
+    const v = checkArg(j, "read", "path", args.path.trim());
+    if (!v.ok) return jailRefusal("fmc_trace", v);
+  }
   const file = args.path.trim() || latestTraceFile(dir, args.document) || "";
   if (!file || !fs.existsSync(file)) return reply({ tool: "fmc_trace", read_only: true, action: "report", error: "No saved findings file." }, true);
   if (onDriveD(file)) return reply({ tool: "fmc_trace", read_only: true, code: "FMC-CLASH-PATH", message: "Refusing to read a findings path on D:." }, true);
@@ -152,8 +161,11 @@ function reportSaved(args: FmcTraceArgs) {
   const target = args.copy_to.trim();
   if (target) {
     const dest = target.toLowerCase() === "handoff" ? handoffDir() : target;
-    try { copy = copyTraceFile(file, dest); }
-    catch (error) { return reply({ tool: "fmc_trace", read_only: true, code: "FMC-CLASH-PATH", message: error instanceof Error ? error.message : String(error), page }, true); }
+    const v = checkArg(j, "write", "copy_to", dest);
+    if (!v.ok) return { ...jailRefusal("fmc_trace", v) };
+    if (onDriveD(v.resolved ?? dest)) return reply({ tool: "fmc_trace", read_only: true, code: "FMC-CLASH-PATH", message: "FMC-CLASH-PATH: a report is not copied onto D:.", page }, true);
+    try { copy = jail.copy(file, dest, j.roots, j.cfg, "copy_to"); }
+    catch (error) { return reply({ tool: "fmc_trace", read_only: true, code: error instanceof JailError ? error.code : "FMC-CLASH-PATH", message: error instanceof Error ? error.message : String(error), page }, true); }
   }
   return reply({ tool: "fmc_trace", read_only: true, action: "report", file, ...page, ...(copy ? { copy } : {}) });
 }
