@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { batchId, planBatch, readBatchResults, recipeRevision } from "./recipebatch.js";
+import { batchId, planBatch, readBatchResults, readBatchStarter, recipeRevision } from "./recipebatch.js";
 
 test("F-063: a recipe's revision follows its template and ops, nothing else", () => {
   const a = { family: "FMC_A_X", template: "Metric Door.rft", ops: [{ op: "add_type", name: "T" }], values: {} };
@@ -48,4 +48,16 @@ test("F-063: the results file keeps the last word per family (a later gate line 
 
 test("F-063: a batch is named by its local start minute", () => {
   assert.equal(batchId(new Date(2026, 9, 18, 9, 5)), "B-20261018-0905");
+});
+
+test("RC-11: the batch's starter is read from its first started_by line and does not count as a family", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-batch-"));
+  const file = path.join(dir, "B-20261128-1230.jsonl");
+  fs.writeFileSync(file, JSON.stringify({ batch: "B-20261128-1230", started_by: { client: "Builder 5", session: "s1", transport: "http", at: "2026-11-28T12:30:00" } }) + "\n"
+    + JSON.stringify({ family: "FMC_A_Door_Single", ok: true, saved: "x.rfa" }) + "\n");
+  assert.equal(readBatchStarter(file)?.client, "Builder 5");
+  assert.equal(readBatchResults(file).built, 1);
+  assert.equal(readBatchResults(file).lines.length, 1);
+  assert.equal(readBatchStarter(path.join(dir, "none.jsonl")), null);
+  fs.rmSync(dir, { recursive: true, force: true });
 });

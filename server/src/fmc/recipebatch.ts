@@ -60,6 +60,22 @@ export function readBatchResults(file: string): { lines: BatchLine[]; built: num
   };
 }
 
+export interface BatchStarter { client: string; session: string; transport: string; at: string }
+
+/** RC-11: who started a batch, from the first line of its results file that carries started_by (null when none). */
+export function readBatchStarter(file: string): BatchStarter | null {
+  let text = "";
+  try { text = fs.readFileSync(file, "utf8"); } catch { return null; }
+  for (const l of text.split(/\r?\n/)) {
+    if (!l.trim()) continue;
+    try {
+      const j = JSON.parse(l.replace(/^\uFEFF/, "")) as { started_by?: BatchStarter };
+      if (j.started_by && typeof j.started_by.client === "string") return j.started_by;
+    } catch { /* a torn line */ }
+  }
+  return null;
+}
+
 /** A batch id from the time, e.g. B-20261018-0930 (local time; one per minute is plenty). */
 export function batchId(d = new Date()): string {
   const p = (n: number) => String(n).padStart(2, "0");
