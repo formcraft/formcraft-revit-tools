@@ -52,3 +52,50 @@ test("a CIS that can't be read is refused, never guessed", () => {
   assert.ok(bad.some((p) => /Room numbers repeat: G01/.test(p)));
   assert.ok(bad.some((p) => /rooms\[2\]: number and name/.test(p)));
 });
+
+import { BRIEF_NOT_APPROVED, briefApproval } from "./brief.js";
+import { runFmcBrief } from "../tools/fmc_brief.js";
+import fsx from "node:fs";
+import osx from "node:os";
+import pathx from "node:path";
+
+test("a CIS is approved when approved is true or the approval date; anything else is not", () => {
+  for (const ok of [true, "true", "TRUE", "2026-10-13", "2026-10-13T08:00:00Z"]) assert.equal(briefApproval(ok).approved, true, String(ok));
+  for (const bad of [false, "false", "no", "pending", "draft", "", undefined, null, "13/10/2026", "2026-13-45", 0, "yes please"]) {
+    const v = briefApproval(bad);
+    assert.equal(v.approved, false, String(bad));
+    assert.equal(v.code, BRIEF_NOT_APPROVED);
+    assert.equal(v.code, "FMC-BRIEF-NOT-APPROVED");
+  }
+});
+
+test("fmc_brief apply with dry_run false is refused for an unapproved CIS before Revit is asked; nothing is created", async () => {
+  const dir = fsx.mkdtempSync(pathx.join(osx.tmpdir(), "fmc-brief-"));
+  const was = process.cwd();
+  process.chdir(dir);
+  try {
+    const kit = pathx.win32.join(pathx.basename(dir), "kit");
+    const master = pathx.win32.join(kit, "03_Master_Data", "FMC_Master_Data.json");
+    if (process.platform === "win32") fsx.mkdirSync(pathx.dirname(master), { recursive: true });
+    fsx.writeFileSync(master, JSON.stringify({ params: { FMC_Project_Name: { binding: "instance", categories: ["OST_ProjectInformation"] } } }));
+    const file = pathx.join(dir, "cis.json");
+    const body = (approved: unknown) => JSON.stringify({ schema: "fmc-cis/0.1", project: "F26001", revision: "R4", ...(approved === undefined ? {} : { approved }),
+      levels: [{ name: "L1", elevation_mm: 0 }], project_info: {}, rooms: [], materials: [], families: [] });
+    for (const approved of [undefined, false, "false", "draft", ""]) {
+      fsx.writeFileSync(file, body(approved));
+      const res = await runFmcBrief({ action: "apply", cis_file: file, kit_folder: kit, dry_run: false });
+      const text = (res.content[0] as { text: string }).text;
+      assert.equal(res.isError, true, String(approved));
+      assert.match(text, /FMC-BRIEF-NOT-APPROVED/, String(approved));
+      assert.doesNotMatch(text, /"result"/, "Revit was not asked");
+    }
+  } finally { process.chdir(was); fsx.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test("fmc_brief source: the approval check sits between the plan and the Revit apply, and only dry_run false needs it", () => {
+  const src = fsx.readFileSync(pathx.resolve(pathx.dirname(new URL(import.meta.url).pathname), "..", "..", "src", "tools", "fmc_brief.ts"), "utf8");
+  const check = src.indexOf("if (!dry && !approval.approved)");
+  assert.ok(check > 0);
+  assert.ok(check < src.indexOf('sendCommand("fmc_brief_apply"'), "refused before fmc_brief_apply is sent");
+  assert.ok(check > src.indexOf("if (plan.problems.length)"));
+});

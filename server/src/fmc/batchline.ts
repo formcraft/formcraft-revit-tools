@@ -168,10 +168,13 @@ export function schedulerNames(cfg: { batch_schedulers?: string[] } | undefined)
   return cfg.batch_schedulers.map((name) => String(name).trim()).filter(Boolean);
 }
 
-/** True when the MCP client or the bot field is a scheduler. */
-export function isScheduler(client: string, bot: string, names: string[]): boolean {
+/**
+ * True when the caller's own name is a scheduler. The bot field is not a credential (the caller writes it): a scheduler by bot name
+ * is proven in the tool (botauth.ts schedulerVerdict) and arrives here as verifiedScheduler.
+ */
+export function isScheduler(client: string, names: string[]): boolean {
   const want = new Set(names.map((name) => name.toLowerCase()));
-  return want.has(client.trim().toLowerCase()) || want.has(bot.trim().toLowerCase());
+  return want.has(client.trim().toLowerCase());
 }
 
 /** Unique document names in document-key order, so two batches lock the same set in the same order. */
@@ -323,6 +326,8 @@ export interface RequestInput {
   /** Optional phase fmc_phase batch_check reads from this lease. */
   phase?: string;
   client: string;
+  /** Set by fmc_batch after botauth.ts schedulerVerdict: the caller is a scheduler by its registered identity. */
+  verifiedScheduler?: boolean;
 }
 
 function copyRefs(refs: BatchReferences): BatchReferences {
@@ -549,9 +554,9 @@ export class BatchBoard {
     const label = input.label?.trim() ?? "";
     const bot = (input.bot?.trim() || "");
     if (!document || !label || !bot) throw new BatchGateError("FMC-BATCH-BAD", "[FMC-BATCH-BAD] reserve needs document, label and bot.");
-    if (!isScheduler(input.client, bot, schedulerNames(loadConfig().config))) {
+    if (input.verifiedScheduler !== true && !isScheduler(input.client, schedulerNames(loadConfig().config))) {
       throw new BatchGateError("FMC-BATCH-SCHEDULER",
-        "[FMC-BATCH-SCHEDULER] reserve is only for a scheduler in batch_schedulers, matched on the MCP client or the bot field. Hostel Building Bot is the scheduler.");
+        "[FMC-BATCH-SCHEDULER] reserve is only for a scheduler in batch_schedulers, matched on the caller's registered client name or a bot name its client is registered for (bot_identities). The bot field alone is not enough.");
     }
     const { refs, missing } = normalizeReferences(input.references, this.required);
     if (missing.length) {

@@ -1,6 +1,10 @@
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { currentClient } from "../fmc/fairqueue.js";
+import { currentCaller, type Caller } from "../fmc/caller.js";
+import { identityVerdict, maintenanceVerdict, schedulerVerdict } from "../fmc/botauth.js";
+import { loadConfig } from "../fmc/policy.js";
+import { startedByFrom } from "../fmc/ledger.js";
 import { BatchGateError, batchBoard } from "../fmc/batchline.js";
 import { MAINTENANCE_REASON } from "../fmc/batchstore.js";
 import { splitBatchFile } from "../fmc/batchsplit.js";
@@ -16,8 +20,8 @@ export const FMC_BATCH_DESCRIPTION =
   "which only shows in fmc_queue. Reads never need a lease. " +
   "references is required: at least one id for the kit, the standards bank, and the rulebooks. " +
   "Actions: request, status, heartbeat, release, cancel, wait (timeout_s at most 60), drain, resume. " +
-  "drain stops new grants (requests stay queued: maintenance: server update) and lets the active lease finish. " +
-  "reserve puts a named bot's label at the head of a document. Only a name in batch_schedulers may do that, matched on the MCP client or the bot field. Hostel Building Bot is the scheduler. " +
+  "drain stops new grants (requests stay queued: maintenance: server update) and lets the active lease finish; drain and resume are for a person (pane, CLI) or a client in batch_admins, and an AI or unlisted client is refused (FMC-BATCH-AUTH). " +
+  "reserve puts a named bot's label at the head of a document. Only a scheduler may do that: a client registered as one in batch_schedulers, or a bot name in batch_schedulers that the caller's client is listed for in bot_identities; the bot field alone proves nothing (FMC-BATCH-SCHEDULER), and a registered bot name from the wrong client is FMC-BATCH-IDENTITY. " +
   "The waiting line is saved and restored after a restart. An active lease is not still held after a restart: it is at the head of its line. " +
   "When free memory is below ram_pause_free_mb (default 1024), request stays queued and wait holds: paused for memory, not failed. " +
   "Workshared models sync from fmc_guard.json sync_minutes (default 15) and sync_on_batch_end (default true). " +
@@ -85,9 +89,18 @@ export async function runFmcBatch(args: {
   error?: string;
   timeout_s?: number;
   phase?: string;
-}, client = currentClient()) {
+}, client = currentClient(), who: { caller?: Caller; startedBy?: string; config?: Parameters<typeof maintenanceVerdict>[4] } = {}) {
   const board = batchBoard();
+  const caller = who.caller ?? currentCaller();
+  const startedBy = who.startedBy ?? startedByFrom(process.env, "ai");
+  const registry = who.config ?? loadConfig().config;
+  const refuse = (v: { code?: string; message?: string }) => reply({ ok: false, code: v.code, message: v.message }, true);
   try {
+    // A bot name on a call is a label unless it is a registered, scheduler or admin name: then the caller's own client must be listed for it.
+    if (args.action === "request" || args.action === "reserve") {
+      const id = identityVerdict(args.bot?.trim() || args.label, caller, registry); // the bot defaults to the label, so the label is checked too
+      if (!id.ok) return refuse(id);
+    }
     if (args.action === "split") {
       if (!args.batch_file?.trim()) return reply({ ok: false, code: "FMC-BATCH-BAD", message: "[FMC-BATCH-BAD] split needs batch_file." }, true);
       const plan = splitBatchFile(args.batch_file.trim());
@@ -132,13 +145,20 @@ export async function runFmcBatch(args: {
       return reply(granted);
     }
     if (args.action === "reserve") {
+      const sched = schedulerVerdict(args.bot, caller, registry);
+      if (!sched.ok) return refuse(sched);
       return reply(await board.reserve({
+        verifiedScheduler: true,
         document: args.document ?? "", label: args.label ?? "", bot: args.bot, client,
         references: args.references, batchId: args.batch_id, estOps: args.est_ops, correction: args.correction, phase: args.phase,
       }));
     }
-    if (args.action === "drain") return reply(board.setMaintenance(true, args.reason || MAINTENANCE_REASON));
-    if (args.action === "resume") return reply(board.setMaintenance(false));
+    if (args.action === "drain" || args.action === "resume") {
+      // Stopping or restarting the line is for a person or a listed client, never an AI session on its own say-so.
+      const auth = maintenanceVerdict(args.action, args.bot, caller, startedBy, registry);
+      if (!auth.ok) return refuse(auth);
+      return reply(args.action === "drain" ? board.setMaintenance(true, args.reason || MAINTENANCE_REASON) : board.setMaintenance(false));
+    }
     if (args.action === "status") return reply(board.status(args.lease, client));
     if (args.action === "heartbeat") {
       if (!args.lease) return reply({ ok: false, code: "FMC-BATCH-BAD", message: "[FMC-BATCH-BAD] heartbeat needs lease." }, true);

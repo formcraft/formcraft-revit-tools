@@ -112,6 +112,13 @@ export interface GuardConfig {
    */
   batch_schedulers?: string[];
   /**
+   * Who may drain or resume the batch line besides a person at the pane or CLI: MCP client names (the name the client gave at
+   * initialize) or bot names proven by bot_identities. Default empty: an AI session never may. Set by a person only.
+   */
+  batch_admins?: string[];
+  /** Bot display name -> the MCP client names that may act as it. A bot name that is registered here, a scheduler or an admin is never self-declared. */
+  bot_identities?: Record<string, string[]>;
+  /**
    * Dialogs and failure warnings an AI job may answer. allow is substrings of the dialog id or text.
    * deny is extra text that must stay for a person. Delete, unjoin, overwrite, relinquish, save-as, upgrade,
    * license, sign-in, corrupt-model and sync are never answered, even if they are in allow. Omit allow for the
@@ -156,6 +163,8 @@ export const DEFAULT_CONFIG: GuardConfig = {
   sync_on_batch_end: true,
   damaged_documents: [],
   batch_schedulers: ["Hostel Building Bot"],
+  batch_admins: [],
+  bot_identities: {},
   recovery: { heartbeat_s: 90, documents: [] },
 };
 

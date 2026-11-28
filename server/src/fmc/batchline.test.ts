@@ -399,7 +399,7 @@ test("drain queues new work, and a restart restores the line with the active lea
   assert.equal(again.snapshot().maintenance, false);
 });
 
-test("Hostel Building Bot reserves the next slot by client or by bot name", async () => {
+test("a scheduler reserves the next slot by registered client name; a bot name needs the tool's identity proof", async () => {
   const { board: made } = board();
   const held = await req(made, "arch", "Architecture", "grids");
   await req(made, "elec", "Architecture", "lights");
@@ -411,8 +411,12 @@ test("Hostel Building Bot reserves the next slot by client or by bot name", asyn
   const refused = await made.reserve({ document: "Site", label: "pads", bot: "site", client: "stranger", references }).then(() => "", (error) => error);
   assert.ok(refused instanceof BatchGateError);
   assert.equal(refused.code, "FMC-BATCH-SCHEDULER");
-  const byBot = await made.reserve({ document: "Plumbing", label: "stacks", bot: "Hostel Building Bot", client: "session-9", references });
-  assert.equal(byBot.state, "queued");
+  // the bot field alone is not a credential: a spoofed name is refused (botauth.test.ts covers the tool)
+  const byBot = await made.reserve({ document: "Plumbing", label: "stacks", bot: "Hostel Building Bot", client: "session-9", references }).then(() => "", (error) => error);
+  assert.ok(byBot instanceof BatchGateError);
+  assert.equal(byBot.code, "FMC-BATCH-SCHEDULER");
+  const proven = await made.reserve({ document: "Plumbing", label: "stacks", bot: "Hostel Building Bot", client: "session-9", references, verifiedScheduler: true });
+  assert.equal(proven.state, "queued");
   const claimed = await req(made, "real-structure", "Architecture", "walls", { bot: "structure" });
   assert.equal(claimed.state, "queued");
   await made.release(String(held.lease), "ok", "arch", "done");
