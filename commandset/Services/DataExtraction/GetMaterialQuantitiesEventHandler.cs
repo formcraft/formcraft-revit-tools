@@ -74,7 +74,9 @@ namespace RevitMCPCommandSet.Services.DataExtraction
                         }
                     }
 
-                    elements = collector.ToElements();
+                    // MQ-3: categories were asked for and none parsed: quantify nothing, never the whole project.
+                    bool noneParsed = _categoryFilters != null && _categoryFilters.Count > 0 && !_categoryFilters.Any(n => Enum.TryParse(n, out BuiltInCategory _));
+                    elements = noneParsed ? new List<Element>() : collector.ToElements();
                 }
 
                 // Process each element
