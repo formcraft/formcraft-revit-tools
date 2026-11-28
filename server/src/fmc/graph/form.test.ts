@@ -275,3 +275,17 @@ test("D4 drafts folder and D1 python policy come from graph_tools.decisions in t
     assert.equal(oldPlace.ok, false);
   } finally { box.done(); }
 });
+
+test("binder: names resolve only through Builder 6 bindInputsByName; a shared name is ambiguous and refused, the id still binds", () => {
+  const inputs = [
+    { id: "id-a", name: "Level", type: "string", default_value: null },
+    { id: "id-b", name: "level", type: "string", default_value: null },
+  ];
+  const fields = inputs.map((p) => ({ id: p.id, name: p.name, node_type: "StringInput", kind: "string" as const, widget: "text" as const, default: null, needs_revit: false, path_like: false, description: "" }));
+  const shared = bindFormValues({ fields, inputs }, { LEVEL: "L1" });
+  assert.equal(shared.ok, false);
+  if (!shared.ok) assert.deepEqual(shared.ambiguous, ["LEVEL"]);
+  const byId = bindFormValues({ fields, inputs }, { "id-b": "L2" });
+  assert.equal(byId.ok, true);
+  if (byId.ok) { assert.deepEqual(byId.inputs_by_id, { "id-b": "L2" }); assert.deepEqual(byId.binding, [{ given: "id-b", id: "id-b", name: "level" }]); }
+});

@@ -10,14 +10,14 @@
  * Feeds the pane form (D6, Builder 7, later step): see GRAPH_FORM.md next to this file.
  */
 import fs from "node:fs";
-import { parseDyn, pathOf, scriptRoots, type DynInspect } from "../dynamo.js";
+import { parseDyn, pathOf, scriptRoots, type DynInspect, type DynPort } from "../dynamo.js";
 import type { GuardConfig } from "../policy.js";
 import { PYTHON_ALWAYS_NEEDS_PERSON, graphDecisions, type GraphDecisions } from "./decisions.js";
 import { sha256Text, stableJson } from "./hash.js";
 import { graphsDir, jailCheck, projectRootOf } from "./jail.js";
 import { lockCheck, type LockState } from "./lib.js";
 import { checkPackages, installedPackages, packageFolders, type PackageCheck } from "./packages.js";
-import { runNeedsApproval, type RunMode } from "./plan.js";
+import { bindInputsByName, runNeedsApproval, type RunMode } from "./plan.js";
 import { readAllowlist } from "./allowlist.js";
 import { scanGraphText } from "./scan.js";
 
@@ -61,6 +61,8 @@ export interface GraphFormSpec {
   v: typeof FORM_SPEC_VERSION;
   graph: { file: string; real: string; name: string; uuid: string; description: string; tier: "K" | "P"; sha256: string };
   fields: FormField[];
+  /** The graph's marked inputs as Builder 6 reads them (parseDyn): what bindInputsByName resolves names against. */
+  inputs: DynPort[];
   outputs: FormOutput[];
   has_python: boolean;
   python_nodes: Array<{ id: string; name: string; engine: string; from_string: boolean }>;
@@ -309,7 +311,7 @@ export function graphFormSpec(args: SpecArgs): SpecResult {
       file, real, name: text(graph.Name) || pathOf(file).basename(file, ".dyn"), uuid: text(graph.Uuid),
       description: text(graph.Description), tier: claimed.tier, sha256,
     },
-    fields, outputs,
+    fields, inputs: inspect?.inputs ?? [], outputs,
     has_python: hasPython,
     python_nodes: form.python,
     custom_nodes: form.custom_nodes,
@@ -332,39 +334,33 @@ export function graphFormSpec(args: SpecArgs): SpecResult {
 }
 
 export type BindResult =
-  | { ok: true; inputs_by_id: Record<string, unknown> }
+  | { ok: true; inputs_by_id: Record<string, unknown>; binding: Array<{ given: string; id: string; name: string }> }
   | { ok: false; code: "FMC-GRAPH-FORM-INPUT"; message: string; unknown: string[]; ambiguous: string[]; invalid: string[] };
 
 /**
- * Binds form values given by field name (case-insensitive) or by node id to node ids, and checks them against the
- * field (type, slider range, dropdown options). Unknown or ambiguous names are refused, never dropped (R-1).
- * The result is the inputs_by_id shape of Builder 6's GraphPlan.
+ * The form layer over Builder 6's binder. Names and ids are resolved ONLY by bindInputsByName (the one resolver the run
+ * gate and plan_hash use); this then checks each bound value against its field (type, slider range, dropdown options)
+ * by the node id the resolver returned. Unknown or ambiguous names and bad values are refused, never dropped (R-1).
+ * inputs_by_id is GraphPlan.inputs_by_id.
  */
-export function bindFormValues(spec: Pick<GraphFormSpec, "fields">, values: Record<string, unknown>): BindResult {
-  const out: Record<string, unknown> = {};
-  const unknown: string[] = [];
-  const ambiguous: string[] = [];
+export function bindFormValues(spec: Pick<GraphFormSpec, "fields" | "inputs">, values: Record<string, unknown>): BindResult {
+  const bound = bindInputsByName({ inputs: spec.inputs }, values ?? {});
   const invalid: string[] = [];
-  for (const [key, value] of Object.entries(values ?? {})) {
-    const byId = spec.fields.filter((field) => field.id === key);
-    const byName = spec.fields.filter((field) => field.name.toLowerCase() === key.trim().toLowerCase());
-    const hits = byId.length ? byId : byName;
-    if (hits.length === 0) { unknown.push(key); continue; }
-    if (hits.length > 1) { ambiguous.push(key); continue; }
-    const field = hits[0];
-    const problem = valueProblem(field, value);
-    if (problem) { invalid.push(`${key}: ${problem}`); continue; }
-    out[field.id] = value;
+  for (const row of bound.binding) {
+    const field = spec.fields.find((item) => item.id.toLowerCase() === row.id.toLowerCase());
+    if (!field) continue;
+    const problem = valueProblem(field, bound.by_id[row.id]);
+    if (problem) invalid.push(`${row.given}: ${problem}`);
   }
-  if (unknown.length || ambiguous.length || invalid.length) {
+  if (!bound.ok || invalid.length) {
     const parts = [
-      unknown.length ? `unknown input(s) ${unknown.join(", ")}` : "",
-      ambiguous.length ? `name(s) shared by more than one input ${ambiguous.join(", ")} (give the id)` : "",
+      bound.unknown.length ? `unknown input(s) ${bound.unknown.join(", ")}` : "",
+      bound.ambiguous.length ? `name(s) shared by more than one input ${bound.ambiguous.join(", ")} (give the id)` : "",
       invalid.length ? `invalid value(s): ${invalid.join("; ")}` : "",
     ].filter(Boolean).join("; ");
-    return { ok: false, code: "FMC-GRAPH-FORM-INPUT", message: `[FMC-GRAPH-FORM-INPUT] ${parts}. Inputs: ${spec.fields.map((f) => f.name).join(", ")}.`, unknown, ambiguous, invalid };
+    return { ok: false, code: "FMC-GRAPH-FORM-INPUT", message: `[FMC-GRAPH-FORM-INPUT] ${parts}. Inputs: ${spec.inputs.map((f) => f.name).join(", ")}.`, unknown: bound.unknown, ambiguous: bound.ambiguous, invalid };
   }
-  return { ok: true, inputs_by_id: out };
+  return { ok: true, inputs_by_id: bound.by_id, binding: bound.binding };
 }
 
 function valueProblem(field: FormField, value: unknown): string {
