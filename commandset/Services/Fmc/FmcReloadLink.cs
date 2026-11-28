@@ -70,15 +70,43 @@ namespace RevitMCPCommandSet.Services.Fmc
             }
 
             string given = (Parameters.Value<string>("path") ?? "").Trim();
-            LinkLoadResult load = given.Length > 0
-                ? type.LoadFrom(ModelPathUtils.ConvertUserVisiblePathToModelPath(given), new WorksetConfiguration())
-                : type.Reload();
+            // RL-2: worksets keep (default: the link's open user worksets stay the open ones), last_viewed or all.
+            string worksets = (Parameters.Value<string>("worksets") ?? "keep").Trim().ToLowerInvariant();
+            string worksetsUsed = worksets;
+            WorksetConfiguration config = null;
+            if (worksets == "all") config = new WorksetConfiguration(WorksetConfigurationOption.OpenAllWorksets);
+            else if (worksets == "last_viewed") config = new WorksetConfiguration(WorksetConfigurationOption.OpenLastViewed);
+            else
+            {
+                Document current = null;
+                foreach (RevitLinkInstance link in new FilteredElementCollector(doc).OfClass(typeof(RevitLinkInstance)).Cast<RevitLinkInstance>())
+                {
+                    if (link.GetTypeId().GetValue() != type.Id.GetValue()) continue;
+                    try { current = link.GetLinkDocument(); } catch (Exception) { current = null; }
+                    if (current != null) break;
+                }
+                if (current != null && current.IsWorkshared)
+                {
+                    var open = new FilteredWorksetCollector(current).OfKind(WorksetKind.UserWorkset).Where(ws => ws.IsOpen).Select(ws => ws.Id).ToList();
+                    config = new WorksetConfiguration(WorksetConfigurationOption.CloseAllWorksets);
+                    config.Open(open);
+                    worksetsUsed = "keep (" + open.Count + " open)";
+                }
+                else worksetsUsed = "keep (link not loaded or not workshared: Revit's default)";
+            }
+            string currentPath = VisiblePath(type, "");
+            LinkLoadResult load;
+            if (given.Length > 0) load = type.LoadFrom(ModelPathUtils.ConvertUserVisiblePathToModelPath(given), config ?? new WorksetConfiguration());
+            else if (config != null && worksets != "keep" && currentPath.Length > 0) load = type.LoadFrom(ModelPathUtils.ConvertUserVisiblePathToModelPath(currentPath), config);
+            else load = type.Reload();
             if (load == null) throw new InvalidOperationException("Revit returned no link load result.");
 
             bool positionsKept = true;
+            int instancesAfter = 0;
             foreach ((ElementId elementId, XYZ origin) in placed)
             {
                 var after = doc.GetElement(elementId) as RevitLinkInstance;
+                if (after != null) instancesAfter++;
                 if (after == null || !after.GetTotalTransform().Origin.IsAlmostEqualTo(origin)) positionsKept = false;
             }
 
@@ -97,7 +125,9 @@ namespace RevitMCPCommandSet.Services.Fmc
                 ["path"] = VisiblePath(type, given),
                 ["link_type_id"] = id,
                 ["instances"] = placed.Count,
+                ["instances_after"] = instancesAfter,
                 ["positions_kept"] = positionsKept,
+                ["worksets"] = worksetsUsed,
                 ["link_open"] = linked != null,
                 ["link_document"] = linked == null ? JValue.CreateNull() : new JObject { ["title"] = linked.Title ?? "", ["path"] = linked.PathName ?? "" },
                 ["document"] = new JObject { ["title"] = doc.Title ?? "", ["path"] = doc.PathName ?? "" },

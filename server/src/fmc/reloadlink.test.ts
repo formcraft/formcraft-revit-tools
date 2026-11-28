@@ -173,7 +173,7 @@ test("Loaded is a lie when the file is open as a host, the path differs, or the 
 
 test("the tool reply keeps load_result, status and path, and asks for the open model's central", async () => {
   const asked: string[] = [];
-  const ran = await runReloadLink({ document: "HEBERT HOSTELS ELECTRICAL_USER", link_type_id: 775979, path: centralPath }, {
+  const ran = await runReloadLink({ document: "HEBERT HOSTELS ELECTRICAL_USER", link_type_id: 775979, path: centralPath, dry_run: false }, {
     documentInfo: async () => ({
       active: { title: "HEBERT HOSTELS ELECTRICAL_USER", path: "C:\\Users\\USER\\Documents\\HEBERT HOSTELS ELECTRICAL_USER.rvt", isFamily: false },
       documents: [
@@ -197,4 +197,42 @@ test("the tool reply keeps load_result, status and path, and asks for the open m
   assert.equal(body.path_matches, false);
   assert.match(body.hint, /HEBERT HOSTELS_USER/);
   assert.ok(asked.some((name) => name.includes("HEBERT HOSTELS_USER.rvt")));
+});
+
+test("RL-1/RL-3/RL-4/RL-5: a dry run reads and names blockers, a moved instance fails, only same-stem documents are asked, a timeout reads the link", async () => {
+  const { judgePositions, mayBeTheLink } = await import("./reloadlink.js");
+  const info = async () => ({
+    active: { title: "E_USER", path: "C:\\W\\E_USER.rvt", isFamily: false },
+    documents: [
+      { title: "E_USER", path: "C:\\W\\E_USER.rvt", isWorkshared: true },
+      { title: "A_USER", path: "C:\\W\\A_USER.rvt", isWorkshared: true },
+      { title: "S_USER", path: "C:\\W\\S_USER.rvt", isWorkshared: true },
+    ],
+  });
+  let reloaded = 0;
+  const dry = await runReloadLink({ document: "E_USER", link_type_id: 5, path: "D:\\Central\\A.rvt" }, {
+    documentInfo: info,
+    reload: async () => { reloaded++; return {}; },
+    linkFacts: async () => ({ links: [{ type_id: 5, status: "Loaded", path: "D:\\Old\\A.rvt" }, { type_id: 6, status: "Loaded" }] }),
+  });
+  const body = JSON.parse(dry.content[0].text);
+  assert.equal(reloaded, 0);
+  assert.equal(body.dry_run, true);
+  assert.deepEqual(body.may_block, ["A_USER"]);
+  assert.equal(body.current.instances, 1);
+  assert.equal(mayBeTheLink({ title: "S_USER" }, "D:\\Central\\A.rvt"), false);
+
+  const moved = judgePositions({ instances: 2, instances_after: 1, positions_kept: false }, { ok: true });
+  assert.equal(moved.ok, false);
+  assert.equal(moved.code, "FMC-LINK-MOVED");
+  assert.equal(judgePositions({ instances: 2, instances_after: 2, positions_kept: true }, { ok: true }).ok, true);
+
+  const timeout = await runReloadLink({ document: "E_USER", link_type_id: 5, dry_run: false }, {
+    documentInfo: info,
+    reload: async () => { throw new Error("fmc_reload_link timed out"); },
+    linkFacts: async () => ({ links: [{ type_id: 5, status: "Loaded", path: "D:\\Old\\A.rvt" }] }),
+  });
+  const t = JSON.parse(timeout.content[0].text);
+  assert.equal(t.timed_out, true);
+  assert.match(t.message, /now Loaded at D:/);
 });
