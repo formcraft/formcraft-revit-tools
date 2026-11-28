@@ -40,9 +40,40 @@ flex, staging save and Gate A are the same as every other recipe.
 
 A build is the same call with `dry_run: false`, `confirm: true` and the `plan_id` the dry run returned. Any change to
 the inputs changes the plan_id, so the build is the plan a person saw (`FMC-GB-DRY-RUN-FIRST` otherwise). The family is
-saved to `<family_staging_root>\A\<family>.rfa` with its recipe beside it and Gate A runs; an existing staged family
-needs `overwrite: true`. It never loads the family into a project and never touches an open model. Release to
-`04_Families` stays a person's act in the pane.
+saved to `<family_staging_root>\A\<family>.rfa` with its recipe beside it and Gate A runs. It never loads the family
+into a project and never touches an open model. Release to `04_Families` stays a person's act in the pane.
+
+`confirm` and `plan_id` are integrity checks (the build is the plan the dry run showed), not an approval. The plan_id
+covers the recipe, the target path, the staging root, the kit file (size and mtime), the tool version and `overwrite`,
+so run the dry run with the same arguments as the build.
+
+The eleven parameters are provisional (owner not signed off): the dry run says so (`parameter_set`) and Gate A adds a
+`Sinko-style parameter set` line (Not checked) for a family that carries all eleven.
+
+## First build and overwrite (F134, FINAL APPROVED 2026-11-28)
+
+- **First build**: nothing is staged under the name. The dry run, `confirm` and `plan_id` are enough. No approval, no
+  `_Archive`. `overwrite: true` on a missing file changes nothing.
+- **Overwrite**: the staged `.rfa` exists. Without `overwrite: true` the build is `FMC-GB-EXISTS`. With it, the build
+  needs a single-use `family_overwrite` approval bound to the target path, the staged file's sha256 (size and mtime
+  recorded) and the plan (the recipe hash), valid 30 minutes. The first call answers `waiting_for_approval` with
+  `approval_id` and `expires_at` and writes nothing; a person approves it in the pane (`family_overwrite_approve`), then
+  the same call with `approval_id` runs. Then, in this order: the `.rfa`, its `.000N` backups, `<family>.recipe.json`
+  and `<family>.gate.json` are copied to `<staging>\A\_Archive\<yyyyMMdd-HHmmss>_<name>` and checked (size, sha256),
+  the approval is marked used, the originals leave staging, and the build runs. The reply lists `archived`.
+- **Testing mode** (`ai_modeller.mode` testing with `auto_approve` true) may issue and approve the record itself; that
+  skips only the person's click. The binding, single use and archive stay. `auto_approve` in any other mode does nothing.
+- Refusals (`FMC-GB-APPROVAL`): an unknown, used, rejected or expired approval; another path; the staged file changed
+  since the approval; another plan. A failed archive (`FMC-GB-ARCHIVE`) builds nothing, leaves the staged files as they
+  were and keeps the approval unused for a retry.
+- The gate is in `fmc_recipe` build and batch, so a direct `fmc_recipe` overwrite and a batch rebuild of a staged family
+  (`approval_ids` per family) meet the same rules. A dry run never writes, archives or consumes an approval; when the
+  target exists it says a real overwrite would move the old files to `_Archive`. A refused build never replaces
+  `<reports>\Recipes\<family>.recipe.json`.
+- **protected_roots** refuses only a path inside a named originals folder in `fmc_guard.json` (an empty list refuses
+  nothing; the folder is not named yet). The forbidden projects are A-0001 and HEBERT HOSTELS as whole words, in the
+  path and its real path; `forbidden_projects` in the guard file may add names. A-00012 is not blocked.
+- The approval records live in `%APPDATA%\Formcraft\approvals\family_overwrite.json`; only the pane sets a status.
 
 ## After the build
 

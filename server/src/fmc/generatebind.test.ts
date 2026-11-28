@@ -231,7 +231,7 @@ function guard(reports: string, over: Partial<GuardConfig> = {}): GuardConfig {
 const args = (over: Partial<FmcGenerateBindArgs> = {}): FmcGenerateBindArgs => ({
   kind: "door", operation: "hinged_left", family: "", description: "", types: [{ width_mm: 900, height_mm: 2100 }],
   frame_depth_mm: 100, leaf_thickness_mm: 45, sill_height_mm: 800, values: {}, source_status: "assumed", source: "",
-  dry_run: true, confirm: false, plan_id: "", overwrite: false, ...over,
+  dry_run: true, confirm: false, plan_id: "", overwrite: false, approval_id: "", ...over,
 });
 const body = (r: { content: Array<{ text: string }> }) => JSON.parse(r.content[0].text);
 const tmp = () => fs.mkdtempSync(path.join(os.tmpdir(), "fmc-gb-"));

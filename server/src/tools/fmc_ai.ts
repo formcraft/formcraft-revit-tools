@@ -70,7 +70,7 @@ export const FMC_AI_DESCRIPTION =
 export const FMC_AI_SHAPE = {
   action: z.enum(["status", "queue", "stop", "usage", "wait", "inbox", "failures", "enable_copy", "policy"]),
   document: z.string().optional().describe("enable_copy: the copy's full .rvt path, or its title when that copy is open"),
-  protected_roots: z.array(z.string()).optional().describe("enable_copy: live original folders, for example D:\\Fomcraft. Required."),
+  protected_roots: z.array(z.string()).optional().describe("enable_copy: the named originals folders (protected_roots). Required."),
   live_paths: z.array(z.string()).optional().describe("enable_copy: full paths of the live originals. Refused."),
   id: z.string().optional().describe("wait: the batch id from the queue message; queue: one batch, in full"),
   status: z.string().optional().describe("queue: pending, approved, used, rejected, done, failed or running"),

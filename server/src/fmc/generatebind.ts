@@ -410,6 +410,24 @@ export function legendPlacement(family: string, kind: OpeningKind, types: string
 }
 
 /** A stable id of what the dry run showed: the apply must name it, so the build is the plan that was shown. */
-export function planId(recipe: Record<string, unknown>): string {
-  return "gb-" + crypto.createHash("sha256").update(JSON.stringify(recipe)).digest("hex").slice(0, 16);
+/** F134 (O4 default): what else a plan_id covers besides the recipe. */
+export interface PlanContext {
+  target: string;
+  staging_root: string;
+  /** the kit shared parameter file: sha256, or size and mtime, or "missing" */
+  kit: string;
+  tool_version: string;
+  overwrite: boolean;
+}
+
+/** The tool version a plan_id carries (a plan made by an older build of the tool is not this plan). */
+export const GB_VERSION = "F134.1";
+
+/**
+ * The plan_id: an integrity check that the build is the plan the dry run showed, never an approval. It covers the
+ * recipe and (O4) the target path, staging root, kit file, tool version and overwrite.
+ */
+export function planId(recipe: Record<string, unknown>, ctx?: PlanContext): string {
+  const covered = ctx ? { recipe, target: ctx.target.toLowerCase(), staging_root: ctx.staging_root.toLowerCase(), kit: ctx.kit, tool_version: ctx.tool_version, overwrite: ctx.overwrite } : recipe;
+  return "gb-" + crypto.createHash("sha256").update(JSON.stringify(covered)).digest("hex").slice(0, 16);
 }

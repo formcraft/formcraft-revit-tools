@@ -57,7 +57,7 @@ export const FMC_FILE_DESCRIPTION =
     "FMC-FILE-NOT-FOUND, FMC-FILE-ONLY-DOC, FMC-FILE-ACTIVE-CLOSE, FMC-FILE-SAVE-REFUSED, FMC-FILE-UNSAVED-CHANGES. " +
     "Example: {\"action\":\"open_copy\",\"source\":\"D:\\\\Fomcraft\\\\proj\\\\01_WIP\\\\S\\\\model.rvt\"," +
     "\"copy_to\":\"C:\\\\Users\\\\USER\\\\agent-tools\\\\ogala-R04\\\\model.copy.rvt\"," +
-    "\"links\":{\"mode\":\"keep\"},\"protected_roots\":[\"D:\\\\Fomcraft\"],\"dry_run\":true}.";
+    "\"links\":{\"mode\":\"keep\"},\"protected_roots\":[\"<the named originals folder in protected_roots>\"],\"dry_run\":true}.";
 
 /** Arguments of the fmc_file tool. The Formcraft Browser's CLI (fmc/cli.ts) parses with the same schema, so defaults match. */
 export const FMC_FILE_SHAPE = {

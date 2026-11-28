@@ -216,7 +216,7 @@ export function planEnableCopy(file: string, cfg: GuardConfig, extraProtected: s
     if (win.extname(p).toLowerCase() !== ".rvt") reasons.push("document must be the copy's full .rvt path");
     const cloud = cloudModelReason(p);
     if (cloud) reasons.push(cloud);
-    if (!prot.length) reasons.push("name protected_roots (the live originals, for example D:\\Fomcraft) so this switch cannot be turned on for them");
+    if (!prot.length) reasons.push("name protected_roots (the named originals folder) so this switch cannot be turned on for them");
     if (underAny(p, prot)) reasons.push(`Refusing to enable AI on a protected original: ${p}`);
     if (livePaths.some((x) => samePath(x, p) || isInside(p, x))) reasons.push(`Refusing to enable AI on a live path: ${p}`);
     if (copies.length && !underAny(p, copies)) reasons.push(`The copy is outside copy_roots (${copies.join("; ")}).`);

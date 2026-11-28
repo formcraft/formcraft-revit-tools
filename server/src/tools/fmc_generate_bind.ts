@@ -6,10 +6,16 @@ import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../
 import { parseSharedParameters, type SpParam } from "../fmc/specs.js";
 import { opsProblems, splitProblems } from "../fmc/ops.js";
 import { RECIPE, stagingPath } from "../fmc/recipes.js";
-import { DOOR_OPERATIONS, GB_TOOL, TEMPLATE_PLANES, WINDOW_OPERATIONS, planGenerateBind, planId, type GbInput } from "../fmc/generatebind.js";
+import { DOOR_OPERATIONS, GB_TOOL, GB_VERSION, TEMPLATE_PLANES, WINDOW_OPERATIONS, planGenerateBind, planId, type GbInput } from "../fmc/generatebind.js";
+import { protectedRootVerdict } from "../fmc/familyapproval.js";
+import { forbiddenProject } from "../fmc/forbidden.js";
+import type { RecipeIo } from "./fmc_recipe.js";
 import { SINKO_PARAMS } from "../fmc/sinkoparams.js";
 
 const win = path.win32;
+
+/** O7: said by the dry run and Gate A until the owner signs off the eleven. */
+const PROVISIONAL = "parameter set is provisional (owner not signed off)";
 
 function reply(body: object, isError = false) {
   return { content: [{ type: "text" as const, text: JSON.stringify(body, null, 2) }], isError };
@@ -24,9 +30,13 @@ export const FMC_GENERATE_BIND_DESCRIPTION =
   "kit file only, the two area columns as formulas from the geometry. One type per row of types (width_mm, height_mm, type_mark); values " +
   "fill the parameter columns. dry_run defaults to true and writes nothing: it returns the recipe, the legend-schedule rows, the legend " +
   "placement that follows, the staging path and plan_id. A build is dry_run false with confirm true and the plan_id the dry run returned " +
-  "(FMC-GB-DRY-RUN-FIRST otherwise); it runs the fmc_recipe build pipeline: a background family document, saved to " +
+  "(FMC-GB-DRY-RUN-FIRST otherwise); confirm and plan_id are integrity checks that the build is the plan shown, not an approval. A first " +
+  "build (nothing staged under that name) needs nothing more. Replacing a staged family is an overwrite: overwrite true and a single-use " +
+  "family_overwrite approval bound to the path, the staged file's sha256 and the plan (waiting_for_approval gives its approval_id; a person " +
+  "approves it in the pane, or testing mode with auto_approve issues it), and the old files go to _Archive before the build, in every mode. " +
+  "The build runs the fmc_recipe build pipeline: a background family document, saved to " +
   "<family_staging_root>\\A\\<family>.rfa with its recipe, then Gate A. It never loads into a project, never touches an open model, " +
-  "and release stays a person's act in the pane.";
+  "and release stays a person's act in the pane. The eleven parameters are provisional (owner not signed off).";
 
 const value = z.union([z.string(), z.number(), z.boolean()]);
 
@@ -52,9 +62,10 @@ export const FMC_GENERATE_BIND_SHAPE = {
   source_status: z.enum(["verified", "EA", "assumed", "pending"]).optional().default("assumed"),
   source: z.string().optional().default(""),
   dry_run: z.boolean().optional().default(true),
-  confirm: z.boolean().optional().default(false).describe("build: a person said yes to the dry run"),
-  plan_id: z.string().optional().default("").describe("build: the plan_id the dry run returned"),
-  overwrite: z.boolean().optional().default(false).describe("build: replace a family already staged (a person decided)"),
+  confirm: z.boolean().optional().default(false).describe("build: the dry run was shown (an integrity check, not an approval)"),
+  plan_id: z.string().optional().default("").describe("build: the plan_id the dry run returned (an integrity check, not an approval)"),
+  overwrite: z.boolean().optional().default(false).describe("build: replace a family already staged; it also needs approval_id (a family_overwrite approval)"),
+  approval_id: z.string().optional().default("").describe("build, overwrite: the family_overwrite approval waiting_for_approval gave"),
 };
 
 export type FmcGenerateBindArgs = z.infer<z.ZodObject<typeof FMC_GENERATE_BIND_SHAPE>>;
@@ -64,7 +75,11 @@ export interface GenerateBindIo {
   dictionary?: Map<string, SpParam> | null;
   exists?: (file: string) => boolean;
   /** The recipe build (default: fmc_recipe build with the inline recipe). */
-  build?: (recipe: Record<string, unknown>, overwrite: boolean) => Promise<{ body: Record<string, unknown>; isError: boolean }>;
+  build?: (recipe: Record<string, unknown>, overwrite: boolean, extra?: { approval_id: string; plan_id: string }) => Promise<{ body: Record<string, unknown>; isError: boolean }>;
+  /** The kit file's stamp for the plan_id (default: its size and mtime, or "missing"). */
+  kitStamp?: (file: string) => string;
+  /** Passed to fmc_recipe when the default build runs (tests). */
+  recipe?: RecipeIo;
   log?: (action: string, dryRun: boolean, target: string, result: string, detail: string) => void;
 }
 
@@ -92,11 +107,15 @@ function fileLog(cfg: GuardConfig) {
   };
 }
 
-async function recipeBuild(recipe: Record<string, unknown>, overwrite: boolean) {
+function kitStamp(file: string): string {
+  try { const st = fs.statSync(file); return `${st.size}:${Math.round(st.mtimeMs)}`; } catch { return "missing"; }
+}
+
+async function recipeBuild(recipe: Record<string, unknown>, overwrite: boolean, extra: { approval_id: string; plan_id: string } = { approval_id: "", plan_id: "" }, io?: RecipeIo) {
   // Imported here so a dry run never loads the Revit build path.
   const { runFmcRecipe, FMC_RECIPE_SHAPE } = await import("./fmc_recipe.js");
-  const args = z.object(FMC_RECIPE_SHAPE).parse({ action: "build", recipe, dry_run: false, overwrite });
-  const r = await runFmcRecipe(args);
+  const args = z.object(FMC_RECIPE_SHAPE).parse({ action: "build", recipe, dry_run: false, overwrite, approval_id: extra.approval_id, plan_id: extra.plan_id });
+  const r = await runFmcRecipe(args, io);
   let body: Record<string, unknown> = {};
   try { body = JSON.parse(r.content[0].text); } catch { body = { text: r.content[0]?.text }; }
   return { body, isError: r.isError === true };
@@ -121,7 +140,7 @@ export async function runFmcGenerateBind(args: FmcGenerateBindArgs, io: Generate
     const plan = planGenerateBind(input, dictionary, kitFile);
     const reasons = [...plan.problems];
     const parsed = RECIPE.safeParse(plan.recipe);
-    let notes = [...plan.notes];
+    let notes = [...plan.notes, `The eleven Sinko-style parameters: ${PROVISIONAL}`];
     if (!parsed.success) reasons.push(...parsed.error.issues.slice(0, 10).map((i) => `[FMC-GB-RECIPE] ${i.path.join(".")}: ${i.message}`));
     else {
       const split = splitProblems(opsProblems(parsed.data.ops, dictionary, undefined, undefined, { templatePlanes: TEMPLATE_PLANES[args.kind], template: plan.template }));
@@ -132,9 +151,13 @@ export async function runFmcGenerateBind(args: FmcGenerateBindArgs, io: Generate
     const stagingRoot = expandEnv(config.family_staging_root ?? "");
     const target = stagingRoot ? stagingPath(stagingRoot, plan.family) : "";
     const where = target ? checkWritePath(target, config) : { ok: false, reasons: ["No family_staging_root in fmc_guard.json"] };
-    if (/hebert hostels|a-0001/i.test(target)) where.reasons.push("A family is not written under a protected project folder (HEBERT HOSTELS, A-0001).");
+    if (target) where.reasons.push(...protectedRootVerdict(target, config).reasons);
+    // O6: the built-in floor (A-0001, HEBERT HOSTELS) as whole words, in the path and its real path; A-00012 is not blocked
+    const project = target ? forbiddenProject(target, config) : null;
+    if (project) where.reasons.push(`A family is not written for ${project} (a protected project).`);
+    where.ok = where.reasons.length === 0;
     const already = target ? exists(target) : false;
-    const id = planId(plan.recipe);
+    const id = planId(plan.recipe, { target, staging_root: stagingRoot, kit: (io.kitStamp ?? kitStamp)(kitFile), tool_version: GB_VERSION, overwrite: args.overwrite });
     const summary = {
       tool: GB_TOOL,
       family: plan.family,
@@ -159,12 +182,16 @@ export async function runFmcGenerateBind(args: FmcGenerateBindArgs, io: Generate
       return reply({ ...summary, refused: true, code: reasons[0].match(/FMC-[A-Z0-9-]+/)?.[0] ?? "FMC-GB", reasons, wrote: false, dry_run: true }, true);
     }
     if (dry) {
-      const blockers = [...(where.ok ? [] : where.reasons), ...(already && !args.overwrite ? [`${target} exists: a person decides to overwrite (overwrite: true)`] : [])];
+      const blockers = [...(where.ok ? [] : where.reasons), ...(already && !args.overwrite ? [`${target} exists: replacing it is an overwrite (overwrite: true, then a family_overwrite approval)`] : [])];
       return reply({
         ...summary,
         dry_run: true,
         wrote: false,
         plan_id: id,
+        parameter_set: PROVISIONAL,
+        ...(already ? { overwrite_note: `${target} exists: a real overwrite moves the old .rfa, its backups, .recipe.json and .gate.json to ` +
+          `${win.join(win.dirname(target), "_Archive")} first, and needs overwrite true and a single-use family_overwrite approval (a person in the pane; ` +
+          "testing mode with auto_approve issues it). This dry run wrote nothing, archived nothing and consumed no approval." } : {}),
         recipe: plan.recipe,
         build_blockers: blockers,
         next: blockers.length
@@ -181,10 +208,23 @@ export async function runFmcGenerateBind(args: FmcGenerateBindArgs, io: Generate
       }, true);
     }
     if (!where.ok) return reply({ ...summary, refused: true, code: "FMC-GB-PATH", reasons: where.reasons, wrote: false }, true);
-    if (already && !args.overwrite) return reply({ ...summary, refused: true, code: "FMC-GB-EXISTS", reasons: [`${target} exists: a person decides to overwrite (overwrite: true)`], wrote: false }, true);
-    const built = await (io.build ?? recipeBuild)(plan.recipe, args.overwrite);
+    if (already && !args.overwrite) return reply({ ...summary, refused: true, code: "FMC-GB-EXISTS", reasons: [`${target} exists: replacing it is an overwrite (overwrite: true and a family_overwrite approval; the old files go to _Archive first)`], wrote: false }, true);
+    // the overwrite gate (approval, binding, single use, archive first) sits in fmc_recipe build, so a direct fmc_recipe call meets it too
+    const extra = { approval_id: args.approval_id.trim(), plan_id: id };
+    const built = io.build ? await io.build(plan.recipe, args.overwrite, extra) : await recipeBuild(plan.recipe, args.overwrite, extra, io.recipe);
+    const b = built.body as Record<string, any>;
+    if (b.waiting_for_approval) {
+      log("generate_bind", false, target, "waiting for approval", String(b.approval_id ?? ""));
+      return reply({ ...summary, dry_run: false, plan_id: id, waiting_for_approval: true, code: b.code, approval_id: b.approval_id, expires_at: b.expires_at,
+        reasons: b.reasons, wrote: false, build: b });
+    }
+    if (b.refused) {
+      log("generate_bind", false, target, "refused", JSON.stringify(b).slice(0, 2000));
+      return reply({ ...summary, dry_run: false, plan_id: id, refused: true, code: b.code ?? "FMC-GB-BUILD", reasons: b.reasons ?? [], wrote: false, build: b }, true);
+    }
     log("generate_bind", false, target, built.isError ? "failed" : "built", JSON.stringify(built.body).slice(0, 2000));
-    return reply({ ...summary, dry_run: false, plan_id: id, build: built.body, saved: !built.isError && built.body.built !== false }, built.isError);
+    return reply({ ...summary, dry_run: false, plan_id: id, build: built.body, ...(b.archived ? { archived: b.archived, approval: b.approval } : {}),
+      saved: !built.isError && built.body.built !== false }, built.isError);
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
     if (!dry) log("generate_bind", false, args.family || args.kind, "error", msg);

@@ -53,6 +53,7 @@ import { FMC_SYSTEMS_SHAPE, runFmcSystems } from "../tools/fmc_systems.js";
 import { FMC_BUILD_SHAPE, runFmcBuild } from "../tools/fmc_build.js";
 import { FMC_AI_SHAPE, paneAi, runFmcAi } from "../tools/fmc_ai.js";
 import { FMC_RECIPE_SHAPE, paneRelease, runFmcRecipe } from "../tools/fmc_recipe.js";
+import { paneFamilyApproval } from "./familyapproval_pane.js";
 import { FMC_ROBOT_SHAPE, runFmcRobot } from "../tools/fmc_robot.js";
 import { FMC_NAVIS_SHAPE, runFmcNavis } from "../tools/fmc_navis.js";
 import { FMC_RHINO_SHAPE, runFmcRhino } from "../tools/fmc_rhino.js";
@@ -279,6 +280,11 @@ async function main() {
       // A person releases a family, or sends it back, in the pane. Never MCP tools.
       case "family_release": case "family_sendback": {
         const r = paneRelease(command, input as Record<string, unknown>, process.env.USERNAME || "unknown");
+        return print(r, "error" in r);
+      }
+      // F134: a person approves or rejects a family_overwrite (replacing a staged family) in the pane. Never MCP tools.
+      case "family_overwrite_list": case "family_overwrite_approve": case "family_overwrite_reject": {
+        const r = paneFamilyApproval(command, input as Record<string, unknown>, process.env.USERNAME || "");
         return print(r, "error" in r);
       }
       // The pane's AI commands: a person approves, rejects, resumes or sets the policy. Never MCP tools.
