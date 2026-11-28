@@ -55,3 +55,13 @@ beyond kitchens (wardrobes, vanities, counters, labs), CNC DXF and workshop rule
 - The wall units' mounting height (underside above the floor) belongs in `FMC_Casework_Standards.json`; placing asks for it.
 - Casework coordination rules (sink over the waste, sockets clear of tall units and the hob, sill above the worktop) belong in the kit;
   the checks flag without a threshold until then.
+
+## Safe shop PDF, run id, standards revision (28 Nov)
+- `shop_drawings` no longer archives the old shop PDF before Revit runs. Revit exports to `<name>.pending-<run id>.pdf` beside it; only when
+  the add-in reports `exported` and the file is there does the old PDF move to `_Archive` and the new one take its name. Any failure (Revit
+  says no, the connection drops, the changes roll back, no file) removes the temporary file and leaves the current PDF untouched.
+  The Revit side keeps its one Undo: a failed export does not undo the views and sheets it made.
+- Every reply has `run_id` (`CW-<date>T<time>-<6 hex>`); pack, place and shop_drawings write it into the `FMC_MCP_FileLog.csv` detail as
+  `run <id>: ...`. Pack files and the PDF carry no run id, so a re-run still sees "unchanged".
+- Replies after the standards are read have `standards_revision`: the kit file's own `revision`/`rev`/`version` label if it has one, the file's
+  modified time and hash, the hash of the standards actually used, and `call_overrides`.
