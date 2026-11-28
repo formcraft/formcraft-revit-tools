@@ -243,6 +243,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_close_local_apply",
   // Close spare documents or purge unused elements. Status stays on fmc_memory.
   "fmc_memory_apply",
+  // Autodesk Docs: Document.SaveAsCloudModel after a dry run and a named approver. Never syncs or publishes.
+  "fmc_cloud_save_as",
 ]);
 
 /**
@@ -295,6 +297,9 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_tags",
   // Sheets, title-block legend zone and an existing keynote legend. No transaction.
   "fmc_keynote_legend",
+  // Autodesk Docs cloud model facts and GUIDs to a cloud path. No transaction, nothing opened, no file system access.
+  "fmc_cloud_facts",
+  "fmc_cloud_path",
 ]);
 
 /**
