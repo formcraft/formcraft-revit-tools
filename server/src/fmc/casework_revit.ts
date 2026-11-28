@@ -5,7 +5,7 @@ import { checkWritePath, expandEnv } from "./policy.js";
 import { packLabel, packNames } from "./casework.js";
 import { a3Frame, kitParams, placementPlan, registerSheet, registerSheetFor, runFromRoom, shopLayout } from "./casework_place.js";
 import { finishExport, swapPlan } from "./casework_run.js";
-import { Ctx, Prepared, Reply, checksFor, kitFamily, log, masterDir, projectCode, readCsv, readJson, readRoom, stamp } from "./casework_tool.js";
+import { Ctx, Prepared, Reply, checksFor, kitFamily, log, masterDir, projectCode, needsConfirm, readCsv, readJson, readRoom, stamp } from "./casework_tool.js";
 
 /** room: a room's walls, doors, windows and services as a run's walls (read only); needs no standards. */
 export async function roomAction(ctx: Ctx): Promise<Reply> {
@@ -68,6 +68,8 @@ export async function shopAction(ctx: Ctx, p: Prepared): Promise<Reply> {
   if (!packLabel(args.label)) reasons.push("Name what this is (label), e.g. K-01 Kitchen");
   if (!args.sheets.length) reasons.push("Name the register's joinery sheet(s) for the drawings, e.g. [\"I-4001\"]");
   if (c.problems.length) reasons.push("Fix the problems first");
+  const unconfirmed = needsConfirm(args, dry, "makes views and sheets in the model and exports the PDF");
+  if (unconfirmed) reasons.push(unconfirmed);
   if (reasons.length) return reply({ refused: true, reasons, problems: c.problems }, true);
   const regFile = path.join(masterDir(config), "FMC_Sheet_Register.csv");
   const reg = readCsv(regFile);
@@ -128,5 +130,5 @@ export async function shopAction(ctx: Ctx, p: Prepared): Promise<Reply> {
     sheets: rows.map((r) => ({ number: r.row!.number, name: r.row!.name, views: layout.views.filter((v) => v.sheet === r.row!.number).map((v) => v.mark) })),
     schedule: cut ? `I11_Joinery_Cutlist on ${cut.number}` : "The sheet register names no sheet for I11_Joinery_Cutlist",
     pdf: exportTo ? { folder, file: names.shop, action, ...(exported ? { export: exported } : {}) } : "No project folder, so the sheets aren't exported as PDF",
-    result, next: dry ? "Show this to the person; run again with dry_run=false once they say yes" : "Make the workshop pack (pack): its PDF names these sheets" });
+    result, next: dry ? `Show this to the person; once they say yes run again with dry_run=false and confirm=true (run_id "${run_id}" saves sending the run again)` : "Make the workshop pack (pack): its PDF names these sheets" });
 }

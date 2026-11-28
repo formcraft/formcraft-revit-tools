@@ -4,7 +4,7 @@ import path from "node:path";
 import { checkWritePath, csvLine } from "./policy.js";
 import { packFiles, packLabel, packNames, summaryOf } from "./casework.js";
 import { workshopPackPdf } from "./casework_pdf.js";
-import { Ctx, Prepared, Reply, checksFor, costOf, fileAction, log, projectCode, stamp } from "./casework_tool.js";
+import { Ctx, Prepared, Reply, checksFor, costOf, fileAction, log, needsConfirm, projectCode, stamp } from "./casework_tool.js";
 
 /** units, parts, nest, cutlist, hardware, summary: computed from the run, nothing written. */
 export function engineAction(ctx: Ctx, p: Prepared): Reply {
@@ -58,6 +58,8 @@ export function packAction(ctx: Ctx, p: Prepared): Reply {
   if (!packLabel(args.label)) reasons.push("Name what this pack is (label), e.g. K-01 Kitchen");
   if (!args.project_folder.trim()) reasons.push("The pack goes into the project's 01_WIP\\_Casework: set the project folder");
   if (c.problems.length) reasons.push("Fix the problems first; a pack is never made from a run that doesn't fit");
+  const unconfirmed = needsConfirm(args, dry, "writes the pack files into the project");
+  if (unconfirmed) reasons.push(unconfirmed);
   if (reasons.length) return reply({ refused: true, reasons, problems: c.problems }, true);
   const folder = path.join(args.project_folder.trim(), "01_WIP", "_Casework");
   const archive = path.join(folder, "_Archive");
@@ -76,7 +78,7 @@ export function packAction(ctx: Ctx, p: Prepared): Reply {
     shop_drawings: shop ?? "not made yet (shop_drawings, in Revit)" };
   if (dry) {
     log(config, true, folder, "dry run", `${plan.length} files`, "casework_pack", run_id);
-    return reply({ dry_run: true, ...summary, next: "Run again with dry_run=false to write these files" });
+    return reply({ dry_run: true, ...summary, next: `Show this to the person; once they say yes run again with dry_run=false and confirm=true (run_id "${run_id}" saves sending the run again)` });
   }
   fs.mkdirSync(folder, { recursive: true });
   const st = stamp();

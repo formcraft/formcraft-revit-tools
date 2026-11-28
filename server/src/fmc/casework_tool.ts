@@ -22,6 +22,11 @@ export interface CaseworkIo {
 
 export type Reply = { content: Array<{ type: "text"; text: string }>; isError: boolean };
 
+/** A real run (dry_run=false) of pack, shop_drawings or remove also needs confirm=true: the person has seen the dry run. */
+export function needsConfirm(args: FmcCaseworkArgs, dry: boolean, what: string): string | null {
+  return !dry && !args.confirm ? `dry_run=false ${what}: show the person the dry run first, then call again with confirm=true` : null;
+}
+
 /** One call: its arguments, config, dry run, run id, Revit call and reply (which stamps the run id and standards revision). */
 export interface Ctx {
   args: FmcCaseworkArgs;

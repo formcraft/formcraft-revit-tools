@@ -60,6 +60,8 @@ export const FMC_CASEWORK_SHAPE = {
     .describe("Unit widths over the run's modules, mm; e.g. with run_id from room, whose run has none yet"),
   fresh_room: z.boolean().optional().default(false)
     .describe("check, place: read the room from Revit again even when the run named in run_id read it in the last 10 minutes"),
+  confirm: z.boolean().optional().default(false)
+    .describe("pack, shop_drawings, remove: needed with dry_run=false, after the person has seen the dry run"),
   dry_run: z.boolean().optional().default(true),
 };
 

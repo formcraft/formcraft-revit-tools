@@ -52,7 +52,7 @@ const done = (k: Kit) => fs.rmSync(k.root, { recursive: true, force: true });
 const parse = (args: Record<string, unknown>) => z.object(FMC_CASEWORK_SHAPE).parse(args);
 const body = (r: { content: Array<{ text: string }> }) => JSON.parse(r.content[0].text);
 const shopArgs = (k: Kit, over: Record<string, unknown> = {}) => parse({ action: "shop_drawings", run: FIX.run, label: LABEL, project_code: CODE,
-  project_folder: k.project, sheets: ["I-4001"], dry_run: false, ...over });
+  project_folder: k.project, sheets: ["I-4001"], dry_run: false, confirm: true, ...over });
 
 /** Puts an old shop PDF in place and returns what it looks like before the run. */
 function oldPdf(k: Kit, text = "OLD SHOP PDF") {
@@ -101,7 +101,7 @@ test("a run id is in every reply, in the right shape, and no two calls share one
 test("the run id goes into the file log rows of pack and shop_drawings, matching the reply", async () => {
   const k = kit();
   try {
-    const pack = body(await runFmcCasework(parse({ action: "pack", run: FIX.run, label: LABEL, project_code: CODE, project_folder: k.project, dry_run: false }), { config: k.config }));
+    const pack = body(await runFmcCasework(parse({ action: "pack", run: FIX.run, label: LABEL, project_code: CODE, project_folder: k.project, dry_run: false, confirm: true }), { config: k.config }));
     assert.equal(pack.done, true);
     const shop = body(await runFmcCasework(shopArgs(k), { config: k.config, revit: revitOk() }));
     assert.notEqual(pack.run_id, shop.run_id);
