@@ -24,6 +24,8 @@ export const FMC_KEYNOTE_PLACE_DESCRIPTION =
   "by is element, material or user. views is all_plans or a list of plan names. categories limits the hosts. " +
   "one_per_key true (the default) keeps one tag per keynote value per view, on the element nearest the middle of that value. Hosts with an empty key are not collapsed. " +
   "leader true (the default) puts the head off the wall face along the wall normal, past half the wall width, with a leader. " +
+  "status is PLANNED or NOTHING_TO_PLACE (0 hosts can be tagged); summary is one line; seed_check says whether a linked tag is in the model and whether the kit seed is on disk. " +
+  "The tag box for overlap tests is the seed tag's own size, else the median linked tag of this type, else 900 x 450 mm (tag_size.source). " +
   "A head that overlaps an existing tag box is shifted. If every offset overlaps, the host is FMC-KEYNOTE-OVERLAP and is not tagged. The answer includes counts. " +
   "dry_run defaults to true and returns the per-view plan. A write is fmc_keynote_place_apply, one transaction, one subtransaction per host, " +
   "and needs batch_lease plus references.kit, references.standards and references.rulebook. A blank copy is rolled back. " +
@@ -127,7 +129,21 @@ export async function runFmcKeynotePlace(args: FmcKeynotePlaceArgs, io: KeynoteP
     });
     const report = writeKeynoteReport(env, { document: doc.title, by, plan }, io.reportDir);
     const dry = args.dry_run !== false;
+    const viewsTotal = plan.views.length;
+    const viewsTagged = plan.views.filter((view) => view.placed.length).length;
+    const why = plan.code === "FMC-KEYNOTE-SEED-MISSING" ? "seed missing" : plan.code ? plan.code : plan.counts.hosts === 0 ? "no hosts in the views" : plan.counts.placed === 0 ? "every host is skipped" : "";
+    const seedCheck = {
+      linked_in_model: plan.seed.route === "document",
+      kit_seed_on_disk: exists,
+      kit_seed: seedFile,
+      ok: plan.seed.route === "document" || exists,
+      ...(plan.seed.route === "document" || exists ? {} : { how_to: "Place one keynote tag of this type (by " + by + ") by hand in any plan view, pick its keynote value so it is linked, then run fmc_keynote_place again. Or add the kit seed (K-02)." }),
+    };
     const summary = stamp({
+      status: plan.counts.placed === 0 ? "NOTHING_TO_PLACE" : "PLANNED",
+      summary: `${viewsTagged} of ${viewsTotal} views can be tagged, ${plan.counts.placed} tags planned${why ? ": " + why : ""}.`,
+      seed_check: seedCheck,
+      tag_size: plan.tag_size,
       dry_run: dry,
       read_only: dry,
       document: doc.title,

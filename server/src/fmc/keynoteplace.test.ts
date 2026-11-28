@@ -142,3 +142,26 @@ test("the read is not a write command and the apply is", () => {
     assert.ok(names.has(name), name);
   }
 });
+
+test("research 53: NOTHING_TO_PLACE status with a summary line, seed check, and the real tag size", async () => {
+  const { tagSize } = await import("./keynoteplace.js");
+  const sized = { ...doc, tags: [{ ...doc.tags[0], min_x: 0, min_y: 0, max_x: 2000, max_y: 800 }, doc.tags[1]] };
+  assert.deepEqual(tagSize(sized.tags, "element", sized.tags[0]), { width: 2000, height: 800, source: "seed" });
+  assert.deepEqual(tagSize(doc.tags, "element", null), { width: 900, height: 450, source: "default" });
+  const plan = planKeynotes(sized, { by: "element", views: "all_plans", categories: ["Walls"], seedPath: "Z:\\kit\\seed.rvt", seedExists: false });
+  assert.equal(plan.tag_size.source, "seed");
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "kp53-"));
+  const env = { ...process.env, FMC_KEYNOTE_DIR: dir } as NodeJS.ProcessEnv;
+  const bare = { ...doc, tags: [] };
+  const none = textOf(await runFmcKeynotePlace(args({ document: doc.title, by: "user" }), { read: async () => ({ documents: [bare] }), env, guard: DEFAULT_CONFIG as GuardConfig, kitRoot: "Z:\\00_Standards", seedExists: () => false }));
+  assert.equal(none.status, "NOTHING_TO_PLACE");
+  assert.equal(none.summary, "0 of 2 views can be tagged, 0 tags planned: seed missing.");
+  assert.equal(none.seed_check.ok, false);
+  assert.equal(none.seed_check.linked_in_model, false);
+  assert.match(none.seed_check.how_to, /Place one keynote tag/);
+  const some = textOf(await runFmcKeynotePlace(args({ document: doc.title, by: "element", categories: ["Walls"] }), { read: async () => ({ documents: [doc] }), env, guard: DEFAULT_CONFIG as GuardConfig, kitRoot: "Z:\\00_Standards", seedExists: () => false }));
+  assert.equal(some.status, "PLANNED");
+  assert.equal(some.seed_check.ok, true);
+  assert.equal(some.seed_check.how_to, undefined);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
