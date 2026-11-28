@@ -120,6 +120,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 case "add_ref_plane": return AddRefPlane(doc, op);
                 case "add_family_param": return AddFamilyParam(doc, op);
                 case "add_shared_param": return AddSharedParam(doc, op);
+                case "bind_shared_param": return BindSharedParam(doc, op);
                 case "set_formula": return SetFormula(doc, op);
                 case "add_type": return AddType(doc, op);
                 case "set_type_value": return SetTypeValue(doc, op);
@@ -311,6 +312,37 @@ namespace RevitMCPCommandSet.Services.Fmc
                 ?? throw new InvalidOperationException("GUID " + guid + " isn't in " + Path.GetFileName(doc.Application.SharedParametersFilename));
             fm.AddParameter(def, Group(op.Value<string>("group") ?? "Data"), op.Value<bool?>("instance") == true);
             return ("create", def.Name);
+        }
+
+        /// <summary>
+        /// fmc_family_evolve: a family parameter that should be the kit's shared parameter of the same name is replaced by
+        /// it (FamilyManager.ReplaceParameter), by GUID from the kit's file. Already bound is a skip; a parameter that is
+        /// shared with another GUID is refused (a person decides: the values held by that GUID would go).
+        /// </summary>
+        private static (string, string) BindSharedParam(Document doc, JObject op)
+        {
+            FamilyManager fm = doc.FamilyManager;
+            string name = op.Value<string>("name") ?? throw new ArgumentException("name is needed");
+            Guid guid = Guid.Parse(op.Value<string>("guid") ?? throw new ArgumentException("guid is needed"));
+            var all = fm.GetParameters();
+            FamilyParameter current = all.FirstOrDefault(x => x.Definition.Name == name);
+            bool kitPresent = all.Any(x => x.IsShared && x.GUID == guid);
+            switch (FmcEvolveRules.Bind(kitPresent, current != null, current?.IsShared == true))
+            {
+                case FmcEvolveRules.BindAction.Skip: return ("skip", "");
+                case FmcEvolveRules.BindAction.RefuseMissing: throw new InvalidOperationException($"No parameter {name} in the family: add it with add_shared_param");
+                case FmcEvolveRules.BindAction.RefuseOtherGuid: throw new InvalidOperationException($"{name} is shared with GUID {current.GUID}, not the kit's {guid}: a person replaces it in the Family Editor");
+            }
+            DefinitionFile df = doc.Application.OpenSharedParameterFile() ?? throw new InvalidOperationException("The kit's shared parameter file isn't set");
+            ExternalDefinition def = df.Groups.SelectMany(g => g.Definitions.Cast<ExternalDefinition>()).FirstOrDefault(d => d.GUID == guid)
+                ?? throw new InvalidOperationException("GUID " + guid + " isn't in " + Path.GetFileName(doc.Application.SharedParametersFilename));
+            if (def.Name != name) throw new InvalidOperationException($"The kit names {guid} {def.Name}, not {name}");
+            bool instance = op.Value<bool?>("instance") ?? current.IsInstance;
+            ForgeTypeId group = current.Definition.GetGroupTypeId();
+            // the shared definition carries the same name: the family parameter steps aside first (one transaction: a failure rolls both back)
+            fm.RenameParameter(current, FmcEvolveRules.TempName(name, n => fm.get_Parameter(n) != null));
+            fm.ReplaceParameter(current, def, group, instance);
+            return ("update", $"{name} is now the kit's shared parameter {guid}");
         }
 
         private static (string, string) SetFormula(Document doc, JObject op)

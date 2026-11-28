@@ -1123,5 +1123,14 @@
     "status": "Built, Revit check due",
     "ref": "fmc_file open_local, fmc_file close_local, fmc_open_local, fmc_close_local, fmc_close_local_apply, docs/tools/fmc_file.md",
     "note": "open_local opens a person's existing workshared local as the active document with UIApplication.OpenAndActivateDocument (activate=false uses OpenDocumentFile). worksets are all, last_viewed, none or a list of names. DoNotDetach; it never creates a new local, never synchronises, and refuses a central (FMC-FILE-CENTRAL-REFUSED), a missing file, a cloud, protected or live path, and worksets on a file that is not workshared. An already open local is only activated. close_local never syncs or relinquishes; it activates another open project first when the target is active, refuses the only open document (FMC-FILE-ONLY-DOC) and unsaved changes without confirm. save=true is a write (fmc_close_local_apply, in WRITE_COMMANDS: batch_lease, live-model lock, AI gate) and is refused for HEBERT HOSTELS, a protected original, a verification copy or a document never saved. dry_run defaults true. Opening a model in Revit stays a person's choice: the Revit check runs after install, dry run only."
+  },
+  {
+    "id": "F126",
+    "area": "Engine",
+    "group": "Families",
+    "feature": "Evolve a family in place (fmc_family_evolve)",
+    "status": "Built, Revit check due",
+    "ref": "fmc_family_evolve, docs/tools/fmc_family_evolve.md",
+    "note": "check (dry run) runs five gates on an existing .rfa: naming, the kit's shared parameters present and bound by GUID, reference planes named, flex (every type, and size parameters with follow), keynote X.YYY_ZZ. It proposes fmc_doc ops (add_shared_param, the new bind_shared_param, name_template_plane, set_type_value Keynote) or a new name, shows Revit's rolled-back dry run and the expected gates, and answers a token. apply needs the token and an unchanged file: it copies the original to _Evolve\\<family>\\v001 (sha256 verified), opens that copy, applies, re-flexes (a regression saves nothing), saves vNNN as a new version with its build report and re-runs the gates (before/after diff). The original is never written unless replace_original (staging only, after the backup verifies). fmc_doc report now lists each plane's axis and position. Offline tests only: needs a Revit check."
   }
 ]

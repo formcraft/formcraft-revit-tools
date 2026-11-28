@@ -92,6 +92,10 @@ export const OP = z.discriminatedUnion("op", [
     group: z.enum(GROUPS).default("Dimensions") }),
   z.object({ op: z.literal("add_shared_param"), name: z.string().min(1), guid: z.string().min(1), instance: z.boolean().default(false),
     group: z.enum(GROUPS).default("Data") }),
+  // fmc_family_evolve: a family parameter that should be the kit's shared one, replaced by it (FamilyManager.ReplaceParameter)
+  z.object({ op: z.literal("bind_shared_param"), name: z.string().min(1).describe("the family parameter to bind"),
+    guid: z.string().min(1).describe("the kit's GUID for it (FMC_SharedParameters.txt)"),
+    instance: z.boolean().optional().describe("default: instance or type as the family parameter is") }),
   z.object({ op: z.literal("set_formula"), name: z.string().min(1).describe("the parameter"), formula: z.string() }),
   z.object({ op: z.literal("add_type"), name: z.string().min(1) }),
   z.object({ op: z.literal("set_type_value"), name: z.string().min(1).describe("<type>/<parameter>"), type: z.string().min(1),
@@ -457,6 +461,15 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
     switch (o.op) {
       case "add_shared_param": {
         // the parameter is added either way, so later ops that use it aren't reported as unknown
+        if (!dictionary) { p.push(`${at}: the kit's shared parameter file isn't readable`); params.add(o.name); break; }
+        const d = [...dictionary.values()].find((x) => x.guid.toLowerCase() === o.guid.toLowerCase());
+        if (!d) p.push(`${at}: GUID ${o.guid} isn't in FMC_SharedParameters.txt (shared parameters come only from the dictionary)`);
+        else if (d.name !== o.name) p.push(`${at}: the dictionary names ${o.guid} "${d.name}", not "${o.name}"`);
+        if (d) paramTypes.set(o.name, sharedType(d.datatype));
+        params.add(o.name);
+        break;
+      }
+      case "bind_shared_param": {
         if (!dictionary) { p.push(`${at}: the kit's shared parameter file isn't readable`); params.add(o.name); break; }
         const d = [...dictionary.values()].find((x) => x.guid.toLowerCase() === o.guid.toLowerCase());
         if (!d) p.push(`${at}: GUID ${o.guid} isn't in FMC_SharedParameters.txt (shared parameters come only from the dictionary)`);
