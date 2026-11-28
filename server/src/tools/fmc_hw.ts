@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { withRevitConnection } from "../utils/ConnectionManager.js";
+import { currentPort, withRevitConnection } from "../utils/ConnectionManager.js";
 import { readInstances } from "../fmc/connect.js";
 import { inFlightJob, readRevitJobLines } from "../fmc/notidle.js";
 import { onMemoryHard } from "../fmc/memory.js";
@@ -279,6 +279,13 @@ function hookAutoFree(): void {
   onMemoryHard(() => {
     void autoFreeIfHard({
       idle: revitIdle,
+      // The documents of the Revit this call goes to (P-fmc_hw-02): each auto-free call names one of them.
+      openDocuments: async () => {
+        try {
+          const port = await currentPort();
+          return (readInstances().find((instance) => instance.port === port)?.documents ?? []) as Array<{ title?: string; path?: string; family?: boolean }>;
+        } catch { return []; }
+      },
       revit: (action, body) => withRevitConnection((client) => client.sendRaw("fmc_hw", { action, ...body }, 120000)),
       savedAt: () => null,
     }).catch(() => { /* a missed free must not take down the server */ });
