@@ -128,3 +128,22 @@ test("a dry run says would_refuse for a protected name or a central, and null wh
   const real = textOf(await runFmcDims(args({ document: "H", view: "Level 1", targets: "grids", dry_run: false, batch_lease: "l" }), { read: readAs("HEBERT HOSTELS_USER"), env, guard, apply: async () => { throw new Error("must not apply"); } }));
   assert.equal(real.code, "FMC-DIMS-GUARD");
 });
+
+test("research tool 35: ids keeps only the named grids, walls or rooms, and an opening follows its wall", async () => {
+  const { filterDimInput } = await import("./dims.js");
+  const rooms = [{ id: "r1", name: "Kitchen", x: 0, y: 0, bounds: [] }, { id: "r2", name: "Bed 1", x: 0, y: 0, bounds: [] }];
+  const all = filterDimInput({ grids, walls, openings, rooms }, undefined);
+  assert.equal(all.grids.length, 4);
+  const one = filterDimInput({ grids, walls, openings, rooms }, ["w1", "kitchen", "nope"]);
+  assert.deepEqual(one.walls.map((w) => w.id), ["w1"]);
+  assert.deepEqual(one.openings.map((o) => o.id), ["d1"]);
+  assert.deepEqual(one.rooms.map((r) => r.id), ["r1"]);
+  assert.equal(one.grids.length, 0);
+  assert.deepEqual(one.unmatched, ["nope"]);
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-dims-ids-"));
+  const env = { ...process.env, LOCALAPPDATA: dir, APPDATA: dir, FMC_DIMS_DIR: path.join(dir, "dims") } as NodeJS.ProcessEnv;
+  const read = async () => ({ title: "A", path: "D:\\Jobs\\_Staging\\A.rvt", view: "Level 1", grids, walls, openings });
+  const dry = textOf(await runFmcDims(args({ document: "A", view: "Level 1", targets: "grids", ids: ["1", "2"] }), { read, env, guard: { ...DEFAULT_CONFIG } }));
+  assert.equal((dry.strings as unknown[]).length, 1, "only grids 1 and 2: one chain");
+  assert.deepEqual(dry.unmatched_ids, []);
+});

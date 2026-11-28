@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { neverWriteMatch } from "../fmc/protectednames.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { kitPaths } from "../fmc/context.js";
@@ -23,7 +24,7 @@ export const FMC_FAMILY_PARAMS_DESCRIPTION =
   "bind binds a kit shared parameter to project categories (instance or type). " +
   "dry_run defaults to true. A real change is fmc_family_params_apply, and needs batch_lease plus references.kit, references.standards and references.rulebook. " +
   "Pass document. A missing name is FMC-DOC-REQUIRED. The active document is not a guess. " +
-  "HEBERT HOSTELS, a central model, a protected path, and a kit family file are refused. The project is not saved or synced. " +
+  "A protected project name (HEBERT HOSTELS, plus the guard's never_write_titles), a central model, a protected path, and a kit family file are refused. The project is not saved or synced. " +
   "Example: action add, document F26901-FMC-ZZ-ZZ-M3-A-0002_USER, family the loaded architecture titleblock name, name Status, type text, group identity, shared true, binding instance, dry_run true.";
 
 const refs = z.object({
@@ -103,7 +104,8 @@ function guardOf(doc: { title: string; path: string }, central: boolean | undefi
   const loaded = io.guard ? { config: io.guard, problem: undefined as string | undefined } : loadConfig(configPath(env));
   const blob = `${doc.title} ${doc.path}`;
   let reason: string | null = null;
-  if (/hebert hostels/i.test(blob)) reason = "HEBERT HOSTELS is not written by fmc_family_params.";
+  const protectedName = neverWriteMatch([blob], loaded.config);
+  if (protectedName) reason = `${protectedName} is not written by fmc_family_params.`;
   else if (/[\\/]centrals[\\/]/i.test(doc.path)) reason = "A file under a Centrals folder is not written by fmc_family_params.";
   else if (central) reason = "A central model is not written by fmc_family_params.";
   else if (isKitOriginal(doc.path)) reason = "A kit family file is not edited. Open the project and name the loaded family.";

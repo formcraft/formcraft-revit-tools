@@ -141,3 +141,17 @@ test("label binds an existing parameter, bind names categories, and apply needs 
   assert.ok(READ_VIA_SEND_COMMAND.has("fmc_family_params"));
   assert.equal(WRITE_COMMANDS.has("fmc_family_params"), false);
 });
+
+test("research tool 41: the guard's never_write_titles adds protected names; HEBERT HOSTELS stays built in", async () => {
+  const io = setup();
+  const named = (title: string) => async () => ({ ...project, title, path: `D:\\Jobs\\_Staging\\${title}.rvt`, resolved_document: { title, path: `D:\\Jobs\\_Staging\\${title}.rvt` } });
+  const call = (title: string, guard: GuardConfig) => runFmcFamilyParams(args({
+    action: "add", document: title, family: "FMC_A_Titleblock_A1", name: "Status", type: "text", dry_run: false, batch_lease: "lease-1", references: refs,
+  }), { ...io, guard, kitFile: io.kit, read: named(title), apply: async () => { throw new Error("must not apply"); } });
+  const extraGuard = { ...io.guard, save_exclude: [], never_write_titles: ["Ogala Live"] } as GuardConfig;
+  const ogala = textOf(await call("Ogala Live_USER", extraGuard));
+  assert.equal(ogala.code, "FMC-PARAM-GUARD");
+  assert.match(String(ogala.message), /Ogala Live is not written by fmc_family_params/);
+  const hebert = textOf(await call("HEBERT HOSTELS_USER", { ...io.guard, save_exclude: [] } as GuardConfig));
+  assert.match(String(hebert.message), /HEBERT HOSTELS is not written by fmc_family_params/);
+});
