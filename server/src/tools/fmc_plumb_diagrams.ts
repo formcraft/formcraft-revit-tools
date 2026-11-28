@@ -13,6 +13,9 @@ export const FMC_PLUMB_DIAGRAMS_DESCRIPTION =
   "riser bands spaces levels equally. riser elevation uses level height, 12 paper mm per metre. " +
   "A loaded kit family FMC_DI_P_Schematic (Generic Annotation or Detail Item) is placed. Otherwise the view is lines and text. " +
   "These drafting views replace a tiny 3D schematic: the 3D view is named in the plan and is not deleted. " +
+  "Systems are taken in name order, at most 16 per call: systems [names or ids] picks them and offset/limit pages them; the reply's selection lists what was not drawn. " +
+  "Drainage systems show fall (pipe slope %) and fixture units when the add-in reads them, otherwise TBC. connector_input carries per-system facts for a plumbing connector. " +
+  "summary is one line at the top. limits lists only the plumbing API limits. " +
   "A missing pipe size is TBC. dry_run defaults to true. apply with dry_run false needs batch_lease and references.kit, references.standards and references.rulebook. " +
   "That call is fmc_plumb_diagrams_apply, one transaction, one subtransaction per view. The model is not saved. " +
   "Pass document. HEBERT HOSTELS, a central model and a protected path are refused. " +
@@ -31,6 +34,9 @@ export const FMC_PLUMB_DIAGRAMS_SHAPE = {
   batch_lease: z.string().optional().default(""),
   riser: z.enum(["bands", "elevation"]).optional().default("bands"),
   references: refs,
+  systems: z.array(z.string()).optional().describe("Piping system names or ids to draw. Empty draws all, 16 at a time."),
+  offset: z.number().int().min(0).optional().default(0),
+  limit: z.number().int().min(1).max(16).optional().default(16),
 };
 
 const TOOL = { tool: "fmc_plumb_diagrams" as const, readCommand: "fmc_plumb_diagrams", applyCommand: "fmc_plumb_diagrams_apply", discipline: "plumb" as const };

@@ -31,6 +31,8 @@ export interface NewLocalInput {
   switch_to?: string;
   backup_suffix?: string;
   dry_run?: boolean;
+  /** Research 60: sync the old local with central first (fmc_revit_file sync, gated like any sync); a failed sync stops the run. */
+  sync_first?: boolean;
 }
 
 export interface OpenDoc {
@@ -42,6 +44,8 @@ export interface OpenDoc {
   isDetached?: boolean;
   isLinked?: boolean;
   centralPath?: string;
+  /** Unsaved changes, when the read says so (research 60). */
+  isModified?: boolean;
 }
 
 export interface CentralFile {
@@ -182,7 +186,15 @@ export function pickScriptHost(docs: OpenDoc[], requested?: string): OpenDoc | u
     const hit = findDocs(open, want);
     return hit.length === 1 ? hit[0] : undefined;
   }
-  return open.find((d) => !d.isFamily);
+  // Research 60: the default host is the least risky other project: not workshared first, then unmodified, then the order Revit lists them.
+  return switchCandidates(open)[0];
+}
+
+/** Other open projects in the order the default picks them (research 60). */
+export function switchCandidates(docs: OpenDoc[]): OpenDoc[] {
+  return docs.map((d, i) => ({ d, i })).filter(({ d }) => !d.isFamily && !d.isLinked && !!d.path)
+    .sort((a, b) => Number(!!a.d.isWorkshared) - Number(!!b.d.isWorkshared) || Number(!!a.d.isModified) - Number(!!b.d.isModified) || a.i - b.i)
+    .map(({ d }) => d);
 }
 
 function queueHits(running: QueueRun, doc: OpenDoc, document: string): boolean {
@@ -434,12 +446,18 @@ try { isCentral = info.IsCentral; } catch (Exception) { isCentral = false; }
 string centralPath = info.CentralPath ?? "";
 string docCentral = "";
 bool docDetached = false;
+bool docModified = found != null && found.IsModified;
+string docUnsynced = "unknown";
+if (found != null && found.IsWorkshared && !string.IsNullOrEmpty(found.PathName) && System.IO.File.Exists(found.PathName))
+{
+    try { docUnsynced = BasicFileInfo.Extract(found.PathName).AllLocalChangesSavedToCentral ? "no" : "yes"; } catch (Exception) { docUnsynced = "unknown"; }
+}
 if (found != null && found.IsWorkshared)
 {
     docDetached = found.IsDetached;
     try { docCentral = ModelPathUtils.ConvertModelPathToUserVisiblePath(found.GetWorksharingCentralModelPath()); } catch (Exception) { docCentral = ""; }
 }
-return new { ok = true, exists = true, isWorkshared = info.IsWorkshared, isCentral, centralPath, docFound = found != null, docTitle = found == null ? "" : found.Title, docPath = found == null ? "" : (found.PathName ?? ""), docFamily = found != null && found.IsFamilyDocument, docWorkshared = found != null && found.IsWorkshared, docDetached, docActive = found != null && uiapp.ActiveUIDocument != null && found.Equals(uiapp.ActiveUIDocument.Document), docCentral, docs };
+return new { ok = true, exists = true, isWorkshared = info.IsWorkshared, isCentral, centralPath, docFound = found != null, docTitle = found == null ? "" : found.Title, docPath = found == null ? "" : (found.PathName ?? ""), docFamily = found != null && found.IsFamilyDocument, docWorkshared = found != null && found.IsWorkshared, docDetached, docActive = found != null && uiapp.ActiveUIDocument != null && found.Equals(uiapp.ActiveUIDocument.Document), docCentral, docModified, docUnsynced, docs };
 `;
 
 const NEW_LOCAL_SCRIPT = `

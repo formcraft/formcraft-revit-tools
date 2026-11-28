@@ -23,7 +23,8 @@ import { csvRow } from "./fmc_sheets.js";
 import { runFmcDoc } from "./fmc_doc.js";
 import { runFmcLibrary } from "./fmc_library.js";
 import { readDb } from "./fmc_material.js";
-import { batchId, planBatch, readBatchResults, recipeRevision } from "../fmc/recipebatch.js";
+import { batchId, planBatch, readBatchResults, readBatchStarter, recipeRevision } from "../fmc/recipebatch.js";
+import { currentCaller } from "../fmc/caller.js";
 import { localIso } from "../fmc/jobs.js";
 import { resolveMaterial } from "../fmc/materials.js";
 
@@ -299,7 +300,7 @@ async function runBatchAction(args: FmcRecipeArgs, config: GuardConfig, dry: boo
     const r = readBatchResults(resultsFile);
     if (!r.lines.length) return reply({ refused: true, reasons: [`No results yet in ${resultsFile}: the batch hasn't built a family, or the name is wrong (fmc_job status shows the job)`] }, true);
     if (args.action === "batch_status")
-      return reply({ batch: args.batch, results_file: resultsFile, built: r.built, failed: r.failed, gated: r.gated, gate_passed: r.passed,
+      return reply({ batch: args.batch, results_file: resultsFile, started_by: readBatchStarter(resultsFile) ?? readBatchStarter(win.join(expandEnv(config.reports_dir), "Batches", `${args.batch.trim()}.json`)), built: r.built, failed: r.failed, gated: r.gated, gate_passed: r.passed,
         failures: r.lines.filter((l) => l.ok === false).map((l) => `${l.family}: ${l.error}`).slice(0, 40),
         gate_fails: r.lines.filter((l) => l.gate === "Fail").map((l) => `${l.family}: ${(l.gate_fails ?? []).join("; ")}`).slice(0, 40),
         next: r.gated < r.built ? `fmc_recipe batch_gate batch=${args.batch} runs Gate A on the ${r.built - r.gated} built and not yet gated` : "Every built family is gated" });
@@ -313,7 +314,7 @@ async function runBatchAction(args: FmcRecipeArgs, config: GuardConfig, dry: boo
       if (Date.now() - started > budget) break;
       const g = await runGate(String(l.saved), config);
       const fails = g.lines.filter((x) => x.state === "Fail").map((x) => `${x.check}: ${x.detail}`.slice(0, 200));
-      fs.appendFileSync(resultsFile, JSON.stringify({ family: l.family, gate: g.verdict, gate_fails: fails, gate_at: localIso(new Date().toISOString()) }) + "\n");
+      fs.appendFileSync(resultsFile, JSON.stringify({ family: l.family, gate: g.verdict, gate_fails: fails, gate_at: localIso(new Date().toISOString()), gate_by: currentCaller().client }) + "\n");
       done.push(`${l.family}: ${g.verdict}`);
     }
     const left = todo.length - done.length;
@@ -366,8 +367,12 @@ async function runBatchAction(args: FmcRecipeArgs, config: GuardConfig, dry: boo
   fs.mkdirSync(folder, { recursive: true });
   const manifest = win.join(expandEnv(config.reports_dir), "Batches", `${id}.json`);
   fs.mkdirSync(win.dirname(manifest), { recursive: true });
-  fs.writeFileSync(manifest, JSON.stringify({ batch: id, made: localIso(new Date().toISOString()), items }));
-  log(config, "recipe_batch", false, resultsFile, "sent", `${build.length} families, ${ops} ops`);
+  // RC-11: who started it, in the manifest and as the first line of the results file (lines without family are skipped by readers).
+  const who = currentCaller();
+  const startedBy = { client: who.client, session: who.session, transport: who.transport, at: localIso(new Date().toISOString()) };
+  fs.writeFileSync(manifest, JSON.stringify({ batch: id, made: localIso(new Date().toISOString()), started_by: startedBy, items }));
+  fs.appendFileSync(resultsFile, JSON.stringify({ batch: id, started_by: startedBy }) + "\n");
+  log(config, "recipe_batch", false, resultsFile, "sent", `${build.length} families, ${ops} ops, by ${who.client}`);
   try {
     const r = await withRevitConnection((c) => c.sendRaw("fmc_recipe_batch", { items_file: manifest, results_file: resultsFile,
       shared_parameter_file: expandEnv(config.shared_parameter_file), max_seconds: args.seconds, max_backups: config.max_backups ?? 3 }, 12 * 60 * 60 * 1000));

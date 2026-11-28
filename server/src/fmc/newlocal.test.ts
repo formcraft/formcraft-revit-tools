@@ -512,3 +512,50 @@ test("FromFile of the backup or the central is refused as a central; the open ho
   const host = { title: "HEBERT HOSTELS_USER", path: "C:\\Users\\USER\\Documents\\HEBERT HOSTELS_USER.rvt", isFamily: false, isWorkshared: true, isLocal: true };
   assert.equal(aiVerdict({ command: "fmc_new_local", doc: host, elements: 0, approved: true }, cfg, book, full, empty).ok, true);
 });
+
+test("research 60: modified and unsynced in the dry run, sync_first stops before anything closes, safer switch_to default", async () => {
+  const { switchCandidates } = await import("./newlocal.js");
+  const { oldLocalState } = await import("../tools/fmc_new_local.js");
+  const order = switchCandidates([
+    doc({ title: "Busy", path: "C:\\WIP\\Busy.rvt", isWorkshared: true }),
+    doc({ title: "Fam", path: "C:\\WIP\\F.rfa", isFamily: true, isWorkshared: false }),
+    doc({ title: "Edited", path: "C:\\WIP\\Edited.rvt", isWorkshared: false, isModified: true }),
+    doc({ title: "Scratch", path: "C:\\WIP\\Scratch.rvt", isWorkshared: false }),
+  ]).map((d) => d.title);
+  assert.deepEqual(order, ["Scratch", "Edited", "Busy"]);
+  assert.deepEqual(oldLocalState({ docModified: true, docUnsynced: "yes" }), { modified: true, unsynced: true });
+  assert.deepEqual(oldLocalState({ docUnsynced: "unknown" }), { modified: null, unsynced: null });
+
+  const localPath = "C:\\WIP\\A_USER.rvt";
+  const centralPath = "C:\\WIP\\A_central.rvt";
+  const commands: Array<{ command: string; params: Record<string, unknown> }> = [];
+  const io = {
+    exists: (p: string) => [localPath, centralPath].includes(p),
+    sendRaw: async (command: string) => command === "fmc_document_info"
+      ? { documents: [
+        { title: "A_USER", path: localPath, isFamily: false, isWorkshared: true, isActive: true },
+        { title: "B_USER", path: "C:\\WIP\\B_USER.rvt", isFamily: false, isWorkshared: true, isActive: false },
+        { title: "Scratch", path: "C:\\WIP\\Scratch.rvt", isFamily: false, isWorkshared: false, isActive: false },
+      ] }
+      : { success: true, result: JSON.stringify({ ok: true, exists: true, isWorkshared: true, isCentral: true, centralPath, docFound: true, docTitle: "A_USER", docPath: localPath, docFamily: false, docWorkshared: true, docDetached: false, docActive: true, docCentral: centralPath, docModified: true, docUnsynced: "yes" }) },
+    sendCommand: async (command: string, params: Record<string, unknown>) => {
+      commands.push({ command, params });
+      if (command === "fmc_revit_file" && params.action === "sync") return { ok: false, message: "Sync refused for the test." };
+      return { ok: true };
+    },
+  };
+  const dry = JSON.parse((await runFmcNewLocal({ document: "A_USER", central: centralPath, local: localPath, dry_run: true, sync_first: true }, io)).content[0].text);
+  assert.equal(dry.old_local.modified, true);
+  assert.equal(dry.old_local.unsynced, true);
+  assert.match(dry.old_local.backup_contains, /last saved state/);
+  assert.match(dry.warning, /unsaved and unsynced/);
+  assert.equal(dry.switch_to, "Scratch");
+  assert.deepEqual(dry.switch_candidates, ["Scratch", "B_USER"]);
+  assert.match(dry.steps[0], /sync/);
+  assert.equal(commands.length, 0);
+  const real = await runFmcNewLocal({ document: "A_USER", central: centralPath, local: localPath, dry_run: false, sync_first: true }, io);
+  const body = JSON.parse(real.content[0].text);
+  assert.equal(body.step, "sync_first", real.content[0].text);
+  assert.equal(real.isError, true);
+  assert.deepEqual(commands.map((c) => c.params.action ?? c.command), ["sync"], "nothing closed after a failed sync");
+});

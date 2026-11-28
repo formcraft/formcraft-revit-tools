@@ -62,7 +62,9 @@ test("an approved kit spec can pass, and a write needs a lease", async () => {
   const dry = textOf(await runFmcViewStyle(args({ action: "templates", document: "A" }), { read, env, guard, kitRoot: kit }));
   assert.equal(dry.dry_run, true);
   assert.equal(dry.can_pass, true);
-  assert.equal(dry.status, "PASS");
+  assert.equal(dry.status, "PLANNED", "VS-3: a dry run never says PASS");
+  assert.equal(dry.cites.spec_read, dry.spec, "VS-3: the cite is the file that was read");
+  assert.doesNotMatch(JSON.stringify(dry.cites), /03_Master_Data\/FMC_ViewStyle\.json/);
   const refused = textOf(await runFmcViewStyle(args({ action: "templates", document: "A", dry_run: false }), { read, env, guard, kitRoot: kit }));
   assert.equal(refused.code, "FMC-BATCH-LOCKED");
   let applied = 0;
@@ -72,6 +74,7 @@ test("an approved kit spec can pass, and a write needs a lease", async () => {
   }));
   assert.equal(applied, 1);
   assert.equal((done.applied as { code: string }).code, "FMC-VIEWSTYLE-SCHEME-PARAM");
+  assert.equal(done.status, "PASS", "VS-3: PASS only after a real apply against a kit spec");
 });
 
 test("the view style read is not a write and the apply is", () => {

@@ -35,7 +35,8 @@ namespace RevitMCPCommandSet.Services.Fmc
                     var sheets = new JArray();
                     foreach (ViewSheet sheet in new FilteredElementCollector(doc).OfClass(typeof(ViewSheet)).Cast<ViewSheet>())
                     {
-                        string value = status == null ? "" : sheet.LookupParameter(status)?.AsString() ?? "";
+                        Parameter statusParam = status == null ? null : sheet.LookupParameter(status);
+                        string value = statusParam?.AsString() ?? "";
                         string revision = sheet.get_Parameter(BuiltInParameter.SHEET_CURRENT_REVISION)?.AsString() ?? "";
                         sheets.Add(new JObject
                         {
@@ -44,7 +45,24 @@ namespace RevitMCPCommandSet.Services.Fmc
                             ["revision"] = revision,
                             ["status"] = value,
                             ["parked"] = string.Equals(value.Trim(), "PARKED", StringComparison.OrdinalIgnoreCase),
+                            ["has_status"] = status != null && statusParam != null,
                         });
+                    }
+                    // RG-6: is the status parameter bound to the Sheets category (null: not a project parameter, e.g. built in).
+                    JToken boundToSheets = JValue.CreateNull();
+                    if (status != null)
+                    {
+                        DefinitionBindingMapIterator it = doc.ParameterBindings.ForwardIterator();
+                        while (it.MoveNext())
+                        {
+                            if (it.Key is Definition definition && string.Equals(definition.Name, status, StringComparison.OrdinalIgnoreCase))
+                            {
+                                bool sheetsBound = it.Current is ElementBinding binding
+                                    && binding.Categories.Cast<Category>().Any(category => category.Id.Value == (long)BuiltInCategory.OST_Sheets);
+                                boundToSheets = sheetsBound;
+                                break;
+                            }
+                        }
                     }
                     var fields = new JArray();
                     var filters = new JArray();
@@ -72,6 +90,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                             ["fields"] = fields,
                             ["filters"] = filters,
                             ["status_parameter"] = status,
+                            ["status_bound_to_sheets"] = boundToSheets,
                         },
                         ["sheets"] = sheets,
                         ["resolved_document"] = FmcTarget.Resolved(doc),

@@ -68,3 +68,19 @@ test("a kit material resolves to absolute texture paths beside the database; a m
 test("without the database the audit says so instead of flagging everything", () => {
   assert.equal(auditMaterials([{ id: 1, name: "X", used: true, textures: [] }], null, () => true)[0].result, "Info");
 });
+
+test("research 57: no 200 cap, merged findings with survivor, summary line", async () => {
+  const m = await import("./materials.js");
+  const big = m.parseMaterialDb({ materials: Array.from({ length: 225 }, (_, i) => ({ name: `FMC_Test_M${i}`, class: "Test" })) });
+  assert.equal(m.searchMaterials(big, "All", "").length, 225);
+  const exists = (p: string) => p.startsWith("Z:\\kit\\");
+  const model = [
+    { id: 1, name: "FMC_Tile_Porcelain_600", used: true, textures: ["C:\\gone\\tile_porc_600_col.jpg"] },
+    { id: 2, name: "Concrete", used: true, textures: [] },
+    { id: 3, name: "Concrete (1)", used: false, textures: ["C:\\gone\\old.jpg"] },
+  ];
+  const findings = m.mergedFindings(model, db, exists);
+  assert.deepEqual(findings.map((f) => [f.name, f.reasons.length, f.survivor ?? ""]), [["FMC_Tile_Porcelain_600", 1, ""], ["Concrete", 2, ""], ["Concrete (1)", 4, "Concrete"]]);
+  const checks = auditMaterials(model, db, exists);
+  assert.equal(m.auditSummary(model, checks, findings), "3 materials: 2 off-library (counted once), 1 duplicates, fail: broken texture paths 2, 1 unused.");
+});

@@ -69,8 +69,9 @@ function balanceFor(code: string, today: string): Sources["balance"] {
     const events = ledgerEvents(lastWeeks(today, 4).from, today);
     const homes = loadHomes(), features = loadFeatures().features;
     const own = digest(events, today, homes, features, code);
+    // RT-6: no fallback to every project's calls; the report says there is no balance for this project.
     if (own.week.total || own.last_week.total) return { digest: own, scope: `${code}'s calls` };
-    return { digest: digest(events, today, homes, features, ""), scope: `every project's calls (the ledger names none for ${code})` };
+    return undefined;
   } catch {
     return undefined;
   }
@@ -82,7 +83,10 @@ export const FMC_REPORT_DESCRIPTION =
     "Since last issue, This month, Whole project. For Team, Client (names, logs and internal notes left out) or BIM " +
     "Manager. Syncs and activity are counted per model and action, never per person (MAN 14.5). make with dry_run (default) " +
     "returns the report's text; dry_run false writes Markdown and a tidy CSV for Power BI, named by the container rules " +
-    "(…-RP-Z-NNNN), into <project>\\01_WIP\\_Reports\\<date>. list shows recent reports. Never reads or changes a model.";
+    "(…-RP-Z-NNNN), into <project>\\01_WIP\\_Reports\\<date>. list shows recent reports (folder_exists says whether _Reports is there); " +
+    "disciplines filters Reviews, QA and Syncs (by the model name's role field); " +
+    "the reply names the sections it did not filter and the QA models left out. An exception whose until is not a date or a revision code is listed as invalid and not counted. " +
+    "Never reads or changes a model.";
 
 export const FMC_REPORT_SHAPE = {
   action: z.enum(["make", "list"]),
@@ -111,15 +115,22 @@ export async function runFmcReport(args: FmcReportArgs) {
         for (const d of fs.readdirSync(root).filter((x) => /^\d{4}-\d{2}-\d{2}$/.test(x)).sort().reverse().slice(0, 10))
           for (const f of fs.readdirSync(win.join(root, d)).filter((x) => x.endsWith(".md"))) out.push({ file: win.join(root, d, f), date: d });
       } catch { /* no reports yet */ }
-      return reply({ reports: out.slice(0, 20) });
+      return reply({ reports: out.slice(0, 20), folder: root, folder_exists: fs.existsSync(root), project_folder_exists: fs.existsSync(folder) });
     }
     const code = args.project_code.trim().toUpperCase() || win.basename(folder).split("_")[0].toUpperCase();
     const today = new Date().toISOString().slice(0, 10);
     const sources = readSources(config, folder);
     sources.balance = balanceFor(code, today);
     const built = buildReport(args.kind, sources, { project: code, period: args.period, audience: args.audience, disciplines: args.disciplines, today });
+    const extra = {
+      project_code: code, project_code_source: args.project_code.trim() ? "given" : "folder name",
+      ...(built.disciplines ? { disciplines: built.disciplines } : {}),
+      ...(built.qa_models ? { qa_models: built.qa_models } : {}),
+      ...(built.invalid_until ? { invalid_until: built.invalid_until } : {}),
+      ...(SECTIONS[args.kind].includes("Automation balance") && !sources.balance ? { balance: `no balance for ${code}` } : {}),
+    };
     if (args.dry_run !== false)
-      return reply({ dry_run: true, title: built.title, sections: SECTIONS[args.kind], left_out: built.left_out, preview: built.markdown,
+      return reply({ dry_run: true, title: built.title, sections: SECTIONS[args.kind], left_out: built.left_out, ...extra, preview: built.markdown,
         next: "Run again with dry_run=false to save it" });
 
     const dir = win.join(root, today);
@@ -133,7 +144,7 @@ export async function runFmcReport(args: FmcReportArgs) {
     if (args.formats.includes("markdown")) { fs.writeFileSync(win.join(dir, name + ".md"), built.markdown + "\n"); files.push(win.join(dir, name + ".md")); }
     if (args.formats.includes("csv")) { fs.writeFileSync(win.join(dir, name + ".csv"), reportCsv(built.rows, csvLine)); files.push(win.join(dir, name + ".csv")); }
     log(config, dir, "done", `${args.kind} for ${args.audience}: ${name}`);
-    return reply({ done: true, name, files, left_out: built.left_out });
+    return reply({ done: true, name, files, left_out: built.left_out, ...extra });
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
     log(config, args.project_folder, "error", msg);

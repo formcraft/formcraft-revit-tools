@@ -10,10 +10,11 @@ export const FMC_RECOVER_DESCRIPTION =
   "Recover crashed or hung Revit. plan (the default) is read-only: it names each open document's title and path, whether it is " +
   "workshared, the last sync and last save it can see, and the risk that unsaved work may be lost. It never closes a responsive, " +
   "healthy instance. apply needs the confirm token from plan, and force_unsaved=true when unsaved or unsynced changes were found. " +
-  "Apply closes only crashed or hung instances (graceful close, then kill), starts Revit 2025, and reopens the documents that were " +
+  "Apply closes only crashed or hung instances (graceful close, then kill), starts Revit (the exe the running Revit came from, else Revit 2025; refused if that exe is missing), and reopens the documents that were " +
   "open, or recovery.documents in fmc_guard.json. Put the five HEBERT HOSTELS models there (architecture, structural, electrical, " +
   "plumbing, site). Workshared files are opened as a new local by Revit. Originals on D: are not written. " +
   "Needs the add-in: plugin heartbeat, the leased port, fmc_document_info, and re-registering the instance. " +
+  "apply is ok only when every document verified; otherwise partial. Unsaved comes from IsModified in the add-in's instance file when it is there. " +
   "scripts/fmc-recover-revit.ps1 runs the same plan when this server is down.";
 
 const shape = {

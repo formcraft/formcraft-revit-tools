@@ -105,7 +105,10 @@ test("a configured HEBERT list is what would be reopened, and apply refuses a ba
     kill: async () => "should not kill",
     startRevit: async (_exe, files) => `started ${files.join("|")}`,
   });
-  assert.equal(result.ok, true);
+  // RV-5: nothing verified (no add-in in the test), so the result is partial, not ok.
+  assert.equal(result.ok, false);
+  assert.equal(result.partial, true);
+  assert.ok(result.needs_addin_first?.length);
   assert.equal(result.writes_originals, false);
   assert.match(result.started, /Architecture\.rvt\|D:\\Fomcraft\\HEBERT\\Structural\.rvt/);
   assert.equal(result.closed.length, 0, "a process that is already gone is not killed");
@@ -161,4 +164,31 @@ test("in-flight leases are requeued at the tail and can resume", async () => {
 test("recovery does not add a write command; verification stays a read", () => {
   assert.ok(READ_VIA_SEND_COMMAND.has("fmc_document_info"));
   assert.ok(!WRITE_COMMANDS.has("fmc_recover_revit"));
+});
+
+test("RV-9/RV-12/QU-5/RV-8: exe from the running Revit, IsModified from the add-in, stale jobs do not count, two samples for hung", async () => {
+  const { revitExeFromProcesses, revitVersionOf } = await import("./recover.js");
+  const { combineSamples, parseProcessRows } = await import("./recover-live.js");
+  const procs = parseProcessRows(JSON.stringify([{ ProcessId: 10, Name: "Revit.exe", ExecutablePath: "E:\\Apps\\Autodesk\\Revit 2026\\Revit.exe" }]));
+  assert.equal(revitExeFromProcesses(procs), "E:\\Apps\\Autodesk\\Revit 2026\\Revit.exe");
+  assert.equal(revitVersionOf("C:\\Program Files\\Autodesk\\Revit 2025\\Revit.exe"), "2025");
+  const plan = buildRecoveryPlan(input({ processes: [{ ...procs[0], responding: false }], portOpen: () => false, documents: [], exeExists: () => true }));
+  assert.equal(plan.revit_exe_source, "running_process");
+  assert.equal(plan.revit_version, "2026");
+  const missing = buildRecoveryPlan(input({ processes: [{ ...procs[0], responding: false }], portOpen: () => false, exeExists: () => false,
+    documents: [{ path: "C:\\Jobs\\A.rvt" }] }));
+  assert.match(applyRefusal(missing, { confirm: missing.confirm, force_unsaved: true }) ?? "", /Revit\.exe was not found/);
+
+  const modified = buildRecoveryPlan(input({ instances: [{ ...inst(10, STALE), documents: [{ title: "A", path: "C:\\Jobs\\A.rvt", modified: true }] }],
+    processes: [revit(10, { responding: false })], portOpen: () => false, documents: [] }));
+  assert.equal(modified.instances[0].documents[0].unsaved, true);
+  assert.match(modified.instances[0].documents[0].risk, /IsModified/);
+  const clean = buildRecoveryPlan(input({ instances: [{ ...inst(10, STALE), documents: [{ title: "A", path: "C:\\Jobs\\A.rvt", modified: false }] }],
+    processes: [revit(10, { responding: false })], portOpen: () => false, documents: [], jobs: [{ pid: 10, state: "running", stale: true }] }));
+  assert.equal(clean.instances[0].documents[0].unsaved, false);
+  assert.match(clean.instances[0].documents[0].risk, /no unsaved change/);
+
+  const a = new Map([[1, false], [2, true], [3, false]]);
+  const b = new Map([[1, false], [3, true]]);
+  assert.deepEqual([...combineSamples(a, b).entries()], [[1, false], [2, true], [3, true]]);
 });

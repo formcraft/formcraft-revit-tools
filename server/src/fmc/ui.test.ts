@@ -57,3 +57,9 @@ test("results and Revit errors come back as JSON", async () => {
 test("close_revit is an fmc_ui action (F-021); the add-in decides whether it may close", () => {
   assert.equal(z.object(FMC_UI_SHAPE).safeParse({ action: "close_revit" }).success, true);
 });
+
+test("UI-7: the description names only groups get_state lists (no QA example)", async () => {
+  const { FMC_UI_DESCRIPTION } = await import("./ui.js");
+  assert.doesNotMatch(FMC_UI_DESCRIPTION, /"QA"/);
+  assert.match(FMC_UI_DESCRIPTION, /Setup, Drawings, Team, Engineer, Build, Ask/);
+});

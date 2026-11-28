@@ -20,7 +20,7 @@ import { wireGrids } from "../fmc/grids.js";
 import { jobBusyReason, leaseBusyReason } from "../fmc/busyreason.js";
 import { admitWrite, memoryGate } from "../fmc/memory.js";
 import { screenScript, scriptLimit } from "../fmc/scriptguard.js";
-import { CACHED_READS, compactReply, invalidateIfWrite, putCachedRead, takeCachedRead, wantsFull } from "../fmc/readcache.js";
+import { CACHED_READS, compactReply, fullReply, invalidateIfWrite, putCachedRead, takeCachedRead, wantsFull } from "../fmc/readcache.js";
 import { stampAppliedDocument } from "../fmc/applieddoc.js";
 
 export class RevitClientConnection {
@@ -340,7 +340,7 @@ export class RevitClientConnection {
     const doc = decision.document?.path || decision.document?.title || named || "active";
     if (CACHED_READS[command]) {
       const hit = takeCachedRead(command, params, doc);
-      if (hit !== undefined) return attachResolvedDocument(wantsFull(params) ? hit : compactReply(hit), decision.document);
+      if (hit !== undefined) return attachResolvedDocument(wantsFull(params) ? fullReply(command, hit) : compactReply(hit), decision.document);
     }
     const pid = open?.pid;
     const run = () => retryWhileBusy(() => this.sendOnce(command, params, timeoutMs, long),
@@ -354,7 +354,7 @@ export class RevitClientConnection {
     const finish = (value: unknown) => {
       if (CACHED_READS[command]) putCachedRead(command, params, doc, value);
       invalidateIfWrite(command, named);
-      const body = CACHED_READS[command] && !wantsFull(params) ? compactReply(value) : value;
+      const body = CACHED_READS[command] && !wantsFull(params) ? compactReply(value) : fullReply(command, value);
       return attachResolvedDocument(body, decision.document);
     };
     try {

@@ -34,3 +34,30 @@ test("levels, types and views are cached until a write or a lease release; docum
   invalidateReads("Plumbing");
   assert.equal(takeCachedRead("get_current_view_info", {}, "Plumbing"), undefined);
 });
+
+test("GT-1: verbose family types are one object like compact, so the document can be attached", async () => {
+  const { fullReply } = await import("./readcache.js");
+  const { attachResolvedDocument } = await import("./docresolve.js");
+  const { familyTypesShape } = await import("../tools/get_available_family_types.js");
+  const full = attachResolvedDocument(fullReply("get_available_family_types", []), { title: "Project1", path: "C:\\P\\Project1.rvt" }) as Record<string, unknown>;
+  assert.deepEqual(full, { count: 0, verbose: true, types: [], resolved_document: { title: "Project1", path: "C:\\P\\Project1.rvt" } });
+  assert.deepEqual(fullReply("get_current_view_elements", [1]), [1], "other reads keep their shape");
+  const shaped = familyTypesShape({ count: 100, ids: [1] }, 100, false) as Record<string, unknown>;
+  assert.equal(shaped.truncated, true);
+  assert.equal(shaped.verbose, false);
+  assert.equal((familyTypesShape([{ id: 1 }], 100, true) as Record<string, unknown>).count, 1);
+});
+
+test("GSE-3/VI-4: selected elements are one object with the document; verbose view info says it changed nothing", async () => {
+  const { fullReply } = await import("./readcache.js");
+  const { attachResolvedDocument } = await import("./docresolve.js");
+  const { selectedShape } = await import("../tools/get_selected_elements.js");
+  const { viewInfoShape } = await import("../tools/get_current_view_info.js");
+  const wrapped = attachResolvedDocument(fullReply("get_selected_elements", []), { title: "Project1", path: "" }) as Record<string, unknown>;
+  assert.deepEqual(wrapped, { count: 0, elements: [], resolved_document: { title: "Project1", path: "" } });
+  const capped = selectedShape({ count: 5, elements: [1, 2, 3, 4, 5] }, 5) as Record<string, unknown>;
+  assert.equal(capped.truncated, true);
+  assert.equal((selectedShape([1], 100) as Record<string, unknown>).truncated, false);
+  assert.equal((viewInfoShape({ Name: "L1" }, true) as Record<string, unknown>).verbose_ignored, true);
+  assert.deepEqual(viewInfoShape({ Name: "L1" }, false), { Name: "L1" });
+});

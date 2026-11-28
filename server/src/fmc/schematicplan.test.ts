@@ -169,3 +169,35 @@ test("apply without a lease changes nothing, and the commands are registered", a
   assert.match(circuitSource, /ElectricalPhaseConfiguration/);
   assert.equal(/item\.Voltage\b/.test(circuitSource), false);
 });
+
+test("PD-1/PD-5/PD-6/PD-14/PD-15: systems are picked and paged, drainage shows fall and fixture units, limits are per discipline", async () => {
+  const { diagramApiLimits, pickSystems } = await import("./schematicplan.js");
+  const systems = Array.from({ length: 20 }, (_, i) => ({ id: 100 + i, name: `Sys ${String(i).padStart(2, "0")}`, classification: "Domestic Cold Water", domain: "piping" }));
+  const first = pickSystems(systems);
+  assert.equal(first.shown.length, 16);
+  assert.equal(first.selection.not_drawn.length, 4);
+  assert.equal(first.shown[0].name, "Sys 00");
+  const page2 = pickSystems(systems, { offset: 16 });
+  assert.deepEqual(page2.shown.map((s) => s.name), ["Sys 16", "Sys 17", "Sys 18", "Sys 19"]);
+  const named = pickSystems(systems, { systems: ["sys 03", "105", "Nope"] });
+  assert.deepEqual(named.shown.map((s) => s.id), [103, 105]);
+  assert.deepEqual(named.selection.not_found, ["Nope"]);
+  const plan = planPlumbDiagrams({
+    systems: [{ id: 5, name: "Soil", classification: "Sanitary", domain: "piping" }],
+    elements: [
+      { id: 1, kind: "pipe", system_ids: [5], level: "Level 0", size_mm: 100, vertical: false, slope_pct: 1.5, fixture_units: 12 },
+      { id: 2, kind: "pipe", system_ids: [5], level: "Level 0", size_mm: 100, vertical: false, slope_pct: 2.5, fixture_units: 20 },
+    ],
+    levels, symbols: [],
+  });
+  assert.match(plan.summary ?? "", /^1 of 1 piping systems drawn/);
+  const schematic = plan.views.find((view) => view.kind === "p_schematic")!;
+  assert.match(schematic.items.map((item) => item.text ?? "").join(" "), /fall 1.5-2.5 %  FU 20/);
+  assert.equal(plan.connector_input?.systems[0].fixture_units, 20);
+  assert.deepEqual(plan.connector_input?.systems[0].fall_pct, { min: 1.5, max: 2.5 });
+  const tbc = planPlumbDiagrams({ systems: [{ id: 5, name: "Soil", classification: "Sanitary", domain: "piping" }], elements: [], levels, symbols: [] });
+  assert.match(tbc.views.find((view) => view.kind === "p_riser")!.notes.join(" "), /Fall TBC/);
+  assert.equal(diagramApiLimits("plumb").some((line) => /SelectPanel|poles/i.test(line)), false);
+  assert.ok(diagramApiLimits("elec").some((line) => /SelectPanel/.test(line)));
+  assert.ok(diagramApiLimits("plumb").some((line) => /PipingSystem/.test(line)));
+});

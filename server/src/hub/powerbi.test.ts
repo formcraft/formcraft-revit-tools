@@ -280,3 +280,28 @@ test("H2: fmc_powerbi build refuses outside the write folders and without a proj
   assert.equal(none.code, 1);
   assert.match(none.body.reasons[0], /project folder/);
 });
+
+test("PB-4/PB-14: Exchange tables are read from Tables, a provisional one stays empty with a note, and replies carry a summary", async () => {
+  const { exchangeTableRows, parseCsv, powerbiSummary } = await import("./powerbi.js");
+  assert.deepEqual(parseCsv('a,b\r\n"x, y","say ""hi"""\r\n'), [["a", "b"], ["x, y", 'say "hi"']]);
+  const rows = exchangeTableRows(table("SheetChecks"), "reviewed_at,pdf,page,verdict,extra\r\n2026-11-28T09:00:00Z,A-101.pdf,2,CHECK,zz\r\n");
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].page, 2);
+  assert.equal(rows[0].verdict, "CHECK");
+  assert.equal("extra" in rows[0], false);
+  assert.equal(powerbiSummary([{ table: "A", state: "read", note: "" }, { table: "B", state: "empty", note: "" }], false), "2 tables: 1 read, 1 empty, 0 not read; Power BI Desktop not running.");
+
+  const p = project();
+  const tables = path.join(p, "01_WIP", "_Exchange", "Tables");
+  fs.mkdirSync(tables, { recursive: true });
+  fs.writeFileSync(path.join(tables, "FMC_SheetChecks.csv"), "reviewed_at,pdf,page,verdict,blank,page_size,missing_titleblock_text,past_border,text_overlaps,empty_drawing_zone,fill_pct\r\n2026-11-28T09:00:00Z,A-101.pdf,1,OK,false,A1 landscape,false,false,0,false,42.5\r\n");
+  const r = cli({ action: "plan", project_folder: p }, { write_roots: [path.join(p, "01_WIP")] });
+  assert.equal(r.code, 0, r.err);
+  const by = Object.fromEntries(r.body.tables.map((t: any) => [t.table, t]));
+  assert.equal(by.SheetChecks.rows_now, 1);
+  assert.ok(by.SheetChecks.freshness);
+  assert.equal(by.Phases.rows_now, 0);
+  assert.match(by.Phases.source, /PROVISIONAL/);
+  assert.match(r.body.summary, /tables: \d+ read/);
+  assert.ok(table("Rooms").columns.some((c) => c.name === "model"));
+});

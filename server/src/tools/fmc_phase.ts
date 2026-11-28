@@ -113,15 +113,17 @@ function failed(error: unknown) {
 }
 
 function leaseOf(args: FmcPhaseArgs): string {
-  return args.batch_lease.trim() || (batchLease.getStore() ?? "");
+  return String(args.batch_lease ?? "").trim() || (batchLease.getStore() ?? "");
 }
 
 function phaseName(args: FmcPhaseArgs, io: PhaseIo): string {
-  if (args.phase.trim()) return args.phase.trim();
+  const given = String(args.phase ?? "").trim();
+  if (given) return given;
   const lease = leaseOf(args);
   if (!lease) return "";
-  if (io.phaseOfLease) return io.phaseOfLease(lease).trim();
-  try { return batchBoard().phaseOf(lease).trim(); } catch { return ""; }
+  // F97: a lease with no phase (undefined) is "no phase", not a trim crash.
+  if (io.phaseOfLease) return String(io.phaseOfLease(lease) ?? "").trim();
+  try { return String(batchBoard().phaseOf(lease) ?? "").trim(); } catch { return ""; }
 }
 
 function docOf(snapshot: PhaseSnapshot | undefined, named: string): { title: string; path: string } {
@@ -249,8 +251,16 @@ export async function runFmcPhase(args: FmcPhaseArgs, io: PhaseIo = {}) {
     if (args.action === "batch_check") {
       const phase = phaseName(args, io);
       if (!phase) return reply({ tool: "fmc_phase", refused: true, code: "FMC-PHASE-REQUIRED", message: "[FMC-PHASE-REQUIRED] batch_check needs phase, or a phase on the fmc_batch lease." }, true);
-      const snapshot = await readModel(args, "batch", { ids: [...args.ids, ...args.demolish_ids], view: args.view, phase }, io);
-      const planned = planBatchCheck(snapshot, { phase, ids: args.ids, demolish_ids: args.demolish_ids, view: args.view }, bank);
+      let snapshot: PhaseSnapshot;
+      let planned: ReturnType<typeof planBatchCheck>;
+      try {
+        snapshot = await readModel(args, "batch", { ids: [...(args.ids ?? []), ...(args.demolish_ids ?? [])], view: args.view ?? "", phase }, io);
+        planned = planBatchCheck(snapshot, { phase, ids: args.ids ?? [], demolish_ids: args.demolish_ids ?? [], view: args.view ?? "" }, bank);
+      } catch (error) {
+        // F97: batch_check threw (a trim on a missing field) instead of refusing; any failure in the read or the plan is a shaped refusal.
+        const message = error instanceof Error ? error.message : String(error);
+        return reply({ tool: "fmc_phase", refused: true, code: "FMC-PHASE-BATCH-CHECK", message: `[FMC-PHASE-BATCH-CHECK] batch_check could not read or plan: ${message}. Nothing was changed.`, phase }, true);
+      }
       if (!planned.ok) return reply({ tool: "fmc_phase", refused: true, code: planned.code, message: planned.message }, true);
       const mismatches = planned.plan.mismatches.map((row) => ({ code: row.code, ...packIds(row.ids, args.sample_limit) }));
       const preview = {

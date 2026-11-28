@@ -1119,10 +1119,15 @@ export function summarizeTrace(runs: CheckRun[], extra: {
     warnings.push(extra.highlightResult.reason || "Temporary highlight was not applied.");
   }
   const resolved = extra.snapshot?.resolved_document;
+  // F98: clean checks against PROVISIONAL limits are not a pass (a provisional bank entry never PASSes).
+  const clean = checks.every((check) => check.pass) && extra.unknown.length === 0 && extra.skipped.length === 0 && warnings.length === 0;
+  const provisionalLimits = extra.limits.status === "PROVISIONAL";
   return {
     tool: "fmc_trace",
     read_only: true,
-    pass: checks.every((check) => check.pass) && extra.unknown.length === 0 && extra.skipped.length === 0 && warnings.length === 0,
+    pass: clean && !provisionalLimits,
+    status: !clean ? "FAIL" : provisionalLimits ? "PROVISIONAL" : "PASS",
+    ...(clean && provisionalLimits ? { status_reason: "The checks found nothing, but the limits are PROVISIONAL (not in the standards bank), so this is not a pass." } : {}),
     ...(resolved ? { document: { title: resolved.title ?? "", path: resolved.path ?? "" } } : {}),
     ...(extra.snapshot && "active_unchanged" in extra.snapshot ? { active_unchanged: extra.snapshot.active_unchanged !== false } : {}),
     limits_status: extra.limits.status,

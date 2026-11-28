@@ -63,3 +63,18 @@ test("fmc_replace is allowed on a read-only copy and refused on the original and
   assert.equal(writeGuard({ ...copySession, path: live, readOnly: true }, "fmc_replace", { live_paths: [live] }, cfg).ok, false);
   assert.equal(writeGuard({ ...detached, isLinked: true }, "fmc_replace", {}, cfg).ok, false);
 });
+
+test("RP-2/RP-3: any failed or unrun row makes the reply not ok, and a batch over max_rows is refused", async () => {
+  const { replaceOutcome, checkMaxRows } = await import("./replace.js");
+  const allFail = replaceOutcome({ rows: [{ id: "A", status: "fail", create: { status: "fail" } }, { id: "B", status: "fail" }], group: { rollback: { proof: true } } });
+  assert.equal(allFail.ok, false);
+  assert.equal(allFail.rows_failed, 2);
+  assert.match(allFail.summary, /^FAIL: 0\/2/);
+  const mixed = replaceOutcome({ rows: [{ id: "A", status: "pass" }, { id: "B", create: { status: "not_run" } }], group: { rollback: { proof: true } } });
+  assert.equal(mixed.ok, false);
+  assert.equal(mixed.rows_not_run, 1);
+  assert.equal(replaceOutcome({ rows: [{ id: "A", status: "pass" }], group: { rollback: { proof: true } } }).ok, true);
+  assert.equal(replaceOutcome({ rows: [{ id: "A", status: "pass" }], group: { rollback: { proof: false } } }).ok, false);
+  assert.equal(checkMaxRows(25), null);
+  assert.match(checkMaxRows(26) ?? "", /max_rows 25/);
+});

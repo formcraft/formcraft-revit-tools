@@ -86,7 +86,9 @@ test("a folder of the log and its results reads both and skips the .cmd and READ
   fs.writeFileSync(path.join(dir, "README_RUN_BATCHES.md"), "B01 PASS ops=1 ok=1 failed=0\n");
   const summary = summarisePath(dir);
   assert.equal(summary.errors.length, 0);
-  assert.equal(summary.rows.length, 4 + 3);
+  // P-fmc_runlog-04: B03 and D1 are in the log and in their result JSON: counted once
+  assert.equal(summary.rows.length, 4 + 3 - 2);
+  assert.equal(summary.duplicates_dropped, 2);
   assert.equal(summarisePath(path.join(FIX, "RUN_ALL_log.sample.txt")).rows.length, 4);
   assert.equal(summarisePath(path.join(dir, "missing.txt")).errors.length, 1);
 });
@@ -104,4 +106,39 @@ test("a log that was cut off mid-reply still counts the tool calls it started", 
   const [row] = summariseLog(cut, "RUN_ALL_log.txt");
   assert.equal(row.batch_id, "runner-A-bq");
   assert.equal(row.ops, 1);
+});
+
+test("RN-1/RN-2/RN-4/RN-6/RN-8: unknown calls are INCOMPLETE, a code-only reply fails, rows carry a time, running and blocked marks", async () => {
+  const { rowStatus, parseRunTime, filterRuns } = await import("./runlog.js");
+  const cut = ["==== B01_A Mon 11/23/2026  1:20:00.00", "Batch  runner-A-bq on X", "Preview:", "  -> modify_model", "  -> fmc_health"].join("\n");
+  const [row] = summariseLog(cut, "RUN_ALL_log.txt");
+  assert.equal(row.ok, 0);
+  assert.equal(row.unknown, 2);
+  assert.equal(row.status, "INCOMPLETE");
+  assert.equal(row.at, "2026-11-23T01:20:00");
+  assert.match(formatRows([row]), /1 batches, 1 incomplete/);
+  const [blocked] = summariseResult({ label: "runner-R", steps: [{ tool: "fmc_register", result: { tool: "fmc_register", code: "FMC-REGISTER-STATUS", reason: "no status param" } }] }, "R1.result-20261124-020000.json");
+  assert.equal(blocked.failed, 1);
+  assert.equal(blocked.status, "BLOCKED");
+  assert.equal(blocked.at, "2026-11-24T02:00:00");
+  const [empty] = summariseResult({ label: "runner-E", steps: [] }, "E1.result-20261124-030000.json");
+  assert.equal(empty.ops, 0);
+  assert.equal(empty.status, "INCOMPLETE");
+  assert.equal(rowStatus({ batch_id: "B09", ops: 1, ok: 0, failed: 0, codes: ["FMC-JOB-RUNNING"], source: "x" }), "RUNNING");
+  assert.equal(parseRunTime("x"), "");
+  const rows = [{ batch_id: "a", name: "J", at: "2026-11-23T01:00:00", ops: 1, ok: 1, failed: 0, codes: [], source: "1" }, { batch_id: "a", name: "J", at: "2026-11-24T01:00:00", ops: 1, ok: 1, failed: 0, codes: [], source: "2" }];
+  assert.equal(filterRuns(rows, { since: "2026-11-24" }).length, 1);
+  assert.equal(filterRuns(rows, { latest_per_job: true })[0].source, "2");
+});
+
+test("P-fmc_runlog-01/RN-5: a missing path is Not found with failed null, and an oversize file is skipped", async () => {
+  const { runFmcRunlog } = await import("../tools/fmc_runlog.js");
+  const missing = JSON.parse(runFmcRunlog({ path: path.join(os.tmpdir(), "no-such-runlog-dir", "x.txt"), since: "", latest_per_job: false }).content[0].text);
+  assert.equal(missing.failed, null);
+  assert.match(missing.text, /^Not found/);
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-runlog-big-"));
+  fs.writeFileSync(path.join(dir, "RUN_ALL_log.txt"), "B01 PASS ops=1 ok=1 failed=0\n");
+  const small = summarisePath(dir, 5);
+  assert.equal(small.rows.length, 0);
+  assert.equal(small.skipped_files.length, 1);
 });

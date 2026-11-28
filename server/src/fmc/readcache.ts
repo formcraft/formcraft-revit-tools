@@ -93,6 +93,15 @@ export function compactReply(value: unknown): unknown {
   return out;
 }
 
+/** GT-1 / GSE-3: commands whose full reply (a bare array) is wrapped in an object, so the shape is stable and the document can be attached. */
+const FULL_OBJECT_READS: Record<string, string> = { get_available_family_types: "types", get_selected_elements: "elements" };
+
+export function fullReply(command: string, value: unknown): unknown {
+  const key = FULL_OBJECT_READS[command];
+  if (!key || !Array.isArray(value)) return value;
+  return { count: value.length, ...(command === "get_available_family_types" ? { verbose: true } : {}), [key]: value };
+}
+
 export function wantsFull(params: unknown): boolean {
   if (!params || typeof params !== "object") return false;
   const row = params as Record<string, unknown>;

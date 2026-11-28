@@ -53,3 +53,29 @@ test("F-010: the scan summary counts families a check couldn't run apart from pa
   const line = s.by_check.find((c) => c.check === "Required FMC parameters present (by GUID)")!;
   assert.deepEqual([line.fail, line.pass, line.not_checked], [0, 1, 1]);
 });
+
+test("QA-5/QA-6/QA-7: pick rules, compare with the last full run, name the fixing tool, order unlocks by Must rules", async () => {
+  const { compareWithLast, fixTool, pickRules, unlockOrder } = await import("./qafix.js");
+  const rule = (id: string, book: string, severity: "Must" | "Should" | "Advice", text: string, kind?: string) =>
+    ({ id, rule: text, severity, status: "Active", book, scope: "", test: "", fix_hint: "", version: "", why: "", gates: [], stages: [], ...(kind ? { check: { kind } } : {}) });
+  const books = { books: [], exceptions: [], decisions: [], problems: [], rules: [
+    rule("NAM-020", "Naming", "Must", "Sheet numbers follow the pattern", "sheet_number_pattern"),
+    rule("NAM-021", "Naming", "Should", "Keynotes use kit codes"),
+    rule("LNK-001", "Links", "Must", "Links are pinned", "links_pinned"),
+    rule("GEN-001", "General", "Advice", "Something with no tool"),
+  ] } as any;
+  assert.deepEqual(pickRules(books, { rules: ["nam-020"] }).books.rules.map((r: any) => r.id), ["NAM-020"]);
+  assert.deepEqual(pickRules(books, { book: "naming", severity: "Should" }).books.rules.map((r: any) => r.id), ["NAM-021"]);
+  assert.deepEqual(pickRules(books, { rules: ["XX-1"] }).unknown, ["XX-1"]);
+  assert.equal(pickRules(books, {}).picked, false);
+  assert.deepEqual(compareWithLast(["NAM-020", "LNK-001"], ["NAM-021"], ["NAM-020", "NAM-021"]), { last_run: true, fixed: ["NAM-020"], still_failing: [], new_failing: ["NAM-021"] });
+  assert.equal(fixTool(books.rules[0]), "fmc_sheets");
+  assert.equal(fixTool(books.rules[1]), "fmc_keynote_place");
+  assert.equal(fixTool(books.rules[2]), "fmc_links");
+  assert.equal(fixTool(books.rules[3]), null);
+  const nc = (id: string, severity: "Must" | "Should", where: string) => ({ id, rule: "", severity, state: "Not checked" as const, where, element_ids: [], fix_hint: "" });
+  const order = unlockOrder([nc("A", "Should", "doesn't read worksets"), nc("B", "Should", "doesn't read worksets"), nc("C", "Must", "doesn't read filters")]);
+  assert.equal(order[0].reason, "doesn't read filters");
+  assert.equal(order[0].must_unlocked, 1);
+  assert.equal(order[1].rules_unlocked, 2);
+});

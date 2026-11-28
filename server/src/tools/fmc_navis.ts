@@ -10,6 +10,30 @@ import { NOT_A_PERSON, NavisClashRow, cloudPlan, newestTest, resolveClashItems, 
 import { exchangeRoot, loadIdentity, saveIdentity, writePackage } from "../hub/exchange.js";
 import { FMC_REVIEW_SHAPE, clashesIntoRegister, loadRegister, runFmcReview, saveRegister } from "./fmc_review.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
+import { fileURLToPath } from "node:url";
+
+const here = path.dirname(fileURLToPath(import.meta.url));
+
+/** Research 59: the clash matrix proposal that ships in build/data (from docs/kit-proposals), used when the kit has none. PROVISIONAL. */
+export function shippedMatrix(): string {
+  for (const f of [path.resolve(here, "..", "data", "FMC_Clash_Matrix.json"), path.resolve(here, "..", "..", "..", "docs", "kit-proposals", "FMC_Clash_Matrix.json")]) if (fs.existsSync(f)) return f;
+  return "";
+}
+
+/** The matrix to read: the caller's, else the kit's, else the shipped proposal (provisional: plans and dry runs only). */
+export function matrixSource(explicit: string, kitFile: string, exists: (f: string) => boolean = (f) => fs.existsSync(expandEnv(f))): { file: string; source: "given" | "kit" | "proposal"; provisional: boolean } {
+  if (explicit.trim()) return { file: explicit.trim(), source: "given", provisional: false };
+  if (kitFile && exists(kitFile)) return { file: kitFile, source: "kit", provisional: false };
+  const shipped = shippedMatrix();
+  return shipped ? { file: shipped, source: "proposal", provisional: true } : { file: kitFile, source: "kit", provisional: false };
+}
+
+/** Research 59: when the hub has switched Navisworks off, fmc_navis is not loaded; this small stand-in says why instead of the tool just being gone. */
+export function navisOffStub(server: McpServer, why: string) {
+  server.tool("fmc_navis", "Navisworks is switched off on this PC, so the Navisworks tools are not loaded. Call it to read why and how to switch it on.", {}, async () => reply({
+    tool: "fmc_navis", navisworks: "off", reason: why, how_to: "fmc_apps: switch navisworks on (it needs Navisworks Manage 2025 with the Formcraft bridge), then restart the server.",
+  }));
+}
 
 const win = path.win32;
 
@@ -43,7 +67,9 @@ export const FMC_NAVIS_DESCRIPTION =
     "elements through the identity map, handed over as Mark & Review tickets (handover tickets) or review clouds in the " +
     "open Revit model (handover clouds, after tickets). clash_status: a status (Active, Reviewed, Approved, Resolved) and a " +
     "comment on the clash results a person names; the dry run gives a plan_hash, the real run needs approved_by (that " +
-    "person, never the AI) and the same plan_hash. Every write is a dry run unless dry_run is false.";
+    "person, never the AI) and the same plan_hash. Every write is a dry run unless dry_run is false. " +
+    "Without a kit matrix, matrix and dry runs use the shipped proposal (docs/kit-proposals, PROVISIONAL); a real clash_create or clash_run needs the kit's or a named matrix. " +
+    "federate saves the new .nwf first under a temporary name, then archives the older one and moves the new one in place.";
 
 export const FMC_NAVIS_SHAPE = {
   action: z.enum(["status", "info", "tests", "results", "federate", "matrix", "clash_create", "clash_run", "back", "clash_status"]),
@@ -134,9 +160,14 @@ export async function runFmcNavis(args: FmcNavisArgs, deps: NavisDeps = {}) {
   }
 
   if (args.action === "matrix") {
-    const file = args.matrix.trim() || cfg.clash_matrix_file;
+    const src = matrixSource(args.matrix, cfg.clash_matrix_file);
+    const file = src.file;
     const { matrix, problems } = loadMatrix(file);
     if (!matrix) return reply({ refused: true, file, reasons: problems }, true);
+    if (src.provisional) {
+      const tests = planTests(matrix, args.tests);
+      return reply({ file, source: "proposal", provisional: true, kit_file: cfg.clash_matrix_file, note: "The kit has no clash matrix yet: this is the shipped proposal (PROVISIONAL, kit change request docs/CLASH_MATRIX.md).", name: matrix.name, revision: matrix.revision, tests });
+    }
     const tests = planTests(matrix, args.tests);
     let ready: ReturnType<typeof coverage> | undefined;
     if (up) { try { ready = coverage(tests, modelFiles(await call("navis_info"))); } catch { ready = undefined; } }
@@ -192,12 +223,19 @@ async function federate(args: FmcNavisArgs, cfg: GuardConfig, call: Call, dry: b
     log(cfg, "navis_federate", false, output, "partial", failed.map((f) => `${win.basename(f.file)} ${f.result}`).join("; "));
     return reply({ done: false, appended: appended.files, reasons: ["Some models weren't appended, so the federation wasn't saved: fix them and run again"] }, true);
   }
-  if (replaces) {
+  // Research 59: save first (a new temporary name), then archive the older .nwf and move the new one in, so a failed save never leaves the archive holding the only copy.
+  const temp = replaces ? win.join(win.dirname(output), `${win.basename(output, ".nwf")}.saving-${Date.now()}.nwf`) : output;
+  let saved = await call("navis_save_as", { file: temp, dry_run: false }, LONG);
+  if (replaces && saved.saved) {
     const [from, to] = archivePlan(output, []).moves[0];
     fs.mkdirSync(win.dirname(to), { recursive: true });
     fs.renameSync(from, to);
+    try { fs.renameSync(temp, output); saved = { ...saved, file: output }; }
+    catch (e) {
+      try { fs.renameSync(to, from); } catch { /* the older file stays in _Archive */ }
+      saved = { ...saved, file: temp, note: `Saved as ${temp}; it could not be moved over ${win.basename(output)} (${e instanceof Error ? e.message : String(e)}), so the older one was put back.` };
+    }
   }
-  const saved = await call("navis_save_as", { file: output, dry_run: false }, LONG);
   const root = exchangeRoot(pf, expandEnv(cfg.reports_dir));
   const pkg = writePackage(root, { from: "revit", to: "navisworks", what: "federation", files: [{ name: "federation.json", text: JSON.stringify({ output, models: ex.models, by }, null, 2) }] });
   log(cfg, "navis_federate", false, output, saved.saved ? "done" : "failed", `${plan.append.length} appended, ${plan.already.length} already in`);
@@ -206,7 +244,9 @@ async function federate(args: FmcNavisArgs, cfg: GuardConfig, call: Call, dry: b
 }
 
 async function clashTests(args: FmcNavisArgs, cfg: GuardConfig, call: Call, dry: boolean) {
-  const file = args.matrix.trim() || cfg.clash_matrix_file;
+  const src = matrixSource(args.matrix, cfg.clash_matrix_file);
+  const file = src.file;
+  if (src.provisional && !dry) return reply({ refused: true, file, code: "FMC-NAVIS-MATRIX-PROVISIONAL", reasons: ["The kit has no clash matrix: the shipped proposal is for plans only. Name a matrix file, or add the kit's (docs/CLASH_MATRIX.md)."] }, true);
   const { matrix, problems } = loadMatrix(file);
   if (!matrix) return reply({ refused: true, file, reasons: problems }, true);
   const planned = planTests(matrix, args.tests);

@@ -79,7 +79,7 @@ namespace revit_mcp_plugin.Shell
 
         public async Task<string> UpdatesAsync()
         {
-            CliResult r = await ServerCli.RunAsync("fmc_material", new JObject { ["action"] = "updates" });
+            CliResult r = await ServerCli.RunAsync("fmc_material", new JObject { ["action"] = "updates", ["acknowledge"] = true });
             if (!r.Ok) return "Can't check: " + string.Join(" ", r.Reasons());
             return r.Body.Value<bool?>("changed") == true
                 ? $"The material database moved from v{r.Body.Value<string>("previous")} to v{r.Body.Value<string>("version")}."

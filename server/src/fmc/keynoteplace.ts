@@ -172,8 +172,29 @@ export function targetViews(views: KeynoteViewRow[], request: "all_plans" | stri
   return { found, missing };
 }
 
+/** Fallback tag box when no linked tag in the model has a box (the kit seed route before the copy). */
 const TAG_W = 900;
 const TAG_H = 450;
+
+export interface TagSize { width: number; height: number; source: "seed" | "model" | "default" }
+
+function median(values: number[]): number {
+  const sorted = [...values].sort((a, b) => a - b);
+  return sorted[Math.floor(sorted.length / 2)];
+}
+
+/** Research 53: the real tag box. The seed tag's own box first, then the median of linked tags of this type, then 900 x 450. */
+export function tagSize(tags: KeynoteTagRow[], by: KeyBy, seed: KeynoteTagRow | null): TagSize {
+  const own = seed ? tagBox(seed) : null;
+  if (own && own.max_x > own.min_x && own.max_y > own.min_y) return { width: r1(own.max_x - own.min_x), height: r1(own.max_y - own.min_y), source: "seed" };
+  const boxes = tags.filter((tag) => linked(tag) && sourceMatches(by, tag.key_source, tag.tag_type)).map(tagBox).filter((box): box is Box => !!box && box.max_x > box.min_x && box.max_y > box.min_y);
+  if (boxes.length) return { width: r1(median(boxes.map((b) => b.max_x - b.min_x))), height: r1(median(boxes.map((b) => b.max_y - b.min_y))), source: "model" };
+  return { width: TAG_W, height: TAG_H, source: "default" };
+}
+
+function r1(n: number): number {
+  return Math.round(n * 10) / 10;
+}
 const HEAD_OFFSETS: Array<[number, number]> = [
   [0, 0], [600, 0], [-600, 0], [0, 600], [0, -600],
   [600, 600], [-600, 600], [600, -600], [-600, -600],
@@ -218,7 +239,7 @@ export function keepCentral(hosts: KeynoteHostRow[], onePerKey: boolean): { kept
   return { kept, dropped };
 }
 
-function headFor(host: KeynoteHostRow, leader: boolean, offset: number, occupied: Box[]): { leader: boolean; head?: [number, number]; moved: boolean; box?: Box } | null {
+function headFor(host: KeynoteHostRow, leader: boolean, offset: number, occupied: Box[], size: TagSize = { width: TAG_W, height: TAG_H, source: "default" }): { leader: boolean; head?: [number, number]; moved: boolean; box?: Box } | null {
   const hasPoint = typeof host.x === "number" && typeof host.y === "number";
   if (!hasPoint) return { leader: false, moved: false };
   let bx = host.x as number;
@@ -239,7 +260,7 @@ function headFor(host: KeynoteHostRow, leader: boolean, offset: number, occupied
   for (let i = 0; i < HEAD_OFFSETS.length; i++) {
     const x = bx + HEAD_OFFSETS[i][0];
     const y = by + HEAD_OFFSETS[i][1];
-    const box = { min_x: x - TAG_W / 2, min_y: y - TAG_H / 2, max_x: x + TAG_W / 2, max_y: y + TAG_H / 2 };
+    const box = { min_x: x - size.width / 2, min_y: y - size.height / 2, max_x: x + size.width / 2, max_y: y + size.height / 2 };
     if (occupied.some((have) => boxesOverlap(have, box))) continue;
     const head: [number, number] = [Math.round(x * 10) / 10, Math.round(y * 10) / 10];
     const moved = i > 0;
@@ -257,7 +278,7 @@ export function planKeynotes(doc: KeynoteDoc, args: {
   one_per_key?: boolean;
   leader?: boolean;
   offset_mm?: number;
-}): { seed: SeedPlan; views: ViewPlan[]; code?: string; counts: { hosts: number; placed: number; skipped: number; one_per_key: number; collision_moved: number; collision_blocked: number } } {
+}): { seed: SeedPlan; views: ViewPlan[]; code?: string; tag_size: TagSize; counts: { hosts: number; placed: number; skipped: number; one_per_key: number; collision_moved: number; collision_blocked: number } } {
   const seedTag = pickSeed(doc.tags ?? [], args.by);
   const seed: SeedPlan = seedTag
     ? {
@@ -274,6 +295,7 @@ export function planKeynotes(doc: KeynoteDoc, args: {
       exists: args.seedExists,
       ...(args.seedExists ? {} : { code: "FMC-KEYNOTE-SEED-MISSING", reason: KEYNOTE_FIX["FMC-KEYNOTE-SEED-MISSING"] }),
     };
+  const size = tagSize(doc.tags ?? [], args.by, seedTag);
   const chosen = targetViews(doc.views ?? [], args.views);
   const views: ViewPlan[] = [];
   for (const name of chosen.missing) {
@@ -319,7 +341,7 @@ export function planKeynotes(doc: KeynoteDoc, args: {
         .map(tagBox)
         .filter((box): box is Box => !!box);
       for (const host of reduced.kept) {
-        const spot = headFor(host, leader, offset, occupied);
+        const spot = headFor(host, leader, offset, occupied, size);
         if (!spot) {
           counts.collision_blocked += 1;
           skipped.push({ host: String(host.id), view: view.name, code: "FMC-KEYNOTE-OVERLAP", reason: KEYNOTE_FIX["FMC-KEYNOTE-OVERLAP"] });
@@ -343,7 +365,7 @@ export function planKeynotes(doc: KeynoteDoc, args: {
     views.push({ view: view.name, view_id: view.id, placed, skipped });
   }
   counts.skipped += chosen.missing.length;
-  return { seed, views, counts, ...(seed.code ? { code: seed.code } : {}) };
+  return { seed, views, counts, tag_size: size, ...(seed.code ? { code: seed.code } : {}) };
 }
 
 export function referenceProblems(refs: { kit?: string[]; standards?: string[]; rulebook?: string[] } | undefined): string | null {
@@ -377,4 +399,13 @@ export function normalizeKeynote(raw: unknown): KeynoteSnapshot {
   const documents = Array.isArray(body.documents) ? body.documents as KeynoteDoc[] : [];
   if (!documents.length && (body.title || body.views || body.tags)) return { documents: [body as unknown as KeynoteDoc] };
   return { documents, resolved_document: body.resolved_document as KeynoteSnapshot["resolved_document"] };
+}
+
+/** P-fmc_keynote_place-02: NOTHING_TO_PLACE says why, so a dry run with 0 tags is never read as a good plan. */
+export function placeStatus(code: string | undefined, counts: { hosts: number; placed: number; skipped: number }): { status: "PLANNED" | "NOTHING_TO_PLACE"; ok: boolean; status_reason: string } {
+  if (counts.placed > 0) return { status: "PLANNED", ok: true, status_reason: `${counts.placed} tag(s) planned${counts.skipped ? `, ${counts.skipped} host(s) skipped` : ""}.` };
+  const why = code === "FMC-KEYNOTE-SEED-MISSING"
+    ? `No seed: no linked keynote tag is in the model and the kit seed is not on disk (K-02). ${counts.skipped} host(s) skipped. Nothing can be placed until a seed exists.`
+    : code ? `${code}: nothing can be placed.` : counts.hosts === 0 ? "No hosts in the views." : `Every host is skipped (${counts.skipped}).`;
+  return { status: "NOTHING_TO_PLACE", ok: false, status_reason: why };
 }

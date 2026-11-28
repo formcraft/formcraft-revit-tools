@@ -3,6 +3,15 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { toolFailure } from "./failure.js";
 
+/** GT-1: one object for compact and verbose: count, verbose, limit, truncated (the limit was reached), ids or types, resolved_document. */
+export function familyTypesShape(response: unknown, limit: number, verbose: boolean): unknown {
+  const body = Array.isArray(response) ? { count: response.length, types: response } : response;
+  if (!body || typeof body !== "object") return body;
+  const row = body as Record<string, unknown>;
+  const count = typeof row.count === "number" ? row.count : 0;
+  return { ...row, verbose, limit, truncated: count >= limit, ...(verbose ? {} : { note: "ids are the first 40; verbose true returns every type up to limit." }) };
+}
+
 export function registerGetAvailableFamilyTypesTool(server: McpServer) {
   server.tool(
     "get_available_family_types",
@@ -44,7 +53,7 @@ export function registerGetAvailableFamilyTypesTool(server: McpServer) {
           content: [
             {
               type: "text",
-              text: JSON.stringify(response, null, 2),
+              text: JSON.stringify(familyTypesShape(response, params.limit, args.verbose === true), null, 2),
             },
           ],
         };

@@ -64,3 +64,13 @@ test("prints list the sheet's open items for review, solved ones as revised, wit
   assert.match(md, /Solution: D12 now opens inward/);
   assert.match(md, /- A: Swing reversed \(NAME A\)/);
 });
+
+test("RW-9/RW-13: a default project code, and the BCF size and type cap", async () => {
+  const { defaultProjectCode, bcfFileProblem, BCF_MAX_BYTES } = await import("./reviewhelp.js");
+  assert.deepEqual(defaultProjectCode("", "F26902_TestHouse"), { code: "F26902", source: "folder name" });
+  assert.deepEqual(defaultProjectCode("", "F26902_TestHouse", "f26900"), { code: "F26900", source: "FMC_Project.json" });
+  assert.equal(defaultProjectCode("abc", "x").code, "ABC");
+  assert.equal(bcfFileProblem("C:\\x\\a.bcfzip", 1000), null);
+  assert.match(bcfFileProblem("C:\\x\\a.txt", 10) ?? "", /not a \.bcfzip/);
+  assert.match(bcfFileProblem("C:\\x\\a.bcfzip", BCF_MAX_BYTES + 1) ?? "", /over the 50 MB/);
+});

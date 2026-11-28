@@ -5,7 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { z } from "zod";
 import { PdfDoc, PdfPage, A4_LANDSCAPE } from "./pdf.js";
-import { detectRenderer, inkFromOps, matchPageSize, pastBorder, reviewPages, safeImageDir, textOverlaps, type PageFact } from "./pdfreview.js";
+import { detectRenderer, inkFromOps, matchPageSize, pageRuns, pagesNotFound, pastBorder, reviewPages, safeImageDir, sheetCheckRows, summarisePdf, textOverlaps, type PageFact } from "./pdfreview.js";
 import { FMC_PDF_REVIEW_SHAPE, runFmcPdfReview, type FmcPdfReviewArgs } from "../tools/fmc_pdf_review.js";
 import { DEFAULT_CONFIG, type GuardConfig } from "./policy.js";
 import { runFmcPdfReview as runPdfReviewLive } from "../tools/fmc_pdf_review.js";
@@ -152,4 +152,97 @@ test("fmc_pdf_review reads a real PDF with the shipped pdfjs (Windows path of im
   assert.equal(body.dry_run, true);
   assert.equal(body.checks.length, 1);
   nodeFs.rmSync(dir, { recursive: true, force: true });
+});
+
+function vectorPdf(): Buffer {
+  const stream = "0 0 1 rg 100 100 m 400 100 l 400 300 l 100 300 l h f 1 0 0 1 5 5 cm 200 200 100 50 re S";
+  const objs = [
+    "<< /Type /Catalog /Pages 2 0 R >>",
+    "<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+    "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 841.89 595.28] /Contents 4 0 R >>",
+    "<< /Length " + stream.length + " >>\nstream\n" + stream + "\nendstream",
+  ];
+  let out = "%PDF-1.4\n"; const offs: number[] = [];
+  objs.forEach((o, i) => { offs.push(out.length); out += (i + 1) + " 0 obj\n" + o + "\nendobj\n"; });
+  const xref = out.length;
+  out += "xref\n0 " + (objs.length + 1) + "\n0000000000 65535 f \n" + offs.map((n) => String(n).padStart(10, "0") + " 00000 n \n").join("");
+  out += "trailer\n<< /Size " + (objs.length + 1) + " /Root 1 0 R >>\nstartxref\n" + xref + "\n%%EOF\n";
+  return Buffer.from(out, "latin1");
+}
+
+test("PR-21/PR-6: a vector-only page read with pdf.js 6 has ink and is not blank; pages not in the PDF are listed", async () => {
+  const dir = nodeFs.mkdtempSync(nodePath.join(nodeOs.tmpdir(), "fmc-pdf-"));
+  const file = nodePath.join(dir, "Logo.pdf");
+  nodeFs.writeFileSync(file, vectorPdf());
+  const env = { ...process.env, LOCALAPPDATA: dir };
+  const res = await runPdfReviewLive(args({ pdf_path: file, pages: [1, 7] }), { env, guard: {} as never, renderer: null });
+  const body = JSON.parse(res.content[0].text);
+  assert.equal(body.checks.length, 1);
+  assert.equal(body.checks[0].has_ink, true);
+  assert.equal(body.checks[0].blank, false);
+  assert.ok(body.checks[0].fill_pct > 0);
+  assert.deepEqual(body.pages_not_found, [7]);
+  assert.equal(body.page_count, 1);
+  assert.equal(body.summary.verdict, "CHECK");
+  const again = JSON.parse((await runPdfReviewLive(args({ pdf_path: file, pages: [1] }), { env, guard: {} as never, renderer: null })).content[0].text);
+  assert.equal(again.cached_pages, 1);
+  nodeFs.rmSync(dir, { recursive: true, force: true });
+});
+
+test("PR-15/PR-20/PR-18: page runs, the overlap sweep and the summary line", () => {
+  assert.deepEqual(pageRuns([50, 1, 2, 3, 2]), [[1, 3], [50, 50]]);
+  assert.deepEqual(pagesNotFound(3, [0, 2, 4]), [0, 4]);
+  const boxes = Array.from({ length: 60 }, (_, i) => ({ x: (i % 10) * 30, y: Math.floor(i / 10) * 8, w: 40, h: 10, text: "t" + i }));
+  const page: PageFact = { page: 1, width_pt: 1190.55, height_pt: 841.89, text: "x", boxes };
+  let brute = 0;
+  for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
+    const a = boxes[i]; const b = boxes[j];
+    if (a.x < b.x + b.w - 0.2 && b.x < a.x + a.w - 0.2 && a.y < b.y + b.h - 0.2 && b.y < a.y + a.h - 0.2) brute += 1;
+  }
+  assert.equal(textOverlaps(page), brute);
+  const ink = inkFromOps([{ op: "transform", args: [1, 0, 0, 1, 10, 20] }, { op: "bounds", args: [0, 0, 5, 5] }]);
+  assert.deepEqual(ink, [{ x: 10, y: 20, w: 5, h: 5 }]);
+  const checks = reviewPages(pages);
+  const summary = summarisePdf(checks, []);
+  assert.equal(summary.verdict, "CHECK");
+  assert.deepEqual(summary.blank, [1]);
+  assert.ok(summary.line.startsWith("CHECK: 3 page(s) checked"));
+  assert.equal(summarisePdf([], []).verdict, "NO_PAGES");
+  const rows = sheetCheckRows("C:\\x\\A-101.pdf", checks, "2026-11-28T09:00:00.000Z");
+  assert.equal(rows.length, 3);
+  assert.equal(rows[0][1], "A-101.pdf");
+});
+
+test("PR-23/PR-1: record appends SheetChecks rows to the Exchange folder and return_images returns PNG content", async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-pdf-"));
+  const local = path.join(dir, "Local");
+  const reports = path.join(dir, "Reports");
+  const pdf = path.join(dir, "A-101.pdf");
+  fs.writeFileSync(pdf, tinyPdf());
+  const env = { ...process.env, LOCALAPPDATA: local, APPDATA: path.join(dir, "Roaming"), USERPROFILE: dir } as NodeJS.ProcessEnv;
+  const guard: GuardConfig = { ...DEFAULT_CONFIG, image_dir: "", reports_dir: reports } as GuardConfig;
+  const io = {
+    env, guard, facts: [pages[1]], renderer: { kind: "pdftoppm" as const, command: "pdftoppm" }, now: () => new Date("2026-11-28T09:00:00Z"),
+    run: (request: { dir: string }) => {
+      fs.mkdirSync(request.dir, { recursive: true });
+      const file = path.join(request.dir, "A-101-p2.png");
+      fs.writeFileSync(file, Buffer.from([137, 80, 78, 71]));
+      return { ok: true, files: [file] };
+    },
+  };
+  const dry = textOf(await runFmcPdfReview(args({ pdf_path: pdf, pages: [2], record: true }), io));
+  assert.equal(dry.table.written, false);
+  const table = path.join(reports, "Exchange", "Tables", "FMC_SheetChecks.csv");
+  assert.equal(fs.existsSync(table), false);
+  const live = await runFmcPdfReview(args({ pdf_path: pdf, pages: [2], dry_run: false, record: true, return_images: true }), io);
+  const body = textOf(live);
+  assert.equal(body.table.written, true, JSON.stringify(body.table));
+  const lines = fs.readFileSync(table, "utf8").trim().split(/\r?\n/);
+  assert.equal(lines.length, 2);
+  assert.ok(lines[0].startsWith("reviewed_at,pdf,page"));
+  const content = live.content as Array<{ type: string; mimeType?: string }>;
+  assert.equal(content.length, 2);
+  assert.equal(content[1].type, "image");
+  assert.equal(content[1].mimeType, "image/png");
+  fs.rmSync(dir, { recursive: true, force: true });
 });

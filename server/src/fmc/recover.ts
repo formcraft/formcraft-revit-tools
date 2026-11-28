@@ -19,7 +19,9 @@ export interface ObservedProcess {
   pid: number;
   name: string;
   commandLine?: string;
-  /** False when Windows reports the process is not responding. */
+  /** The process's executable path (Win32_Process.ExecutablePath), when Windows gives it. */
+  exePath?: string;
+  /** False when Windows reports the process is not responding (in two samples, RV live layer). */
   responding?: boolean;
 }
 
@@ -28,6 +30,8 @@ export interface ObservedDocument {
   path: string;
   workshared?: boolean;
   family?: boolean;
+  /** RV-12: Document.IsModified as the add-in publishes it in instances/<pid>.json (undefined: an older add-in). */
+  modified?: boolean;
 }
 
 export interface ObservedInstance {
@@ -39,7 +43,7 @@ export interface ObservedInstance {
   documents: ObservedDocument[];
 }
 
-export interface JobHint { pid?: number; port?: number; state: string; command?: string }
+export interface JobHint { pid?: number; port?: number; state: string; command?: string; document?: string; stale?: boolean }
 export interface SyncHint { title?: string; path?: string; last_sync?: string | null; next_sync?: string | null }
 export interface RecoveryDocument { role?: string; title?: string; path: string; workshared?: boolean }
 
@@ -80,6 +84,10 @@ export interface RecoveryPlan {
   healthy_left_alone: number[];
   risk: string;
   revit_exe: string;
+  /** RV-9: where revit_exe came from and its version. */
+  revit_exe_source: "input" | "running_process" | "default";
+  revit_version: string | null;
+  revit_exe_found: boolean | null;
 }
 
 export interface RecoveryInput {
@@ -94,6 +102,19 @@ export interface RecoveryInput {
   protectedRoots: string[];
   documents: RecoveryDocument[];
   revitExe?: string;
+  /** RV-9: whether a path exists; when given, apply refuses a Revit.exe that is not there. */
+  exeExists?: (path: string) => boolean;
+}
+
+/** RV-9: the Revit.exe a running Revit was started from (first one found), else null. */
+export function revitExeFromProcesses(processes: ObservedProcess[]): string | null {
+  const hit = processes.find((p) => /^revit(\.exe)?$/i.test(p.name) && p.exePath && /revit\.exe$/i.test(p.exePath));
+  return hit?.exePath ?? null;
+}
+
+export function revitVersionOf(exe: string): string | null {
+  const m = /Revit (20\d\d)/i.exec(exe);
+  return m ? m[1] : null;
 }
 
 const NEEDS_ADDIN = [
@@ -168,9 +189,15 @@ function syncFor(doc: ObservedDocument, syncs: SyncHint[]): SyncHint | undefined
 
 function reportDocument(doc: ObservedDocument, input: RecoveryInput, ids: { pid: number; port: number }): DocumentReport {
   const sync = syncFor(doc, input.syncs);
-  const running = input.jobs.some((j) => (j.pid === ids.pid || (j.port != null && j.port === ids.port)) && (j.state === "running" || j.state === "queued"));
+  // QU-5: a stale job (the queue's own rule) is not live work; a job naming a document counts only for that document.
+  const title = doc.title.trim().toLowerCase();
+  const running = input.jobs.some((j) => !j.stale && (j.state === "running" || j.state === "queued")
+    && (j.document ? j.document.trim().toLowerCase() === title || norm(j.document) === norm(doc.path)
+      : (j.pid === ids.pid || (j.port != null && j.port === ids.port))));
   const unsynced = !!(doc.workshared && sync?.next_sync);
-  const unsaved = running;
+  // RV-12: the add-in publishes IsModified per document; when it is there it is the fact, not a guess from the job log.
+  const modifiedKnown = typeof doc.modified === "boolean";
+  const unsaved = modifiedKnown ? doc.modified === true || running : running;
   const lastSave = input.fileMtime(doc.path);
   const protectedOriginal = underRoot(doc.path, input.protectedRoots);
   const known = unsynced || unsaved;
@@ -187,8 +214,10 @@ function reportDocument(doc: ObservedDocument, input: RecoveryInput, ids: { pid:
     protected_original: protectedOriginal,
     open_as: doc.workshared ? "new_local_from_central" : "file",
     risk: known
-      ? "Unsaved or unsynced work may be lost. Apply needs force_unsaved=true."
-      : "Unsaved work may be lost: the add-in does not record IsModified. Last save is the file time when it could be read.",
+      ? (modifiedKnown && doc.modified ? "The add-in reports this document modified (IsModified). Unsaved work will be lost. Apply needs force_unsaved=true." : "Unsaved or unsynced work may be lost. Apply needs force_unsaved=true.")
+      : modifiedKnown
+        ? "The add-in reports no unsaved change (IsModified false) when it last wrote its instance file."
+        : "Unsaved work may be lost: this add-in build did not publish IsModified for the document. Last save is the file time when it could be read.",
   };
 }
 
@@ -247,8 +276,16 @@ export function buildRecoveryPlan(input: RecoveryInput): RecoveryPlan {
     risk: unsaved
       ? "Unsaved or unsynced changes were found. Apply needs force_unsaved=true. Unsaved work may be lost."
       : "No unsaved change was found in the job log or the batch sync record. Unsaved work may still be lost if it was never recorded.",
-    revit_exe: input.revitExe || REVIT_EXE,
+    revit_exe: "",
+    revit_exe_source: "default",
+    revit_version: null,
+    revit_exe_found: null,
   };
+  const fromProcess = revitExeFromProcesses(input.processes);
+  plan.revit_exe = input.revitExe || fromProcess || REVIT_EXE;
+  plan.revit_exe_source = input.revitExe ? "input" : fromProcess ? "running_process" : "default";
+  plan.revit_version = revitVersionOf(plan.revit_exe);
+  plan.revit_exe_found = input.exeExists ? input.exeExists(plan.revit_exe) : null;
   plan.confirm = confirmToken(would_close, reopen, unsaved);
   return plan;
 }
@@ -262,6 +299,9 @@ export function applyRefusal(plan: RecoveryPlan, args: { confirm?: string; force
   }
   if (plan.unsaved && args.force_unsaved !== true) {
     return "[FMC-RECOVER] Unsaved or unsynced changes were found. Apply again with force_unsaved=true. Nothing was closed.";
+  }
+  if (plan.revit_exe_found === false && plan.reopen.length) {
+    return `[FMC-RECOVER] Revit.exe was not found at ${plan.revit_exe} (${plan.revit_exe_source}). Nothing was closed.`;
   }
   if (!plan.would_close.length && !plan.reopen.length) {
     return "[FMC-RECOVER] Nothing to recover. No crashed or hung instance, and no documents to reopen.";
@@ -281,7 +321,10 @@ export interface RecoveryActions {
 }
 
 export interface ApplyResult {
+  needs_addin_first?: string[];
   ok: boolean;
+  /** RV-5: true when Revit was started but not every document verified. */
+  partial?: boolean;
   action: "apply";
   message?: string;
   closed: Array<{ pid: number; graceful: string; killed?: string }>;
@@ -329,5 +372,12 @@ export async function applyRecovery(plan: RecoveryPlan, args: { confirm?: string
   const requeued = actions.requeue ? actions.requeue().requeued : [];
   const resumed = verified.every((v) => v.ok) && actions.resume ? actions.resume() : [];
   actions.log(`[FMC-RECOVER] requeued ${requeued.length}; resumed ${resumed.length}`);
-  return { ok: true, action: "apply", closed, started, verified, requeued, resumed, needs_addin: plan.needs_addin, writes_originals: false };
+  // RV-5: ok only when every document verified; otherwise partial, with what the add-in is needed for first.
+  const allVerified = verified.every((v) => v.ok);
+  return {
+    ...(allVerified ? {} : { needs_addin_first: plan.needs_addin }),
+    ok: allVerified,
+    ...(allVerified ? {} : { partial: true, message: `${verified.filter((v) => !v.ok).length} of ${verified.length} document(s) not verified: Revit was started but the recovery is not confirmed.` }),
+    action: "apply", closed, started, verified, requeued, resumed, needs_addin: plan.needs_addin, writes_originals: false,
+  };
 }
