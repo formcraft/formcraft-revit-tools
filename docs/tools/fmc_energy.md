@@ -44,3 +44,5 @@ The full JSON and a CSV of types are under `%LOCALAPPDATA%\Formcraft\energy`. Th
   "floor_scope": "lowest"
 }
 ```
+
+Not yet implemented (paused): analytical model report, gbXML export to project folder, gbXML check.
