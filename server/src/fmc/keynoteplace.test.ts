@@ -112,6 +112,15 @@ test("dry run does not apply, and a write needs a lease and references", async (
   assert.equal(noLease.code, "FMC-BATCH-LOCKED");
   const noRefs = textOf(await runFmcKeynotePlace(args({ document: doc.title, by: "element", categories: ["Walls"], dry_run: false, batch_lease: "lease-1" }), { read, env, guard, kitRoot: "Z:\\00_Standards", seedExists: () => false }));
   assert.equal(noRefs.code, "FMC-KEYNOTE-REFERENCES");
+  assert.match(String(dry.plan_hash), /^[0-9a-f]{16}$/);
+  const refsOk = { kit: ["FMC-BIM-MAN-001"], standards: ["FMC-BIM-STD-002"], rulebook: ["FMC_Rulebook_AIUse"] };
+  const noHash = textOf(await runFmcKeynotePlace(args({ document: doc.title, by: "element", categories: ["Walls"], dry_run: false, batch_lease: "lease-1", references: refsOk }), { read, apply: async () => { applied += 1; return {}; }, env, guard, kitRoot: "Z:\\00_Standards", seedExists: () => false }));
+  assert.equal(noHash.code, "FMC-PLAN-HASH");
+  assert.equal(noHash.isError, true);
+  // a hash from another plan (the model moved on since the dry run) is refused
+  const stale = textOf(await runFmcKeynotePlace(args({ document: doc.title, by: "element", categories: ["Walls"], dry_run: false, batch_lease: "lease-1", references: refsOk, plan_hash: "0000000000000000" }), { read, apply: async () => { applied += 1; return {}; }, env, guard, kitRoot: "Z:\\00_Standards", seedExists: () => false }));
+  assert.equal(stale.code, "FMC-PLAN-HASH");
+  assert.equal(applied, 0);
   const hebert = textOf(await runFmcKeynotePlace(args({
     document: "HEBERT HOSTELS", by: "element", dry_run: false, batch_lease: "lease-1",
     references: { kit: ["FMC-BIM-MAN-001"], standards: ["FMC-BIM-STD-002"], rulebook: ["FMC_Rulebook_AIUse"] },
@@ -123,7 +132,7 @@ test("dry run does not apply, and a write needs a lease and references", async (
   assert.equal(hebert.code, "FMC-KEYNOTE-GUARD");
   assert.equal(applied, 0);
   const ok = textOf(await runFmcKeynotePlace(args({
-    document: doc.title, by: "element", categories: ["Walls"], dry_run: false, batch_lease: "lease-1",
+    document: doc.title, by: "element", categories: ["Walls"], dry_run: false, batch_lease: "lease-1", plan_hash: String(dry.plan_hash),
     references: { kit: ["FMC-BIM-MAN-001"], standards: ["FMC-BIM-STD-002"], rulebook: ["FMC_Rulebook_AIUse"] },
   }), { read, apply: async (body) => { applied += 1; return { ok: true, views: body.views }; }, env, guard, kitRoot: "Z:\\00_Standards", seedExists: () => false }));
   assert.equal(ok.isError, false);

@@ -383,12 +383,38 @@ test("a fix dry run does not apply, and apply is one leased call with the plan",
   assert.equal(live.code, "FMC-JOINS-GUARD");
   assert.equal(applies, 0);
 
-  const applied = textOf(await runFmcJoins(args({
-    action: "fix", document: "A-0003", dry_run: false, batch_lease: "lease-1",
-    ops: planned.ops as never[],
+  assert.match(String(planned.plan_hash), /^[0-9a-f]{16}$/);
+  const pairModel = () => model({ pairs: [{ relation: "wall_end", a: "3", b: "4", end: 1, open_end: true, gap_mm: 4, overlap_mm: 0, xyz: { x: 1, y: 0, z: 0 } }] });
+
+  // the model moved on since the dry run (the open end is gone): the re-plan differs and the apply is refused
+  const stale = textOf(await runFmcJoins(args({
+    action: "fix", document: "A-0003", level: "Level 1", dry_run: false, batch_lease: "lease-1", plan_hash: String(planned.plan_hash),
   }), {
-    env, reportDir, guard,
+    env, reportDir, bank: approved, guard,
     readSnapshot: async () => { reads++; return model(); },
+    apply: async () => { applies++; return {}; },
+  }));
+  assert.equal(stale.code, "FMC-PLAN-HASH");
+  assert.equal(applies, 0);
+
+  // ops that are not the dry run's plan are refused even with the right hash
+  const edited = textOf(await runFmcJoins(args({
+    action: "fix", document: "A-0003", level: "Level 1", dry_run: false, batch_lease: "lease-1", plan_hash: String(planned.plan_hash),
+    ops: [{ op: "join", ids: ["3", "9"] }],
+  }), {
+    env, reportDir, bank: approved, guard,
+    readSnapshot: async () => { reads++; return pairModel(); },
+    apply: async () => { applies++; return {}; },
+  }));
+  assert.equal(edited.code, "FMC-PLAN-HASH");
+  assert.equal(applies, 0);
+
+  const applied = textOf(await runFmcJoins(args({
+    action: "fix", document: "A-0003", level: "Level 1", dry_run: false, batch_lease: "lease-1",
+    plan_hash: String(planned.plan_hash),
+  }), {
+    env, reportDir, bank: approved, guard,
+    readSnapshot: async () => { reads++; return pairModel(); },
     apply: async (body) => {
       applies++;
       assert.ok((body.ops as unknown[]).length <= 50);
@@ -398,8 +424,9 @@ test("a fix dry run does not apply, and apply is one leased call with the plan",
       return { ok: true, applied: true, saved: false, synced: false, resolved_document: { title: "A-0003", path: "D:\\Jobs\\_Staging\\A-0003.rvt" } };
     },
   }));
-  assert.equal(reads, 1);
+  assert.equal(reads, 4);
   assert.equal(applies, 1);
+  assert.deepEqual(applied.ops, planned.ops);
   assert.equal(applied.dry_run, false);
   assert.equal(applied.saved, false);
   assert.equal((applied.resolved_document as { title: string }).title, "A-0003");

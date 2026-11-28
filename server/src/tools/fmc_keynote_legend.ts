@@ -9,6 +9,7 @@ import { protectedRoots } from "../fmc/opencopy.js";
 import {
   LEGEND_FIX, loadLegendSpec, planLegend, referenceProblems, writeLegendReport, type LegendSheet,
 } from "../fmc/keynotelegend.js";
+import { planHashOf, planHashProblem } from "../fmc/planhash.js";
 
 function reply(body: object, isError = false) {
   return { content: [{ type: "text" as const, text: JSON.stringify(body) }], isError };
@@ -19,7 +20,8 @@ export const FMC_KEYNOTE_LEGEND_DESCRIPTION =
   "sheets is a list of sheet numbers or names. With sheets omitted, role (default plan) selects the sheets. " +
   "filter_by_sheet defaults to true. The point is the title-block parameter FMC_Legend_Zone (text x,y millimetres) or FMC_Legend_X and FMC_Legend_Y. " +
   "Without that parameter the point is the kit zone: inset from the lower right of the title block (03_Master_Data/FMC_KeynoteLegend.json, or the provisional sample). " +
-  "dry_run defaults to true. A write is fmc_keynote_legend_apply, one transaction, and needs batch_lease plus references.kit, references.standards and references.rulebook. " +
+  "dry_run defaults to true. A write is fmc_keynote_legend_apply, one transaction, and needs batch_lease, the plan_hash from the dry run, plus references.kit, references.standards and references.rulebook. " +
+  "The real run plans again and refuses (FMC-PLAN-HASH) when the plan differs from the dry run. " +
   "The answer is the legend id and the viewport id on each sheet. JSON under %LOCALAPPDATA%\\Formcraft\\keynote-legend. No pictures. " +
   "Example: document F26901-FMC-ZZ-ZZ-M3-A-0002_USER, role plan, filter_by_sheet true, dry_run true.";
 
@@ -37,6 +39,7 @@ export const FMC_KEYNOTE_LEGEND_SHAPE = {
   spec: z.string().optional().default(""),
   dry_run: z.boolean().optional().default(true),
   batch_lease: z.string().optional().default(""),
+  plan_hash: z.string().optional().default("").describe("dry_run false: the plan_hash from the dry run. The apply plans again and refuses if it differs."),
   references: refs,
 };
 
@@ -110,6 +113,7 @@ export async function runFmcKeynoteLegend(args: FmcKeynoteLegendArgs, io: Keynot
     const provisional = loaded.provisional;
     const report = writeLegendReport(env, { document: doc.title, spec: loaded.path, plan }, io.reportDir);
     const dry = args.dry_run !== false;
+    const planHash = planHashOf(args.document, { name: plan.name, filter_by_sheet: plan.filter_by_sheet, placements: plan.placements });
     const summary = stamp({
       dry_run: dry,
       read_only: dry,
@@ -123,8 +127,9 @@ export async function runFmcKeynoteLegend(args: FmcKeynoteLegendArgs, io: Keynot
       sheets: plan.placements,
       skipped: plan.skipped,
       report,
+      plan_hash: planHash,
     });
-    if (dry) return reply({ ...summary, next: "Nothing was placed. Apply with dry_run false, batch_lease, and references. That call is fmc_keynote_legend_apply, one transaction." });
+    if (dry) return reply({ ...summary, next: "Nothing was placed. Apply with dry_run false, batch_lease, this plan_hash, and references. That call is fmc_keynote_legend_apply, one transaction." });
     const blob = `${doc.title} ${doc.path}`;
     if (/hebert hostels/i.test(blob) || doc.is_central) return reply({ ...stamp(), refused: true, code: "FMC-KEYNOTE-LEGEND-GUARD", message: "HEBERT HOSTELS and a central model are not written by fmc_keynote_legend." }, true);
     const loadedCfg = io.guard ? { config: io.guard, problem: undefined as string | undefined } : loadConfig(configPath(env));
@@ -134,6 +139,8 @@ export async function runFmcKeynoteLegend(args: FmcKeynoteLegendArgs, io: Keynot
     if (!lease) return reply({ ...stamp(), refused: true, code: "FMC-BATCH-LOCKED", message: LEGEND_FIX["FMC-BATCH-LOCKED"] }, true);
     const refsProblem = referenceProblems(args.references);
     if (refsProblem) return reply({ ...stamp(), refused: true, code: "FMC-KEYNOTE-LEGEND-REFERENCES", message: refsProblem }, true);
+    const hashProblem = planHashProblem(args.plan_hash, planHash);
+    if (hashProblem) return reply({ ...summary, refused: true, read_only: true, dry_run: true, code: "FMC-PLAN-HASH", message: hashProblem }, true);
     if (!plan.placements.length) return reply({ ...summary, refused: true, read_only: true }, true);
     const roots = [...(loadedCfg.config.protected_paths ?? []), ...protectedRoots(loadedCfg.config)];
     const applyBody = {

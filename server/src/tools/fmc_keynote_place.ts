@@ -12,6 +12,7 @@ import {
   KEYNOTE_FIX, keynoteSeedPath, normalizeKeynote, planKeynotes, referenceProblems, writeKeynoteReport,
   type KeyBy, type KeynoteDoc,
 } from "../fmc/keynoteplace.js";
+import { planHashOf, planHashProblem } from "../fmc/planhash.js";
 
 function reply(body: object, isError = false) {
   return { content: [{ type: "text" as const, text: JSON.stringify(body) }], isError };
@@ -26,7 +27,8 @@ export const FMC_KEYNOTE_PLACE_DESCRIPTION =
   "leader true (the default) puts the head off the wall face along the wall normal, past half the wall width, with a leader. " +
   "A head that overlaps an existing tag box is shifted. If every offset overlaps, the host is FMC-KEYNOTE-OVERLAP and is not tagged. The answer includes counts. " +
   "dry_run defaults to true and returns the per-view plan. A write is fmc_keynote_place_apply, one transaction, one subtransaction per host, " +
-  "and needs batch_lease plus references.kit, references.standards and references.rulebook. A blank copy is rolled back. " +
+  "and needs batch_lease, the plan_hash from the dry run, plus references.kit, references.standards and references.rulebook. " +
+  "The real run plans again and refuses (FMC-PLAN-HASH) when the plan differs from the dry run. A blank copy is rolled back. " +
   "The full JSON is under %LOCALAPPDATA%\\Formcraft\\keynote. No pictures. " +
   "Example: document F26901-FMC-ZZ-ZZ-M3-A-0002_USER, views all_plans, categories [\"Walls\",\"Doors\"], by element, one_per_key true, leader true, dry_run true.";
 
@@ -46,6 +48,7 @@ export const FMC_KEYNOTE_PLACE_SHAPE = {
   offset_mm: z.number().positive().optional().default(600),
   dry_run: z.boolean().optional().default(true),
   batch_lease: z.string().optional().default(""),
+  plan_hash: z.string().optional().default("").describe("dry_run false: the plan_hash from the dry run. The apply plans again and refuses if it differs."),
   references: refs,
 };
 
@@ -127,6 +130,12 @@ export async function runFmcKeynotePlace(args: FmcKeynotePlaceArgs, io: KeynoteP
     });
     const report = writeKeynoteReport(env, { document: doc.title, by, plan }, io.reportDir);
     const dry = args.dry_run !== false;
+    const writeViews = plan.views.filter((view) => view.placed.length).map((view) => ({
+      view_id: view.view_id,
+      view: view.view,
+      hosts: view.placed.map((row) => ({ host: row.host, leader: row.leader === true, ...(row.head_mm ? { head_mm: row.head_mm } : {}) })),
+    }));
+    const planHash = planHashOf(args.document, { by, seed: plan.seed, views: writeViews });
     const summary = stamp({
       dry_run: dry,
       read_only: dry,
@@ -142,15 +151,18 @@ export async function runFmcKeynotePlace(args: FmcKeynotePlaceArgs, io: KeynoteP
       leader: args.leader !== false,
       ...(plan.code ? { code: plan.code, message: KEYNOTE_FIX[plan.code] ?? plan.seed.reason } : {}),
       report,
+      plan_hash: planHash,
     });
     if (dry) {
-      return reply({ ...summary, next: "Nothing was copied. Apply with dry_run false, batch_lease, and references. That call is fmc_keynote_place_apply, one transaction." });
+      return reply({ ...summary, next: "Nothing was copied. Apply with dry_run false, batch_lease, this plan_hash, and references. That call is fmc_keynote_place_apply, one transaction." });
     }
     const guard = guardReason(doc, io);
     if (guard) return reply({ ...stamp(), refused: true, dry_run: false, code: "FMC-KEYNOTE-GUARD", message: guard }, true);
     if (!leaseOf(args)) return reply({ ...stamp(), refused: true, code: "FMC-BATCH-LOCKED", message: KEYNOTE_FIX["FMC-BATCH-LOCKED"] }, true);
     const refsProblem = referenceProblems(args.references);
     if (refsProblem) return reply({ ...stamp(), refused: true, code: "FMC-KEYNOTE-REFERENCES", message: refsProblem }, true);
+    const hashProblem = planHashProblem(args.plan_hash, planHash);
+    if (hashProblem) return reply({ ...summary, refused: true, read_only: true, dry_run: true, code: "FMC-PLAN-HASH", message: hashProblem }, true);
     if (plan.code || !plan.views.some((view) => view.placed.length)) {
       return reply({ ...summary, refused: true, read_only: true, dry_run: true }, true);
     }
@@ -160,11 +172,7 @@ export async function runFmcKeynotePlace(args: FmcKeynotePlaceArgs, io: KeynoteP
       document: args.document.trim(),
       by,
       seed: plan.seed,
-      views: plan.views.filter((view) => view.placed.length).map((view) => ({
-        view_id: view.view_id,
-        view: view.view,
-        hosts: view.placed.map((row) => ({ host: row.host, leader: row.leader === true, ...(row.head_mm ? { head_mm: row.head_mm } : {}) })),
-      })),
+      views: writeViews,
       protected_roots: roots,
       _protected_roots: roots,
       references: args.references ?? {},

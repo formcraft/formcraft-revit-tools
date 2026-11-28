@@ -70,7 +70,15 @@ test("dry run does not apply, and a write returns legend and viewport ids", asyn
   assert.equal(applied, 0);
   assert.equal(dry.can_pass, false);
   const refs = { kit: ["FMC-BIM-MAN-001"], standards: ["FMC-BIM-STD-002"], rulebook: ["FMC_Rulebook_AIUse"] };
-  const done = textOf(await runFmcKeynoteLegend(args({ document: "A", role: "plan", dry_run: false, batch_lease: "lease-1", references: refs }), {
+  assert.match(String(dry.plan_hash), /^[0-9a-f]{16}$/);
+  const noHash = textOf(await runFmcKeynoteLegend(args({ document: "A", role: "plan", dry_run: false, batch_lease: "lease-1", references: refs }), { read, apply: async () => { applied += 1; return {}; }, env, guard, kitRoot: "" }));
+  assert.equal(noHash.code, "FMC-PLAN-HASH");
+  // the sheets changed since the dry run: the rebuilt plan differs, so the dry run's hash is refused
+  const fewer = async () => ({ title: "A", path: "D:\\Jobs\\_Staging\\A.rvt", sheets: [] });
+  const moved = textOf(await runFmcKeynoteLegend(args({ document: "A", role: "plan", dry_run: false, batch_lease: "lease-1", references: refs, plan_hash: String(dry.plan_hash) }), { read: fewer, apply: async () => { applied += 1; return {}; }, env, guard, kitRoot: "" }));
+  assert.equal(moved.code, "FMC-PLAN-HASH");
+  assert.equal(applied, 0);
+  const done = textOf(await runFmcKeynoteLegend(args({ document: "A", role: "plan", dry_run: false, batch_lease: "lease-1", references: refs, plan_hash: String(dry.plan_hash) }), {
     read,
     apply: async (body) => {
       applied += 1;
