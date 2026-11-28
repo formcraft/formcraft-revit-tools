@@ -1123,5 +1123,14 @@
     "status": "Built, Revit check due",
     "ref": "fmc_file open_local, fmc_file close_local, fmc_open_local, fmc_close_local, fmc_close_local_apply, docs/tools/fmc_file.md",
     "note": "open_local opens a person's existing workshared local as the active document with UIApplication.OpenAndActivateDocument (activate=false uses OpenDocumentFile). worksets are all, last_viewed, none or a list of names. DoNotDetach; it never creates a new local, never synchronises, and refuses a central (FMC-FILE-CENTRAL-REFUSED), a missing file, a cloud, protected or live path, and worksets on a file that is not workshared. An already open local is only activated. close_local never syncs or relinquishes; it activates another open project first when the target is active, refuses the only open document (FMC-FILE-ONLY-DOC) and unsaved changes without confirm. save=true is a write (fmc_close_local_apply, in WRITE_COMMANDS: batch_lease, live-model lock, AI gate) and is refused for HEBERT HOSTELS, a protected original, a verification copy or a document never saved. dry_run defaults true. Opening a model in Revit stays a person's choice: the Revit check runs after install, dry run only."
+  },
+  {
+    "id": "F130",
+    "area": "Engine",
+    "group": "Compliance",
+    "feature": "NBRB seismic screening form and building database (fmc_seismic_screen)",
+    "status": "Built, Revit check due",
+    "ref": "fmc_seismic_screen, docs/tools/fmc_seismic_screen.md",
+    "note": "G028 / L011-F15 for the NBRB conference (9-11 Dec). Read-only on the model (fmc_struct_facts). It fills a screening form: storeys, height, floor area, plan, wall material, columns, beams and foundations come from the model, and every value is tagged model, entered or TBC. The checklist has 13 items. Records go into a JSON database in 01_WIP\\_Screening or the reports folder, with versions and history, archive instead of delete, a lock, atomic writes and dry run first. US 319 applicability, Z, I, K, C, T1 and an indicative Cd come only from the kit's seismic.* values. A value the kit gives in words, or does not give, is TBC. Committee report in Markdown and HTML, register CSV and GeoJSON for the map, and three fictional demo buildings. The outcome is the inspector's. Needs a Revit check on a sample model."
   }
 ]
