@@ -68,6 +68,12 @@ namespace RevitMCPCommandSet.Models.Common
         [JsonProperty("skip")]
         public int Skip { get; set; } = 0;
         /// <summary>
+        /// Cursor paging (tool research 1-25, FILTER_TOOL_SPEC 5.6): the page starts after this element id, in element-id
+        /// order. The server takes it from the cursor; -1 means not set (skip is used).
+        /// </summary>
+        [JsonProperty("afterId")]
+        public long AfterId { get; set; } = -1;
+        /// <summary>
         /// 验证过滤器设置的有效性，检查潜在的冲突
         /// </summary>
         /// <returns>如果设置有效返回true，否则返回false</returns>
@@ -99,6 +105,8 @@ namespace RevitMCPCommandSet.Models.Common
                     invalidFilters.Add("family instance filter");
                 if (FilterVisibleInCurrentView)
                     invalidFilters.Add("view visibility filter");
+                if (BoundingBoxMin != null || BoundingBoxMax != null)
+                    invalidFilters.Add("bounding box filter (types have no location)");
                 if (invalidFilters.Count > 0)
                 {
                     errorMessage = $"These filters don't apply when only element types are filtered: {string.Join(", ", invalidFilters)}";
