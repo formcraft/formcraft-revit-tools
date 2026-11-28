@@ -16,7 +16,8 @@ export const FMC_ELEC_DIAGRAMS_DESCRIPTION =
   "A missing rating or load is TBC. The earthing view is a template and does not size the electrode. " +
   "dry_run defaults to true. apply with dry_run false needs batch_lease and references.kit, references.standards and references.rulebook. " +
   "That call is fmc_elec_diagrams_apply, one transaction, one subtransaction per view. The model is not saved. " +
-  "Pass document. HEBERT HOSTELS, a central model and a protected path are refused. " +
+  "Circuits on no read board are counted in counts.circuits_not_drawn with a warning. plan returns would_refuse when an apply would be refused. " +
+  "Pass document. A protected project name (HEBERT HOSTELS, plus the guard's never_write_titles), a central model and a protected path are refused. " +
   "Example: action plan, document F26901-FMC-ZZ-ZZ-M3-E-0001_USER, dry_run true.";
 
 const refs = z.object({
@@ -31,6 +32,8 @@ export const FMC_ELEC_DIAGRAMS_SHAPE = {
   dry_run: z.boolean().optional().default(true),
   batch_lease: z.string().optional().default(""),
   riser: z.enum(["bands", "elevation"]).optional().default("bands"),
+  include: z.array(z.enum(["sld", "riser", "earthing"])).optional()
+    .describe("Views to plan. Default all, but the earthing template is skipped when no panels were read; name earthing to keep it."),
   references: refs,
 };
 

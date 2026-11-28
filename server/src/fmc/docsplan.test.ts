@@ -81,3 +81,56 @@ test("a real close needs a batch lease, and a dry run does not open anything", a
   assert.match(write.content[0].text, /FMC-BATCH-LOCKED/);
   assert.equal(applied, false);
 });
+
+// ---------- research tool 37: list honours document and filters; protected names come from one place ----------
+import { filterDocs, neverSaveTitle } from "./docsplan.js";
+
+const openRows = [
+  { title: "plumbing_USER", path: "C:\\Users\\USER\\Documents\\plumbing_USER.rvt", workshared: true, active: true, modified: false },
+  { title: "electrical_USER", path: "C:\\Users\\USER\\Documents\\electrical_USER.rvt", workshared: true, modified: true },
+  { title: "Project1", path: "", modified: true },
+  { title: "Family1", path: "C:\\Fam\\Family1.rfa", family: true, modified: false },
+];
+
+test("filterDocs matches a title, full path, file name or file name without extension, case-insensitive", () => {
+  assert.deepEqual(filterDocs(openRows, { document: "ELECTRICAL_USER" }).map((d) => d.title), ["electrical_USER"]);
+  assert.deepEqual(filterDocs(openRows, { document: "C:\\Users\\USER\\Documents\\plumbing_USER.rvt" }).map((d) => d.title), ["plumbing_USER"]);
+  assert.deepEqual(filterDocs(openRows, { document: "family1.rfa" }).map((d) => d.title), ["Family1"]);
+  assert.deepEqual(filterDocs(openRows, { document: "nope" }), []);
+  assert.equal(filterDocs(openRows, {}).length, 4);
+});
+
+test("filterDocs flags: family, modified, workshared", () => {
+  assert.deepEqual(filterDocs(openRows, { family: true }).map((d) => d.title), ["Family1"]);
+  assert.deepEqual(filterDocs(openRows, { family: false, modified: true }).map((d) => d.title), ["electrical_USER", "Project1"]);
+  assert.deepEqual(filterDocs(openRows, { workshared: false }).map((d) => d.title), ["Project1", "Family1"]);
+});
+
+test("fmc_docs list with document returns only that document (live: same list for every document)", async () => {
+  const io = { list: async () => openRows };
+  const base = { path: "", as_local: undefined, detach: false, worksets: "all" as const, save: false, dry_run: true, batch_lease: "" };
+  const one = JSON.parse((await runFmcDocs({ ...base, action: "list", document: "architectural_USER" }, io)).content[0].text);
+  assert.equal(one.refused, true);
+  assert.equal(one.code, "FMC-DOC-NOT-OPEN");
+  assert.equal(one.total, 4);
+  const hit = await runFmcDocs({ ...base, action: "list", document: "electrical_USER" }, io);
+  const body = JSON.parse(hit.content[0].text);
+  assert.equal(hit.isError, false);
+  assert.equal(body.count, 1);
+  assert.equal(body.total, 4);
+  assert.equal(body.filtered, true);
+  assert.equal(body.documents[0].title, "electrical_USER");
+  const all = JSON.parse((await runFmcDocs({ ...base, action: "list", document: "" }, io)).content[0].text);
+  assert.equal(all.count, 4);
+  assert.equal(all.filtered, undefined);
+  const mod = JSON.parse((await runFmcDocs({ ...base, action: "list", document: "", modified: true, family: false }, io)).content[0].text);
+  assert.deepEqual(mod.documents.map((d: { title: string }) => d.title), ["electrical_USER", "Project1"]);
+});
+
+test("neverSaveTitle keeps HEBERT HOSTELS and adds the guard's never_write_titles", () => {
+  assert.equal(neverSaveTitle("HEBERT HOSTELS_USER"), true);
+  assert.equal(neverSaveTitle("Ogala Live_USER"), false);
+  assert.equal(neverSaveTitle("Ogala Live_USER", "", { never_write_titles: ["Ogala Live"] }), true);
+  const plan = planClose({ document: "Ogala Live", save: true, open: [{ title: "Ogala Live", path: "C:\\O.rvt" }, { title: "B", path: "C:\\B.rvt" }], guard: { ...DEFAULT_CONFIG, never_write_titles: ["Ogala Live"] } as never });
+  assert.match(plan.reasons.join(" "), /Ogala Live is never saved \(protected name Ogala Live\)/);
+});

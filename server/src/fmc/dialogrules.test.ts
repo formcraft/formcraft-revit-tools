@@ -195,3 +195,60 @@ test("fmc_dialog_rules does not call Revit or read the guard, and the add-in eng
   assert.match(src, /Do not save the project/);
   assert.match(src, /Do not synchronize/);
 });
+
+// ---------- research tool 34: remove and test ----------
+import { removeRule, testDialog } from "./dialogrules.js";
+import { runFmcDialogRules } from "../tools/fmc_dialog_rules.js";
+
+test("remove is a dry run until dry_run false, and refuses an unknown id", () => {
+  const { env } = home();
+  addRule({ id: "warn-ok", dialog_id: "TaskDialog_Some_Warning", answer: "Ok" }, env, false);
+  const before = readRules(env).rules.length;
+  const dry = removeRule("warn-ok", env);
+  assert.equal(dry.refused, false);
+  assert.equal(dry.dry_run, true);
+  assert.equal(dry.rules.some((r) => r.id === "warn-ok"), false);
+  assert.equal(readRules(env).rules.length, before, "a dry run writes nothing");
+  const real = removeRule("warn-ok", env, false);
+  assert.equal(real.refused, false);
+  assert.equal(readRules(env).rules.some((r) => r.id === "warn-ok"), false);
+  assert.equal(readRules(env).rules.length, before - 1);
+  assert.equal(removeRule("nope", env).refused, true);
+});
+
+test("test says whether a dialog would be answered, during a job and between jobs, without writing", () => {
+  const { env } = home();
+  addRule({ id: "warn-always", dialog_id: "TaskDialog_Some_Warning", answer: "Ok", scope: "always", message: "duplicate" }, env, false);
+  addRule({ id: "jobs-only", dialog_id: "TaskDialog_Job_Thing", answer: "Close" }, env, false);
+  const file = readRules(env).file;
+  const stamp = fs.statSync(file).mtimeMs;
+  const hit = testDialog({ dialog_id: "TaskDialog_Some_Warning", message: "a duplicate mark" }, env);
+  assert.ok(!("refused" in hit));
+  if ("refused" in hit) return;
+  assert.equal(hit.during_ai_job.act, true);
+  assert.equal(hit.during_ai_job.rule_id, "warn-always");
+  assert.equal(hit.between_jobs.act, true);
+  const noText = testDialog({ dialog_id: "TaskDialog_Some_Warning", message: "other text" }, env);
+  if (!("refused" in noText)) assert.equal(noText.during_ai_job.act, false);
+  const jobs = testDialog({ dialog_id: "TaskDialog_Job_Thing" }, env);
+  if (!("refused" in jobs)) { assert.equal(jobs.during_ai_job.act, true); assert.equal(jobs.between_jobs.act, false); }
+  const save = testDialog({ dialog_id: "TaskDialog_Save_File" }, env);
+  if (!("refused" in save)) { assert.equal(save.during_ai_job.never_auto, true); assert.equal(save.during_ai_job.act, false); }
+  assert.equal("refused" in testDialog({}, env), true);
+  assert.equal(fs.statSync(file).mtimeMs, stamp, "test never writes the rules file");
+});
+
+test("fmc_dialog_rules test and remove actions", () => {
+  const { env } = home();
+  addRule({ id: "warn-ok", dialog_id: "TaskDialog_Some_Warning", answer: "Ok" }, env, false);
+  const tested = JSON.parse(runFmcDialogRules({ action: "test", dialog_id: "TaskDialog_Some_Warning" }, env).content[0].text);
+  assert.equal(tested.read_only, true);
+  assert.equal(tested.during_ai_job.rule_id, "warn-ok");
+  const missing = runFmcDialogRules({ action: "test" }, env);
+  assert.equal(missing.isError, true);
+  const dry = JSON.parse(runFmcDialogRules({ action: "remove", rule_id: "warn-ok" }, env).content[0].text);
+  assert.equal(dry.dry_run, true);
+  assert.equal(readRules(env).rules.some((r) => r.id === "warn-ok"), true);
+  runFmcDialogRules({ action: "remove", rule_id: "warn-ok", dry_run: false }, env);
+  assert.equal(readRules(env).rules.some((r) => r.id === "warn-ok"), false);
+});

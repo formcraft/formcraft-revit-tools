@@ -107,3 +107,43 @@ test("the dimension read is not a write and the apply is", () => {
   assert.ok(READ_VIA_SEND_COMMAND.has("fmc_dims"));
   assert.ok(WRITE_COMMANDS.has("fmc_dims_apply"));
 });
+
+// ---------- research tool 35: the dry run shows the guard result; protected names from one place ----------
+test("a dry run says would_refuse for a protected name or a central, and null when an apply could go ahead", async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-dims-guard-"));
+  const env = { ...process.env, LOCALAPPDATA: dir, APPDATA: dir, FMC_DIMS_DIR: path.join(dir, "dims") } as NodeJS.ProcessEnv;
+  const guard = { ...DEFAULT_CONFIG, never_write_titles: ["Ogala Live"] } as GuardConfig;
+  const readAs = (title: string, extra: Record<string, unknown> = {}) => async () => ({ title, path: `D:\\Jobs\\_Staging\\${title}.rvt`, view: "Level 1", grids, walls, openings, ...extra });
+  const ok = textOf(await runFmcDims(args({ document: "A", view: "Level 1", targets: "grids" }), { read: readAs("A"), env, guard }));
+  assert.equal(ok.would_refuse, null);
+  const hebert = textOf(await runFmcDims(args({ document: "H", view: "Level 1", targets: "grids" }), { read: readAs("HEBERT HOSTELS_USER"), env, guard }));
+  assert.equal(hebert.dry_run, true);
+  assert.equal(hebert.isError, false, "a dry run is still a plan");
+  assert.match(String(hebert.would_refuse), /HEBERT HOSTELS is not written by fmc_dims/);
+  assert.match(String(hebert.next), /would be refused/);
+  const extra = textOf(await runFmcDims(args({ document: "O", view: "Level 1", targets: "grids" }), { read: readAs("Ogala Live_USER"), env, guard }));
+  assert.match(String(extra.would_refuse), /Ogala Live is not written/);
+  const central = textOf(await runFmcDims(args({ document: "C", view: "Level 1", targets: "grids" }), { read: readAs("C", { is_central: true }), env, guard }));
+  assert.match(String(central.would_refuse), /A central model is not written/);
+  const real = textOf(await runFmcDims(args({ document: "H", view: "Level 1", targets: "grids", dry_run: false, batch_lease: "l" }), { read: readAs("HEBERT HOSTELS_USER"), env, guard, apply: async () => { throw new Error("must not apply"); } }));
+  assert.equal(real.code, "FMC-DIMS-GUARD");
+});
+
+test("research tool 35: ids keeps only the named grids, walls or rooms, and an opening follows its wall", async () => {
+  const { filterDimInput } = await import("./dims.js");
+  const rooms = [{ id: "r1", name: "Kitchen", x: 0, y: 0, bounds: [] }, { id: "r2", name: "Bed 1", x: 0, y: 0, bounds: [] }];
+  const all = filterDimInput({ grids, walls, openings, rooms }, undefined);
+  assert.equal(all.grids.length, 4);
+  const one = filterDimInput({ grids, walls, openings, rooms }, ["w1", "kitchen", "nope"]);
+  assert.deepEqual(one.walls.map((w) => w.id), ["w1"]);
+  assert.deepEqual(one.openings.map((o) => o.id), ["d1"]);
+  assert.deepEqual(one.rooms.map((r) => r.id), ["r1"]);
+  assert.equal(one.grids.length, 0);
+  assert.deepEqual(one.unmatched, ["nope"]);
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-dims-ids-"));
+  const env = { ...process.env, LOCALAPPDATA: dir, APPDATA: dir, FMC_DIMS_DIR: path.join(dir, "dims") } as NodeJS.ProcessEnv;
+  const read = async () => ({ title: "A", path: "D:\\Jobs\\_Staging\\A.rvt", view: "Level 1", grids, walls, openings });
+  const dry = textOf(await runFmcDims(args({ document: "A", view: "Level 1", targets: "grids", ids: ["1", "2"] }), { read, env, guard: { ...DEFAULT_CONFIG } }));
+  assert.equal((dry.strings as unknown[]).length, 1, "only grids 1 and 2: one chain");
+  assert.deepEqual(dry.unmatched_ids, []);
+});

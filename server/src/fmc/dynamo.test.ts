@@ -184,3 +184,29 @@ test("graph_run inspect no longer returns the old runner refusal", async () => {
     if (prevKit === undefined) delete process.env.FMC_KIT; else process.env.FMC_KIT = prevKit;
   }
 });
+
+test("research tool 38: graphs lists the .dyn files under the two kit folders, read-only", async () => {
+  const { listGraphs } = await import("./dynamo.js");
+  const kit = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-dyn-graphs-"));
+  const lib = path.join(kit, "05_Scripts", "library", "walls");
+  fs.mkdirSync(lib, { recursive: true });
+  const graph = (name: string, extra: Record<string, unknown> = {}) => JSON.stringify({ Uuid: "u-" + name, Name: name, Inputs: [{ Id: "i1", Name: "Level", Type: "string", Value: "L1" }], Outputs: [], Nodes: [], NodeLibraryDependencies: [], ...extra });
+  fs.writeFileSync(path.join(lib, "Wall Heights.dyn"), graph("Wall Heights"));
+  fs.writeFileSync(path.join(lib, "notes.txt"), "not a graph");
+  fs.writeFileSync(path.join(kit, "05_Scripts", "library", "Broken.dyn"), "{nope");
+  fs.mkdirSync(path.join(kit, "05_Scripts", "Other"), { recursive: true });
+  fs.writeFileSync(path.join(kit, "05_Scripts", "Other", "Outside.dyn"), graph("Outside"));
+  const all = listGraphs(kit);
+  assert.deepEqual(all.graphs.map((g) => [path.basename(g.file), g.root]), [["Broken.dyn", "library"], ["Wall Heights.dyn", "library"]]);
+  assert.equal(all.total, 2);
+  assert.equal(all.truncated, false);
+  assert.equal(all.missing_roots.length, 1, "05_Scripts/Dynamo is missing and reported");
+  const wall = all.graphs.find((g) => g.name === "Wall Heights")!;
+  assert.deepEqual(wall.inputs, ["Level"]);
+  assert.equal(wall.error, undefined);
+  assert.ok(all.graphs.find((g) => g.file.endsWith("Broken.dyn"))!.error, "a bad file is listed with its error");
+  assert.deepEqual(listGraphs(kit, { query: "wall" }).graphs.map((g) => g.name), ["Wall Heights"]);
+  const capped = listGraphs(kit, { cap: 1 });
+  assert.equal(capped.graphs.length, 1);
+  assert.equal(capped.truncated, true);
+});

@@ -5,7 +5,8 @@ import { batchLease } from "../fmc/target.js";
 import { saveBlocked } from "../fmc/savepolicy.js";
 import { configPath, loadConfig, type GuardConfig } from "../fmc/policy.js";
 import { protectedRoots } from "../fmc/opencopy.js";
-import { DIMS_FIX, planDims, referenceProblems, writeDimsReport, type DimCurve, type DimOpening, type DimRoom, type DimTarget } from "../fmc/dims.js";
+import { neverWriteMatch } from "../fmc/protectednames.js";
+import { DIMS_FIX, filterDimInput, planDims, referenceProblems, writeDimsReport, type DimCurve, type DimOpening, type DimRoom, type DimTarget } from "../fmc/dims.js";
 
 function reply(body: object, isError = false) {
   return { content: [{ type: "text" as const, text: JSON.stringify(body) }], isError };
@@ -21,6 +22,7 @@ export const FMC_DIMS_DESCRIPTION =
   "dry_run defaults to true and returns the planned references and the dimension line. It does not create a dimension. " +
   "A write is fmc_dims_apply, one transaction, one subtransaction per string, and needs batch_lease plus references.kit, references.standards and references.rulebook. " +
   "A missing reference is FMC-DIMS-NO-REFERENCE and that string is not created. Exterior wall strings still skip interior walls. " +
+  "ids limits the plan to those grids, walls or rooms (id or name); unmatched_ids lists the ones not found. dry_run returns would_refuse when the apply would be refused. " +
   "JSON under %LOCALAPPDATA%\\Formcraft\\dims. No pictures. " +
   "Example: action auto, document F26901-FMC-ZZ-ZZ-M3-A-0002_USER, view \"Level 1\", targets [\"interior\",\"rooms\"], chain true, offset_mm 600, dry_run true.";
 
@@ -42,6 +44,7 @@ export const FMC_DIMS_SHAPE = {
   dry_run: z.boolean().optional().default(true),
   batch_lease: z.string().optional().default(""),
   references: refs,
+  ids: z.array(z.string()).optional().describe("Only these grids, walls or rooms (element id, or name). An opening stays with its host wall. Default: the whole view."),
 };
 
 export type FmcDimsArgs = z.infer<z.ZodObject<typeof FMC_DIMS_SHAPE>>;
@@ -96,11 +99,17 @@ export async function runFmcDims(args: FmcDimsArgs, io: DimsIo = {}) {
     const body = raw && typeof raw === "object" ? raw as Record<string, unknown> : {};
     if (body.refused === true) return reply({ ...stamp(), refused: true, code: String(body.code ?? "FMC-DIMS"), message: String(body.message ?? "The read was refused.") }, true);
     const doc = { title: String(body.title ?? args.document), path: String(body.path ?? ""), is_central: body.is_central === true };
-    const plan = planDims({
+    const picked = filterDimInput({
       grids: (Array.isArray(body.grids) ? body.grids : []).map(asCurve).filter((row): row is DimCurve => !!row),
       walls: (Array.isArray(body.walls) ? body.walls : []).map(asCurve).filter((row): row is DimCurve => !!row),
       openings: (Array.isArray(body.openings) ? body.openings : []) as DimOpening[],
       rooms: (Array.isArray(body.rooms) ? body.rooms : []) as DimRoom[],
+    }, args.ids);
+    const plan = planDims({
+      grids: picked.grids,
+      walls: picked.walls,
+      openings: picked.openings,
+      rooms: picked.rooms,
       targets,
       chain: args.chain !== false,
       offset_mm: args.offset_mm,
@@ -118,14 +127,17 @@ export async function runFmcDims(args: FmcDimsArgs, io: DimsIo = {}) {
       strings: plan.strings,
       references: plan.strings.map((row) => row.references),
       skipped: plan.skipped,
+      ...(args.ids?.length ? { ids: args.ids, unmatched_ids: picked.unmatched } : {}),
       report,
     });
-    if (dry) return reply({ ...summary, next: "Nothing was dimensioned. Apply with dry_run false, batch_lease, and references. That call is fmc_dims_apply, one transaction." });
-    const blob = `${doc.title} ${doc.path}`;
-    if (/hebert hostels/i.test(blob) || doc.is_central) return reply({ ...stamp(), refused: true, code: "FMC-DIMS-GUARD", message: "HEBERT HOSTELS and a central model are not written by fmc_dims." }, true);
     const loaded = io.guard ? { config: io.guard, problem: undefined as string | undefined } : loadConfig(configPath(env));
-    const blocked = saveBlocked(doc, loaded.config) || loaded.problem;
-    if (blocked) return reply({ ...stamp(), refused: true, code: "FMC-DIMS-GUARD", message: blocked }, true);
+    const protectedName = neverWriteMatch([doc.title, doc.path], loaded.config);
+    const guardReason = protectedName ? `${protectedName} is not written by fmc_dims.`
+      : doc.is_central ? "A central model is not written by fmc_dims."
+      : saveBlocked(doc, loaded.config) || loaded.problem || null;
+    // research tool 35: the dry run says whether the apply would be refused by the guard (it changes nothing)
+    if (dry) return reply({ ...summary, would_refuse: guardReason, next: guardReason ? `The apply would be refused: ${guardReason}` : "Nothing was dimensioned. Apply with dry_run false, batch_lease, and references. That call is fmc_dims_apply, one transaction." });
+    if (guardReason) return reply({ ...stamp(), refused: true, code: "FMC-DIMS-GUARD", message: guardReason }, true);
     const lease = args.batch_lease.trim() || (batchLease.getStore() ?? "");
     if (!lease) return reply({ ...stamp(), refused: true, code: "FMC-BATCH-LOCKED", message: DIMS_FIX["FMC-BATCH-LOCKED"] }, true);
     const refsProblem = referenceProblems(args.references);

@@ -2,7 +2,7 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { readJsonLines, jobFiles } from "../fmc/jobs.js";
 import {
-  addRule, blockingDialog, defaultRules, dialogAlerts, dialogCounts, neverAutoReason, readRules, setRuleEnabled,
+  addRule, blockingDialog, defaultRules, dialogAlerts, dialogCounts, neverAutoReason, readRules, removeRule, setRuleEnabled, testDialog,
   type DialogLine, type DialogRule,
 } from "../fmc/dialogrules.js";
 import { recentDialogs } from "../fmc/dialogs.js";
@@ -11,7 +11,8 @@ export const FMC_DIALOG_RULES_DESCRIPTION =
   "Dialog rules that keep Revit pop-ups from blocking unattended work. list: the rules (from " +
   "fmc_dialog_rules.json, or the built-in defaults when that file is missing), recent dialog history with counts by " +
   "dialog_id and answer, any dialog the add-in says is open, and alerts for dialogs that are never answered automatically. " +
-  "add: propose a rule (dry_run true, the default) or write it (dry_run false). enable and disable change one rule the same way. " +
+  "add: propose a rule (dry_run true, the default) or write it (dry_run false); add with an existing id replaces that rule. enable, disable and remove change one rule the same way. " +
+  "test {dialog_id, message, document} (read-only) says whether that dialog would be answered, by which rule, during an AI job and between jobs. " +
   "A rule matches dialog_id, plus an optional message regex and an optional active-document regex, and gives an answer " +
   "(Ok, Cancel, Close, No, CommandLink1..4, a positive OverrideResult, or log) and a scope (ai_jobs or always). " +
   "Save, sync, relinquish, upgrade, recover, fatal and serious-error dialogs are refused, including Save_File, " +
@@ -32,13 +33,16 @@ const ruleShape = z.object({
 }).optional();
 
 const shape = {
-  action: z.enum(["list", "history", "propose", "add", "enable", "disable"]).optional()
-    .describe("list (default) returns rules, counts, the open dialog and alerts. history is the counts and recent lines. propose is a dry run of add. add writes when dry_run is false. enable and disable take rule_id."),
+  action: z.enum(["list", "history", "propose", "add", "enable", "disable", "remove", "test"]).optional()
+    .describe("list (default) returns rules, counts, the open dialog and alerts. history is the counts and recent lines. propose is a dry run of add. add writes when dry_run is false. enable, disable and remove take rule_id. test takes dialog_id (and optional message, document) and says whether it would be answered."),
   dry_run: z.boolean().optional().describe("add, enable and disable show the change and write only when this is false. Default true."),
   rule: ruleShape,
   rule_id: z.string().optional().describe("enable and disable: the rule id."),
   enabled: z.boolean().optional().describe("enable and disable: ignored; the action sets it."),
   limit: z.number().int().min(1).max(200).optional().describe("How many recent dialog lines. Default 30."),
+  dialog_id: z.string().optional().describe("test: the Revit dialog id to check."),
+  message: z.string().optional().describe("test: the dialog text to check against message regexes."),
+  document: z.string().optional().describe("test: the active document title or path to check against document regexes."),
 };
 
 function reply(body: unknown, isError = false) {
@@ -50,12 +54,15 @@ function linesOf(env: NodeJS.ProcessEnv, limit: number): DialogLine[] {
 }
 
 export function runFmcDialogRules(args: {
-  action?: "list" | "history" | "propose" | "add" | "enable" | "disable";
+  action?: "list" | "history" | "propose" | "add" | "enable" | "disable" | "remove" | "test";
   dry_run?: boolean;
   rule?: Partial<DialogRule>;
   rule_id?: string;
   enabled?: boolean;
   limit?: number;
+  dialog_id?: string;
+  message?: string;
+  document?: string;
 } = {}, env: NodeJS.ProcessEnv = process.env) {
   const action = args.action ?? "list";
   const limit = args.limit ?? 30;
@@ -67,6 +74,12 @@ export function runFmcDialogRules(args: {
   const alerts = dialogAlerts(lines);
   const blocking = blockingDialog(env);
 
+  // research tool 34: read-only check of the rules in force, both during an AI job and between jobs
+  if (action === "test") {
+    const tested = testDialog({ dialog_id: args.dialog_id, message: args.message, document: args.document }, env);
+    if ("refused" in tested) return reply(tested, true);
+    return reply({ read_only: true, changes_model: false, ...tested });
+  }
   if (action === "history") {
     return reply({ read_only: true, counts, recent, alerts, blocking });
   }
@@ -96,7 +109,7 @@ export function runFmcDialogRules(args: {
   }
   const id = (args.rule_id ?? args.rule?.id ?? "").trim();
   if (!id) return reply({ refused: true, reason: `${action} needs rule_id` }, true);
-  const change = setRuleEnabled(id, action === "enable", env, dry);
+  const change = action === "remove" ? removeRule(id, env, dry) : setRuleEnabled(id, action === "enable", env, dry);
   return reply({ ...change, alerts, blocking }, change.refused);
 }
 

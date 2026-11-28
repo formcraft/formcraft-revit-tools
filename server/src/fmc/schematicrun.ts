@@ -6,9 +6,10 @@ import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { batchLease } from "./target.js";
 import { loadConfig, type GuardConfig } from "./policy.js";
 import { writeReport } from "./localreport.js";
+import { neverWriteMatch } from "./protectednames.js";
 import {
   DIAGRAM_API_LIMITS, elecInputFromTrace, planElecDiagrams, planPlumbDiagrams, plumbInputFromTrace,
-  type DiagramPlan, type DiagramView, type ElecDiagramInput, type PlumbDiagramInput, type RiserStyle,
+  type DiagramPlan, type DiagramView, type ElecDiagramInput, type ElecViewPart, type PlumbDiagramInput, type RiserStyle,
 } from "./schematicplan.js";
 import type { TraceSnapshot } from "./trace.js";
 
@@ -22,6 +23,8 @@ export interface DiagramArgs {
   dry_run: boolean;
   batch_lease: string;
   riser: RiserStyle;
+  /** fmc_elec_diagrams only: which views to plan (sld, riser, earthing). */
+  include?: ElecViewPart[];
   references?: { kit?: string[]; standards?: string[]; rulebook?: string[] };
 }
 
@@ -54,7 +57,8 @@ function guardOf(snapshot: { model?: string; resolved_document?: { title?: strin
   const config = io.guard ?? loadConfig().config;
   const title = snapshot.resolved_document?.title || snapshot.model || "";
   const file = snapshot.resolved_document?.path || "";
-  if (/hebert hostels/i.test(`${title} ${file} ${named}`)) return `HEBERT HOSTELS is not written by ${tool}.`;
+  const protectedName = neverWriteMatch([title, file, named], config);
+  if (protectedName) return `${protectedName} is not written by ${tool}.`;
   if (snapshot.is_central) return `A central model is not written by ${tool}.`;
   const pathName = file.replace(/\//g, "\\").toLowerCase();
   for (const root of config.protected_paths ?? []) {
@@ -73,10 +77,10 @@ function summarise(view: DiagramView) {
   };
 }
 
-function planOf(tool: DiagramTool, snapshot: Record<string, unknown>, style: RiserStyle): DiagramPlan {
+function planOf(tool: DiagramTool, snapshot: Record<string, unknown>, style: RiserStyle, include?: ElecViewPart[]): DiagramPlan {
   if (tool.discipline === "elec") {
     const input = Array.isArray(snapshot.panels) ? snapshot as ElecDiagramInput : elecInputFromTrace(snapshot as TraceSnapshot);
-    return planElecDiagrams(input, style);
+    return planElecDiagrams(input, style, { include });
   }
   const input = Array.isArray(snapshot.systems) ? snapshot as PlumbDiagramInput : plumbInputFromTrace(snapshot as TraceSnapshot);
   return planPlumbDiagrams(input, style);
@@ -104,7 +108,7 @@ export async function runDiagramTool(tool: DiagramTool, args: DiagramArgs, io: D
   if (!snapshot || typeof snapshot !== "object") {
     return reply({ tool: tool.tool, read_only: true, error: `${tool.tool} returned no graph.` }, true);
   }
-  const plan = planOf(tool, snapshot, args.riser);
+  const plan = planOf(tool, snapshot, args.riser, args.include);
   const resolved = (snapshot.resolved_document ?? {}) as { title?: string; path?: string };
   const document = { title: String(resolved.title || snapshot.model || args.document), path: String(resolved.path || "") };
   const report = writeReport(tool.discipline === "elec" ? "elec-diagrams" : "plumb-diagrams", args.action, { plan, document }, io.env);
@@ -130,11 +134,13 @@ export async function runDiagramTool(tool: DiagramTool, args: DiagramArgs, io: D
     if (refusal && args.action === "apply") {
       return reply({ ...body, refused: true, code: "FMC-DIAGRAM-GUARD", dry_run: true, read_only: true, message: refusal }, true);
     }
+    // research tool 39: the plan says whether an apply would be refused by the guard (nothing is changed)
     return reply({
       ...body,
       read_only: true,
       dry_run: true,
-      next: "Apply with dry_run false, batch_lease, and references. That call is one transaction.",
+      would_refuse: refusal,
+      next: refusal ? `An apply would be refused: ${refusal}` : "Apply with dry_run false, batch_lease, and references. That call is one transaction.",
     });
   }
   if (refusal) return reply({ ...body, refused: true, code: "FMC-DIAGRAM-GUARD", message: refusal, saved: false }, true);

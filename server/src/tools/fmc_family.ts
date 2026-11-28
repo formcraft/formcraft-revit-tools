@@ -40,18 +40,35 @@ function brief(p: FamilyPlan) {
   };
 }
 
+/** One row per family for the staging action (research tool 40): is it built, when, how big, and its build report if any. */
+export interface StagingRow { family: string; role: string; built: boolean; save_path: string; modified_at?: string; bytes?: number; build_report?: Record<string, unknown> }
+
+export function stagingRows(plans: Array<Pick<FamilyPlan, "family" | "role" | "save_path">>, stat: (file: string) => { mtime: Date; size: number } | null,
+  readJson: (file: string) => Record<string, unknown> | null = () => null): { built: number; missing: number; families: StagingRow[] } {
+  const families = plans.map((p) => {
+    const st = p.save_path ? stat(p.save_path) : null;
+    if (!st) return { family: p.family, role: p.role, built: false, save_path: p.save_path };
+    const report = readJson(p.save_path.replace(/\.rfa$/i, ".build.json"));
+    return { family: p.family, role: p.role, built: true, save_path: p.save_path, modified_at: st.mtime.toISOString(), bytes: st.size,
+      ...(report ? { build_report: { saved_at: report.saved_at, kit: report.kit, plugin: report.plugin, ops_hash: report.ops_hash } } : {}) };
+  });
+  const built = families.filter((f) => f.built).length;
+  return { built, missing: families.length - built, families };
+}
+
 export const FMC_FAMILY_DESCRIPTION =
   "Formcraft family builder (FMC-BIM-STD-002 4-5, Family Development Process stages 4-5). Builds data-shell families " +
     "in one batch from the kit's FMC_Family_Specs.json: right template and category, dictionary shared parameters " +
     "(asset and electrical packs included), electrical family parameters linked to connectors, a placeholder box carrying " +
     "every MEP connector, Part Type and types. Saves to <family_staging_root>\\<Role>\\ only; the Family Librarian " +
     "releases. Actions: plan (check only), build (dry run unless dry_run=false), load_test (loads staged families into " +
-    "the open FMC_ChainTest project, places and flexes them, checks connectors and parameters). Select families by name " +
-    "or by role and priority; at most 25 per call.";
+    "the open FMC_ChainTest project, places and flexes them, checks connectors and parameters), staging (read-only: which " +
+    "selected families already have an .rfa in staging, with date, size and any build report; with no selection, every family " +
+    "in the specs). Select families by name or by role and priority; at most 25 per call except staging.";
 
 /** Arguments of the fmc_family tool. The Formcraft Browser's CLI (fmc/cli.ts) parses with the same schema, so defaults match. */
 export const FMC_FAMILY_SHAPE = {
-  action: z.enum(["plan", "build", "load_test"]),
+  action: z.enum(["plan", "build", "load_test", "staging"]),
   families: z.array(z.string()).optional().describe("Family names from the register"),
   role: z.string().optional().describe("Role code, e.g. P, E, Z (used when families is empty)"),
   priority: z.enum(["P1", "P2", "P3"]).optional(),
@@ -85,6 +102,16 @@ export async function runFmcFamily(args: FmcFamilyArgs) {
       return reply({ refused: true, reasons: [`Cannot read the shared parameter file at ${config.shared_parameter_file}`] }, true);
     }
     const dictionary = parseSharedParameters(dictionaryText);
+    if (args.action === "staging") {
+      // research tool 40: read-only, no Revit; the whole register unless a selection narrows it
+      const narrowed = !!(args.families?.length || args.role || args.priority);
+      const sel = selectFamilies(specs, { families: args.families, role: args.role, priority: args.priority, limit: narrowed ? Math.max(args.limit, 25) : specs.families.length });
+      const plans = sel.selected.map((f) => planFamily(f, { cfg: config, dictionary, exists: () => false, overwrite: false }));
+      const rows = stagingRows(plans, (file) => { try { const st = fs.statSync(file); return { mtime: st.mtime, size: st.size }; } catch { return null; } },
+        (file) => { try { return JSON.parse(fs.readFileSync(file, "utf8")); } catch { return null; } });
+      return reply({ action: "staging", read_only: true, specs_version: specs.version, selected: plans.length, ...rows,
+        unknown_families: sel.unknown.length ? sel.unknown : undefined, not_selected_over_limit: sel.truncated || undefined });
+    }
     if (!args.families?.length && !args.role && !args.priority)
       return reply({ refused: true, reasons: ["Name families, or give a role and/or priority"] }, true);
 

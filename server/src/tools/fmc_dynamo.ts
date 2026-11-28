@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
-import { kitRootFrom, outsideRootMessage, readDyn, approvedScriptPath } from "../fmc/dynamo.js";
+import { kitRootFrom, listGraphs, outsideRootMessage, readDyn, approvedScriptPath } from "../fmc/dynamo.js";
 import { inputTooLarge, withResolved } from "../fmc/scriptlib.js";
 import { loadConfig } from "../fmc/policy.js";
 import { documentTarget, batchLease } from "../fmc/target.js";
@@ -14,7 +14,7 @@ function reply(body: object, isError = false) {
 
 export const FMC_DYNAMO_DESCRIPTION =
   "Run a Dynamo graph from the kit (05_Scripts/library or 05_Scripts/Dynamo) in the open Revit, through Dynamo for Revit. " +
-  "Not DynamoSandbox and not send_code. inspect reads the .dyn JSON (inputs, outputs, packages, nodes, Python nodes) and does not start Revit. " +
+  "Not DynamoSandbox and not send_code. graphs lists the .dyn files in those two kit folders with their inputs, output count, Python node count and needs_revit (read-only, no Revit; at most 200, query filters). inspect reads the .dyn JSON (inputs, outputs, packages, nodes, Python nodes) and does not start Revit. " +
   "status with no job_id says whether Dynamo for Revit is loaded in this session, and its version. status with job_id, list, log and cancel are the background queue shared with fmc_script_run. " +
   "run and submit take mode preview (rolled back, never saved), apply (kept, needs batch_lease, does not save itself) or offline (DynamoCLI, only when inspect shows no Revit nodes; otherwise FMC-DYNAMO-NEEDS-REVIT). " +
   "If Dynamo for Revit is not loaded, the answer is FMC-DYNAMO-UNAVAILABLE. document is an exact title or path. dry_run defaults to true (preview). " +
@@ -24,7 +24,8 @@ export const FMC_DYNAMO_DESCRIPTION =
 const MODE = z.enum(["preview", "apply", "offline"]);
 
 export const FMC_DYNAMO_SHAPE = {
-  action: z.enum(["inspect", "status", "run", "submit", "list", "log", "cancel"]),
+  action: z.enum(["inspect", "status", "run", "submit", "list", "log", "cancel", "graphs"]),
+  query: z.string().optional().describe("graphs: only graphs whose file or name contains this"),
   path: z.string().optional().default("").describe("inspect, run, submit: the .dyn file under 05_Scripts/library or 05_Scripts/Dynamo"),
   inputs: z.record(z.unknown()).optional().describe("Graph inputs by name. At most 50."),
   mode: MODE.optional().describe("preview rolls back. apply keeps changes and needs batch_lease. offline is DynamoCLI with no Revit nodes."),
@@ -73,6 +74,11 @@ export async function runFmcDynamo(args: FmcDynamoArgs) {
       const parsed = readDyn(args.path);
       if (!parsed.ok) return reply(withResolved({ refused: true, code: "FMC-DYNAMO-PARSE", message: parsed.message }, doc.document), true);
       return reply(withResolved({ ...parsed.inspect, action: "inspect" }, doc.document));
+    }
+    if (args.action === "graphs") {
+      const found = listGraphs(kit, { query: args.query ?? "" });
+      return reply({ action: "graphs", read_only: true, kit, ...found,
+        next: found.total ? "inspect one graph by its file, then run with mode preview" : "No graphs found in the kit script folders." });
     }
     if (args.action === "list") {
       const found = queueOrError();

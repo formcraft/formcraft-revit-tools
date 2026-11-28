@@ -380,3 +380,30 @@ export function writeDimsReport(env: NodeJS.ProcessEnv, body: unknown, dir = dim
   fs.writeFileSync(file, JSON.stringify(body, null, 2));
   return file;
 }
+
+// ---------- research tool 35: dimension one room, one wall or a few grids ----------
+
+export interface DimInput { grids: DimCurve[]; walls: DimCurve[]; openings: DimOpening[]; rooms: DimRoom[] }
+
+/**
+ * Keeps only the grids, walls and rooms named by id (or by name, case-insensitive). An opening stays when its host wall
+ * stays. With no ids everything stays. unmatched lists ids that matched nothing in the read.
+ */
+export function filterDimInput(input: DimInput, ids: string[] | undefined): DimInput & { unmatched: string[] } {
+  const want = (ids ?? []).map((id) => String(id).trim()).filter(Boolean);
+  if (!want.length) return { ...input, unmatched: [] };
+  const lower = new Set(want.map((id) => id.toLowerCase()));
+  const hit = new Set<string>();
+  const keep = <T extends { id: string; name?: string }>(row: T) => {
+    const keys = [String(row.id), row.name ?? ""].map((k) => k.toLowerCase()).filter(Boolean);
+    const found = keys.filter((k) => lower.has(k));
+    found.forEach((k) => hit.add(k));
+    return found.length > 0;
+  };
+  const grids = input.grids.filter(keep);
+  const walls = input.walls.filter(keep);
+  const rooms = input.rooms.filter(keep);
+  const wallIds = new Set(walls.map((w) => String(w.id)));
+  const openings = input.openings.filter((o) => (o.host_id != null && wallIds.has(String(o.host_id))) || keep(o));
+  return { grids, walls, openings, rooms, unmatched: want.filter((id) => !hit.has(id.toLowerCase())) };
+}
