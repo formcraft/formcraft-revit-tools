@@ -1125,7 +1125,7 @@
     "note": "open_local opens a person's existing workshared local as the active document with UIApplication.OpenAndActivateDocument (activate=false uses OpenDocumentFile). worksets are all, last_viewed, none or a list of names. DoNotDetach; it never creates a new local, never synchronises, and refuses a central (FMC-FILE-CENTRAL-REFUSED), a missing file, a cloud, protected or live path, and worksets on a file that is not workshared. An already open local is only activated. close_local never syncs or relinquishes; it activates another open project first when the target is active, refuses the only open document (FMC-FILE-ONLY-DOC) and unsaved changes without confirm. save=true is a write (fmc_close_local_apply, in WRITE_COMMANDS: batch_lease, live-model lock, AI gate) and is refused for HEBERT HOSTELS, a protected original, a verification copy or a document never saved. dry_run defaults true. Opening a model in Revit stays a person's choice: the Revit check runs after install, dry run only."
   },
   {
-    "id": "F126",
+    "id": "F134",
     "area": "Engine",
     "group": "Families",
     "feature": "Generate and bind a door or window for the legend schedule (fmc_generate_bind)",
@@ -1134,7 +1134,7 @@
     "note": "One call makes a door or window family (Metric Door.rft or Metric Window.rft): frame and leaf or glass locked to labelled planes, front and back legend geometry (plane-locked opening lines on Legend Front and Legend Back, the back dashed), and the eleven Sinko-style kit shared parameters bound as type parameters with GUIDs from the kit file, the area columns as formulas. It returns the legend-schedule rows and the fmc_legend placement for Elevation: Front and Elevation: Back (fmc_legend place takes view front or back). dry_run defaults true and writes nothing; a build needs confirm and the dry run's plan_id and runs the fmc_recipe build pipeline into staging with Gate A. Never loads into a project. The eleven names are defined in sinkoparams.ts until the owner confirms them. Needs a Revit check."
   },
   {
-    "id": "F127",
+    "id": "F135",
     "area": "Engine",
     "group": "Families",
     "feature": "Plane-locked polygon outlines and revolution profiles (G011)",
@@ -1143,7 +1143,7 @@
     "note": "L001 build plan 43 (L003-F368, L001-F20): an extrusion or void outline can be a closed loop of plane crossings (outline_planes) with each edge locked to its plane, so L, U and T shapes flex like rect; a revolution profile can be a loop of plane crossings (profile_planes) and its axis can follow two planes (axis_planes), so curved detail follows the type instead of being fixed at the first size. Sweep path_planes, the array op and extrusion start/end planes were already there. The server checks the loop (three corners or more, neighbours share exactly one plane, no two edges on one plane); the add-in builds the loop from the planes' crossings and fails the op when a lock can't be made. Needs a Revit check of the locks."
   },
   {
-    "id": "F128",
+    "id": "F136",
     "area": "Engine",
     "group": "Families",
     "feature": "Recipe language ops set_line_weight, envelope, visibility_tier (N064: the generator recipe builds again)",
@@ -1152,7 +1152,7 @@
     "note": "L001 N064 (L003-F509 'generator recipe broken'): the 6 Nov repaired FMC_E_EQ_Generator_Diesel_Standby recipe used three recipe-language ops this server refused (Invalid discriminator value). Ported from the formcraft plugin: set_line_weight (pens of a subcategory, FAM-044 judged on the last one), envelope (the Coarse box between four planes) and visibility_tier (Coarse/Medium/Fine for many solids). The products recipe added one kit material twice and fmc_parts.py now adds each kit material once. flex_test and type_catalogue are not ported."
   },
   {
-    "id": "F129",
+    "id": "F137",
     "area": "Engine",
     "group": "Families",
     "feature": "Release package: a staged family prepared and validated for release (fmc_release_package)",
