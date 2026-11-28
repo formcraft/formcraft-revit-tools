@@ -144,7 +144,7 @@ export const MODIFY_MODEL_DESCRIPTION =
   "family_type {name, params?: {name: value}} · family_category {category} · " +
   "reference_plane {start_mm, end_mm, name?, view?} (families and projects) · " +
   "dimension {view?, refs (reference plane names, grids, levels), line_mm, label? (a family parameter), equal?} · " +
-  "save_family {path? (.rfa)} · load_into_project {project? (its title), overwrite? (default true)}. " +
+  "save_family {path? (.rfa, inside the project folder), overwrite? (default false), project?} · load_into_project {project? (its title), overwrite? (default false)}. " +
   "Structure: column {level, points_mm, structural? (default true), top_level?, base_offset_mm?, top_offset_mm?, rotation_deg?, type_name?} · " +
   "beam / brace {level, start_mm, end_mm ([x, y, z], z above the level), type_name?} · isolated_foundation {level, points_mm} · " +
   "wall_foundation {ids (walls)} · foundation_slab / structural_floor {level, outline_mm | loops_mm, offset_mm?} · truss {level, start_mm, end_mm} · " +
@@ -362,8 +362,9 @@ export function registerModifyModelTool(server: McpServer) {
       "modify_model's family ops, save_family, and load_into_project.",
     {
       template: z.string().optional().default("Metric Generic Model"),
-      path: z.string().describe("Where to save the new family, ending .rfa (a project's 01_WIP or the kit's staging)"),
+      path: z.string().describe("Where to save the new family, ending .rfa, inside the project's folder (the add-in's project-folder gate refuses the kit, standards, Formcraft shared state and other folders)"),
       overwrite: z.boolean().optional().default(false),
+      project: z.string().optional().describe("The open project (title or path) whose folder the family goes in; needed when more than one project is open"),
     },
     async (args) => {
       try {

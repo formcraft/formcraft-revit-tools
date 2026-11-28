@@ -122,24 +122,36 @@ namespace RevitMCPCommandSet.Services.Fmc
                     Fam(doc, name);
                     string path = op.Value<string>("path");
                     if (path != null && !path.EndsWith(".rfa", StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("save_family path must end in .rfa");
+                    // Project-folder gate (28 Nov 2026): the path must be inside the family's or its project's folder, never
+                    // the kit, standards, shared state, protected_roots or a forbidden project; an existing file is replaced
+                    // only with overwrite: true. Checked now and again right before the save.
+                    bool overwrite = op.Value<bool?>("overwrite") ?? false;
+                    string project = op.Value<string>("project");
+                    string target = FamilySaveTarget(doc, path, project, overwrite);
                     _after.Add(() =>
                     {
-                        if (path != null) doc.SaveAs(path, new SaveAsOptions { OverwriteExistingFile = true, MaximumBackups = 1 });
-                        else doc.Save();
+                        string t = FamilySaveTarget(doc, path, project, overwrite);
+                        if (path == null || FmcTarget.SamePath(t, doc.PathName ?? "")) doc.Save();
+                        else doc.SaveAs(t, new SaveAsOptions { OverwriteExistingFile = overwrite, MaximumBackups = 1 });
                         return new JObject { ["saved"] = doc.PathName };
                     });
-                    return new JObject { ["save"] = path ?? "in place" };
+                    return new JObject { ["save"] = target };
                 }
                 case "load_into_project":
                 {
                     Fam(doc, name);
                     string title = op.Value<string>("project");
-                    bool overwrite = op.Value<bool?>("overwrite") ?? true;
+                    // Project-folder gate (28 Nov 2026): overwrite defaults to false; the target project must be saved, not a
+                    // forbidden project or a workshared central, and inside its own jail; a saved family must be readable
+                    // from the project's folder or read_only_roots (the kit).
+                    bool overwrite = op.Value<bool?>("overwrite") ?? false;
                     _after.Add(() =>
                     {
-                        var projects = doc.Application.Documents.Cast<Document>().Where(d => !d.IsFamilyDocument && !d.IsLinked).ToList();
-                        Document target = (title == null ? (projects.Count == 1 ? projects[0] : null) : projects.FirstOrDefault(d => string.Equals(d.Title, title, StringComparison.OrdinalIgnoreCase)))
-                            ?? throw new InvalidOperationException(title == null ? "several projects are open: name project" : $"{title} isn't open");
+                        var projects = FmcPathJail.OpenProjects(doc.Application);
+                        Document target = FmcPathJail.ProjectFor(doc.Application, title)
+                            ?? throw new InvalidOperationException(title == null ? (projects.Count == 0 ? "no project is open" : "several projects are open: name project") : $"{title} isn't open");
+                        FmcPathJail.RequireLoadTarget(target);
+                        if (!string.IsNullOrEmpty(doc.PathName)) FmcPathJail.Require("read", doc.PathName, FmcPathJail.For(doc, target), "family");
                         Family fam = doc.LoadFamily(target, new LoadOptions(overwrite));
                         return new JObject { ["loaded_into"] = target.Title, ["family"] = fam?.Name ?? doc.Title };
                     });
@@ -147,6 +159,21 @@ namespace RevitMCPCommandSet.Services.Fmc
                 }
                 default: return StructureOp(doc, name, op, made, created) ?? MepOp(doc, name, op, made, created) ?? MoreOp(doc, name, op, made, created) ?? ManageOp(doc, name, op, made, created) ?? ExtraOp(doc, name, op, made, created) ?? SpecialOp(doc, name, op, made, created);
             }
+        }
+
+        /// <summary>save_family's target through the project-folder gate (FmcPathJail); throws the refusal.</summary>
+        private static string FamilySaveTarget(Document doc, string path, string project, bool overwrite)
+        {
+            FmcPathJail.Roots roots = FmcPathJail.ForFamily(doc, project);
+            if (path == null)
+            {
+                if (string.IsNullOrEmpty(doc.PathName)) throw new InvalidOperationException("[" + FmcPathJail.NoRoot + "] the family is not saved yet: give save_family a path (.rfa) in the project folder");
+                return FmcPathJail.Require("write", doc.PathName, roots, "save_family");
+            }
+            string c = FmcPathJail.Require("write", path, roots, "path");
+            if (File.Exists(c) && !overwrite && !FmcTarget.SamePath(c, doc.PathName ?? ""))
+                throw new InvalidOperationException($"{c} already exists: pass overwrite: true to replace it (default false)");
+            return c;
         }
 
         private static void Fam(Document doc, string op)
@@ -279,11 +306,22 @@ namespace RevitMCPCommandSet.Services.Fmc
                 string tpl = Parameters.Value<string>("template") ?? "Metric Generic Model";
                 string path = Parameters.Value<string>("path") ?? throw new InvalidOperationException("path is needed: where to save the new family (.rfa)");
                 if (!path.EndsWith(".rfa", StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("path must end in .rfa");
+                // Project-folder gate (28 Nov 2026): the new family is saved inside the named (or only open) project's
+                // folder; the template must be readable from that project or read_only_roots (the kit). ProgramData is not
+                // a read root (Q5): until the templates are copied into the kit, name a template inside read_only_roots.
+                bool overwrite = Parameters.Value<bool?>("overwrite") ?? false;
+                Document project = FmcPathJail.ProjectFor(app.Application, Parameters.Value<string>("project"));
+                FmcPathJail.Roots roots = FmcPathJail.For(project);
+                string target = FmcPathJail.Require("write", path, roots, "path");
+                if (File.Exists(target) && !overwrite) throw new InvalidOperationException($"{target} already exists: pass overwrite: true to replace it (default false)");
                 string file = File.Exists(tpl) ? tpl : FindTemplate(app.Application.FamilyTemplatePath, tpl)
                     ?? throw new InvalidOperationException($"no family template {tpl} under {app.Application.FamilyTemplatePath}");
+                file = FmcPathJail.Require("read", file, roots, "template");
                 Document fam = app.Application.NewFamilyDocument(file);
-                Directory.CreateDirectory(Path.GetDirectoryName(path));
-                fam.SaveAs(path, new SaveAsOptions { OverwriteExistingFile = Parameters.Value<bool?>("overwrite") ?? false, MaximumBackups = 1 });
+                target = FmcPathJail.Require("write", path, roots, "path");
+                Directory.CreateDirectory(Path.GetDirectoryName(target));
+                fam.SaveAs(target, new SaveAsOptions { OverwriteExistingFile = overwrite, MaximumBackups = 1 });
+                path = target;
                 fam.Close(false);
                 app.OpenAndActivateDocument(path);
                 Result = new JObject { ["family"] = path, ["template"] = file, ["next"] = "It's open in the Family Editor: build it with modify_model (extrusion, family_param, ...), then save_family and load_into_project" };
