@@ -149,3 +149,24 @@ test("Speed (owner 27 Oct): the guard config is read again only when the file ch
   fs.utimesSync(file, new Date(), new Date(Date.now() + 10000));
   assert.equal(loadConfig(file).source, "defaults");
 });
+
+
+test("KL-T07 / KL-T09: protected_roots defaults to empty, an empty list matches nothing, and examples are not D:\\Fomcraft", () => {
+  assert.deepEqual(DEFAULT_CONFIG.protected_roots, []);
+  const standin = path.win32.join(os.tmpdir(), "kl-t07", "Fomcraft", "FMC_PROJECTS_27", "Proj", "01_WIP", "A", "PROJ-FMC-ZZ-ZZ-M3-A-0001.rvt");
+  const writeCfg: GuardConfig = {
+    ...DEFAULT_CONFIG,
+    write_roots: [path.win32.join(os.tmpdir(), "kl-t07", "Fomcraft", "FMC_PROJECTS_27", "*", "01_WIP")],
+    protected_roots: [],
+  };
+  const v = checkWritePath(standin, writeCfg, { checkName: false });
+  assert.equal(v.ok, true, v.reasons.join(" | "));
+  assert.equal((writeCfg.protected_roots ?? []).some((r) => isInside(standin, r)), false);
+
+  const srcDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../src");
+  for (const rel of ["fmc/opencopy.ts", "tools/fmc_ai.ts", "tools/fmc_file.ts"]) {
+    const text = fs.readFileSync(path.join(srcDir, rel), "utf8");
+    assert.match(text, /the named originals folder in protected_roots/, rel);
+    assert.equal(text.includes("D:\\\\Fomcraft"), false, `${rel} must not recommend D:\\Fomcraft as a protected_roots example`);
+  }
+});

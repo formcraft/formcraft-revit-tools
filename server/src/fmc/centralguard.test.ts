@@ -20,10 +20,12 @@ import {
 const NOW = new Date("2026-11-28T09:00:00Z");
 const ACCESS = { central_creators: [os.userInfo().username || "emlyn"], robots: ["family-kit-loader-bot"] };
 
-function world() {
+function world(opts: { protectedRoots?: string[] | "project-parent"; standin?: boolean } = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc_central_gate_"));
   const guard = path.join(dir, "fmc_guard.json");
-  const project = path.join(dir, "share", "F26009");
+  const project = opts.standin
+    ? path.join(dir, "Fomcraft", "FMC_PROJECTS_27", "Proj")
+    : path.join(dir, "share", "F26009");
   const wip = path.join(project, "01_WIP", "A");
   fs.mkdirSync(path.join(project, "00_Info", "Admin"), { recursive: true });
   fs.mkdirSync(wip, { recursive: true });
@@ -32,9 +34,15 @@ function world() {
   fs.writeFileSync(tpl, "template");
   const local = path.join(dir, "Local");
   fs.mkdirSync(path.join(local, "Formcraft", "central-temp"), { recursive: true });
+  const writeRoot = opts.standin
+    ? path.join(dir, "Fomcraft", "FMC_PROJECTS_27", "*", "01_WIP")
+    : path.join(dir, "share", "*", "01_WIP");
+  const protectedRoots = opts.protectedRoots === "project-parent"
+    ? [path.dirname(project)]
+    : (opts.protectedRoots ?? ["D:\\Fomcraft"]);
   fs.writeFileSync(guard, JSON.stringify({
-    write_roots: [path.join(dir, "share", "*", "01_WIP")],
-    protected_roots: ["D:\\Fomcraft"],
+    write_roots: [writeRoot],
+    protected_roots: protectedRoots,
     reports_dir: path.join(dir, "reports"),
   }));
   const old = process.env.FMC_GUARD_CONFIG;
@@ -316,5 +324,59 @@ test("decisions 1-5 are unchanged: 01_WIP\\<Role>, _v2 default, Architecture/Str
     }), mcpCtx(w)));
     assert.match(iso.would_create.tree, /04_Archive\\/);
     assert.match(iso.would_create.tree, /robots\\/);
+  } finally { w.done(); }
+});
+
+test("KL-T03: testing-mode auto_approve does not approve fmc_central or fmc_iso_folders creates", async () => {
+  const w = world();
+  try {
+    const guard = JSON.parse(fs.readFileSync(w.guard, "utf8"));
+    guard.ai_modeller = { on: true, mode: "testing", auto_approve: true, general: true, access: "full" };
+    fs.writeFileSync(w.guard, JSON.stringify(guard));
+    const builder = fakeBuilder();
+    const token = text(await runFmcCentral(argsOf(w, { action: "plan" }), builder, mcpCtx(w))).would_do.plan_token;
+    const r = text(await runFmcCentral(argsOf(w, { plan_token: token }), builder, mcpCtx(w)));
+    assert.equal(r.awaiting_person, true, JSON.stringify(r));
+    assert.equal(builder.calls.length, 0);
+    assert.equal(fs.readdirSync(path.join(w.project, "01_WIP", "A")).length, 0, "no central written");
+
+    const folder = path.join(w.dir, "AutoProj");
+    const shape = { action: "create" as const, project_folder: folder, code: "F26013", roles: ["A"], central_creators: ["emlyn"], dry_run: false };
+    const isoPlan = text(await runFmcIsoFolders(z.object(FMC_ISO_FOLDERS_SHAPE).parse({ ...shape, action: "plan", dry_run: true }), mcpCtx(w)));
+    const iso = text(await runFmcIsoFolders(z.object(FMC_ISO_FOLDERS_SHAPE).parse({ ...shape, plan_token: isoPlan.would_create.plan_token }), mcpCtx(w)));
+    assert.equal(iso.awaiting_person, true, JSON.stringify(iso));
+    assert.equal(fs.existsSync(folder), false);
+
+    for (const c of CENTRAL_PERSON_ONLY_COMMANDS) {
+      const g = await aiGate(c, {}, null, { ...DEFAULT_CONFIG, ai_modeller: { on: true, mode: "testing", auto_approve: true, general: true, access: "full" } } as GuardConfig, async () => ({}));
+      assert.equal(g.ok, false, c);
+      assert.match(g.reason || g.user || "", /person-only|no AI path|rule 6/i);
+    }
+  } finally { w.done(); }
+});
+
+test("KL-T07: empty protected_roots does not refuse a Fomcraft project-tree stand-in", async () => {
+  const w = world({ protectedRoots: [], standin: true });
+  try {
+    const plan = text(await runFmcCentral(argsOf(w, { action: "plan" }), fakeBuilder(), mcpCtx(w)));
+    assert.ok(plan.would_do, JSON.stringify(plan));
+    assert.equal((plan.would_do.reasons ?? []).filter((r: string) => /protected root/i.test(r)).length, 0);
+    assert.match(plan.would_do.target, /Fomcraft\\FMC_PROJECTS_27\\Proj\\01_WIP\\A\\/);
+  } finally { w.done(); }
+});
+
+test("KL-T08: a named originals folder in protected_roots is fail-closed for create and iso-folders", async () => {
+  const w = world({ protectedRoots: "project-parent" });
+  try {
+    const plan = text(await runFmcCentral(argsOf(w, { action: "plan" }), fakeBuilder(), mcpCtx(w)));
+    const reasons = (plan.would_do?.reasons ?? plan.reasons ?? []).join(" | ");
+    assert.match(reasons, /protected root/, JSON.stringify(plan));
+    const folder = path.join(path.dirname(w.project), "InsideOriginals");
+    const iso = text(await runFmcIsoFolders(z.object(FMC_ISO_FOLDERS_SHAPE).parse({
+      action: "plan", project_folder: folder, code: "F26014", roles: ["A"], dry_run: true,
+    }), mcpCtx(w)));
+    const isoReasons = (iso.would_create?.reasons ?? iso.reasons ?? []).join(" | ");
+    assert.match(isoReasons, /protected root/, JSON.stringify(iso));
+    assert.equal(fs.existsSync(folder), false);
   } finally { w.done(); }
 });

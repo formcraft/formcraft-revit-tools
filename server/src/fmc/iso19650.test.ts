@@ -89,3 +89,20 @@ test("apply (temp folder): builds the tree, never overwrites, refuses a folder t
     assert.match(again.error ?? "", /no longer empty/);
   } finally { fs.rmSync(base, { recursive: true, force: true }); }
 });
+
+
+test("KL-T07: empty protected_roots does not refuse a Fomcraft project-tree stand-in", () => {
+  const parent = path.win32.join(os.tmpdir(), "fmc_iso_t07", "Fomcraft", "FMC_PROJECTS_27");
+  const root = path.win32.join(parent, "Proj");
+  const p = planIsoFolders(input({ project_folder: root, code: "PROJ" }), { ...DEFAULT_CONFIG, protected_roots: [] }, disk({ [parent]: [] }));
+  assert.equal(p.reasons.filter((r) => /protected root/i.test(r)).length, 0, p.reasons.join(" | "));
+  assert.equal(p.ok, true, p.reasons.join(" | "));
+});
+
+test("KL-T08: a named originals folder in protected_roots is fail-closed for iso-folders inside it", () => {
+  const originals = path.win32.join(os.tmpdir(), "fmc_iso_t08", "named-originals");
+  const root = path.win32.join(originals, "New");
+  const p = planIsoFolders(input({ project_folder: root, code: "PROJ" }), { ...DEFAULT_CONFIG, protected_roots: [originals] }, disk({ [originals]: [] }));
+  assert.match(p.reasons.join(), /protected root/);
+  assert.equal(p.ok, false);
+});

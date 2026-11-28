@@ -314,3 +314,24 @@ test("temp folders: an end-to-end run with a fake Revit builder moves the centra
     assert.match(fs.readFileSync(p.log_path, "utf8"), /,ready,/);
   } finally { fs.rmSync(base, { recursive: true, force: true }); }
 });
+
+
+test("KL-T07: empty protected_roots does not refuse a Fomcraft project-tree stand-in", () => {
+  const root = path.win32.join(os.tmpdir(), "fmc_central_t07", "Fomcraft", "FMC_PROJECTS_27", "Proj");
+  const wip = path.win32.join(root, "01_WIP", "A");
+  const empty: GuardConfig = { ...DEFAULT_CONFIG, write_roots: [path.win32.join(os.tmpdir(), "fmc_central_t07", "Fomcraft", "FMC_PROJECTS_27", "*", "01_WIP")], protected_roots: [] };
+  const files = { [root]: true, [wip]: true, [TPL]: true, [path.win32.join(root, "00_Info", "Admin", "FMC_Access.json")]: ACCESS };
+  const p = planCentral(input({ project_folder: root, project: "PROJ" }), empty, reader(files), drive(), "C:\\T", NOW);
+  assert.equal(p.reasons.filter((r) => /protected root/i.test(r)).length, 0, p.reasons.join(" | "));
+  assert.deepEqual(p.reasons, [], p.reasons.join(" | "));
+});
+
+test("KL-T08: a named originals folder in protected_roots is fail-closed for a central plan inside it", () => {
+  const originals = path.win32.join(os.tmpdir(), "fmc_central_t08", "named-originals");
+  const root = path.win32.join(originals, "Proj");
+  const wip = path.win32.join(root, "01_WIP", "A");
+  const guarded: GuardConfig = { ...DEFAULT_CONFIG, write_roots: [path.win32.join(originals, "*", "01_WIP")], protected_roots: [originals] };
+  const files = { [originals]: true, [root]: true, [wip]: true, [TPL]: true, [path.win32.join(root, "00_Info", "Admin", "FMC_Access.json")]: ACCESS };
+  const p = planCentral(input({ project_folder: root, project: "PROJ" }), guarded, reader(files), drive(), "C:\\T", NOW);
+  assert.match(p.reasons.join(), /protected root/);
+});
