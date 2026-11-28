@@ -161,3 +161,14 @@ test("FAM no archive folder in the jail: an overwrite is refused (FMC-FAM-ARCHIV
   assert.equal(!r.ok && r.code, FAMILY_LOAD.ARCHIVE);
   assert.equal(readFamilyOverwrites({ store: w.store }).length, 0);
 });
+
+test("FAM pane: only the pane CLI approves, with the Windows user; list shows pending records", async () => {
+  const { paneFamilyLoad } = await import("./familyload_pane.js");
+  const w = world();
+  const r = requireFamilyOverwrite(ask(w), true, { store: w.store });
+  const id = (!r.ok && r.approval_id) || "";
+  assert.equal((paneFamilyLoad("family_load_list", {}, "USER", { store: w.store }).records as unknown[]).length, 1);
+  assert.match(String(paneFamilyLoad("family_load_approve", { id }, "", { store: w.store }).error), /person/);
+  assert.equal(paneFamilyLoad("family_load_approve", { id }, "USER", { store: w.store }).status, "approved");
+  assert.match(String(paneFamilyLoad("family_load_reject", { id }, "USER", { store: w.store }).error), /approved/);
+});

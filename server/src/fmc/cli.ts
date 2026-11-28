@@ -281,6 +281,12 @@ async function main() {
         const r = paneRelease(command, input as Record<string, unknown>, process.env.USERNAME || "unknown");
         return print(r, "error" in r);
       }
+      // BSF-3: a person lists, approves or rejects a family overwrite (load/reload/save over an existing family) in the pane. Never MCP tools.
+      case "family_load_list": case "family_load_approve": case "family_load_reject": {
+        const { paneFamilyLoad } = await import("./familyload_pane.js");
+        const r = paneFamilyLoad(command, input as Record<string, unknown>, process.env.USERNAME || "");
+        return print(r, "error" in r);
+      }
       // The pane's AI commands: a person approves, rejects, resumes or sets the policy. Never MCP tools.
       case "ai_approve": case "ai_reject": case "ai_resume": case "ai_config": case "ai_general": case "ai_send": {
         const r = await paneAi(command, input as Record<string, unknown>, process.env.USERNAME || "unknown");
