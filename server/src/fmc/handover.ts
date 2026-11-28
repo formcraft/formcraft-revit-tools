@@ -9,6 +9,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { csvLine, expandEnv, isInside, type GuardConfig } from "./policy.js";
+import { ZIP_MAX_BYTES } from "./zipwrite.js";
 
 const win = path.win32;
 
@@ -29,7 +30,23 @@ export const HANDOVER_FIX: Record<string, string> = {
   "FMC-HANDOVER-CATEGORY": "A category name is not a Revit built-in category (OST_...).",
   "FMC-HANDOVER-NOTHING": "The read found no elements in the named categories. The package would hold no parameters.",
   "FMC-HANDOVER-EXISTS": "A zip with that name already exists. Nothing is overwritten.",
+  "FMC-HANDOVER-TOO-BIG": "The package would pass 4 GB. The zip writer has no Zip64, so it is refused before anything is written. Leave the model out (include_model false) or split the report files across two packages.",
 };
+
+/** Shown on every PROVISIONAL result while no kit 03_Master_Data/FMC_Handover.json exists. */
+export const PROVISIONAL_NOTE =
+  "PROVISIONAL: no kit 03_Master_Data/FMC_Handover.json was found (or it is marked PROVISIONAL), so the sample categories, parameters and required values were used. The package cannot pass until the kit spec exists.";
+
+/** Shown whenever include_model is asked for. */
+export const MODEL_NOTE =
+  "include_model copies the last saved .rvt on disk byte for byte. Changes not yet saved in Revit are not in the zip; the tool never saves the model.";
+
+/** A safe upper estimate of the zip size: every entry's bytes, its two headers, its name twice, the end record and room for manifest.json. */
+export function estimateZipBytes(files: Array<{ name: string; bytes: number }>, manifestAllowance = 1024 * 1024): number {
+  let total = 22 + manifestAllowance;
+  for (const f of files) total += f.bytes + 30 + 46 + 2 * Buffer.byteLength(f.name, "utf8");
+  return total;
+}
 
 export interface HandoverSpec {
   status?: string;
@@ -107,6 +124,7 @@ export interface HandoverPlan {
   warnings: Problem[];
   blockers: Problem[];
   model: { included: boolean; state: string; code?: string };
+  estimated_zip_bytes: number;
   plan_id: string;
 }
 
@@ -259,6 +277,8 @@ export function planHandover(read: HandoverRead, loaded: LoadedHandoverSpec, req
   report_files?: string[];
   include_model: boolean;
   now: Date;
+  /** Tests only: a smaller limit than 4 GB. */
+  max_zip_bytes?: number;
 }): HandoverPlan {
   const spec = loaded.spec;
   const warnings: Problem[] = [];
@@ -317,6 +337,12 @@ export function planHandover(read: HandoverRead, loaded: LoadedHandoverSpec, req
       if (read.is_modified) warnings.push({ code: "FMC-HANDOVER-MODEL-UNSAVED", message: HANDOVER_FIX["FMC-HANDOVER-MODEL-UNSAVED"] });
     }
   }
+  const estimate = estimateZipBytes(files);
+  const limit = request.max_zip_bytes ?? ZIP_MAX_BYTES;
+  if (estimate > limit) {
+    const gb = (n: number) => (n / 1024 ** 3).toFixed(2);
+    blockers.push({ code: "FMC-HANDOVER-TOO-BIG", message: HANDOVER_FIX["FMC-HANDOVER-TOO-BIG"], detail: `about ${gb(estimate)} GB planned, limit ${gb(limit)} GB` });
+  }
   const zipName = zipNameFor(read.title, request.milestone, request.now);
   const planId = crypto.createHash("sha256").update(JSON.stringify({
     document: [read.title, read.path],
@@ -328,7 +354,7 @@ export function planHandover(read: HandoverRead, loaded: LoadedHandoverSpec, req
   })).digest("hex").slice(0, 16);
   return {
     milestone: request.milestone, zip_name: zipName, files, completeness: rows, missing_required: missingRequired,
-    elements: elements.length, counts, warnings, blockers, model, plan_id: planId,
+    elements: elements.length, counts, warnings, blockers, model, estimated_zip_bytes: estimate, plan_id: planId,
   };
 }
 
@@ -362,8 +388,9 @@ export function manifestFor(args: {
     document: {
       title: read.title, path: read.path, revit_version: read.revit_version ?? "", is_workshared: read.is_workshared === true,
       is_modified: read.is_modified === true, model_included: plan.model.included, model_state: plan.model.state,
+      ...(plan.model.included ? { model_note: MODEL_NOTE } : {}),
     },
-    spec: { path: loaded.path, source: loaded.source, provisional: loaded.provisional },
+    spec: { path: loaded.path, source: loaded.source, provisional: loaded.provisional, ...(loaded.provisional ? { note: PROVISIONAL_NOTE } : {}) },
     counts: plan.counts,
     elements: plan.elements,
     missing_required: plan.missing_required,

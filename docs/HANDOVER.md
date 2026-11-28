@@ -30,3 +30,20 @@ One zip per milestone, named `<Model>_<Milestone>_Handover_<yyyyMMdd-HHmm>.zip`:
 ## Kit file
 `03_Master_Data/FMC_Handover.json` (sample: `server/data/FMC_Handover.json`, PROVISIONAL): `categories` (OST_ names),
 `parameters`, `required` (`"*"` plus per category), `project_info` (values that must not be empty), `milestones`.
+
+## Size limit (no Zip64)
+The writer has no Zip64, so every size and offset must stay under 4 GB. The dry run adds up every planned entry (model,
+reports, CSVs, headers and room for the manifest) and refuses a package over the limit with `FMC-HANDOVER-TOO-BIG`
+before anything is written; the write refuses the same plan again. Leave the model out or split the report files.
+
+## Labels
+- While no kit `03_Master_Data/FMC_Handover.json` exists (or it says `"status": "PROVISIONAL"`), every result and the
+  manifest carry `provisional_note` in plain words, `status` is PROVISIONAL and `can_pass` is false.
+- With `include_model` the result carries `model_note`: the last saved .rvt on disk is copied byte for byte; unsaved
+  changes are not in the zip and the tool never saves.
+
+## Open items
+- Kit spec `03_Master_Data/FMC_Handover.json` does not exist yet (kit owner). Until then the tool is PROVISIONAL.
+- Zip64 for packages over 4 GB: not built; refused gracefully instead.
+- COBie 2.4 and the IDS check: later (item 41 / G009).
+- Live check (Revit Testing Bot): fmc_handover_read on a small saved local model; zip opens in Windows Explorer and 7-Zip.

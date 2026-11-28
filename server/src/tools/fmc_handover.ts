@@ -9,7 +9,7 @@ import { protectedRoots } from "../fmc/opencopy.js";
 import { RUNNING_BUILD } from "../fmc/buildinfo.js";
 import { writeZip, type ZipSource } from "../fmc/zipwrite.js";
 import {
-  HANDOVER_FIX, checkOutputFolder, cleanMilestone, defaultOutputFolder, handoverStatus, loadHandoverSpec, manifestFor, planHandover,
+  HANDOVER_FIX, MODEL_NOTE, PROVISIONAL_NOTE, checkOutputFolder, cleanMilestone, defaultOutputFolder, handoverStatus, loadHandoverSpec, manifestFor, planHandover,
   type HandoverRead,
 } from "../fmc/handover.js";
 
@@ -24,8 +24,8 @@ export const FMC_HANDOVER_DESCRIPTION =
   "Read-only against the model: no transaction, nothing saved or synced. The only write is the zip, in output_folder " +
   "(default reports_dir\\Handover), which must be inside write_roots or reports_dir and never 02_Shared, 03_Published, 04_Archive, 05_Incoming or a protected original. " +
   "categories (OST_ names), parameters and required values come from the kit 03_Master_Data/FMC_Handover.json; without it the sample is used and the package is PROVISIONAL. " +
-  "include_model copies the last saved .rvt; a workshared, cloud or unsaved model is refused (detach and save a handover copy in Revit first). " +
-  "dry_run defaults to true and writes nothing; it returns plan_id. Write with dry_run false and that plan_id. " +
+  "include_model copies the last saved .rvt on disk (unsaved changes are not in it; the tool never saves); a workshared, cloud or unsaved model is refused (detach and save a handover copy in Revit first). " +
+  "A package over 4 GB is refused at the dry run (no Zip64). dry_run defaults to true and writes nothing; it returns plan_id. Write with dry_run false and that plan_id. " +
   "Status: PROVISIONAL (sample spec), GAPS (required values missing or the read was cut short) or READY; nothing is marked passed. " +
   "Example: document F26901-FMC-ZZ-ZZ-M3-A-0001, milestone S4, dry_run true.";
 
@@ -52,6 +52,8 @@ export interface HandoverIo {
   kitRoot?: string;
   specText?: string;
   now?: () => Date;
+  /** Tests only: a smaller zip limit than 4 GB. */
+  maxZipBytes?: number;
 }
 
 function stamp(extra: Record<string, unknown> = {}) {
@@ -102,7 +104,7 @@ export async function runFmcHandover(args: FmcHandoverArgs, io: HandoverIo = {})
     if (body.refused === true) return refuse(String(body.code ?? "FMC-HANDOVER"), String(body.message ?? "The read was refused."));
     const read = { ...(body as unknown as HandoverRead), title: String(body.title ?? args.document), path: String(body.path ?? "") };
     const now = io.now ? io.now() : new Date();
-    const plan = planHandover(read, loaded, { milestone, categories, parameters, report_files: args.report_files, include_model: args.include_model, now });
+    const plan = planHandover(read, loaded, { milestone, categories, parameters, report_files: args.report_files, include_model: args.include_model, now, ...(io.maxZipBytes ? { max_zip_bytes: io.maxZipBytes } : {}) });
     const cfgLoaded = io.guard ? { config: io.guard, problem: undefined as string | undefined } : loadConfig(configPath(env));
     const cfg = cfgLoaded.config;
     const folderRaw = args.output_folder.trim() || defaultOutputFolder(cfg, env);
@@ -117,6 +119,9 @@ export async function runFmcHandover(args: FmcHandoverArgs, io: HandoverIo = {})
       status,
       can_pass: status === "READY",
       provisional: loaded.provisional,
+      ...(loaded.provisional ? { provisional_note: PROVISIONAL_NOTE } : {}),
+      ...(args.include_model ? { model_note: MODEL_NOTE } : {}),
+      estimated_zip_bytes: plan.estimated_zip_bytes,
       spec: loaded.path,
       spec_source: loaded.source,
       output_folder: folder.folder,

@@ -8,7 +8,8 @@ import zlib from "node:zlib";
 import { fileURLToPath } from "node:url";
 import { z } from "zod";
 import { DEFAULT_CONFIG, READ_VIA_SEND_COMMAND, WRITE_COMMANDS, type GuardConfig } from "./policy.js";
-import { checkOutputFolder, cleanMilestone, completeness, loadHandoverSpec, safeName, type HandoverElement } from "./handover.js";
+import { MODEL_NOTE, PROVISIONAL_NOTE, checkOutputFolder, cleanMilestone, completeness, estimateZipBytes, loadHandoverSpec, planHandover, safeName, type HandoverElement } from "./handover.js";
+import { ZIP_MAX_BYTES } from "./zipwrite.js";
 import { crc32, readZip, writeZip, zipEntryName } from "./zipwrite.js";
 import { readZip as readZipInMemory } from "./zip.js";
 import { FMC_HANDOVER_SHAPE, runFmcHandover, type FmcHandoverArgs } from "../tools/fmc_handover.js";
@@ -225,4 +226,43 @@ test("the handover read is a read, and it is in command.json", () => {
   assert.ok(!WRITE_COMMANDS.has("fmc_handover_read"));
   const manifest = JSON.parse(fs.readFileSync(path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..", "command.json"), "utf8")) as { commands: Array<{ commandName: string }> };
   assert.ok(manifest.commands.some((row) => row.commandName === "fmc_handover_read"));
+});
+
+test("a package over the zip limit is refused at the dry run, before anything is written (no Zip64)", async () => {
+  const { dir, out, guard, env } = sandbox();
+  const report = path.join(dir, "clash.html");
+  fs.writeFileSync(report, Buffer.alloc(64 * 1024, 1));
+  const loaded = loadHandoverSpec({ file: "", kitRoot: "" });
+  const small = planHandover(sampleRead() as never, loaded, { milestone: "S4", report_files: [report], include_model: false, now: fixed() });
+  assert.equal(small.blockers.length, 0);
+  assert.ok(small.estimated_zip_bytes >= 64 * 1024 && small.estimated_zip_bytes < ZIP_MAX_BYTES);
+  assert.ok(estimateZipBytes([{ name: "model/a.rvt", bytes: ZIP_MAX_BYTES }]) > ZIP_MAX_BYTES, "a 4 GB model alone is over the limit");
+  const big = planHandover(sampleRead() as never, loaded, { milestone: "S4", report_files: [report], include_model: false, now: fixed(), max_zip_bytes: 32 * 1024 });
+  assert.equal(big.blockers[0]?.code, "FMC-HANDOVER-TOO-BIG");
+  assert.match(big.blockers[0]?.detail ?? "", /GB planned/);
+  const dry = textOf(await runFmcHandover(args({ document: "SAMPLE", milestone: "S4", output_folder: out, report_files: [report] }),
+    { read: async () => sampleRead(), guard, env, kitRoot: "", now: fixed, maxZipBytes: 32 * 1024 }));
+  assert.equal(dry.dry_run, true);
+  assert.equal(dry.blockers[0].code, "FMC-HANDOVER-TOO-BIG");
+  assert.match(dry.next, /Nothing was written/);
+  const write = textOf(await runFmcHandover(args({ document: "SAMPLE", milestone: "S4", output_folder: out, report_files: [report], dry_run: false, plan_id: dry.plan_id }),
+    { read: async () => sampleRead(), guard, env, kitRoot: "", now: fixed, maxZipBytes: 32 * 1024 }));
+  assert.equal(write.isError, true);
+  assert.equal(write.code, "FMC-HANDOVER-TOO-BIG");
+  assert.equal(fs.existsSync(out) ? fs.readdirSync(out).length : 0, 0, "no zip and no .partial file");
+});
+
+test("PROVISIONAL is labelled in plain words while no kit spec exists, and include_model says it copies the last saved file", async () => {
+  const { out, guard, env } = sandbox();
+  const dry = textOf(await runFmcHandover(args({ document: "SAMPLE", milestone: "S4", output_folder: out, include_model: true }),
+    { read: async () => sampleRead(), guard, env, kitRoot: "", now: fixed }));
+  assert.equal(dry.status, "PROVISIONAL");
+  assert.equal(dry.can_pass, false);
+  assert.equal(dry.provisional_note, PROVISIONAL_NOTE);
+  assert.match(dry.provisional_note, /03_Master_Data\/FMC_Handover\.json/);
+  assert.equal(dry.model_note, MODEL_NOTE);
+  assert.match(dry.model_note, /last saved \.rvt/);
+  const plain = textOf(await runFmcHandover(args({ document: "SAMPLE", milestone: "S4", output_folder: out }),
+    { read: async () => sampleRead(), guard, env, kitRoot: "", now: fixed }));
+  assert.equal(plain.model_note, undefined, "no model note when the model is not asked for");
 });
