@@ -637,4 +637,7 @@ test("HW-T14: fmc_hw stays a read; the real writes use the gate helpers and auto
   const hw = fs.readFileSync(new URL("./hw.js", import.meta.url), "utf8");
   const auto = hw.slice(hw.indexOf("export async function autoFreeIfHard"), hw.indexOf("export function memoryReport"));
   for (const helper of ["checkHwApproval", "leaseRefusal", "stopRefusal", "fmc_hw_free", "revitWrite"]) assert.equal(auto.includes(helper), false, helper);
+  // FINAL 3.4: the notice goes to the memory gate's service log, not a separate console call.
+  assert.ok(auto.includes("serviceLog"));
+  assert.equal(auto.includes("console.error"), false);
 });

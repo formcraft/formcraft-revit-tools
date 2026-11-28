@@ -6,7 +6,7 @@
  */
 import os from "node:os";
 import { spawn } from "node:child_process";
-import { memoryGate, type MemoryView } from "./memory.js";
+import { memoryGate, serviceLog, type MemoryView } from "./memory.js";
 import { saveBlocked } from "./savepolicy.js";
 import { loadConfig, type GuardConfig } from "./policy.js";
 import { parseConfig } from "./aiuse.js";
@@ -714,7 +714,7 @@ export interface HwIo {
 }
 
 /** Test hook: forget the one-minute auto-free throttle and the last notice. */
-export function resetAutoFreeThrottle(): void { lastAutoFree = 0; lastNotice = null; }
+export function resetAutoFreeThrottle(): void { lastAutoFreeAt = 0; lastNotice = null; }
 
 export interface AutoFreeResult {
   ran: boolean;
@@ -742,7 +742,7 @@ export interface AutoFreeNotice {
 let lastNotice: AutoFreeNotice | null = null;
 export function lastAutoFree(): AutoFreeNotice | null { return lastNotice; }
 
-let lastAutoFree = 0;
+let lastAutoFreeAt = 0;
 
 export async function collectDefault(): Promise<HostRaw> {
   if (process.platform !== "win32") return hostFromOs();
@@ -793,9 +793,10 @@ export async function autoFreeIfHard(io: HwIo = {}): Promise<AutoFreeResult> {
   if (view.pause_below_mb <= 0) return { ran: false, reason: "ram_pause_free_mb is 0. Auto free stays off." };
   if (view.tier !== "hard") return { ran: false, reason: "Auto free runs only in the hard tier." };
   if (io.idle && !io.idle()) return { ran: false, reason: "Revit is not idle." };
-  if (Date.now() - lastAutoFree < 60_000) return { ran: false, reason: "Auto free already ran in the last minute." };
+  if (Date.now() - lastAutoFreeAt < 60_000) return { ran: false, reason: "Auto free already ran in the last minute." };
   if (!io.revit) return { ran: false, reason: "No Revit connection was given, so nothing was closed." };
-  const log = io.log ?? ((line: string) => console.error(line));
+  // FINAL 3.4: the memory gate's own service-log sink (the [FMC-RAM] lines), not a separate console call.
+  const log = io.log ?? serviceLog;
   const say = (line: string) => { try { log(line); } catch { /* the log never stops a free */ } };
   const before = typeof view.free_mb === "number" ? view.free_mb : null;
   // fmc_hw is a session command (fairqueue SESSION_COMMANDS), so with two or more documents open the snapshot and the
@@ -835,7 +836,7 @@ export async function autoFreeIfHard(io: HwIo = {}): Promise<AutoFreeResult> {
       const sent = reply.closed?.find((row) => String(row?.view_id ?? "") === id);
       return { document: plannedRow?.document ?? String(sent?.document ?? ""), view: plannedRow?.view ?? String(sent?.view ?? ""), view_id: id };
     });
-    lastAutoFree = Date.now(); // B2: the cooldown starts only after a successful free.
+    lastAutoFreeAt = Date.now(); // B2: the cooldown starts only after a successful free.
     const skipped: NonNullable<AutoFreeResult["skipped"]> = [...plan.skipped];
     for (const row of Array.isArray(reply?.skipped) ? reply.skipped : []) skipped.push({ document: String(row?.document ?? ""), reason: String(row?.reason ?? "") });
     const byDoc = new Map<string, string[]>();
