@@ -111,8 +111,6 @@ namespace RevitMCPCommandSet.Bridge
         {
             // owner 27 Oct: calls wait out saves and syncs; the AI's batches are followed on Revit's undo list
             FmcBusy.Hook(app); FmcUndo.Hook(app);
-            // F19: the change feed listens from the first Formcraft call of the session (read-only; never syncs or saves)
-            RevitMCPCommandSet.Services.Fmc.ChangeFeed.FmcChangeFeed.Hook(app);
             if (_hooked || app == null) return;
             try
             {

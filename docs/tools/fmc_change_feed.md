@@ -68,3 +68,25 @@ The pane can run it through the server CLI: `node build/fmc/cli.js fmc_change_fe
 Returns `resolved_document`, `workshared`, `user`, `version {guid, saves}`, `journal {listening, since, last_seq,
 next_after_seq, more, gap, dropped, entries}`, `diff` (null without `since_version`; `FMC-CHANGES-VERSION` when Revit
 doesn't know the version), `notes`. Errors: `FMC-DOC-REQUIRED`, `FMC-DOC-NOT-FOUND`, `FMC-DOC-AMBIGUOUS`.
+
+## Lasting change log
+
+The feed is hooked when the Formcraft plugin starts (and when a document opens), not at the first tool call. Every
+model change, open, save, sync and close is appended to an JSONL log **outside the model**:
+
+`%APPDATA%\Formcraft\ledger\model-changes\<document>-YYYY-MM.jsonl`
+
+(`FMC_CHANGE_FEED_DIR` moves the folder, for tests). One file per document per month; a part file is opened if the
+month's file grows past 8 MB. Nothing is written under `D:\Fomcraft` or into a `.rvt`. The 2,000-entry in-memory
+window is only a live cap; the files keep the whole session history, and earlier months stay on disk.
+
+Each change line carries key-parameter **before → after** values (Mark, Type, Level, Comments, FMC_* and the rest of
+the key list), with a reason when the list is truncated (at most 20 parameters and 40 elements, and an 8 KB cap per
+entry). Times are stored in UTC (`at`) and labeled with the machine's time zone (`at_local`, `tz`), for example
+`2026-11-28 11:10:00 EAT (UTC+3)`.
+
+## Check › Changes
+
+The Formcraft pane (Check › Changes) shows the same log: a timeline with filters by document, category, user and time,
+and the before/after values for a picked row. The page is read-only and never syncs or saves.
+

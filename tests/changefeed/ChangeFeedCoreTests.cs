@@ -113,6 +113,11 @@ namespace ChangeFeedCore.Tests
             new object[] { Path.Combine("commandset", "Services", "Fmc", "ChangeFeed", "FmcChangeFeedRead.cs") },
             new object[] { Path.Combine("commandset", "Services", "Fmc", "ChangeFeed", "ChangeFeedCore.cs") },
             new object[] { Path.Combine("commandset", "Commands", "Fmc", "FmcChangeFeedReadCommand.cs") },
+            new object[] { Path.Combine("commandset", "Services", "Fmc", "ChangeFeed", "ChangeFeedLog.cs") },
+            new object[] { Path.Combine("commandset", "Services", "Fmc", "ChangeFeed", "ChangeFeedParams.cs") },
+            new object[] { Path.Combine("plugin", "Fmc", "ChangeFeedSession.cs") },
+            new object[] { Path.Combine("plugin", "Shell", "RevitChangeFeedTools.cs") },
+            new object[] { Path.Combine("shell", "Formcraft.Shell", "ViewModels", "ChangesPage.cs") },
         };
 
         [Theory]

@@ -39,8 +39,7 @@ namespace RevitMCPCommandSet.Services.Fmc.ChangeFeed
                 string key = (Parameters?.Value<string>("document") ?? "").Trim();
                 if (key.Length == 0)
                     throw new InvalidOperationException("[FMC-DOC-REQUIRED] fmc_change_feed_read needs document. Refusing to use the active document.");
-                FmcChangeFeed.Hook(app);
-                using (FmcTarget target = FmcTarget.Resolve(app, Parameters, mayOpen: false))
+                                using (FmcTarget target = FmcTarget.Resolve(app, Parameters, mayOpen: false))
                 {
                     Document doc = target.Doc;
                     long afterSeq = Math.Max(0, Parameters.Value<long?>("after_seq") ?? 0);
@@ -49,18 +48,21 @@ namespace RevitMCPCommandSet.Services.Fmc.ChangeFeed
                     string sinceVersion = (Parameters.Value<string>("since_version") ?? "").Trim();
                     var notes = new JArray();
 
-                    FeedPage page = FmcChangeFeed.Journal.Query(FmcChangeFeed.Key(doc), afterSeq, limit);
-                    if (page.Gap) notes.Add($"The session journal keeps the last {FeedJournal.DefaultCap} entries; {page.Dropped} older entries were dropped before they were read. Read the version diff for what changed since then.");
+                    string logDir = ChangeFeedLog.DefaultDir();
+                    FeedPage page = ChangeFeedLog.Query(logDir, FmcChangeFeed.Key(doc), afterSeq, limit);
+                    if (page.Gap) notes.Add($"Some journal entries after sequence {afterSeq} could not be read from the log.");
+                    var since = ChangeFeedLog.ListeningSince(logDir);
                     var journal = new JObject
                     {
-                        ["listening"] = FmcChangeFeed.Hooked,
-                        ["since"] = FmcChangeFeed.Journal.StartedAtUtc.HasValue ? FmcChangeFeed.Journal.StartedAtUtc.Value.ToString("yyyy-MM-ddTHH:mm:ss.fffZ") : "",
+                        ["listening"] = ChangeFeedLog.IsListening(logDir),
+                        ["since"] = since.HasValue ? since.Value.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffZ") : "",
+                        ["log_dir"] = logDir,
                         ["last_seq"] = page.LastSeq,
                         ["next_after_seq"] = page.NextAfterSeq,
                         ["more"] = page.More,
                         ["gap"] = page.Gap,
                         ["dropped"] = page.Dropped,
-                        ["entries"] = new JArray(page.Entries.Select(e => e.ToJson())),
+                        ["entries"] = new JArray(page.Entries.Select(e => ChangeFeedLog.EntryJson(e))),
                     };
 
                     Result = new JObject

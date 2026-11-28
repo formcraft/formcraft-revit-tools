@@ -5,8 +5,8 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
-  CHANGE_FEED_COMMANDS, DEFAULT_SOURCES, createdEntries, csvRecords, docKey, externalEntries, feedCounts, filterFeed, flowEntries, ledgerEntries,
-  pageFeed, parseCsvLine, revitEntries, sameDocument, sortFeed, syncLogEntries, syncStateEntries, syncSummary,
+  CHANGE_FEED_COMMANDS, DEFAULT_SOURCES, changeFeedDir, createdEntries, csvRecords, docKey, externalEntries, feedCounts, filterFeed, flowEntries, ledgerEntries,
+  pageFeed, parseCsvLine, persistedEntries, readPersistedLog, revitEntries, sameDocument, sortFeed, syncLogEntries, syncStateEntries, syncSummary,
 } from "./changefeed.js";
 import { READ_VIA_SEND_COMMAND, WRITE_COMMANDS, activityOf } from "./policy.js";
 import { FMC_CHANGE_FEED_SHAPE, runFmcChangeFeed } from "../tools/fmc_change_feed.js";
@@ -199,7 +199,12 @@ test("the add-in side never syncs, saves, reloads latest, relinquishes, opens, c
     ["commandset", "Services", "Fmc", "ChangeFeed", "FmcChangeFeed.cs"],
     ["commandset", "Services", "Fmc", "ChangeFeed", "FmcChangeFeedRead.cs"],
     ["commandset", "Services", "Fmc", "ChangeFeed", "ChangeFeedCore.cs"],
+    ["commandset", "Services", "Fmc", "ChangeFeed", "ChangeFeedLog.cs"],
+    ["commandset", "Services", "Fmc", "ChangeFeed", "ChangeFeedParams.cs"],
     ["commandset", "Commands", "Fmc", "FmcChangeFeedReadCommand.cs"],
+    ["plugin", "Fmc", "ChangeFeedSession.cs"],
+    ["plugin", "Shell", "RevitChangeFeedTools.cs"],
+    ["shell", "Formcraft.Shell", "ViewModels", "ChangesPage.cs"],
   ];
   const forbidden = [
     /SynchronizeWithCentral\s*\(/, /ReloadLatest\s*\(/, /RelinquishOwnership\s*\(/, /\.Save\s*\(/, /\.SaveAs\s*\(/, /\.Close\s*\(/,
@@ -217,5 +222,33 @@ test("the add-in side never syncs, saves, reloads latest, relinquishes, opens, c
   assert.match(handler, /\["saved"\] = false/);
   assert.match(handler, /\["synced"\] = false/);
   assert.match(read("commandset", "Commands", "Fmc", "FmcChangeFeedReadCommand.cs"), /CommandName => "fmc_change_feed_read"/);
-  assert.match(read("commandset", "Bridge", "FmcAiJob.cs"), /FmcChangeFeed\.Hook\(app\)/);
+  assert.doesNotMatch(read("commandset", "Bridge", "FmcAiJob.cs"), /FmcChangeFeed\.Hook/);
+  assert.match(read("plugin", "Core", "Application.cs"), /ChangeFeedSession\.Hook\(/);
+  assert.match(read("plugin", "Fmc", "ChangeFeedSession.cs"), /DocumentOpened/);
+  assert.match(read("plugin", "Fmc", "ChangeFeedSession.cs"), /DocumentChanged/);
 });
+
+test("the lasting JSONL log is read as revit entries, with zone-labeled times and before/after params", async () => {
+  const t = tmpEnv();
+  const dir = path.join(t.dir, "model-changes");
+  fs.mkdirSync(dir, { recursive: true });
+  t.env.FMC_CHANGE_FEED_DIR = dir;
+  const line = {
+    seq: 1, at: "2026-11-28T08:10:00.000Z", at_local: "2026-11-28 11:10:00 EAT (UTC+3)", tz: "EAT",
+    document: "F26901-FMC-ZZ-ZZ-M3-A-0002_USER.rvt", kind: "change", label: "Walls", user: "emlyn", by: "person",
+    added: 0, modified: 1, deleted: 0, modified_ids: [5],
+    elements: [{ id: 5, action: "modified", category: "Walls", name: "Basic Wall", params: [{ name: "Mark", before: "A1", after: "A2" }] }],
+  };
+  fs.writeFileSync(path.join(dir, "F26901-FMC-ZZ-ZZ-M3-A-0002_USER-2026-11.jsonl"), JSON.stringify(line) + "\n");
+  assert.equal(changeFeedDir(t.env), dir);
+  const loaded = persistedEntries(readPersistedLog(dir, "F26901-FMC-ZZ-ZZ-M3-A-0002_USER"));
+  assert.equal(loaded.length, 1);
+  assert.equal((loaded[0].detail as any).at_local, "2026-11-28 11:10:00 EAT (UTC+3)");
+  assert.equal((loaded[0].detail as any).elements[0].params[0].after, "A2");
+  const body = parse(await runFmcChangeFeed(z.object(FMC_CHANGE_FEED_SHAPE).parse({ document: "F26901-FMC-ZZ-ZZ-M3-A-0002_USER", sources: ["revit"] }), {
+    env: t.env, reportsDir: t.dir, now: () => now, revit: async () => revitReply,
+  }));
+  const fromLog = body.entries.filter((e: any) => e.detail && e.detail.at_local);
+  assert.ok(fromLog.some((e: any) => e.what.startsWith("Walls") && e.detail.elements[0].params[0].before === "A1"));
+});
+

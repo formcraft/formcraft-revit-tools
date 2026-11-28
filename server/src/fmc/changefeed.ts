@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 /**
  * The change record and sync feed (F19, L011 tools row 10, for NBRB and DITACO): one read-only timeline of what changed,
  * who changed it and when, over
@@ -212,7 +214,7 @@ export function revitEntries(reply: Record<string, unknown>, now: Date): FeedEnt
     const label = str(e.label);
     out.push({ at, source: "revit", kind, what: `${verb}${label || (kind === "change" ? "(unnamed transaction)" : "")}${counts}`.trim(),
       who: [str(e.user), str(e.by)].filter(Boolean).join(" · "), document: str(e.document) || doc,
-      detail: { seq: e.seq, added_ids: e.added_ids, modified_ids: e.modified_ids, deleted_ids: e.deleted_ids, ids_truncated: e.ids_truncated } });
+      detail: { seq: e.seq, at_local: e.at_local, tz: e.tz, added_ids: e.added_ids, modified_ids: e.modified_ids, deleted_ids: e.deleted_ids, ids_truncated: e.ids_truncated, elements: e.elements, elements_truncated: e.elements_truncated, truncate_reason: e.truncate_reason } });
   }
   const diff = reply.diff as Record<string, unknown> | null | undefined;
   if (diff && !diff.code) {
@@ -281,3 +283,63 @@ export function feedCounts(entries: FeedEntry[]): { by_source: Record<string, nu
   for (const e of entries) { by_source[e.source] = (by_source[e.source] ?? 0) + 1; by_kind[e.kind] = (by_kind[e.kind] ?? 0) + 1; }
   return { by_source, by_kind };
 }
+
+/** The lasting model-change log: %APPDATA%\Formcraft\ledger\model-changes, or FMC_CHANGE_FEED_DIR (tests). */
+export function changeFeedDir(env: NodeJS.ProcessEnv = process.env): string {
+  const own = (env.FMC_CHANGE_FEED_DIR ?? "").trim();
+  if (own) return own;
+  const app = (env.APPDATA ?? "").trim();
+  return app ? path.join(app, "Formcraft", "ledger", "model-changes") : "";
+}
+
+function safeKey(document: string): string {
+  const s = docKey(document).replace(/[<>:"/\\|?*\x00-\x1f]/g, "_").replace(/[ .]+$/, "") || "untitled";
+  return s.slice(0, 80);
+}
+
+/** JSONL lines of the lasting change log as feed entries. Times keep at_local (already labeled with its zone). */
+export function persistedEntries(lines: unknown[]): FeedEntry[] {
+  const out: FeedEntry[] = [];
+  for (const l of lines) {
+    if (!l || typeof l !== "object") continue;
+    const o = l as Record<string, unknown>;
+    const at = iso(o.at);
+    if (!at) continue;
+    const kind = str(o.kind) || "change";
+    const label = str(o.label);
+    const counts = kind === "change" || kind === "undo" || kind === "redo"
+      ? ` (+${Number(o.added) || 0} ~${Number(o.modified) || 0} -${Number(o.deleted) || 0})` : "";
+    const verb = kind === "change" ? "" : kind === "undo" ? "Undo: " : kind === "redo" ? "Redo: " : kind === "saved" ? "Saved " : kind === "synced" ? "Synced with central " : kind === "opened" ? "Opened " : kind === "closed" ? "Closed " : "";
+    const elements = Array.isArray(o.elements) ? o.elements : [];
+    out.push({
+      at, source: "revit", kind, what: `${verb}${label || (kind === "change" ? "(unnamed transaction)" : "")}${counts}`.trim(),
+      who: [str(o.user), str(o.by)].filter(Boolean).join(" · "), document: str(o.document),
+      detail: {
+        seq: o.seq, at_local: o.at_local, tz: o.tz,
+        added_ids: o.added_ids, modified_ids: o.modified_ids, deleted_ids: o.deleted_ids, ids_truncated: o.ids_truncated,
+        elements, elements_truncated: o.elements_truncated, truncate_reason: o.truncate_reason,
+      },
+    });
+  }
+  return out;
+}
+
+/** Every JSON object in the month files for one document (empty document: every file). */
+export function readPersistedLog(dir: string, document = ""): unknown[] {
+  if (!dir) return [];
+  let names: string[] = [];
+  try { names = fs.readdirSync(dir).filter((f) => f.endsWith(".jsonl")); } catch { return []; }
+  const prefix = document.trim() ? safeKey(document) + "-" : "";
+  const out: unknown[] = [];
+  for (const f of names.sort()) {
+    if (prefix && !f.toLowerCase().startsWith(prefix.toLowerCase())) continue;
+    let text = "";
+    try { text = fs.readFileSync(path.join(dir, f), "utf8"); } catch { continue; }
+    for (const line of text.split(/\r?\n/)) {
+      if (!line.trim()) continue;
+      try { out.push(JSON.parse(line.replace(/^\uFEFF/, ""))); } catch { /* a torn line */ }
+    }
+  }
+  return out;
+}
+

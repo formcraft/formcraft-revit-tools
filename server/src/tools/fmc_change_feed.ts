@@ -10,7 +10,7 @@ import { loadSyncState } from "../fmc/docschedule.js";
 import { runFmcChanges } from "./fmc_changes.js";
 import {
   DEFAULT_SOURCES, FEED_SOURCES, FeedEntry, FeedSource, SourceStatus, createdEntries, externalEntries, feedCounts, filterFeed, flowEntries,
-  ledgerEntries, pageFeed, revitEntries, sortFeed, syncLogEntries, syncStateEntries, syncSummary,
+  changeFeedDir, ledgerEntries, pageFeed, persistedEntries, readPersistedLog, revitEntries, sortFeed, syncLogEntries, syncStateEntries, syncSummary,
 } from "../fmc/changefeed.js";
 
 const win = path.win32;
@@ -106,9 +106,15 @@ export async function runFmcChangeFeed(args: FmcChangeFeedArgs, io: ChangeFeedIo
     return { entries, note: read.length ? `Sync log: ${read.join("; ")}` : "No sync log found; managed save/sync clocks only" };
   });
 
+  const persisted = wanted.has("revit") ? persistedEntries(readPersistedLog(changeFeedDir(env), document)) : [];
   if (wanted.has("revit")) {
     if (!document) {
-      statuses.push({ source: "revit", read: false, count: 0, note: "Pass document (an open model's title or path) for Revit's record. Not guessed from the active document." });
+      if (persisted.length) {
+        all.push(...persisted);
+        statuses.push({ source: "revit", read: true, count: persisted.length, note: `Lasting change log under ${changeFeedDir(env)} (append-only JSONL, outside the model). Times include their time zone.` });
+      } else {
+        statuses.push({ source: "revit", read: false, count: 0, note: "Pass document (an open model's title or path) for Revit's version diff. The lasting log is still read when it has entries. Not guessed from the active document." });
+      }
     } else {
       try {
         const body: Record<string, unknown> = { document, after_seq: args.after_seq, limit: 1000, element_limit: args.element_limit };
@@ -117,11 +123,17 @@ export async function runFmcChangeFeed(args: FmcChangeFeedArgs, io: ChangeFeedIo
           ? await io.revit(body)
           : await withRevitConnection((client) => client.sendCommand("fmc_change_feed_read", body, 60000))) as Record<string, unknown>;
         revitFacts = raw ?? {};
-        const entries = revitEntries(revitFacts, now);
+        // When the lasting JSONL is already in hand, drop the add-in journal lines so they are not listed twice;
+        // keep the version diff. If the log is empty (tests, or the server cannot see the file), keep the journal.
+        const journalForEntries = persisted.length
+          ? { ...(revitFacts.journal as object || {}), entries: [] }
+          : (revitFacts.journal ?? {});
+        const entries = [...persisted, ...revitEntries({ ...revitFacts, journal: journalForEntries }, now)];
         all.push(...entries);
         const journal = (revitFacts.journal ?? {}) as Record<string, unknown>;
         const diff = revitFacts.diff as Record<string, unknown> | null | undefined;
         const bits: string[] = [];
+        if (persisted.length) bits.push(`Lasting change log under ${changeFeedDir(env)} (append-only JSONL, outside the model). Times include their time zone.`);
         if (journal.listening === false) bits.push("Revit's journal isn't listening in this session");
         else if (journal.since) bits.push(`Session journal since ${journal.since}`);
         if (journal.more) bits.push("more journal entries: call again with next.after_seq");

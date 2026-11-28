@@ -29,6 +29,12 @@ namespace RevitMCPCommandSet.Services.Fmc.ChangeFeed
         public List<long> AddedIds = new List<long>();
         public List<long> ModifiedIds = new List<long>();
         public List<long> DeletedIds = new List<long>();
+        public List<ElementChange> Elements = new List<ElementChange>();
+        public bool ElementsTruncated;
+        public string TruncateReason = "";
+        /// <summary>The time already labeled with its zone, e.g. "2026-11-28 11:10:00 EAT (UTC+3)".</summary>
+        public string AtLocal = "";
+        public string Tz = "";
 
         public JObject ToJson()
         {
@@ -52,7 +58,58 @@ namespace RevitMCPCommandSet.Services.Fmc.ChangeFeed
                 o["deleted_ids"] = new JArray(DeletedIds);
                 o["ids_truncated"] = AddedIds.Count < Added || ModifiedIds.Count < Modified || DeletedIds.Count < Deleted;
             }
+            if (Elements != null && Elements.Count > 0)
+                o["elements"] = new JArray(Elements.ConvertAll(e => e.ToJson()));
+            if (ElementsTruncated) { o["elements_truncated"] = true; o["truncate_reason"] = TruncateReason ?? ""; }
+            if (!string.IsNullOrEmpty(AtLocal)) o["at_local"] = AtLocal;
+            if (!string.IsNullOrEmpty(Tz)) o["tz"] = Tz;
             return o;
+        }
+
+        public static FeedEntry FromJson(JObject o)
+        {
+            if (o == null) return null;
+            var e = new FeedEntry
+            {
+                Seq = o["seq"] != null ? (long)o["seq"] : 0,
+                Document = (string)o["document"] ?? "",
+                Kind = (string)o["kind"] ?? "",
+                Label = (string)o["label"] ?? "",
+                User = (string)o["user"] ?? "",
+                By = (string)o["by"] ?? "",
+                Added = o["added"] != null ? (int)o["added"] : 0,
+                Modified = o["modified"] != null ? (int)o["modified"] : 0,
+                Deleted = o["deleted"] != null ? (int)o["deleted"] : 0,
+                ElementsTruncated = o["elements_truncated"] != null && (bool)o["elements_truncated"],
+                TruncateReason = (string)o["truncate_reason"] ?? "",
+                AtLocal = (string)o["at_local"] ?? "",
+                Tz = (string)o["tz"] ?? "",
+            };
+            DateTime at;
+            if (DateTime.TryParse((string)o["at"], System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.AdjustToUniversal | System.Globalization.DateTimeStyles.AssumeUniversal, out at))
+                e.AtUtc = at;
+            e.AddedIds = Longs(o["added_ids"]);
+            e.ModifiedIds = Longs(o["modified_ids"]);
+            e.DeletedIds = Longs(o["deleted_ids"]);
+            var els = o["elements"] as JArray;
+            if (els != null)
+                foreach (JToken t in els)
+                {
+                    var el = ElementChange.FromJson(t as JObject);
+                    if (el != null) e.Elements.Add(el);
+                }
+            return e;
+        }
+
+        private static List<long> Longs(JToken t)
+        {
+            var list = new List<long>();
+            var arr = t as JArray;
+            if (arr == null) return list;
+            foreach (JToken x in arr)
+                try { list.Add((long)x); } catch { }
+            return list;
         }
     }
 
