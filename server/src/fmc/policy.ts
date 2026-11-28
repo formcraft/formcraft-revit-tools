@@ -255,6 +255,12 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_match_apply",
   // Bind kit shared parameters, copy values between parameters, fill values from a CSV. One transaction. Reads stay on fmc_params.
   "fmc_params_apply",
+  // Sun and shadow study views: 3D views with sun settings. One transaction. Never changes the site location.
+  "fmc_sun_apply",
+  // Analysis display: the display style and the view's style setting in one transaction, then transient AVF results.
+  "fmc_avf_apply",
+  // A toposolid from survey points. One transaction. The dry run is server-side and sends nothing to this command.
+  "fmc_survey_apply",
 ]);
 
 /**
@@ -323,6 +329,12 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_exports_run",
   // Point cloud against model: element meshes in metres and linked point clouds. No transaction.
   "fmc_pointcloud_read",
+  // Site location, 3D views and existing sun studies. No transaction.
+  "fmc_sun",
+  // Graphical views, their analysis results and the analysis display styles. No transaction.
+  "fmc_avf",
+  // Toposolid types, levels, existing toposolids and the internal-to-shared matrix. No transaction.
+  "fmc_survey",
 ]);
 
 /**
