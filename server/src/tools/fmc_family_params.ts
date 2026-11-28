@@ -20,7 +20,8 @@ export const FMC_FAMILY_PARAMS_DESCRIPTION =
   "list reads parameters on one loaded family, or the loaded titleblock names when family is omitted. " +
   "add adds a parameter (name, type, group, shared, instance or type). shared defaults to true and the definition is taken from the kit shared parameter file by name and GUID. " +
   "A name that is not in that file is FMC-PARAM-NOT-IN-KIT, a kit change. No shared definition is created. " +
-  "label is refused with FMC-NO-API-LABEL: Revit 2025 has no API to create a label in a family, so the label is placed by hand once in the kit title block. It still checks that the parameter is on the family (FMC-PARAM-MISSING). " +
+  "label is refused with FMC-NO-API-LABEL: Revit 2025 has no API to create a label in a family, so the label is placed by hand once in the kit title block. It still checks that the parameter is on the family (FMC-PARAM-MISSING). label is deprecated: it returns place_by_hand, the family's parameters with no visible label. " +
+  "list with summary true adds counts (parameters, shared, instance, labelled) and the unlabelled names. " +
   "bind binds a kit shared parameter to project categories (instance or type). " +
   "dry_run defaults to true. A real change is fmc_family_params_apply, and needs batch_lease plus references.kit, references.standards and references.rulebook. " +
   "Pass document. A missing name is FMC-DOC-REQUIRED. The active document is not a guess. " +
@@ -44,6 +45,7 @@ export const FMC_FAMILY_PARAMS_SHAPE = {
   binding: z.enum(["instance", "type"]).optional().default("instance"),
   categories: z.array(z.string()).optional().default([]).describe("bind: built-in category names, for example OST_Sheets."),
   origin_mm: z.array(z.number()).optional().default([10, 10]).describe("label: origin in the family view, millimetres. The person can move it."),
+  summary: z.boolean().optional().default(false).describe("list: add counts (parameters, shared, instance, labelled) and the parameters with no visible label"),
   dry_run: z.boolean().optional().default(true),
   batch_lease: z.string().optional().default(""),
   references: refs,
@@ -120,6 +122,34 @@ async function readModel(args: FmcFamilyParamsArgs, io: FamilyParamsIo): Promise
   return await withRevitConnection((client) => client.sendCommand("fmc_family_params", body, 180000)) as Record<string, unknown>;
 }
 
+type ParamRow = { name?: string; shared?: boolean; instance?: boolean; has_label?: boolean };
+
+function rowsOf(snapshot: Record<string, unknown>): ParamRow[] {
+  return Array.isArray(snapshot.parameters) ? (snapshot.parameters as unknown[]).filter((r): r is ParamRow => !!r && typeof r === "object") : [];
+}
+
+/** research tool 41: the parameters a person still has to label by hand (Revit 2025 has no label API). */
+export function unlabelledOf(snapshot: Record<string, unknown>): string[] {
+  return rowsOf(snapshot).filter((r) => r.has_label !== true && r.name).map((r) => String(r.name));
+}
+
+/** research tool 41: list summary counts, from the add-in's list reply (no extra Revit call). */
+export function paramSummary(snapshot: Record<string, unknown>) {
+  const rows = rowsOf(snapshot);
+  const titleblocks = Array.isArray(snapshot.titleblocks) ? snapshot.titleblocks.length : 0;
+  if (!rows.length && !snapshot.family) {
+    return { titleblocks, note: "Name a family for its parameter counts; without one the list is titleblock names only." };
+  }
+  return {
+    titleblocks,
+    parameters: rows.length,
+    shared: rows.filter((r) => r.shared === true).length,
+    instance: rows.filter((r) => r.instance === true).length,
+    labelled: rows.filter((r) => r.has_label === true).length,
+    unlabelled: unlabelledOf(snapshot),
+  };
+}
+
 function namesOf(snapshot: Record<string, unknown>): string[] {
   const rows = snapshot.parameters;
   if (!Array.isArray(rows)) return [];
@@ -154,6 +184,7 @@ export async function runFmcFamilyParams(args: FmcFamilyParamsArgs, io: FamilyPa
         parameters: snapshot.parameters ?? [],
         labels: snapshot.labels ?? [],
         label_note: "A label is counted when its visible text matches the parameter name. Revit 2025 does not publish the parameter a label is bound to.",
+        ...(args.summary ? { summary: paramSummary(snapshot) } : {}),
         report,
         kit_file: kitFile,
       }));
@@ -190,7 +221,9 @@ export async function runFmcFamilyParams(args: FmcFamilyParamsArgs, io: FamilyPa
     });
     if (guard.reason) return reply({ ...body, refused: true, code: "FMC-PARAM-GUARD", dry_run: true, read_only: true, message: guard.reason }, true);
     if (args.action === "label") {
-      return reply({ ...body, refused: true, code: "FMC-NO-API-LABEL", read_only: true, dry_run: true, applied: false,
+      // research tool 41: label can never apply on Revit 2025; it still names what the person has to label by hand
+      return reply({ ...body, refused: true, code: "FMC-NO-API-LABEL", read_only: true, dry_run: true, applied: false, deprecated: true,
+        place_by_hand: unlabelledOf(snapshot),
         message: "[FMC-NO-API-LABEL] Revit 2025 has no API to create a label in a family (FamilyItemFactory.NewLabel does not exist). Place the label by hand once in the kit title block; the parameter itself can be added with action add and bound with action bind." }, true);
     }
     if (planned.code === "FMC-PARAM-EXISTS") {

@@ -155,3 +155,33 @@ test("research tool 41: the guard's never_write_titles adds protected names; HEB
   const hebert = textOf(await call("HEBERT HOSTELS_USER", { ...io.guard, save_exclude: [] } as GuardConfig));
   assert.match(String(hebert.message), /HEBERT HOSTELS is not written by fmc_family_params/);
 });
+
+test("research tool 41: list summary counts, and label (deprecated) names what to place by hand", async () => {
+  const io = setup();
+  const { paramSummary, unlabelledOf } = await import("../tools/fmc_family_params.js");
+  const snap = { family: "FMC_A_Titleblock_A1", parameters: [
+    { name: "Sheet Number", shared: true, instance: true, has_label: true },
+    { name: "Status", shared: true, instance: true, has_label: false },
+    { name: "Drawn By", shared: false, instance: false },
+  ] };
+  assert.deepEqual(paramSummary(snap), { titleblocks: 0, parameters: 3, shared: 2, instance: 2, labelled: 1, unlabelled: ["Status", "Drawn By"] });
+  assert.match(String((paramSummary({ titleblocks: ["A1 metric"] }) as { note: string }).note), /Name a family/);
+  assert.deepEqual(unlabelledOf({}), []);
+
+  const listed = textOf(await runFmcFamilyParams(args({ action: "list", document: project.title, family: "FMC_A_Titleblock_A1", summary: true }), {
+    ...io, kitFile: io.kit, read: async () => ({ ...project, parameters: snap.parameters }),
+  }));
+  assert.equal(listed.isError, false);
+  assert.deepEqual((listed.summary as { unlabelled: string[] }).unlabelled, ["Status", "Drawn By"]);
+  const plain = textOf(await runFmcFamilyParams(args({ action: "list", document: project.title, family: "FMC_A_Titleblock_A1" }), {
+    ...io, kitFile: io.kit, read: async () => project,
+  }));
+  assert.equal(plain.summary, undefined, "summary only when asked");
+
+  const label = textOf(await runFmcFamilyParams(args({ action: "label", document: project.title, family: "FMC_A_Titleblock_A1", name: "Status" }), {
+    ...io, kitFile: io.kit, read: async () => ({ ...project, parameters: snap.parameters }),
+  }));
+  assert.equal(label.code, "FMC-NO-API-LABEL");
+  assert.equal(label.deprecated, true);
+  assert.deepEqual(label.place_by_hand, ["Status", "Drawn By"]);
+});
