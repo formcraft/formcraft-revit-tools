@@ -6,10 +6,11 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { READ_VIA_SEND_COMMAND, WRITE_COMMANDS, loadConfig } from "./policy.js";
 import {
-  buildChecks, chainLines, chooseSource, classify, judge, lineDistances, parseValues, polygonArea, segDist, summarize, usable,
+  DEFAULT_ALLOW_DRAFT, DRAFT_LABEL, buildChecks, chainLines, chooseSource, classify, judge, lineDistances, parseValues, polygonArea, segDist, summarize, usable,
   type CheckArgs, type Facts, type Line, type PlanningValue,
 } from "./areacheck.js";
 import { FMC_AREA_CHECK_SHAPE, loadValues, runFmcAreaCheck, type FmcAreaCheckArgs } from "../tools/fmc_area_check.js";
+import crypto from "node:crypto";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const read = (rel: string) => fs.readFileSync(path.join(root, rel), "utf8");
@@ -69,38 +70,68 @@ const args = (over: Partial<CheckArgs> = {}): CheckArgs => ({
 });
 const byName = (r: ReturnType<typeof buildChecks>, name: string) => r.checks.find((c) => c.check === name)!;
 
-test("values file: good entries kept, bad ones dropped and listed, nothing invented", () => {
-  const v = parseValues({ schema: "fmc.planning_values/1", zone: "Z", values: {
+test("values file: values or keys, every entry with a value kept, text kept as text, bad ones dropped and listed", () => {
+  const v = parseValues({ schema: "fmc.planning_values/1", zone: "Z", application_notes: ["FAKE note", 3], values: {
     "plot_ratio.max": { value: 2, unit: "ratio", source: "S", clause: "C", status: "Approved" },
     "plot_coverage.max_pct": { value: "sixty" },
     "setback.front_min_m": "3",
     "colour.red": { value: 1 },
     "parking.residential": { value: 1, basis: "per_dwelling_unit" },
     "parking.office": { value: 1, basis: "per_planet" },
+    "parking.cars": { value: 2, unit: "spaces per plot" },
+    "setback.side.list": { value: [3, 5], unit: "m" },
+    "plot_coverage.max.neg": { value: -1 },
+    "plot_coverage.max.empty": { value: "" },
   } });
-  assert.deepEqual(Object.keys(v.values).sort(), ["parking.residential", "plot_ratio.max"]);
+  assert.deepEqual(Object.keys(v.values).sort(), ["colour.red", "parking.cars", "parking.office", "parking.residential", "plot_coverage.max_pct", "plot_ratio.max", "setback.side.list"]);
   assert.equal(v.values["plot_ratio.max"].status, "approved");
-  assert.equal(v.problems.length, 4);
-  assert.match(v.problems.join(" | "), /plot_coverage\.max_pct: value must be a number/);
-  assert.match(v.problems.join(" | "), /colour\.red: not a key this tool uses/);
-  assert.match(v.problems.join(" | "), /basis must be one of/);
+  assert.equal(v.values["plot_coverage.max_pct"].value, null);
+  assert.equal(v.values["plot_coverage.max_pct"].text, "sixty");
+  assert.equal(v.values["setback.side.list"].value, null);
+  assert.equal(v.values["setback.side.list"].text, "[3,5]");
+  assert.equal(v.values["parking.cars"].basis, "per_plot");
+  assert.equal(v.values["parking.office"].basis, undefined);
+  assert.deepEqual(v.application_notes, ["FAKE note"]);
+  const why = v.problems.join(" | ");
+  assert.match(why, /setback\.front_min_m: not an object/);
+  assert.match(why, /plot_coverage\.max\.neg: a number must be 0 or more/);
+  assert.match(why, /plot_coverage\.max\.empty: no value/);
+  assert.match(why, /basis "per_planet" is not one of/);
+  assert.deepEqual(Object.keys(parseValues({ schema: "fmc.planning_values/1", keys: { "a.b": { value: 1 } } }).values), ["a.b"]);
   assert.deepEqual(parseValues("nope").values, {});
-  assert.deepEqual(parseValues({ schema: "other/9", values: {} }).problems.length, 1);
+  assert.equal(parseValues({ schema: "other/9", values: {} }).problems.length, 1);
+  assert.match(parseValues({ schema: "fmc.planning_values/1" }).problems[0], /no "values" \(or "keys"\) object/);
 });
 
-test("status model: provisional never decides; approved or draft needs a source and a clause", () => {
-  const e = (o: Partial<PlanningValue>): PlanningValue => ({ key: "plot_ratio.max", value: 1, unit: "", source: "S", clause: "C", status: "approved", ...o });
+test("status model (strict): only approved judges; draft only with allow_draft; unbanked, provisional and blank never", () => {
+  const e = (o: Partial<PlanningValue>): PlanningValue => ({ key: "plot_ratio.max", value: 1, text: "", unit: "", source: "S", clause: "C", status: "approved", edition: "", zone_or_use: "", legal_character: "", quote: "", ...o });
+  assert.equal(DEFAULT_ALLOW_DRAFT, false, "the default is strict");
   assert.equal(usable(e({})).ok, true);
-  assert.equal(usable(e({ status: "draft" })).ok, true);
-  assert.match(usable(e({ status: "provisional" })).why, /provisional/);
-  assert.match(usable(e({ status: "" })).why, /no status/);
-  assert.match(usable(e({ clause: "" })).why, /no clause/);
+  assert.equal(usable(e({ status: "draft" })).ok, false);
+  assert.match(usable(e({ status: "draft" })).why, /draft, not approved/);
+  assert.equal(usable(e({ status: "draft" })).ok, usable(e({ status: "draft" }), DEFAULT_ALLOW_DRAFT).ok, "the default is the constant");
+  assert.equal(usable(e({ status: "draft" }), true).ok, true);
+  assert.match(usable(e({ status: "draft", clause: "" }), true).why, /no clause/);
+  assert.match(usable(e({ status: "unbanked" }), true).why, /unbanked.*not stored in the kit bank/);
+  assert.match(usable(e({ status: "provisional" }), true).why, /provisional/);
+  assert.match(usable(e({ status: "" }), true).why, /no status/);
+  assert.match(usable(e({ status: "approved", clause: "" })).why, /no clause/);
   assert.match(usable(e({ source: "" })).why, /no source/);
   assert.equal(judge(0.5, e({}), "max").result, "pass");
   assert.equal(judge(1, e({}), "max").result, "pass");
   assert.equal(judge(1.01, e({}), "max").result, "fail");
   assert.equal(judge(3, e({}), "min").result, "pass");
   assert.equal(judge(0.5, e({ status: "provisional" }), "max").result, "unknown");
+  assert.equal(judge(0.5, e({ status: "draft" }), "max").result, "unknown");
+  const d = judge(0.5, e({ status: "draft" }), "max", undefined, "", true);
+  assert.equal(d.result, "pass");
+  assert.equal(d.indicative, true);
+  assert.ok(d.reason.startsWith(DRAFT_LABEL));
+  assert.equal(judge(0.5, e({}), "max").indicative, undefined);
+  const text = judge(0.5, e({ value: null, text: "1 space per 40 m2" }), "max");
+  assert.equal(text.limit_status, "not_numeric");
+  assert.match(text.reason, /text, not a number/);
+  assert.equal(text.limit!.text, "1 space per 40 m2");
   const none = judge(0.5, undefined, "max");
   assert.equal(none.result, "unknown");
   assert.equal(none.limit, null);
@@ -265,7 +296,7 @@ test("parking: needs a use, a rule and a base; rounds up; input overrides the mo
   assert.match(byName(r, "parking").reason, /no use was given/);
   assert.equal(byName(r, "parking").result, "unknown");
   r = buildChecks(facts(), args({ use: "school" }), fakeValues());
-  assert.match(byName(r, "parking").reason, /no limit configured for parking for the use "school"/);
+  assert.match(byName(r, "parking").reason, /no limit configured/);
   r = buildChecks(facts(), args({ use: "residential" }), fakeValues());
   assert.match(byName(r, "parking").reason, /pass units/);
   assert.equal(byName(r, "parking").result, "unknown");
@@ -336,7 +367,7 @@ test("the tool reads a values file by path, by env, or from the kit folder; with
   const kit = path.join(dir, "kit", "03_Master_Data");
   const none = parse(await runFmcAreaCheck(toolArgs(), { send, env: {}, guard }));
   assert.equal(none.planning_values.found, false);
-  assert.equal(none.planning_values.values_loaded.length, 0);
+  assert.equal(none.planning_values.values_loaded, 0);
   assert.ok(none.planning_values.where_looked.some((w: string) => w.includes(path.join(kit, "FMC_Planning_Values.json"))));
   assert.deepEqual(none.planning_values.values_missing, ["plot_coverage.max_pct", "plot_ratio.max", "setback.front_min_m", "setback.side_min_m", "setback.rear_min_m", "parking.<use>"]);
   assert.match(none.notes.join(" "), /no limit configured/);
@@ -411,4 +442,212 @@ test("the Revit side (source): no transaction, nothing created or set, no writes
   assert.match(code, /CommandName => "fmc_area_check"/);
   assert.match(code, /mayOpen:\s*false/);
   assert.match(code, /\["model_changed"\] = false/);
+});
+
+// ------------------------------------------------------------------ a file shaped like Standards Bot's (top-level "keys", per-rule entries)
+// FAKE FIXTURE: every number, source and clause here is invented for the tests (source "FAKE-TEST-ONLY").
+
+const rule = (value: unknown, unit: string, status: string, zone: string, extra: Record<string, unknown> = {}) => ({
+  value, unit, source: "FAKE-TEST-ONLY", edition: "FAKE", clause: "FAKE-" + zone, zone_or_use: zone, status, legal_character: "guideline", quote: "FAKE QUOTE", bank_key: "fake.key", ...extra,
+});
+function botShapedFile() {
+  return {
+    schema: "fmc.planning_values/1", generated_at: "2026-01-01T00:00:00+03:00", purpose: "FAKE FIXTURE - NOT PLANNING LAW", bank_or_pc_changed: false,
+    status_legend: { draft: "FAKE", unbanked: "FAKE" }, legal_character_legend: { binding_regulation: "FAKE", guideline: "FAKE" },
+    application_notes: ["FAKE note 1", "FAKE note 2"],
+    keys: {
+      "plot_coverage.max.fake_zone_a": rule(25, "percent of plot area", "approved", "zone A", { legal_character: "binding_regulation" }),
+      "plot_coverage.max.fake_zone_b": rule(40, "percent of plot area", "draft", "zone B"),
+      "plot_coverage.max.fake_zone_c": rule(60, "percent site coverage", "unbanked", "zone C"),
+      "plot_coverage.max.fake_nbc_like": rule(30, "percent of plot area", "approved", "Dwellings, only in any area where no provision has been made under the Physical Planning Act, 2010", { legal_character: "binding_regulation" }),
+      "plot_coverage.max.fake_wrong_unit": rule(30, "m", "approved", "zone D"),
+      "plot_ratio.fake_industrial": rule(0.35, "floor area ratio (FAR)", "draft", "industrial"),
+      "setback.front.fake_res": rule(6, "m", "approved", "res"),
+      "setback.front.fake_text": rule("not less than street width plus half the difference", "m", "unbanked", "narrow street"),
+      "setback.side.fake_res": rule(1.5, "m", "draft", "res"),
+      "setback.side.fake_range": rule([3, 5], "m", "approved", "light industrial"),
+      "setback.rear.fake_res": rule(1.5, "m", "approved", "res"),
+      "parking.residential.fake_per_plot": rule(2, "spaces per plot", "approved", "low density"),
+      "parking.residential_estates.fake_per_unit": rule(2, "per unit", "approved", "flats"),
+      "parking.residential_estates.fake_draft_per_unit": rule(3, "per unit", "draft", "big dwellings"),
+      "parking.commercial.fake_text": rule("1 space per 40 square metres gross floor area", "as stated", "draft", "commercial"),
+      "parking.fake_no_unit": rule(5, "", "approved", "no unit"),
+      "parking.bcr_like": { value: "on-site parking in accordance with the Code", source: "FAKE-TEST-ONLY", clause: "FAKE", zone_or_use: "all", status: "draft", legal_character: "binding_regulation" },
+    },
+    missing: [{ topic: "FAKE gap", reason: "FAKE" }],
+  };
+}
+const botValues = () => parseValues(botShapedFile()).values;
+const L = (limits: CheckArgs["limits"], extra: Partial<CheckArgs> = {}) => args({ front_segments: [1], limits, ...extra });
+
+test("a file shaped like Standards Bot's loads: every entry kept, text and ranges as text, basis from the unit, notes carried", () => {
+  const doc = parseValues(botShapedFile());
+  assert.deepEqual(doc.problems, []);
+  assert.equal(Object.keys(doc.values).length, 17);
+  assert.equal(doc.values["plot_coverage.max.fake_zone_a"].legal_character, "binding_regulation");
+  assert.equal(doc.values["setback.front.fake_text"].value, null);
+  assert.equal(doc.values["setback.side.fake_range"].text, "[3,5]");
+  assert.equal(doc.values["parking.residential.fake_per_plot"].basis, "per_plot");
+  assert.equal(doc.values["parking.residential_estates.fake_per_unit"].basis, "per_dwelling_unit");
+  assert.equal(doc.values["parking.commercial.fake_text"].basis, undefined);
+  assert.deepEqual(doc.application_notes, ["FAKE note 1", "FAKE note 2"]);
+});
+
+test("nothing judges without a selection: every limit is 'no limit selected' with the candidate rules listed", () => {
+  const r = buildChecks(facts(), args({ front_segments: [1], use: "residential_estates", units: 12 }), botValues());
+  for (const name of ["plot_coverage", "plot_ratio", "setback_front", "setback_side", "setback_rear", "parking"]) {
+    const c = byName(r, name);
+    assert.equal(c.result, "unknown", name);
+    assert.equal(c.limit_status, "no_limit_selected", name);
+    assert.match(c.reason, /no limit selected/, name);
+    assert.ok(Array.isArray((c.evidence as any).candidates) && (c.evidence as any).candidates.length > 0, `${name} lists candidates`);
+  }
+  assert.equal(summarize(r.checks).pass + summarize(r.checks).fail, 0);
+  const cov = (byName(r, "plot_coverage").evidence as any).candidates;
+  assert.deepEqual(cov.map((c: any) => c.key), ["plot_coverage.max.fake_nbc_like", "plot_coverage.max.fake_wrong_unit", "plot_coverage.max.fake_zone_a", "plot_coverage.max.fake_zone_b", "plot_coverage.max.fake_zone_c"]);
+  assert.deepEqual(cov.map((c: any) => c.judges_when), ["yes", "yes", "yes", "allow_draft", "never"]);
+  assert.deepEqual((byName(r, "parking").evidence as any).candidates.map((c: any) => c.key), ["parking.residential_estates.fake_draft_per_unit", "parking.residential_estates.fake_per_unit"]);
+  assert.deepEqual((byName(r, "setback_front").evidence as any).candidates.map((c: any) => c.key), ["setback.front.fake_res", "setback.front.fake_text"]);
+  assert.equal(r.draft_judged.length, 0);
+  const noUse = buildChecks(facts(), args(), botValues());
+  assert.match(byName(noUse, "parking").reason, /no use was given/);
+  assert.equal(byName(noUse, "parking").limit_status, "no_limit_selected");
+  const general = buildChecks(facts(), args({ use: "residential" }), botValues());
+  assert.deepEqual((byName(general, "parking").evidence as any).candidates.map((c: any) => c.key), ["parking.residential.fake_per_plot"]);
+});
+
+test("a selection judges, but only approved values; draft needs allow_draft and is labelled; unbanked, text, wrong unit never judge", () => {
+  const sel = { plot_coverage: "plot_coverage.max.fake_zone_a", setback_front: "setback.front.fake_res", setback_side: "setback.side.fake_res", setback_rear: "setback.rear.fake_res", plot_ratio: "plot_ratio.fake_industrial" };
+  let r = buildChecks(facts(), L(sel), botValues());
+  assert.equal(byName(r, "plot_coverage").result, "pass");
+  assert.equal(byName(r, "plot_coverage").limit!.legal_character, "binding_regulation");
+  assert.equal(byName(r, "plot_coverage").limit!.zone_or_use, "zone A");
+  assert.equal(byName(r, "setback_front").result, "fail");
+  assert.equal(byName(r, "setback_rear").result, "pass");
+  assert.equal(byName(r, "setback_side").result, "unknown", "draft does not judge by default");
+  assert.equal(byName(r, "setback_side").limit_status, "not_usable");
+  assert.match(byName(r, "setback_side").reason, /draft, not approved/);
+  assert.equal(byName(r, "plot_ratio").result, "unknown");
+  assert.deepEqual(r.draft_judged, []);
+  // allow_draft turns the draft ones on, labelled
+  r = buildChecks(facts(), L(sel, { allow_draft: true }), botValues());
+  const side = byName(r, "setback_side");
+  assert.equal(side.result, "pass");
+  assert.equal(side.indicative, true);
+  assert.ok(side.reason.startsWith(DRAFT_LABEL));
+  assert.equal(byName(r, "plot_ratio").result, "fail");
+  assert.deepEqual(r.draft_judged.sort(), ["plot_ratio", "setback_side"]);
+  assert.equal(byName(r, "plot_coverage").indicative, undefined, "an approved result is not labelled draft");
+  // unbanked never, even with allow_draft; text and ranges are shown, not judged; a wrong unit is refused
+  r = buildChecks(facts(), L({ plot_coverage: "plot_coverage.max.fake_zone_c", setback_front: "setback.front.fake_text", setback_side: "setback.side.fake_range", setback_rear: "setback.rear.fake_nope" }, { allow_draft: true }), botValues());
+  assert.match(byName(r, "plot_coverage").reason, /unbanked/);
+  assert.equal(byName(r, "plot_coverage").result, "unknown");
+  assert.equal(byName(r, "setback_front").result, "unknown");
+  assert.equal(byName(r, "setback_side").limit_status, "not_numeric");
+  assert.equal(byName(r, "setback_side").limit!.text, "[3,5]");
+  assert.match(byName(r, "setback_rear").reason, /the selected key "setback\.rear\.fake_nope" is not in the values file/);
+  r = buildChecks(facts(), L({ plot_coverage: "plot_coverage.max.fake_wrong_unit" }), botValues());
+  assert.equal(byName(r, "plot_coverage").result, "unknown");
+  assert.match(byName(r, "plot_coverage").reason, /unit "m" is not what plot coverage is measured in/);
+  // the NBC-like caveat and the legal character travel with the answer
+  r = buildChecks(facts(), L({ plot_coverage: "plot_coverage.max.fake_nbc_like" }), botValues());
+  assert.match(byName(r, "plot_coverage").assumptions.join(" "), /only where no provision has been made under the Physical Planning Act/);
+  r = buildChecks(facts(), L({ plot_coverage: "plot_coverage.max.fake_zone_b" }, { allow_draft: true }), botValues());
+  assert.match(byName(r, "plot_coverage").assumptions.join(" "), /guideline \(not statutory\)/);
+});
+
+test("parking by selection: per plot, per unit (approved), draft only with allow_draft, text and a missing basis never judge", () => {
+  let r = buildChecks(facts(), L({ parking: "parking.residential.fake_per_plot" }), botValues());
+  assert.equal((byName(r, "parking").evidence as any).required, 2);
+  assert.equal(byName(r, "parking").result, "pass");
+  r = buildChecks(facts(), L({ parking: "parking.residential_estates.fake_per_unit" }, { units: 12 }), botValues());
+  assert.equal((byName(r, "parking").evidence as any).required, 24);
+  assert.equal(byName(r, "parking").result, "fail");
+  r = buildChecks(facts(), L({ parking: "parking.residential_estates.fake_draft_per_unit" }, { units: 3 }), botValues());
+  assert.equal(byName(r, "parking").result, "unknown");
+  assert.match(byName(r, "parking").reason, /draft, not approved/);
+  r = buildChecks(facts(), L({ parking: "parking.residential_estates.fake_draft_per_unit" }, { units: 3, allow_draft: true }), botValues());
+  assert.equal(byName(r, "parking").result, "pass");
+  assert.equal(byName(r, "parking").indicative, true);
+  assert.match(byName(r, "parking").reason, /DRAFT, not approved: indicative/);
+  r = buildChecks(facts(), L({ parking: "parking.commercial.fake_text" }, { allow_draft: true }), botValues());
+  assert.equal(byName(r, "parking").limit_status, "not_numeric");
+  assert.match(byName(r, "parking").limit!.text!, /1 space per 40/);
+  r = buildChecks(facts(), L({ parking: "parking.fake_no_unit" }), botValues());
+  assert.equal(byName(r, "parking").result, "unknown");
+  assert.match(byName(r, "parking").reason, /does not say what the 5 spaces are counted per/);
+  r = buildChecks(facts(), L({ parking: "parking.residential_estates.fake_per_unit" }), botValues());
+  assert.match(byName(r, "parking").reason, /pass units/);
+});
+
+test("the strict default lives in one constant, and nothing else decides whether a draft judges", () => {
+  const src = read("server/src/fmc/areacheck.ts");
+  assert.equal(src.match(/export const DEFAULT_ALLOW_DRAFT = false;/g)?.length, 1);
+  assert.equal(src.match(/DEFAULT_ALLOW_DRAFT/g)!.filter(Boolean).length >= 4, true);
+  assert.doesNotMatch(src, /allowDraft\s*=\s*true/);
+  assert.doesNotMatch(src.split("\n").filter((l) => !/^\s*(\/\/|\*|\/\*)/.test(l)).join("\n"), /status\s*===?\s*"draft"\s*\)\s*return\s*\{\s*ok:\s*true/);
+});
+
+test("the tool with a Standards-Bot-shaped file: keys load, notes and the draft setting are reported, a file with nothing usable says so", async () => {
+  const dir = temp();
+  const file = path.join(dir, "bot_shaped.json");
+  fs.writeFileSync(file, JSON.stringify(botShapedFile()));
+  const send = async () => facts();
+  const none = parse(await runFmcAreaCheck(toolArgs({ values_file: file, use: "residential_estates", units: 12, front_segments: [1] }), { send, env: {} }));
+  assert.equal(none.planning_values.values_loaded, 17);
+  assert.deepEqual(none.planning_values.problems, []);
+  assert.deepEqual(none.planning_values.application_notes, ["FAKE note 1", "FAKE note 2"]);
+  assert.equal(none.planning_values.allow_draft, false);
+  assert.equal(none.planning_values.allow_draft_default, false);
+  assert.equal(none.summary.pass + none.summary.fail, 0);
+  assert.deepEqual(none.notes, []);
+  assert.deepEqual(none.planning_values.values_missing, []);
+  const limits = { plot_coverage: "plot_coverage.max.fake_zone_a", setback_front: "setback.front.fake_res", setback_side: "setback.side.fake_res", setback_rear: "setback.rear.fake_res", parking: "parking.residential_estates.fake_per_unit" };
+  const strict = parse(await runFmcAreaCheck(toolArgs({ values_file: file, units: 12, front_segments: [1], limits }), { send, env: {} }));
+  assert.deepEqual(strict.summary, { pass: 2, fail: 2, unknown: 5 });
+  const draft = parse(await runFmcAreaCheck(toolArgs({ values_file: file, units: 12, front_segments: [1], limits, allow_draft: true }), { send, env: {} }));
+  assert.deepEqual(draft.summary, { pass: 3, fail: 2, unknown: 4 });
+  assert.match(draft.notes.join(" "), /DRAFT, not approved: indicative: setback_side/);
+  const empty = path.join(dir, "empty.json");
+  fs.writeFileSync(empty, JSON.stringify({ schema: "fmc.planning_values/1", something_else: {} }));
+  const e = parse(await runFmcAreaCheck(toolArgs({ values_file: empty }), { send, env: {} }));
+  assert.match(e.notes.join(" "), /read but none of its entries could be used/);
+  assert.equal(e.summary.pass + e.summary.fail, 0);
+  assert.equal(e.planning_values.values_missing.length, 6);
+  assert.deepEqual(fs.readdirSync(dir).sort(), ["bot_shaped.json", "empty.json"]);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// ------------------------------------------------------------------ the real file, read only (skipped when it is not on this box)
+
+const REAL = "/workspace/standards-bot/answers/KCCA_planning_values.json";
+test("the real Standards Bot file (read only): its keys load and nothing judges without a selection", { skip: !fs.existsSync(REAL) && "the real file is not on this box" }, async () => {
+  const sha = () => crypto.createHash("sha256").update(fs.readFileSync(REAL)).digest("hex");
+  const before = sha();
+  const mtime = fs.statSync(REAL).mtimeMs;
+  const loaded = loadValues({ values_file: REAL }, {}, undefined);
+  assert.equal(loaded.found, true);
+  assert.ok(loaded.doc, loaded.problem);
+  const keys = Object.keys(loaded.doc!.values);
+  assert.ok(keys.length >= 50, `only ${keys.length} keys loaded`);
+  for (const k of ["plot_coverage.max.nbc2019_dwelling_default", "setback.front.nbc2019_residential"]) assert.ok(keys.includes(k), `${k} did not load`);
+  assert.deepEqual(loaded.doc!.problems, []);
+  assert.ok(loaded.doc!.application_notes.length > 0);
+  const send = async () => facts();
+  for (const use of ["", "residential", "residential_estates"]) {
+    const out = parse(await runFmcAreaCheck(toolArgs({ values_file: REAL, use, units: 12, front_segments: [1] }), { send, env: {} }));
+    assert.equal(out.summary.pass, 0, `use "${use}"`);
+    assert.equal(out.summary.fail, 0, `use "${use}"`);
+    assert.equal(out.planning_values.values_loaded, keys.length);
+    for (const name of ["plot_coverage", "setback_front", "setback_side", "setback_rear"]) {
+      const c = out.checks.find((x: any) => x.check === name);
+      assert.equal(c.limit_status, "no_limit_selected", name);
+      assert.ok(c.evidence.candidates.length > 0, name);
+    }
+  }
+  // allow_draft alone selects nothing either
+  const alone = parse(await runFmcAreaCheck(toolArgs({ values_file: REAL, allow_draft: true, front_segments: [1] }), { send, env: {} }));
+  assert.equal(alone.summary.pass + alone.summary.fail, 0);
+  assert.equal(sha(), before, "the real file changed");
+  assert.equal(fs.statSync(REAL).mtimeMs, mtime);
 });

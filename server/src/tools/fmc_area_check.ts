@@ -6,7 +6,8 @@ import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { kitPaths } from "../fmc/context.js";
 import { configPath, loadConfig, type GuardConfig } from "../fmc/policy.js";
 import {
-  NEEDED_VALUES, SCHEMA_ID, buildChecks, parseValues, summarize, type CheckArgs, type Facts, type ValuesDoc,
+  DEFAULT_ALLOW_DRAFT, DEFAULT_KEYS, DRAFT_LABEL, NEEDED_VALUES, SCHEMA_ID, buildChecks, candidatesFor, parseValues, summarize,
+  type CheckArgs, type Facts, type Quantity, type ValuesDoc,
 } from "../fmc/areacheck.js";
 
 function reply(body: object, isError = false) {
@@ -24,8 +25,11 @@ export const FMC_AREA_CHECK_DESCRIPTION =
   "parking (required from use and GFA or unit count, against the Parking-category elements in the model or parking_provided). " +
   "THE PLANNING LIMITS ARE NOT BUILT IN. They come from a planning-values file (values_file, else env FMC_PLANNING_VALUES_FILE, " +
   "else " + VALUES_FILE_NAME + " beside the kit's FMC_Standards_Building.json), each value with a source, a clause and a status. " +
-  "A limit that is not in the file is reported as 'no limit configured' (result unknown), never a default. A provisional value, " +
-  "or one without a source and clause, never passes or fails. Every check returns value, limit, result (pass, fail, unknown), " +
+  "A limit that is not in the file is reported as 'no limit configured', and one the file has but you have not chosen as 'no limit " +
+  "selected' (result unknown, with the candidate rules listed): pass limits to choose the exact file key for each check, the tool " +
+  "never picks between zones or uses. Only an approved value with a source and a clause passes or fails; a draft value does so only " +
+  "with allow_draft true and is then labelled DRAFT, not approved: indicative; unbanked, provisional or blank never do. " +
+  "Non-numeric rules (text) are shown, not judged. Every check returns value, limit, result (pass, fail, unknown), " +
   "evidence (element ids, the source used) and assumptions. Example: document F26901-FMC-ZZ-ZZ-M3-A-0002_USER, area_scheme " +
   "\"Gross Building\", use residential, units 12.";
 
@@ -44,6 +48,12 @@ export const FMC_AREA_CHECK_SHAPE = {
   use: z.string().optional().default("").describe("Use for parking, e.g. residential. Must match a parking.<use> key in the values file."),
   units: z.number().int().positive().optional().describe("Dwelling units, for a per_dwelling_unit parking rule."),
   parking_provided: z.number().int().min(0).optional().describe("Spaces provided, overriding the Parking elements counted in the model."),
+  limits: z.object({
+    plot_coverage: z.string().optional(), plot_ratio: z.string().optional(),
+    setback_front: z.string().optional(), setback_side: z.string().optional(), setback_rear: z.string().optional(),
+    parking: z.string().optional(),
+  }).optional().default({}).describe("The exact key in the values file to judge each check against, e.g. plot_coverage: plot_coverage.max.nppsg2011_residential_medium_density. Without one, the check lists the candidate keys and does not judge."),
+  allow_draft: z.boolean().optional().describe("A draft value judges only when true (default " + String(DEFAULT_ALLOW_DRAFT) + "); results are labelled DRAFT, not approved: indicative."),
   zone: z.string().optional().default("").describe("The planning zone the values are for; must match the values file's zone when both are given."),
   values_file: z.string().optional().default("").describe("Path to a planning-values JSON file (see docs/tools/fmc_area_check.md)."),
 };
@@ -114,6 +124,9 @@ export async function runFmcAreaCheck(args: FmcAreaCheckArgs, io: AreaCheckIo = 
     }
     if (!loaded.found) notes.push(`${loaded.problem}. Every limit is reported as 'no limit configured'.`);
     else if (!loaded.doc) notes.push(`${loaded.problem}. Every limit is reported as 'no limit configured'.`);
+    else if (Object.keys(values?.values ?? {}).length === 0 && loaded.doc.problems.length) {
+      notes.push(`The values file was read but none of its entries could be used (${loaded.doc.problems.length} problem(s), first: ${loaded.doc.problems[0]}). That is a file problem, not "no limit configured".`);
+    } else if (loaded.doc.problems.length) notes.push(`${loaded.doc.problems.length} entry problem(s) in the values file are listed under planning_values.problems; those entries were not used.`);
 
     const send = io.send ?? ((body: Record<string, unknown>) => withRevitConnection((client) => client.sendCommand("fmc_area_check", body, 120000)));
     const body: Record<string, unknown> = {};
@@ -131,9 +144,16 @@ export async function runFmcAreaCheck(args: FmcAreaCheckArgs, io: AreaCheckIo = 
       source: args.source, use: args.use, units: args.units, parking_provided: args.parking_provided,
       plot_area_m2: args.plot_area_m2, plot_area_name: args.plot_area_name.trim(), footprint_area_m2: args.footprint_area_m2,
       front_segments: args.front_segments, side_segments: args.side_segments, rear_segments: args.rear_segments, zone: args.zone,
+      limits: args.limits as Partial<Record<Quantity, string>>, allow_draft: args.allow_draft,
     };
     const report = buildChecks(facts, checkArgs, values?.values ?? {});
-    const missing = NEEDED_VALUES.filter((n) => !n.key.includes("<") ? !(values?.values ?? {})[n.key] : !Object.keys(values?.values ?? {}).some((k) => k.startsWith("parking."))).map((n) => n.key);
+    // a quantity is missing when the file has no entry for it at all (the plain key or any rule in its namespace)
+    const table = values?.values ?? {};
+    const missing = NEEDED_VALUES.filter((n) => {
+      const plain = n.quantity === "parking" ? false : !!table[DEFAULT_KEYS[n.quantity as Exclude<Quantity, "parking">]];
+      return !plain && candidatesFor(n.quantity, table).length === 0;
+    }).map((n) => n.key);
+    if (report.draft_judged.length) notes.push(`${DRAFT_LABEL}: ${report.draft_judged.join(", ")} were judged with DRAFT values because allow_draft is on. They are not approved limits.`);
     return reply({
       tool: "fmc_area_check", model_changed: false, read_only: true,
       document: typeof raw.document === "string" ? raw.document : args.document,
@@ -145,8 +165,9 @@ export async function runFmcAreaCheck(args: FmcAreaCheckArgs, io: AreaCheckIo = 
       planning_values: {
         file: loaded.file, found: loaded.found, usable: !!values && Object.keys(values.values).length > 0,
         zone: values?.zone ?? "", jurisdiction: values?.jurisdiction ?? "", authority: values?.authority ?? "", notice: values?.notice ?? "",
-        values_loaded: Object.keys(values?.values ?? {}), problems: values?.problems ?? [], where_looked: loaded.where_looked,
-        values_missing: missing, schema: SCHEMA_ID,
+        values_loaded: Object.keys(values?.values ?? {}).length, problems: values?.problems ?? [], where_looked: loaded.where_looked,
+        values_missing: missing, schema: SCHEMA_ID, application_notes: values?.application_notes ?? [],
+        allow_draft: report.allow_draft, allow_draft_default: DEFAULT_ALLOW_DRAFT, limits_selected: args.limits,
       },
       needed_values: NEEDED_VALUES,
       notes,

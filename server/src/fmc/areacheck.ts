@@ -4,37 +4,69 @@
  * The add-in returns facts in metres and square metres (areas, rooms and floors by level, the footprint outline, property
  * lines, named areas, Parking-category elements). This module picks the area source, computes GFA, plot area, plot coverage,
  * plot ratio, setbacks and parking, and judges them against planning values from a values file. It holds NO planning value:
- * a limit that is not in the file is "no limit configured", never a default and never a pass. Same status model as the
- * kit's standards bank: provisional never passes; draft or approved passes or fails only with a source and a clause.
+ * a limit that is not in the file is "no limit configured", a limit the caller has not chosen from the file is "no limit
+ * selected", and neither is ever a default or a pass.
+ *
+ * The status rule is strict: only an `approved` value with a source and a clause judges. A `draft` value judges only when
+ * the caller passes allow_draft (the result is then labelled as DRAFT, not approved). `unbanked`, `provisional` and a blank
+ * status never judge. The default is DEFAULT_ALLOW_DRAFT below.
  */
 
 export type Result = "pass" | "fail" | "unknown";
 type Pt = [number, number];
 
-export const VALUE_KEYS = [
-  "plot_coverage.max_pct", "plot_ratio.max", "setback.front_min_m", "setback.side_min_m", "setback.rear_min_m",
-] as const;
+/**
+ * THE ONE SWITCH. false: only `approved` values judge, and `draft` ones judge only when the call passes allow_draft: true.
+ * true: a `draft` value with a source and a clause judges by default (the kit bank's joins/coord rule). The result of a draft
+ * value is labelled "DRAFT, not approved: indicative" either way.
+ */
+export const DEFAULT_ALLOW_DRAFT = false;
+
+export const DRAFT_LABEL = "DRAFT, not approved: indicative";
+
+export const QUANTITIES = ["plot_coverage", "plot_ratio", "setback_front", "setback_side", "setback_rear", "parking"] as const;
+export type Quantity = (typeof QUANTITIES)[number];
+
+/** The file's key namespace for each quantity (candidates are the keys that start with these). */
+export const QUANTITY_PREFIX: Record<Quantity, string> = {
+  plot_coverage: "plot_coverage.", plot_ratio: "plot_ratio.", setback_front: "setback.front", setback_side: "setback.side",
+  setback_rear: "setback.rear", parking: "parking.",
+};
+/** The exact keys used when the caller selects nothing (the first, simple schema). */
+export const DEFAULT_KEYS: Record<Exclude<Quantity, "parking">, string> = {
+  plot_coverage: "plot_coverage.max_pct", plot_ratio: "plot_ratio.max",
+  setback_front: "setback.front_min_m", setback_side: "setback.side_min_m", setback_rear: "setback.rear_min_m",
+};
 export const PARKING_PREFIX = "parking.";
-export const PARKING_BASES = ["per_dwelling_unit", "per_100_m2_gfa", "per_m2_gfa"] as const;
+export const PARKING_BASES = ["per_dwelling_unit", "per_100_m2_gfa", "per_m2_gfa", "per_plot"] as const;
 export const SCHEMA_ID = "fmc.planning_values/1";
-export const USABLE_STATUSES = ["approved", "draft"];
+const UNIT_OK: Record<Quantity, RegExp | null> = {
+  plot_coverage: /^%$|percent|per cent/i, plot_ratio: /ratio|^far$|\(far\)/i,
+  setback_front: /^m$|^metres?$|^meters?$/i, setback_side: /^m$|^metres?$|^meters?$/i, setback_rear: /^m$|^metres?$|^meters?$/i, parking: null,
+};
 
 export interface PlanningValue {
-  key: string; value: number; unit: string; source: string; clause: string; status: string; basis?: string; note?: string;
+  key: string;
+  /** the number, or null when the file's value is text, a list or an object (shown as text, never judged) */
+  value: number | null;
+  text: string;
+  unit: string; source: string; clause: string; status: string;
+  edition: string; zone_or_use: string; legal_character: string; quote: string;
+  basis?: string; note?: string;
 }
 export interface ValuesDoc {
   zone: string; jurisdiction: string; authority: string; notice: string;
-  values: Record<string, PlanningValue>; problems: string[];
+  values: Record<string, PlanningValue>; problems: string[]; application_notes: string[];
 }
 
 /** What the tool needs, for the report when a value is missing. */
-export const NEEDED_VALUES: Array<{ key: string; unit: string; meaning: string }> = [
-  { key: "plot_coverage.max_pct", unit: "%", meaning: "maximum plot (site) coverage: building footprint / plot area" },
-  { key: "plot_ratio.max", unit: "ratio", meaning: "maximum plot ratio / floor area ratio: GFA / plot area" },
-  { key: "setback.front_min_m", unit: "m", meaning: "minimum distance from the building to the front boundary" },
-  { key: "setback.side_min_m", unit: "m", meaning: "minimum distance to each side boundary" },
-  { key: "setback.rear_min_m", unit: "m", meaning: "minimum distance to the rear boundary" },
-  { key: "parking.<use>", unit: "spaces per basis", meaning: "required parking for a use, with basis per_dwelling_unit, per_100_m2_gfa or per_m2_gfa (one key per use, e.g. parking.residential)" },
+export const NEEDED_VALUES: Array<{ key: string; quantity: Quantity; unit: string; meaning: string }> = [
+  { key: "plot_coverage.max_pct", quantity: "plot_coverage", unit: "%", meaning: "maximum plot (site) coverage: building footprint / plot area" },
+  { key: "plot_ratio.max", quantity: "plot_ratio", unit: "ratio", meaning: "maximum plot ratio / floor area ratio: GFA / plot area" },
+  { key: "setback.front_min_m", quantity: "setback_front", unit: "m", meaning: "minimum distance from the building to the front boundary" },
+  { key: "setback.side_min_m", quantity: "setback_side", unit: "m", meaning: "minimum distance to each side boundary" },
+  { key: "setback.rear_min_m", quantity: "setback_rear", unit: "m", meaning: "minimum distance to the rear boundary" },
+  { key: "parking.<use>", quantity: "parking", unit: "spaces per basis", meaning: "required parking for a use, with a basis (per_dwelling_unit, per_100_m2_gfa, per_m2_gfa or per_plot), or derived from the unit text ('per unit', 'per plot')" },
 ];
 
 // ------------------------------------------------------------------ the values file
@@ -42,58 +74,158 @@ export const NEEDED_VALUES: Array<{ key: string; unit: string; meaning: string }
 const isObj = (x: unknown): x is Record<string, unknown> => !!x && typeof x === "object" && !Array.isArray(x);
 const str = (x: unknown) => (typeof x === "string" ? x.trim() : "");
 
-/** Read a planning-values document. Never throws; a bad entry is dropped and listed in problems. */
+/** per_dwelling_unit or per_plot from the unit text, when the entry has no explicit basis. */
+export function basisFromUnit(unit: string): string | undefined {
+  if (/\bper\s+(dwelling\s+)?unit\b/i.test(unit)) return "per_dwelling_unit";
+  if (/\bper\s+plot\b/i.test(unit)) return "per_plot";
+  return undefined;
+}
+
+/**
+ * Read a planning-values document: values under "values" (the first schema) or "keys" (Standards Bot's file). Every entry
+ * with a value is kept, the key being whatever the file calls it; a number is a number, anything else is text and is shown
+ * but never judged. Never throws; an entry that cannot be read is dropped and listed in problems.
+ */
 export function parseValues(raw: unknown): ValuesDoc {
-  const out: ValuesDoc = { zone: "", jurisdiction: "", authority: "", notice: "", values: {}, problems: [] };
+  const out: ValuesDoc = { zone: "", jurisdiction: "", authority: "", notice: "", values: {}, problems: [], application_notes: [] };
   if (!isObj(raw)) { out.problems.push("the file is not a JSON object"); return out; }
   out.zone = str(raw.zone); out.jurisdiction = str(raw.jurisdiction); out.authority = str(raw.authority); out.notice = str(raw.notice);
+  if (Array.isArray(raw.application_notes)) out.application_notes = raw.application_notes.filter((n): n is string => typeof n === "string");
   if (raw.schema !== undefined && raw.schema !== SCHEMA_ID) out.problems.push(`schema is "${String(raw.schema)}", expected "${SCHEMA_ID}"`);
-  if (!isObj(raw.values)) { out.problems.push('there is no "values" object'); return out; }
-  for (const [key, e] of Object.entries(raw.values)) {
-    const known = (VALUE_KEYS as readonly string[]).includes(key) || (key.startsWith(PARKING_PREFIX) && key.length > PARKING_PREFIX.length);
-    if (!known) { out.problems.push(`${key}: not a key this tool uses (ignored)`); continue; }
+  const table = isObj(raw.values) ? raw.values : isObj(raw.keys) ? raw.keys : null;
+  if (!table) { out.problems.push('there is no "values" (or "keys") object'); return out; }
+  for (const [key, e] of Object.entries(table)) {
+    if (!key.trim()) { out.problems.push("an entry has an empty key (ignored)"); continue; }
     if (!isObj(e)) { out.problems.push(`${key}: not an object (ignored)`); continue; }
-    if (typeof e.value !== "number" || !Number.isFinite(e.value) || e.value < 0) { out.problems.push(`${key}: value must be a number of 0 or more (ignored)`); continue; }
-    const entry: PlanningValue = { key, value: e.value, unit: str(e.unit), source: str(e.source), clause: str(e.clause), status: str(e.status).toLowerCase() };
+    if (!("value" in e) || e.value === null || e.value === undefined || e.value === "") { out.problems.push(`${key}: no value (ignored)`); continue; }
+    let value: number | null = null; let text = "";
+    if (typeof e.value === "number") {
+      if (!Number.isFinite(e.value) || e.value < 0) { out.problems.push(`${key}: a number must be 0 or more (ignored)`); continue; }
+      value = e.value;
+    } else text = typeof e.value === "string" ? e.value.trim() : JSON.stringify(e.value);
+    const entry: PlanningValue = {
+      key, value, text, unit: str(e.unit), source: str(e.source), clause: str(e.clause), status: str(e.status).toLowerCase(),
+      edition: str(e.edition), zone_or_use: str(e.zone_or_use), legal_character: str(e.legal_character), quote: str(e.quote),
+    };
     if (typeof e.note === "string") entry.note = e.note;
-    if (key.startsWith(PARKING_PREFIX)) {
-      const basis = str(e.basis);
-      if (!(PARKING_BASES as readonly string[]).includes(basis)) { out.problems.push(`${key}: basis must be one of ${PARKING_BASES.join(", ")} (ignored)`); continue; }
-      entry.basis = basis;
-    }
+    const explicit = str(e.basis);
+    if (explicit) {
+      if ((PARKING_BASES as readonly string[]).includes(explicit)) entry.basis = explicit;
+      else out.problems.push(`${key}: basis "${explicit}" is not one of ${PARKING_BASES.join(", ")} (the basis is not used)`);
+    } else if (key.startsWith(PARKING_PREFIX)) entry.basis = basisFromUnit(entry.unit);
     out.values[key] = entry;
   }
   return out;
 }
 
-/** May this value decide pass or fail? Provisional never; draft or approved only with a source and a clause. */
-export function usable(e: PlanningValue): { ok: boolean; why: string } {
-  if (!e.status) return { ok: false, why: "the value has no status (it needs approved or draft)" };
+/**
+ * May this value decide pass or fail? Only approved, with a source and a clause; draft only when allowed (and then also
+ * with a source and a clause). Unbanked, provisional and blank never.
+ */
+export function usable(e: PlanningValue, allowDraft: boolean = DEFAULT_ALLOW_DRAFT): { ok: boolean; why: string } {
+  if (!e.status) return { ok: false, why: "the value has no status (it needs approved)" };
   if (e.status === "provisional") return { ok: false, why: "the value is provisional: a provisional value never passes or fails" };
-  if (!USABLE_STATUSES.includes(e.status)) return { ok: false, why: `the status "${e.status}" is not approved or draft` };
+  if (e.status === "unbanked") return { ok: false, why: "the value is unbanked: found in a source but not stored in the kit bank, so it never passes or fails" };
+  if (e.status === "draft" && !allowDraft) return { ok: false, why: "the value is draft, not approved: it judges only when allow_draft is true" };
+  if (e.status !== "draft" && e.status !== "approved") return { ok: false, why: `the status "${e.status}" is not approved` };
   if (!e.source) return { ok: false, why: "the value has no source" };
   if (!e.clause) return { ok: false, why: "the value has no clause" };
   return { ok: true, why: "" };
 }
 
-export interface LimitInfo { key: string; kind: "max" | "min"; value: number; unit: string; source: string; clause: string; status: string; basis?: string }
-export interface Judged { result: Result; reason: string; limit: LimitInfo | null; limit_status: "ok" | "no_limit_configured" | "not_usable" | "no_value" }
+export interface LimitInfo {
+  key: string; kind: "max" | "min"; value: number | null; text?: string; unit: string; source: string; clause: string; status: string;
+  edition?: string; zone_or_use?: string; legal_character?: string; basis?: string; quote?: string;
+}
+export type LimitStatus = "ok" | "no_limit_configured" | "no_limit_selected" | "not_usable" | "not_numeric" | "no_value";
+export interface Judged { result: Result; reason: string; limit: LimitInfo | null; limit_status: LimitStatus; indicative?: boolean }
 
-const limitOf = (e: PlanningValue, kind: "max" | "min", value = e.value): LimitInfo =>
-  ({ key: e.key, kind, value, unit: e.unit, source: e.source, clause: e.clause, status: e.status, ...(e.basis ? { basis: e.basis } : {}) });
+const trim = (s: string, n: number) => (s.length > n ? s.slice(0, n - 1) + "…" : s);
+
+const limitOf = (e: PlanningValue, kind: "max" | "min", value: number | null = e.value): LimitInfo => ({
+  key: e.key, kind, value, ...(e.value === null ? { text: trim(e.text, 400) } : {}), unit: e.unit, source: e.source, clause: e.clause, status: e.status,
+  ...(e.edition ? { edition: e.edition } : {}), ...(e.zone_or_use ? { zone_or_use: e.zone_or_use } : {}),
+  ...(e.legal_character ? { legal_character: e.legal_character } : {}), ...(e.basis ? { basis: e.basis } : {}), ...(e.quote ? { quote: trim(e.quote, 300) } : {}),
+});
 
 /** value against a max or a min limit. Missing limit: unknown, "no limit configured". */
-export function judge(value: number | null, entry: PlanningValue | undefined, kind: "max" | "min", limitValue?: number, why = ""): Judged {
+export function judge(value: number | null, entry: PlanningValue | undefined, kind: "max" | "min", limitValue?: number, why = "", allowDraft: boolean = DEFAULT_ALLOW_DRAFT): Judged {
   if (!entry) return { result: "unknown", reason: `no limit configured${why ? ` (${why})` : ""}`, limit: null, limit_status: "no_limit_configured" };
   const limit = limitOf(entry, kind, limitValue ?? entry.value);
-  const u = usable(entry);
+  const u = usable(entry, allowDraft);
   if (!u.ok) return { result: "unknown", reason: u.why, limit, limit_status: "not_usable" };
+  if (limit.value === null) return { result: "unknown", reason: `the limit is text, not a number, so it is not judged: ${trim(entry.text, 200)}`, limit, limit_status: "not_numeric" };
   if (value === null || !Number.isFinite(value)) return { result: "unknown", reason: why || "the value could not be computed", limit, limit_status: "no_value" };
   const ok = kind === "max" ? value <= limit.value + 1e-9 : value >= limit.value - 1e-9;
-  return { result: ok ? "pass" : "fail", reason: `${round(value)} ${kind === "max" ? "<=" : ">="} ${round(limit.value)} is ${ok ? "within" : "outside"} the ${kind === "max" ? "maximum" : "minimum"}`, limit, limit_status: "ok" };
+  const draft = entry.status === "draft";
+  const text = `${round(value)} ${kind === "max" ? "<=" : ">="} ${round(limit.value)} is ${ok ? "within" : "outside"} the ${kind === "max" ? "maximum" : "minimum"}`;
+  return { result: ok ? "pass" : "fail", reason: draft ? `${DRAFT_LABEL}. ${text}` : text, limit, limit_status: "ok", ...(draft ? { indicative: true } : {}) };
 }
 
 export const round = (n: number, d = 2) => Math.round(n * 10 ** d) / 10 ** d;
+
+// ------------------------------------------------------------------ choosing the limit
+
+export interface Candidate { key: string; value: number | string; unit: string; zone_or_use: string; legal_character: string; status: string; source: string; clause: string; judges_when: string }
+export interface ResolvedLimit {
+  quantity: Quantity; entry?: PlanningValue; selected_by: "limits" | "default_key" | "none";
+  problem?: Judged; candidates: Candidate[];
+}
+
+const CAP = 60;
+
+export function candidatesFor(q: Quantity, values: Record<string, PlanningValue>, prefix?: string): Candidate[] {
+  const p = prefix ?? QUANTITY_PREFIX[q];
+  return Object.values(values).filter((v) => v.key.startsWith(p)).sort((a, b) => a.key.localeCompare(b.key)).slice(0, CAP).map((v) => ({
+    key: v.key, value: v.value ?? trim(v.text, 120), unit: v.unit, zone_or_use: trim(v.zone_or_use, 160), legal_character: v.legal_character, status: v.status,
+    source: trim(v.source, 80), clause: v.clause,
+    judges_when: v.value === null ? "never (text)" : v.status === "approved" ? "yes" : v.status === "draft" ? "allow_draft" : "never",
+  }));
+}
+
+/** The entry for a quantity: the caller's choice, else the plain default key, else nothing. The tool never chooses between rules. */
+export function resolveLimit(q: Quantity, values: Record<string, PlanningValue>, limits: Partial<Record<Quantity, string>>, args: { use?: string } = {}): ResolvedLimit {
+  const chosen = (limits[q] ?? "").trim();
+  const useKey = q === "parking" ? (args.use ?? "").trim().toLowerCase() : "";
+  const prefix = q === "parking" && useKey ? `${PARKING_PREFIX}${useKey}.` : undefined;
+  const candidates = candidatesFor(q, values, prefix);
+  const none = (reason: string, status: LimitStatus): ResolvedLimit => ({ quantity: q, selected_by: "none", candidates, problem: { result: "unknown", reason, limit: null, limit_status: status } });
+  if (chosen) {
+    const entry = values[chosen];
+    if (!entry) return none(`the selected key "${chosen}" is not in the values file`, "no_limit_configured");
+    return withUnit({ quantity: q, entry, selected_by: "limits", candidates: [] });
+  }
+  const dflt = q === "parking" ? (useKey ? PARKING_PREFIX + useKey : "") : DEFAULT_KEYS[q];
+  if (dflt && values[dflt]) return withUnit({ quantity: q, entry: values[dflt], selected_by: "default_key", candidates: [] });
+  if (candidates.length === 0) return none("no limit configured", "no_limit_configured");
+  const how = q === "parking" && !useKey ? "pass use or limits.parking" : `pass limits.${q} with one of the keys in evidence.candidates`;
+  return none(`no limit selected: the file has ${candidates.length} possible rule(s) and the tool does not choose between them (${how})`, "no_limit_selected");
+}
+
+function withUnit(r: ResolvedLimit): ResolvedLimit {
+  const e = r.entry!;
+  const ok = UNIT_OK[r.quantity];
+  if (ok && e.unit && !ok.test(e.unit)) {
+    return { ...r, problem: { result: "unknown", reason: `the unit "${e.unit}" is not what ${r.quantity.replace("_", " ")} is measured in, so the value is not used`, limit: limitOf(e, r.quantity === "plot_coverage" || r.quantity === "plot_ratio" ? "max" : "min"), limit_status: "not_usable" } };
+  }
+  return r;
+}
+
+/** Judge through a resolved limit; a selection problem comes back as unknown, never a pass. */
+export function judgeResolved(r: ResolvedLimit, value: number | null, kind: "max" | "min", allowDraft: boolean, why = "", limitValue?: number): Judged {
+  if (r.problem) return r.problem;
+  return judge(value, r.entry, kind, limitValue, why, allowDraft);
+}
+
+/** How the rule binds, for the assumptions: binding or guideline, where it applies. */
+export function applicability(e: PlanningValue | undefined): string[] {
+  if (!e) return [];
+  const out: string[] = [];
+  if (e.legal_character) out.push(`The rule is a ${e.legal_character.replace(/_/g, " ")}${e.legal_character === "guideline" ? " (not statutory)" : ""}: ${e.source || "source not given"}${e.clause ? ", " + e.clause : ""}.`);
+  if (e.zone_or_use) out.push(`Applies to: ${trim(e.zone_or_use, 240)}.`);
+  if (/only in any area where no provision/i.test(e.zone_or_use + " " + e.quote)) out.push("This limit applies only where no provision has been made under the Physical Planning Act, 2010: where a physical development plan or other provision exists, that provision comes first. The tool cannot tell which applies to this plot.");
+  return out;
+}
 
 // ------------------------------------------------------------------ geometry (plan, metres)
 
@@ -198,12 +330,16 @@ export interface CheckArgs {
   plot_area_m2?: number; plot_area_name: string; footprint_area_m2?: number;
   front_segments: number[]; side_segments: number[]; rear_segments: number[];
   zone: string;
+  /** the exact values-file key to judge each check against; the tool never chooses between rules */
+  limits?: Partial<Record<Quantity, string>>;
+  /** a draft value judges only when true; default DEFAULT_ALLOW_DRAFT */
+  allow_draft?: boolean;
 }
 
 export interface Check {
   check: string; title: string; value: number | string | null; unit: string;
   limit: LimitInfo | null; limit_status: string; result: Result; reason: string;
-  evidence: Record<string, unknown>; assumptions: string[];
+  evidence: Record<string, unknown>; assumptions: string[]; indicative?: boolean;
 }
 
 const SOURCE_ORDER = ["areas", "rooms", "floors"] as const;
@@ -241,10 +377,21 @@ function noLimit(check: string, title: string, value: number | null, unit: strin
 
 // ------------------------------------------------------------------ the checks
 
-export interface Report { source: { used: SourceName | null; why: string[]; problem: string }; checks: Check[]; plot: { area_m2: number | null; from: string }; classification: Record<string, unknown> }
+export interface Report {
+  source: { used: SourceName | null; why: string[]; problem: string }; checks: Check[]; plot: { area_m2: number | null; from: string };
+  classification: Record<string, unknown>; allow_draft: boolean; draft_judged: string[];
+}
+
+/** evidence plus the candidate rules when the caller still has to choose one */
+function withCandidates(evidence: Record<string, unknown>, r: ResolvedLimit): Record<string, unknown> {
+  return r.problem && r.candidates.length ? { ...evidence, candidates: r.candidates } : evidence;
+}
 
 export function buildChecks(facts: Facts, args: CheckArgs, values: Record<string, PlanningValue>): Report {
   const checks: Check[] = [];
+  const allowDraft = args.allow_draft ?? DEFAULT_ALLOW_DRAFT;
+  const limits = args.limits ?? {};
+  const resolve = (q: Quantity) => resolveLimit(q, values, limits, { use: args.use });
   const src = chooseSource(facts, args.source);
   const sf = src.used ? facts.sources[src.used] : undefined;
 
@@ -272,39 +419,42 @@ export function buildChecks(facts: Facts, args: CheckArgs, values: Record<string
 
   // --- coverage
   const footprint = footprintOf(facts, src.used, args);
-  const coverageEntry = values["plot_coverage.max_pct"];
+  const cov = resolve("plot_coverage");
   if (footprint.area !== null && plotPlan.area) {
     const pct = (footprint.area / plotPlan.area) * 100;
-    const j = judge(pct, coverageEntry, "max");
+    const j = judgeResolved(cov, pct, "max", allowDraft);
     checks.push(checkOf({ check: "plot_coverage", title: "Plot coverage (footprint / plot area)", value: round(pct), unit: "%", ...j,
-      evidence: { footprint_area_m2: round(footprint.area), footprint_from: footprint.from, footprint_level: footprint.level, plot_area_m2: round(plotPlan.area), plot_area_from: plotPlan.from, footprint_element_ids: footprint.ids },
-      assumptions: [...footprint.assumptions, ...plotPlan.assumptions] }));
+      evidence: withCandidates({ footprint_area_m2: round(footprint.area), footprint_from: footprint.from, footprint_level: footprint.level, plot_area_m2: round(plotPlan.area), plot_area_from: plotPlan.from, footprint_element_ids: footprint.ids }, cov),
+      assumptions: [...footprint.assumptions, ...plotPlan.assumptions, ...applicability(cov.entry)] }));
   } else {
-    const j = judge(null, coverageEntry, "max", undefined, footprint.area === null ? footprint.problem : plotPlan.problem || "the plot area is missing");
-    checks.push(checkOf({ check: "plot_coverage", title: "Plot coverage (footprint / plot area)", value: null, unit: "%", ...j, evidence: { footprint_from: footprint.from, plot_area_from: plotPlan.from }, assumptions: footprint.assumptions }));
+    const j = judgeResolved(cov, null, "max", allowDraft, footprint.area === null ? footprint.problem : plotPlan.problem || "the plot area is missing");
+    checks.push(checkOf({ check: "plot_coverage", title: "Plot coverage (footprint / plot area)", value: null, unit: "%", ...j, evidence: withCandidates({ footprint_from: footprint.from, plot_area_from: plotPlan.from }, cov), assumptions: [...footprint.assumptions, ...applicability(cov.entry)] }));
   }
 
   // --- plot ratio
-  const ratioEntry = values["plot_ratio.max"];
+  const rat = resolve("plot_ratio");
   if (gfa !== null && plotPlan.area) {
     const ratio = gfa / plotPlan.area;
-    const j = judge(ratio, ratioEntry, "max");
+    const j = judgeResolved(rat, ratio, "max", allowDraft);
     checks.push(checkOf({ check: "plot_ratio", title: "Plot ratio / FAR (GFA / plot area)", value: round(ratio, 3), unit: "ratio", ...j,
-      evidence: { gfa_m2: round(gfa), gfa_source: src.used, plot_area_m2: round(plotPlan.area), plot_area_from: plotPlan.from },
-      assumptions: [...(src.used ? [SOURCE_NOTE[src.used]] : []), ...plotPlan.assumptions] }));
+      evidence: withCandidates({ gfa_m2: round(gfa), gfa_source: src.used, plot_area_m2: round(plotPlan.area), plot_area_from: plotPlan.from }, rat),
+      assumptions: [...(src.used ? [SOURCE_NOTE[src.used]] : []), ...plotPlan.assumptions, ...applicability(rat.entry)] }));
   } else {
-    const j = judge(null, ratioEntry, "max", undefined, gfa === null ? "GFA could not be computed" : plotPlan.problem || "the plot area is missing");
-    checks.push(checkOf({ check: "plot_ratio", title: "Plot ratio / FAR (GFA / plot area)", value: null, unit: "ratio", ...j, evidence: {}, assumptions: [] }));
+    const j = judgeResolved(rat, null, "max", allowDraft, gfa === null ? "GFA could not be computed" : plotPlan.problem || "the plot area is missing");
+    checks.push(checkOf({ check: "plot_ratio", title: "Plot ratio / FAR (GFA / plot area)", value: null, unit: "ratio", ...j, evidence: withCandidates({}, rat), assumptions: applicability(rat.entry) }));
   }
 
   // --- setbacks
   const classification: Record<string, unknown> = {};
-  checks.push(...setbackChecks(facts, args, values, footprint, plotPlan, classification));
+  checks.push(...setbackChecks(facts, args, resolve, allowDraft, footprint, plotPlan, classification));
 
   // --- parking
-  checks.push(parkingCheck(facts, args, values, gfa, src.used));
+  checks.push(parkingCheck(facts, args, resolve("parking"), allowDraft, gfa, src.used));
 
-  return { source: src, checks, plot: { area_m2: plotPlan.area, from: plotPlan.from }, classification };
+  return {
+    source: src, checks, plot: { area_m2: plotPlan.area, from: plotPlan.from }, classification, allow_draft: allowDraft,
+    draft_judged: checks.filter((c) => c.indicative && (c.result === "pass" || c.result === "fail")).map((c) => c.check),
+  };
 }
 
 interface PlotPlan { area: number | null; from: string; problem: string; evidence: Record<string, unknown>; assumptions: string[]; loop: Pt[] | null }
@@ -375,12 +525,13 @@ function footprintOf(facts: Facts, used: SourceName | null, args: CheckArgs): Fo
   };
 }
 
-function setbackChecks(facts: Facts, args: CheckArgs, values: Record<string, PlanningValue>, footprint: FootprintPlan, plot: PlotPlan, classification: Record<string, unknown>): Check[] {
+function setbackChecks(facts: Facts, args: CheckArgs, resolve: (q: Quantity) => ResolvedLimit, allowDraft: boolean, footprint: FootprintPlan, plot: PlotPlan, classification: Record<string, unknown>): Check[] {
   const lines = facts.property_lines?.lines ?? [];
-  const parts: Array<["front" | "side" | "rear", string]> = [["front", "setback.front_min_m"], ["side", "setback.side_min_m"], ["rear", "setback.rear_min_m"]];
-  const pre = (reason: string): Check[] => parts.map(([name, key]) => {
-    const j = judge(null, values[key], "min", undefined, reason);
-    return checkOf({ check: `setback_${name}`, title: `Setback: ${name}`, value: null, unit: "m", ...j, evidence: {}, assumptions: [] });
+  const parts: Array<["front" | "side" | "rear", Quantity]> = [["front", "setback_front"], ["side", "setback_side"], ["rear", "setback_rear"]];
+  const pre = (reason: string): Check[] => parts.map(([name, q]) => {
+    const r = resolve(q);
+    const j = judgeResolved(r, null, "min", allowDraft, reason);
+    return checkOf({ check: `setback_${name}`, title: `Setback: ${name}`, value: null, unit: "m", ...j, evidence: withCandidates({}, r), assumptions: applicability(r.entry) });
   });
   if (!lines.length) return pre("the model has no Property Line, so there is no boundary to measure to");
   if (footprint.loops.length === 0) return pre(footprint.outlineProblem || footprint.problem || "no footprint outline");
@@ -392,20 +543,21 @@ function setbackChecks(facts: Facts, args: CheckArgs, values: Record<string, Pla
   const cls = classify(lines, args);
   Object.assign(classification, { ...cls });
   const out: Check[] = [];
-  for (const [name, key] of parts) {
+  for (const [name, q] of parts) {
+    const r = resolve(q);
     const ns = (cls as Record<string, unknown>)[name] as number[];
     const mine = dists.filter((d) => ns.includes(d.n));
     const base = { evidence_all_lines: dists };
     if (mine.length === 0) {
-      const j = judge(null, values[key], "min", undefined, `the ${name} boundary is not identified: ${cls.note}`);
-      out.push(checkOf({ check: `setback_${name}`, title: `Setback: ${name}`, value: null, unit: "m", ...j, evidence: { lines: dists, ...base }, assumptions }));
+      const j = judgeResolved(r, null, "min", allowDraft, `the ${name} boundary is not identified: ${cls.note}`);
+      out.push(checkOf({ check: `setback_${name}`, title: `Setback: ${name}`, value: null, unit: "m", ...j, evidence: withCandidates({ lines: dists, ...base }, r), assumptions: [...assumptions, ...applicability(r.entry)] }));
       continue;
     }
     const min = Math.min(...mine.map((d) => d.min_distance_m));
-    const j = judge(min, values[key], "min");
+    const j = judgeResolved(r, min, "min", allowDraft);
     out.push(checkOf({ check: `setback_${name}`, title: `Setback: ${name}`, value: round(min, 3), unit: "m", ...j,
-      evidence: { boundary_segments: ns, boundary_element_ids: [...new Set(mine.map((d) => d.element_id))], per_segment_m: mine, classified_by: cls.inferred ? "inferred" : "input" },
-      assumptions: [...assumptions, ...(cls.inferred ? [cls.note] : [])] }));
+      evidence: withCandidates({ boundary_segments: ns, boundary_element_ids: [...new Set(mine.map((d) => d.element_id))], per_segment_m: mine, classified_by: cls.inferred ? "inferred" : "input" }, r),
+      assumptions: [...assumptions, ...(cls.inferred ? [cls.note] : []), ...applicability(r.entry)] }));
   }
   const overall = Math.min(...dists.map((d) => d.min_distance_m));
   out.push(noLimit("setback_overall", "Setback: nearest boundary (any segment)", round(overall, 3), "m",
@@ -415,7 +567,6 @@ function setbackChecks(facts: Facts, args: CheckArgs, values: Record<string, Pla
   return out;
 }
 
-/** Front/side/rear segment numbers: as given; with only front given on a four-sided plot, rear is the opposite side and the other two are sides. */
 export function classify(lines: Line[], args: Pick<CheckArgs, "front_segments" | "side_segments" | "rear_segments">): { front: number[]; side: number[]; rear: number[]; inferred: boolean; note: string } {
   const known = new Set(lines.map((l) => l.n));
   const clean = (a: number[]) => a.filter((n) => known.has(n));
@@ -441,30 +592,36 @@ export function classify(lines: Line[], args: Pick<CheckArgs, "front_segments" |
   return { front: [], side: [], rear: [], inferred: false, note: `no segments were classified: pass front_segments (and side_segments, rear_segments) using the segment numbers in setback_overall.${bad}` };
 }
 
-function parkingCheck(facts: Facts, args: CheckArgs, values: Record<string, PlanningValue>, gfa: number | null, used: SourceName | null): Check {
+function parkingCheck(facts: Facts, args: CheckArgs, r: ResolvedLimit, allowDraft: boolean, gfa: number | null, used: SourceName | null): Check {
   const useKey = args.use.trim().toLowerCase();
-  const available = Object.keys(values).filter((k) => k.startsWith(PARKING_PREFIX)).map((k) => k.slice(PARKING_PREFIX.length));
   const modelCount = facts.parking?.count ?? 0;
   const provided = args.parking_provided ?? modelCount;
   const providedFrom = args.parking_provided !== undefined ? "input" : "model (Parking category elements)";
   const evidence: Record<string, unknown> = {
     provided, provided_from: providedFrom, model_parking_count: modelCount, by_type: facts.parking?.by_type ?? [],
-    element_ids: facts.parking?.element_ids ?? [], ids_truncated: !!facts.parking?.ids_truncated, use: useKey || null, uses_with_values: available,
+    element_ids: facts.parking?.element_ids ?? [], ids_truncated: !!facts.parking?.ids_truncated, use: useKey || null,
   };
   const assumptions = ["Each Parking-category element is counted as one space (a family that holds several bays, or a bay drawn in a different category, is miscounted). Accessible, loading and visitor bays are not separated."];
   const mk = (j: Judged, value: number | null, extra: Record<string, unknown> = {}) =>
-    checkOf({ check: "parking", title: "Parking (provided against required)", value, unit: "spaces", ...j, evidence: { ...evidence, ...extra }, assumptions });
-  if (!useKey) return mk({ result: "unknown", reason: "no use was given, so the required parking cannot be looked up (pass use)", limit: null, limit_status: "no_value" }, provided);
-  const entry = values[PARKING_PREFIX + useKey];
-  if (!entry) return mk({ result: "unknown", reason: `no limit configured for parking for the use "${useKey}"`, limit: null, limit_status: "no_limit_configured" }, provided);
+    checkOf({ check: "parking", title: "Parking (provided against required)", value, unit: "spaces", ...j, evidence: withCandidates({ ...evidence, ...extra }, r), assumptions: [...assumptions, ...applicability(r.entry)] });
+  const chosen = (args.limits?.parking ?? "").trim();
+  if (!useKey && !chosen) {
+    return mk({ result: "unknown", reason: "no use was given, so the required parking cannot be looked up (pass use or limits.parking)", limit: null, limit_status: r.candidates.length ? "no_limit_selected" : "no_limit_configured" }, provided);
+  }
+  if (r.problem) return mk(r.problem, provided);
+  const entry = r.entry!;
+  const first = judge(null, entry, "min", undefined, "", allowDraft);
+  if (first.limit_status === "not_usable" || first.limit_status === "not_numeric") return mk(first, provided);
   let base: number | null = null; let baseName = "";
   if (entry.basis === "per_dwelling_unit") { base = args.units ?? null; baseName = "dwelling units (units)"; }
   else if (entry.basis === "per_100_m2_gfa") { base = gfa === null ? null : gfa / 100; baseName = "GFA / 100 m2"; }
   else if (entry.basis === "per_m2_gfa") { base = gfa; baseName = "GFA m2"; }
+  else if (entry.basis === "per_plot") { base = 1; baseName = "plot"; }
+  else return mk({ result: "unknown", reason: `the unit "${entry.unit}" does not say what the ${entry.value} spaces are counted per (per unit, per plot, per GFA), so the required parking cannot be computed`, limit: limitOf(entry, "min"), limit_status: "no_value" }, provided);
   if (base === null) return mk({ result: "unknown", reason: `the required parking is ${entry.value} ${entry.basis}, but ${baseName} is not known (${entry.basis === "per_dwelling_unit" ? "pass units" : "GFA could not be computed"})`, limit: limitOf(entry, "min"), limit_status: "no_value" }, provided);
-  const required = Math.ceil(entry.value * base - 1e-9);
-  assumptions.push(`Required = ${entry.value} ${entry.basis} x ${round(base, 3)} ${baseName}, rounded UP to a whole space (${required}).${used && entry.basis !== "per_dwelling_unit" ? ` GFA is from ${used}.` : ""}`);
-  const j = judge(provided, entry, "min", required);
+  const required = Math.ceil((entry.value as number) * base - 1e-9);
+  assumptions.push(`Required = ${entry.value} ${entry.basis} x ${round(base, 3)} ${baseName}, rounded UP to a whole space (${required}).${used && entry.basis !== "per_dwelling_unit" && entry.basis !== "per_plot" ? ` GFA is from ${used}.` : ""}`);
+  const j = judge(provided, entry, "min", required, "", allowDraft);
   return mk(j, provided, { required, rate: entry.value, basis: entry.basis, base: round(base, 3) });
 }
 
