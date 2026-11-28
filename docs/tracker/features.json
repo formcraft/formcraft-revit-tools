@@ -1123,5 +1123,23 @@
     "status": "Built, Revit check due",
     "ref": "fmc_file open_local, fmc_file close_local, fmc_open_local, fmc_close_local, fmc_close_local_apply, docs/tools/fmc_file.md",
     "note": "open_local opens a person's existing workshared local as the active document with UIApplication.OpenAndActivateDocument (activate=false uses OpenDocumentFile). worksets are all, last_viewed, none or a list of names. DoNotDetach; it never creates a new local, never synchronises, and refuses a central (FMC-FILE-CENTRAL-REFUSED), a missing file, a cloud, protected or live path, and worksets on a file that is not workshared. An already open local is only activated. close_local never syncs or relinquishes; it activates another open project first when the target is active, refuses the only open document (FMC-FILE-ONLY-DOC) and unsaved changes without confirm. save=true is a write (fmc_close_local_apply, in WRITE_COMMANDS: batch_lease, live-model lock, AI gate) and is refused for HEBERT HOSTELS, a protected original, a verification copy or a document never saved. dry_run defaults true. Opening a model in Revit stays a person's choice: the Revit check runs after install, dry run only."
+  },
+  {
+    "id": "GAP-16",
+    "area": "Engine",
+    "group": "Structure",
+    "feature": "BS 8666 bar bending schedule with cover and spacing checks",
+    "status": "Built, Revit check due",
+    "ref": "fmc_rebar_schedule, docs/tools/fmc_rebar_schedule.md",
+    "note": "Read-only. No dry run and no transaction. Reads Rebar sets: mark, bar type, diameter, quantity, Revit bar length, shape name and A to F/R, layout and spacing, host cover settings and bar centre lines. The server builds the BS 8666 schedule (member, bar mark, type and size, number, length of each bar from the BS 8666:2020 shape-code formula or Revit's length, rounded up to 25 mm, shape code, A to E/R, mass from Table 1 unit masses) and checks cover against the host settings and min_cover_mm (call, else rebar.min_cover_mm), clear spacing against max(bar, aggregate + 5, 20) with aggregate_mm (call, else rebar.max_aggregate_mm, else a provisional 20 mm that cannot PASS), and bar marks used for different bars. Failures carry element ids. JSON and CSV under %LOCALAPPDATA%\\Formcraft\\rebar. Needs a Revit check."
+  },
+  {
+    "id": "GAP-23",
+    "area": "Engine",
+    "group": "Energy",
+    "feature": "Energy analytical model report, gbXML export and check, and the envelope U-value, UA and WWR check",
+    "status": "Built, Revit check due",
+    "ref": "fmc_energy (modes envelope, analytical, export, check), fmc_energy_export, docs/tools/fmc_energy.md",
+    "note": "envelope: read-only U per type, UA and WWR checks (unchanged). analytical: read-only EnergyDataSettings (by property name), location and base points, whether the main EnergyAnalysisDetailModel exists with its spaces, zones, surfaces and openings, rooms and spaces not placed, unbounded or without a level, surfaces with no adjacent space, and Revit warnings; never creates the model. export: fmc_energy_export (WRITE_COMMANDS: live-model lock, batch lease) writes <model>_gbXML_<yyyyMMdd-HHmm>.xml or a sanitised name ONLY in the open .rvt's folder, refuses unsaved, cloud, non-.rvt, outside-folder, guard-refused and existing files, dry_run defaults true, never saves or syncs; if Revit needs a transaction the export runs in a TransactionGroup that is rolled back. check: offline gbXML counts (Campus, Building, Space, Surface, Opening) and findings (no AdjacentSpaceId, missing space refs, zero areas, missing or undefined constructions) for a file inside the project folder. Needs a Revit check."
   }
 ]

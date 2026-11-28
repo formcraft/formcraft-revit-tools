@@ -243,6 +243,9 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_close_local_apply",
   // Close spare documents or purge unused elements. Status stays on fmc_memory.
   "fmc_memory_apply",
+  // gbXML export beside the open .rvt (GAP-23): writes one new file and may open a transaction group that is always
+  // rolled back. Never saves. The envelope, analytical and check reads stay on fmc_energy.
+  "fmc_energy_export",
 ]);
 
 /**
@@ -276,6 +279,10 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_family_params",
   // Clear headroom. No transaction.
   "fmc_headroom",
+  // BS 8666 bar bending schedule facts, cover settings and bar centre lines. No transaction.
+  "fmc_rebar_schedule",
+  // Envelope U-values, SHGC, areas and directions, and the energy analytical model report. No transaction, no energy model.
+  "fmc_energy",
   // Keynote tags, hosts and plan views. No transaction.
   "fmc_keynote_place",
   // Sheet outlines, view sizes and sheet parameters. No transaction.
