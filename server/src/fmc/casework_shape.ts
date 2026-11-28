@@ -39,7 +39,7 @@ const UNIT = z.object({
 });
 
 export const FMC_CASEWORK_SHAPE = {
-  action: z.enum(["units", "parts", "nest", "cutlist", "hardware", "summary", "pack", "room", "check", "place", "shop_drawings", "remove"]),
+  action: z.enum(["units", "parts", "nest", "cutlist", "hardware", "summary", "pack", "room", "check", "place", "shop_drawings", "remove", "options", "bulk"]),
   run: RUN.optional().describe("The run to lay out (or give units)"),
   units: z.array(UNIT).optional().describe("A unit list instead of a run (the unit editor's)"),
   standards: z.record(z.string(), z.unknown()).optional()
@@ -63,6 +63,9 @@ export const FMC_CASEWORK_SHAPE = {
     .describe("check, place: read the room from Revit again even when the run named in run_id read it in the last 10 minutes"),
   confirm: z.boolean().optional().default(false)
     .describe("pack, shop_drawings, remove: needed with dry_run=false, after the person has seen the dry run"),
+  rooms: z.array(z.string()).max(50).optional().describe("bulk: rooms to read from the active model (numbers or names), read only"),
+  runs: z.array(z.object({ label: z.string(), run: RUN })).max(50).optional().describe("bulk: runs given with a label each"),
+  run_kind: z.enum(["kitchen", "wardrobe", "vanity"]).optional().describe("bulk: the kind of run for the rooms read (kitchen if not given)"),
   dry_run: z.boolean().optional().default(true),
 };
 

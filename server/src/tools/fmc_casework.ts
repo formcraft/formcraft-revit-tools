@@ -6,6 +6,7 @@ import { FMC_CASEWORK_SHAPE, FmcCaseworkArgs } from "../fmc/casework_shape.js";
 import { CaseworkIo, Ctx, log, prepare, replyOf, resolveInputs } from "../fmc/casework_tool.js";
 import { checkAction, engineAction, packAction } from "../fmc/casework_actions.js";
 import { placeAction, removeAction, roomAction, shopAction } from "../fmc/casework_revit.js";
+import { bulkAction, optionsAction } from "../fmc/casework_more.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 
 // The tool is split for the hub's 300-line rule: schema (fmc/casework_shape.ts), plumbing (fmc/casework_tool.ts),
@@ -59,6 +60,8 @@ export async function runFmcCasework(args: FmcCaseworkArgs, io: CaseworkIo = {})
     if (args.action === "room") return await roomAction(ctx);
     // removing needs no standards either: only the label's tag
     if (args.action === "remove") return await removeAction(ctx);
+    // bulk reads rooms and lays out each one by itself (each with its own run id)
+    if (args.action === "bulk") return await bulkAction(ctx);
     const prep = prepare(args, config);
     if ("refused" in prep) return reply(prep.refused, true);
     const p = prep.ok;
@@ -68,6 +71,7 @@ export async function runFmcCasework(args: FmcCaseworkArgs, io: CaseworkIo = {})
       case "place": return await placeAction(ctx, p);
       case "shop_drawings": return await shopAction(ctx, p);
       case "pack": return packAction(ctx, p);
+      case "options": return await optionsAction(ctx, p);
       default: return engineAction(ctx, p);
     }
   } catch (error) {
