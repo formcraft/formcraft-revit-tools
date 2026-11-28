@@ -1,2657 +1,2663 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_M_AirTerminal_HEPA_TerminalFilter",
- "template": "Metric Generic Model.rft",
- "about": "Modelled as a generic product: housing with side spigot, bead, damper shaft and quadrant, face frame and perforated face (rows of perforations), face fixings, DOP test port, aerosol injection and pressure test ports, hanger lug. Reference: query: HEPA terminal filter air terminals hospital; images: https://www.google.com/search?tbm=isch&q=HEPA+terminal+filter+air+terminals+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Air Terminals"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Airflow_Ls",
-   "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "600x600_H14"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_H14/FMC_Cost_Unit",
-   "type": "600x600_H14",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_H14/FMC_Geometry_Stage",
-   "type": "600x600_H14",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_H14/IfcExportAs",
-   "type": "600x600_H14",
-   "param": "IfcExportAs",
-   "value": "IfcAirTerminal"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_H14/Description",
-   "type": "600x600_H14",
-   "param": "Description",
-   "value": "Terminal HEPA filter box 600 x 600, H14 gel-seal filter, white housing with side spigot and damper, perforated diffuser face, DOP test and injection ports"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_H14/Keynote",
-   "type": "600x600_H14",
-   "param": "Keynote",
-   "value": "H.ATD_06"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_H14/FMC_Keynote_Code",
-   "type": "600x600_H14",
-   "param": "FMC_Keynote_Code",
-   "value": "H.ATD_06"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_H14/FMC_Code_Description",
-   "type": "600x600_H14",
-   "param": "FMC_Code_Description",
-   "value": "HEPA TerminalFilter: Terminal HEPA filter box"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_H14/FMC_Code_Group",
-   "type": "600x600_H14",
-   "param": "FMC_Code_Group",
-   "value": "H.ATD"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_H14/FMC_Role_Code",
-   "type": "600x600_H14",
-   "param": "FMC_Role_Code",
-   "value": "M"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_H14/Default Elevation",
-   "type": "600x600_H14",
-   "param": "Default Elevation",
-   "value": 2700
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Epw",
-   "color": [
-    237,
-    237,
-    232
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Epw Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Steel_EpoxyCoated_White",
-   "param": "Epw Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Mgrey",
-   "color": [
-    201,
-    205,
-    210
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Mgrey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_MedicalGrey",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Dark",
-   "color": [
-    61,
-    70,
-    80
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Dark Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_SteelLTZ_Painted",
-   "param": "Dark Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Chrome",
-   "color": [
-    192,
-    195,
-    199
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Chrome Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Chrome_Polished",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Galv",
-   "color": [
-    183,
-    188,
-    192
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Galv Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Duct_Galvanised",
-   "param": "Galv Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -380,
-     -297.0
-    ],
-    [
-     310,
-     -297.0
-    ],
-    [
-     310,
-     297.0
-    ],
-    [
-     -380,
-     297.0
-    ]
-   ],
-   "start": -24,
-   "end": 372
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Housing",
-   "points": [
-    [
-     -290,
-     -290
-    ],
-    [
-     290,
-     -290
-    ],
-    [
-     290,
-     290
-    ],
-    [
-     -290,
-     290
-    ]
-   ],
-   "start": 0,
-   "end": 350
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Housing",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Housing",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Housing",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Face Frame",
-   "points": [
-    [
-     295.0,
-     -297.0
-    ],
-    [
-     295.77,
-     -296.85
-    ],
-    [
-     296.41,
-     -296.41
-    ],
-    [
-     296.85,
-     -295.77
-    ],
-    [
-     297.0,
-     -295.0
-    ],
-    [
-     297.0,
-     295.0
-    ],
-    [
-     296.85,
-     295.77
-    ],
-    [
-     296.41,
-     296.41
-    ],
-    [
-     295.77,
-     296.85
-    ],
-    [
-     295.0,
-     297.0
-    ],
-    [
-     -295.0,
-     297.0
-    ],
-    [
-     -295.77,
-     296.85
-    ],
-    [
-     -296.41,
-     296.41
-    ],
-    [
-     -296.85,
-     295.77
-    ],
-    [
-     -297.0,
-     295.0
-    ],
-    [
-     -297.0,
-     -295.0
-    ],
-    [
-     -296.85,
-     -295.77
-    ],
-    [
-     -296.41,
-     -296.41
-    ],
-    [
-     -295.77,
-     -296.85
-    ],
-    [
-     -295.0,
-     -297.0
-    ]
-   ],
-   "start": -15,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Face Frame",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Face Frame",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Face Frame",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perforated Face",
-   "points": [
-    [
-     -268,
-     -268
-    ],
-    [
-     268,
-     -268
-    ],
-    [
-     268,
-     268
-    ],
-    [
-     -268,
-     268
-    ]
-   ],
-   "start": -18,
-   "end": -15
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perforated Face",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perforated Face",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perforated Face",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perforation Row 1",
-   "points": [
-    [
-     -250,
-     -251.0
-    ],
-    [
-     250,
-     -251.0
-    ],
-    [
-     250,
-     -248.0
-    ],
-    [
-     -250,
-     -248.0
-    ]
-   ],
-   "start": -19,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perforation Row 1",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perforation Row 1",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perforation Row 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perforation Row 2",
-   "points": [
-    [
-     -250,
-     -229.3
-    ],
-    [
-     250,
-     -229.3
-    ],
-    [
-     250,
-     -226.3
-    ],
-    [
-     -250,
-     -226.3
-    ]
-   ],
-   "start": -19,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perforation Row 2",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perforation Row 2",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perforation Row 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perforation Row 3",
-   "points": [
-    [
-     -250,
-     -207.6
-    ],
-    [
-     250,
-     -207.6
-    ],
-    [
-     250,
-     -204.6
-    ],
-    [
-     -250,
-     -204.6
-    ]
-   ],
-   "start": -19,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perforation Row 3",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perforation Row 3",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perforation Row 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perforation Row 4",
-   "points": [
-    [
-     -250,
-     -185.9
-    ],
-    [
-     250,
-     -185.9
-    ],
-    [
-     250,
-     -182.9
-    ],
-    [
-     -250,
-     -182.9
-    ]
-   ],
-   "start": -19,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perforation Row 4",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perforation Row 4",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perforation Row 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perforation Row 5",
-   "points": [
-    [
-     -250,
-     -164.2
-    ],
-    [
-     250,
-     -164.2
-    ],
-    [
-     250,
-     -161.2
-    ],
-    [
-     -250,
-     -161.2
-    ]
-   ],
-   "start": -19,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perforation Row 5",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perforation Row 5",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perforation Row 5",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perforation Row 6",
-   "points": [
-    [
-     -250,
-     -142.5
-    ],
-    [
-     250,
-     -142.5
-    ],
-    [
-     250,
-     -139.5
-    ],
-    [
-     -250,
-     -139.5
-    ]
-   ],
-   "start": -19,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perforation Row 6",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perforation Row 6",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perforation Row 6",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perforation Row 7",
-   "points": [
-    [
-     -250,
-     -120.80000000000001
-    ],
-    [
-     250,
-     -120.80000000000001
-    ],
-    [
-     250,
-     -117.80000000000001
-    ],
-    [
-     -250,
-     -117.80000000000001
-    ]
-   ],
-   "start": -19,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perforation Row 7",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perforation Row 7",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perforation Row 7",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perforation Row 8",
-   "points": [
-    [
-     -250,
-     -99.1
-    ],
-    [
-     250,
-     -99.1
-    ],
-    [
-     250,
-     -96.1
-    ],
-    [
-     -250,
-     -96.1
-    ]
-   ],
-   "start": -19,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perforation Row 8",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perforation Row 8",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perforation Row 8",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perforation Row 9",
-   "points": [
-    [
-     -250,
-     -77.4
-    ],
-    [
-     250,
-     -77.4
-    ],
-    [
-     250,
-     -74.4
-    ],
-    [
-     -250,
-     -74.4
-    ]
-   ],
-   "start": -19,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perforation Row 9",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perforation Row 9",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perforation Row 9",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perforation Row 10",
-   "points": [
-    [
-     -250,
-     -55.70000000000002
-    ],
-    [
-     250,
-     -55.70000000000002
-    ],
-    [
-     250,
-     -52.70000000000002
-    ],
-    [
-     -250,
-     -52.70000000000002
-    ]
-   ],
-   "start": -19,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perforation Row 10",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perforation Row 10",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perforation Row 10",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perforation Row 11",
-   "points": [
-    [
-     -250,
-     -34.0
-    ],
-    [
-     250,
-     -34.0
-    ],
-    [
-     250,
-     -31.0
-    ],
-    [
-     -250,
-     -31.0
-    ]
-   ],
-   "start": -19,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perforation Row 11",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perforation Row 11",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perforation Row 11",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perforation Row 12",
-   "points": [
-    [
-     -250,
-     -12.300000000000011
-    ],
-    [
-     250,
-     -12.300000000000011
-    ],
-    [
-     250,
-     -9.300000000000011
-    ],
-    [
-     -250,
-     -9.300000000000011
-    ]
-   ],
-   "start": -19,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perforation Row 12",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perforation Row 12",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perforation Row 12",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perforation Row 13",
-   "points": [
-    [
-     -250,
-     9.399999999999977
-    ],
-    [
-     250,
-     9.399999999999977
-    ],
-    [
-     250,
-     12.399999999999977
-    ],
-    [
-     -250,
-     12.399999999999977
-    ]
-   ],
-   "start": -19,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perforation Row 13",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perforation Row 13",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perforation Row 13",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perforation Row 14",
-   "points": [
-    [
-     -250,
-     31.099999999999966
-    ],
-    [
-     250,
-     31.099999999999966
-    ],
-    [
-     250,
-     34.099999999999966
-    ],
-    [
-     -250,
-     34.099999999999966
-    ]
-   ],
-   "start": -19,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perforation Row 14",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perforation Row 14",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perforation Row 14",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perforation Row 15",
-   "points": [
-    [
-     -250,
-     52.80000000000001
-    ],
-    [
-     250,
-     52.80000000000001
-    ],
-    [
-     250,
-     55.80000000000001
-    ],
-    [
-     -250,
-     55.80000000000001
-    ]
-   ],
-   "start": -19,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perforation Row 15",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perforation Row 15",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perforation Row 15",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perforation Row 16",
-   "points": [
-    [
-     -250,
-     74.5
-    ],
-    [
-     250,
-     74.5
-    ],
-    [
-     250,
-     77.5
-    ],
-    [
-     -250,
-     77.5
-    ]
-   ],
-   "start": -19,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perforation Row 16",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perforation Row 16",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perforation Row 16",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perforation Row 17",
-   "points": [
-    [
-     -250,
-     96.19999999999999
-    ],
-    [
-     250,
-     96.19999999999999
-    ],
-    [
-     250,
-     99.19999999999999
-    ],
-    [
-     -250,
-     99.19999999999999
-    ]
-   ],
-   "start": -19,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perforation Row 17",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perforation Row 17",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perforation Row 17",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perforation Row 18",
-   "points": [
-    [
-     -250,
-     117.89999999999998
-    ],
-    [
-     250,
-     117.89999999999998
-    ],
-    [
-     250,
-     120.89999999999998
-    ],
-    [
-     -250,
-     120.89999999999998
-    ]
-   ],
-   "start": -19,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perforation Row 18",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perforation Row 18",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perforation Row 18",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perforation Row 19",
-   "points": [
-    [
-     -250,
-     139.59999999999997
-    ],
-    [
-     250,
-     139.59999999999997
-    ],
-    [
-     250,
-     142.59999999999997
-    ],
-    [
-     -250,
-     142.59999999999997
-    ]
-   ],
-   "start": -19,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perforation Row 19",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perforation Row 19",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perforation Row 19",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perforation Row 20",
-   "points": [
-    [
-     -250,
-     161.3
-    ],
-    [
-     250,
-     161.3
-    ],
-    [
-     250,
-     164.3
-    ],
-    [
-     -250,
-     164.3
-    ]
-   ],
-   "start": -19,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perforation Row 20",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perforation Row 20",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perforation Row 20",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perforation Row 21",
-   "points": [
-    [
-     -250,
-     183.0
-    ],
-    [
-     250,
-     183.0
-    ],
-    [
-     250,
-     186.0
-    ],
-    [
-     -250,
-     186.0
-    ]
-   ],
-   "start": -19,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perforation Row 21",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perforation Row 21",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perforation Row 21",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perforation Row 22",
-   "points": [
-    [
-     -250,
-     204.7
-    ],
-    [
-     250,
-     204.7
-    ],
-    [
-     250,
-     207.7
-    ],
-    [
-     -250,
-     207.7
-    ]
-   ],
-   "start": -19,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perforation Row 22",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perforation Row 22",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perforation Row 22",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perforation Row 23",
-   "points": [
-    [
-     -250,
-     226.39999999999998
-    ],
-    [
-     250,
-     226.39999999999998
-    ],
-    [
-     250,
-     229.39999999999998
-    ],
-    [
-     -250,
-     229.39999999999998
-    ]
-   ],
-   "start": -19,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perforation Row 23",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perforation Row 23",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perforation Row 23",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perforation Row 24",
-   "points": [
-    [
-     -250,
-     248.09999999999997
-    ],
-    [
-     250,
-     248.09999999999997
-    ],
-    [
-     250,
-     251.09999999999997
-    ],
-    [
-     -250,
-     251.09999999999997
-    ]
-   ],
-   "start": -19,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perforation Row 24",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perforation Row 24",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perforation Row 24",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Face Fixing 1",
-   "points": [
-    [
-     -249.0,
-     -255.0
-    ],
-    [
-     -249.2,
-     -253.45
-    ],
-    [
-     -249.8,
-     -252.0
-    ],
-    [
-     -250.76,
-     -250.76
-    ],
-    [
-     -252.0,
-     -249.8
-    ],
-    [
-     -253.45,
-     -249.2
-    ],
-    [
-     -255.0,
-     -249.0
-    ],
-    [
-     -256.55,
-     -249.2
-    ],
-    [
-     -258.0,
-     -249.8
-    ],
-    [
-     -259.24,
-     -250.76
-    ],
-    [
-     -260.2,
-     -252.0
-    ],
-    [
-     -260.8,
-     -253.45
-    ],
-    [
-     -261.0,
-     -255.0
-    ],
-    [
-     -260.8,
-     -256.55
-    ],
-    [
-     -260.2,
-     -258.0
-    ],
-    [
-     -259.24,
-     -259.24
-    ],
-    [
-     -258.0,
-     -260.2
-    ],
-    [
-     -256.55,
-     -260.8
-    ],
-    [
-     -255.0,
-     -261.0
-    ],
-    [
-     -253.45,
-     -260.8
-    ],
-    [
-     -252.0,
-     -260.2
-    ],
-    [
-     -250.76,
-     -259.24
-    ],
-    [
-     -249.8,
-     -258.0
-    ],
-    [
-     -249.2,
-     -256.55
-    ]
-   ],
-   "start": -21,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Face Fixing 1",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Face Fixing 1",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Face Fixing 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Face Fixing 2",
-   "points": [
-    [
-     261.0,
-     -255.0
-    ],
-    [
-     260.8,
-     -253.45
-    ],
-    [
-     260.2,
-     -252.0
-    ],
-    [
-     259.24,
-     -250.76
-    ],
-    [
-     258.0,
-     -249.8
-    ],
-    [
-     256.55,
-     -249.2
-    ],
-    [
-     255.0,
-     -249.0
-    ],
-    [
-     253.45,
-     -249.2
-    ],
-    [
-     252.0,
-     -249.8
-    ],
-    [
-     250.76,
-     -250.76
-    ],
-    [
-     249.8,
-     -252.0
-    ],
-    [
-     249.2,
-     -253.45
-    ],
-    [
-     249.0,
-     -255.0
-    ],
-    [
-     249.2,
-     -256.55
-    ],
-    [
-     249.8,
-     -258.0
-    ],
-    [
-     250.76,
-     -259.24
-    ],
-    [
-     252.0,
-     -260.2
-    ],
-    [
-     253.45,
-     -260.8
-    ],
-    [
-     255.0,
-     -261.0
-    ],
-    [
-     256.55,
-     -260.8
-    ],
-    [
-     258.0,
-     -260.2
-    ],
-    [
-     259.24,
-     -259.24
-    ],
-    [
-     260.2,
-     -258.0
-    ],
-    [
-     260.8,
-     -256.55
-    ]
-   ],
-   "start": -21,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Face Fixing 2",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Face Fixing 2",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Face Fixing 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "DOP Test Port",
-   "points": [
-    [
-     240.0,
-     230.0
-    ],
-    [
-     239.66,
-     232.59
-    ],
-    [
-     238.66,
-     235.0
-    ],
-    [
-     237.07,
-     237.07
-    ],
-    [
-     235.0,
-     238.66
-    ],
-    [
-     232.59,
-     239.66
-    ],
-    [
-     230.0,
-     240.0
-    ],
-    [
-     227.41,
-     239.66
-    ],
-    [
-     225.0,
-     238.66
-    ],
-    [
-     222.93,
-     237.07
-    ],
-    [
-     221.34,
-     235.0
-    ],
-    [
-     220.34,
-     232.59
-    ],
-    [
-     220.0,
-     230.0
-    ],
-    [
-     220.34,
-     227.41
-    ],
-    [
-     221.34,
-     225.0
-    ],
-    [
-     222.93,
-     222.93
-    ],
-    [
-     225.0,
-     221.34
-    ],
-    [
-     227.41,
-     220.34
-    ],
-    [
-     230.0,
-     220.0
-    ],
-    [
-     232.59,
-     220.34
-    ],
-    [
-     235.0,
-     221.34
-    ],
-    [
-     237.07,
-     222.93
-    ],
-    [
-     238.66,
-     225.0
-    ],
-    [
-     239.66,
-     227.41
-    ]
-   ],
-   "start": -24,
-   "end": -18
-  },
-  {
-   "op": "set_subcategory",
-   "name": "DOP Test Port",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "DOP Test Port",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "DOP Test Port",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Side Spigot",
-   "points": [
-    [
-     125.0,
-     200.0
-    ],
-    [
-     120.74,
-     232.35
-    ],
-    [
-     108.25,
-     262.5
-    ],
-    [
-     88.39,
-     288.39
-    ],
-    [
-     62.5,
-     308.25
-    ],
-    [
-     32.35,
-     320.74
-    ],
-    [
-     0.0,
-     325.0
-    ],
-    [
-     -32.35,
-     320.74
-    ],
-    [
-     -62.5,
-     308.25
-    ],
-    [
-     -88.39,
-     288.39
-    ],
-    [
-     -108.25,
-     262.5
-    ],
-    [
-     -120.74,
-     232.35
-    ],
-    [
-     -125.0,
-     200.0
-    ],
-    [
-     -120.74,
-     167.65
-    ],
-    [
-     -108.25,
-     137.5
-    ],
-    [
-     -88.39,
-     111.61
-    ],
-    [
-     -62.5,
-     91.75
-    ],
-    [
-     -32.35,
-     79.26
-    ],
-    [
-     -0.0,
-     75.0
-    ],
-    [
-     32.35,
-     79.26
-    ],
-    [
-     62.5,
-     91.75
-    ],
-    [
-     88.39,
-     111.61
-    ],
-    [
-     108.25,
-     137.5
-    ],
-    [
-     120.74,
-     167.65
-    ]
-   ],
-   "start": -380,
-   "end": -290,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Side Spigot",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Side Spigot",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Side Spigot",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Spigot Bead",
-   "profile": [
-    [
-     124,
-     -350
-    ],
-    [
-     130,
-     -350
-    ],
-    [
-     130,
-     -340
-    ],
-    [
-     124,
-     -340
-    ]
-   ],
-   "axis_at": [
-    0,
-    200
-   ],
-   "axis": "x",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Spigot Bead",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Spigot Bead",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Damper Shaft",
-   "points": [
-    [
-     6.0,
-     200.0
-    ],
-    [
-     5.8,
-     201.55
-    ],
-    [
-     5.2,
-     203.0
-    ],
-    [
-     4.24,
-     204.24
-    ],
-    [
-     3.0,
-     205.2
-    ],
-    [
-     1.55,
-     205.8
-    ],
-    [
-     0.0,
-     206.0
-    ],
-    [
-     -1.55,
-     205.8
-    ],
-    [
-     -3.0,
-     205.2
-    ],
-    [
-     -4.24,
-     204.24
-    ],
-    [
-     -5.2,
-     203.0
-    ],
-    [
-     -5.8,
-     201.55
-    ],
-    [
-     -6.0,
-     200.0
-    ],
-    [
-     -5.8,
-     198.45
-    ],
-    [
-     -5.2,
-     197.0
-    ],
-    [
-     -4.24,
-     195.76
-    ],
-    [
-     -3.0,
-     194.8
-    ],
-    [
-     -1.55,
-     194.2
-    ],
-    [
-     -0.0,
-     194.0
-    ],
-    [
-     1.55,
-     194.2
-    ],
-    [
-     3.0,
-     194.8
-    ],
-    [
-     4.24,
-     195.76
-    ],
-    [
-     5.2,
-     197.0
-    ],
-    [
-     5.8,
-     198.45
-    ]
-   ],
-   "start": -300,
-   "end": -290,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Damper Shaft",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Damper Shaft",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Damper Shaft",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Damper Quadrant",
-   "points": [
-    [
-     -292,
-     -40
-    ],
-    [
-     -290,
-     -40
-    ],
-    [
-     -290,
-     40
-    ],
-    [
-     -292,
-     40
-    ]
-   ],
-   "start": 280,
-   "end": 330
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Damper Quadrant",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Damper Quadrant",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Damper Quadrant",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Aerosol Injection Port",
-   "points": [
-    [
-     -142.0,
-     120.0
-    ],
-    [
-     -142.27,
-     122.07
-    ],
-    [
-     -143.07,
-     124.0
-    ],
-    [
-     -144.34,
-     125.66
-    ],
-    [
-     -146.0,
-     126.93
-    ],
-    [
-     -147.93,
-     127.73
-    ],
-    [
-     -150.0,
-     128.0
-    ],
-    [
-     -152.07,
-     127.73
-    ],
-    [
-     -154.0,
-     126.93
-    ],
-    [
-     -155.66,
-     125.66
-    ],
-    [
-     -156.93,
-     124.0
-    ],
-    [
-     -157.73,
-     122.07
-    ],
-    [
-     -158.0,
-     120.0
-    ],
-    [
-     -157.73,
-     117.93
-    ],
-    [
-     -156.93,
-     116.0
-    ],
-    [
-     -155.66,
-     114.34
-    ],
-    [
-     -154.0,
-     113.07
-    ],
-    [
-     -152.07,
-     112.27
-    ],
-    [
-     -150.0,
-     112.0
-    ],
-    [
-     -147.93,
-     112.27
-    ],
-    [
-     -146.0,
-     113.07
-    ],
-    [
-     -144.34,
-     114.34
-    ],
-    [
-     -143.07,
-     116.0
-    ],
-    [
-     -142.27,
-     117.93
-    ]
-   ],
-   "start": 290,
-   "end": 310,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Aerosol Injection Port",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Aerosol Injection Port",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Aerosol Injection Port",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pressure Test Port",
-   "points": [
-    [
-     158.0,
-     150.0
-    ],
-    [
-     157.73,
-     152.07
-    ],
-    [
-     156.93,
-     154.0
-    ],
-    [
-     155.66,
-     155.66
-    ],
-    [
-     154.0,
-     156.93
-    ],
-    [
-     152.07,
-     157.73
-    ],
-    [
-     150.0,
-     158.0
-    ],
-    [
-     147.93,
-     157.73
-    ],
-    [
-     146.0,
-     156.93
-    ],
-    [
-     144.34,
-     155.66
-    ],
-    [
-     143.07,
-     154.0
-    ],
-    [
-     142.27,
-     152.07
-    ],
-    [
-     142.0,
-     150.0
-    ],
-    [
-     142.27,
-     147.93
-    ],
-    [
-     143.07,
-     146.0
-    ],
-    [
-     144.34,
-     144.34
-    ],
-    [
-     146.0,
-     143.07
-    ],
-    [
-     147.93,
-     142.27
-    ],
-    [
-     150.0,
-     142.0
-    ],
-    [
-     152.07,
-     142.27
-    ],
-    [
-     154.0,
-     143.07
-    ],
-    [
-     155.66,
-     144.34
-    ],
-    [
-     156.93,
-     146.0
-    ],
-    [
-     157.73,
-     147.93
-    ]
-   ],
-   "start": 350,
-   "end": 372
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pressure Test Port",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pressure Test Port",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pressure Test Port",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hanger Lug Right",
-   "points": [
-    [
-     290,
-     -20
-    ],
-    [
-     310,
-     -20
-    ],
-    [
-     310,
-     20
-    ],
-    [
-     290,
-     20
-    ]
-   ],
-   "start": 300,
-   "end": 340
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hanger Lug Right",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hanger Lug Right",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hanger Lug Right",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "Supply",
-   "domain": "duct",
-   "system": "SupplyAir",
-   "solid": "Side Spigot",
-   "side": "left",
-   "diameter": 250,
-   "flow": "In"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_AirTerminal_HEPA_TerminalFilter.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_M_AirTerminal_HEPA_TerminalFilter",
+  "template": "Metric Generic Model.rft",
+  "about": "Modelled as a generic product: housing with side spigot, bead, damper shaft and quadrant, face frame and perforated face (rows of perforations), face fixings, DOP test port, aerosol injection and pressure test ports, hanger lug. Reference: query: HEPA terminal filter air terminals hospital; images: https://www.google.com/search?tbm=isch&q=HEPA+terminal+filter+air+terminals+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Air Terminals"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Airflow_Ls",
+      "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "600x600_H14"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_H14/FMC_Cost_Unit",
+      "type": "600x600_H14",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_H14/FMC_Geometry_Stage",
+      "type": "600x600_H14",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_H14/IfcExportAs",
+      "type": "600x600_H14",
+      "param": "IfcExportAs",
+      "value": "IfcAirTerminal"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_H14/Description",
+      "type": "600x600_H14",
+      "param": "Description",
+      "value": "Terminal HEPA filter box 600 x 600, H14 gel-seal filter, white housing with side spigot and damper, perforated diffuser face, DOP test and injection ports"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_H14/Keynote",
+      "type": "600x600_H14",
+      "param": "Keynote",
+      "value": "H.ATD_06"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_H14/FMC_Keynote_Code",
+      "type": "600x600_H14",
+      "param": "FMC_Keynote_Code",
+      "value": "H.ATD_06"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_H14/FMC_Code_Description",
+      "type": "600x600_H14",
+      "param": "FMC_Code_Description",
+      "value": "HEPA TerminalFilter: Terminal HEPA filter box"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_H14/FMC_Code_Group",
+      "type": "600x600_H14",
+      "param": "FMC_Code_Group",
+      "value": "H.ATD"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_H14/FMC_Role_Code",
+      "type": "600x600_H14",
+      "param": "FMC_Role_Code",
+      "value": "M"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_H14/Default Elevation",
+      "type": "600x600_H14",
+      "param": "Default Elevation",
+      "value": 2700
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Epw",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Epw Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Steel_EpoxyCoated_White",
+      "param": "Epw Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Mgrey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Mgrey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_MedicalGrey",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Dark",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Dark Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_SteelLTZ_Painted",
+      "param": "Dark Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Chrome",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Chrome Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Chrome_Polished",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Galv",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Galv Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Duct_Galvanised",
+      "param": "Galv Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -380,
+          -297
+        ],
+        [
+          310,
+          -297
+        ],
+        [
+          310,
+          297
+        ],
+        [
+          -380,
+          297
+        ]
+      ],
+      "start": -24,
+      "end": 372
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Housing",
+      "points": [
+        [
+          -290,
+          -290
+        ],
+        [
+          290,
+          -290
+        ],
+        [
+          290,
+          290
+        ],
+        [
+          -290,
+          290
+        ]
+      ],
+      "start": 0,
+      "end": 350
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Housing",
+      "subcategory": "Epw"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Housing",
+      "param": "Epw Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Housing",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Face Frame",
+      "points": [
+        [
+          295,
+          -297
+        ],
+        [
+          295.77,
+          -296.85
+        ],
+        [
+          296.41,
+          -296.41
+        ],
+        [
+          296.85,
+          -295.77
+        ],
+        [
+          297,
+          -295
+        ],
+        [
+          297,
+          295
+        ],
+        [
+          296.85,
+          295.77
+        ],
+        [
+          296.41,
+          296.41
+        ],
+        [
+          295.77,
+          296.85
+        ],
+        [
+          295,
+          297
+        ],
+        [
+          -295,
+          297
+        ],
+        [
+          -295.77,
+          296.85
+        ],
+        [
+          -296.41,
+          296.41
+        ],
+        [
+          -296.85,
+          295.77
+        ],
+        [
+          -297,
+          295
+        ],
+        [
+          -297,
+          -295
+        ],
+        [
+          -296.85,
+          -295.77
+        ],
+        [
+          -296.41,
+          -296.41
+        ],
+        [
+          -295.77,
+          -296.85
+        ],
+        [
+          -295,
+          -297
+        ]
+      ],
+      "start": -15,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Face Frame",
+      "subcategory": "Epw"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Face Frame",
+      "param": "Epw Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Face Frame",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perforated Face",
+      "points": [
+        [
+          -268,
+          -268
+        ],
+        [
+          268,
+          -268
+        ],
+        [
+          268,
+          268
+        ],
+        [
+          -268,
+          268
+        ]
+      ],
+      "start": -18,
+      "end": -15
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perforated Face",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perforated Face",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perforated Face",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perforation Row 1",
+      "points": [
+        [
+          -250,
+          -251
+        ],
+        [
+          250,
+          -251
+        ],
+        [
+          250,
+          -248
+        ],
+        [
+          -250,
+          -248
+        ]
+      ],
+      "start": -19,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perforation Row 1",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perforation Row 1",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perforation Row 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perforation Row 2",
+      "points": [
+        [
+          -250,
+          -229.3
+        ],
+        [
+          250,
+          -229.3
+        ],
+        [
+          250,
+          -226.3
+        ],
+        [
+          -250,
+          -226.3
+        ]
+      ],
+      "start": -19,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perforation Row 2",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perforation Row 2",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perforation Row 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perforation Row 3",
+      "points": [
+        [
+          -250,
+          -207.6
+        ],
+        [
+          250,
+          -207.6
+        ],
+        [
+          250,
+          -204.6
+        ],
+        [
+          -250,
+          -204.6
+        ]
+      ],
+      "start": -19,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perforation Row 3",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perforation Row 3",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perforation Row 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perforation Row 4",
+      "points": [
+        [
+          -250,
+          -185.9
+        ],
+        [
+          250,
+          -185.9
+        ],
+        [
+          250,
+          -182.9
+        ],
+        [
+          -250,
+          -182.9
+        ]
+      ],
+      "start": -19,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perforation Row 4",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perforation Row 4",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perforation Row 4",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perforation Row 5",
+      "points": [
+        [
+          -250,
+          -164.2
+        ],
+        [
+          250,
+          -164.2
+        ],
+        [
+          250,
+          -161.2
+        ],
+        [
+          -250,
+          -161.2
+        ]
+      ],
+      "start": -19,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perforation Row 5",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perforation Row 5",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perforation Row 5",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perforation Row 6",
+      "points": [
+        [
+          -250,
+          -142.5
+        ],
+        [
+          250,
+          -142.5
+        ],
+        [
+          250,
+          -139.5
+        ],
+        [
+          -250,
+          -139.5
+        ]
+      ],
+      "start": -19,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perforation Row 6",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perforation Row 6",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perforation Row 6",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perforation Row 7",
+      "points": [
+        [
+          -250,
+          -120.80000000000001
+        ],
+        [
+          250,
+          -120.80000000000001
+        ],
+        [
+          250,
+          -117.80000000000001
+        ],
+        [
+          -250,
+          -117.80000000000001
+        ]
+      ],
+      "start": -19,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perforation Row 7",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perforation Row 7",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perforation Row 7",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perforation Row 8",
+      "points": [
+        [
+          -250,
+          -99.1
+        ],
+        [
+          250,
+          -99.1
+        ],
+        [
+          250,
+          -96.1
+        ],
+        [
+          -250,
+          -96.1
+        ]
+      ],
+      "start": -19,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perforation Row 8",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perforation Row 8",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perforation Row 8",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perforation Row 9",
+      "points": [
+        [
+          -250,
+          -77.4
+        ],
+        [
+          250,
+          -77.4
+        ],
+        [
+          250,
+          -74.4
+        ],
+        [
+          -250,
+          -74.4
+        ]
+      ],
+      "start": -19,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perforation Row 9",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perforation Row 9",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perforation Row 9",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perforation Row 10",
+      "points": [
+        [
+          -250,
+          -55.70000000000002
+        ],
+        [
+          250,
+          -55.70000000000002
+        ],
+        [
+          250,
+          -52.70000000000002
+        ],
+        [
+          -250,
+          -52.70000000000002
+        ]
+      ],
+      "start": -19,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perforation Row 10",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perforation Row 10",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perforation Row 10",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perforation Row 11",
+      "points": [
+        [
+          -250,
+          -34
+        ],
+        [
+          250,
+          -34
+        ],
+        [
+          250,
+          -31
+        ],
+        [
+          -250,
+          -31
+        ]
+      ],
+      "start": -19,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perforation Row 11",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perforation Row 11",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perforation Row 11",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perforation Row 12",
+      "points": [
+        [
+          -250,
+          -12.300000000000011
+        ],
+        [
+          250,
+          -12.300000000000011
+        ],
+        [
+          250,
+          -9.300000000000011
+        ],
+        [
+          -250,
+          -9.300000000000011
+        ]
+      ],
+      "start": -19,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perforation Row 12",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perforation Row 12",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perforation Row 12",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perforation Row 13",
+      "points": [
+        [
+          -250,
+          9.399999999999977
+        ],
+        [
+          250,
+          9.399999999999977
+        ],
+        [
+          250,
+          12.399999999999977
+        ],
+        [
+          -250,
+          12.399999999999977
+        ]
+      ],
+      "start": -19,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perforation Row 13",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perforation Row 13",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perforation Row 13",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perforation Row 14",
+      "points": [
+        [
+          -250,
+          31.099999999999966
+        ],
+        [
+          250,
+          31.099999999999966
+        ],
+        [
+          250,
+          34.099999999999966
+        ],
+        [
+          -250,
+          34.099999999999966
+        ]
+      ],
+      "start": -19,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perforation Row 14",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perforation Row 14",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perforation Row 14",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perforation Row 15",
+      "points": [
+        [
+          -250,
+          52.80000000000001
+        ],
+        [
+          250,
+          52.80000000000001
+        ],
+        [
+          250,
+          55.80000000000001
+        ],
+        [
+          -250,
+          55.80000000000001
+        ]
+      ],
+      "start": -19,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perforation Row 15",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perforation Row 15",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perforation Row 15",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perforation Row 16",
+      "points": [
+        [
+          -250,
+          74.5
+        ],
+        [
+          250,
+          74.5
+        ],
+        [
+          250,
+          77.5
+        ],
+        [
+          -250,
+          77.5
+        ]
+      ],
+      "start": -19,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perforation Row 16",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perforation Row 16",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perforation Row 16",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perforation Row 17",
+      "points": [
+        [
+          -250,
+          96.19999999999999
+        ],
+        [
+          250,
+          96.19999999999999
+        ],
+        [
+          250,
+          99.19999999999999
+        ],
+        [
+          -250,
+          99.19999999999999
+        ]
+      ],
+      "start": -19,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perforation Row 17",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perforation Row 17",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perforation Row 17",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perforation Row 18",
+      "points": [
+        [
+          -250,
+          117.89999999999998
+        ],
+        [
+          250,
+          117.89999999999998
+        ],
+        [
+          250,
+          120.89999999999998
+        ],
+        [
+          -250,
+          120.89999999999998
+        ]
+      ],
+      "start": -19,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perforation Row 18",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perforation Row 18",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perforation Row 18",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perforation Row 19",
+      "points": [
+        [
+          -250,
+          139.59999999999997
+        ],
+        [
+          250,
+          139.59999999999997
+        ],
+        [
+          250,
+          142.59999999999997
+        ],
+        [
+          -250,
+          142.59999999999997
+        ]
+      ],
+      "start": -19,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perforation Row 19",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perforation Row 19",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perforation Row 19",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perforation Row 20",
+      "points": [
+        [
+          -250,
+          161.3
+        ],
+        [
+          250,
+          161.3
+        ],
+        [
+          250,
+          164.3
+        ],
+        [
+          -250,
+          164.3
+        ]
+      ],
+      "start": -19,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perforation Row 20",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perforation Row 20",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perforation Row 20",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perforation Row 21",
+      "points": [
+        [
+          -250,
+          183
+        ],
+        [
+          250,
+          183
+        ],
+        [
+          250,
+          186
+        ],
+        [
+          -250,
+          186
+        ]
+      ],
+      "start": -19,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perforation Row 21",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perforation Row 21",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perforation Row 21",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perforation Row 22",
+      "points": [
+        [
+          -250,
+          204.7
+        ],
+        [
+          250,
+          204.7
+        ],
+        [
+          250,
+          207.7
+        ],
+        [
+          -250,
+          207.7
+        ]
+      ],
+      "start": -19,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perforation Row 22",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perforation Row 22",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perforation Row 22",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perforation Row 23",
+      "points": [
+        [
+          -250,
+          226.39999999999998
+        ],
+        [
+          250,
+          226.39999999999998
+        ],
+        [
+          250,
+          229.39999999999998
+        ],
+        [
+          -250,
+          229.39999999999998
+        ]
+      ],
+      "start": -19,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perforation Row 23",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perforation Row 23",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perforation Row 23",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perforation Row 24",
+      "points": [
+        [
+          -250,
+          248.09999999999997
+        ],
+        [
+          250,
+          248.09999999999997
+        ],
+        [
+          250,
+          251.09999999999997
+        ],
+        [
+          -250,
+          251.09999999999997
+        ]
+      ],
+      "start": -19,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perforation Row 24",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perforation Row 24",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perforation Row 24",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Face Fixing 1",
+      "points": [
+        [
+          -249,
+          -255
+        ],
+        [
+          -249.2,
+          -253.45
+        ],
+        [
+          -249.8,
+          -252
+        ],
+        [
+          -250.76,
+          -250.76
+        ],
+        [
+          -252,
+          -249.8
+        ],
+        [
+          -253.45,
+          -249.2
+        ],
+        [
+          -255,
+          -249
+        ],
+        [
+          -256.55,
+          -249.2
+        ],
+        [
+          -258,
+          -249.8
+        ],
+        [
+          -259.24,
+          -250.76
+        ],
+        [
+          -260.2,
+          -252
+        ],
+        [
+          -260.8,
+          -253.45
+        ],
+        [
+          -261,
+          -255
+        ],
+        [
+          -260.8,
+          -256.55
+        ],
+        [
+          -260.2,
+          -258
+        ],
+        [
+          -259.24,
+          -259.24
+        ],
+        [
+          -258,
+          -260.2
+        ],
+        [
+          -256.55,
+          -260.8
+        ],
+        [
+          -255,
+          -261
+        ],
+        [
+          -253.45,
+          -260.8
+        ],
+        [
+          -252,
+          -260.2
+        ],
+        [
+          -250.76,
+          -259.24
+        ],
+        [
+          -249.8,
+          -258
+        ],
+        [
+          -249.2,
+          -256.55
+        ]
+      ],
+      "start": -21,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Face Fixing 1",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Face Fixing 1",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Face Fixing 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Face Fixing 2",
+      "points": [
+        [
+          261,
+          -255
+        ],
+        [
+          260.8,
+          -253.45
+        ],
+        [
+          260.2,
+          -252
+        ],
+        [
+          259.24,
+          -250.76
+        ],
+        [
+          258,
+          -249.8
+        ],
+        [
+          256.55,
+          -249.2
+        ],
+        [
+          255,
+          -249
+        ],
+        [
+          253.45,
+          -249.2
+        ],
+        [
+          252,
+          -249.8
+        ],
+        [
+          250.76,
+          -250.76
+        ],
+        [
+          249.8,
+          -252
+        ],
+        [
+          249.2,
+          -253.45
+        ],
+        [
+          249,
+          -255
+        ],
+        [
+          249.2,
+          -256.55
+        ],
+        [
+          249.8,
+          -258
+        ],
+        [
+          250.76,
+          -259.24
+        ],
+        [
+          252,
+          -260.2
+        ],
+        [
+          253.45,
+          -260.8
+        ],
+        [
+          255,
+          -261
+        ],
+        [
+          256.55,
+          -260.8
+        ],
+        [
+          258,
+          -260.2
+        ],
+        [
+          259.24,
+          -259.24
+        ],
+        [
+          260.2,
+          -258
+        ],
+        [
+          260.8,
+          -256.55
+        ]
+      ],
+      "start": -21,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Face Fixing 2",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Face Fixing 2",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Face Fixing 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "DOP Test Port",
+      "points": [
+        [
+          240,
+          230
+        ],
+        [
+          239.66,
+          232.59
+        ],
+        [
+          238.66,
+          235
+        ],
+        [
+          237.07,
+          237.07
+        ],
+        [
+          235,
+          238.66
+        ],
+        [
+          232.59,
+          239.66
+        ],
+        [
+          230,
+          240
+        ],
+        [
+          227.41,
+          239.66
+        ],
+        [
+          225,
+          238.66
+        ],
+        [
+          222.93,
+          237.07
+        ],
+        [
+          221.34,
+          235
+        ],
+        [
+          220.34,
+          232.59
+        ],
+        [
+          220,
+          230
+        ],
+        [
+          220.34,
+          227.41
+        ],
+        [
+          221.34,
+          225
+        ],
+        [
+          222.93,
+          222.93
+        ],
+        [
+          225,
+          221.34
+        ],
+        [
+          227.41,
+          220.34
+        ],
+        [
+          230,
+          220
+        ],
+        [
+          232.59,
+          220.34
+        ],
+        [
+          235,
+          221.34
+        ],
+        [
+          237.07,
+          222.93
+        ],
+        [
+          238.66,
+          225
+        ],
+        [
+          239.66,
+          227.41
+        ]
+      ],
+      "start": -24,
+      "end": -18
+    },
+    {
+      "op": "set_subcategory",
+      "name": "DOP Test Port",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "DOP Test Port",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "DOP Test Port",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Side Spigot",
+      "points": [
+        [
+          125,
+          200
+        ],
+        [
+          120.74,
+          232.35
+        ],
+        [
+          108.25,
+          262.5
+        ],
+        [
+          88.39,
+          288.39
+        ],
+        [
+          62.5,
+          308.25
+        ],
+        [
+          32.35,
+          320.74
+        ],
+        [
+          0,
+          325
+        ],
+        [
+          -32.35,
+          320.74
+        ],
+        [
+          -62.5,
+          308.25
+        ],
+        [
+          -88.39,
+          288.39
+        ],
+        [
+          -108.25,
+          262.5
+        ],
+        [
+          -120.74,
+          232.35
+        ],
+        [
+          -125,
+          200
+        ],
+        [
+          -120.74,
+          167.65
+        ],
+        [
+          -108.25,
+          137.5
+        ],
+        [
+          -88.39,
+          111.61
+        ],
+        [
+          -62.5,
+          91.75
+        ],
+        [
+          -32.35,
+          79.26
+        ],
+        [
+          0,
+          75
+        ],
+        [
+          32.35,
+          79.26
+        ],
+        [
+          62.5,
+          91.75
+        ],
+        [
+          88.39,
+          111.61
+        ],
+        [
+          108.25,
+          137.5
+        ],
+        [
+          120.74,
+          167.65
+        ]
+      ],
+      "start": -380,
+      "end": -290,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Side Spigot",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Side Spigot",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Side Spigot",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Spigot Bead",
+      "profile": [
+        [
+          124,
+          -350
+        ],
+        [
+          130,
+          -350
+        ],
+        [
+          130,
+          -340
+        ],
+        [
+          124,
+          -340
+        ]
+      ],
+      "axis_at": [
+        0,
+        200
+      ],
+      "axis": "x",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Spigot Bead",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Spigot Bead",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Damper Shaft",
+      "points": [
+        [
+          6,
+          200
+        ],
+        [
+          5.8,
+          201.55
+        ],
+        [
+          5.2,
+          203
+        ],
+        [
+          4.24,
+          204.24
+        ],
+        [
+          3,
+          205.2
+        ],
+        [
+          1.55,
+          205.8
+        ],
+        [
+          0,
+          206
+        ],
+        [
+          -1.55,
+          205.8
+        ],
+        [
+          -3,
+          205.2
+        ],
+        [
+          -4.24,
+          204.24
+        ],
+        [
+          -5.2,
+          203
+        ],
+        [
+          -5.8,
+          201.55
+        ],
+        [
+          -6,
+          200
+        ],
+        [
+          -5.8,
+          198.45
+        ],
+        [
+          -5.2,
+          197
+        ],
+        [
+          -4.24,
+          195.76
+        ],
+        [
+          -3,
+          194.8
+        ],
+        [
+          -1.55,
+          194.2
+        ],
+        [
+          0,
+          194
+        ],
+        [
+          1.55,
+          194.2
+        ],
+        [
+          3,
+          194.8
+        ],
+        [
+          4.24,
+          195.76
+        ],
+        [
+          5.2,
+          197
+        ],
+        [
+          5.8,
+          198.45
+        ]
+      ],
+      "start": -300,
+      "end": -290,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Damper Shaft",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Damper Shaft",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Damper Shaft",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Damper Quadrant",
+      "points": [
+        [
+          -292,
+          -40
+        ],
+        [
+          -290,
+          -40
+        ],
+        [
+          -290,
+          40
+        ],
+        [
+          -292,
+          40
+        ]
+      ],
+      "start": 280,
+      "end": 330
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Damper Quadrant",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Damper Quadrant",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Damper Quadrant",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Aerosol Injection Port",
+      "points": [
+        [
+          -142,
+          120
+        ],
+        [
+          -142.27,
+          122.07
+        ],
+        [
+          -143.07,
+          124
+        ],
+        [
+          -144.34,
+          125.66
+        ],
+        [
+          -146,
+          126.93
+        ],
+        [
+          -147.93,
+          127.73
+        ],
+        [
+          -150,
+          128
+        ],
+        [
+          -152.07,
+          127.73
+        ],
+        [
+          -154,
+          126.93
+        ],
+        [
+          -155.66,
+          125.66
+        ],
+        [
+          -156.93,
+          124
+        ],
+        [
+          -157.73,
+          122.07
+        ],
+        [
+          -158,
+          120
+        ],
+        [
+          -157.73,
+          117.93
+        ],
+        [
+          -156.93,
+          116
+        ],
+        [
+          -155.66,
+          114.34
+        ],
+        [
+          -154,
+          113.07
+        ],
+        [
+          -152.07,
+          112.27
+        ],
+        [
+          -150,
+          112
+        ],
+        [
+          -147.93,
+          112.27
+        ],
+        [
+          -146,
+          113.07
+        ],
+        [
+          -144.34,
+          114.34
+        ],
+        [
+          -143.07,
+          116
+        ],
+        [
+          -142.27,
+          117.93
+        ]
+      ],
+      "start": 290,
+      "end": 310,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Aerosol Injection Port",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Aerosol Injection Port",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Aerosol Injection Port",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pressure Test Port",
+      "points": [
+        [
+          158,
+          150
+        ],
+        [
+          157.73,
+          152.07
+        ],
+        [
+          156.93,
+          154
+        ],
+        [
+          155.66,
+          155.66
+        ],
+        [
+          154,
+          156.93
+        ],
+        [
+          152.07,
+          157.73
+        ],
+        [
+          150,
+          158
+        ],
+        [
+          147.93,
+          157.73
+        ],
+        [
+          146,
+          156.93
+        ],
+        [
+          144.34,
+          155.66
+        ],
+        [
+          143.07,
+          154
+        ],
+        [
+          142.27,
+          152.07
+        ],
+        [
+          142,
+          150
+        ],
+        [
+          142.27,
+          147.93
+        ],
+        [
+          143.07,
+          146
+        ],
+        [
+          144.34,
+          144.34
+        ],
+        [
+          146,
+          143.07
+        ],
+        [
+          147.93,
+          142.27
+        ],
+        [
+          150,
+          142
+        ],
+        [
+          152.07,
+          142.27
+        ],
+        [
+          154,
+          143.07
+        ],
+        [
+          155.66,
+          144.34
+        ],
+        [
+          156.93,
+          146
+        ],
+        [
+          157.73,
+          147.93
+        ]
+      ],
+      "start": 350,
+      "end": 372
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pressure Test Port",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pressure Test Port",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pressure Test Port",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hanger Lug Right",
+      "points": [
+        [
+          290,
+          -20
+        ],
+        [
+          310,
+          -20
+        ],
+        [
+          310,
+          20
+        ],
+        [
+          290,
+          20
+        ]
+      ],
+      "start": 300,
+      "end": 340
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hanger Lug Right",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hanger Lug Right",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hanger Lug Right",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "Supply",
+      "domain": "duct",
+      "system": "SupplyAir",
+      "solid": "Side Spigot",
+      "side": "left",
+      "diameter": 250,
+      "flow": "In"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_AirTerminal_HEPA_TerminalFilter.png"
+    }
+  ],
+  "values": {
+    "Face 595 x 595 mm, housing 350 deep": {
+      "value": "595x595x350",
+      "source_status": "assumed",
+      "source": "typical terminal HEPA box for 600 grid"
+    },
+    "Filter H14 (EN 1822), 99.995 % MPPS": {
+      "value": "H14",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Flow 0.15 m3/s at 0.45 m/s face": {
+      "value": 0.15,
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Spigot 250 mm": {
+      "value": 250,
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   }
- ],
- "values": {
-  "Face 595 x 595 mm, housing 350 deep": {
-   "value": "595x595x350",
-   "source_status": "assumed",
-   "source": "typical terminal HEPA box for 600 grid"
-  },
-  "Filter H14 (EN 1822), 99.995 % MPPS": {
-   "value": "H14",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Flow 0.15 m3/s at 0.45 m/s face": {
-   "value": 0.15,
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Spigot 250 mm": {
-   "value": 250,
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- }
 }

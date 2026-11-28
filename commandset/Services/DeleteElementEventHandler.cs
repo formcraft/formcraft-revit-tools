@@ -1,5 +1,7 @@
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using Newtonsoft.Json.Linq;
+using RevitMCPCommandSet.Services.Fmc;
 using RevitMCPSDK.API.Interfaces;
 
 namespace RevitMCPCommandSet.Services
@@ -11,25 +13,30 @@ namespace RevitMCPCommandSet.Services
 
         // 成功删除的元素数量
         public int DeletedCount { get; private set; }
+        public JArray Skipped { get; private set; } = new JArray();
         // 状态同步对象
         public bool TaskCompleted { get; private set; }
         private readonly ManualResetEvent _resetEvent = new ManualResetEvent(false);
         // 要删除的元素ID数组
         public string[] ElementIds { get; set; }
+        public JObject Parameters { get; set; } = new JObject();
+        public string Error { get; private set; }
         // 实现IWaitableExternalEventHandler接口
         public bool WaitForCompletion(int timeoutMilliseconds = 10000)
         {
             _resetEvent.Reset();
-        return _resetEvent.WaitOne(timeoutMilliseconds);
+        return FmcBusy.Wait(_resetEvent, timeoutMilliseconds);
         }
         public void Execute(UIApplication app)
         {
-            // F-032: an AI job (default failures handling, the save reminder kept from blocking). commandset/Bridge/FmcAiJob.cs
-            RevitMCPCommandSet.Bridge.FmcAiJob.Enter(app, "");
+            Error = null;
             try
             {
-                var doc = app.ActiveUIDocument.Document;
+                // FmcTarget.Resolve starts the AI job (F-032) and refuses a named document that is not open.
+                using var target = FmcTarget.Resolve(app, Parameters, mayOpen: false);
+                var doc = target.Doc;
                 DeletedCount = 0;
+                Skipped = new JArray();
                 if (ElementIds == null || ElementIds.Length == 0)
                 {
                     IsSuccess = false;
@@ -46,7 +53,9 @@ namespace RevitMCPCommandSet.Services
                         // 检查元素是否存在
                         if (doc.GetElement(elementId) != null)
                         {
-                            elementIdsToDelete.Add(elementId);
+                            JObject held = FmcCheckout.Hold(doc, elementId);
+                            if (held != null) Skipped.Add(held);
+                            else elementIdsToDelete.Add(elementId);
                         }
                     }
                     else
@@ -73,6 +82,10 @@ namespace RevitMCPCommandSet.Services
                     }
                     IsSuccess = true;
                 }
+                else if (Skipped.Count > 0)
+                {
+                    IsSuccess = true;
+                }
                 else
                 {
                     RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Error", "No valid elements to delete");
@@ -81,6 +94,7 @@ namespace RevitMCPCommandSet.Services
             }
             catch (Exception ex)
             {
+                Error = ex.Message;
                 RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Error", "Deleting elements failed: " + ex.Message);
                 IsSuccess = false;
             }

@@ -128,7 +128,10 @@ export function skippedOps(reply: { ops?: unknown }, offset: number): SkippedOp[
 
 export interface BuildRecord {
   id: string; family: string; recipe_file: string; template: string; dry_run: boolean; stepwise: boolean; chunk_size: number;
-  ops_total: number; ops_hash: string; session: string; sessions: string[]; started: string; updated: string;
+  ops_total: number; ops_hash: string; session: string; sessions: string[];
+  /** Title or full path of the family this build opened, for later fmc_doc calls when several documents are open. */
+  document?: string;
+  started: string; updated: string;
   state: "running" | "waiting" | "failed" | "dry run done" | "built";
   /** The last op whose chunk Revit committed in the open session (0 = none). */
   last_good_op: number;

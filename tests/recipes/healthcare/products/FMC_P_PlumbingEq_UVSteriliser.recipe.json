@@ -1,2161 +1,2169 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_P_PlumbingEq_UVSteriliser",
- "template": "Metric Generic Model.rft",
- "about": "UV steriliser modelled as a generic product: chamber with end cap and lamp cap, lamp cable, inlet and outlet stubs with unions, wall clamps, UV sensor port, controller with display, LEDs and buttons. Reference: query: uvsteriliser plumbing equipment hospital; images: https://www.google.com/search?tbm=isch&q=uvsteriliser+plumbing+equipment+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Plumbing Equipment"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Voltage",
-   "type": "Voltage",
-   "group": "Electrical"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Apparent Load",
-   "type": "ApparentPower",
-   "group": "ElectricalLoads"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Asset_Tag",
-   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cover_Level_m",
-   "guid": "8ea739e9-8540-52b1-94c8-31f8c3b68946",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Invert_In_m",
-   "guid": "c6a9407b-775b-5907-ad76-c8a50d749eb7",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Invert_Out_m",
-   "guid": "dfc4212d-23c3-50c9-8f96-8111e5c21fa8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Tank_Capacity_L",
-   "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "Inline_UV"
-  },
-  {
-   "op": "set_type_value",
-   "name": "Inline_UV/FMC_Cost_Unit",
-   "type": "Inline_UV",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "Inline_UV/FMC_Geometry_Stage",
-   "type": "Inline_UV",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "Inline_UV/IfcExportAs",
-   "type": "Inline_UV",
-   "param": "IfcExportAs",
-   "value": "IfcFilter"
-  },
-  {
-   "op": "set_type_value",
-   "name": "Inline_UV/Description",
-   "type": "Inline_UV",
-   "param": "Description",
-   "value": "Inline UV steriliser, wall-mounted stainless chamber 100 dia x 1000 mm with UV-C lamp, UV intensity sensor and controller with lamp-life display"
-  },
-  {
-   "op": "set_type_value",
-   "name": "Inline_UV/Keynote",
-   "type": "Inline_UV",
-   "param": "Keynote",
-   "value": "Z.STE_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "Inline_UV/FMC_Keynote_Code",
-   "type": "Inline_UV",
-   "param": "FMC_Keynote_Code",
-   "value": "Z.STE_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "Inline_UV/Voltage",
-   "type": "Inline_UV",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "Inline_UV/Apparent Load",
-   "type": "Inline_UV",
-   "param": "Apparent Load",
-   "value": 100
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Stainless",
-   "color": [
-    180,
-    183,
-    186
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Stainless Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_StainlessSteel_Brushed",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Brass",
-   "color": [
-    200,
-    164,
-    74
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Brass Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Brass_Polished",
-   "param": "Brass Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "White",
-   "color": [
-    242,
-    242,
-    238
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "White Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_White",
-   "param": "White Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Led Blue",
-   "color": [
-    58,
-    141,
-    255
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Led Blue Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_LED_Blue",
-   "param": "Led Blue Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Led Red",
-   "color": [
-    229,
-    72,
-    77
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Led Red Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_LED_Red",
-   "param": "Led Red Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Grey",
-   "color": [
-    154,
-    160,
-    166
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Grey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Grey",
-   "param": "Grey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -450,
-     -215
-    ],
-    [
-     560,
-     -215
-    ],
-    [
-     560,
-     0
-    ],
-    [
-     -450,
-     0
-    ]
-   ],
-   "start": 1200,
-   "end": 1730
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Chamber",
-   "points": [
-    [
-     -100.0,
-     1600.0
-    ],
-    [
-     -101.7,
-     1612.94
-    ],
-    [
-     -106.7,
-     1625.0
-    ],
-    [
-     -114.64,
-     1635.36
-    ],
-    [
-     -125.0,
-     1643.3
-    ],
-    [
-     -137.06,
-     1648.3
-    ],
-    [
-     -150.0,
-     1650.0
-    ],
-    [
-     -162.94,
-     1648.3
-    ],
-    [
-     -175.0,
-     1643.3
-    ],
-    [
-     -185.36,
-     1635.36
-    ],
-    [
-     -193.3,
-     1625.0
-    ],
-    [
-     -198.3,
-     1612.94
-    ],
-    [
-     -200.0,
-     1600.0
-    ],
-    [
-     -198.3,
-     1587.06
-    ],
-    [
-     -193.3,
-     1575.0
-    ],
-    [
-     -185.36,
-     1564.64
-    ],
-    [
-     -175.0,
-     1556.7
-    ],
-    [
-     -162.94,
-     1551.7
-    ],
-    [
-     -150.0,
-     1550.0
-    ],
-    [
-     -137.06,
-     1551.7
-    ],
-    [
-     -125.0,
-     1556.7
-    ],
-    [
-     -114.64,
-     1564.64
-    ],
-    [
-     -106.7,
-     1575.0
-    ],
-    [
-     -101.7,
-     1587.06
-    ]
-   ],
-   "start": -450,
-   "end": 450,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Chamber",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Chamber",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Chamber",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "End Cap",
-   "profile": [
-    [
-     0,
-     450
-    ],
-    [
-     58,
-     450
-    ],
-    [
-     58,
-     490
-    ],
-    [
-     0,
-     490
-    ]
-   ],
-   "axis_at": [
-    -150,
-    1600
-   ],
-   "axis": "x",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "End Cap",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "End Cap",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Lamp Cap",
-   "profile": [
-    [
-     0,
-     490
-    ],
-    [
-     32,
-     490
-    ],
-    [
-     32,
-     560
-    ],
-    [
-     0,
-     560
-    ]
-   ],
-   "axis_at": [
-    -150,
-    1600
-   ],
-   "axis": "x",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lamp Cap",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lamp Cap",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lamp Cable",
-   "points": [
-    [
-     545.0,
-     -150.0
-    ],
-    [
-     544.83,
-     -148.71
-    ],
-    [
-     544.33,
-     -147.5
-    ],
-    [
-     543.54,
-     -146.46
-    ],
-    [
-     542.5,
-     -145.67
-    ],
-    [
-     541.29,
-     -145.17
-    ],
-    [
-     540.0,
-     -145.0
-    ],
-    [
-     538.71,
-     -145.17
-    ],
-    [
-     537.5,
-     -145.67
-    ],
-    [
-     536.46,
-     -146.46
-    ],
-    [
-     535.67,
-     -147.5
-    ],
-    [
-     535.17,
-     -148.71
-    ],
-    [
-     535.0,
-     -150.0
-    ],
-    [
-     535.17,
-     -151.29
-    ],
-    [
-     535.67,
-     -152.5
-    ],
-    [
-     536.46,
-     -153.54
-    ],
-    [
-     537.5,
-     -154.33
-    ],
-    [
-     538.71,
-     -154.83
-    ],
-    [
-     540.0,
-     -155.0
-    ],
-    [
-     541.29,
-     -154.83
-    ],
-    [
-     542.5,
-     -154.33
-    ],
-    [
-     543.54,
-     -153.54
-    ],
-    [
-     544.33,
-     -152.5
-    ],
-    [
-     544.83,
-     -151.29
-    ]
-   ],
-   "start": 1300,
-   "end": 1600
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lamp Cable",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lamp Cable",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lamp Cable",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Inlet Stub",
-   "points": [
-    [
-     -354.0,
-     -150.0
-    ],
-    [
-     -354.55,
-     -145.86
-    ],
-    [
-     -356.14,
-     -142.0
-    ],
-    [
-     -358.69,
-     -138.69
-    ],
-    [
-     -362.0,
-     -136.14
-    ],
-    [
-     -365.86,
-     -134.55
-    ],
-    [
-     -370.0,
-     -134.0
-    ],
-    [
-     -374.14,
-     -134.55
-    ],
-    [
-     -378.0,
-     -136.14
-    ],
-    [
-     -381.31,
-     -138.69
-    ],
-    [
-     -383.86,
-     -142.0
-    ],
-    [
-     -385.45,
-     -145.86
-    ],
-    [
-     -386.0,
-     -150.0
-    ],
-    [
-     -385.45,
-     -154.14
-    ],
-    [
-     -383.86,
-     -158.0
-    ],
-    [
-     -381.31,
-     -161.31
-    ],
-    [
-     -378.0,
-     -163.86
-    ],
-    [
-     -374.14,
-     -165.45
-    ],
-    [
-     -370.0,
-     -166.0
-    ],
-    [
-     -365.86,
-     -165.45
-    ],
-    [
-     -362.0,
-     -163.86
-    ],
-    [
-     -358.69,
-     -161.31
-    ],
-    [
-     -356.14,
-     -158.0
-    ],
-    [
-     -354.55,
-     -154.14
-    ]
-   ],
-   "start": 1650,
-   "end": 1730
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Inlet Stub",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Inlet Stub",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Inlet Stub",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Outlet Stub",
-   "points": [
-    [
-     386.0,
-     -150.0
-    ],
-    [
-     385.45,
-     -145.86
-    ],
-    [
-     383.86,
-     -142.0
-    ],
-    [
-     381.31,
-     -138.69
-    ],
-    [
-     378.0,
-     -136.14
-    ],
-    [
-     374.14,
-     -134.55
-    ],
-    [
-     370.0,
-     -134.0
-    ],
-    [
-     365.86,
-     -134.55
-    ],
-    [
-     362.0,
-     -136.14
-    ],
-    [
-     358.69,
-     -138.69
-    ],
-    [
-     356.14,
-     -142.0
-    ],
-    [
-     354.55,
-     -145.86
-    ],
-    [
-     354.0,
-     -150.0
-    ],
-    [
-     354.55,
-     -154.14
-    ],
-    [
-     356.14,
-     -158.0
-    ],
-    [
-     358.69,
-     -161.31
-    ],
-    [
-     362.0,
-     -163.86
-    ],
-    [
-     365.86,
-     -165.45
-    ],
-    [
-     370.0,
-     -166.0
-    ],
-    [
-     374.14,
-     -165.45
-    ],
-    [
-     378.0,
-     -163.86
-    ],
-    [
-     381.31,
-     -161.31
-    ],
-    [
-     383.86,
-     -158.0
-    ],
-    [
-     385.45,
-     -154.14
-    ]
-   ],
-   "start": 1650,
-   "end": 1730
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Outlet Stub",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Outlet Stub",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Outlet Stub",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Union 1",
-   "profile": [
-    [
-     0,
-     1700
-    ],
-    [
-     24,
-     1700
-    ],
-    [
-     24,
-     1720
-    ],
-    [
-     0,
-     1720
-    ]
-   ],
-   "axis_at": [
-    -370,
-    -150
-   ],
-   "axis": "z",
-   "subcategory": "Brass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Union 1",
-   "param": "Brass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Union 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Union 2",
-   "profile": [
-    [
-     0,
-     1700
-    ],
-    [
-     24,
-     1700
-    ],
-    [
-     24,
-     1720
-    ],
-    [
-     0,
-     1720
-    ]
-   ],
-   "axis_at": [
-    370,
-    -150
-   ],
-   "axis": "z",
-   "subcategory": "Brass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Union 2",
-   "param": "Brass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Union 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Wall Clamp 1",
-   "points": [
-    [
-     -300,
-     1520
-    ],
-    [
-     -260,
-     1520
-    ],
-    [
-     -260,
-     1680
-    ],
-    [
-     -300,
-     1680
-    ]
-   ],
-   "start": 0,
-   "end": 30,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Wall Clamp 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Wall Clamp 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Wall Clamp 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Wall Clamp 2",
-   "points": [
-    [
-     260,
-     1520
-    ],
-    [
-     300,
-     1520
-    ],
-    [
-     300,
-     1680
-    ],
-    [
-     260,
-     1680
-    ]
-   ],
-   "start": 0,
-   "end": 30,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Wall Clamp 2",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Wall Clamp 2",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Wall Clamp 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Clamp Arm 1",
-   "points": [
-    [
-     -300,
-     -150
-    ],
-    [
-     -260,
-     -150
-    ],
-    [
-     -260,
-     -30
-    ],
-    [
-     -300,
-     -30
-    ]
-   ],
-   "start": 1540,
-   "end": 1560
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Clamp Arm 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Clamp Arm 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Clamp Arm 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Clamp Arm 2",
-   "points": [
-    [
-     260,
-     -150
-    ],
-    [
-     300,
-     -150
-    ],
-    [
-     300,
-     -30
-    ],
-    [
-     260,
-     -30
-    ]
-   ],
-   "start": 1540,
-   "end": 1560
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Clamp Arm 2",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Clamp Arm 2",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Clamp Arm 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "UV Sensor Port",
-   "points": [
-    [
-     14.0,
-     1600.0
-    ],
-    [
-     13.52,
-     1603.62
-    ],
-    [
-     12.12,
-     1607.0
-    ],
-    [
-     9.9,
-     1609.9
-    ],
-    [
-     7.0,
-     1612.12
-    ],
-    [
-     3.62,
-     1613.52
-    ],
-    [
-     0.0,
-     1614.0
-    ],
-    [
-     -3.62,
-     1613.52
-    ],
-    [
-     -7.0,
-     1612.12
-    ],
-    [
-     -9.9,
-     1609.9
-    ],
-    [
-     -12.12,
-     1607.0
-    ],
-    [
-     -13.52,
-     1603.62
-    ],
-    [
-     -14.0,
-     1600.0
-    ],
-    [
-     -13.52,
-     1596.38
-    ],
-    [
-     -12.12,
-     1593.0
-    ],
-    [
-     -9.9,
-     1590.1
-    ],
-    [
-     -7.0,
-     1587.88
-    ],
-    [
-     -3.62,
-     1586.48
-    ],
-    [
-     -0.0,
-     1586.0
-    ],
-    [
-     3.62,
-     1586.48
-    ],
-    [
-     7.0,
-     1587.88
-    ],
-    [
-     9.9,
-     1590.1
-    ],
-    [
-     12.12,
-     1593.0
-    ],
-    [
-     13.52,
-     1596.38
-    ]
-   ],
-   "start": 195,
-   "end": 215,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "UV Sensor Port",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "UV Sensor Port",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "UV Sensor Port",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Controller",
-   "points": [
-    [
-     170.0,
-     -90.0
-    ],
-    [
-     173.83,
-     -89.24
-    ],
-    [
-     177.07,
-     -87.07
-    ],
-    [
-     179.24,
-     -83.83
-    ],
-    [
-     180.0,
-     -80.0
-    ],
-    [
-     180.0,
-     -10.0
-    ],
-    [
-     179.24,
-     -6.17
-    ],
-    [
-     177.07,
-     -2.93
-    ],
-    [
-     173.83,
-     -0.76
-    ],
-    [
-     170.0,
-     0.0
-    ],
-    [
-     -170.0,
-     0.0
-    ],
-    [
-     -173.83,
-     -0.76
-    ],
-    [
-     -177.07,
-     -2.93
-    ],
-    [
-     -179.24,
-     -6.17
-    ],
-    [
-     -180.0,
-     -10.0
-    ],
-    [
-     -180.0,
-     -80.0
-    ],
-    [
-     -179.24,
-     -83.83
-    ],
-    [
-     -177.07,
-     -87.07
-    ],
-    [
-     -173.83,
-     -89.24
-    ],
-    [
-     -170.0,
-     -90.0
-    ]
-   ],
-   "start": 1200,
-   "end": 1420
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Controller",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Controller",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Controller",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Controller Display",
-   "points": [
-    [
-     36.0,
-     1320.0
-    ],
-    [
-     37.53,
-     1320.3
-    ],
-    [
-     38.83,
-     1321.17
-    ],
-    [
-     39.7,
-     1322.47
-    ],
-    [
-     40.0,
-     1324.0
-    ],
-    [
-     40.0,
-     1386.0
-    ],
-    [
-     39.7,
-     1387.53
-    ],
-    [
-     38.83,
-     1388.83
-    ],
-    [
-     37.53,
-     1389.7
-    ],
-    [
-     36.0,
-     1390.0
-    ],
-    [
-     -116.0,
-     1390.0
-    ],
-    [
-     -117.53,
-     1389.7
-    ],
-    [
-     -118.83,
-     1388.83
-    ],
-    [
-     -119.7,
-     1387.53
-    ],
-    [
-     -120.0,
-     1386.0
-    ],
-    [
-     -120.0,
-     1324.0
-    ],
-    [
-     -119.7,
-     1322.47
-    ],
-    [
-     -118.83,
-     1321.17
-    ],
-    [
-     -117.53,
-     1320.3
-    ],
-    [
-     -116.0,
-     1320.0
-    ]
-   ],
-   "start": 90,
-   "end": 92,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Controller Display",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Controller Display",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Controller Display",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lamp LED",
-   "points": [
-    [
-     96.0,
-     1360.0
-    ],
-    [
-     95.8,
-     1361.55
-    ],
-    [
-     95.2,
-     1363.0
-    ],
-    [
-     94.24,
-     1364.24
-    ],
-    [
-     93.0,
-     1365.2
-    ],
-    [
-     91.55,
-     1365.8
-    ],
-    [
-     90.0,
-     1366.0
-    ],
-    [
-     88.45,
-     1365.8
-    ],
-    [
-     87.0,
-     1365.2
-    ],
-    [
-     85.76,
-     1364.24
-    ],
-    [
-     84.8,
-     1363.0
-    ],
-    [
-     84.2,
-     1361.55
-    ],
-    [
-     84.0,
-     1360.0
-    ],
-    [
-     84.2,
-     1358.45
-    ],
-    [
-     84.8,
-     1357.0
-    ],
-    [
-     85.76,
-     1355.76
-    ],
-    [
-     87.0,
-     1354.8
-    ],
-    [
-     88.45,
-     1354.2
-    ],
-    [
-     90.0,
-     1354.0
-    ],
-    [
-     91.55,
-     1354.2
-    ],
-    [
-     93.0,
-     1354.8
-    ],
-    [
-     94.24,
-     1355.76
-    ],
-    [
-     95.2,
-     1357.0
-    ],
-    [
-     95.8,
-     1358.45
-    ]
-   ],
-   "start": 90,
-   "end": 93,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lamp LED",
-   "subcategory": "Led Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lamp LED",
-   "param": "Led Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lamp LED",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Alarm LED",
-   "points": [
-    [
-     136.0,
-     1360.0
-    ],
-    [
-     135.8,
-     1361.55
-    ],
-    [
-     135.2,
-     1363.0
-    ],
-    [
-     134.24,
-     1364.24
-    ],
-    [
-     133.0,
-     1365.2
-    ],
-    [
-     131.55,
-     1365.8
-    ],
-    [
-     130.0,
-     1366.0
-    ],
-    [
-     128.45,
-     1365.8
-    ],
-    [
-     127.0,
-     1365.2
-    ],
-    [
-     125.76,
-     1364.24
-    ],
-    [
-     124.8,
-     1363.0
-    ],
-    [
-     124.2,
-     1361.55
-    ],
-    [
-     124.0,
-     1360.0
-    ],
-    [
-     124.2,
-     1358.45
-    ],
-    [
-     124.8,
-     1357.0
-    ],
-    [
-     125.76,
-     1355.76
-    ],
-    [
-     127.0,
-     1354.8
-    ],
-    [
-     128.45,
-     1354.2
-    ],
-    [
-     130.0,
-     1354.0
-    ],
-    [
-     131.55,
-     1354.2
-    ],
-    [
-     133.0,
-     1354.8
-    ],
-    [
-     134.24,
-     1355.76
-    ],
-    [
-     135.2,
-     1357.0
-    ],
-    [
-     135.8,
-     1358.45
-    ]
-   ],
-   "start": 90,
-   "end": 93,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Alarm LED",
-   "subcategory": "Led Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Alarm LED",
-   "param": "Led Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Alarm LED",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Controller Button 1",
-   "points": [
-    [
-     -70.0,
-     1250.0
-    ],
-    [
-     -70.34,
-     1252.59
-    ],
-    [
-     -71.34,
-     1255.0
-    ],
-    [
-     -72.93,
-     1257.07
-    ],
-    [
-     -75.0,
-     1258.66
-    ],
-    [
-     -77.41,
-     1259.66
-    ],
-    [
-     -80.0,
-     1260.0
-    ],
-    [
-     -82.59,
-     1259.66
-    ],
-    [
-     -85.0,
-     1258.66
-    ],
-    [
-     -87.07,
-     1257.07
-    ],
-    [
-     -88.66,
-     1255.0
-    ],
-    [
-     -89.66,
-     1252.59
-    ],
-    [
-     -90.0,
-     1250.0
-    ],
-    [
-     -89.66,
-     1247.41
-    ],
-    [
-     -88.66,
-     1245.0
-    ],
-    [
-     -87.07,
-     1242.93
-    ],
-    [
-     -85.0,
-     1241.34
-    ],
-    [
-     -82.59,
-     1240.34
-    ],
-    [
-     -80.0,
-     1240.0
-    ],
-    [
-     -77.41,
-     1240.34
-    ],
-    [
-     -75.0,
-     1241.34
-    ],
-    [
-     -72.93,
-     1242.93
-    ],
-    [
-     -71.34,
-     1245.0
-    ],
-    [
-     -70.34,
-     1247.41
-    ]
-   ],
-   "start": 90,
-   "end": 94,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Controller Button 1",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Controller Button 1",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Controller Button 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Controller Button 2",
-   "points": [
-    [
-     -10.0,
-     1250.0
-    ],
-    [
-     -10.34,
-     1252.59
-    ],
-    [
-     -11.34,
-     1255.0
-    ],
-    [
-     -12.93,
-     1257.07
-    ],
-    [
-     -15.0,
-     1258.66
-    ],
-    [
-     -17.41,
-     1259.66
-    ],
-    [
-     -20.0,
-     1260.0
-    ],
-    [
-     -22.59,
-     1259.66
-    ],
-    [
-     -25.0,
-     1258.66
-    ],
-    [
-     -27.07,
-     1257.07
-    ],
-    [
-     -28.66,
-     1255.0
-    ],
-    [
-     -29.66,
-     1252.59
-    ],
-    [
-     -30.0,
-     1250.0
-    ],
-    [
-     -29.66,
-     1247.41
-    ],
-    [
-     -28.66,
-     1245.0
-    ],
-    [
-     -27.07,
-     1242.93
-    ],
-    [
-     -25.0,
-     1241.34
-    ],
-    [
-     -22.59,
-     1240.34
-    ],
-    [
-     -20.0,
-     1240.0
-    ],
-    [
-     -17.41,
-     1240.34
-    ],
-    [
-     -15.0,
-     1241.34
-    ],
-    [
-     -12.93,
-     1242.93
-    ],
-    [
-     -11.34,
-     1245.0
-    ],
-    [
-     -10.34,
-     1247.41
-    ]
-   ],
-   "start": 90,
-   "end": 94,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Controller Button 2",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Controller Button 2",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Controller Button 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Controller Button 3",
-   "points": [
-    [
-     50.0,
-     1250.0
-    ],
-    [
-     49.66,
-     1252.59
-    ],
-    [
-     48.66,
-     1255.0
-    ],
-    [
-     47.07,
-     1257.07
-    ],
-    [
-     45.0,
-     1258.66
-    ],
-    [
-     42.59,
-     1259.66
-    ],
-    [
-     40.0,
-     1260.0
-    ],
-    [
-     37.41,
-     1259.66
-    ],
-    [
-     35.0,
-     1258.66
-    ],
-    [
-     32.93,
-     1257.07
-    ],
-    [
-     31.34,
-     1255.0
-    ],
-    [
-     30.34,
-     1252.59
-    ],
-    [
-     30.0,
-     1250.0
-    ],
-    [
-     30.34,
-     1247.41
-    ],
-    [
-     31.34,
-     1245.0
-    ],
-    [
-     32.93,
-     1242.93
-    ],
-    [
-     35.0,
-     1241.34
-    ],
-    [
-     37.41,
-     1240.34
-    ],
-    [
-     40.0,
-     1240.0
-    ],
-    [
-     42.59,
-     1240.34
-    ],
-    [
-     45.0,
-     1241.34
-    ],
-    [
-     47.07,
-     1242.93
-    ],
-    [
-     48.66,
-     1245.0
-    ],
-    [
-     49.66,
-     1247.41
-    ]
-   ],
-   "start": 90,
-   "end": 94,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Controller Button 3",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Controller Button 3",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Controller Button 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "Inlet",
-   "domain": "pipe",
-   "system": "DomesticColdWater",
-   "solid": "Inlet Stub",
-   "side": "top",
-   "diameter": 25,
-   "flow": "In"
-  },
-  {
-   "op": "add_connector",
-   "name": "Outlet",
-   "domain": "pipe",
-   "system": "DomesticColdWater",
-   "solid": "Outlet Stub",
-   "side": "top",
-   "diameter": 25,
-   "flow": "Out"
-  },
-  {
-   "op": "add_connector",
-   "name": "Power",
-   "domain": "electrical",
-   "system": "PowerBalanced",
-   "solid": "Controller",
-   "side": "back"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Voltage",
-   "connector": "Power",
-   "connector_param": "Voltage",
-   "param": "Voltage"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Apparent Load",
-   "connector": "Power",
-   "connector_param": "Apparent Load",
-   "param": "Apparent Load"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_PlumbingEq_UVSteriliser.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_P_PlumbingEq_UVSteriliser",
+  "template": "Metric Generic Model.rft",
+  "about": "UV steriliser modelled as a generic product: chamber with end cap and lamp cap, lamp cable, inlet and outlet stubs with unions, wall clamps, UV sensor port, controller with display, LEDs and buttons. Reference: query: uvsteriliser plumbing equipment hospital; images: https://www.google.com/search?tbm=isch&q=uvsteriliser+plumbing+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Plumbing Equipment"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Voltage",
+      "type": "Voltage",
+      "group": "Electrical"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Apparent Load",
+      "type": "ApparentPower",
+      "group": "ElectricalLoads"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Asset_Tag",
+      "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cover_Level_m",
+      "guid": "8ea739e9-8540-52b1-94c8-31f8c3b68946",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Invert_In_m",
+      "guid": "c6a9407b-775b-5907-ad76-c8a50d749eb7",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Invert_Out_m",
+      "guid": "dfc4212d-23c3-50c9-8f96-8111e5c21fa8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Tank_Capacity_L",
+      "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "Inline_UV"
+    },
+    {
+      "op": "set_type_value",
+      "name": "Inline_UV/FMC_Cost_Unit",
+      "type": "Inline_UV",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "Inline_UV/FMC_Geometry_Stage",
+      "type": "Inline_UV",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "Inline_UV/IfcExportAs",
+      "type": "Inline_UV",
+      "param": "IfcExportAs",
+      "value": "IfcFilter"
+    },
+    {
+      "op": "set_type_value",
+      "name": "Inline_UV/Description",
+      "type": "Inline_UV",
+      "param": "Description",
+      "value": "Inline UV steriliser, wall-mounted stainless chamber 100 dia x 1000 mm with UV-C lamp, UV intensity sensor and controller with lamp-life display"
+    },
+    {
+      "op": "set_type_value",
+      "name": "Inline_UV/Keynote",
+      "type": "Inline_UV",
+      "param": "Keynote",
+      "value": "Z.STE_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "Inline_UV/FMC_Keynote_Code",
+      "type": "Inline_UV",
+      "param": "FMC_Keynote_Code",
+      "value": "Z.STE_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "Inline_UV/Voltage",
+      "type": "Inline_UV",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "Inline_UV/Apparent Load",
+      "type": "Inline_UV",
+      "param": "Apparent Load",
+      "value": 100
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Stainless",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Stainless Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_StainlessSteel_Brushed",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Brass",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Brass Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Brass_Polished",
+      "param": "Brass Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "White",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "White Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_White",
+      "param": "White Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Led Blue",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Led Blue Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_LED_Blue",
+      "param": "Led Blue Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Led Red",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Led Red Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_LED_Red",
+      "param": "Led Red Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Grey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Grey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Grey",
+      "param": "Grey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -450,
+          -215
+        ],
+        [
+          560,
+          -215
+        ],
+        [
+          560,
+          0
+        ],
+        [
+          -450,
+          0
+        ]
+      ],
+      "start": 1200,
+      "end": 1730
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Chamber",
+      "points": [
+        [
+          -100,
+          1600
+        ],
+        [
+          -101.7,
+          1612.94
+        ],
+        [
+          -106.7,
+          1625
+        ],
+        [
+          -114.64,
+          1635.36
+        ],
+        [
+          -125,
+          1643.3
+        ],
+        [
+          -137.06,
+          1648.3
+        ],
+        [
+          -150,
+          1650
+        ],
+        [
+          -162.94,
+          1648.3
+        ],
+        [
+          -175,
+          1643.3
+        ],
+        [
+          -185.36,
+          1635.36
+        ],
+        [
+          -193.3,
+          1625
+        ],
+        [
+          -198.3,
+          1612.94
+        ],
+        [
+          -200,
+          1600
+        ],
+        [
+          -198.3,
+          1587.06
+        ],
+        [
+          -193.3,
+          1575
+        ],
+        [
+          -185.36,
+          1564.64
+        ],
+        [
+          -175,
+          1556.7
+        ],
+        [
+          -162.94,
+          1551.7
+        ],
+        [
+          -150,
+          1550
+        ],
+        [
+          -137.06,
+          1551.7
+        ],
+        [
+          -125,
+          1556.7
+        ],
+        [
+          -114.64,
+          1564.64
+        ],
+        [
+          -106.7,
+          1575
+        ],
+        [
+          -101.7,
+          1587.06
+        ]
+      ],
+      "start": -450,
+      "end": 450,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Chamber",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Chamber",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Chamber",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "End Cap",
+      "profile": [
+        [
+          0,
+          450
+        ],
+        [
+          58,
+          450
+        ],
+        [
+          58,
+          490
+        ],
+        [
+          0,
+          490
+        ]
+      ],
+      "axis_at": [
+        -150,
+        1600
+      ],
+      "axis": "x",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "End Cap",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "End Cap",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Lamp Cap",
+      "profile": [
+        [
+          0,
+          490
+        ],
+        [
+          32,
+          490
+        ],
+        [
+          32,
+          560
+        ],
+        [
+          0,
+          560
+        ]
+      ],
+      "axis_at": [
+        -150,
+        1600
+      ],
+      "axis": "x",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lamp Cap",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Lamp Cap",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Lamp Cable",
+      "points": [
+        [
+          545,
+          -150
+        ],
+        [
+          544.83,
+          -148.71
+        ],
+        [
+          544.33,
+          -147.5
+        ],
+        [
+          543.54,
+          -146.46
+        ],
+        [
+          542.5,
+          -145.67
+        ],
+        [
+          541.29,
+          -145.17
+        ],
+        [
+          540,
+          -145
+        ],
+        [
+          538.71,
+          -145.17
+        ],
+        [
+          537.5,
+          -145.67
+        ],
+        [
+          536.46,
+          -146.46
+        ],
+        [
+          535.67,
+          -147.5
+        ],
+        [
+          535.17,
+          -148.71
+        ],
+        [
+          535,
+          -150
+        ],
+        [
+          535.17,
+          -151.29
+        ],
+        [
+          535.67,
+          -152.5
+        ],
+        [
+          536.46,
+          -153.54
+        ],
+        [
+          537.5,
+          -154.33
+        ],
+        [
+          538.71,
+          -154.83
+        ],
+        [
+          540,
+          -155
+        ],
+        [
+          541.29,
+          -154.83
+        ],
+        [
+          542.5,
+          -154.33
+        ],
+        [
+          543.54,
+          -153.54
+        ],
+        [
+          544.33,
+          -152.5
+        ],
+        [
+          544.83,
+          -151.29
+        ]
+      ],
+      "start": 1300,
+      "end": 1600
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Lamp Cable",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lamp Cable",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Lamp Cable",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Inlet Stub",
+      "points": [
+        [
+          -354,
+          -150
+        ],
+        [
+          -354.55,
+          -145.86
+        ],
+        [
+          -356.14,
+          -142
+        ],
+        [
+          -358.69,
+          -138.69
+        ],
+        [
+          -362,
+          -136.14
+        ],
+        [
+          -365.86,
+          -134.55
+        ],
+        [
+          -370,
+          -134
+        ],
+        [
+          -374.14,
+          -134.55
+        ],
+        [
+          -378,
+          -136.14
+        ],
+        [
+          -381.31,
+          -138.69
+        ],
+        [
+          -383.86,
+          -142
+        ],
+        [
+          -385.45,
+          -145.86
+        ],
+        [
+          -386,
+          -150
+        ],
+        [
+          -385.45,
+          -154.14
+        ],
+        [
+          -383.86,
+          -158
+        ],
+        [
+          -381.31,
+          -161.31
+        ],
+        [
+          -378,
+          -163.86
+        ],
+        [
+          -374.14,
+          -165.45
+        ],
+        [
+          -370,
+          -166
+        ],
+        [
+          -365.86,
+          -165.45
+        ],
+        [
+          -362,
+          -163.86
+        ],
+        [
+          -358.69,
+          -161.31
+        ],
+        [
+          -356.14,
+          -158
+        ],
+        [
+          -354.55,
+          -154.14
+        ]
+      ],
+      "start": 1650,
+      "end": 1730
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Inlet Stub",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Inlet Stub",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Inlet Stub",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Outlet Stub",
+      "points": [
+        [
+          386,
+          -150
+        ],
+        [
+          385.45,
+          -145.86
+        ],
+        [
+          383.86,
+          -142
+        ],
+        [
+          381.31,
+          -138.69
+        ],
+        [
+          378,
+          -136.14
+        ],
+        [
+          374.14,
+          -134.55
+        ],
+        [
+          370,
+          -134
+        ],
+        [
+          365.86,
+          -134.55
+        ],
+        [
+          362,
+          -136.14
+        ],
+        [
+          358.69,
+          -138.69
+        ],
+        [
+          356.14,
+          -142
+        ],
+        [
+          354.55,
+          -145.86
+        ],
+        [
+          354,
+          -150
+        ],
+        [
+          354.55,
+          -154.14
+        ],
+        [
+          356.14,
+          -158
+        ],
+        [
+          358.69,
+          -161.31
+        ],
+        [
+          362,
+          -163.86
+        ],
+        [
+          365.86,
+          -165.45
+        ],
+        [
+          370,
+          -166
+        ],
+        [
+          374.14,
+          -165.45
+        ],
+        [
+          378,
+          -163.86
+        ],
+        [
+          381.31,
+          -161.31
+        ],
+        [
+          383.86,
+          -158
+        ],
+        [
+          385.45,
+          -154.14
+        ]
+      ],
+      "start": 1650,
+      "end": 1730
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Outlet Stub",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Outlet Stub",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Outlet Stub",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Union 1",
+      "profile": [
+        [
+          0,
+          1700
+        ],
+        [
+          24,
+          1700
+        ],
+        [
+          24,
+          1720
+        ],
+        [
+          0,
+          1720
+        ]
+      ],
+      "axis_at": [
+        -370,
+        -150
+      ],
+      "axis": "z",
+      "subcategory": "Brass"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Union 1",
+      "param": "Brass Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Union 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Union 2",
+      "profile": [
+        [
+          0,
+          1700
+        ],
+        [
+          24,
+          1700
+        ],
+        [
+          24,
+          1720
+        ],
+        [
+          0,
+          1720
+        ]
+      ],
+      "axis_at": [
+        370,
+        -150
+      ],
+      "axis": "z",
+      "subcategory": "Brass"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Union 2",
+      "param": "Brass Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Union 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Wall Clamp 1",
+      "points": [
+        [
+          -300,
+          1520
+        ],
+        [
+          -260,
+          1520
+        ],
+        [
+          -260,
+          1680
+        ],
+        [
+          -300,
+          1680
+        ]
+      ],
+      "start": 0,
+      "end": 30,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Wall Clamp 1",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Wall Clamp 1",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Wall Clamp 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Wall Clamp 2",
+      "points": [
+        [
+          260,
+          1520
+        ],
+        [
+          300,
+          1520
+        ],
+        [
+          300,
+          1680
+        ],
+        [
+          260,
+          1680
+        ]
+      ],
+      "start": 0,
+      "end": 30,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Wall Clamp 2",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Wall Clamp 2",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Wall Clamp 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Clamp Arm 1",
+      "points": [
+        [
+          -300,
+          -150
+        ],
+        [
+          -260,
+          -150
+        ],
+        [
+          -260,
+          -30
+        ],
+        [
+          -300,
+          -30
+        ]
+      ],
+      "start": 1540,
+      "end": 1560
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Clamp Arm 1",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Clamp Arm 1",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Clamp Arm 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Clamp Arm 2",
+      "points": [
+        [
+          260,
+          -150
+        ],
+        [
+          300,
+          -150
+        ],
+        [
+          300,
+          -30
+        ],
+        [
+          260,
+          -30
+        ]
+      ],
+      "start": 1540,
+      "end": 1560
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Clamp Arm 2",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Clamp Arm 2",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Clamp Arm 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "UV Sensor Port",
+      "points": [
+        [
+          14,
+          1600
+        ],
+        [
+          13.52,
+          1603.62
+        ],
+        [
+          12.12,
+          1607
+        ],
+        [
+          9.9,
+          1609.9
+        ],
+        [
+          7,
+          1612.12
+        ],
+        [
+          3.62,
+          1613.52
+        ],
+        [
+          0,
+          1614
+        ],
+        [
+          -3.62,
+          1613.52
+        ],
+        [
+          -7,
+          1612.12
+        ],
+        [
+          -9.9,
+          1609.9
+        ],
+        [
+          -12.12,
+          1607
+        ],
+        [
+          -13.52,
+          1603.62
+        ],
+        [
+          -14,
+          1600
+        ],
+        [
+          -13.52,
+          1596.38
+        ],
+        [
+          -12.12,
+          1593
+        ],
+        [
+          -9.9,
+          1590.1
+        ],
+        [
+          -7,
+          1587.88
+        ],
+        [
+          -3.62,
+          1586.48
+        ],
+        [
+          0,
+          1586
+        ],
+        [
+          3.62,
+          1586.48
+        ],
+        [
+          7,
+          1587.88
+        ],
+        [
+          9.9,
+          1590.1
+        ],
+        [
+          12.12,
+          1593
+        ],
+        [
+          13.52,
+          1596.38
+        ]
+      ],
+      "start": 195,
+      "end": 215,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "UV Sensor Port",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "UV Sensor Port",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "UV Sensor Port",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Controller",
+      "points": [
+        [
+          170,
+          -90
+        ],
+        [
+          173.83,
+          -89.24
+        ],
+        [
+          177.07,
+          -87.07
+        ],
+        [
+          179.24,
+          -83.83
+        ],
+        [
+          180,
+          -80
+        ],
+        [
+          180,
+          -10
+        ],
+        [
+          179.24,
+          -6.17
+        ],
+        [
+          177.07,
+          -2.93
+        ],
+        [
+          173.83,
+          -0.76
+        ],
+        [
+          170,
+          0
+        ],
+        [
+          -170,
+          0
+        ],
+        [
+          -173.83,
+          -0.76
+        ],
+        [
+          -177.07,
+          -2.93
+        ],
+        [
+          -179.24,
+          -6.17
+        ],
+        [
+          -180,
+          -10
+        ],
+        [
+          -180,
+          -80
+        ],
+        [
+          -179.24,
+          -83.83
+        ],
+        [
+          -177.07,
+          -87.07
+        ],
+        [
+          -173.83,
+          -89.24
+        ],
+        [
+          -170,
+          -90
+        ]
+      ],
+      "start": 1200,
+      "end": 1420
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Controller",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Controller",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Controller",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Controller Display",
+      "points": [
+        [
+          36,
+          1320
+        ],
+        [
+          37.53,
+          1320.3
+        ],
+        [
+          38.83,
+          1321.17
+        ],
+        [
+          39.7,
+          1322.47
+        ],
+        [
+          40,
+          1324
+        ],
+        [
+          40,
+          1386
+        ],
+        [
+          39.7,
+          1387.53
+        ],
+        [
+          38.83,
+          1388.83
+        ],
+        [
+          37.53,
+          1389.7
+        ],
+        [
+          36,
+          1390
+        ],
+        [
+          -116,
+          1390
+        ],
+        [
+          -117.53,
+          1389.7
+        ],
+        [
+          -118.83,
+          1388.83
+        ],
+        [
+          -119.7,
+          1387.53
+        ],
+        [
+          -120,
+          1386
+        ],
+        [
+          -120,
+          1324
+        ],
+        [
+          -119.7,
+          1322.47
+        ],
+        [
+          -118.83,
+          1321.17
+        ],
+        [
+          -117.53,
+          1320.3
+        ],
+        [
+          -116,
+          1320
+        ]
+      ],
+      "start": 90,
+      "end": 92,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Controller Display",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Controller Display",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Controller Display",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Lamp LED",
+      "points": [
+        [
+          96,
+          1360
+        ],
+        [
+          95.8,
+          1361.55
+        ],
+        [
+          95.2,
+          1363
+        ],
+        [
+          94.24,
+          1364.24
+        ],
+        [
+          93,
+          1365.2
+        ],
+        [
+          91.55,
+          1365.8
+        ],
+        [
+          90,
+          1366
+        ],
+        [
+          88.45,
+          1365.8
+        ],
+        [
+          87,
+          1365.2
+        ],
+        [
+          85.76,
+          1364.24
+        ],
+        [
+          84.8,
+          1363
+        ],
+        [
+          84.2,
+          1361.55
+        ],
+        [
+          84,
+          1360
+        ],
+        [
+          84.2,
+          1358.45
+        ],
+        [
+          84.8,
+          1357
+        ],
+        [
+          85.76,
+          1355.76
+        ],
+        [
+          87,
+          1354.8
+        ],
+        [
+          88.45,
+          1354.2
+        ],
+        [
+          90,
+          1354
+        ],
+        [
+          91.55,
+          1354.2
+        ],
+        [
+          93,
+          1354.8
+        ],
+        [
+          94.24,
+          1355.76
+        ],
+        [
+          95.2,
+          1357
+        ],
+        [
+          95.8,
+          1358.45
+        ]
+      ],
+      "start": 90,
+      "end": 93,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Lamp LED",
+      "subcategory": "Led Blue"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lamp LED",
+      "param": "Led Blue Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Lamp LED",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Alarm LED",
+      "points": [
+        [
+          136,
+          1360
+        ],
+        [
+          135.8,
+          1361.55
+        ],
+        [
+          135.2,
+          1363
+        ],
+        [
+          134.24,
+          1364.24
+        ],
+        [
+          133,
+          1365.2
+        ],
+        [
+          131.55,
+          1365.8
+        ],
+        [
+          130,
+          1366
+        ],
+        [
+          128.45,
+          1365.8
+        ],
+        [
+          127,
+          1365.2
+        ],
+        [
+          125.76,
+          1364.24
+        ],
+        [
+          124.8,
+          1363
+        ],
+        [
+          124.2,
+          1361.55
+        ],
+        [
+          124,
+          1360
+        ],
+        [
+          124.2,
+          1358.45
+        ],
+        [
+          124.8,
+          1357
+        ],
+        [
+          125.76,
+          1355.76
+        ],
+        [
+          127,
+          1354.8
+        ],
+        [
+          128.45,
+          1354.2
+        ],
+        [
+          130,
+          1354
+        ],
+        [
+          131.55,
+          1354.2
+        ],
+        [
+          133,
+          1354.8
+        ],
+        [
+          134.24,
+          1355.76
+        ],
+        [
+          135.2,
+          1357
+        ],
+        [
+          135.8,
+          1358.45
+        ]
+      ],
+      "start": 90,
+      "end": 93,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Alarm LED",
+      "subcategory": "Led Red"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Alarm LED",
+      "param": "Led Red Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Alarm LED",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Controller Button 1",
+      "points": [
+        [
+          -70,
+          1250
+        ],
+        [
+          -70.34,
+          1252.59
+        ],
+        [
+          -71.34,
+          1255
+        ],
+        [
+          -72.93,
+          1257.07
+        ],
+        [
+          -75,
+          1258.66
+        ],
+        [
+          -77.41,
+          1259.66
+        ],
+        [
+          -80,
+          1260
+        ],
+        [
+          -82.59,
+          1259.66
+        ],
+        [
+          -85,
+          1258.66
+        ],
+        [
+          -87.07,
+          1257.07
+        ],
+        [
+          -88.66,
+          1255
+        ],
+        [
+          -89.66,
+          1252.59
+        ],
+        [
+          -90,
+          1250
+        ],
+        [
+          -89.66,
+          1247.41
+        ],
+        [
+          -88.66,
+          1245
+        ],
+        [
+          -87.07,
+          1242.93
+        ],
+        [
+          -85,
+          1241.34
+        ],
+        [
+          -82.59,
+          1240.34
+        ],
+        [
+          -80,
+          1240
+        ],
+        [
+          -77.41,
+          1240.34
+        ],
+        [
+          -75,
+          1241.34
+        ],
+        [
+          -72.93,
+          1242.93
+        ],
+        [
+          -71.34,
+          1245
+        ],
+        [
+          -70.34,
+          1247.41
+        ]
+      ],
+      "start": 90,
+      "end": 94,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Controller Button 1",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Controller Button 1",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Controller Button 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Controller Button 2",
+      "points": [
+        [
+          -10,
+          1250
+        ],
+        [
+          -10.34,
+          1252.59
+        ],
+        [
+          -11.34,
+          1255
+        ],
+        [
+          -12.93,
+          1257.07
+        ],
+        [
+          -15,
+          1258.66
+        ],
+        [
+          -17.41,
+          1259.66
+        ],
+        [
+          -20,
+          1260
+        ],
+        [
+          -22.59,
+          1259.66
+        ],
+        [
+          -25,
+          1258.66
+        ],
+        [
+          -27.07,
+          1257.07
+        ],
+        [
+          -28.66,
+          1255
+        ],
+        [
+          -29.66,
+          1252.59
+        ],
+        [
+          -30,
+          1250
+        ],
+        [
+          -29.66,
+          1247.41
+        ],
+        [
+          -28.66,
+          1245
+        ],
+        [
+          -27.07,
+          1242.93
+        ],
+        [
+          -25,
+          1241.34
+        ],
+        [
+          -22.59,
+          1240.34
+        ],
+        [
+          -20,
+          1240
+        ],
+        [
+          -17.41,
+          1240.34
+        ],
+        [
+          -15,
+          1241.34
+        ],
+        [
+          -12.93,
+          1242.93
+        ],
+        [
+          -11.34,
+          1245
+        ],
+        [
+          -10.34,
+          1247.41
+        ]
+      ],
+      "start": 90,
+      "end": 94,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Controller Button 2",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Controller Button 2",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Controller Button 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Controller Button 3",
+      "points": [
+        [
+          50,
+          1250
+        ],
+        [
+          49.66,
+          1252.59
+        ],
+        [
+          48.66,
+          1255
+        ],
+        [
+          47.07,
+          1257.07
+        ],
+        [
+          45,
+          1258.66
+        ],
+        [
+          42.59,
+          1259.66
+        ],
+        [
+          40,
+          1260
+        ],
+        [
+          37.41,
+          1259.66
+        ],
+        [
+          35,
+          1258.66
+        ],
+        [
+          32.93,
+          1257.07
+        ],
+        [
+          31.34,
+          1255
+        ],
+        [
+          30.34,
+          1252.59
+        ],
+        [
+          30,
+          1250
+        ],
+        [
+          30.34,
+          1247.41
+        ],
+        [
+          31.34,
+          1245
+        ],
+        [
+          32.93,
+          1242.93
+        ],
+        [
+          35,
+          1241.34
+        ],
+        [
+          37.41,
+          1240.34
+        ],
+        [
+          40,
+          1240
+        ],
+        [
+          42.59,
+          1240.34
+        ],
+        [
+          45,
+          1241.34
+        ],
+        [
+          47.07,
+          1242.93
+        ],
+        [
+          48.66,
+          1245
+        ],
+        [
+          49.66,
+          1247.41
+        ]
+      ],
+      "start": 90,
+      "end": 94,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Controller Button 3",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Controller Button 3",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Controller Button 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "Inlet",
+      "domain": "pipe",
+      "system": "DomesticColdWater",
+      "solid": "Inlet Stub",
+      "side": "top",
+      "diameter": 25,
+      "flow": "In"
+    },
+    {
+      "op": "add_connector",
+      "name": "Outlet",
+      "domain": "pipe",
+      "system": "DomesticColdWater",
+      "solid": "Outlet Stub",
+      "side": "top",
+      "diameter": 25,
+      "flow": "Out"
+    },
+    {
+      "op": "add_connector",
+      "name": "Power",
+      "domain": "electrical",
+      "system": "PowerBalanced",
+      "solid": "Controller",
+      "side": "back"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Voltage",
+      "connector": "Power",
+      "connector_param": "Voltage",
+      "param": "Voltage"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Apparent Load",
+      "connector": "Power",
+      "connector_param": "Apparent Load",
+      "param": "Apparent Load"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_PlumbingEq_UVSteriliser.png"
+    }
+  ],
+  "values": {
+    "Chamber 100 dia x 1000 mm": {
+      "value": "100x1000",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Dose 40 mJ/cm2": {
+      "value": 40,
+      "source_status": "assumed",
+      "source": "BS EN 14897 / HTM 04-01 point-of-entry UV"
+    },
+    "Lamp 80 W, 240 V": {
+      "value": 80,
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   }
- ],
- "values": {
-  "Chamber 100 dia x 1000 mm": {
-   "value": "100x1000",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Dose 40 mJ/cm2": {
-   "value": 40,
-   "source_status": "assumed",
-   "source": "BS EN 14897 / HTM 04-01 point-of-entry UV"
-  },
-  "Lamp 80 W, 240 V": {
-   "value": 80,
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- }
 }

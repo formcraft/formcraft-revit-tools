@@ -1,6 +1,7 @@
 ﻿using Autodesk.Revit.UI;
 using Newtonsoft.Json.Linq;
 using RevitMCPCommandSet.Services;
+using RevitMCPCommandSet.Services.Fmc;
 using RevitMCPSDK.API.Base;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,7 @@ namespace RevitMCPCommandSet.Commands.Access
             {
                 try
                 {
+                    FmcCallContext.Begin(parameters);
                     // 解析参数
                     int? limit = parameters?["limit"]?.Value<int>();
 

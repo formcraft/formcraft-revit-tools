@@ -75,6 +75,9 @@ namespace RevitMCPCommandSet.Services.Fmc
             string result = "skip";
             if (sub == null) { sub = doc.Settings.Categories.NewSubcategory(parent, name); result = "create"; }
             var changed = new List<string>();
+            // Owner 26 Oct, FAM-044: families drew in near-white lines on pen 1 (half-toned in plans and legends). Black or
+            // dark grey lines on the rule's pens, unless the recipe marks a deliberate exception (keep_graphics)
+            if (op.Value<bool?>("keep_graphics") != true) op = FmcFamilyGraphics.Apply(name, op);
             int? proj = op.Value<int?>("line_weight_projection"), cut = op.Value<int?>("line_weight_cut");
             if (proj.HasValue && sub.GetLineWeight(GraphicsStyleType.Projection) != proj.Value) { sub.SetLineWeight(proj.Value, GraphicsStyleType.Projection); changed.Add("projection " + proj); }
             if (cut.HasValue)
@@ -141,8 +144,14 @@ namespace RevitMCPCommandSet.Services.Fmc
             CurveArray pathCurves = Polyline(path, false);
             SketchPlane sketch = SketchPlane.Create(doc, PlaneOf(plane, at));
 
-            SweepProfile profile = ProfileFor(doc, op, path[0], (path[1] - path[0]).Normalize(), out string detail);
-            Autodesk.Revit.DB.Sweep made = doc.FamilyCreate.NewSweep(!isVoid, pathCurves, sketch, profile, 0, ProfilePlaneLocation.Start);
+            string detail = "";
+            // a profile with splines Revit refuses is swept again with them as short lines (FmcCurves)
+            Autodesk.Revit.DB.Sweep made = FmcCurves.WithFallback(splines =>
+            {
+                op["_no_splines"] = !splines;
+                SweepProfile profile = ProfileFor(doc, op, path[0], (path[1] - path[0]).Normalize(), out detail);
+                return doc.FamilyCreate.NewSweep(!isVoid, pathCurves, sketch, profile, 0, ProfilePlaneLocation.Start);
+            }, op["profile"] != null && FmcCurves.HasSplines(op["profile"]));
             FmcDocGeometry.Label(made, name);
             ApplySubcategory(doc, made, op);
             return ("create", (isVoid ? "void sweep, " : "sweep, ") + detail + ", path " + path.Count + " points in " + plane);
@@ -168,19 +177,18 @@ namespace RevitMCPCommandSet.Services.Fmc
             }
             else
             {
-                var pts = Points(op["profile"]);
-                if (pts.Count < 3) throw new InvalidOperationException("a profile needs three or more points");
+                if (FmcCurves.Count(op["profile"]) < 2) throw new InvalidOperationException("a profile needs three or more points (or a curve)");
                 // Local profile coordinates: x across the path, y up. Revit 2025 NewSweep refuses a curve-loop profile drawn
                 // on the plane across the path ("One of the conditions for the inputs was not satisfied", F-065): the loop
                 // must be drawn flat in XY at the origin, and Revit carries it to the path start itself. Measured 18 Oct:
                 // on a horizontal path Revit maps the loop's X to world up and its Y across the path; on a vertical path
                 // X and Y stay X and Y. So x/y swap on paths that don't start vertical.
                 bool vertical = Math.Abs(dir.DotProduct(XYZ.BasisZ)) > 0.7;
-                var loop = pts.Select(p => vertical ? new XYZ(Mm(p[0]), Mm(p[1]), 0) : new XYZ(Mm(p[1]), Mm(p[0]), 0)).ToList();
+                // arcs and splines allowed (FmcCurves); a sweep refusing a spline is the caller's to retry
                 var arr = new CurveArrArray();
-                arr.Append(Polyline(loop, true));
+                arr.Append(FmcCurves.Loop(doc, op["profile"], p => vertical ? new XYZ(Mm(p[0]), Mm(p[1]), 0) : new XYZ(Mm(p[1]), Mm(p[0]), 0), true, !(op.Value<bool?>("_no_splines") ?? false)));
                 profile = doc.Application.Create.NewCurveLoopsProfile(arr);
-                detail = pts.Count + "-point profile";
+                detail = FmcCurves.Count(op["profile"]) + "-node profile";
             }
             return profile;
         }
@@ -197,13 +205,16 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (ax == "y") { origin = new XYZ(Mm(axisAt[0]), 0, Mm(axisAt[1])); dir = XYZ.BasisY.Negate(); sketchNormal = XYZ.BasisZ; at = p => origin + new XYZ(Mm(p[0]), -Mm(p[1]), 0); }
             else if (ax == "x") { origin = new XYZ(0, Mm(axisAt[0]), Mm(axisAt[1])); dir = XYZ.BasisX; sketchNormal = XYZ.BasisZ; at = p => origin + new XYZ(Mm(p[1]), Mm(p[0]), 0); }
             else { origin = new XYZ(Mm(axisAt[0]), Mm(axisAt[1]), 0); dir = XYZ.BasisZ; sketchNormal = XYZ.BasisY; at = p => origin + new XYZ(Mm(p[0]), 0, Mm(p[1])); }
-            var loop = Points(op["profile"]).Select(at).ToList();
-            var arr = new CurveArrArray();
-            arr.Append(Polyline(loop, true));
             SketchPlane sketch = SketchPlane.Create(doc, Plane.CreateByNormalAndOrigin(sketchNormal, origin));
             Line axis = Line.CreateBound(origin, origin + dir);
             double a0 = Rad(op.Value<double?>("start_deg") ?? 0), a1 = Rad(op.Value<double?>("end_deg") ?? 360);
-            Autodesk.Revit.DB.Revolution made = doc.FamilyCreate.NewRevolution(true, arr, sketch, axis, a0, a1);
+            // Owner 26 Oct: a profile with arcs and splines revolves smooth instead of faceted (FmcCurves)
+            Autodesk.Revit.DB.Revolution made = FmcCurves.WithFallback(splines =>
+            {
+                var arr = new CurveArrArray();
+                arr.Append(FmcCurves.Loop(doc, op["profile"], at, true, splines));
+                return doc.FamilyCreate.NewRevolution(true, arr, sketch, axis, a0, a1);
+            }, FmcCurves.HasSplines(op["profile"]));
             FmcDocGeometry.Label(made, name);
             ApplySubcategory(doc, made, op);
             return ("create", "revolution about the " + ax + " axis at " + axisAt[0] + ", " + axisAt[1]);
@@ -214,15 +225,16 @@ namespace RevitMCPCommandSet.Services.Fmc
             string name = op.Value<string>("name");
             if (FmcDocGeometry.Solid(doc, name) != null) return ("skip", "exists");
             double z0 = op.Value<double?>("start") ?? 0, z1 = op.Value<double?>("end") ?? 1000;
-            var bottom = Points(op["base"]).Select(p => To3D("plan", p, z0)).ToList();
-            var top = Points(op["top"]).Select(p => To3D("plan", p, z1)).ToList();
             SketchPlane sketch = SketchPlane.Create(doc, PlaneOf("plan", 0));
-            Autodesk.Revit.DB.Blend made = doc.FamilyCreate.NewBlend(true, Polyline(top, true), Polyline(bottom, true), sketch);
+            // Owner 26 Oct: blend outlines may hold arcs and splines (FmcCurves)
+            Autodesk.Revit.DB.Blend made = FmcCurves.WithFallback(splines => doc.FamilyCreate.NewBlend(true,
+                FmcCurves.Loop(doc, op["top"], p => To3D("plan", p, z1), true, splines), FmcCurves.Loop(doc, op["base"], p => To3D("plan", p, z0), true, splines), sketch),
+                FmcCurves.HasSplines(op["top"]) || FmcCurves.HasSplines(op["base"]));
             made.BottomOffset = Mm(z0);
             made.TopOffset = Mm(z1);
             FmcDocGeometry.Label(made, name);
             ApplySubcategory(doc, made, op);
-            return ("create", "blend " + bottom.Count + " → " + top.Count + " sides");
+            return ("create", "blend " + FmcCurves.Count(op["base"]) + " → " + FmcCurves.Count(op["top"]) + " nodes");
         }
 
         internal static void ApplySubcategory(Document doc, GenericForm form, JObject op)

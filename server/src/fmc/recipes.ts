@@ -55,6 +55,8 @@ export function parseRecipe(raw: string): { recipe: Recipe | null; problems: str
 
 /** FMC_<Role>_<Token>_<Description>: the role folder the family is staged in and released to. */
 export function roleOf(family: string): string {
+  // Ogala night report: FMC_Profile_* (the kit's sweep profiles) were refused as nameless; they live in _Profiles
+  if (/^FMC_Profile_/.test(family)) return "_Profiles";
   return /^FMC_([A-Z]{1,2})_/.exec(family)?.[1] ?? "";
 }
 

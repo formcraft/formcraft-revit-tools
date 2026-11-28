@@ -1,1718 +1,1721 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_S_StrColumn_Steel_UC",
- "template": "Metric Generic Model.rft",
- "about": "UC modelled as erected: grout pad, base plate, I-section shaft, gussets and stiffeners, HD bolts with plate washers and nuts (Fine), cap plate. Geometry shows the 203 UC, 3000 high. Reference: query: str column steel uc structural columns hospital; images: https://www.google.com/search?tbm=isch&q=str+column+steel+uc+structural+columns+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Structural Columns"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Curing_Days",
-   "guid": "33575e52-4390-562b-ae33-79cfb8763a86",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Concrete_Grade",
-   "guid": "9d0024a8-a7b4-52c5-9a19-54701506e804",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Steel_Grade",
-   "guid": "d06222d0-07d6-5663-a7c4-a4e890b2c03f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Timber_Grade",
-   "guid": "b3e69a2f-fae9-5ecb-9cc7-c1094c669498",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rebar_Ratio_kg_m3",
-   "guid": "293f58cb-42b0-53a4-8e7c-86c4ca9fac39",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Exposure_Class",
-   "guid": "a77fe04e-fd3a-51de-b34c-d3b808af5916",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Formwork_Type",
-   "guid": "c7110bef-8d3e-5198-b729-1e9664a2f20f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Assembly_Mark",
-   "guid": "63266315-bb4d-5187-9224-35d20981c3d6",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lift_Weight_kg",
-   "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_FEA_NEd_kN",
-   "guid": "82797174-7d95-51e7-8b4c-dab3f933f323",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_FEA_MEd_kNm",
-   "guid": "942dde65-4c14-57d5-9c22-0fa86eb80a44",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_FEA_Utilisation",
-   "guid": "15c508ea-aa97-5d96-9a4c-22e2a1478eff",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_FEA_Run_Ref",
-   "guid": "588a69ec-2914-52f0-b627-633aea9bfbbb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_FEA_Approval_Ref",
-   "guid": "33b0427b-a395-5f9d-acca-0e36401d2456",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Member_Mark",
-   "guid": "31bc3197-1635-5d0a-be71-8658456cb6dc",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "152UC_S275"
-  },
-  {
-   "op": "set_type_value",
-   "name": "152UC_S275/FMC_Cost_Unit",
-   "type": "152UC_S275",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "152UC_S275/FMC_Geometry_Stage",
-   "type": "152UC_S275",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "152UC_S275/IfcExportAs",
-   "type": "152UC_S275",
-   "param": "IfcExportAs",
-   "value": "IfcColumn"
-  },
-  {
-   "op": "set_type_value",
-   "name": "152UC_S275/Description",
-   "type": "152UC_S275",
-   "param": "Description",
-   "value": "UC 152x152 serial size"
-  },
-  {
-   "op": "set_type_value",
-   "name": "152UC_S275/Keynote",
-   "type": "152UC_S275",
-   "param": "Keynote",
-   "value": "M.UCL_02"
-  },
-  {
-   "op": "set_type_value",
-   "name": "152UC_S275/FMC_Keynote_Code",
-   "type": "152UC_S275",
-   "param": "FMC_Keynote_Code",
-   "value": "M.UCL_02"
-  },
-  {
-   "op": "set_type_value",
-   "name": "152UC_S275/FMC_Code_Description",
-   "type": "152UC_S275",
-   "param": "FMC_Code_Description",
-   "value": "Steel UC: Universal column"
-  },
-  {
-   "op": "set_type_value",
-   "name": "152UC_S275/FMC_Code_Group",
-   "type": "152UC_S275",
-   "param": "FMC_Code_Group",
-   "value": "M.UCL"
-  },
-  {
-   "op": "set_type_value",
-   "name": "152UC_S275/FMC_Role_Code",
-   "type": "152UC_S275",
-   "param": "FMC_Role_Code",
-   "value": "S"
-  },
-  {
-   "op": "add_type",
-   "name": "203UC_S275"
-  },
-  {
-   "op": "set_type_value",
-   "name": "203UC_S275/FMC_Cost_Unit",
-   "type": "203UC_S275",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "203UC_S275/FMC_Geometry_Stage",
-   "type": "203UC_S275",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "203UC_S275/IfcExportAs",
-   "type": "203UC_S275",
-   "param": "IfcExportAs",
-   "value": "IfcColumn"
-  },
-  {
-   "op": "set_type_value",
-   "name": "203UC_S275/Description",
-   "type": "203UC_S275",
-   "param": "Description",
-   "value": "UC 203x203 serial size"
-  },
-  {
-   "op": "set_type_value",
-   "name": "203UC_S275/Keynote",
-   "type": "203UC_S275",
-   "param": "Keynote",
-   "value": "M.UCL_02"
-  },
-  {
-   "op": "set_type_value",
-   "name": "203UC_S275/FMC_Keynote_Code",
-   "type": "203UC_S275",
-   "param": "FMC_Keynote_Code",
-   "value": "M.UCL_02"
-  },
-  {
-   "op": "set_type_value",
-   "name": "203UC_S275/FMC_Code_Description",
-   "type": "203UC_S275",
-   "param": "FMC_Code_Description",
-   "value": "Steel UC: Universal column"
-  },
-  {
-   "op": "set_type_value",
-   "name": "203UC_S275/FMC_Code_Group",
-   "type": "203UC_S275",
-   "param": "FMC_Code_Group",
-   "value": "M.UCL"
-  },
-  {
-   "op": "set_type_value",
-   "name": "203UC_S275/FMC_Role_Code",
-   "type": "203UC_S275",
-   "param": "FMC_Role_Code",
-   "value": "S"
-  },
-  {
-   "op": "add_type",
-   "name": "254UC_S275"
-  },
-  {
-   "op": "set_type_value",
-   "name": "254UC_S275/FMC_Cost_Unit",
-   "type": "254UC_S275",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "254UC_S275/FMC_Geometry_Stage",
-   "type": "254UC_S275",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "254UC_S275/IfcExportAs",
-   "type": "254UC_S275",
-   "param": "IfcExportAs",
-   "value": "IfcColumn"
-  },
-  {
-   "op": "set_type_value",
-   "name": "254UC_S275/Description",
-   "type": "254UC_S275",
-   "param": "Description",
-   "value": "UC 254x254 serial size"
-  },
-  {
-   "op": "set_type_value",
-   "name": "254UC_S275/Keynote",
-   "type": "254UC_S275",
-   "param": "Keynote",
-   "value": "M.UCL_02"
-  },
-  {
-   "op": "set_type_value",
-   "name": "254UC_S275/FMC_Keynote_Code",
-   "type": "254UC_S275",
-   "param": "FMC_Keynote_Code",
-   "value": "M.UCL_02"
-  },
-  {
-   "op": "set_type_value",
-   "name": "254UC_S275/FMC_Code_Description",
-   "type": "254UC_S275",
-   "param": "FMC_Code_Description",
-   "value": "Steel UC: Universal column"
-  },
-  {
-   "op": "set_type_value",
-   "name": "254UC_S275/FMC_Code_Group",
-   "type": "254UC_S275",
-   "param": "FMC_Code_Group",
-   "value": "M.UCL"
-  },
-  {
-   "op": "set_type_value",
-   "name": "254UC_S275/FMC_Role_Code",
-   "type": "254UC_S275",
-   "param": "FMC_Role_Code",
-   "value": "S"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Mortar",
-   "color": [
-    168,
-    164,
-    156
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Mortar Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Masonry_Mortar_1to4",
-   "param": "Mortar Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Steel",
-   "color": [
-    110,
-    110,
-    110
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Steel Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_StructuralSteel_S275",
-   "param": "Steel Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -210,
-     -210
-    ],
-    [
-     210,
-     -210
-    ],
-    [
-     210,
-     210
-    ],
-    [
-     -210,
-     210
-    ]
-   ],
-   "start": 0,
-   "end": 3015
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Grout Pad",
-   "points": [
-    [
-     -210,
-     -210
-    ],
-    [
-     210,
-     -210
-    ],
-    [
-     210,
-     210
-    ],
-    [
-     -210,
-     210
-    ]
-   ],
-   "start": 0,
-   "end": 30
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grout Pad",
-   "subcategory": "Mortar"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grout Pad",
-   "param": "Mortar Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grout Pad",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Base Plate",
-   "points": [
-    [
-     -200,
-     -200
-    ],
-    [
-     200,
-     -200
-    ],
-    [
-     200,
-     200
-    ],
-    [
-     -200,
-     200
-    ]
-   ],
-   "start": 30,
-   "end": 50
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Plate",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Plate",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Plate",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Column",
-   "points": [
-    [
-     -101.8,
-     -101.6
-    ],
-    [
-     101.8,
-     -101.6
-    ],
-    [
-     101.8,
-     -90.6
-    ],
-    [
-     -101.8,
-     -90.6
-    ]
-   ],
-   "start": 50,
-   "end": 3000
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Column",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Column",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Column",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Column Part 2",
-   "points": [
-    [
-     -3.6,
-     -90.6
-    ],
-    [
-     3.6,
-     -90.6
-    ],
-    [
-     3.6,
-     90.6
-    ],
-    [
-     -3.6,
-     90.6
-    ]
-   ],
-   "start": 50,
-   "end": 3000
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Column Part 2",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Column Part 2",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Column Part 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Column Part 3",
-   "points": [
-    [
-     -101.8,
-     90.6
-    ],
-    [
-     101.8,
-     90.6
-    ],
-    [
-     101.8,
-     101.6
-    ],
-    [
-     -101.8,
-     101.6
-    ]
-   ],
-   "start": 50,
-   "end": 3000
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Column Part 3",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Column Part 3",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Column Part 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cap Plate",
-   "points": [
-    [
-     -125,
-     -125
-    ],
-    [
-     125,
-     -125
-    ],
-    [
-     125,
-     125
-    ],
-    [
-     -125,
-     125
-    ]
-   ],
-   "start": 3000,
-   "end": 3015
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cap Plate",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cap Plate",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cap Plate",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Gusset Front",
-   "points": [
-    [
-     -101.6,
-     50
-    ],
-    [
-     -190,
-     50
-    ],
-    [
-     -190,
-     70
-    ],
-    [
-     -101.6,
-     200
-    ]
-   ],
-   "start": -6,
-   "end": 6,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Gusset Front",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Gusset Front",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Gusset Front",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Gusset Back",
-   "points": [
-    [
-     101.6,
-     50
-    ],
-    [
-     101.6,
-     200
-    ],
-    [
-     190,
-     70
-    ],
-    [
-     190,
-     50
-    ]
-   ],
-   "start": -6,
-   "end": 6,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Gusset Back",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Gusset Back",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Gusset Back",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Stiffener Left",
-   "points": [
-    [
-     -3.6,
-     50
-    ],
-    [
-     -3.6,
-     200
-    ],
-    [
-     -190,
-     70
-    ],
-    [
-     -190,
-     50
-    ]
-   ],
-   "start": -6,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Stiffener Left",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Stiffener Left",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Stiffener Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Stiffener Right",
-   "points": [
-    [
-     3.6,
-     50
-    ],
-    [
-     190,
-     50
-    ],
-    [
-     190,
-     70
-    ],
-    [
-     3.6,
-     200
-    ]
-   ],
-   "start": -6,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Stiffener Right",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Stiffener Right",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Stiffener Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "HD Bolt 1 Washer",
-   "points": [
-    [
-     -175.0,
-     -175.0
-    ],
-    [
-     -125.0,
-     -175.0
-    ],
-    [
-     -125.0,
-     -125.0
-    ],
-    [
-     -175.0,
-     -125.0
-    ]
-   ],
-   "start": 50,
-   "end": 56
-  },
-  {
-   "op": "set_subcategory",
-   "name": "HD Bolt 1 Washer",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "HD Bolt 1 Washer",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "HD Bolt 1 Washer",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "HD Bolt 1 Nut",
-   "points": [
-    [
-     -135.0,
-     -141.34
-    ],
-    [
-     -150.0,
-     -132.68
-    ],
-    [
-     -165.0,
-     -141.34
-    ],
-    [
-     -165.0,
-     -158.66
-    ],
-    [
-     -150.0,
-     -167.32
-    ],
-    [
-     -135.0,
-     -158.66
-    ]
-   ],
-   "start": 56,
-   "end": 72.0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "HD Bolt 1 Nut",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "HD Bolt 1 Nut",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "HD Bolt 1 Nut",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "HD Bolt 1 Thread",
-   "points": [
-    [
-     -140.0,
-     -150.0
-    ],
-    [
-     -141.34,
-     -145.0
-    ],
-    [
-     -145.0,
-     -141.34
-    ],
-    [
-     -150.0,
-     -140.0
-    ],
-    [
-     -155.0,
-     -141.34
-    ],
-    [
-     -158.66,
-     -145.0
-    ],
-    [
-     -160.0,
-     -150.0
-    ],
-    [
-     -158.66,
-     -155.0
-    ],
-    [
-     -155.0,
-     -158.66
-    ],
-    [
-     -150.0,
-     -160.0
-    ],
-    [
-     -145.0,
-     -158.66
-    ],
-    [
-     -141.34,
-     -155.0
-    ]
-   ],
-   "start": 72.0,
-   "end": 110
-  },
-  {
-   "op": "set_subcategory",
-   "name": "HD Bolt 1 Thread",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "HD Bolt 1 Thread",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "HD Bolt 1 Thread",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "HD Bolt 2 Washer",
-   "points": [
-    [
-     125.0,
-     -175.0
-    ],
-    [
-     175.0,
-     -175.0
-    ],
-    [
-     175.0,
-     -125.0
-    ],
-    [
-     125.0,
-     -125.0
-    ]
-   ],
-   "start": 50,
-   "end": 56
-  },
-  {
-   "op": "set_subcategory",
-   "name": "HD Bolt 2 Washer",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "HD Bolt 2 Washer",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "HD Bolt 2 Washer",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "HD Bolt 2 Nut",
-   "points": [
-    [
-     165.0,
-     -141.34
-    ],
-    [
-     150.0,
-     -132.68
-    ],
-    [
-     135.0,
-     -141.34
-    ],
-    [
-     135.0,
-     -158.66
-    ],
-    [
-     150.0,
-     -167.32
-    ],
-    [
-     165.0,
-     -158.66
-    ]
-   ],
-   "start": 56,
-   "end": 72.0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "HD Bolt 2 Nut",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "HD Bolt 2 Nut",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "HD Bolt 2 Nut",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "HD Bolt 2 Thread",
-   "points": [
-    [
-     160.0,
-     -150.0
-    ],
-    [
-     158.66,
-     -145.0
-    ],
-    [
-     155.0,
-     -141.34
-    ],
-    [
-     150.0,
-     -140.0
-    ],
-    [
-     145.0,
-     -141.34
-    ],
-    [
-     141.34,
-     -145.0
-    ],
-    [
-     140.0,
-     -150.0
-    ],
-    [
-     141.34,
-     -155.0
-    ],
-    [
-     145.0,
-     -158.66
-    ],
-    [
-     150.0,
-     -160.0
-    ],
-    [
-     155.0,
-     -158.66
-    ],
-    [
-     158.66,
-     -155.0
-    ]
-   ],
-   "start": 72.0,
-   "end": 110
-  },
-  {
-   "op": "set_subcategory",
-   "name": "HD Bolt 2 Thread",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "HD Bolt 2 Thread",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "HD Bolt 2 Thread",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "HD Bolt 3 Washer",
-   "points": [
-    [
-     -175.0,
-     125.0
-    ],
-    [
-     -125.0,
-     125.0
-    ],
-    [
-     -125.0,
-     175.0
-    ],
-    [
-     -175.0,
-     175.0
-    ]
-   ],
-   "start": 50,
-   "end": 56
-  },
-  {
-   "op": "set_subcategory",
-   "name": "HD Bolt 3 Washer",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "HD Bolt 3 Washer",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "HD Bolt 3 Washer",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "HD Bolt 3 Nut",
-   "points": [
-    [
-     -135.0,
-     158.66
-    ],
-    [
-     -150.0,
-     167.32
-    ],
-    [
-     -165.0,
-     158.66
-    ],
-    [
-     -165.0,
-     141.34
-    ],
-    [
-     -150.0,
-     132.68
-    ],
-    [
-     -135.0,
-     141.34
-    ]
-   ],
-   "start": 56,
-   "end": 72.0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "HD Bolt 3 Nut",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "HD Bolt 3 Nut",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "HD Bolt 3 Nut",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "HD Bolt 3 Thread",
-   "points": [
-    [
-     -140.0,
-     150.0
-    ],
-    [
-     -141.34,
-     155.0
-    ],
-    [
-     -145.0,
-     158.66
-    ],
-    [
-     -150.0,
-     160.0
-    ],
-    [
-     -155.0,
-     158.66
-    ],
-    [
-     -158.66,
-     155.0
-    ],
-    [
-     -160.0,
-     150.0
-    ],
-    [
-     -158.66,
-     145.0
-    ],
-    [
-     -155.0,
-     141.34
-    ],
-    [
-     -150.0,
-     140.0
-    ],
-    [
-     -145.0,
-     141.34
-    ],
-    [
-     -141.34,
-     145.0
-    ]
-   ],
-   "start": 72.0,
-   "end": 110
-  },
-  {
-   "op": "set_subcategory",
-   "name": "HD Bolt 3 Thread",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "HD Bolt 3 Thread",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "HD Bolt 3 Thread",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "HD Bolt 4 Washer",
-   "points": [
-    [
-     125.0,
-     125.0
-    ],
-    [
-     175.0,
-     125.0
-    ],
-    [
-     175.0,
-     175.0
-    ],
-    [
-     125.0,
-     175.0
-    ]
-   ],
-   "start": 50,
-   "end": 56
-  },
-  {
-   "op": "set_subcategory",
-   "name": "HD Bolt 4 Washer",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "HD Bolt 4 Washer",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "HD Bolt 4 Washer",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "HD Bolt 4 Nut",
-   "points": [
-    [
-     165.0,
-     158.66
-    ],
-    [
-     150.0,
-     167.32
-    ],
-    [
-     135.0,
-     158.66
-    ],
-    [
-     135.0,
-     141.34
-    ],
-    [
-     150.0,
-     132.68
-    ],
-    [
-     165.0,
-     141.34
-    ]
-   ],
-   "start": 56,
-   "end": 72.0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "HD Bolt 4 Nut",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "HD Bolt 4 Nut",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "HD Bolt 4 Nut",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "HD Bolt 4 Thread",
-   "points": [
-    [
-     160.0,
-     150.0
-    ],
-    [
-     158.66,
-     155.0
-    ],
-    [
-     155.0,
-     158.66
-    ],
-    [
-     150.0,
-     160.0
-    ],
-    [
-     145.0,
-     158.66
-    ],
-    [
-     141.34,
-     155.0
-    ],
-    [
-     140.0,
-     150.0
-    ],
-    [
-     141.34,
-     145.0
-    ],
-    [
-     145.0,
-     141.34
-    ],
-    [
-     150.0,
-     140.0
-    ],
-    [
-     155.0,
-     141.34
-    ],
-    [
-     158.66,
-     145.0
-    ]
-   ],
-   "start": 72.0,
-   "end": 110
-  },
-  {
-   "op": "set_subcategory",
-   "name": "HD Bolt 4 Thread",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "HD Bolt 4 Thread",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "HD Bolt 4 Thread",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\S\\_Images\\FMC_S_StrColumn_Steel_UC.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_S_StrColumn_Steel_UC",
+  "template": "Metric Generic Model.rft",
+  "about": "UC modelled as erected: grout pad, base plate, I-section shaft, gussets and stiffeners, HD bolts with plate washers and nuts (Fine), cap plate. Geometry shows the 203 UC, 3000 high. Reference: query: str column steel uc structural columns hospital; images: https://www.google.com/search?tbm=isch&q=str+column+steel+uc+structural+columns+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Structural Columns"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Curing_Days",
+      "guid": "33575e52-4390-562b-ae33-79cfb8763a86",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Concrete_Grade",
+      "guid": "9d0024a8-a7b4-52c5-9a19-54701506e804",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Steel_Grade",
+      "guid": "d06222d0-07d6-5663-a7c4-a4e890b2c03f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Timber_Grade",
+      "guid": "b3e69a2f-fae9-5ecb-9cc7-c1094c669498",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rebar_Ratio_kg_m3",
+      "guid": "293f58cb-42b0-53a4-8e7c-86c4ca9fac39",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Exposure_Class",
+      "guid": "a77fe04e-fd3a-51de-b34c-d3b808af5916",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Formwork_Type",
+      "guid": "c7110bef-8d3e-5198-b729-1e9664a2f20f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Assembly_Mark",
+      "guid": "63266315-bb4d-5187-9224-35d20981c3d6",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lift_Weight_kg",
+      "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_FEA_NEd_kN",
+      "guid": "82797174-7d95-51e7-8b4c-dab3f933f323",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_FEA_MEd_kNm",
+      "guid": "942dde65-4c14-57d5-9c22-0fa86eb80a44",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_FEA_Utilisation",
+      "guid": "15c508ea-aa97-5d96-9a4c-22e2a1478eff",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_FEA_Run_Ref",
+      "guid": "588a69ec-2914-52f0-b627-633aea9bfbbb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_FEA_Approval_Ref",
+      "guid": "33b0427b-a395-5f9d-acca-0e36401d2456",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Member_Mark",
+      "guid": "31bc3197-1635-5d0a-be71-8658456cb6dc",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "152UC_S275"
+    },
+    {
+      "op": "set_type_value",
+      "name": "152UC_S275/FMC_Cost_Unit",
+      "type": "152UC_S275",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "152UC_S275/FMC_Geometry_Stage",
+      "type": "152UC_S275",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "152UC_S275/IfcExportAs",
+      "type": "152UC_S275",
+      "param": "IfcExportAs",
+      "value": "IfcColumn"
+    },
+    {
+      "op": "set_type_value",
+      "name": "152UC_S275/Description",
+      "type": "152UC_S275",
+      "param": "Description",
+      "value": "UC 152x152 serial size"
+    },
+    {
+      "op": "set_type_value",
+      "name": "152UC_S275/Keynote",
+      "type": "152UC_S275",
+      "param": "Keynote",
+      "value": "M.UCL_02"
+    },
+    {
+      "op": "set_type_value",
+      "name": "152UC_S275/FMC_Keynote_Code",
+      "type": "152UC_S275",
+      "param": "FMC_Keynote_Code",
+      "value": "M.UCL_02"
+    },
+    {
+      "op": "set_type_value",
+      "name": "152UC_S275/FMC_Code_Description",
+      "type": "152UC_S275",
+      "param": "FMC_Code_Description",
+      "value": "Steel UC: Universal column"
+    },
+    {
+      "op": "set_type_value",
+      "name": "152UC_S275/FMC_Code_Group",
+      "type": "152UC_S275",
+      "param": "FMC_Code_Group",
+      "value": "M.UCL"
+    },
+    {
+      "op": "set_type_value",
+      "name": "152UC_S275/FMC_Role_Code",
+      "type": "152UC_S275",
+      "param": "FMC_Role_Code",
+      "value": "S"
+    },
+    {
+      "op": "add_type",
+      "name": "203UC_S275"
+    },
+    {
+      "op": "set_type_value",
+      "name": "203UC_S275/FMC_Cost_Unit",
+      "type": "203UC_S275",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "203UC_S275/FMC_Geometry_Stage",
+      "type": "203UC_S275",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "203UC_S275/IfcExportAs",
+      "type": "203UC_S275",
+      "param": "IfcExportAs",
+      "value": "IfcColumn"
+    },
+    {
+      "op": "set_type_value",
+      "name": "203UC_S275/Description",
+      "type": "203UC_S275",
+      "param": "Description",
+      "value": "UC 203x203 serial size"
+    },
+    {
+      "op": "set_type_value",
+      "name": "203UC_S275/Keynote",
+      "type": "203UC_S275",
+      "param": "Keynote",
+      "value": "M.UCL_02"
+    },
+    {
+      "op": "set_type_value",
+      "name": "203UC_S275/FMC_Keynote_Code",
+      "type": "203UC_S275",
+      "param": "FMC_Keynote_Code",
+      "value": "M.UCL_02"
+    },
+    {
+      "op": "set_type_value",
+      "name": "203UC_S275/FMC_Code_Description",
+      "type": "203UC_S275",
+      "param": "FMC_Code_Description",
+      "value": "Steel UC: Universal column"
+    },
+    {
+      "op": "set_type_value",
+      "name": "203UC_S275/FMC_Code_Group",
+      "type": "203UC_S275",
+      "param": "FMC_Code_Group",
+      "value": "M.UCL"
+    },
+    {
+      "op": "set_type_value",
+      "name": "203UC_S275/FMC_Role_Code",
+      "type": "203UC_S275",
+      "param": "FMC_Role_Code",
+      "value": "S"
+    },
+    {
+      "op": "add_type",
+      "name": "254UC_S275"
+    },
+    {
+      "op": "set_type_value",
+      "name": "254UC_S275/FMC_Cost_Unit",
+      "type": "254UC_S275",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "254UC_S275/FMC_Geometry_Stage",
+      "type": "254UC_S275",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "254UC_S275/IfcExportAs",
+      "type": "254UC_S275",
+      "param": "IfcExportAs",
+      "value": "IfcColumn"
+    },
+    {
+      "op": "set_type_value",
+      "name": "254UC_S275/Description",
+      "type": "254UC_S275",
+      "param": "Description",
+      "value": "UC 254x254 serial size"
+    },
+    {
+      "op": "set_type_value",
+      "name": "254UC_S275/Keynote",
+      "type": "254UC_S275",
+      "param": "Keynote",
+      "value": "M.UCL_02"
+    },
+    {
+      "op": "set_type_value",
+      "name": "254UC_S275/FMC_Keynote_Code",
+      "type": "254UC_S275",
+      "param": "FMC_Keynote_Code",
+      "value": "M.UCL_02"
+    },
+    {
+      "op": "set_type_value",
+      "name": "254UC_S275/FMC_Code_Description",
+      "type": "254UC_S275",
+      "param": "FMC_Code_Description",
+      "value": "Steel UC: Universal column"
+    },
+    {
+      "op": "set_type_value",
+      "name": "254UC_S275/FMC_Code_Group",
+      "type": "254UC_S275",
+      "param": "FMC_Code_Group",
+      "value": "M.UCL"
+    },
+    {
+      "op": "set_type_value",
+      "name": "254UC_S275/FMC_Role_Code",
+      "type": "254UC_S275",
+      "param": "FMC_Role_Code",
+      "value": "S"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Mortar",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Mortar Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Masonry_Mortar_1to4",
+      "param": "Mortar Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Steel",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Steel Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_StructuralSteel_S275",
+      "param": "Steel Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -210,
+          -210
+        ],
+        [
+          210,
+          -210
+        ],
+        [
+          210,
+          210
+        ],
+        [
+          -210,
+          210
+        ]
+      ],
+      "start": 0,
+      "end": 3015
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Grout Pad",
+      "points": [
+        [
+          -210,
+          -210
+        ],
+        [
+          210,
+          -210
+        ],
+        [
+          210,
+          210
+        ],
+        [
+          -210,
+          210
+        ]
+      ],
+      "start": 0,
+      "end": 30
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grout Pad",
+      "subcategory": "Mortar"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grout Pad",
+      "param": "Mortar Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grout Pad",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Base Plate",
+      "points": [
+        [
+          -200,
+          -200
+        ],
+        [
+          200,
+          -200
+        ],
+        [
+          200,
+          200
+        ],
+        [
+          -200,
+          200
+        ]
+      ],
+      "start": 30,
+      "end": 50
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Base Plate",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Base Plate",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Base Plate",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Column",
+      "points": [
+        [
+          -101.8,
+          -101.6
+        ],
+        [
+          101.8,
+          -101.6
+        ],
+        [
+          101.8,
+          -90.6
+        ],
+        [
+          -101.8,
+          -90.6
+        ]
+      ],
+      "start": 50,
+      "end": 3000
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Column",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Column",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Column",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Column Part 2",
+      "points": [
+        [
+          -3.6,
+          -90.6
+        ],
+        [
+          3.6,
+          -90.6
+        ],
+        [
+          3.6,
+          90.6
+        ],
+        [
+          -3.6,
+          90.6
+        ]
+      ],
+      "start": 50,
+      "end": 3000
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Column Part 2",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Column Part 2",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Column Part 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Column Part 3",
+      "points": [
+        [
+          -101.8,
+          90.6
+        ],
+        [
+          101.8,
+          90.6
+        ],
+        [
+          101.8,
+          101.6
+        ],
+        [
+          -101.8,
+          101.6
+        ]
+      ],
+      "start": 50,
+      "end": 3000
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Column Part 3",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Column Part 3",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Column Part 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cap Plate",
+      "points": [
+        [
+          -125,
+          -125
+        ],
+        [
+          125,
+          -125
+        ],
+        [
+          125,
+          125
+        ],
+        [
+          -125,
+          125
+        ]
+      ],
+      "start": 3000,
+      "end": 3015
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cap Plate",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cap Plate",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cap Plate",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Gusset Front",
+      "points": [
+        [
+          -101.6,
+          50
+        ],
+        [
+          -190,
+          50
+        ],
+        [
+          -190,
+          70
+        ],
+        [
+          -101.6,
+          200
+        ]
+      ],
+      "start": -6,
+      "end": 6,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Gusset Front",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Gusset Front",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Gusset Front",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Gusset Back",
+      "points": [
+        [
+          101.6,
+          50
+        ],
+        [
+          101.6,
+          200
+        ],
+        [
+          190,
+          70
+        ],
+        [
+          190,
+          50
+        ]
+      ],
+      "start": -6,
+      "end": 6,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Gusset Back",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Gusset Back",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Gusset Back",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Stiffener Left",
+      "points": [
+        [
+          -3.6,
+          50
+        ],
+        [
+          -3.6,
+          200
+        ],
+        [
+          -190,
+          70
+        ],
+        [
+          -190,
+          50
+        ]
+      ],
+      "start": -6,
+      "end": 6,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Stiffener Left",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Stiffener Left",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Stiffener Left",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Stiffener Right",
+      "points": [
+        [
+          3.6,
+          50
+        ],
+        [
+          190,
+          50
+        ],
+        [
+          190,
+          70
+        ],
+        [
+          3.6,
+          200
+        ]
+      ],
+      "start": -6,
+      "end": 6,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Stiffener Right",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Stiffener Right",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Stiffener Right",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "HD Bolt 1 Washer",
+      "points": [
+        [
+          -175,
+          -175
+        ],
+        [
+          -125,
+          -175
+        ],
+        [
+          -125,
+          -125
+        ],
+        [
+          -175,
+          -125
+        ]
+      ],
+      "start": 50,
+      "end": 56
+    },
+    {
+      "op": "set_subcategory",
+      "name": "HD Bolt 1 Washer",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "HD Bolt 1 Washer",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "HD Bolt 1 Washer",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "HD Bolt 1 Nut",
+      "points": [
+        [
+          -135,
+          -141.34
+        ],
+        [
+          -150,
+          -132.68
+        ],
+        [
+          -165,
+          -141.34
+        ],
+        [
+          -165,
+          -158.66
+        ],
+        [
+          -150,
+          -167.32
+        ],
+        [
+          -135,
+          -158.66
+        ]
+      ],
+      "start": 56,
+      "end": 72
+    },
+    {
+      "op": "set_subcategory",
+      "name": "HD Bolt 1 Nut",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "HD Bolt 1 Nut",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "HD Bolt 1 Nut",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "HD Bolt 1 Thread",
+      "points": [
+        [
+          -140,
+          -150
+        ],
+        [
+          -141.34,
+          -145
+        ],
+        [
+          -145,
+          -141.34
+        ],
+        [
+          -150,
+          -140
+        ],
+        [
+          -155,
+          -141.34
+        ],
+        [
+          -158.66,
+          -145
+        ],
+        [
+          -160,
+          -150
+        ],
+        [
+          -158.66,
+          -155
+        ],
+        [
+          -155,
+          -158.66
+        ],
+        [
+          -150,
+          -160
+        ],
+        [
+          -145,
+          -158.66
+        ],
+        [
+          -141.34,
+          -155
+        ]
+      ],
+      "start": 72,
+      "end": 110
+    },
+    {
+      "op": "set_subcategory",
+      "name": "HD Bolt 1 Thread",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "HD Bolt 1 Thread",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "HD Bolt 1 Thread",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "HD Bolt 2 Washer",
+      "points": [
+        [
+          125,
+          -175
+        ],
+        [
+          175,
+          -175
+        ],
+        [
+          175,
+          -125
+        ],
+        [
+          125,
+          -125
+        ]
+      ],
+      "start": 50,
+      "end": 56
+    },
+    {
+      "op": "set_subcategory",
+      "name": "HD Bolt 2 Washer",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "HD Bolt 2 Washer",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "HD Bolt 2 Washer",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "HD Bolt 2 Nut",
+      "points": [
+        [
+          165,
+          -141.34
+        ],
+        [
+          150,
+          -132.68
+        ],
+        [
+          135,
+          -141.34
+        ],
+        [
+          135,
+          -158.66
+        ],
+        [
+          150,
+          -167.32
+        ],
+        [
+          165,
+          -158.66
+        ]
+      ],
+      "start": 56,
+      "end": 72
+    },
+    {
+      "op": "set_subcategory",
+      "name": "HD Bolt 2 Nut",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "HD Bolt 2 Nut",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "HD Bolt 2 Nut",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "HD Bolt 2 Thread",
+      "points": [
+        [
+          160,
+          -150
+        ],
+        [
+          158.66,
+          -145
+        ],
+        [
+          155,
+          -141.34
+        ],
+        [
+          150,
+          -140
+        ],
+        [
+          145,
+          -141.34
+        ],
+        [
+          141.34,
+          -145
+        ],
+        [
+          140,
+          -150
+        ],
+        [
+          141.34,
+          -155
+        ],
+        [
+          145,
+          -158.66
+        ],
+        [
+          150,
+          -160
+        ],
+        [
+          155,
+          -158.66
+        ],
+        [
+          158.66,
+          -155
+        ]
+      ],
+      "start": 72,
+      "end": 110
+    },
+    {
+      "op": "set_subcategory",
+      "name": "HD Bolt 2 Thread",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "HD Bolt 2 Thread",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "HD Bolt 2 Thread",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "HD Bolt 3 Washer",
+      "points": [
+        [
+          -175,
+          125
+        ],
+        [
+          -125,
+          125
+        ],
+        [
+          -125,
+          175
+        ],
+        [
+          -175,
+          175
+        ]
+      ],
+      "start": 50,
+      "end": 56
+    },
+    {
+      "op": "set_subcategory",
+      "name": "HD Bolt 3 Washer",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "HD Bolt 3 Washer",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "HD Bolt 3 Washer",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "HD Bolt 3 Nut",
+      "points": [
+        [
+          -135,
+          158.66
+        ],
+        [
+          -150,
+          167.32
+        ],
+        [
+          -165,
+          158.66
+        ],
+        [
+          -165,
+          141.34
+        ],
+        [
+          -150,
+          132.68
+        ],
+        [
+          -135,
+          141.34
+        ]
+      ],
+      "start": 56,
+      "end": 72
+    },
+    {
+      "op": "set_subcategory",
+      "name": "HD Bolt 3 Nut",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "HD Bolt 3 Nut",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "HD Bolt 3 Nut",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "HD Bolt 3 Thread",
+      "points": [
+        [
+          -140,
+          150
+        ],
+        [
+          -141.34,
+          155
+        ],
+        [
+          -145,
+          158.66
+        ],
+        [
+          -150,
+          160
+        ],
+        [
+          -155,
+          158.66
+        ],
+        [
+          -158.66,
+          155
+        ],
+        [
+          -160,
+          150
+        ],
+        [
+          -158.66,
+          145
+        ],
+        [
+          -155,
+          141.34
+        ],
+        [
+          -150,
+          140
+        ],
+        [
+          -145,
+          141.34
+        ],
+        [
+          -141.34,
+          145
+        ]
+      ],
+      "start": 72,
+      "end": 110
+    },
+    {
+      "op": "set_subcategory",
+      "name": "HD Bolt 3 Thread",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "HD Bolt 3 Thread",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "HD Bolt 3 Thread",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "HD Bolt 4 Washer",
+      "points": [
+        [
+          125,
+          125
+        ],
+        [
+          175,
+          125
+        ],
+        [
+          175,
+          175
+        ],
+        [
+          125,
+          175
+        ]
+      ],
+      "start": 50,
+      "end": 56
+    },
+    {
+      "op": "set_subcategory",
+      "name": "HD Bolt 4 Washer",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "HD Bolt 4 Washer",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "HD Bolt 4 Washer",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "HD Bolt 4 Nut",
+      "points": [
+        [
+          165,
+          158.66
+        ],
+        [
+          150,
+          167.32
+        ],
+        [
+          135,
+          158.66
+        ],
+        [
+          135,
+          141.34
+        ],
+        [
+          150,
+          132.68
+        ],
+        [
+          165,
+          141.34
+        ]
+      ],
+      "start": 56,
+      "end": 72
+    },
+    {
+      "op": "set_subcategory",
+      "name": "HD Bolt 4 Nut",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "HD Bolt 4 Nut",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "HD Bolt 4 Nut",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "HD Bolt 4 Thread",
+      "points": [
+        [
+          160,
+          150
+        ],
+        [
+          158.66,
+          155
+        ],
+        [
+          155,
+          158.66
+        ],
+        [
+          150,
+          160
+        ],
+        [
+          145,
+          158.66
+        ],
+        [
+          141.34,
+          155
+        ],
+        [
+          140,
+          150
+        ],
+        [
+          141.34,
+          145
+        ],
+        [
+          145,
+          141.34
+        ],
+        [
+          150,
+          140
+        ],
+        [
+          155,
+          141.34
+        ],
+        [
+          158.66,
+          145
+        ]
+      ],
+      "start": 72,
+      "end": 110
+    },
+    {
+      "op": "set_subcategory",
+      "name": "HD Bolt 4 Thread",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "HD Bolt 4 Thread",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "HD Bolt 4 Thread",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\S\\_Images\\FMC_S_StrColumn_Steel_UC.png"
+    }
+  ],
+  "values": {
+    "Section 203x203x46 UC (geometry)": {
+      "value": "203.2x203.6x7.2x11.0",
+      "source_status": "assumed",
+      "source": "BS 4-1 section table, from knowledge; section choice by engineer"
+    },
+    "Base plate 400 x 400 x 20 mm": {
+      "value": "400x400x20",
+      "source_status": "assumed",
+      "source": "typical size, engineer to confirm"
+    },
+    "Holding-down bolts 4 x M20": {
+      "value": "4xM20",
+      "source_status": "assumed",
+      "source": "typical size, engineer to confirm"
+    },
+    "Grade S275": {
+      "value": "S275",
+      "source_status": "assumed",
+      "source": "kit material; engineer to confirm"
+    }
   }
- ],
- "values": {
-  "Section 203x203x46 UC (geometry)": {
-   "value": "203.2x203.6x7.2x11.0",
-   "source_status": "assumed",
-   "source": "BS 4-1 section table, from knowledge; section choice by engineer"
-  },
-  "Base plate 400 x 400 x 20 mm": {
-   "value": "400x400x20",
-   "source_status": "assumed",
-   "source": "typical size, engineer to confirm"
-  },
-  "Holding-down bolts 4 x M20": {
-   "value": "4xM20",
-   "source_status": "assumed",
-   "source": "typical size, engineer to confirm"
-  },
-  "Grade S275": {
-   "value": "S275",
-   "source_status": "assumed",
-   "source": "kit material; engineer to confirm"
-  }
- }
 }

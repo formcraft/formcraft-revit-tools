@@ -1,467 +1,472 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_P_PlumbingEq_ServicePoint_MedGas",
- "template": "Metric Generic Model.rft",
- "about": "Nested shared service point: carries the pipe connectors a Medical Equipment host cannot (Revit QE4 test, 17 Oct). Placed inside the host at the real outlet position; a 60 mm cube with BS 1710 / water identification tags (Fine only). Reference: query: service point medical gas plumbing equipment hospital; images: https://www.google.com/search?tbm=isch&q=service+point+medical+gas+plumbing+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.draeger.com/Content/Documents/Products/Terminal-Units-pi-9106572.pdf",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Plumbing Equipment"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_P_PlumbingEq_ServicePoint_MedGas",
+  "template": "Metric Generic Model.rft",
+  "about": "Nested shared service point: carries the pipe connectors a Medical Equipment host cannot (Revit QE4 test, 17 Oct). Placed inside the host at the real outlet position; a 60 mm cube with BS 1710 / water identification tags (Fine only). Reference: query: service point medical gas plumbing equipment hospital; images: https://www.google.com/search?tbm=isch&q=service+point+medical+gas+plumbing+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.draeger.com/Content/Documents/Products/Terminal-Units-pi-9106572.pdf",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Plumbing Equipment"
+    },
+    {
+      "op": "set_family_params",
+      "name": "family",
+      "shared": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Asset_Tag",
+      "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cover_Level_m",
+      "guid": "8ea739e9-8540-52b1-94c8-31f8c3b68946",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Invert_In_m",
+      "guid": "c6a9407b-775b-5907-ad76-c8a50d749eb7",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Invert_Out_m",
+      "guid": "dfc4212d-23c3-50c9-8f96-8111e5c21fa8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Tank_Capacity_L",
+      "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "60_MedGas"
+    },
+    {
+      "op": "set_type_value",
+      "name": "60_MedGas/FMC_Cost_Unit",
+      "type": "60_MedGas",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "60_MedGas/FMC_Geometry_Stage",
+      "type": "60_MedGas",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "60_MedGas/IfcExportAs",
+      "type": "60_MedGas",
+      "param": "IfcExportAs",
+      "value": "IfcFlowTerminal"
+    },
+    {
+      "op": "set_type_value",
+      "name": "60_MedGas/Description",
+      "type": "60_MedGas",
+      "param": "Description",
+      "value": "Medical gas service point (O2, vacuum, medical air) inside a Medical Equipment host"
+    },
+    {
+      "op": "set_type_value",
+      "name": "60_MedGas/URL",
+      "type": "60_MedGas",
+      "param": "URL",
+      "value": "https://www.draeger.com/Content/Documents/Products/Terminal-Units-pi-9106572.pdf"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Medical Grey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Medical Grey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_MedicalGrey",
+      "param": "Medical Grey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "White",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "White Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_White",
+      "param": "White Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Yellow",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Yellow Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Yellow",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -31,
+          -30
+        ],
+        [
+          31,
+          -30
+        ],
+        [
+          31,
+          31
+        ],
+        [
+          -31,
+          31
+        ]
+      ],
+      "start": 0,
+      "end": 60
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Point",
+      "points": [
+        [
+          -30,
+          -30
+        ],
+        [
+          30,
+          -30
+        ],
+        [
+          30,
+          30
+        ],
+        [
+          -30,
+          30
+        ]
+      ],
+      "start": 0,
+      "end": 60
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Point",
+      "subcategory": "Medical Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Point",
+      "param": "Medical Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Point",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "O2 Tag",
+      "points": [
+        [
+          -20,
+          40
+        ],
+        [
+          20,
+          40
+        ],
+        [
+          20,
+          52
+        ],
+        [
+          -20,
+          52
+        ]
+      ],
+      "start": -31,
+      "end": -30,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "O2 Tag",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "O2 Tag",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "O2 Tag",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "VAC Tag",
+      "points": [
+        [
+          -31,
+          -20
+        ],
+        [
+          -30,
+          -20
+        ],
+        [
+          -30,
+          20
+        ],
+        [
+          -31,
+          20
+        ]
+      ],
+      "start": 40,
+      "end": 52
+    },
+    {
+      "op": "set_subcategory",
+      "name": "VAC Tag",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "VAC Tag",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "VAC Tag",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "MA4 Tag",
+      "points": [
+        [
+          30,
+          -20
+        ],
+        [
+          31,
+          -20
+        ],
+        [
+          31,
+          20
+        ],
+        [
+          30,
+          20
+        ]
+      ],
+      "start": 40,
+      "end": 52
+    },
+    {
+      "op": "set_subcategory",
+      "name": "MA4 Tag",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "MA4 Tag",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "MA4 Tag",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "O2",
+      "domain": "pipe",
+      "system": "Other",
+      "solid": "Point",
+      "side": "back",
+      "diameter": 15,
+      "flow": "In"
+    },
+    {
+      "op": "add_connector",
+      "name": "VAC",
+      "domain": "pipe",
+      "system": "Other",
+      "solid": "Point",
+      "side": "left",
+      "diameter": 15,
+      "flow": "Out"
+    },
+    {
+      "op": "add_connector",
+      "name": "MA4",
+      "domain": "pipe",
+      "system": "Other",
+      "solid": "Point",
+      "side": "right",
+      "diameter": 15,
+      "flow": "In"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_PlumbingEq_ServicePoint_MedGas.png"
+    }
+  ],
+  "values": {
+    "Point 60 mm cube": {
+      "value": 60,
+      "source_status": "assumed",
+      "source": "symbolic connection point"
+    },
+    "Connectors O2, VAC, MA4": {
+      "value": 3,
+      "source_status": "assumed",
+      "source": "Revit QE4: pipes refuse Medical Equipment hosts"
+    }
   },
-  {
-   "op": "set_family_params",
-   "name": "family",
-   "shared": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Asset_Tag",
-   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cover_Level_m",
-   "guid": "8ea739e9-8540-52b1-94c8-31f8c3b68946",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Invert_In_m",
-   "guid": "c6a9407b-775b-5907-ad76-c8a50d749eb7",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Invert_Out_m",
-   "guid": "dfc4212d-23c3-50c9-8f96-8111e5c21fa8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Tank_Capacity_L",
-   "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "60_MedGas"
-  },
-  {
-   "op": "set_type_value",
-   "name": "60_MedGas/FMC_Cost_Unit",
-   "type": "60_MedGas",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "60_MedGas/FMC_Geometry_Stage",
-   "type": "60_MedGas",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "60_MedGas/IfcExportAs",
-   "type": "60_MedGas",
-   "param": "IfcExportAs",
-   "value": "IfcFlowTerminal"
-  },
-  {
-   "op": "set_type_value",
-   "name": "60_MedGas/Description",
-   "type": "60_MedGas",
-   "param": "Description",
-   "value": "Medical gas service point (O2, vacuum, medical air) inside a Medical Equipment host"
-  },
-  {
-   "op": "set_type_value",
-   "name": "60_MedGas/URL",
-   "type": "60_MedGas",
-   "param": "URL",
-   "value": "https://www.draeger.com/Content/Documents/Products/Terminal-Units-pi-9106572.pdf"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Medical Grey",
-   "color": [
-    201,
-    205,
-    210
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Medical Grey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_MedicalGrey",
-   "param": "Medical Grey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "White",
-   "color": [
-    242,
-    242,
-    238
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "White Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_White",
-   "param": "White Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Yellow",
-   "color": [
-    242,
-    194,
-    48
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Yellow Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Yellow",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -31,
-     -30
-    ],
-    [
-     31,
-     -30
-    ],
-    [
-     31,
-     31
-    ],
-    [
-     -31,
-     31
-    ]
-   ],
-   "start": 0,
-   "end": 60
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Point",
-   "points": [
-    [
-     -30,
-     -30
-    ],
-    [
-     30,
-     -30
-    ],
-    [
-     30,
-     30
-    ],
-    [
-     -30,
-     30
-    ]
-   ],
-   "start": 0,
-   "end": 60
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Point",
-   "subcategory": "Medical Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Point",
-   "param": "Medical Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Point",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "O2 Tag",
-   "points": [
-    [
-     -20,
-     40
-    ],
-    [
-     20,
-     40
-    ],
-    [
-     20,
-     52
-    ],
-    [
-     -20,
-     52
-    ]
-   ],
-   "start": -31,
-   "end": -30,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "O2 Tag",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "O2 Tag",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "O2 Tag",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "VAC Tag",
-   "points": [
-    [
-     -31,
-     -20
-    ],
-    [
-     -30,
-     -20
-    ],
-    [
-     -30,
-     20
-    ],
-    [
-     -31,
-     20
-    ]
-   ],
-   "start": 40,
-   "end": 52
-  },
-  {
-   "op": "set_subcategory",
-   "name": "VAC Tag",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "VAC Tag",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "VAC Tag",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "MA4 Tag",
-   "points": [
-    [
-     30,
-     -20
-    ],
-    [
-     31,
-     -20
-    ],
-    [
-     31,
-     20
-    ],
-    [
-     30,
-     20
-    ]
-   ],
-   "start": 40,
-   "end": 52
-  },
-  {
-   "op": "set_subcategory",
-   "name": "MA4 Tag",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "MA4 Tag",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "MA4 Tag",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "O2",
-   "domain": "pipe",
-   "system": "Other",
-   "solid": "Point",
-   "side": "back",
-   "diameter": 15,
-   "flow": "In"
-  },
-  {
-   "op": "add_connector",
-   "name": "VAC",
-   "domain": "pipe",
-   "system": "Other",
-   "solid": "Point",
-   "side": "left",
-   "diameter": 15,
-   "flow": "Out"
-  },
-  {
-   "op": "add_connector",
-   "name": "MA4",
-   "domain": "pipe",
-   "system": "Other",
-   "solid": "Point",
-   "side": "right",
-   "diameter": 15,
-   "flow": "In"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_PlumbingEq_ServicePoint_MedGas.png"
+  "checks": {
+    "keynote_exempt": "nested service point, never scheduled; the host carries the keynote"
   }
- ],
- "values": {
-  "Point 60 mm cube": {
-   "value": 60,
-   "source_status": "assumed",
-   "source": "symbolic connection point"
-  },
-  "Connectors O2, VAC, MA4": {
-   "value": 3,
-   "source_status": "assumed",
-   "source": "Revit QE4: pipes refuse Medical Equipment hosts"
-  }
- },
- "checks": {
-  "keynote_exempt": "nested service point, never scheduled; the host carries the keynote"
- }
 }

@@ -1,7 +1,9 @@
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Architecture;
 using Autodesk.Revit.UI;
+using Newtonsoft.Json.Linq;
 using RevitMCPCommandSet.Models.DataExtraction;
+using RevitMCPCommandSet.Services.Fmc;
 using RevitMCPSDK.API.Interfaces;
 
 namespace RevitMCPCommandSet.Services.DataExtraction
@@ -12,6 +14,8 @@ namespace RevitMCPCommandSet.Services.DataExtraction
         private bool _includeNotEnclosedRooms;
 
         public ExportRoomDataResult ResultInfo { get; private set; }
+        public JObject Parameters { get; set; } = new JObject();
+        public string Error { get; private set; }
         public bool TaskCompleted { get; private set; }
         private readonly ManualResetEvent _resetEvent = new ManualResetEvent(false);
 
@@ -26,14 +30,16 @@ namespace RevitMCPCommandSet.Services.DataExtraction
         public bool WaitForCompletion(int timeoutMilliseconds = 10000)
         {
             _resetEvent.Reset();
-        return _resetEvent.WaitOne(timeoutMilliseconds);
+        return FmcBusy.Wait(_resetEvent, timeoutMilliseconds);
         }
 
         public void Execute(UIApplication app)
         {
+            Error = null;
             try
             {
-                var doc = app.ActiveUIDocument.Document;
+                using var target = FmcTarget.Resolve(app, Parameters, mayOpen: false);
+                var doc = target.Doc;
                 var rooms = new List<RoomDataModel>();
                 double totalArea = 0;
 
@@ -89,6 +95,7 @@ namespace RevitMCPCommandSet.Services.DataExtraction
             }
             catch (Exception ex)
             {
+                Error = ex.Message;
                 ResultInfo = new ExportRoomDataResult
                 {
                     Success = false,

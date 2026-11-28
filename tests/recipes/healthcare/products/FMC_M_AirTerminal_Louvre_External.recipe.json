@@ -1,1552 +1,1556 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_M_AirTerminal_Louvre_External",
- "template": "Metric Generic Model.rft",
- "about": "Modelled as a generic product: powder-coated frame and mullion, drainable blades with lips, bird mesh behind, projecting sill with drip, galvanised sleeve into the wall, fixing lugs. External face toward -y. Reference: query: louvre external air terminals hospital; images: https://www.google.com/search?tbm=isch&q=louvre+external+air+terminals+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Air Terminals"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Airflow_Ls",
-   "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "600x600_Weather"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_Weather/FMC_Cost_Unit",
-   "type": "600x600_Weather",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_Weather/FMC_Geometry_Stage",
-   "type": "600x600_Weather",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_Weather/IfcExportAs",
-   "type": "600x600_Weather",
-   "param": "IfcExportAs",
-   "value": "IfcAirTerminal"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_Weather/Description",
-   "type": "600x600_Weather",
-   "param": "Description",
-   "value": "External weather louvre 600 x 600 to 1200 x 600, drainable inclined blades, centre mullion, bird mesh, drainage sill and drip, wall sleeve"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_Weather/Keynote",
-   "type": "600x600_Weather",
-   "param": "Keynote",
-   "value": "H.ATD_07"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_Weather/FMC_Keynote_Code",
-   "type": "600x600_Weather",
-   "param": "FMC_Keynote_Code",
-   "value": "H.ATD_07"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_Weather/FMC_Code_Description",
-   "type": "600x600_Weather",
-   "param": "FMC_Code_Description",
-   "value": "Louvre External: Weather louvre"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_Weather/FMC_Code_Group",
-   "type": "600x600_Weather",
-   "param": "FMC_Code_Group",
-   "value": "H.ATD"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_Weather/FMC_Role_Code",
-   "type": "600x600_Weather",
-   "param": "FMC_Role_Code",
-   "value": "M"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_Weather/Default Elevation",
-   "type": "600x600_Weather",
-   "param": "Default Elevation",
-   "value": 2400
-  },
-  {
-   "op": "add_type",
-   "name": "1200x600_Weather"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x600_Weather/FMC_Cost_Unit",
-   "type": "1200x600_Weather",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x600_Weather/FMC_Geometry_Stage",
-   "type": "1200x600_Weather",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x600_Weather/IfcExportAs",
-   "type": "1200x600_Weather",
-   "param": "IfcExportAs",
-   "value": "IfcAirTerminal"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x600_Weather/Description",
-   "type": "1200x600_Weather",
-   "param": "Description",
-   "value": "External weather louvre 600 x 600 to 1200 x 600, drainable inclined blades, centre mullion, bird mesh, drainage sill and drip, wall sleeve"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x600_Weather/Keynote",
-   "type": "1200x600_Weather",
-   "param": "Keynote",
-   "value": "H.ATD_07"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x600_Weather/FMC_Keynote_Code",
-   "type": "1200x600_Weather",
-   "param": "FMC_Keynote_Code",
-   "value": "H.ATD_07"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x600_Weather/FMC_Code_Description",
-   "type": "1200x600_Weather",
-   "param": "FMC_Code_Description",
-   "value": "Louvre External: Weather louvre"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x600_Weather/FMC_Code_Group",
-   "type": "1200x600_Weather",
-   "param": "FMC_Code_Group",
-   "value": "H.ATD"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x600_Weather/FMC_Role_Code",
-   "type": "1200x600_Weather",
-   "param": "FMC_Role_Code",
-   "value": "M"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x600_Weather/Default Elevation",
-   "type": "1200x600_Weather",
-   "param": "Default Elevation",
-   "value": 2400
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Pcg",
-   "color": [
-    158,
-    164,
-    170
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Pcg Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Aluminium_PowderCoated",
-   "param": "Pcg Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Mesh",
-   "color": [
-    94,
-    106,
-    115
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Mesh Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_InsectMesh_Fibreglass",
-   "param": "Mesh Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Galv",
-   "color": [
-    183,
-    188,
-    192
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Galv Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Duct_Galvanised",
-   "param": "Galv Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -620,
-     -156
-    ],
-    [
-     620,
-     -156
-    ],
-    [
-     620,
-     250
-    ],
-    [
-     -620,
-     250
-    ]
-   ],
-   "start": -35,
-   "end": 600
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Frame Top",
-   "points": [
-    [
-     -600,
-     550
-    ],
-    [
-     600,
-     550
-    ],
-    [
-     600,
-     600
-    ],
-    [
-     -600,
-     600
-    ]
-   ],
-   "start": 0,
-   "end": 100,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Frame Top",
-   "subcategory": "Pcg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Frame Top",
-   "param": "Pcg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Frame Top",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Frame Bottom",
-   "points": [
-    [
-     -600,
-     0
-    ],
-    [
-     600,
-     0
-    ],
-    [
-     600,
-     50
-    ],
-    [
-     -600,
-     50
-    ]
-   ],
-   "start": 0,
-   "end": 100,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Frame Bottom",
-   "subcategory": "Pcg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Frame Bottom",
-   "param": "Pcg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Frame Bottom",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Frame Left",
-   "points": [
-    [
-     -600,
-     50
-    ],
-    [
-     -550,
-     50
-    ],
-    [
-     -550,
-     550
-    ],
-    [
-     -600,
-     550
-    ]
-   ],
-   "start": 0,
-   "end": 100,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Frame Left",
-   "subcategory": "Pcg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Frame Left",
-   "param": "Pcg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Frame Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Frame Right",
-   "points": [
-    [
-     550,
-     50
-    ],
-    [
-     600,
-     50
-    ],
-    [
-     600,
-     550
-    ],
-    [
-     550,
-     550
-    ]
-   ],
-   "start": 0,
-   "end": 100,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Frame Right",
-   "subcategory": "Pcg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Frame Right",
-   "param": "Pcg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Frame Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mullion",
-   "points": [
-    [
-     -15,
-     50
-    ],
-    [
-     15,
-     50
-    ],
-    [
-     15,
-     550
-    ],
-    [
-     -15,
-     550
-    ]
-   ],
-   "start": 0,
-   "end": 100,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mullion",
-   "subcategory": "Pcg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mullion",
-   "param": "Pcg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mullion",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Blade 1",
-   "points": [
-    [
-     -98,
-     0
-    ],
-    [
-     -90,
-     0
-    ],
-    [
-     -90,
-     10
-    ],
-    [
-     -12,
-     54
-    ],
-    [
-     -12,
-     66
-    ],
-    [
-     -98,
-     18
-    ]
-   ],
-   "start": -550,
-   "end": 550,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Blade 1",
-   "subcategory": "Pcg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blade 1",
-   "param": "Pcg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blade 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Blade 2",
-   "points": [
-    [
-     -98,
-     47
-    ],
-    [
-     -90,
-     47
-    ],
-    [
-     -90,
-     57
-    ],
-    [
-     -12,
-     101
-    ],
-    [
-     -12,
-     113
-    ],
-    [
-     -98,
-     65
-    ]
-   ],
-   "start": -550,
-   "end": 550,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Blade 2",
-   "subcategory": "Pcg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blade 2",
-   "param": "Pcg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blade 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Blade 3",
-   "points": [
-    [
-     -98,
-     94
-    ],
-    [
-     -90,
-     94
-    ],
-    [
-     -90,
-     104
-    ],
-    [
-     -12,
-     148
-    ],
-    [
-     -12,
-     160
-    ],
-    [
-     -98,
-     112
-    ]
-   ],
-   "start": -550,
-   "end": 550,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Blade 3",
-   "subcategory": "Pcg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blade 3",
-   "param": "Pcg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blade 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Blade 4",
-   "points": [
-    [
-     -98,
-     141
-    ],
-    [
-     -90,
-     141
-    ],
-    [
-     -90,
-     151
-    ],
-    [
-     -12,
-     195
-    ],
-    [
-     -12,
-     207
-    ],
-    [
-     -98,
-     159
-    ]
-   ],
-   "start": -550,
-   "end": 550,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Blade 4",
-   "subcategory": "Pcg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blade 4",
-   "param": "Pcg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blade 4",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Blade 5",
-   "points": [
-    [
-     -98,
-     188
-    ],
-    [
-     -90,
-     188
-    ],
-    [
-     -90,
-     198
-    ],
-    [
-     -12,
-     242
-    ],
-    [
-     -12,
-     254
-    ],
-    [
-     -98,
-     206
-    ]
-   ],
-   "start": -550,
-   "end": 550,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Blade 5",
-   "subcategory": "Pcg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blade 5",
-   "param": "Pcg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blade 5",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Blade 6",
-   "points": [
-    [
-     -98,
-     235
-    ],
-    [
-     -90,
-     235
-    ],
-    [
-     -90,
-     245
-    ],
-    [
-     -12,
-     289
-    ],
-    [
-     -12,
-     301
-    ],
-    [
-     -98,
-     253
-    ]
-   ],
-   "start": -550,
-   "end": 550,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Blade 6",
-   "subcategory": "Pcg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blade 6",
-   "param": "Pcg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blade 6",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Blade 7",
-   "points": [
-    [
-     -98,
-     282
-    ],
-    [
-     -90,
-     282
-    ],
-    [
-     -90,
-     292
-    ],
-    [
-     -12,
-     336
-    ],
-    [
-     -12,
-     348
-    ],
-    [
-     -98,
-     300
-    ]
-   ],
-   "start": -550,
-   "end": 550,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Blade 7",
-   "subcategory": "Pcg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blade 7",
-   "param": "Pcg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blade 7",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Blade 8",
-   "points": [
-    [
-     -98,
-     329
-    ],
-    [
-     -90,
-     329
-    ],
-    [
-     -90,
-     339
-    ],
-    [
-     -12,
-     383
-    ],
-    [
-     -12,
-     395
-    ],
-    [
-     -98,
-     347
-    ]
-   ],
-   "start": -550,
-   "end": 550,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Blade 8",
-   "subcategory": "Pcg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blade 8",
-   "param": "Pcg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blade 8",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Blade 9",
-   "points": [
-    [
-     -98,
-     376
-    ],
-    [
-     -90,
-     376
-    ],
-    [
-     -90,
-     386
-    ],
-    [
-     -12,
-     430
-    ],
-    [
-     -12,
-     442
-    ],
-    [
-     -98,
-     394
-    ]
-   ],
-   "start": -550,
-   "end": 550,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Blade 9",
-   "subcategory": "Pcg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blade 9",
-   "param": "Pcg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blade 9",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Blade 10",
-   "points": [
-    [
-     -98,
-     423
-    ],
-    [
-     -90,
-     423
-    ],
-    [
-     -90,
-     433
-    ],
-    [
-     -12,
-     477
-    ],
-    [
-     -12,
-     489
-    ],
-    [
-     -98,
-     441
-    ]
-   ],
-   "start": -550,
-   "end": 550,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Blade 10",
-   "subcategory": "Pcg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blade 10",
-   "param": "Pcg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blade 10",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Blade 11",
-   "points": [
-    [
-     -98,
-     470
-    ],
-    [
-     -90,
-     470
-    ],
-    [
-     -90,
-     480
-    ],
-    [
-     -12,
-     524
-    ],
-    [
-     -12,
-     536
-    ],
-    [
-     -98,
-     488
-    ]
-   ],
-   "start": -550,
-   "end": 550,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Blade 11",
-   "subcategory": "Pcg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blade 11",
-   "param": "Pcg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blade 11",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bird Mesh",
-   "points": [
-    [
-     -550,
-     50
-    ],
-    [
-     550,
-     50
-    ],
-    [
-     550,
-     550
-    ],
-    [
-     -550,
-     550
-    ]
-   ],
-   "start": 4,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bird Mesh",
-   "subcategory": "Mesh"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bird Mesh",
-   "param": "Mesh Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bird Mesh",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drainage Sill",
-   "points": [
-    [
-     -610,
-     -150
-    ],
-    [
-     610,
-     -150
-    ],
-    [
-     610,
-     0
-    ],
-    [
-     -610,
-     0
-    ]
-   ],
-   "start": -15,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drainage Sill",
-   "subcategory": "Pcg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drainage Sill",
-   "param": "Pcg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drainage Sill",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drip Lip",
-   "points": [
-    [
-     -610,
-     -35
-    ],
-    [
-     610,
-     -35
-    ],
-    [
-     610,
-     0
-    ],
-    [
-     -610,
-     0
-    ]
-   ],
-   "start": 150,
-   "end": 156,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drip Lip",
-   "subcategory": "Pcg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drip Lip",
-   "param": "Pcg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drip Lip",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Wall Sleeve",
-   "points": [
-    [
-     -550,
-     0
-    ],
-    [
-     550,
-     0
-    ],
-    [
-     550,
-     250
-    ],
-    [
-     -550,
-     250
-    ]
-   ],
-   "start": 50,
-   "end": 550
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Wall Sleeve",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Wall Sleeve",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Wall Sleeve",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fixing Lug 1",
-   "points": [
-    [
-     -620,
-     100
-    ],
-    [
-     -600,
-     100
-    ],
-    [
-     -600,
-     140
-    ],
-    [
-     -620,
-     140
-    ]
-   ],
-   "start": 0,
-   "end": 40,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fixing Lug 1",
-   "subcategory": "Pcg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fixing Lug 1",
-   "param": "Pcg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fixing Lug 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fixing Lug 2",
-   "points": [
-    [
-     600,
-     100
-    ],
-    [
-     620,
-     100
-    ],
-    [
-     620,
-     140
-    ],
-    [
-     600,
-     140
-    ]
-   ],
-   "start": 0,
-   "end": 40,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fixing Lug 2",
-   "subcategory": "Pcg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fixing Lug 2",
-   "param": "Pcg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fixing Lug 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "Intake",
-   "domain": "duct",
-   "system": "SupplyAir",
-   "solid": "Wall Sleeve",
-   "side": "back",
-   "width": 1100,
-   "height": 500,
-   "flow": "Out"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_AirTerminal_Louvre_External.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_M_AirTerminal_Louvre_External",
+  "template": "Metric Generic Model.rft",
+  "about": "Modelled as a generic product: powder-coated frame and mullion, drainable blades with lips, bird mesh behind, projecting sill with drip, galvanised sleeve into the wall, fixing lugs. External face toward -y. Reference: query: louvre external air terminals hospital; images: https://www.google.com/search?tbm=isch&q=louvre+external+air+terminals+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Air Terminals"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Airflow_Ls",
+      "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "600x600_Weather"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_Weather/FMC_Cost_Unit",
+      "type": "600x600_Weather",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_Weather/FMC_Geometry_Stage",
+      "type": "600x600_Weather",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_Weather/IfcExportAs",
+      "type": "600x600_Weather",
+      "param": "IfcExportAs",
+      "value": "IfcAirTerminal"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_Weather/Description",
+      "type": "600x600_Weather",
+      "param": "Description",
+      "value": "External weather louvre 600 x 600 to 1200 x 600, drainable inclined blades, centre mullion, bird mesh, drainage sill and drip, wall sleeve"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_Weather/Keynote",
+      "type": "600x600_Weather",
+      "param": "Keynote",
+      "value": "H.ATD_07"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_Weather/FMC_Keynote_Code",
+      "type": "600x600_Weather",
+      "param": "FMC_Keynote_Code",
+      "value": "H.ATD_07"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_Weather/FMC_Code_Description",
+      "type": "600x600_Weather",
+      "param": "FMC_Code_Description",
+      "value": "Louvre External: Weather louvre"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_Weather/FMC_Code_Group",
+      "type": "600x600_Weather",
+      "param": "FMC_Code_Group",
+      "value": "H.ATD"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_Weather/FMC_Role_Code",
+      "type": "600x600_Weather",
+      "param": "FMC_Role_Code",
+      "value": "M"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_Weather/Default Elevation",
+      "type": "600x600_Weather",
+      "param": "Default Elevation",
+      "value": 2400
+    },
+    {
+      "op": "add_type",
+      "name": "1200x600_Weather"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x600_Weather/FMC_Cost_Unit",
+      "type": "1200x600_Weather",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x600_Weather/FMC_Geometry_Stage",
+      "type": "1200x600_Weather",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x600_Weather/IfcExportAs",
+      "type": "1200x600_Weather",
+      "param": "IfcExportAs",
+      "value": "IfcAirTerminal"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x600_Weather/Description",
+      "type": "1200x600_Weather",
+      "param": "Description",
+      "value": "External weather louvre 600 x 600 to 1200 x 600, drainable inclined blades, centre mullion, bird mesh, drainage sill and drip, wall sleeve"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x600_Weather/Keynote",
+      "type": "1200x600_Weather",
+      "param": "Keynote",
+      "value": "H.ATD_07"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x600_Weather/FMC_Keynote_Code",
+      "type": "1200x600_Weather",
+      "param": "FMC_Keynote_Code",
+      "value": "H.ATD_07"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x600_Weather/FMC_Code_Description",
+      "type": "1200x600_Weather",
+      "param": "FMC_Code_Description",
+      "value": "Louvre External: Weather louvre"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x600_Weather/FMC_Code_Group",
+      "type": "1200x600_Weather",
+      "param": "FMC_Code_Group",
+      "value": "H.ATD"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x600_Weather/FMC_Role_Code",
+      "type": "1200x600_Weather",
+      "param": "FMC_Role_Code",
+      "value": "M"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x600_Weather/Default Elevation",
+      "type": "1200x600_Weather",
+      "param": "Default Elevation",
+      "value": 2400
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Pcg",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Pcg Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Aluminium_PowderCoated",
+      "param": "Pcg Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Mesh",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Mesh Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_InsectMesh_Fibreglass",
+      "param": "Mesh Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Galv",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Galv Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Duct_Galvanised",
+      "param": "Galv Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -620,
+          -156
+        ],
+        [
+          620,
+          -156
+        ],
+        [
+          620,
+          250
+        ],
+        [
+          -620,
+          250
+        ]
+      ],
+      "start": -35,
+      "end": 600
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Frame Top",
+      "points": [
+        [
+          -600,
+          550
+        ],
+        [
+          600,
+          550
+        ],
+        [
+          600,
+          600
+        ],
+        [
+          -600,
+          600
+        ]
+      ],
+      "start": 0,
+      "end": 100,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Frame Top",
+      "subcategory": "Pcg"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Frame Top",
+      "param": "Pcg Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Frame Top",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Frame Bottom",
+      "points": [
+        [
+          -600,
+          0
+        ],
+        [
+          600,
+          0
+        ],
+        [
+          600,
+          50
+        ],
+        [
+          -600,
+          50
+        ]
+      ],
+      "start": 0,
+      "end": 100,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Frame Bottom",
+      "subcategory": "Pcg"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Frame Bottom",
+      "param": "Pcg Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Frame Bottom",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Frame Left",
+      "points": [
+        [
+          -600,
+          50
+        ],
+        [
+          -550,
+          50
+        ],
+        [
+          -550,
+          550
+        ],
+        [
+          -600,
+          550
+        ]
+      ],
+      "start": 0,
+      "end": 100,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Frame Left",
+      "subcategory": "Pcg"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Frame Left",
+      "param": "Pcg Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Frame Left",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Frame Right",
+      "points": [
+        [
+          550,
+          50
+        ],
+        [
+          600,
+          50
+        ],
+        [
+          600,
+          550
+        ],
+        [
+          550,
+          550
+        ]
+      ],
+      "start": 0,
+      "end": 100,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Frame Right",
+      "subcategory": "Pcg"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Frame Right",
+      "param": "Pcg Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Frame Right",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Mullion",
+      "points": [
+        [
+          -15,
+          50
+        ],
+        [
+          15,
+          50
+        ],
+        [
+          15,
+          550
+        ],
+        [
+          -15,
+          550
+        ]
+      ],
+      "start": 0,
+      "end": 100,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Mullion",
+      "subcategory": "Pcg"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Mullion",
+      "param": "Pcg Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Mullion",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Blade 1",
+      "points": [
+        [
+          -98,
+          0
+        ],
+        [
+          -90,
+          0
+        ],
+        [
+          -90,
+          10
+        ],
+        [
+          -12,
+          54
+        ],
+        [
+          -12,
+          66
+        ],
+        [
+          -98,
+          18
+        ]
+      ],
+      "start": -550,
+      "end": 550,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Blade 1",
+      "subcategory": "Pcg"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Blade 1",
+      "param": "Pcg Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Blade 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Blade 2",
+      "points": [
+        [
+          -98,
+          47
+        ],
+        [
+          -90,
+          47
+        ],
+        [
+          -90,
+          57
+        ],
+        [
+          -12,
+          101
+        ],
+        [
+          -12,
+          113
+        ],
+        [
+          -98,
+          65
+        ]
+      ],
+      "start": -550,
+      "end": 550,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Blade 2",
+      "subcategory": "Pcg"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Blade 2",
+      "param": "Pcg Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Blade 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Blade 3",
+      "points": [
+        [
+          -98,
+          94
+        ],
+        [
+          -90,
+          94
+        ],
+        [
+          -90,
+          104
+        ],
+        [
+          -12,
+          148
+        ],
+        [
+          -12,
+          160
+        ],
+        [
+          -98,
+          112
+        ]
+      ],
+      "start": -550,
+      "end": 550,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Blade 3",
+      "subcategory": "Pcg"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Blade 3",
+      "param": "Pcg Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Blade 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Blade 4",
+      "points": [
+        [
+          -98,
+          141
+        ],
+        [
+          -90,
+          141
+        ],
+        [
+          -90,
+          151
+        ],
+        [
+          -12,
+          195
+        ],
+        [
+          -12,
+          207
+        ],
+        [
+          -98,
+          159
+        ]
+      ],
+      "start": -550,
+      "end": 550,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Blade 4",
+      "subcategory": "Pcg"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Blade 4",
+      "param": "Pcg Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Blade 4",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Blade 5",
+      "points": [
+        [
+          -98,
+          188
+        ],
+        [
+          -90,
+          188
+        ],
+        [
+          -90,
+          198
+        ],
+        [
+          -12,
+          242
+        ],
+        [
+          -12,
+          254
+        ],
+        [
+          -98,
+          206
+        ]
+      ],
+      "start": -550,
+      "end": 550,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Blade 5",
+      "subcategory": "Pcg"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Blade 5",
+      "param": "Pcg Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Blade 5",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Blade 6",
+      "points": [
+        [
+          -98,
+          235
+        ],
+        [
+          -90,
+          235
+        ],
+        [
+          -90,
+          245
+        ],
+        [
+          -12,
+          289
+        ],
+        [
+          -12,
+          301
+        ],
+        [
+          -98,
+          253
+        ]
+      ],
+      "start": -550,
+      "end": 550,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Blade 6",
+      "subcategory": "Pcg"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Blade 6",
+      "param": "Pcg Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Blade 6",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Blade 7",
+      "points": [
+        [
+          -98,
+          282
+        ],
+        [
+          -90,
+          282
+        ],
+        [
+          -90,
+          292
+        ],
+        [
+          -12,
+          336
+        ],
+        [
+          -12,
+          348
+        ],
+        [
+          -98,
+          300
+        ]
+      ],
+      "start": -550,
+      "end": 550,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Blade 7",
+      "subcategory": "Pcg"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Blade 7",
+      "param": "Pcg Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Blade 7",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Blade 8",
+      "points": [
+        [
+          -98,
+          329
+        ],
+        [
+          -90,
+          329
+        ],
+        [
+          -90,
+          339
+        ],
+        [
+          -12,
+          383
+        ],
+        [
+          -12,
+          395
+        ],
+        [
+          -98,
+          347
+        ]
+      ],
+      "start": -550,
+      "end": 550,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Blade 8",
+      "subcategory": "Pcg"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Blade 8",
+      "param": "Pcg Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Blade 8",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Blade 9",
+      "points": [
+        [
+          -98,
+          376
+        ],
+        [
+          -90,
+          376
+        ],
+        [
+          -90,
+          386
+        ],
+        [
+          -12,
+          430
+        ],
+        [
+          -12,
+          442
+        ],
+        [
+          -98,
+          394
+        ]
+      ],
+      "start": -550,
+      "end": 550,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Blade 9",
+      "subcategory": "Pcg"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Blade 9",
+      "param": "Pcg Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Blade 9",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Blade 10",
+      "points": [
+        [
+          -98,
+          423
+        ],
+        [
+          -90,
+          423
+        ],
+        [
+          -90,
+          433
+        ],
+        [
+          -12,
+          477
+        ],
+        [
+          -12,
+          489
+        ],
+        [
+          -98,
+          441
+        ]
+      ],
+      "start": -550,
+      "end": 550,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Blade 10",
+      "subcategory": "Pcg"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Blade 10",
+      "param": "Pcg Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Blade 10",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Blade 11",
+      "points": [
+        [
+          -98,
+          470
+        ],
+        [
+          -90,
+          470
+        ],
+        [
+          -90,
+          480
+        ],
+        [
+          -12,
+          524
+        ],
+        [
+          -12,
+          536
+        ],
+        [
+          -98,
+          488
+        ]
+      ],
+      "start": -550,
+      "end": 550,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Blade 11",
+      "subcategory": "Pcg"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Blade 11",
+      "param": "Pcg Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Blade 11",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bird Mesh",
+      "points": [
+        [
+          -550,
+          50
+        ],
+        [
+          550,
+          50
+        ],
+        [
+          550,
+          550
+        ],
+        [
+          -550,
+          550
+        ]
+      ],
+      "start": 4,
+      "end": 6,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bird Mesh",
+      "subcategory": "Mesh"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bird Mesh",
+      "param": "Mesh Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bird Mesh",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Drainage Sill",
+      "points": [
+        [
+          -610,
+          -150
+        ],
+        [
+          610,
+          -150
+        ],
+        [
+          610,
+          0
+        ],
+        [
+          -610,
+          0
+        ]
+      ],
+      "start": -15,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Drainage Sill",
+      "subcategory": "Pcg"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Drainage Sill",
+      "param": "Pcg Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Drainage Sill",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Drip Lip",
+      "points": [
+        [
+          -610,
+          -35
+        ],
+        [
+          610,
+          -35
+        ],
+        [
+          610,
+          0
+        ],
+        [
+          -610,
+          0
+        ]
+      ],
+      "start": 150,
+      "end": 156,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Drip Lip",
+      "subcategory": "Pcg"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Drip Lip",
+      "param": "Pcg Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Drip Lip",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Wall Sleeve",
+      "points": [
+        [
+          -550,
+          0
+        ],
+        [
+          550,
+          0
+        ],
+        [
+          550,
+          250
+        ],
+        [
+          -550,
+          250
+        ]
+      ],
+      "start": 50,
+      "end": 550
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Wall Sleeve",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Wall Sleeve",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Wall Sleeve",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fixing Lug 1",
+      "points": [
+        [
+          -620,
+          100
+        ],
+        [
+          -600,
+          100
+        ],
+        [
+          -600,
+          140
+        ],
+        [
+          -620,
+          140
+        ]
+      ],
+      "start": 0,
+      "end": 40,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fixing Lug 1",
+      "subcategory": "Pcg"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fixing Lug 1",
+      "param": "Pcg Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fixing Lug 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fixing Lug 2",
+      "points": [
+        [
+          600,
+          100
+        ],
+        [
+          620,
+          100
+        ],
+        [
+          620,
+          140
+        ],
+        [
+          600,
+          140
+        ]
+      ],
+      "start": 0,
+      "end": 40,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fixing Lug 2",
+      "subcategory": "Pcg"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fixing Lug 2",
+      "param": "Pcg Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fixing Lug 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "Intake",
+      "domain": "duct",
+      "system": "SupplyAir",
+      "solid": "Wall Sleeve",
+      "side": "back",
+      "width": 1100,
+      "height": 500,
+      "flow": "Out"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_AirTerminal_Louvre_External.png"
+    }
+  ],
+  "values": {
+    "Face 1200 x 600 mm, 100 deep": {
+      "value": "1200x600x100",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Blade pitch 47 mm, 45 deg": {
+      "value": 47,
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Free area 50 %, class B rain defence at 1 m/s": {
+      "value": "50%",
+      "source_status": "assumed",
+      "source": "EN 13030 class, typical"
+    }
   }
- ],
- "values": {
-  "Face 1200 x 600 mm, 100 deep": {
-   "value": "1200x600x100",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Blade pitch 47 mm, 45 deg": {
-   "value": 47,
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Free area 50 %, class B rain defence at 1 m/s": {
-   "value": "50%",
-   "source_status": "assumed",
-   "source": "EN 13030 class, typical"
-  }
- }
 }

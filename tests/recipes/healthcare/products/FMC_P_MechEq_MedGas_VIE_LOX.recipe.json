@@ -1,3361 +1,3374 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_P_MechEq_MedGas_VIE_LOX",
- "template": "Metric Mechanical Equipment.rft",
- "about": "VIE modelled as a generic product: plinth, vessel with dished heads and four legs, valve manifold with safety valves, top vent, liquid line, three star-finned vaporisers with headers, supply pipe, fill cabinet with coupling, hazard label, contents and pressure gauges; the BCGA CP 36 separation zone as a Clearance Operation solid. 1500 l drawn; 3000 l shares it. Reference: query: medical gas vie lox mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=medical+gas+vie+lox+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Mechanical Equipment"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cooling_Capacity_kW",
-   "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cooling_Capacity_BTUh",
-   "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Airflow_Ls",
-   "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Refrigerant",
-   "guid": "a46c59d0-d719-583b-99c0-074994d01603",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Asset_Tag",
-   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Serial_Number",
-   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Install_Date",
-   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Warranty_End",
-   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Maintenance_Interval_Months",
-   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_OM_Link",
-   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lift_Weight_kg",
-   "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Mounting_Height_mm",
-   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Power_W",
-   "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Power_W_2",
-   "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Controller_ID",
-   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Type",
-   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Signal",
-   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Protocol",
-   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Tank_Capacity_L",
-   "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "1500L_VIE"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500L_VIE/FMC_Cost_Unit",
-   "type": "1500L_VIE",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500L_VIE/FMC_Geometry_Stage",
-   "type": "1500L_VIE",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500L_VIE/IfcExportAs",
-   "type": "1500L_VIE",
-   "param": "IfcExportAs",
-   "value": "IfcTank"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500L_VIE/Description",
-   "type": "1500L_VIE",
-   "param": "Description",
-   "value": "Liquid oxygen VIE (vacuum insulated evaporator) 1500 l, vertical vessel on legs with valve manifold, contents and pressure gauges, three finned ambient vaporisers, fill cabinet, on a concrete plinth; safety-distance zone as a solid"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500L_VIE/Keynote",
-   "type": "1500L_VIE",
-   "param": "Keynote",
-   "value": "P.MGP_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500L_VIE/FMC_Keynote_Code",
-   "type": "1500L_VIE",
-   "param": "FMC_Keynote_Code",
-   "value": "P.MGP_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500L_VIE/FMC_Code_Description",
-   "type": "1500L_VIE",
-   "param": "FMC_Code_Description",
-   "value": "MedGas VIE LOX: Liquid oxygen VIE tank with safety distances solid"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500L_VIE/FMC_Code_Group",
-   "type": "1500L_VIE",
-   "param": "FMC_Code_Group",
-   "value": "P.MGP"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500L_VIE/FMC_Role_Code",
-   "type": "1500L_VIE",
-   "param": "FMC_Role_Code",
-   "value": "P"
-  },
-  {
-   "op": "add_type",
-   "name": "3000L_VIE"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000L_VIE/FMC_Cost_Unit",
-   "type": "3000L_VIE",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000L_VIE/FMC_Geometry_Stage",
-   "type": "3000L_VIE",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000L_VIE/IfcExportAs",
-   "type": "3000L_VIE",
-   "param": "IfcExportAs",
-   "value": "IfcTank"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000L_VIE/Description",
-   "type": "3000L_VIE",
-   "param": "Description",
-   "value": "Liquid oxygen VIE (vacuum insulated evaporator) 1500 l, vertical vessel on legs with valve manifold, contents and pressure gauges, three finned ambient vaporisers, fill cabinet, on a concrete plinth; safety-distance zone as a solid"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000L_VIE/Keynote",
-   "type": "3000L_VIE",
-   "param": "Keynote",
-   "value": "P.MGP_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000L_VIE/FMC_Keynote_Code",
-   "type": "3000L_VIE",
-   "param": "FMC_Keynote_Code",
-   "value": "P.MGP_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000L_VIE/FMC_Code_Description",
-   "type": "3000L_VIE",
-   "param": "FMC_Code_Description",
-   "value": "MedGas VIE LOX: Liquid oxygen VIE tank with safety distances solid"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000L_VIE/FMC_Code_Group",
-   "type": "3000L_VIE",
-   "param": "FMC_Code_Group",
-   "value": "P.MGP"
-  },
-  {
-   "op": "set_type_value",
-   "name": "3000L_VIE/FMC_Role_Code",
-   "type": "3000L_VIE",
-   "param": "FMC_Role_Code",
-   "value": "P"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Concrete",
-   "color": [
-    217,
-    212,
-    199
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Concrete Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Concrete_Precast_Painted",
-   "param": "Concrete Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Epoxy White",
-   "color": [
-    237,
-    237,
-    232
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Epoxy White Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Steel_EpoxyCoated_White",
-   "param": "Epoxy White Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Painted Steel",
-   "color": [
-    61,
-    70,
-    80
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Painted Steel Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_SteelLTZ_Painted",
-   "param": "Painted Steel Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Stainless",
-   "color": [
-    180,
-    183,
-    186
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Stainless Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_StainlessSteel_Brushed",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Brass",
-   "color": [
-    200,
-    164,
-    74
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Brass Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Brass_Polished",
-   "param": "Brass Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Aluminium",
-   "color": [
-    192,
-    192,
-    192
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Aluminium Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Aluminium_Anodised_Silver",
-   "param": "Aluminium Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Copper",
-   "color": [
-    184,
-    115,
-    51
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Copper Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Copper_Pipe",
-   "param": "Copper Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Yellow",
-   "color": [
-    242,
-    194,
-    48
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Yellow Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Yellow",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Chrome",
-   "color": [
-    192,
-    195,
-    199
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Chrome Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Chrome_Polished",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "White",
-   "color": [
-    242,
-    242,
-    238
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "White Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_White",
-   "param": "White Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Clearance Operation",
-   "color": [
-    111,
-    168,
-    220
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -1300,
-     -1300
-    ],
-    [
-     2900,
-     -1300
-    ],
-    [
-     2900,
-     1300
-    ],
-    [
-     -1300,
-     1300
-    ]
-   ],
-   "start": 0,
-   "end": 3800
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Plinth",
-   "points": [
-    [
-     -1300,
-     -1300
-    ],
-    [
-     2900,
-     -1300
-    ],
-    [
-     2900,
-     1300
-    ],
-    [
-     -1300,
-     1300
-    ]
-   ],
-   "start": 0,
-   "end": 150
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Plinth",
-   "subcategory": "Concrete"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Plinth",
-   "param": "Concrete Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Plinth",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vessel Shell",
-   "points": [
-    [
-     720.0,
-     0.0
-    ],
-    [
-     695.47,
-     186.35
-    ],
-    [
-     623.54,
-     360.0
-    ],
-    [
-     509.12,
-     509.12
-    ],
-    [
-     360.0,
-     623.54
-    ],
-    [
-     186.35,
-     695.47
-    ],
-    [
-     0.0,
-     720.0
-    ],
-    [
-     -186.35,
-     695.47
-    ],
-    [
-     -360.0,
-     623.54
-    ],
-    [
-     -509.12,
-     509.12
-    ],
-    [
-     -623.54,
-     360.0
-    ],
-    [
-     -695.47,
-     186.35
-    ],
-    [
-     -720.0,
-     0.0
-    ],
-    [
-     -695.47,
-     -186.35
-    ],
-    [
-     -623.54,
-     -360.0
-    ],
-    [
-     -509.12,
-     -509.12
-    ],
-    [
-     -360.0,
-     -623.54
-    ],
-    [
-     -186.35,
-     -695.47
-    ],
-    [
-     -0.0,
-     -720.0
-    ],
-    [
-     186.35,
-     -695.47
-    ],
-    [
-     360.0,
-     -623.54
-    ],
-    [
-     509.12,
-     -509.12
-    ],
-    [
-     623.54,
-     -360.0
-    ],
-    [
-     695.47,
-     -186.35
-    ]
-   ],
-   "start": 770,
-   "end": 3480
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vessel Shell",
-   "subcategory": "Epoxy White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vessel Shell",
-   "param": "Epoxy White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vessel Shell",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Vessel Top Head",
-   "profile": [
-    [
-     0,
-     3480
-    ],
-    [
-     720,
-     3480
-    ],
-    [
-     612.0,
-     3558.0
-    ],
-    [
-     288.0,
-     3600
-    ],
-    [
-     0,
-     3600
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Epoxy White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vessel Top Head",
-   "param": "Epoxy White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vessel Top Head",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Vessel Bottom Head",
-   "profile": [
-    [
-     0,
-     650
-    ],
-    [
-     288.0,
-     650
-    ],
-    [
-     612.0,
-     728.0
-    ],
-    [
-     720,
-     770
-    ],
-    [
-     0,
-     770
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Epoxy White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vessel Bottom Head",
-   "param": "Epoxy White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vessel Bottom Head",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leg Front 1",
-   "points": [
-    [
-     -560,
-     -560
-    ],
-    [
-     -480,
-     -560
-    ],
-    [
-     -480,
-     -480
-    ],
-    [
-     -560,
-     -480
-    ]
-   ],
-   "start": 150,
-   "end": 900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leg Front 1",
-   "subcategory": "Painted Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leg Front 1",
-   "param": "Painted Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leg Front 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leg Front 2",
-   "points": [
-    [
-     480,
-     -560
-    ],
-    [
-     560,
-     -560
-    ],
-    [
-     560,
-     -480
-    ],
-    [
-     480,
-     -480
-    ]
-   ],
-   "start": 150,
-   "end": 900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leg Front 2",
-   "subcategory": "Painted Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leg Front 2",
-   "param": "Painted Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leg Front 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leg Back 1",
-   "points": [
-    [
-     -560,
-     480
-    ],
-    [
-     -480,
-     480
-    ],
-    [
-     -480,
-     560
-    ],
-    [
-     -560,
-     560
-    ]
-   ],
-   "start": 150,
-   "end": 900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leg Back 1",
-   "subcategory": "Painted Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leg Back 1",
-   "param": "Painted Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leg Back 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leg Back 2",
-   "points": [
-    [
-     480,
-     480
-    ],
-    [
-     560,
-     480
-    ],
-    [
-     560,
-     560
-    ],
-    [
-     480,
-     560
-    ]
-   ],
-   "start": 150,
-   "end": 900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leg Back 2",
-   "subcategory": "Painted Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leg Back 2",
-   "param": "Painted Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leg Back 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Valve Manifold",
-   "points": [
-    [
-     -300,
-     -820
-    ],
-    [
-     300,
-     -820
-    ],
-    [
-     300,
-     -720
-    ],
-    [
-     -300,
-     -720
-    ]
-   ],
-   "start": 1000,
-   "end": 1500
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Valve Manifold",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Valve Manifold",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Valve Manifold",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Safety Valve 1",
-   "points": [
-    [
-     -185.0,
-     -770.0
-    ],
-    [
-     -185.51,
-     -766.12
-    ],
-    [
-     -187.01,
-     -762.5
-    ],
-    [
-     -189.39,
-     -759.39
-    ],
-    [
-     -192.5,
-     -757.01
-    ],
-    [
-     -196.12,
-     -755.51
-    ],
-    [
-     -200.0,
-     -755.0
-    ],
-    [
-     -203.88,
-     -755.51
-    ],
-    [
-     -207.5,
-     -757.01
-    ],
-    [
-     -210.61,
-     -759.39
-    ],
-    [
-     -212.99,
-     -762.5
-    ],
-    [
-     -214.49,
-     -766.12
-    ],
-    [
-     -215.0,
-     -770.0
-    ],
-    [
-     -214.49,
-     -773.88
-    ],
-    [
-     -212.99,
-     -777.5
-    ],
-    [
-     -210.61,
-     -780.61
-    ],
-    [
-     -207.5,
-     -782.99
-    ],
-    [
-     -203.88,
-     -784.49
-    ],
-    [
-     -200.0,
-     -785.0
-    ],
-    [
-     -196.12,
-     -784.49
-    ],
-    [
-     -192.5,
-     -782.99
-    ],
-    [
-     -189.39,
-     -780.61
-    ],
-    [
-     -187.01,
-     -777.5
-    ],
-    [
-     -185.51,
-     -773.88
-    ]
-   ],
-   "start": 1500,
-   "end": 1620
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Safety Valve 1",
-   "subcategory": "Brass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Safety Valve 1",
-   "param": "Brass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Safety Valve 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Safety Valve 2",
-   "points": [
-    [
-     215.0,
-     -770.0
-    ],
-    [
-     214.49,
-     -766.12
-    ],
-    [
-     212.99,
-     -762.5
-    ],
-    [
-     210.61,
-     -759.39
-    ],
-    [
-     207.5,
-     -757.01
-    ],
-    [
-     203.88,
-     -755.51
-    ],
-    [
-     200.0,
-     -755.0
-    ],
-    [
-     196.12,
-     -755.51
-    ],
-    [
-     192.5,
-     -757.01
-    ],
-    [
-     189.39,
-     -759.39
-    ],
-    [
-     187.01,
-     -762.5
-    ],
-    [
-     185.51,
-     -766.12
-    ],
-    [
-     185.0,
-     -770.0
-    ],
-    [
-     185.51,
-     -773.88
-    ],
-    [
-     187.01,
-     -777.5
-    ],
-    [
-     189.39,
-     -780.61
-    ],
-    [
-     192.5,
-     -782.99
-    ],
-    [
-     196.12,
-     -784.49
-    ],
-    [
-     200.0,
-     -785.0
-    ],
-    [
-     203.88,
-     -784.49
-    ],
-    [
-     207.5,
-     -782.99
-    ],
-    [
-     210.61,
-     -780.61
-    ],
-    [
-     212.99,
-     -777.5
-    ],
-    [
-     214.49,
-     -773.88
-    ]
-   ],
-   "start": 1500,
-   "end": 1620
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Safety Valve 2",
-   "subcategory": "Brass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Safety Valve 2",
-   "param": "Brass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Safety Valve 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Top Vent",
-   "points": [
-    [
-     25.0,
-     0.0
-    ],
-    [
-     24.15,
-     6.47
-    ],
-    [
-     21.65,
-     12.5
-    ],
-    [
-     17.68,
-     17.68
-    ],
-    [
-     12.5,
-     21.65
-    ],
-    [
-     6.47,
-     24.15
-    ],
-    [
-     0.0,
-     25.0
-    ],
-    [
-     -6.47,
-     24.15
-    ],
-    [
-     -12.5,
-     21.65
-    ],
-    [
-     -17.68,
-     17.68
-    ],
-    [
-     -21.65,
-     12.5
-    ],
-    [
-     -24.15,
-     6.47
-    ],
-    [
-     -25.0,
-     0.0
-    ],
-    [
-     -24.15,
-     -6.47
-    ],
-    [
-     -21.65,
-     -12.5
-    ],
-    [
-     -17.68,
-     -17.68
-    ],
-    [
-     -12.5,
-     -21.65
-    ],
-    [
-     -6.47,
-     -24.15
-    ],
-    [
-     -0.0,
-     -25.0
-    ],
-    [
-     6.47,
-     -24.15
-    ],
-    [
-     12.5,
-     -21.65
-    ],
-    [
-     17.68,
-     -17.68
-    ],
-    [
-     21.65,
-     -12.5
-    ],
-    [
-     24.15,
-     -6.47
-    ]
-   ],
-   "start": 3600,
-   "end": 3800
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Top Vent",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Top Vent",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Top Vent",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Liquid Line",
-   "points": [
-    [
-     -752.0,
-     1100.0
-    ],
-    [
-     -752.61,
-     1104.66
-    ],
-    [
-     -754.41,
-     1109.0
-    ],
-    [
-     -757.27,
-     1112.73
-    ],
-    [
-     -761.0,
-     1115.59
-    ],
-    [
-     -765.34,
-     1117.39
-    ],
-    [
-     -770.0,
-     1118.0
-    ],
-    [
-     -774.66,
-     1117.39
-    ],
-    [
-     -779.0,
-     1115.59
-    ],
-    [
-     -782.73,
-     1112.73
-    ],
-    [
-     -785.59,
-     1109.0
-    ],
-    [
-     -787.39,
-     1104.66
-    ],
-    [
-     -788.0,
-     1100.0
-    ],
-    [
-     -787.39,
-     1095.34
-    ],
-    [
-     -785.59,
-     1091.0
-    ],
-    [
-     -782.73,
-     1087.27
-    ],
-    [
-     -779.0,
-     1084.41
-    ],
-    [
-     -774.66,
-     1082.61
-    ],
-    [
-     -770.0,
-     1082.0
-    ],
-    [
-     -765.34,
-     1082.61
-    ],
-    [
-     -761.0,
-     1084.41
-    ],
-    [
-     -757.27,
-     1087.27
-    ],
-    [
-     -754.41,
-     1091.0
-    ],
-    [
-     -752.61,
-     1095.34
-    ]
-   ],
-   "start": 300,
-   "end": 1600,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Liquid Line",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Liquid Line",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Liquid Line",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vaporiser Fin A 1",
-   "points": [
-    [
-     1450,
-     -10
-    ],
-    [
-     1750,
-     -10
-    ],
-    [
-     1750,
-     10
-    ],
-    [
-     1450,
-     10
-    ]
-   ],
-   "start": 300,
-   "end": 3000
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vaporiser Fin A 1",
-   "subcategory": "Aluminium"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vaporiser Fin A 1",
-   "param": "Aluminium Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vaporiser Fin A 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vaporiser Fin A 2",
-   "points": [
-    [
-     1870,
-     -10
-    ],
-    [
-     2170,
-     -10
-    ],
-    [
-     2170,
-     10
-    ],
-    [
-     1870,
-     10
-    ]
-   ],
-   "start": 300,
-   "end": 3000
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vaporiser Fin A 2",
-   "subcategory": "Aluminium"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vaporiser Fin A 2",
-   "param": "Aluminium Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vaporiser Fin A 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vaporiser Fin A 3",
-   "points": [
-    [
-     2290,
-     -10
-    ],
-    [
-     2590,
-     -10
-    ],
-    [
-     2590,
-     10
-    ],
-    [
-     2290,
-     10
-    ]
-   ],
-   "start": 300,
-   "end": 3000
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vaporiser Fin A 3",
-   "subcategory": "Aluminium"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vaporiser Fin A 3",
-   "param": "Aluminium Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vaporiser Fin A 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vaporiser Fin B 1",
-   "points": [
-    [
-     1590,
-     -150
-    ],
-    [
-     1610,
-     -150
-    ],
-    [
-     1610,
-     150
-    ],
-    [
-     1590,
-     150
-    ]
-   ],
-   "start": 300,
-   "end": 3000
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vaporiser Fin B 1",
-   "subcategory": "Aluminium"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vaporiser Fin B 1",
-   "param": "Aluminium Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vaporiser Fin B 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vaporiser Fin B 2",
-   "points": [
-    [
-     2010,
-     -150
-    ],
-    [
-     2030,
-     -150
-    ],
-    [
-     2030,
-     150
-    ],
-    [
-     2010,
-     150
-    ]
-   ],
-   "start": 300,
-   "end": 3000
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vaporiser Fin B 2",
-   "subcategory": "Aluminium"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vaporiser Fin B 2",
-   "param": "Aluminium Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vaporiser Fin B 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vaporiser Fin B 3",
-   "points": [
-    [
-     2430,
-     -150
-    ],
-    [
-     2450,
-     -150
-    ],
-    [
-     2450,
-     150
-    ],
-    [
-     2430,
-     150
-    ]
-   ],
-   "start": 300,
-   "end": 3000
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vaporiser Fin B 3",
-   "subcategory": "Aluminium"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vaporiser Fin B 3",
-   "param": "Aluminium Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vaporiser Fin B 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vaporiser Core 1",
-   "points": [
-    [
-     1635.0,
-     0.0
-    ],
-    [
-     1633.81,
-     9.06
-    ],
-    [
-     1630.31,
-     17.5
-    ],
-    [
-     1624.75,
-     24.75
-    ],
-    [
-     1617.5,
-     30.31
-    ],
-    [
-     1609.06,
-     33.81
-    ],
-    [
-     1600.0,
-     35.0
-    ],
-    [
-     1590.94,
-     33.81
-    ],
-    [
-     1582.5,
-     30.31
-    ],
-    [
-     1575.25,
-     24.75
-    ],
-    [
-     1569.69,
-     17.5
-    ],
-    [
-     1566.19,
-     9.06
-    ],
-    [
-     1565.0,
-     0.0
-    ],
-    [
-     1566.19,
-     -9.06
-    ],
-    [
-     1569.69,
-     -17.5
-    ],
-    [
-     1575.25,
-     -24.75
-    ],
-    [
-     1582.5,
-     -30.31
-    ],
-    [
-     1590.94,
-     -33.81
-    ],
-    [
-     1600.0,
-     -35.0
-    ],
-    [
-     1609.06,
-     -33.81
-    ],
-    [
-     1617.5,
-     -30.31
-    ],
-    [
-     1624.75,
-     -24.75
-    ],
-    [
-     1630.31,
-     -17.5
-    ],
-    [
-     1633.81,
-     -9.06
-    ]
-   ],
-   "start": 300,
-   "end": 3000
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vaporiser Core 1",
-   "subcategory": "Aluminium"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vaporiser Core 1",
-   "param": "Aluminium Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vaporiser Core 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vaporiser Core 2",
-   "points": [
-    [
-     2055.0,
-     0.0
-    ],
-    [
-     2053.81,
-     9.06
-    ],
-    [
-     2050.31,
-     17.5
-    ],
-    [
-     2044.75,
-     24.75
-    ],
-    [
-     2037.5,
-     30.31
-    ],
-    [
-     2029.06,
-     33.81
-    ],
-    [
-     2020.0,
-     35.0
-    ],
-    [
-     2010.94,
-     33.81
-    ],
-    [
-     2002.5,
-     30.31
-    ],
-    [
-     1995.25,
-     24.75
-    ],
-    [
-     1989.69,
-     17.5
-    ],
-    [
-     1986.19,
-     9.06
-    ],
-    [
-     1985.0,
-     0.0
-    ],
-    [
-     1986.19,
-     -9.06
-    ],
-    [
-     1989.69,
-     -17.5
-    ],
-    [
-     1995.25,
-     -24.75
-    ],
-    [
-     2002.5,
-     -30.31
-    ],
-    [
-     2010.94,
-     -33.81
-    ],
-    [
-     2020.0,
-     -35.0
-    ],
-    [
-     2029.06,
-     -33.81
-    ],
-    [
-     2037.5,
-     -30.31
-    ],
-    [
-     2044.75,
-     -24.75
-    ],
-    [
-     2050.31,
-     -17.5
-    ],
-    [
-     2053.81,
-     -9.06
-    ]
-   ],
-   "start": 300,
-   "end": 3000
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vaporiser Core 2",
-   "subcategory": "Aluminium"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vaporiser Core 2",
-   "param": "Aluminium Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vaporiser Core 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vaporiser Core 3",
-   "points": [
-    [
-     2475.0,
-     0.0
-    ],
-    [
-     2473.81,
-     9.06
-    ],
-    [
-     2470.31,
-     17.5
-    ],
-    [
-     2464.75,
-     24.75
-    ],
-    [
-     2457.5,
-     30.31
-    ],
-    [
-     2449.06,
-     33.81
-    ],
-    [
-     2440.0,
-     35.0
-    ],
-    [
-     2430.94,
-     33.81
-    ],
-    [
-     2422.5,
-     30.31
-    ],
-    [
-     2415.25,
-     24.75
-    ],
-    [
-     2409.69,
-     17.5
-    ],
-    [
-     2406.19,
-     9.06
-    ],
-    [
-     2405.0,
-     0.0
-    ],
-    [
-     2406.19,
-     -9.06
-    ],
-    [
-     2409.69,
-     -17.5
-    ],
-    [
-     2415.25,
-     -24.75
-    ],
-    [
-     2422.5,
-     -30.31
-    ],
-    [
-     2430.94,
-     -33.81
-    ],
-    [
-     2440.0,
-     -35.0
-    ],
-    [
-     2449.06,
-     -33.81
-    ],
-    [
-     2457.5,
-     -30.31
-    ],
-    [
-     2464.75,
-     -24.75
-    ],
-    [
-     2470.31,
-     -17.5
-    ],
-    [
-     2473.81,
-     -9.06
-    ]
-   ],
-   "start": 300,
-   "end": 3000
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vaporiser Core 3",
-   "subcategory": "Aluminium"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vaporiser Core 3",
-   "param": "Aluminium Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vaporiser Core 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vaporiser Header Bottom",
-   "points": [
-    [
-     1450,
-     -40
-    ],
-    [
-     2590,
-     -40
-    ],
-    [
-     2590,
-     40
-    ],
-    [
-     1450,
-     40
-    ]
-   ],
-   "start": 220,
-   "end": 300
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vaporiser Header Bottom",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vaporiser Header Bottom",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vaporiser Header Bottom",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vaporiser Header Top",
-   "points": [
-    [
-     1450,
-     -40
-    ],
-    [
-     2590,
-     -40
-    ],
-    [
-     2590,
-     40
-    ],
-    [
-     1450,
-     40
-    ]
-   ],
-   "start": 3000,
-   "end": 3080
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vaporiser Header Top",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vaporiser Header Top",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vaporiser Header Top",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Supply Pipe",
-   "points": [
-    [
-     18.0,
-     2600.0
-    ],
-    [
-     17.39,
-     2604.66
-    ],
-    [
-     15.59,
-     2609.0
-    ],
-    [
-     12.73,
-     2612.73
-    ],
-    [
-     9.0,
-     2615.59
-    ],
-    [
-     4.66,
-     2617.39
-    ],
-    [
-     0.0,
-     2618.0
-    ],
-    [
-     -4.66,
-     2617.39
-    ],
-    [
-     -9.0,
-     2615.59
-    ],
-    [
-     -12.73,
-     2612.73
-    ],
-    [
-     -15.59,
-     2609.0
-    ],
-    [
-     -17.39,
-     2604.66
-    ],
-    [
-     -18.0,
-     2600.0
-    ],
-    [
-     -17.39,
-     2595.34
-    ],
-    [
-     -15.59,
-     2591.0
-    ],
-    [
-     -12.73,
-     2587.27
-    ],
-    [
-     -9.0,
-     2584.41
-    ],
-    [
-     -4.66,
-     2582.61
-    ],
-    [
-     -0.0,
-     2582.0
-    ],
-    [
-     4.66,
-     2582.61
-    ],
-    [
-     9.0,
-     2584.41
-    ],
-    [
-     12.73,
-     2587.27
-    ],
-    [
-     15.59,
-     2591.0
-    ],
-    [
-     17.39,
-     2595.34
-    ]
-   ],
-   "start": 2590,
-   "end": 2900,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Supply Pipe",
-   "subcategory": "Copper"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Supply Pipe",
-   "param": "Copper Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Supply Pipe",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fill Cabinet",
-   "points": [
-    [
-     -856.0,
-     -1250.0
-    ],
-    [
-     -853.7,
-     -1249.54
-    ],
-    [
-     -851.76,
-     -1248.24
-    ],
-    [
-     -850.46,
-     -1246.3
-    ],
-    [
-     -850.0,
-     -1244.0
-    ],
-    [
-     -850.0,
-     -956.0
-    ],
-    [
-     -850.46,
-     -953.7
-    ],
-    [
-     -851.76,
-     -951.76
-    ],
-    [
-     -853.7,
-     -950.46
-    ],
-    [
-     -856.0,
-     -950.0
-    ],
-    [
-     -1244.0,
-     -950.0
-    ],
-    [
-     -1246.3,
-     -950.46
-    ],
-    [
-     -1248.24,
-     -951.76
-    ],
-    [
-     -1249.54,
-     -953.7
-    ],
-    [
-     -1250.0,
-     -956.0
-    ],
-    [
-     -1250.0,
-     -1244.0
-    ],
-    [
-     -1249.54,
-     -1246.3
-    ],
-    [
-     -1248.24,
-     -1248.24
-    ],
-    [
-     -1246.3,
-     -1249.54
-    ],
-    [
-     -1244.0,
-     -1250.0
-    ]
-   ],
-   "start": 150,
-   "end": 1050
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fill Cabinet",
-   "subcategory": "Painted Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fill Cabinet",
-   "param": "Painted Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fill Cabinet",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fill Coupling",
-   "points": [
-    [
-     -1100,
-     650
-    ],
-    [
-     -1000,
-     650
-    ],
-    [
-     -1000,
-     750
-    ],
-    [
-     -1100,
-     750
-    ]
-   ],
-   "start": 1250,
-   "end": 1262,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fill Coupling",
-   "subcategory": "Brass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fill Coupling",
-   "param": "Brass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fill Coupling",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hazard Label",
-   "points": [
-    [
-     -300,
-     2000
-    ],
-    [
-     300,
-     2000
-    ],
-    [
-     300,
-     2300
-    ],
-    [
-     -300,
-     2300
-    ]
-   ],
-   "start": 716,
-   "end": 722,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hazard Label",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hazard Label",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hazard Label",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Contents Gauge Case",
-   "points": [
-    [
-     -90.0,
-     1700.0
-    ],
-    [
-     -92.04,
-     1715.53
-    ],
-    [
-     -98.04,
-     1730.0
-    ],
-    [
-     -107.57,
-     1742.43
-    ],
-    [
-     -120.0,
-     1751.96
-    ],
-    [
-     -134.47,
-     1757.96
-    ],
-    [
-     -150.0,
-     1760.0
-    ],
-    [
-     -165.53,
-     1757.96
-    ],
-    [
-     -180.0,
-     1751.96
-    ],
-    [
-     -192.43,
-     1742.43
-    ],
-    [
-     -201.96,
-     1730.0
-    ],
-    [
-     -207.96,
-     1715.53
-    ],
-    [
-     -210.0,
-     1700.0
-    ],
-    [
-     -207.96,
-     1684.47
-    ],
-    [
-     -201.96,
-     1670.0
-    ],
-    [
-     -192.43,
-     1657.57
-    ],
-    [
-     -180.0,
-     1648.04
-    ],
-    [
-     -165.53,
-     1642.04
-    ],
-    [
-     -150.0,
-     1640.0
-    ],
-    [
-     -134.47,
-     1642.04
-    ],
-    [
-     -120.0,
-     1648.04
-    ],
-    [
-     -107.57,
-     1657.57
-    ],
-    [
-     -98.04,
-     1670.0
-    ],
-    [
-     -92.04,
-     1684.47
-    ]
-   ],
-   "start": 820,
-   "end": 845,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Contents Gauge Case",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Contents Gauge Case",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Contents Gauge Case",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Contents Gauge Dial",
-   "points": [
-    [
-     -94.0,
-     1700.0
-    ],
-    [
-     -95.91,
-     1714.49
-    ],
-    [
-     -101.5,
-     1728.0
-    ],
-    [
-     -110.4,
-     1739.6
-    ],
-    [
-     -122.0,
-     1748.5
-    ],
-    [
-     -135.51,
-     1754.09
-    ],
-    [
-     -150.0,
-     1756.0
-    ],
-    [
-     -164.49,
-     1754.09
-    ],
-    [
-     -178.0,
-     1748.5
-    ],
-    [
-     -189.6,
-     1739.6
-    ],
-    [
-     -198.5,
-     1728.0
-    ],
-    [
-     -204.09,
-     1714.49
-    ],
-    [
-     -206.0,
-     1700.0
-    ],
-    [
-     -204.09,
-     1685.51
-    ],
-    [
-     -198.5,
-     1672.0
-    ],
-    [
-     -189.6,
-     1660.4
-    ],
-    [
-     -178.0,
-     1651.5
-    ],
-    [
-     -164.49,
-     1645.91
-    ],
-    [
-     -150.0,
-     1644.0
-    ],
-    [
-     -135.51,
-     1645.91
-    ],
-    [
-     -122.0,
-     1651.5
-    ],
-    [
-     -110.4,
-     1660.4
-    ],
-    [
-     -101.5,
-     1672.0
-    ],
-    [
-     -95.91,
-     1685.51
-    ]
-   ],
-   "start": 845,
-   "end": 847,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Contents Gauge Dial",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Contents Gauge Dial",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Contents Gauge Dial",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Contents Gauge Needle",
-   "points": [
-    [
-     -151.5,
-     -849
-    ],
-    [
-     -114.0,
-     -849
-    ],
-    [
-     -114.0,
-     -847
-    ],
-    [
-     -151.5,
-     -847
-    ]
-   ],
-   "start": 1698,
-   "end": 1702
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Contents Gauge Needle",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Contents Gauge Needle",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Contents Gauge Needle",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pressure Gauge Case",
-   "points": [
-    [
-     210.0,
-     1700.0
-    ],
-    [
-     207.96,
-     1715.53
-    ],
-    [
-     201.96,
-     1730.0
-    ],
-    [
-     192.43,
-     1742.43
-    ],
-    [
-     180.0,
-     1751.96
-    ],
-    [
-     165.53,
-     1757.96
-    ],
-    [
-     150.0,
-     1760.0
-    ],
-    [
-     134.47,
-     1757.96
-    ],
-    [
-     120.0,
-     1751.96
-    ],
-    [
-     107.57,
-     1742.43
-    ],
-    [
-     98.04,
-     1730.0
-    ],
-    [
-     92.04,
-     1715.53
-    ],
-    [
-     90.0,
-     1700.0
-    ],
-    [
-     92.04,
-     1684.47
-    ],
-    [
-     98.04,
-     1670.0
-    ],
-    [
-     107.57,
-     1657.57
-    ],
-    [
-     120.0,
-     1648.04
-    ],
-    [
-     134.47,
-     1642.04
-    ],
-    [
-     150.0,
-     1640.0
-    ],
-    [
-     165.53,
-     1642.04
-    ],
-    [
-     180.0,
-     1648.04
-    ],
-    [
-     192.43,
-     1657.57
-    ],
-    [
-     201.96,
-     1670.0
-    ],
-    [
-     207.96,
-     1684.47
-    ]
-   ],
-   "start": 820,
-   "end": 845,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pressure Gauge Case",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pressure Gauge Case",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pressure Gauge Case",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pressure Gauge Dial",
-   "points": [
-    [
-     206.0,
-     1700.0
-    ],
-    [
-     204.09,
-     1714.49
-    ],
-    [
-     198.5,
-     1728.0
-    ],
-    [
-     189.6,
-     1739.6
-    ],
-    [
-     178.0,
-     1748.5
-    ],
-    [
-     164.49,
-     1754.09
-    ],
-    [
-     150.0,
-     1756.0
-    ],
-    [
-     135.51,
-     1754.09
-    ],
-    [
-     122.0,
-     1748.5
-    ],
-    [
-     110.4,
-     1739.6
-    ],
-    [
-     101.5,
-     1728.0
-    ],
-    [
-     95.91,
-     1714.49
-    ],
-    [
-     94.0,
-     1700.0
-    ],
-    [
-     95.91,
-     1685.51
-    ],
-    [
-     101.5,
-     1672.0
-    ],
-    [
-     110.4,
-     1660.4
-    ],
-    [
-     122.0,
-     1651.5
-    ],
-    [
-     135.51,
-     1645.91
-    ],
-    [
-     150.0,
-     1644.0
-    ],
-    [
-     164.49,
-     1645.91
-    ],
-    [
-     178.0,
-     1651.5
-    ],
-    [
-     189.6,
-     1660.4
-    ],
-    [
-     198.5,
-     1672.0
-    ],
-    [
-     204.09,
-     1685.51
-    ]
-   ],
-   "start": 845,
-   "end": 847,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pressure Gauge Dial",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pressure Gauge Dial",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pressure Gauge Dial",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pressure Gauge Needle",
-   "points": [
-    [
-     148.5,
-     -849
-    ],
-    [
-     186.0,
-     -849
-    ],
-    [
-     186.0,
-     -847
-    ],
-    [
-     148.5,
-     -847
-    ]
-   ],
-   "start": 1698,
-   "end": 1702
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pressure Gauge Needle",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pressure Gauge Needle",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pressure Gauge Needle",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Safety Distance Zone",
-   "points": [
-    [
-     -4300,
-     -4300
-    ],
-    [
-     5900,
-     -4300
-    ],
-    [
-     5900,
-     4300
-    ],
-    [
-     -4300,
-     4300
-    ]
-   ],
-   "start": 0,
-   "end": 50
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Safety Distance Zone",
-   "subcategory": "Clearance Operation"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Safety Distance Zone",
-   "coarse": true,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "O2",
-   "domain": "pipe",
-   "system": "Other",
-   "solid": "Supply Pipe",
-   "side": "right",
-   "diameter": 28,
-   "flow": "Out"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_MechEq_MedGas_VIE_LOX.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_P_MechEq_MedGas_VIE_LOX",
+  "template": "Metric Mechanical Equipment.rft",
+  "about": "VIE modelled as a generic product: plinth, vessel with dished heads and four legs, valve manifold with safety valves, top vent, liquid line, three star-finned vaporisers with headers, supply pipe, fill cabinet with coupling, hazard label, contents and pressure gauges; the BCGA CP 36 separation zone as a Clearance Operation solid. 1500 l drawn; 3000 l shares it. Reference: query: medical gas vie lox mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=medical+gas+vie+lox+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Mechanical Equipment"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cooling_Capacity_kW",
+      "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cooling_Capacity_BTUh",
+      "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Airflow_Ls",
+      "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Refrigerant",
+      "guid": "a46c59d0-d719-583b-99c0-074994d01603",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Asset_Tag",
+      "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Serial_Number",
+      "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Install_Date",
+      "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Warranty_End",
+      "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Maintenance_Interval_Months",
+      "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_OM_Link",
+      "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lift_Weight_kg",
+      "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Mounting_Height_mm",
+      "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Power_W",
+      "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Power_W_2",
+      "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Controller_ID",
+      "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Type",
+      "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Signal",
+      "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Protocol",
+      "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Tank_Capacity_L",
+      "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "1500L_VIE"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500L_VIE/FMC_Cost_Unit",
+      "type": "1500L_VIE",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500L_VIE/FMC_Geometry_Stage",
+      "type": "1500L_VIE",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500L_VIE/IfcExportAs",
+      "type": "1500L_VIE",
+      "param": "IfcExportAs",
+      "value": "IfcTank"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500L_VIE/Description",
+      "type": "1500L_VIE",
+      "param": "Description",
+      "value": "Liquid oxygen VIE (vacuum insulated evaporator) 1500 l, vertical vessel on legs with valve manifold, contents and pressure gauges, three finned ambient vaporisers, fill cabinet, on a concrete plinth; safety-distance zone as a solid"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500L_VIE/Keynote",
+      "type": "1500L_VIE",
+      "param": "Keynote",
+      "value": "P.MGP_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500L_VIE/FMC_Keynote_Code",
+      "type": "1500L_VIE",
+      "param": "FMC_Keynote_Code",
+      "value": "P.MGP_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500L_VIE/FMC_Code_Description",
+      "type": "1500L_VIE",
+      "param": "FMC_Code_Description",
+      "value": "MedGas VIE LOX: Liquid oxygen VIE tank with safety distances solid"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500L_VIE/FMC_Code_Group",
+      "type": "1500L_VIE",
+      "param": "FMC_Code_Group",
+      "value": "P.MGP"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500L_VIE/FMC_Role_Code",
+      "type": "1500L_VIE",
+      "param": "FMC_Role_Code",
+      "value": "P"
+    },
+    {
+      "op": "add_type",
+      "name": "3000L_VIE"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000L_VIE/FMC_Cost_Unit",
+      "type": "3000L_VIE",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000L_VIE/FMC_Geometry_Stage",
+      "type": "3000L_VIE",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000L_VIE/IfcExportAs",
+      "type": "3000L_VIE",
+      "param": "IfcExportAs",
+      "value": "IfcTank"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000L_VIE/Description",
+      "type": "3000L_VIE",
+      "param": "Description",
+      "value": "Liquid oxygen VIE (vacuum insulated evaporator) 1500 l, vertical vessel on legs with valve manifold, contents and pressure gauges, three finned ambient vaporisers, fill cabinet, on a concrete plinth; safety-distance zone as a solid"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000L_VIE/Keynote",
+      "type": "3000L_VIE",
+      "param": "Keynote",
+      "value": "P.MGP_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000L_VIE/FMC_Keynote_Code",
+      "type": "3000L_VIE",
+      "param": "FMC_Keynote_Code",
+      "value": "P.MGP_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000L_VIE/FMC_Code_Description",
+      "type": "3000L_VIE",
+      "param": "FMC_Code_Description",
+      "value": "MedGas VIE LOX: Liquid oxygen VIE tank with safety distances solid"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000L_VIE/FMC_Code_Group",
+      "type": "3000L_VIE",
+      "param": "FMC_Code_Group",
+      "value": "P.MGP"
+    },
+    {
+      "op": "set_type_value",
+      "name": "3000L_VIE/FMC_Role_Code",
+      "type": "3000L_VIE",
+      "param": "FMC_Role_Code",
+      "value": "P"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Concrete",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Concrete Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Concrete_Precast_Painted",
+      "param": "Concrete Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Epoxy White",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Epoxy White Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Steel_EpoxyCoated_White",
+      "param": "Epoxy White Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Painted Steel",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Painted Steel Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_SteelLTZ_Painted",
+      "param": "Painted Steel Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Stainless",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Stainless Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_StainlessSteel_Brushed",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Brass",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Brass Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Brass_Polished",
+      "param": "Brass Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Aluminium",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Aluminium Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Aluminium_Anodised_Silver",
+      "param": "Aluminium Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Copper",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Copper Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Copper_Pipe",
+      "param": "Copper Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Yellow",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Yellow Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Yellow",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Chrome",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Chrome Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Chrome_Polished",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "White",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "White Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_White",
+      "param": "White Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Clearance Operation",
+      "color": [
+        80,
+        122,
+        160
+      ],
+      "line_weight_projection": 1,
+      "line_weight_cut": 1
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -1300,
+          -1300
+        ],
+        [
+          2900,
+          -1300
+        ],
+        [
+          2900,
+          1300
+        ],
+        [
+          -1300,
+          1300
+        ]
+      ],
+      "start": 0,
+      "end": 3800
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Plinth",
+      "points": [
+        [
+          -1300,
+          -1300
+        ],
+        [
+          2900,
+          -1300
+        ],
+        [
+          2900,
+          1300
+        ],
+        [
+          -1300,
+          1300
+        ]
+      ],
+      "start": 0,
+      "end": 150
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Plinth",
+      "subcategory": "Concrete"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Plinth",
+      "param": "Concrete Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Plinth",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vessel Shell",
+      "points": [
+        [
+          720,
+          0
+        ],
+        [
+          695.47,
+          186.35
+        ],
+        [
+          623.54,
+          360
+        ],
+        [
+          509.12,
+          509.12
+        ],
+        [
+          360,
+          623.54
+        ],
+        [
+          186.35,
+          695.47
+        ],
+        [
+          0,
+          720
+        ],
+        [
+          -186.35,
+          695.47
+        ],
+        [
+          -360,
+          623.54
+        ],
+        [
+          -509.12,
+          509.12
+        ],
+        [
+          -623.54,
+          360
+        ],
+        [
+          -695.47,
+          186.35
+        ],
+        [
+          -720,
+          0
+        ],
+        [
+          -695.47,
+          -186.35
+        ],
+        [
+          -623.54,
+          -360
+        ],
+        [
+          -509.12,
+          -509.12
+        ],
+        [
+          -360,
+          -623.54
+        ],
+        [
+          -186.35,
+          -695.47
+        ],
+        [
+          0,
+          -720
+        ],
+        [
+          186.35,
+          -695.47
+        ],
+        [
+          360,
+          -623.54
+        ],
+        [
+          509.12,
+          -509.12
+        ],
+        [
+          623.54,
+          -360
+        ],
+        [
+          695.47,
+          -186.35
+        ]
+      ],
+      "start": 770,
+      "end": 3480
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vessel Shell",
+      "subcategory": "Epoxy White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vessel Shell",
+      "param": "Epoxy White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vessel Shell",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Vessel Top Head",
+      "profile": [
+        [
+          0,
+          3480
+        ],
+        [
+          720,
+          3480
+        ],
+        [
+          612,
+          3558
+        ],
+        [
+          288,
+          3600
+        ],
+        [
+          0,
+          3600
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Epoxy White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vessel Top Head",
+      "param": "Epoxy White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vessel Top Head",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Vessel Bottom Head",
+      "profile": [
+        [
+          0,
+          650
+        ],
+        [
+          288,
+          650
+        ],
+        [
+          612,
+          728
+        ],
+        [
+          720,
+          770
+        ],
+        [
+          0,
+          770
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Epoxy White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vessel Bottom Head",
+      "param": "Epoxy White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vessel Bottom Head",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Leg Front 1",
+      "points": [
+        [
+          -560,
+          -560
+        ],
+        [
+          -480,
+          -560
+        ],
+        [
+          -480,
+          -480
+        ],
+        [
+          -560,
+          -480
+        ]
+      ],
+      "start": 150,
+      "end": 900
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Leg Front 1",
+      "subcategory": "Painted Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Leg Front 1",
+      "param": "Painted Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Leg Front 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Leg Front 2",
+      "points": [
+        [
+          480,
+          -560
+        ],
+        [
+          560,
+          -560
+        ],
+        [
+          560,
+          -480
+        ],
+        [
+          480,
+          -480
+        ]
+      ],
+      "start": 150,
+      "end": 900
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Leg Front 2",
+      "subcategory": "Painted Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Leg Front 2",
+      "param": "Painted Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Leg Front 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Leg Back 1",
+      "points": [
+        [
+          -560,
+          480
+        ],
+        [
+          -480,
+          480
+        ],
+        [
+          -480,
+          560
+        ],
+        [
+          -560,
+          560
+        ]
+      ],
+      "start": 150,
+      "end": 900
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Leg Back 1",
+      "subcategory": "Painted Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Leg Back 1",
+      "param": "Painted Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Leg Back 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Leg Back 2",
+      "points": [
+        [
+          480,
+          480
+        ],
+        [
+          560,
+          480
+        ],
+        [
+          560,
+          560
+        ],
+        [
+          480,
+          560
+        ]
+      ],
+      "start": 150,
+      "end": 900
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Leg Back 2",
+      "subcategory": "Painted Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Leg Back 2",
+      "param": "Painted Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Leg Back 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Valve Manifold",
+      "points": [
+        [
+          -300,
+          -820
+        ],
+        [
+          300,
+          -820
+        ],
+        [
+          300,
+          -720
+        ],
+        [
+          -300,
+          -720
+        ]
+      ],
+      "start": 1000,
+      "end": 1500
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Valve Manifold",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Valve Manifold",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Valve Manifold",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Safety Valve 1",
+      "points": [
+        [
+          -185,
+          -770
+        ],
+        [
+          -185.51,
+          -766.12
+        ],
+        [
+          -187.01,
+          -762.5
+        ],
+        [
+          -189.39,
+          -759.39
+        ],
+        [
+          -192.5,
+          -757.01
+        ],
+        [
+          -196.12,
+          -755.51
+        ],
+        [
+          -200,
+          -755
+        ],
+        [
+          -203.88,
+          -755.51
+        ],
+        [
+          -207.5,
+          -757.01
+        ],
+        [
+          -210.61,
+          -759.39
+        ],
+        [
+          -212.99,
+          -762.5
+        ],
+        [
+          -214.49,
+          -766.12
+        ],
+        [
+          -215,
+          -770
+        ],
+        [
+          -214.49,
+          -773.88
+        ],
+        [
+          -212.99,
+          -777.5
+        ],
+        [
+          -210.61,
+          -780.61
+        ],
+        [
+          -207.5,
+          -782.99
+        ],
+        [
+          -203.88,
+          -784.49
+        ],
+        [
+          -200,
+          -785
+        ],
+        [
+          -196.12,
+          -784.49
+        ],
+        [
+          -192.5,
+          -782.99
+        ],
+        [
+          -189.39,
+          -780.61
+        ],
+        [
+          -187.01,
+          -777.5
+        ],
+        [
+          -185.51,
+          -773.88
+        ]
+      ],
+      "start": 1500,
+      "end": 1620
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Safety Valve 1",
+      "subcategory": "Brass"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Safety Valve 1",
+      "param": "Brass Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Safety Valve 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Safety Valve 2",
+      "points": [
+        [
+          215,
+          -770
+        ],
+        [
+          214.49,
+          -766.12
+        ],
+        [
+          212.99,
+          -762.5
+        ],
+        [
+          210.61,
+          -759.39
+        ],
+        [
+          207.5,
+          -757.01
+        ],
+        [
+          203.88,
+          -755.51
+        ],
+        [
+          200,
+          -755
+        ],
+        [
+          196.12,
+          -755.51
+        ],
+        [
+          192.5,
+          -757.01
+        ],
+        [
+          189.39,
+          -759.39
+        ],
+        [
+          187.01,
+          -762.5
+        ],
+        [
+          185.51,
+          -766.12
+        ],
+        [
+          185,
+          -770
+        ],
+        [
+          185.51,
+          -773.88
+        ],
+        [
+          187.01,
+          -777.5
+        ],
+        [
+          189.39,
+          -780.61
+        ],
+        [
+          192.5,
+          -782.99
+        ],
+        [
+          196.12,
+          -784.49
+        ],
+        [
+          200,
+          -785
+        ],
+        [
+          203.88,
+          -784.49
+        ],
+        [
+          207.5,
+          -782.99
+        ],
+        [
+          210.61,
+          -780.61
+        ],
+        [
+          212.99,
+          -777.5
+        ],
+        [
+          214.49,
+          -773.88
+        ]
+      ],
+      "start": 1500,
+      "end": 1620
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Safety Valve 2",
+      "subcategory": "Brass"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Safety Valve 2",
+      "param": "Brass Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Safety Valve 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Top Vent",
+      "points": [
+        [
+          25,
+          0
+        ],
+        [
+          24.15,
+          6.47
+        ],
+        [
+          21.65,
+          12.5
+        ],
+        [
+          17.68,
+          17.68
+        ],
+        [
+          12.5,
+          21.65
+        ],
+        [
+          6.47,
+          24.15
+        ],
+        [
+          0,
+          25
+        ],
+        [
+          -6.47,
+          24.15
+        ],
+        [
+          -12.5,
+          21.65
+        ],
+        [
+          -17.68,
+          17.68
+        ],
+        [
+          -21.65,
+          12.5
+        ],
+        [
+          -24.15,
+          6.47
+        ],
+        [
+          -25,
+          0
+        ],
+        [
+          -24.15,
+          -6.47
+        ],
+        [
+          -21.65,
+          -12.5
+        ],
+        [
+          -17.68,
+          -17.68
+        ],
+        [
+          -12.5,
+          -21.65
+        ],
+        [
+          -6.47,
+          -24.15
+        ],
+        [
+          0,
+          -25
+        ],
+        [
+          6.47,
+          -24.15
+        ],
+        [
+          12.5,
+          -21.65
+        ],
+        [
+          17.68,
+          -17.68
+        ],
+        [
+          21.65,
+          -12.5
+        ],
+        [
+          24.15,
+          -6.47
+        ]
+      ],
+      "start": 3600,
+      "end": 3800
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Top Vent",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Top Vent",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Top Vent",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Liquid Line",
+      "points": [
+        [
+          -752,
+          1100
+        ],
+        [
+          -752.61,
+          1104.66
+        ],
+        [
+          -754.41,
+          1109
+        ],
+        [
+          -757.27,
+          1112.73
+        ],
+        [
+          -761,
+          1115.59
+        ],
+        [
+          -765.34,
+          1117.39
+        ],
+        [
+          -770,
+          1118
+        ],
+        [
+          -774.66,
+          1117.39
+        ],
+        [
+          -779,
+          1115.59
+        ],
+        [
+          -782.73,
+          1112.73
+        ],
+        [
+          -785.59,
+          1109
+        ],
+        [
+          -787.39,
+          1104.66
+        ],
+        [
+          -788,
+          1100
+        ],
+        [
+          -787.39,
+          1095.34
+        ],
+        [
+          -785.59,
+          1091
+        ],
+        [
+          -782.73,
+          1087.27
+        ],
+        [
+          -779,
+          1084.41
+        ],
+        [
+          -774.66,
+          1082.61
+        ],
+        [
+          -770,
+          1082
+        ],
+        [
+          -765.34,
+          1082.61
+        ],
+        [
+          -761,
+          1084.41
+        ],
+        [
+          -757.27,
+          1087.27
+        ],
+        [
+          -754.41,
+          1091
+        ],
+        [
+          -752.61,
+          1095.34
+        ]
+      ],
+      "start": 300,
+      "end": 1600,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Liquid Line",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Liquid Line",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Liquid Line",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vaporiser Fin A 1",
+      "points": [
+        [
+          1450,
+          -10
+        ],
+        [
+          1750,
+          -10
+        ],
+        [
+          1750,
+          10
+        ],
+        [
+          1450,
+          10
+        ]
+      ],
+      "start": 300,
+      "end": 3000
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vaporiser Fin A 1",
+      "subcategory": "Aluminium"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vaporiser Fin A 1",
+      "param": "Aluminium Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vaporiser Fin A 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vaporiser Fin A 2",
+      "points": [
+        [
+          1870,
+          -10
+        ],
+        [
+          2170,
+          -10
+        ],
+        [
+          2170,
+          10
+        ],
+        [
+          1870,
+          10
+        ]
+      ],
+      "start": 300,
+      "end": 3000
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vaporiser Fin A 2",
+      "subcategory": "Aluminium"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vaporiser Fin A 2",
+      "param": "Aluminium Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vaporiser Fin A 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vaporiser Fin A 3",
+      "points": [
+        [
+          2290,
+          -10
+        ],
+        [
+          2590,
+          -10
+        ],
+        [
+          2590,
+          10
+        ],
+        [
+          2290,
+          10
+        ]
+      ],
+      "start": 300,
+      "end": 3000
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vaporiser Fin A 3",
+      "subcategory": "Aluminium"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vaporiser Fin A 3",
+      "param": "Aluminium Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vaporiser Fin A 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vaporiser Fin B 1",
+      "points": [
+        [
+          1590,
+          -150
+        ],
+        [
+          1610,
+          -150
+        ],
+        [
+          1610,
+          150
+        ],
+        [
+          1590,
+          150
+        ]
+      ],
+      "start": 300,
+      "end": 3000
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vaporiser Fin B 1",
+      "subcategory": "Aluminium"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vaporiser Fin B 1",
+      "param": "Aluminium Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vaporiser Fin B 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vaporiser Fin B 2",
+      "points": [
+        [
+          2010,
+          -150
+        ],
+        [
+          2030,
+          -150
+        ],
+        [
+          2030,
+          150
+        ],
+        [
+          2010,
+          150
+        ]
+      ],
+      "start": 300,
+      "end": 3000
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vaporiser Fin B 2",
+      "subcategory": "Aluminium"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vaporiser Fin B 2",
+      "param": "Aluminium Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vaporiser Fin B 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vaporiser Fin B 3",
+      "points": [
+        [
+          2430,
+          -150
+        ],
+        [
+          2450,
+          -150
+        ],
+        [
+          2450,
+          150
+        ],
+        [
+          2430,
+          150
+        ]
+      ],
+      "start": 300,
+      "end": 3000
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vaporiser Fin B 3",
+      "subcategory": "Aluminium"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vaporiser Fin B 3",
+      "param": "Aluminium Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vaporiser Fin B 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vaporiser Core 1",
+      "points": [
+        [
+          1635,
+          0
+        ],
+        [
+          1633.81,
+          9.06
+        ],
+        [
+          1630.31,
+          17.5
+        ],
+        [
+          1624.75,
+          24.75
+        ],
+        [
+          1617.5,
+          30.31
+        ],
+        [
+          1609.06,
+          33.81
+        ],
+        [
+          1600,
+          35
+        ],
+        [
+          1590.94,
+          33.81
+        ],
+        [
+          1582.5,
+          30.31
+        ],
+        [
+          1575.25,
+          24.75
+        ],
+        [
+          1569.69,
+          17.5
+        ],
+        [
+          1566.19,
+          9.06
+        ],
+        [
+          1565,
+          0
+        ],
+        [
+          1566.19,
+          -9.06
+        ],
+        [
+          1569.69,
+          -17.5
+        ],
+        [
+          1575.25,
+          -24.75
+        ],
+        [
+          1582.5,
+          -30.31
+        ],
+        [
+          1590.94,
+          -33.81
+        ],
+        [
+          1600,
+          -35
+        ],
+        [
+          1609.06,
+          -33.81
+        ],
+        [
+          1617.5,
+          -30.31
+        ],
+        [
+          1624.75,
+          -24.75
+        ],
+        [
+          1630.31,
+          -17.5
+        ],
+        [
+          1633.81,
+          -9.06
+        ]
+      ],
+      "start": 300,
+      "end": 3000
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vaporiser Core 1",
+      "subcategory": "Aluminium"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vaporiser Core 1",
+      "param": "Aluminium Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vaporiser Core 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vaporiser Core 2",
+      "points": [
+        [
+          2055,
+          0
+        ],
+        [
+          2053.81,
+          9.06
+        ],
+        [
+          2050.31,
+          17.5
+        ],
+        [
+          2044.75,
+          24.75
+        ],
+        [
+          2037.5,
+          30.31
+        ],
+        [
+          2029.06,
+          33.81
+        ],
+        [
+          2020,
+          35
+        ],
+        [
+          2010.94,
+          33.81
+        ],
+        [
+          2002.5,
+          30.31
+        ],
+        [
+          1995.25,
+          24.75
+        ],
+        [
+          1989.69,
+          17.5
+        ],
+        [
+          1986.19,
+          9.06
+        ],
+        [
+          1985,
+          0
+        ],
+        [
+          1986.19,
+          -9.06
+        ],
+        [
+          1989.69,
+          -17.5
+        ],
+        [
+          1995.25,
+          -24.75
+        ],
+        [
+          2002.5,
+          -30.31
+        ],
+        [
+          2010.94,
+          -33.81
+        ],
+        [
+          2020,
+          -35
+        ],
+        [
+          2029.06,
+          -33.81
+        ],
+        [
+          2037.5,
+          -30.31
+        ],
+        [
+          2044.75,
+          -24.75
+        ],
+        [
+          2050.31,
+          -17.5
+        ],
+        [
+          2053.81,
+          -9.06
+        ]
+      ],
+      "start": 300,
+      "end": 3000
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vaporiser Core 2",
+      "subcategory": "Aluminium"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vaporiser Core 2",
+      "param": "Aluminium Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vaporiser Core 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vaporiser Core 3",
+      "points": [
+        [
+          2475,
+          0
+        ],
+        [
+          2473.81,
+          9.06
+        ],
+        [
+          2470.31,
+          17.5
+        ],
+        [
+          2464.75,
+          24.75
+        ],
+        [
+          2457.5,
+          30.31
+        ],
+        [
+          2449.06,
+          33.81
+        ],
+        [
+          2440,
+          35
+        ],
+        [
+          2430.94,
+          33.81
+        ],
+        [
+          2422.5,
+          30.31
+        ],
+        [
+          2415.25,
+          24.75
+        ],
+        [
+          2409.69,
+          17.5
+        ],
+        [
+          2406.19,
+          9.06
+        ],
+        [
+          2405,
+          0
+        ],
+        [
+          2406.19,
+          -9.06
+        ],
+        [
+          2409.69,
+          -17.5
+        ],
+        [
+          2415.25,
+          -24.75
+        ],
+        [
+          2422.5,
+          -30.31
+        ],
+        [
+          2430.94,
+          -33.81
+        ],
+        [
+          2440,
+          -35
+        ],
+        [
+          2449.06,
+          -33.81
+        ],
+        [
+          2457.5,
+          -30.31
+        ],
+        [
+          2464.75,
+          -24.75
+        ],
+        [
+          2470.31,
+          -17.5
+        ],
+        [
+          2473.81,
+          -9.06
+        ]
+      ],
+      "start": 300,
+      "end": 3000
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vaporiser Core 3",
+      "subcategory": "Aluminium"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vaporiser Core 3",
+      "param": "Aluminium Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vaporiser Core 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vaporiser Header Bottom",
+      "points": [
+        [
+          1450,
+          -40
+        ],
+        [
+          2590,
+          -40
+        ],
+        [
+          2590,
+          40
+        ],
+        [
+          1450,
+          40
+        ]
+      ],
+      "start": 220,
+      "end": 300
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vaporiser Header Bottom",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vaporiser Header Bottom",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vaporiser Header Bottom",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vaporiser Header Top",
+      "points": [
+        [
+          1450,
+          -40
+        ],
+        [
+          2590,
+          -40
+        ],
+        [
+          2590,
+          40
+        ],
+        [
+          1450,
+          40
+        ]
+      ],
+      "start": 3000,
+      "end": 3080
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vaporiser Header Top",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vaporiser Header Top",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vaporiser Header Top",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Supply Pipe",
+      "points": [
+        [
+          18,
+          2600
+        ],
+        [
+          17.39,
+          2604.66
+        ],
+        [
+          15.59,
+          2609
+        ],
+        [
+          12.73,
+          2612.73
+        ],
+        [
+          9,
+          2615.59
+        ],
+        [
+          4.66,
+          2617.39
+        ],
+        [
+          0,
+          2618
+        ],
+        [
+          -4.66,
+          2617.39
+        ],
+        [
+          -9,
+          2615.59
+        ],
+        [
+          -12.73,
+          2612.73
+        ],
+        [
+          -15.59,
+          2609
+        ],
+        [
+          -17.39,
+          2604.66
+        ],
+        [
+          -18,
+          2600
+        ],
+        [
+          -17.39,
+          2595.34
+        ],
+        [
+          -15.59,
+          2591
+        ],
+        [
+          -12.73,
+          2587.27
+        ],
+        [
+          -9,
+          2584.41
+        ],
+        [
+          -4.66,
+          2582.61
+        ],
+        [
+          0,
+          2582
+        ],
+        [
+          4.66,
+          2582.61
+        ],
+        [
+          9,
+          2584.41
+        ],
+        [
+          12.73,
+          2587.27
+        ],
+        [
+          15.59,
+          2591
+        ],
+        [
+          17.39,
+          2595.34
+        ]
+      ],
+      "start": 2590,
+      "end": 2900,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Supply Pipe",
+      "subcategory": "Copper"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Supply Pipe",
+      "param": "Copper Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Supply Pipe",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fill Cabinet",
+      "points": [
+        [
+          -856,
+          -1250
+        ],
+        [
+          -853.7,
+          -1249.54
+        ],
+        [
+          -851.76,
+          -1248.24
+        ],
+        [
+          -850.46,
+          -1246.3
+        ],
+        [
+          -850,
+          -1244
+        ],
+        [
+          -850,
+          -956
+        ],
+        [
+          -850.46,
+          -953.7
+        ],
+        [
+          -851.76,
+          -951.76
+        ],
+        [
+          -853.7,
+          -950.46
+        ],
+        [
+          -856,
+          -950
+        ],
+        [
+          -1244,
+          -950
+        ],
+        [
+          -1246.3,
+          -950.46
+        ],
+        [
+          -1248.24,
+          -951.76
+        ],
+        [
+          -1249.54,
+          -953.7
+        ],
+        [
+          -1250,
+          -956
+        ],
+        [
+          -1250,
+          -1244
+        ],
+        [
+          -1249.54,
+          -1246.3
+        ],
+        [
+          -1248.24,
+          -1248.24
+        ],
+        [
+          -1246.3,
+          -1249.54
+        ],
+        [
+          -1244,
+          -1250
+        ]
+      ],
+      "start": 150,
+      "end": 1050
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fill Cabinet",
+      "subcategory": "Painted Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fill Cabinet",
+      "param": "Painted Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fill Cabinet",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fill Coupling",
+      "points": [
+        [
+          -1100,
+          650
+        ],
+        [
+          -1000,
+          650
+        ],
+        [
+          -1000,
+          750
+        ],
+        [
+          -1100,
+          750
+        ]
+      ],
+      "start": 1250,
+      "end": 1262,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fill Coupling",
+      "subcategory": "Brass"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fill Coupling",
+      "param": "Brass Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fill Coupling",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hazard Label",
+      "points": [
+        [
+          -300,
+          2000
+        ],
+        [
+          300,
+          2000
+        ],
+        [
+          300,
+          2300
+        ],
+        [
+          -300,
+          2300
+        ]
+      ],
+      "start": 716,
+      "end": 722,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hazard Label",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hazard Label",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hazard Label",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Contents Gauge Case",
+      "points": [
+        [
+          -90,
+          1700
+        ],
+        [
+          -92.04,
+          1715.53
+        ],
+        [
+          -98.04,
+          1730
+        ],
+        [
+          -107.57,
+          1742.43
+        ],
+        [
+          -120,
+          1751.96
+        ],
+        [
+          -134.47,
+          1757.96
+        ],
+        [
+          -150,
+          1760
+        ],
+        [
+          -165.53,
+          1757.96
+        ],
+        [
+          -180,
+          1751.96
+        ],
+        [
+          -192.43,
+          1742.43
+        ],
+        [
+          -201.96,
+          1730
+        ],
+        [
+          -207.96,
+          1715.53
+        ],
+        [
+          -210,
+          1700
+        ],
+        [
+          -207.96,
+          1684.47
+        ],
+        [
+          -201.96,
+          1670
+        ],
+        [
+          -192.43,
+          1657.57
+        ],
+        [
+          -180,
+          1648.04
+        ],
+        [
+          -165.53,
+          1642.04
+        ],
+        [
+          -150,
+          1640
+        ],
+        [
+          -134.47,
+          1642.04
+        ],
+        [
+          -120,
+          1648.04
+        ],
+        [
+          -107.57,
+          1657.57
+        ],
+        [
+          -98.04,
+          1670
+        ],
+        [
+          -92.04,
+          1684.47
+        ]
+      ],
+      "start": 820,
+      "end": 845,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Contents Gauge Case",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Contents Gauge Case",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Contents Gauge Case",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Contents Gauge Dial",
+      "points": [
+        [
+          -94,
+          1700
+        ],
+        [
+          -95.91,
+          1714.49
+        ],
+        [
+          -101.5,
+          1728
+        ],
+        [
+          -110.4,
+          1739.6
+        ],
+        [
+          -122,
+          1748.5
+        ],
+        [
+          -135.51,
+          1754.09
+        ],
+        [
+          -150,
+          1756
+        ],
+        [
+          -164.49,
+          1754.09
+        ],
+        [
+          -178,
+          1748.5
+        ],
+        [
+          -189.6,
+          1739.6
+        ],
+        [
+          -198.5,
+          1728
+        ],
+        [
+          -204.09,
+          1714.49
+        ],
+        [
+          -206,
+          1700
+        ],
+        [
+          -204.09,
+          1685.51
+        ],
+        [
+          -198.5,
+          1672
+        ],
+        [
+          -189.6,
+          1660.4
+        ],
+        [
+          -178,
+          1651.5
+        ],
+        [
+          -164.49,
+          1645.91
+        ],
+        [
+          -150,
+          1644
+        ],
+        [
+          -135.51,
+          1645.91
+        ],
+        [
+          -122,
+          1651.5
+        ],
+        [
+          -110.4,
+          1660.4
+        ],
+        [
+          -101.5,
+          1672
+        ],
+        [
+          -95.91,
+          1685.51
+        ]
+      ],
+      "start": 845,
+      "end": 847,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Contents Gauge Dial",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Contents Gauge Dial",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Contents Gauge Dial",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Contents Gauge Needle",
+      "points": [
+        [
+          -151.5,
+          -849
+        ],
+        [
+          -114,
+          -849
+        ],
+        [
+          -114,
+          -847
+        ],
+        [
+          -151.5,
+          -847
+        ]
+      ],
+      "start": 1698,
+      "end": 1702
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Contents Gauge Needle",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Contents Gauge Needle",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Contents Gauge Needle",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pressure Gauge Case",
+      "points": [
+        [
+          210,
+          1700
+        ],
+        [
+          207.96,
+          1715.53
+        ],
+        [
+          201.96,
+          1730
+        ],
+        [
+          192.43,
+          1742.43
+        ],
+        [
+          180,
+          1751.96
+        ],
+        [
+          165.53,
+          1757.96
+        ],
+        [
+          150,
+          1760
+        ],
+        [
+          134.47,
+          1757.96
+        ],
+        [
+          120,
+          1751.96
+        ],
+        [
+          107.57,
+          1742.43
+        ],
+        [
+          98.04,
+          1730
+        ],
+        [
+          92.04,
+          1715.53
+        ],
+        [
+          90,
+          1700
+        ],
+        [
+          92.04,
+          1684.47
+        ],
+        [
+          98.04,
+          1670
+        ],
+        [
+          107.57,
+          1657.57
+        ],
+        [
+          120,
+          1648.04
+        ],
+        [
+          134.47,
+          1642.04
+        ],
+        [
+          150,
+          1640
+        ],
+        [
+          165.53,
+          1642.04
+        ],
+        [
+          180,
+          1648.04
+        ],
+        [
+          192.43,
+          1657.57
+        ],
+        [
+          201.96,
+          1670
+        ],
+        [
+          207.96,
+          1684.47
+        ]
+      ],
+      "start": 820,
+      "end": 845,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pressure Gauge Case",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pressure Gauge Case",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pressure Gauge Case",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pressure Gauge Dial",
+      "points": [
+        [
+          206,
+          1700
+        ],
+        [
+          204.09,
+          1714.49
+        ],
+        [
+          198.5,
+          1728
+        ],
+        [
+          189.6,
+          1739.6
+        ],
+        [
+          178,
+          1748.5
+        ],
+        [
+          164.49,
+          1754.09
+        ],
+        [
+          150,
+          1756
+        ],
+        [
+          135.51,
+          1754.09
+        ],
+        [
+          122,
+          1748.5
+        ],
+        [
+          110.4,
+          1739.6
+        ],
+        [
+          101.5,
+          1728
+        ],
+        [
+          95.91,
+          1714.49
+        ],
+        [
+          94,
+          1700
+        ],
+        [
+          95.91,
+          1685.51
+        ],
+        [
+          101.5,
+          1672
+        ],
+        [
+          110.4,
+          1660.4
+        ],
+        [
+          122,
+          1651.5
+        ],
+        [
+          135.51,
+          1645.91
+        ],
+        [
+          150,
+          1644
+        ],
+        [
+          164.49,
+          1645.91
+        ],
+        [
+          178,
+          1651.5
+        ],
+        [
+          189.6,
+          1660.4
+        ],
+        [
+          198.5,
+          1672
+        ],
+        [
+          204.09,
+          1685.51
+        ]
+      ],
+      "start": 845,
+      "end": 847,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pressure Gauge Dial",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pressure Gauge Dial",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pressure Gauge Dial",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pressure Gauge Needle",
+      "points": [
+        [
+          148.5,
+          -849
+        ],
+        [
+          186,
+          -849
+        ],
+        [
+          186,
+          -847
+        ],
+        [
+          148.5,
+          -847
+        ]
+      ],
+      "start": 1698,
+      "end": 1702
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pressure Gauge Needle",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pressure Gauge Needle",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pressure Gauge Needle",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Safety Distance Zone",
+      "points": [
+        [
+          -4300,
+          -4300
+        ],
+        [
+          5900,
+          -4300
+        ],
+        [
+          5900,
+          4300
+        ],
+        [
+          -4300,
+          4300
+        ]
+      ],
+      "start": 0,
+      "end": 50
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Safety Distance Zone",
+      "subcategory": "Clearance Operation"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Safety Distance Zone",
+      "coarse": true,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "O2",
+      "domain": "pipe",
+      "system": "Other",
+      "solid": "Supply Pipe",
+      "side": "right",
+      "diameter": 28,
+      "flow": "Out"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_MechEq_MedGas_VIE_LOX.png"
+    }
+  ],
+  "values": {
+    "Vessel 1440 dia x 3600 mm (1500 l)": {
+      "value": "1440x3600",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Safety distance 5 m to buildings, 3 m to drains": {
+      "value": "5 m / 3 m",
+      "source_status": "assumed",
+      "source": "BCGA CP 36 / HTM 02-01 VIE siting"
+    },
+    "Plinth 4200 x 2600 mm": {
+      "value": "4200x2600",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   }
- ],
- "values": {
-  "Vessel 1440 dia x 3600 mm (1500 l)": {
-   "value": "1440x3600",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Safety distance 5 m to buildings, 3 m to drains": {
-   "value": "5 m / 3 m",
-   "source_status": "assumed",
-   "source": "BCGA CP 36 / HTM 02-01 VIE siting"
-  },
-  "Plinth 4200 x 2600 mm": {
-   "value": "4200x2600",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- }
 }

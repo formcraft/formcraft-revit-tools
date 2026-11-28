@@ -36,7 +36,8 @@ namespace RevitMCPCommandSet.Commands.Fmc
         public FmcDocumentInfoCommand(UIApplication uiApp) : base(uiApp) { }
         public override string CommandName => "fmc_document_info";
         protected override string Action => "info";
-        protected override int TimeoutMs => 15000;
+        // Ogala night report: an autosave holds Revit 40-60 s; the document check waits it out instead of timing out at 15 s
+        protected override int TimeoutMs => 120000;
     }
 
     /// <summary>New family, project or template from a template file, saved to a path the server has checked.</summary>
@@ -61,5 +62,41 @@ namespace RevitMCPCommandSet.Commands.Fmc
         public FmcCloseDocumentCommand(UIApplication uiApp) : base(uiApp) { }
         public override string CommandName => "fmc_close_document";
         protected override string Action => "close";
+    }
+
+    /// <summary>Open a detached verification copy in the background. The source file is not opened or written.</summary>
+    public class FmcOpenCopyCommand : FmcFileCommandBase
+    {
+        public FmcOpenCopyCommand(UIApplication uiApp) : base(uiApp) { }
+        public override string CommandName => "fmc_open_copy";
+        protected override string Action => "open_copy";
+        protected override int TimeoutMs => 300000;
+    }
+
+    /// <summary>Open a person's existing workshared local, optionally as the active document. No detach, no new local, no sync. A central is refused.</summary>
+    public class FmcOpenLocalCommand : FmcFileCommandBase
+    {
+        public FmcOpenLocalCommand(UIApplication uiApp) : base(uiApp) { }
+        public override string CommandName => "fmc_open_local";
+        protected override string Action => "open_local";
+        protected override int TimeoutMs => 300000;
+    }
+
+    /// <summary>Close an open local without saving, syncing or relinquishing. A save goes through fmc_close_local_apply.</summary>
+    public class FmcCloseLocalCommand : FmcFileCommandBase
+    {
+        public FmcCloseLocalCommand(UIApplication uiApp) : base(uiApp) { }
+        public override string CommandName => "fmc_close_local";
+        protected override string Action => "close_local";
+        protected override int TimeoutMs => 180000;
+    }
+
+    /// <summary>Save the local file, then close it. A write command: the server applies the live-model lock, the AI gate and the batch lease. Never syncs.</summary>
+    public class FmcCloseLocalApplyCommand : FmcFileCommandBase
+    {
+        public FmcCloseLocalApplyCommand(UIApplication uiApp) : base(uiApp) { }
+        public override string CommandName => "fmc_close_local_apply";
+        protected override string Action => "close_local_apply";
+        protected override int TimeoutMs => 180000;
     }
 }

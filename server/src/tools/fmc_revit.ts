@@ -24,6 +24,8 @@ export async function runFmcRevit(args: FmcRevitArgs) {
   try {
     const instances = readInstances();
     if (args.action === "use") {
+      // Owner 26 Oct: a default would be shared by every chat on this server; with two Revits each call names its own
+      if (instances.length > 1) return reply({ refused: true, reasons: [`${instances.length} Revits are open and chats share this server: pass revit on each call instead of a default`] }, true);
       if (!args.target.trim()) return reply({ refused: true, reasons: ["use needs a target: a project or document name, a pid or a port"] }, true);
       const port = resolvePort(args.target, instances, { ...process.env, REVIT_PORT: "" }, undefined);
       setChosen(args.target);

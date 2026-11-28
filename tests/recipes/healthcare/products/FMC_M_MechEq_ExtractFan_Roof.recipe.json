@@ -1,2221 +1,2228 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_M_MechEq_ExtractFan_Roof",
- "template": "Metric Mechanical Equipment.rft",
- "about": "Modelled as a generic product: galvanised kerb with capping, base plate, mesh guard band, four struts, domed aluminium hood with lip and motor cap, spigot below the roof (z = 0), isolator on the kerb. Reference: query: extract fan roof mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=extract+fan+roof+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Mechanical Equipment"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Voltage",
-   "type": "Voltage",
-   "group": "Electrical"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Apparent Load",
-   "type": "ApparentPower",
-   "group": "ElectricalLoads"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cooling_Capacity_kW",
-   "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cooling_Capacity_BTUh",
-   "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Airflow_Ls",
-   "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Refrigerant",
-   "guid": "a46c59d0-d719-583b-99c0-074994d01603",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Asset_Tag",
-   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Serial_Number",
-   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Install_Date",
-   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Warranty_End",
-   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Maintenance_Interval_Months",
-   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_OM_Link",
-   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lift_Weight_kg",
-   "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Mounting_Height_mm",
-   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Power_W",
-   "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Power_W_2",
-   "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Controller_ID",
-   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Type",
-   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Signal",
-   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Protocol",
-   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Tank_Capacity_L",
-   "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "300_Roof"
-  },
-  {
-   "op": "set_type_value",
-   "name": "300_Roof/FMC_Cost_Unit",
-   "type": "300_Roof",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "300_Roof/FMC_Geometry_Stage",
-   "type": "300_Roof",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "300_Roof/IfcExportAs",
-   "type": "300_Roof",
-   "param": "IfcExportAs",
-   "value": "IfcFan"
-  },
-  {
-   "op": "set_type_value",
-   "name": "300_Roof/Description",
-   "type": "300_Roof",
-   "param": "Description",
-   "value": "Roof extract fan, mushroom cowl on a roof kerb, 300 to 450 mm, aluminium hood, mesh guard band, isolator on kerb"
-  },
-  {
-   "op": "set_type_value",
-   "name": "300_Roof/Keynote",
-   "type": "300_Roof",
-   "param": "Keynote",
-   "value": "H.FAN_05"
-  },
-  {
-   "op": "set_type_value",
-   "name": "300_Roof/FMC_Keynote_Code",
-   "type": "300_Roof",
-   "param": "FMC_Keynote_Code",
-   "value": "H.FAN_05"
-  },
-  {
-   "op": "set_type_value",
-   "name": "300_Roof/FMC_Code_Description",
-   "type": "300_Roof",
-   "param": "FMC_Code_Description",
-   "value": "ExtractFan Roof: Roof extract fan"
-  },
-  {
-   "op": "set_type_value",
-   "name": "300_Roof/FMC_Code_Group",
-   "type": "300_Roof",
-   "param": "FMC_Code_Group",
-   "value": "H.FAN"
-  },
-  {
-   "op": "set_type_value",
-   "name": "300_Roof/FMC_Role_Code",
-   "type": "300_Roof",
-   "param": "FMC_Role_Code",
-   "value": "M"
-  },
-  {
-   "op": "set_type_value",
-   "name": "300_Roof/Voltage",
-   "type": "300_Roof",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "300_Roof/Apparent Load",
-   "type": "300_Roof",
-   "param": "Apparent Load",
-   "value": 250
-  },
-  {
-   "op": "add_type",
-   "name": "450_Roof"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Roof/FMC_Cost_Unit",
-   "type": "450_Roof",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Roof/FMC_Geometry_Stage",
-   "type": "450_Roof",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Roof/IfcExportAs",
-   "type": "450_Roof",
-   "param": "IfcExportAs",
-   "value": "IfcFan"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Roof/Description",
-   "type": "450_Roof",
-   "param": "Description",
-   "value": "Roof extract fan, mushroom cowl on a roof kerb, 300 to 450 mm, aluminium hood, mesh guard band, isolator on kerb"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Roof/Keynote",
-   "type": "450_Roof",
-   "param": "Keynote",
-   "value": "H.FAN_05"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Roof/FMC_Keynote_Code",
-   "type": "450_Roof",
-   "param": "FMC_Keynote_Code",
-   "value": "H.FAN_05"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Roof/FMC_Code_Description",
-   "type": "450_Roof",
-   "param": "FMC_Code_Description",
-   "value": "ExtractFan Roof: Roof extract fan"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Roof/FMC_Code_Group",
-   "type": "450_Roof",
-   "param": "FMC_Code_Group",
-   "value": "H.FAN"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Roof/FMC_Role_Code",
-   "type": "450_Roof",
-   "param": "FMC_Role_Code",
-   "value": "M"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Roof/Voltage",
-   "type": "450_Roof",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Roof/Apparent Load",
-   "type": "450_Roof",
-   "param": "Apparent Load",
-   "value": 550
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Galv",
-   "color": [
-    183,
-    188,
-    192
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Galv Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Duct_Galvanised",
-   "param": "Galv Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Alu",
-   "color": [
-    192,
-    192,
-    192
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Alu Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Aluminium_Anodised_Silver",
-   "param": "Alu Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Mesh",
-   "color": [
-    94,
-    106,
-    115
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Mesh Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_InsectMesh_Fibreglass",
-   "param": "Mesh Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Grey",
-   "color": [
-    154,
-    160,
-    166
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Grey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Grey",
-   "param": "Grey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Chrome",
-   "color": [
-    192,
-    195,
-    199
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Chrome Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Chrome_Polished",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Yellow",
-   "color": [
-    242,
-    194,
-    48
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Yellow Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Yellow",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -420.0,
-     -472
-    ],
-    [
-     420.0,
-     -472
-    ],
-    [
-     420.0,
-     420.0
-    ],
-    [
-     -420.0,
-     420.0
-    ]
-   ],
-   "start": -150,
-   "end": 700
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Roof Kerb",
-   "points": [
-    [
-     -400,
-     -400
-    ],
-    [
-     400,
-     -400
-    ],
-    [
-     400,
-     400
-    ],
-    [
-     -400,
-     400
-    ]
-   ],
-   "start": 0,
-   "end": 290
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Roof Kerb",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Roof Kerb",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Roof Kerb",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Kerb Capping",
-   "points": [
-    [
-     -412,
-     -412
-    ],
-    [
-     412,
-     -412
-    ],
-    [
-     412,
-     412
-    ],
-    [
-     -412,
-     412
-    ]
-   ],
-   "start": 290,
-   "end": 300
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Kerb Capping",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Kerb Capping",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Kerb Capping",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Base Plate",
-   "points": [
-    [
-     400.0,
-     -420.0
-    ],
-    [
-     407.65,
-     -418.48
-    ],
-    [
-     414.14,
-     -414.14
-    ],
-    [
-     418.48,
-     -407.65
-    ],
-    [
-     420.0,
-     -400.0
-    ],
-    [
-     420.0,
-     400.0
-    ],
-    [
-     418.48,
-     407.65
-    ],
-    [
-     414.14,
-     414.14
-    ],
-    [
-     407.65,
-     418.48
-    ],
-    [
-     400.0,
-     420.0
-    ],
-    [
-     -400.0,
-     420.0
-    ],
-    [
-     -407.65,
-     418.48
-    ],
-    [
-     -414.14,
-     414.14
-    ],
-    [
-     -418.48,
-     407.65
-    ],
-    [
-     -420.0,
-     400.0
-    ],
-    [
-     -420.0,
-     -400.0
-    ],
-    [
-     -418.48,
-     -407.65
-    ],
-    [
-     -414.14,
-     -414.14
-    ],
-    [
-     -407.65,
-     -418.48
-    ],
-    [
-     -400.0,
-     -420.0
-    ]
-   ],
-   "start": 300,
-   "end": 312
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Plate",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Plate",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Plate",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Spigot",
-   "points": [
-    [
-     225.0,
-     0.0
-    ],
-    [
-     217.33,
-     58.23
-    ],
-    [
-     194.86,
-     112.5
-    ],
-    [
-     159.1,
-     159.1
-    ],
-    [
-     112.5,
-     194.86
-    ],
-    [
-     58.23,
-     217.33
-    ],
-    [
-     0.0,
-     225.0
-    ],
-    [
-     -58.23,
-     217.33
-    ],
-    [
-     -112.5,
-     194.86
-    ],
-    [
-     -159.1,
-     159.1
-    ],
-    [
-     -194.86,
-     112.5
-    ],
-    [
-     -217.33,
-     58.23
-    ],
-    [
-     -225.0,
-     0.0
-    ],
-    [
-     -217.33,
-     -58.23
-    ],
-    [
-     -194.86,
-     -112.5
-    ],
-    [
-     -159.1,
-     -159.1
-    ],
-    [
-     -112.5,
-     -194.86
-    ],
-    [
-     -58.23,
-     -217.33
-    ],
-    [
-     -0.0,
-     -225.0
-    ],
-    [
-     58.23,
-     -217.33
-    ],
-    [
-     112.5,
-     -194.86
-    ],
-    [
-     159.1,
-     -159.1
-    ],
-    [
-     194.86,
-     -112.5
-    ],
-    [
-     217.33,
-     -58.23
-    ]
-   ],
-   "start": -150,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Spigot",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Spigot",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Spigot",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Mesh Band",
-   "profile": [
-    [
-     300,
-     312
-    ],
-    [
-     305,
-     312
-    ],
-    [
-     305,
-     520
-    ],
-    [
-     300,
-     520
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Mesh"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Band",
-   "param": "Mesh Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Band",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Hood",
-   "profile": [
-    [
-     0,
-     520
-    ],
-    [
-     415,
-     520
-    ],
-    [
-     415,
-     538
-    ],
-    [
-     320,
-     590
-    ],
-    [
-     170,
-     628
-    ],
-    [
-     0,
-     638
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hood",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hood",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Hood Lip",
-   "profile": [
-    [
-     405,
-     505
-    ],
-    [
-     418,
-     505
-    ],
-    [
-     418,
-     520
-    ],
-    [
-     405,
-     520
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hood Lip",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hood Lip",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Motor Cap",
-   "profile": [
-    [
-     0,
-     638
-    ],
-    [
-     95,
-     634
-    ],
-    [
-     95,
-     670
-    ],
-    [
-     60,
-     695
-    ],
-    [
-     0,
-     700
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Motor Cap",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Motor Cap",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hood Strut Front 1",
-   "points": [
-    [
-     -262,
-     -262
-    ],
-    [
-     -246,
-     -262
-    ],
-    [
-     -246,
-     -246
-    ],
-    [
-     -262,
-     -246
-    ]
-   ],
-   "start": 312,
-   "end": 520
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hood Strut Front 1",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hood Strut Front 1",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hood Strut Front 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hood Strut Front 2",
-   "points": [
-    [
-     246,
-     -262
-    ],
-    [
-     262,
-     -262
-    ],
-    [
-     262,
-     -246
-    ],
-    [
-     246,
-     -246
-    ]
-   ],
-   "start": 312,
-   "end": 520
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hood Strut Front 2",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hood Strut Front 2",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hood Strut Front 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hood Strut Rear 1",
-   "points": [
-    [
-     -262,
-     246
-    ],
-    [
-     -246,
-     246
-    ],
-    [
-     -246,
-     262
-    ],
-    [
-     -262,
-     262
-    ]
-   ],
-   "start": 312,
-   "end": 520
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hood Strut Rear 1",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hood Strut Rear 1",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hood Strut Rear 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hood Strut Rear 2",
-   "points": [
-    [
-     246,
-     246
-    ],
-    [
-     262,
-     246
-    ],
-    [
-     262,
-     262
-    ],
-    [
-     246,
-     262
-    ]
-   ],
-   "start": 312,
-   "end": 520
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hood Strut Rear 2",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hood Strut Rear 2",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hood Strut Rear 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Base Bolt Front 1",
-   "points": [
-    [
-     -372.0,
-     -380.0
-    ],
-    [
-     -372.27,
-     -377.93
-    ],
-    [
-     -373.07,
-     -376.0
-    ],
-    [
-     -374.34,
-     -374.34
-    ],
-    [
-     -376.0,
-     -373.07
-    ],
-    [
-     -377.93,
-     -372.27
-    ],
-    [
-     -380.0,
-     -372.0
-    ],
-    [
-     -382.07,
-     -372.27
-    ],
-    [
-     -384.0,
-     -373.07
-    ],
-    [
-     -385.66,
-     -374.34
-    ],
-    [
-     -386.93,
-     -376.0
-    ],
-    [
-     -387.73,
-     -377.93
-    ],
-    [
-     -388.0,
-     -380.0
-    ],
-    [
-     -387.73,
-     -382.07
-    ],
-    [
-     -386.93,
-     -384.0
-    ],
-    [
-     -385.66,
-     -385.66
-    ],
-    [
-     -384.0,
-     -386.93
-    ],
-    [
-     -382.07,
-     -387.73
-    ],
-    [
-     -380.0,
-     -388.0
-    ],
-    [
-     -377.93,
-     -387.73
-    ],
-    [
-     -376.0,
-     -386.93
-    ],
-    [
-     -374.34,
-     -385.66
-    ],
-    [
-     -373.07,
-     -384.0
-    ],
-    [
-     -372.27,
-     -382.07
-    ]
-   ],
-   "start": 312,
-   "end": 320
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Bolt Front 1",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Bolt Front 1",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Bolt Front 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Base Bolt Front 2",
-   "points": [
-    [
-     388.0,
-     -380.0
-    ],
-    [
-     387.73,
-     -377.93
-    ],
-    [
-     386.93,
-     -376.0
-    ],
-    [
-     385.66,
-     -374.34
-    ],
-    [
-     384.0,
-     -373.07
-    ],
-    [
-     382.07,
-     -372.27
-    ],
-    [
-     380.0,
-     -372.0
-    ],
-    [
-     377.93,
-     -372.27
-    ],
-    [
-     376.0,
-     -373.07
-    ],
-    [
-     374.34,
-     -374.34
-    ],
-    [
-     373.07,
-     -376.0
-    ],
-    [
-     372.27,
-     -377.93
-    ],
-    [
-     372.0,
-     -380.0
-    ],
-    [
-     372.27,
-     -382.07
-    ],
-    [
-     373.07,
-     -384.0
-    ],
-    [
-     374.34,
-     -385.66
-    ],
-    [
-     376.0,
-     -386.93
-    ],
-    [
-     377.93,
-     -387.73
-    ],
-    [
-     380.0,
-     -388.0
-    ],
-    [
-     382.07,
-     -387.73
-    ],
-    [
-     384.0,
-     -386.93
-    ],
-    [
-     385.66,
-     -385.66
-    ],
-    [
-     386.93,
-     -384.0
-    ],
-    [
-     387.73,
-     -382.07
-    ]
-   ],
-   "start": 312,
-   "end": 320
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Bolt Front 2",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Bolt Front 2",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Bolt Front 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Base Bolt Rear 1",
-   "points": [
-    [
-     -372.0,
-     380.0
-    ],
-    [
-     -372.27,
-     382.07
-    ],
-    [
-     -373.07,
-     384.0
-    ],
-    [
-     -374.34,
-     385.66
-    ],
-    [
-     -376.0,
-     386.93
-    ],
-    [
-     -377.93,
-     387.73
-    ],
-    [
-     -380.0,
-     388.0
-    ],
-    [
-     -382.07,
-     387.73
-    ],
-    [
-     -384.0,
-     386.93
-    ],
-    [
-     -385.66,
-     385.66
-    ],
-    [
-     -386.93,
-     384.0
-    ],
-    [
-     -387.73,
-     382.07
-    ],
-    [
-     -388.0,
-     380.0
-    ],
-    [
-     -387.73,
-     377.93
-    ],
-    [
-     -386.93,
-     376.0
-    ],
-    [
-     -385.66,
-     374.34
-    ],
-    [
-     -384.0,
-     373.07
-    ],
-    [
-     -382.07,
-     372.27
-    ],
-    [
-     -380.0,
-     372.0
-    ],
-    [
-     -377.93,
-     372.27
-    ],
-    [
-     -376.0,
-     373.07
-    ],
-    [
-     -374.34,
-     374.34
-    ],
-    [
-     -373.07,
-     376.0
-    ],
-    [
-     -372.27,
-     377.93
-    ]
-   ],
-   "start": 312,
-   "end": 320
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Bolt Rear 1",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Bolt Rear 1",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Bolt Rear 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Base Bolt Rear 2",
-   "points": [
-    [
-     388.0,
-     380.0
-    ],
-    [
-     387.73,
-     382.07
-    ],
-    [
-     386.93,
-     384.0
-    ],
-    [
-     385.66,
-     385.66
-    ],
-    [
-     384.0,
-     386.93
-    ],
-    [
-     382.07,
-     387.73
-    ],
-    [
-     380.0,
-     388.0
-    ],
-    [
-     377.93,
-     387.73
-    ],
-    [
-     376.0,
-     386.93
-    ],
-    [
-     374.34,
-     385.66
-    ],
-    [
-     373.07,
-     384.0
-    ],
-    [
-     372.27,
-     382.07
-    ],
-    [
-     372.0,
-     380.0
-    ],
-    [
-     372.27,
-     377.93
-    ],
-    [
-     373.07,
-     376.0
-    ],
-    [
-     374.34,
-     374.34
-    ],
-    [
-     376.0,
-     373.07
-    ],
-    [
-     377.93,
-     372.27
-    ],
-    [
-     380.0,
-     372.0
-    ],
-    [
-     382.07,
-     372.27
-    ],
-    [
-     384.0,
-     373.07
-    ],
-    [
-     385.66,
-     374.34
-    ],
-    [
-     386.93,
-     376.0
-    ],
-    [
-     387.73,
-     377.93
-    ]
-   ],
-   "start": 312,
-   "end": 320
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Bolt Rear 2",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Bolt Rear 2",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Bolt Rear 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Isolator",
-   "points": [
-    [
-     254.0,
-     140.0
-    ],
-    [
-     256.3,
-     140.46
-    ],
-    [
-     258.24,
-     141.76
-    ],
-    [
-     259.54,
-     143.7
-    ],
-    [
-     260.0,
-     146.0
-    ],
-    [
-     260.0,
-     254.0
-    ],
-    [
-     259.54,
-     256.3
-    ],
-    [
-     258.24,
-     258.24
-    ],
-    [
-     256.3,
-     259.54
-    ],
-    [
-     254.0,
-     260.0
-    ],
-    [
-     156.0,
-     260.0
-    ],
-    [
-     153.7,
-     259.54
-    ],
-    [
-     151.76,
-     258.24
-    ],
-    [
-     150.46,
-     256.3
-    ],
-    [
-     150.0,
-     254.0
-    ],
-    [
-     150.0,
-     146.0
-    ],
-    [
-     150.46,
-     143.7
-    ],
-    [
-     151.76,
-     141.76
-    ],
-    [
-     153.7,
-     140.46
-    ],
-    [
-     156.0,
-     140.0
-    ]
-   ],
-   "start": 400,
-   "end": 460,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Isolator",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Isolator",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Isolator",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Isolator Knob",
-   "points": [
-    [
-     216.0,
-     180.0
-    ],
-    [
-     217.53,
-     180.3
-    ],
-    [
-     218.83,
-     181.17
-    ],
-    [
-     219.7,
-     182.47
-    ],
-    [
-     220.0,
-     184.0
-    ],
-    [
-     220.0,
-     216.0
-    ],
-    [
-     219.7,
-     217.53
-    ],
-    [
-     218.83,
-     218.83
-    ],
-    [
-     217.53,
-     219.7
-    ],
-    [
-     216.0,
-     220.0
-    ],
-    [
-     194.0,
-     220.0
-    ],
-    [
-     192.47,
-     219.7
-    ],
-    [
-     191.17,
-     218.83
-    ],
-    [
-     190.3,
-     217.53
-    ],
-    [
-     190.0,
-     216.0
-    ],
-    [
-     190.0,
-     184.0
-    ],
-    [
-     190.3,
-     182.47
-    ],
-    [
-     191.17,
-     181.17
-    ],
-    [
-     192.47,
-     180.3
-    ],
-    [
-     194.0,
-     180.0
-    ]
-   ],
-   "start": 460,
-   "end": 472,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Isolator Knob",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Isolator Knob",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Isolator Knob",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Conduit",
-   "points": [
-    [
-     215.0,
-     -430.0
-    ],
-    [
-     214.66,
-     -427.41
-    ],
-    [
-     213.66,
-     -425.0
-    ],
-    [
-     212.07,
-     -422.93
-    ],
-    [
-     210.0,
-     -421.34
-    ],
-    [
-     207.59,
-     -420.34
-    ],
-    [
-     205.0,
-     -420.0
-    ],
-    [
-     202.41,
-     -420.34
-    ],
-    [
-     200.0,
-     -421.34
-    ],
-    [
-     197.93,
-     -422.93
-    ],
-    [
-     196.34,
-     -425.0
-    ],
-    [
-     195.34,
-     -427.41
-    ],
-    [
-     195.0,
-     -430.0
-    ],
-    [
-     195.34,
-     -432.59
-    ],
-    [
-     196.34,
-     -435.0
-    ],
-    [
-     197.93,
-     -437.07
-    ],
-    [
-     200.0,
-     -438.66
-    ],
-    [
-     202.41,
-     -439.66
-    ],
-    [
-     205.0,
-     -440.0
-    ],
-    [
-     207.59,
-     -439.66
-    ],
-    [
-     210.0,
-     -438.66
-    ],
-    [
-     212.07,
-     -437.07
-    ],
-    [
-     213.66,
-     -435.0
-    ],
-    [
-     214.66,
-     -432.59
-    ]
-   ],
-   "start": 260,
-   "end": 330
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Conduit",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Conduit",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Conduit",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "Power",
-   "domain": "electrical",
-   "system": "PowerBalanced",
-   "solid": "Isolator",
-   "side": "front"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Voltage",
-   "connector": "Power",
-   "connector_param": "Voltage",
-   "param": "Voltage"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Apparent Load",
-   "connector": "Power",
-   "connector_param": "Apparent Load",
-   "param": "Apparent Load"
-  },
-  {
-   "op": "add_connector",
-   "name": "Extract",
-   "domain": "duct",
-   "system": "ExhaustAir",
-   "solid": "Spigot",
-   "side": "bottom",
-   "diameter": 450,
-   "flow": "In"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_MechEq_ExtractFan_Roof.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_M_MechEq_ExtractFan_Roof",
+  "template": "Metric Mechanical Equipment.rft",
+  "about": "Modelled as a generic product: galvanised kerb with capping, base plate, mesh guard band, four struts, domed aluminium hood with lip and motor cap, spigot below the roof (z = 0), isolator on the kerb. Reference: query: extract fan roof mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=extract+fan+roof+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Mechanical Equipment"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Voltage",
+      "type": "Voltage",
+      "group": "Electrical"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Apparent Load",
+      "type": "ApparentPower",
+      "group": "ElectricalLoads"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cooling_Capacity_kW",
+      "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cooling_Capacity_BTUh",
+      "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Airflow_Ls",
+      "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Refrigerant",
+      "guid": "a46c59d0-d719-583b-99c0-074994d01603",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Asset_Tag",
+      "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Serial_Number",
+      "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Install_Date",
+      "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Warranty_End",
+      "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Maintenance_Interval_Months",
+      "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_OM_Link",
+      "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lift_Weight_kg",
+      "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Mounting_Height_mm",
+      "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Power_W",
+      "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Power_W_2",
+      "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Controller_ID",
+      "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Type",
+      "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Signal",
+      "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Protocol",
+      "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Tank_Capacity_L",
+      "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "300_Roof"
+    },
+    {
+      "op": "set_type_value",
+      "name": "300_Roof/FMC_Cost_Unit",
+      "type": "300_Roof",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "300_Roof/FMC_Geometry_Stage",
+      "type": "300_Roof",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "300_Roof/IfcExportAs",
+      "type": "300_Roof",
+      "param": "IfcExportAs",
+      "value": "IfcFan"
+    },
+    {
+      "op": "set_type_value",
+      "name": "300_Roof/Description",
+      "type": "300_Roof",
+      "param": "Description",
+      "value": "Roof extract fan, mushroom cowl on a roof kerb, 300 to 450 mm, aluminium hood, mesh guard band, isolator on kerb"
+    },
+    {
+      "op": "set_type_value",
+      "name": "300_Roof/Keynote",
+      "type": "300_Roof",
+      "param": "Keynote",
+      "value": "H.FAN_05"
+    },
+    {
+      "op": "set_type_value",
+      "name": "300_Roof/FMC_Keynote_Code",
+      "type": "300_Roof",
+      "param": "FMC_Keynote_Code",
+      "value": "H.FAN_05"
+    },
+    {
+      "op": "set_type_value",
+      "name": "300_Roof/FMC_Code_Description",
+      "type": "300_Roof",
+      "param": "FMC_Code_Description",
+      "value": "ExtractFan Roof: Roof extract fan"
+    },
+    {
+      "op": "set_type_value",
+      "name": "300_Roof/FMC_Code_Group",
+      "type": "300_Roof",
+      "param": "FMC_Code_Group",
+      "value": "H.FAN"
+    },
+    {
+      "op": "set_type_value",
+      "name": "300_Roof/FMC_Role_Code",
+      "type": "300_Roof",
+      "param": "FMC_Role_Code",
+      "value": "M"
+    },
+    {
+      "op": "set_type_value",
+      "name": "300_Roof/Voltage",
+      "type": "300_Roof",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "300_Roof/Apparent Load",
+      "type": "300_Roof",
+      "param": "Apparent Load",
+      "value": 250
+    },
+    {
+      "op": "add_type",
+      "name": "450_Roof"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Roof/FMC_Cost_Unit",
+      "type": "450_Roof",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Roof/FMC_Geometry_Stage",
+      "type": "450_Roof",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Roof/IfcExportAs",
+      "type": "450_Roof",
+      "param": "IfcExportAs",
+      "value": "IfcFan"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Roof/Description",
+      "type": "450_Roof",
+      "param": "Description",
+      "value": "Roof extract fan, mushroom cowl on a roof kerb, 300 to 450 mm, aluminium hood, mesh guard band, isolator on kerb"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Roof/Keynote",
+      "type": "450_Roof",
+      "param": "Keynote",
+      "value": "H.FAN_05"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Roof/FMC_Keynote_Code",
+      "type": "450_Roof",
+      "param": "FMC_Keynote_Code",
+      "value": "H.FAN_05"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Roof/FMC_Code_Description",
+      "type": "450_Roof",
+      "param": "FMC_Code_Description",
+      "value": "ExtractFan Roof: Roof extract fan"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Roof/FMC_Code_Group",
+      "type": "450_Roof",
+      "param": "FMC_Code_Group",
+      "value": "H.FAN"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Roof/FMC_Role_Code",
+      "type": "450_Roof",
+      "param": "FMC_Role_Code",
+      "value": "M"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Roof/Voltage",
+      "type": "450_Roof",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Roof/Apparent Load",
+      "type": "450_Roof",
+      "param": "Apparent Load",
+      "value": 550
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Galv",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Galv Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Duct_Galvanised",
+      "param": "Galv Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Alu",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Alu Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Aluminium_Anodised_Silver",
+      "param": "Alu Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Mesh",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Mesh Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_InsectMesh_Fibreglass",
+      "param": "Mesh Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Grey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Grey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Grey",
+      "param": "Grey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Chrome",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Chrome Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Chrome_Polished",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Yellow",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Yellow Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Yellow",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -420,
+          -472
+        ],
+        [
+          420,
+          -472
+        ],
+        [
+          420,
+          420
+        ],
+        [
+          -420,
+          420
+        ]
+      ],
+      "start": -150,
+      "end": 700
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Roof Kerb",
+      "points": [
+        [
+          -400,
+          -400
+        ],
+        [
+          400,
+          -400
+        ],
+        [
+          400,
+          400
+        ],
+        [
+          -400,
+          400
+        ]
+      ],
+      "start": 0,
+      "end": 290
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Roof Kerb",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Roof Kerb",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Roof Kerb",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Kerb Capping",
+      "points": [
+        [
+          -412,
+          -412
+        ],
+        [
+          412,
+          -412
+        ],
+        [
+          412,
+          412
+        ],
+        [
+          -412,
+          412
+        ]
+      ],
+      "start": 290,
+      "end": 300
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Kerb Capping",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Kerb Capping",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Kerb Capping",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Base Plate",
+      "points": [
+        [
+          400,
+          -420
+        ],
+        [
+          407.65,
+          -418.48
+        ],
+        [
+          414.14,
+          -414.14
+        ],
+        [
+          418.48,
+          -407.65
+        ],
+        [
+          420,
+          -400
+        ],
+        [
+          420,
+          400
+        ],
+        [
+          418.48,
+          407.65
+        ],
+        [
+          414.14,
+          414.14
+        ],
+        [
+          407.65,
+          418.48
+        ],
+        [
+          400,
+          420
+        ],
+        [
+          -400,
+          420
+        ],
+        [
+          -407.65,
+          418.48
+        ],
+        [
+          -414.14,
+          414.14
+        ],
+        [
+          -418.48,
+          407.65
+        ],
+        [
+          -420,
+          400
+        ],
+        [
+          -420,
+          -400
+        ],
+        [
+          -418.48,
+          -407.65
+        ],
+        [
+          -414.14,
+          -414.14
+        ],
+        [
+          -407.65,
+          -418.48
+        ],
+        [
+          -400,
+          -420
+        ]
+      ],
+      "start": 300,
+      "end": 312
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Base Plate",
+      "subcategory": "Alu"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Base Plate",
+      "param": "Alu Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Base Plate",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Spigot",
+      "points": [
+        [
+          225,
+          0
+        ],
+        [
+          217.33,
+          58.23
+        ],
+        [
+          194.86,
+          112.5
+        ],
+        [
+          159.1,
+          159.1
+        ],
+        [
+          112.5,
+          194.86
+        ],
+        [
+          58.23,
+          217.33
+        ],
+        [
+          0,
+          225
+        ],
+        [
+          -58.23,
+          217.33
+        ],
+        [
+          -112.5,
+          194.86
+        ],
+        [
+          -159.1,
+          159.1
+        ],
+        [
+          -194.86,
+          112.5
+        ],
+        [
+          -217.33,
+          58.23
+        ],
+        [
+          -225,
+          0
+        ],
+        [
+          -217.33,
+          -58.23
+        ],
+        [
+          -194.86,
+          -112.5
+        ],
+        [
+          -159.1,
+          -159.1
+        ],
+        [
+          -112.5,
+          -194.86
+        ],
+        [
+          -58.23,
+          -217.33
+        ],
+        [
+          0,
+          -225
+        ],
+        [
+          58.23,
+          -217.33
+        ],
+        [
+          112.5,
+          -194.86
+        ],
+        [
+          159.1,
+          -159.1
+        ],
+        [
+          194.86,
+          -112.5
+        ],
+        [
+          217.33,
+          -58.23
+        ]
+      ],
+      "start": -150,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Spigot",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Spigot",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Spigot",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Mesh Band",
+      "profile": [
+        [
+          300,
+          312
+        ],
+        [
+          305,
+          312
+        ],
+        [
+          305,
+          520
+        ],
+        [
+          300,
+          520
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Mesh"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Mesh Band",
+      "param": "Mesh Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Mesh Band",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Hood",
+      "profile": [
+        [
+          0,
+          520
+        ],
+        [
+          415,
+          520
+        ],
+        [
+          415,
+          538
+        ],
+        [
+          320,
+          590
+        ],
+        [
+          170,
+          628
+        ],
+        [
+          0,
+          638
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Alu"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hood",
+      "param": "Alu Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hood",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Hood Lip",
+      "profile": [
+        [
+          405,
+          505
+        ],
+        [
+          418,
+          505
+        ],
+        [
+          418,
+          520
+        ],
+        [
+          405,
+          520
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Alu"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hood Lip",
+      "param": "Alu Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hood Lip",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Motor Cap",
+      "profile": [
+        [
+          0,
+          638
+        ],
+        [
+          95,
+          634
+        ],
+        [
+          95,
+          670
+        ],
+        [
+          60,
+          695
+        ],
+        [
+          0,
+          700
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Motor Cap",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Motor Cap",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hood Strut Front 1",
+      "points": [
+        [
+          -262,
+          -262
+        ],
+        [
+          -246,
+          -262
+        ],
+        [
+          -246,
+          -246
+        ],
+        [
+          -262,
+          -246
+        ]
+      ],
+      "start": 312,
+      "end": 520
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hood Strut Front 1",
+      "subcategory": "Alu"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hood Strut Front 1",
+      "param": "Alu Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hood Strut Front 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hood Strut Front 2",
+      "points": [
+        [
+          246,
+          -262
+        ],
+        [
+          262,
+          -262
+        ],
+        [
+          262,
+          -246
+        ],
+        [
+          246,
+          -246
+        ]
+      ],
+      "start": 312,
+      "end": 520
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hood Strut Front 2",
+      "subcategory": "Alu"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hood Strut Front 2",
+      "param": "Alu Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hood Strut Front 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hood Strut Rear 1",
+      "points": [
+        [
+          -262,
+          246
+        ],
+        [
+          -246,
+          246
+        ],
+        [
+          -246,
+          262
+        ],
+        [
+          -262,
+          262
+        ]
+      ],
+      "start": 312,
+      "end": 520
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hood Strut Rear 1",
+      "subcategory": "Alu"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hood Strut Rear 1",
+      "param": "Alu Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hood Strut Rear 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hood Strut Rear 2",
+      "points": [
+        [
+          246,
+          246
+        ],
+        [
+          262,
+          246
+        ],
+        [
+          262,
+          262
+        ],
+        [
+          246,
+          262
+        ]
+      ],
+      "start": 312,
+      "end": 520
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hood Strut Rear 2",
+      "subcategory": "Alu"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hood Strut Rear 2",
+      "param": "Alu Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Hood Strut Rear 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Base Bolt Front 1",
+      "points": [
+        [
+          -372,
+          -380
+        ],
+        [
+          -372.27,
+          -377.93
+        ],
+        [
+          -373.07,
+          -376
+        ],
+        [
+          -374.34,
+          -374.34
+        ],
+        [
+          -376,
+          -373.07
+        ],
+        [
+          -377.93,
+          -372.27
+        ],
+        [
+          -380,
+          -372
+        ],
+        [
+          -382.07,
+          -372.27
+        ],
+        [
+          -384,
+          -373.07
+        ],
+        [
+          -385.66,
+          -374.34
+        ],
+        [
+          -386.93,
+          -376
+        ],
+        [
+          -387.73,
+          -377.93
+        ],
+        [
+          -388,
+          -380
+        ],
+        [
+          -387.73,
+          -382.07
+        ],
+        [
+          -386.93,
+          -384
+        ],
+        [
+          -385.66,
+          -385.66
+        ],
+        [
+          -384,
+          -386.93
+        ],
+        [
+          -382.07,
+          -387.73
+        ],
+        [
+          -380,
+          -388
+        ],
+        [
+          -377.93,
+          -387.73
+        ],
+        [
+          -376,
+          -386.93
+        ],
+        [
+          -374.34,
+          -385.66
+        ],
+        [
+          -373.07,
+          -384
+        ],
+        [
+          -372.27,
+          -382.07
+        ]
+      ],
+      "start": 312,
+      "end": 320
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Base Bolt Front 1",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Base Bolt Front 1",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Base Bolt Front 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Base Bolt Front 2",
+      "points": [
+        [
+          388,
+          -380
+        ],
+        [
+          387.73,
+          -377.93
+        ],
+        [
+          386.93,
+          -376
+        ],
+        [
+          385.66,
+          -374.34
+        ],
+        [
+          384,
+          -373.07
+        ],
+        [
+          382.07,
+          -372.27
+        ],
+        [
+          380,
+          -372
+        ],
+        [
+          377.93,
+          -372.27
+        ],
+        [
+          376,
+          -373.07
+        ],
+        [
+          374.34,
+          -374.34
+        ],
+        [
+          373.07,
+          -376
+        ],
+        [
+          372.27,
+          -377.93
+        ],
+        [
+          372,
+          -380
+        ],
+        [
+          372.27,
+          -382.07
+        ],
+        [
+          373.07,
+          -384
+        ],
+        [
+          374.34,
+          -385.66
+        ],
+        [
+          376,
+          -386.93
+        ],
+        [
+          377.93,
+          -387.73
+        ],
+        [
+          380,
+          -388
+        ],
+        [
+          382.07,
+          -387.73
+        ],
+        [
+          384,
+          -386.93
+        ],
+        [
+          385.66,
+          -385.66
+        ],
+        [
+          386.93,
+          -384
+        ],
+        [
+          387.73,
+          -382.07
+        ]
+      ],
+      "start": 312,
+      "end": 320
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Base Bolt Front 2",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Base Bolt Front 2",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Base Bolt Front 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Base Bolt Rear 1",
+      "points": [
+        [
+          -372,
+          380
+        ],
+        [
+          -372.27,
+          382.07
+        ],
+        [
+          -373.07,
+          384
+        ],
+        [
+          -374.34,
+          385.66
+        ],
+        [
+          -376,
+          386.93
+        ],
+        [
+          -377.93,
+          387.73
+        ],
+        [
+          -380,
+          388
+        ],
+        [
+          -382.07,
+          387.73
+        ],
+        [
+          -384,
+          386.93
+        ],
+        [
+          -385.66,
+          385.66
+        ],
+        [
+          -386.93,
+          384
+        ],
+        [
+          -387.73,
+          382.07
+        ],
+        [
+          -388,
+          380
+        ],
+        [
+          -387.73,
+          377.93
+        ],
+        [
+          -386.93,
+          376
+        ],
+        [
+          -385.66,
+          374.34
+        ],
+        [
+          -384,
+          373.07
+        ],
+        [
+          -382.07,
+          372.27
+        ],
+        [
+          -380,
+          372
+        ],
+        [
+          -377.93,
+          372.27
+        ],
+        [
+          -376,
+          373.07
+        ],
+        [
+          -374.34,
+          374.34
+        ],
+        [
+          -373.07,
+          376
+        ],
+        [
+          -372.27,
+          377.93
+        ]
+      ],
+      "start": 312,
+      "end": 320
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Base Bolt Rear 1",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Base Bolt Rear 1",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Base Bolt Rear 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Base Bolt Rear 2",
+      "points": [
+        [
+          388,
+          380
+        ],
+        [
+          387.73,
+          382.07
+        ],
+        [
+          386.93,
+          384
+        ],
+        [
+          385.66,
+          385.66
+        ],
+        [
+          384,
+          386.93
+        ],
+        [
+          382.07,
+          387.73
+        ],
+        [
+          380,
+          388
+        ],
+        [
+          377.93,
+          387.73
+        ],
+        [
+          376,
+          386.93
+        ],
+        [
+          374.34,
+          385.66
+        ],
+        [
+          373.07,
+          384
+        ],
+        [
+          372.27,
+          382.07
+        ],
+        [
+          372,
+          380
+        ],
+        [
+          372.27,
+          377.93
+        ],
+        [
+          373.07,
+          376
+        ],
+        [
+          374.34,
+          374.34
+        ],
+        [
+          376,
+          373.07
+        ],
+        [
+          377.93,
+          372.27
+        ],
+        [
+          380,
+          372
+        ],
+        [
+          382.07,
+          372.27
+        ],
+        [
+          384,
+          373.07
+        ],
+        [
+          385.66,
+          374.34
+        ],
+        [
+          386.93,
+          376
+        ],
+        [
+          387.73,
+          377.93
+        ]
+      ],
+      "start": 312,
+      "end": 320
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Base Bolt Rear 2",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Base Bolt Rear 2",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Base Bolt Rear 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Isolator",
+      "points": [
+        [
+          254,
+          140
+        ],
+        [
+          256.3,
+          140.46
+        ],
+        [
+          258.24,
+          141.76
+        ],
+        [
+          259.54,
+          143.7
+        ],
+        [
+          260,
+          146
+        ],
+        [
+          260,
+          254
+        ],
+        [
+          259.54,
+          256.3
+        ],
+        [
+          258.24,
+          258.24
+        ],
+        [
+          256.3,
+          259.54
+        ],
+        [
+          254,
+          260
+        ],
+        [
+          156,
+          260
+        ],
+        [
+          153.7,
+          259.54
+        ],
+        [
+          151.76,
+          258.24
+        ],
+        [
+          150.46,
+          256.3
+        ],
+        [
+          150,
+          254
+        ],
+        [
+          150,
+          146
+        ],
+        [
+          150.46,
+          143.7
+        ],
+        [
+          151.76,
+          141.76
+        ],
+        [
+          153.7,
+          140.46
+        ],
+        [
+          156,
+          140
+        ]
+      ],
+      "start": 400,
+      "end": 460,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Isolator",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Isolator",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Isolator",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Isolator Knob",
+      "points": [
+        [
+          216,
+          180
+        ],
+        [
+          217.53,
+          180.3
+        ],
+        [
+          218.83,
+          181.17
+        ],
+        [
+          219.7,
+          182.47
+        ],
+        [
+          220,
+          184
+        ],
+        [
+          220,
+          216
+        ],
+        [
+          219.7,
+          217.53
+        ],
+        [
+          218.83,
+          218.83
+        ],
+        [
+          217.53,
+          219.7
+        ],
+        [
+          216,
+          220
+        ],
+        [
+          194,
+          220
+        ],
+        [
+          192.47,
+          219.7
+        ],
+        [
+          191.17,
+          218.83
+        ],
+        [
+          190.3,
+          217.53
+        ],
+        [
+          190,
+          216
+        ],
+        [
+          190,
+          184
+        ],
+        [
+          190.3,
+          182.47
+        ],
+        [
+          191.17,
+          181.17
+        ],
+        [
+          192.47,
+          180.3
+        ],
+        [
+          194,
+          180
+        ]
+      ],
+      "start": 460,
+      "end": 472,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Isolator Knob",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Isolator Knob",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Isolator Knob",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Conduit",
+      "points": [
+        [
+          215,
+          -430
+        ],
+        [
+          214.66,
+          -427.41
+        ],
+        [
+          213.66,
+          -425
+        ],
+        [
+          212.07,
+          -422.93
+        ],
+        [
+          210,
+          -421.34
+        ],
+        [
+          207.59,
+          -420.34
+        ],
+        [
+          205,
+          -420
+        ],
+        [
+          202.41,
+          -420.34
+        ],
+        [
+          200,
+          -421.34
+        ],
+        [
+          197.93,
+          -422.93
+        ],
+        [
+          196.34,
+          -425
+        ],
+        [
+          195.34,
+          -427.41
+        ],
+        [
+          195,
+          -430
+        ],
+        [
+          195.34,
+          -432.59
+        ],
+        [
+          196.34,
+          -435
+        ],
+        [
+          197.93,
+          -437.07
+        ],
+        [
+          200,
+          -438.66
+        ],
+        [
+          202.41,
+          -439.66
+        ],
+        [
+          205,
+          -440
+        ],
+        [
+          207.59,
+          -439.66
+        ],
+        [
+          210,
+          -438.66
+        ],
+        [
+          212.07,
+          -437.07
+        ],
+        [
+          213.66,
+          -435
+        ],
+        [
+          214.66,
+          -432.59
+        ]
+      ],
+      "start": 260,
+      "end": 330
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Conduit",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Conduit",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Conduit",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "Power",
+      "domain": "electrical",
+      "system": "PowerBalanced",
+      "solid": "Isolator",
+      "side": "front"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Voltage",
+      "connector": "Power",
+      "connector_param": "Voltage",
+      "param": "Voltage"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Apparent Load",
+      "connector": "Power",
+      "connector_param": "Apparent Load",
+      "param": "Apparent Load"
+    },
+    {
+      "op": "add_connector",
+      "name": "Extract",
+      "domain": "duct",
+      "system": "ExhaustAir",
+      "solid": "Spigot",
+      "side": "bottom",
+      "diameter": 450,
+      "flow": "In"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_MechEq_ExtractFan_Roof.png"
+    }
+  ],
+  "values": {
+    "Hood 830 dia, 700 high on 300 kerb": {
+      "value": "830x700",
+      "source_status": "assumed",
+      "source": "typical 450 roof cowl fan"
+    },
+    "Spigot 300 / 450 mm": {
+      "value": "300/450",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Load 250 / 550 VA": {
+      "value": "250/550",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   }
- ],
- "values": {
-  "Hood 830 dia, 700 high on 300 kerb": {
-   "value": "830x700",
-   "source_status": "assumed",
-   "source": "typical 450 roof cowl fan"
-  },
-  "Spigot 300 / 450 mm": {
-   "value": "300/450",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Load 250 / 550 VA": {
-   "value": "250/550",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- }
 }

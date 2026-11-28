@@ -1,150 +1,156 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_P_PlumbingEq_ServicePoint_Water",
- "template": "Metric Generic Model.rft",
- "about": "Nested shared service point: carries the pipe connectors a Medical Equipment host cannot (Revit QE4 test, 17 Oct). Placed inside the host at the real outlet position.",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Plumbing Equipment"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_P_PlumbingEq_ServicePoint_Water",
+  "template": "Metric Generic Model.rft",
+  "about": "Nested shared service point: carries the pipe connectors a Medical Equipment host cannot (Revit QE4 test, 17 Oct). Placed inside the host at the real outlet position.",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Plumbing Equipment"
+    },
+    {
+      "op": "set_family_params",
+      "name": "family",
+      "shared": true
+    },
+    {
+      "op": "add_type",
+      "name": "60_Water"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+    },
+    {
+      "op": "set_type_value",
+      "name": "60_Water/FMC_Cost_Unit",
+      "type": "60_Water",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "60_Water/FMC_Geometry_Stage",
+      "type": "60_Water",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "60_Water/IfcExportAs",
+      "type": "60_Water",
+      "param": "IfcExportAs",
+      "value": "IfcFlowTerminal"
+    },
+    {
+      "op": "set_type_value",
+      "name": "60_Water/Description",
+      "type": "60_Water",
+      "param": "Description",
+      "value": "Water and drainage service point (CW, HW, waste) inside a Medical Equipment host"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Service Point",
+      "line_weight_projection": 2,
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Point",
+      "points": [
+        [
+          -30,
+          -30
+        ],
+        [
+          30,
+          -30
+        ],
+        [
+          30,
+          30
+        ],
+        [
+          -30,
+          30
+        ]
+      ],
+      "start": 0,
+      "end": 60
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Point",
+      "subcategory": "Service Point"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Point",
+      "coarse": true,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "CW",
+      "domain": "pipe",
+      "system": "DomesticColdWater",
+      "solid": "Point",
+      "side": "back",
+      "diameter": 15,
+      "flow": "In"
+    },
+    {
+      "op": "add_connector",
+      "name": "HW",
+      "domain": "pipe",
+      "system": "DomesticHotWater",
+      "solid": "Point",
+      "side": "left",
+      "diameter": 15,
+      "flow": "In"
+    },
+    {
+      "op": "add_connector",
+      "name": "Waste",
+      "domain": "pipe",
+      "system": "Sanitary",
+      "solid": "Point",
+      "side": "bottom",
+      "diameter": 40,
+      "flow": "Out"
+    }
+  ],
+  "values": {
+    "Point 60 mm cube": {
+      "value": "see key",
+      "source_status": "assumed",
+      "source": "symbolic connection point"
+    }
   },
-  {
-   "op": "set_family_params",
-   "name": "family",
-   "shared": true
-  },
-  {
-   "op": "add_type",
-   "name": "60_Water"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
-  },
-  {
-   "op": "set_type_value",
-   "name": "60_Water/FMC_Cost_Unit",
-   "type": "60_Water",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "60_Water/FMC_Geometry_Stage",
-   "type": "60_Water",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "60_Water/IfcExportAs",
-   "type": "60_Water",
-   "param": "IfcExportAs",
-   "value": "IfcFlowTerminal"
-  },
-  {
-   "op": "set_type_value",
-   "name": "60_Water/Description",
-   "type": "60_Water",
-   "param": "Description",
-   "value": "Water and drainage service point (CW, HW, waste) inside a Medical Equipment host"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Service Point",
-   "line_weight_projection": 1
-  },
-  {
-   "op": "extrusion",
-   "name": "Point",
-   "points": [
-    [
-     -30,
-     -30
-    ],
-    [
-     30,
-     -30
-    ],
-    [
-     30,
-     30
-    ],
-    [
-     -30,
-     30
-    ]
-   ],
-   "start": 0,
-   "end": 60
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Point",
-   "subcategory": "Service Point"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Point",
-   "coarse": true,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "CW",
-   "domain": "pipe",
-   "system": "DomesticColdWater",
-   "solid": "Point",
-   "side": "back",
-   "diameter": 15,
-   "flow": "In"
-  },
-  {
-   "op": "add_connector",
-   "name": "HW",
-   "domain": "pipe",
-   "system": "DomesticHotWater",
-   "solid": "Point",
-   "side": "left",
-   "diameter": 15,
-   "flow": "In"
-  },
-  {
-   "op": "add_connector",
-   "name": "Waste",
-   "domain": "pipe",
-   "system": "Sanitary",
-   "solid": "Point",
-   "side": "bottom",
-   "diameter": 40,
-   "flow": "Out"
+  "checks": {
+    "keynote_exempt": "nested service point, never scheduled; the host carries the keynote"
   }
- ],
- "values": {
-  "Point 60 mm cube": {
-   "value": "see key",
-   "source_status": "assumed",
-   "source": "symbolic connection point"
-  }
- },
- "checks": {
-  "keynote_exempt": "nested service point, never scheduled; the host carries the keynote"
- }
 }

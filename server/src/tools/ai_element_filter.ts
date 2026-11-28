@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
+import { toolFailure } from "./failure.js";
 
 export function registerAIElementFilterTool(server: McpServer) {
   server.tool(
@@ -62,6 +63,12 @@ export function registerAIElementFilterTool(server: McpServer) {
           })
           .optional()
           .describe("The maximum point coordinates (in mm) for spatial bounding box filtering. When set along with boundingBoxMin, only elements that intersect with this bounding box will be returned. Set to null to disable this filter."),
+          skip: z
+            .number()
+            .int()
+            .min(0)
+            .optional()
+            .describe("Paging: how many matching elements to skip. The answer gives the total and the skip for the next page."),
           maxElements: z
           .number()
           .optional()
@@ -89,15 +96,8 @@ export function registerAIElementFilterTool(server: McpServer) {
           ],
         };
       } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `Get element information failed: ${error instanceof Error ? error.message : String(error)
-                }`,
-            },
-          ],
-        };
+        return toolFailure(`Get element information failed: ${error instanceof Error ? error.message : String(error)
+                }`);
       }
     }
   );

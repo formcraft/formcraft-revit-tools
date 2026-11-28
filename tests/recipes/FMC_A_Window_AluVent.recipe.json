@@ -1,3249 +1,3274 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_A_Window_AluVent",
- "template": "Metric Window.rft",
- "about": "LOD 400 Kampala aluminium window: 50x100 frame, casement (1 or 2 leaves, mullion by Leaf Count) or 2-track sliding leaves that overlap at the centre with interlock stiles, and a top-hung projected (PJ) vent over the transom. Height runs from the template Sill plane (z = 0) to Head; leaf top = Height - Fanlight Height. Casement vs sliding parts and the mesh are switched by Yes/No-driven offset formulas that collapse the part into the left jamb (Hide Offset / Hide Width). The recipe puts its outer face at -y, but the template's plane named Exterior is at +y (field review, 15 Oct): the Revit retest confirms which way the family faces in a wall; frame centred on the wall. The vent's opening triangle is a symbolic line drawn for the default type and does not flex. Profile slot (gen_profile_slots.py): FMC_Design_Movement (1-20, default 17) shows one of 20 Surround sweeps (Ext face) from FMC_Profile_Surround_<Token>, each bound to Show_<Token>. Each sweep's path is locked to Left, Right, Head and Sill (path_planes) on Trim Face Ext, so the trims follow Width and Height in every type.",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "OST_Windows"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "group": "IdentityData"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Frame_Spec",
-   "guid": "7a163363-b62c-57f9-8d75-66d6b9aad4c6",
-   "group": "Data"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fanlight_Height_mm",
-   "guid": "425ed7f1-679a-5ee8-98dc-4fad02fde0ed",
-   "group": "Data"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Vent_Type",
-   "guid": "cfd77ccf-d77d-53e0-b769-10b62e8aa1d5",
-   "group": "Data"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Mosquito_Mesh",
-   "guid": "5ec6628e-e5ce-55d7-a8c1-d1737876b897",
-   "group": "Data"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Glazed_Area_m2",
-   "guid": "c3c61f30-7abb-515e-9902-4cf9a3b72200",
-   "group": "Data"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Openable_Area_m2",
-   "guid": "6919d4a2-ffd3-5f03-bbd5-4715a375a99d",
-   "group": "Data"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "group": "Data"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "group": "Data"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Frame Width",
-   "type": "Length",
-   "group": "Dimensions"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Frame Depth",
-   "type": "Length",
-   "group": "Dimensions"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Fanlight Height",
-   "type": "Length",
-   "group": "Dimensions"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Transom Depth",
-   "type": "Length",
-   "group": "Dimensions"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Mullion Width",
-   "type": "Length",
-   "group": "Dimensions"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Sash Overlap",
-   "type": "Length",
-   "group": "Dimensions"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Interlock Width",
-   "type": "Length",
-   "group": "Dimensions"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Sill Depth",
-   "type": "Length",
-   "group": "Dimensions"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Hide Offset",
-   "type": "Length",
-   "group": "Dimensions"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Hide Width",
-   "type": "Length",
-   "group": "Dimensions"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Mullion Offset",
-   "type": "Length",
-   "group": "Dimensions"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Casement Glass L Offset",
-   "type": "Length",
-   "group": "Dimensions"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Casement Glass R Offset",
-   "type": "Length",
-   "group": "Dimensions"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Slide Ext L Offset",
-   "type": "Length",
-   "group": "Dimensions"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Slide Ext R Offset",
-   "type": "Length",
-   "group": "Dimensions"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Slide Int L Offset",
-   "type": "Length",
-   "group": "Dimensions"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Slide Int R Offset",
-   "type": "Length",
-   "group": "Dimensions"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Interlock Ext Offset",
-   "type": "Length",
-   "group": "Dimensions"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Interlock Int Offset",
-   "type": "Length",
-   "group": "Dimensions"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Mesh L Offset",
-   "type": "Length",
-   "group": "Dimensions"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Mesh R Offset",
-   "type": "Length",
-   "group": "Dimensions"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Leaf Count",
-   "type": "Integer",
-   "group": "Dimensions"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Leaves Sliding",
-   "type": "YesNo",
-   "group": "Constraints"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Frame Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Glass Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Mesh Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Sill Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Frame",
-   "line_weight_projection": 2,
-   "line_weight_cut": 4
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Glass",
-   "line_weight_projection": 1,
-   "line_weight_cut": 2
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Mesh",
-   "line_weight_projection": 1,
-   "line_weight_cut": 1
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Sill",
-   "line_weight_projection": 2,
-   "line_weight_cut": 3
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Elevation Swing",
-   "line_weight_projection": 1,
-   "line_weight_cut": 1
-  },
-  {
-   "op": "add_type",
-   "name": "1200x1500_Casement-TopHung300"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1500_Casement-TopHung300/Width",
-   "type": "1200x1500_Casement-TopHung300",
-   "param": "Width",
-   "value": 1200
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1500_Casement-TopHung300/Height",
-   "type": "1200x1500_Casement-TopHung300",
-   "param": "Height",
-   "value": 1500
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Wall Centre",
-   "from": [
-    -2000,
-    0
-   ],
-   "to": [
-    2000,
-    0
-   ],
-   "is_reference": "CenterFrontBack"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Frame Ext",
-   "from": [
-    -2000,
-    -50.0
-   ],
-   "to": [
-    2000,
-    -50.0
-   ],
-   "is_reference": "StrongReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Frame Int",
-   "from": [
-    -2000,
-    50.0
-   ],
-   "to": [
-    2000,
-    50.0
-   ],
-   "is_reference": "StrongReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Inset Front",
-   "from": [
-    -2000,
-    -48
-   ],
-   "to": [
-    2000,
-    -48
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Inset Back",
-   "from": [
-    -2000,
-    48
-   ],
-   "to": [
-    2000,
-    48
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Glass Front",
-   "from": [
-    -2000,
-    -3
-   ],
-   "to": [
-    2000,
-    -3
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Glass Back",
-   "from": [
-    -2000,
-    2
-   ],
-   "to": [
-    2000,
-    2
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Track Ext Front",
-   "from": [
-    -2000,
-    -40
-   ],
-   "to": [
-    2000,
-    -40
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Track Ext Back",
-   "from": [
-    -2000,
-    -10
-   ],
-   "to": [
-    2000,
-    -10
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Track Int Front",
-   "from": [
-    -2000,
-    10
-   ],
-   "to": [
-    2000,
-    10
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Track Int Back",
-   "from": [
-    -2000,
-    40
-   ],
-   "to": [
-    2000,
-    40
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Slide Glass Ext F",
-   "from": [
-    -2000,
-    -27
-   ],
-   "to": [
-    2000,
-    -27
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Slide Glass Ext B",
-   "from": [
-    -2000,
-    -22
-   ],
-   "to": [
-    2000,
-    -22
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Slide Glass Int F",
-   "from": [
-    -2000,
-    22
-   ],
-   "to": [
-    2000,
-    22
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Slide Glass Int B",
-   "from": [
-    -2000,
-    27
-   ],
-   "to": [
-    2000,
-    27
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Mesh Front",
-   "from": [
-    -2000,
-    44
-   ],
-   "to": [
-    2000,
-    44
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Mesh Back",
-   "from": [
-    -2000,
-    46
-   ],
-   "to": [
-    2000,
-    46
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Sill Front",
-   "from": [
-    -2000,
-    -160.0
-   ],
-   "to": [
-    2000,
-    -160.0
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Frame L In",
-   "from": [
-    -550.0,
-    -1500
-   ],
-   "to": [
-    -550.0,
-    1500
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Frame R In",
-   "from": [
-    550.0,
-    -1500
-   ],
-   "to": [
-    550.0,
-    1500
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Mullion L",
-   "from": [
-    -20.0,
-    -1500
-   ],
-   "to": [
-    -20.0,
-    1500
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Mullion R",
-   "from": [
-    20.0,
-    -1500
-   ],
-   "to": [
-    20.0,
-    1500
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Case Glass L",
-   "from": [
-    -550.0,
-    -1500
-   ],
-   "to": [
-    -550.0,
-    1500
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Case Glass R",
-   "from": [
-    550.0,
-    -1500
-   ],
-   "to": [
-    550.0,
-    1500
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Slide Ext L",
-   "from": [
-    -595.0,
-    -1500
-   ],
-   "to": [
-    -595.0,
-    1500
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Slide Ext R",
-   "from": [
-    -555.0,
-    -1500
-   ],
-   "to": [
-    -555.0,
-    1500
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Slide Int L",
-   "from": [
-    -595.0,
-    -1500
-   ],
-   "to": [
-    -595.0,
-    1500
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Slide Int R",
-   "from": [
-    -555.0,
-    -1500
-   ],
-   "to": [
-    -555.0,
-    1500
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Interlock Ext L",
-   "from": [
-    -595.0,
-    -1500
-   ],
-   "to": [
-    -595.0,
-    1500
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Interlock Ext R",
-   "from": [
-    -555.0,
-    -1500
-   ],
-   "to": [
-    -555.0,
-    1500
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Interlock Int L",
-   "from": [
-    -595.0,
-    -1500
-   ],
-   "to": [
-    -595.0,
-    1500
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Interlock Int R",
-   "from": [
-    -555.0,
-    -1500
-   ],
-   "to": [
-    -555.0,
-    1500
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Mesh L",
-   "from": [
-    -595.0,
-    -1500
-   ],
-   "to": [
-    -595.0,
-    1500
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Mesh R",
-   "from": [
-    -555.0,
-    -1500
-   ],
-   "to": [
-    -555.0,
-    1500
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Sill Inner",
-   "from": [
-    -2000,
-    850.0
-   ],
-   "to": [
-    2000,
-    850.0
-   ],
-   "is_reference": "WeakReference",
-   "view": "Exterior"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Leaf Top",
-   "from": [
-    -2000,
-    2000.0
-   ],
-   "to": [
-    2000,
-    2000.0
-   ],
-   "is_reference": "WeakReference",
-   "view": "Exterior"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Transom Top",
-   "from": [
-    -2000,
-    2050.0
-   ],
-   "to": [
-    2000,
-    2050.0
-   ],
-   "is_reference": "WeakReference",
-   "view": "Exterior"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Head Inner",
-   "from": [
-    -2000,
-    2250.0
-   ],
-   "to": [
-    2000,
-    2250.0
-   ],
-   "is_reference": "WeakReference",
-   "view": "Exterior"
-  },
-  {
-   "op": "add_dimension",
-   "name": "Frame Width L",
-   "between": [
-    "Left",
-    "Frame L In"
-   ],
-   "label": "Frame Width"
-  },
-  {
-   "op": "add_dimension",
-   "name": "Frame Width R",
-   "between": [
-    "Frame R In",
-    "Right"
-   ],
-   "label": "Frame Width"
-  },
-  {
-   "op": "add_dimension",
-   "name": "Frame Depth",
-   "between": [
-    "Frame Ext",
-    "Frame Int"
-   ],
-   "label": "Frame Depth",
-   "offset": 600
-  },
-  {
-   "op": "add_eq_dimension",
-   "name": "EQ frame depth",
-   "planes": [
-    "Frame Ext",
-    "Wall Centre",
-    "Frame Int"
-   ],
-   "offset": 700
-  },
-  {
-   "op": "add_dimension",
-   "name": "Sill Depth",
-   "between": [
-    "Sill Front",
-    "Frame Ext"
-   ],
-   "label": "Sill Depth",
-   "offset": 800
-  },
-  {
-   "op": "add_dimension",
-   "name": "Mullion Offset",
-   "between": [
-    "Left",
-    "Mullion L"
-   ],
-   "label": "Mullion Offset",
-   "offset": -400
-  },
-  {
-   "op": "add_dimension",
-   "name": "Mullion Width",
-   "between": [
-    "Mullion L",
-    "Mullion R"
-   ],
-   "label": "Mullion Width",
-   "offset": -400
-  },
-  {
-   "op": "add_dimension",
-   "name": "Casement Glass L Offset",
-   "between": [
-    "Left",
-    "Case Glass L"
-   ],
-   "label": "Casement Glass L Offset",
-   "offset": -500
-  },
-  {
-   "op": "add_dimension",
-   "name": "Casement Glass R Offset",
-   "between": [
-    "Left",
-    "Case Glass R"
-   ],
-   "label": "Casement Glass R Offset",
-   "offset": -525
-  },
-  {
-   "op": "add_dimension",
-   "name": "Slide Ext L Offset",
-   "between": [
-    "Left",
-    "Slide Ext L"
-   ],
-   "label": "Slide Ext L Offset",
-   "offset": -550
-  },
-  {
-   "op": "add_dimension",
-   "name": "Slide Ext R Offset",
-   "between": [
-    "Left",
-    "Slide Ext R"
-   ],
-   "label": "Slide Ext R Offset",
-   "offset": -575
-  },
-  {
-   "op": "add_dimension",
-   "name": "Slide Int L Offset",
-   "between": [
-    "Left",
-    "Slide Int L"
-   ],
-   "label": "Slide Int L Offset",
-   "offset": -600
-  },
-  {
-   "op": "add_dimension",
-   "name": "Slide Int R Offset",
-   "between": [
-    "Left",
-    "Slide Int R"
-   ],
-   "label": "Slide Int R Offset",
-   "offset": -625
-  },
-  {
-   "op": "add_dimension",
-   "name": "Mesh L Offset",
-   "between": [
-    "Left",
-    "Mesh L"
-   ],
-   "label": "Mesh L Offset",
-   "offset": -650
-  },
-  {
-   "op": "add_dimension",
-   "name": "Mesh R Offset",
-   "between": [
-    "Left",
-    "Mesh R"
-   ],
-   "label": "Mesh R Offset",
-   "offset": -675
-  },
-  {
-   "op": "add_dimension",
-   "name": "Interlock Ext Offset",
-   "between": [
-    "Left",
-    "Interlock Ext L"
-   ],
-   "label": "Interlock Ext Offset",
-   "offset": -700
-  },
-  {
-   "op": "add_dimension",
-   "name": "Interlock Ext Width",
-   "between": [
-    "Interlock Ext L",
-    "Interlock Ext R"
-   ],
-   "label": "Interlock Width",
-   "offset": -700
-  },
-  {
-   "op": "add_dimension",
-   "name": "Interlock Int Offset",
-   "between": [
-    "Left",
-    "Interlock Int L"
-   ],
-   "label": "Interlock Int Offset",
-   "offset": -750
-  },
-  {
-   "op": "add_dimension",
-   "name": "Interlock Int Width",
-   "between": [
-    "Interlock Int L",
-    "Interlock Int R"
-   ],
-   "label": "Interlock Width",
-   "offset": -750
-  },
-  {
-   "op": "add_dimension",
-   "name": "Frame Width Sill",
-   "between": [
-    "Sill",
-    "Sill Inner"
-   ],
-   "label": "Frame Width",
-   "view": "Exterior",
-   "offset": 700
-  },
-  {
-   "op": "add_dimension",
-   "name": "Frame Width Head",
-   "between": [
-    "Head Inner",
-    "Head"
-   ],
-   "label": "Frame Width",
-   "view": "Exterior",
-   "offset": 700
-  },
-  {
-   "op": "add_dimension",
-   "name": "Fanlight Height",
-   "between": [
-    "Leaf Top",
-    "Head"
-   ],
-   "label": "Fanlight Height",
-   "view": "Exterior",
-   "offset": -600
-  },
-  {
-   "op": "add_dimension",
-   "name": "Transom Depth",
-   "between": [
-    "Leaf Top",
-    "Transom Top"
-   ],
-   "label": "Transom Depth",
-   "view": "Exterior",
-   "offset": 750
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1500_Casement-TopHung300/Fanlight Height",
-   "type": "1200x1500_Casement-TopHung300",
-   "param": "Fanlight Height",
-   "value": 300
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1500_Casement-TopHung300/FMC_Fanlight_Height_mm",
-   "type": "1200x1500_Casement-TopHung300",
-   "param": "FMC_Fanlight_Height_mm",
-   "value": 300
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1500_Casement-TopHung300/Leaf Count",
-   "type": "1200x1500_Casement-TopHung300",
-   "param": "Leaf Count",
-   "value": 2
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1500_Casement-TopHung300/Leaves Sliding",
-   "type": "1200x1500_Casement-TopHung300",
-   "param": "Leaves Sliding",
-   "value": false
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1500_Casement-TopHung300/FMC_Vent_Type",
-   "type": "1200x1500_Casement-TopHung300",
-   "param": "FMC_Vent_Type",
-   "value": "Top-hung (PJ)"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1500_Casement-TopHung300/FMC_Mosquito_Mesh",
-   "type": "1200x1500_Casement-TopHung300",
-   "param": "FMC_Mosquito_Mesh",
-   "value": false
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1500_Casement-TopHung300/FMC_Frame_Spec",
-   "type": "1200x1500_Casement-TopHung300",
-   "param": "FMC_Frame_Spec",
-   "value": "Aluminium window, frame 50x100 (series to confirm), 5 mm clear glass; casement or 2-track sliding leaves; top-hung projected (PJ) vent over; precast sill"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1500_Casement-TopHung300/Frame Width",
-   "type": "1200x1500_Casement-TopHung300",
-   "param": "Frame Width",
-   "value": 50
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1500_Casement-TopHung300/Frame Depth",
-   "type": "1200x1500_Casement-TopHung300",
-   "param": "Frame Depth",
-   "value": 100
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1500_Casement-TopHung300/Transom Depth",
-   "type": "1200x1500_Casement-TopHung300",
-   "param": "Transom Depth",
-   "value": 50
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1500_Casement-TopHung300/Mullion Width",
-   "type": "1200x1500_Casement-TopHung300",
-   "param": "Mullion Width",
-   "value": 40
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1500_Casement-TopHung300/Sash Overlap",
-   "type": "1200x1500_Casement-TopHung300",
-   "param": "Sash Overlap",
-   "value": 60
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1500_Casement-TopHung300/Interlock Width",
-   "type": "1200x1500_Casement-TopHung300",
-   "param": "Interlock Width",
-   "value": 40
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1500_Casement-TopHung300/Sill Depth",
-   "type": "1200x1500_Casement-TopHung300",
-   "param": "Sill Depth",
-   "value": 110
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1500_Casement-TopHung300/Hide Offset",
-   "type": "1200x1500_Casement-TopHung300",
-   "param": "Hide Offset",
-   "value": 5
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1500_Casement-TopHung300/Hide Width",
-   "type": "1200x1500_Casement-TopHung300",
-   "param": "Hide Width",
-   "value": 40
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1500_Casement-TopHung300/FMC_Geometry_Stage",
-   "type": "1200x1500_Casement-TopHung300",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1500_Casement-TopHung300/IfcExportAs",
-   "type": "1200x1500_Casement-TopHung300",
-   "param": "IfcExportAs",
-   "value": "IfcWindow"
-  },
-  {
-   "op": "set_formula",
-   "name": "Mullion Offset",
-   "formula": "if(and(not(Leaves Sliding), Leaf Count > 1), Frame Width + (Width - 2 * Frame Width - Mullion Width) / 2, Hide Offset)"
-  },
-  {
-   "op": "set_formula",
-   "name": "Casement Glass L Offset",
-   "formula": "if(Leaves Sliding, Hide Offset, Frame Width)"
-  },
-  {
-   "op": "set_formula",
-   "name": "Casement Glass R Offset",
-   "formula": "if(Leaves Sliding, Hide Offset + Hide Width, Width - Frame Width)"
-  },
-  {
-   "op": "set_formula",
-   "name": "Slide Ext L Offset",
-   "formula": "if(Leaves Sliding, Frame Width, Hide Offset)"
-  },
-  {
-   "op": "set_formula",
-   "name": "Slide Ext R Offset",
-   "formula": "if(Leaves Sliding, Width / 2 + Sash Overlap / 2, Hide Offset + Hide Width)"
-  },
-  {
-   "op": "set_formula",
-   "name": "Slide Int L Offset",
-   "formula": "if(Leaves Sliding, Width / 2 - Sash Overlap / 2, Hide Offset)"
-  },
-  {
-   "op": "set_formula",
-   "name": "Slide Int R Offset",
-   "formula": "if(Leaves Sliding, Width - Frame Width, Hide Offset + Hide Width)"
-  },
-  {
-   "op": "set_formula",
-   "name": "Interlock Ext Offset",
-   "formula": "if(Leaves Sliding, Width / 2 + Sash Overlap / 2 - Interlock Width, Hide Offset)"
-  },
-  {
-   "op": "set_formula",
-   "name": "Interlock Int Offset",
-   "formula": "if(Leaves Sliding, Width / 2 - Sash Overlap / 2, Hide Offset)"
-  },
-  {
-   "op": "set_formula",
-   "name": "Mesh L Offset",
-   "formula": "if(FMC_Mosquito_Mesh, Frame Width, Hide Offset)"
-  },
-  {
-   "op": "set_formula",
-   "name": "Mesh R Offset",
-   "formula": "if(FMC_Mosquito_Mesh, Width - Frame Width, Hide Offset + Hide Width)"
-  },
-  {
-   "op": "set_formula",
-   "name": "FMC_Glazed_Area_m2",
-   "formula": "(Width - 2 * Frame Width) * (Height - Fanlight Height - Frame Width) + (Width - 2 * Frame Width) * (Fanlight Height - Transom Depth - Frame Width)"
-  },
-  {
-   "op": "set_formula",
-   "name": "FMC_Openable_Area_m2",
-   "formula": "(Width - 2 * Frame Width) * (Height - Fanlight Height - Frame Width) * if(Leaves Sliding, 0.5, 1) + (Width - 2 * Frame Width) * (Fanlight Height - Transom Depth - Frame Width)"
-  },
-  {
-   "op": "extrusion",
-   "name": "Jamb L",
-   "rect": [
-    "Left",
-    "Frame L In",
-    "Frame Ext",
-    "Frame Int"
-   ],
-   "start": 800.0,
-   "end": 2300.0,
-   "end_plane": "Head"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Jamb L",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Jamb L",
-   "param": "Frame Material"
-  },
-  {
-   "op": "lock_face",
-   "name": "Jamb L/Sill",
-   "solid": "Jamb L",
-   "plane": "Sill",
-   "view": "front"
-  },
-  {
-   "op": "extrusion",
-   "name": "Jamb R",
-   "rect": [
-    "Frame R In",
-    "Right",
-    "Frame Ext",
-    "Frame Int"
-   ],
-   "start": 800.0,
-   "end": 2300.0,
-   "end_plane": "Head"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Jamb R",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Jamb R",
-   "param": "Frame Material"
-  },
-  {
-   "op": "lock_face",
-   "name": "Jamb R/Sill",
-   "solid": "Jamb R",
-   "plane": "Sill",
-   "view": "front"
-  },
-  {
-   "op": "extrusion",
-   "name": "Sill Rail",
-   "rect": [
-    "Frame L In",
-    "Frame R In",
-    "Frame Ext",
-    "Frame Int"
-   ],
-   "start": 800.0,
-   "end": 850.0,
-   "end_plane": "Sill Inner"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sill Rail",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sill Rail",
-   "param": "Frame Material"
-  },
-  {
-   "op": "lock_face",
-   "name": "Sill Rail/Sill",
-   "solid": "Sill Rail",
-   "plane": "Sill",
-   "view": "front"
-  },
-  {
-   "op": "extrusion",
-   "name": "Head",
-   "rect": [
-    "Frame L In",
-    "Frame R In",
-    "Frame Ext",
-    "Frame Int"
-   ],
-   "start": 2250.0,
-   "end": 2300.0,
-   "end_plane": "Head"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Head",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Head",
-   "param": "Frame Material"
-  },
-  {
-   "op": "lock_face",
-   "name": "Head/Head Inner",
-   "solid": "Head",
-   "plane": "Head Inner",
-   "view": "front"
-  },
-  {
-   "op": "extrusion",
-   "name": "Transom",
-   "rect": [
-    "Frame L In",
-    "Frame R In",
-    "Frame Ext",
-    "Frame Int"
-   ],
-   "start": 2000.0,
-   "end": 2050.0,
-   "end_plane": "Transom Top"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Transom",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Transom",
-   "param": "Frame Material"
-  },
-  {
-   "op": "lock_face",
-   "name": "Transom/Leaf Top",
-   "solid": "Transom",
-   "plane": "Leaf Top",
-   "view": "front"
-  },
-  {
-   "op": "extrusion",
-   "name": "Mullion",
-   "rect": [
-    "Mullion L",
-    "Mullion R",
-    "Inset Front",
-    "Inset Back"
-   ],
-   "start": 850.0,
-   "end": 2000.0,
-   "end_plane": "Leaf Top"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mullion",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mullion",
-   "param": "Frame Material"
-  },
-  {
-   "op": "lock_face",
-   "name": "Mullion/Sill Inner",
-   "solid": "Mullion",
-   "plane": "Sill Inner",
-   "view": "front"
-  },
-  {
-   "op": "extrusion",
-   "name": "Casement Glass",
-   "rect": [
-    "Case Glass L",
-    "Case Glass R",
-    "Glass Front",
-    "Glass Back"
-   ],
-   "start": 850.0,
-   "end": 2000.0,
-   "end_plane": "Leaf Top"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Casement Glass",
-   "subcategory": "Glass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Casement Glass",
-   "param": "Glass Material"
-  },
-  {
-   "op": "lock_face",
-   "name": "Casement Glass/Sill Inner",
-   "solid": "Casement Glass",
-   "plane": "Sill Inner",
-   "view": "front"
-  },
-  {
-   "op": "extrusion",
-   "name": "Sliding Glass Ext",
-   "rect": [
-    "Slide Ext L",
-    "Slide Ext R",
-    "Slide Glass Ext F",
-    "Slide Glass Ext B"
-   ],
-   "start": 850.0,
-   "end": 2000.0,
-   "end_plane": "Leaf Top"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sliding Glass Ext",
-   "subcategory": "Glass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sliding Glass Ext",
-   "param": "Glass Material"
-  },
-  {
-   "op": "lock_face",
-   "name": "Sliding Glass Ext/Sill Inner",
-   "solid": "Sliding Glass Ext",
-   "plane": "Sill Inner",
-   "view": "front"
-  },
-  {
-   "op": "extrusion",
-   "name": "Sliding Glass Int",
-   "rect": [
-    "Slide Int L",
-    "Slide Int R",
-    "Slide Glass Int F",
-    "Slide Glass Int B"
-   ],
-   "start": 850.0,
-   "end": 2000.0,
-   "end_plane": "Leaf Top"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sliding Glass Int",
-   "subcategory": "Glass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sliding Glass Int",
-   "param": "Glass Material"
-  },
-  {
-   "op": "lock_face",
-   "name": "Sliding Glass Int/Sill Inner",
-   "solid": "Sliding Glass Int",
-   "plane": "Sill Inner",
-   "view": "front"
-  },
-  {
-   "op": "extrusion",
-   "name": "Interlock Ext",
-   "rect": [
-    "Interlock Ext L",
-    "Interlock Ext R",
-    "Track Ext Front",
-    "Track Ext Back"
-   ],
-   "start": 850.0,
-   "end": 2000.0,
-   "end_plane": "Leaf Top"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Interlock Ext",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Interlock Ext",
-   "param": "Frame Material"
-  },
-  {
-   "op": "lock_face",
-   "name": "Interlock Ext/Sill Inner",
-   "solid": "Interlock Ext",
-   "plane": "Sill Inner",
-   "view": "front"
-  },
-  {
-   "op": "extrusion",
-   "name": "Interlock Int",
-   "rect": [
-    "Interlock Int L",
-    "Interlock Int R",
-    "Track Int Front",
-    "Track Int Back"
-   ],
-   "start": 850.0,
-   "end": 2000.0,
-   "end_plane": "Leaf Top"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Interlock Int",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Interlock Int",
-   "param": "Frame Material"
-  },
-  {
-   "op": "lock_face",
-   "name": "Interlock Int/Sill Inner",
-   "solid": "Interlock Int",
-   "plane": "Sill Inner",
-   "view": "front"
-  },
-  {
-   "op": "extrusion",
-   "name": "Vent Glass",
-   "rect": [
-    "Frame L In",
-    "Frame R In",
-    "Glass Front",
-    "Glass Back"
-   ],
-   "start": 2050.0,
-   "end": 2250.0,
-   "end_plane": "Head Inner"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vent Glass",
-   "subcategory": "Glass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Glass",
-   "param": "Glass Material"
-  },
-  {
-   "op": "lock_face",
-   "name": "Vent Glass/Transom Top",
-   "solid": "Vent Glass",
-   "plane": "Transom Top",
-   "view": "front"
-  },
-  {
-   "op": "extrusion",
-   "name": "Mosquito Mesh",
-   "rect": [
-    "Mesh L",
-    "Mesh R",
-    "Mesh Front",
-    "Mesh Back"
-   ],
-   "start": 850.0,
-   "end": 2250.0,
-   "end_plane": "Head Inner"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mosquito Mesh",
-   "subcategory": "Mesh"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mosquito Mesh",
-   "param": "Mesh Material"
-  },
-  {
-   "op": "lock_face",
-   "name": "Mosquito Mesh/Sill Inner",
-   "solid": "Mosquito Mesh",
-   "plane": "Sill Inner",
-   "view": "front"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mosquito Mesh",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Sill",
-   "rect": [
-    "Left",
-    "Right",
-    "Sill Front",
-    "Frame Int"
-   ],
-   "start": 750.0,
-   "end": 800.0,
-   "end_plane": "Sill"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sill",
-   "subcategory": "Sill"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sill",
-   "param": "Sill Material"
-  },
-  {
-   "op": "symbolic_lines",
-   "name": "Top-hung vent",
-   "view": "front",
-   "points": [
-    [
-     -550.0,
-     2050.0
-    ],
-    [
-     0,
-     2250.0
-    ],
-    [
-     550.0,
-     2050.0
-    ]
-   ],
-   "subcategory": "Elevation Swing",
-   "coarse": false
-  },
-  {
-   "op": "symbolic_lines",
-   "name": "Sill line",
-   "view": "plan",
-   "points": [
-    [
-     -600.0,
-     -160.0
-    ],
-    [
-     600.0,
-     -160.0
-    ]
-   ],
-   "subcategory": "Sill"
-  },
-  {
-   "op": "add_type",
-   "name": "1500x1500_Sliding-TopHung300"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500x1500_Sliding-TopHung300/Width",
-   "type": "1500x1500_Sliding-TopHung300",
-   "param": "Width",
-   "value": 1500
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500x1500_Sliding-TopHung300/Leaves Sliding",
-   "type": "1500x1500_Sliding-TopHung300",
-   "param": "Leaves Sliding",
-   "value": true
-  },
-  {
-   "op": "add_type",
-   "name": "1800x1500_Sliding-TopHung300"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1800x1500_Sliding-TopHung300/Width",
-   "type": "1800x1500_Sliding-TopHung300",
-   "param": "Width",
-   "value": 1800
-  },
-  {
-   "op": "add_type",
-   "name": "0600x1200_Casement-Projected300"
-  },
-  {
-   "op": "set_type_value",
-   "name": "0600x1200_Casement-Projected300/Width",
-   "type": "0600x1200_Casement-Projected300",
-   "param": "Width",
-   "value": 600
-  },
-  {
-   "op": "set_type_value",
-   "name": "0600x1200_Casement-Projected300/Height",
-   "type": "0600x1200_Casement-Projected300",
-   "param": "Height",
-   "value": 1200
-  },
-  {
-   "op": "set_type_value",
-   "name": "0600x1200_Casement-Projected300/Leaf Count",
-   "type": "0600x1200_Casement-Projected300",
-   "param": "Leaf Count",
-   "value": 1
-  },
-  {
-   "op": "set_type_value",
-   "name": "0600x1200_Casement-Projected300/Leaves Sliding",
-   "type": "0600x1200_Casement-Projected300",
-   "param": "Leaves Sliding",
-   "value": false
-  },
-  {
-   "op": "add_type",
-   "name": "0600x0900_WC-PJ"
-  },
-  {
-   "op": "set_type_value",
-   "name": "0600x0900_WC-PJ/Height",
-   "type": "0600x0900_WC-PJ",
-   "param": "Height",
-   "value": 900
-  },
-  {
-   "op": "add_family_param",
-   "name": "Trim Face Offset",
-   "type": "Length",
-   "instance": false,
-   "group": "Dimensions"
-  },
-  {
-   "op": "add_ref_plane",
-   "name": "Trim Face Ext",
-   "from": [
-    -2000,
-    -130.0
-   ],
-   "to": [
-    2000,
-    -130.0
-   ],
-   "is_reference": "WeakReference"
-  },
-  {
-   "op": "add_dimension",
-   "name": "Trim Face Offset Ext",
-   "between": [
-    "Wall Centre",
-    "Trim Face Ext"
-   ],
-   "label": "Trim Face Offset",
-   "offset": 900
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Design_Movement",
-   "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
-   "instance": true,
-   "group": "Graphics"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Trim Material",
-   "type": "Material",
-   "instance": false,
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Aluminium_PowderCoated",
-   "param": "Frame Material"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Glass_Clear",
-   "param": "Glass Material"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_InsectMesh_Fibreglass",
-   "param": "Mesh Material"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Concrete_Precast_Painted",
-   "param": "Sill Material"
-  },
-  {
-   "op": "set_formula",
-   "name": "Trim Material",
-   "formula": "Sill Material"
-  },
-  {
-   "op": "load_family",
-   "name": "FMC_Profile_Surround_Greek",
-   "path": "_Profiles\\FMC_Profile_Surround_Greek.rfa"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Show_Greek",
-   "type": "YesNo",
-   "instance": true,
-   "group": "Graphics"
-  },
-  {
-   "op": "set_formula",
-   "name": "Show_Greek",
-   "formula": "FMC_Design_Movement = 1"
-  },
-  {
-   "op": "sweep",
-   "name": "Surround Greek Ext",
-   "path_planes": [
-    [
-     "Left",
-     "Sill"
-    ],
-    [
-     "Left",
-     "Head"
-    ],
-    [
-     "Right",
-     "Head"
-    ],
-    [
-     "Right",
-     "Sill"
-    ]
-   ],
-   "path_host": "Trim Face Ext",
-   "path_plane": "front",
-   "profile_family": "FMC_Profile_Surround_Greek",
-   "profile_type": "150x40",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Surround Greek Ext",
-   "param": "Trim Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Surround Greek Ext",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_visible_param",
-   "name": "Surround Greek Ext/Visible",
-   "solid": "Surround Greek Ext",
-   "param": "Show_Greek"
-  },
-  {
-   "op": "load_family",
-   "name": "FMC_Profile_Surround_Roman",
-   "path": "_Profiles\\FMC_Profile_Surround_Roman.rfa"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Show_Roman",
-   "type": "YesNo",
-   "instance": true,
-   "group": "Graphics"
-  },
-  {
-   "op": "set_formula",
-   "name": "Show_Roman",
-   "formula": "FMC_Design_Movement = 2"
-  },
-  {
-   "op": "sweep",
-   "name": "Surround Roman Ext",
-   "path_planes": [
-    [
-     "Left",
-     "Sill"
-    ],
-    [
-     "Left",
-     "Head"
-    ],
-    [
-     "Right",
-     "Head"
-    ],
-    [
-     "Right",
-     "Sill"
-    ]
-   ],
-   "path_host": "Trim Face Ext",
-   "path_plane": "front",
-   "profile_family": "FMC_Profile_Surround_Roman",
-   "profile_type": "225x50",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Surround Roman Ext",
-   "param": "Trim Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Surround Roman Ext",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_visible_param",
-   "name": "Surround Roman Ext/Visible",
-   "solid": "Surround Roman Ext",
-   "param": "Show_Roman"
-  },
-  {
-   "op": "load_family",
-   "name": "FMC_Profile_Surround_Romanesque",
-   "path": "_Profiles\\FMC_Profile_Surround_Romanesque.rfa"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Show_Romanesque",
-   "type": "YesNo",
-   "instance": true,
-   "group": "Graphics"
-  },
-  {
-   "op": "set_formula",
-   "name": "Show_Romanesque",
-   "formula": "FMC_Design_Movement = 3"
-  },
-  {
-   "op": "sweep",
-   "name": "Surround Romanesque Ext",
-   "path_planes": [
-    [
-     "Left",
-     "Sill"
-    ],
-    [
-     "Left",
-     "Head"
-    ],
-    [
-     "Right",
-     "Head"
-    ],
-    [
-     "Right",
-     "Sill"
-    ]
-   ],
-   "path_host": "Trim Face Ext",
-   "path_plane": "front",
-   "profile_family": "FMC_Profile_Surround_Romanesque",
-   "profile_type": "200x90",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Surround Romanesque Ext",
-   "param": "Trim Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Surround Romanesque Ext",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_visible_param",
-   "name": "Surround Romanesque Ext/Visible",
-   "solid": "Surround Romanesque Ext",
-   "param": "Show_Romanesque"
-  },
-  {
-   "op": "load_family",
-   "name": "FMC_Profile_Surround_Gothic",
-   "path": "_Profiles\\FMC_Profile_Surround_Gothic.rfa"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Show_Gothic",
-   "type": "YesNo",
-   "instance": true,
-   "group": "Graphics"
-  },
-  {
-   "op": "set_formula",
-   "name": "Show_Gothic",
-   "formula": "FMC_Design_Movement = 4"
-  },
-  {
-   "op": "sweep",
-   "name": "Surround Gothic Ext",
-   "path_planes": [
-    [
-     "Left",
-     "Sill"
-    ],
-    [
-     "Left",
-     "Head"
-    ],
-    [
-     "Right",
-     "Head"
-    ],
-    [
-     "Right",
-     "Sill"
-    ]
-   ],
-   "path_host": "Trim Face Ext",
-   "path_plane": "front",
-   "profile_family": "FMC_Profile_Surround_Gothic",
-   "profile_type": "155x60",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Surround Gothic Ext",
-   "param": "Trim Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Surround Gothic Ext",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_visible_param",
-   "name": "Surround Gothic Ext/Visible",
-   "solid": "Surround Gothic Ext",
-   "param": "Show_Gothic"
-  },
-  {
-   "op": "load_family",
-   "name": "FMC_Profile_Surround_Renaissance",
-   "path": "_Profiles\\FMC_Profile_Surround_Renaissance.rfa"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Show_Renaissance",
-   "type": "YesNo",
-   "instance": true,
-   "group": "Graphics"
-  },
-  {
-   "op": "set_formula",
-   "name": "Show_Renaissance",
-   "formula": "FMC_Design_Movement = 5"
-  },
-  {
-   "op": "sweep",
-   "name": "Surround Renaissance Ext",
-   "path_planes": [
-    [
-     "Left",
-     "Sill"
-    ],
-    [
-     "Left",
-     "Head"
-    ],
-    [
-     "Right",
-     "Head"
-    ],
-    [
-     "Right",
-     "Sill"
-    ]
-   ],
-   "path_host": "Trim Face Ext",
-   "path_plane": "front",
-   "profile_family": "FMC_Profile_Surround_Renaissance",
-   "profile_type": "190x40",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Surround Renaissance Ext",
-   "param": "Trim Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Surround Renaissance Ext",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_visible_param",
-   "name": "Surround Renaissance Ext/Visible",
-   "solid": "Surround Renaissance Ext",
-   "param": "Show_Renaissance"
-  },
-  {
-   "op": "load_family",
-   "name": "FMC_Profile_Surround_Baroque",
-   "path": "_Profiles\\FMC_Profile_Surround_Baroque.rfa"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Show_Baroque",
-   "type": "YesNo",
-   "instance": true,
-   "group": "Graphics"
-  },
-  {
-   "op": "set_formula",
-   "name": "Show_Baroque",
-   "formula": "FMC_Design_Movement = 6"
-  },
-  {
-   "op": "sweep",
-   "name": "Surround Baroque Ext",
-   "path_planes": [
-    [
-     "Left",
-     "Sill"
-    ],
-    [
-     "Left",
-     "Head"
-    ],
-    [
-     "Right",
-     "Head"
-    ],
-    [
-     "Right",
-     "Sill"
-    ]
-   ],
-   "path_host": "Trim Face Ext",
-   "path_plane": "front",
-   "profile_family": "FMC_Profile_Surround_Baroque",
-   "profile_type": "250x100",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Surround Baroque Ext",
-   "param": "Trim Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Surround Baroque Ext",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_visible_param",
-   "name": "Surround Baroque Ext/Visible",
-   "solid": "Surround Baroque Ext",
-   "param": "Show_Baroque"
-  },
-  {
-   "op": "load_family",
-   "name": "FMC_Profile_Surround_Georgian",
-   "path": "_Profiles\\FMC_Profile_Surround_Georgian.rfa"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Show_Georgian",
-   "type": "YesNo",
-   "instance": true,
-   "group": "Graphics"
-  },
-  {
-   "op": "set_formula",
-   "name": "Show_Georgian",
-   "formula": "FMC_Design_Movement = 7"
-  },
-  {
-   "op": "sweep",
-   "name": "Surround Georgian Ext",
-   "path_planes": [
-    [
-     "Left",
-     "Sill"
-    ],
-    [
-     "Left",
-     "Head"
-    ],
-    [
-     "Right",
-     "Head"
-    ],
-    [
-     "Right",
-     "Sill"
-    ]
-   ],
-   "path_host": "Trim Face Ext",
-   "path_plane": "front",
-   "profile_family": "FMC_Profile_Surround_Georgian",
-   "profile_type": "159x35",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Surround Georgian Ext",
-   "param": "Trim Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Surround Georgian Ext",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_visible_param",
-   "name": "Surround Georgian Ext/Visible",
-   "solid": "Surround Georgian Ext",
-   "param": "Show_Georgian"
-  },
-  {
-   "op": "load_family",
-   "name": "FMC_Profile_Surround_FederalAdam",
-   "path": "_Profiles\\FMC_Profile_Surround_FederalAdam.rfa"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Show_FederalAdam",
-   "type": "YesNo",
-   "instance": true,
-   "group": "Graphics"
-  },
-  {
-   "op": "set_formula",
-   "name": "Show_FederalAdam",
-   "formula": "FMC_Design_Movement = 8"
-  },
-  {
-   "op": "sweep",
-   "name": "Surround FederalAdam Ext",
-   "path_planes": [
-    [
-     "Left",
-     "Sill"
-    ],
-    [
-     "Left",
-     "Head"
-    ],
-    [
-     "Right",
-     "Head"
-    ],
-    [
-     "Right",
-     "Sill"
-    ]
-   ],
-   "path_host": "Trim Face Ext",
-   "path_plane": "front",
-   "profile_family": "FMC_Profile_Surround_FederalAdam",
-   "profile_type": "94x30",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Surround FederalAdam Ext",
-   "param": "Trim Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Surround FederalAdam Ext",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_visible_param",
-   "name": "Surround FederalAdam Ext/Visible",
-   "solid": "Surround FederalAdam Ext",
-   "param": "Show_FederalAdam"
-  },
-  {
-   "op": "load_family",
-   "name": "FMC_Profile_Surround_GreekRevival",
-   "path": "_Profiles\\FMC_Profile_Surround_GreekRevival.rfa"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Show_GreekRevival",
-   "type": "YesNo",
-   "instance": true,
-   "group": "Graphics"
-  },
-  {
-   "op": "set_formula",
-   "name": "Show_GreekRevival",
-   "formula": "FMC_Design_Movement = 9"
-  },
-  {
-   "op": "sweep",
-   "name": "Surround GreekRevival Ext",
-   "path_planes": [
-    [
-     "Left",
-     "Sill"
-    ],
-    [
-     "Left",
-     "Head"
-    ],
-    [
-     "Right",
-     "Head"
-    ],
-    [
-     "Right",
-     "Sill"
-    ]
-   ],
-   "path_host": "Trim Face Ext",
-   "path_plane": "front",
-   "profile_family": "FMC_Profile_Surround_GreekRevival",
-   "profile_type": "180x40",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Surround GreekRevival Ext",
-   "param": "Trim Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Surround GreekRevival Ext",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_visible_param",
-   "name": "Surround GreekRevival Ext/Visible",
-   "solid": "Surround GreekRevival Ext",
-   "param": "Show_GreekRevival"
-  },
-  {
-   "op": "load_family",
-   "name": "FMC_Profile_Surround_Italianate",
-   "path": "_Profiles\\FMC_Profile_Surround_Italianate.rfa"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Show_Italianate",
-   "type": "YesNo",
-   "instance": true,
-   "group": "Graphics"
-  },
-  {
-   "op": "set_formula",
-   "name": "Show_Italianate",
-   "formula": "FMC_Design_Movement = 10"
-  },
-  {
-   "op": "sweep",
-   "name": "Surround Italianate Ext",
-   "path_planes": [
-    [
-     "Left",
-     "Sill"
-    ],
-    [
-     "Left",
-     "Head"
-    ],
-    [
-     "Right",
-     "Head"
-    ],
-    [
-     "Right",
-     "Sill"
-    ]
-   ],
-   "path_host": "Trim Face Ext",
-   "path_plane": "front",
-   "profile_family": "FMC_Profile_Surround_Italianate",
-   "profile_type": "165x115",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Surround Italianate Ext",
-   "param": "Trim Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Surround Italianate Ext",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_visible_param",
-   "name": "Surround Italianate Ext/Visible",
-   "solid": "Surround Italianate Ext",
-   "param": "Show_Italianate"
-  },
-  {
-   "op": "load_family",
-   "name": "FMC_Profile_Surround_Victorian",
-   "path": "_Profiles\\FMC_Profile_Surround_Victorian.rfa"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Show_Victorian",
-   "type": "YesNo",
-   "instance": true,
-   "group": "Graphics"
-  },
-  {
-   "op": "set_formula",
-   "name": "Show_Victorian",
-   "formula": "FMC_Design_Movement = 11"
-  },
-  {
-   "op": "sweep",
-   "name": "Surround Victorian Ext",
-   "path_planes": [
-    [
-     "Left",
-     "Sill"
-    ],
-    [
-     "Left",
-     "Head"
-    ],
-    [
-     "Right",
-     "Head"
-    ],
-    [
-     "Right",
-     "Sill"
-    ]
-   ],
-   "path_host": "Trim Face Ext",
-   "path_plane": "front",
-   "profile_family": "FMC_Profile_Surround_Victorian",
-   "profile_type": "151x36",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Surround Victorian Ext",
-   "param": "Trim Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Surround Victorian Ext",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_visible_param",
-   "name": "Surround Victorian Ext/Visible",
-   "solid": "Surround Victorian Ext",
-   "param": "Show_Victorian"
-  },
-  {
-   "op": "load_family",
-   "name": "FMC_Profile_Surround_ArtsCrafts",
-   "path": "_Profiles\\FMC_Profile_Surround_ArtsCrafts.rfa"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Show_ArtsCrafts",
-   "type": "YesNo",
-   "instance": true,
-   "group": "Graphics"
-  },
-  {
-   "op": "set_formula",
-   "name": "Show_ArtsCrafts",
-   "formula": "FMC_Design_Movement = 12"
-  },
-  {
-   "op": "sweep",
-   "name": "Surround ArtsCrafts Ext",
-   "path_planes": [
-    [
-     "Left",
-     "Sill"
-    ],
-    [
-     "Left",
-     "Head"
-    ],
-    [
-     "Right",
-     "Head"
-    ],
-    [
-     "Right",
-     "Sill"
-    ]
-   ],
-   "path_host": "Trim Face Ext",
-   "path_plane": "front",
-   "profile_family": "FMC_Profile_Surround_ArtsCrafts",
-   "profile_type": "150x40",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Surround ArtsCrafts Ext",
-   "param": "Trim Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Surround ArtsCrafts Ext",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_visible_param",
-   "name": "Surround ArtsCrafts Ext/Visible",
-   "solid": "Surround ArtsCrafts Ext",
-   "param": "Show_ArtsCrafts"
-  },
-  {
-   "op": "load_family",
-   "name": "FMC_Profile_Surround_ArtNouveau",
-   "path": "_Profiles\\FMC_Profile_Surround_ArtNouveau.rfa"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Show_ArtNouveau",
-   "type": "YesNo",
-   "instance": true,
-   "group": "Graphics"
-  },
-  {
-   "op": "set_formula",
-   "name": "Show_ArtNouveau",
-   "formula": "FMC_Design_Movement = 13"
-  },
-  {
-   "op": "sweep",
-   "name": "Surround ArtNouveau Ext",
-   "path_planes": [
-    [
-     "Left",
-     "Sill"
-    ],
-    [
-     "Left",
-     "Head"
-    ],
-    [
-     "Right",
-     "Head"
-    ],
-    [
-     "Right",
-     "Sill"
-    ]
-   ],
-   "path_host": "Trim Face Ext",
-   "path_plane": "front",
-   "profile_family": "FMC_Profile_Surround_ArtNouveau",
-   "profile_type": "190x40",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Surround ArtNouveau Ext",
-   "param": "Trim Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Surround ArtNouveau Ext",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_visible_param",
-   "name": "Surround ArtNouveau Ext/Visible",
-   "solid": "Surround ArtNouveau Ext",
-   "param": "Show_ArtNouveau"
-  },
-  {
-   "op": "load_family",
-   "name": "FMC_Profile_Surround_ArtDeco",
-   "path": "_Profiles\\FMC_Profile_Surround_ArtDeco.rfa"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Show_ArtDeco",
-   "type": "YesNo",
-   "instance": true,
-   "group": "Graphics"
-  },
-  {
-   "op": "set_formula",
-   "name": "Show_ArtDeco",
-   "formula": "FMC_Design_Movement = 14"
-  },
-  {
-   "op": "sweep",
-   "name": "Surround ArtDeco Ext",
-   "path_planes": [
-    [
-     "Left",
-     "Sill"
-    ],
-    [
-     "Left",
-     "Head"
-    ],
-    [
-     "Right",
-     "Head"
-    ],
-    [
-     "Right",
-     "Sill"
-    ]
-   ],
-   "path_host": "Trim Face Ext",
-   "path_plane": "front",
-   "profile_family": "FMC_Profile_Surround_ArtDeco",
-   "profile_type": "100x50",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Surround ArtDeco Ext",
-   "param": "Trim Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Surround ArtDeco Ext",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_visible_param",
-   "name": "Surround ArtDeco Ext/Visible",
-   "solid": "Surround ArtDeco Ext",
-   "param": "Show_ArtDeco"
-  },
-  {
-   "op": "load_family",
-   "name": "FMC_Profile_Surround_Modernist",
-   "path": "_Profiles\\FMC_Profile_Surround_Modernist.rfa"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Show_Modernist",
-   "type": "YesNo",
-   "instance": true,
-   "group": "Graphics"
-  },
-  {
-   "op": "set_formula",
-   "name": "Show_Modernist",
-   "formula": "FMC_Design_Movement = 15"
-  },
-  {
-   "op": "sweep",
-   "name": "Surround Modernist Ext",
-   "path_planes": [
-    [
-     "Left",
-     "Sill"
-    ],
-    [
-     "Left",
-     "Head"
-    ],
-    [
-     "Right",
-     "Head"
-    ],
-    [
-     "Right",
-     "Sill"
-    ]
-   ],
-   "path_host": "Trim Face Ext",
-   "path_plane": "front",
-   "profile_family": "FMC_Profile_Surround_Modernist",
-   "profile_type": "60x10",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Surround Modernist Ext",
-   "param": "Trim Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Surround Modernist Ext",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_visible_param",
-   "name": "Surround Modernist Ext/Visible",
-   "solid": "Surround Modernist Ext",
-   "param": "Show_Modernist"
-  },
-  {
-   "op": "load_family",
-   "name": "FMC_Profile_Surround_Brutalist",
-   "path": "_Profiles\\FMC_Profile_Surround_Brutalist.rfa"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Show_Brutalist",
-   "type": "YesNo",
-   "instance": true,
-   "group": "Graphics"
-  },
-  {
-   "op": "set_formula",
-   "name": "Show_Brutalist",
-   "formula": "FMC_Design_Movement = 16"
-  },
-  {
-   "op": "sweep",
-   "name": "Surround Brutalist Ext",
-   "path_planes": [
-    [
-     "Left",
-     "Sill"
-    ],
-    [
-     "Left",
-     "Head"
-    ],
-    [
-     "Right",
-     "Head"
-    ],
-    [
-     "Right",
-     "Sill"
-    ]
-   ],
-   "path_host": "Trim Face Ext",
-   "path_plane": "front",
-   "profile_family": "FMC_Profile_Surround_Brutalist",
-   "profile_type": "200x100",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Surround Brutalist Ext",
-   "param": "Trim Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Surround Brutalist Ext",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_visible_param",
-   "name": "Surround Brutalist Ext/Visible",
-   "solid": "Surround Brutalist Ext",
-   "param": "Show_Brutalist"
-  },
-  {
-   "op": "load_family",
-   "name": "FMC_Profile_Surround_Contemporary",
-   "path": "_Profiles\\FMC_Profile_Surround_Contemporary.rfa"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Show_Contemporary",
-   "type": "YesNo",
-   "instance": true,
-   "group": "Graphics"
-  },
-  {
-   "op": "set_formula",
-   "name": "Show_Contemporary",
-   "formula": "FMC_Design_Movement = 17"
-  },
-  {
-   "op": "sweep",
-   "name": "Surround Contemporary Ext",
-   "path_planes": [
-    [
-     "Left",
-     "Sill"
-    ],
-    [
-     "Left",
-     "Head"
-    ],
-    [
-     "Right",
-     "Head"
-    ],
-    [
-     "Right",
-     "Sill"
-    ]
-   ],
-   "path_host": "Trim Face Ext",
-   "path_plane": "front",
-   "profile_family": "FMC_Profile_Surround_Contemporary",
-   "profile_type": "70x15",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Surround Contemporary Ext",
-   "param": "Trim Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Surround Contemporary Ext",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_visible_param",
-   "name": "Surround Contemporary Ext/Visible",
-   "solid": "Surround Contemporary Ext",
-   "param": "Show_Contemporary"
-  },
-  {
-   "op": "load_family",
-   "name": "FMC_Profile_Surround_SwahiliZanzibar",
-   "path": "_Profiles\\FMC_Profile_Surround_SwahiliZanzibar.rfa"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Show_SwahiliZanzibar",
-   "type": "YesNo",
-   "instance": true,
-   "group": "Graphics"
-  },
-  {
-   "op": "set_formula",
-   "name": "Show_SwahiliZanzibar",
-   "formula": "FMC_Design_Movement = 18"
-  },
-  {
-   "op": "sweep",
-   "name": "Surround SwahiliZanzibar Ext",
-   "path_planes": [
-    [
-     "Left",
-     "Sill"
-    ],
-    [
-     "Left",
-     "Head"
-    ],
-    [
-     "Right",
-     "Head"
-    ],
-    [
-     "Right",
-     "Sill"
-    ]
-   ],
-   "path_host": "Trim Face Ext",
-   "path_plane": "front",
-   "profile_family": "FMC_Profile_Surround_SwahiliZanzibar",
-   "profile_type": "185x100",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Surround SwahiliZanzibar Ext",
-   "param": "Trim Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Surround SwahiliZanzibar Ext",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_visible_param",
-   "name": "Surround SwahiliZanzibar Ext/Visible",
-   "solid": "Surround SwahiliZanzibar Ext",
-   "param": "Show_SwahiliZanzibar"
-  },
-  {
-   "op": "load_family",
-   "name": "FMC_Profile_Surround_Islamic",
-   "path": "_Profiles\\FMC_Profile_Surround_Islamic.rfa"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Show_Islamic",
-   "type": "YesNo",
-   "instance": true,
-   "group": "Graphics"
-  },
-  {
-   "op": "set_formula",
-   "name": "Show_Islamic",
-   "formula": "FMC_Design_Movement = 19"
-  },
-  {
-   "op": "sweep",
-   "name": "Surround Islamic Ext",
-   "path_planes": [
-    [
-     "Left",
-     "Sill"
-    ],
-    [
-     "Left",
-     "Head"
-    ],
-    [
-     "Right",
-     "Head"
-    ],
-    [
-     "Right",
-     "Sill"
-    ]
-   ],
-   "path_host": "Trim Face Ext",
-   "path_plane": "front",
-   "profile_family": "FMC_Profile_Surround_Islamic",
-   "profile_type": "140x40",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Surround Islamic Ext",
-   "param": "Trim Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Surround Islamic Ext",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_visible_param",
-   "name": "Surround Islamic Ext/Visible",
-   "solid": "Surround Islamic Ext",
-   "param": "Show_Islamic"
-  },
-  {
-   "op": "load_family",
-   "name": "FMC_Profile_Surround_TropicalEastAfrican",
-   "path": "_Profiles\\FMC_Profile_Surround_TropicalEastAfrican.rfa"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Show_TropicalEastAfrican",
-   "type": "YesNo",
-   "instance": true,
-   "group": "Graphics"
-  },
-  {
-   "op": "set_formula",
-   "name": "Show_TropicalEastAfrican",
-   "formula": "FMC_Design_Movement = 20"
-  },
-  {
-   "op": "sweep",
-   "name": "Surround TropicalEastAfrican Ext",
-   "path_planes": [
-    [
-     "Left",
-     "Sill"
-    ],
-    [
-     "Left",
-     "Head"
-    ],
-    [
-     "Right",
-     "Head"
-    ],
-    [
-     "Right",
-     "Sill"
-    ]
-   ],
-   "path_host": "Trim Face Ext",
-   "path_plane": "front",
-   "profile_family": "FMC_Profile_Surround_TropicalEastAfrican",
-   "profile_type": "165x60",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Surround TropicalEastAfrican Ext",
-   "param": "Trim Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Surround TropicalEastAfrican Ext",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_visible_param",
-   "name": "Surround TropicalEastAfrican Ext/Visible",
-   "solid": "Surround TropicalEastAfrican Ext",
-   "param": "Show_TropicalEastAfrican"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1500_Casement-TopHung300/Keynote",
-   "type": "1200x1500_Casement-TopHung300",
-   "param": "Keynote",
-   "value": "G.CAS_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1500_Casement-TopHung300/FMC_Keynote_Code",
-   "type": "1200x1500_Casement-TopHung300",
-   "param": "FMC_Keynote_Code",
-   "value": "G.CAS_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1500_Casement-TopHung300/FMC_Design_Movement",
-   "type": "1200x1500_Casement-TopHung300",
-   "param": "FMC_Design_Movement",
-   "value": 17
-  },
-  {
-   "op": "set_type_value",
-   "name": "1200x1500_Casement-TopHung300/Trim Face Offset",
-   "type": "1200x1500_Casement-TopHung300",
-   "param": "Trim Face Offset",
-   "value": 130.0
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500x1500_Sliding-TopHung300/Keynote",
-   "type": "1500x1500_Sliding-TopHung300",
-   "param": "Keynote",
-   "value": "G.SLD_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500x1500_Sliding-TopHung300/FMC_Keynote_Code",
-   "type": "1500x1500_Sliding-TopHung300",
-   "param": "FMC_Keynote_Code",
-   "value": "G.SLD_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500x1500_Sliding-TopHung300/FMC_Design_Movement",
-   "type": "1500x1500_Sliding-TopHung300",
-   "param": "FMC_Design_Movement",
-   "value": 17
-  },
-  {
-   "op": "set_type_value",
-   "name": "1500x1500_Sliding-TopHung300/Trim Face Offset",
-   "type": "1500x1500_Sliding-TopHung300",
-   "param": "Trim Face Offset",
-   "value": 130.0
-  },
-  {
-   "op": "set_type_value",
-   "name": "1800x1500_Sliding-TopHung300/Keynote",
-   "type": "1800x1500_Sliding-TopHung300",
-   "param": "Keynote",
-   "value": "G.SLD_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1800x1500_Sliding-TopHung300/FMC_Keynote_Code",
-   "type": "1800x1500_Sliding-TopHung300",
-   "param": "FMC_Keynote_Code",
-   "value": "G.SLD_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1800x1500_Sliding-TopHung300/FMC_Design_Movement",
-   "type": "1800x1500_Sliding-TopHung300",
-   "param": "FMC_Design_Movement",
-   "value": 17
-  },
-  {
-   "op": "set_type_value",
-   "name": "1800x1500_Sliding-TopHung300/Trim Face Offset",
-   "type": "1800x1500_Sliding-TopHung300",
-   "param": "Trim Face Offset",
-   "value": 130.0
-  },
-  {
-   "op": "set_type_value",
-   "name": "0600x1200_Casement-Projected300/Keynote",
-   "type": "0600x1200_Casement-Projected300",
-   "param": "Keynote",
-   "value": "G.CAS_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "0600x1200_Casement-Projected300/FMC_Keynote_Code",
-   "type": "0600x1200_Casement-Projected300",
-   "param": "FMC_Keynote_Code",
-   "value": "G.CAS_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "0600x1200_Casement-Projected300/FMC_Design_Movement",
-   "type": "0600x1200_Casement-Projected300",
-   "param": "FMC_Design_Movement",
-   "value": 17
-  },
-  {
-   "op": "set_type_value",
-   "name": "0600x1200_Casement-Projected300/Trim Face Offset",
-   "type": "0600x1200_Casement-Projected300",
-   "param": "Trim Face Offset",
-   "value": 130.0
-  },
-  {
-   "op": "set_type_value",
-   "name": "0600x0900_WC-PJ/Keynote",
-   "type": "0600x0900_WC-PJ",
-   "param": "Keynote",
-   "value": "G.CAS_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "0600x0900_WC-PJ/FMC_Keynote_Code",
-   "type": "0600x0900_WC-PJ",
-   "param": "FMC_Keynote_Code",
-   "value": "G.CAS_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "0600x0900_WC-PJ/FMC_Design_Movement",
-   "type": "0600x0900_WC-PJ",
-   "param": "FMC_Design_Movement",
-   "value": 17
-  },
-  {
-   "op": "set_type_value",
-   "name": "0600x0900_WC-PJ/Trim Face Offset",
-   "type": "0600x0900_WC-PJ",
-   "param": "Trim Face Offset",
-   "value": 130.0
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_A_Window_AluVent",
+  "template": "Metric Window.rft",
+  "about": "LOD 400 Kampala aluminium window: 50x100 frame, casement (1 or 2 leaves, mullion by Leaf Count) or 2-track sliding leaves that overlap at the centre with interlock stiles, and a top-hung projected (PJ) vent over the transom. Height runs from the template Sill plane (z = 0) to Head; leaf top = Height - Fanlight Height. Casement vs sliding parts and the mesh are switched by Yes/No-driven offset formulas that collapse the part into the left jamb (Hide Offset / Hide Width). The recipe puts its outer face at -y, but the template's plane named Exterior is at +y (field review, 15 Oct): the Revit retest confirms which way the family faces in a wall; frame centred on the wall. The vent's opening triangle is a symbolic line drawn for the default type and does not flex. Profile slot (gen_profile_slots.py): FMC_Design_Movement (1-20, default 17) shows one of 20 Surround sweeps (Ext face) from FMC_Profile_Surround_<Token>, each bound to Show_<Token>. Each sweep's path is locked to Left, Right, Head and Sill (path_planes) on Trim Face Ext, so the trims follow Width and Height in every type.",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "OST_Windows"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "group": "IdentityData"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Frame_Spec",
+      "guid": "7a163363-b62c-57f9-8d75-66d6b9aad4c6",
+      "group": "Data"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fanlight_Height_mm",
+      "guid": "425ed7f1-679a-5ee8-98dc-4fad02fde0ed",
+      "group": "Data"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Vent_Type",
+      "guid": "cfd77ccf-d77d-53e0-b769-10b62e8aa1d5",
+      "group": "Data"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Mosquito_Mesh",
+      "guid": "5ec6628e-e5ce-55d7-a8c1-d1737876b897",
+      "group": "Data"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Glazed_Area_m2",
+      "guid": "c3c61f30-7abb-515e-9902-4cf9a3b72200",
+      "group": "Data"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Openable_Area_m2",
+      "guid": "6919d4a2-ffd3-5f03-bbd5-4715a375a99d",
+      "group": "Data"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "group": "Data"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "group": "Data"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Frame Width",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Frame Depth",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Fanlight Height",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Transom Depth",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Mullion Width",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Sash Overlap",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Interlock Width",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Sill Depth",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Hide Offset",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Hide Width",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Mullion Offset",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Casement Glass L Offset",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Casement Glass R Offset",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Slide Ext L Offset",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Slide Ext R Offset",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Slide Int L Offset",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Slide Int R Offset",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Interlock Ext Offset",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Interlock Int Offset",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Mesh L Offset",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Mesh R Offset",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Leaf Count",
+      "type": "Integer",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Leaves Sliding",
+      "type": "YesNo",
+      "group": "Constraints"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Frame Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Glass Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Mesh Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Sill Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Frame",
+      "line_weight_projection": 2,
+      "line_weight_cut": 4,
+      "color": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Glass",
+      "line_weight_projection": 2,
+      "line_weight_cut": 4,
+      "color": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Mesh",
+      "line_weight_projection": 2,
+      "line_weight_cut": 4,
+      "color": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Sill",
+      "line_weight_projection": 2,
+      "line_weight_cut": 4,
+      "color": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Elevation Swing",
+      "line_weight_projection": 1,
+      "line_weight_cut": 1,
+      "color": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "op": "add_type",
+      "name": "1200x1500_Casement-TopHung300"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1500_Casement-TopHung300/Width",
+      "type": "1200x1500_Casement-TopHung300",
+      "param": "Width",
+      "value": 1200
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1500_Casement-TopHung300/Height",
+      "type": "1200x1500_Casement-TopHung300",
+      "param": "Height",
+      "value": 1500
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Wall Centre",
+      "from": [
+        -2000,
+        0
+      ],
+      "to": [
+        2000,
+        0
+      ],
+      "is_reference": "CenterFrontBack"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Frame Ext",
+      "from": [
+        -2000,
+        -50
+      ],
+      "to": [
+        2000,
+        -50
+      ],
+      "is_reference": "StrongReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Frame Int",
+      "from": [
+        -2000,
+        50
+      ],
+      "to": [
+        2000,
+        50
+      ],
+      "is_reference": "StrongReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Inset Front",
+      "from": [
+        -2000,
+        -48
+      ],
+      "to": [
+        2000,
+        -48
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Inset Back",
+      "from": [
+        -2000,
+        48
+      ],
+      "to": [
+        2000,
+        48
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Glass Front",
+      "from": [
+        -2000,
+        -3
+      ],
+      "to": [
+        2000,
+        -3
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Glass Back",
+      "from": [
+        -2000,
+        2
+      ],
+      "to": [
+        2000,
+        2
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Track Ext Front",
+      "from": [
+        -2000,
+        -40
+      ],
+      "to": [
+        2000,
+        -40
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Track Ext Back",
+      "from": [
+        -2000,
+        -10
+      ],
+      "to": [
+        2000,
+        -10
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Track Int Front",
+      "from": [
+        -2000,
+        10
+      ],
+      "to": [
+        2000,
+        10
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Track Int Back",
+      "from": [
+        -2000,
+        40
+      ],
+      "to": [
+        2000,
+        40
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Slide Glass Ext F",
+      "from": [
+        -2000,
+        -27
+      ],
+      "to": [
+        2000,
+        -27
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Slide Glass Ext B",
+      "from": [
+        -2000,
+        -22
+      ],
+      "to": [
+        2000,
+        -22
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Slide Glass Int F",
+      "from": [
+        -2000,
+        22
+      ],
+      "to": [
+        2000,
+        22
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Slide Glass Int B",
+      "from": [
+        -2000,
+        27
+      ],
+      "to": [
+        2000,
+        27
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Mesh Front",
+      "from": [
+        -2000,
+        44
+      ],
+      "to": [
+        2000,
+        44
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Mesh Back",
+      "from": [
+        -2000,
+        46
+      ],
+      "to": [
+        2000,
+        46
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Sill Front",
+      "from": [
+        -2000,
+        -160
+      ],
+      "to": [
+        2000,
+        -160
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Frame L In",
+      "from": [
+        -550,
+        -1500
+      ],
+      "to": [
+        -550,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Frame R In",
+      "from": [
+        550,
+        -1500
+      ],
+      "to": [
+        550,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Mullion L",
+      "from": [
+        -20,
+        -1500
+      ],
+      "to": [
+        -20,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Mullion R",
+      "from": [
+        20,
+        -1500
+      ],
+      "to": [
+        20,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Case Glass L",
+      "from": [
+        -550,
+        -1500
+      ],
+      "to": [
+        -550,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Case Glass R",
+      "from": [
+        550,
+        -1500
+      ],
+      "to": [
+        550,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Slide Ext L",
+      "from": [
+        -595,
+        -1500
+      ],
+      "to": [
+        -595,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Slide Ext R",
+      "from": [
+        -555,
+        -1500
+      ],
+      "to": [
+        -555,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Slide Int L",
+      "from": [
+        -595,
+        -1500
+      ],
+      "to": [
+        -595,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Slide Int R",
+      "from": [
+        -555,
+        -1500
+      ],
+      "to": [
+        -555,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Interlock Ext L",
+      "from": [
+        -595,
+        -1500
+      ],
+      "to": [
+        -595,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Interlock Ext R",
+      "from": [
+        -555,
+        -1500
+      ],
+      "to": [
+        -555,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Interlock Int L",
+      "from": [
+        -595,
+        -1500
+      ],
+      "to": [
+        -595,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Interlock Int R",
+      "from": [
+        -555,
+        -1500
+      ],
+      "to": [
+        -555,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Mesh L",
+      "from": [
+        -595,
+        -1500
+      ],
+      "to": [
+        -595,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Mesh R",
+      "from": [
+        -555,
+        -1500
+      ],
+      "to": [
+        -555,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Sill Inner",
+      "from": [
+        -2000,
+        850
+      ],
+      "to": [
+        2000,
+        850
+      ],
+      "is_reference": "WeakReference",
+      "view": "Exterior"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Leaf Top",
+      "from": [
+        -2000,
+        2000
+      ],
+      "to": [
+        2000,
+        2000
+      ],
+      "is_reference": "WeakReference",
+      "view": "Exterior"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Transom Top",
+      "from": [
+        -2000,
+        2050
+      ],
+      "to": [
+        2000,
+        2050
+      ],
+      "is_reference": "WeakReference",
+      "view": "Exterior"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Head Inner",
+      "from": [
+        -2000,
+        2250
+      ],
+      "to": [
+        2000,
+        2250
+      ],
+      "is_reference": "WeakReference",
+      "view": "Exterior"
+    },
+    {
+      "op": "add_dimension",
+      "name": "Frame Width L",
+      "between": [
+        "Left",
+        "Frame L In"
+      ],
+      "label": "Frame Width"
+    },
+    {
+      "op": "add_dimension",
+      "name": "Frame Width R",
+      "between": [
+        "Frame R In",
+        "Right"
+      ],
+      "label": "Frame Width"
+    },
+    {
+      "op": "add_dimension",
+      "name": "Frame Depth",
+      "between": [
+        "Frame Ext",
+        "Frame Int"
+      ],
+      "label": "Frame Depth",
+      "offset": 600
+    },
+    {
+      "op": "add_eq_dimension",
+      "name": "EQ frame depth",
+      "planes": [
+        "Frame Ext",
+        "Wall Centre",
+        "Frame Int"
+      ],
+      "offset": 700
+    },
+    {
+      "op": "add_dimension",
+      "name": "Sill Depth",
+      "between": [
+        "Sill Front",
+        "Frame Ext"
+      ],
+      "label": "Sill Depth",
+      "offset": 800
+    },
+    {
+      "op": "add_dimension",
+      "name": "Mullion Offset",
+      "between": [
+        "Left",
+        "Mullion L"
+      ],
+      "label": "Mullion Offset",
+      "offset": -400
+    },
+    {
+      "op": "add_dimension",
+      "name": "Mullion Width",
+      "between": [
+        "Mullion L",
+        "Mullion R"
+      ],
+      "label": "Mullion Width",
+      "offset": -400
+    },
+    {
+      "op": "add_dimension",
+      "name": "Casement Glass L Offset",
+      "between": [
+        "Left",
+        "Case Glass L"
+      ],
+      "label": "Casement Glass L Offset",
+      "offset": -500
+    },
+    {
+      "op": "add_dimension",
+      "name": "Casement Glass R Offset",
+      "between": [
+        "Left",
+        "Case Glass R"
+      ],
+      "label": "Casement Glass R Offset",
+      "offset": -525
+    },
+    {
+      "op": "add_dimension",
+      "name": "Slide Ext L Offset",
+      "between": [
+        "Left",
+        "Slide Ext L"
+      ],
+      "label": "Slide Ext L Offset",
+      "offset": -550
+    },
+    {
+      "op": "add_dimension",
+      "name": "Slide Ext R Offset",
+      "between": [
+        "Left",
+        "Slide Ext R"
+      ],
+      "label": "Slide Ext R Offset",
+      "offset": -575
+    },
+    {
+      "op": "add_dimension",
+      "name": "Slide Int L Offset",
+      "between": [
+        "Left",
+        "Slide Int L"
+      ],
+      "label": "Slide Int L Offset",
+      "offset": -600
+    },
+    {
+      "op": "add_dimension",
+      "name": "Slide Int R Offset",
+      "between": [
+        "Left",
+        "Slide Int R"
+      ],
+      "label": "Slide Int R Offset",
+      "offset": -625
+    },
+    {
+      "op": "add_dimension",
+      "name": "Mesh L Offset",
+      "between": [
+        "Left",
+        "Mesh L"
+      ],
+      "label": "Mesh L Offset",
+      "offset": -650
+    },
+    {
+      "op": "add_dimension",
+      "name": "Mesh R Offset",
+      "between": [
+        "Left",
+        "Mesh R"
+      ],
+      "label": "Mesh R Offset",
+      "offset": -675
+    },
+    {
+      "op": "add_dimension",
+      "name": "Interlock Ext Offset",
+      "between": [
+        "Left",
+        "Interlock Ext L"
+      ],
+      "label": "Interlock Ext Offset",
+      "offset": -700
+    },
+    {
+      "op": "add_dimension",
+      "name": "Interlock Ext Width",
+      "between": [
+        "Interlock Ext L",
+        "Interlock Ext R"
+      ],
+      "label": "Interlock Width",
+      "offset": -700
+    },
+    {
+      "op": "add_dimension",
+      "name": "Interlock Int Offset",
+      "between": [
+        "Left",
+        "Interlock Int L"
+      ],
+      "label": "Interlock Int Offset",
+      "offset": -750
+    },
+    {
+      "op": "add_dimension",
+      "name": "Interlock Int Width",
+      "between": [
+        "Interlock Int L",
+        "Interlock Int R"
+      ],
+      "label": "Interlock Width",
+      "offset": -750
+    },
+    {
+      "op": "add_dimension",
+      "name": "Frame Width Sill",
+      "between": [
+        "Sill",
+        "Sill Inner"
+      ],
+      "label": "Frame Width",
+      "view": "Exterior",
+      "offset": 700
+    },
+    {
+      "op": "add_dimension",
+      "name": "Frame Width Head",
+      "between": [
+        "Head Inner",
+        "Head"
+      ],
+      "label": "Frame Width",
+      "view": "Exterior",
+      "offset": 700
+    },
+    {
+      "op": "add_dimension",
+      "name": "Fanlight Height",
+      "between": [
+        "Leaf Top",
+        "Head"
+      ],
+      "label": "Fanlight Height",
+      "view": "Exterior",
+      "offset": -600
+    },
+    {
+      "op": "add_dimension",
+      "name": "Transom Depth",
+      "between": [
+        "Leaf Top",
+        "Transom Top"
+      ],
+      "label": "Transom Depth",
+      "view": "Exterior",
+      "offset": 750
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1500_Casement-TopHung300/Fanlight Height",
+      "type": "1200x1500_Casement-TopHung300",
+      "param": "Fanlight Height",
+      "value": 300
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1500_Casement-TopHung300/FMC_Fanlight_Height_mm",
+      "type": "1200x1500_Casement-TopHung300",
+      "param": "FMC_Fanlight_Height_mm",
+      "value": 300
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1500_Casement-TopHung300/Leaf Count",
+      "type": "1200x1500_Casement-TopHung300",
+      "param": "Leaf Count",
+      "value": 2
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1500_Casement-TopHung300/Leaves Sliding",
+      "type": "1200x1500_Casement-TopHung300",
+      "param": "Leaves Sliding",
+      "value": false
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1500_Casement-TopHung300/FMC_Vent_Type",
+      "type": "1200x1500_Casement-TopHung300",
+      "param": "FMC_Vent_Type",
+      "value": "Top-hung (PJ)"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1500_Casement-TopHung300/FMC_Mosquito_Mesh",
+      "type": "1200x1500_Casement-TopHung300",
+      "param": "FMC_Mosquito_Mesh",
+      "value": false
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1500_Casement-TopHung300/FMC_Frame_Spec",
+      "type": "1200x1500_Casement-TopHung300",
+      "param": "FMC_Frame_Spec",
+      "value": "Aluminium window, frame 50x100 (series to confirm), 5 mm clear glass; casement or 2-track sliding leaves; top-hung projected (PJ) vent over; precast sill"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1500_Casement-TopHung300/Frame Width",
+      "type": "1200x1500_Casement-TopHung300",
+      "param": "Frame Width",
+      "value": 50
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1500_Casement-TopHung300/Frame Depth",
+      "type": "1200x1500_Casement-TopHung300",
+      "param": "Frame Depth",
+      "value": 100
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1500_Casement-TopHung300/Transom Depth",
+      "type": "1200x1500_Casement-TopHung300",
+      "param": "Transom Depth",
+      "value": 50
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1500_Casement-TopHung300/Mullion Width",
+      "type": "1200x1500_Casement-TopHung300",
+      "param": "Mullion Width",
+      "value": 40
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1500_Casement-TopHung300/Sash Overlap",
+      "type": "1200x1500_Casement-TopHung300",
+      "param": "Sash Overlap",
+      "value": 60
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1500_Casement-TopHung300/Interlock Width",
+      "type": "1200x1500_Casement-TopHung300",
+      "param": "Interlock Width",
+      "value": 40
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1500_Casement-TopHung300/Sill Depth",
+      "type": "1200x1500_Casement-TopHung300",
+      "param": "Sill Depth",
+      "value": 110
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1500_Casement-TopHung300/Hide Offset",
+      "type": "1200x1500_Casement-TopHung300",
+      "param": "Hide Offset",
+      "value": 5
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1500_Casement-TopHung300/Hide Width",
+      "type": "1200x1500_Casement-TopHung300",
+      "param": "Hide Width",
+      "value": 40
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1500_Casement-TopHung300/FMC_Geometry_Stage",
+      "type": "1200x1500_Casement-TopHung300",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1500_Casement-TopHung300/IfcExportAs",
+      "type": "1200x1500_Casement-TopHung300",
+      "param": "IfcExportAs",
+      "value": "IfcWindow"
+    },
+    {
+      "op": "set_formula",
+      "name": "Mullion Offset",
+      "formula": "if(and(not(Leaves Sliding), Leaf Count > 1), Frame Width + (Width - 2 * Frame Width - Mullion Width) / 2, Hide Offset)"
+    },
+    {
+      "op": "set_formula",
+      "name": "Casement Glass L Offset",
+      "formula": "if(Leaves Sliding, Hide Offset, Frame Width)"
+    },
+    {
+      "op": "set_formula",
+      "name": "Casement Glass R Offset",
+      "formula": "if(Leaves Sliding, Hide Offset + Hide Width, Width - Frame Width)"
+    },
+    {
+      "op": "set_formula",
+      "name": "Slide Ext L Offset",
+      "formula": "if(Leaves Sliding, Frame Width, Hide Offset)"
+    },
+    {
+      "op": "set_formula",
+      "name": "Slide Ext R Offset",
+      "formula": "if(Leaves Sliding, Width / 2 + Sash Overlap / 2, Hide Offset + Hide Width)"
+    },
+    {
+      "op": "set_formula",
+      "name": "Slide Int L Offset",
+      "formula": "if(Leaves Sliding, Width / 2 - Sash Overlap / 2, Hide Offset)"
+    },
+    {
+      "op": "set_formula",
+      "name": "Slide Int R Offset",
+      "formula": "if(Leaves Sliding, Width - Frame Width, Hide Offset + Hide Width)"
+    },
+    {
+      "op": "set_formula",
+      "name": "Interlock Ext Offset",
+      "formula": "if(Leaves Sliding, Width / 2 + Sash Overlap / 2 - Interlock Width, Hide Offset)"
+    },
+    {
+      "op": "set_formula",
+      "name": "Interlock Int Offset",
+      "formula": "if(Leaves Sliding, Width / 2 - Sash Overlap / 2, Hide Offset)"
+    },
+    {
+      "op": "set_formula",
+      "name": "Mesh L Offset",
+      "formula": "if(FMC_Mosquito_Mesh, Frame Width, Hide Offset)"
+    },
+    {
+      "op": "set_formula",
+      "name": "Mesh R Offset",
+      "formula": "if(FMC_Mosquito_Mesh, Width - Frame Width, Hide Offset + Hide Width)"
+    },
+    {
+      "op": "set_formula",
+      "name": "FMC_Glazed_Area_m2",
+      "formula": "(Width - 2 * Frame Width) * (Height - Fanlight Height - Frame Width) + (Width - 2 * Frame Width) * (Fanlight Height - Transom Depth - Frame Width)"
+    },
+    {
+      "op": "set_formula",
+      "name": "FMC_Openable_Area_m2",
+      "formula": "(Width - 2 * Frame Width) * (Height - Fanlight Height - Frame Width) * if(Leaves Sliding, 0.5, 1) + (Width - 2 * Frame Width) * (Fanlight Height - Transom Depth - Frame Width)"
+    },
+    {
+      "op": "extrusion",
+      "name": "Jamb L",
+      "rect": [
+        "Left",
+        "Frame L In",
+        "Frame Ext",
+        "Frame Int"
+      ],
+      "start": 800,
+      "end": 2300,
+      "end_plane": "Head"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Jamb L",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Jamb L",
+      "param": "Frame Material"
+    },
+    {
+      "op": "lock_face",
+      "name": "Jamb L/Sill",
+      "solid": "Jamb L",
+      "plane": "Sill",
+      "view": "front"
+    },
+    {
+      "op": "extrusion",
+      "name": "Jamb R",
+      "rect": [
+        "Frame R In",
+        "Right",
+        "Frame Ext",
+        "Frame Int"
+      ],
+      "start": 800,
+      "end": 2300,
+      "end_plane": "Head"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Jamb R",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Jamb R",
+      "param": "Frame Material"
+    },
+    {
+      "op": "lock_face",
+      "name": "Jamb R/Sill",
+      "solid": "Jamb R",
+      "plane": "Sill",
+      "view": "front"
+    },
+    {
+      "op": "extrusion",
+      "name": "Sill Rail",
+      "rect": [
+        "Frame L In",
+        "Frame R In",
+        "Frame Ext",
+        "Frame Int"
+      ],
+      "start": 800,
+      "end": 850,
+      "end_plane": "Sill Inner"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Sill Rail",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sill Rail",
+      "param": "Frame Material"
+    },
+    {
+      "op": "lock_face",
+      "name": "Sill Rail/Sill",
+      "solid": "Sill Rail",
+      "plane": "Sill",
+      "view": "front"
+    },
+    {
+      "op": "extrusion",
+      "name": "Head",
+      "rect": [
+        "Frame L In",
+        "Frame R In",
+        "Frame Ext",
+        "Frame Int"
+      ],
+      "start": 2250,
+      "end": 2300,
+      "end_plane": "Head"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Head",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Head",
+      "param": "Frame Material"
+    },
+    {
+      "op": "lock_face",
+      "name": "Head/Head Inner",
+      "solid": "Head",
+      "plane": "Head Inner",
+      "view": "front"
+    },
+    {
+      "op": "extrusion",
+      "name": "Transom",
+      "rect": [
+        "Frame L In",
+        "Frame R In",
+        "Frame Ext",
+        "Frame Int"
+      ],
+      "start": 2000,
+      "end": 2050,
+      "end_plane": "Transom Top"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Transom",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Transom",
+      "param": "Frame Material"
+    },
+    {
+      "op": "lock_face",
+      "name": "Transom/Leaf Top",
+      "solid": "Transom",
+      "plane": "Leaf Top",
+      "view": "front"
+    },
+    {
+      "op": "extrusion",
+      "name": "Mullion",
+      "rect": [
+        "Mullion L",
+        "Mullion R",
+        "Inset Front",
+        "Inset Back"
+      ],
+      "start": 850,
+      "end": 2000,
+      "end_plane": "Leaf Top"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Mullion",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Mullion",
+      "param": "Frame Material"
+    },
+    {
+      "op": "lock_face",
+      "name": "Mullion/Sill Inner",
+      "solid": "Mullion",
+      "plane": "Sill Inner",
+      "view": "front"
+    },
+    {
+      "op": "extrusion",
+      "name": "Casement Glass",
+      "rect": [
+        "Case Glass L",
+        "Case Glass R",
+        "Glass Front",
+        "Glass Back"
+      ],
+      "start": 850,
+      "end": 2000,
+      "end_plane": "Leaf Top"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Casement Glass",
+      "subcategory": "Glass"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Casement Glass",
+      "param": "Glass Material"
+    },
+    {
+      "op": "lock_face",
+      "name": "Casement Glass/Sill Inner",
+      "solid": "Casement Glass",
+      "plane": "Sill Inner",
+      "view": "front"
+    },
+    {
+      "op": "extrusion",
+      "name": "Sliding Glass Ext",
+      "rect": [
+        "Slide Ext L",
+        "Slide Ext R",
+        "Slide Glass Ext F",
+        "Slide Glass Ext B"
+      ],
+      "start": 850,
+      "end": 2000,
+      "end_plane": "Leaf Top"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Sliding Glass Ext",
+      "subcategory": "Glass"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sliding Glass Ext",
+      "param": "Glass Material"
+    },
+    {
+      "op": "lock_face",
+      "name": "Sliding Glass Ext/Sill Inner",
+      "solid": "Sliding Glass Ext",
+      "plane": "Sill Inner",
+      "view": "front"
+    },
+    {
+      "op": "extrusion",
+      "name": "Sliding Glass Int",
+      "rect": [
+        "Slide Int L",
+        "Slide Int R",
+        "Slide Glass Int F",
+        "Slide Glass Int B"
+      ],
+      "start": 850,
+      "end": 2000,
+      "end_plane": "Leaf Top"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Sliding Glass Int",
+      "subcategory": "Glass"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sliding Glass Int",
+      "param": "Glass Material"
+    },
+    {
+      "op": "lock_face",
+      "name": "Sliding Glass Int/Sill Inner",
+      "solid": "Sliding Glass Int",
+      "plane": "Sill Inner",
+      "view": "front"
+    },
+    {
+      "op": "extrusion",
+      "name": "Interlock Ext",
+      "rect": [
+        "Interlock Ext L",
+        "Interlock Ext R",
+        "Track Ext Front",
+        "Track Ext Back"
+      ],
+      "start": 850,
+      "end": 2000,
+      "end_plane": "Leaf Top"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Interlock Ext",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Interlock Ext",
+      "param": "Frame Material"
+    },
+    {
+      "op": "lock_face",
+      "name": "Interlock Ext/Sill Inner",
+      "solid": "Interlock Ext",
+      "plane": "Sill Inner",
+      "view": "front"
+    },
+    {
+      "op": "extrusion",
+      "name": "Interlock Int",
+      "rect": [
+        "Interlock Int L",
+        "Interlock Int R",
+        "Track Int Front",
+        "Track Int Back"
+      ],
+      "start": 850,
+      "end": 2000,
+      "end_plane": "Leaf Top"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Interlock Int",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Interlock Int",
+      "param": "Frame Material"
+    },
+    {
+      "op": "lock_face",
+      "name": "Interlock Int/Sill Inner",
+      "solid": "Interlock Int",
+      "plane": "Sill Inner",
+      "view": "front"
+    },
+    {
+      "op": "extrusion",
+      "name": "Vent Glass",
+      "rect": [
+        "Frame L In",
+        "Frame R In",
+        "Glass Front",
+        "Glass Back"
+      ],
+      "start": 2050,
+      "end": 2250,
+      "end_plane": "Head Inner"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vent Glass",
+      "subcategory": "Glass"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vent Glass",
+      "param": "Glass Material"
+    },
+    {
+      "op": "lock_face",
+      "name": "Vent Glass/Transom Top",
+      "solid": "Vent Glass",
+      "plane": "Transom Top",
+      "view": "front"
+    },
+    {
+      "op": "extrusion",
+      "name": "Mosquito Mesh",
+      "rect": [
+        "Mesh L",
+        "Mesh R",
+        "Mesh Front",
+        "Mesh Back"
+      ],
+      "start": 850,
+      "end": 2250,
+      "end_plane": "Head Inner"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Mosquito Mesh",
+      "subcategory": "Mesh"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Mosquito Mesh",
+      "param": "Mesh Material"
+    },
+    {
+      "op": "lock_face",
+      "name": "Mosquito Mesh/Sill Inner",
+      "solid": "Mosquito Mesh",
+      "plane": "Sill Inner",
+      "view": "front"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Mosquito Mesh",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Sill",
+      "rect": [
+        "Left",
+        "Right",
+        "Sill Front",
+        "Frame Int"
+      ],
+      "start": 750,
+      "end": 800,
+      "end_plane": "Sill"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Sill",
+      "subcategory": "Sill"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sill",
+      "param": "Sill Material"
+    },
+    {
+      "op": "symbolic_lines",
+      "name": "Top-hung vent",
+      "view": "front",
+      "points": [
+        [
+          -550,
+          2050
+        ],
+        [
+          0,
+          2250
+        ],
+        [
+          550,
+          2050
+        ]
+      ],
+      "subcategory": "Elevation Swing",
+      "coarse": false
+    },
+    {
+      "op": "symbolic_lines",
+      "name": "Sill line",
+      "view": "plan",
+      "points": [
+        [
+          -600,
+          -160
+        ],
+        [
+          600,
+          -160
+        ]
+      ],
+      "subcategory": "Sill"
+    },
+    {
+      "op": "add_type",
+      "name": "1500x1500_Sliding-TopHung300"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500x1500_Sliding-TopHung300/Width",
+      "type": "1500x1500_Sliding-TopHung300",
+      "param": "Width",
+      "value": 1500
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500x1500_Sliding-TopHung300/Leaves Sliding",
+      "type": "1500x1500_Sliding-TopHung300",
+      "param": "Leaves Sliding",
+      "value": true
+    },
+    {
+      "op": "add_type",
+      "name": "1800x1500_Sliding-TopHung300"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1800x1500_Sliding-TopHung300/Width",
+      "type": "1800x1500_Sliding-TopHung300",
+      "param": "Width",
+      "value": 1800
+    },
+    {
+      "op": "add_type",
+      "name": "0600x1200_Casement-Projected300"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0600x1200_Casement-Projected300/Width",
+      "type": "0600x1200_Casement-Projected300",
+      "param": "Width",
+      "value": 600
+    },
+    {
+      "op": "set_type_value",
+      "name": "0600x1200_Casement-Projected300/Height",
+      "type": "0600x1200_Casement-Projected300",
+      "param": "Height",
+      "value": 1200
+    },
+    {
+      "op": "set_type_value",
+      "name": "0600x1200_Casement-Projected300/Leaf Count",
+      "type": "0600x1200_Casement-Projected300",
+      "param": "Leaf Count",
+      "value": 1
+    },
+    {
+      "op": "set_type_value",
+      "name": "0600x1200_Casement-Projected300/Leaves Sliding",
+      "type": "0600x1200_Casement-Projected300",
+      "param": "Leaves Sliding",
+      "value": false
+    },
+    {
+      "op": "add_type",
+      "name": "0600x0900_WC-PJ"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0600x0900_WC-PJ/Height",
+      "type": "0600x0900_WC-PJ",
+      "param": "Height",
+      "value": 900
+    },
+    {
+      "op": "add_family_param",
+      "name": "Trim Face Offset",
+      "type": "Length",
+      "instance": false,
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Trim Face Ext",
+      "from": [
+        -2000,
+        -130
+      ],
+      "to": [
+        2000,
+        -130
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_dimension",
+      "name": "Trim Face Offset Ext",
+      "between": [
+        "Wall Centre",
+        "Trim Face Ext"
+      ],
+      "label": "Trim Face Offset",
+      "offset": 900
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Design_Movement",
+      "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Trim Material",
+      "type": "Material",
+      "instance": false,
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Aluminium_PowderCoated",
+      "param": "Frame Material"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Glass_Clear",
+      "param": "Glass Material"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_InsectMesh_Fibreglass",
+      "param": "Mesh Material"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Concrete_Precast_Painted",
+      "param": "Sill Material"
+    },
+    {
+      "op": "set_formula",
+      "name": "Trim Material",
+      "formula": "Sill Material"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Surround_Greek",
+      "path": "_Profiles\\FMC_Profile_Surround_Greek.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_Greek",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_Greek",
+      "formula": "FMC_Design_Movement = 1"
+    },
+    {
+      "op": "sweep",
+      "name": "Surround Greek Ext",
+      "path_planes": [
+        [
+          "Left",
+          "Sill"
+        ],
+        [
+          "Left",
+          "Head"
+        ],
+        [
+          "Right",
+          "Head"
+        ],
+        [
+          "Right",
+          "Sill"
+        ]
+      ],
+      "path_host": "Trim Face Ext",
+      "path_plane": "front",
+      "profile_family": "FMC_Profile_Surround_Greek",
+      "profile_type": "150x40",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Surround Greek Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Surround Greek Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Surround Greek Ext/Visible",
+      "solid": "Surround Greek Ext",
+      "param": "Show_Greek"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Surround_Roman",
+      "path": "_Profiles\\FMC_Profile_Surround_Roman.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_Roman",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_Roman",
+      "formula": "FMC_Design_Movement = 2"
+    },
+    {
+      "op": "sweep",
+      "name": "Surround Roman Ext",
+      "path_planes": [
+        [
+          "Left",
+          "Sill"
+        ],
+        [
+          "Left",
+          "Head"
+        ],
+        [
+          "Right",
+          "Head"
+        ],
+        [
+          "Right",
+          "Sill"
+        ]
+      ],
+      "path_host": "Trim Face Ext",
+      "path_plane": "front",
+      "profile_family": "FMC_Profile_Surround_Roman",
+      "profile_type": "225x50",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Surround Roman Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Surround Roman Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Surround Roman Ext/Visible",
+      "solid": "Surround Roman Ext",
+      "param": "Show_Roman"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Surround_Romanesque",
+      "path": "_Profiles\\FMC_Profile_Surround_Romanesque.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_Romanesque",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_Romanesque",
+      "formula": "FMC_Design_Movement = 3"
+    },
+    {
+      "op": "sweep",
+      "name": "Surround Romanesque Ext",
+      "path_planes": [
+        [
+          "Left",
+          "Sill"
+        ],
+        [
+          "Left",
+          "Head"
+        ],
+        [
+          "Right",
+          "Head"
+        ],
+        [
+          "Right",
+          "Sill"
+        ]
+      ],
+      "path_host": "Trim Face Ext",
+      "path_plane": "front",
+      "profile_family": "FMC_Profile_Surround_Romanesque",
+      "profile_type": "200x90",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Surround Romanesque Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Surround Romanesque Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Surround Romanesque Ext/Visible",
+      "solid": "Surround Romanesque Ext",
+      "param": "Show_Romanesque"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Surround_Gothic",
+      "path": "_Profiles\\FMC_Profile_Surround_Gothic.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_Gothic",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_Gothic",
+      "formula": "FMC_Design_Movement = 4"
+    },
+    {
+      "op": "sweep",
+      "name": "Surround Gothic Ext",
+      "path_planes": [
+        [
+          "Left",
+          "Sill"
+        ],
+        [
+          "Left",
+          "Head"
+        ],
+        [
+          "Right",
+          "Head"
+        ],
+        [
+          "Right",
+          "Sill"
+        ]
+      ],
+      "path_host": "Trim Face Ext",
+      "path_plane": "front",
+      "profile_family": "FMC_Profile_Surround_Gothic",
+      "profile_type": "155x60",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Surround Gothic Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Surround Gothic Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Surround Gothic Ext/Visible",
+      "solid": "Surround Gothic Ext",
+      "param": "Show_Gothic"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Surround_Renaissance",
+      "path": "_Profiles\\FMC_Profile_Surround_Renaissance.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_Renaissance",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_Renaissance",
+      "formula": "FMC_Design_Movement = 5"
+    },
+    {
+      "op": "sweep",
+      "name": "Surround Renaissance Ext",
+      "path_planes": [
+        [
+          "Left",
+          "Sill"
+        ],
+        [
+          "Left",
+          "Head"
+        ],
+        [
+          "Right",
+          "Head"
+        ],
+        [
+          "Right",
+          "Sill"
+        ]
+      ],
+      "path_host": "Trim Face Ext",
+      "path_plane": "front",
+      "profile_family": "FMC_Profile_Surround_Renaissance",
+      "profile_type": "190x40",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Surround Renaissance Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Surround Renaissance Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Surround Renaissance Ext/Visible",
+      "solid": "Surround Renaissance Ext",
+      "param": "Show_Renaissance"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Surround_Baroque",
+      "path": "_Profiles\\FMC_Profile_Surround_Baroque.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_Baroque",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_Baroque",
+      "formula": "FMC_Design_Movement = 6"
+    },
+    {
+      "op": "sweep",
+      "name": "Surround Baroque Ext",
+      "path_planes": [
+        [
+          "Left",
+          "Sill"
+        ],
+        [
+          "Left",
+          "Head"
+        ],
+        [
+          "Right",
+          "Head"
+        ],
+        [
+          "Right",
+          "Sill"
+        ]
+      ],
+      "path_host": "Trim Face Ext",
+      "path_plane": "front",
+      "profile_family": "FMC_Profile_Surround_Baroque",
+      "profile_type": "250x100",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Surround Baroque Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Surround Baroque Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Surround Baroque Ext/Visible",
+      "solid": "Surround Baroque Ext",
+      "param": "Show_Baroque"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Surround_Georgian",
+      "path": "_Profiles\\FMC_Profile_Surround_Georgian.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_Georgian",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_Georgian",
+      "formula": "FMC_Design_Movement = 7"
+    },
+    {
+      "op": "sweep",
+      "name": "Surround Georgian Ext",
+      "path_planes": [
+        [
+          "Left",
+          "Sill"
+        ],
+        [
+          "Left",
+          "Head"
+        ],
+        [
+          "Right",
+          "Head"
+        ],
+        [
+          "Right",
+          "Sill"
+        ]
+      ],
+      "path_host": "Trim Face Ext",
+      "path_plane": "front",
+      "profile_family": "FMC_Profile_Surround_Georgian",
+      "profile_type": "159x35",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Surround Georgian Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Surround Georgian Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Surround Georgian Ext/Visible",
+      "solid": "Surround Georgian Ext",
+      "param": "Show_Georgian"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Surround_FederalAdam",
+      "path": "_Profiles\\FMC_Profile_Surround_FederalAdam.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_FederalAdam",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_FederalAdam",
+      "formula": "FMC_Design_Movement = 8"
+    },
+    {
+      "op": "sweep",
+      "name": "Surround FederalAdam Ext",
+      "path_planes": [
+        [
+          "Left",
+          "Sill"
+        ],
+        [
+          "Left",
+          "Head"
+        ],
+        [
+          "Right",
+          "Head"
+        ],
+        [
+          "Right",
+          "Sill"
+        ]
+      ],
+      "path_host": "Trim Face Ext",
+      "path_plane": "front",
+      "profile_family": "FMC_Profile_Surround_FederalAdam",
+      "profile_type": "94x30",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Surround FederalAdam Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Surround FederalAdam Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Surround FederalAdam Ext/Visible",
+      "solid": "Surround FederalAdam Ext",
+      "param": "Show_FederalAdam"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Surround_GreekRevival",
+      "path": "_Profiles\\FMC_Profile_Surround_GreekRevival.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_GreekRevival",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_GreekRevival",
+      "formula": "FMC_Design_Movement = 9"
+    },
+    {
+      "op": "sweep",
+      "name": "Surround GreekRevival Ext",
+      "path_planes": [
+        [
+          "Left",
+          "Sill"
+        ],
+        [
+          "Left",
+          "Head"
+        ],
+        [
+          "Right",
+          "Head"
+        ],
+        [
+          "Right",
+          "Sill"
+        ]
+      ],
+      "path_host": "Trim Face Ext",
+      "path_plane": "front",
+      "profile_family": "FMC_Profile_Surround_GreekRevival",
+      "profile_type": "180x40",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Surround GreekRevival Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Surround GreekRevival Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Surround GreekRevival Ext/Visible",
+      "solid": "Surround GreekRevival Ext",
+      "param": "Show_GreekRevival"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Surround_Italianate",
+      "path": "_Profiles\\FMC_Profile_Surround_Italianate.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_Italianate",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_Italianate",
+      "formula": "FMC_Design_Movement = 10"
+    },
+    {
+      "op": "sweep",
+      "name": "Surround Italianate Ext",
+      "path_planes": [
+        [
+          "Left",
+          "Sill"
+        ],
+        [
+          "Left",
+          "Head"
+        ],
+        [
+          "Right",
+          "Head"
+        ],
+        [
+          "Right",
+          "Sill"
+        ]
+      ],
+      "path_host": "Trim Face Ext",
+      "path_plane": "front",
+      "profile_family": "FMC_Profile_Surround_Italianate",
+      "profile_type": "165x115",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Surround Italianate Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Surround Italianate Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Surround Italianate Ext/Visible",
+      "solid": "Surround Italianate Ext",
+      "param": "Show_Italianate"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Surround_Victorian",
+      "path": "_Profiles\\FMC_Profile_Surround_Victorian.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_Victorian",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_Victorian",
+      "formula": "FMC_Design_Movement = 11"
+    },
+    {
+      "op": "sweep",
+      "name": "Surround Victorian Ext",
+      "path_planes": [
+        [
+          "Left",
+          "Sill"
+        ],
+        [
+          "Left",
+          "Head"
+        ],
+        [
+          "Right",
+          "Head"
+        ],
+        [
+          "Right",
+          "Sill"
+        ]
+      ],
+      "path_host": "Trim Face Ext",
+      "path_plane": "front",
+      "profile_family": "FMC_Profile_Surround_Victorian",
+      "profile_type": "151x36",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Surround Victorian Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Surround Victorian Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Surround Victorian Ext/Visible",
+      "solid": "Surround Victorian Ext",
+      "param": "Show_Victorian"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Surround_ArtsCrafts",
+      "path": "_Profiles\\FMC_Profile_Surround_ArtsCrafts.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_ArtsCrafts",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_ArtsCrafts",
+      "formula": "FMC_Design_Movement = 12"
+    },
+    {
+      "op": "sweep",
+      "name": "Surround ArtsCrafts Ext",
+      "path_planes": [
+        [
+          "Left",
+          "Sill"
+        ],
+        [
+          "Left",
+          "Head"
+        ],
+        [
+          "Right",
+          "Head"
+        ],
+        [
+          "Right",
+          "Sill"
+        ]
+      ],
+      "path_host": "Trim Face Ext",
+      "path_plane": "front",
+      "profile_family": "FMC_Profile_Surround_ArtsCrafts",
+      "profile_type": "150x40",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Surround ArtsCrafts Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Surround ArtsCrafts Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Surround ArtsCrafts Ext/Visible",
+      "solid": "Surround ArtsCrafts Ext",
+      "param": "Show_ArtsCrafts"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Surround_ArtNouveau",
+      "path": "_Profiles\\FMC_Profile_Surround_ArtNouveau.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_ArtNouveau",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_ArtNouveau",
+      "formula": "FMC_Design_Movement = 13"
+    },
+    {
+      "op": "sweep",
+      "name": "Surround ArtNouveau Ext",
+      "path_planes": [
+        [
+          "Left",
+          "Sill"
+        ],
+        [
+          "Left",
+          "Head"
+        ],
+        [
+          "Right",
+          "Head"
+        ],
+        [
+          "Right",
+          "Sill"
+        ]
+      ],
+      "path_host": "Trim Face Ext",
+      "path_plane": "front",
+      "profile_family": "FMC_Profile_Surround_ArtNouveau",
+      "profile_type": "190x40",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Surround ArtNouveau Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Surround ArtNouveau Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Surround ArtNouveau Ext/Visible",
+      "solid": "Surround ArtNouveau Ext",
+      "param": "Show_ArtNouveau"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Surround_ArtDeco",
+      "path": "_Profiles\\FMC_Profile_Surround_ArtDeco.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_ArtDeco",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_ArtDeco",
+      "formula": "FMC_Design_Movement = 14"
+    },
+    {
+      "op": "sweep",
+      "name": "Surround ArtDeco Ext",
+      "path_planes": [
+        [
+          "Left",
+          "Sill"
+        ],
+        [
+          "Left",
+          "Head"
+        ],
+        [
+          "Right",
+          "Head"
+        ],
+        [
+          "Right",
+          "Sill"
+        ]
+      ],
+      "path_host": "Trim Face Ext",
+      "path_plane": "front",
+      "profile_family": "FMC_Profile_Surround_ArtDeco",
+      "profile_type": "100x50",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Surround ArtDeco Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Surround ArtDeco Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Surround ArtDeco Ext/Visible",
+      "solid": "Surround ArtDeco Ext",
+      "param": "Show_ArtDeco"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Surround_Modernist",
+      "path": "_Profiles\\FMC_Profile_Surround_Modernist.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_Modernist",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_Modernist",
+      "formula": "FMC_Design_Movement = 15"
+    },
+    {
+      "op": "sweep",
+      "name": "Surround Modernist Ext",
+      "path_planes": [
+        [
+          "Left",
+          "Sill"
+        ],
+        [
+          "Left",
+          "Head"
+        ],
+        [
+          "Right",
+          "Head"
+        ],
+        [
+          "Right",
+          "Sill"
+        ]
+      ],
+      "path_host": "Trim Face Ext",
+      "path_plane": "front",
+      "profile_family": "FMC_Profile_Surround_Modernist",
+      "profile_type": "60x10",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Surround Modernist Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Surround Modernist Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Surround Modernist Ext/Visible",
+      "solid": "Surround Modernist Ext",
+      "param": "Show_Modernist"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Surround_Brutalist",
+      "path": "_Profiles\\FMC_Profile_Surround_Brutalist.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_Brutalist",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_Brutalist",
+      "formula": "FMC_Design_Movement = 16"
+    },
+    {
+      "op": "sweep",
+      "name": "Surround Brutalist Ext",
+      "path_planes": [
+        [
+          "Left",
+          "Sill"
+        ],
+        [
+          "Left",
+          "Head"
+        ],
+        [
+          "Right",
+          "Head"
+        ],
+        [
+          "Right",
+          "Sill"
+        ]
+      ],
+      "path_host": "Trim Face Ext",
+      "path_plane": "front",
+      "profile_family": "FMC_Profile_Surround_Brutalist",
+      "profile_type": "200x100",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Surround Brutalist Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Surround Brutalist Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Surround Brutalist Ext/Visible",
+      "solid": "Surround Brutalist Ext",
+      "param": "Show_Brutalist"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Surround_Contemporary",
+      "path": "_Profiles\\FMC_Profile_Surround_Contemporary.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_Contemporary",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_Contemporary",
+      "formula": "FMC_Design_Movement = 17"
+    },
+    {
+      "op": "sweep",
+      "name": "Surround Contemporary Ext",
+      "path_planes": [
+        [
+          "Left",
+          "Sill"
+        ],
+        [
+          "Left",
+          "Head"
+        ],
+        [
+          "Right",
+          "Head"
+        ],
+        [
+          "Right",
+          "Sill"
+        ]
+      ],
+      "path_host": "Trim Face Ext",
+      "path_plane": "front",
+      "profile_family": "FMC_Profile_Surround_Contemporary",
+      "profile_type": "70x15",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Surround Contemporary Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Surround Contemporary Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Surround Contemporary Ext/Visible",
+      "solid": "Surround Contemporary Ext",
+      "param": "Show_Contemporary"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Surround_SwahiliZanzibar",
+      "path": "_Profiles\\FMC_Profile_Surround_SwahiliZanzibar.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_SwahiliZanzibar",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_SwahiliZanzibar",
+      "formula": "FMC_Design_Movement = 18"
+    },
+    {
+      "op": "sweep",
+      "name": "Surround SwahiliZanzibar Ext",
+      "path_planes": [
+        [
+          "Left",
+          "Sill"
+        ],
+        [
+          "Left",
+          "Head"
+        ],
+        [
+          "Right",
+          "Head"
+        ],
+        [
+          "Right",
+          "Sill"
+        ]
+      ],
+      "path_host": "Trim Face Ext",
+      "path_plane": "front",
+      "profile_family": "FMC_Profile_Surround_SwahiliZanzibar",
+      "profile_type": "185x100",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Surround SwahiliZanzibar Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Surround SwahiliZanzibar Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Surround SwahiliZanzibar Ext/Visible",
+      "solid": "Surround SwahiliZanzibar Ext",
+      "param": "Show_SwahiliZanzibar"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Surround_Islamic",
+      "path": "_Profiles\\FMC_Profile_Surround_Islamic.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_Islamic",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_Islamic",
+      "formula": "FMC_Design_Movement = 19"
+    },
+    {
+      "op": "sweep",
+      "name": "Surround Islamic Ext",
+      "path_planes": [
+        [
+          "Left",
+          "Sill"
+        ],
+        [
+          "Left",
+          "Head"
+        ],
+        [
+          "Right",
+          "Head"
+        ],
+        [
+          "Right",
+          "Sill"
+        ]
+      ],
+      "path_host": "Trim Face Ext",
+      "path_plane": "front",
+      "profile_family": "FMC_Profile_Surround_Islamic",
+      "profile_type": "140x40",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Surround Islamic Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Surround Islamic Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Surround Islamic Ext/Visible",
+      "solid": "Surround Islamic Ext",
+      "param": "Show_Islamic"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Surround_TropicalEastAfrican",
+      "path": "_Profiles\\FMC_Profile_Surround_TropicalEastAfrican.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_TropicalEastAfrican",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_TropicalEastAfrican",
+      "formula": "FMC_Design_Movement = 20"
+    },
+    {
+      "op": "sweep",
+      "name": "Surround TropicalEastAfrican Ext",
+      "path_planes": [
+        [
+          "Left",
+          "Sill"
+        ],
+        [
+          "Left",
+          "Head"
+        ],
+        [
+          "Right",
+          "Head"
+        ],
+        [
+          "Right",
+          "Sill"
+        ]
+      ],
+      "path_host": "Trim Face Ext",
+      "path_plane": "front",
+      "profile_family": "FMC_Profile_Surround_TropicalEastAfrican",
+      "profile_type": "165x60",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Surround TropicalEastAfrican Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Surround TropicalEastAfrican Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Surround TropicalEastAfrican Ext/Visible",
+      "solid": "Surround TropicalEastAfrican Ext",
+      "param": "Show_TropicalEastAfrican"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1500_Casement-TopHung300/Keynote",
+      "type": "1200x1500_Casement-TopHung300",
+      "param": "Keynote",
+      "value": "G.CAS_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1500_Casement-TopHung300/FMC_Keynote_Code",
+      "type": "1200x1500_Casement-TopHung300",
+      "param": "FMC_Keynote_Code",
+      "value": "G.CAS_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1500_Casement-TopHung300/FMC_Design_Movement",
+      "type": "1200x1500_Casement-TopHung300",
+      "param": "FMC_Design_Movement",
+      "value": 17
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x1500_Casement-TopHung300/Trim Face Offset",
+      "type": "1200x1500_Casement-TopHung300",
+      "param": "Trim Face Offset",
+      "value": 130
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500x1500_Sliding-TopHung300/Keynote",
+      "type": "1500x1500_Sliding-TopHung300",
+      "param": "Keynote",
+      "value": "G.SLD_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500x1500_Sliding-TopHung300/FMC_Keynote_Code",
+      "type": "1500x1500_Sliding-TopHung300",
+      "param": "FMC_Keynote_Code",
+      "value": "G.SLD_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500x1500_Sliding-TopHung300/FMC_Design_Movement",
+      "type": "1500x1500_Sliding-TopHung300",
+      "param": "FMC_Design_Movement",
+      "value": 17
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500x1500_Sliding-TopHung300/Trim Face Offset",
+      "type": "1500x1500_Sliding-TopHung300",
+      "param": "Trim Face Offset",
+      "value": 130
+    },
+    {
+      "op": "set_type_value",
+      "name": "1800x1500_Sliding-TopHung300/Keynote",
+      "type": "1800x1500_Sliding-TopHung300",
+      "param": "Keynote",
+      "value": "G.SLD_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1800x1500_Sliding-TopHung300/FMC_Keynote_Code",
+      "type": "1800x1500_Sliding-TopHung300",
+      "param": "FMC_Keynote_Code",
+      "value": "G.SLD_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1800x1500_Sliding-TopHung300/FMC_Design_Movement",
+      "type": "1800x1500_Sliding-TopHung300",
+      "param": "FMC_Design_Movement",
+      "value": 17
+    },
+    {
+      "op": "set_type_value",
+      "name": "1800x1500_Sliding-TopHung300/Trim Face Offset",
+      "type": "1800x1500_Sliding-TopHung300",
+      "param": "Trim Face Offset",
+      "value": 130
+    },
+    {
+      "op": "set_type_value",
+      "name": "0600x1200_Casement-Projected300/Keynote",
+      "type": "0600x1200_Casement-Projected300",
+      "param": "Keynote",
+      "value": "G.CAS_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0600x1200_Casement-Projected300/FMC_Keynote_Code",
+      "type": "0600x1200_Casement-Projected300",
+      "param": "FMC_Keynote_Code",
+      "value": "G.CAS_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0600x1200_Casement-Projected300/FMC_Design_Movement",
+      "type": "0600x1200_Casement-Projected300",
+      "param": "FMC_Design_Movement",
+      "value": 17
+    },
+    {
+      "op": "set_type_value",
+      "name": "0600x1200_Casement-Projected300/Trim Face Offset",
+      "type": "0600x1200_Casement-Projected300",
+      "param": "Trim Face Offset",
+      "value": 130
+    },
+    {
+      "op": "set_type_value",
+      "name": "0600x0900_WC-PJ/Keynote",
+      "type": "0600x0900_WC-PJ",
+      "param": "Keynote",
+      "value": "G.CAS_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0600x0900_WC-PJ/FMC_Keynote_Code",
+      "type": "0600x0900_WC-PJ",
+      "param": "FMC_Keynote_Code",
+      "value": "G.CAS_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0600x0900_WC-PJ/FMC_Design_Movement",
+      "type": "0600x0900_WC-PJ",
+      "param": "FMC_Design_Movement",
+      "value": 17
+    },
+    {
+      "op": "set_type_value",
+      "name": "0600x0900_WC-PJ/Trim Face Offset",
+      "type": "0600x0900_WC-PJ",
+      "param": "Trim Face Offset",
+      "value": 130
+    }
+  ],
+  "values": {
+    "Frame 50x100 aluminium (series not identified)": {
+      "value": "50x100",
+      "source_status": "assumed"
+    },
+    "Glass 5 mm clear": {
+      "value": 5,
+      "source_status": "assumed"
+    },
+    "Type sizes 1200/1500/1800 x 1500, 600 x 1200 / 900": {
+      "value": "register type names",
+      "source_status": "assumed",
+      "source": "register: Jiji 'Windows Pj', Casements Africa; sizes PRACTICE"
+    },
+    "PJ vent height 300 over a 50 transom": {
+      "value": 300,
+      "source_status": "assumed"
+    },
+    "Sliding overlap 60, interlock stile 40": {
+      "value": "60/40",
+      "source_status": "assumed"
+    },
+    "Mullion 40": {
+      "value": 40,
+      "source_status": "assumed"
+    },
+    "0600x0900_WC-PJ modelled as a casement leaf under a 300 PJ vent": {
+      "value": "1 leaf + PJ 300",
+      "source_status": "assumed",
+      "source": "type name; confirm whether the whole unit is one projected leaf"
+    },
+    "Mosquito mesh off by default": {
+      "value": "No",
+      "source_status": "assumed"
+    },
+    "Sill: precast 50 thick, depth 110 from frame face": {
+      "value": 110,
+      "source_status": "assumed"
+    },
+    "Keynote": {
+      "value": "G.CAS_00, G.SLD_00",
+      "source_status": "assumed",
+      "source": "casement and PJ types G.CAS_00, sliding types G.SLD_00; both kit codes say double glazed and this is 5 mm single glazing (kit change request for single-glazed aluminium codes)"
+    },
+    "Materials (kit library)": {
+      "value": "Frame Material = FMC_Metal_Aluminium_PowderCoated; Glass Material = FMC_Glass_Clear; Mesh Material = FMC_Plastic_InsectMesh_Fibreglass; Sill Material = FMC_Concrete_Precast_Painted; Trim Material = FMC_Concrete_Precast_Painted",
+      "source_status": "assumed",
+      "source": "FMC_Materials.json; chosen for the family, the reviewer confirms"
+    },
+    "Design movement default 17 (Contemporary)": {
+      "value": 17,
+      "source_status": "assumed",
+      "source": "canvas boards; FMC_Profile_Sets.json has no default"
+    },
+    "Surround profiles: 20 movements": {
+      "value": "FMC_Profile_Surround_<Token>",
+      "source_status": "assumed",
+      "source": "FMC_Profile_Sets.json (outlines proposed for the designer to approve)"
+    },
+    "Trim position": {
+      "value": "jambs and head at the opening edge",
+      "source_status": "assumed",
+      "source": "exterior wall face at y = -130 (230 wall + 15 plaster), as the sill: Trim Face Ext, Trim Face Offset from Wall Centre"
+    },
+    "Trim Face Offset": {
+      "value": 130,
+      "source_status": "assumed",
+      "source": "230 wall + 15 plaster each side; set it per type for other walls"
+    }
+  },
+  "checks": {
+    "clear_opening_min_mm": 600,
+    "clear_opening_param": "Width"
   }
- ],
- "values": {
-  "Frame 50x100 aluminium (series not identified)": {
-   "value": "50x100",
-   "source_status": "assumed"
-  },
-  "Glass 5 mm clear": {
-   "value": 5,
-   "source_status": "assumed"
-  },
-  "Type sizes 1200/1500/1800 x 1500, 600 x 1200 / 900": {
-   "value": "register type names",
-   "source_status": "assumed",
-   "source": "register: Jiji 'Windows Pj', Casements Africa; sizes PRACTICE"
-  },
-  "PJ vent height 300 over a 50 transom": {
-   "value": 300,
-   "source_status": "assumed"
-  },
-  "Sliding overlap 60, interlock stile 40": {
-   "value": "60/40",
-   "source_status": "assumed"
-  },
-  "Mullion 40": {
-   "value": 40,
-   "source_status": "assumed"
-  },
-  "0600x0900_WC-PJ modelled as a casement leaf under a 300 PJ vent": {
-   "value": "1 leaf + PJ 300",
-   "source_status": "assumed",
-   "source": "type name; confirm whether the whole unit is one projected leaf"
-  },
-  "Mosquito mesh off by default": {
-   "value": "No",
-   "source_status": "assumed"
-  },
-  "Sill: precast 50 thick, depth 110 from frame face": {
-   "value": 110,
-   "source_status": "assumed"
-  },
-  "Keynote": {
-   "value": "G.CAS_00, G.SLD_00",
-   "source_status": "assumed",
-   "source": "casement and PJ types G.CAS_00, sliding types G.SLD_00; both kit codes say double glazed and this is 5 mm single glazing (kit change request for single-glazed aluminium codes)"
-  },
-  "Materials (kit library)": {
-   "value": "Frame Material = FMC_Metal_Aluminium_PowderCoated; Glass Material = FMC_Glass_Clear; Mesh Material = FMC_Plastic_InsectMesh_Fibreglass; Sill Material = FMC_Concrete_Precast_Painted; Trim Material = FMC_Concrete_Precast_Painted",
-   "source_status": "assumed",
-   "source": "FMC_Materials.json; chosen for the family, the reviewer confirms"
-  },
-  "Design movement default 17 (Contemporary)": {
-   "value": 17,
-   "source_status": "assumed",
-   "source": "canvas boards; FMC_Profile_Sets.json has no default"
-  },
-  "Surround profiles: 20 movements": {
-   "value": "FMC_Profile_Surround_<Token>",
-   "source_status": "assumed",
-   "source": "FMC_Profile_Sets.json (outlines proposed for the designer to approve)"
-  },
-  "Trim position": {
-   "value": "jambs and head at the opening edge",
-   "source_status": "assumed",
-   "source": "exterior wall face at y = -130 (230 wall + 15 plaster), as the sill: Trim Face Ext, Trim Face Offset from Wall Centre"
-  },
-  "Trim Face Offset": {
-   "value": 130.0,
-   "source_status": "assumed",
-   "source": "230 wall + 15 plaster each side; set it per type for other walls"
-  }
- },
- "checks": {
-  "clear_opening_min_mm": 600,
-  "clear_opening_param": "Width"
- }
 }

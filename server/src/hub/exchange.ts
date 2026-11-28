@@ -48,10 +48,50 @@ export function saveIdentity(root: string, map: IdentityMap) {
 
 export function newFmcId(): string { return `FMC-${crypto.randomBytes(5).toString("hex")}`; }
 
+/**
+ * The reverse index (owner 27 Oct, speed): "app|id" (lower case) → the Formcraft ids that app id is linked to, in the
+ * map's order, so a lookup no longer scans every entry (linking 1,000 Robot bars was a million checks). Built on first
+ * use; link keeps it up to date; rebuilt when entries are added some other way (the count changes). Callers still check
+ * each candidate against the entry itself, so a stale index can only cost a rebuild, never a wrong answer.
+ */
+interface Reverse { count: number; at: Map<string, string[]>; order: Map<string, number> }
+const reverses = new WeakMap<IdentityMap, Reverse>();
+const rkey = (app: string, id: string) => `${app}|${id.toLowerCase()}`;
+
+function addReverse(r: Reverse, app: string, id: string, fmc: string) {
+  const k = rkey(app, id), list = r.at.get(k);
+  if (!list) r.at.set(k, [fmc]); else if (!list.includes(fmc)) list.push(fmc);
+}
+
+function reverse(map: IdentityMap): Reverse {
+  const n = Object.keys(map.entries).length;
+  let r = reverses.get(map);
+  if (r && r.count === n) return r;
+  r = { count: n, at: new Map(), order: new Map() };
+  let i = 0;
+  for (const e of Object.values(map.entries)) {
+    r.order.set(e.fmc, i++);
+    for (const [app, ref] of Object.entries(e.apps)) if (ref?.id) addReverse(r, app, ref.id, e.fmc);
+  }
+  reverses.set(map, r);
+  return r;
+}
+
+/** The Formcraft ids an app id may belong to (any case), earliest in the map first; check each against its entry. */
+export function candidates(map: IdentityMap, app: AppId, appId: string): string[] {
+  const r = reverse(map);
+  return byOrder(map, (r.at.get(rkey(app, appId)) ?? []).filter((f) => map.entries[f]));
+}
+
+/** Formcraft ids sorted as the map holds them (the order a full scan would meet them). */
+export function byOrder(map: IdentityMap, fmcs: Iterable<string>): string[] {
+  const r = reverse(map);
+  return [...fmcs].sort((a, b) => (r.order.get(a) ?? 0) - (r.order.get(b) ?? 0));
+}
+
 /** The Formcraft id an app's element is known by, or null. */
 export function findFmc(map: IdentityMap, app: AppId, appId: string): string | null {
-  for (const e of Object.values(map.entries)) if (e.apps[app]?.id === appId) return e.fmc;
-  return null;
+  return candidates(map, app, appId).find((f) => map.entries[f].apps[app]?.id === appId) ?? null;
 }
 
 /**
@@ -63,10 +103,13 @@ export function link(map: IdentityMap, app: AppId, appId: string, opts: { fmc?: 
   const known = findFmc(map, app, appId);
   const fmc = opts.fmc ?? known ?? newFmcId();
   if (known && opts.fmc && known !== opts.fmc) delete map.entries[known].apps[app]; // it moved to another element
-  const e = map.entries[fmc] ?? (map.entries[fmc] = { fmc, apps: {} });
+  const r = reverse(map);
+  let e = map.entries[fmc];
+  if (!e) { e = map.entries[fmc] = { fmc, apps: {} }; r.order.set(fmc, r.count++); }
   if (opts.kind) e.kind = opts.kind;
   if (opts.name) e.name = opts.name;
   e.apps[app] = { id: appId, ...(opts.file ? { file: opts.file } : {}), at };
+  addReverse(r, app, appId, fmc);
   return fmc;
 }
 

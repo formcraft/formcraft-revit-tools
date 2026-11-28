@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
+import { toolFailure } from "./failure.js";
 
 export function registerCreateDimensionsTool(server: McpServer) {
   server.tool(
@@ -84,16 +85,9 @@ export function registerCreateDimensionsTool(server: McpServer) {
           ],
         };
       } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `Dimension creation failed: ${
+        return toolFailure(`Dimension creation failed: ${
                 error instanceof Error ? error.message : String(error)
-              }`,
-            },
-          ],
-        };
+              }`);
       }
     }
   );

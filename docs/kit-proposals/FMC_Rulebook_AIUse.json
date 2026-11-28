@@ -3,27 +3,123 @@
   "about": "PROPOSED for the kit (03_Master_Data\\FMC_Rulebook\\FMC_Rulebook_AIUse.json), from docs/AI_ASSISTED_MODELLER.md v2. The BIM Manager approves it through the kit change process; until it is in the kit, AI-assisted modelling stays Off. Values here are the owner's v2 direction, not decided by code.",
   "default_involvement": 20,
   "bands": [
-    { "min": 0, "max": 0, "name": "Off", "groups": [] },
-    { "min": 1, "max": 20, "name": "Assist", "groups": ["data", "views", "mep_small", "create_from_brief"] },
-    { "min": 21, "max": 50, "name": "Co-model", "groups": ["fixtures", "mep_routing", "architecture", "families"] },
-    { "min": 51, "max": 80, "name": "Lead", "groups": ["mep_layouts"] },
-    { "min": 81, "max": 100, "name": "Full", "groups": [] }
+    {
+      "min": 0,
+      "max": 0,
+      "name": "Off",
+      "groups": []
+    },
+    {
+      "min": 1,
+      "max": 20,
+      "name": "Assist",
+      "groups": [
+        "data",
+        "views",
+        "mep_small",
+        "create_from_brief"
+      ]
+    },
+    {
+      "min": 21,
+      "max": 50,
+      "name": "Co-model",
+      "groups": [
+        "fixtures",
+        "mep_routing",
+        "architecture",
+        "families"
+      ]
+    },
+    {
+      "min": 51,
+      "max": 80,
+      "name": "Lead",
+      "groups": [
+        "mep_layouts",
+        "levels_grids"
+      ]
+    },
+    {
+      "min": 81,
+      "max": 100,
+      "name": "Full",
+      "groups": []
+    }
   ],
   "groups": {
-    "data": { "name": "Data", "auto_allowed": true },
-    "views": { "name": "Views and annotation", "auto_allowed": true },
-    "mep_small": { "name": "MEP small moves", "auto_allowed": true },
-    "mep_routing": { "name": "MEP routing", "auto_allowed": false },
-    "fixtures": { "name": "Fixtures and devices", "auto_allowed": false },
-    "openings": { "name": "Openings and sleeves", "auto_allowed": false },
-    "families": { "name": "Families", "auto_allowed": false },
-    "create_from_brief": { "name": "Create from brief", "auto_allowed": false },
-    "architecture": { "name": "Architecture modelling", "auto_allowed": false },
-    "mep_layouts": { "name": "MEP layouts", "auto_allowed": false }
+    "data": {
+      "name": "Data",
+      "auto_allowed": true
+    },
+    "views": {
+      "name": "Views and annotation",
+      "auto_allowed": true
+    },
+    "mep_small": {
+      "name": "MEP small moves",
+      "auto_allowed": true
+    },
+    "mep_routing": {
+      "name": "MEP routing",
+      "auto_allowed": false
+    },
+    "fixtures": {
+      "name": "Fixtures and devices",
+      "auto_allowed": false
+    },
+    "openings": {
+      "name": "Openings and sleeves",
+      "auto_allowed": false
+    },
+    "families": {
+      "name": "Families",
+      "auto_allowed": false
+    },
+    "create_from_brief": {
+      "name": "Create from brief",
+      "auto_allowed": false
+    },
+    "architecture": {
+      "name": "Architecture modelling",
+      "auto_allowed": false
+    },
+    "mep_layouts": {
+      "name": "MEP layouts",
+      "auto_allowed": false
+    },
+    "levels_grids": {
+      "name": "Levels and grids",
+      "auto_allowed": false
+    }
   },
   "discipline_overrides": {
-    "S": { "max_involvement": 5, "groups": ["data", "views"] }
+    "S": {
+      "max_involvement": 5,
+      "groups": [
+        "data",
+        "views"
+      ]
+    }
   },
-  "limits": { "batch_elements": 50, "daily_elements": 500, "failed_batches_per_day": 3 },
-  "cap": { "measure": "none" }
+  "limits": {
+    "batch_elements": 50,
+    "daily_elements": 500,
+    "failed_batches_per_day": 3
+  },
+  "general": {
+    "about": "The General AI switch (owner 26 Oct 2026): one On/Off per project for every user. On = AI may model in the active WIP model, every batch waits for one-click approval, and the limits above apply. Groups not listed, and everything the plugin never lets AI run (deleting, purging, arbitrary code, links, worksets, structural framing), stay with admins. Involvement bands and per-group levels are the admin's Advanced panel.",
+    "level": "Fix with approval",
+    "groups": [
+      "data",
+      "views",
+      "create_from_brief",
+      "fixtures",
+      "architecture",
+      "levels_grids"
+    ]
+  },
+  "cap": {
+    "measure": "none"
+  }
 }

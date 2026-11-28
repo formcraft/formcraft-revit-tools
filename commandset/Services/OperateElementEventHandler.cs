@@ -2,6 +2,7 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using RevitMCPSDK.API.Interfaces;
 using RevitMCPCommandSet.Models.Common;
+using RevitMCPCommandSet.Services.Fmc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +13,6 @@ namespace RevitMCPCommandSet.Services
 {
     public class OperateElementEventHandler : IExternalEventHandler, IWaitableExternalEventHandler
     {
-        private UIApplication uiApp;
-        private UIDocument uiDoc => uiApp.ActiveUIDocument;
-        private Document doc => uiDoc.Document;
-        private Autodesk.Revit.ApplicationServices.Application app => uiApp.Application;
-
         /// <summary>
         /// 事件等待对象
         /// </summary>
@@ -42,11 +38,11 @@ namespace RevitMCPCommandSet.Services
         {
             // F-032: an AI job (default failures handling, the save reminder kept from blocking). commandset/Bridge/FmcAiJob.cs
             RevitMCPCommandSet.Bridge.FmcAiJob.Enter(uiapp, "");
-            uiApp = uiapp;
 
             try
             {
-                bool result = ExecuteElementOperation(uiDoc, OperationData);
+                using var target = FmcTarget.Resolve(uiapp, FmcCallContext.Parameters ?? new Newtonsoft.Json.Linq.JObject(), false);
+                bool result = ExecuteElementOperation(target.Doc, target.Ui, OperationData);
 
                 Result = new AIResult<string>
                 {
@@ -76,7 +72,7 @@ namespace RevitMCPCommandSet.Services
         public bool WaitForCompletion(int timeoutMilliseconds = 10000)
         {
             _resetEvent.Reset();
-            return _resetEvent.WaitOne(timeoutMilliseconds);
+            return FmcBusy.Wait(_resetEvent, timeoutMilliseconds);
         }
 
         /// <summary>
@@ -93,14 +89,18 @@ namespace RevitMCPCommandSet.Services
         /// <param name="uidoc">当前UI文档</param>
         /// <param name="setting">操作设置</param>
         /// <returns>操作是否成功</returns>
-        public static bool ExecuteElementOperation(UIDocument uidoc, OperationSetting setting)
+        public static bool ExecuteElementOperation(Document doc, UIDocument uidoc, OperationSetting setting)
         {
             // 检查参数有效性
-            if (uidoc == null || uidoc.Document == null || setting == null || setting.ElementIds == null ||
+            if (doc == null || setting == null || setting.ElementIds == null ||
                 (setting.ElementIds.Count == 0 && setting.Action.ToLower() != "resetisolate"))
                 throw new Exception("Invalid parameters: no document, or no elements given");
 
-            Document doc = uidoc.Document;
+            UIDocument NeedUi(string what)
+            {
+                if (uidoc != null && uidoc.Document.Equals(doc)) return uidoc;
+                throw new InvalidOperationException($"{what} needs {doc.Title} to be the active document. Refusing to use the active document.");
+            }
 
             // 将int类型的元素ID转换为ElementId类型
             ICollection<ElementId> elementIds = setting.ElementIds.Select(id => new ElementId(id)).ToList();
@@ -117,7 +117,7 @@ namespace RevitMCPCommandSet.Services
             {
                 case ElementOperationType.Select:
                     // 选择元素
-                    uidoc.Selection.SetElementIds(elementIds);
+                    NeedUi("Selecting").Selection.SetElementIds(elementIds);
                     return true;
 
                 case ElementOperationType.SelectionBox:
@@ -149,7 +149,7 @@ namespace RevitMCPCommandSet.Services
                         }
 
                         // 激活该3D视图
-                        uidoc.ActiveView = targetView;
+                        NeedUi("The section box").ActiveView = targetView;
                     }
 
                     // 计算所选元素的包围盒
@@ -206,7 +206,7 @@ namespace RevitMCPCommandSet.Services
                     }
 
                     // 移动到视图中心
-                    uidoc.ShowElements(elementIds);
+                    if (uidoc != null && uidoc.Document.Equals(doc)) uidoc.ShowElements(elementIds);
                     return true;
 
                 case ElementOperationType.SetColor:
@@ -218,7 +218,7 @@ namespace RevitMCPCommandSet.Services
                         trans.Commit();
                     }
                     // 滚动到这些元素使其可见
-                    uidoc.ShowElements(elementIds);
+                    if (uidoc != null && uidoc.Document.Equals(doc)) uidoc.ShowElements(elementIds);
                     return true;
 
 

@@ -1,3301 +1,3316 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_M_MechEq_ExtractFan_Isolation_HEPA",
- "template": "Metric Mechanical Equipment.rft",
- "about": "Modelled as a generic product: base frame, stainless HEPA housing with clamped door, bagging ring and bag cover, gauge, upstream and downstream test ports, isolation damper with handle on the inlet, fan section with door, window and handle, outlet spigot, control panel with beacon. Reference: query: extract fan isolation HEPA mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=extract+fan+isolation+HEPA+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Mechanical Equipment"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Voltage",
-   "type": "Voltage",
-   "group": "Electrical"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Apparent Load",
-   "type": "ApparentPower",
-   "group": "ElectricalLoads"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cooling_Capacity_kW",
-   "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cooling_Capacity_BTUh",
-   "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Airflow_Ls",
-   "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Refrigerant",
-   "guid": "a46c59d0-d719-583b-99c0-074994d01603",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Asset_Tag",
-   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Serial_Number",
-   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Install_Date",
-   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Warranty_End",
-   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Maintenance_Interval_Months",
-   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_OM_Link",
-   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lift_Weight_kg",
-   "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Mounting_Height_mm",
-   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Power_W",
-   "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Power_W_2",
-   "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Controller_ID",
-   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Type",
-   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Signal",
-   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Protocol",
-   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Tank_Capacity_L",
-   "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "0.2m3s_BIBO"
-  },
-  {
-   "op": "set_type_value",
-   "name": "0.2m3s_BIBO/FMC_Cost_Unit",
-   "type": "0.2m3s_BIBO",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "0.2m3s_BIBO/FMC_Geometry_Stage",
-   "type": "0.2m3s_BIBO",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "0.2m3s_BIBO/IfcExportAs",
-   "type": "0.2m3s_BIBO",
-   "param": "IfcExportAs",
-   "value": "IfcFan"
-  },
-  {
-   "op": "set_type_value",
-   "name": "0.2m3s_BIBO/Description",
-   "type": "0.2m3s_BIBO",
-   "param": "Description",
-   "value": "Negative-pressure isolation room extract unit 0.2 m3/s, stainless bag-in/bag-out HEPA housing with test ports and gauge, fan section, control panel"
-  },
-  {
-   "op": "set_type_value",
-   "name": "0.2m3s_BIBO/Keynote",
-   "type": "0.2m3s_BIBO",
-   "param": "Keynote",
-   "value": "H.FAN_08"
-  },
-  {
-   "op": "set_type_value",
-   "name": "0.2m3s_BIBO/FMC_Keynote_Code",
-   "type": "0.2m3s_BIBO",
-   "param": "FMC_Keynote_Code",
-   "value": "H.FAN_08"
-  },
-  {
-   "op": "set_type_value",
-   "name": "0.2m3s_BIBO/FMC_Code_Description",
-   "type": "0.2m3s_BIBO",
-   "param": "FMC_Code_Description",
-   "value": "ExtractFan Isolation HEPA: Negative-pressure isolation extract with HEPA"
-  },
-  {
-   "op": "set_type_value",
-   "name": "0.2m3s_BIBO/FMC_Code_Group",
-   "type": "0.2m3s_BIBO",
-   "param": "FMC_Code_Group",
-   "value": "H.FAN"
-  },
-  {
-   "op": "set_type_value",
-   "name": "0.2m3s_BIBO/FMC_Role_Code",
-   "type": "0.2m3s_BIBO",
-   "param": "FMC_Role_Code",
-   "value": "M"
-  },
-  {
-   "op": "set_type_value",
-   "name": "0.2m3s_BIBO/Voltage",
-   "type": "0.2m3s_BIBO",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "0.2m3s_BIBO/Apparent Load",
-   "type": "0.2m3s_BIBO",
-   "param": "Apparent Load",
-   "value": 1500
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Steel",
-   "color": [
-    110,
-    110,
-    110
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Steel Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_StructuralSteel_S275",
-   "param": "Steel Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Ss",
-   "color": [
-    180,
-    183,
-    186
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Ss Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_StainlessSteel_Brushed",
-   "param": "Ss Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Mgrey",
-   "color": [
-    201,
-    205,
-    210
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Mgrey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_MedicalGrey",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "White",
-   "color": [
-    242,
-    242,
-    238
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "White Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_White",
-   "param": "White Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Chrome",
-   "color": [
-    192,
-    195,
-    199
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Chrome Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Chrome_Polished",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Epw",
-   "color": [
-    237,
-    237,
-    232
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Epw Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Steel_EpoxyCoated_White",
-   "param": "Epw Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Glass",
-   "color": [
-    191,
-    217,
-    230
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Glass Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Glass_Clear",
-   "param": "Glass Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Dark",
-   "color": [
-    61,
-    70,
-    80
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Dark Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_SteelLTZ_Painted",
-   "param": "Dark Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Red",
-   "color": [
-    200,
-    16,
-    46
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Red Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_SprinklerPipe_RedPainted",
-   "param": "Red Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Galv",
-   "color": [
-    183,
-    188,
-    192
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Galv Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Duct_Galvanised",
-   "param": "Galv Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Ledr",
-   "color": [
-    229,
-    72,
-    77
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Ledr Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_LED_Red",
-   "param": "Ledr Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Ledg",
-   "color": [
-    59,
-    209,
-    111
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Ledg Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_LED_Green",
-   "param": "Ledg Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Clearance Maintenance",
-   "color": [
-    111,
-    168,
-    220
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -1060,
-     -392
-    ],
-    [
-     905,
-     -392
-    ],
-    [
-     905,
-     350
-    ],
-    [
-     -1060,
-     350
-    ]
-   ],
-   "start": 0,
-   "end": 1420
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Base Frame",
-   "points": [
-    [
-     -900,
-     -350
-    ],
-    [
-     800,
-     -350
-    ],
-    [
-     800,
-     350
-    ],
-    [
-     -900,
-     350
-    ]
-   ],
-   "start": 0,
-   "end": 150
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Frame",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Frame",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Frame",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "HEPA Housing",
-   "points": [
-    [
-     -900,
-     -350
-    ],
-    [
-     -50,
-     -350
-    ],
-    [
-     -50,
-     350
-    ],
-    [
-     -900,
-     350
-    ]
-   ],
-   "start": 150,
-   "end": 1300
-  },
-  {
-   "op": "set_subcategory",
-   "name": "HEPA Housing",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "HEPA Housing",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "HEPA Housing",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Housing Door",
-   "points": [
-    [
-     -280.0,
-     240.0
-    ],
-    [
-     -276.17,
-     240.76
-    ],
-    [
-     -272.93,
-     242.93
-    ],
-    [
-     -270.76,
-     246.17
-    ],
-    [
-     -270.0,
-     250.0
-    ],
-    [
-     -270.0,
-     1210.0
-    ],
-    [
-     -270.76,
-     1213.83
-    ],
-    [
-     -272.93,
-     1217.07
-    ],
-    [
-     -276.17,
-     1219.24
-    ],
-    [
-     -280.0,
-     1220.0
-    ],
-    [
-     -850.0,
-     1220.0
-    ],
-    [
-     -853.83,
-     1219.24
-    ],
-    [
-     -857.07,
-     1217.07
-    ],
-    [
-     -859.24,
-     1213.83
-    ],
-    [
-     -860.0,
-     1210.0
-    ],
-    [
-     -860.0,
-     250.0
-    ],
-    [
-     -859.24,
-     246.17
-    ],
-    [
-     -857.07,
-     242.93
-    ],
-    [
-     -853.83,
-     240.76
-    ],
-    [
-     -850.0,
-     240.0
-    ]
-   ],
-   "start": 350,
-   "end": 362,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Housing Door",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Housing Door",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Housing Door",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Bagging Ring",
-   "profile": [
-    [
-     215,
-     384
-    ],
-    [
-     238,
-     384
-    ],
-    [
-     238,
-     362
-    ],
-    [
-     215,
-     362
-    ]
-   ],
-   "axis_at": [
-    -565,
-    730
-   ],
-   "axis": "y",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bagging Ring",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bagging Ring",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bag Port Cover",
-   "points": [
-    [
-     -350.0,
-     730.0
-    ],
-    [
-     -357.33,
-     785.65
-    ],
-    [
-     -378.8,
-     837.5
-    ],
-    [
-     -412.97,
-     882.03
-    ],
-    [
-     -457.5,
-     916.2
-    ],
-    [
-     -509.35,
-     937.67
-    ],
-    [
-     -565.0,
-     945.0
-    ],
-    [
-     -620.65,
-     937.67
-    ],
-    [
-     -672.5,
-     916.2
-    ],
-    [
-     -717.03,
-     882.03
-    ],
-    [
-     -751.2,
-     837.5
-    ],
-    [
-     -772.67,
-     785.65
-    ],
-    [
-     -780.0,
-     730.0
-    ],
-    [
-     -772.67,
-     674.35
-    ],
-    [
-     -751.2,
-     622.5
-    ],
-    [
-     -717.03,
-     577.97
-    ],
-    [
-     -672.5,
-     543.8
-    ],
-    [
-     -620.65,
-     522.33
-    ],
-    [
-     -565.0,
-     515.0
-    ],
-    [
-     -509.35,
-     522.33
-    ],
-    [
-     -457.5,
-     543.8
-    ],
-    [
-     -412.97,
-     577.97
-    ],
-    [
-     -378.8,
-     622.5
-    ],
-    [
-     -357.33,
-     674.35
-    ]
-   ],
-   "start": 362,
-   "end": 366,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bag Port Cover",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bag Port Cover",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bag Port Cover",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Door Clamp 1",
-   "points": [
-    [
-     -817.0,
-     400.0
-    ],
-    [
-     -817.61,
-     404.66
-    ],
-    [
-     -819.41,
-     409.0
-    ],
-    [
-     -822.27,
-     412.73
-    ],
-    [
-     -826.0,
-     415.59
-    ],
-    [
-     -830.34,
-     417.39
-    ],
-    [
-     -835.0,
-     418.0
-    ],
-    [
-     -839.66,
-     417.39
-    ],
-    [
-     -844.0,
-     415.59
-    ],
-    [
-     -847.73,
-     412.73
-    ],
-    [
-     -850.59,
-     409.0
-    ],
-    [
-     -852.39,
-     404.66
-    ],
-    [
-     -853.0,
-     400.0
-    ],
-    [
-     -852.39,
-     395.34
-    ],
-    [
-     -850.59,
-     391.0
-    ],
-    [
-     -847.73,
-     387.27
-    ],
-    [
-     -844.0,
-     384.41
-    ],
-    [
-     -839.66,
-     382.61
-    ],
-    [
-     -835.0,
-     382.0
-    ],
-    [
-     -830.34,
-     382.61
-    ],
-    [
-     -826.0,
-     384.41
-    ],
-    [
-     -822.27,
-     387.27
-    ],
-    [
-     -819.41,
-     391.0
-    ],
-    [
-     -817.61,
-     395.34
-    ]
-   ],
-   "start": 362,
-   "end": 392,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Door Clamp 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Door Clamp 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Door Clamp 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Door Clamp 2",
-   "points": [
-    [
-     -817.0,
-     1060.0
-    ],
-    [
-     -817.61,
-     1064.66
-    ],
-    [
-     -819.41,
-     1069.0
-    ],
-    [
-     -822.27,
-     1072.73
-    ],
-    [
-     -826.0,
-     1075.59
-    ],
-    [
-     -830.34,
-     1077.39
-    ],
-    [
-     -835.0,
-     1078.0
-    ],
-    [
-     -839.66,
-     1077.39
-    ],
-    [
-     -844.0,
-     1075.59
-    ],
-    [
-     -847.73,
-     1072.73
-    ],
-    [
-     -850.59,
-     1069.0
-    ],
-    [
-     -852.39,
-     1064.66
-    ],
-    [
-     -853.0,
-     1060.0
-    ],
-    [
-     -852.39,
-     1055.34
-    ],
-    [
-     -850.59,
-     1051.0
-    ],
-    [
-     -847.73,
-     1047.27
-    ],
-    [
-     -844.0,
-     1044.41
-    ],
-    [
-     -839.66,
-     1042.61
-    ],
-    [
-     -835.0,
-     1042.0
-    ],
-    [
-     -830.34,
-     1042.61
-    ],
-    [
-     -826.0,
-     1044.41
-    ],
-    [
-     -822.27,
-     1047.27
-    ],
-    [
-     -819.41,
-     1051.0
-    ],
-    [
-     -817.61,
-     1055.34
-    ]
-   ],
-   "start": 362,
-   "end": 392,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Door Clamp 2",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Door Clamp 2",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Door Clamp 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Door Clamp Right 1",
-   "points": [
-    [
-     -277.0,
-     400.0
-    ],
-    [
-     -277.61,
-     404.66
-    ],
-    [
-     -279.41,
-     409.0
-    ],
-    [
-     -282.27,
-     412.73
-    ],
-    [
-     -286.0,
-     415.59
-    ],
-    [
-     -290.34,
-     417.39
-    ],
-    [
-     -295.0,
-     418.0
-    ],
-    [
-     -299.66,
-     417.39
-    ],
-    [
-     -304.0,
-     415.59
-    ],
-    [
-     -307.73,
-     412.73
-    ],
-    [
-     -310.59,
-     409.0
-    ],
-    [
-     -312.39,
-     404.66
-    ],
-    [
-     -313.0,
-     400.0
-    ],
-    [
-     -312.39,
-     395.34
-    ],
-    [
-     -310.59,
-     391.0
-    ],
-    [
-     -307.73,
-     387.27
-    ],
-    [
-     -304.0,
-     384.41
-    ],
-    [
-     -299.66,
-     382.61
-    ],
-    [
-     -295.0,
-     382.0
-    ],
-    [
-     -290.34,
-     382.61
-    ],
-    [
-     -286.0,
-     384.41
-    ],
-    [
-     -282.27,
-     387.27
-    ],
-    [
-     -279.41,
-     391.0
-    ],
-    [
-     -277.61,
-     395.34
-    ]
-   ],
-   "start": 362,
-   "end": 392,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Door Clamp Right 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Door Clamp Right 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Door Clamp Right 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Door Clamp Right 2",
-   "points": [
-    [
-     -277.0,
-     1060.0
-    ],
-    [
-     -277.61,
-     1064.66
-    ],
-    [
-     -279.41,
-     1069.0
-    ],
-    [
-     -282.27,
-     1072.73
-    ],
-    [
-     -286.0,
-     1075.59
-    ],
-    [
-     -290.34,
-     1077.39
-    ],
-    [
-     -295.0,
-     1078.0
-    ],
-    [
-     -299.66,
-     1077.39
-    ],
-    [
-     -304.0,
-     1075.59
-    ],
-    [
-     -307.73,
-     1072.73
-    ],
-    [
-     -310.59,
-     1069.0
-    ],
-    [
-     -312.39,
-     1064.66
-    ],
-    [
-     -313.0,
-     1060.0
-    ],
-    [
-     -312.39,
-     1055.34
-    ],
-    [
-     -310.59,
-     1051.0
-    ],
-    [
-     -307.73,
-     1047.27
-    ],
-    [
-     -304.0,
-     1044.41
-    ],
-    [
-     -299.66,
-     1042.61
-    ],
-    [
-     -295.0,
-     1042.0
-    ],
-    [
-     -290.34,
-     1042.61
-    ],
-    [
-     -286.0,
-     1044.41
-    ],
-    [
-     -282.27,
-     1047.27
-    ],
-    [
-     -279.41,
-     1051.0
-    ],
-    [
-     -277.61,
-     1055.34
-    ]
-   ],
-   "start": 362,
-   "end": 392,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Door Clamp Right 2",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Door Clamp Right 2",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Door Clamp Right 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Gauge",
-   "points": [
-    [
-     -105.0,
-     1050.0
-    ],
-    [
-     -106.87,
-     1064.24
-    ],
-    [
-     -112.37,
-     1077.5
-    ],
-    [
-     -121.11,
-     1088.89
-    ],
-    [
-     -132.5,
-     1097.63
-    ],
-    [
-     -145.76,
-     1103.13
-    ],
-    [
-     -160.0,
-     1105.0
-    ],
-    [
-     -174.24,
-     1103.13
-    ],
-    [
-     -187.5,
-     1097.63
-    ],
-    [
-     -198.89,
-     1088.89
-    ],
-    [
-     -207.63,
-     1077.5
-    ],
-    [
-     -213.13,
-     1064.24
-    ],
-    [
-     -215.0,
-     1050.0
-    ],
-    [
-     -213.13,
-     1035.76
-    ],
-    [
-     -207.63,
-     1022.5
-    ],
-    [
-     -198.89,
-     1011.11
-    ],
-    [
-     -187.5,
-     1002.37
-    ],
-    [
-     -174.24,
-     996.87
-    ],
-    [
-     -160.0,
-     995.0
-    ],
-    [
-     -145.76,
-     996.87
-    ],
-    [
-     -132.5,
-     1002.37
-    ],
-    [
-     -121.11,
-     1011.11
-    ],
-    [
-     -112.37,
-     1022.5
-    ],
-    [
-     -106.87,
-     1035.76
-    ]
-   ],
-   "start": 350,
-   "end": 376,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Gauge",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Gauge",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Gauge",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Gauge Bezel",
-   "profile": [
-    [
-     52,
-     380
-    ],
-    [
-     60,
-     380
-    ],
-    [
-     60,
-     350
-    ],
-    [
-     52,
-     350
-    ]
-   ],
-   "axis_at": [
-    -160,
-    1050
-   ],
-   "axis": "y",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Gauge Bezel",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Gauge Bezel",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Test Port Upstream",
-   "points": [
-    [
-     -188.0,
-     600.0
-    ],
-    [
-     -188.41,
-     603.11
-    ],
-    [
-     -189.61,
-     606.0
-    ],
-    [
-     -191.51,
-     608.49
-    ],
-    [
-     -194.0,
-     610.39
-    ],
-    [
-     -196.89,
-     611.59
-    ],
-    [
-     -200.0,
-     612.0
-    ],
-    [
-     -203.11,
-     611.59
-    ],
-    [
-     -206.0,
-     610.39
-    ],
-    [
-     -208.49,
-     608.49
-    ],
-    [
-     -210.39,
-     606.0
-    ],
-    [
-     -211.59,
-     603.11
-    ],
-    [
-     -212.0,
-     600.0
-    ],
-    [
-     -211.59,
-     596.89
-    ],
-    [
-     -210.39,
-     594.0
-    ],
-    [
-     -208.49,
-     591.51
-    ],
-    [
-     -206.0,
-     589.61
-    ],
-    [
-     -203.11,
-     588.41
-    ],
-    [
-     -200.0,
-     588.0
-    ],
-    [
-     -196.89,
-     588.41
-    ],
-    [
-     -194.0,
-     589.61
-    ],
-    [
-     -191.51,
-     591.51
-    ],
-    [
-     -189.61,
-     594.0
-    ],
-    [
-     -188.41,
-     596.89
-    ]
-   ],
-   "start": 350,
-   "end": 380,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Test Port Upstream",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Test Port Upstream",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Test Port Upstream",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Test Port Downstream",
-   "points": [
-    [
-     -108.0,
-     600.0
-    ],
-    [
-     -108.41,
-     603.11
-    ],
-    [
-     -109.61,
-     606.0
-    ],
-    [
-     -111.51,
-     608.49
-    ],
-    [
-     -114.0,
-     610.39
-    ],
-    [
-     -116.89,
-     611.59
-    ],
-    [
-     -120.0,
-     612.0
-    ],
-    [
-     -123.11,
-     611.59
-    ],
-    [
-     -126.0,
-     610.39
-    ],
-    [
-     -128.49,
-     608.49
-    ],
-    [
-     -130.39,
-     606.0
-    ],
-    [
-     -131.59,
-     603.11
-    ],
-    [
-     -132.0,
-     600.0
-    ],
-    [
-     -131.59,
-     596.89
-    ],
-    [
-     -130.39,
-     594.0
-    ],
-    [
-     -128.49,
-     591.51
-    ],
-    [
-     -126.0,
-     589.61
-    ],
-    [
-     -123.11,
-     588.41
-    ],
-    [
-     -120.0,
-     588.0
-    ],
-    [
-     -116.89,
-     588.41
-    ],
-    [
-     -114.0,
-     589.61
-    ],
-    [
-     -111.51,
-     591.51
-    ],
-    [
-     -109.61,
-     594.0
-    ],
-    [
-     -108.41,
-     596.89
-    ]
-   ],
-   "start": 350,
-   "end": 380,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Test Port Downstream",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Test Port Downstream",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Test Port Downstream",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fan Section",
-   "points": [
-    [
-     -50,
-     -350
-    ],
-    [
-     800,
-     -350
-    ],
-    [
-     800,
-     350
-    ],
-    [
-     -50,
-     350
-    ]
-   ],
-   "start": 150,
-   "end": 1200
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fan Section",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fan Section",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fan Section",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fan Door",
-   "points": [
-    [
-     742.0,
-     240.0
-    ],
-    [
-     745.06,
-     240.61
-    ],
-    [
-     747.66,
-     242.34
-    ],
-    [
-     749.39,
-     244.94
-    ],
-    [
-     750.0,
-     248.0
-    ],
-    [
-     750.0,
-     1102.0
-    ],
-    [
-     749.39,
-     1105.06
-    ],
-    [
-     747.66,
-     1107.66
-    ],
-    [
-     745.06,
-     1109.39
-    ],
-    [
-     742.0,
-     1110.0
-    ],
-    [
-     8.0,
-     1110.0
-    ],
-    [
-     4.94,
-     1109.39
-    ],
-    [
-     2.34,
-     1107.66
-    ],
-    [
-     0.61,
-     1105.06
-    ],
-    [
-     0.0,
-     1102.0
-    ],
-    [
-     0.0,
-     248.0
-    ],
-    [
-     0.61,
-     244.94
-    ],
-    [
-     2.34,
-     242.34
-    ],
-    [
-     4.94,
-     240.61
-    ],
-    [
-     8.0,
-     240.0
-    ]
-   ],
-   "start": 350,
-   "end": 362,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fan Door",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fan Door",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fan Door",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fan Door Handle",
-   "points": [
-    [
-     701.0,
-     600.0
-    ],
-    [
-     702.53,
-     600.3
-    ],
-    [
-     703.83,
-     601.17
-    ],
-    [
-     704.7,
-     602.47
-    ],
-    [
-     705.0,
-     604.0
-    ],
-    [
-     705.0,
-     756.0
-    ],
-    [
-     704.7,
-     757.53
-    ],
-    [
-     703.83,
-     758.83
-    ],
-    [
-     702.53,
-     759.7
-    ],
-    [
-     701.0,
-     760.0
-    ],
-    [
-     684.0,
-     760.0
-    ],
-    [
-     682.47,
-     759.7
-    ],
-    [
-     681.17,
-     758.83
-    ],
-    [
-     680.3,
-     757.53
-    ],
-    [
-     680.0,
-     756.0
-    ],
-    [
-     680.0,
-     604.0
-    ],
-    [
-     680.3,
-     602.47
-    ],
-    [
-     681.17,
-     601.17
-    ],
-    [
-     682.47,
-     600.3
-    ],
-    [
-     684.0,
-     600.0
-    ]
-   ],
-   "start": 362,
-   "end": 392,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fan Door Handle",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fan Door Handle",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fan Door Handle",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fan Window",
-   "points": [
-    [
-     485.0,
-     750.0
-    ],
-    [
-     481.25,
-     778.47
-    ],
-    [
-     470.26,
-     805.0
-    ],
-    [
-     452.78,
-     827.78
-    ],
-    [
-     430.0,
-     845.26
-    ],
-    [
-     403.47,
-     856.25
-    ],
-    [
-     375.0,
-     860.0
-    ],
-    [
-     346.53,
-     856.25
-    ],
-    [
-     320.0,
-     845.26
-    ],
-    [
-     297.22,
-     827.78
-    ],
-    [
-     279.74,
-     805.0
-    ],
-    [
-     268.75,
-     778.47
-    ],
-    [
-     265.0,
-     750.0
-    ],
-    [
-     268.75,
-     721.53
-    ],
-    [
-     279.74,
-     695.0
-    ],
-    [
-     297.22,
-     672.22
-    ],
-    [
-     320.0,
-     654.74
-    ],
-    [
-     346.53,
-     643.75
-    ],
-    [
-     375.0,
-     640.0
-    ],
-    [
-     403.47,
-     643.75
-    ],
-    [
-     430.0,
-     654.74
-    ],
-    [
-     452.78,
-     672.22
-    ],
-    [
-     470.26,
-     695.0
-    ],
-    [
-     481.25,
-     721.53
-    ]
-   ],
-   "start": 362,
-   "end": 366,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fan Window",
-   "subcategory": "Glass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fan Window",
-   "param": "Glass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fan Window",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Inlet Spigot",
-   "points": [
-    [
-     160.0,
-     725.0
-    ],
-    [
-     154.55,
-     766.41
-    ],
-    [
-     138.56,
-     805.0
-    ],
-    [
-     113.14,
-     838.14
-    ],
-    [
-     80.0,
-     863.56
-    ],
-    [
-     41.41,
-     879.55
-    ],
-    [
-     0.0,
-     885.0
-    ],
-    [
-     -41.41,
-     879.55
-    ],
-    [
-     -80.0,
-     863.56
-    ],
-    [
-     -113.14,
-     838.14
-    ],
-    [
-     -138.56,
-     805.0
-    ],
-    [
-     -154.55,
-     766.41
-    ],
-    [
-     -160.0,
-     725.0
-    ],
-    [
-     -154.55,
-     683.59
-    ],
-    [
-     -138.56,
-     645.0
-    ],
-    [
-     -113.14,
-     611.86
-    ],
-    [
-     -80.0,
-     586.44
-    ],
-    [
-     -41.41,
-     570.45
-    ],
-    [
-     -0.0,
-     565.0
-    ],
-    [
-     41.41,
-     570.45
-    ],
-    [
-     80.0,
-     586.44
-    ],
-    [
-     113.14,
-     611.86
-    ],
-    [
-     138.56,
-     645.0
-    ],
-    [
-     154.55,
-     683.59
-    ]
-   ],
-   "start": -1060,
-   "end": -960,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Inlet Spigot",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Inlet Spigot",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Inlet Spigot",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Isolation Damper",
-   "points": [
-    [
-     185.0,
-     725.0
-    ],
-    [
-     178.7,
-     772.88
-    ],
-    [
-     160.21,
-     817.5
-    ],
-    [
-     130.81,
-     855.81
-    ],
-    [
-     92.5,
-     885.21
-    ],
-    [
-     47.88,
-     903.7
-    ],
-    [
-     0.0,
-     910.0
-    ],
-    [
-     -47.88,
-     903.7
-    ],
-    [
-     -92.5,
-     885.21
-    ],
-    [
-     -130.81,
-     855.81
-    ],
-    [
-     -160.21,
-     817.5
-    ],
-    [
-     -178.7,
-     772.88
-    ],
-    [
-     -185.0,
-     725.0
-    ],
-    [
-     -178.7,
-     677.12
-    ],
-    [
-     -160.21,
-     632.5
-    ],
-    [
-     -130.81,
-     594.19
-    ],
-    [
-     -92.5,
-     564.79
-    ],
-    [
-     -47.88,
-     546.3
-    ],
-    [
-     -0.0,
-     540.0
-    ],
-    [
-     47.88,
-     546.3
-    ],
-    [
-     92.5,
-     564.79
-    ],
-    [
-     130.81,
-     594.19
-    ],
-    [
-     160.21,
-     632.5
-    ],
-    [
-     178.7,
-     677.12
-    ]
-   ],
-   "start": -960,
-   "end": -900,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Isolation Damper",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Isolation Damper",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Isolation Damper",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Damper Handle",
-   "points": [
-    [
-     -945,
-     -30
-    ],
-    [
-     -915,
-     -30
-    ],
-    [
-     -915,
-     30
-    ],
-    [
-     -945,
-     30
-    ]
-   ],
-   "start": 910,
-   "end": 1040
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Damper Handle",
-   "subcategory": "Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Damper Handle",
-   "param": "Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Damper Handle",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Outlet Spigot",
-   "points": [
-    [
-     660.0,
-     0.0
-    ],
-    [
-     654.55,
-     41.41
-    ],
-    [
-     638.56,
-     80.0
-    ],
-    [
-     613.14,
-     113.14
-    ],
-    [
-     580.0,
-     138.56
-    ],
-    [
-     541.41,
-     154.55
-    ],
-    [
-     500.0,
-     160.0
-    ],
-    [
-     458.59,
-     154.55
-    ],
-    [
-     420.0,
-     138.56
-    ],
-    [
-     386.86,
-     113.14
-    ],
-    [
-     361.44,
-     80.0
-    ],
-    [
-     345.45,
-     41.41
-    ],
-    [
-     340.0,
-     0.0
-    ],
-    [
-     345.45,
-     -41.41
-    ],
-    [
-     361.44,
-     -80.0
-    ],
-    [
-     386.86,
-     -113.14
-    ],
-    [
-     420.0,
-     -138.56
-    ],
-    [
-     458.59,
-     -154.55
-    ],
-    [
-     500.0,
-     -160.0
-    ],
-    [
-     541.41,
-     -154.55
-    ],
-    [
-     580.0,
-     -138.56
-    ],
-    [
-     613.14,
-     -113.14
-    ],
-    [
-     638.56,
-     -80.0
-    ],
-    [
-     654.55,
-     -41.41
-    ]
-   ],
-   "start": 1200,
-   "end": 1420
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Outlet Spigot",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Outlet Spigot",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Outlet Spigot",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Outlet Collar",
-   "profile": [
-    [
-     160,
-     1200
-    ],
-    [
-     185,
-     1200
-    ],
-    [
-     185,
-     1230
-    ],
-    [
-     160,
-     1230
-    ]
-   ],
-   "axis_at": [
-    500,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Outlet Collar",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Outlet Collar",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Control Panel",
-   "points": [
-    [
-     886.0,
-     -260.0
-    ],
-    [
-     887.53,
-     -259.7
-    ],
-    [
-     888.83,
-     -258.83
-    ],
-    [
-     889.7,
-     -257.53
-    ],
-    [
-     890.0,
-     -256.0
-    ],
-    [
-     890.0,
-     256.0
-    ],
-    [
-     889.7,
-     257.53
-    ],
-    [
-     888.83,
-     258.83
-    ],
-    [
-     887.53,
-     259.7
-    ],
-    [
-     886.0,
-     260.0
-    ],
-    [
-     804.0,
-     260.0
-    ],
-    [
-     802.47,
-     259.7
-    ],
-    [
-     801.17,
-     258.83
-    ],
-    [
-     800.3,
-     257.53
-    ],
-    [
-     800.0,
-     256.0
-    ],
-    [
-     800.0,
-     -256.0
-    ],
-    [
-     800.3,
-     -257.53
-    ],
-    [
-     801.17,
-     -258.83
-    ],
-    [
-     802.47,
-     -259.7
-    ],
-    [
-     804.0,
-     -260.0
-    ]
-   ],
-   "start": 450,
-   "end": 1100
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Control Panel",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Control Panel",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Control Panel",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Alarm Beacon",
-   "points": [
-    [
-     210.0,
-     1150.0
-    ],
-    [
-     208.98,
-     1157.76
-    ],
-    [
-     205.98,
-     1165.0
-    ],
-    [
-     201.21,
-     1171.21
-    ],
-    [
-     195.0,
-     1175.98
-    ],
-    [
-     187.76,
-     1178.98
-    ],
-    [
-     180.0,
-     1180.0
-    ],
-    [
-     172.24,
-     1178.98
-    ],
-    [
-     165.0,
-     1175.98
-    ],
-    [
-     158.79,
-     1171.21
-    ],
-    [
-     154.02,
-     1165.0
-    ],
-    [
-     151.02,
-     1157.76
-    ],
-    [
-     150.0,
-     1150.0
-    ],
-    [
-     151.02,
-     1142.24
-    ],
-    [
-     154.02,
-     1135.0
-    ],
-    [
-     158.79,
-     1128.79
-    ],
-    [
-     165.0,
-     1124.02
-    ],
-    [
-     172.24,
-     1121.02
-    ],
-    [
-     180.0,
-     1120.0
-    ],
-    [
-     187.76,
-     1121.02
-    ],
-    [
-     195.0,
-     1124.02
-    ],
-    [
-     201.21,
-     1128.79
-    ],
-    [
-     205.98,
-     1135.0
-    ],
-    [
-     208.98,
-     1142.24
-    ]
-   ],
-   "start": 890,
-   "end": 905,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Alarm Beacon",
-   "subcategory": "Ledr"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Alarm Beacon",
-   "param": "Ledr Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Alarm Beacon",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Run Lamp",
-   "points": [
-    [
-     115.0,
-     1150.0
-    ],
-    [
-     114.49,
-     1153.88
-    ],
-    [
-     112.99,
-     1157.5
-    ],
-    [
-     110.61,
-     1160.61
-    ],
-    [
-     107.5,
-     1162.99
-    ],
-    [
-     103.88,
-     1164.49
-    ],
-    [
-     100.0,
-     1165.0
-    ],
-    [
-     96.12,
-     1164.49
-    ],
-    [
-     92.5,
-     1162.99
-    ],
-    [
-     89.39,
-     1160.61
-    ],
-    [
-     87.01,
-     1157.5
-    ],
-    [
-     85.51,
-     1153.88
-    ],
-    [
-     85.0,
-     1150.0
-    ],
-    [
-     85.51,
-     1146.12
-    ],
-    [
-     87.01,
-     1142.5
-    ],
-    [
-     89.39,
-     1139.39
-    ],
-    [
-     92.5,
-     1137.01
-    ],
-    [
-     96.12,
-     1135.51
-    ],
-    [
-     100.0,
-     1135.0
-    ],
-    [
-     103.88,
-     1135.51
-    ],
-    [
-     107.5,
-     1137.01
-    ],
-    [
-     110.61,
-     1139.39
-    ],
-    [
-     112.99,
-     1142.5
-    ],
-    [
-     114.49,
-     1146.12
-    ]
-   ],
-   "start": 890,
-   "end": 900,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Run Lamp",
-   "subcategory": "Ledg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Run Lamp",
-   "param": "Ledg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Run Lamp",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Filter Change Space",
-   "points": [
-    [
-     -900,
-     -1250
-    ],
-    [
-     800,
-     -1250
-    ],
-    [
-     800,
-     -350
-    ],
-    [
-     -900,
-     -350
-    ]
-   ],
-   "start": 0,
-   "end": 1300
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Filter Change Space",
-   "subcategory": "Clearance Maintenance"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Filter Change Space",
-   "coarse": true,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "Power",
-   "domain": "electrical",
-   "system": "PowerBalanced",
-   "solid": "Control Panel",
-   "side": "right"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Voltage",
-   "connector": "Power",
-   "connector_param": "Voltage",
-   "param": "Voltage"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Apparent Load",
-   "connector": "Power",
-   "connector_param": "Apparent Load",
-   "param": "Apparent Load"
-  },
-  {
-   "op": "add_connector",
-   "name": "Extract In",
-   "domain": "duct",
-   "system": "ExhaustAir",
-   "solid": "Inlet Spigot",
-   "side": "left",
-   "diameter": 320,
-   "flow": "In"
-  },
-  {
-   "op": "add_connector",
-   "name": "Extract Out",
-   "domain": "duct",
-   "system": "ExhaustAir",
-   "solid": "Outlet Spigot",
-   "side": "top",
-   "diameter": 320,
-   "flow": "Out"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_MechEq_ExtractFan_Isolation_HEPA.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_M_MechEq_ExtractFan_Isolation_HEPA",
+  "template": "Metric Mechanical Equipment.rft",
+  "about": "Modelled as a generic product: base frame, stainless HEPA housing with clamped door, bagging ring and bag cover, gauge, upstream and downstream test ports, isolation damper with handle on the inlet, fan section with door, window and handle, outlet spigot, control panel with beacon. Reference: query: extract fan isolation HEPA mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=extract+fan+isolation+HEPA+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Mechanical Equipment"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Voltage",
+      "type": "Voltage",
+      "group": "Electrical"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Apparent Load",
+      "type": "ApparentPower",
+      "group": "ElectricalLoads"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cooling_Capacity_kW",
+      "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cooling_Capacity_BTUh",
+      "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Airflow_Ls",
+      "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Refrigerant",
+      "guid": "a46c59d0-d719-583b-99c0-074994d01603",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Asset_Tag",
+      "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Serial_Number",
+      "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Install_Date",
+      "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Warranty_End",
+      "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Maintenance_Interval_Months",
+      "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_OM_Link",
+      "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lift_Weight_kg",
+      "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Mounting_Height_mm",
+      "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Power_W",
+      "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Power_W_2",
+      "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Controller_ID",
+      "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Type",
+      "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Signal",
+      "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Protocol",
+      "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Tank_Capacity_L",
+      "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "0.2m3s_BIBO"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0.2m3s_BIBO/FMC_Cost_Unit",
+      "type": "0.2m3s_BIBO",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0.2m3s_BIBO/FMC_Geometry_Stage",
+      "type": "0.2m3s_BIBO",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0.2m3s_BIBO/IfcExportAs",
+      "type": "0.2m3s_BIBO",
+      "param": "IfcExportAs",
+      "value": "IfcFan"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0.2m3s_BIBO/Description",
+      "type": "0.2m3s_BIBO",
+      "param": "Description",
+      "value": "Negative-pressure isolation room extract unit 0.2 m3/s, stainless bag-in/bag-out HEPA housing with test ports and gauge, fan section, control panel"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0.2m3s_BIBO/Keynote",
+      "type": "0.2m3s_BIBO",
+      "param": "Keynote",
+      "value": "H.FAN_08"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0.2m3s_BIBO/FMC_Keynote_Code",
+      "type": "0.2m3s_BIBO",
+      "param": "FMC_Keynote_Code",
+      "value": "H.FAN_08"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0.2m3s_BIBO/FMC_Code_Description",
+      "type": "0.2m3s_BIBO",
+      "param": "FMC_Code_Description",
+      "value": "ExtractFan Isolation HEPA: Negative-pressure isolation extract with HEPA"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0.2m3s_BIBO/FMC_Code_Group",
+      "type": "0.2m3s_BIBO",
+      "param": "FMC_Code_Group",
+      "value": "H.FAN"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0.2m3s_BIBO/FMC_Role_Code",
+      "type": "0.2m3s_BIBO",
+      "param": "FMC_Role_Code",
+      "value": "M"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0.2m3s_BIBO/Voltage",
+      "type": "0.2m3s_BIBO",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "0.2m3s_BIBO/Apparent Load",
+      "type": "0.2m3s_BIBO",
+      "param": "Apparent Load",
+      "value": 1500
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Steel",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Steel Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_StructuralSteel_S275",
+      "param": "Steel Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Ss",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Ss Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_StainlessSteel_Brushed",
+      "param": "Ss Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Mgrey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Mgrey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_MedicalGrey",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "White",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "White Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_White",
+      "param": "White Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Chrome",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Chrome Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Chrome_Polished",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Epw",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Epw Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Steel_EpoxyCoated_White",
+      "param": "Epw Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Glass",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Glass Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Glass_Clear",
+      "param": "Glass Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Dark",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Dark Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_SteelLTZ_Painted",
+      "param": "Dark Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Red",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Red Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_SprinklerPipe_RedPainted",
+      "param": "Red Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Galv",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Galv Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Duct_Galvanised",
+      "param": "Galv Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Ledr",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Ledr Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_LED_Red",
+      "param": "Ledr Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Ledg",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Ledg Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_LED_Green",
+      "param": "Ledg Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Clearance Maintenance",
+      "color": [
+        80,
+        122,
+        160
+      ],
+      "line_weight_projection": 1,
+      "line_weight_cut": 1
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -1060,
+          -392
+        ],
+        [
+          905,
+          -392
+        ],
+        [
+          905,
+          350
+        ],
+        [
+          -1060,
+          350
+        ]
+      ],
+      "start": 0,
+      "end": 1420
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Base Frame",
+      "points": [
+        [
+          -900,
+          -350
+        ],
+        [
+          800,
+          -350
+        ],
+        [
+          800,
+          350
+        ],
+        [
+          -900,
+          350
+        ]
+      ],
+      "start": 0,
+      "end": 150
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Base Frame",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Base Frame",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Base Frame",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "HEPA Housing",
+      "points": [
+        [
+          -900,
+          -350
+        ],
+        [
+          -50,
+          -350
+        ],
+        [
+          -50,
+          350
+        ],
+        [
+          -900,
+          350
+        ]
+      ],
+      "start": 150,
+      "end": 1300
+    },
+    {
+      "op": "set_subcategory",
+      "name": "HEPA Housing",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "HEPA Housing",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "HEPA Housing",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Housing Door",
+      "points": [
+        [
+          -280,
+          240
+        ],
+        [
+          -276.17,
+          240.76
+        ],
+        [
+          -272.93,
+          242.93
+        ],
+        [
+          -270.76,
+          246.17
+        ],
+        [
+          -270,
+          250
+        ],
+        [
+          -270,
+          1210
+        ],
+        [
+          -270.76,
+          1213.83
+        ],
+        [
+          -272.93,
+          1217.07
+        ],
+        [
+          -276.17,
+          1219.24
+        ],
+        [
+          -280,
+          1220
+        ],
+        [
+          -850,
+          1220
+        ],
+        [
+          -853.83,
+          1219.24
+        ],
+        [
+          -857.07,
+          1217.07
+        ],
+        [
+          -859.24,
+          1213.83
+        ],
+        [
+          -860,
+          1210
+        ],
+        [
+          -860,
+          250
+        ],
+        [
+          -859.24,
+          246.17
+        ],
+        [
+          -857.07,
+          242.93
+        ],
+        [
+          -853.83,
+          240.76
+        ],
+        [
+          -850,
+          240
+        ]
+      ],
+      "start": 350,
+      "end": 362,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Housing Door",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Housing Door",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Housing Door",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Bagging Ring",
+      "profile": [
+        [
+          215,
+          384
+        ],
+        [
+          238,
+          384
+        ],
+        [
+          238,
+          362
+        ],
+        [
+          215,
+          362
+        ]
+      ],
+      "axis_at": [
+        -565,
+        730
+      ],
+      "axis": "y",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bagging Ring",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bagging Ring",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bag Port Cover",
+      "points": [
+        [
+          -350,
+          730
+        ],
+        [
+          -357.33,
+          785.65
+        ],
+        [
+          -378.8,
+          837.5
+        ],
+        [
+          -412.97,
+          882.03
+        ],
+        [
+          -457.5,
+          916.2
+        ],
+        [
+          -509.35,
+          937.67
+        ],
+        [
+          -565,
+          945
+        ],
+        [
+          -620.65,
+          937.67
+        ],
+        [
+          -672.5,
+          916.2
+        ],
+        [
+          -717.03,
+          882.03
+        ],
+        [
+          -751.2,
+          837.5
+        ],
+        [
+          -772.67,
+          785.65
+        ],
+        [
+          -780,
+          730
+        ],
+        [
+          -772.67,
+          674.35
+        ],
+        [
+          -751.2,
+          622.5
+        ],
+        [
+          -717.03,
+          577.97
+        ],
+        [
+          -672.5,
+          543.8
+        ],
+        [
+          -620.65,
+          522.33
+        ],
+        [
+          -565,
+          515
+        ],
+        [
+          -509.35,
+          522.33
+        ],
+        [
+          -457.5,
+          543.8
+        ],
+        [
+          -412.97,
+          577.97
+        ],
+        [
+          -378.8,
+          622.5
+        ],
+        [
+          -357.33,
+          674.35
+        ]
+      ],
+      "start": 362,
+      "end": 366,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bag Port Cover",
+      "subcategory": "Mgrey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bag Port Cover",
+      "param": "Mgrey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bag Port Cover",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Door Clamp 1",
+      "points": [
+        [
+          -817,
+          400
+        ],
+        [
+          -817.61,
+          404.66
+        ],
+        [
+          -819.41,
+          409
+        ],
+        [
+          -822.27,
+          412.73
+        ],
+        [
+          -826,
+          415.59
+        ],
+        [
+          -830.34,
+          417.39
+        ],
+        [
+          -835,
+          418
+        ],
+        [
+          -839.66,
+          417.39
+        ],
+        [
+          -844,
+          415.59
+        ],
+        [
+          -847.73,
+          412.73
+        ],
+        [
+          -850.59,
+          409
+        ],
+        [
+          -852.39,
+          404.66
+        ],
+        [
+          -853,
+          400
+        ],
+        [
+          -852.39,
+          395.34
+        ],
+        [
+          -850.59,
+          391
+        ],
+        [
+          -847.73,
+          387.27
+        ],
+        [
+          -844,
+          384.41
+        ],
+        [
+          -839.66,
+          382.61
+        ],
+        [
+          -835,
+          382
+        ],
+        [
+          -830.34,
+          382.61
+        ],
+        [
+          -826,
+          384.41
+        ],
+        [
+          -822.27,
+          387.27
+        ],
+        [
+          -819.41,
+          391
+        ],
+        [
+          -817.61,
+          395.34
+        ]
+      ],
+      "start": 362,
+      "end": 392,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Door Clamp 1",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Door Clamp 1",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Door Clamp 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Door Clamp 2",
+      "points": [
+        [
+          -817,
+          1060
+        ],
+        [
+          -817.61,
+          1064.66
+        ],
+        [
+          -819.41,
+          1069
+        ],
+        [
+          -822.27,
+          1072.73
+        ],
+        [
+          -826,
+          1075.59
+        ],
+        [
+          -830.34,
+          1077.39
+        ],
+        [
+          -835,
+          1078
+        ],
+        [
+          -839.66,
+          1077.39
+        ],
+        [
+          -844,
+          1075.59
+        ],
+        [
+          -847.73,
+          1072.73
+        ],
+        [
+          -850.59,
+          1069
+        ],
+        [
+          -852.39,
+          1064.66
+        ],
+        [
+          -853,
+          1060
+        ],
+        [
+          -852.39,
+          1055.34
+        ],
+        [
+          -850.59,
+          1051
+        ],
+        [
+          -847.73,
+          1047.27
+        ],
+        [
+          -844,
+          1044.41
+        ],
+        [
+          -839.66,
+          1042.61
+        ],
+        [
+          -835,
+          1042
+        ],
+        [
+          -830.34,
+          1042.61
+        ],
+        [
+          -826,
+          1044.41
+        ],
+        [
+          -822.27,
+          1047.27
+        ],
+        [
+          -819.41,
+          1051
+        ],
+        [
+          -817.61,
+          1055.34
+        ]
+      ],
+      "start": 362,
+      "end": 392,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Door Clamp 2",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Door Clamp 2",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Door Clamp 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Door Clamp Right 1",
+      "points": [
+        [
+          -277,
+          400
+        ],
+        [
+          -277.61,
+          404.66
+        ],
+        [
+          -279.41,
+          409
+        ],
+        [
+          -282.27,
+          412.73
+        ],
+        [
+          -286,
+          415.59
+        ],
+        [
+          -290.34,
+          417.39
+        ],
+        [
+          -295,
+          418
+        ],
+        [
+          -299.66,
+          417.39
+        ],
+        [
+          -304,
+          415.59
+        ],
+        [
+          -307.73,
+          412.73
+        ],
+        [
+          -310.59,
+          409
+        ],
+        [
+          -312.39,
+          404.66
+        ],
+        [
+          -313,
+          400
+        ],
+        [
+          -312.39,
+          395.34
+        ],
+        [
+          -310.59,
+          391
+        ],
+        [
+          -307.73,
+          387.27
+        ],
+        [
+          -304,
+          384.41
+        ],
+        [
+          -299.66,
+          382.61
+        ],
+        [
+          -295,
+          382
+        ],
+        [
+          -290.34,
+          382.61
+        ],
+        [
+          -286,
+          384.41
+        ],
+        [
+          -282.27,
+          387.27
+        ],
+        [
+          -279.41,
+          391
+        ],
+        [
+          -277.61,
+          395.34
+        ]
+      ],
+      "start": 362,
+      "end": 392,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Door Clamp Right 1",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Door Clamp Right 1",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Door Clamp Right 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Door Clamp Right 2",
+      "points": [
+        [
+          -277,
+          1060
+        ],
+        [
+          -277.61,
+          1064.66
+        ],
+        [
+          -279.41,
+          1069
+        ],
+        [
+          -282.27,
+          1072.73
+        ],
+        [
+          -286,
+          1075.59
+        ],
+        [
+          -290.34,
+          1077.39
+        ],
+        [
+          -295,
+          1078
+        ],
+        [
+          -299.66,
+          1077.39
+        ],
+        [
+          -304,
+          1075.59
+        ],
+        [
+          -307.73,
+          1072.73
+        ],
+        [
+          -310.59,
+          1069
+        ],
+        [
+          -312.39,
+          1064.66
+        ],
+        [
+          -313,
+          1060
+        ],
+        [
+          -312.39,
+          1055.34
+        ],
+        [
+          -310.59,
+          1051
+        ],
+        [
+          -307.73,
+          1047.27
+        ],
+        [
+          -304,
+          1044.41
+        ],
+        [
+          -299.66,
+          1042.61
+        ],
+        [
+          -295,
+          1042
+        ],
+        [
+          -290.34,
+          1042.61
+        ],
+        [
+          -286,
+          1044.41
+        ],
+        [
+          -282.27,
+          1047.27
+        ],
+        [
+          -279.41,
+          1051
+        ],
+        [
+          -277.61,
+          1055.34
+        ]
+      ],
+      "start": 362,
+      "end": 392,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Door Clamp Right 2",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Door Clamp Right 2",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Door Clamp Right 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Gauge",
+      "points": [
+        [
+          -105,
+          1050
+        ],
+        [
+          -106.87,
+          1064.24
+        ],
+        [
+          -112.37,
+          1077.5
+        ],
+        [
+          -121.11,
+          1088.89
+        ],
+        [
+          -132.5,
+          1097.63
+        ],
+        [
+          -145.76,
+          1103.13
+        ],
+        [
+          -160,
+          1105
+        ],
+        [
+          -174.24,
+          1103.13
+        ],
+        [
+          -187.5,
+          1097.63
+        ],
+        [
+          -198.89,
+          1088.89
+        ],
+        [
+          -207.63,
+          1077.5
+        ],
+        [
+          -213.13,
+          1064.24
+        ],
+        [
+          -215,
+          1050
+        ],
+        [
+          -213.13,
+          1035.76
+        ],
+        [
+          -207.63,
+          1022.5
+        ],
+        [
+          -198.89,
+          1011.11
+        ],
+        [
+          -187.5,
+          1002.37
+        ],
+        [
+          -174.24,
+          996.87
+        ],
+        [
+          -160,
+          995
+        ],
+        [
+          -145.76,
+          996.87
+        ],
+        [
+          -132.5,
+          1002.37
+        ],
+        [
+          -121.11,
+          1011.11
+        ],
+        [
+          -112.37,
+          1022.5
+        ],
+        [
+          -106.87,
+          1035.76
+        ]
+      ],
+      "start": 350,
+      "end": 376,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Gauge",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Gauge",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Gauge",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Gauge Bezel",
+      "profile": [
+        [
+          52,
+          380
+        ],
+        [
+          60,
+          380
+        ],
+        [
+          60,
+          350
+        ],
+        [
+          52,
+          350
+        ]
+      ],
+      "axis_at": [
+        -160,
+        1050
+      ],
+      "axis": "y",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Gauge Bezel",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Gauge Bezel",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Test Port Upstream",
+      "points": [
+        [
+          -188,
+          600
+        ],
+        [
+          -188.41,
+          603.11
+        ],
+        [
+          -189.61,
+          606
+        ],
+        [
+          -191.51,
+          608.49
+        ],
+        [
+          -194,
+          610.39
+        ],
+        [
+          -196.89,
+          611.59
+        ],
+        [
+          -200,
+          612
+        ],
+        [
+          -203.11,
+          611.59
+        ],
+        [
+          -206,
+          610.39
+        ],
+        [
+          -208.49,
+          608.49
+        ],
+        [
+          -210.39,
+          606
+        ],
+        [
+          -211.59,
+          603.11
+        ],
+        [
+          -212,
+          600
+        ],
+        [
+          -211.59,
+          596.89
+        ],
+        [
+          -210.39,
+          594
+        ],
+        [
+          -208.49,
+          591.51
+        ],
+        [
+          -206,
+          589.61
+        ],
+        [
+          -203.11,
+          588.41
+        ],
+        [
+          -200,
+          588
+        ],
+        [
+          -196.89,
+          588.41
+        ],
+        [
+          -194,
+          589.61
+        ],
+        [
+          -191.51,
+          591.51
+        ],
+        [
+          -189.61,
+          594
+        ],
+        [
+          -188.41,
+          596.89
+        ]
+      ],
+      "start": 350,
+      "end": 380,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Test Port Upstream",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Test Port Upstream",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Test Port Upstream",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Test Port Downstream",
+      "points": [
+        [
+          -108,
+          600
+        ],
+        [
+          -108.41,
+          603.11
+        ],
+        [
+          -109.61,
+          606
+        ],
+        [
+          -111.51,
+          608.49
+        ],
+        [
+          -114,
+          610.39
+        ],
+        [
+          -116.89,
+          611.59
+        ],
+        [
+          -120,
+          612
+        ],
+        [
+          -123.11,
+          611.59
+        ],
+        [
+          -126,
+          610.39
+        ],
+        [
+          -128.49,
+          608.49
+        ],
+        [
+          -130.39,
+          606
+        ],
+        [
+          -131.59,
+          603.11
+        ],
+        [
+          -132,
+          600
+        ],
+        [
+          -131.59,
+          596.89
+        ],
+        [
+          -130.39,
+          594
+        ],
+        [
+          -128.49,
+          591.51
+        ],
+        [
+          -126,
+          589.61
+        ],
+        [
+          -123.11,
+          588.41
+        ],
+        [
+          -120,
+          588
+        ],
+        [
+          -116.89,
+          588.41
+        ],
+        [
+          -114,
+          589.61
+        ],
+        [
+          -111.51,
+          591.51
+        ],
+        [
+          -109.61,
+          594
+        ],
+        [
+          -108.41,
+          596.89
+        ]
+      ],
+      "start": 350,
+      "end": 380,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Test Port Downstream",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Test Port Downstream",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Test Port Downstream",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fan Section",
+      "points": [
+        [
+          -50,
+          -350
+        ],
+        [
+          800,
+          -350
+        ],
+        [
+          800,
+          350
+        ],
+        [
+          -50,
+          350
+        ]
+      ],
+      "start": 150,
+      "end": 1200
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fan Section",
+      "subcategory": "Epw"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fan Section",
+      "param": "Epw Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fan Section",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fan Door",
+      "points": [
+        [
+          742,
+          240
+        ],
+        [
+          745.06,
+          240.61
+        ],
+        [
+          747.66,
+          242.34
+        ],
+        [
+          749.39,
+          244.94
+        ],
+        [
+          750,
+          248
+        ],
+        [
+          750,
+          1102
+        ],
+        [
+          749.39,
+          1105.06
+        ],
+        [
+          747.66,
+          1107.66
+        ],
+        [
+          745.06,
+          1109.39
+        ],
+        [
+          742,
+          1110
+        ],
+        [
+          8,
+          1110
+        ],
+        [
+          4.94,
+          1109.39
+        ],
+        [
+          2.34,
+          1107.66
+        ],
+        [
+          0.61,
+          1105.06
+        ],
+        [
+          0,
+          1102
+        ],
+        [
+          0,
+          248
+        ],
+        [
+          0.61,
+          244.94
+        ],
+        [
+          2.34,
+          242.34
+        ],
+        [
+          4.94,
+          240.61
+        ],
+        [
+          8,
+          240
+        ]
+      ],
+      "start": 350,
+      "end": 362,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fan Door",
+      "subcategory": "Epw"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fan Door",
+      "param": "Epw Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fan Door",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fan Door Handle",
+      "points": [
+        [
+          701,
+          600
+        ],
+        [
+          702.53,
+          600.3
+        ],
+        [
+          703.83,
+          601.17
+        ],
+        [
+          704.7,
+          602.47
+        ],
+        [
+          705,
+          604
+        ],
+        [
+          705,
+          756
+        ],
+        [
+          704.7,
+          757.53
+        ],
+        [
+          703.83,
+          758.83
+        ],
+        [
+          702.53,
+          759.7
+        ],
+        [
+          701,
+          760
+        ],
+        [
+          684,
+          760
+        ],
+        [
+          682.47,
+          759.7
+        ],
+        [
+          681.17,
+          758.83
+        ],
+        [
+          680.3,
+          757.53
+        ],
+        [
+          680,
+          756
+        ],
+        [
+          680,
+          604
+        ],
+        [
+          680.3,
+          602.47
+        ],
+        [
+          681.17,
+          601.17
+        ],
+        [
+          682.47,
+          600.3
+        ],
+        [
+          684,
+          600
+        ]
+      ],
+      "start": 362,
+      "end": 392,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fan Door Handle",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fan Door Handle",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fan Door Handle",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Fan Window",
+      "points": [
+        [
+          485,
+          750
+        ],
+        [
+          481.25,
+          778.47
+        ],
+        [
+          470.26,
+          805
+        ],
+        [
+          452.78,
+          827.78
+        ],
+        [
+          430,
+          845.26
+        ],
+        [
+          403.47,
+          856.25
+        ],
+        [
+          375,
+          860
+        ],
+        [
+          346.53,
+          856.25
+        ],
+        [
+          320,
+          845.26
+        ],
+        [
+          297.22,
+          827.78
+        ],
+        [
+          279.74,
+          805
+        ],
+        [
+          268.75,
+          778.47
+        ],
+        [
+          265,
+          750
+        ],
+        [
+          268.75,
+          721.53
+        ],
+        [
+          279.74,
+          695
+        ],
+        [
+          297.22,
+          672.22
+        ],
+        [
+          320,
+          654.74
+        ],
+        [
+          346.53,
+          643.75
+        ],
+        [
+          375,
+          640
+        ],
+        [
+          403.47,
+          643.75
+        ],
+        [
+          430,
+          654.74
+        ],
+        [
+          452.78,
+          672.22
+        ],
+        [
+          470.26,
+          695
+        ],
+        [
+          481.25,
+          721.53
+        ]
+      ],
+      "start": 362,
+      "end": 366,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fan Window",
+      "subcategory": "Glass"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fan Window",
+      "param": "Glass Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Fan Window",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Inlet Spigot",
+      "points": [
+        [
+          160,
+          725
+        ],
+        [
+          154.55,
+          766.41
+        ],
+        [
+          138.56,
+          805
+        ],
+        [
+          113.14,
+          838.14
+        ],
+        [
+          80,
+          863.56
+        ],
+        [
+          41.41,
+          879.55
+        ],
+        [
+          0,
+          885
+        ],
+        [
+          -41.41,
+          879.55
+        ],
+        [
+          -80,
+          863.56
+        ],
+        [
+          -113.14,
+          838.14
+        ],
+        [
+          -138.56,
+          805
+        ],
+        [
+          -154.55,
+          766.41
+        ],
+        [
+          -160,
+          725
+        ],
+        [
+          -154.55,
+          683.59
+        ],
+        [
+          -138.56,
+          645
+        ],
+        [
+          -113.14,
+          611.86
+        ],
+        [
+          -80,
+          586.44
+        ],
+        [
+          -41.41,
+          570.45
+        ],
+        [
+          0,
+          565
+        ],
+        [
+          41.41,
+          570.45
+        ],
+        [
+          80,
+          586.44
+        ],
+        [
+          113.14,
+          611.86
+        ],
+        [
+          138.56,
+          645
+        ],
+        [
+          154.55,
+          683.59
+        ]
+      ],
+      "start": -1060,
+      "end": -960,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Inlet Spigot",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Inlet Spigot",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Inlet Spigot",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Isolation Damper",
+      "points": [
+        [
+          185,
+          725
+        ],
+        [
+          178.7,
+          772.88
+        ],
+        [
+          160.21,
+          817.5
+        ],
+        [
+          130.81,
+          855.81
+        ],
+        [
+          92.5,
+          885.21
+        ],
+        [
+          47.88,
+          903.7
+        ],
+        [
+          0,
+          910
+        ],
+        [
+          -47.88,
+          903.7
+        ],
+        [
+          -92.5,
+          885.21
+        ],
+        [
+          -130.81,
+          855.81
+        ],
+        [
+          -160.21,
+          817.5
+        ],
+        [
+          -178.7,
+          772.88
+        ],
+        [
+          -185,
+          725
+        ],
+        [
+          -178.7,
+          677.12
+        ],
+        [
+          -160.21,
+          632.5
+        ],
+        [
+          -130.81,
+          594.19
+        ],
+        [
+          -92.5,
+          564.79
+        ],
+        [
+          -47.88,
+          546.3
+        ],
+        [
+          0,
+          540
+        ],
+        [
+          47.88,
+          546.3
+        ],
+        [
+          92.5,
+          564.79
+        ],
+        [
+          130.81,
+          594.19
+        ],
+        [
+          160.21,
+          632.5
+        ],
+        [
+          178.7,
+          677.12
+        ]
+      ],
+      "start": -960,
+      "end": -900,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Isolation Damper",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Isolation Damper",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Isolation Damper",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Damper Handle",
+      "points": [
+        [
+          -945,
+          -30
+        ],
+        [
+          -915,
+          -30
+        ],
+        [
+          -915,
+          30
+        ],
+        [
+          -945,
+          30
+        ]
+      ],
+      "start": 910,
+      "end": 1040
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Damper Handle",
+      "subcategory": "Red"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Damper Handle",
+      "param": "Red Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Damper Handle",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Outlet Spigot",
+      "points": [
+        [
+          660,
+          0
+        ],
+        [
+          654.55,
+          41.41
+        ],
+        [
+          638.56,
+          80
+        ],
+        [
+          613.14,
+          113.14
+        ],
+        [
+          580,
+          138.56
+        ],
+        [
+          541.41,
+          154.55
+        ],
+        [
+          500,
+          160
+        ],
+        [
+          458.59,
+          154.55
+        ],
+        [
+          420,
+          138.56
+        ],
+        [
+          386.86,
+          113.14
+        ],
+        [
+          361.44,
+          80
+        ],
+        [
+          345.45,
+          41.41
+        ],
+        [
+          340,
+          0
+        ],
+        [
+          345.45,
+          -41.41
+        ],
+        [
+          361.44,
+          -80
+        ],
+        [
+          386.86,
+          -113.14
+        ],
+        [
+          420,
+          -138.56
+        ],
+        [
+          458.59,
+          -154.55
+        ],
+        [
+          500,
+          -160
+        ],
+        [
+          541.41,
+          -154.55
+        ],
+        [
+          580,
+          -138.56
+        ],
+        [
+          613.14,
+          -113.14
+        ],
+        [
+          638.56,
+          -80
+        ],
+        [
+          654.55,
+          -41.41
+        ]
+      ],
+      "start": 1200,
+      "end": 1420
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Outlet Spigot",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Outlet Spigot",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Outlet Spigot",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Outlet Collar",
+      "profile": [
+        [
+          160,
+          1200
+        ],
+        [
+          185,
+          1200
+        ],
+        [
+          185,
+          1230
+        ],
+        [
+          160,
+          1230
+        ]
+      ],
+      "axis_at": [
+        500,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Outlet Collar",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Outlet Collar",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Control Panel",
+      "points": [
+        [
+          886,
+          -260
+        ],
+        [
+          887.53,
+          -259.7
+        ],
+        [
+          888.83,
+          -258.83
+        ],
+        [
+          889.7,
+          -257.53
+        ],
+        [
+          890,
+          -256
+        ],
+        [
+          890,
+          256
+        ],
+        [
+          889.7,
+          257.53
+        ],
+        [
+          888.83,
+          258.83
+        ],
+        [
+          887.53,
+          259.7
+        ],
+        [
+          886,
+          260
+        ],
+        [
+          804,
+          260
+        ],
+        [
+          802.47,
+          259.7
+        ],
+        [
+          801.17,
+          258.83
+        ],
+        [
+          800.3,
+          257.53
+        ],
+        [
+          800,
+          256
+        ],
+        [
+          800,
+          -256
+        ],
+        [
+          800.3,
+          -257.53
+        ],
+        [
+          801.17,
+          -258.83
+        ],
+        [
+          802.47,
+          -259.7
+        ],
+        [
+          804,
+          -260
+        ]
+      ],
+      "start": 450,
+      "end": 1100
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Control Panel",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Control Panel",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Control Panel",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Alarm Beacon",
+      "points": [
+        [
+          210,
+          1150
+        ],
+        [
+          208.98,
+          1157.76
+        ],
+        [
+          205.98,
+          1165
+        ],
+        [
+          201.21,
+          1171.21
+        ],
+        [
+          195,
+          1175.98
+        ],
+        [
+          187.76,
+          1178.98
+        ],
+        [
+          180,
+          1180
+        ],
+        [
+          172.24,
+          1178.98
+        ],
+        [
+          165,
+          1175.98
+        ],
+        [
+          158.79,
+          1171.21
+        ],
+        [
+          154.02,
+          1165
+        ],
+        [
+          151.02,
+          1157.76
+        ],
+        [
+          150,
+          1150
+        ],
+        [
+          151.02,
+          1142.24
+        ],
+        [
+          154.02,
+          1135
+        ],
+        [
+          158.79,
+          1128.79
+        ],
+        [
+          165,
+          1124.02
+        ],
+        [
+          172.24,
+          1121.02
+        ],
+        [
+          180,
+          1120
+        ],
+        [
+          187.76,
+          1121.02
+        ],
+        [
+          195,
+          1124.02
+        ],
+        [
+          201.21,
+          1128.79
+        ],
+        [
+          205.98,
+          1135
+        ],
+        [
+          208.98,
+          1142.24
+        ]
+      ],
+      "start": 890,
+      "end": 905,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Alarm Beacon",
+      "subcategory": "Ledr"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Alarm Beacon",
+      "param": "Ledr Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Alarm Beacon",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Run Lamp",
+      "points": [
+        [
+          115,
+          1150
+        ],
+        [
+          114.49,
+          1153.88
+        ],
+        [
+          112.99,
+          1157.5
+        ],
+        [
+          110.61,
+          1160.61
+        ],
+        [
+          107.5,
+          1162.99
+        ],
+        [
+          103.88,
+          1164.49
+        ],
+        [
+          100,
+          1165
+        ],
+        [
+          96.12,
+          1164.49
+        ],
+        [
+          92.5,
+          1162.99
+        ],
+        [
+          89.39,
+          1160.61
+        ],
+        [
+          87.01,
+          1157.5
+        ],
+        [
+          85.51,
+          1153.88
+        ],
+        [
+          85,
+          1150
+        ],
+        [
+          85.51,
+          1146.12
+        ],
+        [
+          87.01,
+          1142.5
+        ],
+        [
+          89.39,
+          1139.39
+        ],
+        [
+          92.5,
+          1137.01
+        ],
+        [
+          96.12,
+          1135.51
+        ],
+        [
+          100,
+          1135
+        ],
+        [
+          103.88,
+          1135.51
+        ],
+        [
+          107.5,
+          1137.01
+        ],
+        [
+          110.61,
+          1139.39
+        ],
+        [
+          112.99,
+          1142.5
+        ],
+        [
+          114.49,
+          1146.12
+        ]
+      ],
+      "start": 890,
+      "end": 900,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Run Lamp",
+      "subcategory": "Ledg"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Run Lamp",
+      "param": "Ledg Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Run Lamp",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Filter Change Space",
+      "points": [
+        [
+          -900,
+          -1250
+        ],
+        [
+          800,
+          -1250
+        ],
+        [
+          800,
+          -350
+        ],
+        [
+          -900,
+          -350
+        ]
+      ],
+      "start": 0,
+      "end": 1300
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Filter Change Space",
+      "subcategory": "Clearance Maintenance"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Filter Change Space",
+      "coarse": true,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "Power",
+      "domain": "electrical",
+      "system": "PowerBalanced",
+      "solid": "Control Panel",
+      "side": "right"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Voltage",
+      "connector": "Power",
+      "connector_param": "Voltage",
+      "param": "Voltage"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Apparent Load",
+      "connector": "Power",
+      "connector_param": "Apparent Load",
+      "param": "Apparent Load"
+    },
+    {
+      "op": "add_connector",
+      "name": "Extract In",
+      "domain": "duct",
+      "system": "ExhaustAir",
+      "solid": "Inlet Spigot",
+      "side": "left",
+      "diameter": 320,
+      "flow": "In"
+    },
+    {
+      "op": "add_connector",
+      "name": "Extract Out",
+      "domain": "duct",
+      "system": "ExhaustAir",
+      "solid": "Outlet Spigot",
+      "side": "top",
+      "diameter": 320,
+      "flow": "Out"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_MechEq_ExtractFan_Isolation_HEPA.png"
+    }
+  ],
+  "values": {
+    "Flow 0.2 m3/s": {
+      "value": 0.2,
+      "source_status": "assumed",
+      "source": "record basis"
+    },
+    "HEPA H14, bag-in/bag-out": {
+      "value": "H14",
+      "source_status": "assumed",
+      "source": "HTM 03-01 isolation suite extract practice"
+    },
+    "Unit 1700 x 700 x 1420 mm": {
+      "value": "1700x700x1420",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Load 1.5 kVA": {
+      "value": 1500,
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   }
- ],
- "values": {
-  "Flow 0.2 m3/s": {
-   "value": 0.2,
-   "source_status": "assumed",
-   "source": "record basis"
-  },
-  "HEPA H14, bag-in/bag-out": {
-   "value": "H14",
-   "source_status": "assumed",
-   "source": "HTM 03-01 isolation suite extract practice"
-  },
-  "Unit 1700 x 700 x 1420 mm": {
-   "value": "1700x700x1420",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Load 1.5 kVA": {
-   "value": 1500,
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- }
 }

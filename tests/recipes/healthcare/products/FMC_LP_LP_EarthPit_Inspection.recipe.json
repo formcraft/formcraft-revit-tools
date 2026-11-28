@@ -1,1139 +1,1148 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_LP_LP_EarthPit_Inspection",
- "template": "Metric Generic Model.rft",
- "about": "Earth pit: four precast chamber walls, steel lid frame, concrete lid with yellow plate, lift rings and label; rod head, clamp and green/yellow lead inside. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: lp lp earth pit inspection lightning protection hospital; images: https://www.google.com/search?tbm=isch&q=lp+lp+earth+pit+inspection+lightning+protection+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Site"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
-  },
-  {
-   "op": "add_type",
-   "name": "300x300_Concrete"
-  },
-  {
-   "op": "set_type_value",
-   "name": "300x300_Concrete/FMC_Cost_Unit",
-   "type": "300x300_Concrete",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "300x300_Concrete/FMC_Geometry_Stage",
-   "type": "300x300_Concrete",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "300x300_Concrete/IfcExportAs",
-   "type": "300x300_Concrete",
-   "param": "IfcExportAs",
-   "value": "IfcBuildingElementProxy"
-  },
-  {
-   "op": "set_type_value",
-   "name": "300x300_Concrete/Description",
-   "type": "300x300_Concrete",
-   "param": "Description",
-   "value": "Earth inspection pit, precast concrete 300 x 300 clear with heavy lid flush at ground, earth rod head and clamp visible inside"
-  },
-  {
-   "op": "set_type_value",
-   "name": "300x300_Concrete/Keynote",
-   "type": "300x300_Concrete",
-   "param": "Keynote",
-   "value": "X.EAR_02"
-  },
-  {
-   "op": "set_type_value",
-   "name": "300x300_Concrete/FMC_Keynote_Code",
-   "type": "300x300_Concrete",
-   "param": "FMC_Keynote_Code",
-   "value": "X.EAR_02"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Conc",
-   "color": [
-    180,
-    178,
-    170
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Conc Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Concrete_C25",
-   "param": "Conc Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Struct",
-   "color": [
-    110,
-    110,
-    110
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Struct Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_StructuralSteel_S275",
-   "param": "Struct Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Yellow",
-   "color": [
-    242,
-    194,
-    48
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Yellow Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Yellow",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Galv",
-   "color": [
-    167,
-    172,
-    175
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Galv Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_ColdFormed_Galvanised",
-   "param": "Galv Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Cubond",
-   "color": [
-    168,
-    104,
-    58
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Cubond Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_EarthRod_CopperBond",
-   "param": "Cubond Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Brass",
-   "color": [
-    200,
-    164,
-    74
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Brass Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Brass_Polished",
-   "param": "Brass Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Gy",
-   "color": [
-    127,
-    165,
-    30
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Gy Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_CableCore_GreenYellow",
-   "param": "Gy Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -205,
-     -205
-    ],
-    [
-     205,
-     -205
-    ],
-    [
-     205,
-     205
-    ],
-    [
-     -205,
-     205
-    ]
-   ],
-   "start": -450,
-   "end": 47
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Chamber Wall Front",
-   "points": [
-    [
-     -200,
-     -200
-    ],
-    [
-     200,
-     -200
-    ],
-    [
-     200,
-     -150
-    ],
-    [
-     -200,
-     -150
-    ]
-   ],
-   "start": -450,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Chamber Wall Front",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Chamber Wall Front",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Chamber Wall Front",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Chamber Wall Back",
-   "points": [
-    [
-     -200,
-     150
-    ],
-    [
-     200,
-     150
-    ],
-    [
-     200,
-     200
-    ],
-    [
-     -200,
-     200
-    ]
-   ],
-   "start": -450,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Chamber Wall Back",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Chamber Wall Back",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Chamber Wall Back",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Chamber Wall Left",
-   "points": [
-    [
-     -200,
-     -150
-    ],
-    [
-     -150,
-     -150
-    ],
-    [
-     -150,
-     150
-    ],
-    [
-     -200,
-     150
-    ]
-   ],
-   "start": -450,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Chamber Wall Left",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Chamber Wall Left",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Chamber Wall Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Chamber Wall Right",
-   "points": [
-    [
-     150,
-     -150
-    ],
-    [
-     200,
-     -150
-    ],
-    [
-     200,
-     150
-    ],
-    [
-     150,
-     150
-    ]
-   ],
-   "start": -450,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Chamber Wall Right",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Chamber Wall Right",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Chamber Wall Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lid Frame",
-   "points": [
-    [
-     -205,
-     -205
-    ],
-    [
-     205,
-     -205
-    ],
-    [
-     205,
-     205
-    ],
-    [
-     -205,
-     205
-    ]
-   ],
-   "start": -10,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lid Frame",
-   "subcategory": "Struct"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lid Frame",
-   "param": "Struct Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lid Frame",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lid",
-   "points": [
-    [
-     189.0,
-     -195.0
-    ],
-    [
-     191.3,
-     -194.54
-    ],
-    [
-     193.24,
-     -193.24
-    ],
-    [
-     194.54,
-     -191.3
-    ],
-    [
-     195.0,
-     -189.0
-    ],
-    [
-     195.0,
-     189.0
-    ],
-    [
-     194.54,
-     191.3
-    ],
-    [
-     193.24,
-     193.24
-    ],
-    [
-     191.3,
-     194.54
-    ],
-    [
-     189.0,
-     195.0
-    ],
-    [
-     -189.0,
-     195.0
-    ],
-    [
-     -191.3,
-     194.54
-    ],
-    [
-     -193.24,
-     193.24
-    ],
-    [
-     -194.54,
-     191.3
-    ],
-    [
-     -195.0,
-     189.0
-    ],
-    [
-     -195.0,
-     -189.0
-    ],
-    [
-     -194.54,
-     -191.3
-    ],
-    [
-     -193.24,
-     -193.24
-    ],
-    [
-     -191.3,
-     -194.54
-    ],
-    [
-     -189.0,
-     -195.0
-    ]
-   ],
-   "start": -8,
-   "end": 30
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lid",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lid",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lid",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lid Plate",
-   "points": [
-    [
-     181.0,
-     -185.0
-    ],
-    [
-     182.53,
-     -184.7
-    ],
-    [
-     183.83,
-     -183.83
-    ],
-    [
-     184.7,
-     -182.53
-    ],
-    [
-     185.0,
-     -181.0
-    ],
-    [
-     185.0,
-     181.0
-    ],
-    [
-     184.7,
-     182.53
-    ],
-    [
-     183.83,
-     183.83
-    ],
-    [
-     182.53,
-     184.7
-    ],
-    [
-     181.0,
-     185.0
-    ],
-    [
-     -181.0,
-     185.0
-    ],
-    [
-     -182.53,
-     184.7
-    ],
-    [
-     -183.83,
-     183.83
-    ],
-    [
-     -184.7,
-     182.53
-    ],
-    [
-     -185.0,
-     181.0
-    ],
-    [
-     -185.0,
-     -181.0
-    ],
-    [
-     -184.7,
-     -182.53
-    ],
-    [
-     -183.83,
-     -183.83
-    ],
-    [
-     -182.53,
-     -184.7
-    ],
-    [
-     -181.0,
-     -185.0
-    ]
-   ],
-   "start": 30,
-   "end": 32
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lid Plate",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lid Plate",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lid Plate",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Lift Ring 1",
-   "profile": [
-    [
-     10,
-     -40
-    ],
-    [
-     15,
-     -40
-    ],
-    [
-     15,
-     -30
-    ],
-    [
-     10,
-     -30
-    ]
-   ],
-   "axis_at": [
-    0,
-    32
-   ],
-   "axis": "x",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lift Ring 1",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lift Ring 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Lift Ring 2",
-   "profile": [
-    [
-     10,
-     30
-    ],
-    [
-     15,
-     30
-    ],
-    [
-     15,
-     40
-    ],
-    [
-     10,
-     40
-    ]
-   ],
-   "axis_at": [
-    0,
-    32
-   ],
-   "axis": "x",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lift Ring 2",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lift Ring 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lid Label",
-   "points": [
-    [
-     -70,
-     -120
-    ],
-    [
-     70,
-     -120
-    ],
-    [
-     70,
-     -80
-    ],
-    [
-     -70,
-     -80
-    ]
-   ],
-   "start": 32,
-   "end": 33
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lid Label",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lid Label",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lid Label",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Earth Rod Head",
-   "points": [
-    [
-     8.0,
-     0.0
-    ],
-    [
-     7.73,
-     2.07
-    ],
-    [
-     6.93,
-     4.0
-    ],
-    [
-     5.66,
-     5.66
-    ],
-    [
-     4.0,
-     6.93
-    ],
-    [
-     2.07,
-     7.73
-    ],
-    [
-     0.0,
-     8.0
-    ],
-    [
-     -2.07,
-     7.73
-    ],
-    [
-     -4.0,
-     6.93
-    ],
-    [
-     -5.66,
-     5.66
-    ],
-    [
-     -6.93,
-     4.0
-    ],
-    [
-     -7.73,
-     2.07
-    ],
-    [
-     -8.0,
-     0.0
-    ],
-    [
-     -7.73,
-     -2.07
-    ],
-    [
-     -6.93,
-     -4.0
-    ],
-    [
-     -5.66,
-     -5.66
-    ],
-    [
-     -4.0,
-     -6.93
-    ],
-    [
-     -2.07,
-     -7.73
-    ],
-    [
-     -0.0,
-     -8.0
-    ],
-    [
-     2.07,
-     -7.73
-    ],
-    [
-     4.0,
-     -6.93
-    ],
-    [
-     5.66,
-     -5.66
-    ],
-    [
-     6.93,
-     -4.0
-    ],
-    [
-     7.73,
-     -2.07
-    ]
-   ],
-   "start": -400,
-   "end": -150
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Earth Rod Head",
-   "subcategory": "Cubond"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Earth Rod Head",
-   "param": "Cubond Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Earth Rod Head",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rod Clamp",
-   "points": [
-    [
-     -15,
-     -15
-    ],
-    [
-     15,
-     -15
-    ],
-    [
-     15,
-     15
-    ],
-    [
-     -15,
-     15
-    ]
-   ],
-   "start": -200,
-   "end": -170
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rod Clamp",
-   "subcategory": "Brass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rod Clamp",
-   "param": "Brass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rod Clamp",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Earth Lead",
-   "points": [
-    [
-     5.0,
-     -185.0
-    ],
-    [
-     4.83,
-     -183.71
-    ],
-    [
-     4.33,
-     -182.5
-    ],
-    [
-     3.54,
-     -181.46
-    ],
-    [
-     2.5,
-     -180.67
-    ],
-    [
-     1.29,
-     -180.17
-    ],
-    [
-     0.0,
-     -180.0
-    ],
-    [
-     -1.29,
-     -180.17
-    ],
-    [
-     -2.5,
-     -180.67
-    ],
-    [
-     -3.54,
-     -181.46
-    ],
-    [
-     -4.33,
-     -182.5
-    ],
-    [
-     -4.83,
-     -183.71
-    ],
-    [
-     -5.0,
-     -185.0
-    ],
-    [
-     -4.83,
-     -186.29
-    ],
-    [
-     -4.33,
-     -187.5
-    ],
-    [
-     -3.54,
-     -188.54
-    ],
-    [
-     -2.5,
-     -189.33
-    ],
-    [
-     -1.29,
-     -189.83
-    ],
-    [
-     -0.0,
-     -190.0
-    ],
-    [
-     1.29,
-     -189.83
-    ],
-    [
-     2.5,
-     -189.33
-    ],
-    [
-     3.54,
-     -188.54
-    ],
-    [
-     4.33,
-     -187.5
-    ],
-    [
-     4.83,
-     -186.29
-    ]
-   ],
-   "start": -150,
-   "end": 15,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Earth Lead",
-   "subcategory": "Gy"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Earth Lead",
-   "param": "Gy Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Earth Lead",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\LP\\_Images\\FMC_LP_LP_EarthPit_Inspection.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_LP_LP_EarthPit_Inspection",
+  "template": "Metric Generic Model.rft",
+  "about": "Earth pit: four precast chamber walls, steel lid frame, concrete lid with yellow plate, lift rings and label; rod head, clamp and green/yellow lead inside. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: lp lp earth pit inspection lightning protection hospital; images: https://www.google.com/search?tbm=isch&q=lp+lp+earth+pit+inspection+lightning+protection+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Site"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+    },
+    {
+      "op": "add_type",
+      "name": "300x300_Concrete"
+    },
+    {
+      "op": "set_type_value",
+      "name": "300x300_Concrete/FMC_Cost_Unit",
+      "type": "300x300_Concrete",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "300x300_Concrete/FMC_Geometry_Stage",
+      "type": "300x300_Concrete",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "300x300_Concrete/IfcExportAs",
+      "type": "300x300_Concrete",
+      "param": "IfcExportAs",
+      "value": "IfcBuildingElementProxy"
+    },
+    {
+      "op": "set_type_value",
+      "name": "300x300_Concrete/Description",
+      "type": "300x300_Concrete",
+      "param": "Description",
+      "value": "Earth inspection pit, precast concrete 300 x 300 clear with heavy lid flush at ground, earth rod head and clamp visible inside"
+    },
+    {
+      "op": "set_type_value",
+      "name": "300x300_Concrete/Keynote",
+      "type": "300x300_Concrete",
+      "param": "Keynote",
+      "value": "X.EAR_02"
+    },
+    {
+      "op": "set_type_value",
+      "name": "300x300_Concrete/FMC_Keynote_Code",
+      "type": "300x300_Concrete",
+      "param": "FMC_Keynote_Code",
+      "value": "X.EAR_02"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Conc",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Conc Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Concrete_C25",
+      "param": "Conc Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Struct",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Struct Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_StructuralSteel_S275",
+      "param": "Struct Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Yellow",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Yellow Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Yellow",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Galv",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Galv Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_ColdFormed_Galvanised",
+      "param": "Galv Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Cubond",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Cubond Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_EarthRod_CopperBond",
+      "param": "Cubond Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Brass",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Brass Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Brass_Polished",
+      "param": "Brass Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Gy",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Gy Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_CableCore_GreenYellow",
+      "param": "Gy Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -205,
+          -205
+        ],
+        [
+          205,
+          -205
+        ],
+        [
+          205,
+          205
+        ],
+        [
+          -205,
+          205
+        ]
+      ],
+      "start": -450,
+      "end": 47
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Chamber Wall Front",
+      "points": [
+        [
+          -200,
+          -200
+        ],
+        [
+          200,
+          -200
+        ],
+        [
+          200,
+          -150
+        ],
+        [
+          -200,
+          -150
+        ]
+      ],
+      "start": -450,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Chamber Wall Front",
+      "subcategory": "Conc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Chamber Wall Front",
+      "param": "Conc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Chamber Wall Front",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Chamber Wall Back",
+      "points": [
+        [
+          -200,
+          150
+        ],
+        [
+          200,
+          150
+        ],
+        [
+          200,
+          200
+        ],
+        [
+          -200,
+          200
+        ]
+      ],
+      "start": -450,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Chamber Wall Back",
+      "subcategory": "Conc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Chamber Wall Back",
+      "param": "Conc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Chamber Wall Back",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Chamber Wall Left",
+      "points": [
+        [
+          -200,
+          -150
+        ],
+        [
+          -150,
+          -150
+        ],
+        [
+          -150,
+          150
+        ],
+        [
+          -200,
+          150
+        ]
+      ],
+      "start": -450,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Chamber Wall Left",
+      "subcategory": "Conc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Chamber Wall Left",
+      "param": "Conc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Chamber Wall Left",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Chamber Wall Right",
+      "points": [
+        [
+          150,
+          -150
+        ],
+        [
+          200,
+          -150
+        ],
+        [
+          200,
+          150
+        ],
+        [
+          150,
+          150
+        ]
+      ],
+      "start": -450,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Chamber Wall Right",
+      "subcategory": "Conc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Chamber Wall Right",
+      "param": "Conc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Chamber Wall Right",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Lid Frame",
+      "points": [
+        [
+          -205,
+          -205
+        ],
+        [
+          205,
+          -205
+        ],
+        [
+          205,
+          205
+        ],
+        [
+          -205,
+          205
+        ]
+      ],
+      "start": -10,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Lid Frame",
+      "subcategory": "Struct"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lid Frame",
+      "param": "Struct Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Lid Frame",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Lid",
+      "points": [
+        [
+          189,
+          -195
+        ],
+        [
+          191.3,
+          -194.54
+        ],
+        [
+          193.24,
+          -193.24
+        ],
+        [
+          194.54,
+          -191.3
+        ],
+        [
+          195,
+          -189
+        ],
+        [
+          195,
+          189
+        ],
+        [
+          194.54,
+          191.3
+        ],
+        [
+          193.24,
+          193.24
+        ],
+        [
+          191.3,
+          194.54
+        ],
+        [
+          189,
+          195
+        ],
+        [
+          -189,
+          195
+        ],
+        [
+          -191.3,
+          194.54
+        ],
+        [
+          -193.24,
+          193.24
+        ],
+        [
+          -194.54,
+          191.3
+        ],
+        [
+          -195,
+          189
+        ],
+        [
+          -195,
+          -189
+        ],
+        [
+          -194.54,
+          -191.3
+        ],
+        [
+          -193.24,
+          -193.24
+        ],
+        [
+          -191.3,
+          -194.54
+        ],
+        [
+          -189,
+          -195
+        ]
+      ],
+      "start": -8,
+      "end": 30
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Lid",
+      "subcategory": "Conc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lid",
+      "param": "Conc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Lid",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Lid Plate",
+      "points": [
+        [
+          181,
+          -185
+        ],
+        [
+          182.53,
+          -184.7
+        ],
+        [
+          183.83,
+          -183.83
+        ],
+        [
+          184.7,
+          -182.53
+        ],
+        [
+          185,
+          -181
+        ],
+        [
+          185,
+          181
+        ],
+        [
+          184.7,
+          182.53
+        ],
+        [
+          183.83,
+          183.83
+        ],
+        [
+          182.53,
+          184.7
+        ],
+        [
+          181,
+          185
+        ],
+        [
+          -181,
+          185
+        ],
+        [
+          -182.53,
+          184.7
+        ],
+        [
+          -183.83,
+          183.83
+        ],
+        [
+          -184.7,
+          182.53
+        ],
+        [
+          -185,
+          181
+        ],
+        [
+          -185,
+          -181
+        ],
+        [
+          -184.7,
+          -182.53
+        ],
+        [
+          -183.83,
+          -183.83
+        ],
+        [
+          -182.53,
+          -184.7
+        ],
+        [
+          -181,
+          -185
+        ]
+      ],
+      "start": 30,
+      "end": 32
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Lid Plate",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lid Plate",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Lid Plate",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Lift Ring 1",
+      "profile": [
+        [
+          10,
+          -40
+        ],
+        [
+          15,
+          -40
+        ],
+        [
+          15,
+          -30
+        ],
+        [
+          10,
+          -30
+        ]
+      ],
+      "axis_at": [
+        0,
+        32
+      ],
+      "axis": "x",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lift Ring 1",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Lift Ring 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Lift Ring 2",
+      "profile": [
+        [
+          10,
+          30
+        ],
+        [
+          15,
+          30
+        ],
+        [
+          15,
+          40
+        ],
+        [
+          10,
+          40
+        ]
+      ],
+      "axis_at": [
+        0,
+        32
+      ],
+      "axis": "x",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lift Ring 2",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Lift Ring 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Lid Label",
+      "points": [
+        [
+          -70,
+          -120
+        ],
+        [
+          70,
+          -120
+        ],
+        [
+          70,
+          -80
+        ],
+        [
+          -70,
+          -80
+        ]
+      ],
+      "start": 32,
+      "end": 33
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Lid Label",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lid Label",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Lid Label",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Earth Rod Head",
+      "points": [
+        [
+          8,
+          0
+        ],
+        [
+          7.73,
+          2.07
+        ],
+        [
+          6.93,
+          4
+        ],
+        [
+          5.66,
+          5.66
+        ],
+        [
+          4,
+          6.93
+        ],
+        [
+          2.07,
+          7.73
+        ],
+        [
+          0,
+          8
+        ],
+        [
+          -2.07,
+          7.73
+        ],
+        [
+          -4,
+          6.93
+        ],
+        [
+          -5.66,
+          5.66
+        ],
+        [
+          -6.93,
+          4
+        ],
+        [
+          -7.73,
+          2.07
+        ],
+        [
+          -8,
+          0
+        ],
+        [
+          -7.73,
+          -2.07
+        ],
+        [
+          -6.93,
+          -4
+        ],
+        [
+          -5.66,
+          -5.66
+        ],
+        [
+          -4,
+          -6.93
+        ],
+        [
+          -2.07,
+          -7.73
+        ],
+        [
+          0,
+          -8
+        ],
+        [
+          2.07,
+          -7.73
+        ],
+        [
+          4,
+          -6.93
+        ],
+        [
+          5.66,
+          -5.66
+        ],
+        [
+          6.93,
+          -4
+        ],
+        [
+          7.73,
+          -2.07
+        ]
+      ],
+      "start": -400,
+      "end": -150
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Earth Rod Head",
+      "subcategory": "Cubond"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Earth Rod Head",
+      "param": "Cubond Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Earth Rod Head",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rod Clamp",
+      "points": [
+        [
+          -15,
+          -15
+        ],
+        [
+          15,
+          -15
+        ],
+        [
+          15,
+          15
+        ],
+        [
+          -15,
+          15
+        ]
+      ],
+      "start": -200,
+      "end": -170
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rod Clamp",
+      "subcategory": "Brass"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rod Clamp",
+      "param": "Brass Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rod Clamp",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Earth Lead",
+      "points": [
+        [
+          5,
+          -185
+        ],
+        [
+          4.83,
+          -183.71
+        ],
+        [
+          4.33,
+          -182.5
+        ],
+        [
+          3.54,
+          -181.46
+        ],
+        [
+          2.5,
+          -180.67
+        ],
+        [
+          1.29,
+          -180.17
+        ],
+        [
+          0,
+          -180
+        ],
+        [
+          -1.29,
+          -180.17
+        ],
+        [
+          -2.5,
+          -180.67
+        ],
+        [
+          -3.54,
+          -181.46
+        ],
+        [
+          -4.33,
+          -182.5
+        ],
+        [
+          -4.83,
+          -183.71
+        ],
+        [
+          -5,
+          -185
+        ],
+        [
+          -4.83,
+          -186.29
+        ],
+        [
+          -4.33,
+          -187.5
+        ],
+        [
+          -3.54,
+          -188.54
+        ],
+        [
+          -2.5,
+          -189.33
+        ],
+        [
+          -1.29,
+          -189.83
+        ],
+        [
+          0,
+          -190
+        ],
+        [
+          1.29,
+          -189.83
+        ],
+        [
+          2.5,
+          -189.33
+        ],
+        [
+          3.54,
+          -188.54
+        ],
+        [
+          4.33,
+          -187.5
+        ],
+        [
+          4.83,
+          -186.29
+        ]
+      ],
+      "start": -150,
+      "end": 15,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Earth Lead",
+      "subcategory": "Gy"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Earth Lead",
+      "param": "Gy Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Earth Lead",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\LP\\_Images\\FMC_LP_LP_EarthPit_Inspection.png"
+    }
+  ],
+  "values": {
+    "Clear 300 x 300 x 450 mm, lid 390 mm": {
+      "value": "300x300x450",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Lid marked EARTH, removable for test": {
+      "value": "EARTH",
+      "source_status": "assumed",
+      "source": "BS 7430 / BS EN 62305-3"
+    }
   }
- ],
- "values": {
-  "Clear 300 x 300 x 450 mm, lid 390 mm": {
-   "value": "300x300x450",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Lid marked EARTH, removable for test": {
-   "value": "EARTH",
-   "source_status": "assumed",
-   "source": "BS 7430 / BS EN 62305-3"
-  }
- }
 }

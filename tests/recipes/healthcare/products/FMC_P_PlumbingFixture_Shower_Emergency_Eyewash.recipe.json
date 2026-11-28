@@ -1,2588 +1,2595 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_P_PlumbingFixture_Shower_Emergency_Eyewash",
- "template": "Metric Generic Model.rft",
- "about": "Emergency shower modelled as a generic product: foot plate, column, inlet tee, arm, cone head, valve with lever, pull rod and ring, eyewash arm, valve and bowl, twin sprays with dust covers, push flag, waste and green safety sign. Reference: query: shower emergency eyewash plumbing fixtures hospital; images: https://www.google.com/search?tbm=isch&q=shower+emergency+eyewash+plumbing+fixtures+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Plumbing Fixtures"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Pipe_System",
-   "guid": "19b06c84-7f51-563a-ac4a-ed9b4addfabc",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Discharge_Units",
-   "guid": "7aa955c0-3c0f-5f8c-a77b-9124e8d513eb",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Asset_Tag",
-   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Serial_Number",
-   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Install_Date",
-   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Warranty_End",
-   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Maintenance_Interval_Months",
-   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_OM_Link",
-   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Mounting_Height_mm",
-   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
-   "instance": true
-  },
-  {
-   "op": "add_type",
-   "name": "2300_Combo"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2300_Combo/FMC_Cost_Unit",
-   "type": "2300_Combo",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2300_Combo/FMC_Geometry_Stage",
-   "type": "2300_Combo",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2300_Combo/IfcExportAs",
-   "type": "2300_Combo",
-   "param": "IfcExportAs",
-   "value": "IfcSanitaryTerminal"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2300_Combo/Description",
-   "type": "2300_Combo",
-   "param": "Description",
-   "value": "Emergency shower and eyewash combination, free-standing yellow steel column, 2200 mm shower head with pull rod, eyewash bowl with twin spray heads and push flag"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2300_Combo/Keynote",
-   "type": "2300_Combo",
-   "param": "Keynote",
-   "value": "P.SHW_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2300_Combo/FMC_Keynote_Code",
-   "type": "2300_Combo",
-   "param": "FMC_Keynote_Code",
-   "value": "P.SHW_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2300_Combo/FMC_Code_Description",
-   "type": "2300_Combo",
-   "param": "FMC_Code_Description",
-   "value": "Shower Emergency Eyewash: Emergency shower and eyewash"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2300_Combo/FMC_Code_Group",
-   "type": "2300_Combo",
-   "param": "FMC_Code_Group",
-   "value": "P.SHW"
-  },
-  {
-   "op": "set_type_value",
-   "name": "2300_Combo/FMC_Role_Code",
-   "type": "2300_Combo",
-   "param": "FMC_Role_Code",
-   "value": "P"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Yellow",
-   "color": [
-    242,
-    194,
-    48
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Yellow Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Yellow",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Brass",
-   "color": [
-    200,
-    164,
-    74
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Brass Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Brass_Polished",
-   "param": "Brass Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Chrome",
-   "color": [
-    192,
-    195,
-    199
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Chrome Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Chrome_Polished",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Grey",
-   "color": [
-    154,
-    160,
-    166
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Grey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Grey",
-   "param": "Grey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Galvanised",
-   "color": [
-    158,
-    163,
-    166
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Galvanised Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_GI_Pipe",
-   "param": "Galvanised Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Safety Green",
-   "color": [
-    59,
-    209,
-    111
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Safety Green Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_LED_Green",
-   "param": "Safety Green Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -152,
-     -652
-    ],
-    [
-     218,
-     -652
-    ],
-    [
-     218,
-     130
-    ],
-    [
-     -152,
-     130
-    ]
-   ],
-   "start": 0,
-   "end": 2500.0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "revolution",
-   "name": "Foot Plate",
-   "profile": [
-    [
-     0,
-     0
-    ],
-    [
-     130,
-     0
-    ],
-    [
-     120,
-     15
-    ],
-    [
-     0,
-     15
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Foot Plate",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Foot Plate",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Column",
-   "points": [
-    [
-     20.0,
-     0.0
-    ],
-    [
-     19.32,
-     5.18
-    ],
-    [
-     17.32,
-     10.0
-    ],
-    [
-     14.14,
-     14.14
-    ],
-    [
-     10.0,
-     17.32
-    ],
-    [
-     5.18,
-     19.32
-    ],
-    [
-     0.0,
-     20.0
-    ],
-    [
-     -5.18,
-     19.32
-    ],
-    [
-     -10.0,
-     17.32
-    ],
-    [
-     -14.14,
-     14.14
-    ],
-    [
-     -17.32,
-     10.0
-    ],
-    [
-     -19.32,
-     5.18
-    ],
-    [
-     -20.0,
-     0.0
-    ],
-    [
-     -19.32,
-     -5.18
-    ],
-    [
-     -17.32,
-     -10.0
-    ],
-    [
-     -14.14,
-     -14.14
-    ],
-    [
-     -10.0,
-     -17.32
-    ],
-    [
-     -5.18,
-     -19.32
-    ],
-    [
-     -0.0,
-     -20.0
-    ],
-    [
-     5.18,
-     -19.32
-    ],
-    [
-     10.0,
-     -17.32
-    ],
-    [
-     14.14,
-     -14.14
-    ],
-    [
-     17.32,
-     -10.0
-    ],
-    [
-     19.32,
-     -5.18
-    ]
-   ],
-   "start": 15,
-   "end": 2200
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Column",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Column",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Column",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Inlet Tee",
-   "points": [
-    [
-     26.0,
-     0.0
-    ],
-    [
-     25.11,
-     6.73
-    ],
-    [
-     22.52,
-     13.0
-    ],
-    [
-     18.38,
-     18.38
-    ],
-    [
-     13.0,
-     22.52
-    ],
-    [
-     6.73,
-     25.11
-    ],
-    [
-     0.0,
-     26.0
-    ],
-    [
-     -6.73,
-     25.11
-    ],
-    [
-     -13.0,
-     22.52
-    ],
-    [
-     -18.38,
-     18.38
-    ],
-    [
-     -22.52,
-     13.0
-    ],
-    [
-     -25.11,
-     6.73
-    ],
-    [
-     -26.0,
-     0.0
-    ],
-    [
-     -25.11,
-     -6.73
-    ],
-    [
-     -22.52,
-     -13.0
-    ],
-    [
-     -18.38,
-     -18.38
-    ],
-    [
-     -13.0,
-     -22.52
-    ],
-    [
-     -6.73,
-     -25.11
-    ],
-    [
-     -0.0,
-     -26.0
-    ],
-    [
-     6.73,
-     -25.11
-    ],
-    [
-     13.0,
-     -22.52
-    ],
-    [
-     18.38,
-     -18.38
-    ],
-    [
-     22.52,
-     -13.0
-    ],
-    [
-     25.11,
-     -6.73
-    ]
-   ],
-   "start": 2170,
-   "end": 2260
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Inlet Tee",
-   "subcategory": "Brass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Inlet Tee",
-   "param": "Brass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Inlet Tee",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Shower Arm",
-   "points": [
-    [
-     18.0,
-     2215.0
-    ],
-    [
-     17.39,
-     2219.66
-    ],
-    [
-     15.59,
-     2224.0
-    ],
-    [
-     12.73,
-     2227.73
-    ],
-    [
-     9.0,
-     2230.59
-    ],
-    [
-     4.66,
-     2232.39
-    ],
-    [
-     0.0,
-     2233.0
-    ],
-    [
-     -4.66,
-     2232.39
-    ],
-    [
-     -9.0,
-     2230.59
-    ],
-    [
-     -12.73,
-     2227.73
-    ],
-    [
-     -15.59,
-     2224.0
-    ],
-    [
-     -17.39,
-     2219.66
-    ],
-    [
-     -18.0,
-     2215.0
-    ],
-    [
-     -17.39,
-     2210.34
-    ],
-    [
-     -15.59,
-     2206.0
-    ],
-    [
-     -12.73,
-     2202.27
-    ],
-    [
-     -9.0,
-     2199.41
-    ],
-    [
-     -4.66,
-     2197.61
-    ],
-    [
-     -0.0,
-     2197.0
-    ],
-    [
-     4.66,
-     2197.61
-    ],
-    [
-     9.0,
-     2199.41
-    ],
-    [
-     12.73,
-     2202.27
-    ],
-    [
-     15.59,
-     2206.0
-    ],
-    [
-     17.39,
-     2210.34
-    ]
-   ],
-   "start": 0,
-   "end": 520,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Shower Arm",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Shower Arm",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Shower Arm",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Head Stem",
-   "points": [
-    [
-     15.0,
-     -500.0
-    ],
-    [
-     14.49,
-     -496.12
-    ],
-    [
-     12.99,
-     -492.5
-    ],
-    [
-     10.61,
-     -489.39
-    ],
-    [
-     7.5,
-     -487.01
-    ],
-    [
-     3.88,
-     -485.51
-    ],
-    [
-     0.0,
-     -485.0
-    ],
-    [
-     -3.88,
-     -485.51
-    ],
-    [
-     -7.5,
-     -487.01
-    ],
-    [
-     -10.61,
-     -489.39
-    ],
-    [
-     -12.99,
-     -492.5
-    ],
-    [
-     -14.49,
-     -496.12
-    ],
-    [
-     -15.0,
-     -500.0
-    ],
-    [
-     -14.49,
-     -503.88
-    ],
-    [
-     -12.99,
-     -507.5
-    ],
-    [
-     -10.61,
-     -510.61
-    ],
-    [
-     -7.5,
-     -512.99
-    ],
-    [
-     -3.88,
-     -514.49
-    ],
-    [
-     -0.0,
-     -515.0
-    ],
-    [
-     3.88,
-     -514.49
-    ],
-    [
-     7.5,
-     -512.99
-    ],
-    [
-     10.61,
-     -510.61
-    ],
-    [
-     12.99,
-     -507.5
-    ],
-    [
-     14.49,
-     -503.88
-    ]
-   ],
-   "start": 2150,
-   "end": 2215
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Head Stem",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Head Stem",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Head Stem",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Shower Head",
-   "profile": [
-    [
-     0,
-     2050
-    ],
-    [
-     140,
-     2068
-    ],
-    [
-     152,
-     2090
-    ],
-    [
-     30,
-     2150
-    ],
-    [
-     0,
-     2150
-    ]
-   ],
-   "axis_at": [
-    0,
-    -500
-   ],
-   "axis": "z",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Shower Head",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Shower Head",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Shower Valve",
-   "points": [
-    [
-     30.0,
-     2215.0
-    ],
-    [
-     28.98,
-     2222.76
-    ],
-    [
-     25.98,
-     2230.0
-    ],
-    [
-     21.21,
-     2236.21
-    ],
-    [
-     15.0,
-     2240.98
-    ],
-    [
-     7.76,
-     2243.98
-    ],
-    [
-     0.0,
-     2245.0
-    ],
-    [
-     -7.76,
-     2243.98
-    ],
-    [
-     -15.0,
-     2240.98
-    ],
-    [
-     -21.21,
-     2236.21
-    ],
-    [
-     -25.98,
-     2230.0
-    ],
-    [
-     -28.98,
-     2222.76
-    ],
-    [
-     -30.0,
-     2215.0
-    ],
-    [
-     -28.98,
-     2207.24
-    ],
-    [
-     -25.98,
-     2200.0
-    ],
-    [
-     -21.21,
-     2193.79
-    ],
-    [
-     -15.0,
-     2189.02
-    ],
-    [
-     -7.76,
-     2186.02
-    ],
-    [
-     -0.0,
-     2185.0
-    ],
-    [
-     7.76,
-     2186.02
-    ],
-    [
-     15.0,
-     2189.02
-    ],
-    [
-     21.21,
-     2193.79
-    ],
-    [
-     25.98,
-     2200.0
-    ],
-    [
-     28.98,
-     2207.24
-    ]
-   ],
-   "start": 100,
-   "end": 150,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Shower Valve",
-   "subcategory": "Brass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Shower Valve",
-   "param": "Brass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Shower Valve",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Valve Lever",
-   "points": [
-    [
-     0,
-     -135
-    ],
-    [
-     190,
-     -135
-    ],
-    [
-     190,
-     -115
-    ],
-    [
-     0,
-     -115
-    ]
-   ],
-   "start": 2205,
-   "end": 2225
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Valve Lever",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Valve Lever",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Valve Lever",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pull Rod",
-   "points": [
-    [
-     185.0,
-     -125.0
-    ],
-    [
-     184.83,
-     -123.71
-    ],
-    [
-     184.33,
-     -122.5
-    ],
-    [
-     183.54,
-     -121.46
-    ],
-    [
-     182.5,
-     -120.67
-    ],
-    [
-     181.29,
-     -120.17
-    ],
-    [
-     180.0,
-     -120.0
-    ],
-    [
-     178.71,
-     -120.17
-    ],
-    [
-     177.5,
-     -120.67
-    ],
-    [
-     176.46,
-     -121.46
-    ],
-    [
-     175.67,
-     -122.5
-    ],
-    [
-     175.17,
-     -123.71
-    ],
-    [
-     175.0,
-     -125.0
-    ],
-    [
-     175.17,
-     -126.29
-    ],
-    [
-     175.67,
-     -127.5
-    ],
-    [
-     176.46,
-     -128.54
-    ],
-    [
-     177.5,
-     -129.33
-    ],
-    [
-     178.71,
-     -129.83
-    ],
-    [
-     180.0,
-     -130.0
-    ],
-    [
-     181.29,
-     -129.83
-    ],
-    [
-     182.5,
-     -129.33
-    ],
-    [
-     183.54,
-     -128.54
-    ],
-    [
-     184.33,
-     -127.5
-    ],
-    [
-     184.83,
-     -126.29
-    ]
-   ],
-   "start": 1580,
-   "end": 2210
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pull Rod",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pull Rod",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pull Rod",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Pull Ring",
-   "profile": [
-    [
-     30,
-     120
-    ],
-    [
-     38,
-     120
-    ],
-    [
-     38,
-     130
-    ],
-    [
-     30,
-     130
-    ]
-   ],
-   "axis_at": [
-    180,
-    1545
-   ],
-   "axis": "y",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pull Ring",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pull Ring",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Eyewash Arm",
-   "points": [
-    [
-     15.0,
-     1000.0
-    ],
-    [
-     14.49,
-     1003.88
-    ],
-    [
-     12.99,
-     1007.5
-    ],
-    [
-     10.61,
-     1010.61
-    ],
-    [
-     7.5,
-     1012.99
-    ],
-    [
-     3.88,
-     1014.49
-    ],
-    [
-     0.0,
-     1015.0
-    ],
-    [
-     -3.88,
-     1014.49
-    ],
-    [
-     -7.5,
-     1012.99
-    ],
-    [
-     -10.61,
-     1010.61
-    ],
-    [
-     -12.99,
-     1007.5
-    ],
-    [
-     -14.49,
-     1003.88
-    ],
-    [
-     -15.0,
-     1000.0
-    ],
-    [
-     -14.49,
-     996.12
-    ],
-    [
-     -12.99,
-     992.5
-    ],
-    [
-     -10.61,
-     989.39
-    ],
-    [
-     -7.5,
-     987.01
-    ],
-    [
-     -3.88,
-     985.51
-    ],
-    [
-     -0.0,
-     985.0
-    ],
-    [
-     3.88,
-     985.51
-    ],
-    [
-     7.5,
-     987.01
-    ],
-    [
-     10.61,
-     989.39
-    ],
-    [
-     12.99,
-     992.5
-    ],
-    [
-     14.49,
-     996.12
-    ]
-   ],
-   "start": 0,
-   "end": 300,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Eyewash Arm",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Eyewash Arm",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Eyewash Arm",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Eyewash Valve",
-   "points": [
-    [
-     26.0,
-     1000.0
-    ],
-    [
-     25.11,
-     1006.73
-    ],
-    [
-     22.52,
-     1013.0
-    ],
-    [
-     18.38,
-     1018.38
-    ],
-    [
-     13.0,
-     1022.52
-    ],
-    [
-     6.73,
-     1025.11
-    ],
-    [
-     0.0,
-     1026.0
-    ],
-    [
-     -6.73,
-     1025.11
-    ],
-    [
-     -13.0,
-     1022.52
-    ],
-    [
-     -18.38,
-     1018.38
-    ],
-    [
-     -22.52,
-     1013.0
-    ],
-    [
-     -25.11,
-     1006.73
-    ],
-    [
-     -26.0,
-     1000.0
-    ],
-    [
-     -25.11,
-     993.27
-    ],
-    [
-     -22.52,
-     987.0
-    ],
-    [
-     -18.38,
-     981.62
-    ],
-    [
-     -13.0,
-     977.48
-    ],
-    [
-     -6.73,
-     974.89
-    ],
-    [
-     -0.0,
-     974.0
-    ],
-    [
-     6.73,
-     974.89
-    ],
-    [
-     13.0,
-     977.48
-    ],
-    [
-     18.38,
-     981.62
-    ],
-    [
-     22.52,
-     987.0
-    ],
-    [
-     25.11,
-     993.27
-    ]
-   ],
-   "start": 70,
-   "end": 120,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Eyewash Valve",
-   "subcategory": "Brass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Eyewash Valve",
-   "param": "Brass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Eyewash Valve",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Eyewash Bowl",
-   "profile": [
-    [
-     20,
-     945
-    ],
-    [
-     150,
-     1000
-    ],
-    [
-     150,
-     1012
-    ],
-    [
-     140,
-     1012
-    ],
-    [
-     15,
-     965
-    ],
-    [
-     0,
-     965
-    ],
-    [
-     0,
-     945
-    ]
-   ],
-   "axis_at": [
-    0,
-    -400
-   ],
-   "axis": "z",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Eyewash Bowl",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Eyewash Bowl",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Spray Head 1",
-   "points": [
-    [
-     -46.0,
-     -400.0
-    ],
-    [
-     -46.48,
-     -396.38
-    ],
-    [
-     -47.88,
-     -393.0
-    ],
-    [
-     -50.1,
-     -390.1
-    ],
-    [
-     -53.0,
-     -387.88
-    ],
-    [
-     -56.38,
-     -386.48
-    ],
-    [
-     -60.0,
-     -386.0
-    ],
-    [
-     -63.62,
-     -386.48
-    ],
-    [
-     -67.0,
-     -387.88
-    ],
-    [
-     -69.9,
-     -390.1
-    ],
-    [
-     -72.12,
-     -393.0
-    ],
-    [
-     -73.52,
-     -396.38
-    ],
-    [
-     -74.0,
-     -400.0
-    ],
-    [
-     -73.52,
-     -403.62
-    ],
-    [
-     -72.12,
-     -407.0
-    ],
-    [
-     -69.9,
-     -409.9
-    ],
-    [
-     -67.0,
-     -412.12
-    ],
-    [
-     -63.62,
-     -413.52
-    ],
-    [
-     -60.0,
-     -414.0
-    ],
-    [
-     -56.38,
-     -413.52
-    ],
-    [
-     -53.0,
-     -412.12
-    ],
-    [
-     -50.1,
-     -409.9
-    ],
-    [
-     -47.88,
-     -407.0
-    ],
-    [
-     -46.48,
-     -403.62
-    ]
-   ],
-   "start": 965,
-   "end": 1030
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Spray Head 1",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Spray Head 1",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Spray Head 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Spray Head 2",
-   "points": [
-    [
-     74.0,
-     -400.0
-    ],
-    [
-     73.52,
-     -396.38
-    ],
-    [
-     72.12,
-     -393.0
-    ],
-    [
-     69.9,
-     -390.1
-    ],
-    [
-     67.0,
-     -387.88
-    ],
-    [
-     63.62,
-     -386.48
-    ],
-    [
-     60.0,
-     -386.0
-    ],
-    [
-     56.38,
-     -386.48
-    ],
-    [
-     53.0,
-     -387.88
-    ],
-    [
-     50.1,
-     -390.1
-    ],
-    [
-     47.88,
-     -393.0
-    ],
-    [
-     46.48,
-     -396.38
-    ],
-    [
-     46.0,
-     -400.0
-    ],
-    [
-     46.48,
-     -403.62
-    ],
-    [
-     47.88,
-     -407.0
-    ],
-    [
-     50.1,
-     -409.9
-    ],
-    [
-     53.0,
-     -412.12
-    ],
-    [
-     56.38,
-     -413.52
-    ],
-    [
-     60.0,
-     -414.0
-    ],
-    [
-     63.62,
-     -413.52
-    ],
-    [
-     67.0,
-     -412.12
-    ],
-    [
-     69.9,
-     -409.9
-    ],
-    [
-     72.12,
-     -407.0
-    ],
-    [
-     73.52,
-     -403.62
-    ]
-   ],
-   "start": 965,
-   "end": 1030
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Spray Head 2",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Spray Head 2",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Spray Head 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Dust Cover 1",
-   "profile": [
-    [
-     0,
-     1030
-    ],
-    [
-     20,
-     1030
-    ],
-    [
-     18,
-     1042
-    ],
-    [
-     0,
-     1046
-    ]
-   ],
-   "axis_at": [
-    -60,
-    -400
-   ],
-   "axis": "z",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Dust Cover 1",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Dust Cover 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Dust Cover 2",
-   "profile": [
-    [
-     0,
-     1030
-    ],
-    [
-     20,
-     1030
-    ],
-    [
-     18,
-     1042
-    ],
-    [
-     0,
-     1046
-    ]
-   ],
-   "axis_at": [
-    60,
-    -400
-   ],
-   "axis": "z",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Dust Cover 2",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Dust Cover 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Push Flag",
-   "points": [
-    [
-     60.0,
-     960.0
-    ],
-    [
-     63.83,
-     960.76
-    ],
-    [
-     67.07,
-     962.93
-    ],
-    [
-     69.24,
-     966.17
-    ],
-    [
-     70.0,
-     970.0
-    ],
-    [
-     70.0,
-     1050.0
-    ],
-    [
-     69.24,
-     1053.83
-    ],
-    [
-     67.07,
-     1057.07
-    ],
-    [
-     63.83,
-     1059.24
-    ],
-    [
-     60.0,
-     1060.0
-    ],
-    [
-     -60.0,
-     1060.0
-    ],
-    [
-     -63.83,
-     1059.24
-    ],
-    [
-     -67.07,
-     1057.07
-    ],
-    [
-     -69.24,
-     1053.83
-    ],
-    [
-     -70.0,
-     1050.0
-    ],
-    [
-     -70.0,
-     970.0
-    ],
-    [
-     -69.24,
-     966.17
-    ],
-    [
-     -67.07,
-     962.93
-    ],
-    [
-     -63.83,
-     960.76
-    ],
-    [
-     -60.0,
-     960.0
-    ]
-   ],
-   "start": 555,
-   "end": 568,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Push Flag",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Push Flag",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Push Flag",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Push Flag Arm",
-   "points": [
-    [
-     -8,
-     -555
-    ],
-    [
-     8,
-     -555
-    ],
-    [
-     8,
-     -520
-    ],
-    [
-     -8,
-     -520
-    ]
-   ],
-   "start": 990,
-   "end": 1000
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Push Flag Arm",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Push Flag Arm",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Push Flag Arm",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bowl Waste",
-   "points": [
-    [
-     16.0,
-     -400.0
-    ],
-    [
-     15.45,
-     -395.86
-    ],
-    [
-     13.86,
-     -392.0
-    ],
-    [
-     11.31,
-     -388.69
-    ],
-    [
-     8.0,
-     -386.14
-    ],
-    [
-     4.14,
-     -384.55
-    ],
-    [
-     0.0,
-     -384.0
-    ],
-    [
-     -4.14,
-     -384.55
-    ],
-    [
-     -8.0,
-     -386.14
-    ],
-    [
-     -11.31,
-     -388.69
-    ],
-    [
-     -13.86,
-     -392.0
-    ],
-    [
-     -15.45,
-     -395.86
-    ],
-    [
-     -16.0,
-     -400.0
-    ],
-    [
-     -15.45,
-     -404.14
-    ],
-    [
-     -13.86,
-     -408.0
-    ],
-    [
-     -11.31,
-     -411.31
-    ],
-    [
-     -8.0,
-     -413.86
-    ],
-    [
-     -4.14,
-     -415.45
-    ],
-    [
-     -0.0,
-     -416.0
-    ],
-    [
-     4.14,
-     -415.45
-    ],
-    [
-     8.0,
-     -413.86
-    ],
-    [
-     11.31,
-     -411.31
-    ],
-    [
-     13.86,
-     -408.0
-    ],
-    [
-     15.45,
-     -404.14
-    ]
-   ],
-   "start": 120,
-   "end": 945
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bowl Waste",
-   "subcategory": "Galvanised"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bowl Waste",
-   "param": "Galvanised Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bowl Waste",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Waste Elbow",
-   "points": [
-    [
-     16.0,
-     120.0
-    ],
-    [
-     15.45,
-     124.14
-    ],
-    [
-     13.86,
-     128.0
-    ],
-    [
-     11.31,
-     131.31
-    ],
-    [
-     8.0,
-     133.86
-    ],
-    [
-     4.14,
-     135.45
-    ],
-    [
-     0.0,
-     136.0
-    ],
-    [
-     -4.14,
-     135.45
-    ],
-    [
-     -8.0,
-     133.86
-    ],
-    [
-     -11.31,
-     131.31
-    ],
-    [
-     -13.86,
-     128.0
-    ],
-    [
-     -15.45,
-     124.14
-    ],
-    [
-     -16.0,
-     120.0
-    ],
-    [
-     -15.45,
-     115.86
-    ],
-    [
-     -13.86,
-     112.0
-    ],
-    [
-     -11.31,
-     108.69
-    ],
-    [
-     -8.0,
-     106.14
-    ],
-    [
-     -4.14,
-     104.55
-    ],
-    [
-     -0.0,
-     104.0
-    ],
-    [
-     4.14,
-     104.55
-    ],
-    [
-     8.0,
-     106.14
-    ],
-    [
-     11.31,
-     108.69
-    ],
-    [
-     13.86,
-     112.0
-    ],
-    [
-     15.45,
-     115.86
-    ]
-   ],
-   "start": 0,
-   "end": 400,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Waste Elbow",
-   "subcategory": "Galvanised"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Waste Elbow",
-   "param": "Galvanised Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Waste Elbow",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Sign",
-   "points": [
-    [
-     144.0,
-     2280.0
-    ],
-    [
-     146.3,
-     2280.46
-    ],
-    [
-     148.24,
-     2281.76
-    ],
-    [
-     149.54,
-     2283.7
-    ],
-    [
-     150.0,
-     2286.0
-    ],
-    [
-     150.0,
-     2494.0
-    ],
-    [
-     149.54,
-     2496.3
-    ],
-    [
-     148.24,
-     2498.24
-    ],
-    [
-     146.3,
-     2499.54
-    ],
-    [
-     144.0,
-     2500.0
-    ],
-    [
-     -144.0,
-     2500.0
-    ],
-    [
-     -146.3,
-     2499.54
-    ],
-    [
-     -148.24,
-     2498.24
-    ],
-    [
-     -149.54,
-     2496.3
-    ],
-    [
-     -150.0,
-     2494.0
-    ],
-    [
-     -150.0,
-     2286.0
-    ],
-    [
-     -149.54,
-     2283.7
-    ],
-    [
-     -148.24,
-     2281.76
-    ],
-    [
-     -146.3,
-     2280.46
-    ],
-    [
-     -144.0,
-     2280.0
-    ]
-   ],
-   "start": 20,
-   "end": 26,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sign",
-   "subcategory": "Safety Green"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sign",
-   "param": "Safety Green Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sign",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "CW",
-   "domain": "pipe",
-   "system": "DomesticColdWater",
-   "solid": "Inlet Tee",
-   "side": "top",
-   "diameter": 32,
-   "flow": "In"
-  },
-  {
-   "op": "add_connector",
-   "name": "Waste",
-   "domain": "pipe",
-   "system": "Sanitary",
-   "solid": "Waste Elbow",
-   "side": "back",
-   "diameter": 32,
-   "flow": "Out"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_PlumbingFixture_Shower_Emergency_Eyewash.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_P_PlumbingFixture_Shower_Emergency_Eyewash",
+  "template": "Metric Generic Model.rft",
+  "about": "Emergency shower modelled as a generic product: foot plate, column, inlet tee, arm, cone head, valve with lever, pull rod and ring, eyewash arm, valve and bowl, twin sprays with dust covers, push flag, waste and green safety sign. Reference: query: shower emergency eyewash plumbing fixtures hospital; images: https://www.google.com/search?tbm=isch&q=shower+emergency+eyewash+plumbing+fixtures+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Plumbing Fixtures"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Pipe_System",
+      "guid": "19b06c84-7f51-563a-ac4a-ed9b4addfabc",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Discharge_Units",
+      "guid": "7aa955c0-3c0f-5f8c-a77b-9124e8d513eb",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Asset_Tag",
+      "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Serial_Number",
+      "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Install_Date",
+      "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Warranty_End",
+      "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Maintenance_Interval_Months",
+      "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_OM_Link",
+      "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Mounting_Height_mm",
+      "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+      "instance": true
+    },
+    {
+      "op": "add_type",
+      "name": "2300_Combo"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2300_Combo/FMC_Cost_Unit",
+      "type": "2300_Combo",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2300_Combo/FMC_Geometry_Stage",
+      "type": "2300_Combo",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2300_Combo/IfcExportAs",
+      "type": "2300_Combo",
+      "param": "IfcExportAs",
+      "value": "IfcSanitaryTerminal"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2300_Combo/Description",
+      "type": "2300_Combo",
+      "param": "Description",
+      "value": "Emergency shower and eyewash combination, free-standing yellow steel column, 2200 mm shower head with pull rod, eyewash bowl with twin spray heads and push flag"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2300_Combo/Keynote",
+      "type": "2300_Combo",
+      "param": "Keynote",
+      "value": "P.SHW_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2300_Combo/FMC_Keynote_Code",
+      "type": "2300_Combo",
+      "param": "FMC_Keynote_Code",
+      "value": "P.SHW_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2300_Combo/FMC_Code_Description",
+      "type": "2300_Combo",
+      "param": "FMC_Code_Description",
+      "value": "Shower Emergency Eyewash: Emergency shower and eyewash"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2300_Combo/FMC_Code_Group",
+      "type": "2300_Combo",
+      "param": "FMC_Code_Group",
+      "value": "P.SHW"
+    },
+    {
+      "op": "set_type_value",
+      "name": "2300_Combo/FMC_Role_Code",
+      "type": "2300_Combo",
+      "param": "FMC_Role_Code",
+      "value": "P"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Yellow",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Yellow Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Yellow",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Brass",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Brass Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Brass_Polished",
+      "param": "Brass Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Chrome",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Chrome Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Chrome_Polished",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Grey",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Grey Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Grey",
+      "param": "Grey Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Galvanised",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Galvanised Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_GI_Pipe",
+      "param": "Galvanised Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Safety Green",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Safety Green Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_LED_Green",
+      "param": "Safety Green Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -152,
+          -652
+        ],
+        [
+          218,
+          -652
+        ],
+        [
+          218,
+          130
+        ],
+        [
+          -152,
+          130
+        ]
+      ],
+      "start": 0,
+      "end": 2500
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "revolution",
+      "name": "Foot Plate",
+      "profile": [
+        [
+          0,
+          0
+        ],
+        [
+          130,
+          0
+        ],
+        [
+          120,
+          15
+        ],
+        [
+          0,
+          15
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Foot Plate",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Foot Plate",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Column",
+      "points": [
+        [
+          20,
+          0
+        ],
+        [
+          19.32,
+          5.18
+        ],
+        [
+          17.32,
+          10
+        ],
+        [
+          14.14,
+          14.14
+        ],
+        [
+          10,
+          17.32
+        ],
+        [
+          5.18,
+          19.32
+        ],
+        [
+          0,
+          20
+        ],
+        [
+          -5.18,
+          19.32
+        ],
+        [
+          -10,
+          17.32
+        ],
+        [
+          -14.14,
+          14.14
+        ],
+        [
+          -17.32,
+          10
+        ],
+        [
+          -19.32,
+          5.18
+        ],
+        [
+          -20,
+          0
+        ],
+        [
+          -19.32,
+          -5.18
+        ],
+        [
+          -17.32,
+          -10
+        ],
+        [
+          -14.14,
+          -14.14
+        ],
+        [
+          -10,
+          -17.32
+        ],
+        [
+          -5.18,
+          -19.32
+        ],
+        [
+          0,
+          -20
+        ],
+        [
+          5.18,
+          -19.32
+        ],
+        [
+          10,
+          -17.32
+        ],
+        [
+          14.14,
+          -14.14
+        ],
+        [
+          17.32,
+          -10
+        ],
+        [
+          19.32,
+          -5.18
+        ]
+      ],
+      "start": 15,
+      "end": 2200
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Column",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Column",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Column",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Inlet Tee",
+      "points": [
+        [
+          26,
+          0
+        ],
+        [
+          25.11,
+          6.73
+        ],
+        [
+          22.52,
+          13
+        ],
+        [
+          18.38,
+          18.38
+        ],
+        [
+          13,
+          22.52
+        ],
+        [
+          6.73,
+          25.11
+        ],
+        [
+          0,
+          26
+        ],
+        [
+          -6.73,
+          25.11
+        ],
+        [
+          -13,
+          22.52
+        ],
+        [
+          -18.38,
+          18.38
+        ],
+        [
+          -22.52,
+          13
+        ],
+        [
+          -25.11,
+          6.73
+        ],
+        [
+          -26,
+          0
+        ],
+        [
+          -25.11,
+          -6.73
+        ],
+        [
+          -22.52,
+          -13
+        ],
+        [
+          -18.38,
+          -18.38
+        ],
+        [
+          -13,
+          -22.52
+        ],
+        [
+          -6.73,
+          -25.11
+        ],
+        [
+          0,
+          -26
+        ],
+        [
+          6.73,
+          -25.11
+        ],
+        [
+          13,
+          -22.52
+        ],
+        [
+          18.38,
+          -18.38
+        ],
+        [
+          22.52,
+          -13
+        ],
+        [
+          25.11,
+          -6.73
+        ]
+      ],
+      "start": 2170,
+      "end": 2260
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Inlet Tee",
+      "subcategory": "Brass"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Inlet Tee",
+      "param": "Brass Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Inlet Tee",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Shower Arm",
+      "points": [
+        [
+          18,
+          2215
+        ],
+        [
+          17.39,
+          2219.66
+        ],
+        [
+          15.59,
+          2224
+        ],
+        [
+          12.73,
+          2227.73
+        ],
+        [
+          9,
+          2230.59
+        ],
+        [
+          4.66,
+          2232.39
+        ],
+        [
+          0,
+          2233
+        ],
+        [
+          -4.66,
+          2232.39
+        ],
+        [
+          -9,
+          2230.59
+        ],
+        [
+          -12.73,
+          2227.73
+        ],
+        [
+          -15.59,
+          2224
+        ],
+        [
+          -17.39,
+          2219.66
+        ],
+        [
+          -18,
+          2215
+        ],
+        [
+          -17.39,
+          2210.34
+        ],
+        [
+          -15.59,
+          2206
+        ],
+        [
+          -12.73,
+          2202.27
+        ],
+        [
+          -9,
+          2199.41
+        ],
+        [
+          -4.66,
+          2197.61
+        ],
+        [
+          0,
+          2197
+        ],
+        [
+          4.66,
+          2197.61
+        ],
+        [
+          9,
+          2199.41
+        ],
+        [
+          12.73,
+          2202.27
+        ],
+        [
+          15.59,
+          2206
+        ],
+        [
+          17.39,
+          2210.34
+        ]
+      ],
+      "start": 0,
+      "end": 520,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Shower Arm",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Shower Arm",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Shower Arm",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Head Stem",
+      "points": [
+        [
+          15,
+          -500
+        ],
+        [
+          14.49,
+          -496.12
+        ],
+        [
+          12.99,
+          -492.5
+        ],
+        [
+          10.61,
+          -489.39
+        ],
+        [
+          7.5,
+          -487.01
+        ],
+        [
+          3.88,
+          -485.51
+        ],
+        [
+          0,
+          -485
+        ],
+        [
+          -3.88,
+          -485.51
+        ],
+        [
+          -7.5,
+          -487.01
+        ],
+        [
+          -10.61,
+          -489.39
+        ],
+        [
+          -12.99,
+          -492.5
+        ],
+        [
+          -14.49,
+          -496.12
+        ],
+        [
+          -15,
+          -500
+        ],
+        [
+          -14.49,
+          -503.88
+        ],
+        [
+          -12.99,
+          -507.5
+        ],
+        [
+          -10.61,
+          -510.61
+        ],
+        [
+          -7.5,
+          -512.99
+        ],
+        [
+          -3.88,
+          -514.49
+        ],
+        [
+          0,
+          -515
+        ],
+        [
+          3.88,
+          -514.49
+        ],
+        [
+          7.5,
+          -512.99
+        ],
+        [
+          10.61,
+          -510.61
+        ],
+        [
+          12.99,
+          -507.5
+        ],
+        [
+          14.49,
+          -503.88
+        ]
+      ],
+      "start": 2150,
+      "end": 2215
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Head Stem",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Head Stem",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Head Stem",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Shower Head",
+      "profile": [
+        [
+          0,
+          2050
+        ],
+        [
+          140,
+          2068
+        ],
+        [
+          152,
+          2090
+        ],
+        [
+          30,
+          2150
+        ],
+        [
+          0,
+          2150
+        ]
+      ],
+      "axis_at": [
+        0,
+        -500
+      ],
+      "axis": "z",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Shower Head",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Shower Head",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Shower Valve",
+      "points": [
+        [
+          30,
+          2215
+        ],
+        [
+          28.98,
+          2222.76
+        ],
+        [
+          25.98,
+          2230
+        ],
+        [
+          21.21,
+          2236.21
+        ],
+        [
+          15,
+          2240.98
+        ],
+        [
+          7.76,
+          2243.98
+        ],
+        [
+          0,
+          2245
+        ],
+        [
+          -7.76,
+          2243.98
+        ],
+        [
+          -15,
+          2240.98
+        ],
+        [
+          -21.21,
+          2236.21
+        ],
+        [
+          -25.98,
+          2230
+        ],
+        [
+          -28.98,
+          2222.76
+        ],
+        [
+          -30,
+          2215
+        ],
+        [
+          -28.98,
+          2207.24
+        ],
+        [
+          -25.98,
+          2200
+        ],
+        [
+          -21.21,
+          2193.79
+        ],
+        [
+          -15,
+          2189.02
+        ],
+        [
+          -7.76,
+          2186.02
+        ],
+        [
+          0,
+          2185
+        ],
+        [
+          7.76,
+          2186.02
+        ],
+        [
+          15,
+          2189.02
+        ],
+        [
+          21.21,
+          2193.79
+        ],
+        [
+          25.98,
+          2200
+        ],
+        [
+          28.98,
+          2207.24
+        ]
+      ],
+      "start": 100,
+      "end": 150,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Shower Valve",
+      "subcategory": "Brass"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Shower Valve",
+      "param": "Brass Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Shower Valve",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Valve Lever",
+      "points": [
+        [
+          0,
+          -135
+        ],
+        [
+          190,
+          -135
+        ],
+        [
+          190,
+          -115
+        ],
+        [
+          0,
+          -115
+        ]
+      ],
+      "start": 2205,
+      "end": 2225
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Valve Lever",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Valve Lever",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Valve Lever",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pull Rod",
+      "points": [
+        [
+          185,
+          -125
+        ],
+        [
+          184.83,
+          -123.71
+        ],
+        [
+          184.33,
+          -122.5
+        ],
+        [
+          183.54,
+          -121.46
+        ],
+        [
+          182.5,
+          -120.67
+        ],
+        [
+          181.29,
+          -120.17
+        ],
+        [
+          180,
+          -120
+        ],
+        [
+          178.71,
+          -120.17
+        ],
+        [
+          177.5,
+          -120.67
+        ],
+        [
+          176.46,
+          -121.46
+        ],
+        [
+          175.67,
+          -122.5
+        ],
+        [
+          175.17,
+          -123.71
+        ],
+        [
+          175,
+          -125
+        ],
+        [
+          175.17,
+          -126.29
+        ],
+        [
+          175.67,
+          -127.5
+        ],
+        [
+          176.46,
+          -128.54
+        ],
+        [
+          177.5,
+          -129.33
+        ],
+        [
+          178.71,
+          -129.83
+        ],
+        [
+          180,
+          -130
+        ],
+        [
+          181.29,
+          -129.83
+        ],
+        [
+          182.5,
+          -129.33
+        ],
+        [
+          183.54,
+          -128.54
+        ],
+        [
+          184.33,
+          -127.5
+        ],
+        [
+          184.83,
+          -126.29
+        ]
+      ],
+      "start": 1580,
+      "end": 2210
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pull Rod",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pull Rod",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pull Rod",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Pull Ring",
+      "profile": [
+        [
+          30,
+          120
+        ],
+        [
+          38,
+          120
+        ],
+        [
+          38,
+          130
+        ],
+        [
+          30,
+          130
+        ]
+      ],
+      "axis_at": [
+        180,
+        1545
+      ],
+      "axis": "y",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pull Ring",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pull Ring",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Eyewash Arm",
+      "points": [
+        [
+          15,
+          1000
+        ],
+        [
+          14.49,
+          1003.88
+        ],
+        [
+          12.99,
+          1007.5
+        ],
+        [
+          10.61,
+          1010.61
+        ],
+        [
+          7.5,
+          1012.99
+        ],
+        [
+          3.88,
+          1014.49
+        ],
+        [
+          0,
+          1015
+        ],
+        [
+          -3.88,
+          1014.49
+        ],
+        [
+          -7.5,
+          1012.99
+        ],
+        [
+          -10.61,
+          1010.61
+        ],
+        [
+          -12.99,
+          1007.5
+        ],
+        [
+          -14.49,
+          1003.88
+        ],
+        [
+          -15,
+          1000
+        ],
+        [
+          -14.49,
+          996.12
+        ],
+        [
+          -12.99,
+          992.5
+        ],
+        [
+          -10.61,
+          989.39
+        ],
+        [
+          -7.5,
+          987.01
+        ],
+        [
+          -3.88,
+          985.51
+        ],
+        [
+          0,
+          985
+        ],
+        [
+          3.88,
+          985.51
+        ],
+        [
+          7.5,
+          987.01
+        ],
+        [
+          10.61,
+          989.39
+        ],
+        [
+          12.99,
+          992.5
+        ],
+        [
+          14.49,
+          996.12
+        ]
+      ],
+      "start": 0,
+      "end": 300,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Eyewash Arm",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Eyewash Arm",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Eyewash Arm",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Eyewash Valve",
+      "points": [
+        [
+          26,
+          1000
+        ],
+        [
+          25.11,
+          1006.73
+        ],
+        [
+          22.52,
+          1013
+        ],
+        [
+          18.38,
+          1018.38
+        ],
+        [
+          13,
+          1022.52
+        ],
+        [
+          6.73,
+          1025.11
+        ],
+        [
+          0,
+          1026
+        ],
+        [
+          -6.73,
+          1025.11
+        ],
+        [
+          -13,
+          1022.52
+        ],
+        [
+          -18.38,
+          1018.38
+        ],
+        [
+          -22.52,
+          1013
+        ],
+        [
+          -25.11,
+          1006.73
+        ],
+        [
+          -26,
+          1000
+        ],
+        [
+          -25.11,
+          993.27
+        ],
+        [
+          -22.52,
+          987
+        ],
+        [
+          -18.38,
+          981.62
+        ],
+        [
+          -13,
+          977.48
+        ],
+        [
+          -6.73,
+          974.89
+        ],
+        [
+          0,
+          974
+        ],
+        [
+          6.73,
+          974.89
+        ],
+        [
+          13,
+          977.48
+        ],
+        [
+          18.38,
+          981.62
+        ],
+        [
+          22.52,
+          987
+        ],
+        [
+          25.11,
+          993.27
+        ]
+      ],
+      "start": 70,
+      "end": 120,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Eyewash Valve",
+      "subcategory": "Brass"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Eyewash Valve",
+      "param": "Brass Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Eyewash Valve",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Eyewash Bowl",
+      "profile": [
+        [
+          20,
+          945
+        ],
+        [
+          150,
+          1000
+        ],
+        [
+          150,
+          1012
+        ],
+        [
+          140,
+          1012
+        ],
+        [
+          15,
+          965
+        ],
+        [
+          0,
+          965
+        ],
+        [
+          0,
+          945
+        ]
+      ],
+      "axis_at": [
+        0,
+        -400
+      ],
+      "axis": "z",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Eyewash Bowl",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Eyewash Bowl",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Spray Head 1",
+      "points": [
+        [
+          -46,
+          -400
+        ],
+        [
+          -46.48,
+          -396.38
+        ],
+        [
+          -47.88,
+          -393
+        ],
+        [
+          -50.1,
+          -390.1
+        ],
+        [
+          -53,
+          -387.88
+        ],
+        [
+          -56.38,
+          -386.48
+        ],
+        [
+          -60,
+          -386
+        ],
+        [
+          -63.62,
+          -386.48
+        ],
+        [
+          -67,
+          -387.88
+        ],
+        [
+          -69.9,
+          -390.1
+        ],
+        [
+          -72.12,
+          -393
+        ],
+        [
+          -73.52,
+          -396.38
+        ],
+        [
+          -74,
+          -400
+        ],
+        [
+          -73.52,
+          -403.62
+        ],
+        [
+          -72.12,
+          -407
+        ],
+        [
+          -69.9,
+          -409.9
+        ],
+        [
+          -67,
+          -412.12
+        ],
+        [
+          -63.62,
+          -413.52
+        ],
+        [
+          -60,
+          -414
+        ],
+        [
+          -56.38,
+          -413.52
+        ],
+        [
+          -53,
+          -412.12
+        ],
+        [
+          -50.1,
+          -409.9
+        ],
+        [
+          -47.88,
+          -407
+        ],
+        [
+          -46.48,
+          -403.62
+        ]
+      ],
+      "start": 965,
+      "end": 1030
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Spray Head 1",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Spray Head 1",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Spray Head 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Spray Head 2",
+      "points": [
+        [
+          74,
+          -400
+        ],
+        [
+          73.52,
+          -396.38
+        ],
+        [
+          72.12,
+          -393
+        ],
+        [
+          69.9,
+          -390.1
+        ],
+        [
+          67,
+          -387.88
+        ],
+        [
+          63.62,
+          -386.48
+        ],
+        [
+          60,
+          -386
+        ],
+        [
+          56.38,
+          -386.48
+        ],
+        [
+          53,
+          -387.88
+        ],
+        [
+          50.1,
+          -390.1
+        ],
+        [
+          47.88,
+          -393
+        ],
+        [
+          46.48,
+          -396.38
+        ],
+        [
+          46,
+          -400
+        ],
+        [
+          46.48,
+          -403.62
+        ],
+        [
+          47.88,
+          -407
+        ],
+        [
+          50.1,
+          -409.9
+        ],
+        [
+          53,
+          -412.12
+        ],
+        [
+          56.38,
+          -413.52
+        ],
+        [
+          60,
+          -414
+        ],
+        [
+          63.62,
+          -413.52
+        ],
+        [
+          67,
+          -412.12
+        ],
+        [
+          69.9,
+          -409.9
+        ],
+        [
+          72.12,
+          -407
+        ],
+        [
+          73.52,
+          -403.62
+        ]
+      ],
+      "start": 965,
+      "end": 1030
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Spray Head 2",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Spray Head 2",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Spray Head 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Dust Cover 1",
+      "profile": [
+        [
+          0,
+          1030
+        ],
+        [
+          20,
+          1030
+        ],
+        [
+          18,
+          1042
+        ],
+        [
+          0,
+          1046
+        ]
+      ],
+      "axis_at": [
+        -60,
+        -400
+      ],
+      "axis": "z",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Dust Cover 1",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Dust Cover 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Dust Cover 2",
+      "profile": [
+        [
+          0,
+          1030
+        ],
+        [
+          20,
+          1030
+        ],
+        [
+          18,
+          1042
+        ],
+        [
+          0,
+          1046
+        ]
+      ],
+      "axis_at": [
+        60,
+        -400
+      ],
+      "axis": "z",
+      "subcategory": "Grey"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Dust Cover 2",
+      "param": "Grey Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Dust Cover 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Push Flag",
+      "points": [
+        [
+          60,
+          960
+        ],
+        [
+          63.83,
+          960.76
+        ],
+        [
+          67.07,
+          962.93
+        ],
+        [
+          69.24,
+          966.17
+        ],
+        [
+          70,
+          970
+        ],
+        [
+          70,
+          1050
+        ],
+        [
+          69.24,
+          1053.83
+        ],
+        [
+          67.07,
+          1057.07
+        ],
+        [
+          63.83,
+          1059.24
+        ],
+        [
+          60,
+          1060
+        ],
+        [
+          -60,
+          1060
+        ],
+        [
+          -63.83,
+          1059.24
+        ],
+        [
+          -67.07,
+          1057.07
+        ],
+        [
+          -69.24,
+          1053.83
+        ],
+        [
+          -70,
+          1050
+        ],
+        [
+          -70,
+          970
+        ],
+        [
+          -69.24,
+          966.17
+        ],
+        [
+          -67.07,
+          962.93
+        ],
+        [
+          -63.83,
+          960.76
+        ],
+        [
+          -60,
+          960
+        ]
+      ],
+      "start": 555,
+      "end": 568,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Push Flag",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Push Flag",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Push Flag",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Push Flag Arm",
+      "points": [
+        [
+          -8,
+          -555
+        ],
+        [
+          8,
+          -555
+        ],
+        [
+          8,
+          -520
+        ],
+        [
+          -8,
+          -520
+        ]
+      ],
+      "start": 990,
+      "end": 1000
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Push Flag Arm",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Push Flag Arm",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Push Flag Arm",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bowl Waste",
+      "points": [
+        [
+          16,
+          -400
+        ],
+        [
+          15.45,
+          -395.86
+        ],
+        [
+          13.86,
+          -392
+        ],
+        [
+          11.31,
+          -388.69
+        ],
+        [
+          8,
+          -386.14
+        ],
+        [
+          4.14,
+          -384.55
+        ],
+        [
+          0,
+          -384
+        ],
+        [
+          -4.14,
+          -384.55
+        ],
+        [
+          -8,
+          -386.14
+        ],
+        [
+          -11.31,
+          -388.69
+        ],
+        [
+          -13.86,
+          -392
+        ],
+        [
+          -15.45,
+          -395.86
+        ],
+        [
+          -16,
+          -400
+        ],
+        [
+          -15.45,
+          -404.14
+        ],
+        [
+          -13.86,
+          -408
+        ],
+        [
+          -11.31,
+          -411.31
+        ],
+        [
+          -8,
+          -413.86
+        ],
+        [
+          -4.14,
+          -415.45
+        ],
+        [
+          0,
+          -416
+        ],
+        [
+          4.14,
+          -415.45
+        ],
+        [
+          8,
+          -413.86
+        ],
+        [
+          11.31,
+          -411.31
+        ],
+        [
+          13.86,
+          -408
+        ],
+        [
+          15.45,
+          -404.14
+        ]
+      ],
+      "start": 120,
+      "end": 945
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bowl Waste",
+      "subcategory": "Galvanised"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bowl Waste",
+      "param": "Galvanised Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bowl Waste",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Waste Elbow",
+      "points": [
+        [
+          16,
+          120
+        ],
+        [
+          15.45,
+          124.14
+        ],
+        [
+          13.86,
+          128
+        ],
+        [
+          11.31,
+          131.31
+        ],
+        [
+          8,
+          133.86
+        ],
+        [
+          4.14,
+          135.45
+        ],
+        [
+          0,
+          136
+        ],
+        [
+          -4.14,
+          135.45
+        ],
+        [
+          -8,
+          133.86
+        ],
+        [
+          -11.31,
+          131.31
+        ],
+        [
+          -13.86,
+          128
+        ],
+        [
+          -15.45,
+          124.14
+        ],
+        [
+          -16,
+          120
+        ],
+        [
+          -15.45,
+          115.86
+        ],
+        [
+          -13.86,
+          112
+        ],
+        [
+          -11.31,
+          108.69
+        ],
+        [
+          -8,
+          106.14
+        ],
+        [
+          -4.14,
+          104.55
+        ],
+        [
+          0,
+          104
+        ],
+        [
+          4.14,
+          104.55
+        ],
+        [
+          8,
+          106.14
+        ],
+        [
+          11.31,
+          108.69
+        ],
+        [
+          13.86,
+          112
+        ],
+        [
+          15.45,
+          115.86
+        ]
+      ],
+      "start": 0,
+      "end": 400,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Waste Elbow",
+      "subcategory": "Galvanised"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Waste Elbow",
+      "param": "Galvanised Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Waste Elbow",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Sign",
+      "points": [
+        [
+          144,
+          2280
+        ],
+        [
+          146.3,
+          2280.46
+        ],
+        [
+          148.24,
+          2281.76
+        ],
+        [
+          149.54,
+          2283.7
+        ],
+        [
+          150,
+          2286
+        ],
+        [
+          150,
+          2494
+        ],
+        [
+          149.54,
+          2496.3
+        ],
+        [
+          148.24,
+          2498.24
+        ],
+        [
+          146.3,
+          2499.54
+        ],
+        [
+          144,
+          2500
+        ],
+        [
+          -144,
+          2500
+        ],
+        [
+          -146.3,
+          2499.54
+        ],
+        [
+          -148.24,
+          2498.24
+        ],
+        [
+          -149.54,
+          2496.3
+        ],
+        [
+          -150,
+          2494
+        ],
+        [
+          -150,
+          2286
+        ],
+        [
+          -149.54,
+          2283.7
+        ],
+        [
+          -148.24,
+          2281.76
+        ],
+        [
+          -146.3,
+          2280.46
+        ],
+        [
+          -144,
+          2280
+        ]
+      ],
+      "start": 20,
+      "end": 26,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Sign",
+      "subcategory": "Safety Green"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sign",
+      "param": "Safety Green Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Sign",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "CW",
+      "domain": "pipe",
+      "system": "DomesticColdWater",
+      "solid": "Inlet Tee",
+      "side": "top",
+      "diameter": 32,
+      "flow": "In"
+    },
+    {
+      "op": "add_connector",
+      "name": "Waste",
+      "domain": "pipe",
+      "system": "Sanitary",
+      "solid": "Waste Elbow",
+      "side": "back",
+      "diameter": 32,
+      "flow": "Out"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_PlumbingFixture_Shower_Emergency_Eyewash.png"
+    }
+  ],
+  "values": {
+    "Shower head 2200 mm": {
+      "value": 2200,
+      "source_status": "assumed",
+      "source": "ANSI Z358.1 / BS EN 15154-1 head 2085-2440 mm"
+    },
+    "Eyewash bowl 1000 mm": {
+      "value": 1000,
+      "source_status": "assumed",
+      "source": "BS EN 15154-2 bowl 838-1143 mm"
+    },
+    "Supply 32 mm": {
+      "value": 32,
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   }
- ],
- "values": {
-  "Shower head 2200 mm": {
-   "value": 2200,
-   "source_status": "assumed",
-   "source": "ANSI Z358.1 / BS EN 15154-1 head 2085-2440 mm"
-  },
-  "Eyewash bowl 1000 mm": {
-   "value": 1000,
-   "source_status": "assumed",
-   "source": "BS EN 15154-2 bowl 838-1143 mm"
-  },
-  "Supply 32 mm": {
-   "value": 32,
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- }
 }

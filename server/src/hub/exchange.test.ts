@@ -84,3 +84,17 @@ test("X0: a flow may only run Formcraft tools, never fmc_flow itself", async () 
   assert.match(r.steps[0].error!, /can't run inside a flow/);
   for (const f of BUILTIN_FLOWS) assert.ok(f.steps.every((s) => s.tool.startsWith("fmc_")), f.name);
 });
+
+test("Speed (owner 27 Oct): the reverse index finds 2,000 links without scanning, and stays right when entries change", () => {
+  const map = loadIdentity(tmp());
+  for (let i = 0; i < 2000; i++) { const fmc = link(map, "revit", `uid-${i}`); link(map, "robot", `RUN#${i}`, { fmc }); }
+  assert.equal(findFmc(map, "robot", "RUN#1999"), findFmc(map, "revit", "uid-1999"));
+  assert.equal(findFmc(map, "revit", "UID-5"), null, "exact ids, as before");
+  // an id moved to another element: the old entry no longer answers
+  const other = link(map, "revit", "uid-x");
+  link(map, "robot", "RUN#7", { fmc: other });
+  assert.equal(findFmc(map, "robot", "RUN#7"), other);
+  // an entry added straight into the map (as clash review does) is still found
+  map.entries["FMC-direct"] = { fmc: "FMC-direct", apps: { navisworks: { id: "GUID-1", at: "" } } };
+  assert.equal(findFmc(map, "navisworks", "GUID-1"), "FMC-direct");
+});

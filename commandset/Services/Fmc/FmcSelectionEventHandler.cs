@@ -24,7 +24,7 @@ namespace RevitMCPCommandSet.Services.Fmc
         public JObject Result { get; private set; } = new JObject();
         public string Error { get; private set; } = "";
 
-        public bool WaitForCompletion(int timeoutMilliseconds = 10000) { _done.Reset(); return _done.WaitOne(timeoutMilliseconds); }
+        public bool WaitForCompletion(int timeoutMilliseconds = 10000) { _done.Reset(); return FmcBusy.Wait(_done, timeoutMilliseconds); }
         public string GetName() => "Formcraft selection";
 
         public void Execute(UIApplication app)
@@ -150,7 +150,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                 (contains || partial ? v.IndexOf(q, StringComparison.OrdinalIgnoreCase) >= 0 : string.Equals(v.Trim(), q, StringComparison.OrdinalIgnoreCase));
 
             var matches = new List<(Element E, string Field)>();
-            foreach (Element e in new FilteredElementCollector(doc).WhereElementIsNotElementType())
+            // Owner 26 Oct: an element id or UniqueId is looked up directly (ids made minutes ago were "not found")
+            Element byId = long.TryParse(q, out long idValue) ? doc.GetElement(new ElementId(idValue)) : q.Length > 30 ? doc.GetElement(q) : null;
+            if (byId != null && byId.Category != null) matches.Add((byId, "element id"));
+            foreach (Element e in byId != null ? Enumerable.Empty<Element>() : new FilteredElementCollector(doc).WhereElementIsNotElementType())
             {
                 if (e.Category == null) continue;
                 string field = null;

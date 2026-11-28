@@ -47,6 +47,8 @@ namespace RevitMCPCommandSet.Bridge
             foreach (string u in usings) source.Append("using ").Append(u).Append(";\n");
             source.Append("namespace AIGeneratedCode\n{\n    public static class CodeExecutor\n    {\n");
             source.Append("        public static object Execute(Document document, object[] parameters)\n        {\n");
+            // `doc` is the call's resolved document. It is not uiapp.ActiveUIDocument.Document.
+            source.Append("            Document doc = document;\n");
             source.Append("#line 1 \"").Append(ScriptPath).Append("\"\n");
             source.Append(code).Append('\n');
             source.Append("#line default\n        }\n    }\n}\n");
@@ -107,6 +109,35 @@ namespace RevitMCPCommandSet.Bridge
                 return SyntaxFactory.ParseExpression($"{TrackCall}({inner})").WithTriviaFrom(original);
             });
             return Parse(rewritten.ToFullString());
+        }
+
+        private const string CancelCall = "global::RevitMCPCommandSet.Bridge.FmcScript.CancelPoint();";
+
+        /// <summary>
+        /// Ogala night report (a cancelled script ran to its end): a cancel check at the top of every loop body. No new
+        /// lines are added, so the script's line numbers stay.
+        /// </summary>
+        public static SyntaxTree AddCancelChecks(SyntaxTree tree)
+        {
+            SyntaxNode root = tree.GetRoot();
+            SyntaxNode rewritten = new CancelChecks().Visit(root);
+            return rewritten == root ? tree : Parse(rewritten.ToFullString());
+        }
+
+        private sealed class CancelChecks : CSharpSyntaxRewriter
+        {
+            private static StatementSyntax Guard(StatementSyntax body)
+            {
+                StatementSyntax check = SyntaxFactory.ParseStatement(CancelCall);
+                if (body is BlockSyntax b) return b.WithStatements(b.Statements.Insert(0, check));
+                return SyntaxFactory.Block(check, body.WithoutTrivia()).WithTriviaFrom(body);
+            }
+
+            public override SyntaxNode VisitForStatement(ForStatementSyntax node) { var n = (ForStatementSyntax)base.VisitForStatement(node); return n.WithStatement(Guard(n.Statement)); }
+            public override SyntaxNode VisitForEachStatement(ForEachStatementSyntax node) { var n = (ForEachStatementSyntax)base.VisitForEachStatement(node); return n.WithStatement(Guard(n.Statement)); }
+            public override SyntaxNode VisitForEachVariableStatement(ForEachVariableStatementSyntax node) { var n = (ForEachVariableStatementSyntax)base.VisitForEachVariableStatement(node); return n.WithStatement(Guard(n.Statement)); }
+            public override SyntaxNode VisitWhileStatement(WhileStatementSyntax node) { var n = (WhileStatementSyntax)base.VisitWhileStatement(node); return n.WithStatement(Guard(n.Statement)); }
+            public override SyntaxNode VisitDoStatement(DoStatementSyntax node) { var n = (DoStatementSyntax)base.VisitDoStatement(node); return n.WithStatement(Guard(n.Statement)); }
         }
 
         private static IEnumerable<ExpressionSyntax> TransactionCreations(SyntaxNode root)

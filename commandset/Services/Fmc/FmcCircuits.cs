@@ -96,9 +96,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                 boardOut["family"] = board.Symbol?.FamilyName ?? "";
                 boardOut["type"] = board.Symbol?.Name ?? "";
                 boardOut["part_type"] = part?.ToString() ?? "";
-                if (part == null || !PanelParts.Contains(part.Value))
-                    throw new InvalidOperationException($"{board.Symbol?.FamilyName} has Part Type {part?.ToString() ?? "(none)"}: Revit takes a board as a circuit's panel only " +
-                        "when its Part Type is Panelboard, Switchboard or Other Panel. Rebuild the family with set_family_params part_type (kit change request §6)");
+                bool scheduleCapable = board.MEPModel?.ConnectorManager?.Connectors?.Cast<Connector>()
+                    .Any(c => c.Domain == Domain.DomainElectrical && (c.ElectricalSystemType == ElectricalSystemType.PowerBalanced || c.ElectricalSystemType == ElectricalSystemType.PowerUnBalanced)) == true;
+                if ((part == null || !PanelParts.Contains(part.Value)) && !scheduleCapable)
+                    throw new InvalidOperationException($"{board.Symbol?.FamilyName} has Part Type {part?.ToString() ?? "(none)"} and no panel-schedule connector: Revit takes a board as a circuit's panel when its Part Type is Panelboard, Switchboard or Other Panel, or the family has a power-balanced MEP connector.");
 
                 string boardName = (p.Value<string>("board_name") ?? "").Trim();
                 if (PanelName(board).Length == 0 && boardName.Length > 0)
@@ -114,18 +115,26 @@ namespace RevitMCPCommandSet.Services.Fmc
                 bool dsSet = false;
                 if (dsId == null || dsId == ElementId.InvalidElementId)
                 {
-                    if (!(p["distribution_system"] is JObject spec))
-                        throw new InvalidOperationException("The board has no distribution system: name one from the kit's Electrical_Settings (distribution_system)");
-                    DistributionSysType ds = DistributionSystem(doc, spec, p["voltages"] as JArray ?? new JArray(), notes);
-                    if (dsp.IsReadOnly || !dsp.Set(ds.Id))
-                        throw new InvalidOperationException($"Revit didn't take distribution system {ds.Name} on the board");
-                    dsSet = true;
-                    notes.Add($"Distribution system {ds.Name} set on the board (from the kit)");
+                    if (p["distribution_system"] is JObject spec)
+                    {
+                        DistributionSysType ds = DistributionSystem(doc, spec, p["voltages"] as JArray ?? new JArray(), notes);
+                        if (dsp.IsReadOnly || !dsp.Set(ds.Id))
+                            throw new InvalidOperationException($"Revit didn't take distribution system {ds.Name} on the board");
+                        dsSet = true;
+                        notes.Add($"Distribution system {ds.Name} set on the board (from the kit)");
+                    }
+                    else
+                    {
+                        notes.Add("FMC-PANEL-NO-DISTRIBUTION");
+                        problems.Add("FMC-PANEL-NO-DISTRIBUTION: set the Distribution System parameter (RBS_FAMILY_CONTENT_DISTRIBUTION_SYSTEM). Dry-run plan: set_parameter Distribution System.");
+                    }
                 }
                 boardOut["distribution_system"] = doc.GetElement(dsp.AsElementId())?.Name ?? "";
                 boardOut["distribution_set"] = dsSet;
+                boardOut["code"] = problems.Count > 0 && problems.Any(x => x.ToString().StartsWith("FMC-PANEL-NO-DISTRIBUTION")) ? "FMC-PANEL-NO-DISTRIBUTION" : "";
 
                 int n = 0;
+                if (problems.Count == 0)
                 foreach (JObject c in (p["circuits"] as JArray ?? new JArray()).OfType<JObject>())
                 {
                     n++;

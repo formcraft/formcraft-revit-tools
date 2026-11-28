@@ -1,1363 +1,1368 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_P_PipeAccessory_Valve_Gate",
- "template": "Metric Generic Model.rft",
- "about": "Gate valve modelled as a generic product: body, two flanges with bolts, wedge housing, bonnet with bolts, gland, stem, handwheel with rim, spokes and hub. Reference: query: pipe accessory valve gate pipe accessories hospital; images: https://www.google.com/search?tbm=isch&q=pipe+accessory+valve+gate+pipe+accessories+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Pipe Accessories"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Controller_ID",
-   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Type",
-   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Point_Signal",
-   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Protocol",
-   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "15-100_Gate"
-  },
-  {
-   "op": "set_type_value",
-   "name": "15-100_Gate/FMC_Cost_Unit",
-   "type": "15-100_Gate",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "15-100_Gate/FMC_Geometry_Stage",
-   "type": "15-100_Gate",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "15-100_Gate/IfcExportAs",
-   "type": "15-100_Gate",
-   "param": "IfcExportAs",
-   "value": "IfcValve"
-  },
-  {
-   "op": "set_type_value",
-   "name": "15-100_Gate/Description",
-   "type": "15-100_Gate",
-   "param": "Description",
-   "value": "Gate valve, flanged PN16 cast iron, non-rising stem, bronze trim, red handwheel; types cover DN15-100 (DN50 drawn)"
-  },
-  {
-   "op": "set_type_value",
-   "name": "15-100_Gate/Keynote",
-   "type": "15-100_Gate",
-   "param": "Keynote",
-   "value": "P.VLV_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "15-100_Gate/FMC_Keynote_Code",
-   "type": "15-100_Gate",
-   "param": "FMC_Keynote_Code",
-   "value": "P.VLV_00"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Painted Steel",
-   "color": [
-    61,
-    70,
-    80
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Painted Steel Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_SteelLTZ_Painted",
-   "param": "Painted Steel Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Chrome",
-   "color": [
-    192,
-    195,
-    199
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Chrome Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Chrome_Polished",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Brass",
-   "color": [
-    200,
-    164,
-    74
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Brass Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Brass_Polished",
-   "param": "Brass Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Red",
-   "color": [
-    181,
-    18,
-    27
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Red Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_FireHoseReel_Red",
-   "param": "Red Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -96,
-     -85
-    ],
-    [
-     96,
-     -85
-    ],
-    [
-     96,
-     85
-    ],
-    [
-     -96,
-     85
-    ]
-   ],
-   "start": -82,
-   "end": 213
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Body",
-   "points": [
-    [
-     38.0,
-     0.0
-    ],
-    [
-     36.71,
-     9.84
-    ],
-    [
-     32.91,
-     19.0
-    ],
-    [
-     26.87,
-     26.87
-    ],
-    [
-     19.0,
-     32.91
-    ],
-    [
-     9.84,
-     36.71
-    ],
-    [
-     0.0,
-     38.0
-    ],
-    [
-     -9.84,
-     36.71
-    ],
-    [
-     -19.0,
-     32.91
-    ],
-    [
-     -26.87,
-     26.87
-    ],
-    [
-     -32.91,
-     19.0
-    ],
-    [
-     -36.71,
-     9.84
-    ],
-    [
-     -38.0,
-     0.0
-    ],
-    [
-     -36.71,
-     -9.84
-    ],
-    [
-     -32.91,
-     -19.0
-    ],
-    [
-     -26.87,
-     -26.87
-    ],
-    [
-     -19.0,
-     -32.91
-    ],
-    [
-     -9.84,
-     -36.71
-    ],
-    [
-     -0.0,
-     -38.0
-    ],
-    [
-     9.84,
-     -36.71
-    ],
-    [
-     19.0,
-     -32.91
-    ],
-    [
-     26.87,
-     -26.87
-    ],
-    [
-     32.91,
-     -19.0
-    ],
-    [
-     36.71,
-     -9.84
-    ]
-   ],
-   "start": -75,
-   "end": 75,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Body",
-   "subcategory": "Painted Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Body",
-   "param": "Painted Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Body",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Flange 1",
-   "profile": [
-    [
-     0,
-     -90
-    ],
-    [
-     82,
-     -90
-    ],
-    [
-     82,
-     -72
-    ],
-    [
-     0,
-     -72
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "x",
-   "subcategory": "Painted Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flange 1",
-   "param": "Painted Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flange 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Flange 2",
-   "profile": [
-    [
-     0,
-     72
-    ],
-    [
-     82,
-     72
-    ],
-    [
-     82,
-     90
-    ],
-    [
-     0,
-     90
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "x",
-   "subcategory": "Painted Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flange 2",
-   "param": "Painted Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flange 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flange Bolt Top 1",
-   "points": [
-    [
-     7.0,
-     62.0
-    ],
-    [
-     3.5,
-     68.06
-    ],
-    [
-     -3.5,
-     68.06
-    ],
-    [
-     -7.0,
-     62.0
-    ],
-    [
-     -3.5,
-     55.94
-    ],
-    [
-     3.5,
-     55.94
-    ]
-   ],
-   "start": -96,
-   "end": -66,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flange Bolt Top 1",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flange Bolt Top 1",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flange Bolt Top 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flange Bolt Top 2",
-   "points": [
-    [
-     7.0,
-     62.0
-    ],
-    [
-     3.5,
-     68.06
-    ],
-    [
-     -3.5,
-     68.06
-    ],
-    [
-     -7.0,
-     62.0
-    ],
-    [
-     -3.5,
-     55.94
-    ],
-    [
-     3.5,
-     55.94
-    ]
-   ],
-   "start": 66,
-   "end": 96,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flange Bolt Top 2",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flange Bolt Top 2",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flange Bolt Top 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flange Bolt Bottom 1",
-   "points": [
-    [
-     7.0,
-     -62.0
-    ],
-    [
-     3.5,
-     -55.94
-    ],
-    [
-     -3.5,
-     -55.94
-    ],
-    [
-     -7.0,
-     -62.0
-    ],
-    [
-     -3.5,
-     -68.06
-    ],
-    [
-     3.5,
-     -68.06
-    ]
-   ],
-   "start": -96,
-   "end": -66,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flange Bolt Bottom 1",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flange Bolt Bottom 1",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flange Bolt Bottom 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Flange Bolt Bottom 2",
-   "points": [
-    [
-     7.0,
-     -62.0
-    ],
-    [
-     3.5,
-     -55.94
-    ],
-    [
-     -3.5,
-     -55.94
-    ],
-    [
-     -7.0,
-     -62.0
-    ],
-    [
-     -3.5,
-     -68.06
-    ],
-    [
-     3.5,
-     -68.06
-    ]
-   ],
-   "start": 66,
-   "end": 96,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Flange Bolt Bottom 2",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flange Bolt Bottom 2",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flange Bolt Bottom 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Wedge Housing",
-   "profile": [
-    [
-     0,
-     -45
-    ],
-    [
-     50,
-     -40
-    ],
-    [
-     52,
-     50
-    ],
-    [
-     0,
-     50
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Painted Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Wedge Housing",
-   "param": "Painted Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Wedge Housing",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Bonnet",
-   "profile": [
-    [
-     0,
-     50
-    ],
-    [
-     62,
-     50
-    ],
-    [
-     62,
-     64
-    ],
-    [
-     36,
-     64
-    ],
-    [
-     32,
-     120
-    ],
-    [
-     0,
-     120
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Painted Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bonnet",
-   "param": "Painted Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bonnet",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bonnet Bolt 1",
-   "points": [
-    [
-     -47.0,
-     0.0
-    ],
-    [
-     -49.5,
-     4.33
-    ],
-    [
-     -54.5,
-     4.33
-    ],
-    [
-     -57.0,
-     0.0
-    ],
-    [
-     -54.5,
-     -4.33
-    ],
-    [
-     -49.5,
-     -4.33
-    ]
-   ],
-   "start": 50,
-   "end": 72
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bonnet Bolt 1",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bonnet Bolt 1",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bonnet Bolt 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bonnet Bolt 2",
-   "points": [
-    [
-     57.0,
-     0.0
-    ],
-    [
-     54.5,
-     4.33
-    ],
-    [
-     49.5,
-     4.33
-    ],
-    [
-     47.0,
-     0.0
-    ],
-    [
-     49.5,
-     -4.33
-    ],
-    [
-     54.5,
-     -4.33
-    ]
-   ],
-   "start": 50,
-   "end": 72
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bonnet Bolt 2",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bonnet Bolt 2",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bonnet Bolt 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Gland",
-   "points": [
-    [
-     18.0,
-     0.0
-    ],
-    [
-     17.39,
-     4.66
-    ],
-    [
-     15.59,
-     9.0
-    ],
-    [
-     12.73,
-     12.73
-    ],
-    [
-     9.0,
-     15.59
-    ],
-    [
-     4.66,
-     17.39
-    ],
-    [
-     0.0,
-     18.0
-    ],
-    [
-     -4.66,
-     17.39
-    ],
-    [
-     -9.0,
-     15.59
-    ],
-    [
-     -12.73,
-     12.73
-    ],
-    [
-     -15.59,
-     9.0
-    ],
-    [
-     -17.39,
-     4.66
-    ],
-    [
-     -18.0,
-     0.0
-    ],
-    [
-     -17.39,
-     -4.66
-    ],
-    [
-     -15.59,
-     -9.0
-    ],
-    [
-     -12.73,
-     -12.73
-    ],
-    [
-     -9.0,
-     -15.59
-    ],
-    [
-     -4.66,
-     -17.39
-    ],
-    [
-     -0.0,
-     -18.0
-    ],
-    [
-     4.66,
-     -17.39
-    ],
-    [
-     9.0,
-     -15.59
-    ],
-    [
-     12.73,
-     -12.73
-    ],
-    [
-     15.59,
-     -9.0
-    ],
-    [
-     17.39,
-     -4.66
-    ]
-   ],
-   "start": 120,
-   "end": 140
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Gland",
-   "subcategory": "Brass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Gland",
-   "param": "Brass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Gland",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Stem",
-   "points": [
-    [
-     8.0,
-     0.0
-    ],
-    [
-     7.73,
-     2.07
-    ],
-    [
-     6.93,
-     4.0
-    ],
-    [
-     5.66,
-     5.66
-    ],
-    [
-     4.0,
-     6.93
-    ],
-    [
-     2.07,
-     7.73
-    ],
-    [
-     0.0,
-     8.0
-    ],
-    [
-     -2.07,
-     7.73
-    ],
-    [
-     -4.0,
-     6.93
-    ],
-    [
-     -5.66,
-     5.66
-    ],
-    [
-     -6.93,
-     4.0
-    ],
-    [
-     -7.73,
-     2.07
-    ],
-    [
-     -8.0,
-     0.0
-    ],
-    [
-     -7.73,
-     -2.07
-    ],
-    [
-     -6.93,
-     -4.0
-    ],
-    [
-     -5.66,
-     -5.66
-    ],
-    [
-     -4.0,
-     -6.93
-    ],
-    [
-     -2.07,
-     -7.73
-    ],
-    [
-     -0.0,
-     -8.0
-    ],
-    [
-     2.07,
-     -7.73
-    ],
-    [
-     4.0,
-     -6.93
-    ],
-    [
-     5.66,
-     -5.66
-    ],
-    [
-     6.93,
-     -4.0
-    ],
-    [
-     7.73,
-     -2.07
-    ]
-   ],
-   "start": 140,
-   "end": 200
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Stem",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Stem",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Stem",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Handwheel Rim",
-   "profile": [
-    [
-     76,
-     195
-    ],
-    [
-     85,
-     195
-    ],
-    [
-     85,
-     205
-    ],
-    [
-     76,
-     205
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Handwheel Rim",
-   "param": "Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Handwheel Rim",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Handwheel Spoke A",
-   "points": [
-    [
-     -80,
-     -5
-    ],
-    [
-     80,
-     -5
-    ],
-    [
-     80,
-     5
-    ],
-    [
-     -80,
-     5
-    ]
-   ],
-   "start": 197,
-   "end": 203
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Handwheel Spoke A",
-   "subcategory": "Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Handwheel Spoke A",
-   "param": "Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Handwheel Spoke A",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Handwheel Spoke B",
-   "points": [
-    [
-     -5,
-     -80
-    ],
-    [
-     5,
-     -80
-    ],
-    [
-     5,
-     80
-    ],
-    [
-     -5,
-     80
-    ]
-   ],
-   "start": 197,
-   "end": 203
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Handwheel Spoke B",
-   "subcategory": "Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Handwheel Spoke B",
-   "param": "Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Handwheel Spoke B",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Handwheel Hub",
-   "points": [
-    [
-     16.0,
-     0.0
-    ],
-    [
-     15.45,
-     4.14
-    ],
-    [
-     13.86,
-     8.0
-    ],
-    [
-     11.31,
-     11.31
-    ],
-    [
-     8.0,
-     13.86
-    ],
-    [
-     4.14,
-     15.45
-    ],
-    [
-     0.0,
-     16.0
-    ],
-    [
-     -4.14,
-     15.45
-    ],
-    [
-     -8.0,
-     13.86
-    ],
-    [
-     -11.31,
-     11.31
-    ],
-    [
-     -13.86,
-     8.0
-    ],
-    [
-     -15.45,
-     4.14
-    ],
-    [
-     -16.0,
-     0.0
-    ],
-    [
-     -15.45,
-     -4.14
-    ],
-    [
-     -13.86,
-     -8.0
-    ],
-    [
-     -11.31,
-     -11.31
-    ],
-    [
-     -8.0,
-     -13.86
-    ],
-    [
-     -4.14,
-     -15.45
-    ],
-    [
-     -0.0,
-     -16.0
-    ],
-    [
-     4.14,
-     -15.45
-    ],
-    [
-     8.0,
-     -13.86
-    ],
-    [
-     11.31,
-     -11.31
-    ],
-    [
-     13.86,
-     -8.0
-    ],
-    [
-     15.45,
-     -4.14
-    ]
-   ],
-   "start": 195,
-   "end": 213
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Handwheel Hub",
-   "subcategory": "Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Handwheel Hub",
-   "param": "Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Handwheel Hub",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "Inlet",
-   "domain": "pipe",
-   "system": "DomesticColdWater",
-   "solid": "Flange 1",
-   "side": "left",
-   "diameter": 50,
-   "flow": "In"
-  },
-  {
-   "op": "add_connector",
-   "name": "Outlet",
-   "domain": "pipe",
-   "system": "DomesticColdWater",
-   "solid": "Flange 2",
-   "side": "right",
-   "diameter": 50,
-   "flow": "Out"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_PipeAccessory_Valve_Gate.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_P_PipeAccessory_Valve_Gate",
+  "template": "Metric Generic Model.rft",
+  "about": "Gate valve modelled as a generic product: body, two flanges with bolts, wedge housing, bonnet with bolts, gland, stem, handwheel with rim, spokes and hub. Reference: query: pipe accessory valve gate pipe accessories hospital; images: https://www.google.com/search?tbm=isch&q=pipe+accessory+valve+gate+pipe+accessories+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Pipe Accessories"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Controller_ID",
+      "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Type",
+      "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Point_Signal",
+      "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Protocol",
+      "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "15-100_Gate"
+    },
+    {
+      "op": "set_type_value",
+      "name": "15-100_Gate/FMC_Cost_Unit",
+      "type": "15-100_Gate",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "15-100_Gate/FMC_Geometry_Stage",
+      "type": "15-100_Gate",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "15-100_Gate/IfcExportAs",
+      "type": "15-100_Gate",
+      "param": "IfcExportAs",
+      "value": "IfcValve"
+    },
+    {
+      "op": "set_type_value",
+      "name": "15-100_Gate/Description",
+      "type": "15-100_Gate",
+      "param": "Description",
+      "value": "Gate valve, flanged PN16 cast iron, non-rising stem, bronze trim, red handwheel; types cover DN15-100 (DN50 drawn)"
+    },
+    {
+      "op": "set_type_value",
+      "name": "15-100_Gate/Keynote",
+      "type": "15-100_Gate",
+      "param": "Keynote",
+      "value": "P.VLV_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "15-100_Gate/FMC_Keynote_Code",
+      "type": "15-100_Gate",
+      "param": "FMC_Keynote_Code",
+      "value": "P.VLV_00"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Painted Steel",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Painted Steel Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_SteelLTZ_Painted",
+      "param": "Painted Steel Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Chrome",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Chrome Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Chrome_Polished",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Brass",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Brass Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Brass_Polished",
+      "param": "Brass Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Red",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Red Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_FireHoseReel_Red",
+      "param": "Red Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -96,
+          -85
+        ],
+        [
+          96,
+          -85
+        ],
+        [
+          96,
+          85
+        ],
+        [
+          -96,
+          85
+        ]
+      ],
+      "start": -82,
+      "end": 213
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Body",
+      "points": [
+        [
+          38,
+          0
+        ],
+        [
+          36.71,
+          9.84
+        ],
+        [
+          32.91,
+          19
+        ],
+        [
+          26.87,
+          26.87
+        ],
+        [
+          19,
+          32.91
+        ],
+        [
+          9.84,
+          36.71
+        ],
+        [
+          0,
+          38
+        ],
+        [
+          -9.84,
+          36.71
+        ],
+        [
+          -19,
+          32.91
+        ],
+        [
+          -26.87,
+          26.87
+        ],
+        [
+          -32.91,
+          19
+        ],
+        [
+          -36.71,
+          9.84
+        ],
+        [
+          -38,
+          0
+        ],
+        [
+          -36.71,
+          -9.84
+        ],
+        [
+          -32.91,
+          -19
+        ],
+        [
+          -26.87,
+          -26.87
+        ],
+        [
+          -19,
+          -32.91
+        ],
+        [
+          -9.84,
+          -36.71
+        ],
+        [
+          0,
+          -38
+        ],
+        [
+          9.84,
+          -36.71
+        ],
+        [
+          19,
+          -32.91
+        ],
+        [
+          26.87,
+          -26.87
+        ],
+        [
+          32.91,
+          -19
+        ],
+        [
+          36.71,
+          -9.84
+        ]
+      ],
+      "start": -75,
+      "end": 75,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Body",
+      "subcategory": "Painted Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Body",
+      "param": "Painted Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Body",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Flange 1",
+      "profile": [
+        [
+          0,
+          -90
+        ],
+        [
+          82,
+          -90
+        ],
+        [
+          82,
+          -72
+        ],
+        [
+          0,
+          -72
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "x",
+      "subcategory": "Painted Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flange 1",
+      "param": "Painted Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flange 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Flange 2",
+      "profile": [
+        [
+          0,
+          72
+        ],
+        [
+          82,
+          72
+        ],
+        [
+          82,
+          90
+        ],
+        [
+          0,
+          90
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "x",
+      "subcategory": "Painted Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flange 2",
+      "param": "Painted Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flange 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flange Bolt Top 1",
+      "points": [
+        [
+          7,
+          62
+        ],
+        [
+          3.5,
+          68.06
+        ],
+        [
+          -3.5,
+          68.06
+        ],
+        [
+          -7,
+          62
+        ],
+        [
+          -3.5,
+          55.94
+        ],
+        [
+          3.5,
+          55.94
+        ]
+      ],
+      "start": -96,
+      "end": -66,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flange Bolt Top 1",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flange Bolt Top 1",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flange Bolt Top 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flange Bolt Top 2",
+      "points": [
+        [
+          7,
+          62
+        ],
+        [
+          3.5,
+          68.06
+        ],
+        [
+          -3.5,
+          68.06
+        ],
+        [
+          -7,
+          62
+        ],
+        [
+          -3.5,
+          55.94
+        ],
+        [
+          3.5,
+          55.94
+        ]
+      ],
+      "start": 66,
+      "end": 96,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flange Bolt Top 2",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flange Bolt Top 2",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flange Bolt Top 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flange Bolt Bottom 1",
+      "points": [
+        [
+          7,
+          -62
+        ],
+        [
+          3.5,
+          -55.94
+        ],
+        [
+          -3.5,
+          -55.94
+        ],
+        [
+          -7,
+          -62
+        ],
+        [
+          -3.5,
+          -68.06
+        ],
+        [
+          3.5,
+          -68.06
+        ]
+      ],
+      "start": -96,
+      "end": -66,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flange Bolt Bottom 1",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flange Bolt Bottom 1",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flange Bolt Bottom 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Flange Bolt Bottom 2",
+      "points": [
+        [
+          7,
+          -62
+        ],
+        [
+          3.5,
+          -55.94
+        ],
+        [
+          -3.5,
+          -55.94
+        ],
+        [
+          -7,
+          -62
+        ],
+        [
+          -3.5,
+          -68.06
+        ],
+        [
+          3.5,
+          -68.06
+        ]
+      ],
+      "start": 66,
+      "end": 96,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Flange Bolt Bottom 2",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flange Bolt Bottom 2",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flange Bolt Bottom 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Wedge Housing",
+      "profile": [
+        [
+          0,
+          -45
+        ],
+        [
+          50,
+          -40
+        ],
+        [
+          52,
+          50
+        ],
+        [
+          0,
+          50
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Painted Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Wedge Housing",
+      "param": "Painted Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Wedge Housing",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Bonnet",
+      "profile": [
+        [
+          0,
+          50
+        ],
+        [
+          62,
+          50
+        ],
+        [
+          62,
+          64
+        ],
+        [
+          36,
+          64
+        ],
+        [
+          32,
+          120
+        ],
+        [
+          0,
+          120
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Painted Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bonnet",
+      "param": "Painted Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bonnet",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bonnet Bolt 1",
+      "points": [
+        [
+          -47,
+          0
+        ],
+        [
+          -49.5,
+          4.33
+        ],
+        [
+          -54.5,
+          4.33
+        ],
+        [
+          -57,
+          0
+        ],
+        [
+          -54.5,
+          -4.33
+        ],
+        [
+          -49.5,
+          -4.33
+        ]
+      ],
+      "start": 50,
+      "end": 72
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bonnet Bolt 1",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bonnet Bolt 1",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bonnet Bolt 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bonnet Bolt 2",
+      "points": [
+        [
+          57,
+          0
+        ],
+        [
+          54.5,
+          4.33
+        ],
+        [
+          49.5,
+          4.33
+        ],
+        [
+          47,
+          0
+        ],
+        [
+          49.5,
+          -4.33
+        ],
+        [
+          54.5,
+          -4.33
+        ]
+      ],
+      "start": 50,
+      "end": 72
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bonnet Bolt 2",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bonnet Bolt 2",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bonnet Bolt 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Gland",
+      "points": [
+        [
+          18,
+          0
+        ],
+        [
+          17.39,
+          4.66
+        ],
+        [
+          15.59,
+          9
+        ],
+        [
+          12.73,
+          12.73
+        ],
+        [
+          9,
+          15.59
+        ],
+        [
+          4.66,
+          17.39
+        ],
+        [
+          0,
+          18
+        ],
+        [
+          -4.66,
+          17.39
+        ],
+        [
+          -9,
+          15.59
+        ],
+        [
+          -12.73,
+          12.73
+        ],
+        [
+          -15.59,
+          9
+        ],
+        [
+          -17.39,
+          4.66
+        ],
+        [
+          -18,
+          0
+        ],
+        [
+          -17.39,
+          -4.66
+        ],
+        [
+          -15.59,
+          -9
+        ],
+        [
+          -12.73,
+          -12.73
+        ],
+        [
+          -9,
+          -15.59
+        ],
+        [
+          -4.66,
+          -17.39
+        ],
+        [
+          0,
+          -18
+        ],
+        [
+          4.66,
+          -17.39
+        ],
+        [
+          9,
+          -15.59
+        ],
+        [
+          12.73,
+          -12.73
+        ],
+        [
+          15.59,
+          -9
+        ],
+        [
+          17.39,
+          -4.66
+        ]
+      ],
+      "start": 120,
+      "end": 140
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Gland",
+      "subcategory": "Brass"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Gland",
+      "param": "Brass Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Gland",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Stem",
+      "points": [
+        [
+          8,
+          0
+        ],
+        [
+          7.73,
+          2.07
+        ],
+        [
+          6.93,
+          4
+        ],
+        [
+          5.66,
+          5.66
+        ],
+        [
+          4,
+          6.93
+        ],
+        [
+          2.07,
+          7.73
+        ],
+        [
+          0,
+          8
+        ],
+        [
+          -2.07,
+          7.73
+        ],
+        [
+          -4,
+          6.93
+        ],
+        [
+          -5.66,
+          5.66
+        ],
+        [
+          -6.93,
+          4
+        ],
+        [
+          -7.73,
+          2.07
+        ],
+        [
+          -8,
+          0
+        ],
+        [
+          -7.73,
+          -2.07
+        ],
+        [
+          -6.93,
+          -4
+        ],
+        [
+          -5.66,
+          -5.66
+        ],
+        [
+          -4,
+          -6.93
+        ],
+        [
+          -2.07,
+          -7.73
+        ],
+        [
+          0,
+          -8
+        ],
+        [
+          2.07,
+          -7.73
+        ],
+        [
+          4,
+          -6.93
+        ],
+        [
+          5.66,
+          -5.66
+        ],
+        [
+          6.93,
+          -4
+        ],
+        [
+          7.73,
+          -2.07
+        ]
+      ],
+      "start": 140,
+      "end": 200
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Stem",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Stem",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Stem",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Handwheel Rim",
+      "profile": [
+        [
+          76,
+          195
+        ],
+        [
+          85,
+          195
+        ],
+        [
+          85,
+          205
+        ],
+        [
+          76,
+          205
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Red"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Handwheel Rim",
+      "param": "Red Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Handwheel Rim",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Handwheel Spoke A",
+      "points": [
+        [
+          -80,
+          -5
+        ],
+        [
+          80,
+          -5
+        ],
+        [
+          80,
+          5
+        ],
+        [
+          -80,
+          5
+        ]
+      ],
+      "start": 197,
+      "end": 203
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Handwheel Spoke A",
+      "subcategory": "Red"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Handwheel Spoke A",
+      "param": "Red Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Handwheel Spoke A",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Handwheel Spoke B",
+      "points": [
+        [
+          -5,
+          -80
+        ],
+        [
+          5,
+          -80
+        ],
+        [
+          5,
+          80
+        ],
+        [
+          -5,
+          80
+        ]
+      ],
+      "start": 197,
+      "end": 203
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Handwheel Spoke B",
+      "subcategory": "Red"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Handwheel Spoke B",
+      "param": "Red Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Handwheel Spoke B",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Handwheel Hub",
+      "points": [
+        [
+          16,
+          0
+        ],
+        [
+          15.45,
+          4.14
+        ],
+        [
+          13.86,
+          8
+        ],
+        [
+          11.31,
+          11.31
+        ],
+        [
+          8,
+          13.86
+        ],
+        [
+          4.14,
+          15.45
+        ],
+        [
+          0,
+          16
+        ],
+        [
+          -4.14,
+          15.45
+        ],
+        [
+          -8,
+          13.86
+        ],
+        [
+          -11.31,
+          11.31
+        ],
+        [
+          -13.86,
+          8
+        ],
+        [
+          -15.45,
+          4.14
+        ],
+        [
+          -16,
+          0
+        ],
+        [
+          -15.45,
+          -4.14
+        ],
+        [
+          -13.86,
+          -8
+        ],
+        [
+          -11.31,
+          -11.31
+        ],
+        [
+          -8,
+          -13.86
+        ],
+        [
+          -4.14,
+          -15.45
+        ],
+        [
+          0,
+          -16
+        ],
+        [
+          4.14,
+          -15.45
+        ],
+        [
+          8,
+          -13.86
+        ],
+        [
+          11.31,
+          -11.31
+        ],
+        [
+          13.86,
+          -8
+        ],
+        [
+          15.45,
+          -4.14
+        ]
+      ],
+      "start": 195,
+      "end": 213
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Handwheel Hub",
+      "subcategory": "Red"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Handwheel Hub",
+      "param": "Red Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Handwheel Hub",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "Inlet",
+      "domain": "pipe",
+      "system": "DomesticColdWater",
+      "solid": "Flange 1",
+      "side": "left",
+      "diameter": 50,
+      "flow": "In"
+    },
+    {
+      "op": "add_connector",
+      "name": "Outlet",
+      "domain": "pipe",
+      "system": "DomesticColdWater",
+      "solid": "Flange 2",
+      "side": "right",
+      "diameter": 50,
+      "flow": "Out"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_PipeAccessory_Valve_Gate.png"
+    }
+  ],
+  "values": {
+    "DN50 drawn, face to face 180 mm": {
+      "value": 180,
+      "source_status": "assumed",
+      "source": "BS EN 558 series 3"
+    },
+    "Flange 165 mm dia PN16": {
+      "value": 165,
+      "source_status": "assumed",
+      "source": "BS EN 1092-2 DN50 PN16"
+    },
+    "Height to handwheel 205 mm": {
+      "value": 205,
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   }
- ],
- "values": {
-  "DN50 drawn, face to face 180 mm": {
-   "value": 180,
-   "source_status": "assumed",
-   "source": "BS EN 558 series 3"
-  },
-  "Flange 165 mm dia PN16": {
-   "value": 165,
-   "source_status": "assumed",
-   "source": "BS EN 1092-2 DN50 PN16"
-  },
-  "Height to handwheel 205 mm": {
-   "value": 205,
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- }
 }

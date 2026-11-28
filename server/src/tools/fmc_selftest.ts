@@ -6,9 +6,9 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { configPath, expandEnv, loadConfig } from "../fmc/policy.js";
 import { label, notListening, readInstances, revitPort } from "../fmc/connect.js";
-import { AddinFacts, Line, PathProbe, aiRulebookLine, rhinoRulebookLine, guardPaths, kitLayout, revitLines, runningBuildLine, summary } from "../fmc/selftest.js";
+import { AddinFacts, Line, PathProbe, aiRulebookLine, generalSwitchLine, rhinoRulebookLine, guardPaths, kitLayout, revitLines, runningBuildLine, summary } from "../fmc/selftest.js";
 import { loadRhinoRulebook } from "../hub/rhino.js";
-import { loadRulebook } from "../fmc/aiuse_io.js";
+import { loadAiConfig, loadRulebook } from "../fmc/aiuse_io.js";
 import { BuildStamp, RUNNING_BUILD, diskBuild } from "../fmc/buildinfo.js";
 
 const probe: PathProbe = {
@@ -44,7 +44,14 @@ export async function runFmcSelftest(args: FmcSelftestArgs) {
   const onDisk = diskBuild();
   let facts: AddinFacts | null = null;
   let failure = notListening(revitPort());
-  try { facts = (await withRevitConnection((c) => c.sendRaw("fmc_selftest_facts", {}, 15000))) as AddinFacts; }
+  // Ogala report: right after a restart Revit isn't listening yet; wait for it (up to about 30 s) before saying so
+  const ask = () => withRevitConnection((c) => c.sendRaw("fmc_selftest_facts", {}, 15000)) as Promise<AddinFacts>;
+  try {
+    for (let i = 0; ; i++) {
+      try { facts = await ask(); break; }
+      catch (e) { if (i >= 5 || !String(e instanceof Error ? e.message : e).includes("nothing in Revit is listening")) throw e; await new Promise((r) => setTimeout(r, 5000)); }
+    }
+  }
   catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
     // Revit answered but doesn't know the command: the add-in is older than the self-test.
@@ -63,6 +70,7 @@ export async function runFmcSelftest(args: FmcSelftestArgs) {
     { area: "Guard", check: "fmc_guard.json", state: problem ? "Fail" : "Pass", detail: problem ?? configPath() },
     ...guardPaths(config, probe, (p) => expandEnv(p)),
     aiRulebookLine(loadRulebook(config), config.rulebooks_dir),
+    generalSwitchLine(loadAiConfig(config), loadRulebook(config).book),
     rhinoRulebookLine(loadRhinoRulebook(expandEnv(config.rulebooks_dir))),
     ...kitLayout((facts?.kit_folder || args.kit_folder || "").trim(), probe),
     // the engineering hub: each app, its connector and whether it is on (fmc_apps)

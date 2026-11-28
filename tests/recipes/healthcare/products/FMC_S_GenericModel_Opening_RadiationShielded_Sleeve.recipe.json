@@ -1,903 +1,908 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_S_GenericModel_Opening_RadiationShielded_Sleeve",
- "template": "Metric Generic Model.rft",
- "about": "Wall centred on y = 0 (230 thick), sleeve axis along y: steel sleeve, lead lining, collars lapping the wall lead on both faces, sealant rings and a radiation label (Fine). Lead thickness is the RPA's decision. Reference: query: opening radiation shielded sleeve generic models hospital; images: https://www.google.com/search?tbm=isch&q=opening+radiation+shielded+sleeve+generic+models+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Generic Models"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Earth_Resistance_Ohm",
-   "guid": "0fe20834-bce9-5c3f-a498-96c0b6c61998",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_LPS_Class",
-   "guid": "aa1c5aad-32f5-5ba3-8139-a49a5faba0dd",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Compaction_Pct_MDD",
-   "guid": "3694e24c-eacc-5409-81e2-f985cc1dda60",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_CBR_Pct",
-   "guid": "8c9ca741-f469-5a4d-bdf4-12a2eaaa8901",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Layer_Thickness_mm",
-   "guid": "6e7bbdb7-2de3-5a2a-a889-5f1d9f7db58a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Assembly_Mark",
-   "guid": "63266315-bb4d-5187-9224-35d20981c3d6",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lift_Weight_kg",
-   "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_LP_Part",
-   "guid": "7358e31e-0924-5ef8-9e82-c11bf9ad7160",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cover_Level_m",
-   "guid": "8ea739e9-8540-52b1-94c8-31f8c3b68946",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Invert_In_m",
-   "guid": "c6a9407b-775b-5907-ad76-c8a50d749eb7",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Invert_Out_m",
-   "guid": "dfc4212d-23c3-50c9-8f96-8111e5c21fa8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Sign_Code",
-   "guid": "308bad99-638f-5312-920b-abcd5888e7f3",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Control_Point_ID",
-   "guid": "6d68ef1f-0334-5505-8830-53d8fd274146",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Design_Movement",
-   "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "100dia_Lead"
-  },
-  {
-   "op": "set_type_value",
-   "name": "100dia_Lead/FMC_Cost_Unit",
-   "type": "100dia_Lead",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "100dia_Lead/FMC_Geometry_Stage",
-   "type": "100dia_Lead",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "100dia_Lead/IfcExportAs",
-   "type": "100dia_Lead",
-   "param": "IfcExportAs",
-   "value": "IfcBuildingElementProxy"
-  },
-  {
-   "op": "set_type_value",
-   "name": "100dia_Lead/Description",
-   "type": "100dia_Lead",
-   "param": "Description",
-   "value": "100 mm bore sleeve"
-  },
-  {
-   "op": "set_type_value",
-   "name": "100dia_Lead/Keynote",
-   "type": "100dia_Lead",
-   "param": "Keynote",
-   "value": "M.FIX_04"
-  },
-  {
-   "op": "set_type_value",
-   "name": "100dia_Lead/FMC_Keynote_Code",
-   "type": "100dia_Lead",
-   "param": "FMC_Keynote_Code",
-   "value": "M.FIX_04"
-  },
-  {
-   "op": "set_type_value",
-   "name": "100dia_Lead/FMC_Code_Description",
-   "type": "100dia_Lead",
-   "param": "FMC_Code_Description",
-   "value": "Opening RadiationShielded Sleeve: Lead-sleeved penetration for shielded rooms"
-  },
-  {
-   "op": "set_type_value",
-   "name": "100dia_Lead/FMC_Code_Group",
-   "type": "100dia_Lead",
-   "param": "FMC_Code_Group",
-   "value": "M.FIX"
-  },
-  {
-   "op": "set_type_value",
-   "name": "100dia_Lead/FMC_Role_Code",
-   "type": "100dia_Lead",
-   "param": "FMC_Role_Code",
-   "value": "S"
-  },
-  {
-   "op": "add_type",
-   "name": "150dia_Lead"
-  },
-  {
-   "op": "set_type_value",
-   "name": "150dia_Lead/FMC_Cost_Unit",
-   "type": "150dia_Lead",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "150dia_Lead/FMC_Geometry_Stage",
-   "type": "150dia_Lead",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "150dia_Lead/IfcExportAs",
-   "type": "150dia_Lead",
-   "param": "IfcExportAs",
-   "value": "IfcBuildingElementProxy"
-  },
-  {
-   "op": "set_type_value",
-   "name": "150dia_Lead/Description",
-   "type": "150dia_Lead",
-   "param": "Description",
-   "value": "150 mm bore sleeve"
-  },
-  {
-   "op": "set_type_value",
-   "name": "150dia_Lead/Keynote",
-   "type": "150dia_Lead",
-   "param": "Keynote",
-   "value": "M.FIX_04"
-  },
-  {
-   "op": "set_type_value",
-   "name": "150dia_Lead/FMC_Keynote_Code",
-   "type": "150dia_Lead",
-   "param": "FMC_Keynote_Code",
-   "value": "M.FIX_04"
-  },
-  {
-   "op": "set_type_value",
-   "name": "150dia_Lead/FMC_Code_Description",
-   "type": "150dia_Lead",
-   "param": "FMC_Code_Description",
-   "value": "Opening RadiationShielded Sleeve: Lead-sleeved penetration for shielded rooms"
-  },
-  {
-   "op": "set_type_value",
-   "name": "150dia_Lead/FMC_Code_Group",
-   "type": "150dia_Lead",
-   "param": "FMC_Code_Group",
-   "value": "M.FIX"
-  },
-  {
-   "op": "set_type_value",
-   "name": "150dia_Lead/FMC_Role_Code",
-   "type": "150dia_Lead",
-   "param": "FMC_Role_Code",
-   "value": "S"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Gi",
-   "color": [
-    158,
-    163,
-    166
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Gi Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_GI_Pipe",
-   "param": "Gi Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Lead",
-   "color": [
-    110,
-    110,
-    110
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Lead Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_StructuralSteel_S275",
-   "param": "Lead Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Yellow",
-   "color": [
-    242,
-    194,
-    48
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Yellow Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Yellow",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -110,
-     -140
-    ],
-    [
-     110,
-     -140
-    ],
-    [
-     110,
-     140
-    ],
-    [
-     -110,
-     140
-    ]
-   ],
-   "start": -110,
-   "end": 110
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "revolution",
-   "name": "Sleeve Tube",
-   "profile": [
-    [
-     50,
-     140
-    ],
-    [
-     54,
-     140
-    ],
-    [
-     54,
-     -140
-    ],
-    [
-     50,
-     -140
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "y",
-   "subcategory": "Gi"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sleeve Tube",
-   "param": "Gi Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sleeve Tube",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Lead Lining",
-   "profile": [
-    [
-     54,
-     115
-    ],
-    [
-     57,
-     115
-    ],
-    [
-     57,
-     -115
-    ],
-    [
-     54,
-     -115
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "y",
-   "subcategory": "Lead"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lead Lining",
-   "param": "Lead Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lead Lining",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Lead Collar Front",
-   "profile": [
-    [
-     54,
-     118
-    ],
-    [
-     110,
-     118
-    ],
-    [
-     110,
-     115
-    ],
-    [
-     54,
-     115
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "y",
-   "subcategory": "Lead"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lead Collar Front",
-   "param": "Lead Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lead Collar Front",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Lead Collar Back",
-   "profile": [
-    [
-     54,
-     -115
-    ],
-    [
-     110,
-     -115
-    ],
-    [
-     110,
-     -118
-    ],
-    [
-     54,
-     -118
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "y",
-   "subcategory": "Lead"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lead Collar Back",
-   "param": "Lead Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lead Collar Back",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Sealant Ring Front",
-   "profile": [
-    [
-     54,
-     124
-    ],
-    [
-     62,
-     124
-    ],
-    [
-     62,
-     118
-    ],
-    [
-     54,
-     118
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "y",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sealant Ring Front",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sealant Ring Front",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Sealant Ring Back",
-   "profile": [
-    [
-     54,
-     -118
-    ],
-    [
-     62,
-     -118
-    ],
-    [
-     62,
-     -124
-    ],
-    [
-     54,
-     -124
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "y",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sealant Ring Back",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sealant Ring Back",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Radiation Label",
-   "points": [
-    [
-     -25,
-     72
-    ],
-    [
-     25,
-     72
-    ],
-    [
-     25,
-     102
-    ],
-    [
-     -25,
-     102
-    ]
-   ],
-   "start": 118,
-   "end": 119.5,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Radiation Label",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Radiation Label",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Radiation Label",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\S\\_Images\\FMC_S_GenericModel_Opening_RadiationShielded_Sleeve.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_S_GenericModel_Opening_RadiationShielded_Sleeve",
+  "template": "Metric Generic Model.rft",
+  "about": "Wall centred on y = 0 (230 thick), sleeve axis along y: steel sleeve, lead lining, collars lapping the wall lead on both faces, sealant rings and a radiation label (Fine). Lead thickness is the RPA's decision. Reference: query: opening radiation shielded sleeve generic models hospital; images: https://www.google.com/search?tbm=isch&q=opening+radiation+shielded+sleeve+generic+models+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Generic Models"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Earth_Resistance_Ohm",
+      "guid": "0fe20834-bce9-5c3f-a498-96c0b6c61998",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_LPS_Class",
+      "guid": "aa1c5aad-32f5-5ba3-8139-a49a5faba0dd",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Compaction_Pct_MDD",
+      "guid": "3694e24c-eacc-5409-81e2-f985cc1dda60",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_CBR_Pct",
+      "guid": "8c9ca741-f469-5a4d-bdf4-12a2eaaa8901",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Layer_Thickness_mm",
+      "guid": "6e7bbdb7-2de3-5a2a-a889-5f1d9f7db58a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Assembly_Mark",
+      "guid": "63266315-bb4d-5187-9224-35d20981c3d6",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lift_Weight_kg",
+      "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_LP_Part",
+      "guid": "7358e31e-0924-5ef8-9e82-c11bf9ad7160",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cover_Level_m",
+      "guid": "8ea739e9-8540-52b1-94c8-31f8c3b68946",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Invert_In_m",
+      "guid": "c6a9407b-775b-5907-ad76-c8a50d749eb7",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Invert_Out_m",
+      "guid": "dfc4212d-23c3-50c9-8f96-8111e5c21fa8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Sign_Code",
+      "guid": "308bad99-638f-5312-920b-abcd5888e7f3",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Control_Point_ID",
+      "guid": "6d68ef1f-0334-5505-8830-53d8fd274146",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Design_Movement",
+      "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "100dia_Lead"
+    },
+    {
+      "op": "set_type_value",
+      "name": "100dia_Lead/FMC_Cost_Unit",
+      "type": "100dia_Lead",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "100dia_Lead/FMC_Geometry_Stage",
+      "type": "100dia_Lead",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "100dia_Lead/IfcExportAs",
+      "type": "100dia_Lead",
+      "param": "IfcExportAs",
+      "value": "IfcBuildingElementProxy"
+    },
+    {
+      "op": "set_type_value",
+      "name": "100dia_Lead/Description",
+      "type": "100dia_Lead",
+      "param": "Description",
+      "value": "100 mm bore sleeve"
+    },
+    {
+      "op": "set_type_value",
+      "name": "100dia_Lead/Keynote",
+      "type": "100dia_Lead",
+      "param": "Keynote",
+      "value": "M.FIX_04"
+    },
+    {
+      "op": "set_type_value",
+      "name": "100dia_Lead/FMC_Keynote_Code",
+      "type": "100dia_Lead",
+      "param": "FMC_Keynote_Code",
+      "value": "M.FIX_04"
+    },
+    {
+      "op": "set_type_value",
+      "name": "100dia_Lead/FMC_Code_Description",
+      "type": "100dia_Lead",
+      "param": "FMC_Code_Description",
+      "value": "Opening RadiationShielded Sleeve: Lead-sleeved penetration for shielded rooms"
+    },
+    {
+      "op": "set_type_value",
+      "name": "100dia_Lead/FMC_Code_Group",
+      "type": "100dia_Lead",
+      "param": "FMC_Code_Group",
+      "value": "M.FIX"
+    },
+    {
+      "op": "set_type_value",
+      "name": "100dia_Lead/FMC_Role_Code",
+      "type": "100dia_Lead",
+      "param": "FMC_Role_Code",
+      "value": "S"
+    },
+    {
+      "op": "add_type",
+      "name": "150dia_Lead"
+    },
+    {
+      "op": "set_type_value",
+      "name": "150dia_Lead/FMC_Cost_Unit",
+      "type": "150dia_Lead",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "150dia_Lead/FMC_Geometry_Stage",
+      "type": "150dia_Lead",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "150dia_Lead/IfcExportAs",
+      "type": "150dia_Lead",
+      "param": "IfcExportAs",
+      "value": "IfcBuildingElementProxy"
+    },
+    {
+      "op": "set_type_value",
+      "name": "150dia_Lead/Description",
+      "type": "150dia_Lead",
+      "param": "Description",
+      "value": "150 mm bore sleeve"
+    },
+    {
+      "op": "set_type_value",
+      "name": "150dia_Lead/Keynote",
+      "type": "150dia_Lead",
+      "param": "Keynote",
+      "value": "M.FIX_04"
+    },
+    {
+      "op": "set_type_value",
+      "name": "150dia_Lead/FMC_Keynote_Code",
+      "type": "150dia_Lead",
+      "param": "FMC_Keynote_Code",
+      "value": "M.FIX_04"
+    },
+    {
+      "op": "set_type_value",
+      "name": "150dia_Lead/FMC_Code_Description",
+      "type": "150dia_Lead",
+      "param": "FMC_Code_Description",
+      "value": "Opening RadiationShielded Sleeve: Lead-sleeved penetration for shielded rooms"
+    },
+    {
+      "op": "set_type_value",
+      "name": "150dia_Lead/FMC_Code_Group",
+      "type": "150dia_Lead",
+      "param": "FMC_Code_Group",
+      "value": "M.FIX"
+    },
+    {
+      "op": "set_type_value",
+      "name": "150dia_Lead/FMC_Role_Code",
+      "type": "150dia_Lead",
+      "param": "FMC_Role_Code",
+      "value": "S"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Gi",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Gi Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_GI_Pipe",
+      "param": "Gi Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Lead",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Lead Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_StructuralSteel_S275",
+      "param": "Lead Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Yellow",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Yellow Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Yellow",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -110,
+          -140
+        ],
+        [
+          110,
+          -140
+        ],
+        [
+          110,
+          140
+        ],
+        [
+          -110,
+          140
+        ]
+      ],
+      "start": -110,
+      "end": 110
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "revolution",
+      "name": "Sleeve Tube",
+      "profile": [
+        [
+          50,
+          140
+        ],
+        [
+          54,
+          140
+        ],
+        [
+          54,
+          -140
+        ],
+        [
+          50,
+          -140
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "y",
+      "subcategory": "Gi"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sleeve Tube",
+      "param": "Gi Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Sleeve Tube",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Lead Lining",
+      "profile": [
+        [
+          54,
+          115
+        ],
+        [
+          57,
+          115
+        ],
+        [
+          57,
+          -115
+        ],
+        [
+          54,
+          -115
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "y",
+      "subcategory": "Lead"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lead Lining",
+      "param": "Lead Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Lead Lining",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Lead Collar Front",
+      "profile": [
+        [
+          54,
+          118
+        ],
+        [
+          110,
+          118
+        ],
+        [
+          110,
+          115
+        ],
+        [
+          54,
+          115
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "y",
+      "subcategory": "Lead"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lead Collar Front",
+      "param": "Lead Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Lead Collar Front",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Lead Collar Back",
+      "profile": [
+        [
+          54,
+          -115
+        ],
+        [
+          110,
+          -115
+        ],
+        [
+          110,
+          -118
+        ],
+        [
+          54,
+          -118
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "y",
+      "subcategory": "Lead"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lead Collar Back",
+      "param": "Lead Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Lead Collar Back",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Sealant Ring Front",
+      "profile": [
+        [
+          54,
+          124
+        ],
+        [
+          62,
+          124
+        ],
+        [
+          62,
+          118
+        ],
+        [
+          54,
+          118
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "y",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sealant Ring Front",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Sealant Ring Front",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Sealant Ring Back",
+      "profile": [
+        [
+          54,
+          -118
+        ],
+        [
+          62,
+          -118
+        ],
+        [
+          62,
+          -124
+        ],
+        [
+          54,
+          -124
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "y",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sealant Ring Back",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Sealant Ring Back",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Radiation Label",
+      "points": [
+        [
+          -25,
+          72
+        ],
+        [
+          25,
+          72
+        ],
+        [
+          25,
+          102
+        ],
+        [
+          -25,
+          102
+        ]
+      ],
+      "start": 118,
+      "end": 119.5,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Radiation Label",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Radiation Label",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Radiation Label",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\S\\_Images\\FMC_S_GenericModel_Opening_RadiationShielded_Sleeve.png"
+    }
+  ],
+  "values": {
+    "Bore 100 mm (geometry)": {
+      "value": 100,
+      "source_status": "assumed",
+      "source": "service size"
+    },
+    "Lead code and lap from the RPA shielding report": {
+      "value": "RPA report",
+      "source_status": "assumed",
+      "source": "radiation protection adviser; not decided here"
+    },
+    "Collar lap 60 mm beyond sleeve": {
+      "value": 60,
+      "source_status": "assumed",
+      "source": "typical; RPA to confirm"
+    },
+    "Wall 230 mm (sleeve 280 long)": {
+      "value": 230,
+      "source_status": "assumed",
+      "source": "typical wall"
+    }
   }
- ],
- "values": {
-  "Bore 100 mm (geometry)": {
-   "value": 100,
-   "source_status": "assumed",
-   "source": "service size"
-  },
-  "Lead code and lap from the RPA shielding report": {
-   "value": "RPA report",
-   "source_status": "assumed",
-   "source": "radiation protection adviser; not decided here"
-  },
-  "Collar lap 60 mm beyond sleeve": {
-   "value": 60,
-   "source_status": "assumed",
-   "source": "typical; RPA to confirm"
-  },
-  "Wall 230 mm (sleeve 280 long)": {
-   "value": 230,
-   "source_status": "assumed",
-   "source": "typical wall"
-  }
- }
 }

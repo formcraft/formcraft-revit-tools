@@ -1,984 +1,989 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_A_GenericModel_Bollard_AmbulanceBay",
- "template": "Metric Generic Model.rft",
- "about": "Bollard modelled as a generic product: footing below ground (z < 0), painted tube with domed cap, reflective bands, ground collar, anchor bar; geometry is the 150 type. Reference: query: bollard ambulance bay generic models hospital; images: https://www.google.com/search?tbm=isch&q=bollard+ambulance+bay+generic+models+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Site"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
-  },
-  {
-   "op": "add_type",
-   "name": "150_Steel"
-  },
-  {
-   "op": "set_type_value",
-   "name": "150_Steel/FMC_Cost_Unit",
-   "type": "150_Steel",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "150_Steel/FMC_Geometry_Stage",
-   "type": "150_Steel",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "150_Steel/IfcExportAs",
-   "type": "150_Steel",
-   "param": "IfcExportAs",
-   "value": "IfcBuildingElementProxy"
-  },
-  {
-   "op": "set_type_value",
-   "name": "150_Steel/Description",
-   "type": "150_Steel",
-   "param": "Description",
-   "value": "Steel bollard 152 mm dia, 1000 mm high, concrete filled"
-  },
-  {
-   "op": "set_type_value",
-   "name": "150_Steel/Keynote",
-   "type": "150_Steel",
-   "param": "Keynote",
-   "value": "T.BOL_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "150_Steel/FMC_Keynote_Code",
-   "type": "150_Steel",
-   "param": "FMC_Keynote_Code",
-   "value": "T.BOL_00"
-  },
-  {
-   "op": "add_type",
-   "name": "200_Steel"
-  },
-  {
-   "op": "set_type_value",
-   "name": "200_Steel/FMC_Cost_Unit",
-   "type": "200_Steel",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "200_Steel/FMC_Geometry_Stage",
-   "type": "200_Steel",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "200_Steel/IfcExportAs",
-   "type": "200_Steel",
-   "param": "IfcExportAs",
-   "value": "IfcBuildingElementProxy"
-  },
-  {
-   "op": "set_type_value",
-   "name": "200_Steel/Description",
-   "type": "200_Steel",
-   "param": "Description",
-   "value": "Steel bollard 200 mm dia, 1000 mm high, concrete filled"
-  },
-  {
-   "op": "set_type_value",
-   "name": "200_Steel/Keynote",
-   "type": "200_Steel",
-   "param": "Keynote",
-   "value": "T.BOL_00"
-  },
-  {
-   "op": "set_type_value",
-   "name": "200_Steel/FMC_Keynote_Code",
-   "type": "200_Steel",
-   "param": "FMC_Keynote_Code",
-   "value": "T.BOL_00"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Conc",
-   "color": [
-    177,
-    175,
-    168
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Conc Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Concrete_C30",
-   "param": "Conc Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Dark",
-   "color": [
-    61,
-    70,
-    80
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Dark Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_SteelLTZ_Painted",
-   "param": "Dark Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Yellow",
-   "color": [
-    242,
-    194,
-    48
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Yellow Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Yellow",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Steel",
-   "color": [
-    110,
-    110,
-    110
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Steel Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_StructuralSteel_S275",
-   "param": "Steel Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -175.0,
-     -180
-    ],
-    [
-     175.0,
-     -180
-    ],
-    [
-     175.0,
-     180
-    ],
-    [
-     -175.0,
-     180
-    ]
-   ],
-   "start": -600,
-   "end": 1050
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Footing",
-   "points": [
-    [
-     175.0,
-     0.0
-    ],
-    [
-     169.04,
-     45.29
-    ],
-    [
-     151.55,
-     87.5
-    ],
-    [
-     123.74,
-     123.74
-    ],
-    [
-     87.5,
-     151.55
-    ],
-    [
-     45.29,
-     169.04
-    ],
-    [
-     0.0,
-     175.0
-    ],
-    [
-     -45.29,
-     169.04
-    ],
-    [
-     -87.5,
-     151.55
-    ],
-    [
-     -123.74,
-     123.74
-    ],
-    [
-     -151.55,
-     87.5
-    ],
-    [
-     -169.04,
-     45.29
-    ],
-    [
-     -175.0,
-     0.0
-    ],
-    [
-     -169.04,
-     -45.29
-    ],
-    [
-     -151.55,
-     -87.5
-    ],
-    [
-     -123.74,
-     -123.74
-    ],
-    [
-     -87.5,
-     -151.55
-    ],
-    [
-     -45.29,
-     -169.04
-    ],
-    [
-     -0.0,
-     -175.0
-    ],
-    [
-     45.29,
-     -169.04
-    ],
-    [
-     87.5,
-     -151.55
-    ],
-    [
-     123.74,
-     -123.74
-    ],
-    [
-     151.55,
-     -87.5
-    ],
-    [
-     169.04,
-     -45.29
-    ]
-   ],
-   "start": -600,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Footing",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Footing",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Footing",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Body",
-   "points": [
-    [
-     76.0,
-     0.0
-    ],
-    [
-     73.41,
-     19.67
-    ],
-    [
-     65.82,
-     38.0
-    ],
-    [
-     53.74,
-     53.74
-    ],
-    [
-     38.0,
-     65.82
-    ],
-    [
-     19.67,
-     73.41
-    ],
-    [
-     0.0,
-     76.0
-    ],
-    [
-     -19.67,
-     73.41
-    ],
-    [
-     -38.0,
-     65.82
-    ],
-    [
-     -53.74,
-     53.74
-    ],
-    [
-     -65.82,
-     38.0
-    ],
-    [
-     -73.41,
-     19.67
-    ],
-    [
-     -76.0,
-     0.0
-    ],
-    [
-     -73.41,
-     -19.67
-    ],
-    [
-     -65.82,
-     -38.0
-    ],
-    [
-     -53.74,
-     -53.74
-    ],
-    [
-     -38.0,
-     -65.82
-    ],
-    [
-     -19.67,
-     -73.41
-    ],
-    [
-     -0.0,
-     -76.0
-    ],
-    [
-     19.67,
-     -73.41
-    ],
-    [
-     38.0,
-     -65.82
-    ],
-    [
-     53.74,
-     -53.74
-    ],
-    [
-     65.82,
-     -38.0
-    ],
-    [
-     73.41,
-     -19.67
-    ]
-   ],
-   "start": -600,
-   "end": 1000
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Body",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Body",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Body",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Dome Cap",
-   "profile": [
-    [
-     0,
-     1050
-    ],
-    [
-     30,
-     1046
-    ],
-    [
-     55,
-     1035
-    ],
-    [
-     70,
-     1018
-    ],
-    [
-     80,
-     1000
-    ],
-    [
-     80,
-     990
-    ],
-    [
-     0,
-     990
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Dome Cap",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Dome Cap",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Reflective Band",
-   "points": [
-    [
-     77.5,
-     0.0
-    ],
-    [
-     74.86,
-     20.06
-    ],
-    [
-     67.12,
-     38.75
-    ],
-    [
-     54.8,
-     54.8
-    ],
-    [
-     38.75,
-     67.12
-    ],
-    [
-     20.06,
-     74.86
-    ],
-    [
-     0.0,
-     77.5
-    ],
-    [
-     -20.06,
-     74.86
-    ],
-    [
-     -38.75,
-     67.12
-    ],
-    [
-     -54.8,
-     54.8
-    ],
-    [
-     -67.12,
-     38.75
-    ],
-    [
-     -74.86,
-     20.06
-    ],
-    [
-     -77.5,
-     0.0
-    ],
-    [
-     -74.86,
-     -20.06
-    ],
-    [
-     -67.12,
-     -38.75
-    ],
-    [
-     -54.8,
-     -54.8
-    ],
-    [
-     -38.75,
-     -67.12
-    ],
-    [
-     -20.06,
-     -74.86
-    ],
-    [
-     -0.0,
-     -77.5
-    ],
-    [
-     20.06,
-     -74.86
-    ],
-    [
-     38.75,
-     -67.12
-    ],
-    [
-     54.8,
-     -54.8
-    ],
-    [
-     67.12,
-     -38.75
-    ],
-    [
-     74.86,
-     -20.06
-    ]
-   ],
-   "start": 820,
-   "end": 900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Reflective Band",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Reflective Band",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Reflective Band",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Reflective Band Lower",
-   "points": [
-    [
-     77.5,
-     0.0
-    ],
-    [
-     74.86,
-     20.06
-    ],
-    [
-     67.12,
-     38.75
-    ],
-    [
-     54.8,
-     54.8
-    ],
-    [
-     38.75,
-     67.12
-    ],
-    [
-     20.06,
-     74.86
-    ],
-    [
-     0.0,
-     77.5
-    ],
-    [
-     -20.06,
-     74.86
-    ],
-    [
-     -38.75,
-     67.12
-    ],
-    [
-     -54.8,
-     54.8
-    ],
-    [
-     -67.12,
-     38.75
-    ],
-    [
-     -74.86,
-     20.06
-    ],
-    [
-     -77.5,
-     0.0
-    ],
-    [
-     -74.86,
-     -20.06
-    ],
-    [
-     -67.12,
-     -38.75
-    ],
-    [
-     -54.8,
-     -54.8
-    ],
-    [
-     -38.75,
-     -67.12
-    ],
-    [
-     -20.06,
-     -74.86
-    ],
-    [
-     -0.0,
-     -77.5
-    ],
-    [
-     20.06,
-     -74.86
-    ],
-    [
-     38.75,
-     -67.12
-    ],
-    [
-     54.8,
-     -54.8
-    ],
-    [
-     67.12,
-     -38.75
-    ],
-    [
-     74.86,
-     -20.06
-    ]
-   ],
-   "start": 700,
-   "end": 760
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Reflective Band Lower",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Reflective Band Lower",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Reflective Band Lower",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Ground Collar",
-   "profile": [
-    [
-     76,
-     0
-    ],
-    [
-     110,
-     0
-    ],
-    [
-     110,
-     10
-    ],
-    [
-     76,
-     25
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Dark"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Ground Collar",
-   "param": "Dark Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Ground Collar",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rebar Anchor",
-   "points": [
-    [
-     8.0,
-     -400.0
-    ],
-    [
-     7.73,
-     -397.93
-    ],
-    [
-     6.93,
-     -396.0
-    ],
-    [
-     5.66,
-     -394.34
-    ],
-    [
-     4.0,
-     -393.07
-    ],
-    [
-     2.07,
-     -392.27
-    ],
-    [
-     0.0,
-     -392.0
-    ],
-    [
-     -2.07,
-     -392.27
-    ],
-    [
-     -4.0,
-     -393.07
-    ],
-    [
-     -5.66,
-     -394.34
-    ],
-    [
-     -6.93,
-     -396.0
-    ],
-    [
-     -7.73,
-     -397.93
-    ],
-    [
-     -8.0,
-     -400.0
-    ],
-    [
-     -7.73,
-     -402.07
-    ],
-    [
-     -6.93,
-     -404.0
-    ],
-    [
-     -5.66,
-     -405.66
-    ],
-    [
-     -4.0,
-     -406.93
-    ],
-    [
-     -2.07,
-     -407.73
-    ],
-    [
-     -0.0,
-     -408.0
-    ],
-    [
-     2.07,
-     -407.73
-    ],
-    [
-     4.0,
-     -406.93
-    ],
-    [
-     5.66,
-     -405.66
-    ],
-    [
-     6.93,
-     -404.0
-    ],
-    [
-     7.73,
-     -402.07
-    ]
-   ],
-   "start": -180,
-   "end": 180,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rebar Anchor",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rebar Anchor",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rebar Anchor",
-   "coarse": false,
-   "medium": true,
-   "fine": false
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\A\\_Images\\FMC_A_GenericModel_Bollard_AmbulanceBay.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_A_GenericModel_Bollard_AmbulanceBay",
+  "template": "Metric Generic Model.rft",
+  "about": "Bollard modelled as a generic product: footing below ground (z < 0), painted tube with domed cap, reflective bands, ground collar, anchor bar; geometry is the 150 type. Reference: query: bollard ambulance bay generic models hospital; images: https://www.google.com/search?tbm=isch&q=bollard+ambulance+bay+generic+models+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Site"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+    },
+    {
+      "op": "add_type",
+      "name": "150_Steel"
+    },
+    {
+      "op": "set_type_value",
+      "name": "150_Steel/FMC_Cost_Unit",
+      "type": "150_Steel",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "150_Steel/FMC_Geometry_Stage",
+      "type": "150_Steel",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "150_Steel/IfcExportAs",
+      "type": "150_Steel",
+      "param": "IfcExportAs",
+      "value": "IfcBuildingElementProxy"
+    },
+    {
+      "op": "set_type_value",
+      "name": "150_Steel/Description",
+      "type": "150_Steel",
+      "param": "Description",
+      "value": "Steel bollard 152 mm dia, 1000 mm high, concrete filled"
+    },
+    {
+      "op": "set_type_value",
+      "name": "150_Steel/Keynote",
+      "type": "150_Steel",
+      "param": "Keynote",
+      "value": "T.BOL_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "150_Steel/FMC_Keynote_Code",
+      "type": "150_Steel",
+      "param": "FMC_Keynote_Code",
+      "value": "T.BOL_00"
+    },
+    {
+      "op": "add_type",
+      "name": "200_Steel"
+    },
+    {
+      "op": "set_type_value",
+      "name": "200_Steel/FMC_Cost_Unit",
+      "type": "200_Steel",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "200_Steel/FMC_Geometry_Stage",
+      "type": "200_Steel",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "200_Steel/IfcExportAs",
+      "type": "200_Steel",
+      "param": "IfcExportAs",
+      "value": "IfcBuildingElementProxy"
+    },
+    {
+      "op": "set_type_value",
+      "name": "200_Steel/Description",
+      "type": "200_Steel",
+      "param": "Description",
+      "value": "Steel bollard 200 mm dia, 1000 mm high, concrete filled"
+    },
+    {
+      "op": "set_type_value",
+      "name": "200_Steel/Keynote",
+      "type": "200_Steel",
+      "param": "Keynote",
+      "value": "T.BOL_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "200_Steel/FMC_Keynote_Code",
+      "type": "200_Steel",
+      "param": "FMC_Keynote_Code",
+      "value": "T.BOL_00"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Conc",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Conc Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Concrete_C30",
+      "param": "Conc Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Dark",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Dark Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_SteelLTZ_Painted",
+      "param": "Dark Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Yellow",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Yellow Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Yellow",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Steel",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Steel Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_StructuralSteel_S275",
+      "param": "Steel Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -175,
+          -180
+        ],
+        [
+          175,
+          -180
+        ],
+        [
+          175,
+          180
+        ],
+        [
+          -175,
+          180
+        ]
+      ],
+      "start": -600,
+      "end": 1050
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Footing",
+      "points": [
+        [
+          175,
+          0
+        ],
+        [
+          169.04,
+          45.29
+        ],
+        [
+          151.55,
+          87.5
+        ],
+        [
+          123.74,
+          123.74
+        ],
+        [
+          87.5,
+          151.55
+        ],
+        [
+          45.29,
+          169.04
+        ],
+        [
+          0,
+          175
+        ],
+        [
+          -45.29,
+          169.04
+        ],
+        [
+          -87.5,
+          151.55
+        ],
+        [
+          -123.74,
+          123.74
+        ],
+        [
+          -151.55,
+          87.5
+        ],
+        [
+          -169.04,
+          45.29
+        ],
+        [
+          -175,
+          0
+        ],
+        [
+          -169.04,
+          -45.29
+        ],
+        [
+          -151.55,
+          -87.5
+        ],
+        [
+          -123.74,
+          -123.74
+        ],
+        [
+          -87.5,
+          -151.55
+        ],
+        [
+          -45.29,
+          -169.04
+        ],
+        [
+          0,
+          -175
+        ],
+        [
+          45.29,
+          -169.04
+        ],
+        [
+          87.5,
+          -151.55
+        ],
+        [
+          123.74,
+          -123.74
+        ],
+        [
+          151.55,
+          -87.5
+        ],
+        [
+          169.04,
+          -45.29
+        ]
+      ],
+      "start": -600,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Footing",
+      "subcategory": "Conc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Footing",
+      "param": "Conc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Footing",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Body",
+      "points": [
+        [
+          76,
+          0
+        ],
+        [
+          73.41,
+          19.67
+        ],
+        [
+          65.82,
+          38
+        ],
+        [
+          53.74,
+          53.74
+        ],
+        [
+          38,
+          65.82
+        ],
+        [
+          19.67,
+          73.41
+        ],
+        [
+          0,
+          76
+        ],
+        [
+          -19.67,
+          73.41
+        ],
+        [
+          -38,
+          65.82
+        ],
+        [
+          -53.74,
+          53.74
+        ],
+        [
+          -65.82,
+          38
+        ],
+        [
+          -73.41,
+          19.67
+        ],
+        [
+          -76,
+          0
+        ],
+        [
+          -73.41,
+          -19.67
+        ],
+        [
+          -65.82,
+          -38
+        ],
+        [
+          -53.74,
+          -53.74
+        ],
+        [
+          -38,
+          -65.82
+        ],
+        [
+          -19.67,
+          -73.41
+        ],
+        [
+          0,
+          -76
+        ],
+        [
+          19.67,
+          -73.41
+        ],
+        [
+          38,
+          -65.82
+        ],
+        [
+          53.74,
+          -53.74
+        ],
+        [
+          65.82,
+          -38
+        ],
+        [
+          73.41,
+          -19.67
+        ]
+      ],
+      "start": -600,
+      "end": 1000
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Body",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Body",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Body",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Dome Cap",
+      "profile": [
+        [
+          0,
+          1050
+        ],
+        [
+          30,
+          1046
+        ],
+        [
+          55,
+          1035
+        ],
+        [
+          70,
+          1018
+        ],
+        [
+          80,
+          1000
+        ],
+        [
+          80,
+          990
+        ],
+        [
+          0,
+          990
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Dome Cap",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Dome Cap",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Reflective Band",
+      "points": [
+        [
+          77.5,
+          0
+        ],
+        [
+          74.86,
+          20.06
+        ],
+        [
+          67.12,
+          38.75
+        ],
+        [
+          54.8,
+          54.8
+        ],
+        [
+          38.75,
+          67.12
+        ],
+        [
+          20.06,
+          74.86
+        ],
+        [
+          0,
+          77.5
+        ],
+        [
+          -20.06,
+          74.86
+        ],
+        [
+          -38.75,
+          67.12
+        ],
+        [
+          -54.8,
+          54.8
+        ],
+        [
+          -67.12,
+          38.75
+        ],
+        [
+          -74.86,
+          20.06
+        ],
+        [
+          -77.5,
+          0
+        ],
+        [
+          -74.86,
+          -20.06
+        ],
+        [
+          -67.12,
+          -38.75
+        ],
+        [
+          -54.8,
+          -54.8
+        ],
+        [
+          -38.75,
+          -67.12
+        ],
+        [
+          -20.06,
+          -74.86
+        ],
+        [
+          0,
+          -77.5
+        ],
+        [
+          20.06,
+          -74.86
+        ],
+        [
+          38.75,
+          -67.12
+        ],
+        [
+          54.8,
+          -54.8
+        ],
+        [
+          67.12,
+          -38.75
+        ],
+        [
+          74.86,
+          -20.06
+        ]
+      ],
+      "start": 820,
+      "end": 900
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Reflective Band",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Reflective Band",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Reflective Band",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Reflective Band Lower",
+      "points": [
+        [
+          77.5,
+          0
+        ],
+        [
+          74.86,
+          20.06
+        ],
+        [
+          67.12,
+          38.75
+        ],
+        [
+          54.8,
+          54.8
+        ],
+        [
+          38.75,
+          67.12
+        ],
+        [
+          20.06,
+          74.86
+        ],
+        [
+          0,
+          77.5
+        ],
+        [
+          -20.06,
+          74.86
+        ],
+        [
+          -38.75,
+          67.12
+        ],
+        [
+          -54.8,
+          54.8
+        ],
+        [
+          -67.12,
+          38.75
+        ],
+        [
+          -74.86,
+          20.06
+        ],
+        [
+          -77.5,
+          0
+        ],
+        [
+          -74.86,
+          -20.06
+        ],
+        [
+          -67.12,
+          -38.75
+        ],
+        [
+          -54.8,
+          -54.8
+        ],
+        [
+          -38.75,
+          -67.12
+        ],
+        [
+          -20.06,
+          -74.86
+        ],
+        [
+          0,
+          -77.5
+        ],
+        [
+          20.06,
+          -74.86
+        ],
+        [
+          38.75,
+          -67.12
+        ],
+        [
+          54.8,
+          -54.8
+        ],
+        [
+          67.12,
+          -38.75
+        ],
+        [
+          74.86,
+          -20.06
+        ]
+      ],
+      "start": 700,
+      "end": 760
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Reflective Band Lower",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Reflective Band Lower",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Reflective Band Lower",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Ground Collar",
+      "profile": [
+        [
+          76,
+          0
+        ],
+        [
+          110,
+          0
+        ],
+        [
+          110,
+          10
+        ],
+        [
+          76,
+          25
+        ]
+      ],
+      "axis_at": [
+        0,
+        0
+      ],
+      "axis": "z",
+      "subcategory": "Dark"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Ground Collar",
+      "param": "Dark Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Ground Collar",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rebar Anchor",
+      "points": [
+        [
+          8,
+          -400
+        ],
+        [
+          7.73,
+          -397.93
+        ],
+        [
+          6.93,
+          -396
+        ],
+        [
+          5.66,
+          -394.34
+        ],
+        [
+          4,
+          -393.07
+        ],
+        [
+          2.07,
+          -392.27
+        ],
+        [
+          0,
+          -392
+        ],
+        [
+          -2.07,
+          -392.27
+        ],
+        [
+          -4,
+          -393.07
+        ],
+        [
+          -5.66,
+          -394.34
+        ],
+        [
+          -6.93,
+          -396
+        ],
+        [
+          -7.73,
+          -397.93
+        ],
+        [
+          -8,
+          -400
+        ],
+        [
+          -7.73,
+          -402.07
+        ],
+        [
+          -6.93,
+          -404
+        ],
+        [
+          -5.66,
+          -405.66
+        ],
+        [
+          -4,
+          -406.93
+        ],
+        [
+          -2.07,
+          -407.73
+        ],
+        [
+          0,
+          -408
+        ],
+        [
+          2.07,
+          -407.73
+        ],
+        [
+          4,
+          -406.93
+        ],
+        [
+          5.66,
+          -405.66
+        ],
+        [
+          6.93,
+          -404
+        ],
+        [
+          7.73,
+          -402.07
+        ]
+      ],
+      "start": -180,
+      "end": 180,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rebar Anchor",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rebar Anchor",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rebar Anchor",
+      "coarse": false,
+      "medium": true,
+      "fine": false
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\A\\_Images\\FMC_A_GenericModel_Bollard_AmbulanceBay.png"
+    }
+  ],
+  "values": {
+    "Tube 152 mm dia, 1000 mm above ground": {
+      "value": "152x1000",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Footing 350 dia x 600 deep": {
+      "value": "350x600",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Reflective bands 80 + 60 mm": {
+      "value": 80,
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   }
- ],
- "values": {
-  "Tube 152 mm dia, 1000 mm above ground": {
-   "value": "152x1000",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Footing 350 dia x 600 deep": {
-   "value": "350x600",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Reflective bands 80 + 60 mm": {
-   "value": 80,
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- }
 }

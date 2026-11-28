@@ -34,7 +34,7 @@ test("H0: by default an installed app is on; a person's switch wins; Revit is al
   s = appStatuses(probe, { rhino: false, navisworks: true, revit: false });
   assert.deepEqual(s.filter((a) => a.on).map((a) => a.id), ["revit", "navisworks", "robot"]);
   // the tools of apps that are off don't load
-  assert.deepEqual([...toolsOff(s)].sort(), ["fmc_powerbi", "fmc_rhino"]);
+  assert.deepEqual([...toolsOff(s)].sort(), ["fmc_blender", "fmc_powerbi", "fmc_rhino"]);
 });
 
 test("H0: the switches are kept per PC in %APPDATA%\\Formcraft\\apps.json", () => {

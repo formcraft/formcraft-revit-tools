@@ -1,6 +1,7 @@
 using Autodesk.Revit.UI;
 using Newtonsoft.Json.Linq;
 using RevitMCPCommandSet.Services;
+using RevitMCPCommandSet.Services.Fmc;
 using RevitMCPSDK.API.Base;
 
 namespace RevitMCPCommandSet.Commands
@@ -50,10 +51,11 @@ namespace RevitMCPCommandSet.Commands
                 }
 
                 // Set parameters for the event handler
+                FmcCallContext.Begin(parameters);
                 _handler.SetParameters(useLeader, tagTypeId, roomIds);
 
                 // Trigger external event and wait for completion
-                if (RaiseAndWaitForCompletion(15000)) // 15 second timeout
+                if (RaiseAndWaitForCompletion(300000)) // owner 26 Oct: big batches take Revit over 10 s; wait up to 5 min
                 {
                     return _handler.TaggingResults;
                 }

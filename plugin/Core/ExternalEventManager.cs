@@ -61,9 +61,9 @@ namespace revit_mcp_plugin.Core
             // You need to create events in the UI thread. 
             ExternalEvent externalEvent = null;
 
-            // 使用活动文档的上下文执行创建事件的操作
-            // Perform the operation that created the event using the context of the active document.
-            _uiApp.ActiveUIDocument.Document.Application.ExecuteCommand(
+            // Create the event from the application, not the active document. A background copy is often the only
+            // document, and ActiveUIDocument is null then. ExternalEvent.Create does not need a document.
+            _uiApp.Application.ExecuteCommand(
                 (uiApp) => {
                     externalEvent = ExternalEvent.Create(handler);
                 }

@@ -1,6 +1,7 @@
 ﻿using Autodesk.Revit.UI;
 using Newtonsoft.Json.Linq;
 using RevitMCPCommandSet.Services;
+using RevitMCPCommandSet.Services.Fmc;
 using RevitMCPSDK.API.Base;
 
 namespace RevitMCPCommandSet.Commands.Access
@@ -20,6 +21,7 @@ namespace RevitMCPCommandSet.Commands.Access
         {
             try
             {
+                FmcCallContext.Begin(parameters);
                 // 解析参数
                 List<string> modelCategoryList = parameters?["modelCategoryList"]?.ToObject<List<string>>() ?? new List<string>();
                 List<string> annotationCategoryList = parameters?["annotationCategoryList"]?.ToObject<List<string>>() ?? new List<string>();

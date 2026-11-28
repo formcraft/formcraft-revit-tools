@@ -40,6 +40,8 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
     {
         public const string TransactionModeAuto = "auto";
         public const string TransactionModeNone = "none";
+        /// <summary>Owner 26 Oct: reads only. The script runs in a transaction that is always rolled back, so the model can't change.</summary>
+        public const string TransactionModeReadOnly = "read_only";
         private const string ScriptPath = FmcScriptSource.ScriptPath;
 
         /// <summary>Always there: the old template's namespaces, rooms and structure, and the Formcraft helpers.</summary>
@@ -67,7 +69,7 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
         {
             _code = code;
             _executionParameters = parameters ?? Array.Empty<object>();
-            _transactionMode = transactionMode == TransactionModeNone ? TransactionModeNone : TransactionModeAuto;
+            _transactionMode = transactionMode == TransactionModeNone ? TransactionModeNone : transactionMode == TransactionModeReadOnly ? TransactionModeReadOnly : TransactionModeAuto;
             _usings = usings ?? Array.Empty<string>();
             _parameters = allParameters ?? new JObject();
             Job = job ?? "";
@@ -80,7 +82,7 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
         public ExecutionResultInfo TakeResult(string job) => _results.TryRemove(job ?? "", out var r) ? r : null;
 
         // Never resets here: SetExecutionParameters does, so a script that finishes before the wait starts is not missed.
-        public bool WaitForCompletion(int timeoutMilliseconds = 10000) => _resetEvent.WaitOne(timeoutMilliseconds);
+        public bool WaitForCompletion(int timeoutMilliseconds = 10000) => FmcBusy.Wait(_resetEvent, timeoutMilliseconds);
 
         public void Execute(UIApplication app)
         {
@@ -105,6 +107,7 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
                 using (target)
                 {
                     info.Document = doc.Title;
+                    info.ResolvedDocument = FmcTarget.Resolved(doc);
                     // KISIC §4.1: a document a script left with an open transaction the bridge couldn't roll back.
                     string blocked = FmcTxGuard.BlockedReason(doc);
                     if (blocked != null)
@@ -116,20 +119,44 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
 
                     FmcTxGuard.Begin(app);
                     var run = Stopwatch.StartNew();
-                    object result;
+                    object result = null;
+                    // Ogala report: the elements a script made, removed and changed come back with its answer
+                    var added = new HashSet<long>(); var deleted = new HashSet<long>(); var modified = new HashSet<long>();
+                    EventHandler<Autodesk.Revit.DB.Events.DocumentChangedEventArgs> changed = (s, e) =>
+                    {
+                        if (!e.GetDocument().Equals(doc)) return;
+                        foreach (var id in e.GetAddedElementIds()) added.Add(id.Value);
+                        foreach (var id in e.GetDeletedElementIds()) { deleted.Add(id.Value); added.Remove(id.Value); }
+                        foreach (var id in e.GetModifiedElementIds()) modified.Add(id.Value);
+                    };
+                    app.Application.DocumentChanged += changed;
+                    // owner 27 Oct: a script is one entry on the undo list, so undo_ai_batch can take it back
+                    string undoId = FmcUndo.Begin("FMC: AI script");
+                    bool kept = false;
+                    bool reportDiff = _parameters.Value<bool?>("report_diff") == true;
                     try
                     {
                         if (_transactionMode == TransactionModeNone)
                         {
-                            try
+                            // Ogala report (66e346e2): all or nothing even when the script runs its own transactions
+                            using (var group = new TransactionGroup(doc, "FMC: AI script"))
                             {
-                                result = script.Invoke(doc, _executionParameters);
+                                group.Start();
+                                bool whole = false;
+                                try
+                                {
+                                    if (reportDiff) info.ParameterBefore = FmcModelDiff.Read(doc, SnapshotIds(_parameters), 50);
+                                    try { result = script.Invoke(doc, _executionParameters); }
+                                    finally { CloseLeaks(info); }
+                                    whole = info.TxLeak == null && !FmcAiJob.CancelRequested(job);
+                                }
+                                finally
+                                {
+                                    if (reportDiff) info.ParameterAfter = FmcModelDiff.Read(doc, modified.Concat(added), 50);
+                                    if (group.HasStarted()) { if (whole) { group.Assimilate(); kept = true; } else group.RollBack(); }
+                                }
                             }
-                            finally
-                            {
-                                CloseLeaks(info);
-                            }
-                            info.Transaction = "none (the script manages its own)";
+                            info.Transaction = "none (the script manages its own; all or nothing: a failure rolls every step back)";
                             if (info.TxLeak != null) throw LeakFailure(info, result);
                         }
                         else
@@ -138,6 +165,7 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
                             {
                                 FmcAiJob.Failures.Attach(transaction);
                                 transaction.Start();
+                                if (reportDiff) info.ParameterBefore = FmcModelDiff.Read(doc, SnapshotIds(_parameters), 50);
                                 try
                                 {
                                     result = script.Invoke(doc, _executionParameters);
@@ -145,6 +173,7 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
                                 finally
                                 {
                                     CloseLeaks(info);
+                                    if (reportDiff) info.ParameterAfter = FmcModelDiff.Read(doc, modified.Concat(added), 50);
                                 }
                                 if (info.TxLeak != null)
                                 {
@@ -156,19 +185,46 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
                                     transaction.RollBack();
                                     throw new ScriptFailure("FMC-CODE-CANCELLED", $"Job {job} was cancelled while the script ran; its transaction was rolled back, nothing was changed.");
                                 }
-                                TransactionStatus status = transaction.Commit();
-                                info.Transaction = status.ToString();
-                                if (status != TransactionStatus.Committed)
-                                    throw new ScriptFailure("FMC-CODE-ROLLED-BACK",
-                                        "Revit rolled the script's transaction back, so nothing was changed: " +
-                                        (FmcAiJob.Failures.Errors.Count > 0 ? string.Join(" | ", FmcAiJob.Failures.Errors) : $"status {status}."));
+                                if (_transactionMode == TransactionModeReadOnly)
+                                {
+                                    transaction.RollBack();
+                                    info.Transaction = "RolledBack (read-only: nothing changed)";
+                                }
+                                else
+                                {
+                                    TransactionStatus status = transaction.Commit();
+                                    kept = status == TransactionStatus.Committed;
+                                    info.Transaction = status.ToString();
+                                    if (status != TransactionStatus.Committed)
+                                        throw new ScriptFailure("FMC-CODE-ROLLED-BACK",
+                                            "Revit rolled the script's transaction back, so nothing was changed: " +
+                                            (FmcAiJob.Failures.Errors.Count > 0 ? string.Join(" | ", FmcAiJob.Failures.Errors) : $"status {status}."));
+                                }
                             }
                         }
                     }
                     finally
                     {
+                        FmcUndo.Committed(doc, kept, added);
+                        FmcUndo.Close();
+                        if (kept) info.UndoId = undoId;
+                        app.Application.DocumentChanged -= changed;
                         info.RunMs = run.ElapsedMilliseconds;
                         CheckStillOpen(doc, info);
+                    }
+                    bool rolled = info.Transaction != null && info.Transaction.StartsWith("RolledBack");
+                    if (reportDiff || !rolled)
+                    {
+                        int cap = reportDiff ? 50 : 1000;
+                        info.CreatedIds = added.Take(cap).ToList();
+                        info.DeletedIds = deleted.Take(cap).ToList();
+                        info.ModifiedCount = modified.Count;
+                        if (reportDiff)
+                        {
+                            info.CreatedCount = added.Count;
+                            info.DeletedCount = deleted.Count;
+                            info.ModifiedIds = modified.Take(50).ToList();
+                        }
                     }
                     if (info.DocumentBlocked)
                         throw new ScriptFailure("FMC-CODE-TX-LEAK", NeedsAPerson(doc), new JObject { ["result"] = Serialize(result, info) });
@@ -302,6 +358,7 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
                             })),
                         });
                     tree = FmcScriptSource.AddTracking(tree);
+                    tree = FmcScriptSource.AddCancelChecks(tree);
                 }
                 CSharpCompilation compilation = CSharpCompilation.Create(
                     "FmcScript_" + Guid.NewGuid().ToString("N"),
@@ -461,6 +518,19 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
             }
         }
 
+        private static IEnumerable<long> SnapshotIds(JObject parameters)
+        {
+            var ids = new List<long>();
+            if (parameters?["snapshot_ids"] is JArray array)
+            {
+                foreach (var token in array)
+                {
+                    if (token.Type == JTokenType.Integer || token.Type == JTokenType.Float) ids.Add(token.Value<long>());
+                }
+            }
+            return ids.Take(50);
+        }
+
         public string GetName() => "FMC: AI script";
     }
 
@@ -497,8 +567,43 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
         [JsonProperty("job")]
         public string Job { get; set; } = string.Empty;
 
+        /// <summary>What the script changed in the model (Ogala report): made, removed, and how many changed.</summary>
+        [JsonProperty("createdIds", NullValueHandling = NullValueHandling.Ignore)]
+        public List<long> CreatedIds { get; set; }
+
+        [JsonProperty("deletedIds", NullValueHandling = NullValueHandling.Ignore)]
+        public List<long> DeletedIds { get; set; }
+
+        [JsonProperty("modifiedCount", NullValueHandling = NullValueHandling.Ignore)]
+        public int? ModifiedCount { get; set; }
+
+        [JsonProperty("createdCount", NullValueHandling = NullValueHandling.Ignore)]
+        public int? CreatedCount { get; set; }
+
+        [JsonProperty("deletedCount", NullValueHandling = NullValueHandling.Ignore)]
+        public int? DeletedCount { get; set; }
+
+        [JsonProperty("modifiedIds", NullValueHandling = NullValueHandling.Ignore)]
+        public List<long> ModifiedIds { get; set; }
+
+        /// <summary>Parameter values captured before the script, for ids the caller named. Capped.</summary>
+        [JsonProperty("parameter_before", NullValueHandling = NullValueHandling.Ignore)]
+        public JArray ParameterBefore { get; set; }
+
+        /// <summary>Parameter values of created and modified elements, read before rollback or commit. Capped.</summary>
+        [JsonProperty("parameter_after", NullValueHandling = NullValueHandling.Ignore)]
+        public JArray ParameterAfter { get; set; }
+
+        /// <summary>The script's id on Revit's undo list, for undo_ai_batch (owner 27 Oct).</summary>
+        [JsonProperty("undoId", NullValueHandling = NullValueHandling.Ignore)]
+        public string UndoId { get; set; }
+
         [JsonProperty("document", NullValueHandling = NullValueHandling.Ignore)]
         public string Document { get; set; }
+
+        /// <summary>The document the script ran in: title and path. Not whichever model was active.</summary>
+        [JsonProperty("resolved_document", NullValueHandling = NullValueHandling.Ignore)]
+        public JObject ResolvedDocument { get; set; }
 
         [JsonProperty("transactionMode")]
         public string TransactionMode { get; set; } = string.Empty;

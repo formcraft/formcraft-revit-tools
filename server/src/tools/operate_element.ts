@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
+import { toolFailure } from "./failure.js";
 
 export function registerOperateElementTool(server: McpServer) {
   server.tool(
@@ -49,14 +50,7 @@ export function registerOperateElementTool(server: McpServer) {
           ],
         };
       } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `Operate elements failed: ${error instanceof Error ? error.message : String(error)}`,
-            },
-          ],
-        };
+        return toolFailure(`Operate elements failed: ${error instanceof Error ? error.message : String(error)}`);
       }
     }
   );

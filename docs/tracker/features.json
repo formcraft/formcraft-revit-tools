@@ -213,7 +213,7 @@
     "feature": "Links and coordinates",
     "status": "Built, Revit check due",
     "ref": "U20",
-    "note": ""
+    "note": "fmc_links audits any open document by exact title, and a closed .rvt via TransmissionData without opening it. apply links a set across open hosts (Z_Links_<Role>, pinned, dry_run default). When the source is open as a host, published_copy detach-saves a non-workshared read-only copy under 01_WIP\\_LinkCopies instead of linking the open file. A byte copy keeps the central identity (SameCentralModelAsHost). fmc_reload_link stays the strict reload. Centrals, protected_paths and save_exclude are not written. Add-in restart: unload, publish, transmission, type_id on facts."
   },
   {
     "id": "F25",
@@ -258,7 +258,7 @@
     "feature": "Scripts and automation",
     "status": "Built, Revit check due",
     "ref": "U24",
-    "note": ""
+    "note": "graph_run is refused on purpose: Formcraft does not host Dynamo or Revit nodes. Typed read tools are the verification path."
   },
   {
     "id": "F30",
@@ -375,7 +375,7 @@
     "feature": "AI-assisted modeller",
     "status": "Built, Revit check due",
     "ref": "#88",
-    "note": "Off until the kit and BIM Manager allow it"
+    "note": "26 Oct: General AI switch (pane top and ribbon; any user, per project; every batch approved; Stop AI overrides; walls, floors, roofs, levels and grids under approval; admins only: delete, purge, code, links, worksets). Off until the kit and BIM Manager allow it"
   },
   {
     "id": "F43",
@@ -681,7 +681,7 @@
     "feature": "Saved add-ons and bridge transaction safety",
     "status": "Built, Revit check due",
     "ref": "docs/ADDONS.md, #231",
-    "note": "KISIC gap plan steps 1-2, approved 19 Oct. Built: transactions not in a using refused (FMC-CODE-TX-USING), leaks rolled back and reported (FMC-CODE-TX-LEAK), FmcScript.Tx and CopyOptionsUseDestinationTypes; add-ons in resources/addons shipped with the server, fmc_scripts addon_list / addon_run / job and addon: automation steps; export_png_pdf, qa_orphans, strips_on_room_walls ported. Bodies compile-checked against RevitAPI; none run in Revit yet. Pane add-on buttons still to build Merged 19 Oct (#231)."
+    "note": "KISIC gap plan steps 1-2, approved 19 Oct. Built: transactions not in a using refused (FMC-CODE-TX-USING), leaks rolled back and reported (FMC-CODE-TX-LEAK), FmcScript.Tx and CopyOptionsUseDestinationTypes; add-ons in resources/addons shipped with the server, fmc_scripts addon_list / addon_run / job and addon: automation steps; export_png_pdf, qa_orphans, strips_on_room_walls ported. Bodies compile-checked against RevitAPI; none run in Revit yet. Pane add-on buttons still to build Merged 19 Oct (#231). A send_code reply includes output_json when the script result is a JSON object or a JSON string; the existing text stays."
   },
   {
     "id": "F77",
@@ -781,5 +781,347 @@
     "status": "In progress",
     "ref": "docs/kit-proposals/FMC_Rulebook_Rhino.json; tests/recipes/practice/sofa_midcentury",
     "note": "20 Oct: owner's sofa practice, round 2: geometry Pass, blind likeness 6 of 8 features. The rulebook waits for the owner's approval in the kit; the Rhino bridge needs a shell sweep and domed patches (round 3)."
+  },
+  {
+    "id": "F88",
+    "area": "App",
+    "group": "Core",
+    "feature": "AI activity strip on the ribbon",
+    "status": "Built, Revit check due",
+    "ref": "PR #139, feat/ai-ribbon-strip-2",
+    "note": "Panel title bars on every tab: orange changing, amber waiting for yes, blue reading; Settings › General. Merged into the stack 27 Oct (it had never been in an installed build)."
+  },
+  {
+    "id": "F89",
+    "area": "App",
+    "group": "Core",
+    "feature": "Detached verification copy",
+    "status": "Built, Revit check due",
+    "ref": "fmc_file open_copy",
+    "note": "Opens a copy in the background, detached when workshared, links keep/unload/repath on the copy only. Unload and repath close the copy without saving and return an error if a link is still loaded. Protected originals are not written, saved, synced or relinquished. modify_model dry_run rolls back on the copy. Needs a Revit check."
+  },
+  {
+    "id": "F90",
+    "area": "Engine",
+    "group": "Structure",
+    "feature": "Column endpoint read",
+    "status": "Built, Revit check due",
+    "ref": "fmc_structure facts",
+    "note": "Columns report base and top level plus offsets, a constraint axis or location curve, attachment parameters and the analytical member. full:true and column_ends also report the solid's bottom and top after cuts and joins, and the gap or overlap to each contact face. DirectShape stairs and columns no longer fail the read. Needs a Revit check on pad 1666458 and column 1666062."
+  },
+  {
+    "id": "F91",
+    "area": "Engine",
+    "group": "Structure",
+    "feature": "Preview structural replacement on a verification copy",
+    "status": "Built, Revit check due",
+    "ref": "fmc_replace",
+    "note": "One TransactionGroup, always rolled back, only on a document opened with fmc_file open_copy. Sequential sub-transactions so a later row can see an earlier one. Create, verify, rebind, delete exact ids, orphan check. No apply mode. Needs a Revit check on one B7 pad row and one B3 beam row."
+  },
+  {
+    "id": "F92",
+    "area": "App",
+    "group": "Core",
+    "feature": "Formcraft MCP service on this PC",
+    "status": "Built, Revit check due",
+    "ref": "docs/MCP_SERVICE.md",
+    "note": "Streamable HTTP on 127.0.0.1:8787 with a per-user token. A logon task restarts it and reloads when the updater swaps the build; a failed health check rolls the server back. The add-in still waits until Revit is closed. Several agents share one Revit by taking turns, and a model call names its document. fmc_batch leases one document, or every document named in documents (taken in document-key order, all or nothing, released together, save and sync per document). A batch file whose ops name several documents is split into a sequence. FIFO, heartbeat, failed batches rejoin the tail with a new correction, struggling is only a flag. Free memory uses ram_pause_free_mb (default 1024) and the 1536 MB resume line as two tiers: soft queues heavy writes, Dynamo and script jobs (FMC-MEMORY-SOFT), and hard waits on every model-changing call until free memory is above 1536 MB (FMC-MEMORY-HARD). Reads still run. fmc_hw reports the tier. See F101. Workshared models sync from sync_minutes (default 15) and sync_on_batch_end (default true) using the existing fmc_revit_file save and sync; sync_exclude skips named documents and sync_documents, when set, is the only list that syncs. fmc_batch drain stops new grants for a server swap; the waiting line is saved in FMC_BatchLine.json and restored, and an active lease returns to the head of its line. batch_schedulers (default Hostel Building Bot) may reserve the next slot, matched on the MCP client or the bot field. Excluded documents are saved locally and are not synced. Levels, types and views are cached until a write or a lease release, and those replies are counts and ids unless verbose is true. Document info is read live every time. ai_modeller.auto_approve_sync (default false) auto-approves a direct sync only in testing mode with auto_approve, and only for a workshared local that is not excluded, damaged, or held by another lease, while the RAM gate is clear and AI is on. Relinquish stays manual. Decisions go to FMC_SyncAutoApprove.jsonl and fmc_ai status. fmc_reload_link reloads one Revit link type outside any transaction (LoadFrom when a path is given, otherwise Reload) and leaves the link instances where they are. A family, a verification copy, a link and a protected original are refused. The handler needs the add-in. Dialog rules live in fmc_dialog_rules.json (not fmc_guard.json) and hot-reload. Defaults: AccessingFile is logged, the save reminder is CommandLink3 (Do not save the project) and the sync reminder is CommandLink3 (Do not synchronize), both always; DocWarn and PasteSimilar are OK and ExtendedError and SelectElement are Cancel during AI jobs. Save, sync, relinquish, upgrade, recover, fatal and serious errors, including Save_File, RevitSaveOptions, PartitionsSaveToCentral, Worksets_Errors and Changes_Not_Saved, stay for a person. A waiting call returns FMC-DIALOG-BLOCKING. fmc_dialog_rules lists rules, counts and the open dialog. Failure warnings still use dialogs.allow. fmc_dialogs reads that guard list and does not call Revit. The add-in half needs a Revit restart; the server works against an older add-in. Stop AI and the live-model lock still apply. send_code_to_revit refuses a method that calls itself and an endless while(true) or for(;;) before it runs. Every applied write reply names the target file's title and path. see_view exports a named view of a named open document with ExportImage (SetOfViews), including a document that is not the active window, and the reply names the title, path and view. fmc_connect_fixture joins a pipe to a basin or WC through send_code_to_revit (one transaction, rolled back on failure) until the add-in connect, which uses the fixture's MEP connectors, is installed. fmc_save_project is the project save: it checks that title and path and refuses a family. fmc_recover_revit plans crash recovery and applies it only with the plan's confirm token; scripts/fmc-recover-revit.ps1 runs the same plan when the server is down. fmc_health and fmc_queue. fmc_health lists each Revit's open documents (title and path) and sets resolved_document when exactly one project document is open. send_code refuses an unscoped parameter scan of every element (FMC-SEND-CODE-UNSCOPED) unless allow_full_scan is true. Timed autosave saves every open project locally, including a workshared local, and never writes the central. A batch lease defers save and sync only for that document. A deferred batch-end sync is remembered in fmc_sync_state.json and retried until it succeeds. save_exclude and protected_paths skip autosave. Screenshots go to %LOCALAPPDATA%\\Formcraft\\images and the previous active document is restored. fmc_reload_link reports FMC-LINK-OPEN-AS-HOST, FMC-LINK-PATH-MISMATCH or FMC-LINK-NOT-LOADED instead of a false Loaded. see_view restores the previous window after its transaction rolls back. Autosave also skips sync_exclude, so a local such as HEBERT HOSTELS_USER is not saved. A workshared local gets a sync clock at first sight, so next_sync_at is set unless sync_exclude names it. Managed sync reloads latest first and defers when the central is busy. Elements another user owns, or that are not current, are skipped. Editing requests are never granted. Needs a Windows check with Revit open."
+  },
+  {
+    "id": "F93",
+    "area": "Engine",
+    "group": "Annotate",
+    "feature": "Keynote tags, a keynote legend, and placing a schedule on a sheet",
+    "status": "Built, Revit check due",
+    "ref": "modify_model tag mode keynote_element",
+    "note": "Server hot-swap for the keynote ops: modify_model sends one script through send_code_to_revit. The API does not link a keynote tag (TagText and Keynote Text stay empty; SetInternal does not write Key Source), so a probe tag is rolled back and a blank result is FMC-NO-API-KEYNOTE-LINK with the views and host counts. Nothing blank is kept. keynote_retag posts Tag All Not Tagged (FMC-NEEDS-HUMAN) when that command exists. keynote_clone copies one linked tag and rolls a blank copy back. keynote_audit lists blank keynote tags and linked tags (TagText not empty: id, view, host, key, Key Source) with a seed for keynote_clone per tag type, and does not delete them. A type with no linked tag has seed null and says to make one via keynote_retag. Every shaped reply carries resolved_document (title and path), whether send_code stamps document as a string or an object. The generic tag op in the add-in refuses a keynote tag type, which needs that DLL. Needs a Revit check on sheet view A201 in Revit 2025.4."
+  },
+  {
+    "id": "F94",
+    "area": "Engine",
+    "group": "Site",
+    "feature": "Property line from model lines, with a person finishing Revit's command",
+    "status": "Built, Revit check due",
+    "ref": "modify_model property_line",
+    "note": "Server hot-swap only. Revit 2025.4 and 2026 have no PropertyLine.Create (CS0117); Create arrives in 2027 and this op does not call it. points_mm returns FMC-NO-API-PROPERTYLINE. from_ids checks the chain, then selects the lines and posts PostableCommand.PropertyLine, returning FMC-NEEDS-HUMAN. Source lines stay unless property_line_verify later deletes them after a new property line exists. No FMC_TAG property-line family is in the kit. Needs a Revit check on a site plan."
+  },
+  {
+    "id": "F95",
+    "area": "App",
+    "group": "Core",
+    "feature": "Dialog manager for unattended Revit pop-ups",
+    "status": "Built, Revit check due",
+    "ref": "fmc_dialog_rules",
+    "note": "Rules in %APPDATA%\\Formcraft\\fmc_dialog_rules.json, hot-reloaded, hooked for the whole session. Scope always answers the save reminder with CommandLink3 (Do not save the project, 1003) and the sync reminder with CommandLink3 (Do not synchronize, 1003). AccessingFile is log only. DocWarn and PasteSimilar are OK, ExtendedError and SelectElement are Cancel, during AI jobs. Never-auto (not overridable): save, sync, relinquish, upgrade, recover, fatal and serious errors, Save_File, RevitSaveOptions, PartitionsSaveToCentral, Worksets_Errors, Changes_Not_Saved. A blocked call returns FMC-DIALOG-BLOCKING. /health instances[].busy.dialog names the dialog id. The add-in installs only while Revit is closed. The server degrades against an older add-in."
+  },
+  {
+    "id": "F96",
+    "area": "App",
+    "group": "Core",
+    "feature": "Library scripts and Dynamo graphs, including background jobs",
+    "status": "Built, Revit check due",
+    "ref": "fmc_dynamo, fmc_script_run, fmc_library, docs/RUN_FMC_BATCH.md",
+    "note": "fmc_dynamo inspects a .dyn on the server and runs it in-process through Dynamo for Revit by reflection, so the add-in builds without those assemblies. If Dynamo for Revit is not loaded the answer is FMC-DYNAMO-UNAVAILABLE. Preview rolls a transaction group back and does not save. Apply keeps the group, needs batch_lease, and does not save; the existing timer and batch-end sync do. Offline DynamoCLI runs only graphs with no Revit nodes (FMC-DYNAMO-NEEDS-REVIT otherwise) and does not launch Revit. fmc_script_run loads 05_Scripts/library by id. C# goes through send_code. A missing kit, standards or rulebook reference is refused. allow_full_scan is refused. workshared_safe scripts that call CheckoutElements or an editing request are refused. submit, status, list, log and cancel share one queue. One job at a time per Revit, waiting while Revit is not idle. The queue file is %APPDATA%\\Formcraft\\jobs\\queue.json. A running job becomes interrupted on restart and is not started again. /health jobs reports queued, running and last_finished. graph_run forwards to fmc_dynamo. status reports loaded and model_started separately. A graph runs only after DynamoRevit.ExecuteCommand has started the model with the UI hidden; if that cannot start it, the answer is FMC-DYNAMO-NOT-STARTED and says to open Dynamo once. A job with ran false or an FMC- code is failed, and result.json includes the exception type, message and stack. Inputs are read from the top-level Inputs array and from NodeViews IsSetAsInput, with each input's name, type and default value. Python that references Revit sets needs_revit and python_revit_refs, and offline mode then returns FMC-DYNAMO-NEEDS-REVIT. Needs a Revit check with Dynamo for Revit installed."
+  },
+  {
+    "id": "F97",
+    "area": "Engine",
+    "group": "Manage",
+    "feature": "Phases and revisions from a batch",
+    "status": "Built, Revit check due",
+    "ref": "fmc_phase",
+    "note": "One tool. phases, audit, batch_check, revision_open, revision_cloud, compare, issue and unissue. The batch declares its phase (fmc_batch phase, or the phase argument). Dry run defaults to true. A write is fmc_phase_apply, one transaction, at most 50 operations, with batch_lease. Document is an exact title or path. Counts and ids, no images. The revision ledger is FMC_Revisions.jsonl. phase.* and revision.* come from the standards bank; a missing key is PROVISIONAL and cannot PASS. Needs a Revit check."
+  },
+  {
+    "id": "F98",
+    "area": "Engine",
+    "group": "Engineer",
+    "feature": "Systems flow tracer",
+    "status": "Built, Revit check due",
+    "ref": "fmc_trace",
+    "note": "Read-only leak test, continuity, missing parts, standards verdicts, counts and recommendations. Domains include conduit, tray and electrical_containment (open ends, not connected, near-miss; FLOW-NO-SYSTEM is not raised for them). limits, leak and continuity read tolerances from the bank with a per-field source. Aliases: trace.near_miss_tolerance, trace.voltage_drop_max, and trace.connection_tolerance (a scalar for touch and connected gap, or an object of the joint fields). A null alias is UNKNOWN and the labelled provisional default is still used. A null pipe capacity with capacity_FU_tool_default keeps the built-in size table as a PROVISIONAL tool default. Voltage-drop cells that are not a known cable size are reported as unmatched_cells. A provisional bank entry never PASSes. A draft or approved entry with a clause can. Vent distance is 300 mm from the trap outlet. fix plans FLOW-OPEN-END, FLOW-NOT-CONNECTED, FLOW-SIZE-MISMATCH and FLOW-NO-SYSTEM with a confidence. Pass ids to apply only those elements. A cap needs caps true. A system is created only from a connector classification. DirectShapes are skipped. One transaction, one subtransaction per edit, rolled back if the failure count rises. Recommendations that resize, cap or assign a system can be passed to fix. Splits, regrades, cleanouts and valves stay advisory. fix with dry_run false needs a batch lease. HEBERT HOSTELS, centrals and protected paths are refused. Replies are capped; the JSON is under %LOCALAPPDATA%\\Formcraft\\trace. Needs a Revit check. The add-in needs a Revit restart; the server walk does not. A DirectShape or other non-family in an MEP category is skipped instead of cast to a family, and the reply includes skipped_non_family with a count and capped ids. report pages a saved findings file (offset, limit, codes) with no Revit call and can copy it under Formcraft or HANDOFF, never D:."
+  },
+  {
+    "id": "F99",
+    "area": "Engine",
+    "group": "Coordinate",
+    "feature": "Coordination matrix across models, objects and families",
+    "status": "Built, Revit check due",
+    "ref": "fmc_coord",
+    "note": "fmc_coord keeps a versioned record (survey, base, true north, elevation datum, shared origin, control points, and model, object and family transforms) next to the project and in %APPDATA%\\Formcraft\\coord. publish, check, align and place call fmc_coord_apply once. read, export and import, and a check of two published models, stay on the server. dry_run defaults true. document is required. Tolerances are coord.tol_mm and coord.tol_deg. Needs a Revit check."
+  },
+  {
+    "id": "F100",
+    "area": "Engine",
+    "group": "Build",
+    "feature": "Join audit, hosting and envelope pressure test",
+    "status": "Built, Revit check due",
+    "ref": "fmc_joins",
+    "note": "One tool. audit, hosting, pressure_test, rooms, fix, checks and limits. Dry run defaults to true. A write is fmc_joins_apply, one transaction, at most 50 operations, with batch_lease and the ops from the dry run. Document is an exact title or path. Collectors are scoped by level, category, bounding box, room, space or ids. An unscoped scan above joins.scan_cap is refused. Counts and ids per finding code. Images only when asked. JSON under %LOCALAPPDATA%\\Formcraft\\joins. joins.* come from the standards bank. A missing key is a labelled PROVISIONAL default and cannot PASS. draft or approved with a clause can PASS. A null status is UNKNOWN. A clean pressure sample is SEALED only then. Pinned elements and elements another user owns are reported and not moved. Ownership is never taken. A DirectShape in a collected category is reported in skipped_non_family and is not cast. Needs a Revit check."
+  },
+  {
+    "id": "F101",
+    "area": "App",
+    "group": "Core",
+    "feature": "Hardware scan, tiered memory pause, and optional GPU sampling",
+    "status": "Built, Revit check due",
+    "ref": "fmc_hw",
+    "note": "One tool: scan, gpu_prefer, memory, free, advice, offload. The GPU cannot replace system RAM. The model, regeneration, transactions and the Revit API stay on the CPU. Video memory is for views. Scan lists GPUs (WMI, DXGI when the collector has it), RAM, page file, disks, CPU, Revit working set, private bytes and commit, which GPU Revit is on, and hardware acceleration. Cached at startup and shown on /health hw. gpu_prefer sets the Windows high-performance GPU for Revit.exe only with confirm:true and does not write Revit.ini. offload reports and, with confirm:true, writes hardware acceleration, anti-aliasing and optimize-view-navigation for the next Revit start. free closes non-active, non-pinned views beyond keep and never the last view. It does not save unless the existing autosave would. A local save does not clear the undo stack. Soft and hard tiers use ram_pause_free_mb and the 1.5× resume line. No new guard setting. Point, clash and ray samples run on the CPU unless an optional GPU library matches that result. The add-in builds without that library. Needs a Revit check. The add-in needs a Revit restart; the server works against an older add-in for the OS scan."
+  },
+  {
+    "id": "F102",
+    "area": "Engine",
+    "group": "Engineer",
+    "feature": "Power and lighting circuits",
+    "status": "Built, Revit check due",
+    "ref": "fmc_circuits",
+    "note": "plan, apply, panel, audit and limits. Groups unassigned lighting and power devices by room, then level, then kind. Lighting and sockets are never mixed. Names are {board}/{zone}-{type}{n}. Phases balance L1/L2/L3 and FMC_Phase is bound when it is missing. A board is electrical equipment with Part Type Panelboard, Switchboard or Other Panel, or a panel-schedule MEP connector. A board family is not refused. A board with no distribution system is FMC-PANEL-NO-DISTRIBUTION and a dry-run plan that sets Distribution System. accept_no_supply and utility-fed panels may have no supply. non_board_ids are panel part types treated as loads; others that look like an SPD or isolator are flagged. Devices are grouped by connector voltage and poles. A group SelectPanel would refuse is FMC-CIRCUIT-PANEL-MISMATCH and names the panel line-to-line and line-to-ground voltage against the device connector. FMC-NO-CONNECTOR is grouped by family. A board such as TPN_T1 with no distribution system still returns the dry-run plan that sets it. FMC-NO-CONNECTOR instead of Connector.IsConnected. Distribution target DS_415-240V_3Ph_4W. Single-phase finals at 240 V. Caps are trace.circuit.* plus trace.voltage_drop_pct and trace.phase_imbalance_max. A missing key is PROVISIONAL. dry_run defaults true. A write is fmc_circuits_apply, one transaction, one subtransaction per circuit, with batch_lease. Document is an exact title or path. HEBERT HOSTELS, centrals and protected paths are refused. JSON under %LOCALAPPDATA%\\Formcraft\\circuits. Needs a Revit check."
+  },
+  {
+    "id": "F103",
+    "area": "Engine",
+    "group": "Engineer",
+    "feature": "Conduit ends, size table and fittings",
+    "status": "Built, Revit check due",
+    "ref": "fmc_conduit",
+    "note": "scan, fix, sizes and fittings. Free ends pair with the nearest end within the trace tolerances: extend, union, elbow, transition, or a junction box FMC_E_ElecFixture_JunctionBox 75x75_Galv. Each fitting is its own subtransaction and a failure preprocessor drops a commit-time lookup failure so the rest is kept. sizes adds nominal, inside and outside diameters to ConduitSizeSettings and reports whether the type's elbow, union and transition are set. There is no separate routing-coverage API. resize_fallback uses the nearest table size and writes Comments 'nominal N mm PVC'. A missing family is FMC-NO-FITTING-TYPE. DirectShapes are skipped. dry_run defaults true. A write needs batch_lease. HEBERT HOSTELS, centrals and protected paths are refused. JSON under %LOCALAPPDATA%\\Formcraft\\conduit. Needs a Revit check."
+  },
+  {
+    "id": "F104",
+    "area": "Engine",
+    "group": "Coordinate",
+    "feature": "Low-RAM clash scan",
+    "status": "Built, Revit check due",
+    "ref": "fmc_clash",
+    "note": "Read-only scan. Category pairs across the document and its links. An empty pairs list uses the default set, including OST_PlumbingEquipment, OST_Site, OST_GenericModel and OST_SpecialityEquipment. link S uses a RevitLinkInstance in the host, transformed by GetTotalTransform (eight corners). The structural model does not have to be open. An unloaded link is FMC-LINK-NOT-LOADED. export_cache writes boxes and optional capped meshes under %LOCALAPPDATA%\\Formcraft\\clash\\cache and does not save the source or write on D:. source cache:<file or title> scans an open host against that file and reports STALE when the source file is newer. source import:<file> reads the documented millimetre schema (elements and openings) and converts it to that cache. Live boxes are internal feet times 304.8. Hits are hard, cleared_by_opening, join, hosted or clearance. centreline tests MEP centrelines. sleeves lists openings and sleeve families near a hit. Ids are kept; bounding boxes exist only for the live chunk. Exact solid intersection is optional and only for a box hit. Hits append to JSONL. The reply includes the peak working set when the process reports it. A bad category is FMC-CLASH-CATEGORY. No pictures. Needs a Revit check."
+  },
+  {
+    "id": "F105",
+    "area": "Engine",
+    "group": "Coordinate",
+    "feature": "True north and project north",
+    "status": "Built, Revit check due",
+    "ref": "fmc_north, docs/NORTH.md",
+    "note": "audit, compare, align_views and north_arrows. fmc_coord still owns the coordination record and is the tool that may move a survey point. fmc_north never calls SetProjectPosition and never acquires coordinates. audit reads the project-north to true-north angle, the site, shared coordinates, the survey and project base points, each view's orientation, and each grid set's dominant angle. compare checks A, E, P and S, or a named list, within north.tol_deg and north.tol_mm (else coord.tol_*, else provisional 0.01 deg and 1 mm, which cannot PASS). Links use GetTotalTransform against shared coordinates. align_views rotates plan-view crops or an existing scope box square to a grid set and does not change project north. north_arrows rotates a sheet symbol. dry_run defaults true. A write is fmc_north_apply, one transaction, with batch_lease and kit, standards and rulebook references. JSON under %LOCALAPPDATA%\\Formcraft\\north. No pictures. Needs a Revit check."
+  },
+  {
+    "id": "F106",
+    "area": "Engine",
+    "group": "Drawings",
+    "feature": "Legend views and symbols",
+    "status": "Built, Revit check due",
+    "ref": "fmc_legend seed, create_view, place, docs/LEGEND.md",
+    "note": "The chain action is unchanged. seed, create_view and place copy a seed because Revit cannot create a LegendComponent or a ViewLegend. seed is read-only and returns FMC-LEGEND-NO-SEED when no component exists. create_view duplicates a legend view or copies one from another open document and reports a refusal. place copies the seed into a grid and sets LEGEND_COMPONENT, LEGEND_COMPONENT_VIEW and, for a wall, LEGEND_COMPONENT_LENGTH, one SubTransaction per component. label is none, keynote or type_mark. No free text notes. If a tag cannot be placed, type marks are returned for a schedule. dry_run defaults true. A write is fmc_legend_apply, one transaction, with batch_lease and references. JSON under %LOCALAPPDATA%\\Formcraft\\legend. No pictures. Needs a Revit check."
+  },
+  {
+    "id": "F107",
+    "area": "Engine",
+    "group": "Drawings",
+    "feature": "Typical details from the kit",
+    "status": "Built, Revit check due",
+    "ref": "fmc_details, docs/tools/fmc_details.md",
+    "note": "list reads the kit Details folder of .rvt and .rfa plus FMC_Details.json. A missing folder is a kit change and no detail is invented. place creates a drafting view and copies detail components, lines, text and filled regions with CopyElements, or places a detail-item family. The source opens in the background and is closed without saving. OpenOptions has no read-only flag; a workshared source is detached and its worksets discarded. detail_ids, details or a batch JSON file lists ids so a batch can run without an AI. At most 50. dry_run defaults true. A write is fmc_details_apply, one transaction, one subtransaction per detail, with batch_lease and kit, standards and rulebook references. HEBERT HOSTELS, centrals, protected paths and kit originals are refused. The project is not saved. Needs a Revit check."
+  },
+  {
+    "id": "F108",
+    "area": "Engine",
+    "group": "Drawings",
+    "feature": "Title block and family parameters",
+    "status": "Built, Revit check due",
+    "ref": "fmc_family_params, docs/tools/fmc_family_params.md",
+    "note": "list, add, label and bind on the family loaded in the project. The kit family file is not opened for edit and is never saved. add takes the shared definition from FMC_SharedParameters.txt. A missing name is FMC-PARAM-NOT-IN-KIT, a kit change. No shared definition is created. label uses FamilyItemFactory.NewLabel, then LoadFamily back with overwrite and Close(false). bind binds that shared parameter to project categories. dry_run defaults true. A write is fmc_family_params_apply and needs batch_lease plus kit, standards and rulebook references. HEBERT HOSTELS, centrals, protected paths and a kit family document are refused. Needs a Revit check."
+  },
+  {
+    "id": "F109",
+    "area": "Engine",
+    "group": "Coordinate",
+    "feature": "Clear headroom scan",
+    "status": "Built, Revit check due",
+    "ref": "fmc_headroom, docs/tools/fmc_headroom.md",
+    "note": "Read-only. No dry run and no transaction, including no rollback. Stairs, corridors and rooms in the host and loaded links. Clear height is from the walking surface to the underside of a beam, duct, pipe or soffit. ReferenceIntersector runs only when a 3D view already exists. Without one, bounding boxes are used and the reply says so. min_clear_mm is headroom.min_clear_mm. A missing key is the provisional 2100 mm and cannot PASS. Hits return ids, a location in millimetres and the clear height. JSON under %LOCALAPPDATA%\\Formcraft\\headroom. No pictures. Needs a Revit check."
+  },
+  {
+    "id": "F110",
+    "area": "Engine",
+    "group": "Drawings",
+    "feature": "Keynote placement from a seed",
+    "status": "Built, Revit check due",
+    "ref": "fmc_keynote_place, docs/KEYNOTE_PLACE.md",
+    "note": "Finds a linked keynote tag of type element, material or user in any view, or copies one from 02_Keynotes/Seeds/FMC_Keynote_Seed.rvt. Copies that seed into every target plan with CopyElements and retargets the host. one_per_key defaults true and keeps the element nearest the middle of each keynote value. leader defaults true and sits the head off the wall face. A head that overlaps an existing tag is shifted. The API still cannot create the keynote link: a blank copy is rolled back as FMC-NO-API-KEYNOTE-LINK. A missing kit file is FMC-KEYNOTE-SEED-MISSING. A refused copy is FMC-KEYNOTE-COPY-REFUSED. dry_run defaults true. A write is fmc_keynote_place_apply, one transaction, with batch_lease and references. JSON under %LOCALAPPDATA%\\Formcraft\\keynote. No pictures. Needs a Revit check."
+  },
+  {
+    "id": "F111",
+    "area": "Engine",
+    "group": "Drawings",
+    "feature": "Sheet pair, arrange and park",
+    "status": "Built, Revit check due",
+    "ref": "fmc_sheets pair, arrange, park, docs/SHEETS_LAYOUT.md",
+    "note": "pair packs views in a grid inside the title block. arrange uses grid, pair or stack. pack shelves viewports in the FMC_TB_A0 or FMC_TB_A1 drawing area, picks the largest standard scale at or above min_scale, aligns titles, and can propose small views from other sheets. Overflow is in millimetres and apply is refused. park sets a browser-organization parameter or FMC_Sheet_Status to Parked. Margins are sheets.margin_left_mm, sheets.margin_other_mm and sheets.gap_mm. A missing key is provisional and cannot PASS. dry_run defaults true. A write is fmc_sheets_layout_apply, one transaction, with batch_lease and references. JSON under %LOCALAPPDATA%\\Formcraft\\sheets. No pictures. Needs a Revit check."
+  },
+  {
+    "id": "F112",
+    "area": "Engine",
+    "group": "Drawings",
+    "feature": "View templates, filters and room colour",
+    "status": "Built, Revit check due",
+    "ref": "fmc_viewstyle, docs/VIEWSTYLE.md, server/data/FMC_ViewStyle.json",
+    "note": "templates, filters and room_fill read 03_Master_Data/FMC_ViewStyle.json, or the sample under server/data when the kit file is missing. Sample colours are PROVISIONAL and cannot PASS. A template is created from a view. A filter is a parameter filter with a colour. room_fill duplicates an existing Rooms scheme (ColorFillScheme has no Create in 2025), sets ParameterDefinition to ROOM_NAME or ROOM_DEPARTMENT, adds entries, assigns the view and places ColorFillLegend.Create. No Rooms scheme is FMC-VIEWSTYLE-NO-SCHEME. A rejected parameter is FMC-VIEWSTYLE-SCHEME-PARAM. dry_run defaults true. A write is fmc_viewstyle_apply, one transaction, with batch_lease and references. JSON under %LOCALAPPDATA%\\Formcraft\\viewstyle. No pictures. Needs a Revit check."
+  },
+  {
+    "id": "F113",
+    "area": "Engine",
+    "group": "Drawings",
+    "feature": "Dimension strings",
+    "status": "Built, Revit check due",
+    "ref": "fmc_dims auto, docs/DIMS.md",
+    "note": "auto plans strings along parallel grids and along exterior walls, with openings in the chain. targets interior chains interior partitions and does not return FMC-DIMS-NOT-EXTERIOR for those walls. targets rooms places two clear dimensions per room between bounding wall faces. chain defaults true. offset_mm defaults to 600. dry_run defaults true and returns the references. A write is fmc_dims_apply, one transaction, one subtransaction per string, with batch_lease and references. A missing reference is FMC-DIMS-NO-REFERENCE and that string is not created. JSON under %LOCALAPPDATA%\\Formcraft\\dims. No pictures. Needs a Revit check."
+  },
+  {
+    "id": "F114",
+    "area": "Engine",
+    "group": "Drawings",
+    "feature": "PDF self-check",
+    "status": "Built, Revit check due",
+    "ref": "fmc_pdf_review, docs/PDF_REVIEW.md",
+    "note": "Rasterizes exported PDF pages to PNG under %LOCALAPPDATA%\\Formcraft\\images. Never D: and never beside the model. The renderer is pdftoppm, pdftocairo, Ghostscript, or FMC_PDFIUM. None of those is FMC-PDF-NO-RENDERER, and the text checks are still returned. Checks are a blank page, page size A0 to A4, missing title-block text, ink past the border, overlapping text, an empty drawing zone and fill percent. Border, overlap, empty zone and fill use pdf.js text and path operators and do not need a raster. dpi defaults to 110. dry_run defaults true and writes no PNG. The model is not changed, so there is no batch lease. Needs a Revit check only for the export that produces the PDF."
+  },
+  {
+    "id": "F115",
+    "area": "App",
+    "group": "Core",
+    "feature": "Queue list, cancel and a named busy reason",
+    "status": "Built, Revit check due",
+    "ref": "fmc_queue",
+    "note": "list shows queued and running jobs per instance with age, document, tool, lease holder and caller. cancel removes a queued job. A running job is FMC-JOB-RUNNING unless it is stale and Revit is idle. purge_stale drops queued jobs older than older_than_min. dry_run defaults true. A queued-only job older than a minute is not left in flight. Every wait or refusal carries busy_reason: a running job, a lease, a modal dialog, the RAM gate, an open transaction, or Revit not idle. /health includes busy_reason. Needs a Revit check."
+  },
+  {
+    "id": "F116",
+    "area": "App",
+    "group": "Core",
+    "feature": "Open and close models",
+    "status": "Built, Revit check due",
+    "ref": "fmc_docs",
+    "note": "list, open and close. A workshared central opens as a new local in Documents unless detach is set. worksets are all or last. close defaults to save false, refuses a dirty document unless save is true, and never closes the last document. Saves under protected_roots, save_exclude, or HEBERT HOSTELS_USER are refused. A workshared model is not saved. dry_run defaults true. A write needs batch_lease and is fmc_docs_apply on the API thread. Needs a Revit check."
+  },
+  {
+    "id": "F117",
+    "area": "App",
+    "group": "Core",
+    "feature": "Memory guard",
+    "status": "Built, Revit check due",
+    "ref": "fmc_memory",
+    "note": "status reports free MB, the Revit working set and open documents including families. free closes unmodified family documents and unmodified non-active non-workshared documents, then GC.Collect. The last document stays. Revit 2025 has no API to clear the undo stack. purge_unused runs PerformanceAdviser rules named unused or purge, with an optional category filter. dry_run defaults true. A write needs batch_lease and is fmc_memory_apply. The reply includes MB before and after. The pause stays 1024 MB and the resume line 1536 MB. Needs a Revit check."
+  },
+  {
+    "id": "F118",
+    "area": "Engine",
+    "group": "Engineer",
+    "feature": "Electrical single-line, power riser and earthing template",
+    "status": "Built, Revit check due",
+    "ref": "fmc_elec_diagrams, docs/tools/fmc_elec_diagrams.md",
+    "note": "plan, apply and limits for an open electrical model such as F26901-FMC-ZZ-ZZ-M3-E-0001_USER. Reads the panel and circuit graph fmc_trace uses, plus level and distribution voltage. Draws a single-line (boards, feeders, breaker number, rating, poles and load), a power riser per building, and an earthing template. riser bands or elevation (12 paper mm per metre of level height). A loaded FMC_DI_E_SLD_Board or FMC_DI_E_SLD_Breaker is placed. Otherwise lines and text. A missing rating or load is TBC. The earthing view does not size the electrode. dry_run defaults true. A write is fmc_elec_diagrams_apply, one transaction, one subtransaction per view, with batch_lease and kit, standards and rulebook references. The model is not saved. Needs a Revit check."
+  },
+  {
+    "id": "F119",
+    "area": "Engine",
+    "group": "Engineer",
+    "feature": "Plumbing and drainage risers and schematics",
+    "status": "Built, Revit check due",
+    "ref": "fmc_plumb_diagrams, docs/tools/fmc_plumb_diagrams.md",
+    "note": "plan, apply and limits for an open plumbing model such as F26901-FMC-ZZ-ZZ-M3-P-0001_USER. Reads piping-system membership the way fmc_trace does, without walking every connector. One riser and one schematic per system: stacks by level, branches, fixture counts, pipe sizes and vent stacks. riser bands or elevation. A loaded FMC_DI_P_Schematic is placed. Otherwise lines and text. A tiny 3D schematic is listed and left in place. A missing size is TBC. dry_run defaults true. A write is fmc_plumb_diagrams_apply, one transaction, one subtransaction per view, with batch_lease and references. The model is not saved. Needs a Revit check."
+  },
+  {
+    "id": "F120",
+    "area": "Engine",
+    "group": "Drawings",
+    "feature": "Door, window and room tags on issued plans",
+    "status": "Built, Revit check due",
+    "ref": "fmc_tags, docs/TAGS.md",
+    "note": "Tags untagged doors, windows and rooms on floor plans placed on issued sheets. No leaders. Linked doors use CreateLinkReference. Rooms use NewRoomTag with LinkElementId. A host collector and an OwnerViewId filter both return 0 for those cases, which is why a send_code script reported tags 0. Overlaps shift. dry_run defaults true. A write is fmc_tags_apply, one transaction, one subtransaction per tag, with batch_lease and references. JSON under %LOCALAPPDATA%\\Formcraft\\tags. No pictures. Needs a Revit check. Fixed 28 Nov: the read failed on every dry run in Revit 2025 because OfClass(typeof(RoomTag)) is rejected; it now collects SpatialElementTag and keeps RoomTag, and only when Rooms is among the categories. No other collector in the add-in uses RoomTag, AreaTag or SpaceTag with OfClass."
+  },
+  {
+    "id": "F121",
+    "area": "Engine",
+    "group": "Drawings",
+    "feature": "Keynote legend on plan sheets",
+    "status": "Built, Revit check due",
+    "ref": "fmc_keynote_legend, docs/KEYNOTE_LEGEND.md",
+    "note": "Creates one keynote legend, filters it by sheet, and places it on each plan sheet. The point is the title-block parameter FMC_Legend_Zone, or the kit zone inset from the lower right. keynote_legend and place_schedule are not keynote tags, so a for_each of either runs on the add-in. The sample zone is PROVISIONAL and cannot PASS. dry_run defaults true. A write is fmc_keynote_legend_apply, one transaction, with batch_lease and references. Returns the legend id and viewport ids. JSON under %LOCALAPPDATA%\\Formcraft\\keynote-legend. No pictures. Needs a Revit check."
+  },
+  {
+    "id": "F122",
+    "area": "Engine",
+    "group": "Drawings",
+    "feature": "Drawing register refresh",
+    "status": "Built, Revit check due",
+    "ref": "fmc_register, docs/REGISTER.md",
+    "note": "Filters a sheet-list schedule (G100 or the given name) so FMC_Sheet_Status or the browser parameter equal to PARKED drops out. Fields are number, name, current revision and status. dry_run defaults true. Apply is fmc_register_apply, one transaction, with batch_lease and references. A missing status parameter is FMC-REGISTER-STATUS and is not created. Needs a Revit check."
+  },
+  {
+    "id": "F123",
+    "area": "App",
+    "group": "Core",
+    "feature": "Undo a batch after sync",
+    "status": "Built, Revit check due",
+    "ref": "fmc_batch_undo, docs/BATCH_UNDO.md",
+    "note": "After sync clears Revit's Undo, deletes element ids recorded for that batch in FMC_Created.jsonl. Each id must still exist, be editable by this user, and match its fingerprint when one was stored. dry_run defaults true. Apply needs confirm true, batch_lease and references. One transaction, fmc_batch_undo_apply. Reports deleted, kept and skipped. Does not check elements out. Needs a Revit check."
+  },
+  {
+    "id": "F124",
+    "area": "App",
+    "group": "Core",
+    "feature": "Run log summary",
+    "status": "Built, Revit check due",
+    "ref": "fmc_runlog, scripts/Run-FmcRunlog.mjs, docs/RUNLOG.md",
+    "note": "Read-only pass/fail list from RUN_ALL_log.txt or a folder of result JSON. One line per batch: id, ops, ok, failed, FMC codes. The CLI script sits next to Run-FmcBatch.mjs. No lease. Fixed 28 Nov: the real RUN_ALL_log.txt is sectioned (==== job, Batch label on document, Preview/Apply/Verify, -> tool lines, JSON replies) and a result JSON is { label, steps }. Both now give real op, ok, failed and skipped counts, and a document name such as FMC-ZZ-ZZ-M3-A-0002 is no longer reported as a code. Tests read a fixture laid out like the 23 Nov F26901 run."
+  },
+  {
+    "id": "F125",
+    "area": "App",
+    "group": "Core",
+    "feature": "Open and close a workshared local (fmc_file open_local, close_local)",
+    "status": "Built, Revit check due",
+    "ref": "fmc_file open_local, fmc_file close_local, fmc_open_local, fmc_close_local, fmc_close_local_apply, docs/tools/fmc_file.md",
+    "note": "open_local opens a person's existing workshared local as the active document with UIApplication.OpenAndActivateDocument (activate=false uses OpenDocumentFile). worksets are all, last_viewed, none or a list of names. DoNotDetach; it never creates a new local, never synchronises, and refuses a central (FMC-FILE-CENTRAL-REFUSED), a missing file, a cloud, protected or live path, and worksets on a file that is not workshared. An already open local is only activated. close_local never syncs or relinquishes; it activates another open project first when the target is active, refuses the only open document (FMC-FILE-ONLY-DOC) and unsaved changes without confirm. save=true is a write (fmc_close_local_apply, in WRITE_COMMANDS: batch_lease, live-model lock, AI gate) and is refused for HEBERT HOSTELS, a protected original, a verification copy or a document never saved. dry_run defaults true. Opening a model in Revit stays a person's choice: the Revit check runs after install, dry run only."
   }
 ]

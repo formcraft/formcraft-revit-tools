@@ -9,6 +9,9 @@ const win = path.win32;
  * (pyRevit's FMC tab, Dynamo Player, a Python prompt); it doesn't run them (Manual 17: scripts pass the release gate in
  * their own tool).
  */
+/** graph_run is an alias of fmc_dynamo. The tool forwards the call. It is not a refusal. */
+export const GRAPH_RUN_FORWARDS_TO = "fmc_dynamo";
+
 export interface KitScript {
   name: string;
   type: "pyRevit" | "Dynamo (Python node)" | "Python tool";

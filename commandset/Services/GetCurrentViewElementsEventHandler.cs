@@ -1,5 +1,6 @@
 using Autodesk.Revit.UI;
 using RevitMCPCommandSet.Models.Common;
+using RevitMCPCommandSet.Services.Fmc;
 using RevitMCPSDK.API.Interfaces;
 
 namespace RevitMCPCommandSet.Services
@@ -66,15 +67,14 @@ namespace RevitMCPCommandSet.Services
         public bool WaitForCompletion(int timeoutMilliseconds = 10000)
         {
             _resetEvent.Reset();
-            return _resetEvent.WaitOne(timeoutMilliseconds);
+            return FmcBusy.Wait(_resetEvent, timeoutMilliseconds);
         }
 
         public void Execute(UIApplication app)
         {
             try
             {
-                var uiDoc = app.ActiveUIDocument;
-                var doc = uiDoc.Document;
+                var doc = FmcCallContext.Document(app);
                 var activeView = doc.ActiveView;
 
 

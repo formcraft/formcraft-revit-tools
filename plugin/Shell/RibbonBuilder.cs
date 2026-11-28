@@ -46,6 +46,17 @@ namespace revit_mcp_plugin.Shell
 
         private static readonly Dictionary<FmcModule, RibbonPanel> Panels = new Dictionary<FmcModule, RibbonPanel>();
         private static PushButton _connect;
+        private static PushButton _aiSwitch;
+        private static string _aiSwitchShown;
+        private const string AiSwitchTip = "The General AI switch for the open model's project: On lets AI model in this WIP model, every batch waiting for your approval. Stop AI overrides it.";
+
+        /// <summary>Shows the General AI switch's state (On, Off, Stopped) on its button; called at idle, changes only when it changed.</summary>
+        public static void ShowAiSwitch(string state)
+        {
+            if (_aiSwitch == null || _aiSwitchShown == state) return;
+            _aiSwitchShown = state;
+            _aiSwitch.ItemText = state == "Stopped" ? "AI: stopped" : "AI switch: " + state.ToLowerInvariant();
+        }
         private static bool? _connectShown;
 
         private static string ConnectTip(bool on) =>
@@ -83,8 +94,10 @@ namespace revit_mcp_plugin.Shell
             core.AddItem(Button("FMC_Pane", "Formcraft\npane", typeof(TogglePaneCommand), "pane", "Shows or hides the Formcraft pane.", assembly, large: true));
             var stacked = core.AddStackedItems(
                 Button("FMC_ConnectAI", "AI: off", typeof(ConnectAiCommand), "ai", ConnectTip(false), assembly),
+                Button("FMC_AiSwitch", "AI switch: off", typeof(AiSwitchCommand), "ai", AiSwitchTip, assembly),
                 Button("FMC_LogFile", "Log file", typeof(LogFileCommand), "log", "Opens today's log for this PC: every action, dry run and refusal.", assembly));
             _connect = stacked[0] as PushButton;
+            _aiSwitch = stacked[1] as PushButton;
 
             foreach (var m in Modules)
             {

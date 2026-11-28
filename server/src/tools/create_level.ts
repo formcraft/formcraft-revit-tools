@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
+import { toolFailure } from "./failure.js";
 
 export function registerCreateLevelTool(server: McpServer) {
   server.tool(
@@ -75,16 +76,9 @@ export function registerCreateLevelTool(server: McpServer) {
           ],
         };
       } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `Create level failed: ${
+        return toolFailure(`Create level failed: ${
                 error instanceof Error ? error.message : String(error)
-              }`,
-            },
-          ],
-        };
+              }`);
       }
     }
   );

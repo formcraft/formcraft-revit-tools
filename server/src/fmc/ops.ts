@@ -11,11 +11,20 @@ import { z } from "zod";
 import { isInside } from "./policy.js";
 import { SpParam } from "./specs.js";
 import { MaterialDb } from "./materials.js";
+import { graphicsProblems } from "./familygraphics.js";
+import { CurveNode, arcPoints, outlineProblems, segmentsMeet, smoothOps } from "./curves.js";
 
 const mm = z.number().finite();
 // Fixed-length arrays, not z.tuple: a tuple becomes JSON Schema "items": [a, b], which the Claude API rejects
 // ("items must be object,boolean"), and the whole tool drops out of the client. schemas.test.ts checks every tool.
 const point = z.array(mm).length(2).describe("[x, y] in mm");
+/** An outline node (owner 26 Oct, fmc/curves.ts): [x, y] a straight line to it, { to, through } a 3-point arc, { to, spline } a smooth curve. */
+const node = z.union([point, z.object({ to: point, through: point.optional().describe("a point on the arc"),
+  spline: z.array(point).min(1).optional().describe("points the smooth curve passes through on its way to `to`") })]);
+const smoothing = {
+  smooth: z.boolean().optional().describe("smooth a traced outline: corners kept, the stretches between them as splines (default: outlines of 24 points or more)"),
+  smooth_tolerance_mm: z.number().positive().optional().describe("how far the smoothed curve may leave the traced points (default 0.5 mm)"),
+};
 const point3 = z.array(mm).length(3).describe("[x, y, z] in mm");
 const VIEWS = ["plan", "front", "right"] as const;
 // A point as the crossing of two named reference planes: an end drawn there is locked to both, so it follows them.
@@ -44,7 +53,8 @@ const sweepShape = {
     "path_planes: a reference plane parallel to the path plane that hosts the path sketch, so the sweep follows it (e.g. Frame Ext); otherwise the path sits at `at`"),
   path_plane: z.enum(VIEWS).default("plan").describe("plan: [x, y] at height `at`; front: [x, z] at y = `at`; right: [y, z] at x = `at`"),
   at: mm.default(0),
-  profile: z.array(point).min(3).optional().describe("a closed profile in mm, local to the start of the path (x across, y up)"),
+  profile: z.array(node).min(2).optional().describe("a closed profile in mm, local to the start of the path (x across, y up); nodes may be arcs or splines"),
+  ...smoothing,
   profile_family: z.string().optional().describe("or a loaded profile family (FMC_Profile_*), loaded earlier with load_family"),
   profile_type: z.string().optional(),
   subcategory: z.string().optional(),
@@ -92,14 +102,16 @@ export const OP = z.discriminatedUnion("op", [
     offset: mm.default(300).describe("where the dimension line sits, mm from the first plane") }),
   z.object({ op: z.literal("extrusion"), name: z.string().min(1),
     rect: z.array(z.string().min(1)).length(4).optional().describe("left, right, front, back reference planes; each side is locked to its plane"),
-    points: z.array(point).min(3).optional().describe("or a closed outline in mm (not locked)"),
+    points: z.array(node).min(2).optional().describe("or a closed outline in mm (not locked); nodes may be arcs { to, through } or splines { to, spline }"),
+    ...smoothing,
     start: mm.default(0), end: mm.default(1000), start_plane: z.string().optional().describe("a plane or level the bottom goes onto and is locked to (the start moves onto it first, F-064)"),
     end_plane: z.string().optional().describe("a level reference plane, or a level such as Upper Ref. Level, the top goes onto and is locked to (the end moves onto it first)"),
     view: z.string().optional(),
     sketch: z.enum(["plan", "front", "right"]).optional().describe("plan (default): points [x, y], depth up; front: [x, z], depth toward the viewer (-y); right: [y, z], depth along +x (F-059)") }),
   z.object({ op: z.literal("void_extrusion"), name: z.string().min(1),
     rect: z.array(z.string().min(1)).length(4).optional().describe("left, right, front, back reference planes; each side is locked to its plane"),
-    points: z.array(point).min(3).optional().describe("or a closed outline in mm (not locked)"),
+    points: z.array(node).min(2).optional().describe("or a closed outline in mm (not locked); nodes may be arcs { to, through } or splines { to, spline }"),
+    ...smoothing,
     start: mm.default(0), end: mm.default(1000), start_plane: z.string().optional().describe("a plane or level the bottom goes onto and is locked to"),
     end_plane: z.string().optional().describe("a level reference plane, or a level, the top goes onto and is locked to"),
     view: z.string().optional(),
@@ -118,19 +130,22 @@ export const OP = z.discriminatedUnion("op", [
   // face locks, equal dimensions, nested families.
   z.object({ op: z.literal("add_subcategory"), name: z.string().min(1).describe("e.g. Frame, Panel, Glass, Plan Swing, Elevation Swing, Clearance"),
     line_weight_projection: z.number().int().min(1).max(16).optional(), line_weight_cut: z.number().int().min(1).max(16).optional(),
-    color: z.array(z.number().int().min(0).max(255)).length(3).optional().describe("[r, g, b]"),
-    material: z.string().optional().describe("an FMC_ material already in the family") }),
+    color: z.array(z.number().int().min(0).max(255)).length(3).optional().describe("[r, g, b] line colour: black or dark grey (FAM-044); the finish colour goes on the material"),
+    material: z.string().optional().describe("an FMC_ material already in the family"),
+    keep_graphics: z.boolean().optional().describe("a deliberate exception to FAM-044's line colours and pens") }),
   z.object({ op: z.literal("set_subcategory"), name: z.string().min(1).describe("the solid or line set, by op name"),
     subcategory: z.string().min(1) }),
   z.object({ op: z.literal("sweep"), ...sweepShape }),
   z.object({ op: z.literal("void_sweep"), ...sweepShape }),
   z.object({ op: z.literal("revolution"), name: z.string().min(1),
-    profile: z.array(point).min(3).describe("closed profile as [r, z] in mm: distance from the axis, height"),
+    profile: z.array(node).min(2).describe("closed profile as [r, z] in mm: distance from the axis, height; nodes may be arcs or splines"),
+    ...smoothing,
     axis_at: point.default([0, 0]).describe("axis z: [x, y] in plan; axis y: [x, z]; axis x: [y, z] (mm)"),
     axis: z.enum(["z", "y", "x"]).optional().describe("z (default, vertical); y: faces the viewer, profile [r, depth toward -y]; x: profile [r, depth along +x] (knobs, ports, nozzles, LEDs)"),
     start_deg: z.number().default(0), end_deg: z.number().default(360), subcategory: z.string().optional() }),
   z.object({ op: z.literal("blend"), name: z.string().min(1),
-    base: z.array(point).min(3).describe("closed base outline in plan, mm"), top: z.array(point).min(3).describe("closed top outline in plan, mm"),
+    base: z.array(node).min(2).describe("closed base outline in plan, mm (arcs and splines allowed)"), top: z.array(node).min(2).describe("closed top outline in plan, mm"),
+    ...smoothing,
     start: mm.default(0), end: mm.default(1000), subcategory: z.string().optional() }),
   z.object({ op: z.literal("symbolic_lines"), name: z.string().min(1).describe("one name for the set, e.g. Swing plan"),
     view: z.enum(VIEWS).default("plan").describe("plan lines show in plan views; front in front/back elevations; right in side elevations"),
@@ -226,7 +241,8 @@ type SkeletonOp = Extract<Op, { op: "skeleton" }>;
  * plane (and a Bottom one at an instance mounting height), each labelled. Every other op passes through.
  */
 export function expandSkeletons<T extends { op: string }>(ops: T[]): T[] {
-  return ops.flatMap((o) => (o.op === "skeleton" ? (skeletonOps(o as unknown as SkeletonOp) as unknown as T[]) : [o]));
+  // and every outline cleaned, a traced one smoothed (fmc/curves.ts), before it's checked or built
+  return smoothOps(ops.flatMap((o) => (o.op === "skeleton" ? (skeletonOps(o as unknown as SkeletonOp) as unknown as T[]) : [o])));
 }
 
 function skeletonOps(s: SkeletonOp): Array<Record<string, unknown>> {
@@ -262,36 +278,6 @@ type P2 = [number, number];
 const TOL = 0.01; // mm: closer than this is the same point
 const dist = (a: P2, b: P2) => Math.hypot(a[0] - b[0], a[1] - b[1]);
 const cross = (o: P2, a: P2, b: P2) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
-
-/** The points along a 3-point arc from a through m to b (16 pieces), or null when the three points are in a line. */
-function arcPoints(a: P2, m: P2, b: P2): P2[] | null {
-  const d = 2 * (a[0] * (m[1] - b[1]) + m[0] * (b[1] - a[1]) + b[0] * (a[1] - m[1]));
-  const scale = Math.max(dist(a, m), dist(m, b), dist(a, b));
-  if (Math.abs(cross(a, m, b)) < 1e-9 * scale * scale || d === 0) return null;
-  const sq = (p: P2) => p[0] * p[0] + p[1] * p[1];
-  const cx = (sq(a) * (m[1] - b[1]) + sq(m) * (b[1] - a[1]) + sq(b) * (a[1] - m[1])) / d;
-  const cy = (sq(a) * (b[0] - m[0]) + sq(m) * (a[0] - b[0]) + sq(b) * (m[0] - a[0])) / d;
-  const r = Math.hypot(a[0] - cx, a[1] - cy);
-  const ang = (p: P2) => Math.atan2(p[1] - cy, p[0] - cx);
-  const ccw = (from: number, to: number) => { let s = to - from; while (s < 0) s += 2 * Math.PI; while (s >= 2 * Math.PI) s -= 2 * Math.PI; return s; };
-  const a0 = ang(a), toM = ccw(a0, ang(m)), toB = ccw(a0, ang(b));
-  // Counter-clockwise from a reaches m before b: the arc runs counter-clockwise; otherwise clockwise.
-  const sweep = toM < toB ? toB : toB - 2 * Math.PI;
-  const out: P2[] = [];
-  for (let k = 1; k <= 16; k++) { const t = a0 + (sweep * k) / 16; out.push([cx + r * Math.cos(t), cy + r * Math.sin(t)]); }
-  out[out.length - 1] = b;
-  return out;
-}
-
-/** Proper or touching intersection of segments p1-p2 and q1-q2 (shared end points count as touching). */
-function segmentsMeet(p1: P2, p2: P2, q1: P2, q2: P2): boolean {
-  const eps = 1e-9;
-  const d1 = cross(q1, q2, p1), d2 = cross(q1, q2, p2), d3 = cross(p1, p2, q1), d4 = cross(p1, p2, q2);
-  if (((d1 > eps && d2 < -eps) || (d1 < -eps && d2 > eps)) && ((d3 > eps && d4 < -eps) || (d3 < -eps && d4 > eps))) return true;
-  const on = (a: P2, b: P2, c: P2) => Math.abs(cross(a, b, c)) <= eps * Math.max(1, dist(a, b)) &&
-    Math.min(a[0], b[0]) - TOL <= c[0] && c[0] <= Math.max(a[0], b[0]) + TOL && Math.min(a[1], b[1]) - TOL <= c[1] && c[1] <= Math.max(a[1], b[1]) + TOL;
-  return on(q1, q2, p1) || on(q1, q2, p2) || on(p1, p2, q1) || on(p1, p2, q2);
-}
 
 /**
  * A profile loop Revit accepts: closed (the last point is the start, within 0.01 mm), no zero-length segment, no arc
@@ -521,6 +507,7 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
       case "extrusion":
       case "void_extrusion":
         if (!o.rect && !o.points) p.push(`${at}: give rect (four reference planes) or points`);
+        if (o.points) for (const x of outlineProblems(o.points as CurveNode[])) p.push(`${at}: the outline ${x}`);
         if (o.end <= o.start) p.push(`${at}: end (${o.end}) must be above start (${o.start})`);
         if (o.start_plane && o.start_plane === o.end_plane)
           p.push(`${at}: start and end are both locked to "${o.start_plane}", so the solid would be flat: lock one end and let the other keep its thickness`);
@@ -560,7 +547,7 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
           else if (!TEMPLATE_SIZE_PARAMS.has(o.param)) p.push(`${at}: ${mayExist("parameter", o.param)}`);
         }
         break;
-      case "add_subcategory": subcats.add(o.name); break;
+      case "add_subcategory": subcats.add(o.name); p.push(...graphicsProblems(o as any, at)); break;
       case "sweep":
       case "void_sweep":
         if (!o.path && !o.path_planes) p.push(`${at}: give path_planes (corners on named planes) or path (fixed points)`);
@@ -578,12 +565,14 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
         break;
       case "revolution":
         if (o.end_deg === o.start_deg) p.push(`${at}: start_deg and end_deg are the same`);
-        if (o.profile.some((pt) => pt[0] < 0)) p.push(`${at}: a revolution profile can't cross its axis (r must be 0 or more)`);
+        for (const x of outlineProblems(o.profile as CurveNode[], "revolution")) p.push(`${at}: the profile ${x}`);
         if (o.subcategory && !subcats.has(o.subcategory)) p.push(`${at}: ${mayExist("subcategory", o.subcategory)}`);
         solids.add(o.name);
         break;
       case "blend":
         if (o.end <= o.start) p.push(`${at}: end (${o.end}) must be above start (${o.start})`);
+        for (const x of outlineProblems(o.base as CurveNode[])) p.push(`${at}: the base ${x}`);
+        for (const x of outlineProblems(o.top as CurveNode[])) p.push(`${at}: the top ${x}`);
         if (o.subcategory && !subcats.has(o.subcategory)) p.push(`${at}: ${mayExist("subcategory", o.subcategory)}`);
         solids.add(o.name);
         break;
