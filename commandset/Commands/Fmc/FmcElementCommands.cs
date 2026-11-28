@@ -317,7 +317,16 @@ namespace RevitMCPCommandSet.Commands.Fmc
         {
             lock (_lock)
             {
-                _handler.Parameters = new JObject { ["action"] = "status" };
+                // Read-only: only status and the UB-2 dry runs (plan, redo_plan) pass; undo and redo never go through this command.
+                var asked = parameters ?? new JObject();
+                string action = asked.Value<string>("action") ?? "status";
+                if (action == "plan" || action == "redo_plan")
+                {
+                    var p = new JObject { ["action"] = action };
+                    foreach (var key in new[] { "batch_id", "count", "document" }) if (asked[key] != null) p[key] = asked[key];
+                    _handler.Parameters = p;
+                }
+                else _handler.Parameters = new JObject { ["action"] = "status" };
                 if (!RaiseAndWaitForCompletion(60000)) throw new TimeoutException($"{CommandName} timed out");
                 if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
                 return _handler.Result;
