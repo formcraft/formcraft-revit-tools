@@ -11,11 +11,11 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { GuardConfig, expandEnv } from "./policy.js";
+import { GuardConfig, WRITE_COMMANDS, expandEnv } from "./policy.js";
 import { parseSharedParameters, SpParam } from "./specs.js";
 import { Keynote, parseKeynotes } from "./library.js";
 import { parseRulebook as parseQaRulebook } from "./rules.js";
-import { parseConfig as parseAiConfig } from "./aiuse.js";
+import { COMMAND_GROUPS, NEVER, parseConfig as parseAiConfig } from "./aiuse.js";
 import type { RevitInstance } from "./connect.js";
 
 // ---------- paths: Windows paths on the PC, POSIX paths in tests ----------
@@ -190,8 +190,23 @@ export function summariseRecipe(file: string): RecipeSummary | null {
   });
 }
 
+/** Folder listings kept 10 s, like the recipe index: a network kit folder is not listed on every call. */
+const FOLDER_MEMO_MS = 10_000;
+let familyMemo: { at: number; key: string; files: { staged: Map<string, string>; released: Map<string, string> } } | null = null;
+let templateMemo: { at: number; key: string; files: string[] } | null = null;
+/** Drops the 10 s folder memos (tests, or after a known change on disk). */
+export function clearFolderMemos() { familyMemo = null; templateMemo = null; recipeMemo = null; }
+
 /** Family files on disk: staging (04_Families\_Staging\<Role>) and released (04_Families\<Role>). */
 export function familyFiles(k: KitPaths): { staged: Map<string, string>; released: Map<string, string> } {
+  const key = [k.stagingRoot, k.familiesRoot].join("|");
+  if (familyMemo && familyMemo.key === key && Date.now() - familyMemo.at < FOLDER_MEMO_MS) return familyMemo.files;
+  const files = familyFilesUncached(k);
+  familyMemo = { at: Date.now(), key, files };
+  return files;
+}
+
+function familyFilesUncached(k: KitPaths): { staged: Map<string, string>; released: Map<string, string> } {
   const staged = new Map<string, string>(), released = new Map<string, string>();
   const collect = (dir: string, into: Map<string, string>) => {
     for (const e of listDir(dir)) if (e.isFile() && /\.rfa$/i.test(e.name)) into.set(e.name.replace(/\.rfa$/i, ""), pj(dir, e.name));
@@ -214,15 +229,48 @@ function rulebookSummary(file: string) {
 }
 
 export function templateFiles(k: KitPaths): string[] {
+  if (templateMemo && templateMemo.key === k.templatesDir && Date.now() - templateMemo.at < FOLDER_MEMO_MS) return [...templateMemo.files];
   const out: string[] = [];
   for (const d of [k.templatesDir, pj(k.templatesDir, "_Staging")])
     for (const e of listDir(d)) if (e.isFile() && /\.(rte|rft)$/i.test(e.name)) out.push(pj(d, e.name));
-  return out;
+  templateMemo = { at: Date.now(), key: k.templatesDir, files: out };
+  return [...out];
 }
 
 // ---------- the engine registry: engines in open PRs plug in by name, nothing depends on them ----------
 
-export interface ContextEngine { id: string; intent: Intent; tool: string; about: string; calls: string[]; kit: string[] }
+/**
+ * `writes`: the add-in commands the engine's real (non dry-run) step sends. They decide `ai_mode` and the lease note.
+ * Optional, so an engine registered without it reads as a read-only engine.
+ */
+export interface ContextEngine { id: string; intent: Intent; tool: string; about: string; calls: string[]; kit: string[]; writes?: string[] }
+
+export type AiMode = "allowed" | "approval" | "refused";
+
+/**
+ * What the AI gate does with one add-in command in AI mode (aiuse.ts aiVerdict): a read is allowed; a write in an AI
+ * operation group waits for a person's approval; a write in NEVER, or in no group, is refused unless a person set
+ * access to full. This is a hint for the next-call list; the gate itself decides at run time.
+ */
+export function aiModeOf(command: string): AiMode {
+  if (NEVER[command]) return "refused";
+  if (COMMAND_GROUPS[command]) return "approval";
+  if (WRITE_COMMANDS.has(command)) return "refused";
+  return "allowed";
+}
+
+const MODE_RANK: Record<AiMode, number> = { allowed: 0, approval: 1, refused: 2 };
+
+/** The engine's real step: the strictest AI mode of its writes, and whether it needs a batch lease first. */
+export function engineGate(e: ContextEngine): { ai_mode: AiMode; lease?: string } {
+  const writes = e.writes ?? [];
+  if (!writes.length) return { ai_mode: "allowed" };
+  const mode = writes.map(aiModeOf).sort((a, b) => MODE_RANK[b] - MODE_RANK[a])[0];
+  return {
+    ai_mode: mode,
+    lease: `the real run (dry_run=false) writes (${writes.join(", ")}): take fmc_batch request first and release after`,
+  };
+}
 
 export const CONTEXT_ENGINES: ContextEngine[] = [
   { id: "line_diagram", intent: "line_diagram", tool: "fmc_diagram", about: "single-lines, risers and schematics drawn from the model; missing values print TBC",
@@ -231,6 +279,23 @@ export const CONTEXT_ENGINES: ContextEngine[] = [
     calls: ['fmc_casework {"action":"units", ...run}', 'fmc_casework {"action":"summary", ...}', 'fmc_casework {"action":"pack","dry_run":true}'], kit: ["03_Master_Data/FMC_Casework_Standards.json", "07_Materials/FMC_Materials.json"] },
   { id: "ceiling", intent: "ceiling", tool: "fmc_ceiling", about: "ceiling designs, checks, set-out, quantities and BoQ from the kit's I.CLG keynotes and material prices",
     calls: ['fmc_ceiling {"action":"designs", ...}', 'fmc_ceiling {"action":"setout", ...}', 'fmc_ceiling {"action":"boq", ...}'], kit: ["03_Master_Data/FMC_Ceiling_Standard.json", "07_Materials/FMC_Materials.json"] },
+  // MEP and coordination tools (tool-research fmc_context gap 2). `kit` lists only files the tool's code names.
+  { id: "clash", intent: "clash", tool: "fmc_clash", about: "read-only clash scan by category pair, live, against a link or a saved cache; sleeves lists unopened pass-throughs",
+    calls: ['fmc_clash {"action":"scan","document":"<doc>"}', 'fmc_clash {"action":"sleeves","document":"<doc>"}'], kit: [] },
+  { id: "coordination", intent: "coordination", tool: "fmc_coord", about: "the project coordination record (survey, base point, true north, shared origin): read, check models against it, export",
+    calls: ['fmc_coord {"action":"read","project":"<project>"}', 'fmc_coord {"action":"check","document":"<doc>","against":"record"}', 'fmc_coord {"action":"align","document":"<doc>","dry_run":true}'], kit: [], writes: ["fmc_coord_apply"] },
+  { id: "conduit", intent: "conduit", tool: "fmc_conduit", about: "open ends, near misses and size mismatches in conduit and cable tray; fix plans the fittings",
+    calls: ['fmc_conduit {"action":"scan","document":"<doc>"}', 'fmc_conduit {"action":"fix","document":"<doc>","dry_run":true}'], kit: [], writes: ["fmc_conduit_apply"] },
+  { id: "circuits", intent: "circuits", tool: "fmc_circuits", about: "electrical circuits: plan from the model, audit boards and circuits, apply after a yes",
+    calls: ['fmc_circuits {"action":"plan","document":"<doc>"}', 'fmc_circuits {"action":"audit","document":"<doc>"}'], kit: [], writes: ["fmc_circuits_apply"] },
+  { id: "calc", intent: "calc", tool: "fmc_calc", about: "engineering calculations from the model's MEP facts; a missing value stays TBC",
+    calls: ['fmc_calc {"action":"list"}', 'fmc_calc {"action":"run","document":"<doc>"}'], kit: [] },
+  { id: "trace", intent: "trace", tool: "fmc_trace", about: "open ends, leaks and continuity in piping, duct and containment networks",
+    calls: ['fmc_trace {"action":"checks"}', 'fmc_trace {"action":"run","document":"<doc>"}'], kit: [], writes: ["fmc_trace_apply"] },
+  { id: "details", intent: "details", tool: "fmc_details", about: "typical construction details from the kit's Details catalogue, placed into drafting views",
+    calls: ['fmc_details {"action":"list"}', 'fmc_details {"action":"place","document":"<doc>","detail_id":"<id>","dry_run":true}'], kit: ["Details/FMC_Details.json"], writes: ["fmc_details_apply"] },
+  { id: "headroom", intent: "headroom", tool: "fmc_headroom", about: "clear height under beams, ducts and pipes per level, read-only",
+    calls: ['fmc_headroom {"document":"<doc>"}'], kit: [] },
 ];
 
 /** An engine added later registers itself here (one call at import), so fmc_context routes to it. */
@@ -278,7 +343,8 @@ const SYNONYMS: Record<string, Array<[string, number]>> = {
 const TRIM_ELEMENTS = ["Architrave", "Skirting", "DadoRail", "PictureRail", "PanelMould"];
 
 export type Intent = "family" | "door" | "window" | "profile" | "material" | "keynote" | "parameter" | "sheet" | "schedule"
-  | "casework" | "ceiling" | "line_diagram" | "template" | "qa";
+  | "casework" | "ceiling" | "line_diagram" | "template" | "qa"
+  | "clash" | "coordination" | "conduit" | "circuits" | "calc" | "trace" | "details" | "headroom";
 
 const INTENT_WORDS: Record<Intent, string[]> = {
   door: ["door", "doorset", "bifold", "doorway", "shutter", "grille"],
@@ -296,6 +362,15 @@ const INTENT_WORDS: Record<Intent, string[]> = {
   line_diagram: ["diagram", "schematic", "riser", "singleline", "sld"],
   template: ["template", "rte", "rft", "viewtemplate"],
   qa: ["qa", "audit", "check", "rule", "rulebook", "compliance", "compliant", "gate"],
+  // Routing words only (which tool to point at), never kit values.
+  clash: ["clash", "clashes", "collision", "sleeve", "sleeves"],
+  coordination: ["coordination", "coordinate", "coordinates", "basepoint", "survey"],
+  conduit: ["conduit", "conduits", "tray", "containment"],
+  circuits: ["circuit", "circuits", "circuiting"],
+  calc: ["calc", "calcs", "calculation", "calculations", "sizing"],
+  trace: ["trace", "continuity", "leak", "leaks"],
+  details: ["detail", "details"],
+  headroom: ["headroom", "clearance"],
   family: ["family", "families", "rfa", "component", "fixture", "equipment", "fitting", "build", "create", "make", "door", "window", "profile"],
 };
 
@@ -494,15 +569,23 @@ export function overview(deps: ContextDeps) {
     revit: docs.length ? docs : "No Revit with the AI connection on (Formcraft tab › Core › \"AI: off\" switches it on)",
     project,
     ai_use: aiUseState(k, deps.cfg),
-    engines: CONTEXT_ENGINES.map((e) => ({ id: e.id, tool: e.tool, available: toolAvailable(e.tool) })),
+    engines: CONTEXT_ENGINES.map((e) => ({ id: e.id, tool: e.tool, available: toolAvailable(e.tool), ai_mode: engineGate(e).ai_mode })),
     use: TOOL_MAP,
+    tools: REGISTERED_TOOLS.size
+      ? { registered: REGISTERED_TOOLS.size, not_in_use: [...REGISTERED_TOOLS].filter((t) => !toolMapNames().has(t)).length, list: 'fmc_context {"action":"get","ref":"list:tool"}' }
+      : undefined,
     next: 'Before creating anything: fmc_context {"action":"for_task","task":"<what the person asked>"}',
   };
 }
 
 const q = (o: unknown) => JSON.stringify(o);
 
-export function forTask(task: string, deps: ContextDeps) {
+export interface ForTaskOptions {
+  /** How many family specs to return (1-20). Default: 3 for a profile, 4 when no intent matched, else 8. */
+  limit?: number;
+}
+
+export function forTask(task: string, deps: ContextDeps, opts: ForTaskOptions = {}) {
   const k = kitPaths(deps.cfg, deps.extraRecipeDirs);
   const intents = classify(task);
   const ts = terms(task);
@@ -562,7 +645,7 @@ export function forTask(task: string, deps: ContextDeps) {
       const idf = rarity(ts, specs.families.map(specDoc));
       const scored = specs.families.map((s) => ({ s, score: scoreSpec(s, ts, intents, wantsAnnotation, idf) })).filter((x) => x.score > 0)
         .sort((a, b) => b.score - a.score || a.s.family.localeCompare(b.s.family));
-      const limit = intents.includes("profile") ? 3 : any ? 4 : 8;
+      const limit = opts.limit !== undefined ? Math.max(1, Math.min(20, Math.floor(opts.limit))) : intents.includes("profile") ? 3 : any ? 4 : 8;
       const top = scored.slice(0, limit);
       const dict = loadDictionary(k);
       out.family_specs = top.map(({ s, score }) => {
@@ -667,11 +750,14 @@ export function forTask(task: string, deps: ContextDeps) {
   const engines = CONTEXT_ENGINES.filter((e) => intents.includes(e.intent));
   if (engines.length) {
     out.engines = engines.map((e) => ({ id: e.id, tool: e.tool, available: toolAvailable(e.tool), about: e.about, kit: e.kit,
+      ...engineGate(e),
       note: toolAvailable(e.tool) ? undefined : "not in this build yet: say so, don't improvise it" }));
     for (const e of engines) if (toolAvailable(e.tool)) next.push(...e.calls.slice(0, 2));
   }
 
   out.next = next.length ? next.slice(0, 6) : ["Nothing in the kit matches: ask the person, or raise a kit change request; don't invent values"];
+  const calls = nextCalls(out.next as string[]);
+  if (calls.length) out.next_calls = calls;
   if (notes.length) out.notes = notes;
   out.rule = "Reuse these; never invent a value the kit holds; a missing value is a kit change request";
   return fit(out, MAX_ANSWER_BYTES);
@@ -707,6 +793,8 @@ function capText(o: unknown, max = MAX_GET_BYTES): unknown {
 /** One item in full (a spec, recipe summary, material, rulebook, profile row, keynote or parameter), capped. */
 export function getItem(ref: string, deps: ContextDeps): Record<string, unknown> {
   const k = kitPaths(deps.cfg, deps.extraRecipeDirs);
+  const list = /^list:(.*)$/i.exec(ref.trim());
+  if (list) return listNames(list[1].trim().toLowerCase(), k);
   const m = /^(spec|recipe|material|rulebook|profile|keynote|parameter|engine):(.*)$/i.exec(ref.trim());
   const kind = m ? m[1].toLowerCase() : "";
   const name = (m ? m[2] : ref).trim();
@@ -753,7 +841,16 @@ function getOne(kind: string, name: string, k: KitPaths): Record<string, unknown
       const b = rulebookSummary(file);
       if (!b) return { file, problems: ["not readable as JSON"] };
       if (rule) { const r = b.rules.find((x) => x.id.toLowerCase() === rule.toLowerCase()); return r ? { file, book: b.name, rule: r } : null; }
-      return { file, book: b.name, version: b.version, count: b.rules.length, rules: b.rules.map((r) => `${r.id} [${r.severity}] ${r.rule}`.slice(0, 140)) };
+      const out: Record<string, unknown> = { file, book: b.name, version: b.version, count: b.rules.length, rules: b.rules.map((r) => `${r.id} [${r.severity}] ${r.rule}`.slice(0, 140)) };
+      // A file with no QA rules (count 0) may hold another shape: name its top-level keys rather than look empty.
+      if (!b.rules.length) {
+        const raw = cached(file, (t) => JSON.parse(t), "rulebook-raw") as unknown;
+        if (raw && typeof raw === "object" && !Array.isArray(raw)) {
+          out.top_level_keys = Object.keys(raw as object).slice(0, 30);
+          out.note = "No QA rules (rules[]) in this file; top_level_keys shows what it holds";
+        }
+      }
+      return out;
     }
     case "profile": {
       const row = profileRowFull(k, name);
@@ -776,6 +873,112 @@ function getOne(kind: string, name: string, k: KitPaths): Record<string, unknown
     }
   }
   return null;
+}
+
+// ---------- lists, search and structured next calls ----------
+
+/** Tool names TOOL_MAP already names (the first word of each line and every fmc_* / *_* name in it). */
+function toolMapNames(): Set<string> {
+  const out = new Set<string>();
+  for (const v of Object.values(TOOL_MAP)) for (const m of v.match(/\b[a-z]+(?:_[a-z0-9]+)+\b/g) ?? []) out.add(m);
+  return out;
+}
+
+export const LIST_KINDS = ["spec", "recipe", "material", "keynote", "parameter", "rulebook", "engine", "tool"] as const;
+export const LIST_CAP = 300;
+
+/** get ref:"list:<kind>": names only, sorted, capped, with the true total. */
+export function listNames(kind: string, k: KitPaths): Record<string, unknown> {
+  let names: string[] | null;
+  let note: string | undefined;
+  switch (kind) {
+    case "spec": names = loadSpecs(k)?.families.map((s) => s.family) ?? null; break;
+    case "recipe": names = [...recipeIndex(k).keys()]; break;
+    case "material": names = loadMaterials(k)?.materials.map((m) => m.name) ?? null; break;
+    case "keynote": names = loadKeynotes(k)?.map((x) => x.code) ?? null; break;
+    case "parameter": names = loadDictionary(k) ? [...loadDictionary(k)!.keys()] : null; break;
+    case "rulebook": names = rulebookFiles(k).map((f) => pbase(f, ".json").replace(/^FMC_Rulebook_/, "")); break;
+    case "engine": names = CONTEXT_ENGINES.map((e) => e.id); break;
+    case "tool":
+      names = [...REGISTERED_TOOLS];
+      if (!names.length) note = "The registered tool list is filled by the running MCP server; none here";
+      break;
+    default:
+      return { found: false, ref: `list:${kind}`, hint: `list kinds: ${LIST_KINDS.join(", ")}` };
+  }
+  if (names === null) return { found: false, ref: `list:${kind}`, hint: `the ${kind} data set is not readable (a kit change request, or a path in fmc_guard.json)` };
+  const sorted = [...new Set(names)].sort((a, b) => a.localeCompare(b));
+  const shown = sorted.slice(0, LIST_CAP);
+  const body: Record<string, unknown> = { kind: "list", of: kind, count: sorted.length, names: shown, truncated: sorted.length > shown.length };
+  if (note) body.note = note;
+  return fit(body, MAX_GET_BYTES);
+}
+
+export const SEARCH_KINDS = ["spec", "recipe", "material", "keynote", "parameter", "rule"] as const;
+export type SearchKind = typeof SEARCH_KINDS[number];
+const SEARCH_PER_KIND = 10;
+
+/**
+ * Free-text search across the kit's data sets (tool-research fmc_context gap 3). Every query word must appear
+ * (case-insensitive substring) in the item's name or text. Names only plus a short text; `get` returns one in full.
+ */
+export function search(query: string, deps: ContextDeps, kinds: readonly string[] = SEARCH_KINDS): Record<string, unknown> {
+  const k = kitPaths(deps.cfg, deps.extraRecipeDirs);
+  const qs = query.toLowerCase().split(/\s+/).filter(Boolean);
+  const hit = (text: string) => { const t = text.toLowerCase(); return qs.every((w) => t.includes(w)); };
+  const want = new Set(kinds.map((x) => x.toLowerCase()));
+  const results: Record<string, { count: number; items: string[] }> = {};
+  const unreadable: string[] = [];
+  const add = (kind: string, rows: Array<{ name: string; text: string }> | null) => {
+    if (!want.has(kind)) return;
+    if (rows === null) { unreadable.push(kind); return; }
+    const found = rows.filter((r) => hit(`${r.name} ${r.text}`));
+    results[kind] = { count: found.length, items: found.slice(0, SEARCH_PER_KIND).map((r) => (r.text ? `${r.name}: ${r.text}` : r.name).slice(0, 140)) };
+  };
+  add("spec", loadSpecs(k)?.families.map((s) => ({ name: s.family, text: `${s.category ?? ""} ${s.why ?? ""}`.trim() })) ?? null);
+  add("recipe", [...recipeIndex(k).keys()].map((f) => ({ name: f, text: "" })));
+  add("material", loadMaterials(k)?.materials.map((m) => ({ name: m.name, text: String(m.class ?? "") })) ?? null);
+  add("keynote", loadKeynotes(k)?.map((x) => ({ name: x.code, text: x.description })) ?? null);
+  add("parameter", loadDictionary(k) ? [...loadDictionary(k)!.values()].map((p) => ({ name: p.name, text: String(p.group ?? "") })) : null);
+  if (want.has("rule")) {
+    const rows: Array<{ name: string; text: string }> = [];
+    for (const f of rulebookFiles(k)) for (const r of rulebookSummary(f)?.rules ?? []) rows.push({ name: `${pbase(f, ".json").replace(/^FMC_Rulebook_/, "")}/${r.id}`, text: String(r.rule ?? "") });
+    add("rule", rows);
+  }
+  const total = Object.values(results).reduce((s, r) => s + r.count, 0);
+  const body: Record<string, unknown> = {
+    query, total, results,
+    unreadable: unreadable.length ? unreadable : undefined,
+    next: total ? 'fmc_context {"action":"get","ref":"<kind>:<name>"} for one in full (rule: rulebook:<book>/<id>)' : "Nothing in the kit matches: ask the person, or raise a kit change request; don't invent values",
+  };
+  return fit(body, MAX_ANSWER_BYTES);
+}
+
+export interface NextCall { tool: string; args: Record<string, unknown>; placeholders?: boolean; real_run?: { ai_mode: AiMode; lease?: string } }
+
+/**
+ * The `next` strings as {tool, args} objects a bot can run without parsing (tool-research fmc_context item 13).
+ * Only strings that start with a tool name and a JSON object are converted; the strings stay for people.
+ * `placeholders` marks args with <...> values to fill; `real_run` says what the gate does with the real step.
+ */
+export function nextCalls(next: string[]): NextCall[] {
+  const out: NextCall[] = [];
+  for (const s of next) {
+    const m = /^([a-z][a-z0-9_]*) (\{)/.exec(s);
+    if (!m) continue;
+    const start = m[1].length + 1;
+    let args: Record<string, unknown> | null = null;
+    for (let end = s.indexOf("}", start); end >= 0 && !args; end = s.indexOf("}", end + 1)) {
+      try { const v = JSON.parse(s.slice(start, end + 1)); if (v && typeof v === "object" && !Array.isArray(v)) args = v; } catch { /* longer */ }
+    }
+    if (!args) continue;
+    const call: NextCall = { tool: m[1], args };
+    if (/"<[^"]*>"/.test(JSON.stringify(args))) call.placeholders = true;
+    const engine = CONTEXT_ENGINES.find((e) => e.tool === m[1] && (e.writes ?? []).length);
+    if (engine && args.dry_run === true) call.real_run = engineGate(engine);
+    out.push(call);
+  }
+  return out;
 }
 
 // ---------- the nudge at the point of use ----------
