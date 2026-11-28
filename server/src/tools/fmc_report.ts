@@ -77,6 +77,23 @@ function balanceFor(code: string, today: string): Sources["balance"] {
   }
 }
 
+/** RT-9: one saved report by name, searched in the dated folders under _Reports. Read-only. */
+export function findReport(root: string, name: string, maxBytes = 200_000): { file: string; text: string; truncated: boolean } | { error: string } {
+  const wanted = name.trim();
+  if (!wanted) return { error: "Set name to the report's name (…-RP-Z-NNNN) from list." };
+  if (/[\\/:]|\.\./.test(wanted)) return { error: "name is a report name, not a path." };
+  let dirs: string[] = [];
+  try { dirs = fs.readdirSync(root).filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d)).sort().reverse(); } catch { return { error: `No _Reports folder at ${root}.` }; }
+  const files = /\.(md|csv)$/i.test(wanted) ? [wanted] : [wanted + ".md", wanted + ".csv"];
+  for (const d of dirs) for (const f of files) {
+    const file = win.join(root, d, f);
+    if (!fs.existsSync(file)) continue;
+    const text = fs.readFileSync(file, "utf8");
+    return { file, text: text.slice(0, maxBytes), truncated: text.length > maxBytes };
+  }
+  return { error: `No report named ${wanted} under ${root}.` };
+}
+
 export const FMC_REPORT_DESCRIPTION =
   "Formcraft reports, traced to the plugin's own saved files (MAN 13.1): Weekly project report, Model health and QA, " +
     "Review register, Sync log and workshare, Ready to issue record, Rule exceptions, Activity log. Period: Last 7 days, " +
@@ -84,12 +101,13 @@ export const FMC_REPORT_DESCRIPTION =
     "Manager. Syncs and activity are counted per model and action, never per person (MAN 14.5). make with dry_run (default) " +
     "returns the report's text; dry_run false writes Markdown and a tidy CSV for Power BI, named by the container rules " +
     "(…-RP-Z-NNNN), into <project>\\01_WIP\\_Reports\\<date>. list shows recent reports (folder_exists says whether _Reports is there); " +
-    "disciplines filters Reviews, QA and Syncs (by the model name's role field); " +
+    "read returns one saved report by name (…-RP-Z-NNNN, .md or .csv). disciplines filters Reviews, QA and Syncs (by the model name's role field); " +
     "the reply names the sections it did not filter and the QA models left out. An exception whose until is not a date or a revision code is listed as invalid and not counted. " +
     "Never reads or changes a model.";
 
 export const FMC_REPORT_SHAPE = {
-  action: z.enum(["make", "list"]),
+  action: z.enum(["make", "list", "read"]),
+  name: z.string().optional().describe("read: the report name (…-RP-Z-NNNN) or its file name"),
   project_folder: z.string(),
   project_code: z.string().optional().default(""),
   originator: z.string().optional().default("FMC"),
@@ -116,6 +134,11 @@ export async function runFmcReport(args: FmcReportArgs) {
           for (const f of fs.readdirSync(win.join(root, d)).filter((x) => x.endsWith(".md"))) out.push({ file: win.join(root, d, f), date: d });
       } catch { /* no reports yet */ }
       return reply({ reports: out.slice(0, 20), folder: root, folder_exists: fs.existsSync(root), project_folder_exists: fs.existsSync(folder) });
+    }
+    if (args.action === "read") {
+      const found = findReport(root, args.name ?? "");
+      if ("error" in found) return reply({ ok: false, message: found.error, folder: root, folder_exists: fs.existsSync(root) }, true);
+      return reply({ ok: true, file: found.file, bytes: found.text.length, truncated: found.truncated, text: found.text });
     }
     const code = args.project_code.trim().toUpperCase() || win.basename(folder).split("_")[0].toUpperCase();
     const today = new Date().toISOString().slice(0, 10);
