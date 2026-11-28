@@ -257,7 +257,9 @@ export function queueSnapshots(): Array<{ port: number } & QueueSnapshot> {
 // fmc_docs (list, probe) lists every open document; its writes are fmc_docs_apply. fmc_north (audit, compare) is read-only
 // and resolves document, documents or all_open itself in the add-in; its writes are fmc_north_apply.
 // fmc_open_local opens a file by path and works on no open document (Revit may be on its Home page).
-const SESSION_COMMANDS = new Set(["fmc_selftest_facts", "fmc_document_info", "fmc_revit", "fmc_doc_background", "fmc_docs", "fmc_north", "fmc_open_local"]);
+const SESSION_COMMANDS = new Set(["fmc_selftest_facts", "fmc_document_info", "fmc_revit", "fmc_doc_background", "fmc_docs", "fmc_north", "fmc_open_local",
+  // P-fmc_hw-02 (FINAL 3.2): fmc_hw reads and the hard-latch auto free walk every open document in the add-in.
+  "fmc_hw"]);
 
 /**
  * These commands may name a file that is not open yet (they open it, or they describe it from disk).

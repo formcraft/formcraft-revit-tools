@@ -27,8 +27,10 @@ import { addGrantListener, batchBoard, logBatchRestart, notifyBatchGranted } fro
 import { coordinationReport } from "./coordination.js";
 import { callerFor, clientNameFromInitialize, rememberCaller, runAsCaller } from "./caller.js";
 import { memoryGate } from "./memory.js";
-import { hwHealth } from "./hw.js";
+import { hwHealth, lastAutoFree } from "./hw.js";
 import { noteRestart } from "./scriptjobs.js";
+import { loadConfig } from "./policy.js";
+import { guardWarnings } from "./opencopy.js";
 
 const win = path.win32;
 
@@ -154,10 +156,14 @@ export interface HealthReport {
   memory: ReturnType<typeof memoryGate.view>;
   /** Last hardware scan. Pending until the startup scan finishes. */
   hw: ReturnType<typeof hwHealth>;
+  /** FINAL fmc_hw 3.4: the latest hard-latch auto free (time, ran, views closed, free_mb before and after, documents_open, text). */
+  last_auto_free: ReturnType<typeof lastAutoFree>;
   /** Editing requests (never granted) and per-document coordination counts. */
   coordination: ReturnType<typeof coordinationReport>;
   /** Background Dynamo and library script jobs. */
   jobs: { queued: number; running: number; last_finished: string | null };
+  /** Guard settings a person should fix, e.g. protected_roots not set (RV-6). */
+  guard_warnings: string[];
 }
 
 export function describeInstance(
@@ -217,8 +223,10 @@ export async function healthReport(listen: string, startedAt: number, env: NodeJ
     schedule: batchBoard().snapshot().syncs,
     memory: memoryGate.view(),
     hw: hwHealth(),
+    last_auto_free: lastAutoFree(),
     coordination: coordinationReport(env),
     jobs: noteRestart(env),
+    guard_warnings: (() => { try { return guardWarnings(loadConfig().config); } catch { return ["fmc_guard.json could not be read: the guard warnings are unknown."]; } })(),
   };
 }
 

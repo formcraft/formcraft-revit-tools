@@ -102,6 +102,8 @@ export const NEVER: Record<string, string> = {
   fmc_new_local: "files (new local)",
   fmc_dynamo: "running a Dynamo graph",
   fmc_script_run: "running a library script",
+  fmc_hw_free: "closing views to free memory",
+  fmc_hw_host: "changing this PC's graphics settings (GPU preference or Revit.ini)",
 };
 
 /** What a person sees when AI isn't allowed: plain lines, never the lock's wording (owner 26 Oct). */

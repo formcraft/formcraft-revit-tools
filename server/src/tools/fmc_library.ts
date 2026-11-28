@@ -11,7 +11,7 @@ import {
 } from "../fmc/library.js";
 import { kitRootFrom } from "../fmc/dynamo.js";
 import { findScript, loadLibrary, resolveEntry, validateManifest, withResolved } from "../fmc/scriptlib.js";
-import { prepareLibraryStep } from "../fmc/batchstep.js";
+import { libraryRunPreview, prepareLibraryStep } from "../fmc/batchstep.js";
 import { runFmcDynamo } from "./fmc_dynamo.js";
 import { runFmcScriptRun } from "./fmc_script_run.js";
 import { namedDocument } from "../fmc/scriptexec.js";
@@ -115,11 +115,13 @@ async function runScriptLibrary(args: FmcLibraryArgs) {
     return reply({ id, ok: fresh.ok && found.problems.length === 0, problems: fresh.ok ? found.problems : fresh.problems, manifest: found.manifest, resolved_document: null }, !fresh.ok || found.problems.length > 0);
   }
   if (!found.manifest || found.problems.length) return reply({ refused: true, id, problems: found.problems, resolved_document: null }, true);
+  const preview = libraryRunPreview(args.dry_run, args.arguments);
+  if (preview.conflict) return reply({ refused: true, code: "FMC-LIBRARY-DRY-RUN", id, message: preview.conflict, resolved_document: null }, true);
   const prepared = prepareLibraryStep(
     { tool: "library", id, arguments: args.arguments, background: args.background },
     found.manifest,
     {
-      previewOnly: args.dry_run !== false && args.arguments?.mode !== "apply",
+      previewOnly: preview.previewOnly,
       revitVersion: args.revit_version,
       document: { title: namedDocument(), path: namedDocument(), workshared: args.workshared },
     },

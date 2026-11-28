@@ -248,6 +248,8 @@ export function classifyTier(freeMb: number, limits: MemoryLimits, paused: boole
 export async function admitWrite(gate: MemoryGate, command: string, params: unknown, maxMs: number): Promise<void> {
   const view = gate.view();
   if (view.tier === "off" || view.tier === "ok") return;
+  // Closing spare views is how memory comes back: it must not wait for memory.
+  if (command === "fmc_hw_free" || command === "fmc_hw_host") return;
   if (view.tier === "hard" || view.paused) {
     await gate.holdWrites(maxMs);
     return;
@@ -318,10 +320,13 @@ function ensureWindowsPoll(): void {
   timer.unref?.();
 }
 
+/** The service log the memory gate writes its [FMC-RAM] lines to; fmc_hw auto free writes [FMC-HW-AUTO-FREE] here too. */
+export const serviceLog = (line: string): void => { console.error(line); };
+
 export const memoryGate = new MemoryGate(
   sampleHost,
   () => memoryLimits(loadConfig().config.ram_pause_free_mb),
-  (line) => console.error(line),
+  serviceLog,
   1000,
   fireResumeListeners,
   fireHardListeners,

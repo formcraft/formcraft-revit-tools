@@ -8,6 +8,7 @@ import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { JobStillRunning } from "../utils/SocketClient.js";
 import { registerHost } from "./fmc_recipe.js";
 import { LEGEND_VIEW_FIELDS, runLegendViews, type LegendViewArgs } from "../fmc/legendrun.js";
+import { batchLease } from "../fmc/target.js";
 
 const win = path.win32;
 
@@ -68,7 +69,7 @@ export function chainTestsRoot(libraryRoots: string[], stagingRoot: string): str
   return libraryRoots.find((r) => /[\\/]_ChainTests[\\/]*$/i.test(r)) ?? win.join(win.dirname(stagingRoot.replace(/[\\/]+$/, "")), "_ChainTests");
 }
 
-export async function runFmcLegend(args: FmcLegendArgs, deps: { env?: NodeJS.ProcessEnv; guard?: GuardConfig; read?: (body: Record<string, unknown>) => Promise<unknown>; apply?: (body: Record<string, unknown>) => Promise<unknown>; reportDir?: string } = {}) {
+export async function runFmcLegend(args: FmcLegendArgs, deps: { env?: NodeJS.ProcessEnv; guard?: GuardConfig; read?: (body: Record<string, unknown>) => Promise<unknown>; apply?: (body: Record<string, unknown>) => Promise<unknown>; chain?: (body: Record<string, unknown>, timeoutMs: number) => Promise<unknown>; reportDir?: string } = {}) {
   if (args.action !== "chain") return runLegendViews(args as LegendViewArgs, deps);
   const { config } = deps.guard ? { config: deps.guard } : loadConfig();
   const dry = args.dry_run !== false;
@@ -104,10 +105,17 @@ export async function runFmcLegend(args: FmcLegendArgs, deps: { env?: NodeJS.Pro
       list: families.slice(0, 40).map((f) => `${f.family} (${f.host}, ${f.types} type${f.types === 1 ? "" : "s"})`) };
     if (dry) return reply({ dry_run: true, ...summary, next: "Run again with dry_run=false to make the chain-test project" });
 
+    // the real chain is a write: it needs the batch lease, and goes through sendCommand's gates (lease, memory, live lock, AI gate)
+    const lease = args.batch_lease.trim() || (batchLease.getStore() ?? "");
+    if (!lease) return reply({ ...summary, refused: true, code: "FMC-BATCH-LOCKED",
+      message: "The chain test is a write: take the batch lease first (fmc_batch take) and pass batch_lease; name document when more than one model is open" }, true);
     log(config, "legend_chain", false, output, "sent", `${families.length} families`);
     try {
-      const r = await withRevitConnection((c) => c.sendRaw("fmc_legend_chain",
-        { template, output, families: families.map(({ path: p, host, types }) => ({ path: p, host, types })) }, 12 * 60 * 60 * 1000));
+      const body = { template, output, families: families.map(({ path: p, host, types }) => ({ path: p, host, types })) };
+      const timeout = 12 * 60 * 60 * 1000;
+      const r = deps.chain
+        ? await deps.chain(body, timeout)
+        : await withRevitConnection((c) => c.sendCommand("fmc_legend_chain", body, timeout));
       log(config, "legend_chain", false, output, "done", `${(r as any)?.placed_all ?? 0} placed in full`);
       return reply({ ...summary, revit: r, next: "Open the chain-test project to look at the sheet, the keynote legend and the schedules" });
     } catch (e) {

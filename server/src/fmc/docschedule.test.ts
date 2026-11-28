@@ -89,8 +89,10 @@ test("save_exclude matches like sync_exclude, and protected_paths is a prefix", 
   assert.equal(saveBlocked({ title: "Other", path: "C:\\WIP\\Other.rvt" }, cfg), null);
   assert.match(saveBlocked({ title: "F26901-FMC-ZZ-ZZ-M3-S-0001", path: "C:\\WIP\\X.rvt" }, cfg) ?? "", /save_exclude/);
   assert.match(saveBlocked({ title: "S-0001", path: ogala }, { ...DEFAULT_CONFIG, protected_paths: ["D:\\Fomcraft"], protected_roots: [] }) ?? "", /protected path/);
-  // The old check is protected_roots only. Empty matches nothing, so this WIP file is not protected.
+  // Owner 28 Nov (RV-6): empty protected_roots protects no tree, so this WIP file is saved (/health warns).
   assert.equal(saveBlocked({ title: "S-0001", path: ogala }, { ...DEFAULT_CONFIG, protected_roots: [], protected_paths: [] }), null);
+  // Roots a person names elsewhere leave it saved too.
+  assert.equal(saveBlocked({ title: "S-0001", path: ogala }, { ...DEFAULT_CONFIG, protected_roots: ["Z:\\Live"], protected_paths: [] }), null);
   assert.match(saveBlocked({ title: "S-0001", path: ogala }, { ...DEFAULT_CONFIG, protected_roots: ["D:\\Fomcraft"] }) ?? "", /protected path/);
 });
 
@@ -98,7 +100,11 @@ test("sync_exclude HEBERT HOSTELS means HEBERT HOSTELS_USER is never autosaved",
   const cfg = { ...DEFAULT_CONFIG, sync_exclude: ["HEBERT HOSTELS"], save_exclude: [], protected_paths: [], protected_roots: [] };
   const local = { title: "HEBERT HOSTELS_USER", path: "C:\\Users\\USER\\Documents\\HEBERT HOSTELS_USER.rvt" };
   assert.equal(saveSkipReason(local, cfg), "excluded");
-  assert.match(saveBlocked(local, cfg) ?? "", /sync_exclude/);
+  // RV-6: HEBERT HOSTELS is also on the forbidden-project floor, which answers first; a non-floor name shows sync_exclude.
+  assert.match(saveBlocked(local, cfg) ?? "", /Forbidden project \(HEBERT HOSTELS\)/);
+  const quiet = { ...cfg, sync_exclude: ["QUIET"] };
+  assert.equal(saveSkipReason({ title: "QUIET_USER", path: "C:\\Users\\USER\\Documents\\QUIET_USER.rvt" }, quiet), "excluded");
+  assert.match(saveBlocked({ title: "QUIET_USER", path: "C:\\Users\\USER\\Documents\\QUIET_USER.rvt" }, quiet) ?? "", /sync_exclude/);
   assert.equal(saveBlocked({ title: "S-0001", path: "C:\\WIP\\S-0001.rvt" }, cfg), null);
   const due = planTick({
     now: 100_000,
