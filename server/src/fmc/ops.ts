@@ -132,6 +132,7 @@ export const OP = z.discriminatedUnion("op", [
     line_weight_projection: z.number().int().min(1).max(16).optional(), line_weight_cut: z.number().int().min(1).max(16).optional(),
     color: z.array(z.number().int().min(0).max(255)).length(3).optional().describe("[r, g, b] line colour: black or dark grey (FAM-044); the finish colour goes on the material"),
     material: z.string().optional().describe("an FMC_ material already in the family"),
+    line_pattern: z.string().optional().describe("projection line pattern by name, e.g. Dash or Hidden (Solid for none); the closest pattern the family has is used, and a family with none like it keeps solid lines with a note"),
     keep_graphics: z.boolean().optional().describe("a deliberate exception to FAM-044's line colours and pens") }),
   z.object({ op: z.literal("set_subcategory"), name: z.string().min(1).describe("the solid or line set, by op name"),
     subcategory: z.string().min(1) }),

@@ -98,6 +98,22 @@ namespace RevitMCPCommandSet.Services.Fmc
                     ?? throw new InvalidOperationException("No material " + material + " in the family");
                 if (sub.Material?.Id != m.Id) { sub.Material = m; changed.Add("material " + material); }
             }
+            // fmc_generate_bind (28 Nov): the back legend face is dashed. The closest pattern the family has, or solid with a note.
+            string pattern = op.Value<string>("line_pattern");
+            if (!string.IsNullOrWhiteSpace(pattern))
+            {
+                var patterns = new FilteredElementCollector(doc).OfClass(typeof(LinePatternElement)).Cast<LinePatternElement>().ToList();
+                string pick = FmcLinePatternPick.Pick(pattern, patterns.Select(x => x.Name));
+                ElementId pid = pick == null ? null
+                    : pick == FmcLinePatternPick.Solid ? LinePatternElement.GetSolidPatternId()
+                    : patterns.First(x => x.Name == pick).Id;
+                if (pid == null) changed.Add("warning: no line pattern like " + pattern + " in the family, lines stay solid");
+                else if (sub.GetLinePatternId(GraphicsStyleType.Projection) != pid)
+                {
+                    sub.SetLinePatternId(pid, GraphicsStyleType.Projection);
+                    changed.Add("pattern " + pick);
+                }
+            }
             if (result == "skip" && changed.Count > 0) result = "update";
             return (result, string.Join(", ", changed));
         }

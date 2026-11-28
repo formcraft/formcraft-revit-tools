@@ -27,6 +27,7 @@ export const LEGEND_VIEW_FIELDS = {
   types: z.array(z.object({
     id: z.union([z.string(), z.number()]),
     category: z.string(),
+    view: z.enum(["front", "back"]).optional().describe("door or window: Elevation: Front (default) or Elevation: Back (fmc_generate_bind's back legend)"),
   })).optional().default([]).describe("place: type ids with category door, window, wall, floor, roof or ceiling."),
   columns: z.number().int().positive().optional().default(1),
   spacing_x_mm: z.number().optional().default(185),
