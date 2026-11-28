@@ -1123,5 +1123,14 @@
     "status": "Built, Revit check due",
     "ref": "fmc_file open_local, fmc_file close_local, fmc_open_local, fmc_close_local, fmc_close_local_apply, docs/tools/fmc_file.md",
     "note": "open_local opens a person's existing workshared local as the active document with UIApplication.OpenAndActivateDocument (activate=false uses OpenDocumentFile). worksets are all, last_viewed, none or a list of names. DoNotDetach; it never creates a new local, never synchronises, and refuses a central (FMC-FILE-CENTRAL-REFUSED), a missing file, a cloud, protected or live path, and worksets on a file that is not workshared. An already open local is only activated. close_local never syncs or relinquishes; it activates another open project first when the target is active, refuses the only open document (FMC-FILE-ONLY-DOC) and unsaved changes without confirm. save=true is a write (fmc_close_local_apply, in WRITE_COMMANDS: batch_lease, live-model lock, AI gate) and is refused for HEBERT HOSTELS, a protected original, a verification copy or a document never saved. dry_run defaults true. Opening a model in Revit stays a person's choice: the Revit check runs after install, dry run only."
+  },
+  {
+    "id": "F126",
+    "area": "App",
+    "group": "Core",
+    "feature": "Change record and sync feed (F19, NBRB/DITACO)",
+    "status": "Built, Revit check due",
+    "ref": "fmc_change_feed, fmc_model_changes, docs/tools/fmc_change_feed.md",
+    "note": "Read-only timeline of what changed, who and when: the hub call ledger (who started each call: ai, pane, job, schedule, cli), hook runs, batches' created elements, the sync log and managed save/sync clocks, and Revit's own record from fmc_model_changes (an in-memory session journal of transactions, undos, saves and syncs with the Revit user, and elements created, modified and deleted since a document version with creator and last changed by). fmc_changes flags on request. Never syncs, saves, reloads latest, relinquishes, checks out, opens or closes a model, and starts no transaction (decision 5, rule 6); tests scan the sources for those calls and fmc_model_changes is a policy read. Counts never per person. No pane page yet: the pane can run it through the CLI."
   }
 ]
