@@ -7,6 +7,8 @@ function reply(body: object, isError = false) {
 }
 
 export const FMC_ELEC_DIAGRAMS_DESCRIPTION =
+  "Use for: one electrical model's single-line, power riser and earthing template as a leased batch run with cited references; " +
+  "for Sheet Register sheets, Gate D or the pane's Generate use fmc_diagram. " +
   "Formcraft electrical diagrams for an open model such as F26901-FMC-ZZ-ZZ-M3-E-0001_USER. " +
   "plan reads panels and circuits (the same graph fmc_trace collects) and returns drafting views: " +
   "a single-line diagram (boards, feeders, breakers with circuit number, rating, poles and load), " +

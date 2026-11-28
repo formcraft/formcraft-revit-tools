@@ -28,7 +28,9 @@ function reply(body: object, isError = false) {
 }
 
 export const FMC_DIAGRAM_DESCRIPTION =
-  "Formcraft line diagrams from the model (track LD): electrical single-lines (BS 7671, IEC 60617 symbols) and power risers, fire alarm " +
+  "Use for: line diagrams of any discipline from the open model, put on the Sheet Register sheets and checked by Gate D; " +
+    "the pane's Generate button runs this tool (fmc_elec_diagrams and fmc_plumb_diagrams are leased batch runs for one electrical or plumbing model). " +
+    "Formcraft line diagrams from the model (track LD): electrical single-lines (BS 7671, IEC 60617 symbols) and power risers, fire alarm " +
     "zone charts (BS 5839), ELV risers, fire fighting (BS EN 12845), water and drainage schematics, refrigerant and " +
     "lightning protection schematics, and the building controls network riser with its points list (m_controls). Values come only from the model: a missing value prints TBC and is listed; nothing " +
     "is sized, rated or computed. scan (read-only) reads the systems and returns per diagram the node and edge counts and " +

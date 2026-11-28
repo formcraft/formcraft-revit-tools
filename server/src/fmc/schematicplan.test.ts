@@ -9,8 +9,19 @@ import {
   elecInputFromTrace, levelYs, planElecDiagrams, planPlumbDiagrams, plumbInputFromTrace,
   type ElecCircuit, type ElecPanel,
 } from "./schematicplan.js";
-import { FMC_ELEC_DIAGRAMS_SHAPE, runFmcElecDiagrams } from "../tools/fmc_elec_diagrams.js";
-import { FMC_PLUMB_DIAGRAMS_SHAPE, runFmcPlumbDiagrams } from "../tools/fmc_plumb_diagrams.js";
+import { FMC_ELEC_DIAGRAMS_DESCRIPTION, FMC_ELEC_DIAGRAMS_SHAPE, runFmcElecDiagrams } from "../tools/fmc_elec_diagrams.js";
+import { FMC_PLUMB_DIAGRAMS_DESCRIPTION, FMC_PLUMB_DIAGRAMS_SHAPE, runFmcPlumbDiagrams } from "../tools/fmc_plumb_diagrams.js";
+import { FMC_DIAGRAM_DESCRIPTION } from "../tools/fmc_diagram.js";
+
+test("F23: each of the three diagram tools opens with one 'Use for' line that points at the others", () => {
+  for (const [name, text] of [["fmc_diagram", FMC_DIAGRAM_DESCRIPTION], ["fmc_elec_diagrams", FMC_ELEC_DIAGRAMS_DESCRIPTION], ["fmc_plumb_diagrams", FMC_PLUMB_DIAGRAMS_DESCRIPTION]] as const) {
+    assert.ok(text.startsWith("Use for: "), name);
+    assert.equal(text.split("Use for:").length, 2, name);
+  }
+  assert.match(FMC_DIAGRAM_DESCRIPTION, /fmc_elec_diagrams and fmc_plumb_diagrams/);
+  assert.match(FMC_ELEC_DIAGRAMS_DESCRIPTION, /Gate D or the pane's Generate use fmc_diagram/);
+  assert.match(FMC_PLUMB_DIAGRAMS_DESCRIPTION, /Gate D or the pane's Generate use fmc_diagram/);
+});
 import type { DiagramArgs } from "./schematicrun.js";
 import type { TraceSnapshot } from "./trace.js";
 

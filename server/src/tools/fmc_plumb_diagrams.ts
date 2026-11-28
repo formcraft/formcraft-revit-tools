@@ -7,6 +7,8 @@ function reply(body: object, isError = false) {
 }
 
 export const FMC_PLUMB_DIAGRAMS_DESCRIPTION =
+  "Use for: one plumbing model's riser and schematic per piping system as a leased batch run with cited references; " +
+  "for Sheet Register sheets, Gate D or the pane's Generate use fmc_diagram. " +
   "Formcraft plumbing and drainage diagrams for an open model such as F26901-FMC-ZZ-ZZ-M3-P-0001_USER. " +
   "plan reads piping systems (the same system membership fmc_trace uses, without walking every connector) and returns drafting views: " +
   "a riser per system (stacks by level, branch counts, fixture counts, pipe sizes, vent stacks) and a schematic of that system. " +
