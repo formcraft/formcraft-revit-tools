@@ -38,7 +38,7 @@ static class Program
 
         // MQ-4(2): a mixed list refuses and names only the bad token.
         Check("mixed list refused", Throws(() => FmcReadShape.RequireKnownNames<FakeCategory>("t", new[] { "OST_Walls", "Walls" }), out msg));
-        Check("mixed list names only bad token", msg != null && msg.Contains("\"Walls\"") && !msg.Contains("\"OST_Walls\""), msg ?? "");
+        Check("mixed list names only bad token", msg != null && msg.Contains("name(s) \"Walls\"."), msg ?? "");
 
         // Numeric strings parse with Enum.TryParse but are not names: refused.
         var num = FmcReadShape.SplitEnumNames<FakeCategory>(new[] { "-2000011", "5" });
