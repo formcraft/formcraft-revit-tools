@@ -44,6 +44,9 @@ namespace RevitMCPCommandSet.Services.Fmc
                     case "save_as": Result = SaveAs(app); break;
                     case "close": Result = Close(app); break;
                     case "open_copy": Result = FmcOpenCopy.Open(app, Parameters); break;
+                    case "open_local": Result = FmcOpenLocal.Open(app, Parameters); break;
+                    case "close_local": Result = FmcOpenLocal.Close(app, Parameters, false); break;
+                    case "close_local_apply": Result = FmcOpenLocal.Close(app, Parameters, true); break;
                     default: Error = $"Unknown FMC file action '{Action}'"; break;
                 }
             }

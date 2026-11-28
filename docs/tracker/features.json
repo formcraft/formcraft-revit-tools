@@ -1077,7 +1077,7 @@
     "feature": "Door, window and room tags on issued plans",
     "status": "Built, Revit check due",
     "ref": "fmc_tags, docs/TAGS.md",
-    "note": "Tags untagged doors, windows and rooms on floor plans placed on issued sheets. No leaders. Linked doors use CreateLinkReference. Rooms use NewRoomTag with LinkElementId. A host collector and an OwnerViewId filter both return 0 for those cases, which is why a send_code script reported tags 0. Overlaps shift. dry_run defaults true. A write is fmc_tags_apply, one transaction, one subtransaction per tag, with batch_lease and references. JSON under %LOCALAPPDATA%\\Formcraft\\tags. No pictures. Needs a Revit check."
+    "note": "Tags untagged doors, windows and rooms on floor plans placed on issued sheets. No leaders. Linked doors use CreateLinkReference. Rooms use NewRoomTag with LinkElementId. A host collector and an OwnerViewId filter both return 0 for those cases, which is why a send_code script reported tags 0. Overlaps shift. dry_run defaults true. A write is fmc_tags_apply, one transaction, one subtransaction per tag, with batch_lease and references. JSON under %LOCALAPPDATA%\\Formcraft\\tags. No pictures. Needs a Revit check. Fixed 28 Nov: the read failed on every dry run in Revit 2025 because OfClass(typeof(RoomTag)) is rejected; it now collects SpatialElementTag and keeps RoomTag, and only when Rooms is among the categories. No other collector in the add-in uses RoomTag, AreaTag or SpaceTag with OfClass."
   },
   {
     "id": "F121",
@@ -1113,6 +1113,15 @@
     "feature": "Run log summary",
     "status": "Built, Revit check due",
     "ref": "fmc_runlog, scripts/Run-FmcRunlog.mjs, docs/RUNLOG.md",
-    "note": "Read-only pass/fail list from RUN_ALL_log.txt or a folder of result JSON. One line per batch: id, ops, ok, failed, FMC codes. The CLI script sits next to Run-FmcBatch.mjs. No lease."
+    "note": "Read-only pass/fail list from RUN_ALL_log.txt or a folder of result JSON. One line per batch: id, ops, ok, failed, FMC codes. The CLI script sits next to Run-FmcBatch.mjs. No lease. Fixed 28 Nov: the real RUN_ALL_log.txt is sectioned (==== job, Batch label on document, Preview/Apply/Verify, -> tool lines, JSON replies) and a result JSON is { label, steps }. Both now give real op, ok, failed and skipped counts, and a document name such as FMC-ZZ-ZZ-M3-A-0002 is no longer reported as a code. Tests read a fixture laid out like the 23 Nov F26901 run."
+  },
+  {
+    "id": "F125",
+    "area": "App",
+    "group": "Core",
+    "feature": "Open and close a workshared local (fmc_file open_local, close_local)",
+    "status": "Built, Revit check due",
+    "ref": "fmc_file open_local, fmc_file close_local, fmc_open_local, fmc_close_local, fmc_close_local_apply, docs/tools/fmc_file.md",
+    "note": "open_local opens a person's existing workshared local as the active document with UIApplication.OpenAndActivateDocument (activate=false uses OpenDocumentFile). worksets are all, last_viewed, none or a list of names. DoNotDetach; it never creates a new local, never synchronises, and refuses a central (FMC-FILE-CENTRAL-REFUSED), a missing file, a cloud, protected or live path, and worksets on a file that is not workshared. An already open local is only activated. close_local never syncs or relinquishes; it activates another open project first when the target is active, refuses the only open document (FMC-FILE-ONLY-DOC) and unsaved changes without confirm. save=true is a write (fmc_close_local_apply, in WRITE_COMMANDS: batch_lease, live-model lock, AI gate) and is refused for HEBERT HOSTELS, a protected original, a verification copy or a document never saved. dry_run defaults true. Opening a model in Revit stays a person's choice: the Revit check runs after install, dry run only."
   }
 ]

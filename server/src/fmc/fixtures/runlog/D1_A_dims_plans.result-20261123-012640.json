@@ -1,0 +1,134 @@
+{
+  "ok": true,
+  "started": "2026-11-22T22:25:58.000Z",
+  "file": "C:\\Jobs\\batches\\D1_A_dims_plans.json",
+  "preview_only": false,
+  "document": "F26901-FMC-ZZ-ZZ-M3-A-0002_USER",
+  "label": "runner-A-dims",
+  "lease": "11206bac",
+  "idle": {
+    "idle": true
+  },
+  "preview": [
+    {
+      "tool": "modify_model",
+      "result": {
+        "applied": false,
+        "dry_run": true,
+        "ops": [
+          {
+            "op": 1,
+            "kind": "create_dimensions"
+          },
+          {
+            "op": 2,
+            "kind": "create_dimensions"
+          }
+        ]
+      }
+    }
+  ],
+  "apply": [
+    {
+      "tool": "modify_model",
+      "result": {
+        "applied": true,
+        "batch_id": "01ee05",
+        "ops": [
+          {
+            "op": 1,
+            "kind": "create_dimensions",
+            "created_ids": [
+              1
+            ]
+          },
+          {
+            "op": 2,
+            "kind": "create_dimensions",
+            "error": "[FMC-DIMS-NO-WALLS] No exterior walls in the view."
+          }
+        ]
+      }
+    }
+  ],
+  "verify": [
+    {
+      "tool": "fmc_health",
+      "result": {
+        "ok": true,
+        "build": "16d28e8+site(2ef99c4)",
+        "server": {
+          "commit": "16d28e8+site(2ef99c4)"
+        },
+        "addin": [
+          "16d28e8"
+        ],
+        "uptime_s": 16362
+      }
+    }
+  ],
+  "release": {
+    "ok": true,
+    "outcome": "ok",
+    "label": "runner-A-dims",
+    "batch_id": "runner-A-dims"
+  },
+  "steps": [
+    {
+      "tool": "modify_model",
+      "result": {
+        "applied": false,
+        "dry_run": true,
+        "ops": [
+          {
+            "op": 1,
+            "kind": "create_dimensions"
+          },
+          {
+            "op": 2,
+            "kind": "create_dimensions"
+          }
+        ]
+      }
+    },
+    {
+      "tool": "modify_model",
+      "result": {
+        "applied": true,
+        "batch_id": "01ee05",
+        "ops": [
+          {
+            "op": 1,
+            "kind": "create_dimensions",
+            "created_ids": [
+              1
+            ]
+          },
+          {
+            "op": 2,
+            "kind": "create_dimensions",
+            "error": "[FMC-DIMS-NO-WALLS] No exterior walls in the view."
+          }
+        ]
+      }
+    },
+    {
+      "tool": "fmc_health",
+      "result": {
+        "ok": true,
+        "build": "16d28e8+site(2ef99c4)",
+        "server": {
+          "commit": "16d28e8+site(2ef99c4)"
+        },
+        "addin": [
+          "16d28e8"
+        ],
+        "uptime_s": 16362
+      }
+    }
+  ],
+  "error": null,
+  "applied": true,
+  "declined": false,
+  "finished": "2026-11-22T22:26:20.000Z"
+}

@@ -72,4 +72,31 @@ namespace RevitMCPCommandSet.Commands.Fmc
         protected override string Action => "open_copy";
         protected override int TimeoutMs => 300000;
     }
+
+    /// <summary>Open a person's existing workshared local, optionally as the active document. No detach, no new local, no sync. A central is refused.</summary>
+    public class FmcOpenLocalCommand : FmcFileCommandBase
+    {
+        public FmcOpenLocalCommand(UIApplication uiApp) : base(uiApp) { }
+        public override string CommandName => "fmc_open_local";
+        protected override string Action => "open_local";
+        protected override int TimeoutMs => 300000;
+    }
+
+    /// <summary>Close an open local without saving, syncing or relinquishing. A save goes through fmc_close_local_apply.</summary>
+    public class FmcCloseLocalCommand : FmcFileCommandBase
+    {
+        public FmcCloseLocalCommand(UIApplication uiApp) : base(uiApp) { }
+        public override string CommandName => "fmc_close_local";
+        protected override string Action => "close_local";
+        protected override int TimeoutMs => 180000;
+    }
+
+    /// <summary>Save the local file, then close it. A write command: the server applies the live-model lock, the AI gate and the batch lease. Never syncs.</summary>
+    public class FmcCloseLocalApplyCommand : FmcFileCommandBase
+    {
+        public FmcCloseLocalApplyCommand(UIApplication uiApp) : base(uiApp) { }
+        public override string CommandName => "fmc_close_local_apply";
+        protected override string Action => "close_local_apply";
+        protected override int TimeoutMs => 180000;
+    }
 }
