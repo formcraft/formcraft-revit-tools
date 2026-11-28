@@ -224,13 +224,13 @@ test("fmc_graph_form tool: spec reply over the kit, refusal is an error reply, v
   process.env.FMC_KIT = box.kit;
   try {
     const { runFmcGraphForm } = await import("../../tools/fmc_graph_form.js");
-    const ok = await runFmcGraphForm({ action: "spec", path: path.join(box.dyn, "form_inputs.dyn"), kit_folder: "", check_packages: false, values: { Count: 3 } });
+    const ok = await runFmcGraphForm({ action: "spec", path: path.join(box.dyn, "form_inputs.dyn"), kit_folder: "", reason: "", mode: "preview", approval_id: "", check_packages: false, values: { Count: 3 } });
     assert.equal(ok.isError, false);
     const body = JSON.parse(ok.content[0].text);
     assert.equal(body.action, "spec");
     assert.equal(body.binding.ok, true);
     assert.deepEqual(body.binding.inputs_by_id, { a1000000000000000000000000000001: 3 });
-    const refused = await runFmcGraphForm({ action: "spec", path: "\\\\srv\\share\\x.dyn", kit_folder: "", check_packages: false });
+    const refused = await runFmcGraphForm({ action: "spec", path: "\\\\srv\\share\\x.dyn", kit_folder: "", reason: "", mode: "preview", approval_id: "", check_packages: false });
     assert.equal(refused.isError, true);
     assert.equal(JSON.parse(refused.content[0].text).code, "FMC-GRAPH-JAIL");
   } finally {
