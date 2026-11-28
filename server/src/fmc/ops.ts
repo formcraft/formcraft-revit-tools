@@ -27,6 +27,8 @@ const smoothing = {
 };
 const point3 = z.array(mm).length(3).describe("[x, y, z] in mm");
 const VIEWS = ["plan", "front", "right"] as const;
+/** Views a 2D op may draw in: annotation is the one view of an annotation, tag or title block family. */
+const VIEWS_2D = ["plan", "front", "right", "annotation"] as const;
 // A point as the crossing of two named reference planes: an end drawn there is locked to both, so it follows them.
 const planeEnd = z.object({ planes: z.array(z.string().min(1)).length(2)
   .describe("two reference planes that cross in the view (in plan: a left/right plane and a front/back plane); {k} is the leaf number in a repeat") });
@@ -39,6 +41,18 @@ const visibility = {
 const corner = z.array(z.string().min(1)).length(2).describe("[plane, plane]: where two named reference planes (or a level) cross");
 const segmentOffset = z.union([mm, z.string().min(1)])
   .describe("mm, or a Length parameter's name (\"-Name\" for the other way): the segment sits this far off the plane it runs along");
+const sweptBlendShape = {
+  name: z.string().min(1),
+  path: z.array(point3).length(2).describe("[[x, y, z], [x, y, z]] mm: a straight path from the bottom profile to the top one"),
+  bottom: z.array(node).min(3).describe("closed profile [u, v] in mm at the path's start, square to it (u across, v up; v along +y for a vertical path)"),
+  top: z.array(node).min(3).describe("closed profile [u, v] in mm at the path's end"),
+  subcategory: z.string().optional(),
+};
+const regionShape = {
+  name: z.string().min(1),
+  view: z.enum(["plan", "front", "right", "annotation"]).default("plan"),
+  points: z.array(node).min(3).describe("closed outline in the view's plane, mm (lines and 3-point arcs; spline nodes are drawn as straight segments)"),
+};
 const sweepShape = {
   name: z.string().min(1),
   path: z.array(point).min(2).optional().describe("a fixed polyline in mm in the path plane: it never follows a parameter (use path_planes)"),
@@ -147,6 +161,32 @@ export const OP = z.discriminatedUnion("op", [
     base: z.array(node).min(2).describe("closed base outline in plan, mm (arcs and splines allowed)"), top: z.array(node).min(2).describe("closed top outline in plan, mm"),
     ...smoothing,
     start: mm.default(0), end: mm.default(1000), subcategory: z.string().optional() }),
+  // FE-02 (fmc_fam_form): a swept blend, solid or void: a straight path from one profile to another (Revit NewSweptBlend).
+  z.object({ op: z.literal("swept_blend"), ...sweptBlendShape }),
+  z.object({ op: z.literal("void_swept_blend"), ...sweptBlendShape }),
+  // FE-03 (fmc_fam_2d): filled and masking regions, view-specific, in the view's plane (Revit FilledRegion).
+  z.object({ op: z.literal("filled_region"), ...regionShape,
+    region_type: z.string().optional().describe("a FilledRegionType in the family by name (default: the first one)") }),
+  z.object({ op: z.literal("masking_region"), ...regionShape }),
+  // FE-03 / FE-05: detail lines in one view (annotation, tag and title block families draw with these).
+  z.object({ op: z.literal("detail_lines"), name: z.string().min(1).describe("one name for the set"),
+    view: z.enum(VIEWS_2D).default("plan"), points: z.array(point).min(2).describe("a polyline in the view's plane, mm"),
+    closed: z.boolean().optional().describe("join the last point to the first"),
+    line_style: z.string().optional().describe("a line style (subcategory of Lines) by name") }),
+  // FE-05: a text note in an annotation, tag or title block family (Revit TextNote).
+  z.object({ op: z.literal("text_note"), name: z.string().min(1), view: z.enum(VIEWS_2D).default("annotation"),
+    text: z.string().min(1).max(500), at: point.describe("the text's origin, mm in the view's plane"),
+    text_type: z.string().optional().describe("a TextNoteType by name (default: the family's default)") }),
+  // FE-04 (fmc_fam_light): the light source of a lighting fixture family (Revit LightFamily), from the kit hand script
+  // docs/handoff/kisic_gap_scripts/revit/16_family_light_source.cs.
+  z.object({ op: z.literal("light_source"), name: z.string().min(1).describe("identity, e.g. Light source"),
+    shape: z.enum(["point", "line", "rectangle", "circle"]).default("point"),
+    distribution: z.enum(["spherical", "hemispherical", "spot"]).default("hemispherical"),
+    lumens: z.number().positive().optional().describe("initial flux for every type, lm"),
+    lumens_by_type: z.record(z.number().positive()).optional().describe("type name (or its start) → lm; wins over lumens"),
+    kelvin: z.number().min(1000).max(20000).default(3000).describe("initial colour temperature, K"),
+    beam_deg: z.number().min(1).max(179).optional().describe("spot: beam angle"), field_deg: z.number().min(1).max(179).optional().describe("spot: field angle"),
+    source_z_mm: z.number().optional().describe("where the source sits, mm above the family origin") }),
   z.object({ op: z.literal("symbolic_lines"), name: z.string().min(1).describe("one name for the set, e.g. Swing plan"),
     view: z.enum(VIEWS).default("plan").describe("plan lines show in plan views; front in front/back elevations; right in side elevations"),
     at: mm.default(0),
@@ -441,7 +481,7 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
   };
   const integerParam = typedParam("Integer"), lengthParam = typedParam("Length");
   const solidAt = new Map<string, number>();
-  const SOLID_OPS = new Set(["extrusion", "void_extrusion", "sweep", "void_sweep", "revolution", "blend", "import_part"]);
+  const SOLID_OPS = new Set(["extrusion", "void_extrusion", "sweep", "void_sweep", "revolution", "blend", "import_part", "swept_blend", "void_swept_blend"]);
   let category: string | null = null;
   ops.forEach((o, i) => {
     const at = `op ${i + 1} (${o.op} ${o.name})`;
@@ -575,6 +615,33 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
         for (const x of outlineProblems(o.top as CurveNode[])) p.push(`${at}: the top ${x}`);
         if (o.subcategory && !subcats.has(o.subcategory)) p.push(`${at}: ${mayExist("subcategory", o.subcategory)}`);
         solids.add(o.name);
+        break;
+      case "swept_blend":
+      case "void_swept_blend": {
+        const [a, b] = o.path;
+        if (Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2]) < 1) p.push(`${at}: the path is shorter than 1 mm`);
+        for (const x of outlineProblems(o.bottom as CurveNode[])) p.push(`${at}: the bottom profile ${x}`);
+        for (const x of outlineProblems(o.top as CurveNode[])) p.push(`${at}: the top profile ${x}`);
+        if (o.subcategory && !subcats.has(o.subcategory)) p.push(`${at}: ${mayExist("subcategory", o.subcategory)}`);
+        solids.add(o.name);
+        break;
+      }
+      case "filled_region":
+      case "masking_region":
+        for (const x of outlineProblems(o.points as CurveNode[])) p.push(`${at}: the outline ${x}`);
+        lines.add(o.name);
+        break;
+      case "detail_lines":
+        lines.add(o.name);
+        break;
+      case "text_note":
+        if (/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(o.text)) p.push(`${at}: the text holds control characters`);
+        break;
+      case "light_source":
+        if (category && !/^(lighting fixtures|ost_lightingfixtures)$/i.test(category)) p.push(`${at}: a light source needs the Lighting Fixtures category (this batch sets ${category})`);
+        if (o.lumens === undefined && !o.lumens_by_type) p.push(`${at}: give lumens or lumens_by_type`);
+        if (o.distribution !== "spot" && (o.beam_deg !== undefined || o.field_deg !== undefined)) p.push(`${at}: beam_deg and field_deg are for a spot distribution`);
+        if (o.beam_deg !== undefined && o.field_deg !== undefined && o.field_deg < o.beam_deg) p.push(`${at}: field_deg must be at least beam_deg`);
         break;
       case "symbolic_lines": {
         if (!o.points && !o.arc && !o.lines) p.push(`${at}: give points, lines or arc`);
