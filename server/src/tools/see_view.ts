@@ -96,12 +96,14 @@ export function registerSeeViewTool(server: McpServer) {
 
   server.tool(
     "select_by",
-    "Formcraft (Ogala report), read-only: find elements with the same query modify_model's select takes: category (Walls " +
+    "Formcraft (Ogala report), read-only: find elements with the same query modify_model's select takes. A query only: it " +
+      "never changes the person's selection in Revit (selection_changed is always false). category (Walls " +
       "or OST_Walls, or a list), level, type_name and family (part of the name), comment (contains), mark, workset, phase " +
       "(created), view (visible in it; \"active\"), room (inside it), box (a section-box spec, inside? true), box_mm " +
       "[[x, y, z?], [x, y, z?]] (anything touching it), near {id | point_mm, within_mm}, hosted_by, host_of, param {name, " +
       "is: equals|contains|starts|gt|lt|empty|not_empty, value} (or a list), exclude, not {query}, types true; combine them. " +
-      "Gives the count by category, the ids (up to limit, default 500) and the first 100 with type and level. Try a query " +
+      "Gives count (every match), by_category, the ids (up to limit, default 500) and elements (the first min(limit, 100) with " +
+      "type and level), so count can be larger than the lists. Try a query " +
       "here before an edit uses it as select.",
     {
       category: z.union([z.string(), z.array(z.string())]).optional(), level: z.string().optional(), type_name: z.string().optional(), family: z.string().optional(),
