@@ -8,6 +8,7 @@ import { approvedScriptPath, kitRootFrom, pathOf, scriptRoots } from "./dynamo.j
 import { underAny, protectedRoots } from "./opencopy.js";
 import type { GuardConfig } from "./policy.js";
 import type { ResolvedDocument } from "./docresolve.js";
+import { missingKitMessage } from "./kitcrs.js";
 
 export const DIFF_CAP = 50;
 export const INPUT_CAP = 50;
@@ -122,7 +123,7 @@ export function loadLibrary(kit: string): { folder: string; index: string; entri
   const index = pathOf(folder).join(folder, "index.json");
   const problems: string[] = [];
   const parsed = readJson(index);
-  if (!parsed.ok) return { folder, index, entries: [], problems: [`Can't read ${parsed.message}`] };
+  if (!parsed.ok) return { folder, index, entries: [], problems: [missingKitMessage("K-04", `Can't read ${parsed.message}`)] };
   const body = parsed.value as { scripts?: unknown };
   const rows = Array.isArray(body?.scripts) ? body.scripts : null;
   if (!rows) return { folder, index, entries: [], problems: [`${index} needs a scripts list`] };

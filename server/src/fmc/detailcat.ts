@@ -6,6 +6,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { kitPaths } from "./context.js";
 import { configPath, loadConfig, type GuardConfig } from "./policy.js";
+import { missingKitMessage } from "./kitcrs.js";
 
 export const DETAIL_CAP = 50;
 
@@ -115,13 +116,13 @@ export function loadCatalogue(folder: string): Catalogue {
   if (!folder) {
     return {
       folder: "", catalogue_file: "", details: [],
-      problems: ["FMC-DETAILS-CATALOGUE: the kit Details folder is not set. Kit change: add a Details folder of .rvt and .rfa sources plus FMC_Details.json."],
+      problems: [missingKitMessage("K-03", "FMC-DETAILS-CATALOGUE: the kit Details folder is not set")],
     };
   }
   if (!fs.existsSync(folder)) {
     return {
       folder, catalogue_file: "", details: [],
-      problems: [`FMC-DETAILS-CATALOGUE: ${folder} is not in the kit. Kit change: add a Details folder of .rvt and .rfa sources plus FMC_Details.json. No detail was invented.`],
+      problems: [missingKitMessage("K-03", `FMC-DETAILS-CATALOGUE: ${folder} is not in the kit`)],
     };
   }
   const files: string[] = [];
@@ -162,7 +163,7 @@ export function loadCatalogue(folder: string): Catalogue {
       });
     }
   } else {
-    problems.push(`FMC-DETAILS-CATALOGUE: ${folder} has no FMC_Details.json. Folder files are listed. A JSON catalogue is a kit change.`);
+    problems.push(missingKitMessage("K-03", `FMC-DETAILS-CATALOGUE: ${folder} has no FMC_Details.json. Folder files are listed`));
   }
   const details = [...byId.values()].sort((a, b) => a.id.localeCompare(b.id));
   return { folder, catalogue_file: catalogueFile, details, problems };
