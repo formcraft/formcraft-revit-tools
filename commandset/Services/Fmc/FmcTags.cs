@@ -50,6 +50,14 @@ namespace RevitMCPCommandSet.Services.Fmc
             return true;
         }
 
+        /// <summary>Keys (link:element) of everything tagged in the view now. Used by the apply to refuse a second tag.</summary>
+        internal static void TaggedKeys(Document doc, View view, HashSet<string> keys)
+        {
+            var tagged = new JArray();
+            var boxes = new JArray();
+            CollectTags(doc, view, keys, tagged, boxes, true);
+        }
+
         internal static JObject Read(Document doc, bool wantRooms = true)
         {
             var sheets = new JArray();
@@ -90,7 +98,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                     ["view_type"] = view.ViewType.ToString(),
                     ["is_floor_plan"] = plan,
                     ["sheet_ids"] = new JArray(onSheet.TryGetValue(view.Id.Value, out List<string> ids) ? ids : new List<string>()),
+                    ["scale"] = SafeScale(view),
                 };
+                JObject crop = CropBoxMm(view);
+                if (crop != null) row["crop"] = crop;
                 if (plan) FillPlan(doc, view, row, wantRooms);
                 views.Add(row);
             }
@@ -124,6 +135,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             row["elements"] = elements;
             row["tagged"] = tagged;
             row["tags"] = tags;
+            row["obstacles"] = Obstacles(doc, view);
             row["diagnosis"] = new JObject
             {
                 ["doors_in_document"] = doorsDoc,
@@ -155,6 +167,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     ["placed"] = placed,
                 };
                 if (point != null) { row["x"] = Mm(point.X); row["y"] = Mm(point.Y); }
+                if (bic != BuiltInCategory.OST_Rooms) AddElementBox(row, element.get_BoundingBox(view), Transform.Identity);
                 elements.Add(row);
                 if (placed) count++;
             }
@@ -196,6 +209,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     ["x"] = Mm(hostPoint.X),
                     ["y"] = Mm(hostPoint.Y),
                 };
+                if (bic != BuiltInCategory.OST_Rooms) AddElementBox(row, element.get_BoundingBox(null), transform);
                 elements.Add(row);
                 if (placed) count++;
             }
@@ -205,7 +219,8 @@ namespace RevitMCPCommandSet.Services.Fmc
         {
             foreach (IndependentTag tag in new FilteredElementCollector(doc, view.Id).OfClass(typeof(IndependentTag)).Cast<IndependentTag>())
             {
-                AddBox(tag, view, tags, "independent");
+                JObject box = AddBox(tag, view, tags, "independent");
+                if (box != null) DescribeIndependent(doc, tag, box);
                 try
                 {
                     foreach (LinkElementId leid in tag.GetTaggedElementIds() ?? new List<LinkElementId>())
@@ -223,7 +238,13 @@ namespace RevitMCPCommandSet.Services.Fmc
             var roomTags = new FilteredElementCollector(doc, view.Id).OfClass(typeof(SpatialElementTag)).OfType<RoomTag>().ToList();
             foreach (RoomTag tag in roomTags)
             {
-                AddBox(tag, view, tags, "room");
+                JObject box = AddBox(tag, view, tags, "room");
+                if (box != null)
+                {
+                    box["category"] = "Rooms";
+                    box["text"] = SafeText(() => tag.TagText);
+                    if (tag.Room != null) box["element"] = tag.Room.Id.Value.ToString();
+                }
                 if (tag.Room != null) Remember(have, tagged, "", tag.Room.Id.Value.ToString());
             }
             foreach (RoomTag tag in roomTags.Where(item => item.Room == null))
@@ -286,11 +307,11 @@ namespace RevitMCPCommandSet.Services.Fmc
             tagged.Add(new JObject { ["id"] = id, ["link_id"] = link });
         }
 
-        static void AddBox(Element tag, View view, JArray tags, string kind)
+        static JObject AddBox(Element tag, View view, JArray tags, string kind)
         {
             BoundingBoxXYZ box = tag.get_BoundingBox(view);
-            if (box == null) return;
-            tags.Add(new JObject
+            if (box == null) return null;
+            var row = new JObject
             {
                 ["id"] = tag.Id.Value.ToString(),
                 ["kind"] = kind,
@@ -298,7 +319,96 @@ namespace RevitMCPCommandSet.Services.Fmc
                 ["min_y"] = Mm(box.Min.Y),
                 ["max_x"] = Mm(box.Max.X),
                 ["max_y"] = Mm(box.Max.Y),
-            });
+            };
+            tags.Add(row);
+            return row;
+        }
+
+        /// <summary>The text an IndependentTag shows and the element it reads. Blank text is how the audit finds an empty Mark.</summary>
+        static void DescribeIndependent(Document doc, IndependentTag tag, JObject box)
+        {
+            box["text"] = SafeText(() => tag.TagText);
+            long cat = tag.Category?.Id.Value ?? 0;
+            box["category"] = cat == (long)BuiltInCategory.OST_DoorTags ? "Doors" : cat == (long)BuiltInCategory.OST_WindowTags ? "Windows" : (tag.Category?.Name ?? "");
+            try
+            {
+                LinkElementId first = (tag.GetTaggedElementIds() ?? new List<LinkElementId>()).FirstOrDefault();
+                if (first != null && first.LinkedElementId != null && first.LinkedElementId != ElementId.InvalidElementId)
+                    box["element"] = first.LinkedElementId.Value.ToString();
+                else if (first != null && first.HostElementId != null && first.HostElementId != ElementId.InvalidElementId)
+                    box["element"] = first.HostElementId.Value.ToString();
+            }
+            catch (Exception) { /* the element is left out; the text is still checked */ }
+        }
+
+        static string SafeText(Func<string> read)
+        {
+            try { return read() ?? ""; } catch (Exception) { return null; }
+        }
+
+        static int SafeScale(View view)
+        {
+            try { return view.Scale > 0 ? view.Scale : 100; } catch (Exception) { return 100; }
+        }
+
+        /// <summary>The active crop as a plan box in model mm. Null when the crop is off.</summary>
+        internal static JObject CropBoxMm(View view)
+        {
+            try
+            {
+                if (!view.CropBoxActive || view.CropBox == null) return null;
+                BoundingBoxXYZ crop = view.CropBox;
+                double minX = double.MaxValue, minY = double.MaxValue, maxX = double.MinValue, maxY = double.MinValue;
+                foreach (double x in new[] { crop.Min.X, crop.Max.X })
+                    foreach (double y in new[] { crop.Min.Y, crop.Max.Y })
+                    {
+                        XYZ p = crop.Transform.OfPoint(new XYZ(x, y, 0));
+                        minX = Math.Min(minX, p.X); minY = Math.Min(minY, p.Y); maxX = Math.Max(maxX, p.X); maxY = Math.Max(maxY, p.Y);
+                    }
+                return new JObject { ["min_x"] = Mm(minX), ["min_y"] = Mm(minY), ["max_x"] = Mm(maxX), ["max_y"] = Mm(maxY) };
+            }
+            catch (Exception) { return null; }
+        }
+
+        static void AddElementBox(JObject row, BoundingBoxXYZ box, Transform transform)
+        {
+            if (box == null) return;
+            double minX = double.MaxValue, minY = double.MaxValue, maxX = double.MinValue, maxY = double.MinValue;
+            foreach (double x in new[] { box.Min.X, box.Max.X })
+                foreach (double y in new[] { box.Min.Y, box.Max.Y })
+                {
+                    XYZ p = transform.OfPoint(new XYZ(x, y, box.Min.Z));
+                    minX = Math.Min(minX, p.X); minY = Math.Min(minY, p.Y); maxX = Math.Max(maxX, p.X); maxY = Math.Max(maxY, p.Y);
+                }
+            row["min_x"] = Mm(minX);
+            row["min_y"] = Mm(minY);
+            row["max_x"] = Mm(maxX);
+            row["max_y"] = Mm(maxY);
+        }
+
+        /// <summary>Text notes in the view: a new tag is kept off them.</summary>
+        static JArray Obstacles(Document doc, View view)
+        {
+            var rows = new JArray();
+            try
+            {
+                foreach (TextNote note in new FilteredElementCollector(doc, view.Id).OfClass(typeof(TextNote)).Cast<TextNote>())
+                {
+                    BoundingBoxXYZ box = note.get_BoundingBox(view);
+                    if (box == null) continue;
+                    rows.Add(new JObject
+                    {
+                        ["id"] = note.Id.Value.ToString(),
+                        ["kind"] = "text",
+                        ["min_x"] = Mm(box.Min.X),
+                        ["min_y"] = Mm(box.Min.Y),
+                        ["max_x"] = Mm(box.Max.X),
+                        ["max_y"] = Mm(box.Max.Y),
+                    });
+                }
+            }
+            catch (Exception) { /* no obstacles: the tag boxes still apply */ }
+            return rows;
         }
 
         static JArray TagTypes(Document doc)
@@ -421,11 +531,28 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (view == null || view.ViewType != ViewType.FloorPlan)
             {
                 skipped.Add(new JObject { ["code"] = "FMC-TAGS-NOT-PLAN", ["reason"] = "That view is not a floor plan." });
-                return new JObject { ["view_id"] = viewOp.Value<string>("view_id"), ["view"] = viewOp.Value<string>("view"), ["tag_ids"] = ids, ["skipped"] = skipped };
+                var notPlan = new JArray();
+                foreach (JObject row in (viewOp["placed"] as JArray ?? new JArray()).OfType<JObject>())
+                    notPlan.Add(new JObject { ["element"] = row.Value<string>("element"), ["link_id"] = row.Value<string>("link_id") ?? "", ["status"] = "failed", ["code"] = "FMC-TAGS-NOT-PLAN", ["reason"] = "That view is not a floor plan." });
+                return new JObject { ["view_id"] = viewOp.Value<string>("view_id"), ["view"] = viewOp.Value<string>("view"), ["tag_ids"] = ids, ["skipped"] = skipped, ["items"] = notPlan };
             }
             double z = view is ViewPlan plan && plan.GenLevel != null ? plan.GenLevel.Elevation : 0;
+            var items = new JArray();
+            // Tagged now, not at the dry run: a tag placed since then is not doubled (no silent duplicates).
+            var have = new HashSet<string>();
+            FmcTagsHandler.TaggedKeys(doc, view, have);
             foreach (JObject row in (viewOp["placed"] as JArray ?? new JArray()).OfType<JObject>())
             {
+                string element = row.Value<string>("element") ?? "";
+                string link = row.Value<string>("link_id") ?? "";
+                string key = link + ":" + element;
+                if (have.Contains(key))
+                {
+                    var already = new JObject { ["element"] = element, ["link_id"] = link, ["status"] = "failed", ["code"] = "FMC-TAGS-ALREADY", ["reason"] = "The element already has a tag in this view. No second tag was placed." };
+                    items.Add(already);
+                    skipped.Add(new JObject { ["element"] = element, ["code"] = "FMC-TAGS-ALREADY", ["reason"] = already.Value<string>("reason") });
+                    continue;
+                }
                 using (var sub = new SubTransaction(doc))
                 {
                     sub.Start();
@@ -434,16 +561,20 @@ namespace RevitMCPCommandSet.Services.Fmc
                         Element tag = PlaceOne(doc, view, row, z);
                         if (tag == null) throw new InvalidOperationException("The tag was not created.");
                         sub.Commit();
+                        have.Add(key);
                         ids.Add(tag.Id.Value.ToString());
+                        items.Add(new JObject { ["element"] = element, ["link_id"] = link, ["status"] = "placed", ["tag_id"] = tag.Id.Value.ToString() });
                     }
                     catch (Exception ex)
                     {
                         try { if (sub.HasStarted()) sub.RollBack(); } catch (Exception) { }
-                        skipped.Add(new JObject { ["element"] = row.Value<string>("element"), ["code"] = "FMC-TAGS-NO-TYPE", ["reason"] = ex.Message });
+                        string code = ex.Message.IndexOf("type", StringComparison.OrdinalIgnoreCase) >= 0 ? "FMC-TAGS-NO-TYPE" : "FMC-TAGS-PLACE-FAILED";
+                        skipped.Add(new JObject { ["element"] = element, ["code"] = code, ["reason"] = ex.Message });
+                        items.Add(new JObject { ["element"] = element, ["link_id"] = link, ["status"] = "failed", ["code"] = code, ["reason"] = ex.Message });
                     }
                 }
             }
-            return new JObject { ["view_id"] = view.Id.Value.ToString(), ["view"] = view.Name, ["tag_ids"] = ids, ["skipped"] = skipped };
+            return new JObject { ["view_id"] = view.Id.Value.ToString(), ["view"] = view.Name, ["tag_ids"] = ids, ["skipped"] = skipped, ["items"] = items };
         }
 
         private static Element PlaceOne(Document doc, View view, JObject row, double z)
