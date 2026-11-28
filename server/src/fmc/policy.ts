@@ -295,6 +295,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_tags",
   // Sheets, title-block legend zone and an existing keynote legend. No transaction.
   "fmc_keynote_legend",
+  // Every Revit warning with failure id, level, workset and owner. No transaction, nothing deleted.
+  "fmc_warnings",
 ]);
 
 /**
