@@ -295,6 +295,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_tags",
   // Sheets, title-block legend zone and an existing keynote legend. No transaction.
   "fmc_keynote_legend",
+  // COBie-style asset register: facility, spaces, types, components and systems. No transaction; nothing is written.
+  "fmc_assets_read",
 ]);
 
 /**
