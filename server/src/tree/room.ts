@@ -19,6 +19,7 @@ export const ROOM = z.object({
   number: z.string().optional(),
   level: z.string().min(1).describe("the level the room is on"),
   origin_mm: z.array(mm).length(2).describe("the room's south-west inner corner, mm"),
+  rotation_deg: mm.default(0).describe("RM-6: the room turned about origin_mm, degrees anticlockwise. Walls, openings, items (x, y included: they are in the room's own frame) and the ceiling turn with it"),
   width: mm.positive().describe("east-west, inside the walls, mm"),
   depth: mm.positive().describe("north-south, inside the walls, mm"),
   height: mm.positive().describe("floor to the structure above (wall height), mm"),
@@ -74,8 +75,35 @@ const r1 = (v: number) => Math.round(v * 10) / 10;
 export interface RoomPlan { ops: Op[]; problems: string[]; warnings: string[] }
 
 /** The room into ops, every position resolved; problems stop the build, warnings don't. */
-export function planRoom(input: Room): RoomPlan {
-  const r = ROOM.parse(input);
+/** RM-8: a bad room is problems, one line per issue, not a raw schema error. */
+export function roomSchemaProblems(input: unknown): string[] {
+  const parsed = ROOM.safeParse(input);
+  return parsed.success ? [] : parsed.error.issues.map((q) => `room${q.path.length ? "." + q.path.join(".") : ""}: ${q.message}`);
+}
+
+/** RM-6: turn every op about the origin. Checks run in the room's own frame first, so they hold for any rotation. */
+export function rotateOps(ops: Op[], origin: number[], deg: number): Op[] {
+  if (!deg) return ops;
+  const c = Math.cos((deg * Math.PI) / 180), s = Math.sin((deg * Math.PI) / 180);
+  const turn = (p: number[]) => {
+    const dx = p[0] - origin[0], dy = p[1] - origin[1];
+    return [r1(origin[0] + dx * c - dy * s), r1(origin[1] + dx * s + dy * c), ...p.slice(2)];
+  };
+  return ops.map((o) => {
+    switch (o.op) {
+      case "wall": return { ...o, start: turn(o.start), end: turn(o.end) };
+      case "opening": return { ...o, at: turn(o.at) };
+      case "place": return { ...o, at: turn(o.at), rotate_deg: Math.round((o.rotate_deg + deg) * 10) / 10 };
+      case "ceiling": return { ...o, outline: o.outline.map(turn) };
+      case "room": return { ...o, at: turn(o.at) };
+    }
+  });
+}
+
+export function planRoom(input: z.input<typeof ROOM>): RoomPlan {
+  const parsed = ROOM.safeParse(input);
+  if (!parsed.success) return { ops: [], problems: roomSchemaProblems(input), warnings: [] };
+  const r = parsed.data;
   const ops: Op[] = [], problems: string[] = [], warnings: string[] = [];
   const t = r.walls.thickness;
   // the walls on their centre lines, half a thickness outside the inner faces, corners overlapping by a half thickness
@@ -132,7 +160,7 @@ export function planRoom(input: Room): RoomPlan {
     ops.push({ op: "ceiling", outline: [[x0, y0], [x0 + r.width, y0], [x0 + r.width, y0 + r.depth], [x0, y0 + r.depth]], height: r.ceiling.height, type: r.ceiling.type });
   }
   ops.push({ op: "room", name: r.name, ...(r.number ? { number: r.number } : {}), at: [r1(centre[0]), r1(centre[1])], ...(Object.keys(r.params).length ? { params: r.params } : {}) });
-  return { ops, problems, warnings };
+  return { ops: rotateOps(ops, r.origin_mm, r.rotation_deg ?? 0), problems, warnings };
 }
 
 /** The families a room's ops place (openings and items), each once, in plan order. */
