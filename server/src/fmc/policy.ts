@@ -268,6 +268,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_joins",
   // True north, survey point, view orientation and grid angles. No transaction.
   "fmc_north",
+  // MEP connectivity and system audit (Builder 19). No transaction.
+  "fmc_mep_audit",
   // Legend views and legend components. No transaction.
   "fmc_legend_views",
   // The open project a detail will be placed in. No copy.
