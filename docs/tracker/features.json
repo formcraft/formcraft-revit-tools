@@ -9,6 +9,15 @@
     "note": "CI runs on the pilot PC; every merge is staged for the updater"
   },
   {
+    "id": "FE-01",
+    "area": "App",
+    "group": "Family editor",
+    "feature": "Family templates (fmc_fam_template)",
+    "status": "Built, Revit check due",
+    "ref": "fmc_fam_template, server/src/fmc/famtools.ts, docs/tools/fmc_fam_template.md",
+    "note": "list and audit (read-only) .rft files in template_roots and family_template_dir, kit templates assumed named FMC_*. create opens a new family from the template and applies set_category, skeleton (Width/Depth/Height planes) and kit shared parameters by name from the dictionary. Overlaps F47 (744769d, not merged); fmc_template keeps .rte. Thin wrapper over fmc_doc sessions (open, apply, save): dry run by default (no session: planned ops only), saves only into family_staging_root, an existing .rfa only with overwrite: true and archived to _Archive first (archivePlan plus .build.json). Branch feat/family-editor-tools; not merged."
+  },
+  {
     "id": "F02",
     "area": "App",
     "group": "Core",
@@ -16,6 +25,15 @@
     "status": "Tested in Revit",
     "ref": "U01",
     "note": "All kit styles; theme follows Revit"
+  },
+  {
+    "id": "FE-02",
+    "area": "App",
+    "group": "Family editor",
+    "feature": "Family forms incl. swept blend and loft (fmc_fam_form)",
+    "status": "Built, Revit check due",
+    "ref": "fmc_fam_form, server/src/fmc/famtools.ts, docs/tools/fmc_fam_form.md, commandset/Services/Fmc/FmcDocFam.cs",
+    "note": "Passes extrusion, void_extrusion, sweep, void_sweep, revolution, blend and array to fmc_doc; new fmc_doc ops swept_blend and void_swept_blend (NewSweptBlend, straight path); loft drawn as one blend per pair of sections. Not built: edit_profile, edit_path, set_depth, align_to_plane, cut/uncut, array_radial, delete, void loft. Thin wrapper over fmc_doc sessions (open, apply, save): dry run by default (no session: planned ops only), saves only into family_staging_root, an existing .rfa only with overwrite: true and archived to _Archive first (archivePlan plus .build.json). Branch feat/family-editor-tools; not merged."
   },
   {
     "id": "F03",
@@ -27,6 +45,15 @@
     "note": "Header, search, tabs, banner, footer"
   },
   {
+    "id": "FE-03",
+    "area": "App",
+    "group": "Family editor",
+    "feature": "Family 2D: masking and filled regions (fmc_fam_2d)",
+    "status": "Built, Revit check due",
+    "ref": "fmc_fam_2d, server/src/fmc/famtools.ts, docs/tools/fmc_fam_2d.md, commandset/Services/Fmc/FmcDocFam.cs",
+    "note": "New fmc_doc ops filled_region (FilledRegion.Create, type by name), masking_region (CreateMaskingRegion, Revit 2024+), detail_lines (NewDetailCurveArray, line style); symbolic_lines passed through. builder16: new fmc_doc ops model_lines (NewModelCurve on a sketch plane, subcategory) and model_text (NewModelText), both with FamilyElementVisibility (coarse/medium/fine, plan_rcp/front_back/left_right); add_subcategory passed through for FAM-044 line subcategories; visibility flags on regions and detail lines refused (no API for view-specific elements). Thin wrapper over fmc_doc sessions (open, apply, save): dry run by default (no session: planned ops only), saves only into family_staging_root, an existing .rfa only with overwrite: true and archived to _Archive first (archivePlan plus .build.json). Branch feat/family-editor-tools; not merged."
+  },
+  {
     "id": "F04",
     "area": "App",
     "group": "Core",
@@ -36,6 +63,15 @@
     "note": "sections.json, parts switches"
   },
   {
+    "id": "FE-04",
+    "area": "App",
+    "group": "Family editor",
+    "feature": "Lighting family light source (fmc_fam_light)",
+    "status": "Built, Revit check due",
+    "ref": "fmc_fam_light, server/src/fmc/famtools.ts, docs/tools/fmc_fam_light.md, commandset/Services/Fmc/FmcDocFam.cs, docs/handoff/kisic_gap_scripts/revit/16_family_light_source.cs",
+    "note": "New fmc_doc op light_source, ported from the hand script: Light Source on, family types made again when light types are missing, shape, distribution, lumens (all or by type), kelvin, spot beam/field, source height; only differences changed. LightFamily API members checked against the R25 reference assembly (builder16: CustomInitialColor.Temperature, not TemperatureValue; kelvin 1800 to 20000; spot defaults 60/90 written into the plan); not yet run in Revit. Thin wrapper over fmc_doc sessions (open, apply, save): dry run by default (no session: planned ops only), saves only into family_staging_root, an existing .rfa only with overwrite: true and archived to _Archive first (archivePlan plus .build.json). Branch feat/family-editor-tools; not merged."
+  },
+  {
     "id": "F05",
     "area": "App",
     "group": "Core",
@@ -43,6 +79,15 @@
     "status": "Built, Revit check due",
     "ref": "U04",
     "note": "F-012 fixed, retest due"
+  },
+  {
+    "id": "FE-05",
+    "area": "App",
+    "group": "Family editor",
+    "feature": "Tag, annotation, title block and detail component families (fmc_fam_annotation)",
+    "status": "Built, Revit check due",
+    "ref": "fmc_fam_annotation, server/src/fmc/famtools.ts, docs/tools/fmc_fam_annotation.md, commandset/Services/Fmc/FmcDocFam.cs",
+    "note": "Sets the category (tag category, Generic Annotations, Title Blocks, Detail Items), checks label parameters against the kit dictionary (added as shared parameters for annotation and title block, listed for tags), draws detail_lines, filled/masking regions and text_note (new fmc_doc op). Returns a label_plan: label placement stays a person step. builder16: keynote_tag kind (Keynote Tags; labels Key Value/Keynote Text/Keynote Number only) and repeating_detail for detail components (returns repeat_plan, the project Repeating Detail type values; never set in a project). Thin wrapper over fmc_doc sessions (open, apply, save): dry run by default (no session: planned ops only), saves only into family_staging_root, an existing .rfa only with overwrite: true and archived to _Archive first (archivePlan plus .build.json). Branch feat/family-editor-tools; not merged."
   },
   {
     "id": "F06",

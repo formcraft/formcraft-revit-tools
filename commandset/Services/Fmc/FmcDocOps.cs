@@ -138,6 +138,15 @@ namespace RevitMCPCommandSet.Services.Fmc
                 case "revolution": return FmcDocLod.MakeRevolution(doc, op);
                 case "import_part": return FmcDocRhino.ImportPart(doc, op);
                 case "blend": return FmcDocLod.MakeBlend(doc, op);
+                case "swept_blend": return FmcDocFam.SweptBlend(doc, op, false);
+                case "void_swept_blend": return FmcDocFam.SweptBlend(doc, op, true);
+                case "filled_region": return FmcDocFam.Region(doc, op, false);
+                case "masking_region": return FmcDocFam.Region(doc, op, true);
+                case "detail_lines": return FmcDocFam.DetailLines(doc, op);
+                case "text_note": return FmcDocFam.TextNoteOp(doc, op);
+                case "model_lines": return FmcDocFam.ModelLines(doc, op);
+                case "model_text": return FmcDocFam.ModelTextOp(doc, op);
+                case "light_source": return FmcDocFam.LightSource(doc, op);
                 case "symbolic_lines": return FmcDocRecipe.SymbolicLines(doc, op);
                 case "lock_face": return FmcDocLod.LockFace(doc, op);
                 case "name_template_plane": return FmcDocPlanes.NameTemplatePlane(doc, op);
