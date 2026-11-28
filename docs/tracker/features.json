@@ -1123,5 +1123,14 @@
     "status": "Built, Revit check due",
     "ref": "fmc_file open_local, fmc_file close_local, fmc_open_local, fmc_close_local, fmc_close_local_apply, docs/tools/fmc_file.md",
     "note": "open_local opens a person's existing workshared local as the active document with UIApplication.OpenAndActivateDocument (activate=false uses OpenDocumentFile). worksets are all, last_viewed, none or a list of names. DoNotDetach; it never creates a new local, never synchronises, and refuses a central (FMC-FILE-CENTRAL-REFUSED), a missing file, a cloud, protected or live path, and worksets on a file that is not workshared. An already open local is only activated. close_local never syncs or relinquishes; it activates another open project first when the target is active, refuses the only open document (FMC-FILE-ONLY-DOC) and unsaved changes without confirm. save=true is a write (fmc_close_local_apply, in WRITE_COMMANDS: batch_lease, live-model lock, AI gate) and is refused for HEBERT HOSTELS, a protected original, a verification copy or a document never saved. dry_run defaults true. Opening a model in Revit stays a person's choice: the Revit check runs after install, dry run only."
+  },
+  {
+    "id": "F138",
+    "area": "Engine",
+    "group": "Families",
+    "feature": "Family parameters: rename, regroup, reporting, formula, remove (fmc_fam_param)",
+    "status": "Built, Revit check due",
+    "ref": "fmc_fam_param, fmc_doc ops param_rename, param_regroup, param_set_reporting, param_set_formula, param_remove, docs/tools/fmc_fam_param.md, docs/tools/fmc_fam_ops.md",
+    "note": "A thin wrapper over fmc_doc ops on an fmc_doc session (Tool Research coverage review, section 5 item 4). list reads fmc_doc report (group, reporting, formula, built_in). Shared and built-in parameters are never renamed. param_remove is person-gated: the dry run (the real run rolled back) answers a confirm_token bound to the session and ops; dry_run false with it only queues the batch in the pane's approval queue (group family_delete), and a person's Approve runs it. The add-in refuses a real delete without a person's approval for exactly that batch and marks it used. Testing-mode auto_approve does not apply. Nothing is saved; fmc_doc save does that."
   }
 ]
