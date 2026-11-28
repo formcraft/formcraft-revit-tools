@@ -229,7 +229,9 @@ namespace Formcraft.Shell.ViewModels
             OpenSettingsCommand = new RelayCommand(() => Open(ShellPage.Settings));
             // The Admin button is only shown to admins; the check here keeps it that way for keyboard and MCP too.
             OpenAdminCommand = new RelayCommand(() => { if (IsAdmin) Open(ShellPage.Admin); });
-            HelpCommand = new RelayCommand(() => Status = "Help: opens this section of the guide and the first-run tour.");
+            // F03: there is no guide or tour to open yet, so the header button is hidden (HelpAvailable) and the command
+            // says so plainly instead of claiming it opened something.
+            HelpCommand = new RelayCommand(() => Status = "Help isn't built yet: there is no guide or tour in the pane to open.");
             // Board flow/PaneFlowTouch: Touch in the quick tools strip opens Settings › Flow › Touch.
             // U22: Section box, Align (Sheet Layout) and Tag Tidy run in Revit; each asks first and is one Undo.
             var flowTools = flow ?? new MockFlowTools();
@@ -290,7 +292,7 @@ namespace Formcraft.Shell.ViewModels
             // ribbon has Connect AI. A banner here took space from every page (your feedback, 14 Oct).
             else if (_connection.State == ConnectionState.RevitBusy)
                 s = new StateBannerInfo(PaneState.RevitBusy, ChipKind.Grey, "Waiting for Revit to finish…", "Nothing new starts until Revit is ready");
-            else if (!_kit.Check(_settings.Get(SettingKeys.KitFolder) ?? WelcomeViewModel.DefaultKitFolder).KitFound)
+            else if (!KitFound())
                 s = new StateBannerInfo(PaneState.KitMissing, ChipKind.Warn, "Point to the kit folder in Settings", "Connect and Settings still work", "Open Settings",
                     new RelayCommand(() => { if (Page != ShellPage.Settings) Open(ShellPage.Settings); Settings.Open("General", "General · kit"); }));
             else if (l.Offline)
@@ -301,6 +303,70 @@ namespace Formcraft.Shell.ViewModels
                     "Everything still works", "Check now", CheckLicenceCommand);
             }
             StateBanner = s;
+        }
+
+        // F03 / F09: the kit check used to run on the UI thread on every settings change, so an offline mapped drive
+        // froze the pane. It now runs on a worker thread; the pane waits at most KitWait for it, keeps the last answer
+        // for the same folder for KitCacheAge, and when a slow check finishes it works the state out again.
+        internal static readonly TimeSpan KitWait = TimeSpan.FromMilliseconds(400);
+        internal static readonly TimeSpan KitCacheAge = TimeSpan.FromSeconds(30);
+        private readonly object _kitGate = new object();
+        private KitProbe? _kitProbe;
+
+        private sealed class KitProbe
+        {
+            public KitProbe(string folder) { Folder = folder; }
+            public string Folder { get; }
+            public Task? Task { get; set; }
+            public bool Done { get; set; }
+            public bool Found { get; set; }
+            public bool GaveUp { get; set; }
+            public DateTime CheckedUtc { get; set; }
+        }
+
+        /// <summary>Whether the kit folder holds a kit. Until a check of this folder finishes, says yes (no banner).</summary>
+        private bool KitFound()
+        {
+            var folder = _settings.Get(SettingKeys.KitFolder) ?? WelcomeViewModel.DefaultKitFolder;
+            KitProbe probe;
+            KitProbe? running = null;
+            lock (_kitGate)
+            {
+                var last = _kitProbe;
+                if (last != null && last.Folder == folder && !last.Done) running = last;
+                else if (last != null && last.Folder == folder && DateTime.UtcNow - last.CheckedUtc < KitCacheAge) return last.Found;
+                probe = running ?? new KitProbe(folder);
+                _kitProbe = probe;
+            }
+            if (running != null) return KitWaitFor(running);
+            probe.Task = Task.Run(() =>
+            {
+                bool found;
+                try { found = _kit.Check(folder).KitFound; }
+                catch (Exception) { found = false; }
+                bool again;
+                lock (_kitGate)
+                {
+                    probe.Found = found;
+                    probe.CheckedUtc = DateTime.UtcNow;
+                    probe.Done = true;
+                    again = probe.GaveUp && ReferenceEquals(_kitProbe, probe);
+                }
+                if (again) OnUi(UpdateState);
+            });
+            return KitWaitFor(probe);
+        }
+
+        private bool KitWaitFor(KitProbe probe)
+        {
+            var task = probe.Task;
+            if (task != null && !probe.Done) task.Wait(KitWait);
+            lock (_kitGate)
+            {
+                if (probe.Done) return probe.Found;
+                probe.GaveUp = true;
+                return true;
+            }
         }
 
         private async System.Threading.Tasks.Task StartTrialAsync()
@@ -329,6 +395,8 @@ namespace Formcraft.Shell.ViewModels
         public RelayCommand OpenSettingsCommand { get; }
         public RelayCommand OpenAdminCommand { get; }
         public RelayCommand HelpCommand { get; }
+        /// <summary>The header Help button shows only when there is a guide to open (F03: not yet).</summary>
+        public bool HelpAvailable => false;
         public RelayCommand QuickToolCommand { get; }
 
         /// <summary>What the person does next in Revit for each Flow tool.</summary>
