@@ -60,3 +60,13 @@ test("results map back only through the run's own bars", () => {
   assert.deepEqual(rows, [{ id: 101, ned_kn: 812.4, med_knm: 41.2, run: "FEA-20261015-0805" }]);
   assert.deepEqual(unknown, [2, 3, 2]);
 });
+
+test("RB-6: a run name already taken in that minute gets -2, -3, and the name pattern accepts it", async () => {
+  const { uniqueRunRef, RUN_NAME } = await import("./robot.js");
+  const d = new Date(2026, 10, 27, 3, 41);
+  assert.equal(uniqueRunRef(() => false, d), "FEA-20261127-0341");
+  const taken = new Set(["FEA-20261127-0341", "FEA-20261127-0341-2"]);
+  assert.equal(uniqueRunRef((n) => taken.has(n), d), "FEA-20261127-0341-3");
+  assert.ok(RUN_NAME.test("FEA-20261127-0341-3"));
+  assert.ok(!RUN_NAME.test("FEA-2026-x"));
+});

@@ -84,11 +84,12 @@ namespace RevitMCPCommandSet.Services.Fmc
             var cats = new List<BuiltInCategory> { BuiltInCategory.OST_StructuralColumns, BuiltInCategory.OST_StructuralFraming };
             var members = new JArray();
             int without = 0;
+            var withoutIds = new JArray(); // RB-12: which members, first 50
             foreach (FamilyInstance m in new FilteredElementCollector(doc).WherePasses(new ElementMulticategoryFilter(cats))
                          .WhereElementIsNotElementType().OfType<FamilyInstance>())
             {
                 ElementId aId = assoc?.GetAssociatedElementId(m.Id) ?? ElementId.InvalidElementId;
-                if (!(doc.GetElement(aId) is AnalyticalMember am) || am.GetCurve() is not Curve c) { without++; continue; }
+                if (!(doc.GetElement(aId) is AnalyticalMember am) || am.GetCurve() is not Curve c) { without++; if (withoutIds.Count < 50) withoutIds.Add(m.Id.Value); continue; }
                 XYZ a = c.GetEndPoint(0), b = c.GetEndPoint(1);
                 FamilySymbol type = m.Symbol;
                 string material = "";
@@ -111,7 +112,8 @@ namespace RevitMCPCommandSet.Services.Fmc
                     ["mark"] = Text(m, "FMC_Member_Mark") is string mk && mk.Length > 0 ? mk : Text(m, "Mark"),
                 });
             }
-            return new JObject { ["members"] = members, ["without_analytical"] = without };
+            return new JObject { ["members"] = members, ["without_analytical"] = without, ["without_analytical_ids"] = withoutIds,
+                ["categories"] = new JArray("Structural Columns", "Structural Framing") };
         }
 
         private static readonly string[] Writable = { "FMC_FEA_NEd_kN", "FMC_FEA_MEd_kNm", "FMC_FEA_Run_Ref" };
@@ -120,8 +122,25 @@ namespace RevitMCPCommandSet.Services.Fmc
         {
             bool dry = p.Value<bool?>("dry_run") != false;
             var rows = new JArray();
-            int set = 0;
+            int set = 0, notSet = 0;
             var missing = new HashSet<string>();
+            // RB-7: preflight. Every member must carry all three parameters (writable) or nothing is written: no NEd without MEd or Run_Ref.
+            var lacking = new JArray();
+            foreach (JObject r in (p["results"] as JArray ?? new JArray()).OfType<JObject>())
+            {
+                Element e = doc.GetElement(FmcCompatId(r.Value<long>("id")));
+                if (e == null) continue;
+                var names = Writable.Where(n => { Parameter q = e.LookupParameter(n); return q == null || q.IsReadOnly; }).ToList();
+                if (names.Count == 0) continue;
+                foreach (string n in names) missing.Add(n);
+                if (lacking.Count < 50) lacking.Add(new JObject { ["id"] = e.Id.Value, ["missing_parameters"] = new JArray(names) });
+            }
+            if (lacking.Count > 0)
+                return new JObject { ["dry_run"] = dry, ["refused"] = !dry, ["can_write"] = false, ["values_set"] = 0,
+                    ["missing_parameters"] = new JArray(missing.OrderBy(x => x)), ["members_missing"] = lacking,
+                    ["not_in_model"] = new JArray(missing.OrderBy(x => x)),
+                    ["message"] = "Some members lack FMC_FEA_NEd_kN, FMC_FEA_MEd_kNm or FMC_FEA_Run_Ref (or it is read-only). Nothing is written until every member has all three: load the kit's FEA parameters.",
+                    ["never_written"] = "FMC_FEA_Approval_Ref (the engineer's)" };
             using (var t = new Transaction(doc, "Formcraft: Robot results"))
             {
                 if (!dry) t.Start();
@@ -138,17 +157,18 @@ namespace RevitMCPCommandSet.Services.Fmc
                         if (par == null || par.IsReadOnly) { missing.Add(kv.Key); continue; }
                         before[kv.Key] = par.StorageType == StorageType.String ? par.AsString() : par.AsValueString();
                         if (dry) continue;
-                        if (par.StorageType == StorageType.String) par.Set(kv.Value.ToString());
-                        else if (par.StorageType == StorageType.Double) par.Set(kv.Value.Value<double>());
-                        else if (par.StorageType == StorageType.Integer) par.Set((int)Math.Round(kv.Value.Value<double>()));
-                        set++;
+                        bool ok = false;
+                        if (par.StorageType == StorageType.String) ok = par.Set(kv.Value.ToString());
+                        else if (par.StorageType == StorageType.Double) ok = par.Set(kv.Value.Value<double>());
+                        else if (par.StorageType == StorageType.Integer) ok = par.Set((int)Math.Round(kv.Value.Value<double>()));
+                        if (ok) set++; else notSet++;
                     }
                     rows.Add(new JObject { ["id"] = r["id"], ["before"] = before, ["after"] = new JObject { ["FMC_FEA_NEd_kN"] = r["ned_kn"], ["FMC_FEA_MEd_kNm"] = r["med_knm"], ["FMC_FEA_Run_Ref"] = r["run"] } });
                 }
                 if (!dry) t.Commit();
             }
-            return new JObject { ["dry_run"] = dry, ["rows"] = rows, ["values_set"] = set,
-                ["not_in_model"] = new JArray(missing.OrderBy(x => x)), ["never_written"] = "FMC_FEA_Approval_Ref (the engineer's)" };
+            return new JObject { ["dry_run"] = dry, ["rows"] = rows, ["values_set"] = set, ["values_not_set"] = notSet, ["can_write"] = true,
+                ["missing_parameters"] = new JArray(missing.OrderBy(x => x)), ["not_in_model"] = new JArray(missing.OrderBy(x => x)), ["never_written"] = "FMC_FEA_Approval_Ref (the engineer's)" };
         }
 
         private static ElementId FmcCompatId(long v) => new ElementId(v);

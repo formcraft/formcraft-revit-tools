@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
-import { BarResult, Member, assemble, checkForm, mapResults, runRef } from "../fmc/robot.js";
+import { BarResult, Member, RUN_NAME, assemble, checkForm, mapResults, uniqueRunRef } from "../fmc/robot.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 
 const win = path.win32;
@@ -30,12 +30,13 @@ function reply(body: object, isError = false) {
 export const FMC_ROBOT_DESCRIPTION =
   "Formcraft and Robot Structural Analysis (track R). status: whether Robot is installed and running. send: the model's " +
     "analytical columns and beams go to a new Robot model (nodes merged within 1 mm, sections from Robot's databases or " +
-    "concrete rectangles, grades as materials); the engineer's form is required: column-base supports (Fixed or Pinned), the " +
+    "concrete rectangles, grades as materials). Covered: Structural Columns and Structural Framing with an analytical member; walls, slabs, foundations and openings are not sent, and the members without an analytical member are listed (first 50). The engineer's form is required: column-base supports (Fixed or Pinned), the " +
     "load cases (name, nature, self-weight yes/no) and their name. A dry run (the default) shows what would go. The run is " +
-    "FEA-yyyymmdd-hhmm, saved as <run>.rtd with <run>.json (the bar to element mapping). In Robot the engineer adds the loads, " +
+    "FEA-yyyymmdd-hhmm (with -2, -3 when that minute already has a run; an existing run is never overwritten), saved as <run>.rtd with <run>.json (the bar to element mapping). In Robot the engineer adds the loads, " +
     "combinations and code. calculate: runs Robot's analysis on a run. results: each member's governing NEd (kN) and MEd (kN·m) " +
     "as a dry run; dry_run=false writes them into FMC_FEA_NEd_kN, FMC_FEA_MEd_kNm and FMC_FEA_Run_Ref (behind the live-model " +
-    "lock). FMC_FEA_Approval_Ref is the engineer's signature and is never written; no section, load or size is ever chosen.";
+    "lock). The dry run checks every member has all three parameters; if any lacks one, nothing is written (members_missing). " +
+    "status lists runs and any calculate still running (running). calculate and results can take up to 20 minutes. FMC_FEA_Approval_Ref is the engineer's signature and is never written; no section, load or size is ever chosen.";
 
 const CASE = z.object({
   name: z.string(),
@@ -94,8 +95,13 @@ export async function runFmcRobot(args: FmcRobotArgs) {
       const exe = robotExe();
       const s = fs.existsSync(exe) ? await connector("status", {}, 60000) : { error: `No connector at ${exe}` };
       let runs: string[] = [];
-      try { runs = fs.readdirSync(dir).filter((f) => /^FEA-\d{8}-\d{4}\.json$/.test(f)).map((f) => f.slice(0, -5)).sort().reverse(); } catch { /* none yet */ }
-      return reply({ connector: exe, ...s, runs_folder: dir, runs });
+      let running: Array<{ run: string; since: string }> = [];
+      try {
+        const files = fs.readdirSync(dir);
+        runs = files.filter((f) => f.endsWith(".json") && RUN_NAME.test(f.slice(0, -5))).map((f) => f.slice(0, -5)).sort().reverse();
+        running = files.filter((f) => f.endsWith(".running") && RUN_NAME.test(f.slice(0, -8))).map((f) => ({ run: f.slice(0, -8), since: fs.statSync(win.join(dir, f)).mtime.toISOString() }));
+      } catch { /* none yet */ }
+      return reply({ connector: exe, ...s, runs_folder: dir, runs, running });
     }
 
     if (args.folder) {
@@ -108,12 +114,14 @@ export async function runFmcRobot(args: FmcRobotArgs) {
       if (!form) return reply({ refused: true, reasons: problems, note: "Supports, load cases and loads are the engineer's decisions: nothing is filled in" }, true);
       const exported = (await withRevitConnection((c) => c.sendRaw("fmc_analytical_export", {}, 300000))) as { members?: Member[]; without_analytical?: number; model?: string };
       const members = exported.members ?? [];
-      if (members.length === 0) return reply({ refused: true, reasons: ["No columns or beams with an analytical member in this model"], without_analytical: exported.without_analytical ?? 0 }, true);
+      const withoutIds = ((exported as { without_analytical_ids?: number[] }).without_analytical_ids ?? []);
+      if (members.length === 0) return reply({ refused: true, reasons: ["No columns or beams with an analytical member in this model"], without_analytical: exported.without_analytical ?? 0, without_analytical_ids: withoutIds }, true);
       const model = assemble(members);
-      const run = runRef();
+      const run = uniqueRunRef((name) => fs.existsSync(win.join(dir, `${name}.json`)) || fs.existsSync(win.join(dir, `${name}.rtd`)));
       const rtd = win.join(dir, `${run}.rtd`);
       const summary = { model: exported.model, run, rtd, nodes: model.nodes.length, bars: model.bars.length, supports: `${model.supports.length} ${form.supports}`,
-        cases: form.cases, skipped: model.skipped, without_analytical: exported.without_analytical ?? 0 };
+        cases: form.cases, skipped: model.skipped, without_analytical: exported.without_analytical ?? 0, without_analytical_ids: withoutIds,
+        categories: ["Structural Columns", "Structural Framing"] };
       if (dry) return reply({ dry_run: true, ...summary, next: "Run again with dry_run=false to open Robot and build this model" });
       fs.mkdirSync(dir, { recursive: true });
       const sent = await connector("send", { rtd, model: { nodes: model.nodes, bars: model.bars, supports: model.supports }, form });
@@ -131,7 +139,11 @@ export async function runFmcRobot(args: FmcRobotArgs) {
     if (!runFile) return reply({ refused: true, reasons: [`No run ${args.run} in ${dir}`] }, true);
 
     if (args.action === "calculate") {
-      const r = await connector("calculate", { rtd: runFile.rtd });
+      // RB-8 (part): a marker so status shows the run as running while Robot calculates.
+      const marker = win.join(dir, `${args.run}.running`);
+      try { fs.writeFileSync(marker, new Date().toISOString()); } catch { /* status just won't show it */ }
+      let r: Record<string, unknown>;
+      try { r = await connector("calculate", { rtd: runFile.rtd }); } finally { try { fs.unlinkSync(marker); } catch { /* gone */ } }
       log(config, "robot_calculate", false, runFile.rtd, r.error ? "error" : String(r.calculated), String(r.error ?? r.status ?? ""));
       return reply(r.error ? { error: r.error } : { run: args.run, ...r }, !!r.error);
     }
@@ -141,6 +153,10 @@ export async function runFmcRobot(args: FmcRobotArgs) {
     if (r.error) return reply({ error: r.error }, true);
     const { rows, unknown } = mapResults(runFile.bars, (r.bars ?? []) as BarResult[], args.run);
     const written = (await withRevitConnection((c) => c.sendRaw("fmc_fea_write", { results: rows, dry_run: dry }, 300000))) as Record<string, unknown>;
+    if (written.can_write === false) {
+      log(config, "robot_results", dry, runFile.rtd, "refused", "members lack FEA parameters");
+      return reply({ run: args.run, ok: false, refused: !dry, dry_run: dry, members: rows.length, revit: written, message: String(written.message ?? "Members lack FEA parameters") }, !dry);
+    }
     log(config, "robot_results", dry, runFile.rtd, dry ? "dry run" : `${written.values_set ?? 0} values`, `${rows.length} members`);
     if (!dry) recordResults(config, args.project_folder, runFile, rows, written);
     return reply({ run: args.run, model: runFile.model, engineer: runFile.engineer, cases: r.cases, members: rows.length, not_mapped: unknown, revit: written,
