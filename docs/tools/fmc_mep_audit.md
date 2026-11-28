@@ -52,6 +52,10 @@ Read-only MEP connectivity and system audit. It opens **no transaction**, takes 
 - `systems[]` and `mep_systems[]`: one row per system:
   `{ id, name, domain, classification, system_type, is_well_connected, base_equipment_id, base_equipment_name, element_count, levels, flow_lps, static_pressure_pa, critical_path_pressure_loss_pa, critical_path_sections, critical_path[], fixture_units, calc_valid }`.
   Each `critical_path[]` entry is `{ number, flow_lps, length_m, pressure_loss_pa, velocity_ms, fixture_units, element_count }`.
+- `segments[]`: the critical path of each well-connected system as **`MepSegment`** rows. The type is copied from Builder 8's `server/src/fmc/mepsize.ts` (`feat/mep-tools`, commit `cbe2bf5`) into `mepaudit.ts`. `fmc_mep_size` `pressure` or `critical_path` can take them directly:
+  `{ id: "<system_id>:<section>", kind: "pipe"|"duct", flow_l_s, length_m?, shape?, size_mm? | w_mm?/h_mm?, roughness_mm?, k?: [TotalCoefficient], upstream?, source: "model:<system_id>#section:<n>" }`.
+  Sections are in flow order: each section's `upstream` is the previous one, and the first has none. A section without flow is skipped and listed in `segment_notes`.
+- `segment_checks[]`: Revit's own values beside each segment, `{ id, system_id, section, revit_pressure_loss_pa, velocity_ms, fixture_units, element_ids }`, so `fmc_mep_size` can compare its loss with Revit's. `segments_truncated` is set when there are more than `max(max_results, 1000)`.
 - `scanned`, `source_truncated`, `dropped_out_of_scope`, `skipped_non_family`, `excludes`, `api_notes`.
 
 Units: flow is in L/s, pressure in Pa, length in m, velocity in m/s and sizes in mm. Fixture units have no unit and are `null` on duct systems. Only rows with `calc_valid: true` (well connected) carry trustworthy values.

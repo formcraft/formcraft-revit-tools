@@ -92,6 +92,80 @@ export interface SystemRow {
   calc_notes?: string[];
 }
 
+/**
+ * MepSegment: COPIED from Builder 8's server/src/fmc/mepsize.ts (branch feat/mep-tools, commit cbe2bf5, worktree
+ * C:\Users\USER\agent-tools\builder-8-mep-tools) on 28 Nov 2026, so fmc_mep_size pressure|critical_path can take
+ * fmc_mep_audit's segments. Copied, not imported: this branch does not depend on theirs. Keep it in step by hand.
+ */
+export interface MepSegment {
+  id: string;
+  kind: "duct" | "pipe";
+  /** Design flow in L/s (air or water). */
+  flow_l_s: number;
+  length_m?: number;
+  shape?: "round" | "rect";
+  /** Round: the inside diameter. */
+  size_mm?: number;
+  w_mm?: number;
+  h_mm?: number;
+  roughness_mm?: number;
+  /** Fitting loss factors on this segment (elbows, tees, dampers), summed. */
+  k?: number[];
+  /** The segment this one flows into or out of (towards the fan, pump or source). Empty for the root. */
+  upstream?: string;
+  /** Where the facts came from (for example model:123456). Defaults to engineer. */
+  source?: string;
+}
+
+/** Revit's own values for a segment, kept beside the MepSegment so fmc_mep_size can compare its loss with Revit's. */
+export interface SegmentCheck {
+  id: string;
+  system_id: number;
+  section: number;
+  revit_pressure_loss_pa: number | null;
+  velocity_ms: number | null;
+  fixture_units: number | null;
+  element_ids: number[];
+}
+
+export const segmentId = (systemId: number, section: number) => `${systemId}:${section}`;
+
+/**
+ * The critical path of one well-connected system as MepSegments, in flow order: each section's upstream is the section
+ * before it (towards the fan, pump or source), the first has none. A section without flow is skipped with a note.
+ */
+export function segmentsFor(row: SystemRow & { domain: MepDomain }): { segments: MepSegment[]; checks: SegmentCheck[]; notes: string[] } {
+  const segments: MepSegment[] = [];
+  const checks: SegmentCheck[] = [];
+  const notes: string[] = [];
+  if (row.is_well_connected !== true) {
+    if ((row.critical_path ?? []).length) notes.push(`${row.name}: not well connected, no segments`);
+    return { segments, checks, notes };
+  }
+  let upstream: string | undefined;
+  for (const sec of row.critical_path ?? []) {
+    const id = segmentId(row.id, sec.number);
+    if (sec.flow_lps == null || !Number.isFinite(sec.flow_lps)) {
+      notes.push(`${row.name} section ${sec.number}: no flow, skipped`);
+      continue;
+    }
+    const seg: MepSegment = { id, kind: row.domain === "duct" ? "duct" : "pipe", flow_l_s: round(sec.flow_lps, 4)!, source: `model:${row.id}#section:${sec.number}` };
+    if (sec.length_m != null) seg.length_m = round(sec.length_m)!;
+    if (sec.shape === "round" && sec.size_mm != null) { seg.shape = "round"; seg.size_mm = sec.size_mm; }
+    if (sec.shape === "rect" && sec.w_mm != null && sec.h_mm != null) { seg.shape = "rect"; seg.w_mm = sec.w_mm; seg.h_mm = sec.h_mm; }
+    if (sec.roughness_mm != null) seg.roughness_mm = sec.roughness_mm;
+    if (sec.total_coefficient != null && sec.total_coefficient > 0) seg.k = [round(sec.total_coefficient)!];
+    if (upstream) seg.upstream = upstream;
+    segments.push(seg);
+    checks.push({
+      id, system_id: row.id, section: sec.number, revit_pressure_loss_pa: round(sec.pressure_loss_pa, 1),
+      velocity_ms: round(sec.velocity_ms), fixture_units: round(sec.fixture_units, 2), element_ids: sec.element_ids ?? [],
+    });
+    upstream = id;
+  }
+  return { segments, checks, notes };
+}
+
 export interface MepAuditSnapshot {
   model?: string;
   resolved_document?: { title?: string; path?: string };
@@ -366,6 +440,10 @@ export function shapeMepAudit(snapshot: MepAuditSnapshot, opts: MepAuditOptions)
   const issues = sortIssues([...connectors.map(connectorIssue), ...crossCheckIssues(connectors, plumbingOnly), ...systems.flatMap(systemIssues)]);
   const cap = Math.max(1, Math.min(5000, Math.floor(opts.max_results || 200)));
   const facts = systems.map(systemFact);
+  const segmentParts = systems.map(segmentsFor);
+  const segments = segmentParts.flatMap((p) => p.segments);
+  const segmentChecks = segmentParts.flatMap((p) => p.checks);
+  const segmentCap = Math.max(cap, 1000);
   const noBase = systems.filter((s) => s.base_equipment_id == null && s.is_empty !== true).map((s) => s.id);
 
   const bySeverity = countBy(issues, (i) => i.severity);
@@ -425,6 +503,11 @@ export function shapeMepAudit(snapshot: MepAuditSnapshot, opts: MepAuditOptions)
     systems_truncated: systemRows.length > cap,
     /** Every filtered system, capped: the stable per-system block other tools read. */
     mep_systems: facts.slice(0, cap),
+    /** fmc_mep_size pressure|critical_path input: MepSegment[] (critical-path sections of well-connected systems, flow order). */
+    segments: segments.slice(0, segmentCap),
+    segment_checks: segmentChecks.slice(0, segmentCap),
+    segments_truncated: segments.length > segmentCap,
+    segment_notes: segmentParts.flatMap((p) => p.notes).slice(0, 100),
     scanned: snapshot.scanned ?? {},
     source_truncated: { connectors: !!snapshot.truncated?.connectors, systems: !!snapshot.truncated?.systems },
     dropped_out_of_scope: dropped,

@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 import { READ_VIA_SEND_COMMAND, WRITE_COMMANDS } from "./policy.js";
 import {
   MEP_AUDIT_SCHEMA, MEP_CODES, crossCheckIssues, filterConnectors, filterPlumbingOnly, filterSystems, normDomain, openConnectorCode,
-  shapeMepAudit, systemIssues, type MepAuditOptions, type MepAuditSnapshot, type OpenConnectorRow, type SystemRow,
+  segmentsFor, shapeMepAudit, systemIssues, type MepAuditOptions, type MepAuditSnapshot, type OpenConnectorRow, type SystemRow,
 } from "./mepaudit.js";
 import { FMC_MEP_AUDIT_DESCRIPTION, FMC_MEP_AUDIT_SHAPE, mepAuditBody, runFmcMepAudit, type FmcMepAuditArgs } from "../tools/fmc_mep_audit.js";
 
@@ -217,4 +217,22 @@ test("fmc_mep_audit is a read command: policy, command.json, C# without a transa
   assert.match(doc, /fmc_conduit/);
   assert.match(doc, /fmc_trace/);
   for (const code of Object.values(MEP_CODES)) assert.match(doc, new RegExp(code), `${code} not documented`);
+});
+
+test("segments: the critical path as Builder 8's MepSegment, upstream in flow order, Revit's loss beside it", () => {
+  const reply = shapeMepAudit(snapshot, opts({ mode: "detail" }));
+  const s900 = reply.segments.filter((s) => s.id.startsWith("900:"));
+  assert.deepEqual(s900, [
+    { id: "900:1", kind: "pipe", flow_l_s: 1.25, source: "model:900#section:1", length_m: 10, shape: "round", size_mm: 32, roughness_mm: 0.0015, k: [1.5] },
+    { id: "900:2", kind: "pipe", flow_l_s: 0.6, source: "model:900#section:2", length_m: 6, shape: "round", size_mm: 25, roughness_mm: 0.0015, upstream: "900:1" },
+  ]);
+  const allowed = new Set(["id", "kind", "flow_l_s", "length_m", "shape", "size_mm", "w_mm", "h_mm", "roughness_mm", "k", "upstream", "source"]);
+  for (const seg of reply.segments) for (const key of Object.keys(seg)) assert.ok(allowed.has(key), `${key} is not a MepSegment field`);
+  assert.ok(reply.segments.some((s) => s.kind === "duct" && s.id.startsWith("901:")));
+  assert.ok(!reply.segments.some((s) => s.id.startsWith("903:")), "a not-well-connected system gives no segments");
+  assert.deepEqual(reply.segment_checks.find((c) => c.id === "900:1"), { id: "900:1", system_id: 900, section: 1, revit_pressure_loss_pa: 500, velocity_ms: 1.1, fixture_units: 14, element_ids: [11, 12, 13, 14] });
+  const rect = segmentsFor({ ...sys(910, { domain: "duct", classification: "SupplyAir" }), domain: "duct",
+    critical_path: [{ number: 1, flow_lps: 400, length_m: 5, pressure_loss_pa: 20, shape: "rect", w_mm: 400, h_mm: 300 }, { number: 2, flow_lps: null, length_m: 3, pressure_loss_pa: null }] });
+  assert.deepEqual(rect.segments, [{ id: "910:1", kind: "duct", flow_l_s: 400, source: "model:910#section:1", length_m: 5, shape: "rect", w_mm: 400, h_mm: 300 }]);
+  assert.match(rect.notes[0], /section 2: no flow/);
 });
