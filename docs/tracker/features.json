@@ -706,9 +706,9 @@
     "area": "App",
     "group": "Engineer",
     "feature": "Electrical enrich and sizing in the plugin (E3)",
-    "status": "Planned",
+    "status": "Partly built",
     "ref": "docs/PLAN_ENGINEERING_SERVICES.md",
-    "note": "FormCraft Electrical 0.1's enrich and feeder sizing folded into the one plugin through kit parameters; drafts only, the engineer signs. Waits on the kit adding the 16 parameters (kit change request)"
+    "note": "Built in the server only (not Revit checked, no C#): fmc_electrical, read-only and draft-only. kit_request drafts the 16 FMC_E_* parameters as a kit change request with every value assumed (names are assumed until the kit adopts or renames them); enrich turns device facts into load values and a CSV for fmc_params fill; size drafts a breaker, cable and voltage drop per circuit from the engineer's own inputs (demand factor, derating, cable table, limit), and any missing input is TBC, never a default. Parameters not in the kit file are never written. The engineer's name stays empty. Still waits on the kit adding the 16 parameters; writing into the model stays with fmc_params."
   },
   {
     "id": "F80",
