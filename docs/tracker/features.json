@@ -1258,5 +1258,14 @@
     "status": "Built, Revit check due",
     "ref": "GAP-20, fmc_assets, fmc_assets_read, docs/ASSETS.md",
     "note": "Canonical id: GAP-20 (whole-plugin gap analysis). The features.json id F170 is provisional and will be renumbered at merge; the schema here requires an F-number. Asset register for handover, COBie style, read-only, export to 03_Published. Tool fmc_assets; C# read command fmc_assets_read (no transaction, saves nothing, syncs nothing; READ_VIA_SEND_COMMAND). Five sheets with COBie 2.4 names (Facility, Space, Type, Component, System), not a certified COBie deliverable. Returns rows or CSV inline; no file is written. Status is PROVISIONAL, GAPS or READY; can_pass is always false. Family documents are refused. Kit 03_Master_Data/FMC_Assets.json; without it the built-in sample is PROVISIONAL. Needs a Revit check."
+  },
+  {
+    "id": "F171",
+    "area": "Engine",
+    "group": "Coordinate",
+    "feature": "Stair, ramp and handrail compliance check",
+    "status": "Built, Revit check due",
+    "ref": "fmc_stairs_check, docs/tools/fmc_stairs_check.md",
+    "note": "Read-only. No dry run and no transaction, including no rollback. Reads stairs (runs, landings, associated railings), ramps and railings in the host and loaded links and compares them with the standards bank: stairs.riser_max, stairs.going_min, stairs.width_min, stairs.risers_per_flight_max, stairs.landing_depth, stairs.handrail_height, guards.stair_and_landing, accessibility.ramp_gradient_max, accessibility.ramp, and with accessible=true accessibility.stair and accessibility.handrail. Every element gets a result row. Every check is pass, fail, not_applicable (with the reason) or provisional (the number or the measurement cannot be confirmed, so it cannot PASS), with measured, required, the bank key and the clause. 2R+G (550 to 700 mm) and the minimum handrail count are PROVISIONAL defaults, labelled, because the bank has no key for them; they need the owner's confirmation. Headroom is not measured here (use fmc_headroom). Ramp gradient is the Maximum Incline (1/x); ramp rise is approximate; a sketched ramp has no width in Revit. JSON under %LOCALAPPDATA%\\Formcraft\\stairs_check. No pictures. Needs a Revit check."
   }
 ]
