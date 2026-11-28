@@ -567,7 +567,7 @@ const fmtFactor = (v: number | typeof TBC) => (v === TBC ? "TBC" : String(v));
 export function recordBlocks(r: ScreeningRecord, kit: KitLookup): Block[] {
   const b: Block[] = [];
   const name = show(r.fields.building_name?.value);
-  b.push({ h: 2, text: `${r.id}: ${name}${r.demo ? " (DEMO DATA, fictional)" : ""}` });
+  b.push({ h: 2, text: `${r.id}: ${name}${r.demo ? (/fictional/i.test(name) ? " (DEMO DATA)" : " (DEMO DATA, fictional)") : ""}` });
   b.push({ p: `Status ${r.status}, version ${r.version}, updated ${r.updated_at.slice(0, 10)}. Model read: ${r.model ? `${r.model.name} (${r.model.read_at.slice(0, 10)})` : "none"}.` });
   b.push({ h: 3, text: "Summary" });
   b.push({ table: { head: ["Item", "Result"], rows: [
