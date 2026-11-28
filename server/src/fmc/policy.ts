@@ -335,6 +335,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_avf",
   // Toposolid types, levels, existing toposolids and the internal-to-shared matrix. No transaction.
   "fmc_survey",
+  // The change ledger: start and stop register a read-only updater and an event hook, never a model change. No transaction.
+  "fmc_watch",
 ]);
 
 /**
