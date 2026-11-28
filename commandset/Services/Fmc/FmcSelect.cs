@@ -27,6 +27,22 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         public static List<Element> Find(Document doc, JObject p, Func<JToken, ElementId> id = null, View active = null)
         {
+            // build plan item 32 (spec 6.1): a select may name a select_by result set, or carry a criteria tree
+            if (p["result_set"] != null)
+            {
+                try
+                {
+                    var ids = Filter.FilterEngine.HostIds(doc, p.Value<string>("result_set"), p.Value<bool?>("allow_stale") == true, out JArray other);
+                    if (other.Count > 0) throw new InvalidOperationException($"[FMC-FILTER-BAD-CRITERIA] result set {p["result_set"]} has {other.Count} rows in another document than {doc.Title}: run it for this document");
+                    return ids.Select(doc.GetElement).Where(e => e != null).ToList();
+                }
+                catch (Filter.FilterException fx) { throw new InvalidOperationException(fx.Message + (fx.Hint.Length > 0 ? $" ({fx.Hint})" : "")); }
+            }
+            if (p["criteria"] is JObject)
+            {
+                try { return Filter.FilterEngine.FindIn(doc, p, active); }
+                catch (Filter.FilterException fx) { throw new InvalidOperationException(fx.Message + (fx.Hint.Length > 0 ? $" ({fx.Hint})" : "")); }
+            }
             id = id ?? (t => FmcBox.Id(doc, t));
             View view = p["view"] != null ? (Same(p.Value<string>("view"), "active") && active != null ? active : FmcViewImageHandler.ViewOf(doc, p.Value<string>("view"))) : null;
             IEnumerable<Element> q;

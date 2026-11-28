@@ -323,6 +323,13 @@ export function callActivity(command: string, params: unknown, env: NodeJS.Proce
 /** Commands that read or steer the Formcraft pane only. They never change the model, so they work on live models. */
 export const PANE_COMMANDS = new Set<string>(["fmc_ui"]);
 
+/**
+ * Commands that change only Revit's UI selection or camera (build plan item 32, FILTER_TOOL_SPEC.md 6): no transaction,
+ * nothing in the undo list, so no lease and no AI gate. The tool refuses them while another bot holds the document's
+ * lease (Emlyn 28 Nov, decision 3), and the add-in needs the active document and caps them.
+ */
+export const UI_COMMANDS = new Set<string>(["fmc_select_by_show"]);
+
 export const ROLE_CODES = ["A", "S", "C", "E", "M", "P", "Q", "Z", "I", "L", "LP", "FP", "G", "W", "K", "Y"];
 export const TYPE_CODES = ["M3", "M2", "DR", "SH", "SP", "RP", "IE", "PP", "RI", "CM", "CR", "MR", "BQ", "CA", "MI", "VS", "CO", "SU"];
 

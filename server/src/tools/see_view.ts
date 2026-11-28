@@ -5,6 +5,64 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { loadConfig } from "../fmc/policy.js";
 import { imageDir, keptImagePath } from "../fmc/images.js";
+import { FilterTool, isEngineCall, ACTIONS, type FilterDeps } from "../fmc/filter.js";
+import { kitPaths } from "../fmc/context.js";
+import { configPath } from "../fmc/policy.js";
+import { projectFolderOf } from "../fmc/aiuse.js";
+import { batchBoard } from "../fmc/batchline.js";
+import { currentClient } from "../fmc/fairqueue.js";
+import { currentCaller } from "../fmc/caller.js";
+
+/** The filter engine's arguments on select_by (FILTER_TOOL_SPEC.md 3.1). */
+const FILTER_SHAPE = {
+  action: z.enum(ACTIONS).optional().describe("preview | run | page | show | export | save_set | sets | delete_set | history | explain"),
+  criteria: z.record(z.string(), z.any()).optional().describe("A criteria tree: {all:[...]}, {any:[...]}, {not:...} or a leaf"),
+  scope: z.object({
+    documents: z.union([z.enum(["target", "all_open"]), z.array(z.string())]).optional(),
+    links: z.enum(["host", "links", "both"]).optional(),
+    link_names: z.array(z.string()).optional(),
+    nested_links: z.boolean().optional(),
+    kind: z.enum(["instances", "types", "both"]).optional(),
+    universe: z.record(z.string(), z.any()).optional(),
+    include_view_specific: z.boolean().optional(),
+    family_documents: z.boolean().optional(),
+    dedupe: z.enum(["none", "by_unique_id"]).optional(),
+  }).optional(),
+  invert: z.boolean().optional(),
+  missing: z.enum(["report", "no_match", "match"]).optional(),
+  fields: z.array(z.string()).optional(),
+  params: z.union([z.enum(["key", "all"]), z.array(z.string())]).optional(),
+  page_size: z.number().int().min(1).max(500).optional(),
+  cursor: z.string().optional(),
+  result_set: z.string().optional(),
+  on_change: z.enum(["fail", "continue"]).optional(),
+  allow_stale: z.boolean().optional(),
+  show: z.object({ zoom: z.boolean().optional(), max: z.number().int().min(1).max(5000).optional() }).optional(),
+  export: z.object({ format: z.enum(["csv", "json"]).optional(), path: z.string().optional(), params: z.union([z.enum(["key", "all"]), z.array(z.string())]).optional() }).optional(),
+  set: z.union([z.string(), z.object({ name: z.string(), note: z.string().optional(), overwrite: z.boolean().optional(), share: z.boolean().optional() })]).optional(),
+  history_id: z.string().optional(),
+};
+
+let tool: FilterTool | undefined;
+function filterTool(): FilterTool {
+  const deps: FilterDeps = {
+    send: (command, params) => withRevitConnection((c) => c.sendCommand(command, params)),
+    get config() { return loadConfig().config; },
+    caller: () => currentCaller().client,
+    client: () => currentClient(),
+    leaseHolder: (document) => batchBoard().activeHolder(document),
+    kit: () => {
+      try {
+        const file = path.win32.join(path.win32.dirname(kitPaths(loadConfig(configPath()).config).recipesDir), "FMC_Standards_Building.json");
+        const kit = JSON.parse(fs.readFileSync(file, "utf8").replace(/^\uFEFF/, "")) as { standards?: Record<string, unknown> };
+        return kit.standards ?? null;
+      } catch { return null; }
+    },
+    projectOf: (docPath) => projectFolderOf(docPath),
+  };
+  tool ??= new FilterTool(deps);
+  return tool;
+}
 
 type Content = { type: "text"; text: string } | { type: "image"; data: string; mimeType: string };
 
@@ -85,13 +143,25 @@ export function registerSeeViewTool(server: McpServer) {
 
   server.tool(
     "select_by",
-    "Formcraft (Ogala report), read-only: find elements with the same query modify_model's select takes: category (Walls " +
-      "or OST_Walls, or a list), level, type_name and family (part of the name), comment (contains), mark, workset, phase " +
-      "(created), view (visible in it; \"active\"), room (inside it), box (a section-box spec, inside? true), box_mm " +
-      "[[x, y, z?], [x, y, z?]] (anything touching it), near {id | point_mm, within_mm}, hosted_by, host_of, param {name, " +
-      "is: equals|contains|starts|gt|lt|empty|not_empty, value} (or a list), exclude, not {query}, types true; combine them. " +
-      "Gives the count by category, the ids (up to limit, default 500) and the first 100 with type and level. Try a query " +
-      "here before an edit uses it as select.",
+    "Formcraft, read-only: find elements. Flat keys (as modify_model's select takes): category (Walls or OST_Walls, or a " +
+      "list), level, type_name and family (part of the name), comment, mark, workset, phase, view (\"active\"), room, box, " +
+      "box_mm [[x, y, z?], [x, y, z?]], near {id | point_mm, within_mm}, hosted_by, host_of, param {name, is: " +
+      "equals|contains|starts|gt|lt|empty|not_empty, value} (or a list), exclude, not {query}, types true; alone they give " +
+      "the count by category, the ids (up to limit) and the first 100 rows, as before. " +
+      "The filter engine (build plan item 32) with action: preview (counts only, a result_set, no rows), run (counts + first " +
+      "page + cursor), page (cursor: follow it until null), explain (the compiled plan), show (put a result_set or ids into " +
+      "Revit's selection: active document only, max 2000 (5000), refused while another bot holds the lease), export (CSV or " +
+      "JSON of every parameter, into the reports folder or a write_roots path), save_set / sets / delete_set (named queries, " +
+      "shared read-only with other bots through the project's 01_WIP\\_Exchange), history. criteria is a tree: {all:[...]}, " +
+      "{any:[...]}, {not: node}, leaves {category}, {class}, {family, match}, {type, match}, {type_id}, {ids}, {level}, " +
+      "{workset}, {phase_created}, {design_option}, {view}, {param|bip|guid, of: instance|type|either, op: = != > >= < <= " +
+      "contains starts ends empty not_empty in between, value, unit}, {in_room: {room, mode: center|any_point|solid, z}}, " +
+      "{in_boundary: {polygon_mm, level | z_mm, mode}}, {in_box: {min_mm, max_mm, inside}}, {near}, {hosted_by}, {host_of}, " +
+      "{tagged_in_view, is}. Lengths in mm, areas m2, volumes m3, angles degrees. scope: documents target|all_open|[names] " +
+      "(rows tagged with their doc), links host|links|both, link_names, kind instances|types|both, universe (for invert). " +
+      "invert: the universe minus the matches. An element missing a criterion parameter is undetermined (listed with its " +
+      "reason), never a silent no-match; every skip is listed with a reason. Preview before a big read; say \"no elements\" " +
+      "when total is 0; report undetermined and skipped counts.",
     {
       category: z.union([z.string(), z.array(z.string())]).optional(), level: z.string().optional(), type_name: z.string().optional(), family: z.string().optional(),
       comment: z.string().optional(), mark: z.string().optional(), workset: z.string().optional(), phase: z.string().optional(),
@@ -103,9 +173,14 @@ export function registerSeeViewTool(server: McpServer) {
       exclude: z.array(z.union([z.string(), z.number()])).optional(), not: z.record(z.string(), z.any()).optional(),
       ids: z.array(z.union([z.string(), z.number()])).optional(), types: z.boolean().optional(),
       limit: z.number().int().min(1).max(5000).optional(),
+      ...FILTER_SHAPE,
     },
     async (args) => {
       try {
+        if (isEngineCall(args as Record<string, unknown>)) {
+          const r = await filterTool().run(args as Record<string, unknown>);
+          return { content: [{ type: "text" as const, text: JSON.stringify(r, null, 2) }], ...(r.ok === false ? { isError: true } : {}) };
+        }
         const r = await withRevitConnection((c) => c.sendCommand("fmc_select_by", args));
         return { content: [{ type: "text" as const, text: JSON.stringify(r, null, 2) }] };
       } catch (e) {

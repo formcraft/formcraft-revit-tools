@@ -279,6 +279,27 @@ namespace RevitMCPCommandSet.Commands.Fmc
         }
     }
 
+    /// <summary>fmc_select_by_show (build plan item 32): a result set or ids into Revit's selection; UI only, no transaction.</summary>
+    public class FmcSelectByShowCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcSelectByShowHandler _handler => (FmcSelectByShowHandler)Handler;
+
+        public FmcSelectByShowCommand(UIApplication uiApp) : base(new FmcSelectByShowHandler(), uiApp) { }
+        public override string CommandName => "fmc_select_by_show";
+
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                _handler.Parameters = parameters ?? new JObject();
+                if (!RaiseAndWaitForCompletion(60000)) throw new TimeoutException($"{CommandName} timed out");
+                if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
+                return _handler.Result;
+            }
+        }
+    }
+
     /// <summary>undo_ai_batch (owner 27 Oct): posts Revit's Undo for the AI's own batches only (see FmcUndo).</summary>
     public class FmcUndoCommand : ExternalEventCommandBase
     {
