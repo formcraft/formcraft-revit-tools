@@ -293,7 +293,10 @@ namespace RevitMCPCommandSet.Commands.Fmc
             lock (_lock)
             {
                 _handler.Parameters = parameters ?? new JObject();
-                if (_handler.Parameters["action"] == null) _handler.Parameters["action"] = "undo";
+                // UB-1: fmc_undo is a write, so it never guesses the action. undo or redo must be named; anything else is refused.
+                string action = _handler.Parameters.Value<string>("action") ?? "";
+                if (action != "undo" && action != "redo")
+                    throw new Exception($"{CommandName}: [FMC-UNDO-ACTION] action must be \"undo\" or \"redo\" (got \"{action}\"). Nothing was undone. Use undo_ai_batch status to read the list.");
                 if (!RaiseAndWaitForCompletion(60000)) throw new TimeoutException($"{CommandName} timed out");
                 if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
                 return _handler.Result;
@@ -314,7 +317,16 @@ namespace RevitMCPCommandSet.Commands.Fmc
         {
             lock (_lock)
             {
-                _handler.Parameters = new JObject { ["action"] = "status" };
+                // Read-only: only status and the UB-2 dry runs (plan, redo_plan) pass; undo and redo never go through this command.
+                var asked = parameters ?? new JObject();
+                string action = asked.Value<string>("action") ?? "status";
+                if (action == "plan" || action == "redo_plan")
+                {
+                    var p = new JObject { ["action"] = action };
+                    foreach (var key in new[] { "batch_id", "count", "document" }) if (asked[key] != null) p[key] = asked[key];
+                    _handler.Parameters = p;
+                }
+                else _handler.Parameters = new JObject { ["action"] = "status" };
                 if (!RaiseAndWaitForCompletion(60000)) throw new TimeoutException($"{CommandName} timed out");
                 if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
                 return _handler.Result;

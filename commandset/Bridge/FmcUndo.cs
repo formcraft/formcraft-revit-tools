@@ -213,37 +213,67 @@ namespace RevitMCPCommandSet
                 if (_planDoc != null) throw new InvalidOperationException("An undo is still running: check with undo_ai_batch status");
                 if (app.ActiveUIDocument?.Document == null || !app.ActiveUIDocument.Document.Equals(doc)) throw new InvalidOperationException($"Revit undoes in the active model: make {doc.Title} the active window first");
                 if (doc.IsModifiable) throw new InvalidOperationException("Revit is in the middle of an edit");
-                var u = Of(Undos, Key(doc));
-                if (u.Count == 0) throw new InvalidOperationException("Nothing the AI did is on Revit's undo list (a sync, a close or a person's undo cleared it)");
-                // clusters from the top: (id, entries)
-                var clusters = new List<List<Entry>>();
-                for (int i = u.Count - 1; i >= 0; i--)
-                {
-                    if (clusters.Count > 0 && clusters[clusters.Count - 1][0].Id == u[i].Id) clusters[clusters.Count - 1].Add(u[i]);
-                    else clusters.Add(new List<Entry> { u[i] });
-                }
-                var plan = new List<List<Entry>>();
-                var batches = new List<string>();
-                foreach (var c in clusters)
-                {
-                    Entry top = c[0];
-                    if (string.IsNullOrEmpty(batchId) && !batches.Contains(top.Batch) && batches.Count >= Math.Max(1, count)) break;
-                    if (top.Kind != "ai")
-                        throw new InvalidOperationException($"A person's change is above {(string.IsNullOrEmpty(batchId) ? "the AI's last batch" : "batch " + batchId)}: \"{top.Label}\" ({top.At:HH:mm}). " +
-                            "The AI never undoes a person's work: they can undo it themselves, or leave the batch and fix it with a new one.");
-                    plan.Add(c);
-                    if (!batches.Contains(top.Batch)) batches.Add(top.Batch);
-                    if (!string.IsNullOrEmpty(batchId) && top.Id == batchId) break;
-                }
-                if (!string.IsNullOrEmpty(batchId) && !plan.Any(c => c[0].Id == batchId))
-                    throw new InvalidOperationException($"Batch {batchId} isn't on Revit's undo list for {doc.Title} (see undo_ai_batch status)");
+                var plan = BuildPlan(doc, batchId, count);
                 _planDoc = Key(doc); _planLeft.Clear(); _planDone.Clear(); _planStop = "";
                 _planLeft.AddRange(plan.Select(c => c[0].Id));
                 PostNext(app);
                 return new JObject
                 {
                     ["posted"] = _planDoc != null, ["stopped"] = _planStop.Length > 0 ? _planStop : null,
-                    ["undoing"] = new JArray(plan.Select(c => new JObject { ["id"] = c[0].Id, ["label"] = c[0].Label, ["at"] = c[0].At.ToString("HH:mm:ss") })),
+                    ["undoing"] = PlanRows(plan),
+                };
+            }
+        }
+
+        private static List<List<Entry>> BuildPlan(Document doc, string batchId, int count) =>
+            FmcUndoPlan.Build(Of(Undos, Key(doc)), e => e.Id, e => e.Kind, e => e.Label, e => e.At, batchId, count, doc.Title);
+
+        private static JArray PlanRows(List<List<Entry>> plan) =>
+            new JArray(plan.Select(c => new JObject { ["id"] = c[0].Id, ["label"] = c[0].Label, ["at"] = c[0].At.ToString("HH:mm:ss") }));
+
+        /// <summary>
+        /// UB-2 dry run: the same plan Undo would post (same refusals, a person's work included), returned without posting
+        /// anything. The active window and an open edit do not refuse here; they are reported as what would block the undo.
+        /// </summary>
+        public static JObject Plan(UIApplication app, Document doc, string batchId, int count)
+        {
+            lock (L)
+            {
+                if (!_hooked) throw new InvalidOperationException("The undo list is followed from the AI's first change after Revit starts; nothing is known yet");
+                if (_planDoc != null) throw new InvalidOperationException("An undo is still running: check with undo_ai_batch status");
+                var plan = BuildPlan(doc, batchId, count);
+                bool active = app.ActiveUIDocument?.Document != null && app.ActiveUIDocument.Document.Equals(doc);
+                var blocked = new JArray();
+                if (!active) blocked.Add($"Revit undoes in the active model: make {doc.Title} the active window first");
+                if (doc.IsModifiable) blocked.Add("Revit is in the middle of an edit");
+                return new JObject
+                {
+                    ["dry_run"] = true, ["posted"] = false, ["action"] = "undo",
+                    ["undoing"] = PlanRows(plan),
+                    ["batches"] = new JArray(plan.Select(c => FmcUndoPlan.BatchOf(c[0].Id)).Distinct()),
+                    ["needs_active_window"] = !active,
+                    ["ready"] = blocked.Count == 0,
+                    ["blocked_by"] = blocked.Count > 0 ? blocked : null,
+                };
+            }
+        }
+
+        /// <summary>UB-2 dry run of Redo: what the next redo would take back in, without posting it. Refuses a person's change.</summary>
+        public static JObject RedoPlan(UIApplication app, Document doc)
+        {
+            lock (L)
+            {
+                var r = Of(Redos, Key(doc));
+                if (r.Count == 0) throw new InvalidOperationException("Nothing to redo");
+                Entry top = r[r.Count - 1];
+                if (top.Kind != "ai") throw new InvalidOperationException($"The next redo is a person's change (\"{top.Label}\"), not the AI's");
+                bool active = app.ActiveUIDocument?.Document != null && app.ActiveUIDocument.Document.Equals(doc);
+                return new JObject
+                {
+                    ["dry_run"] = true, ["posted"] = false, ["action"] = "redo",
+                    ["redoing"] = top.Id, ["label"] = top.Label,
+                    ["needs_active_window"] = !active, ["ready"] = active,
+                    ["blocked_by"] = active ? null : new JArray($"Revit redoes in the active model: make {doc.Title} the active window first"),
                 };
             }
         }
@@ -316,11 +346,17 @@ namespace RevitMCPCommandSet.Services.Fmc
                         if (!string.Equals(owner, FmcUndo.Key(doc), StringComparison.OrdinalIgnoreCase))
                             throw new InvalidOperationException($"[FMC-DOC-NOT-FOUND] Batch {batchId} belongs to {owner}, not {doc.Title}. Refusing to undo a different document.");
                     }
-                    switch (Parameters.Value<string>("action") ?? "status")
+                    // UB-1: a missing action is a status read; an unknown one is refused, never treated as undo.
+                    string action = Parameters.Value<string>("action") ?? "status";
+                    switch (action)
                     {
                         case "undo": Result = FmcUndo.Undo(app, doc, batchId, Parameters.Value<int?>("count") ?? 1); break;
                         case "redo": Result = FmcUndo.Redo(app, doc); break;
-                        default: Result = FmcUndo.Status(doc); break;
+                        case "status": Result = FmcUndo.Status(doc); break;
+                        // UB-2: dry runs, read-only (fmc_undo_status); nothing is posted to Revit
+                        case "plan": Result = FmcUndo.Plan(app, doc, batchId, Parameters.Value<int?>("count") ?? 1); break;
+                        case "redo_plan": Result = FmcUndo.RedoPlan(app, doc); break;
+                        default: throw new InvalidOperationException($"[FMC-UNDO-ACTION] Unknown action \"{action}\": use status, plan, redo_plan, undo or redo. Nothing was undone.");
                     }
                     Result["resolved_document"] = FmcTarget.Resolved(doc);
                 }

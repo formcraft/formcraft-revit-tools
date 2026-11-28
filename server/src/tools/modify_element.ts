@@ -271,11 +271,60 @@ export function batchHasExtent(ops: Array<{ op?: string }>): boolean {
 }
 
 export const UNDO_AI_BATCH_DESCRIPTION =
-  "Formcraft (owner 27 Oct): take back the AI's own work with Revit's Undo. batch_id (modify_model answers it; scripts answer " +
-  "undo_id): that batch and any AI batches made after it; without it, the last count batches (default 1). It never undoes a " +
-  "person's work: if a person changed the model after the batch, it refuses and says what is on top. action status: Revit's undo " +
-  "list as the AI sees it (the AI's batches and a person's changes); redo: the batch the last undo took back. The model must be the " +
-  "active window in Revit; a sync with central or closing the model clears Revit's undo list.";
+  "Formcraft (owner 27 Oct): take back the AI's own work with Revit's Undo. With no action (the default) it only reads: " +
+  "action status is Revit's undo list as the AI sees it (the AI's batches and a person's changes). Nothing is undone unless " +
+  "you pass action undo (or redo) yourself. action undo: batch_id (modify_model answers it; scripts answer undo_id): that " +
+  "batch and any AI batches made after it; without it, the last count batches (default 1). It never undoes a person's work: " +
+  "if a person changed the model after the batch, it refuses and says what is on top. redo: the batch the last undo took " +
+  "back. dry_run true with undo (or redo): the plan, i.e. the batches it would take back, with the same refusals (a person's " +
+  "work on top), and nothing posted; call it before an undo. The model must be the active window in Revit; a sync with " +
+  "central or closing the model clears Revit's undo list.";
+
+/** undo_ai_batch's inputs. UB-1: action defaults to status (a read); undo and redo must be asked for by name. */
+export const UNDO_AI_BATCH_SHAPE = {
+  action: z.enum(["status", "undo", "redo"]).optional().default("status")
+    .describe("status (default): read the undo list, nothing changes. undo / redo: post Revit's Undo / Redo; only when a person asked for it."),
+  batch_id: z.string().max(40).optional(),
+  count: z.number().int().min(1).max(20).optional(),
+  dry_run: z.boolean().optional()
+    .describe("UB-2: with action undo or redo, return what would be taken back (and what would block it) without posting anything."),
+};
+
+export type UndoAiBatchArgs = { action?: "status" | "undo" | "redo"; batch_id?: string; count?: number; dry_run?: boolean };
+
+/**
+ * The first socket call undo_ai_batch makes. A missing action is a status read (UB-1): only an explicit
+ * action "undo" or "redo" reaches fmc_undo (a write).
+ */
+export function undoAiBatchCall(args: UndoAiBatchArgs): { command: "fmc_undo" | "fmc_undo_status"; params: Record<string, unknown> } {
+  const action = args?.action ?? "status";
+  if (action !== "undo" && action !== "redo") return { command: "fmc_undo_status", params: {} };
+  // UB-2: a dry run is a read (fmc_undo_status, never fmc_undo), so it needs no lease and posts nothing
+  if (args.dry_run === true) {
+    if (action === "redo") return { command: "fmc_undo_status", params: { action: "redo_plan" } };
+    return {
+      command: "fmc_undo_status",
+      params: { action: "plan", ...(args.batch_id ? { batch_id: args.batch_id } : {}), ...(args.count ? { count: args.count } : {}) },
+    };
+  }
+  return {
+    command: "fmc_undo",
+    params: { action, ...(args.batch_id ? { batch_id: args.batch_id } : {}), ...(args.count ? { count: args.count } : {}) },
+  };
+}
+
+/**
+ * UB-2: an add-in from before the dry run answers a plan request with plain status. Say so rather than let it pass for a plan.
+ */
+export function undoDryRunReply(params: Record<string, unknown>, result: any): [unknown, boolean] {
+  const wanted = params?.action === "plan" || params?.action === "redo_plan";
+  if (!wanted || result?.dry_run === true) return [result, false];
+  return [{
+    dry_run: false, posted: false,
+    error: "[FMC-UNDO-DRYRUN-UNSUPPORTED] The installed add-in has no undo dry run; nothing was undone. Here is the undo list instead.",
+    status: result,
+  }, true];
+}
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -283,15 +332,15 @@ export function registerModifyModelTool(server: McpServer) {
   server.tool(
     "undo_ai_batch",
     UNDO_AI_BATCH_DESCRIPTION,
-    {
-      action: z.enum(["undo", "redo", "status"]).optional().default("undo"),
-      batch_id: z.string().max(40).optional(),
-      count: z.number().int().min(1).max(20).optional(),
-    },
+    UNDO_AI_BATCH_SHAPE,
     async (args) => {
       try {
-        if (args.action === "status") return reply(await withRevitConnection((c) => c.sendCommand("fmc_undo_status", {})));
-        const r = await withRevitConnection((c) => c.sendCommand("fmc_undo", { action: args.action, ...(args.batch_id ? { batch_id: args.batch_id } : {}), ...(args.count ? { count: args.count } : {}) }));
+        const call = undoAiBatchCall(args);
+        if (call.command === "fmc_undo_status") {
+          const s = await withRevitConnection((c) => c.sendCommand(call.command, call.params));
+          return reply(...undoDryRunReply(call.params, s));
+        }
+        const r = await withRevitConnection((c) => c.sendCommand(call.command, call.params));
         if (!r?.posted) return reply(r, !r?.queued && !r?.approval);
         // Revit runs each Undo once it is idle; the add-in posts the next after Revit reports the last
         let s: any;
