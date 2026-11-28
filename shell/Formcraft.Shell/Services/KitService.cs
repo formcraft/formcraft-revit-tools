@@ -62,11 +62,62 @@ namespace Formcraft.Shell.Services
             [DataMember(Name = "sample")] public bool Sample { get; set; }
         }
 
+        private readonly Func<string, bool> _directoryExists;
+        private readonly TimeSpan _networkTimeout;
+
+        /// <summary>Waits at most this long for a UNC or mapped network folder to answer (F03).</summary>
+        public static readonly TimeSpan NetworkTimeout = TimeSpan.FromMilliseconds(1500);
+
+        public FolderKitService() : this(Directory.Exists, NetworkTimeout) { }
+
+        /// <summary>For tests: how a folder is looked up, and how long a network folder may take.</summary>
+        public FolderKitService(Func<string, bool> directoryExists, TimeSpan networkTimeout)
+        {
+            _directoryExists = directoryExists ?? throw new ArgumentNullException(nameof(directoryExists));
+            _networkTimeout = networkTimeout;
+        }
+
+        /// <summary>A UNC path (\\server\share) or a folder on a mapped network drive.</summary>
+        public static bool IsNetworkPath(string folder)
+        {
+            if (string.IsNullOrEmpty(folder)) return false;
+            if (folder.StartsWith(@"\\", StringComparison.Ordinal) || folder.StartsWith("//", StringComparison.Ordinal)) return true;
+            try
+            {
+                var root = Path.GetPathRoot(folder);
+                return !string.IsNullOrEmpty(root) && new DriveInfo(root).DriveType == DriveType.Network;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        // An offline mapped drive can make Directory.Exists hang for many seconds; on a network path the lookup
+        // runs on a worker thread and the check gives up after the timeout, saying so (never "found").
+        private bool FolderExists(string folder, out bool timedOut)
+        {
+            timedOut = false;
+            if (!IsNetworkPath(folder)) return _directoryExists(folder);
+            var lookup = System.Threading.Tasks.Task.Run(() => _directoryExists(folder));
+            if (lookup.Wait(_networkTimeout)) return lookup.Result;
+            timedOut = true;
+            return false;
+        }
+
         public KitCheck Check(string folder)
         {
             var lines = new List<KitCheckLine>();
             folder = (folder ?? "").Trim();
-            if (folder.Length == 0 || !Directory.Exists(folder))
+            var timedOut = false;
+            var exists = folder.Length > 0 && FolderExists(folder, out timedOut);
+            if (timedOut)
+            {
+                lines.Add(new KitCheckLine("The folder didn't answer within " + _networkTimeout.TotalSeconds.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture)
+                    + " s (network drive offline?)", false, "No answer", ChipKind.Bad));
+                return new KitCheck(folder, lines, false, false);
+            }
+            if (!exists)
             {
                 lines.Add(new KitCheckLine("No folder at this path", false, "Missing", ChipKind.Bad));
                 return new KitCheck(folder, lines, false, false);

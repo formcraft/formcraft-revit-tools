@@ -129,7 +129,9 @@ namespace Formcraft.Shell.ViewModels
                 }
 
                 var visible = _visibleSections().ToList();
-                foreach (var s in visible.Where(s => Matches(s.Group + " › " + s.Name, null)))
+                // F05: a section's own words (sections.json "words") find it too, e.g. "kitchen" finds Casework.
+                IEnumerable<string>? SectionWords(string name) => _registry.Sections.FirstOrDefault(d => d.Name == name)?.Words;
+                foreach (var s in visible.Where(s => Matches(s.Group + " › " + s.Name, SectionWords(s.Name))))
                     found.Add(new SearchResult(SearchKind.Section, s.Group + " › " + s.Name, s.Module.ToString(), s.Module, s.Name, _licensed(s.Module)));
 
                 foreach (var e in _registry.Search ?? new SearchEntryDef[0])

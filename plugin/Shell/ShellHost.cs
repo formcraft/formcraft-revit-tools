@@ -184,7 +184,9 @@ namespace revit_mcp_plugin.Shell
                 if ((ConnectSettings.Load().StartWithRevit || UnattendedMode.On) && !SocketService.Instance.IsRunning)
                     FormcraftBrowser.RequestToggleService();
             }
-            Connection.Update(SocketService.Instance.IsRunning);
+            // F09: Revit busy reaches the pane: a command in flight (RevitWake keeps Idling coming while one is) or the
+            // bridge's timed-out job. Both clear in a finally / the probe, so the state cannot stay stuck on busy.
+            Connection.Update(SocketService.Instance.IsRunning, BridgeBusy.IsBusy || RevitWake.InFlight > 0);
             // The AI connection is off: no AI call can be running or waiting, so the strip clears.
             if (!SocketService.Instance.IsRunning) AiActivityTracker.Shared.Reset();
             RibbonBuilder.ShowConnection(SocketService.Instance.IsRunning);
@@ -258,9 +260,11 @@ namespace revit_mcp_plugin.Shell
         public ConnectionState State { get; private set; } = ConnectionState.NotConnected;
         public event EventHandler Changed;
 
-        public void Update(bool running)
+        private readonly BusyState _busy = new BusyState();
+
+        public void Update(bool running, bool busy = false)
         {
-            var state = running ? ConnectionState.Connected : ConnectionState.NotConnected;
+            var state = _busy.Next(running, busy, DateTime.UtcNow);
             if (state == State) return;
             State = state;
             Changed?.Invoke(this, EventArgs.Empty);

@@ -31,6 +31,8 @@ namespace Formcraft.Shell.Services
         [DataMember(Name = "phase")] public string Phase { get; set; } = "";
         /// <summary>Board file under design/boards, without ".dc.html".</summary>
         [DataMember(Name = "board")] public string Board { get; set; } = "";
+        /// <summary>More words that find the section in search, besides "Group › Name" (F05).</summary>
+        [DataMember(Name = "words")] public string[]? Words { get; set; }
         public FmcModule Module => (FmcModule)Enum.Parse(typeof(FmcModule), ModuleName);
         public string IconKey => "Icon." + Name;
     }
