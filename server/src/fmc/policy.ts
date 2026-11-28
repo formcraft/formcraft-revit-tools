@@ -225,6 +225,7 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_north_apply",
   // Legend views: duplicate a seed view or copy a seed component. One transaction. No text notes.
   "fmc_legend_apply",
+  "fmc_legend_chain",
   // Kit typical details copied into a drafting view. One transaction. The kit file is not saved.
   "fmc_details_apply",
   // A parameter or label on the family loaded in the project, or a project binding. The kit family file is not saved.
