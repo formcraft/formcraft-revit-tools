@@ -1,20 +1,24 @@
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { loadConfig } from "../fmc/policy.js";
-import { dialogStatus } from "../fmc/dialogs.js";
+import { dialogStatus, ignoredInputs } from "../fmc/dialogs.js";
 
 export const FMC_DIALOGS_DESCRIPTION =
   "Read-only. The dialog allow and deny lists from fmc_guard.json, the hard refusals (corrupt-model, sync, relinquish, " +
   "delete, overwrite, and the rest of the built-in deny), and the recent dialog lines in FMC_Jobs_Revit.jsonl. " +
   "Nothing is sent to Revit and nothing is answered. The add-in is what closes an allowlisted prompt; this tool only reports. " +
   "These are the guard lists (tier 1). Dialog boxes are also answered from the rules file: fmc_dialog_rules list shows it " +
-  "(rules_file says whether it exists). Filter the recent lines with since (ISO time), job and only_left_for_person; counts tally them.";
+  "(rules_file says whether it exists). Filter the recent lines with since (ISO time), job and only_left_for_person; counts tally them. " +
+  "The reply is machine-wide: now, log_file, lines_read and age_minutes on every recent line (and newest_age_minutes). " +
+  "document is accepted so a caller can see it was ignored (ignored_inputs); this tool does not read a document. " +
+  "open_now is true or false only when the add-in's fmc_dialog_open.json is fresh (under 10 minutes); otherwise it is null, with a note, and is not guessed from the log.";
 
 const shape = {
   limit: z.number().int().min(1).max(200).optional().describe("How many recent dialog lines to return. Default 30."),
   since: z.string().optional().describe("Only lines at or after this ISO time, e.g. 2026-11-28T06:00:00Z."),
   job: z.string().optional().describe("Only lines of this job id."),
   only_left_for_person: z.boolean().optional().describe("Only prompts that were left for a person (not answered)."),
+  document: z.string().optional().describe("Ignored: this tool is machine-wide and does not read a document. A passed value is listed under ignored_inputs."),
 };
 
 function reply(body: unknown, isError = false) {
@@ -22,13 +26,17 @@ function reply(body: unknown, isError = false) {
 }
 
 export function runFmcDialogs(
-  args: { limit?: number; since?: string; job?: string; only_left_for_person?: boolean } = {},
+  args: { limit?: number; since?: string; job?: string; only_left_for_person?: boolean; document?: string } = {},
   env: NodeJS.ProcessEnv = process.env,
   load: () => { config: Parameters<typeof dialogStatus>[0] } = loadConfig,
+  now?: () => number,
 ) {
   const { config } = load();
   try {
-    return reply(dialogStatus(config, env, args.limit ?? 30, { since: args.since, job: args.job, only_left_for_person: args.only_left_for_person }));
+    return reply(dialogStatus(config, env, args.limit ?? 30, { since: args.since, job: args.job, only_left_for_person: args.only_left_for_person }, {
+      now: now?.(),
+      ignored_inputs: ignoredInputs(args),
+    }));
   } catch (error) {
     return reply({ error: error instanceof Error ? error.message : String(error) }, true);
   }

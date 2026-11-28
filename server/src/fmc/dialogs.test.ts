@@ -4,7 +4,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { DIALOG_HARD_DENY, DIALOGS_SCHEMA_VERSION, dialogBlocked, dialogLists, dialogRowCounts, dialogStatus, hardDenyComparison, recentDialogs, sinceMs } from "./dialogs.js";
+import { DIALOG_HARD_DENY, DIALOGS_SCHEMA_VERSION, ageMinutes, dialogBlocked, dialogLists, dialogRowCounts, dialogStatus, hardDenyComparison, ignoredInputs, openNowOf, recentDialogs, sinceMs } from "./dialogs.js";
 import { NEVER_AUTO_FRAGMENTS } from "./dialogrules.js";
 import { runFmcDialogs } from "../tools/fmc_dialogs.js";
 import { WRITE_COMMANDS } from "./policy.js";
@@ -132,4 +132,80 @@ test("the tool returns a structured error for a bad since", () => {
   const r = runFmcDialogs({ since: "soon" }, { APPDATA: fs.mkdtempSync(path.join(os.tmpdir(), "fmc-dialogs-")) } as NodeJS.ProcessEnv, () => ({ config: {} }));
   assert.equal(r.isError, true);
   assert.match(r.content[0].text, /FMC-DIALOGS-SINCE/);
+});
+
+test("status says what it covers: now, log file, ages, and a passed document is listed as ignored (P-fmc_dialogs-01)", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-dialogs-"));
+  const home = path.join(dir, "Formcraft");
+  fs.mkdirSync(home, { recursive: true });
+  fs.writeFileSync(path.join(home, "FMC_Jobs_Revit.jsonl"), LOG.map((l) => JSON.stringify(l)).join("\n") + "\n");
+  const env = { APPDATA: dir } as NodeJS.ProcessEnv;
+  const now = Date.parse("2026-11-28T07:19:00Z");
+  const status = dialogStatus({}, env, 30, {}, { now, ignored_inputs: ignoredInputs({ document: "Project1" }) });
+  assert.equal(status.schema_version, 2);
+  assert.equal(status.now, "2026-11-28T07:19:00.000Z");
+  assert.equal(status.log_file, path.join(home, "FMC_Jobs_Revit.jsonl"));
+  assert.equal(status.lines_read, 5);
+  assert.match(status.scope, /machine-wide/);
+  assert.deepEqual(status.ignored_inputs, { document: "Project1" });
+  assert.equal(ageMinutes("2026-11-28T07:00:00Z", now), 19);
+  assert.equal(status.recent.find((r) => r.dialog_id === "dup")?.age_minutes, 19);
+  assert.equal(status.recent.find((r) => r.dialog_id === "TaskDialog_Sync")?.age_minutes, 79);
+  assert.equal(status.recent.find((r) => r.dialog_id === "x")?.age_minutes, null, "a bad stamp is not given an age");
+  assert.equal(status.newest_age_minutes, 19, "newest parseable line, not the unparseable last one");
+  assert.deepEqual(ignoredInputs({}), {});
+  assert.deepEqual(ignoredInputs({ document: "  " }), {});
+
+  const tool = JSON.parse(runFmcDialogs(
+    { document: "architectural_USER", limit: 10 },
+    env,
+    () => ({ config: {} }),
+    () => now,
+  ).content[0].text);
+  assert.deepEqual(tool.ignored_inputs, { document: "architectural_USER" });
+  assert.equal(tool.recent.length, 4, "document does not filter the machine-wide log");
+  const bare = JSON.parse(runFmcDialogs({ limit: 10 }, env, () => ({ config: {} }), () => now).content[0].text);
+  assert.deepEqual(bare.ignored_inputs, {});
+});
+
+test("open_now is true or false only from a fresh add-in file, never guessed from the log (P-fmc_dialogs-02)", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-dialogs-"));
+  const home = path.join(dir, "Formcraft");
+  fs.mkdirSync(home, { recursive: true });
+  fs.writeFileSync(path.join(home, "FMC_Jobs_Revit.jsonl"), JSON.stringify({
+    at: "2026-11-28T06:00:00Z", event: "dialog", dialog_id: "TaskDialog_Sync", message: "Synchronize?", answer: "left for a person", job: "9",
+  }) + "\n");
+  const env = { APPDATA: dir } as NodeJS.ProcessEnv;
+  const now = Date.parse("2026-11-28T08:55:00Z");
+
+  const missing = openNowOf(env, now);
+  assert.equal(missing.open_now, null);
+  assert.equal(missing.open_now_source, "none");
+  assert.match(missing.open_now_note, /cannot say whether a dialog is still on screen/);
+  const statusMissing = dialogStatus({}, env, 30, {}, { now });
+  assert.equal(statusMissing.open_now, null);
+  assert.equal(statusMissing.recent[0].left_for_a_person, true, "the log still reports left-for-a-person; that is not open_now");
+
+  const writeOpen = (over: Record<string, unknown>) => fs.writeFileSync(path.join(home, "fmc_dialog_open.json"), JSON.stringify({
+    open: true, dialog_id: "TaskDialog_Save_Changes_To_Local_File", message: "Save?", job: "9", pid: 42, at: "2026-11-28T08:49:00Z", ...over,
+  }));
+
+  writeOpen({});
+  const up = openNowOf(env, now);
+  assert.equal(up.open_now, true);
+  assert.equal(up.open_now_source, "add-in");
+  assert.equal(up.open?.dialog_id, "TaskDialog_Save_Changes_To_Local_File");
+  assert.equal(up.open?.age_minutes, 6);
+
+  writeOpen({ open: false });
+  assert.equal(openNowOf(env, now).open_now, false);
+  assert.match(openNowOf(env, now).open_now_note, /no dialog is up/);
+
+  writeOpen({ open: true, at: "2026-11-28T08:20:00Z" });
+  const stale = openNowOf(env, now);
+  assert.equal(stale.open_now, null, "a stale open file is not treated as still waiting");
+  assert.match(stale.open_now_note, /35 minutes old/);
+
+  writeOpen({ open: false, at: "2026-11-28T08:20:00Z" });
+  assert.equal(openNowOf(env, now).open_now, null, "a stale closed file is also unknown");
 });
