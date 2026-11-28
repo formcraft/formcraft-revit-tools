@@ -74,7 +74,8 @@ export function resolveMaterial(m: DbMaterial, materialsFile: string, exists: (p
   };
 }
 
-export function searchMaterials(db: MaterialDb, cls: string, query: string, limit = 200): DbMaterial[] {
+/** Research 57: no silent cap; a caller that wants fewer passes limit. */
+export function searchMaterials(db: MaterialDb, cls: string, query: string, limit = Number.POSITIVE_INFINITY): DbMaterial[] {
   const q = query.trim().toLowerCase();
   return db.materials.filter((m) => (!cls || cls === "All" || m.class === cls) &&
     (!q || m.name.toLowerCase().includes(q) || m.keynote.toLowerCase().includes(q) || m.sub.toLowerCase().includes(q))).slice(0, limit);
@@ -110,4 +111,29 @@ export function auditMaterials(model: ModelMaterial[], db: MaterialDb | null, ex
     { check: "Unused materials", found: unused.length, result: level(unused.length, "Info"), ...pick(unused) },
     { check: "Names not FMC_ standard", found: nonStandard.length, result: level(nonStandard.length, "Warn"), ...pick(nonStandard) },
   ];
+}
+
+/** Research 57: one row per material that is off-library, with every reason, so a name is counted once (not in the database and not FMC_ named overlap). */
+export interface MaterialFinding { id: number; name: string; reasons: string[]; survivor?: string }
+
+export function mergedFindings(model: ModelMaterial[], db: MaterialDb | null, exists: (path: string) => boolean): MaterialFinding[] {
+  const inDb = new Set((db?.materials ?? []).map((m) => m.name));
+  const names = new Set(model.map((m) => m.name));
+  const out: MaterialFinding[] = [];
+  for (const m of model) {
+    const reasons: string[] = [];
+    if (db && !inDb.has(m.name)) reasons.push("not in the database");
+    if (!/^FMC_[A-Za-z]+_[A-Za-z0-9]/.test(m.name)) reasons.push("name not FMC_");
+    const dup = duplicateOf(m.name, names);
+    if (dup) reasons.push(`duplicate of ${dup}`);
+    if (m.textures.some((t) => t && !exists(t))) reasons.push("broken texture path");
+    if (reasons.length) out.push({ id: m.id, name: m.name, reasons, ...(dup ? { survivor: dup } : {}) });
+  }
+  return out;
+}
+
+export function auditSummary(model: ModelMaterial[], checks: AuditCheck[], findings: MaterialFinding[]): string {
+  const fails = checks.filter((c) => c.result === "Fail").map((c) => `${c.check.toLowerCase()} ${c.found}`);
+  const offLibrary = findings.filter((f) => f.reasons.includes("not in the database") || f.reasons.includes("name not FMC_")).length;
+  return `${model.length} materials: ${offLibrary} off-library (counted once), ${findings.filter((f) => f.survivor).length} duplicates${fails.length ? ", fail: " + fails.join(", ") : ""}, ${model.filter((m) => !m.used).length} unused.`;
 }
