@@ -93,6 +93,12 @@ export interface GuardConfig {
    * Empty matches nothing. protected_roots is still checked as well.
    */
   protected_paths?: string[];
+  /**
+   * fmc_directshape: the categories a DirectShape may be made in. Names from fmc/directshape_cats.ts (Generic Models, Mass,
+   * Entourage, Site, Parking, Planting, Furniture, Specialty Equipment, Casework, Mechanical Equipment, Electrical
+   * Equipment, Plumbing Fixtures). Omit it for the default: Generic Models and Mass. Walls, floors, doors and the like can't be added.
+   */
+  directshape_categories?: string[];
   /** Folder for see_view and other screenshots. Default %LOCALAPPDATA%\\Formcraft\\images. Never D: and never beside a model. */
   image_dir?: string;
   /**
@@ -243,6 +249,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_close_local_apply",
   // Close spare documents or purge unused elements. Status stays on fmc_memory.
   "fmc_memory_apply",
+  // DirectShape volumes (gap proposal 25): create or remove only the shapes fmc_directshape made. One transaction.
+  "fmc_directshape_apply",
 ]);
 
 /**
@@ -295,6 +303,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_tags",
   // Sheets, title-block legend zone and an existing keynote legend. No transaction.
   "fmc_keynote_legend",
+  // DirectShapes this tool made, and the check of a planned set. No transaction.
+  "fmc_directshape",
 ]);
 
 /**
