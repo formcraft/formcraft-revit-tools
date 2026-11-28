@@ -103,3 +103,19 @@ test("a stale running log entry while Revit is idle does not make the queue busy
   assert.equal(unknown.code, "FMC-QUEUE-UNKNOWN");
   assert.doesNotMatch(unknown.busy_reason, /not idle|1022517/);
 });
+
+test("QU-4/QU-5/QU-6: filter and count the list, mark mine, pick stale running log entries", async () => {
+  const { countByTool, filterRows, isMine, selectStaleRunning } = await import("./queueops.js");
+  const rows = [
+    row({ job_id: "a", document: "E-0001_USER", caller: "Builder 5", stale: false, revit_idle: false, state: "running", tool: "fmc_qa" }),
+    row({ job_id: "b", document: "A-0001_USER", caller: "Other Bot", tool: "fmc_qa" }),
+    row({ job_id: "c", document: "E-0001_USER", caller: "stdio", state: "running", stale: true, revit_idle: true, tool: "fmc_circuits" }),
+  ];
+  assert.deepEqual(filterRows(rows, { document: "e-0001" }).map((r) => r.job_id), ["a", "c"]);
+  assert.deepEqual(filterRows(rows, { only_live: true }).map((r) => r.job_id), ["a"]);
+  assert.deepEqual(filterRows(rows, { mine_only: true, me: "builder 5" }).map((r) => r.job_id), ["a"]);
+  assert.deepEqual(filterRows(rows, { state: "queued" }).map((r) => r.job_id), ["b"]);
+  assert.deepEqual(countByTool(rows), { fmc_qa: 2, fmc_circuits: 1 });
+  assert.equal(isMine(rows[1], "unknown"), false);
+  assert.deepEqual(selectStaleRunning(rows).map((r) => r.job_id), ["c"]);
+});

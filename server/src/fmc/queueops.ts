@@ -167,6 +167,45 @@ export function decideCancel(row: QueueListRow | null, queueBusy: string | null 
   };
 }
 
+export interface QueueFilter {
+  document?: string;
+  caller?: string;
+  state?: "queued" | "running";
+  only_live?: boolean;
+  mine_only?: boolean;
+  me?: string;
+}
+
+/** QU-6: a row is mine when its caller (or the lease holder) is this client. */
+export function isMine(row: QueueListRow, me: string): boolean {
+  const who = me.trim().toLowerCase();
+  if (!who || who === "unknown") return false;
+  return row.caller.trim().toLowerCase() === who || row.lease_holder.trim().toLowerCase() === who;
+}
+
+/** QU-4: list scoped by document (title, case-insensitive, part of it), caller, state, live only (not stale) and mine only. */
+export function filterRows(rows: QueueListRow[], f: QueueFilter): QueueListRow[] {
+  const doc = (f.document ?? "").trim().toLowerCase();
+  const caller = (f.caller ?? "").trim().toLowerCase();
+  return rows.filter((row) => (!doc || row.document.toLowerCase().includes(doc))
+    && (!caller || row.caller.toLowerCase().includes(caller) || row.lease_holder.toLowerCase().includes(caller))
+    && (!f.state || row.state === f.state)
+    && (!f.only_live || !row.stale)
+    && (!f.mine_only || isMine(row, f.me ?? "")));
+}
+
+/** QU-4: jobs per tool, so one small call says what is waiting. */
+export function countByTool(rows: QueueListRow[]): Record<string, number> {
+  const out: Record<string, number> = {};
+  for (const row of rows) out[row.tool || "(none)"] = (out[row.tool || "(none)"] ?? 0) + 1;
+  return out;
+}
+
+/** QU-5: Revit log entries that say running while Revit is idle (the same stale rule as the list); not a live job. */
+export function selectStaleRunning(rows: QueueListRow[]): QueueListRow[] {
+  return rows.filter((row) => row.state === "running" && row.source === "revit" && row.stale && row.revit_idle);
+}
+
 export function selectStale(rows: QueueListRow[], olderThanMin: number): QueueListRow[] {
   const minS = Math.max(0, olderThanMin) * 60;
   return rows.filter((row) => row.state === "queued" && row.age_s >= minS);
