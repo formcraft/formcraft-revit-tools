@@ -62,7 +62,7 @@ export const FMC_DOC_DESCRIPTION =
     "screenshot: PNGs of its 3D, front and plan views to the reports folder, each cropped to the family's own geometry, " +
     "at a detail level (coarse, medium, fine or all three) and style (shaded, hidden, wireframe, realistic), with reference planes, " +
     "levels and dimensions hidden (F-055). save: to an .rfa in the write roots under a name " +
-    "the naming rules accept, with <name>.build.json beside it. close: discards unsaved changes. background (read-only): the " +
+    "the naming rules accept, or an FMC .rft under _FamilyTemplates (B3), with <name>.build.json beside it. close: discards unsaved changes. background (read-only): the " +
     "sessions Revit holds, which close may close, and other background family documents. list and background mark a " +
     "session idle longer than the guard's session_idle_hours (default 12) as stale; fmc_recipe cleanup closes stale and " +
     "left-over sessions without saving (dry run first), never a document in a Revit window or one the person opened. " +
@@ -78,7 +78,7 @@ export const FMC_DOC_SHAPE = {
   template: z.string().optional().default("").describe("open: a family template (.rft) in the template roots"),
   file: z.string().optional().default("").describe("open: a family file (.rfa) in the library roots"),
   session: z.string().optional().default(""),
-  path: z.string().optional().default("").describe("save: the target .rfa (inside the write roots, named by the rules)"),
+  path: z.string().optional().default("").describe("save: the target .rfa, or an FMC .rft under _FamilyTemplates (inside the write roots, named by the rules)"),
   overwrite: z.boolean().optional().default(false).describe("save: replace an existing file (a person decided)"),
   follow: z.array(z.object({ param: z.string().min(1), low_mm: z.number(), high_mm: z.number(), stepped: z.boolean().optional() })).optional()
     .describe("flex: size parameters to move from low to high on one type, reporting which named solids moved with each (Gate A)"),
@@ -187,7 +187,7 @@ export async function runFmcDoc(args: FmcDocArgs) {
     const saved = await sendDoc("fmc_doc_save", { session: s.id, path: args.path.trim(), overwrite: args.overwrite, max_backups: config.max_backups }, 120000, document);
     const report = await sendDoc("fmc_doc_report", { session: s.id }, 60000, document);
     const build = buildReport(s, args.path.trim(), report ?? {}, kitManifest(config), serverBuild().commit, new Date());
-    const buildFile = args.path.trim().replace(/\.rfa$/i, ".build.json");
+    const buildFile = args.path.trim().replace(/\.(rfa|rft)$/i, ".build.json");
     fs.writeFileSync(buildFile, JSON.stringify(build, null, 2));
     log(config, "doc_save", args.path, "done", `${s.id} · ${build.ops.length} ops · ${build.ops_hash}`);
     return reply({ saved: saved?.saved ?? args.path, build_report: buildFile, build });

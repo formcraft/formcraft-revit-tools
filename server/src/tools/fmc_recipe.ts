@@ -11,6 +11,7 @@ import { BRIDGE_LIMIT_BYTES, BuildRecord, CHUNK_BYTES, DEFAULT_CHUNK_OPS, applyE
 import { buildRecipe, cleanupBackground } from "./fmc_recipe_build.js";
 import { JobStillRunning, softTimeoutMs } from "../utils/SocketClient.js";
 import { HostTestResult, LodLadder, NestedLod, RecordedSides, Recipe, familyHost, followParams, gateA, hostTestKindFor, lodLadder, parseRecipe, releasePath, roleOf, stagingPath } from "../fmc/recipes.js";
+import { recipeStagingPath } from "../fmc/familytemplates.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { loadRhinoRulebook } from "../hub/rhino.js";
 import { rhinoProofProblems } from "../hub/rhinoproof.js";
@@ -160,7 +161,7 @@ function nestedLod(cfg: GuardConfig, file: string): NestedLod {
   const staging = expandEnv(cfg.family_staging_root);
   const read = (family: string, depth: number): LodLadder | null => {
     if (depth > 3) return null;
-    for (const f of [win.join(win.dirname(file), family + ".recipe.json"), stagingPath(staging, family).replace(/\.rfa$/i, ".recipe.json")]) {
+    for (const f of [win.join(win.dirname(file), family + ".recipe.json"), stagingPath(staging, family).replace(/\.(rfa|rft)$/i, ".recipe.json")]) {
       try {
         if (!fs.existsSync(f)) continue;
         const r = parseRecipe(fs.readFileSync(f, "utf8")).recipe;
@@ -180,8 +181,8 @@ export function hostTestCeilingMs(env: NodeJS.ProcessEnv = process.env): number 
 }
 
 export async function runGate(file: string, cfg: GuardConfig, flex: object | null = null) {
-  const family = win.basename(file, ".rfa");
-  const recipeFile = file.replace(/\.rfa$/i, ".recipe.json");
+  const family = win.basename(file).replace(/\.(rfa|rft)$/i, "");
+  const recipeFile = file.replace(/\.(rfa|rft)$/i, ".recipe.json");
   const recipe = fs.existsSync(recipeFile) ? parseRecipe(fs.readFileSync(recipeFile, "utf8")).recipe : null;
   let inspect: any;
   try { inspect = body(await runFmcLibrary({ action: "inspect", path: file, overwrite: false, dry_run: true, document: file } as any)); }
@@ -219,14 +220,14 @@ export async function runGate(file: string, cfg: GuardConfig, flex: object | nul
     registerHost: registerHostText, hostTest, hostTestError, familyHost: famHost, nestedLod: nestedLod(cfg, file) });
   // owner 20 Oct (RHN-020, RHN-022): a family made from a picture has real-life evidence and looks like it before release
   const readJson = (f: string) => { try { return JSON.parse(fs.readFileSync(f, "utf8").replace(/^\uFEFF/, "")); } catch { return null; } };
-  const ref = readJson(file.replace(/\.rfa$/i, ".reference.json")) as Reference | null;
+  const ref = readJson(file.replace(/\.(rfa|rft)$/i, ".reference.json")) as Reference | null;
   const rbook = loadRhinoRulebook(expandEnv(cfg.rulebooks_dir)).book;
-  gate.lines.push(referenceLine(ref, rbook), likenessLine(ref, readJson(file.replace(/\.rfa$/i, ".likeness.json")) as Likeness | null, rbook, "revit"));
+  gate.lines.push(referenceLine(ref, rbook), likenessLine(ref, readJson(file.replace(/\.(rfa|rft)$/i, ".likeness.json")) as Likeness | null, rbook, "revit"));
   if (gate.lines.some((l) => l.state === "Fail")) gate.verdict = "Fail";
   // callers (the test runner) check these directly: hostTestError is "" when the host test ran fine or wasn't needed
   const result = { family, file, at: new Date().toISOString(), ...gate,
     hostFrom: registerHostText ? "register" : famHost ? "family" : "", hostKind: kind ?? "", hostTest, hostTestError };
-  try { fs.writeFileSync(file.replace(/\.rfa$/i, ".gate.json"), JSON.stringify(result, null, 2)); } catch { /* the gate still answers */ }
+  try { fs.writeFileSync(file.replace(/\.(rfa|rft)$/i, ".gate.json"), JSON.stringify(result, null, 2)); } catch { /* the gate still answers */ }
   return result;
 }
 
@@ -256,7 +257,7 @@ function prepareRecipe(recipe: Recipe, config: GuardConfig, dictionary: ReturnTy
   // F-062: a skeleton op is sent as the ops it stands for
   const families = resolveFamilyPaths(expandSkeletons(recipe.ops), familyRoots(expandEnv(config.family_staging_root), libraryRoots), (f) => fs.existsSync(f));
   notes.push(...families.notes);
-  const target = stagingPath(expandEnv(config.family_staging_root), recipe.family);
+  const target = recipeStagingPath(expandEnv(config.family_staging_root), recipe, stagingPath);
   return { template, planes, errors, notes, families, target, materials };
 }
 
@@ -337,8 +338,8 @@ async function runBatchAction(args: FmcRecipeArgs, config: GuardConfig, dry: boo
   const staged = (target: string) => {
     if (!fs.existsSync(target)) return { exists: false };
     let revision: string | null = null, verdict: string | null = null;
-    try { const r = parseRecipe(fs.readFileSync(target.replace(/\.rfa$/i, ".recipe.json"), "utf8")).recipe; revision = r ? recipeRevision(r) : null; } catch { /* no recipe beside it */ }
-    try { verdict = JSON.parse(fs.readFileSync(target.replace(/\.rfa$/i, ".gate.json"), "utf8")).verdict ?? null; } catch { /* never gated */ }
+    try { const r = parseRecipe(fs.readFileSync(target.replace(/\.(rfa|rft)$/i, ".recipe.json"), "utf8")).recipe; revision = r ? recipeRevision(r) : null; } catch { /* no recipe beside it */ }
+    try { verdict = JSON.parse(fs.readFileSync(target.replace(/\.(rfa|rft)$/i, ".gate.json"), "utf8")).verdict ?? null; } catch { /* never gated */ }
     return { exists: true, revision, verdict };
   };
   const plan = planBatch([...ready.values()].map((x) => ({ family: x.recipe.family, revision: x.revision, staged: staged(x.prep.target) })), args.rebuild);
@@ -464,7 +465,7 @@ export function paneRelease(command: string, input: Record<string, unknown>, by:
   const file = String(input.file ?? "").trim(), reviewer = String(input.reviewer ?? "").trim(), note = String(input.note ?? "").trim();
   if (!file || !fs.existsSync(file)) return { error: `Family not found: ${file || "(none)"}` };
   if (!reviewer || !note) return { error: "A reviewer and a note are needed" };
-  const family = win.basename(file, ".rfa");
+  const family = win.basename(file).replace(/\.(rfa|rft)$/i, "");
   const staging = expandEnv(config.family_staging_root);
   if (!win.normalize(file).toLowerCase().startsWith(win.normalize(staging).toLowerCase())) return { error: "Only families in staging are released" };
   const logFile = win.join(win.dirname(win.normalize(staging).replace(/\\+$/, "")), "FMC_Release_Log.csv");
@@ -474,7 +475,7 @@ export function paneRelease(command: string, input: Record<string, unknown>, by:
   };
   if (command === "family_sendback") { write("sent back", ""); return { sent_back: family, log: logFile }; }
   let gate: { verdict?: string } = {};
-  try { gate = JSON.parse(fs.readFileSync(file.replace(/\.rfa$/i, ".gate.json"), "utf8")); } catch { return { error: "Run Gate A first: there is no gate result beside the family" }; }
+  try { gate = JSON.parse(fs.readFileSync(file.replace(/\.(rfa|rft)$/i, ".gate.json"), "utf8")); } catch { return { error: "Run Gate A first: there is no gate result beside the family" }; }
   if (gate.verdict !== "Pass") return { error: "Gate A didn't pass: fix what fails and run it again" };
   const to = releasePath(staging, family);
   if (fs.existsSync(to)) return { error: `${to} exists: the Family Librarian archives the released version first` };

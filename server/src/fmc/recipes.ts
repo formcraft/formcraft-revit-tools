@@ -22,6 +22,8 @@ export const SOURCE_STATUS = ["verified", "EA", "assumed", "pending"] as const;
 
 export const RECIPE = z.object({
   schema: z.string().optional().default("fmc-recipe/0.1"),
+  /** family_template (B3): an FMC .rft built from a metric template; default is a family recipe. */
+  kind: z.enum(["family", "family_template"]).optional().default("family"),
   family: z.string().min(1),
   template: z.string().min(1).describe("the family template (.rft) the build starts from"),
   about: z.string().optional().default(""),
@@ -90,6 +92,8 @@ export function typeValues(recipe: Recipe): Map<string, Map<string, number | str
 export const TEMPLATE_DRIVEN: Record<string, Record<string, string[]>> = {
   "metric door.rft": { Left: ["Width"], Right: ["Width"], Head: ["Height"], Exterior: [], Interior: [] },
   "metric window.rft": { Left: ["Width"], Right: ["Width"], Head: ["Height"], Sill: [], Exterior: [], Interior: [] },
+  "fmc_door.rft": { Left: ["Width"], Right: ["Width"], Head: ["Height"], Exterior: [], Interior: [] },
+  "fmc_window.rft": { Left: ["Width"], Right: ["Width"], Head: ["Height"], Sill: [], Exterior: [], Interior: [] },
 };
 const FIXED_PLANES = ["Center (Left/Right)", "Center (Front/Back)", "Ref. Level"];
 
