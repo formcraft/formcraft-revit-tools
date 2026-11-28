@@ -2,6 +2,8 @@ import fs from "node:fs";
 import { DocInfo, GuardConfig, loadConfig } from "./policy.js";
 import { protectedRoots } from "./opencopy.js";
 import { saveBlocked } from "./savepolicy.js";
+import { adminSession, lineBatchRefusal, lineTypeIds, type ResolvedTypes } from "./linecat.js";
+import { startedByFrom } from "./ledger.js";
 import { NEVER, PLACEABLE, USER_LINE, aiVerdict, batchSize, generalState, recordBatch } from "./aiuse.js";
 import { Names, elementNames, explain, namesWanted } from "./explain.js";
 import { approvalFor, claimApproval, enqueue, loadAiConfig, loadRulebook, loadState, logBatch, saveState, setResult, setStatus } from "./aiuse_io.js";
@@ -28,6 +30,22 @@ export async function aiGate(command: string, params: any, active: DocInfo | nul
   const ai = loadAiConfig(cfg, env);
   // Not set up yet (no ai_modeller section): the person sees the plain line, never the lock's wording.
   if (!ai) return { ok: false, reason: "", user: NEVER[command] ? USER_LINE.admin(NEVER[command]) : USER_LINE.off };
+  // create_line_based_element: walls and ducts for everyone, structure for an admin only, anything else refused. Checked before
+  // the rulebook, so a missing rulebook never widens it. The type's own category counts, not only the item's claim.
+  if (command === "create_line_based_element") {
+    const items = (Array.isArray(params?.data) ? params.data : []) as Array<{ category?: unknown; typeId?: unknown }>;
+    const admin = (ai.access === "full" && generalState(ai, active.title, active.path) === "On") || adminSession(null, startedByFrom(env, "ai"));
+    let resolved: ResolvedTypes | undefined;
+    const ids = lineTypeIds(items);
+    if (ids.length) {
+      try {
+        const facts = await send("fmc_type_facts", { ids, _full: true });
+        resolved = new Map(((facts?.types ?? []) as Array<{ id: number; category?: string; found?: boolean }>).map((t) => [t.id, { found: t.found === true, category: String(t.category ?? "") }]));
+      } catch { /* the claimed category still decides */ }
+    }
+    const refusal = lineBatchRefusal(items, admin, resolved);
+    if (refusal) return { ok: false, reason: `AI-assisted modeller: ${refusal.message}`, user: refusal.message };
+  }
   // Read-only code (owner 26 Oct): its transaction is always rolled back, so it needs no approval, only the code switch.
   const dryRun = command === "fmc_model_edit" && params?.dry_run === true;
   // fmc_replace always rolls the group back. It needs the copy's own AI switch (enable_copy), not an approval that would imply a commit.

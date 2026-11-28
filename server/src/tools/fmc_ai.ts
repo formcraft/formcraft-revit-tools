@@ -8,7 +8,8 @@ import { jobMaxMs } from "../utils/SocketClient.js";
 import { GuardConfig, configPath, loadConfig } from "../fmc/policy.js";
 import { imageDir } from "../fmc/images.js";
 import { COMMAND_GROUPS, LEVELS, Level, NEVER, USER_LINE, aiVerdict, generalState, modelParts, projectCode, projectKey } from "../fmc/aiuse.js";
-import { planEnableCopy } from "../fmc/opencopy.js";
+import { planEnableCopy, AI_PROTECTED_CALLER } from "../fmc/opencopy.js";
+import { addCopy, GUARD_FILE_WRITE } from "../fmc/aicopies.js";
 import { formcraftDir, loadAiConfig, loadRulebook, loadState, readItem, readQueue, setResult, setStatus } from "../fmc/aiuse_io.js";
 import { failures, readUsage, summariseUsage } from "../fmc/usage.js";
 import { readSyncAutoLog, syncAutoInEffect } from "../fmc/syncauto.js";
@@ -60,18 +61,20 @@ export const FMC_AI_DESCRIPTION =
     "on, propose a send_code_to_revit batch (the person sees the code before approving); otherwise say which tool is " +
     "missing so it can be built. " +
     "enable_copy turns the General AI switch On for one verification-copy path only. It does not turn on the project " +
-    "switch, so a live model that shares the copy's project code stays Off. protected_roots is required. Stop AI still wins. " +
+    "switch, so a live model that shares the copy's project code stays Off. The copy is recorded in ai_copies.json, never in " +
+    "fmc_guard.json; the protected folders come only from fmc_guard.json protected_roots, so protected_roots and live_paths on a call " +
+    "are refused (FMC-AI-PROTECTED-CALLER). Stop AI still wins. " +
     "status also shows sync_auto_approve: whether a direct sync can run on its own (testing, auto_approve and " +
     "auto_approve_sync), and the recent lines from FMC_SyncAutoApprove.jsonl. " +
     "policy: the effective approve, save and sync policy (batch-end, the managed timer and a direct sync). " +
-    "It does not write fmc_guard.json. When auto_approve_sync is in effect, an AI sync is listed in Approvals as auto-approved (sync). " +
+    "fmc_ai never writes fmc_guard.json (any action). When auto_approve_sync is in effect, an AI sync is listed in Approvals as auto-approved (sync). " +
     "Relinquish of other people's elements is never automatic.";
 
 export const FMC_AI_SHAPE = {
   action: z.enum(["status", "queue", "stop", "usage", "wait", "inbox", "failures", "enable_copy", "policy"]),
   document: z.string().optional().describe("enable_copy: the copy's full .rvt path, or its title when that copy is open"),
-  protected_roots: z.array(z.string()).optional().describe("enable_copy: live original folders, for example D:\\Fomcraft. Required."),
-  live_paths: z.array(z.string()).optional().describe("enable_copy: full paths of the live originals. Refused."),
+  protected_roots: z.array(z.string()).optional().describe("Refused (FMC-AI-PROTECTED-CALLER): protected folders come only from fmc_guard.json, which a person edits by hand."),
+  live_paths: z.array(z.string()).optional().describe("Refused (FMC-AI-PROTECTED-CALLER): protected folders come only from fmc_guard.json."),
   id: z.string().optional().describe("wait: the batch id from the queue message; queue: one batch, in full"),
   status: z.string().optional().describe("queue: pending, approved, used, rejected, done, failed or running"),
   limit: z.number().int().min(1).max(200).optional().describe("queue: how many (default 20, newest first)"),
@@ -168,21 +171,13 @@ export async function enableCopy(args: FmcAiArgs, config: GuardConfig): Promise<
       return { refused: true, reasons: [`Could not resolve the copy in Revit: ${e instanceof Error ? e.message : String(e)}`] };
     }
   }
+  // Protected folders come only from fmc_guard.json and the built-in defaults; a list named on the call is refused.
   const plan = planEnableCopy(file, config, args.protected_roots ?? [], args.live_paths ?? []);
-  if (!plan.ok) return { refused: true, reasons: plan.reasons };
-  const guardFile = configPath();
-  let raw: Record<string, unknown> = {};
-  try { raw = JSON.parse(fs.readFileSync(guardFile, "utf8").replace(/^\uFEFF/, "")); }
-  catch { return { refused: true, reasons: [`Can't read ${guardFile}: the AI switch needs the guard file`] }; }
-  const cur = raw.ai_modeller && typeof raw.ai_modeller === "object" ? raw.ai_modeller as Record<string, unknown> : { on: false, stop: false, levels: {}, projects: {} };
-  const copies = (cur.copies && typeof cur.copies === "object" ? cur.copies : {}) as Record<string, unknown>;
-  copies[plan.path] = { general: true };
-  cur.copies = copies;
-  cur.changed = { at: new Date().toISOString(), what: `General AI switch On for verification copy ${plan.path} only` };
-  raw.ai_modeller = cur;
-  fs.writeFileSync(guardFile, JSON.stringify(raw, null, 2));
+  if (!plan.ok) return { refused: true, ...(plan.code ? { code: plan.code } : {}), reasons: plan.reasons };
+  // The copy is recorded in ai_copies.json. fmc_guard.json is never written here (an AI session can call this action).
+  try { addCopy(plan.path); } catch (e) { return { refused: true, code: GUARD_FILE_WRITE, reasons: [e instanceof Error ? e.message : String(e)] }; }
   return {
-    enabled: true, path: plan.path, project_switch: "unchanged", copies_only: true,
+    enabled: true, path: plan.path, project_switch: "unchanged", copies_only: true, guard_file: "unchanged",
     line: "AI is on for this copy only. The project switch is unchanged, so a live model that shares its project code stays off. Stop AI still wins. modify_model dry_run rolls back; other writes on the copy stay refused.",
   };
 }
@@ -190,6 +185,9 @@ export async function enableCopy(args: FmcAiArgs, config: GuardConfig): Promise<
 export async function runFmcAi(args: FmcAiArgs) {
   const { config } = loadConfig();
   try {
+    // Any action: a protected-folder list named on the call is refused, never merged or remembered.
+    if ((args.protected_roots ?? []).some((x) => x.trim()) || (args.live_paths ?? []).some((x) => x.trim()))
+      return reply({ refused: true, code: AI_PROTECTED_CALLER, reasons: [`[${AI_PROTECTED_CALLER}] fmc_ai does not take protected_roots or live_paths from the caller: the protected folders come only from fmc_guard.json protected_roots (set by hand, outside an AI session) and the built-in defaults.`] }, true);
     if (args.action === "stop") {
       fs.mkdirSync(formcraftDir(), { recursive: true });
       fs.writeFileSync(win.join(formcraftDir(), "ai_stop"), new Date().toISOString());

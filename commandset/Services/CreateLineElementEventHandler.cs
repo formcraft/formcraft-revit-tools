@@ -20,6 +20,8 @@ namespace RevitMCPCommandSet.Services
         /// 创建数据（传入数据）
         /// </summary>
         public List<LineElement> CreatedInfo { get; private set; }
+        /// <summary>Set by the command from the server's _category_admin: structure may be made only by an admin session.</summary>
+        public bool CategoryAdmin { get; set; }
         /// <summary>
         /// 执行结果（传出数据）
         /// </summary>
@@ -47,6 +49,15 @@ namespace RevitMCPCommandSet.Services
             {
                 var elementIds = new List<long>();
                 _warnings.Clear();
+                // Before anything is made: the category each item will really be built as. A typeId wins over the category
+                // string (a beam type under category OST_Walls is a beam), so the type's own category is checked too.
+                foreach (var data in CreatedInfo)
+                {
+                    string refused = FmcLineCategory.Refusal(data.Category, CategoryAdmin);
+                    if (refused == null && data.TypeId != -1 && data.TypeId != 0 && doc.GetElement(new ElementId(data.TypeId)) is ElementType typeOf && typeOf.Category != null)
+                        refused = FmcLineCategory.Refusal(((BuiltInCategory)typeOf.Category.Id.GetIntValue()).ToString(), CategoryAdmin);
+                    if (refused != null) throw new InvalidOperationException(refused);
+                }
                 foreach (var data in CreatedInfo)
                 {
                     long requestedTypeId = data.TypeId;
@@ -253,7 +264,8 @@ namespace RevitMCPCommandSet.Services
                 Result = new AIResult<List<long>>
                 {
                     Success = false,
-                    Message = $"[FMC-TOOL-FAILED] Creating line-based elements failed: {ex.Message}",
+                    // a category refusal keeps its code first; nothing was made
+                    Message = ex.Message.StartsWith("[FMC-LINE-CATEGORY-") ? ex.Message : $"[FMC-TOOL-FAILED] Creating line-based elements failed: {ex.Message}",
                 };
                 RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Error", $"Creating line-based elements failed: {ex.Message}");
             }

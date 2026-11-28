@@ -1,3 +1,5 @@
+import { readCopies } from "./aicopies.js";
+import { guardProtectedRoots, underAny } from "./opencopy.js";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -31,7 +33,13 @@ export function loadRulebook(cfg: GuardConfig): { book: AiRulebook | null; file:
 
 /** The ai_modeller section of fmc_guard.json, with Stop AI from the pane's switch file too. */
 export function loadAiConfig(cfg: GuardConfig, env: NodeJS.ProcessEnv = process.env): AiModellerConfig | null {
-  const ai = parseConfig((cfg as unknown as { ai_modeller?: unknown }).ai_modeller);
+  // The copies enable_copy turned On are in ai_copies.json (never in the guard file); a copy under a protected root is dropped.
+  const section = (cfg as unknown as { ai_modeller?: unknown }).ai_modeller;
+  const own = readCopies(env);
+  const protectedRoots = guardProtectedRoots(cfg);
+  const copies = Object.fromEntries(Object.entries(own).filter(([p]) => !underAny(p, protectedRoots)));
+  const base = section && typeof section === "object" ? section as Record<string, unknown> : {};
+  const ai = parseConfig(Object.keys(copies).length ? { ...base, copies: { ...((base.copies ?? {}) as object), ...copies } } : section);
   if (ai && fs.existsSync(win.join(formcraftDir(env), "ai_stop"))) ai.stop = true;
   return ai;
 }

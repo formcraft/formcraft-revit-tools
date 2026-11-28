@@ -78,9 +78,9 @@ test("enable_copy is path scoped and does not turn the switch on for the live mo
   const missing = planEnableCopy(copy, { ...DEFAULT_CONFIG, protected_roots: [] }, [], []);
   assert.equal(missing.ok, false);
   assert.match(missing.reasons.join(" "), /protected_roots/);
-  const refused = planEnableCopy(live, cfg, [], [live]);
+  const refused = planEnableCopy(live, cfg, [], []);
   assert.equal(refused.ok, false);
-  const allowed = planEnableCopy(copy, cfg, [], [live, arch]);
+  const allowed = planEnableCopy(copy, cfg, [], []);
   assert.equal(allowed.ok, true, allowed.reasons.join(" | "));
 
   const ai = parseConfig({ on: false, copies: { [allowed.path]: { general: true } }, projects: {} });

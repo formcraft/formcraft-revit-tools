@@ -205,22 +205,45 @@ export function writeGuard(doc: (DocInfo & { isLocal?: boolean | null }) | null 
   return { ok: reasons.length === 0, reasons: [...new Set(reasons)] };
 }
 
-/** The General AI switch for one copy path. Refuses a protected or live path, and never sets the project-wide switch. */
-export function planEnableCopy(file: string, cfg: GuardConfig, extraProtected: string[] = [], livePaths: string[] = []): { ok: boolean; reasons: string[]; path: string } {
+export const AI_PROTECTED_CALLER = "FMC-AI-PROTECTED-CALLER";
+export const AI_PROTECTED_NONE = "FMC-AI-PROTECTED-NONE";
+
+/**
+ * The protected folders enable_copy checks against: fmc_guard.json protected_roots and the built-in defaults, nothing a
+ * call names. A caller's list is how an AI session could satisfy "name protected_roots" with a folder that protects
+ * nothing, so for enable_copy a caller-supplied list is refused, not merged (Emlyn 28 Nov 2026).
+ */
+export const BUILTIN_PROTECTED_ROOTS: readonly string[] = [];
+export function guardProtectedRoots(cfg: GuardConfig): string[] {
+  return [...(Array.isArray(cfg.protected_roots) ? cfg.protected_roots.filter((r) => typeof r === "string" && r.trim()) : []), ...BUILTIN_PROTECTED_ROOTS];
+}
+
+/**
+ * The General AI switch for one copy path. Refuses a protected or live path, and never sets the project-wide switch.
+ * Protected folders come only from fmc_guard.json (and the built-in defaults): a caller-supplied protected_roots or
+ * live_paths is refused with FMC-AI-PROTECTED-CALLER, and a guard with no protected_roots with FMC-AI-PROTECTED-NONE.
+ * Nothing a caller names is remembered.
+ */
+export function planEnableCopy(file: string, cfg: GuardConfig, extraProtected: string[] = [], livePaths: string[] = []): { ok: boolean; reasons: string[]; path: string; code?: string } {
   const p = (file ?? "").trim();
-  const prot = protectedRoots(cfg, extraProtected);
-  const copies = copyRoots(cfg);
   const reasons: string[] = [];
+  const named = (a: string[]) => (a ?? []).some((x) => typeof x === "string" && x.trim());
+  if (named(extraProtected) || named(livePaths))
+    return {
+      ok: false, code: AI_PROTECTED_CALLER, path: p ? win.normalize(p) : "",
+      reasons: [`[${AI_PROTECTED_CALLER}] enable_copy does not take protected_roots or live_paths from the caller: the protected folders come only from fmc_guard.json protected_roots (set by hand, outside an AI session) and the built-in defaults. Call enable_copy with the copy's document only.`],
+    };
+  const prot = guardProtectedRoots(cfg);
+  const copies = copyRoots(cfg);
   if (!p) reasons.push("document is required: the copy's full path");
   else {
     if (win.extname(p).toLowerCase() !== ".rvt") reasons.push("document must be the copy's full .rvt path");
     const cloud = cloudModelReason(p);
     if (cloud) reasons.push(cloud);
-    if (!prot.length) reasons.push("name protected_roots (the live originals, for example D:\\Fomcraft) so this switch cannot be turned on for them");
+    if (!prot.length)
+      return { ok: false, code: AI_PROTECTED_NONE, path: win.normalize(p), reasons: [`[${AI_PROTECTED_NONE}] fmc_guard.json has no protected_roots (the live originals, for example D:\\Fomcraft), so enable_copy can't tell a copy from an original. A person adds them to the guard file by hand; AI cannot.`] };
     if (underAny(p, prot)) reasons.push(`Refusing to enable AI on a protected original: ${p}`);
-    if (livePaths.some((x) => samePath(x, p) || isInside(p, x))) reasons.push(`Refusing to enable AI on a live path: ${p}`);
     if (copies.length && !underAny(p, copies)) reasons.push(`The copy is outside copy_roots (${copies.join("; ")}).`);
   }
-  if (reasons.length === 0) rememberProtected(extraProtected);
   return { ok: reasons.length === 0, reasons, path: p ? win.normalize(p) : "" };
 }
