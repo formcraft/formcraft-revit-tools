@@ -146,6 +146,23 @@ draw is refused and a person presses Generate in the pane.
 - Unattended scenario: `tests/revit/16_diagrams.json` (scan, plan, the draw and the sheets as dry runs, Gate D; the draw
   is skipped on a model with nothing to draw).
 
+## Design notes from the F23 research (28 Nov, not built)
+- **One Undo for Generate (F23 rec 2).** Today Generate sends `fmc_diagram draw`, then `fmc_diagram sheets`: two bridge
+  commands, two transaction groups, two Undo steps, and views without sheets when the second is refused (the pane says
+  so). Doing this on the server can't make it atomic: each `sendCommand` is its own Revit transaction. A single Undo needs
+  a new add-in command (say `fmc_diagram_generate`) that runs `FmcDiagramDraw` and `FmcDiagramSheet` inside one
+  `TransactionGroup` and assimilates it. That command name would have to be classified in `server/src/fmc/policy.ts`
+  (`WRITE_COMMANDS`, the live-model lock), the lease rules in `memory.ts`, the fair queue and the AI groups, and the pane
+  would switch to it. That classification is a gate decision for Builder 1, so it is left as a plan item.
+- **Hand-edit protection on redraw (F23 rec 1).** Redraw deletes every element whose `FMC_DiagramSource` key is set
+  (`FmcDiagramDraw.cs`, the `ours` list), so a drawn symbol a person moved or a drawn text they edited is reset; only
+  unkeyed items are kept. No safe minimal fix exists in the add-in alone: telling "edited" from "as drawn" needs a
+  fingerprint (location, rotation, text, type) stored per item at draw time, which means a new field in the
+  extensible-storage schema `a9d9490d-�` (a schema version change Revit can't undo once a model holds it) and a rule for
+  what a redraw does with an edited item (keep it and skip the new one, keep both, or refuse the view). Both need a
+  decision and a Revit check. Until then the Generate dialog says plainly that moved or edited drawn items are reset;
+  the count of edited items (rec 1, second half) needs the fingerprint first.
+
 ## Third-party tools already on the pilot PC
 The ribbon shows the ElectroBIM Single Line and FireBIM Riser add-ins. They may cover SLDs and FP risers today. LD
 reads the same model data, but uses Formcraft's kit, keynotes and QA gates, and covers every discipline from one scan.

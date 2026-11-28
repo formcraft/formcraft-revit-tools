@@ -71,6 +71,81 @@ export function scanChunks(left: Aabb[], right: Aabb[], chunk: number, tolerance
   return { hits, compared, chunks };
 }
 
+/** Which document each sampled id is in: the link title, "cache", or "host" (P-fmc_clash-02). */
+export function idDocs(hits: Array<Partial<ClashHit>>, cap = 100): Array<{ id: number; doc: string }> {
+  const out: Array<{ id: number; doc: string }> = [];
+  const seen = new Set<string>();
+  for (const hit of hits) {
+    for (const [id, link] of [[hit.a, hit.link_a], [hit.b, hit.link_b]] as Array<[number | undefined, string | undefined]>) {
+      if (typeof id !== "number") continue;
+      const doc = link && String(link).trim() ? String(link) : "host";
+      const key = `${doc}|${id}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      if (out.length < cap) out.push({ id, doc });
+    }
+  }
+  return out;
+}
+
+export interface ReportPage {
+  file: string;
+  offset: number;
+  limit: number;
+  total: number;
+  rows: Array<Record<string, unknown>>;
+  bad_lines: number;
+  next_offset: number | null;
+}
+
+/** One page of a JSONL clash report. Lines that are not JSON objects are counted, not returned. */
+export function readReportPage(file: string, offset: number, limit: number): ReportPage {
+  const lines = fs.readFileSync(file, "utf8").replace(/^\uFEFF/, "").split(/\r?\n/).filter((line) => line.trim());
+  const rows: Array<Record<string, unknown>> = [];
+  let bad = 0;
+  const start = Math.max(0, Math.floor(offset));
+  const size = Math.max(1, Math.floor(limit));
+  for (const line of lines.slice(start, start + size)) {
+    try {
+      const row = JSON.parse(line) as unknown;
+      if (row && typeof row === "object" && !Array.isArray(row)) rows.push(row as Record<string, unknown>);
+      else bad += 1;
+    } catch { bad += 1; }
+  }
+  return { file, offset: start, limit: size, total: lines.length, rows, bad_lines: bad, next_offset: start + size < lines.length ? start + size : null };
+}
+
+export type ReportGroup = "element" | "pair" | "status";
+
+/** Counts per element (doc and id), per category pair, or per status, largest first. */
+export function groupReportRows(rows: Array<Record<string, unknown>>, by: ReportGroup): Array<{ key: string; count: number }> {
+  const counts = new Map<string, number>();
+  const add = (key: string) => counts.set(key, (counts.get(key) ?? 0) + 1);
+  for (const row of rows) {
+    if (by === "pair") add(`${row.category_a ?? "?"}|${row.category_b ?? "?"}`);
+    else if (by === "status") add(String(row.status ?? "unknown"));
+    else {
+      add(`${row.link_a ? String(row.link_a) : "host"}:${row.a ?? "?"}`);
+      add(`${row.link_b ? String(row.link_b) : "host"}:${row.b ?? "?"}`);
+    }
+  }
+  return [...counts.entries()].map(([key, count]) => ({ key, count })).sort((x, y) => y.count - x.count || x.key.localeCompare(y.key));
+}
+
+/** The newest clash report (*.jsonl) in a folder, or null. */
+export function latestReport(dir: string): string | null {
+  let names: string[] = [];
+  try { names = fs.readdirSync(dir).filter((name) => /^clash-.*\.jsonl$/i.test(name)); } catch { return null; }
+  let best: { file: string; at: number } | null = null;
+  for (const name of names) {
+    const file = path.join(dir, name);
+    let at = 0;
+    try { at = fs.statSync(file).mtimeMs; } catch { continue; }
+    if (!best || at > best.at || (at === best.at && file > best.file)) best = { file, at };
+  }
+  return best ? best.file : null;
+}
+
 export function summariseHits(hits: ClashHit[], sample: number): { count: number; ids: number[]; capped: boolean; by_pair: Record<string, number> } {
   const ids: number[] = [];
   const seen = new Set<number>();

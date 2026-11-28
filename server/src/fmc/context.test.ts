@@ -5,7 +5,8 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { DEFAULT_CONFIG, GuardConfig } from "./policy.js";
-import { ContextDeps, classify, familyNamesIn, forTask, getItem, kitNoteFor, overview, words } from "./context.js";
+import { CONTEXT_ENGINES, ContextDeps, LIST_CAP, REGISTERED_TOOLS, aiModeOf, classify, clearFolderMemos, engineGate, familyFiles, familyNamesIn, forTask, getItem, kitNoteFor, kitPaths, listNames, nextCalls, overview, search, templateFiles, words } from "./context.js";
+import { contextAction, runFmcContext } from "../tools/fmc_context.js";
 import { FMC_INSTRUCTIONS, NUDGE, annotateResult, installContextNudges, registerContextPrompts, registerContextResources, serverOptions } from "./mcp_context.js";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -165,6 +166,14 @@ test("overview: kit, counts, open documents, the project manifest, AI-use state 
   assert.equal(o.kit.version, "2.2");
   assert.equal(o.kit.revision, "r4");
   assert.equal(o.counts.family_specs, 44);
+  for (const key of ["recipes", "staged_families", "released_families"]) assert.equal(typeof o.count_notes[key], "string", key);
+  assert.equal(typeof o.counts.staged_families, "number", "counts stay plain numbers");
+  // F63 rec 3 and 4: the revision is labelled as the file's, and staged never reads as released.
+  assert.match(o.kit.revision_note, /as written in FMC_Kit\.json \(r4, 2026-10-15\); the counts below are read from the kit folders now/);
+  assert.match(o.count_notes.staged_families, /^staged, NOT released/);
+  assert.match(o.count_notes.released_families, /^released/);
+  assert.match(o.count_notes.recipes, /^build instructions, not families/);
+  assert.match(o.count_notes.families, /^1 staged \(not released\), 1 released; \d+ recipes are build instructions/);
   assert.ok(o.counts.profile_recipes >= 7, "the kit fixture's seven, plus any in the repo's own recipe folders");
   assert.ok(o.counts.recipes > 7, "the repo's door and window recipes too");
   assert.equal(o.counts.design_movements, 4);
@@ -198,6 +207,235 @@ test("get: a spec, a recipe summary, a material, a rulebook and a profile row, e
   assert.equal(p.profile.element, "Skirting");
   assert.equal((getItem("spec:FMC_Nope", deps) as any).found, false);
   for (const x of [s, r, m, b, p]) assert.ok(bytes(x) < 12500);
+});
+
+test("get: a miss is an error at the tool, a hit is not", async () => {
+  const { deps } = kit();
+  const miss = await runFmcContext({ action: "get", ref: "spec:FMC_Nope" }, deps);
+  assert.equal(miss.isError, true);
+  assert.equal(JSON.parse(miss.content[0].text).found, false);
+  const hit = await runFmcContext({ action: "get", ref: "spec:FMC_TAG_A_Door" }, deps);
+  assert.equal(hit.isError, false);
+});
+
+test("action may be left out: ref means get, task means for_task, query means search, none means overview", async () => {
+  assert.equal(contextAction({}), "overview");
+  assert.equal(contextAction({ ref: "spec:X" }), "get");
+  assert.equal(contextAction({ task: "a door" }), "for_task");
+  assert.equal(contextAction({ query: "sill" }), "search");
+  assert.equal(contextAction({ action: "overview", task: "a door" }), "overview", "an explicit action wins");
+  const { deps } = kit();
+  const o = JSON.parse((await runFmcContext({}, deps)).content[0].text);
+  assert.equal(o.kit.found, true);
+  const t = JSON.parse((await runFmcContext({ task: "make a bi-fold aluminium door" }, deps)).content[0].text);
+  assert.ok(t.family_specs.length > 0);
+  const r = await runFmcContext({ action: "search" }, deps);
+  assert.equal(r.isError, true, "search with no query is refused");
+});
+
+test("get list:<kind> names every item of a kind, sorted, with the true count", () => {
+  const { deps } = kit();
+  const specs = getItem("list:spec", deps) as any;
+  assert.equal(specs.kind, "list");
+  assert.equal(specs.count, 44);
+  assert.equal(specs.names.length, 44);
+  assert.deepEqual(specs.names, [...specs.names].sort((a: string, b: string) => a.localeCompare(b)));
+  assert.equal(specs.truncated, false);
+  assert.deepEqual((getItem("list:rulebook", deps) as any).names, ["Families"]);
+  assert.ok((getItem("list:engine", deps) as any).names.includes("clash"));
+  assert.equal((getItem("list:nonsense", deps) as any).found, false);
+  const k = kitPaths(deps.cfg, deps.extraRecipeDirs);
+  assert.ok(LIST_CAP >= 100);
+  assert.equal((listNames("material", k) as any).count, 8);
+});
+
+test("get list:tool reads the registered tools, and says so when none are registered", () => {
+  const { deps } = kit();
+  const k = kitPaths(deps.cfg, deps.extraRecipeDirs);
+  const saved = [...REGISTERED_TOOLS];
+  REGISTERED_TOOLS.clear();
+  try {
+    const none = listNames("tool", k) as any;
+    assert.equal(none.count, 0);
+    assert.match(none.note, /running MCP server/);
+    REGISTERED_TOOLS.add("fmc_clash"); REGISTERED_TOOLS.add("fmc_coord");
+    assert.deepEqual((listNames("tool", k) as any).names, ["fmc_clash", "fmc_coord"]);
+    const o = overview(deps) as any;
+    assert.equal(o.tools.registered, 2);
+    assert.equal(o.tools.not_in_use, 2, "neither is in TOOL_MAP");
+  } finally {
+    REGISTERED_TOOLS.clear();
+    for (const t of saved) REGISTERED_TOOLS.add(t);
+  }
+});
+
+test("search: every word must appear; results per data set, capped, with totals", () => {
+  const { deps } = kit();
+  const r = search("terrazzo", deps) as any;
+  assert.ok(r.results.material.count >= 1);
+  assert.ok(r.results.material.items.some((x: string) => x.startsWith("FMC_Finish_Terrazzo_InSitu")));
+  assert.equal(r.total, Object.values(r.results).reduce((s: number, x: any) => s + x.count, 0));
+  const only = search("terrazzo", deps, ["material"]) as any;
+  assert.deepEqual(Object.keys(only.results), ["material"]);
+  const none = search("zzqqxx nothing", deps) as any;
+  assert.equal(none.total, 0);
+  assert.match(none.next, /don't invent/);
+  const rule = search("library families", deps, ["rule"]) as any;
+  assert.deepEqual(rule.results.rule.items.map((x: string) => x.split(":")[0]), ["Families/FAM-001"]);
+});
+
+test("engines: the MEP and coordination tools route, with ai_mode and a lease note for a real step", () => {
+  for (const [task, id] of [["clash the pipes with the beams", "clash"], ["check the survey point coordination", "coordination"],
+    ["cable tray open ends", "conduit"], ["circuit the sockets", "circuits"], ["pipe sizing calculation", "calc"],
+    ["trace the drainage continuity", "trace"], ["typical eaves detail", "details"], ["headroom under the ducts", "headroom"]] as const) {
+    assert.ok(classify(task).includes(id), `${task} -> ${id}`);
+    assert.ok(CONTEXT_ENGINES.some((e) => e.id === id && e.intent === id), id);
+  }
+  const { deps } = kit();
+  const c = forTask("cable tray open ends", deps) as any;
+  const e = c.engines.find((x: any) => x.id === "conduit");
+  assert.equal(e.ai_mode, "refused", "fmc_conduit_apply is a write in no AI group");
+  assert.match(e.lease, /fmc_batch request/);
+  const clash = (forTask("clash the pipes with the beams", deps) as any).engines.find((x: any) => x.id === "clash");
+  assert.equal(clash.ai_mode, "allowed");
+  assert.equal(clash.lease, undefined);
+  // the older routes are unchanged
+  assert.deepEqual(classify("make a bi-fold aluminium door").sort(), ["door", "family"]);
+});
+
+test("aiModeOf follows the gate's lists: NEVER and group-less writes refused, grouped writes approval, reads allowed", () => {
+  assert.equal(aiModeOf("fmc_coord_apply"), "refused");
+  assert.equal(aiModeOf("send_code_to_revit"), "refused");
+  assert.equal(aiModeOf("create_level"), "approval");
+  assert.equal(aiModeOf("fmc_details_apply"), "refused");
+  assert.equal(aiModeOf("fmc_clash"), "allowed");
+  assert.deepEqual(engineGate({ id: "x", intent: "qa", tool: "t", about: "", calls: [], kit: [] }), { ai_mode: "allowed" });
+  assert.equal(engineGate({ id: "x", intent: "qa", tool: "t", about: "", calls: [], kit: [], writes: ["create_level", "fmc_coord_apply"] }).ai_mode, "refused", "the strictest write wins");
+});
+
+test("next_calls: tool-plus-JSON strings become {tool, args}; other strings are left as strings only", () => {
+  const calls = nextCalls([
+    'fmc_recipe {"action":"check","recipe_file":"C:\\\\k\\\\a.recipe.json"}',
+    'fmc_recipe {"action":"build","dry_run":true} → show the dry run → dry_run=false after a yes',
+    'fmc_conduit {"action":"fix","document":"<doc>","dry_run":true}',
+    'fmc_casework {"action":"units", ...run}',
+    "Write X.recipe.json from the spec",
+  ]);
+  assert.equal(calls.length, 3);
+  assert.deepEqual(calls[0], { tool: "fmc_recipe", args: { action: "check", recipe_file: "C:\\k\\a.recipe.json" } });
+  assert.deepEqual(calls[1].args, { action: "build", dry_run: true });
+  assert.equal(calls[2].placeholders, true);
+  assert.equal(calls[2].real_run?.ai_mode, "refused");
+  const { deps } = kit();
+  const t = forTask("make a bi-fold aluminium door", deps) as any;
+  assert.ok(Array.isArray(t.next));
+  for (const c of t.next_calls ?? []) assert.equal(typeof c.tool, "string");
+});
+
+test("for_task limit sets how many family specs come back", () => {
+  const { deps } = kit();
+  const all = forTask("door", deps) as any;
+  const two = forTask("door", deps, { limit: 2 }) as any;
+  assert.ok(all.family_specs.length > 2);
+  assert.equal(two.family_specs.length, 2);
+  assert.equal((forTask("door", deps, { limit: 99 }) as any).family_specs.length <= 20, true);
+});
+
+test("a rulebook with no QA rules names its top-level keys instead of looking empty", () => {
+  const { root, deps } = kit();
+  fs.writeFileSync(path.join(root, "03_Master_Data", "FMC_Rulebook", "FMC_Rulebook_AIUse.json"), JSON.stringify({ groups: {}, bands: [] }));
+  const b = getItem("rulebook:AIUse", deps) as any;
+  assert.equal(b.count, 0);
+  assert.deepEqual(b.top_level_keys, ["groups", "bands"]);
+  assert.match(b.note, /No QA rules/);
+  assert.equal((getItem("rulebook:Families", deps) as any).top_level_keys, undefined);
+});
+
+test("F63: get rulebook:AIUse shows the AI-use limits (fmc-aiuse schema), never 0 rules", () => {
+  const { root, deps } = kit();
+  const proposal = fs.readFileSync(path.resolve(HERE, "../../../docs/kit-proposals/FMC_Rulebook_AIUse.json"), "utf8");
+  fs.writeFileSync(path.join(root, "03_Master_Data", "FMC_Rulebook", "FMC_Rulebook_AIUse.json"), "\ufeff" + proposal);
+  const b = getItem("rulebook:AIUse", deps) as any;
+  assert.equal(b.kind, "ai-use limits");
+  assert.equal(b.valid, true);
+  assert.ok(b.count > 10, `${b.count} lines`);
+  assert.equal(b.count, b.rules.length);
+  assert.ok(b.rules.includes("limits: batch_elements 50, daily_elements 500, failed_batches_per_day 3"));
+  assert.ok(b.rules.some((l: string) => l.startsWith("band Assist 1-20: data, views")));
+  assert.ok(b.rules.some((l: string) => l.startsWith("override S: max_involvement 5")));
+  assert.ok(b.rules.some((l: string) => l.startsWith("general switch: Fix with approval")));
+  assert.ok(b.rules.includes("cap: none"));
+  // A broken one says so instead of looking empty or valid.
+  fs.writeFileSync(path.join(root, "03_Master_Data", "FMC_Rulebook", "FMC_Rulebook_AIUse.json"), JSON.stringify({ schema: "fmc-aiuse/0.1", bands: [] }));
+  const bad = getItem("rulebook:AIUse", deps) as any;
+  assert.equal(bad.valid, false);
+  assert.ok(bad.problems.length > 0);
+  assert.equal(bad.rules[0], "limits: batch_elements 0, daily_elements 0, failed_batches_per_day 0");
+  // Raw non-numbers are shown as the gate's num() defaults, not the raw text.
+  fs.writeFileSync(path.join(root, "03_Master_Data", "FMC_Rulebook", "FMC_Rulebook_AIUse.json"),
+    JSON.stringify({ schema: "fmc-aiuse/0.1", limits: { batch_elements: "50", daily_elements: null, failed_batches_per_day: 3 }, bands: [] }));
+  const coerced = getItem("rulebook:AIUse", deps) as any;
+  assert.equal(coerced.rules[0], "limits: batch_elements 0, daily_elements 0, failed_batches_per_day 3");
+});
+
+test("F63: overview.ai_use says mode, access, auto-approve and code, read-only", () => {
+  const { deps } = kit();
+  const on = { ...deps, cfg: { ...deps.cfg, ai_modeller: { on: true, mode: "testing", auto_approve: true, access: "full", levels: {} } } as unknown as GuardConfig };
+  const a = (overview(on) as any).ai_use;
+  assert.equal(a.ai_modeller, "on");
+  assert.equal(a.mode, "testing");
+  assert.equal(a.access, "full (configured, effective where General is On)");
+  assert.equal(a.auto_approve, true);
+  assert.equal(a.allow_code, false);
+  assert.match(a.approvals, /^auto-approve: applies only while the AI is on and not stopped/);
+  assert.match(a.approvals, /Relinquish, shared items and a direct sync still wait for a person/);
+  const strict = { ...deps, cfg: { ...deps.cfg, ai_modeller: { on: true, auto_approve: true, levels: {} } } as unknown as GuardConfig };
+  const s = (overview(strict) as any).ai_use;
+  assert.equal(s.mode, "strict");
+  assert.match(s.approvals, /^no auto-approve/, "auto_approve only acts in testing mode (aigate.ts)");
+  assert.match(s.approvals, /Relinquish, shared items and a direct sync still wait for a person/);
+  const stopped = { ...deps, cfg: { ...deps.cfg, ai_modeller: { on: true, stop: true, mode: "testing", auto_approve: true, levels: {} } } as unknown as GuardConfig };
+  assert.match((overview(stopped) as any).ai_use.approvals, /does not apply: the AI is stopped/);
+  const offSwitch = { ...deps, cfg: { ...deps.cfg, ai_modeller: { on: false, mode: "testing", auto_approve: true, levels: {} } } as unknown as GuardConfig };
+  assert.match((overview(offSwitch) as any).ai_use.approvals, /does not apply: the AI is off/);
+  const off = (overview(deps) as any).ai_use;
+  assert.equal(off.auto_approve, undefined, "no ai_modeller section: nothing to report");
+});
+
+test("F63: AI-use limits can be loaded from FMC_Rulebook_ClaudeUse.json when AIUse is missing", () => {
+  const { root, deps } = kit();
+  const proposal = JSON.parse(fs.readFileSync(path.resolve(HERE, "../../../docs/kit-proposals/FMC_Rulebook_AIUse.json"), "utf8"));
+  fs.writeFileSync(path.join(root, "03_Master_Data", "FMC_Rulebook", "FMC_Rulebook_ClaudeUse.json"), JSON.stringify(proposal));
+  const o = (overview(deps) as any).ai_use;
+  assert.match(o.aiuse_rulebook, /FMC_Rulebook_ClaudeUse\.json \(whole file; used because FMC_Rulebook_AIUse.json is not in the kit\)/);
+  const b = getItem("rulebook:ClaudeUse", deps) as any;
+  assert.equal(b.kind, "ai-use limits");
+  assert.equal(b.valid, true);
+  fs.writeFileSync(path.join(root, "03_Master_Data", "FMC_Rulebook", "FMC_Rulebook_ClaudeUse.json"), JSON.stringify({
+    feature: "ClaudeUse", rulebook_version: "0.1",
+    rules: [{ id: "AI-001", title: "A QA rule", severity: "Must", check: { type: "human_gate" } }],
+    ai_use: proposal,
+  }));
+  const mixed = getItem("rulebook:ClaudeUse", deps) as any;
+  assert.equal(mixed.count, 1);
+  assert.equal(mixed.ai_use.kind, "ai-use limits");
+  assert.equal(mixed.ai_use.valid, true);
+  assert.match((overview(deps) as any).ai_use.aiuse_rulebook, /FMC_Rulebook_ClaudeUse\.json \(ai_use;/);
+});
+
+test("family and template listings are kept 10 s, and clearFolderMemos drops them", () => {
+  const { root, deps } = kit();
+  const k = kitPaths(deps.cfg, deps.extraRecipeDirs);
+  clearFolderMemos();
+  assert.equal(familyFiles(k).staged.size, 1);
+  assert.equal(templateFiles(k).length, 1);
+  fs.writeFileSync(path.join(root, "04_Families", "_Staging", "A", "FMC_A_Door_Second.rfa"), "");
+  fs.writeFileSync(path.join(root, "06_Templates", "FMC_Second.rte"), "");
+  assert.equal(familyFiles(k).staged.size, 1, "memo: not listed again within 10 s");
+  assert.equal(templateFiles(k).length, 1);
+  clearFolderMemos();
+  assert.equal(familyFiles(k).staged.size, 2);
+  assert.equal(templateFiles(k).length, 2);
 });
 
 test("nudge: family- and material-making tools start with the line; others don't; results that make a kit family get a pointer", async () => {

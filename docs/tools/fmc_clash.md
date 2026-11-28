@@ -20,7 +20,11 @@ Read-only. Category pairs are walked in chunks. Only element ids are kept for th
 
 A category name that is not a built-in category is `FMC-CLASH-CATEGORY` and that pair is skipped. No pictures.
 
-An empty `pairs` list uses the default set. That set includes the usual walls, floors, structure, pipes, ducts, conduit and cable tray, and also `OST_PlumbingEquipment`, `OST_Site`, `OST_GenericModel` and `OST_SpecialityEquipment`.
+An empty `pairs` list uses the default set. That set includes the usual walls, floors, structure, pipes, ducts, conduit and cable tray, and also `OST_PlumbingEquipment`, `OST_Site`, `OST_GenericModel` and `OST_SpecialityEquipment`. This holds for a scan against a cache too; the reply says `pairs_default: true`.
+
+Report names carry a short document tag and milliseconds (`clash-<doc>-YYYYMMDD-HHMMSS-fff.jsonl`, UTC), with `-2`, `-3` added if a name is still taken, so two scans in the same second no longer share a file. `max_hits_per_pair` stops one pair after that many hits and moves on, and the reply has `pairs_done` of `pairs_total` and `capped_pairs`. `id_docs` gives each sampled id with its document (`host`, a link title, or `cache`). All lengths are millimetres (`units: "mm"`).
+
+`read_report` returns a page of a JSONL report: `report` (default the newest `clash-*.jsonl` in the local clash folder), `offset`, `limit` (up to 500), and optional `group_by` (`element`, `pair` or `status`) counts for that page. Only `.jsonl` files in the local clash folder or the temp folder are read.
 
 Every hit has `status`: `hard`, `cleared_by_opening`, `join`, `hosted` or `clearance`. A wall or floor hit whose overlap sits inside an opening (a door, window, or other hosted void) is `cleared_by_opening`. Elements joined by an MEP connector are `join`. A device whose host is the clashing wall is `hosted`. `centreline: true` tests a pipe, duct, conduit or tray centreline plus its radius or half-width; a box-only touch is `clearance`.
 

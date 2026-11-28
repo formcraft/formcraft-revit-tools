@@ -85,7 +85,11 @@ namespace RevitMCPCommandSet.Services.Fmc
                     var sample = new JArray();
                     string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Formcraft", "clash");
                     Directory.CreateDirectory(folder);
-                    string file = Path.Combine(folder, "clash-" + DateTime.UtcNow.ToString("yyyyMMdd-HHmmss") + ".jsonl");
+                    string file = UniqueReport(folder, "clash-", doc.Title);
+                    int perPair = Math.Max(0, Parameters.Value<int?>("max_hits_per_pair") ?? 0);
+                    var cappedPairs = new JArray();
+                    int pairsTotal = 0;
+                    int pairsDone = 0;
                     using (var writer = new StreamWriter(file, false))
                     {
                         JArray pairTokens = Parameters["pairs"] as JArray ?? new JArray();
@@ -93,8 +97,11 @@ namespace RevitMCPCommandSet.Services.Fmc
                         bool centreline = Parameters.Value<bool?>("centreline") == true;
                         double clearance = (Parameters.Value<double?>("clearance_mm") ?? 0) / FeetToMm;
                         List<OpeningInfo> openings = LoadOpenings(doc);
+                        pairsTotal = pairTokens.OfType<JObject>().Count();
                         foreach (JObject pair in pairTokens.OfType<JObject>())
                         {
+                            int pairCount = 0;
+                            bool Full() => count >= maxHits || (perPair > 0 && pairCount >= perPair);
                             string nameA = pair.Value<string>("a") ?? "";
                             string nameB = pair.Value<string>("b") ?? "";
                             if (!TryCategory(nameA, out BuiltInCategory catA)) { skipped.Add(nameA); continue; }
@@ -163,6 +170,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                                                 if (exactHit == false) continue;
                                             }
                                             count++;
+                                            pairCount++;
                                             string key = nameA + "|" + nameB;
                                             byPair[key] = byPair.TryGetValue(key, out int have) ? have + 1 : 1;
                                             string status = Mark(a, b, nameA, nameB, centreline, clearance, openings, out long openingId);
@@ -174,20 +182,22 @@ namespace RevitMCPCommandSet.Services.Fmc
                                             };
                                             writer.WriteLine(line.ToString(Newtonsoft.Json.Formatting.None));
                                             if (sample.Count < 40) sample.Add(line);
-                                            if (count >= maxHits) break;
+                                            if (Full()) break;
                                         }
-                                        if (count >= maxHits) break;
+                                        if (Full()) break;
                                     }
                                     bChunk.Clear();
-                                    if (count >= maxHits) break;
+                                    if (Full()) break;
                                 }
                                 aChunk.Clear();
                                 peak = Math.Max(peak, WorkingSet());
-                                if (count >= maxHits) break;
+                                if (Full()) break;
                             }
                             left.Clear();
                             right.Clear();
                             peak = Math.Max(peak, WorkingSet());
+                            pairsDone++;
+                            if (perPair > 0 && pairCount >= perPair) cappedPairs.Add(nameA + "|" + nameB);
                             if (count >= maxHits) break;
                         }
                         writer.Flush();
@@ -201,6 +211,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                     Result["compared"] = compared;
                     Result["chunks"] = chunks;
                     Result["truncated"] = count >= maxHits;
+                    Result["pairs_total"] = pairsTotal;
+                    Result["pairs_done"] = pairsDone;
+                    Result["max_hits_per_pair"] = perPair;
+                    Result["capped_pairs"] = cappedPairs;
                     Result["by_pair"] = pairs;
                     Result["sample"] = sample;
                     Result["report"] = file;
@@ -658,8 +672,10 @@ namespace RevitMCPCommandSet.Services.Fmc
             int count = 0;
             int chunks = 0;
             var sample = new JArray();
-            string report = Path.Combine(Path.GetDirectoryName(CacheDir()) ?? CacheDir(), "clash-cache-" + DateTime.UtcNow.ToString("yyyyMMdd-HHmmss") + ".jsonl");
-            if (OnD(report)) report = Path.Combine(Path.GetTempPath(), "fmc-clash-" + DateTime.UtcNow.ToString("yyyyMMdd-HHmmss") + ".jsonl");
+            string reportDir = Path.GetDirectoryName(CacheDir()) ?? CacheDir();
+            if (OnD(reportDir)) reportDir = Path.GetTempPath();
+            Directory.CreateDirectory(reportDir);
+            string report = UniqueReport(reportDir, "clash-cache-", doc.Title);
             using (var writer = new StreamWriter(report, false))
             {
                 foreach (JObject pair in (Parameters["pairs"] as JArray ?? new JArray()).OfType<JObject>())
@@ -730,6 +746,17 @@ namespace RevitMCPCommandSet.Services.Fmc
         }
 
         private static bool OnD(string file) => !string.IsNullOrWhiteSpace(file) && file.Trim().StartsWith("D:", StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>A report name that two scans in the same second cannot share: a short document tag, milliseconds, then -2, -3 if still taken.</summary>
+        private static string UniqueReport(string folder, string prefix, string title)
+        {
+            string tag = Safe(title ?? "").Replace(' ', '_');
+            if (tag.Length > 24) tag = tag.Substring(0, 24);
+            string stem = prefix + (tag.Length > 0 ? tag + "-" : "") + DateTime.UtcNow.ToString("yyyyMMdd-HHmmss-fff");
+            string file = Path.Combine(folder, stem + ".jsonl");
+            for (int n = 2; File.Exists(file); n++) file = Path.Combine(folder, stem + "-" + n + ".jsonl");
+            return file;
+        }
 
         private static string Safe(string title)
         {

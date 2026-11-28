@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { boxesOverlap, cacheStatus, linkMatches, modelRole, readCacheLines, resolveLinkRequest, scanChunks, summariseHits, transformAabb, transformPoint, writeClashCache, type Aabb, type CacheHeader } from "./clashscan.js";
+import { boxesOverlap, cacheStatus, groupReportRows, idDocs, latestReport, linkMatches, modelRole, readCacheLines, readReportPage, resolveLinkRequest, scanChunks, summariseHits, transformAabb, transformPoint, writeClashCache, type Aabb, type CacheHeader } from "./clashscan.js";
 import { DEFAULT_CLASH_CATEGORIES, centrelineHitsBox, classifyHit, defaultClashPairs, importLegacy, sleevesNear } from "./clashfilter.js";
 import { runFmcClash } from "../tools/fmc_clash.js";
 
@@ -148,4 +148,95 @@ test("a legacy millimetre export becomes a cache without scaling", () => {
   assert.equal(imported.elements[1].category, "opening");
   assert.equal(imported.elements[1].host_id, 4);
   assert.equal(imported.header.doc_title, "F26901-FMC-ZZ-ZZ-M3-S-0001");
+});
+
+test("clash: id_docs names the document of each id, and reports page and group", async () => {
+  const docs = idDocs([
+    { a: 315010, b: 722769, link_a: "architectural" },
+    { a: 315010, b: 722770, link_a: "architectural" },
+    { a: 5, b: 9, link_b: "cache" },
+  ]);
+  assert.deepEqual(docs, [
+    { id: 315010, doc: "architectural" }, { id: 722769, doc: "host" }, { id: 722770, doc: "host" },
+    { id: 5, doc: "host" }, { id: 9, doc: "cache" },
+  ]);
+  assert.equal(idDocs([{ a: 1, b: 2 }, { a: 3, b: 4 }], 3).length, 3);
+
+  const local = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-clash-rr-"));
+  const env = { LOCALAPPDATA: local } as NodeJS.ProcessEnv;
+  const dir = path.join(local, "Formcraft", "clash");
+  fs.mkdirSync(dir, { recursive: true });
+  const rows = [
+    { a: 1, b: 10, category_a: "OST_Walls", category_b: "OST_PipeCurves", link_a: "architectural", status: "hard" },
+    { a: 1, b: 11, category_a: "OST_Walls", category_b: "OST_PipeCurves", link_a: "architectural", status: "hard" },
+    { a: 2, b: 12, category_a: "OST_Floors", category_b: "OST_PipeCurves", status: "hosted" },
+  ];
+  const older = path.join(dir, "clash-A-20261128-062051-000.jsonl");
+  fs.writeFileSync(older, "{}\n");
+  fs.utimesSync(older, new Date(2026, 0, 1), new Date(2026, 0, 1));
+  const file = path.join(dir, "clash-B-20261128-062052-123.jsonl");
+  fs.writeFileSync(file, rows.map((row) => JSON.stringify(row)).join("\n") + "\nnot json\n");
+  assert.equal(latestReport(dir), file);
+
+  const page = readReportPage(file, 2, 2);
+  assert.equal(page.total, 4);
+  assert.equal(page.rows.length, 1);
+  assert.equal(page.bad_lines, 1);
+  assert.equal(page.next_offset, null);
+  assert.deepEqual(groupReportRows(rows, "pair"), [{ key: "OST_Walls|OST_PipeCurves", count: 2 }, { key: "OST_Floors|OST_PipeCurves", count: 1 }]);
+  assert.deepEqual(groupReportRows(rows, "status")[0], { key: "hard", count: 2 });
+  assert.deepEqual(groupReportRows(rows, "element")[0], { key: "architectural:1", count: 2 });
+
+  const base = {
+    document: "", pairs: [], categories: [], link: "", source: "", meshes: false, mesh_cap: 24,
+    centreline: false, clearance_mm: 0, radius_mm: 300, chunk: 250, tolerance_mm: 0, exact: false, include_links: true, max_hits: 100, sample_limit: 10,
+  };
+  const read = JSON.parse((await runFmcClash({ ...base, action: "read_report", limit: 2, group_by: "status" }, { env })).content[0].text);
+  assert.equal(read.file, file);
+  assert.equal(read.rows.length, 2);
+  assert.equal(read.next_offset, 2);
+  assert.equal(read.units, "mm");
+  assert.deepEqual(read.groups, [{ key: "hard", count: 2 }]);
+  const outside = await runFmcClash({ ...base, action: "read_report", report: path.resolve("/not-a-clash-root/elsewhere.jsonl") }, { env });
+  assert.equal(outside.isError, true);
+  assert.match(outside.content[0].text, /FMC-CLASH-PATH/);
+  const notJsonl = await runFmcClash({ ...base, action: "read_report", report: path.join(dir, "clash-x.json") }, { env });
+  assert.match(notJsonl.content[0].text, /FMC-CLASH-PATH/);
+  const dDrive = await runFmcClash({ ...base, action: "read_report", report: "D:\\x\\clash.jsonl" }, { env });
+  assert.match(dDrive.content[0].text, /FMC-CLASH-PATH/);
+  const empty = await runFmcClash({ ...base, action: "read_report" }, { env: { LOCALAPPDATA: path.join(local, "none") } as NodeJS.ProcessEnv });
+  assert.match(empty.content[0].text, /FMC-CLASH-REPORT/);
+});
+
+test("clash: a cache scan with no pairs uses the defaults; scans say units mm and pass max_hits_per_pair", async () => {
+  const local = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-clash-cp-"));
+  const env = { LOCALAPPDATA: local } as NodeJS.ProcessEnv;
+  const header: CacheHeader = { kind: "fmc_clash_cache", doc_title: "S-0001", path: "", saved_at: "2026-11-28T06:00:00Z", written_at: "2026-11-28T06:00:00Z", categories: ["OST_Walls"], mesh_cap: 0 };
+  const cache = writeClashCache(path.join(local, "cache"), header, [{ id: 9, unique_id: "u-9", category: "OST_Walls", min: [0, 0, 0], max: [1, 1, 1] }]);
+  const bodies: Array<Record<string, unknown>> = [];
+  const read = async (body: Record<string, unknown>) => {
+    bodies.push(body);
+    return { count: 1, sample: [{ a: 1, b: 9, category_a: "OST_PipeCurves", category_b: "OST_Walls", link_b: "cache", overlap: true }], report: "C:\\Temp\\clash-cache-x.jsonl",
+      pairs_total: 3, pairs_done: 3, capped_pairs: ["OST_Walls|OST_PipeCurves"] };
+  };
+  const base = {
+    action: "scan" as const, document: "P-0001", pairs: [], categories: [], link: "", source: "", meshes: false, mesh_cap: 24,
+    centreline: false, clearance_mm: 0, radius_mm: 300, chunk: 250, tolerance_mm: 0, exact: false, include_links: true, max_hits: 100, sample_limit: 10,
+  };
+  const viaCache = await runFmcClash({ ...base, source: `cache:${cache}` }, { read, env });
+  assert.equal(viaCache.isError, false);
+  const cb = JSON.parse(viaCache.content[0].text);
+  assert.equal(cb.pairs_default, true);
+  assert.equal(cb.units, "mm");
+  assert.deepEqual(bodies[0].pairs, defaultClashPairs());
+  assert.deepEqual(cb.id_docs, [{ id: 1, doc: "host" }, { id: 9, doc: "cache" }]);
+
+  const live = JSON.parse((await runFmcClash({ ...base, max_hits_per_pair: 5, pairs: [{ a: "OST_Walls", b: "OST_PipeCurves" }] }, { read, env })).content[0].text);
+  assert.equal(bodies[1].max_hits_per_pair, 5);
+  assert.equal(live.pairs_default, false);
+  assert.equal(live.units, "mm");
+  assert.equal(live.pairs_total, 3);
+  assert.deepEqual(live.capped_pairs, ["OST_Walls|OST_PipeCurves"]);
+  await runFmcClash({ ...base }, { read, env });
+  assert.equal("max_hits_per_pair" in bodies[2], false);
 });

@@ -2,11 +2,13 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import {
-  cacheStatus, findCacheByTitle, onDriveD, readCacheHeader, refuseCacheWrite, summariseHits, writeClashCache,
+  cacheStatus, findCacheByTitle, groupReportRows, idDocs, latestReport, onDriveD, readCacheHeader, readReportPage, refuseCacheWrite, summariseHits, writeClashCache,
   type CacheElement, type CacheHeader, type ClashHit,
 } from "../fmc/clashscan.js";
 import { DEFAULT_CLASH_CATEGORIES, defaultClashPairs, importLegacy, type LegacyExport } from "../fmc/clashfilter.js";
 import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
 import { reportHostDir, writeReport } from "../fmc/localreport.js";
 
 function reply(body: object, isError = false) {
@@ -21,7 +23,12 @@ export const FMC_CLASH_DESCRIPTION =
   "It does not save the source model and it does not write on D:. " +
   "source cache:<file or doc title> scans the open host against that cache and reports the cache age. " +
   "source import:<file> reads the clash-bot JSON (doc, captured_at, elements[].bbox_mm, openings[].bbox_mm). Those coordinates are millimetres and are not scaled. Live Revit boxes are internal feet converted by 304.8. " +
-  "An empty pairs list uses the default set, which includes OST_PlumbingEquipment, OST_Site, OST_GenericModel and OST_SpecialityEquipment. " +
+  "An empty pairs list uses the default set, which includes OST_PlumbingEquipment, OST_Site, OST_GenericModel and OST_SpecialityEquipment, " +
+  "for a live scan and for a cache scan alike (the reply says pairs_default true). " +
+  "max_hits_per_pair stops one pair after that many hits and goes on to the next, so one busy pair does not hide the rest; " +
+  "the reply has pairs_done of pairs_total and capped_pairs. Every length in a reply is millimetres (units mm). " +
+  "id_docs says which document each id is in: host, a link title, or cache. " +
+  "read_report returns a page of a JSONL report (report, default the newest; offset; limit up to 500) and group_by element, pair or status counts for that page. " +
   "Each hit has status hard, cleared_by_opening, join, hosted or clearance. centreline tests a pipe, duct, conduit or tray centreline plus radius instead of the full box. " +
   "sleeves lists openings and sleeve families near a hit or a point. " +
   "STALE when the source file's modified time is newer than the cache. " +
@@ -36,9 +43,9 @@ const pair = z.object({
 });
 
 const shape = {
-  action: z.enum(["scan", "export_cache", "sleeves"]).optional().default("scan"),
+  action: z.enum(["scan", "export_cache", "sleeves", "read_report"]).optional().default("scan"),
   document: z.string().optional().default(""),
-  pairs: z.array(pair).optional().default([]).describe("Category names, for example OST_Walls and OST_DuctCurves. Required for scan."),
+  pairs: z.array(pair).optional().default([]).describe("Category names, for example OST_Walls and OST_DuctCurves. Empty uses the default pairs, live or against a cache."),
   categories: z.array(z.string()).optional().default([]).describe("export_cache: categories to store. Empty uses the pairs."),
   link: z.string().optional().default("").describe("Link instance to use as the other model, for example S. The source model does not have to be open."),
   source: z.string().optional().default("").describe("cache:<file or title>, or import:<legacy json file>."),
@@ -56,6 +63,11 @@ const shape = {
   include_links: z.boolean().optional().default(true),
   max_hits: z.number().int().min(1).max(50000).optional().default(5000),
   sample_limit: z.number().int().min(1).max(100).optional().default(40),
+  max_hits_per_pair: z.number().int().min(0).max(50000).optional().describe("scan: stop a pair after this many hits and go on to the next. 0 or absent: no per-pair stop."),
+  report: z.string().optional().describe("read_report: a clash JSONL file. Default: the newest in the local clash folder."),
+  offset: z.number().int().min(0).optional().describe("read_report: first line, from 0"),
+  limit: z.number().int().min(1).max(500).optional().describe("read_report: lines per page, default 100"),
+  group_by: z.enum(["element", "pair", "status"]).optional().describe("read_report: also count the page by element, pair or status"),
 };
 
 export type FmcClashArgs = z.infer<z.ZodObject<typeof shape>>;
@@ -86,6 +98,7 @@ function resolveCache(source: string, env?: NodeJS.ProcessEnv): { file: string }
 export async function runFmcClash(args: FmcClashArgs, io: ClashIo = {}) {
   if (args.action === "export_cache") return exportCache(args, io);
   if (args.action === "sleeves") return sleeves(args, io);
+  if (args.action === "read_report") return readReport(args, io);
   if (args.source.trim().toLowerCase().startsWith("import:")) return importSource(args, io);
   if (args.source.trim()) return scanCache(args, io);
   const pairs = args.pairs.length ? args.pairs : defaultClashPairs();
@@ -93,6 +106,7 @@ export async function runFmcClash(args: FmcClashArgs, io: ClashIo = {}) {
     mode: "scan", document: args.document, pairs, chunk: args.chunk, tolerance_mm: args.tolerance_mm,
     exact: args.exact, include_links: args.include_links, max_hits: args.max_hits, link: args.link,
     centreline: args.centreline, clearance_mm: args.clearance_mm,
+    ...(args.max_hits_per_pair ? { max_hits_per_pair: args.max_hits_per_pair } : {}),
   };
   let result: Record<string, unknown>;
   try {
@@ -105,11 +119,14 @@ export async function runFmcClash(args: FmcClashArgs, io: ClashIo = {}) {
   const report = typeof result.report === "string" && result.report ? result.report : writeReport("clash", "scan", result, io.env);
   const peak = typeof result.peak_working_set_mb === "number" ? result.peak_working_set_mb : null;
   return reply({
-    tool: "fmc_clash", read_only: true, applied: false,
+    tool: "fmc_clash", read_only: true, applied: false, units: "mm",
     document: result.resolved_document ?? result.document ?? { title: args.document, path: "" },
     hits: result.count ?? summary.count,
     by_pair: result.by_pair ?? summary.by_pair,
+    pairs_default: args.pairs.length === 0,
+    ...(typeof result.pairs_total === "number" ? { pairs_total: result.pairs_total, pairs_done: result.pairs_done ?? null, capped_pairs: result.capped_pairs ?? [] } : {}),
     ids: result.ids ?? summary,
+    id_docs: idDocs(hits, args.sample_limit * 2),
     chunks: result.chunks ?? null,
     compared: result.compared ?? null,
     exact: args.exact,
@@ -212,11 +229,10 @@ async function scanCache(args: FmcClashArgs, io: ClashIo) {
     } catch { sourceMtime = null; }
   }
   const status = cacheStatus(header, Date.now(), header.path ? sourceMtime : null);
-  if (!args.pairs.length) {
-    return reply({ tool: "fmc_clash", read_only: true, code: "FMC-CLASH-CATEGORY", message: "A cache scan needs category pairs. The host is read in Revit. The cache is the other side.", cache: status }, true);
-  }
+  const pairsDefault = !args.pairs.length;
+  const pairs = pairsDefault ? defaultClashPairs() : args.pairs;
   const body = {
-    mode: "scan", document: args.document, pairs: args.pairs, chunk: args.chunk, tolerance_mm: args.tolerance_mm,
+    mode: "scan", document: args.document, pairs, chunk: args.chunk, tolerance_mm: args.tolerance_mm,
     exact: false, include_links: false, max_hits: args.max_hits, source: `cache:${resolved.file}`,
   };
   let result: Record<string, unknown>;
@@ -226,11 +242,43 @@ async function scanCache(args: FmcClashArgs, io: ClashIo) {
     return reply({ tool: "fmc_clash", read_only: true, error: error instanceof Error ? error.message : String(error), cache: status }, true);
   }
   return reply({
-    tool: "fmc_clash", read_only: true, applied: false, source: `cache:${resolved.file}`,
+    tool: "fmc_clash", read_only: true, applied: false, units: "mm", source: `cache:${resolved.file}`,
     cache: { file: resolved.file, doc_title: header.doc_title, age_ms: status.age_ms, stale: status.stale, warning: status.warning, saved_at: header.saved_at },
-    hits: result.count ?? 0, by_pair: result.by_pair ?? {}, report: result.report ?? null,
+    hits: result.count ?? 0, by_pair: result.by_pair ?? {}, report: result.report ?? null, pairs_default: pairsDefault,
+    id_docs: idDocs(Array.isArray(result.sample) ? result.sample as ClashHit[] : [], args.sample_limit * 2),
     peak_working_set_mb: result.peak_working_set_mb ?? null,
     document: result.resolved_document ?? { title: args.document, path: "" },
+  });
+}
+
+/** Folders read_report may read: the local clash folder (and its cache folder) and the temp folder the add-in falls back to. */
+export function reportRoots(env?: NodeJS.ProcessEnv): string[] {
+  return [reportHostDir("clash", env), os.tmpdir()];
+}
+
+function inside(file: string, root: string): boolean {
+  const norm = (value: string) => path.resolve(value).replace(/[\\/]+$/, "").toLowerCase();
+  const f = norm(file);
+  const r = norm(root);
+  return f === r || f.startsWith(r + path.sep) || f.startsWith(r + "\\") || f.startsWith(r + "/");
+}
+
+async function readReport(args: FmcClashArgs, io: ClashIo) {
+  const dir = reportHostDir("clash", io.env);
+  const asked = (args.report ?? "").trim();
+  const file = asked || latestReport(dir) || "";
+  if (!file) return reply({ tool: "fmc_clash", read_only: true, code: "FMC-CLASH-REPORT", message: `No clash report under ${dir}. Run scan first.` }, true);
+  if (onDriveD(file)) return reply({ tool: "fmc_clash", read_only: true, code: "FMC-CLASH-PATH", message: "Reports are not read from D:." }, true);
+  if (!/\.jsonl$/i.test(file) || !reportRoots(io.env).some((root) => inside(file, root))) {
+    return reply({ tool: "fmc_clash", read_only: true, code: "FMC-CLASH-PATH", message: "read_report reads only .jsonl clash reports in the local clash folder or the temp folder." }, true);
+  }
+  let page;
+  try { page = readReportPage(file, args.offset ?? 0, args.limit ?? 100); }
+  catch (error) { return reply({ tool: "fmc_clash", read_only: true, code: "FMC-CLASH-REPORT", message: error instanceof Error ? error.message : String(error) }, true); }
+  return reply({
+    tool: "fmc_clash", read_only: true, applied: false, action: "read_report", units: "mm",
+    ...page,
+    ...(args.group_by ? { group_by: args.group_by, groups: groupReportRows(page.rows, args.group_by) } : {}),
   });
 }
 

@@ -6,8 +6,8 @@ import { saveBlocked } from "../fmc/savepolicy.js";
 import { configPath, loadConfig, type GuardConfig } from "../fmc/policy.js";
 import { protectedRoots } from "../fmc/opencopy.js";
 import {
-  DETAIL_CAP, detailsFolder, isKitOriginal, loadCatalogue, planDetails, readBatchFile, referenceProblems,
-  writeDetailsReport, type DetailRequest,
+  DETAIL_CAP, appliedSummary, catalogueOk, detailsFolder, filterDetails, isKitOriginal, loadCatalogue, planDetails, readBatchFile,
+  referenceProblems, writeDetailsReport, writeOrReuseDetailsReport, type DetailRequest,
 } from "../fmc/detailcat.js";
 
 function reply(body: object, isError = false) {
@@ -16,10 +16,12 @@ function reply(body: object, isError = false) {
 
 export const FMC_DETAILS_DESCRIPTION =
   "Formcraft typical details from the kit. list reads the kit Details folder (.rvt and .rfa) and FMC_Details.json. " +
-  "It does not invent a detail. A missing folder is FMC-DETAILS-CATALOGUE, a kit change. " +
+  "It does not invent a detail. A missing folder is FMC-DETAILS-CATALOGUE, a kit change: catalogue_ok is then false, and an empty list is an error. " +
+  "list takes kind (drafting or family) and query (words in the id or name). Its report file is written only when the list changed (report_reused). " +
   "place copies one detail, or a list, into the named project: a new drafting view, then CopyElements of detail components, lines, text and filled regions from the kit source, " +
   "or a detail-item family placed in that view. The source opens in the background and is closed without saving. The kit file is not edited. " +
-  "view_name names the drafting view. sheet places the view when the sheet exists. " +
+  "view_name names the drafting view. sheet places the view when the sheet exists. source_view picks the drafting view to copy from in a source with several. " +
+  "A real place returns status per detail (created, reused, skipped) and created_ids (the new drafting views). " +
   "detail_ids or details or batch_file (a JSON file of detail ids) places more than one. A batch file runs without an AI composing each id. At most 50. " +
   "dry_run defaults to true. A real place is fmc_details_apply, one transaction, one subtransaction per detail, and needs batch_lease plus references.kit, references.standards and references.rulebook. " +
   "Pass document on place. A missing name is FMC-DOC-REQUIRED. The active document is not a guess. " +
@@ -36,10 +38,14 @@ const detailRow = z.object({
   detail_id: z.string(),
   view_name: z.string().optional().default(""),
   sheet: z.string().optional().default(""),
+  source_view: z.string().optional().default(""),
 });
 
 export const FMC_DETAILS_SHAPE = {
   action: z.enum(["list", "place"]),
+  kind: z.enum(["drafting", "family"]).optional().describe("list: only this kind"),
+  query: z.string().optional().default("").describe("list: words that must all appear in the detail id or name"),
+  source_view: z.string().optional().default("").describe("place: the drafting view to copy from, in a source with several (overrides the catalogue's view)"),
   document: z.string().optional().default("").describe("Title or full path of the open project. Required for place."),
   detail_id: z.string().optional().default(""),
   detail_ids: z.array(z.string()).optional().default([]),
@@ -91,13 +97,14 @@ function stamp(extra: Record<string, unknown> = {}) {
 
 function requestsOf(args: FmcDetailsArgs): { requests: DetailRequest[]; error: string } {
   const requests: DetailRequest[] = [];
-  if (args.detail_id.trim()) requests.push({ detail_id: args.detail_id.trim(), view_name: args.view_name, sheet: args.sheet });
-  for (const id of args.detail_ids) if (id.trim()) requests.push({ detail_id: id.trim(), view_name: args.view_name, sheet: args.sheet });
-  for (const row of args.details) requests.push({ detail_id: row.detail_id, view_name: row.view_name || args.view_name, sheet: row.sheet || args.sheet });
+  const sv = args.source_view ?? "";
+  if (args.detail_id.trim()) requests.push({ detail_id: args.detail_id.trim(), view_name: args.view_name, sheet: args.sheet, source_view: sv });
+  for (const id of args.detail_ids) if (id.trim()) requests.push({ detail_id: id.trim(), view_name: args.view_name, sheet: args.sheet, source_view: sv });
+  for (const row of args.details) requests.push({ detail_id: row.detail_id, view_name: row.view_name || args.view_name, sheet: row.sheet || args.sheet, source_view: row.source_view || sv });
   if (args.batch_file.trim()) {
     try {
       const fromFile = readBatchFile(args.batch_file.trim());
-      for (const row of fromFile) requests.push({ detail_id: row.detail_id, view_name: row.view_name || args.view_name, sheet: row.sheet || args.sheet });
+      for (const row of fromFile) requests.push({ detail_id: row.detail_id, view_name: row.view_name || args.view_name, sheet: row.sheet || args.sheet, source_view: row.source_view || sv });
     } catch (error) {
       return { requests: [], error: error instanceof Error ? error.message : String(error) };
     }
@@ -131,19 +138,26 @@ export async function runFmcDetails(args: FmcDetailsArgs, io: DetailsIo = {}) {
     const folder = io.catalogueFolder ?? detailsFolder(env, io.guard);
     const catalogue = loadCatalogue(folder);
     if (args.action === "list") {
-      const report = writeDetailsReport(env, "list", { folder: catalogue.folder, catalogue_file: catalogue.catalogue_file, details: catalogue.details, problems: catalogue.problems }, io.reportDir);
+      const { report, reused } = writeOrReuseDetailsReport(env, "list", { folder: catalogue.folder, catalogue_file: catalogue.catalogue_file, details: catalogue.details, problems: catalogue.problems }, io.reportDir);
+      const ok = catalogueOk(catalogue);
+      const filter = { kind: args.kind, query: (args.query ?? "").trim() };
+      const filtered = filter.kind || filter.query;
+      const rows = filtered ? filterDetails(catalogue.details, filter) : catalogue.details;
       return reply(stamp({
         action: "list",
         read_only: true,
+        catalogue_ok: ok,
         folder: catalogue.folder,
         catalogue_file: catalogue.catalogue_file,
-        count: catalogue.details.length,
-        details: catalogue.details.map((row) => ({
+        count: rows.length,
+        ...(filtered ? { total: catalogue.details.length, filter: Object.fromEntries(Object.entries(filter).filter(([, v]) => v)) } : {}),
+        details: rows.map((row) => ({
           id: row.id, name: row.name, kind: row.kind, source: row.source, view: row.view, sheet: row.sheet, type_name: row.type_name, from: row.from, exists: row.exists,
         })),
         problems: catalogue.problems,
         report,
-      }));
+        report_reused: reused,
+      }), !ok && catalogue.details.length === 0);
     }
     if (!args.document.trim()) {
       return reply({ ...stamp(), refused: true, code: "FMC-DOC-REQUIRED", message: "[FMC-DOC-REQUIRED] fmc_details place needs document: a title or a full path. Refusing to use the active document." }, true);
@@ -203,7 +217,8 @@ export async function runFmcDetails(args: FmcDetailsArgs, io: DetailsIo = {}) {
     const applied = io.apply
       ? await io.apply(applyBody) as Record<string, unknown>
       : await withRevitConnection((client) => client.sendCommand("fmc_details_apply", applyBody, 300000)) as Record<string, unknown>;
-    return reply({ ...body, read_only: false, dry_run: false, applied, kit_saved: false, saved: false, synced: false });
+    const summary = appliedSummary(applied);
+    return reply({ ...body, read_only: false, dry_run: false, applied, status: summary.status, created_ids: summary.created_ids, kit_saved: false, saved: false, synced: false });
   } catch (error) {
     return failed(error);
   }

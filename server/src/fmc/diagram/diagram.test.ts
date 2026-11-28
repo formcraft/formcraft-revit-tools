@@ -8,6 +8,7 @@ import { collisions, segmentHitsBox, textBox } from "./geometry.js";
 import { Plan, drawSpec, layoutScan, planSummary } from "./layout.js";
 import { DEFAULT_DIAGRAM_KIT, breakerFor, loadDiagramKit, mergeKit, symbolFor, tableSymbols } from "./symbols.js";
 import { WRITE_COMMANDS } from "../policy.js";
+import { isSyntheticSupply, scanSummary } from "../../tools/fmc_diagram.js";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 // build/fmc/diagram -> repo root
@@ -490,4 +491,33 @@ test("controls: more points than the kit's maximum list counts only and refer to
   const ptxt = plan.views.find((v) => v.view.name === "M-Controls-Points")!.view.items.filter((i) => i.t === "text").map((i) => (i as { text: string }).text);
   assert.ok(ptxt.includes("Points 47: AI 24 · AO 1 · DI 22 · DO 0\nMore than 40 points: see M15_Controls_Points"));
   assert.ok(ptxt.includes("DDC-01 · BACnet MS/TP · 4 points"), "the others still list their points");
+});
+
+test("scan summary: a made-up supply is marked and counted as a gap, same-named boards are distinct, empty kinds are not gaps (P-fmc_diagram-01/02/03)", () => {
+  const board = (id: string, name: string) => ({ id, kind: "board" as const, name, category: "Electrical Equipment", family: "FMC_E_Board", type: "", level: null, params: {} });
+  const synth = (name: string) => ({ id: `supply:${name}`, kind: "supply" as const, name: "Supply", category: "", family: "", type: "", level: null, params: {} });
+  const scan: ScanResult = {
+    model: "electrical_USER", levels: [],
+    diagrams: [
+      { kind: "e_sld", system: "100A", nodes: [synth("100A"), board("u-1", "100A")], edges: [{ id: null, from: "supply:100A", to: "u-1", kind: "feeder", params: {} }] },
+      { kind: "e_sld", system: "100A", nodes: [synth("100A"), board("u-2", "100A")], edges: [{ id: null, from: "supply:100A", to: "u-2", kind: "feeder", params: {} }] },
+    ],
+    gaps: [
+      { kind: "p_water", element_id: null, message: "Nothing in the model for this diagram yet." },
+      { kind: "e_sld", element_id: "circuit:1", message: "Circuit <unnamed> (Receptacle) is on no board." },
+    ],
+  };
+  const s = scanSummary(scan);
+  assert.deepEqual(s.diagrams.map((d) => d.id), ["e_sld:u-1", "e_sld:u-2"]);
+  assert.equal(s.diagrams[0].same_name_as_another, true);
+  assert.equal(s.diagrams[0].by_kind.supply, undefined);
+  assert.equal(s.diagrams[0].by_kind.board, 1);
+  assert.equal(s.diagrams[0].synthetic_supply, 1);
+  assert.equal(s.diagrams[0].nodes, 1);
+  assert.deepEqual(s.not_applicable, ["p_water"]);
+  assert.equal(s.gaps.p_water, undefined);
+  assert.equal(s.gaps.e_sld.count, 3);
+  assert.equal(s.gap_total, 3);
+  assert.ok(s.gaps.e_sld.first.some((line) => /no modelled supply.*\(u-1\)/.test(line)));
+  assert.equal(isSyntheticSupply({ id: "u-9", kind: "supply", category: "Electrical Equipment", family: "FMC_E_Supply" }), false);
 });

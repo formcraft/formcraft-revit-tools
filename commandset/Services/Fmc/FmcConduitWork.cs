@@ -33,6 +33,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     string domain = (Parameters.Value<string>("domain") ?? "conduit").Trim().ToLowerInvariant();
                     var ends = new JArray();
                     var skipped = new FmcNonFamily();
+                    int conduits = 0, trays = 0, conduitFittings = 0, trayFittings = 0, connectorsRead = 0, connectedEnds = 0;
                     var categories = new List<BuiltInCategory>();
                     if (domain != "tray") { categories.Add(BuiltInCategory.OST_Conduit); categories.Add(BuiltInCategory.OST_ConduitFitting); }
                     if (domain != "conduit") { categories.Add(BuiltInCategory.OST_CableTray); categories.Add(BuiltInCategory.OST_CableTrayFitting); }
@@ -43,6 +44,11 @@ namespace RevitMCPCommandSet.Services.Fmc
                             skipped.Add(element);
                             continue;
                         }
+                        long cat = element.Category?.Id.Value ?? 0;
+                        if (element is Conduit) conduits++;
+                        else if (element is CableTray) trays++;
+                        else if (cat == (long)BuiltInCategory.OST_ConduitFitting) conduitFittings++;
+                        else if (cat == (long)BuiltInCategory.OST_CableTrayFitting) trayFittings++;
                         ConnectorManager manager = element is MEPCurve curve ? curve.ConnectorManager : ((FamilyInstance)element).MEPModel?.ConnectorManager;
                         if (manager == null) continue;
                         foreach (Connector connector in manager.Connectors)
@@ -50,9 +56,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                             try
                             {
                                 if (connector.ConnectorType != ConnectorType.End) continue;
+                                connectorsRead++;
                                 bool connected = false;
                                 try { connected = connector.IsConnected; } catch (Exception) { connected = false; }
-                                if (connected) continue;
+                                if (connected) { connectedEnds++; continue; }
                                 double size = 0;
                                 try { size = connector.Radius * 2 * FeetToMm; } catch (Exception) { size = 0; }
                                 var direction = new JArray();
@@ -116,6 +123,11 @@ namespace RevitMCPCommandSet.Services.Fmc
                     Result["resolved_document"] = FmcTarget.Resolved(doc);
                     Result["is_central"] = false;
                     Result["ends"] = ends;
+                    Result["counts"] = new JObject
+                    {
+                        ["conduits"] = conduits, ["trays"] = trays, ["conduit_fittings"] = conduitFittings, ["tray_fittings"] = trayFittings,
+                        ["end_connectors_read"] = connectorsRead, ["connected_ends"] = connectedEnds, ["free_ends"] = ends.Count,
+                    };
                     Result["sizes_mm"] = sizes;
                     Result["fittings"] = fittingFlags;
                     Result["fitting_types_loaded"] = loaded;
@@ -236,14 +248,17 @@ namespace RevitMCPCommandSet.Services.Fmc
                         if (a == null || b == null) throw new InvalidOperationException("A connector in the plan is not in the document.");
                         if (doc.GetElement(a.Owner.Id) is DirectShape || doc.GetElement(b.Owner.Id) is DirectShape)
                             throw new InvalidOperationException("DirectShape skipped.");
+                        long createdId = 0;
                         if (kind == "extend") Extend(a, b);
-                        else if (kind == "elbow") doc.Create.NewElbowFitting(a, b);
-                        else if (kind == "union") doc.Create.NewUnionFitting(a, b);
-                        else if (kind == "transition") doc.Create.NewTransitionFitting(a, b);
-                        else if (kind == "junction") PlaceJunction(doc, a, junctionName);
+                        else if (kind == "elbow") createdId = doc.Create.NewElbowFitting(a, b)?.Id.Value ?? 0;
+                        else if (kind == "union") createdId = doc.Create.NewUnionFitting(a, b)?.Id.Value ?? 0;
+                        else if (kind == "transition") createdId = doc.Create.NewTransitionFitting(a, b)?.Id.Value ?? 0;
+                        else if (kind == "junction") createdId = PlaceJunction(doc, a, junctionName);
                         else throw new InvalidOperationException("Unknown conduit op " + kind);
                         sub.Commit();
-                        done.Add(new JObject { ["op"] = kind, ["ok"] = true, ["a"] = op["a"], ["b"] = op["b"] });
+                        var row = new JObject { ["op"] = kind, ["ok"] = true, ["a"] = op["a"], ["b"] = op["b"] };
+                        if (createdId > 0) row["created_id"] = createdId;
+                        done.Add(row);
                     }
                     catch (Exception ex)
                     {
@@ -355,7 +370,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             a.ConnectTo(b);
         }
 
-        private static void PlaceJunction(Document doc, Connector connector, string family)
+        private static long PlaceJunction(Document doc, Connector connector, string family)
         {
             FamilySymbol symbol = FindSymbol(doc, family);
             if (symbol == null) throw new InvalidOperationException("FMC-NO-FITTING-TYPE " + family + " is not loaded.");
@@ -365,6 +380,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             foreach (Connector other in placed.MEPModel.ConnectorManager.Connectors) { mate = other; break; }
             if (mate == null) throw new InvalidOperationException("FMC-NO-FITTING-TYPE The junction box has no connector.");
             connector.ConnectTo(mate);
+            return placed.Id.Value;
         }
 
         private static void ResizeNearest(Document doc, JObject op, string material)
