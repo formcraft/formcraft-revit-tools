@@ -158,3 +158,29 @@ export const B7_PEDESTAL_ROW = {
   parameters: [{ name: "Height Offset From Level", value_mm: -500 }],
   expect: { top_mm: -250, underside_mm: -500, size_mm: [450, 450, 250], point_mm: [9200, -8000] },
 };
+
+/** RP-3: rows per call unless max_rows raises it (the schema caps a call at 64). */
+export const REPLACE_MAX_ROWS_DEFAULT = 25;
+
+export function checkMaxRows(count: number, maxRows = REPLACE_MAX_ROWS_DEFAULT): string | null {
+  return count > maxRows ? `${count} rows is over max_rows ${maxRows}. Split the batch (by level or by type), or raise max_rows (at most 64) knowing one call holds Revit until it ends.` : null;
+}
+
+/** RP-2: a reply is ok only when every row passed and the rollback proof held. */
+export function replaceOutcome(result: unknown): { ok: boolean; rows_failed: number; rows_not_run: number; rows_passed: number; summary: string } {
+  const body = (result && typeof result === "object" ? result : {}) as { rows?: Array<Record<string, unknown>>; group?: { rollback?: { proof?: boolean } }; error?: string };
+  const rows = Array.isArray(body.rows) ? body.rows : [];
+  let failed = 0, notRun = 0, passed = 0;
+  for (const row of rows) {
+    const gates = Object.values(row).filter((v): v is { status?: string } => !!v && typeof v === "object" && typeof (v as { status?: unknown }).status === "string");
+    const status = typeof row.status === "string" ? row.status : "";
+    if (status === "pass") passed++;
+    else if (status === "fail" || gates.some((g) => g.status === "fail")) failed++;
+    else notRun++;
+  }
+  const proof = body.group?.rollback?.proof !== false;
+  const ok = !body.error && proof && rows.length > 0 && passed === rows.length;
+  const summary = body.error ? `FAIL: ${body.error}`
+    : `${ok ? "PASS" : "FAIL"}: ${passed}/${rows.length} row(s) passed, ${failed} failed, ${notRun} not run${proof ? "" : "; rollback proof failed"}.`;
+  return { ok, rows_failed: failed, rows_not_run: notRun, rows_passed: passed, summary };
+}
