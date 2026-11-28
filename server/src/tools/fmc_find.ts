@@ -26,7 +26,10 @@ export const FMC_FIND_DESCRIPTION =
     "naming it, with what it clashes with); review tickets naming it; recipe tree nodes (by id, name or a value such as a " +
     "room number); exchange packages that carry it. An app that isn't open is skipped and said so. log: one timeline, " +
     "newest first, for the same query: the file log (FMC_MCP_FileLog.csv), exchange packages, review ticket history and " +
-    "identity links, from files only. Both are read-only: nothing is selected, written or changed (fmc_select shows it).";
+    "identity links, from files only. Both are read-only: nothing is selected, written or changed (fmc_select shows it). " +
+    "find also takes: categories (Revit category names, e.g. [\"Doors\"]); parameter (search only that parameter's value, e.g. Comments); " +
+    "offset for the next page (the reply's next_offset). Work plane grids and internal elements are left out unless all_categories is true. " +
+    "A project_folder that does not exist, or does not look like the open model's project, is said so in warnings.";
 
 export const FMC_FIND_SHAPE = {
   action: z.enum(["find", "log"]).optional().default("find"),
@@ -35,9 +38,42 @@ export const FMC_FIND_SHAPE = {
   partial: z.boolean().optional().default(false).describe("find: Revit matches part of a mark or name too"),
   touching: z.boolean().optional().default(true).describe("find: also what touches each Revit match (its box, 25 mm apart at most)"),
   limit: z.number().int().min(1).max(500).optional().default(50).describe("find: Revit matches at most; log: timeline lines at most"),
+  offset: z.number().int().min(0).optional().default(0).describe("find: skip this many Revit matches (the reply's next_offset gives the next page)"),
+  categories: z.array(z.string().min(1)).optional().default([]).describe("find: only these Revit categories (names as Revit shows them, e.g. Doors, Rooms, Levels)"),
+  parameter: z.string().optional().default("").describe("find: search only this parameter (instance, then type), e.g. Comments or FMC_System"),
+  all_categories: z.boolean().optional().default(false).describe("find: keep work plane grids and internal elements (left out by default)"),
 };
 
-export type FmcFindArgs = z.infer<z.ZodObject<typeof FMC_FIND_SHAPE>>;
+/** The project number at the start of a folder name: F26902 from F26902_TestHouse. Empty when there is none. */
+export function projectNumberOf(folder: string): string {
+  const base = win.basename(folder.replace(/[\\/]+$/, ""));
+  const m = /^([A-Za-z]{0,3}\d{3,})/.exec(base);
+  return m ? m[1] : "";
+}
+
+/**
+ * Why project_folder may not be the open model's project (Tool Research: the TestHouse folder silently gave empty
+ * tickets and tree for other models). Empty when it looks right or there is nothing to compare.
+ */
+export function projectFolderWarnings(project: string, model: { title?: string; path?: string } | null, exists: (p: string) => boolean): string[] {
+  if (!project) return [];
+  if (!exists(project)) return [`project_folder ${project} does not exist: review tickets, the recipe tree and exchange were not read`];
+  if (!model || (!model.title && !model.path)) return [];
+  const folder = project.replace(/[\\/]+$/, "").toLowerCase();
+  const modelPath = (model.path ?? "").toLowerCase();
+  if (modelPath && (modelPath.startsWith(folder + "\\") || modelPath.startsWith(folder + "/"))) return [];
+  const number = projectNumberOf(project).toLowerCase();
+  const names = `${model.title ?? ""} ${win.basename(model.path ?? "")}`.toLowerCase();
+  if (number && names.includes(number)) return [];
+  return [`project_folder ${project} may not be the project of the open model ${model.title || model.path}` +
+    (number ? ` (its name does not hold ${projectNumberOf(project)})` : "") +
+    ": empty tickets, tree or packages may mean the wrong folder, not that nothing names the element"];
+}
+
+type FindNewArgs = "offset" | "categories" | "parameter" | "all_categories";
+type FindParsed = z.infer<z.ZodObject<typeof FMC_FIND_SHAPE>>;
+/** The newer find arguments are optional for callers that build args by hand (tests, flows). */
+export type FmcFindArgs = Omit<FindParsed, FindNewArgs> & Partial<Pick<FindParsed, FindNewArgs>>;
 
 type Call = (method: string, params: object) => Promise<any>;
 
@@ -47,6 +83,8 @@ export interface FindDeps {
   navis: Call | null;
   identityRoot: string;
   reportsDir: string;
+  /** Does a folder exist (tests pass a stand-in). */
+  exists?: (p: string) => boolean;
 }
 
 export function realFindDeps(projectFolder: string): FindDeps {
@@ -98,11 +136,26 @@ export async function runFmcFind(args: FmcFindArgs, deps?: FindDeps) {
   // Revit: the elements named by the query, and what touches them
   let revit: Record<string, unknown> = { open: false };
   let revitFound: any[] = [];
+  let revitModel: { title?: string; path?: string } | null = null;
   if (d.revit) {
     try {
-      const r = await d.revit("fmc_find_elements", { query, partial: args.partial, touching: args.touching, limit: args.limit });
+      const r = await d.revit("fmc_find_elements", {
+        query, partial: args.partial, touching: args.touching, limit: args.limit,
+        offset: args.offset ?? 0, categories: args.categories ?? [], parameter: (args.parameter ?? "").trim(), all_categories: args.all_categories === true,
+      });
       revitFound = r?.found ?? [];
-      revit = { model: r?.model, found: revitFound, touching: r?.touching ?? [], truncated: r?.truncated ?? false };
+      revitModel = { title: r?.model, path: r?.path };
+      // An add-in older than this server ignores the filters; drop work plane grids here too.
+      if (!args.all_categories && !(args.categories ?? []).length) {
+        const before = revitFound.length;
+        revitFound = revitFound.filter((f) => !/^work plane grid$/i.test(String(f?.category ?? "")));
+        if (before !== revitFound.length && typeof r?.skipped_non_model !== "number") r.skipped_non_model = before - revitFound.length;
+      }
+      revit = {
+        model: r?.model, found: revitFound, touching: r?.touching ?? [], truncated: r?.truncated ?? false,
+        ...(typeof r?.next_offset === "number" ? { next_offset: r.next_offset } : {}),
+        ...(r?.skipped_non_model ? { skipped_non_model: r.skipped_non_model } : {}),
+      };
     } catch (e) { revit = { error: msg(e) }; }
   }
   // a UniqueId typed as the query, or one of the map's, names the same element as Revit's matches
@@ -127,11 +180,16 @@ export async function runFmcFind(args: FmcFindArgs, deps?: FindDeps) {
   const tickets = matchTickets(registerOf(project), needles);
   const tree = matchTree(treeOf(project), query);
   const packages = matchPackages(d.identityRoot, listPackages(d.identityRoot), needles);
+  const warnings = projectFolderWarnings(project, revitModel, d.exists ?? ((p) => fs.existsSync(p)));
+  const count = (v: unknown) => (Array.isArray(v) ? v.length : 0);
+  const summary = `${revitFound.length} Revit, ${count((navisworks as { items?: unknown }).items)} Navisworks, ${count((navisworks as { clashes?: unknown }).clashes)} clashes, ` +
+    `${count(tickets)} tickets, ${count(tree)} tree nodes, ${count(packages)} packages, ${entries.length} identity entries`;
 
   return reply({
-    query, needles,
+    query, needles, summary,
     identity: { file: identityFile(d.identityRoot), elements: entries.map((e) => ({ fmc: e.fmc, name: e.name, kind: e.kind, apps: e.apps })) },
     revit, navisworks, tickets, tree, packages,
+    ...(warnings.length ? { warnings } : {}),
     ...(noProject ? { note: noProject } : {}),
     read_only: "Nothing was selected or changed: fmc_select shows these elements in each app",
   });

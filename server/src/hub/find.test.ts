@@ -6,7 +6,7 @@ import path from "node:path";
 import { IdentityMap, exchangeRoot, link, saveIdentity, writePackage } from "./exchange.js";
 import { fileLogLines, identityMatches, matchClashes, matchTickets, matchTree, mentions, mergeTimeline, needlesFor, ticketWhy, wordRe } from "./find.js";
 import { csvLine } from "../fmc/policy.js";
-import { FindDeps, runFmcFind } from "../tools/fmc_find.js";
+import { FindDeps, projectFolderWarnings, projectNumberOf, runFmcFind } from "../tools/fmc_find.js";
 
 const win = path.win32;
 const MODEL = "F26001-FMC-ZZ-ZZ-M3-S-0001";
@@ -160,4 +160,33 @@ test("fmc_find log: the file log, packages, ticket history and identity links on
   assert.deepEqual(b.lines.map((l: any) => l.source).sort(), ["exchange", "file log", "identity"]);
   assert.equal(b.lines.find((l: any) => l.source === "file log").what, "review_fix: done");
   assert.match(b.read_only, /nothing changed/);
+});
+test("fmc_find: work plane grids are left out, filters and paging reach Revit, and a wrong project folder is said so", async () => {
+  const { reports, root } = sampleProject();
+  let params: any = null;
+  const deps: FindDeps = {
+    revit: async (_m, p: any) => {
+      params = p;
+      return { model: "plumbing_USER", path: "C:\\Users\\u\\Documents\\plumbing_USER.rvt", truncated: true, next_offset: 2, found: [
+        { unique_id: "lv", element_id: 694, category: "Levels", name: "Level 1", matched: "name" },
+        { unique_id: "wp", element_id: 24931, category: "Work Plane Grid", name: "Level 1", matched: "name" },
+      ] };
+    },
+    navis: null, identityRoot: root, reportsDir: reports, exists: () => true,
+  };
+  const b = body(await runFmcFind({ action: "find", query: "Level 1", project_folder: "D:\\Fomcraft\\FMC_PROJECTS_27\\F26902_TestHouse", partial: true, touching: false, limit: 2, offset: 0, categories: [], parameter: "", all_categories: false }, deps));
+  assert.deepEqual(b.revit.found.map((f: any) => f.element_id), [694]);
+  assert.equal(b.revit.skipped_non_model, 1);
+  assert.equal(b.revit.next_offset, 2);
+  assert.match(b.warnings[0], /may not be the project/);
+  assert.match(b.summary, /^1 Revit/);
+  await runFmcFind({ action: "find", query: "X", project_folder: "", partial: false, touching: false, limit: 5, offset: 10, categories: ["Doors"], parameter: "Comments", all_categories: false }, deps);
+  assert.equal(params.offset, 10);
+  assert.deepEqual(params.categories, ["Doors"]);
+  assert.equal(params.parameter, "Comments");
+
+  assert.equal(projectNumberOf("D:\\P\\F26902_TestHouse\\"), "F26902");
+  assert.deepEqual(projectFolderWarnings("D:\\P\\F26902_TestHouse", { title: "F26902-FMC-ZZ-ZZ-M3-A-0002_USER", path: "C:\\L\\x.rvt" }, () => true), []);
+  assert.deepEqual(projectFolderWarnings("D:\\P\\F26902_TestHouse", { title: "a", path: "D:\\P\\F26902_TestHouse\\01_WIP\\a.rvt" }, () => true), []);
+  assert.match(projectFolderWarnings("D:\\Nope", null, () => false)[0], /does not exist/);
 });
