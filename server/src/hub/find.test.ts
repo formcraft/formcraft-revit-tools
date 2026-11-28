@@ -190,9 +190,13 @@ test("fmc_find: work plane grids are left out, filters and paging reach Revit, a
   assert.deepEqual(projectFolderWarnings("D:\\P\\F26902_TestHouse", { title: "a", path: "D:\\P\\F26902_TestHouse\\01_WIP\\a.rvt" }, () => true), []);
   assert.match(projectFolderWarnings("D:\\Nope", null, () => false)[0], /does not exist/);
 });test("fmc_find: sources say which files were looked for, and needles list the query only once", async () => {
-  const { reports, root } = sampleProject();
-  const project = "D:\\Fomcraft\\FMC_PROJECTS_27\\F26902_TestHouse";
-  const exists = (p: string) => p === root || p.startsWith(root);
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-find-src-"));
+  const reports = win.join(tmp, "reports");
+  const project = win.join(tmp, "EmptyProject");
+  const root = win.join(tmp, "Exchange");
+  fs.mkdirSync(reports, { recursive: true });
+  fs.mkdirSync(root, { recursive: true });
+  const exists = (p: string) => fs.existsSync(p);
   const src = findSources({ project, identityRoot: root, navis: "not searched", navisDetail: "Navisworks is not open", exists });
   assert.equal(src.identity.status, "missing");
   assert.ok(src.identity.path);
