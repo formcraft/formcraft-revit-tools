@@ -370,7 +370,12 @@ test("F63: get rulebook:AIUse shows the AI-use limits (fmc-aiuse schema), never 
   const bad = getItem("rulebook:AIUse", deps) as any;
   assert.equal(bad.valid, false);
   assert.ok(bad.problems.length > 0);
-  assert.equal(bad.rules[0], "limits: none set");
+  assert.equal(bad.rules[0], "limits: batch_elements 0, daily_elements 0, failed_batches_per_day 0");
+  // Raw non-numbers are shown as the gate's num() defaults, not the raw text.
+  fs.writeFileSync(path.join(root, "03_Master_Data", "FMC_Rulebook", "FMC_Rulebook_AIUse.json"),
+    JSON.stringify({ schema: "fmc-aiuse/0.1", limits: { batch_elements: "50", daily_elements: null, failed_batches_per_day: 3 }, bands: [] }));
+  const coerced = getItem("rulebook:AIUse", deps) as any;
+  assert.equal(coerced.rules[0], "limits: batch_elements 0, daily_elements 0, failed_batches_per_day 3");
 });
 
 test("F63: overview.ai_use says mode, access, auto-approve and code, read-only", () => {
@@ -379,16 +384,43 @@ test("F63: overview.ai_use says mode, access, auto-approve and code, read-only",
   const a = (overview(on) as any).ai_use;
   assert.equal(a.ai_modeller, "on");
   assert.equal(a.mode, "testing");
-  assert.equal(a.access, "full");
+  assert.equal(a.access, "full (configured, effective where General is On)");
   assert.equal(a.auto_approve, true);
   assert.equal(a.allow_code, false);
-  assert.match(a.approvals, /^auto-approve/);
+  assert.match(a.approvals, /^auto-approve: applies only while the AI is on and not stopped/);
+  assert.match(a.approvals, /Relinquish, shared items and a direct sync still wait for a person/);
   const strict = { ...deps, cfg: { ...deps.cfg, ai_modeller: { on: true, auto_approve: true, levels: {} } } as unknown as GuardConfig };
   const s = (overview(strict) as any).ai_use;
   assert.equal(s.mode, "strict");
   assert.match(s.approvals, /^no auto-approve/, "auto_approve only acts in testing mode (aigate.ts)");
+  assert.match(s.approvals, /Relinquish, shared items and a direct sync still wait for a person/);
+  const stopped = { ...deps, cfg: { ...deps.cfg, ai_modeller: { on: true, stop: true, mode: "testing", auto_approve: true, levels: {} } } as unknown as GuardConfig };
+  assert.match((overview(stopped) as any).ai_use.approvals, /does not apply: the AI is stopped/);
+  const offSwitch = { ...deps, cfg: { ...deps.cfg, ai_modeller: { on: false, mode: "testing", auto_approve: true, levels: {} } } as unknown as GuardConfig };
+  assert.match((overview(offSwitch) as any).ai_use.approvals, /does not apply: the AI is off/);
   const off = (overview(deps) as any).ai_use;
   assert.equal(off.auto_approve, undefined, "no ai_modeller section: nothing to report");
+});
+
+test("F63: AI-use limits can be loaded from FMC_Rulebook_ClaudeUse.json when AIUse is missing", () => {
+  const { root, deps } = kit();
+  const proposal = JSON.parse(fs.readFileSync(path.resolve(HERE, "../../../docs/kit-proposals/FMC_Rulebook_AIUse.json"), "utf8"));
+  fs.writeFileSync(path.join(root, "03_Master_Data", "FMC_Rulebook", "FMC_Rulebook_ClaudeUse.json"), JSON.stringify(proposal));
+  const o = (overview(deps) as any).ai_use;
+  assert.match(o.aiuse_rulebook, /FMC_Rulebook_ClaudeUse\.json \(whole file; used because FMC_Rulebook_AIUse.json is not in the kit\)/);
+  const b = getItem("rulebook:ClaudeUse", deps) as any;
+  assert.equal(b.kind, "ai-use limits");
+  assert.equal(b.valid, true);
+  fs.writeFileSync(path.join(root, "03_Master_Data", "FMC_Rulebook", "FMC_Rulebook_ClaudeUse.json"), JSON.stringify({
+    feature: "ClaudeUse", rulebook_version: "0.1",
+    rules: [{ id: "AI-001", title: "A QA rule", severity: "Must", check: { type: "human_gate" } }],
+    ai_use: proposal,
+  }));
+  const mixed = getItem("rulebook:ClaudeUse", deps) as any;
+  assert.equal(mixed.count, 1);
+  assert.equal(mixed.ai_use.kind, "ai-use limits");
+  assert.equal(mixed.ai_use.valid, true);
+  assert.match((overview(deps) as any).ai_use.aiuse_rulebook, /FMC_Rulebook_ClaudeUse\.json \(ai_use;/);
 });
 
 test("family and template listings are kept 10 s, and clearFolderMemos drops them", () => {

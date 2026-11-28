@@ -15,7 +15,7 @@ import { GuardConfig, WRITE_COMMANDS, expandEnv } from "./policy.js";
 import { parseSharedParameters, SpParam } from "./specs.js";
 import { Keynote, parseKeynotes } from "./library.js";
 import { parseRulebook as parseQaRulebook } from "./rules.js";
-import { COMMAND_GROUPS, NEVER, parseConfig as parseAiConfig, parseRulebook as parseAiRulebook } from "./aiuse.js";
+import { COMMAND_GROUPS, NEVER, parseConfig as parseAiConfig, parseRulebook as parseAiRulebook, pickAiRulebook } from "./aiuse.js";
 import type { RevitInstance } from "./connect.js";
 
 // ---------- paths: Windows paths on the PC, POSIX paths in tests ----------
@@ -236,19 +236,30 @@ export function aiUseSummary(file: string): Record<string, unknown> | null {
   const isAi = (x: any) => !!x && typeof x === "object" && /^fmc-aiuse\//.test(String(x.schema ?? ""));
   const o = isAi(raw) ? raw : isAi(raw.ai_use) ? raw.ai_use : null;
   if (!o) return null;
+  // Same num() as aiuse.ts parseRulebook: a string or missing value is the default, not the raw text.
+  const num = (v: unknown, d: number) => (typeof v === "number" && Number.isFinite(v) ? v : d);
   const list = (v: unknown) => Array.isArray(v) && v.length ? v.map(String).join(", ") : "none";
-  const lines: string[] = [];
-  const lim = o.limits && typeof o.limits === "object" ? o.limits : {};
-  lines.push(`limits: ${Object.entries(lim).map(([k, v]) => `${k} ${v}`).join(", ") || "none set"}`);
-  if (o.default_involvement !== undefined) lines.push(`default_involvement ${o.default_involvement}`);
-  for (const band of Array.isArray(o.bands) ? o.bands : []) lines.push(`band ${band?.name ?? "?"} ${band?.min ?? "?"}-${band?.max ?? "?"}: ${list(band?.groups)}`);
-  for (const [id, g] of Object.entries((o.groups && typeof o.groups === "object" ? o.groups : {}) as Record<string, any>))
-    lines.push(`group ${id} (${g?.name ?? id}): ${g?.auto_allowed === true ? "auto_allowed (may be set to Auto in WIP)" : "not auto_allowed (at most Fix with approval)"}`);
-  for (const [d, v] of Object.entries((o.discipline_overrides && typeof o.discipline_overrides === "object" ? o.discipline_overrides : {}) as Record<string, any>))
-    lines.push(`override ${d}: max_involvement ${v?.max_involvement ?? "?"}, groups ${list(v?.groups)}`);
-  if (o.general && typeof o.general === "object") lines.push(`general switch: ${o.general.level ?? "?"}, groups ${list(o.general.groups)}`);
-  if (o.cap && typeof o.cap === "object") lines.push(`cap: ${o.cap.measure ?? "none"}${o.cap.value !== undefined ? ` ${o.cap.value}` : ""}`);
   const parsed = parseAiRulebook(JSON.stringify(o));
+  const book = parsed.book;
+  const lines: string[] = [];
+  const lim = book?.limits ?? {
+    batch_elements: num(o.limits?.batch_elements, 0),
+    daily_elements: num(o.limits?.daily_elements, 0),
+    failed_batches_per_day: num(o.limits?.failed_batches_per_day, 0),
+  };
+  lines.push(`limits: batch_elements ${lim.batch_elements}, daily_elements ${lim.daily_elements}, failed_batches_per_day ${lim.failed_batches_per_day}`);
+  lines.push(`default_involvement ${book ? book.default_involvement : num(o.default_involvement, 0)}`);
+  const bands = book?.bands ?? (Array.isArray(o.bands) ? o.bands.map((b: any) => ({ name: String(b?.name ?? "?"), min: num(b?.min, -1), max: num(b?.max, -1), groups: Array.isArray(b?.groups) ? b.groups : [] })) : []);
+  for (const band of bands) lines.push(`band ${band.name} ${band.min}-${band.max}: ${list(band.groups)}`);
+  const groups = book?.groups ?? ((o.groups && typeof o.groups === "object" ? o.groups : {}) as Record<string, any>);
+  for (const [id, g] of Object.entries(groups))
+    lines.push(`group ${id} (${(g as any)?.name ?? id}): ${(g as any)?.auto_allowed === true ? "auto_allowed (may be set to Auto in WIP)" : "not auto_allowed (at most Fix with approval)"}`);
+  const overrides = book?.discipline_overrides ?? ((o.discipline_overrides && typeof o.discipline_overrides === "object" ? o.discipline_overrides : {}) as Record<string, any>);
+  for (const [d, v] of Object.entries(overrides))
+    lines.push(`override ${d}: max_involvement ${num((v as any)?.max_involvement, 0)}, groups ${list((v as any)?.groups)}`);
+  const general = book?.general ?? (o.general && typeof o.general === "object" ? o.general : null);
+  if (general) lines.push(`general switch: ${(general as any).level ?? "?"}, groups ${list((general as any).groups)}`);
+  if (o.cap && typeof o.cap === "object") lines.push(`cap: ${book?.cap?.measure ?? o.cap.measure ?? "none"}${((book?.cap?.value ?? o.cap.value) !== undefined) ? ` ${book?.cap?.value ?? o.cap.value}` : ""}`);
   return {
     file, book: pbase(file, ".json").replace(/^FMC_Rulebook_/, ""), kind: "ai-use limits", schema: String(o.schema),
     section: o === raw ? "whole file" : "ai_use", valid: !!parsed.book, problems: parsed.problems.length ? parsed.problems : undefined,
@@ -534,22 +545,44 @@ function projectOf(docPath: string): { folder: string; manifest: string } | null
   return { folder, manifest: [folder, "01_WIP", "FMC_Project.json"].join(sep) };
 }
 
+/** Auto-approve (aigate.ts:112-115) applies only while the AI is on and not stopped, in testing mode; Relinquish, shared items and a direct sync still wait. */
+function approvalsLine(ai: { on: boolean; stop: boolean; mode?: string; auto_approve?: boolean }): string {
+  const waits = "Relinquish, shared items and a direct sync still wait for a person";
+  const configured = ai.mode === "testing" && ai.auto_approve === true;
+  if (configured && ai.on && !ai.stop)
+    return `auto-approve: applies only while the AI is on and not stopped; in testing mode AI batches run without waiting for a person (each is listed in Approvals as auto-approved). ${waits}`;
+  if (configured && (!ai.on || ai.stop))
+    return `auto-approve is configured but does not apply: the AI is ${ai.stop ? "stopped" : "off"}. ${waits}`;
+  return `no auto-approve: AI batches follow the rulebook levels (a person approves unless a group is at Auto in WIP). ${waits}`;
+}
+
 function aiUseState(k: KitPaths, cfg: GuardConfig) {
   const files = rulebookFiles(k).map((f) => pbase(f));
   const aiBook = files.find((f) => /^FMC_Rulebook_AIUse\.json$/i.test(f));
   const claudeBook = files.find((f) => /^FMC_Rulebook_ClaudeUse\.json$/i.test(f));
   const ai = parseAiConfig((cfg as unknown as { ai_modeller?: unknown }).ai_modeller);
   return {
-    aiuse_rulebook: aiBook ?? "missing (AI modelling on projects stays Off)",
+    aiuse_rulebook: (() => {
+      const present = rulebookFiles(k).map((f) => {
+        const raw = cached(f, (t) => t, "rulebook-text");
+        return raw ? { name: pbase(f), raw } : null;
+      }).filter((p): p is { name: string; raw: string } => !!p);
+      const picked = pickAiRulebook(present);
+      if (picked.book) {
+        const fromAiUse = /^FMC_Rulebook_AIUse\.json$/i.test(picked.file);
+        return fromAiUse ? picked.file : `${picked.file} (${picked.section}; used because ${aiBook ? "FMC_Rulebook_AIUse.json is not a valid AI-modeller rulebook" : "FMC_Rulebook_AIUse.json is not in the kit"})`;
+      }
+      return aiBook ?? "missing (AI modelling on projects stays Off)";
+    })(),
     claudeuse_rulebook: claudeBook ?? "missing",
     ai_modeller: !ai ? "off (no ai_modeller section in fmc_guard.json)" : ai.stop ? "stopped" : ai.on ? "on" : "off",
-    // F63 / P-fmc_context-02: what "on" means, read-only, so an "on" can't look like a guarded switch while batches auto-run.
+    // F63 / P-fmc_context-02 (Builder 1 review of 77fa7f4): what "on" means, read-only.
     ...(ai ? {
-      mode: ai.mode ?? "strict", access: ai.access ?? "general", auto_approve: ai.auto_approve === true,
+      mode: ai.mode ?? "strict",
+      access: ai.access === "full" ? "full (configured, effective where General is On)" : (ai.access ?? "general"),
+      auto_approve: ai.auto_approve === true,
       auto_approve_sync: ai.auto_approve_sync === true, allow_code: ai.allow_code === true,
-      approvals: ai.mode === "testing" && ai.auto_approve === true
-        ? "auto-approve: in testing mode AI batches run without waiting for a person (each is listed in Approvals as auto-approved)"
-        : "no auto-approve: AI batches follow the rulebook levels (a person approves unless a group is at Auto in WIP)",
+      approvals: approvalsLine(ai),
     } : {}),
   };
 }
@@ -902,8 +935,8 @@ function getOne(kind: string, name: string, k: KitPaths): Record<string, unknown
       if (!b) return { file, problems: ["not readable as JSON"] };
       if (rule) { const r = b.rules.find((x) => x.id.toLowerCase() === rule.toLowerCase()); return r ? { file, book: b.name, rule: r } : null; }
       // F63 / P-fmc_context-01: the AI-use rulebook holds limits (schema fmc-aiuse), not QA rules; show them, never "0 rules".
-      const ai = !b.rules.length ? aiUseSummary(file) : null;
-      if (ai) return ai;
+      const ai = aiUseSummary(file);
+      if (ai && !b.rules.length) return ai;
       const out: Record<string, unknown> = { file, book: b.name, version: b.version, count: b.rules.length, rules: b.rules.map((r) => `${r.id} [${r.severity}] ${r.rule}`.slice(0, 140)) };
       // A file with no QA rules (count 0) may hold another shape: name its top-level keys rather than look empty.
       if (!b.rules.length) {
@@ -913,6 +946,7 @@ function getOne(kind: string, name: string, k: KitPaths): Record<string, unknown
           out.note = "No QA rules (rules[]) in this file; top_level_keys shows what it holds";
         }
       }
+      if (ai && b.rules.length) out.ai_use = { kind: "ai-use limits", section: ai.section, valid: ai.valid, count: ai.count, note: "This file also holds AI-modeller limits; the gate can load them when FMC_Rulebook_AIUse.json is missing or invalid" };
       return out;
     }
     case "profile": {
