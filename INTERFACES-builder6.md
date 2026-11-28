@@ -1,6 +1,6 @@
 # INTERFACES-builder6.md: Dynamo graph tools contract (Builder 6)
 
-Contract version: **1.1** (28 Nov 2026, EAT; 1.1 only adds fields, nothing removed or renamed). Branch `builder6/dynamo-graph-tools` from `cf71214`.
+Contract version: **1.2** (28 Nov 2026, EAT; 1.1 and 1.2 only add, nothing removed or renamed; code interfaces unchanged since 1.1). Branch `builder6/dynamo-graph-tools` from `cf71214`.
 Builder 7 (form, study, schedule, graph packs, pane) codes against this. If anything here changes, the version
 number goes up and the change is listed in "Change log" at the end. Server modules are TypeScript ESM under
 `server/src/fmc/graph/`; tools are under `server/src/tools/`.
@@ -153,14 +153,28 @@ Config: `fmc_guard.json` -> `graph_tools.decisions.<key>` overrides; `graphDecis
 | D14 | `diagnostics_outside_jail` | `"read_only"` (paths, names, versions only) |
 | - | `approval_ttl_minutes` | `30` |
 
-## 8. BUILD.lock convention (found under C:\Users\USER\agent-tools\revit-tests\builds\)
+## 8. BUILD.lock convention and BUILD.queue (v1.2)
 
-- Path: `C:\Users\USER\agent-tools\BUILD.lock`. Also respect `C:\Users\USER\agent-tools\LIVE_TEST.hold` (do not build while it exists).
-- Format: one line, `<owner> yyyy-MM-dd HH:mm:ss (<purpose>)`, e.g. `Builder 6 2026-11-28 14:10:00 (b6 tsc/test/dotnet R25)`.
-- Acquire: only when neither file exists, create atomically with `[IO.File]::Open($lock,'CreateNew','Write','None')`; retry every 15 s.
-- Hold: long holders refresh the timestamp every ~4 min while their line is still theirs.
+- Lock: `C:\Users\USER\agent-tools\BUILD.lock`. Also respect `C:\Users\USER\agent-tools\LIVE_TEST.hold` (no build while it exists).
+- Queue (Plugin Bot rule, 14:12 EAT): `C:\Users\USER\agent-tools\BUILD.queue`, FIFO. Lines starting with `#` are comments.
+  - To queue: append one line at the END: `<bot name> <time EAT> <what>`, e.g. `Builder 6 Dynamo Graph Tools 19:36 EAT tsc+targeted+suite+dotnet R25`.
+  - Take BUILD.lock ONLY when it is free (no file), there is no LIVE_TEST.hold, AND your line is the FIRST non-comment line.
+  - One build per hold. If a fix needs another build: release, delete your line, append a fresh line at the end.
+  - On release: delete your own queue line. Plugin Bot may reorder the queue; nobody else edits other bots' lines.
+- Lock format: one line, `<owner> yyyy-MM-dd HH:mm:ss (<purpose>)`.
+- Acquire: create atomically with `[IO.File]::Open($lock,'CreateNew','Write','None')`; poll every 15 s.
+- Hold: refresh the timestamp every ~4 min while the content is still yours (stale, unrefreshed locks may be removed by Plugin Bot).
 - Release: delete the file only if its content starts with your owner tag.
+- Builder 6 script: `C:\Users\USER\agent-tools\builder-6-dynamo-graph-tools\b6-qbuild.ps1` (queue-aware). The old lock-only
+  `b6-build.ps1` was retired (renamed `b6-build.OLD-lockonly-DO-NOT-USE.txt`).
 
+## 10. Known issues (logged, not fixed in this slice)
+
+- **Double approval under the live-model lock.** An `apply` run of a graph needs the person's graph approval
+  (`graph_approve`, bound to plan_hash). When the live-model lock is on, `sendCommand` also routes the same write
+  through the existing aiGate "Fix with approval" queue (`ai_queue`), so the person may be asked twice for one run, and
+  the aiGate replay path does not carry `approval_id`. Plugin Bot (19:36 EAT): log it, don't fix it in this slice.
+  Planned fix: let a claimed graph approval satisfy aiGate for that one command (same plan_hash, same session).
 ## 9. As built (v1.1)
 
 - Tools: `fmc_graph` (scaffold, generate, validate), `fmc_graph_lib` (list, version, lock), `fmc_graph_guard`
@@ -180,3 +194,4 @@ Config: `fmc_guard.json` -> `graph_tools.decisions.<key>` overrides; `graphDecis
 ## Change log
 - v1 (28 Nov 2026): first version.
 - v1.1 (28 Nov 2026): additive GraphPlan fields; section 9 "As built".
+- v1.2 (28 Nov 2026 19:40 EAT): section 8 adds the BUILD.queue FIFO rule; new section 10 Known issues (double approval under the live-model lock). No code interface changes.
