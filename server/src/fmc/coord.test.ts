@@ -207,7 +207,7 @@ test("fmc_coord: document errors, dry run, one Revit call, and no live appdata",
   const dir = tmp();
   const env = envOf(dir);
   const cfg = guard();
-  const base = { env, guard: cfg, standards: approved, now: () => "2026-11-22T12:00:00Z" };
+  const base = { env, guard: cfg, standards: approved, now: () => "2026-11-22T12:00:00Z", holder: () => ({ lease: "L1", client: "t" }) };
   const calls: Array<{ command: string; write: boolean; params: Record<string, unknown> }> = [];
   const revit = async (command: string, params: Record<string, unknown>, write: boolean) => {
     calls.push({ command, write, params });
@@ -236,7 +236,7 @@ test("fmc_coord: document errors, dry run, one Revit call, and no live appdata",
   assert.equal(fs.existsSync(path.join(dir, "proj", "FMC_Coord.json")), false);
   assert.equal(fs.existsSync(path.join(dir, "unread-appdata")), false);
 
-  const published = body(await runFmcCoord(args({ action: "publish", document: "A-0003", project: "Ogala", project_folder: path.join(dir, "proj"), level: "all", dry_run: false }), { ...base, revit }));
+  const published = body(await runFmcCoord(args({ action: "publish", document: "A-0003", project: "Ogala", project_folder: path.join(dir, "proj"), level: "all", dry_run: false, batch_lease: "L1" }), { ...base, revit }));
   assert.equal(published.dry_run, false);
   assert.equal(calls.length, 2);
   assert.equal(calls[1].write, false);
@@ -274,7 +274,7 @@ test("fmc_coord: document errors, dry run, one Revit call, and no live appdata",
   const importedDry = body(await runFmcCoord(args({ action: "import", project: "Ogala", project_folder: path.join(dir, "proj"), source: csvFile }), { ...base, revit }));
   assert.equal(importedDry.dry_run, true);
   assert.deepEqual(importedDry.would_add, ["N1"]);
-  const imported = body(await runFmcCoord(args({ action: "import", project: "Ogala", project_folder: path.join(dir, "proj"), source: csvFile, dry_run: false }), { ...base, revit }));
+  const imported = body(await runFmcCoord(args({ action: "import", document: "A-0003", project: "Ogala", project_folder: path.join(dir, "proj"), source: csvFile, dry_run: false, batch_lease: "L1" }), { ...base, revit }));
   assert.equal(imported.imported, 1);
   assert.equal(calls.length, 3, "read, export and import do not call Revit");
 
@@ -303,4 +303,45 @@ test("fmc_coord: document errors, dry run, one Revit call, and no live appdata",
 test("a control point kind survives import", () => {
   const points: ControlPoint[] = parseImport(JSON.stringify({ control_points: [{ name: "BM1", kind: "survey", xyz_mm: [1, 2, 3], angle_deg: 0 }] }), "p.json");
   assert.equal(points[0].kind, "survey");
+});
+
+test("B5: a real publish or import needs document and the held lease, is guarded, and backs FMC_Coord.json up first", async () => {
+  const dir = tmp();
+  const env = envOf(dir);
+  const cfg = guard();
+  const folder = path.join(dir, "proj");
+  let calls = 0;
+  const revit = async () => { calls++; const shot = snap("A-0003", 1000, 12, { name: "A/1", x: 5000 }); return { ...shot, resolved_document: shot.document }; };
+  const held = { env, guard: cfg, standards: approved, now: () => "2026-11-22T12:00:00Z", holder: () => ({ lease: "L1", client: "t" }), revit };
+  const publish = (over: Record<string, unknown>, deps: Record<string, unknown> = held) =>
+    runFmcCoord(args({ action: "publish", document: "A-0003", project: "Ogala", project_folder: folder, level: "all", dry_run: false, ...over }), deps as any).then(body);
+  // no lease, nobody holding, a different lease: refused before Revit is read, nothing written
+  assert.match(String((await publish({})).error), /FMC-COORD-LEASE.*No lease was passed/);
+  assert.match(String((await publish({ batch_lease: "L1" }, { ...held, holder: () => null })).error), /FMC-COORD-LEASE.*Nobody holds/);
+  assert.match(String((await publish({ batch_lease: "other" })).error), /FMC-COORD-LEASE.*not the one held/);
+  assert.match(String((await publish({ document: "HEBERT HOSTELS", batch_lease: "L1" })).error), /FMC-COORD-GUARD/);
+  assert.equal(calls, 0);
+  assert.equal(fs.existsSync(path.join(folder, "FMC_Coord.json")), false);
+  // first real publish: nothing to back up
+  const first = await publish({ batch_lease: "L1" });
+  assert.equal(first.dry_run, false);
+  assert.deepEqual(first.backups, []);
+  const file = path.join(folder, "FMC_Coord.json");
+  const before = fs.readFileSync(file, "utf8");
+  // a dry run names what would be backed up
+  const dry = await publish({ dry_run: true });
+  assert.ok((dry.would_back_up as string[]).includes(file));
+  // the second publish keeps the old file beside it
+  const second = await publish({ batch_lease: "L1" });
+  const backup = (second.backups as string[]).find((b) => b.startsWith(file + ".bak-"));
+  assert.ok(backup, JSON.stringify(second.backups));
+  assert.equal(fs.readFileSync(backup!, "utf8"), before);
+  // import: needs document and lease too
+  const csv = path.join(dir, "pts.csv");
+  fs.writeFileSync(csv, "name,X,Y,Z,rotation\nN1,1,2,3,4\n");
+  const noDoc = body(await runFmcCoord(args({ action: "import", project: "Ogala", project_folder: folder, source: csv, dry_run: false, batch_lease: "L1" }), held as any));
+  assert.match(String(noDoc.error), /FMC-COORD-LEASE.*needs document/);
+  const imported = body(await runFmcCoord(args({ action: "import", document: "A-0003", project: "Ogala", project_folder: folder, source: csv, dry_run: false, batch_lease: "L1" }), held as any));
+  assert.equal(imported.imported, 1);
+  assert.ok((imported.backups as string[]).some((b) => b.startsWith(file + ".bak-")));
 });

@@ -212,16 +212,29 @@ export function readRecord(projectFolder: string, projectKey: string, env: NodeJ
   return { record: null, file: "" };
 }
 
-export function writeRecordFiles(record: CoordRecord, plan: WritePlan): string[] {
+/** B5: the file as it was, kept beside it before it is overwritten (<file>.bak-<UTC stamp>). Null when there was none. */
+export function backupRecordFile(file: string, now: Date = new Date()): string | null {
+  if (!fs.existsSync(file)) return null;
+  const stamp = now.toISOString().replace(/[-:]/g, "").replace(/\..*$/, "").replace("T", "-");
+  let backup = `${file}.bak-${stamp}`;
+  for (let i = 2; fs.existsSync(backup); i++) backup = `${file}.bak-${stamp}-${i}`;
+  fs.copyFileSync(file, backup);
+  return backup;
+}
+
+/** Writes the record; an existing FMC_Coord.json (and the app copy) is backed up first. A failed backup writes nothing. */
+export function writeRecordFiles(record: CoordRecord, plan: WritePlan, backups: string[] = [], now: Date = new Date()): string[] {
   const text = JSON.stringify(record, null, 2);
+  const targets = [plan.app_file, ...(plan.project_file ? [plan.project_file] : [])];
+  for (const file of targets) {
+    const backup = backupRecordFile(file, now);
+    if (backup) backups.push(backup);
+  }
   const wrote: string[] = [];
-  fs.mkdirSync(path.dirname(plan.app_file), { recursive: true });
-  fs.writeFileSync(plan.app_file, text);
-  wrote.push(plan.app_file);
-  if (plan.project_file) {
-    fs.mkdirSync(path.dirname(plan.project_file), { recursive: true });
-    fs.writeFileSync(plan.project_file, text);
-    wrote.push(plan.project_file);
+  for (const file of targets) {
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, text);
+    wrote.push(file);
   }
   return wrote;
 }
