@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
+using System.Threading;
 
 namespace Formcraft.Shell.Services
 {
@@ -74,13 +75,23 @@ namespace Formcraft.Shell.Services
         private static readonly DataContractJsonSerializerSettings Format = new DataContractJsonSerializerSettings { UseSimpleDictionaryFormat = true };
 
         private readonly string _path;
+        private readonly string _mutexName;
         private Data _data;
+        private (DateTime, long)? _seen;
 
         public JsonUserSettings(string path)
         {
             _path = path;
-            _data = Read(path);
+            _mutexName = MutexName(path);
+            _data = ReadReporting(path);
+            _seen = Stamp(path);
         }
+
+        /// <summary>The last save or read problem (file locked, read-only, no access), or null. The value stays in memory.</summary>
+        public string? LastError { get; private set; }
+
+        /// <summary>Raised with a plain message when the file could not be saved (F07: shown in the footer).</summary>
+        public event EventHandler<string>? SaveFailed;
 
         public static string DefaultPath =>
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Formcraft", "settings.json");
@@ -94,30 +105,115 @@ namespace Formcraft.Shell.Services
         public void Set(string key, string? value)
         {
             if (Get(key) == value) return;
-            if (value == null) _data.Values.Remove(key);
-            else _data.Values[key] = value;
-            Save();
+            void Apply(Data d)
+            {
+                if (value == null) d.Values.Remove(key);
+                else d.Values[key] = value;
+            }
+            Apply(_data);
+            Save(Apply);
             Changed?.Invoke(this, EventArgs.Empty);
         }
 
         public void SetPart(string partId, bool on)
         {
-            var changed = on ? _data.PartsOff.Remove(partId) : !_data.PartsOff.Contains(partId);
+            var changed = on ? _data.PartsOff.Contains(partId) : !_data.PartsOff.Contains(partId);
             if (!changed) return;
-            if (!on) _data.PartsOff.Add(partId);
-            _data.PartsOff = _data.PartsOff.Distinct().OrderBy(p => p, StringComparer.Ordinal).ToList();
-            Save();
+            void Apply(Data d)
+            {
+                d.PartsOff.RemoveAll(p => p == partId);
+                if (!on) d.PartsOff.Add(partId);
+                d.PartsOff = d.PartsOff.Distinct().OrderBy(p => p, StringComparer.Ordinal).ToList();
+            }
+            Apply(_data);
+            Save(Apply);
             Changed?.Invoke(this, EventArgs.Empty);
         }
 
-        private void Save()
+        // F07: the old save deleted settings.json and then moved a fixed-name temp over it, so a crash in between lost
+        // the file and two Revits could clash on the same .tmp and overwrite each other's changes. Now: one writer at a
+        // time across processes (a named mutex), re-read and apply this one change when another Revit wrote the file
+        // since we last saw it, a unique temp, File.Replace with one .bak, and no exception out of Set.
+        private void Save(Action<Data> change)
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(_path)!);
-            var temp = _path + ".tmp";
-            using (var file = File.Create(temp))
-                new DataContractJsonSerializer(typeof(Data), Format).WriteObject(file, _data);
-            if (File.Exists(_path)) File.Delete(_path);
-            File.Move(temp, _path);
+            string? temp = null;
+            Mutex? mutex = null;
+            var owned = false;
+            try
+            {
+                mutex = new Mutex(false, _mutexName);
+                try { owned = mutex.WaitOne(TimeSpan.FromSeconds(2)); }
+                catch (AbandonedMutexException) { owned = true; }
+
+                var dir = Path.GetDirectoryName(_path);
+                if (!string.IsNullOrEmpty(dir)) Directory.CreateDirectory(dir);
+                var now = Stamp(_path);
+                if (now != null && now != _seen)
+                {
+                    var disk = Read(_path);
+                    change(disk);
+                    _data = disk;
+                }
+                temp = _path + "." + Guid.NewGuid().ToString("N") + ".tmp";
+                using (var file = new FileStream(temp, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+                    new DataContractJsonSerializer(typeof(Data), Format).WriteObject(file, _data);
+                if (File.Exists(_path)) File.Replace(temp, _path, _path + ".bak", ignoreMetadataErrors: true);
+                else File.Move(temp, _path);
+                temp = null;
+                _seen = Stamp(_path);
+                LastError = null;
+            }
+            catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
+            {
+                Fail("Settings not saved: " + ex.Message + " The change applies until Revit closes.");
+            }
+            finally
+            {
+                if (temp != null) try { File.Delete(temp); } catch (Exception) { /* best effort */ }
+                if (owned) try { mutex!.ReleaseMutex(); } catch (ApplicationException) { /* not owned */ }
+                mutex?.Dispose();
+            }
+        }
+
+        private void Fail(string message)
+        {
+            LastError = message;
+            SaveFailed?.Invoke(this, message);
+        }
+
+        private Data ReadReporting(string path)
+        {
+            try { return Read(path); }
+            catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
+            {
+                LastError = "Settings not read: " + ex.Message + " Defaults are used.";
+                return new Data();
+            }
+        }
+
+        private static (DateTime, long)? Stamp(string path)
+        {
+            try
+            {
+                var info = new FileInfo(path);
+                return info.Exists ? (info.LastWriteTimeUtc, info.Length) : ((DateTime, long)?)null;
+            }
+            catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>One name per settings file, the same in every process (string.GetHashCode is not).</summary>
+        private static string MutexName(string path)
+        {
+            uint hash = 2166136261;
+            foreach (var ch in Path.GetFullPath(path).ToLowerInvariant())
+            {
+                hash ^= ch;
+                hash *= 16777619;
+            }
+            return @"Local\Formcraft.Settings." + hash.ToString("x8");
         }
 
         private static Data Read(string path)
@@ -134,7 +230,8 @@ namespace Formcraft.Shell.Services
             catch (SerializationException)
             {
                 // Keep the broken file for whoever wants to look, and start from the defaults.
-                File.Copy(path, path + ".broken", overwrite: true);
+                try { File.Copy(path, path + ".broken", overwrite: true); }
+                catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException) { /* the defaults still apply */ }
                 return new Data();
             }
         }

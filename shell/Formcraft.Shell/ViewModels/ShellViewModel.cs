@@ -251,6 +251,12 @@ namespace Formcraft.Shell.ViewModels
             _connection.Changed += (_, __) => _ = RefreshAiAsync();
             _ = RefreshAiAsync();
             _settings.Changed += (_, __) => { Rebuild(); UpdateState(); };
+            // F07: a settings file that cannot be saved (locked, read-only) is said in the footer, not thrown.
+            if (_settings is JsonUserSettings saved)
+            {
+                saved.SaveFailed += (_, message) => OnUi(() => Status = message);
+                if (saved.LastError != null) Status = saved.LastError;
+            }
             Rebuild();
             UpdateState();
             UpdateFooter();
