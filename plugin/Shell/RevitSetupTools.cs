@@ -454,7 +454,7 @@ namespace revit_mcp_plugin.Shell
 
         public async Task<string> RequestKeynoteAsync(string group, string text)
         {
-            CliResult r = await ServerCli.RunAsync("fmc_library", new JObject { ["action"] = "keynote_request", ["group"] = group, ["text"] = text });
+            CliResult r = await ServerCli.RunAsync("fmc_library", new JObject { ["action"] = "keynote_request", ["group"] = group, ["text"] = text, ["dry_run"] = false });
             return r.Ok ? "Requested " + r.Body.Value<string>("requested") + ". The BIM Manager approves it into the kit's keynote file."
                         : "Keynote request refused: " + string.Join(" ", r.Reasons());
         }

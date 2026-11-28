@@ -7,6 +7,7 @@ for (const [from, to] of [
   ["../docs/tracker/mep_matrix.json", "build/mep_matrix.json"],
   ["data/FMC_ViewStyle.json", "build/data/FMC_ViewStyle.json"],
   ["data/FMC_KeynoteLegend.json", "build/data/FMC_KeynoteLegend.json"],
+  ["data/library/index.json", "build/data/library/index.json"],
 ]) {
   if (!fs.existsSync(from)) throw new Error(`ship-data: ${from} is missing`);
   fs.mkdirSync(path.dirname(to), { recursive: true });
