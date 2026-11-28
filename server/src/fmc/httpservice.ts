@@ -187,7 +187,11 @@ export function describeInstance(
   };
 }
 
-export async function healthReport(listen: string, startedAt: number, env: NodeJS.ProcessEnv = process.env): Promise<HealthReport> {
+/**
+ * light (fmc_health summary): skip the coordination scan, which reads the project's coordination files.
+ * The section is then an empty object. HTTP /health always asks for the full report.
+ */
+export async function healthReport(listen: string, startedAt: number, env: NodeJS.ProcessEnv = process.env, options: { light?: boolean } = {}): Promise<HealthReport> {
   const instances = readInstances(env);
   const lines = readRevitJobLines(env);
   const rows = [];
@@ -200,6 +204,7 @@ export async function healthReport(listen: string, startedAt: number, env: NodeJ
   const reg = lastRegistration;
   const addin = [...new Set(rows.map((row) => row.build).filter(Boolean))];
   const openProjects = rows.flatMap((row) => row.documents.filter((doc) => !doc.family));
+  const snapshot = batchBoard().snapshot();
   return {
     ok: reg.failed.length === 0,
     build: RUNNING_BUILD.commit,
@@ -213,11 +218,12 @@ export async function healthReport(listen: string, startedAt: number, env: NodeJ
     registration: { registered: reg.registered.length, skipped: reg.skipped.length, failed: reg.failed },
     queue: queueSnapshots(),
     busy_reason: rows.map((row) => row.busy_reason).find((reason) => reason) ?? null,
-    batches: batchBoard().snapshot(),
-    schedule: batchBoard().snapshot().syncs,
+    // One snapshot: each one refreshes the sync clocks from disk.
+    batches: snapshot,
+    schedule: snapshot.syncs,
     memory: memoryGate.view(),
     hw: hwHealth(),
-    coordination: coordinationReport(env),
+    coordination: options.light ? ({} as ReturnType<typeof coordinationReport>) : coordinationReport(env),
     jobs: noteRestart(env),
   };
 }

@@ -9,6 +9,9 @@ import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { assertHttpPort, bearerToken, bindHost, isLoopback, startHttpService, tokenEquals, writeTokenFile } from "./httpservice.js";
 import { bridgeStdio } from "./stdio_shim.js";
+import { ageSyncRows, buildMatch, healthView } from "./healthview.js";
+import type { HealthReport } from "./httpservice.js";
+import { runFmcHealth } from "../tools/fmc_health.js";
 
 test("the HTTP service stays on loopback, off Revit's ports, and the token is not a prefix match", () => {
   assert.equal(bindHost(undefined), "127.0.0.1");
@@ -116,4 +119,69 @@ test("the service requires the bearer token, reports health, lists fmc_review, a
     else process.env.FMC_GUARD_CONFIG = previousGuard;
     await service?.close();
   }
+});
+function fakeHealth(over: Partial<HealthReport> = {}): HealthReport {
+  return {
+    ok: true, build: "cfc56f5", built: "", server: { commit: "cfc56f5", built: "" }, addin: ["cf71214"], uptime_s: 10, listen: "x",
+    instances: [{
+      pid: 1, port: 8080, revit: "2025", build: "cf71214", answering: true, verdict: "ok", busy: null, busy_reason: null,
+      documents: [{ title: "plumbing_USER", path: "C:\\M\\plumbing_USER.rvt", active: true, family: false }, { title: "electrical_USER", path: "C:\\M\\electrical_USER.rvt", active: false, family: false }],
+      resolved_document: null,
+    }],
+    resolved_document: null,
+    registration: { registered: 110, skipped: 15, failed: [] },
+    queue: [] as unknown as HealthReport["queue"],
+    busy_reason: null,
+    batches: { syncs: [
+      { document: "plumbing_USER", last_error: null, last_sync_at: "2026-11-28T06:00:00Z" },
+      { document: "F26901-FMC-ZZ-ZZ-M3-A-0002_USER", last_error: "[FMC-DOC-NOT-FOUND] No open document", last_sync_at: null },
+    ] },
+    schedule: [],
+    memory: { free_mb: 3000, tier: "ok", paused: false } as unknown as HealthReport["memory"],
+    hw: {} as HealthReport["hw"],
+    coordination: {} as HealthReport["coordination"],
+    jobs: { queued: 0, running: 0, last_finished: null },
+    ...over,
+  };
+}
+
+test("fmc_health: stale sync errors age out, build mismatch is a warning, ok stays true", () => {
+  assert.equal(buildMatch("cfc56f5", ["cf71214"]), false);
+  assert.equal(buildMatch("cfc56f5+dirty", ["cfc56f5"]), true);
+  assert.equal(buildMatch("cfc56f5", []), null);
+  const rows = ageSyncRows([{ document: "Gone", last_error: "boom" }], ["plumbing_USER"]);
+  assert.equal(rows[0].last_error, null);
+  assert.equal(rows[0].stale_error, "boom");
+  const view = healthView(fakeHealth());
+  assert.equal(view.ok, true);
+  assert.equal(view.server_ok, true);
+  assert.equal(view.build_match, false);
+  const warnings = view.warnings as Array<{ code: string }>;
+  assert.deepEqual(warnings.map((w) => w.code), ["FMC-HEALTH-BUILD-MISMATCH"]);
+});
+
+test("fmc_health: a dialog, a hard memory pause or an open-document sync error make ok false", () => {
+  const base = fakeHealth();
+  const dialog = healthView(fakeHealth({ instances: [{ ...base.instances[0], verdict: "waiting_for_idle", busy: { job: "j", command: "fmc_revit_file", since_s: 60, dialog: "TaskDialog_Save_Changes_To_Local_File" } }] }));
+  assert.equal(dialog.ok, false);
+  assert.ok((dialog.warnings as Array<{ code: string }>).some((w) => w.code === "FMC-HEALTH-REVIT-DIALOG"));
+  const mem = healthView(fakeHealth({ memory: { free_mb: 900, tier: "hard", paused: true, reason: "low" } as unknown as HealthReport["memory"] }));
+  assert.equal(mem.ok, false);
+  const sync = healthView(fakeHealth({ batches: { syncs: [{ document: "plumbing_USER", last_error: "central busy" }] } }));
+  assert.equal(sync.ok, false);
+  assert.equal(sync.server_ok, true);
+});
+
+test("fmc_health: document narrows the reply and summary is short", async () => {
+  const one = healthView(fakeHealth(), { document: "plumbing_USER", summary: true });
+  assert.deepEqual(one.resolved_document, { title: "plumbing_USER", path: "C:\\M\\plumbing_USER.rvt" });
+  assert.equal(one.summary, true);
+  assert.equal("batches" in one, false);
+  assert.deepEqual((one.syncs as Array<{ document: string }>).map((s) => s.document), ["plumbing_USER"]);
+  const missing = healthView(fakeHealth(), { document: "Nope" });
+  assert.equal(missing.ok, false);
+  assert.match(String(missing.note), /FMC-DOC-NOT-FOUND/);
+  const reply = await runFmcHealth({ summary: true }, async () => fakeHealth({ memory: { free_mb: 900, tier: "hard", paused: true } as unknown as HealthReport["memory"] }));
+  assert.equal(reply.isError, false);
+  assert.ok(reply.content[0].text.length < 2000);
 });
