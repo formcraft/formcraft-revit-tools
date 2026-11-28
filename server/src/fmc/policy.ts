@@ -243,6 +243,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_close_local_apply",
   // Close spare documents or purge unused elements. Status stays on fmc_memory.
   "fmc_memory_apply",
+  // fmc_extstore (GAP-19): FMC_ExtStore records stamped on elements, one transaction, under a batch lease. Reads stay on fmc_extstore_read.
+  "fmc_extstore_write",
 ]);
 
 /**
