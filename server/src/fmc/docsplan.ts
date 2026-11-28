@@ -1,9 +1,11 @@
 /**
  * Open and close plans for fmc_docs. Revit is not called here.
  * A workshared central opens as a new local in Documents unless detach is set.
- * A save is refused under protected_roots, on save_exclude, and for HEBERT HOSTELS_USER.
+ * A save is refused under protected_roots, on save_exclude, and for a protected project name (HEBERT HOSTELS built in,
+ * more from the guard's never_write_titles; see protectednames.ts).
  */
 import path from "node:path";
+import { neverWriteMatch } from "./protectednames.js";
 import { saveBlocked } from "./savepolicy.js";
 import type { GuardConfig } from "./policy.js";
 
@@ -31,8 +33,27 @@ export function localPathFor(centralPath: string, documents = documentsFolder())
   return win.join(documents, `${name}.rvt`);
 }
 
-export function neverSaveTitle(title: string, file = ""): boolean {
-  return /hebert hostels/i.test(`${title} ${file}`);
+export function neverSaveTitle(title: string, file = "", guard?: unknown): boolean {
+  return neverWriteMatch([title, file], guard) != null;
+}
+
+/** list filters (research tool 37): document matches a title, full path or file name; the flags must match when given. */
+export interface DocsFilter { document?: string; family?: boolean; modified?: boolean; workshared?: boolean }
+
+export function filterDocs(rows: OpenDocRow[], filter: DocsFilter): OpenDocRow[] {
+  const want = (filter.document ?? "").trim().toLowerCase();
+  return rows.filter((doc) => {
+    if (want) {
+      const title = (doc.title ?? "").toLowerCase();
+      const file = (doc.path ?? "").toLowerCase();
+      const base = win.basename(file);
+      if (title !== want && file !== want && base !== want && win.basename(file, win.extname(file)) !== want) return false;
+    }
+    if (filter.family != null && (doc.family === true) !== filter.family) return false;
+    if (filter.modified != null && (doc.modified === true) !== filter.modified) return false;
+    if (filter.workshared != null && (doc.workshared === true) !== filter.workshared) return false;
+    return true;
+  });
 }
 
 export interface OpenRequest {
@@ -117,7 +138,8 @@ export function planClose(req: CloseRequest): ClosePlan {
   const save = req.save === true;
   if (doc.modified && !save) reasons.push("The document is modified. close refuses it unless save is true. Nothing was closed.");
   if (save) {
-    if (neverSaveTitle(doc.title ?? "", doc.path ?? "")) reasons.push("HEBERT HOSTELS_USER is never saved.");
+    const protectedName = neverWriteMatch([doc.title ?? "", doc.path ?? ""], req.guard);
+    if (protectedName) reasons.push(`${doc.title || protectedName} is never saved (protected name ${protectedName}).`);
     const blocked = req.guard ? saveBlocked({ title: doc.title, path: doc.path }, req.guard) : null;
     if (blocked) reasons.push(blocked);
     if (doc.workshared) reasons.push("A workshared model is not saved by a tool. Sync stays with the person.");
