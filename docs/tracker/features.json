@@ -1141,5 +1141,14 @@
     "status": "Built, Revit check due",
     "ref": "fmc_fam_type, fmc_doc ops type_rename, type_flex_matrix, type_delete, docs/tools/fmc_fam_type.md",
     "note": "A thin wrapper over fmc_doc ops. type_flex_matrix is a read sent on its own: each type regenerated with each parameter at 2-6 values from low to high in one TransactionGroup that is rolled back; it lists every failing type and value and never saves. type_delete never removes the last type and is person-gated like param_remove (confirm_token, then the pane's Approve runs it)."
+  },
+  {
+    "id": "F140",
+    "area": "Engine",
+    "group": "Families",
+    "feature": "Reference planes: rename, move, delete (fmc_fam_ref)",
+    "status": "Built, Revit check due",
+    "ref": "fmc_fam_ref, fmc_doc ops plane_rename, plane_move, plane_delete, docs/tools/fmc_fam_ref.md",
+    "note": "A thin wrapper over fmc_doc ops, by plane name or element id. list shows id, name, Is Reference, Defines Origin, pinned, normal and position. plane_move moves along the plane's own normal and warns when a lock holds it. Center (Left/Right), Center (Front/Back), Ref. Level and Defines Origin planes are never renamed, moved or deleted. plane_delete is person-gated; its dry run names what depends on the plane. The naming standard for other planes is still Emlyn's decision."
   }
 ]
