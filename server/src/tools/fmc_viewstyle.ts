@@ -65,10 +65,12 @@ function stamp(extra: Record<string, unknown> = {}) {
     images: [] as [],
     saved: false,
     synced: false,
+    // VS-3: cite only what was read. The spec cite is filled in once a spec is loaded; the standard and the rulebook are named, not opened.
     cites: {
-      kit: "03_Master_Data/FMC_ViewStyle.json",
-      standards: "FMC-BIM-STD-002 view graphics",
-      rulebook: "Colours marked PROVISIONAL are not the standard and cannot PASS.",
+      spec_read: null as string | null,
+      kit: "not read",
+      standards_named: "FMC-BIM-STD-002 view graphics (not opened by this tool)",
+      rule: "Colours marked PROVISIONAL are not the standard and cannot PASS.",
     },
     ...extra,
   };
@@ -122,8 +124,15 @@ export async function runFmcViewStyle(args: FmcViewStyleArgs, io: ViewStyleIo = 
       document: doc.title,
       spec: loaded.path,
       spec_source: loaded.source,
+      cites: {
+        spec_read: loaded.path,
+        kit: loaded.source === "kit" ? loaded.path : `not read (spec_source ${loaded.source})`,
+        standards_named: "FMC-BIM-STD-002 view graphics (not opened by this tool)",
+        rule: "Colours marked PROVISIONAL are not the standard and cannot PASS.",
+      },
       provisional,
-      status: provisional ? "PROVISIONAL" : "PASS",
+      // VS-3: a dry run has applied nothing, so it is PLANNED (or PROVISIONAL), never PASS; PASS is kept for a real apply.
+      status: provisional ? "PROVISIONAL" : (args.dry_run !== false ? "PLANNED" : "PASS"),
       can_pass: !provisional,
       ops,
       skipped: planned.skipped,
@@ -147,7 +156,8 @@ export async function runFmcViewStyle(args: FmcViewStyleArgs, io: ViewStyleIo = 
       ? await io.apply(applyBody) as Record<string, unknown>
       : await withRevitConnection((client) => client.sendCommand("fmc_viewstyle_apply", applyBody, 180000)) as Record<string, unknown>;
     const appliedCode = typeof applied.code === "string" ? applied.code : "";
-    return reply({ ...summary, read_only: false, dry_run: false, applied, ...(appliedCode ? { code: appliedCode, message: VIEWSTYLE_FIX[appliedCode] ?? "" } : {}) });
+    const appliedOk = applied?.refused !== true && (applied?.ok === true || !appliedCode);
+    return reply({ ...summary, status: provisional ? "PROVISIONAL" : (appliedOk ? "PASS" : "FAIL"), read_only: false, dry_run: false, applied, ...(appliedCode ? { code: appliedCode, message: VIEWSTYLE_FIX[appliedCode] ?? "" } : {}) });
   } catch (error) {
     return failed(error);
   }
