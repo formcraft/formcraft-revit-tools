@@ -15,7 +15,7 @@ import { GuardConfig, WRITE_COMMANDS, expandEnv } from "./policy.js";
 import { parseSharedParameters, SpParam } from "./specs.js";
 import { Keynote, parseKeynotes } from "./library.js";
 import { parseRulebook as parseQaRulebook } from "./rules.js";
-import { COMMAND_GROUPS, NEVER, parseConfig as parseAiConfig } from "./aiuse.js";
+import { COMMAND_GROUPS, NEVER, parseConfig as parseAiConfig, parseRulebook as parseAiRulebook } from "./aiuse.js";
 import type { RevitInstance } from "./connect.js";
 
 // ---------- paths: Windows paths on the PC, POSIX paths in tests ----------
@@ -223,6 +223,38 @@ function familyFilesUncached(k: KitPaths): { staged: Map<string, string>; releas
   for (const e of listDir(k.stagingRoot)) if (e.isDirectory()) collect(pj(k.stagingRoot, e.name), staged);
   for (const e of listDir(k.familiesRoot)) if (e.isDirectory() && /^[A-Z]{1,3}$/.test(e.name)) collect(pj(k.familiesRoot, e.name), released);
   return { staged, released };
+}
+
+/**
+ * An AI-use rulebook (schema "fmc-aiuse/0.x", the whole file or its "ai_use" section): one line per limit, band, group,
+ * discipline override, the General switch and the cap, read as written; valid says whether the AI gate can use it
+ * (aiuse.ts parseRulebook). Null when the file isn't in that schema.
+ */
+export function aiUseSummary(file: string): Record<string, unknown> | null {
+  const raw = cached(file, (t) => JSON.parse(t), "rulebook-raw") as any;
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null;
+  const isAi = (x: any) => !!x && typeof x === "object" && /^fmc-aiuse\//.test(String(x.schema ?? ""));
+  const o = isAi(raw) ? raw : isAi(raw.ai_use) ? raw.ai_use : null;
+  if (!o) return null;
+  const list = (v: unknown) => Array.isArray(v) && v.length ? v.map(String).join(", ") : "none";
+  const lines: string[] = [];
+  const lim = o.limits && typeof o.limits === "object" ? o.limits : {};
+  lines.push(`limits: ${Object.entries(lim).map(([k, v]) => `${k} ${v}`).join(", ") || "none set"}`);
+  if (o.default_involvement !== undefined) lines.push(`default_involvement ${o.default_involvement}`);
+  for (const band of Array.isArray(o.bands) ? o.bands : []) lines.push(`band ${band?.name ?? "?"} ${band?.min ?? "?"}-${band?.max ?? "?"}: ${list(band?.groups)}`);
+  for (const [id, g] of Object.entries((o.groups && typeof o.groups === "object" ? o.groups : {}) as Record<string, any>))
+    lines.push(`group ${id} (${g?.name ?? id}): ${g?.auto_allowed === true ? "auto_allowed (may be set to Auto in WIP)" : "not auto_allowed (at most Fix with approval)"}`);
+  for (const [d, v] of Object.entries((o.discipline_overrides && typeof o.discipline_overrides === "object" ? o.discipline_overrides : {}) as Record<string, any>))
+    lines.push(`override ${d}: max_involvement ${v?.max_involvement ?? "?"}, groups ${list(v?.groups)}`);
+  if (o.general && typeof o.general === "object") lines.push(`general switch: ${o.general.level ?? "?"}, groups ${list(o.general.groups)}`);
+  if (o.cap && typeof o.cap === "object") lines.push(`cap: ${o.cap.measure ?? "none"}${o.cap.value !== undefined ? ` ${o.cap.value}` : ""}`);
+  const parsed = parseAiRulebook(JSON.stringify(o));
+  return {
+    file, book: pbase(file, ".json").replace(/^FMC_Rulebook_/, ""), kind: "ai-use limits", schema: String(o.schema),
+    section: o === raw ? "whole file" : "ai_use", valid: !!parsed.book, problems: parsed.problems.length ? parsed.problems : undefined,
+    count: lines.length, rules: lines.map((l) => l.slice(0, 140)), sections: Object.keys(o).slice(0, 30),
+    note: "Not QA rules: the AI-modeller limits the AI gate reads (bands, groups, limits, General switch, cap). valid false: the gate can't use this file, so AI modelling stays Off",
+  };
 }
 
 export function rulebookFiles(k: KitPaths): string[] {
@@ -511,6 +543,14 @@ function aiUseState(k: KitPaths, cfg: GuardConfig) {
     aiuse_rulebook: aiBook ?? "missing (AI modelling on projects stays Off)",
     claudeuse_rulebook: claudeBook ?? "missing",
     ai_modeller: !ai ? "off (no ai_modeller section in fmc_guard.json)" : ai.stop ? "stopped" : ai.on ? "on" : "off",
+    // F63 / P-fmc_context-02: what "on" means, read-only, so an "on" can't look like a guarded switch while batches auto-run.
+    ...(ai ? {
+      mode: ai.mode ?? "strict", access: ai.access ?? "general", auto_approve: ai.auto_approve === true,
+      auto_approve_sync: ai.auto_approve_sync === true, allow_code: ai.allow_code === true,
+      approvals: ai.mode === "testing" && ai.auto_approve === true
+        ? "auto-approve: in testing mode AI batches run without waiting for a person (each is listed in Approvals as auto-approved)"
+        : "no auto-approve: AI batches follow the rulebook levels (a person approves unless a group is at Auto in WIP)",
+    } : {}),
   };
 }
 
@@ -851,6 +891,9 @@ function getOne(kind: string, name: string, k: KitPaths): Record<string, unknown
       const b = rulebookSummary(file);
       if (!b) return { file, problems: ["not readable as JSON"] };
       if (rule) { const r = b.rules.find((x) => x.id.toLowerCase() === rule.toLowerCase()); return r ? { file, book: b.name, rule: r } : null; }
+      // F63 / P-fmc_context-01: the AI-use rulebook holds limits (schema fmc-aiuse), not QA rules; show them, never "0 rules".
+      const ai = !b.rules.length ? aiUseSummary(file) : null;
+      if (ai) return ai;
       const out: Record<string, unknown> = { file, book: b.name, version: b.version, count: b.rules.length, rules: b.rules.map((r) => `${r.id} [${r.severity}] ${r.rule}`.slice(0, 140)) };
       // A file with no QA rules (count 0) may hold another shape: name its top-level keys rather than look empty.
       if (!b.rules.length) {

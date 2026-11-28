@@ -345,6 +345,46 @@ test("a rulebook with no QA rules names its top-level keys instead of looking em
   assert.equal((getItem("rulebook:Families", deps) as any).top_level_keys, undefined);
 });
 
+test("F63: get rulebook:AIUse shows the AI-use limits (fmc-aiuse schema), never 0 rules", () => {
+  const { root, deps } = kit();
+  const proposal = fs.readFileSync(path.resolve(HERE, "../../../docs/kit-proposals/FMC_Rulebook_AIUse.json"), "utf8");
+  fs.writeFileSync(path.join(root, "03_Master_Data", "FMC_Rulebook", "FMC_Rulebook_AIUse.json"), "\ufeff" + proposal);
+  const b = getItem("rulebook:AIUse", deps) as any;
+  assert.equal(b.kind, "ai-use limits");
+  assert.equal(b.valid, true);
+  assert.ok(b.count > 10, `${b.count} lines`);
+  assert.equal(b.count, b.rules.length);
+  assert.ok(b.rules.includes("limits: batch_elements 50, daily_elements 500, failed_batches_per_day 3"));
+  assert.ok(b.rules.some((l: string) => l.startsWith("band Assist 1-20: data, views")));
+  assert.ok(b.rules.some((l: string) => l.startsWith("override S: max_involvement 5")));
+  assert.ok(b.rules.some((l: string) => l.startsWith("general switch: Fix with approval")));
+  assert.ok(b.rules.includes("cap: none"));
+  // A broken one says so instead of looking empty or valid.
+  fs.writeFileSync(path.join(root, "03_Master_Data", "FMC_Rulebook", "FMC_Rulebook_AIUse.json"), JSON.stringify({ schema: "fmc-aiuse/0.1", bands: [] }));
+  const bad = getItem("rulebook:AIUse", deps) as any;
+  assert.equal(bad.valid, false);
+  assert.ok(bad.problems.length > 0);
+  assert.equal(bad.rules[0], "limits: none set");
+});
+
+test("F63: overview.ai_use says mode, access, auto-approve and code, read-only", () => {
+  const { deps } = kit();
+  const on = { ...deps, cfg: { ...deps.cfg, ai_modeller: { on: true, mode: "testing", auto_approve: true, access: "full", levels: {} } } as unknown as GuardConfig };
+  const a = (overview(on) as any).ai_use;
+  assert.equal(a.ai_modeller, "on");
+  assert.equal(a.mode, "testing");
+  assert.equal(a.access, "full");
+  assert.equal(a.auto_approve, true);
+  assert.equal(a.allow_code, false);
+  assert.match(a.approvals, /^auto-approve/);
+  const strict = { ...deps, cfg: { ...deps.cfg, ai_modeller: { on: true, auto_approve: true, levels: {} } } as unknown as GuardConfig };
+  const s = (overview(strict) as any).ai_use;
+  assert.equal(s.mode, "strict");
+  assert.match(s.approvals, /^no auto-approve/, "auto_approve only acts in testing mode (aigate.ts)");
+  const off = (overview(deps) as any).ai_use;
+  assert.equal(off.auto_approve, undefined, "no ai_modeller section: nothing to report");
+});
+
 test("family and template listings are kept 10 s, and clearFolderMemos drops them", () => {
   const { root, deps } = kit();
   const k = kitPaths(deps.cfg, deps.extraRecipeDirs);
