@@ -320,12 +320,13 @@ namespace RevitMCPCommandSet.Services.Fmc
                 FmcPathJail.Roots roots = FmcPathJail.For(project);
                 string target = FmcPathJail.Require("write", path, roots, "path");
                 // BSF-3: an existing .rfa is replaced only with overwrite: true and the server's archive of it
-                string archivedFile = File.Exists(target) ? FmcFamilySafe.RequireFileArchived(target, overwrite, Parameters.Value<string>("archive_path"), roots) : null;
+                bool dryRun = Parameters.Value<bool?>("dry_run") == true;
+                string archivedFile = File.Exists(target) && !dryRun ? FmcFamilySafe.RequireFileArchived(target, overwrite, Parameters.Value<string>("archive_path"), roots) : null;
                 string file = File.Exists(tpl) ? tpl : FindTemplate(app.Application.FamilyTemplatePath, tpl)
                     ?? throw new InvalidOperationException($"no family template {tpl} under {app.Application.FamilyTemplatePath}");
                 file = FmcPathJail.Require("read", file, roots, "template");
                 // NF-2: a dry run checks the path, the template and the overwrite, and writes nothing
-                if (Parameters.Value<bool?>("dry_run") == true)
+                if (dryRun)
                 {
                     Result = new JObject { ["dry_run"] = true, ["would_save"] = target, ["template"] = file, ["exists"] = File.Exists(target), ["archived"] = archivedFile,
                         ["next"] = "Run again with dry_run false to make it" };

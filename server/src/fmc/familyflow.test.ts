@@ -115,3 +115,40 @@ test("FLOW reload: a failed preview loads nothing; an unsaved project has nowher
   const u = await reloadGate("load_family", { family: "F", overwrite: true }, unsaved, there, { store: w.store });
   assert.equal(u.ok, false);
 });
+
+test("FLOW live lock: load_into_project checks the target project's live-model lock, not only the family document", async () => {
+  const { gateModelFamilyOps, FAMILY_LIVELOCK } = await import("./familyflow.js");
+  const w = world();
+  const ops: Array<Record<string, unknown>> = [{ op: "load_into_project", overwrite: true, archive_path: "C:\\evil\\x.rfa" }];
+  const live = await gateModelFamilyOps(ops, false, {
+    jail: async () => w.j, cfg: { ...w.cfg, live_model_lock: true, library_roots: [] },
+    docInfo: async () => ({ active: { title: "P-2222-ORG-ZZ-00-M3-A-0101", path: w.model.replace("01_WIP", "03_PUBLISHED"), isFamily: false } }),
+    familyDoc: () => ({ title: "FMC_A_Door.rfa", path: "" }), preview: async () => ({ exists: false }), fl: { store: w.store },
+  });
+  assert.equal(live?.code, FAMILY_LIVELOCK, "a live project outside library_roots refuses the load");
+  assert.match(live?.message ?? "", /revit_file load_family/);
+  assert.equal(ops[0].archive_path, undefined, "a caller's archive_path never survives");
+  // a family document as the target (or the lock off) is not refused by the lock
+  const off = await gateModelFamilyOps([{ op: "load_into_project" }], false, { jail: async () => w.j, cfg: { ...w.cfg, live_model_lock: false },
+    familyDoc: () => ({ title: "FMC_A_Door.rfa", path: "" }), preview: async () => ({ exists: false }), fl: { store: w.store } });
+  assert.equal(off, null);
+});
+
+test("FLOW modify_model ops: save_family path gated, caller archive_path stripped, overwrite only with an archive", async () => {
+  const { gateModelFamilyOps } = await import("./familyflow.js");
+  const w = world();
+  const target = win.join(w.wip, "FMC_A_Door.rfa");
+  fs.writeFileSync(target, "v1");
+  const ops: Array<Record<string, unknown>> = [{ op: "save_family", path: target, overwrite: true, archive_path: win.join(w.wip, "_Archive", "fake.rfa") }];
+  const r = await gateModelFamilyOps(ops, false, { jail: async () => w.j, cfg: w.cfg, fl: { store: w.store } });
+  assert.equal(r?.code, FAMILY_LOAD.WAITING);
+  assert.equal(ops[0].archive_path, undefined);
+  assert.equal(ops[0].overwrite, false);
+  const esc: Array<Record<string, unknown>> = [{ op: "save_family", path: win.join(w.kit, "Families", "x.rfa") }];
+  assert.ok((await gateModelFamilyOps(esc, false, { jail: async () => w.j, cfg: w.cfg, fl: { store: w.store } }))?.code);
+  const fresh: Array<Record<string, unknown>> = [{ op: "load_into_project" }];
+  const ok = await gateModelFamilyOps(fresh, false, { jail: async () => w.j, cfg: { ...w.cfg, live_model_lock: false }, familyDoc: () => ({ title: "New.rfa", path: "" }),
+    preview: async () => ({ exists: false }), fl: { store: w.store } });
+  assert.equal(ok, null);
+  assert.equal(fresh[0].overwrite, false);
+});

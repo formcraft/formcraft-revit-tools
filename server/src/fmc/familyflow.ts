@@ -18,6 +18,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import { readInstances } from "./connect.js";
+import { documentTarget } from "./target.js";
+import { liveLockVerdict, loadConfig, type GuardConfig } from "./policy.js";
 import { callJail, revitCentral, type CallJail } from "./jailctx.js";
 import {
   FAMILY_LOAD, archiveFile, archiveFolderFor, claimFamilyOverwrite, familyPathGate, fileFingerprint, reloadFingerprint,
@@ -130,4 +132,106 @@ export async function reloadGate(op: string, a: ReloadAsk, j: CallJail, preview:
   try { claimFamilyOverwrite(g.record.id, d); }
   catch (e) { return { ok: false, code: FAMILY_LOAD.APPROVAL, approval_id: g.record.id, message: `[${FAMILY_LOAD.APPROVAL}] ${e instanceof Error ? e.message : String(e)}: nothing was loaded.` }; }
   return { ok: true, resolved: project, archive_path: g.archive, approval_id: g.record.id, preview: pv };
+}
+
+export const FAMILY_LIVELOCK = "FMC-FAM-LIVELOCK";
+
+/** The family document a modify_model batch runs in: the named one, else the active family, else the only open family. */
+export function currentFamilyDocument(named = documentTarget.getStore()): { title: string; path: string } | null {
+  let docs: Array<{ title: string; path: string; family?: boolean; active?: boolean }> = [];
+  try { docs = readInstances().flatMap((i) => i.documents ?? []).filter((d) => d.family); } catch { docs = []; }
+  const n = (named ?? "").trim().toLowerCase();
+  return (n ? docs.find((d) => d.title.toLowerCase() === n || d.path.toLowerCase() === n || d.title.toLowerCase() === n + ".rfa") : undefined)
+    ?? docs.find((d) => d.active) ?? (docs.length === 1 ? docs[0] : null);
+}
+
+/**
+ * The live-model lock on the project a family is loaded into. modify_model's batch is locked on the family document it
+ * runs in, so load_into_project reached a live project unchecked (BSF-3 finding). This checks the project itself;
+ * a refusal points to revit_file load_family on the project, which goes through the project's own lock and AI gate.
+ */
+export async function liveLockForProject(project: string, docInfo: (doc: string) => Promise<any>, cfg: GuardConfig): Promise<FamilyGateOk | FamilyGateNo> {
+  if (!cfg.live_model_lock) return { ok: true, resolved: project };
+  let info: any;
+  try { info = await docInfo(project); }
+  catch (e) { return { ok: false, code: FAMILY_LIVELOCK, message: `[${FAMILY_LIVELOCK}] load_into_project: could not read ${project} for the live-model lock (${e instanceof Error ? e.message : String(e)}): nothing was loaded.` }; }
+  const v = liveLockVerdict(info?.active, cfg);
+  return v.ok ? { ok: true, resolved: project }
+    : { ok: false, code: FAMILY_LIVELOCK, message: `[${FAMILY_LIVELOCK}] load_into_project into ${project}: the live-model lock refuses it (${v.reasons.join(" ")}). ` +
+      "Save the family (save_family), then load it with revit_file load_family on that project: it goes through the project's lock and approvals." };
+}
+
+export interface ModelOpsDeps {
+  jail?: (project?: string) => Promise<CallJail>;
+  preview?: PreviewFn;
+  docInfo?: (doc: string) => Promise<any>;
+  familyDoc?: () => { title: string; path: string } | null;
+  cfg?: GuardConfig;
+  fl?: FamilyLoadDeps;
+}
+
+async function revitDocInfo(doc: string) {
+  const { withRevitConnection } = await import("../utils/ConnectionManager.js");
+  return withRevitConnection((c) => c.sendRaw("fmc_document_info", { document: doc }, 15000));
+}
+
+const stemOf = (t: string) => t.replace(/\.rfa$/i, "");
+
+/**
+ * modify_model: save_family (with a path) and load_into_project through the gates, in place. A caller's archive_path is
+ * never trusted: it is removed, and set only from an approved, archived overwrite (overwrite is true only then).
+ * Returns the first refusal, or null when the batch may go to Revit.
+ */
+export async function gateModelFamilyOps(ops: Array<Record<string, unknown>>, dryRun: boolean, deps: ModelOpsDeps = {}): Promise<FamilyGateNo | null> {
+  const jailOf = deps.jail ?? ((p?: string) => familyJail(p));
+  for (const op of ops) {
+    if (op.op !== "save_family" && op.op !== "load_into_project") continue;
+    delete op.archive_path;
+    const wantOverwrite = op.overwrite === true;
+    const approval = typeof op.approval_id === "string" ? op.approval_id : undefined;
+    delete op.approval_id;
+    op.overwrite = false;
+    const project = typeof op.project === "string" ? op.project : undefined;
+    if (op.op === "save_family") {
+      if (typeof op.path !== "string" || !op.path.trim()) continue; // in place: the family's own file (Revit's .000N backups)
+      const j = await jailOf(project);
+      const g = fileWriteGate("save_family", op.path, { overwrite: wantOverwrite, approval_id: approval, dry_run: dryRun }, j, deps.fl);
+      if (!g.ok) return g;
+      op.path = g.resolved;
+      if (g.archive_path) { op.overwrite = true; op.archive_path = g.archive_path; }
+      continue;
+    }
+    const j = await jailOf(project);
+    const lock = await liveLockForProject(j.roots.document, deps.docInfo ?? revitDocInfo, deps.cfg ?? loadConfig().config);
+    if (!lock.ok) return lock;
+    const fam = (deps.familyDoc ?? (() => currentFamilyDocument()))();
+    if (!fam) return { ok: false, code: FAMILY_LOAD.PATH, message: `[${FAMILY_LOAD.PATH}] load_into_project: no family document open to load` };
+    const g = await reloadGate("load_into_project", { family: stemOf(fam.title), source: fam.path || fam.title, overwrite: wantOverwrite, approval_id: approval, dry_run: dryRun },
+      j, deps.preview, deps.fl);
+    if (!g.ok) return g;
+    if (g.archive_path) { op.overwrite = true; op.archive_path = g.archive_path; }
+    if (!project && j.roots.document) op.project = j.roots.document;
+  }
+  return null;
+}
+
+/**
+ * revit_file load_family / export_family through the gates. Returns the parameters to send (path resolved, overwrite
+ * true only with an archive, archive_path from the approval), or the refusal.
+ */
+export async function revitFileFamilyGate(args: { action: string; path?: string; family?: string; overwrite?: boolean; approval_id?: string; dry_run?: boolean },
+  deps: { jail?: (project?: string) => Promise<CallJail>; preview?: PreviewFn; fl?: FamilyLoadDeps } = {}):
+  Promise<{ ok: true; params: Record<string, unknown> } | FamilyGateNo> {
+  const j = await (deps.jail ?? ((p?: string) => familyJail(p)))(documentTarget.getStore());
+  if (args.action === "load_family") {
+    const r = familyReadGate("load_family", args.path, j);
+    if (!r.ok) return r;
+    const family = win.basename(r.resolved).replace(/\.rfa$/i, "");
+    const g = await reloadGate("load_family", { family, source: r.resolved, overwrite: args.overwrite === true, approval_id: args.approval_id }, j, deps.preview, deps.fl);
+    if (!g.ok) return g;
+    return { ok: true, params: { path: r.resolved, overwrite: !!g.archive_path, ...(g.archive_path ? { archive_path: g.archive_path } : {}) } };
+  }
+  const g = fileWriteGate("export_family", args.path, { overwrite: args.overwrite === true, approval_id: args.approval_id, family: args.family }, j, deps.fl);
+  if (!g.ok) return g;
+  return { ok: true, params: { path: g.resolved, overwrite: !!g.archive_path, ...(g.archive_path ? { archive_path: g.archive_path } : {}) } };
 }

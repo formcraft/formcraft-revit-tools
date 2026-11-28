@@ -11,6 +11,7 @@ import { OP, expandSkeletons, familyRoots, opsProblems, resolveFamilyPaths, spli
 import { parseSharedParameters } from "../fmc/specs.js";
 import { resolveMaterial } from "../fmc/materials.js";
 import { readDb } from "./fmc_material.js";
+import { familyJail, familyRefusal, fileWriteGate } from "../fmc/familyflow.js";
 
 const win = path.win32;
 
@@ -79,7 +80,8 @@ export const FMC_DOC_SHAPE = {
   file: z.string().optional().default("").describe("open: a family file (.rfa) in the library roots"),
   session: z.string().optional().default(""),
   path: z.string().optional().default("").describe("save: the target .rfa (inside the write roots, named by the rules)"),
-  overwrite: z.boolean().optional().default(false).describe("save: replace an existing file (a person decided)"),
+  overwrite: z.boolean().optional().default(false).describe("save: replace an existing file (one family overwrite approval; the old file is archived first)"),
+  approval_id: z.string().optional().describe("save: the family overwrite approval FMC-FAM-WAITING gave"),
   follow: z.array(z.object({ param: z.string().min(1), low_mm: z.number(), high_mm: z.number(), stepped: z.boolean().optional() })).optional()
     .describe("flex: size parameters to move from low to high on one type, reporting which named solids moved with each (Gate A)"),
   detail_level: z.enum(["coarse", "medium", "fine", "all"]).optional().default("fine").describe("screenshot: detail level; all gives one image per level"),
@@ -183,8 +185,11 @@ export async function runFmcDoc(args: FmcDocArgs) {
     // save
     const problems = saveProblems(args.path, config);
     if (problems.length) return reply({ refused: true, reasons: problems }, true);
-    if (fs.existsSync(args.path) && !args.overwrite) return reply({ refused: true, reasons: [`${args.path} exists: a person decides to overwrite (overwrite: true)`] }, true);
-    const saved = await sendDoc("fmc_doc_save", { session: s.id, path: args.path.trim(), overwrite: args.overwrite, max_backups: config.max_backups }, 120000, document);
+    // BSF-3: a jail write in the open project's folder (kit staging refused while kit_staging_writes is off); an existing
+    // file needs overwrite, one approval, and the old file archived (verified) inside the project first
+    const gate = fileWriteGate("fmc_doc save", args.path, { overwrite: args.overwrite, approval_id: args.approval_id }, await familyJail());
+    if (!gate.ok) return familyRefusal("fmc_doc", gate);
+    const saved = await sendDoc("fmc_doc_save", { session: s.id, path: gate.resolved, overwrite: !!gate.archive_path, max_backups: config.max_backups }, 120000, document);
     const report = await sendDoc("fmc_doc_report", { session: s.id }, 60000, document);
     const build = buildReport(s, args.path.trim(), report ?? {}, kitManifest(config), serverBuild().commit, new Date());
     const buildFile = args.path.trim().replace(/\.rfa$/i, ".build.json");
