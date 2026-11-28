@@ -1,0 +1,30 @@
+{
+  "title": "FMC_I_Casework_BaseUnit_Door.rfa",
+  "source": "Z:\\00_Standards\\04_Families\\_Staging\\I\\FMC_I_Casework_BaseUnit_Door.rfa",
+  "family": true,
+  "path": "Z:\\00_Standards\\04_Families\\_Staging\\I\\FMC_I_Casework_BaseUnit_Door.rfa",
+  "category": "Casework",
+  "parameters": [
+    { "name": "Width", "instance": false, "shared": false, "guid": "", "formula": "" },
+    { "name": "Door Width", "instance": false, "shared": false, "guid": "", "formula": "Width - 4 mm" },
+    { "name": "Shelf Count", "type": "Integer", "instance": true, "shared": false, "guid": "", "formula": "" },
+    { "name": "FMC_Keynote_Code", "instance": false, "shared": true, "guid": "2d089b32-0589-516b-8952-9f6afad95971", "formula": "" }
+  ],
+  "types": ["600", "450"],
+  "reference_planes": ["Center (Front/Back)", "Center (Left/Right)", "Unit Left", "Unit Right"],
+  "solids": 5,
+  "connectors": 0,
+  "solids_detail": [
+    { "name": "Carcass", "kind": "Extrusion", "void": false, "subcategory": "Carcass",
+      "visible_in": { "coarse": false, "medium": true, "fine": true, "plan_rcp": true, "front_back": true, "left_right": true },
+      "box_mm": { "min": [-300, -560, 100], "max": [300, 0, 870] } },
+    { "name": "Door", "kind": "Extrusion", "void": false, "subcategory": "Door Panel",
+      "visible_in": { "coarse": false, "medium": true, "fine": true }, "box_mm": { "min": [-298, -578, 102], "max": [298, -560, 868] } },
+    { "name": "Handle", "kind": "SweptBlend", "void": false, "subcategory": "Door Panel", "box_mm": { "min": [200, -600, 780], "max": [280, -578, 840] } },
+    { "name": "Handle Recess", "kind": "Extrusion", "void": true, "subcategory": "", "box_mm": { "min": [200, -580, 780], "max": [280, -570, 840] } },
+    { "name": "Broken", "kind": "Sweep", "void": false, "subcategory": "" }
+  ],
+  "connectors_detail": [],
+  "nested": [ { "family": "FMC_I_Hardware_Hinge", "type": "Concealed", "at_mm": [-290, -560, 200], "shared": true } ],
+  "extents_mm": { "min": [-300, -600, 100], "max": [300, 0, 870], "size": [600, 600, 770] }
+}

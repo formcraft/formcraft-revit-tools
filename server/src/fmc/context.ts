@@ -433,6 +433,7 @@ function aiUseState(k: KitPaths, cfg: GuardConfig) {
 export const TOOL_MAP: Record<string, string> = {
   "find the kit's data for a task": "fmc_context for_task, then get for one item",
   "build a family from a recipe": "fmc_recipe check → build (dry run) → build dry_run=false after a yes → gate",
+  "an ArchiCAD object (GDL) from a family": "fmc_archicad map → export (dry run) → export dry_run=false; LP_XMLConverter stays a separate step",
   "data-shell families from the specs": "fmc_family plan → build",
   "family ops in a background session": "fmc_doc open → apply → flex → save (to staging)",
   "check or bring in families": "fmc_library scan / inspect / bring_in",
