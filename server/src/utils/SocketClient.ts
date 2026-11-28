@@ -177,7 +177,7 @@ export class RevitClientConnection {
   }
 
   public async sendCommand(command: string, params: any = {}, timeoutMs: number = 120000, long?: LongJobOptions): Promise<any> {
-    if (command === "send_code_to_revit" || command === "fmc_new_local" || command === "fmc_grids_from_link") {
+    if (command === "send_code_to_revit" || command === "fmc_new_local" || command === "fmc_grids_from_link" || command === "fmc_connect_fixture") {
       const code = params && typeof params.code === "string" ? params.code : "";
       const problem = screenScript(code, scriptLimit(), { allowFullScan: params?.allow_full_scan === true });
       if (problem) throw new Error(problem.message);
@@ -275,6 +275,10 @@ export class RevitClientConnection {
       if (command === "fmc_grids_from_link") {
         const wire = wireGrids(params ?? {});
         return stampAppliedDocument(await this.sendRaw(wire.command, wire.params, timeoutMs, long), active, params);
+      }
+      // B4: the gate saw fmc_connect_fixture; the add-in command is send_code_to_revit with the fixed script.
+      if (command === "fmc_connect_fixture") {
+        return stampAppliedDocument(await this.sendRaw("send_code_to_revit", params ?? {}, timeoutMs, long), active, params);
       }
       // The gate saw fmc_hw_free; the add-in command is fmc_hw with action free.
       if (command === "fmc_hw_free") {

@@ -214,6 +214,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_new_local",
   // Grids copied from a loaded link. The server sends a fixed script; the add-in command is still send_code_to_revit.
   "fmc_grids_from_link",
+  // B4: pipe-to-fixture connect. The server sends a fixed script; the add-in command is still send_code_to_revit.
+  "fmc_connect_fixture",
   // Phases and revisions. Reads stay on fmc_phase. This command is the one transaction.
   "fmc_phase_apply",
   // Joins and the envelope pressure test. Reads stay on fmc_joins. This command is the one transaction.

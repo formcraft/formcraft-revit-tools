@@ -2,7 +2,7 @@ import fs from "node:fs";
 import { DocInfo, GuardConfig, loadConfig } from "./policy.js";
 import { protectedRoots } from "./opencopy.js";
 import { saveBlocked } from "./savepolicy.js";
-import { NEVER, PLACEABLE, USER_LINE, aiVerdict, batchSize, generalState, recordBatch } from "./aiuse.js";
+import { NEVER, NOT_AI_COMMANDS, PLACEABLE, USER_LINE, aiVerdict, batchSize, generalState, recordBatch } from "./aiuse.js";
 import { Names, elementNames, explain, namesWanted } from "./explain.js";
 import { approvalFor, claimApproval, enqueue, loadAiConfig, loadRulebook, loadState, logBatch, saveState, setResult, setStatus } from "./aiuse_io.js";
 import { batchBoard } from "./batchline.js";
@@ -32,6 +32,8 @@ export const ROLLBACK_DRY_RUNS = new Set([
 export async function aiGate(command: string, params: any, active: DocInfo | null | undefined, cfg: GuardConfig,
   send: (command: string, params: object) => Promise<any>, env: NodeJS.ProcessEnv = process.env): Promise<Gate> {
   if (!active) return { ok: false, reason: "" };
+  // B4: never AI-run on a project model, at any access level (P-fmc_connect_fixture-01).
+  if (NOT_AI_COMMANDS.has(command)) return { ok: false, reason: `${command} is not in the AI set`, user: USER_LINE.admin(NEVER[command] ?? command) };
   const { book } = loadRulebook(cfg);
   const ai = loadAiConfig(cfg, env);
   // Not set up yet (no ai_modeller section): the person sees the plain line, never the lock's wording.

@@ -8,6 +8,10 @@ import { screenScript } from "./scriptguard.js";
 
 export const TIE_MM = 1;
 
+/** B4: the longest gap a connect bridges with a new pipe unless the call names a larger max_gap_mm. */
+export const DEFAULT_MAX_GAP_MM = 300;
+export const MAX_GAP_LIMIT_MM = 2000;
+
 /** Basin and WC services this connect covers. */
 export const FIXTURE_CASES = [
   { fixture: "basin", service: "waste", systems: ["Sanitary"] },
@@ -75,6 +79,9 @@ export interface FixtureConnectArgs {
   pipe: number | string;
   fixture: number | string;
   system?: string;
+  /** B4: the script checks and reports, then the add-in's read_only mode rolls back. */
+  dry_run?: boolean;
+  max_gap_mm?: number;
 }
 
 export interface FixtureConnectCall {
@@ -83,7 +90,7 @@ export interface FixtureConnectCall {
     code: string;
     parameters: string[];
     usings: string[];
-    transactionMode: "auto";
+    transactionMode: "auto" | "read_only";
     purpose: string;
     document: string;
   };
@@ -97,12 +104,18 @@ export function fixtureConnectCall(args: FixtureConnectArgs): FixtureConnectCall
   const fixture = elementId(args.fixture, "fixture");
   const choice = systemChoice(args.system);
   if ("error" in choice) throw new Error(choice.error);
+  const maxGap = args.max_gap_mm === undefined ? DEFAULT_MAX_GAP_MM : Number(args.max_gap_mm);
+  if (!Number.isFinite(maxGap) || maxGap < 0 || maxGap > MAX_GAP_LIMIT_MM)
+    throw new Error(`[FMC-CONNECT] max_gap_mm must be a number from 0 to ${MAX_GAP_LIMIT_MM}. Fix: pass the longest gap a new pipe may bridge, in mm.`);
+  const dry = args.dry_run !== false;
   const accept = choice.infer ? "new string[0]" : `new string[] { ${choice.accept.map((name) => `"${name}"`).join(", ")} }`;
   const code = FIXTURE_SCRIPT
     .replace("PIPE_ID", `${pipe}L`)
     .replace("FIXTURE_ID", `${fixture}L`)
     .replace("ACCEPT_LIST", accept)
-    .replace("INFER_SYSTEM", choice.infer ? "true" : "false");
+    .replace("INFER_SYSTEM", choice.infer ? "true" : "false")
+    .replace("MAX_GAP_MM", String(maxGap))
+    .replace("DRY_RUN", dry ? "true" : "false");
   const problem = screenScript(code);
   if (problem) throw new Error(problem.message);
   return {
@@ -111,8 +124,8 @@ export function fixtureConnectCall(args: FixtureConnectArgs): FixtureConnectCall
       code,
       parameters: [],
       usings: ["Autodesk.Revit.DB.Plumbing"],
-      transactionMode: "auto",
-      purpose: "Connect a pipe end to a plumbing fixture",
+      transactionMode: dry ? "read_only" : "auto",
+      purpose: dry ? "Check a pipe-to-fixture connect (rolled back)" : "Connect a pipe end to a plumbing fixture",
       document,
     },
   };
@@ -129,6 +142,14 @@ long fixtureId = FIXTURE_ID;
 string[] accept = ACCEPT_LIST;
 bool infer = INFER_SYSTEM;
 const double tol = 1.0 / 304.8;
+double maxGap = MAX_GAP_MM / 304.8;
+bool dryRun = DRY_RUN;
+if (document.IsWorkshared)
+{
+    string centralPath = "";
+    try { centralPath = ModelPathUtils.ConvertModelPathToUserVisiblePath(document.GetWorksharingCentralModelPath()) ?? ""; } catch (Exception) { centralPath = ""; }
+    if (centralPath.Length == 0 || string.Equals(centralPath, document.PathName ?? "", StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("[FMC-CONNECT-CENTRAL] " + document.Title + " is a central model (or its central path is unknown). Nothing was changed. Fix: connect in a person's local.");
+}
 Element pipeEl = document.GetElement(new ElementId(pipeId));
 Element fixEl = document.GetElement(new ElementId(fixtureId));
 if (pipeEl == null) throw new InvalidOperationException("[FMC-CONNECT] No element " + pipeId + ". Fix: pass the pipe's element id.");
@@ -204,6 +225,13 @@ if (second != null && System.Math.Abs(first.Item3 - second.Item3) <= tol) throw 
 Connector bestFix = first.Item1;
 Connector bestPipe = first.Item2;
 double best = first.Item3;
+if (best > maxGap + tol) throw new InvalidOperationException("[FMC-CONNECT-GAP] The connectors are " + System.Math.Round(best * 304.8, 1) + " mm apart, more than max_gap_mm " + System.Math.Round(maxGap * 304.8, 1) + ". Nothing was changed. Fix: move the pipe end nearer the fixture, or check the route and pass a larger max_gap_mm.");
+if (dryRun)
+{
+    string wouldJoin = "";
+    try { wouldJoin = bestFix.PipeSystemType.ToString(); } catch (Exception) { wouldJoin = ""; }
+    return new { dry_run = true, title = document.Title, path = document.PathName ?? "", fixture = fixtureId, pipe = pipeId, system = wouldJoin, how = best <= tol ? "connect_to" : "pipe", made = (long)0, gap_mm = System.Math.Round(best * 304.8, 1) };
+}
 string how;
 long made = 0;
 if (best <= tol)

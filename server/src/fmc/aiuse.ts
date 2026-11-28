@@ -104,7 +104,12 @@ export const NEVER: Record<string, string> = {
   fmc_dynamo: "running a Dynamo graph",
   fmc_script_run: "running a library script",
   fmc_hw_free: "closing views to free memory",
+  // B4 / P-fmc_connect_fixture-01: out of the AI set until a typed add-in command with dry_run exists.
+  fmc_connect_fixture: "connecting fixtures (a person runs it until the typed command with dry_run exists)",
 };
+
+/** Refused at the AI gate whatever the access level (NEVER alone does not bind under access full). */
+export const NOT_AI_COMMANDS = new Set(["fmc_connect_fixture"]);
 
 /** What a person sees when AI isn't allowed: plain lines, never the lock's wording (owner 26 Oct). */
 export const USER_LINE = {
