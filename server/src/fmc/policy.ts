@@ -278,6 +278,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_headroom",
   // BS 8666 bar bending schedule facts, cover settings and bar centre lines. No transaction.
   "fmc_rebar_schedule",
+  // Envelope U-values, SHGC, areas and directions. No transaction, no energy model.
+  "fmc_energy",
   // Keynote tags, hosts and plan views. No transaction.
   "fmc_keynote_place",
   // Sheet outlines, view sizes and sheet parameters. No transaction.
