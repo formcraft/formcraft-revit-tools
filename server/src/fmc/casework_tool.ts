@@ -6,7 +6,7 @@ import { Casework, KitRequest, LibMaterial, Standards, Unit, checkStandards, che
 import { KitFamily, RoomRead, coordinationChecks, matchWalls, registerFamily, runFromRoom } from "./casework_place.js";
 import { csvRow } from "../tools/fmc_sheets.js";
 import { StandardsRevision, standardsRevision, unitsHash } from "./casework_run.js";
-import { StoredRun, loadRun } from "./casework_store.js";
+import { StoredRun, loadRun, usableRoom } from "./casework_store.js";
 import { FmcCaseworkArgs } from "./casework_shape.js";
 
 /** The Revit call: a dry run goes through sendRaw (no lock), a real run through sendCommand (lease, lock, AI gate). */
@@ -187,15 +187,22 @@ export function kitFamily(config: GuardConfig, family: string): { family: KitFam
 }
 
 /** Coordination checks for the layout against the room as Revit reads it (walls matched by where they run). */
-export async function checksFor(args: FmcCaseworkArgs, p: Prepared, send: RevitSend) {
-  const read = await readRoom(send, args.room.trim());
+export async function checksFor(ctx: Ctx, p: Prepared) {
+  const { args, send } = ctx;
+  const room = args.room.trim();
+  // check → place: the room read by the run named in run_id is reused while it is young (fresh_room reads it again)
+  const cached = args.fresh_room ? null : usableRoom(ctx.saved?.room_read, room);
+  const read = cached ? cached.read : await readRoom(send, room);
+  const at = cached ? cached.at : new Date().toISOString();
+  ctx.entry.room_read = { room, at, read };
+  const room_read = { from: cached ? `the saved run ${ctx.saved!.id} (no new Revit read)` : "Revit, now", at, age_s: Math.round((Date.now() - Date.parse(at)) / 1000) };
   const r = runFromRoom(read);
   const walls = args.run?.walls ?? [];
   const names = matchWalls(r.walls, walls as Parameters<typeof matchWalls>[1]);
   const sills = r.sills.flatMap((x) => (names.has(x.wall) ? [{ ...x, wall: names.get(x.wall)! }] : []));
   const unmatched = walls.filter((w) => ![...names.values()].includes(w.name)).map((w) => w.name);
   const flags = coordinationChecks(p.casework.layout.units, walls as Parameters<typeof coordinationChecks>[1], r.services, sills, p.standards);
-  return { room: read.room, flags, services: r.services.length, notes: [...r.notes,
+  return { room: read.room, room_read, flags, services: r.services.length, notes: [...r.notes,
     ...(unmatched.length ? [`Wall(s) ${unmatched.join(", ")} don't run along the room's boundary, so their window sills aren't checked`] : [])] };
 }
 

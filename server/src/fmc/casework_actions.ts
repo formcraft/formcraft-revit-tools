@@ -38,12 +38,12 @@ export function engineAction(ctx: Ctx, p: Prepared): Reply {
 
 /** check: the layout against the room as Revit reads it (read only); flags for a person. */
 export async function checkAction(ctx: Ctx, p: Prepared): Promise<Reply> {
-  const { args, reply, send } = ctx;
+  const { args, reply } = ctx;
   const c = p.casework;
   const head = { standards_from: p.from, problems: c.problems, notes: c.layout.notes };
   if (!args.room.trim()) return reply({ refused: true, reasons: ["Name the room to check against (its number or name)"] }, true);
   if (!args.run) return reply({ refused: true, reasons: ["Checks need a run whose walls have their place in the model (start, end): read the room first"] }, true);
-  const ch = await checksFor(args, p, send);
+  const ch = await checksFor(ctx, p);
   return reply({ ...head, ...ch, flagged: ch.flags.filter((f) => f.state === "flag").length,
     next: "Each flag is for a person to decide; the tool moves no service and no unit (rule 5)" });
 }

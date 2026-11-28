@@ -48,7 +48,7 @@ export async function placeAction(ctx: Ctx, p: Prepared): Promise<Reply> {
   const tag = `FMC:casework:${packLabel(args.label)}`;
   const payload = { dry_run: dry, level: args.level.trim(), family: plan.family, tag, width_param: widthParam,
     ops: plan.ops.map((o) => ({ mark: o.mark, type: o.type, width: o.width, at: o.at, facing: o.facing, params: o.params })), type_params: plan.type_params };
-  const checks = dry && args.room.trim() ? await checksFor(args, p, send) : null;
+  const checks = dry && args.room.trim() ? await checksFor(ctx, p) : null;
   // the dry run places and rolls back, so it changes nothing and needs no lock; the real run goes through the lock
   const result = await send("fmc_casework_place", payload, dry, 300000);
   log(config, dry, args.level, dry ? "dry run" : "done", `${plan.ops.length} units of ${plan.family} (${tag})`, "casework_place", run_id);

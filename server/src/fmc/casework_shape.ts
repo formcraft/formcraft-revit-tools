@@ -58,6 +58,8 @@ export const FMC_CASEWORK_SHAPE = {
     .describe("Instead of sending the run, unit list and standards again: the run_id of an earlier reply (its saved inputs are used; what you send overrides them)"),
   modules: z.array(z.number().positive()).optional()
     .describe("Unit widths over the run's modules, mm; e.g. with run_id from room, whose run has none yet"),
+  fresh_room: z.boolean().optional().default(false)
+    .describe("check, place: read the room from Revit again even when the run named in run_id read it in the last 10 minutes"),
   dry_run: z.boolean().optional().default(true),
 };
 

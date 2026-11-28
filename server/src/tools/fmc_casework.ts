@@ -54,7 +54,7 @@ export async function runFmcCasework(args: FmcCaseworkArgs, io: CaseworkIo = {})
     ctx.args = args = resolved.args;
     ctx.saved = resolved.saved;
     if (resolved.saved) ctx.inputsFrom = { inputs_from: resolved.saved.id };
-    ctx.entry = { ...ctx.entry, run: args.run, units: args.units, standards: args.standards };
+    ctx.entry = { ...ctx.entry, run: args.run, units: args.units, standards: args.standards, room_read: resolved.saved?.room_read };
     // room reading needs no standards: it gives the run's walls, which the person completes
     if (args.action === "room") return await roomAction(ctx);
     const prep = prepare(args, config);
