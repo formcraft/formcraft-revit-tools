@@ -295,6 +295,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_tags",
   // Sheets, title-block legend zone and an existing keynote legend. No transaction.
   "fmc_keynote_legend",
+  // Duct and piping systems, system types and routing preferences (read only, never written). No transaction.
+  "fmc_mep_systems",
 ]);
 
 /**
