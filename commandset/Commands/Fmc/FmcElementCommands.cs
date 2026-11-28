@@ -293,7 +293,10 @@ namespace RevitMCPCommandSet.Commands.Fmc
             lock (_lock)
             {
                 _handler.Parameters = parameters ?? new JObject();
-                if (_handler.Parameters["action"] == null) _handler.Parameters["action"] = "undo";
+                // UB-1: fmc_undo is a write, so it never guesses the action. undo or redo must be named; anything else is refused.
+                string action = _handler.Parameters.Value<string>("action") ?? "";
+                if (action != "undo" && action != "redo")
+                    throw new Exception($"{CommandName}: [FMC-UNDO-ACTION] action must be \"undo\" or \"redo\" (got \"{action}\"). Nothing was undone. Use undo_ai_batch status to read the list.");
                 if (!RaiseAndWaitForCompletion(60000)) throw new TimeoutException($"{CommandName} timed out");
                 if (!string.IsNullOrEmpty(_handler.Error)) throw new Exception($"{CommandName}: {_handler.Error}");
                 return _handler.Result;

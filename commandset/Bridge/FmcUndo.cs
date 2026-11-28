@@ -316,11 +316,14 @@ namespace RevitMCPCommandSet.Services.Fmc
                         if (!string.Equals(owner, FmcUndo.Key(doc), StringComparison.OrdinalIgnoreCase))
                             throw new InvalidOperationException($"[FMC-DOC-NOT-FOUND] Batch {batchId} belongs to {owner}, not {doc.Title}. Refusing to undo a different document.");
                     }
-                    switch (Parameters.Value<string>("action") ?? "status")
+                    // UB-1: a missing action is a status read; an unknown one is refused, never treated as undo.
+                    string action = Parameters.Value<string>("action") ?? "status";
+                    switch (action)
                     {
                         case "undo": Result = FmcUndo.Undo(app, doc, batchId, Parameters.Value<int?>("count") ?? 1); break;
                         case "redo": Result = FmcUndo.Redo(app, doc); break;
-                        default: Result = FmcUndo.Status(doc); break;
+                        case "status": Result = FmcUndo.Status(doc); break;
+                        default: throw new InvalidOperationException($"[FMC-UNDO-ACTION] Unknown action \"{action}\": use status, undo or redo. Nothing was undone.");
                     }
                     Result["resolved_document"] = FmcTarget.Resolved(doc);
                 }
