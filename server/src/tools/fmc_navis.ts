@@ -68,11 +68,13 @@ export const FMC_NAVIS_DESCRIPTION =
     "open Revit model (handover clouds, after tickets). clash_status: a status (Active, Reviewed, Approved, Resolved) and a " +
     "comment on the clash results a person names; the dry run gives a plan_hash, the real run needs approved_by (that " +
     "person, never the AI) and the same plan_hash. Every write is a dry run unless dry_run is false. " +
+    "open (file): opens an .nwf, .nwd or .nwc in Navisworks (dry run first). viewpoints: the saved viewpoints, read-only. " +
     "Without a kit matrix, matrix and dry runs use the shipped proposal (docs/kit-proposals, PROVISIONAL); a real clash_create or clash_run needs the kit's or a named matrix. " +
     "federate saves the new .nwf first under a temporary name, then archives the older one and moves the new one in place.";
 
 export const FMC_NAVIS_SHAPE = {
-  action: z.enum(["status", "info", "tests", "results", "federate", "matrix", "clash_create", "clash_run", "back", "clash_status"]),
+  action: z.enum(["status", "info", "tests", "results", "federate", "matrix", "clash_create", "clash_run", "back", "clash_status", "open", "viewpoints"]),
+  file: z.string().optional().default("").describe("open: the .nwf, .nwd or .nwc to open"),
   test: z.string().optional().default("").describe("results, clash_status: the clash test's name; back: the test (default: the one run most recently)"),
   status: z.string().optional().default("").describe("results: only this status (New, Active, Reviewed, Approved, Resolved)"),
   limit: z.number().int().min(1).max(2000).optional().default(200).describe("results: at most this many clashes"),
@@ -174,8 +176,25 @@ export async function runFmcNavis(args: FmcNavisArgs, deps: NavisDeps = {}) {
     return reply({ file, name: matrix.name, revision: matrix.revision, tests, ...(ready ? { open_federation: ready } : { note: "Open the federation in Navisworks to see which tests it can run" }) });
   }
 
+  if (args.action === "open" && dry) {
+    const f = args.file.trim();
+    const reasons: string[] = [];
+    if (!f || !win.isAbsolute(f)) reasons.push("open needs file: a full path");
+    else if (![".nwf", ".nwd", ".nwc"].includes(win.extname(f).toLowerCase())) reasons.push("Only an .nwf, .nwd or .nwc opens");
+    else if (!fs.existsSync(f)) reasons.push(`${f} doesn't exist`);
+    if (reasons.length) return reply({ refused: true, reasons }, true);
+    let current = "";
+    if (up) { try { current = String((await call("navis_info", {}, 15000)).file ?? ""); } catch { current = ""; } }
+    return reply({ dry_run: true, would_open: f, navisworks: up ? "running" : "not running", replaces: current, next: up ? "Run again with dry_run=false; the document open now is replaced (save it first if it changed)." : "Start Navisworks with the Formcraft bridge first." });
+  }
   if (!up) return reply({ refused: true, reasons: ["Navisworks with the Formcraft bridge isn't running (fmc_navis status)"] }, true);
   try {
+    if (args.action === "viewpoints") return reply({ read_only: true, ...(await call("navis_viewpoints", {}, 30000)) });
+    if (args.action === "open") {
+      const opened = await call("navis_open", { file: args.file.trim(), dry_run: false }, LONG);
+      log(cfg, "navis_open", false, args.file.trim(), opened.opened ? "done" : "failed", "");
+      return reply(opened, !opened.opened);
+    }
     if (args.action === "info") return reply(await call("navis_info"));
     if (args.action === "tests") return reply(await call("navis_clash_tests"));
     if (args.action === "results") {

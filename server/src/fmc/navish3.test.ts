@@ -284,7 +284,7 @@ test("H3 clash_status: only named results, only with a person's yes on the plan 
   assert.equal(statusHash("t", ["b", "a"], "Resolved", ""), statusHash("T", ["a", "b"], "resolved", ""));
 });
 
-test("research 59: shipped matrix proposal and the off stand-in", async () => {
+test("research 59: shipped matrix proposal, open dry run, viewpoints, and the off stand-in", async () => {
   const { matrixSource, loadMatrix, navisOffStub } = await import("../tools/fmc_navis.js");
   const src = matrixSource("", "Z:\\none\\FMC_Clash_Matrix.json", () => false);
   assert.equal(src.source, "proposal");
@@ -295,6 +295,19 @@ test("research 59: shipped matrix proposal and the off stand-in", async () => {
   const m = body(await runFmcNavis(parse({ action: "matrix" }), { state: () => null, config }));
   assert.equal(m.provisional, true);
   assert.ok(m.tests.length > 0);
+  const dir = tmp();
+  const nwf = path.join(dir, "fed.nwf");
+  touch(nwf);
+  const b = bridge({ navis_info: () => ({ file: "C:\\old.nwf", models: [] }), navis_viewpoints: () => ({ viewpoints: [{ name: "Level 1", folder: "" }], count: 1 }) });
+  const open = body(await runFmcNavis(parse({ action: "open", file: nwf }), { ...b.deps, config }));
+  assert.equal(open.dry_run, true);
+  assert.equal(open.replaces, "C:\\old.nwf");
+  assert.ok(!b.calls.some((c) => c.method === "navis_open"), "a dry run never opens");
+  const bad = await runFmcNavis(parse({ action: "open", file: path.join(dir, "x.rvt") }), { ...b.deps, config });
+  assert.equal(bad.isError, true);
+  const vps = body(await runFmcNavis(parse({ action: "viewpoints" }), { ...b.deps, config }));
+  assert.equal(vps.read_only, true);
+  assert.equal(vps.count, 1);
   const tools: Array<{ name: string; run: () => Promise<{ content: Array<{ text: string }> }> }> = [];
   navisOffStub({ tool: (name: string, _d: string, _s: object, run: () => Promise<{ content: Array<{ text: string }> }>) => { tools.push({ name, run }); } } as any, "off for the test");
   assert.equal(tools[0].name, "fmc_navis");
