@@ -8,6 +8,7 @@ import { GuardConfig, checkWritePath, csvLine, expandEnv, isInside, loadConfig }
 import { parseSharedParameters } from "../fmc/specs.js";
 import { BrandPack, TemplateFacts, TemplateRef, auditTemplate, roleCopyLine } from "../fmc/template.js";
 import { csvRow, readRegisterFile } from "./fmc_sheets.js";
+import { callJail, jailArgs, revitCentral } from "../fmc/jailctx.js";
 import { readXlsxSheets } from "../fmc/xlsx.js";
 import { BaseRecipe, LAYERS, Layer, baseRecipe, expectedNames, layerPayload, table } from "../fmc/templatekit.js";
 
@@ -155,6 +156,15 @@ export function loadAuditRef(kitFolder: string, config: GuardConfig, target: str
 }
 
 async function runRecipeTools(args: FmcTemplateArgs, config: GuardConfig) {
+  // Project-folder gate: seed_path is opened by Revit (NewProjectTemplateDocument), kit_folder is read. Both must be in
+  // the document's jail or read_only_roots. template_path for build stays on checkWritePath, which now refuses
+  // read_only_roots (kit staging writes wait on Q4).
+  const refused = jailArgs("fmc_template", await callJail({ cfg: config, central: revitCentral }), [
+    ["seed_path", "open", args.seed_path],
+    ["kit_folder", "read", args.kit_folder],
+    ["template_path", "open", args.action === "compare" ? args.template_path : ""],
+  ]);
+  if (refused) return refused;
   const { recipe, problems, roles } = loadRecipe(args.kit_folder.trim());
   if (!recipe) return reply({ refused: true, reasons: problems.length ? problems : ["Set kit_folder"] }, true);
   const counts = {

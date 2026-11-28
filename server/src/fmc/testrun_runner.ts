@@ -21,6 +21,7 @@ import { expandEnv, loadConfig } from "./policy.js";
 import { formcraftHome, jobFiles, readJsonLines } from "./jobs.js";
 import { RevitInstance, readInstances } from "./connect.js";
 import { revitTarget } from "./target.js";
+import { jailCheck, jailRoots, serverInstallFolder } from "./jail.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { appStatuses, realProbe } from "../hub/apps.js";
 import { BridgeBusy, bridgeState, busyWords, parseBusy, waitForBridgeFree } from "./busy.js";
@@ -97,6 +98,14 @@ function writeJson(file: string, value: unknown) {
 }
 function readJson<T>(file: string): T | null {
   try { return JSON.parse(fs.readFileSync(file, "utf8").replace(/^\uFEFF/, "")) as T; } catch { return null; }
+}
+
+/** The runner has no person's document: only read_only_roots, shared state (read) and its own folders are open. */
+export function runnerPathGate(kind: "read" | "open", file: string, scenariosDir: string): string {
+  const { config } = loadConfig();
+  const roots = jailRoots(null, config, { bundled: [serverInstallFolder(), scenariosDir].filter(Boolean) });
+  const v = jailCheck(kind, file, roots, config);
+  return v.ok ? "" : v.message;
 }
 
 export function saveState(s: RunState) { writeJson(statePath(s.run), s); writeJson(lastPath(), { run: s.run }); }
@@ -553,12 +562,20 @@ export async function runForeground(opts: RunOptions): Promise<RunOutcome> {
         catch (e) { reply = { exit: 1, body: { error: e instanceof Error ? e.message : String(e) } }; }
       } else if (a.read_json !== undefined) {
         input = substitute(a.read_json, vars);
-        const body = readJson<unknown>(String(input));
-        reply = body === null ? { exit: 1, body: { error: `Can't read JSON at ${input}` } } : { exit: 0, body };
+        const gate = runnerPathGate("read", String(input), s.scenarios_dir);
+        const body = gate ? null : readJson<unknown>(String(input));
+        reply = gate ? { exit: 1, body: { error: gate } }
+          : body === null ? { exit: 1, body: { error: `Can't read JSON at ${input}` } } : { exit: 0, body };
       } else if (a.runner === "open_in_revit") {
         input = substitute(a.path ?? "", vars);
-        await revit.ensure(String(input));
-        reply = { exit: 0, body: { opened: input, pid: revit.pid, port: s.revit?.port } };
+        // Project-folder gate (testrun.ts:145 only checked that a path was given): the scratch file must be in
+        // read_only_roots, shared state, the server's bundled folder or the run's scenarios folder.
+        const gate = runnerPathGate("open", String(input), s.scenarios_dir);
+        if (gate) reply = { exit: 1, body: { error: gate } };
+        else {
+          await revit.ensure(String(input));
+          reply = { exit: 0, body: { opened: input, pid: revit.pid, port: s.revit?.port } };
+        }
       } else if (a.runner === "close_revit") {
         await revit.close();
         reply = { exit: 0, body: { closed: true } };

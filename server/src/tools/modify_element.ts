@@ -6,6 +6,7 @@ import { executeKeynoteBatch } from "../fmc/keynote.js";
 import { decodeKeynoteFile, keynoteTableWarnings } from "../fmc/library.js";
 import { executePropertyLineBatch } from "../fmc/propertyline.js";
 import { documentTarget } from "../fmc/target.js";
+import { familyJail, familyRefusal, fileWriteGate, gateModelFamilyOps, revitFileFamilyGate } from "../fmc/familyflow.js";
 import { touchedIds, viewImage } from "./see_view.js";
 
 function reply(body: unknown, isError = false) {
@@ -144,7 +145,7 @@ export const MODIFY_MODEL_DESCRIPTION =
   "family_type {name, params?: {name: value}} · family_category {category} · " +
   "reference_plane {start_mm, end_mm, name?, view?} (families and projects) · " +
   "dimension {view?, refs (reference plane names, grids, levels), line_mm, label? (a family parameter), equal?} · " +
-  "save_family {path? (.rfa)} · load_into_project {project? (its title), overwrite? (default true)}. " +
+  "save_family {path? (.rfa, inside the project folder), overwrite? (default false), approval_id?, project?} · load_into_project {project? (its title), overwrite? (default false), approval_id?}: an existing file or a family already in the project is refused without overwrite (FMC-FAM-EXISTS with a preview of its types and instances); an overwrite waits for one approval (FMC-FAM-WAITING, approval_id) and the old family is archived inside the project first. " +
   "Structure: column {level, points_mm, structural? (default true), top_level?, base_offset_mm?, top_offset_mm?, rotation_deg?, type_name?} · " +
   "beam / brace {level, start_mm, end_mm ([x, y, z], z above the level), type_name?} · isolated_foundation {level, points_mm} · " +
   "wall_foundation {ids (walls)} · foundation_slab / structural_floor {level, outline_mm | loops_mm, offset_mm?} · truss {level, start_mm, end_mm} · " +
@@ -313,6 +314,10 @@ export function registerModifyModelTool(server: McpServer) {
         const propertyLine = await executePropertyLineBatch(args.ops, args.dry_run, documentTarget.getStore(),
           (command, params) => withRevitConnection((c) => c.sendCommand(command, params)));
         if (propertyLine) return reply(propertyLine.body, propertyLine.isError);
+        // BSF-3: save_family and load_into_project through the safe family gates (jail, no default overwrite, one approval
+        // per overwrite carrying the archive path, the target project's live-model lock)
+        const famRefusal = await gateModelFamilyOps(args.ops as Array<Record<string, unknown>>, args.dry_run);
+        if (famRefusal) return familyRefusal("modify_model", famRefusal);
         const r = await withRevitConnection((c) => c.sendCommand("fmc_model_edit", { ops: args.ops, dry_run: args.dry_run, ...(args.why ? { why: args.why } : {}) }));
         attachKeynoteFileWarnings(args.ops, r);
         const out = reply(r, r?.applied === false && !r?.dry_run) as { content: any[]; isError: boolean };
@@ -362,12 +367,20 @@ export function registerModifyModelTool(server: McpServer) {
       "modify_model's family ops, save_family, and load_into_project.",
     {
       template: z.string().optional().default("Metric Generic Model"),
-      path: z.string().describe("Where to save the new family, ending .rfa (a project's 01_WIP or the kit's staging)"),
+      path: z.string().describe("Where to save the new family, ending .rfa, inside the project's folder (the add-in's project-folder gate refuses the kit, standards, Formcraft shared state and other folders)"),
       overwrite: z.boolean().optional().default(false),
+      project: z.string().optional().describe("The open project (title or path) whose folder the family goes in; needed when more than one project is open"),
+      dry_run: z.boolean().optional().default(false).describe("NF-2: check the path, the template and any overwrite; make nothing"),
+      approval_id: z.string().optional().describe("The family overwrite approval (FMC-FAM-WAITING gave it) when path already exists"),
     },
     async (args) => {
       try {
-        return reply(await withRevitConnection((c) => c.sendCommand("fmc_family_new", args)));
+        // BSF-3: the path is a jail write in the project's folder; an existing .rfa needs overwrite, one approval and an archive first
+        const g = fileWriteGate("new_family", args.path, { overwrite: args.overwrite, approval_id: args.approval_id, dry_run: args.dry_run }, await familyJail(args.project));
+        if (!g.ok) return familyRefusal("new_family", g);
+        const { approval_id: _a, ...rest } = args;
+        return reply(await withRevitConnection((c) => c.sendCommand("fmc_family_new", { ...rest, path: g.resolved, overwrite: !!g.archive_path,
+          ...(g.archive_path ? { archive_path: g.archive_path } : {}) })));
       } catch (e) {
         return reply(`new_family: ${e instanceof Error ? e.message : String(e)}`, true);
       }
@@ -382,13 +395,16 @@ export function registerModifyModelTool(server: McpServer) {
       "fbx|dwf|gbxml|image|schedule, folder, name?, views? (names, sheet numbers or ids; default the active view), combine? " +
       "(pdf), pixels? (image)}, link_cad / import_cad {path, view?, this_view_only?}, link_image / import_image / link_pdf " +
       "{path, view?, point_mm?, page? (pdf)}, link_revit {path, placement?: shared|origin}, load_family {path, overwrite? (default " +
-      "true: replaces a loaded family, its parameters too)}, point_cloud " +
+      "false; a family already in the project is refused with FMC-FAM-EXISTS and a preview; an overwrite needs one approval, approval_id, and the old family is archived first)}, " +
+      "family_preview {family | path} (read only: its types and instance counts in this project), point_cloud " +
       "{path}, sync {comment?, relinquish? (default true), compact?}, reload_latest, relinquish, open_ifc {path}, export_family " +
-      "{family, path (.rfa), overwrite?} (Save As Library Family). Sync and relinquish always " +
+      "{family, path (.rfa, inside the project folder), overwrite?, approval_id?} (Save As Library Family). Sync and relinquish always " +
       "wait for a person's approval, even with auto-approve.",
     {
       action: z.enum(["save", "save_as", "open", "close", "export", "link_cad", "import_cad", "link_image", "import_image", "link_pdf",
-        "link_revit", "load_family", "point_cloud", "sync", "reload_latest", "relinquish", "open_ifc", "export_family"]),
+        "link_revit", "load_family", "point_cloud", "sync", "reload_latest", "relinquish", "open_ifc", "export_family", "family_preview"]),
+      approval_id: z.string().optional().describe("load_family / export_family: the family overwrite approval FMC-FAM-WAITING gave"),
+      incoming_types: z.array(z.string()).optional().describe("family_preview: the incoming family's type names, for the type changes"),
       family: z.string().optional().describe("export_family: the family to save out of the project"),
       path: z.string().optional(), title: z.string().optional(), save: z.boolean().optional(), overwrite: z.boolean().optional(),
       as_central: z.boolean().optional(), format: z.string().optional(), folder: z.string().optional(), name: z.string().optional(),
@@ -399,7 +415,15 @@ export function registerModifyModelTool(server: McpServer) {
     },
     async (args) => {
       try {
-        return reply(await withRevitConnection((c) => c.sendCommand("fmc_revit_file", args)));
+        // BSF-3: family_preview is a read; load_family and export_family go through the safe family gates first
+        if (args.action === "family_preview") return reply(await withRevitConnection((c) => c.sendRaw("fmc_revit_file", args)));
+        const { approval_id, ...send } = args;
+        if (args.action === "load_family" || args.action === "export_family") {
+          const g = await revitFileFamilyGate({ ...args, approval_id });
+          if (!g.ok) return familyRefusal("revit_file", g);
+          Object.assign(send, g.params);
+        }
+        return reply(await withRevitConnection((c) => c.sendCommand("fmc_revit_file", send)));
       } catch (e) {
         return reply(`revit_file: ${e instanceof Error ? e.message : String(e)}`, true);
       }

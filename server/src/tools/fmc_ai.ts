@@ -257,6 +257,10 @@ export async function waitFor(id: string, timeoutS: number, sleep = (ms: number)
     if (item.result === "done") return { id, status: "done", detail: item.detail, waited_s, next: "Done in the model: go straight on with the next batch of your plan." };
     if (item.result === "failed") return { id, status: "failed", detail: item.detail, waited_s, next: "Approved, but it didn't run: fix the cause and queue it again, or tell the person why." };
     if (item.result === "running") return { id, status: "running", detail: item.detail, waited_s, next: "Revit is still placing it: check fmc_job status with the job id in detail, then go on." };
+    if (item.command === "send_code_to_revit" && item.status === "approved")
+      return { id, status: "approved", waited_s, next: "Approved once: send the same send_code_to_revit call again now (same code, reason, document and batch_lease). It runs once." };
+    if (item.command === "send_code_to_revit" && item.status === "used" && !item.result)
+      return { id, status: "used", waited_s, next: "This approval has been used. Queue a new call if more code is needed." };
     if (now() >= until) return { id, status: item.status === "approved" ? "running" : "waiting", waited_s, next: "Still waiting: call wait again (no tokens are spent while it holds)." };
     await sleep(1000);
   }
@@ -288,6 +292,10 @@ export async function paneAi(command: string, input: Record<string, unknown>, by
       // Owner 26 Oct: Approve runs the batch now, through the same gate (approval, limits, Stop AI); no AI needed.
       const item = readItem(id);
       if (!setStatus(id, "approved", by) || !item) return { error: `No batch ${id} in the queue` };
+      // send_code_to_revit (permission first, owner 28 Nov): approving does not run the code from the pane. The AI sends
+      // the same call again under its own batch lease, and it runs once (fmc/codegate.ts).
+      if (item.command === "send_code_to_revit")
+        return { approved: true, ran: false, result: "approved", message: `Approved once: ${item.summary} in ${item.model}. The AI sends it again with its batch lease; it runs once.` };
       try {
         // The long-job route (owner 26 Oct): a batch Revit is still placing is waited for on its heartbeats, not 10 s.
         // Owner 26 Oct: with two Revits open the batch runs in the Revit that has its model (the pane names none)

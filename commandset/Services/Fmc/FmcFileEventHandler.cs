@@ -78,6 +78,8 @@ namespace RevitMCPCommandSet.Services.Fmc
                 // A person's local copy of a workshared model (not the central): the only workshared file the
                 // AI-assisted modeller may change. Null when it isn't workshared.
                 ["isLocal"] = d.IsWorkshared ? (JToken)IsLocalCopy(d) : null,
+                // Project-folder gate: the central's path, so the server jail can add the central's folder ("" when unknown).
+                ["centralPath"] = FmcPathJail.CentralOf(d),
             };
         }
 
