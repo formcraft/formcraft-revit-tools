@@ -5,6 +5,7 @@ import { batchLease } from "../fmc/target.js";
 import { saveBlocked } from "../fmc/savepolicy.js";
 import { configPath, loadConfig, type GuardConfig } from "../fmc/policy.js";
 import { protectedRoots } from "../fmc/opencopy.js";
+import { neverWriteMatch } from "../fmc/protectednames.js";
 import { DIMS_FIX, planDims, referenceProblems, writeDimsReport, type DimCurve, type DimOpening, type DimRoom, type DimTarget } from "../fmc/dims.js";
 
 function reply(body: object, isError = false) {
@@ -120,12 +121,14 @@ export async function runFmcDims(args: FmcDimsArgs, io: DimsIo = {}) {
       skipped: plan.skipped,
       report,
     });
-    if (dry) return reply({ ...summary, next: "Nothing was dimensioned. Apply with dry_run false, batch_lease, and references. That call is fmc_dims_apply, one transaction." });
-    const blob = `${doc.title} ${doc.path}`;
-    if (/hebert hostels/i.test(blob) || doc.is_central) return reply({ ...stamp(), refused: true, code: "FMC-DIMS-GUARD", message: "HEBERT HOSTELS and a central model are not written by fmc_dims." }, true);
     const loaded = io.guard ? { config: io.guard, problem: undefined as string | undefined } : loadConfig(configPath(env));
-    const blocked = saveBlocked(doc, loaded.config) || loaded.problem;
-    if (blocked) return reply({ ...stamp(), refused: true, code: "FMC-DIMS-GUARD", message: blocked }, true);
+    const protectedName = neverWriteMatch([doc.title, doc.path], loaded.config);
+    const guardReason = protectedName ? `${protectedName} is not written by fmc_dims.`
+      : doc.is_central ? "A central model is not written by fmc_dims."
+      : saveBlocked(doc, loaded.config) || loaded.problem || null;
+    // research tool 35: the dry run says whether the apply would be refused by the guard (it changes nothing)
+    if (dry) return reply({ ...summary, would_refuse: guardReason, next: guardReason ? `The apply would be refused: ${guardReason}` : "Nothing was dimensioned. Apply with dry_run false, batch_lease, and references. That call is fmc_dims_apply, one transaction." });
+    if (guardReason) return reply({ ...stamp(), refused: true, code: "FMC-DIMS-GUARD", message: guardReason }, true);
     const lease = args.batch_lease.trim() || (batchLease.getStore() ?? "");
     if (!lease) return reply({ ...stamp(), refused: true, code: "FMC-BATCH-LOCKED", message: DIMS_FIX["FMC-BATCH-LOCKED"] }, true);
     const refsProblem = referenceProblems(args.references);
