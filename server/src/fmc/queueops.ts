@@ -206,6 +206,12 @@ export function selectStaleRunning(rows: QueueListRow[]): QueueListRow[] {
   return rows.filter((row) => row.state === "running" && row.source === "revit" && row.stale && row.revit_idle);
 }
 
+/** QU-9: what still blocks a call (live rows only), optionally for one document. */
+export function blockingRows(rows: QueueListRow[], document = ""): QueueListRow[] {
+  const doc = document.trim().toLowerCase();
+  return rows.filter((row) => !row.stale && row.source !== "lease" && (!doc || row.document.toLowerCase().includes(doc)));
+}
+
 export function selectStale(rows: QueueListRow[], olderThanMin: number): QueueListRow[] {
   const minS = Math.max(0, olderThanMin) * 60;
   return rows.filter((row) => row.state === "queued" && row.age_s >= minS);

@@ -104,8 +104,9 @@ test("a stale running log entry while Revit is idle does not make the queue busy
   assert.doesNotMatch(unknown.busy_reason, /not idle|1022517/);
 });
 
-test("QU-4/QU-5/QU-6: filter and count the list, mark mine, pick stale running log entries", async () => {
-  const { countByTool, filterRows, isMine, selectStaleRunning } = await import("./queueops.js");
+test("QU-4/QU-5/QU-6/QU-9: filter and count the list, mark mine, pick stale running log entries, wait until free", async () => {
+  const { blockingRows, countByTool, filterRows, isMine, selectStaleRunning } = await import("./queueops.js");
+  const { waitForQueue } = await import("../tools/fmc_queue.js");
   const rows = [
     row({ job_id: "a", document: "E-0001_USER", caller: "Builder 5", stale: false, revit_idle: false, state: "running", tool: "fmc_qa" }),
     row({ job_id: "b", document: "A-0001_USER", caller: "Other Bot", tool: "fmc_qa" }),
@@ -118,4 +119,15 @@ test("QU-4/QU-5/QU-6: filter and count the list, mark mine, pick stale running l
   assert.deepEqual(countByTool(rows), { fmc_qa: 2, fmc_circuits: 1 });
   assert.equal(isMine(rows[1], "unknown"), false);
   assert.deepEqual(selectStaleRunning(rows).map((r) => r.job_id), ["c"]);
+  assert.deepEqual(blockingRows(rows, "E-0001").map((r) => r.job_id), ["a"]);
+
+  let t = 0;
+  let calls = 0;
+  const free = await waitForQueue(5, "E-0001", { list: () => (++calls < 3 ? rows : rows.slice(1)), sleep: async (ms) => { t += ms; }, clock: () => t });
+  assert.equal(free.free, true);
+  assert.equal(free.waited_s, 2);
+  t = 0;
+  const busy = await waitForQueue(3, "E-0001", { list: () => rows, sleep: async (ms) => { t += ms; }, clock: () => t });
+  assert.equal(busy.free, false);
+  assert.equal(busy.waited_s, 3);
 });

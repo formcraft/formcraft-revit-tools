@@ -6,7 +6,7 @@ import { queueFor, queueSnapshots } from "../fmc/fairqueue.js";
 import { readInstances } from "../fmc/connect.js";
 import { inFlightJob, readRevitJobLines } from "../fmc/notidle.js";
 import { currentCaller } from "../fmc/caller.js";
-import { queueBusyReason, countByTool, filterRows, isMine, selectStaleRunning,
+import { queueBusyReason, blockingRows, countByTool, filterRows, isMine, selectStaleRunning,
   decideCancel, markRevitCancelled, openRevitJobs, purgeFair, rowFromFair, rowFromLease, selectStale,
   type LeaseRow, type QueueListRow,
 } from "../fmc/queueops.js";
@@ -23,20 +23,22 @@ export const FMC_QUEUE_DESCRIPTION =
   "A stale queued job is not left blocking the next call with no reason. /health carries the same busy_reason. " +
   "Reads are not blocked. Cancel never closes Revit. " +
   "list takes document, caller, state, only_live (no stale log entries), mine_only and limit; every row says mine when its caller is this client, " +
-  "and by_tool counts the jobs per tool. purge_stale with stale_running true also clears Revit log entries that say running while Revit is idle.";
+  "and by_tool counts the jobs per tool. purge_stale with stale_running true also clears Revit log entries that say running while Revit is idle. " +
+  "wait {seconds, document} returns when nothing live is queued or running (for that document) or when the time is up, with the reason.";
 
 const shape = {
-  action: z.enum(["list", "cancel", "purge_stale"]).optional().default("list"),
+  action: z.enum(["list", "cancel", "purge_stale", "wait"]).optional().default("list"),
   job_id: z.string().optional().default("").describe("cancel: the job id from list"),
   older_than_min: z.number().min(0).optional().default(5).describe("purge_stale: queued jobs older than this many minutes"),
   dry_run: z.boolean().optional().default(true).describe("purge_stale: true lists them and removes nothing"),
-  document: z.string().optional().default("").describe("list: only jobs for this document (title or part of it)"),
+  document: z.string().optional().default("").describe("list, wait: only jobs for this document (title or part of it)"),
   caller: z.string().optional().default("").describe("list: only jobs from this caller or lease holder"),
   state: z.enum(["queued", "running"]).optional().describe("list: only queued or only running"),
   only_live: z.boolean().optional().default(false).describe("list: leave out stale log entries"),
   mine_only: z.boolean().optional().default(false).describe("list: only this client's jobs"),
   limit: z.number().int().min(1).max(500).optional().default(100).describe("list: at most this many rows (oldest first)"),
   stale_running: z.boolean().optional().default(false).describe("purge_stale: also clear Revit log entries that say running while Revit is idle"),
+  seconds: z.number().int().min(1).max(120).optional().default(30).describe("wait: how long to wait at most"),
 };
 
 export type FmcQueueArgs = z.infer<z.ZodObject<typeof shape>>;
@@ -94,7 +96,31 @@ function portOf(instance: string): number | undefined {
   return match ? Number(match[1]) : undefined;
 }
 
+export interface QueueWaitIo { list?: () => QueueListRow[]; sleep?: (ms: number) => Promise<void>; clock?: () => number }
+
+/** QU-9: wait until nothing live blocks (for the document), polling once a second. */
+export async function waitForQueue(seconds: number, document: string, io: QueueWaitIo = {}) {
+  const list = io.list ?? (() => listQueue());
+  const sleep = io.sleep ?? ((ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms)));
+  const clock = io.clock ?? (() => Date.now());
+  const start = clock();
+  for (;;) {
+    const rows = list();
+    const blocking = blockingRows(rows, document);
+    const waited = Math.round((clock() - start) / 1000);
+    if (!blocking.length) return { free: true, waited_s: waited, reason: document ? `Nothing live is queued or running for ${document}.` : "Nothing live is queued or running." };
+    if (clock() - start >= seconds * 1000) {
+      return { free: false, waited_s: waited, reason: queueBusyReason(blocking) ?? `${blocking.length} job(s) still queued or running.`, blocking: blocking.slice(0, 10) };
+    }
+    await sleep(1000);
+  }
+}
+
 export async function runFmcQueue(args: FmcQueueArgs, env: NodeJS.ProcessEnv = process.env, now = Date.now()) {
+  if (args.action === "wait") {
+    const result = await waitForQueue(args.seconds ?? 30, args.document ?? "", { list: () => listQueue(env) });
+    return reply({ tool: "fmc_queue", action: "wait", read_only: true, document: args.document || undefined, ...result });
+  }
   const me = currentCaller().client;
   const all = listQueue(env, now).map((row) => ({ ...row, mine: isMine(row, me) }));
   const rows = all;
