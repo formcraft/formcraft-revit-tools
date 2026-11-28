@@ -31,6 +31,9 @@ export interface NewLocalInput {
   switch_to?: string;
   backup_suffix?: string;
   dry_run?: boolean;
+  /** A real run on a local with unsaved or unsynced changes is refused unless this is true (the person accepted losing them). */
+  discard_changes?: boolean;
+  batch_lease?: string;
 }
 
 export interface OpenDoc {
@@ -42,6 +45,10 @@ export interface OpenDoc {
   isDetached?: boolean;
   isLinked?: boolean;
   centralPath?: string;
+  /** Document.IsModified from the probe. Undefined when unknown. */
+  modified?: boolean;
+  /** User worksets this user holds editable (unsynced ownership). -1 or undefined when unknown. */
+  ownedWorksets?: number;
 }
 
 export interface CentralFile {
@@ -98,6 +105,11 @@ export interface NewLocalPlan {
   steps: string[];
   caveat: string;
   script?: string;
+  /** The open local's state: unsaved edits, and worksets still held (changes not synced). Null when unknown or closed. */
+  modified: boolean | null;
+  owned_worksets: number | null;
+  /** The renamed file is the last saved state only: unsaved and unsynced work is not in it. */
+  backup_contains: string;
 }
 
 /** A quote or a newline in a path or title would break out of the verbatim string. Reject it; do not escape it in. */
@@ -253,6 +265,21 @@ export function planNewLocal(input: NewLocalInput, ctx: PlanContext): NewLocalPl
   if (doc && ctx.queueRunning && ctx.caller && ctx.queueRunning.client !== ctx.caller.client && queueHits(ctx.queueRunning, doc, document)) {
     reasons.push(`Another caller is running a batch on ${doc.title} (${ctx.queueRunning.client}).`);
   }
+  // A real run needs the caller to hold the document's lease (not just "nobody else holds it").
+  const callerLease = (ctx.caller?.lease ?? "").trim();
+  if (!dry && (doc || resume) && (!callerLease || !ctx.holder)) {
+    reasons.push(`A real run needs the batch lease on ${doc?.title ?? document}: fmc_batch request, then pass batch_lease. Nothing was closed.`);
+  }
+  // Unsaved or unsynced work in the open local is lost by the close (save false). Refuse unless the person said discard.
+  if (!dry && doc && input.discard_changes !== true) {
+    const unknown = doc.modified === undefined || doc.ownedWorksets === undefined || doc.ownedWorksets < 0;
+    const held = (doc.ownedWorksets ?? 0) > 0;
+    if (doc.modified === true || held) {
+      reasons.push(`${doc.title} has ${doc.modified === true ? "unsaved changes" : ""}${doc.modified === true && held ? " and " : ""}${held ? `${doc.ownedWorksets} workset(s) still held (changes not synced)` : ""}. Save and sync first, or pass discard_changes true once the person accepts losing them. Nothing was closed.`);
+    } else if (unknown) {
+      reasons.push(`Could not read whether ${doc.title} has unsaved or unsynced changes. Pass discard_changes true only once the person accepts losing them. Nothing was closed.`);
+    }
+  }
 
   const names = local && !localPathProblem ? backupNames(local, suffix, ctx.exists) : { file: "", folderFrom: "", folderTo: "" };
   if (local && !localPathProblem && !names.file) reasons.push("No free backup name (tried -2 through -1000). Nothing was moved.");
@@ -282,6 +309,9 @@ export function planNewLocal(input: NewLocalInput, ctx: PlanContext): NewLocalPl
     backup_folder_to: names.folderTo,
     steps: [],
     caveat: NEW_LOCAL_CAVEAT,
+    modified: doc && doc.modified !== undefined ? doc.modified : null,
+    owned_worksets: doc && typeof doc.ownedWorksets === "number" && doc.ownedWorksets >= 0 ? doc.ownedWorksets : null,
+    backup_contains: "last saved state: unsaved and unsynced work in the open local is not in the backup",
   };
   if (!base.ok || !host || (!doc && !resume)) return base;
 
@@ -434,12 +464,15 @@ try { isCentral = info.IsCentral; } catch (Exception) { isCentral = false; }
 string centralPath = info.CentralPath ?? "";
 string docCentral = "";
 bool docDetached = false;
+bool docModified = found != null && found.IsModified;
+int docOwnedWorksets = 0;
 if (found != null && found.IsWorkshared)
 {
     docDetached = found.IsDetached;
     try { docCentral = ModelPathUtils.ConvertModelPathToUserVisiblePath(found.GetWorksharingCentralModelPath()); } catch (Exception) { docCentral = ""; }
+    try { foreach (Workset ws in new FilteredWorksetCollector(found).OfKind(WorksetKind.UserWorkset)) if (ws.IsEditable) docOwnedWorksets++; } catch (Exception) { docOwnedWorksets = -1; }
 }
-return new { ok = true, exists = true, isWorkshared = info.IsWorkshared, isCentral, centralPath, docFound = found != null, docTitle = found == null ? "" : found.Title, docPath = found == null ? "" : (found.PathName ?? ""), docFamily = found != null && found.IsFamilyDocument, docWorkshared = found != null && found.IsWorkshared, docDetached, docActive = found != null && uiapp.ActiveUIDocument != null && found.Equals(uiapp.ActiveUIDocument.Document), docCentral, docs };
+return new { ok = true, exists = true, isWorkshared = info.IsWorkshared, isCentral, centralPath, docFound = found != null, docTitle = found == null ? "" : found.Title, docPath = found == null ? "" : (found.PathName ?? ""), docFamily = found != null && found.IsFamilyDocument, docWorkshared = found != null && found.IsWorkshared, docDetached, docActive = found != null && uiapp.ActiveUIDocument != null && found.Equals(uiapp.ActiveUIDocument.Document), docCentral, docModified, docOwnedWorksets, docs };
 `;
 
 const NEW_LOCAL_SCRIPT = `
@@ -500,6 +533,22 @@ export function moveBackup(plan: Pick<NewLocalPlan, "local" | "backup" | "backup
   }
 }
 
+/**
+ * Put the old local (and its _backup folder) back after a later step failed. Only when the local path is free: a
+ * half-written new local is never deleted. Returns what was restored, or why not.
+ */
+export function restoreBackup(plan: Pick<NewLocalPlan, "local" | "backup" | "backup_folder_from" | "backup_folder_to">, io: MoveFs = fs): { restored: boolean; message: string } {
+  if (!plan.backup || !io.existsSync(plan.backup)) return { restored: false, message: "No backup file to restore (the local was already gone)." };
+  if (io.existsSync(plan.local)) return { restored: false, message: `${plan.local} exists (a partial new local?). The old local stays at ${plan.backup}; nothing was deleted.` };
+  io.renameSync(plan.backup, plan.local);
+  let folder = "";
+  if (plan.backup_folder_to && io.existsSync(plan.backup_folder_to) && plan.backup_folder_from && !io.existsSync(plan.backup_folder_from)) {
+    io.renameSync(plan.backup_folder_to, plan.backup_folder_from);
+    folder = ` and ${plan.backup_folder_from}`;
+  }
+  return { restored: true, message: `The old local was put back at ${plan.local}${folder}. Reopen it in Revit.` };
+}
+
 export interface NewLocalRun {
   ok: boolean;
   step?: string;
@@ -516,6 +565,7 @@ export interface NewLocalRun {
   backup?: string;
   elapsed_ms?: number;
   opened_how?: unknown;
+  restored?: boolean;
 }
 
 function asRecord(value: unknown): Record<string, unknown> | null {
@@ -546,7 +596,13 @@ export async function runNewLocalSteps(
   plan: NewLocalPlan,
   sendCommand: (command: string, params: Record<string, unknown>) => Promise<unknown>,
   move: (plan: NewLocalPlan) => void = moveBackup,
+  restore: (plan: NewLocalPlan) => { restored: boolean; message: string } = restoreBackup,
 ): Promise<NewLocalRun> {
+  const undo = (step: string, why: string): NewLocalRun => {
+    let back: { restored: boolean; message: string };
+    try { back = restore(plan); } catch (error) { back = { restored: false, message: `Restoring the old local failed: ${failText(error)} It stays at ${plan.backup}.` }; }
+    return { ok: false, step, closed: true, backup: plan.backup, restored: back.restored, message: `${why} ${back.message}` };
+  };
   const started = Date.now();
   const scriptAt = plan.calls.findIndex((call) => call.command === "fmc_new_local");
   const makeLocal = plan.calls[scriptAt];
@@ -568,16 +624,16 @@ export async function runNewLocalSteps(
   try {
     move(plan);
   } catch (error) {
-    return { ok: false, step: "backup", closed: true, backup: plan.backup, message: `${failText(error)} Nothing was deleted.` };
+    return undo("backup", `${failText(error)} Nothing was deleted.`);
   }
   let made: Record<string, unknown> | null;
   try {
     made = codeResult(await sendCommand(makeLocal.command, makeLocal.params));
   } catch (error) {
-    return { ok: false, step: "create_local", closed: true, backup: plan.backup, message: `${failText(error)} The backup was kept.` };
+    return undo("create_local", `${failText(error)}`);
   }
   if (!made || made.ok === false) {
-    return { ok: false, step: String(made?.step ?? "create_local"), closed: true, backup: plan.backup, message: String(made?.message ?? "CreateNewLocal failed. The backup was kept.") };
+    return undo(String(made?.step ?? "create_local"), String(made?.message ?? "CreateNewLocal failed."));
   }
   const summary = {
     ok: true, closed: true, title: made.title, path: made.path ?? plan.local, isWorkshared: made.isWorkshared, isLocal: made.isLocal,

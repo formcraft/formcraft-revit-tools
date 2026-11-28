@@ -58,9 +58,13 @@ export interface GuardConfig {
   family_max_mb?: number;
   /**
    * Original / live model roots. Write, save, sync, reload and relinquish are refused for any document under these
-   * paths. A verification copy must sit outside them. Empty until the guard file names them (for example D:\Fomcraft).
+   * paths. A verification copy must sit outside them. Empty until a person names them (for example D:\Fomcraft).
+   * RV-6 (owner 28 Nov): empty or missing does not protect a whole tree, because the AI works in project folders under
+   * D:\Fomcraft; the forbidden-project floor (FORBIDDEN_PROJECTS_FLOOR) still applies, and /health and the log warn.
    */
   protected_roots: string[];
+  /** Extra projects never written, saved or synced. Added to FORBIDDEN_PROJECTS_FLOOR; it can never remove a floor name. */
+  forbidden_projects?: string[];
   /**
    * Folders a verification copy may be written to. Empty means any path that is not a protected root and not a CDE
    * gate folder. When set, open_copy's copy_to must be inside one of them.
@@ -71,6 +75,11 @@ export interface GuardConfig {
    * They resume above 1.5× this value (1536 when this is 1024). 0 turns the pause off.
    */
   ram_pause_free_mb?: number;
+  /**
+   * fmc_hw auto free: close spare views by itself when the memory pause is hard (a system action, FINAL fmc_hw section 4).
+   * On by default; false turns it off for this PC.
+   */
+  hw_auto_free?: boolean;
   /** Longest send_code_to_revit script, in characters. Default 1_000_000. */
   script_max_chars?: number;
   /** Minutes of changes between syncs of a workshared model. Default 15. 0 turns the timer off. */
@@ -201,6 +210,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_new_local",
   // Grids copied from a loaded link. The server sends a fixed script; the add-in command is still send_code_to_revit.
   "fmc_grids_from_link",
+  // B4: pipe-to-fixture connect. The server sends a fixed script; the add-in command is still send_code_to_revit.
+  "fmc_connect_fixture",
   // Phases and revisions. Reads stay on fmc_phase. This command is the one transaction.
   "fmc_phase_apply",
   // Joins and the envelope pressure test. Reads stay on fmc_joins. This command is the one transaction.
@@ -216,6 +227,7 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_north_apply",
   // Legend views: duplicate a seed view or copy a seed component. One transaction. No text notes.
   "fmc_legend_apply",
+  "fmc_legend_chain",
   // Kit typical details copied into a drafting view. One transaction. The kit file is not saved.
   "fmc_details_apply",
   // A parameter or label on the family loaded in the project, or a project binding. The kit family file is not saved.
@@ -243,6 +255,11 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_close_local_apply",
   // Close spare documents or purge unused elements. Status stays on fmc_memory.
   "fmc_memory_apply",
+  // fmc_hw free closes views in an open document. The add-in command is fmc_hw (action free); the gate sees fmc_hw_free.
+  "fmc_hw_free",
+  // fmc_hw gpu_prefer and offload with a Revit model open: a gate-only write (lease, live-model lock, AI gate) on the
+  // named document. It sends nothing to Revit; the registry or Revit.ini write follows in fmc_hw. fmc_hw itself stays a read.
+  "fmc_hw_host",
 ]);
 
 /**
@@ -377,6 +394,53 @@ function norm(p: string): string {
 
 function segments(p: string): string[] {
   return norm(p).toLowerCase().split("\\").filter(Boolean);
+}
+
+
+/** Projects no tool writes, saves or syncs, wherever they sit. Config forbidden_projects adds to it, never replaces it. */
+export const FORBIDDEN_PROJECTS_FLOOR: readonly string[] = ["A-0001", "HEBERT HOSTELS"];
+
+/** Upper case, every run of space, _, -, . and ~ becomes one space: HEBERT_HOSTELS, hebert-hostels and "Hebert  Hostels" match. */
+export function normaliseProjectText(text: string): string {
+  return text.toUpperCase().replace(/[\s_\-.~]+/g, " ").trim();
+}
+
+/** The floor plus the guard file's forbidden_projects. */
+export function forbiddenProjects(cfg?: Partial<GuardConfig> | null): string[] {
+  const extra = Array.isArray(cfg?.forbidden_projects)
+    ? cfg!.forbidden_projects.filter((x): x is string => typeof x === "string" && x.trim().length > 0)
+    : [];
+  return [...new Set([...FORBIDDEN_PROJECTS_FLOOR, ...extra.map((x) => x.trim())])];
+}
+
+function realPathOf(file: string): string {
+  try { return /^[a-zA-Z]:[\\/]|^\\\\/.test(file) && fs.existsSync(file) ? fs.realpathSync.native(file) : ""; } catch { return ""; }
+}
+
+/**
+ * The forbidden project a title or path names, or null. Each path segment (folder, file name) and the title is
+ * normalised. A name is a hit at the start of a segment (A-0001, A-0001-Legacy, A-00012, HEBERT HOSTELS_USER). A name
+ * without digits (HEBERT HOSTELS) is also a hit at any word start inside a segment. A code with digits is not matched
+ * inside a segment, because ISO 19650 model names carry role-number fields such as ...-M3-A-0001. An existing path is
+ * also checked by its real path (junction, subst drive, 8.3 name).
+ */
+export function forbiddenProject(text: string | undefined | null, cfg?: Partial<GuardConfig> | null): string | null {
+  const raw = (text ?? "").trim();
+  if (!raw) return null;
+  const names = forbiddenProjects(cfg).map((n) => ({ name: n, norm: normaliseProjectText(n), code: /\d/.test(n) }));
+  const candidates = [raw, realPathOf(raw)].filter(Boolean);
+  for (const candidate of candidates) {
+    for (const seg of candidate.split(/[\\/]+/)) {
+      const s = normaliseProjectText(seg.replace(/\.(rvt|rfa|rte|rft)$/i, ""));
+      if (!s) continue;
+      for (const n of names) {
+        if (!n.norm) continue;
+        if (s.startsWith(n.norm)) return n.name;
+        if (!n.code && (" " + s).includes(" " + n.norm)) return n.name;
+      }
+    }
+  }
+  return null;
 }
 
 /** True when target is root itself or inside root. "*" in root matches exactly one folder. */

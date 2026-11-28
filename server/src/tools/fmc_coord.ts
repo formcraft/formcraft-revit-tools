@@ -7,6 +7,8 @@ import { GuardConfig, loadConfig } from "../fmc/policy.js";
 import { saveBlocked } from "../fmc/savepolicy.js";
 import { kitPaths } from "../fmc/context.js";
 import { documentRequired } from "../fmc/fairqueue.js";
+import { batchBoard } from "../fmc/batchline.js";
+import { batchLease } from "../fmc/target.js";
 import type { OpenDocRef } from "../fmc/docresolve.js";
 import { isMat4 } from "../fmc/coordmath.js";
 import {
@@ -80,6 +82,7 @@ export const FMC_COORD_SHAPE = {
   control_points: z.array(pointShape).optional().default([]),
   source: z.string().optional().default("").describe("import: a CSV or JSON path"),
   format: z.enum(["all", "ifc", "archicad", "navis", "blender", "csv"]).optional().default("all"),
+  batch_lease: z.string().optional().default("").describe("publish or import with dry_run false: the lease on document from fmc_batch request."),
 };
 
 export type FmcCoordArgs = z.infer<z.ZodObject<typeof FMC_COORD_SHAPE>>;
@@ -94,6 +97,25 @@ export interface CoordDeps {
   standards?: Record<string, unknown> | null;
   open?: Array<string | OpenDocRef>;
   revit?: (command: string, params: Record<string, unknown>, write: boolean) => Promise<unknown>;
+  /** Test hook: the lease board's holder of a document. */
+  holder?: (document: string) => { lease: string; client: string } | null;
+}
+
+/**
+ * B5: a real publish or import overwrites the shared FMC_Coord.json, so it is gated like a write: a named document that
+ * the guard allows (not save_exclude, a protected original or a forbidden project), and the caller's lease on it.
+ */
+function recordWriteRefusal(args: FmcCoordArgs, deps: CoordDeps, cfg: GuardConfig): string | null {
+  const document = (args.document ?? "").trim();
+  if (!document) return `[FMC-COORD-LEASE] ${args.action} with dry_run false needs document (the model this record is for) and batch_lease. Nothing was written.`;
+  const blocked = guardReason(document, cfg);
+  if (blocked) return `[FMC-COORD-GUARD] ${blocked} Nothing was written.`;
+  const caller = (args.batch_lease ?? "").trim() || batchLease.getStore() || "";
+  let holder: { lease: string; client: string } | null = null;
+  try { holder = (deps.holder ?? ((d: string) => batchBoard().activeHolder(d)))(document); } catch { holder = null; }
+  if (!caller || !holder || holder.lease !== caller)
+    return `[FMC-COORD-LEASE] ${args.action} with dry_run false needs the batch lease on ${document}: fmc_batch request, then pass batch_lease. ${!caller ? "No lease was passed." : !holder ? "Nobody holds this document's lease." : "The lease passed is not the one held."} Nothing was written.`;
+  return null;
 }
 
 function projectFolderOf(given: string, document: string): string {
@@ -221,9 +243,12 @@ export async function runFmcCoord(args: FmcCoordArgs, deps: CoordDeps = {}) {
       const existing = readRecord(folder, project, env).record ?? emptyRecord(project, at);
       const next = mergePoints(existing, points, at);
       const plan = planRecordWrite(folder, project, cfg, env);
-      if (dry) return finish({ dry_run: true, project, would_add: points.map((point) => point.name), count: points.length, project_skipped: plan.project_skipped, next: "Run again with dry_run=false" }, false, `${points.length} points`);
-      const files = writeRecordFiles(next, plan);
-      return finish({ dry_run: false, project, imported: points.length, files, project_skipped: plan.project_skipped, summary: summaryOf(next) }, false, `${points.length} points`);
+      if (dry) return finish({ dry_run: true, project, would_add: points.map((point) => point.name), count: points.length, project_skipped: plan.project_skipped, would_back_up: [plan.app_file, plan.project_file].filter((f): f is string => !!f && fs.existsSync(f)), next: "Run again with dry_run=false, document and batch_lease" }, false, `${points.length} points`);
+      const refusedImport = recordWriteRefusal(args, deps, cfg);
+      if (refusedImport) return finish({ error: refusedImport, project }, true);
+      const backups: string[] = [];
+      const files = writeRecordFiles(next, plan, backups);
+      return finish({ dry_run: false, project, imported: points.length, files, backups, project_skipped: plan.project_skipped, summary: summaryOf(next) }, false, `${points.length} points`);
     }
 
     if (args.action === "export") {
@@ -256,6 +281,11 @@ export async function runFmcCoord(args: FmcCoordArgs, deps: CoordDeps = {}) {
     const record = loaded.record;
 
     if (args.action === "publish") {
+      // B5: refused before the model is read, so a refused publish costs no Revit call.
+      if (!dry) {
+        const refusedPublish = recordWriteRefusal(args, deps, cfg);
+        if (refusedPublish) return finish({ error: refusedPublish, project }, true);
+      }
       const extra = userPoints(args.control_points ?? []);
       const snap = await revit({
         action: "snapshot", document: aimed.document, level, ids: (args.ids ?? []).map(String),
@@ -271,9 +301,10 @@ export async function runFmcCoord(args: FmcCoordArgs, deps: CoordDeps = {}) {
         project_skipped: plan.project_skipped, resolved_document: snap.resolved_document ?? snap.document,
         tolerances: tols,
       };
-      if (dry) return finish({ ...body, would_write: [plan.app_file, plan.project_file].filter(Boolean), next: "Run again with dry_run=false" }, false, "publish dry run");
-      const files = writeRecordFiles(next, plan);
-      return finish({ ...body, files }, false, "publish");
+      if (dry) return finish({ ...body, would_write: [plan.app_file, plan.project_file].filter(Boolean), would_back_up: [plan.app_file, plan.project_file].filter((f): f is string => !!f && fs.existsSync(f)), next: "Run again with dry_run=false and batch_lease" }, false, "publish dry run");
+      const backups: string[] = [];
+      const files = writeRecordFiles(next, plan, backups);
+      return finish({ ...body, files, backups }, false, "publish");
     }
 
     if (args.action === "check") {

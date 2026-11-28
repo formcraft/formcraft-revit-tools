@@ -60,7 +60,8 @@ export async function runFmcSchedules(args: FmcSchedulesArgs) {
     const real = args.action === "apply" && args.dry_run === false;
     // the plan only reads (it is rolled back in Revit); the real run is a model write behind the live-model lock
     const params = { schedules, dry_run: !real };
-    const r = await withRevitConnection((c) => real ? c.sendCommand("fmc_schedules_apply", params, 300000) : c.sendRaw("fmc_schedules_apply", params, 300000)) as Record<string, unknown>;
+    // X-01: the dry run applies and rolls back in Revit, so it goes through the same gates as the real run
+    const r = await withRevitConnection((c) => c.sendCommand("fmc_schedules_apply", params, 300000)) as Record<string, unknown>;
     if (real) log(config, "schedules_apply", false, file, "done", `${schedules.length} schedules`);
     return reply({ dry_run: !real, set: set.name, warnings, ...r, next: real ? "Check the schedules in Revit" : "Run apply with dry_run=false in the template or WIP model" });
   } catch (e) {

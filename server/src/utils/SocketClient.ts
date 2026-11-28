@@ -177,7 +177,7 @@ export class RevitClientConnection {
   }
 
   public async sendCommand(command: string, params: any = {}, timeoutMs: number = 120000, long?: LongJobOptions): Promise<any> {
-    if (command === "send_code_to_revit" || command === "fmc_new_local" || command === "fmc_grids_from_link") {
+    if (command === "send_code_to_revit" || command === "fmc_new_local" || command === "fmc_grids_from_link" || command === "fmc_connect_fixture") {
       const code = params && typeof params.code === "string" ? params.code : "";
       const problem = screenScript(code, scriptLimit(), { allowFullScan: params?.allow_full_scan === true });
       if (problem) throw new Error(problem.message);
@@ -223,7 +223,7 @@ export class RevitClientConnection {
 
   /** Drop elements another user owns, or that are not current. An older add-in has no currency command: the write still goes. */
   private async screenOwnership(command: string, params: any, aimed: string | undefined): Promise<{ params: any; skipped: SkippedElement[]; stopped: boolean }> {
-    if (command === "fmc_revit_file" || command === "fmc_undo" || command === "fmc_new_local" || command === "fmc_elem_currency") {
+    if (command === "fmc_revit_file" || command === "fmc_undo" || command === "fmc_new_local" || command === "fmc_elem_currency" || command === "fmc_hw_free" || command === "fmc_hw_host") {
       return { params, skipped: [], stopped: false };
     }
     const ids = [...new Set(namedElementIds(params))];
@@ -275,6 +275,18 @@ export class RevitClientConnection {
       if (command === "fmc_grids_from_link") {
         const wire = wireGrids(params ?? {});
         return stampAppliedDocument(await this.sendRaw(wire.command, wire.params, timeoutMs, long), active, params);
+      }
+      // B4: the gate saw fmc_connect_fixture; the add-in command is send_code_to_revit with the fixed script.
+      if (command === "fmc_connect_fixture") {
+        return stampAppliedDocument(await this.sendRaw("send_code_to_revit", params ?? {}, timeoutMs, long), active, params);
+      }
+      // fmc_hw_host is gate-only: the lease, lock and AI gate passed; fmc_hw then writes the PC setting itself.
+      if (command === "fmc_hw_host") {
+        return { gated: true, document: params?.document ?? null, sent_to_revit: false };
+      }
+      // The gate saw fmc_hw_free; the add-in command is fmc_hw with action free.
+      if (command === "fmc_hw_free") {
+        return stampAppliedDocument(await this.sendRaw("fmc_hw", { ...(params ?? {}), action: "free" }, timeoutMs, long), active, params);
       }
       return stampAppliedDocument(await this.sendRaw(command, params, timeoutMs, long), active, params);
     };

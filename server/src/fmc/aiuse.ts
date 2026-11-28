@@ -99,10 +99,18 @@ export const NEVER: Record<string, string> = {
   fmc_link_add: "links (coordination)", fmc_link_pin: "links (coordination)", fmc_reload_link: "links (coordination)",
   fmc_link_unload: "links (coordination)", fmc_link_publish: "links (coordination)", fmc_coord_apply: "coordinates (coordination)", fmc_workset_create: "worksets (setup)",
   fmc_material_purge: "purging (deleting)",
+  fmc_memory_apply: "purging (deleting)",
   fmc_new_local: "files (new local)",
   fmc_dynamo: "running a Dynamo graph",
   fmc_script_run: "running a library script",
+  fmc_hw_free: "closing views to free memory",
+  // B4 / P-fmc_connect_fixture-01: out of the AI set until a typed add-in command with dry_run exists.
+  fmc_connect_fixture: "connecting fixtures (a person runs it until the typed command with dry_run exists)",
+  fmc_hw_host: "changing this PC's graphics settings (GPU preference or Revit.ini)",
 };
+
+/** Refused at the AI gate whatever the access level (NEVER alone does not bind under access full). */
+export const NOT_AI_COMMANDS = new Set(["fmc_connect_fixture"]);
 
 /** What a person sees when AI isn't allowed: plain lines, never the lock's wording (owner 26 Oct). */
 export const USER_LINE = {

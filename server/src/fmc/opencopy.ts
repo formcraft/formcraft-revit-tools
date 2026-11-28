@@ -4,7 +4,7 @@
  * Nothing here saves, syncs, publishes or relinquishes.
  */
 import path from "node:path";
-import { DocInfo, GuardConfig, isInside } from "./policy.js";
+import { DocInfo, GuardConfig, forbiddenProject, isInside } from "./policy.js";
 
 const win = path.win32;
 
@@ -70,9 +70,38 @@ export function clearRememberedProtected(): void {
   remembered.clear();
 }
 
+/**
+ * The guard file's protected_roots plus extras. RV-6 (owner 28 Nov): an empty or missing list protects no tree (the AI
+ * works under D:\Fomcraft); originals are then guarded by the forbidden-project floor alone, and a warning is logged once
+ * and shown on /health (guard_warnings).
+ */
 export function protectedRoots(cfg: GuardConfig, extra?: string[]): string[] {
-  const fromCfg = Array.isArray(cfg.protected_roots) ? cfg.protected_roots : [];
-  return [...fromCfg, ...(extra ?? []), ...remembered];
+  const named = configuredProtectedRoots(cfg);
+  if (!named.length) noteProtectedRootsUnset();
+  return [...named, ...(extra ?? []), ...remembered];
+}
+
+export const PROTECTED_ROOTS_UNSET =
+  "protected_roots is not set in fmc_guard.json: no originals folder is protected by path. Only the forbidden-project floor (A-0001, HEBERT HOSTELS, plus forbidden_projects) refuses writes, saves and syncs. A person should name the originals roots.";
+
+let warnedUnset = false;
+
+/** Logs the warning once per process. Test hook: pass a logger and reset. */
+export function noteProtectedRootsUnset(log: (line: string) => void = (line) => console.error(line), reset = false): void {
+  if (reset) { warnedUnset = false; return; }
+  if (warnedUnset) return;
+  warnedUnset = true;
+  try { log(`[FMC-GUARD] ${PROTECTED_ROOTS_UNSET}`); } catch { /* logging must not stop a guard */ }
+}
+
+/** The guard warnings /health shows. */
+export function guardWarnings(cfg: GuardConfig | null | undefined): string[] {
+  return configuredProtectedRoots(cfg).length ? [] : [PROTECTED_ROOTS_UNSET];
+}
+
+/** Only what the guard file names (no floor). */
+export function configuredProtectedRoots(cfg: GuardConfig | null | undefined): string[] {
+  return Array.isArray(cfg?.protected_roots) ? cfg!.protected_roots.filter((r) => typeof r === "string" && r.trim().length > 0) : [];
 }
 
 export function copyRoots(cfg: GuardConfig, extra?: string[]): string[] {
@@ -180,7 +209,8 @@ export function writeGuard(doc: (DocInfo & { isLocal?: boolean | null }) | null 
   const prot = protectedRoots(cfg, strings(params?.protected_roots));
   const live = strings(params?.live_paths);
   const path = doc.path ?? "";
-  const protectedDoc = !!path && underAny(path, prot);
+  const forbidden = forbiddenProject(doc.title, cfg) ?? forbiddenProject(path, cfg);
+  const protectedDoc = (!!path && underAny(path, prot)) || !!forbidden;
   const liveDoc = !!path && live.some((p) => samePath(p, path) || isInside(path, p));
   const readOnly = doc.readOnly === true || doc.isDetached === true || doc.isLinked === true;
   const previewReplace = command === "fmc_replace";
@@ -188,7 +218,8 @@ export function writeGuard(doc: (DocInfo & { isLocal?: boolean | null }) | null 
   if (previewReplace && !readOnly)
     reasons.push("fmc_replace runs only on a verification copy opened by fmc_file open_copy. This document is not one. Nothing is saved.");
   if (doc.isLinked) reasons.push("A linked document is never written, saved, synced, reloaded or relinquished.");
-  if (protectedDoc) reasons.push(`Protected original: ${path}. Write, save, sync, reload and relinquish are refused.`);
+  if (forbidden) reasons.push(`Forbidden project (${forbidden}): ${path || doc.title}. Write, save, sync, reload and relinquish are refused.`);
+  else if (protectedDoc) reasons.push(`Protected original: ${path}. Write, save, sync, reload and relinquish are refused.`);
   if (liveDoc) reasons.push(`Live path: ${path}. Write, save, sync, reload and relinquish are refused.`);
   if (readOnly && !dryEdit && !doc.isLinked && !protectedDoc && !liveDoc)
     reasons.push("This document is a read-only verification copy. modify_model with dry_run true rolls back; every other write is refused. Nothing is saved.");
@@ -216,7 +247,9 @@ export function planEnableCopy(file: string, cfg: GuardConfig, extraProtected: s
     if (win.extname(p).toLowerCase() !== ".rvt") reasons.push("document must be the copy's full .rvt path");
     const cloud = cloudModelReason(p);
     if (cloud) reasons.push(cloud);
-    if (!prot.length) reasons.push("name protected_roots (the live originals, for example D:\\Fomcraft) so this switch cannot be turned on for them");
+    if (!configuredProtectedRoots(cfg).length && !extraProtected.some((r) => r && r.trim()))
+      reasons.push("name protected_roots (the live originals, for example D:\\Fomcraft) so this switch cannot be turned on for them");
+    if (forbiddenProject(p, cfg)) reasons.push(`Refusing to enable AI on a forbidden project (${forbiddenProject(p, cfg)}): ${p}`);
     if (underAny(p, prot)) reasons.push(`Refusing to enable AI on a protected original: ${p}`);
     if (livePaths.some((x) => samePath(x, p) || isInside(p, x))) reasons.push(`Refusing to enable AI on a live path: ${p}`);
     if (copies.length && !underAny(p, copies)) reasons.push(`The copy is outside copy_roots (${copies.join("; ")}).`);

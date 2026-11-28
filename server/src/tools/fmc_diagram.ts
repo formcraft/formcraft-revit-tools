@@ -189,8 +189,8 @@ export async function runFmcDiagram(args: FmcDiagramArgs) {
     const blocked = views.filter((v) => v.collisions > 0 && spec.views.some((s) => s.name === v.name));
     if (blocked.length)
       return reply({ refused: true, reasons: blocked.map((v) => `${v.name}: ${v.collisions} collision(s)`), collisions: blocked.map((v) => ({ view: v.name, list: v.collision_list })) }, true);
-    // The dry run only reads; the real run changes the model and goes through the live-model lock (fmc_diagram_draw).
-    const r = await withRevitConnection((c) => dry ? c.sendRaw("fmc_diagram_draw", spec, 600000) : c.sendCommand("fmc_diagram_draw", spec, 600000));
+    // X-01: the dry run draws and rolls back the group in Revit, so it goes through the same gates as the real run.
+    const r = await withRevitConnection((c) => c.sendCommand("fmc_diagram_draw", { ...spec, dry_run: dry }, 600000));
     const result = DRAW_RESULT.safeParse(r);
     const body = result.success ? result.data : r;
     if (!dry) log(config, "diagram_draw", false, scan.model, "done", spec.views.map((v) => v.name).join("; "));

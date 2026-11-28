@@ -62,7 +62,7 @@ function pair(partial: Record<string, unknown>): PairRow {
 
 function model(partial: Record<string, unknown> = {}) {
   return normalizeSnapshot({
-    resolved_document: { title: "A-0001", path: "D:\\Jobs\\_Staging\\A-0001.rvt" },
+    resolved_document: { title: "A-0003", path: "D:\\Jobs\\_Staging\\A-0003.rvt" },
     scoped: true,
     pairs: [], hosts: [], rooms: [], room_walls: [], leaks: [],
     envelope: { built: true, incomplete: false, capped: false, exterior_walls: 4, roofs: 1, floors: 1, curtain: 0, doors: 1, windows: 1, rays: 48, voxels: 20, booleans: 4, reason: "" },
@@ -281,11 +281,11 @@ test("checks and limits do not call Revit, and a model call needs an exact docum
 test("audit is one read, images stay off unless asked, and the report is not the live AppData", async () => {
   const { env, reportDir } = tempEnv();
   let reads = 0;
-  const body = textOf(await runFmcJoins(args({ action: "audit", document: "A-0001", level: "Level 1" }), {
+  const body = textOf(await runFmcJoins(args({ action: "audit", document: "A-0003", level: "Level 1" }), {
     env, reportDir, bank: approved,
     readSnapshot: async (sent) => {
       reads++;
-      assert.equal(sent.document, "A-0001");
+      assert.equal(sent.document, "A-0003");
       assert.equal(sent.images, false);
       assert.equal(sent.level, "Level 1");
       return model({
@@ -297,7 +297,7 @@ test("audit is one read, images stay off unless asked, and the report is not the
   assert.equal(reads, 1);
   assert.equal(body.isError, false);
   assert.deepEqual(body.images, []);
-  assert.equal((body.resolved_document as { title: string }).title, "A-0001");
+  assert.equal((body.resolved_document as { title: string }).title, "A-0003");
   const summary = (body.findings as Array<{ code: string; count: number; ids: string[] }>).find((item) => item.code === "JOIN-WALL-END-OPEN");
   assert.equal(summary?.count, 1);
   assert.deepEqual(summary?.ids, ["1"]);
@@ -307,7 +307,7 @@ test("audit is one read, images stay off unless asked, and the report is not the
   assert.equal(saved.items[0].size_mm, 80);
   assert.equal(body.verdict, "FAIL");
 
-  const pictured = textOf(await runFmcJoins(args({ action: "audit", document: "A-0001", level: "Level 1", images: true }), {
+  const pictured = textOf(await runFmcJoins(args({ action: "audit", document: "A-0003", level: "Level 1", images: true }), {
     env, reportDir, bank: approved,
     readSnapshot: async (sent) => {
       assert.equal(sent.images, true);
@@ -318,9 +318,9 @@ test("audit is one read, images stay off unless asked, and the report is not the
 });
 
 test("an unscoped model over the cap is refused, and document errors keep their codes", async () => {
-  const refused = textOf(await runFmcJoins(args({ action: "audit", document: "A-0001" }), {
+  const refused = textOf(await runFmcJoins(args({ action: "audit", document: "A-0003" }), {
     bank: {},
-    readSnapshot: async () => ({ refused: true, code: "FMC-JOINS-SCOPE", message: "[FMC-JOINS-SCOPE] Name a level.", element_count: 5000, resolved_document: { title: "A-0001", path: "" } }),
+    readSnapshot: async () => ({ refused: true, code: "FMC-JOINS-SCOPE", message: "[FMC-JOINS-SCOPE] Name a level.", element_count: 5000, resolved_document: { title: "A-0003", path: "" } }),
   }));
   assert.equal(refused.code, "FMC-JOINS-SCOPE");
   assert.equal(refused.element_count, 5000);
@@ -329,8 +329,8 @@ test("an unscoped model over the cap is refused, and document errors keep their 
     readSnapshot: async () => { throw new Error("[FMC-DOC-NOT-FOUND] No open document has title or path \"Missing\". Refusing to use the active document."); },
   }));
   assert.equal(missing.code, "FMC-DOC-NOT-FOUND");
-  const ambiguous = textOf(await runFmcJoins(args({ action: "rooms", document: "A-0001" }), {
-    readSnapshot: async () => { throw new Error("[FMC-DOC-AMBIGUOUS] \"A-0001\" matches 2 open documents."); },
+  const ambiguous = textOf(await runFmcJoins(args({ action: "rooms", document: "A-0003" }), {
+    readSnapshot: async () => { throw new Error("[FMC-DOC-AMBIGUOUS] \"A-0003\" matches 2 open documents."); },
   }));
   assert.equal(ambiguous.code, "FMC-DOC-AMBIGUOUS");
 });
@@ -340,7 +340,7 @@ test("a fix dry run does not apply, and apply is one leased call with the plan",
   const guard = JSON.parse(fs.readFileSync(path.join(path.dirname(reportDir), "fmc_guard.json"), "utf8"));
   let reads = 0;
   let applies = 0;
-  const planned = textOf(await runFmcJoins(args({ action: "fix", document: "A-0001", level: "Level 1" }), {
+  const planned = textOf(await runFmcJoins(args({ action: "fix", document: "A-0003", level: "Level 1" }), {
     env, reportDir, bank: approved, guard,
     readSnapshot: async () => {
       reads++;
@@ -354,7 +354,7 @@ test("a fix dry run does not apply, and apply is one leased call with the plan",
   const ops = planned.ops as Array<{ op: string }>;
   assert.ok(ops.some((op) => op.op === "join"));
 
-  const needsPlan = textOf(await runFmcJoins(args({ action: "fix", document: "A-0001", dry_run: false, batch_lease: "lease-1" }), {
+  const needsPlan = textOf(await runFmcJoins(args({ action: "fix", document: "A-0003", dry_run: false, batch_lease: "lease-1" }), {
     env, reportDir, bank: approved, guard,
     readSnapshot: async () => { reads++; return model(); },
     apply: async () => { applies++; return {}; },
@@ -362,7 +362,7 @@ test("a fix dry run does not apply, and apply is one leased call with the plan",
   assert.equal(needsPlan.code, "FMC-JOINS-PLAN");
   assert.equal(applies, 0);
 
-  const locked = textOf(await runFmcJoins(args({ action: "fix", document: "A-0001", dry_run: false, ops: [{ op: "join", ids: ["3", "4"] }] }), {
+  const locked = textOf(await runFmcJoins(args({ action: "fix", document: "A-0003", dry_run: false, ops: [{ op: "join", ids: ["3", "4"] }] }), {
     env, reportDir, guard,
     apply: async () => { applies++; return {}; },
   }));
@@ -383,26 +383,53 @@ test("a fix dry run does not apply, and apply is one leased call with the plan",
   assert.equal(live.code, "FMC-JOINS-GUARD");
   assert.equal(applies, 0);
 
-  const applied = textOf(await runFmcJoins(args({
-    action: "fix", document: "A-0001", dry_run: false, batch_lease: "lease-1",
-    ops: planned.ops as never[],
+  assert.match(String(planned.plan_hash), /^[0-9a-f]{16}$/);
+  const pairModel = () => model({ pairs: [{ relation: "wall_end", a: "3", b: "4", end: 1, open_end: true, gap_mm: 4, overlap_mm: 0, xyz: { x: 1, y: 0, z: 0 } }] });
+
+  // the model moved on since the dry run (the open end is gone): the re-plan differs and the apply is refused
+  const stale = textOf(await runFmcJoins(args({
+    action: "fix", document: "A-0003", level: "Level 1", dry_run: false, batch_lease: "lease-1", plan_hash: String(planned.plan_hash),
   }), {
-    env, reportDir, guard,
+    env, reportDir, bank: approved, guard,
     readSnapshot: async () => { reads++; return model(); },
+    apply: async () => { applies++; return {}; },
+  }));
+  assert.equal(stale.code, "FMC-PLAN-HASH");
+  assert.equal(applies, 0);
+
+  // ops that are not the dry run's plan are refused even with the right hash
+  const edited = textOf(await runFmcJoins(args({
+    action: "fix", document: "A-0003", level: "Level 1", dry_run: false, batch_lease: "lease-1", plan_hash: String(planned.plan_hash),
+    ops: [{ op: "join", ids: ["3", "9"] }],
+  }), {
+    env, reportDir, bank: approved, guard,
+    readSnapshot: async () => { reads++; return pairModel(); },
+    apply: async () => { applies++; return {}; },
+  }));
+  assert.equal(edited.code, "FMC-PLAN-HASH");
+  assert.equal(applies, 0);
+
+  const applied = textOf(await runFmcJoins(args({
+    action: "fix", document: "A-0003", level: "Level 1", dry_run: false, batch_lease: "lease-1",
+    plan_hash: String(planned.plan_hash),
+  }), {
+    env, reportDir, bank: approved, guard,
+    readSnapshot: async () => { reads++; return pairModel(); },
     apply: async (body) => {
       applies++;
       assert.ok((body.ops as unknown[]).length <= 50);
       assert.equal(body.max_ops, 50);
       assert.ok((body.protected_roots as string[]).includes("D:\\Live"));
-      assert.equal(body.document, "A-0001");
-      return { ok: true, applied: true, saved: false, synced: false, resolved_document: { title: "A-0001", path: "D:\\Jobs\\_Staging\\A-0001.rvt" } };
+      assert.equal(body.document, "A-0003");
+      return { ok: true, applied: true, saved: false, synced: false, resolved_document: { title: "A-0003", path: "D:\\Jobs\\_Staging\\A-0003.rvt" } };
     },
   }));
-  assert.equal(reads, 1);
+  assert.equal(reads, 4);
   assert.equal(applies, 1);
+  assert.deepEqual(applied.ops, planned.ops);
   assert.equal(applied.dry_run, false);
   assert.equal(applied.saved, false);
-  assert.equal((applied.resolved_document as { title: string }).title, "A-0001");
+  assert.equal((applied.resolved_document as { title: string }).title, "A-0003");
 });
 
 test("the add-in commands are registered, reads and writes are listed, and ownership is never taken", () => {

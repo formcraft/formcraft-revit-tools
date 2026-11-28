@@ -83,7 +83,7 @@ function fireHardListeners(): void {
 }
 
 const HEAVY_COMMANDS = new Set([
-  "send_code_to_revit", "fmc_new_local", "fmc_grids_from_link", "fmc_recipe_batch",
+  "send_code_to_revit", "fmc_new_local", "fmc_grids_from_link", "fmc_connect_fixture", "fmc_recipe_batch",
   "fmc_model_edit", "fmc_diagram_draw", "fmc_diagram_sheet", "fmc_room_build",
   "fmc_casework_place", "fmc_casework_pack", "fmc_replace", "fmc_template_build",
   "fmc_build_families", "fmc_legend_chain",
@@ -248,6 +248,8 @@ export function classifyTier(freeMb: number, limits: MemoryLimits, paused: boole
 export async function admitWrite(gate: MemoryGate, command: string, params: unknown, maxMs: number): Promise<void> {
   const view = gate.view();
   if (view.tier === "off" || view.tier === "ok") return;
+  // Closing spare views is how memory comes back: it must not wait for memory.
+  if (command === "fmc_hw_free" || command === "fmc_hw_host") return;
   if (view.tier === "hard" || view.paused) {
     await gate.holdWrites(maxMs);
     return;
@@ -318,10 +320,13 @@ function ensureWindowsPoll(): void {
   timer.unref?.();
 }
 
+/** The service log the memory gate writes its [FMC-RAM] lines to; fmc_hw auto free writes [FMC-HW-AUTO-FREE] here too. */
+export const serviceLog = (line: string): void => { console.error(line); };
+
 export const memoryGate = new MemoryGate(
   sampleHost,
   () => memoryLimits(loadConfig().config.ram_pause_free_mb),
-  (line) => console.error(line),
+  serviceLog,
   1000,
   fireResumeListeners,
   fireHardListeners,

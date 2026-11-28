@@ -161,9 +161,12 @@ export function placeParams(plan: PlacePlan, room: string, level: string, board:
   };
 }
 
-/** The dry run goes straight to Revit (it is rolled back there); the real run goes through the live-model lock. */
+/**
+ * X-01: the dry run runs in Revit and is rolled back there, so it goes through the same gates as the real run
+ * (lease, memory, live-model lock; at the AI gate it is a preview). params carry dry_run.
+ */
 async function revit(command: string, params: object, dry: boolean, timeout = 300000): Promise<Record<string, any>> {
-  return await withRevitConnection((c) => dry ? c.sendRaw(command, params, timeout) : c.sendCommand(command, params, timeout)) as Record<string, any>;
+  return await withRevitConnection((c) => c.sendCommand(command, { ...params, dry_run: dry }, timeout)) as Record<string, any>;
 }
 
 const dateOf = () => new Date().toISOString().slice(0, 10);

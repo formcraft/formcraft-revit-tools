@@ -28,7 +28,21 @@ Video memory is for drawn views. It is not a substitute for system RAM. A full p
 
 ## Actions
 
-`dry_run` defaults to true for `gpu_prefer`, `free` and `offload`. `gpu_prefer` and `offload` also need `confirm:true` before they write. The bearer token is never printed. There is no new key in `fmc_guard.json`.
+`dry_run` defaults to true for `gpu_prefer`, `free` and `offload`. A real `free`, `gpu_prefer` or `offload` needs `confirm:true` (`FMC-HW-CONFIRM` otherwise) and is refused while Stop AI is on. A real `free` needs `document`, this session's batch lease on it (`FMC-BATCH-LOCKED`), and goes through the live-model lock and the AI gate like any model change (`fmc_hw_free`). `gpu_prefer` and `offload` change a machine setting, not a model; with a Revit model open they still need `document` when two or more project documents are open (`FMC-DOC-REQUIRED`), the lease on it, and the live-model lock and AI gate on it (`fmc_hw_host`, a gate-only write that sends nothing to Revit).
+
+Each real `free`, `gpu_prefer` or `offload` also needs a person's approval in the pane (the approval queue): kind `hw_free` (the document, the close list of view ids and names, `keep`, `purge_undo`), `hw_gpu_prefer` (the exe and the registry value) or `hw_offload` (the `Revit.ini` path, its sha256, size and mtime, and the planned keys). The first real call queues the request and is refused with `FMC-HW-APPROVAL`; the person approves it; the next identical call runs. An approval is used once, only after the write succeeded, and expires after 30 minutes. A changed plan or a changed `Revit.ini` is a different request. Testing-mode auto-approve never approves these kinds, and `confirm:true` is not an approval. Dry runs create and use nothing.
+
+`offload` first copies `Revit.ini` to `Revit.ini.<yyyyMMdd-HHmmss>.bak` beside it (a bare `Revit.ini.bak` is never overwritten), then writes `Revit.ini.tmp` and renames it over the live file. A failed copy or replace is `FMC-HW-BACKUP` and leaves the live file as it was; a missing file or unset path is `FMC-HW`. The reply names the `.bak`. The bearer token is never printed.
+
+## Guard key (`fmc_guard.json`)
+
+A person sets this for the PC.
+
+| Key | Default | Effect |
+|---|---|---|
+| `hw_auto_free` | on | `false` turns auto free off for this PC; then the hard tier never closes views on its own and a person runs `fmc_hw free`. |
+
+In the hard memory tier the server frees views by itself (auto free). It is a system action on the memory gate's internal hook, not an AI write: no lease, lock, AI gate, Stop AI, `confirm` or approval. It runs at most once a minute (the minute starts only after a successful free), only when Revit is idle and `ram_pause_free_mb` is above 0, never in the soft tier. `fmc_hw` is a session command, so two or more open documents do not stop it (P-fmc_hw-02). It closes only spare views (non-active, non-pinned, beyond 2 per document, never the last one; spare views in the active document too) and adds no save. Each run, and each failure after the snapshot, writes one `[FMC-HW-AUTO-FREE]` line on the service log (each closed view by document, name and id, `free_mb` before and after, and `documents_open`) and the same facts as `last_auto_free` on `/health` and `fmc_health`. An explicit `free` sets the memory pause only in the hard tier, so in the soft tier it still skips the document a person is working in.
 
 | Action | What it does |
 |---|---|
@@ -44,7 +58,7 @@ Video memory is for drawn views. It is not a substitute for system RAM. A full p
 Both tiers use `ram_pause_free_mb` (default 1024) and the resume line at 1.5× (1536). `0` turns the pause off.
 
 - **Soft** (`FMC-MEMORY-SOFT`). Free memory is between the two lines, and the hard latch is not on. Reads and small writes continue. Heavy writes, Dynamo and script jobs are queued, not failed. New batch leases wait.
-- **Hard** (`FMC-MEMORY-HARD`). Free memory is below 1024 MB. It stays hard until free memory is above 1536 MB, so a lease does not flap. Every model-changing call waits. Reads still run. When this tier is on and Revit is idle, `free` runs once a minute. It does not add a save.
+- **Hard** (`FMC-MEMORY-HARD`). Free memory is below 1024 MB. It stays hard until free memory is above 1536 MB, so a lease does not flap. Every model-changing call waits. Reads still run. When this tier is on, Revit is idle and `hw_auto_free` is true, `free` runs once a minute. It does not add a save.
 
 `/health` shows `memory.tier`, `memory.code` and `memory.reason`, and `hw` from the scan cached when the server starts.
 

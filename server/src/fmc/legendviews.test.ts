@@ -115,3 +115,34 @@ test("seed reports a missing component, and place plans a grid without text note
   assert.ok(READ_VIA_SEND_COMMAND.has("fmc_legend_views"));
   assert.ok(WRITE_COMMANDS.has("fmc_legend_apply"));
 });
+
+test("fmc_legend chain: the real chain is a write that needs the batch lease and goes through sendCommand", async () => {
+  assert.ok(WRITE_COMMANDS.has("fmc_legend_chain"));
+  const box = io();
+  const staging = path.join(box.dir, "staging");
+  fs.mkdirSync(path.join(staging, "A"), { recursive: true });
+  fs.writeFileSync(path.join(staging, "A", "FMC_Door.rfa"), "");
+  const template = path.join(box.dir, "FMC_A_Template_v2.2.rte");
+  fs.writeFileSync(template, "");
+  const guard: GuardConfig = { ...box.guard, family_staging_root: staging, library_roots: [path.join(box.dir, "_ChainTests")], template_roots: [], write_roots: [box.dir] };
+  const sent: Array<{ body: Record<string, unknown>; timeout: number }> = [];
+  const chain = async (body: Record<string, unknown>, timeout: number) => { sent.push({ body, timeout }); return { placed_all: 1 }; };
+
+  const dry = textOf(await runFmcLegend(args({ action: "chain", role: "A", template }), { ...box, guard, chain }));
+  assert.equal(dry.dry_run, true, JSON.stringify(dry));
+  assert.equal(sent.length, 0);
+
+  const noLease = textOf(await runFmcLegend(args({ action: "chain", role: "A", template, dry_run: false }), { ...box, guard, chain }));
+  assert.equal(noLease.code, "FMC-BATCH-LOCKED", JSON.stringify(noLease));
+  assert.equal(noLease.isError, true);
+  assert.equal(sent.length, 0);
+
+  const real = textOf(await runFmcLegend(args({ action: "chain", role: "A", template, dry_run: false, batch_lease: "L1" }), { ...box, guard, chain }));
+  assert.equal(real.isError, false, JSON.stringify(real));
+  assert.equal(sent.length, 1);
+  assert.equal(sent[0].timeout, 12 * 60 * 60 * 1000);
+
+  const src = fs.readFileSync(path.join(root, "server", "src", "tools", "fmc_legend.ts"), "utf8");
+  assert.match(src, /sendCommand\("fmc_legend_chain"/);
+  assert.doesNotMatch(src, /sendRaw\("fmc_legend_chain"/);
+});

@@ -8,6 +8,7 @@ import { batchLease } from "../fmc/target.js";
 import { saveBlocked } from "../fmc/savepolicy.js";
 import { configPath, loadConfig, type GuardConfig } from "../fmc/policy.js";
 import { protectedRoots } from "../fmc/opencopy.js";
+import { planHashOf, planHashProblem } from "../fmc/planhash.js";
 import {
   JOINS_BANK_SHAPES, JOINS_DEFAULTS, joinsEntriesFromStandards,
   type JoinsBankEntry,
@@ -64,6 +65,7 @@ export const FMC_JOINS_SHAPE = {
   images: z.boolean().optional().default(false).describe("Export one PNG into the joins folder. Off unless you ask. The active view is restored if Revit switches it."),
   dry_run: z.boolean().optional().default(true).describe("fix: return the plan unless false. A real apply needs batch_lease and the ops from this plan."),
   batch_lease: z.string().optional().default("").describe("Lease id from fmc_batch request. Required when dry_run is false."),
+  plan_hash: z.string().optional().default("").describe("fix with dry_run false: the plan_hash from the dry run. The apply reads the model again with the same scope, plans again and refuses if the hash differs."),
   sample_limit: z.number().int().min(1).max(50).optional().default(20).describe("How many element ids the reply keeps per finding code. The count is the full number."),
   ops: z.array(z.object({
     op: z.string(),
@@ -366,7 +368,8 @@ function planReply(args: FmcJoinsArgs, snapshot: JoinsSnapshot, limits: Resolved
     warnings: plan.warnings,
     capped: plan.capped,
     rule: plan.rule,
-    next: "Show this plan. Apply with dry_run false, batch_lease, and these ops. That call is fmc_joins_apply, one transaction, at most 50 operations.",
+    plan_hash: planHashOf(args.document, plan.ops),
+    next: "Show this plan. Apply with dry_run false, batch_lease, this plan_hash and the same scope (ops optional). The apply plans again and refuses if the plan changed. That call is fmc_joins_apply, one transaction, at most 50 operations.",
   });
 }
 
@@ -375,13 +378,6 @@ async function applyFix(args: FmcJoinsArgs, limits: ResolvedLimits, io: JoinsIo)
     return reply({
       tool: "fmc_joins", refused: true, code: "FMC-BATCH-LOCKED", dry_run: true,
       message: "[FMC-BATCH-LOCKED] This write needs batch_lease from fmc_batch request. Nothing was changed.",
-    }, true);
-  }
-  const named = (args.ops ?? []).slice(0, limits.values.max_ops);
-  if (!named.length) {
-    return reply({
-      tool: "fmc_joins", refused: true, code: "FMC-JOINS-PLAN", dry_run: true,
-      message: "[FMC-JOINS-PLAN] fix with dry_run false applies the ops from a dry run. Run dry_run true, then pass those ops. Nothing was changed.",
     }, true);
   }
   const doc = docOf(undefined, args.document);
@@ -394,6 +390,34 @@ async function applyFix(args: FmcJoinsArgs, limits: ResolvedLimits, io: JoinsIo)
       sync_exclude: guard.config.sync_exclude ?? [],
       protected_paths: guard.config.protected_paths ?? [],
     }, true);
+  }
+  if (!args.plan_hash.trim()) {
+    return reply({
+      tool: "fmc_joins", refused: true, code: "FMC-JOINS-PLAN", dry_run: true,
+      message: "[FMC-JOINS-PLAN] fix with dry_run false applies the plan from a dry run. Run dry_run true, show the plan, then pass its plan_hash with the same scope. Nothing was changed.",
+    }, true);
+  }
+  let named: object[];
+  try {
+    // re-plan from the model with the same scope and compare with the plan the person saw
+    const snapshot = await readModel(args, limits, io);
+    if (snapshot.refused) {
+      return reply({ tool: "fmc_joins", refused: true, code: snapshot.code || "FMC-JOINS-SCOPE", dry_run: true, message: snapshot.message || "[FMC-JOINS-SCOPE] The re-plan read was refused. Nothing was changed." }, true);
+    }
+    const again = guardReason(docOf(snapshot, args.document), snapshot, io);
+    if (again.reason) return reply({ tool: "fmc_joins", refused: true, code: "FMC-JOINS-GUARD", dry_run: true, message: again.reason }, true);
+    const findings = [...auditFindings(snapshot, limits), ...hostingFindings(snapshot, limits, args.category)];
+    const plan = planFixes(findings, snapshot, limits);
+    const rebuilt = planHashOf(args.document, plan.ops);
+    let problem = planHashProblem(args.plan_hash, rebuilt);
+    if (!problem && (args.ops ?? []).length && planHashOf(args.document, args.ops) !== rebuilt) {
+      problem = "[FMC-PLAN-HASH] The ops passed are not the plan from the dry run. Pass the plan_hash and leave ops out, or pass the dry run's ops unchanged. Nothing was changed.";
+    }
+    if (problem) return reply({ tool: "fmc_joins", refused: true, code: "FMC-PLAN-HASH", dry_run: true, message: problem, plan_hash: rebuilt }, true);
+    named = (plan.ops as object[]).slice(0, limits.values.max_ops);
+    if (!named.length) return reply({ tool: "fmc_joins", refused: true, code: "FMC-JOINS-PLAN", dry_run: true, message: "[FMC-JOINS-PLAN] The plan has no operations. Nothing was changed." }, true);
+  } catch (error) {
+    return failed(error);
   }
   try {
     const applied = await applyModel(args, named, limits.values.max_ops, io, guard.config);

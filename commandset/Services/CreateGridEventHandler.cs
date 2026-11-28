@@ -65,6 +65,29 @@ namespace RevitMCPCommandSet.Services
                     .Select(g => g.Name)
                     .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
+                // B3 (round 2): a duplicate name is refused, never renamed (A to A1). Checked before any grid is created,
+                // against the model and within this call, so a refused run changes nothing. The server checks this too.
+                var plannedLabels = GenerateLabels(Parameters.XCount, Parameters.XStartLabel, Parameters.XNamingStyle)
+                    .Concat(GenerateLabels(Parameters.YCount, Parameters.YStartLabel, Parameters.YNamingStyle))
+                    .ToList();
+                var seenLabels = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                var duplicateLabels = new List<string>();
+                foreach (var planned in plannedLabels)
+                {
+                    if (existingGridNames.Contains(planned) || !seenLabels.Add(planned)) duplicateLabels.Add(planned);
+                }
+                if (duplicateLabels.Count > 0)
+                {
+                    Result = new AIResult<List<GridCreationResult>>
+                    {
+                        Success = false,
+                        Message = "FMC-GRID-DUPLICATE: refusing to create grids; these names already exist or repeat (they are not renamed): " +
+                                  string.Join(", ", duplicateLabels.Distinct(StringComparer.OrdinalIgnoreCase)),
+                        Response = null
+                    };
+                    return;
+                }
+
                 using (Transaction trans = new Transaction(doc, "Create Grid System"))
                 {
                     trans.Start();
@@ -87,8 +110,8 @@ namespace RevitMCPCommandSet.Services
                         double xPos = xPositions[i];
                         string label = xLabels[i];
 
-                        // Handle duplicate names with auto-increment
-                        string uniqueLabel = GetUniqueGridName(label, existingGridNames);
+                        // B3: duplicates were refused above; the name is used as given.
+                        string uniqueLabel = label;
                         existingGridNames.Add(uniqueLabel);
 
                         // X-axis grids run parallel to Y-axis (vertical lines)
@@ -143,8 +166,8 @@ namespace RevitMCPCommandSet.Services
                         double yPos = yPositions[i];
                         string label = yLabels[i];
 
-                        // Handle duplicate names with auto-increment
-                        string uniqueLabel = GetUniqueGridName(label, existingGridNames);
+                        // B3: duplicates were refused above; the name is used as given.
+                        string uniqueLabel = label;
                         existingGridNames.Add(uniqueLabel);
 
                         // Y-axis grids run parallel to X-axis (horizontal lines)
@@ -184,14 +207,8 @@ namespace RevitMCPCommandSet.Services
                     trans.Commit();
                 }
 
-                int renamedCount = createdGrids.Count(g => g.WasRenamed);
                 string message = $"Successfully created {createdGrids.Count} grids " +
                                  $"({Parameters.XCount} X-axis + {Parameters.YCount} Y-axis)";
-
-                if (renamedCount > 0)
-                {
-                    message += $". {renamedCount} grid(s) were renamed to avoid duplicates.";
-                }
 
                 Result = new AIResult<List<GridCreationResult>>
                 {
