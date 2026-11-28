@@ -299,6 +299,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_keynote_legend",
   // GAP-18 fmc_print_sets: sheets and the view and sheet sets in the model. No transaction.
   "fmc_print_sets_read",
+  // GAP-26 fmc_groups: types and instances (unused, nesting, text, mirrored facts). No transaction.
+  "fmc_groups_audit",
 ]);
 
 /**
