@@ -192,9 +192,9 @@ export function summariseRecipe(file: string): RecipeSummary | null {
 
 /** What each overview count counts (P-fmc_context-04), so a number that differs from another tool's is not read as a fault. */
 export const COUNT_NOTES: Record<string, string> = {
-  recipes: "family names with a *.recipe.json, 5 folders deep: kit Recipes, _Staging, repo",
-  staged_families: ".rfa names in each _Staging\\<folder>, all folders incl. _Archive",
-  released_families: ".rfa names in 04_Families\\<1-3 capital letters>",
+  recipes: "build instructions, not families: family names with a *.recipe.json, 5 folders deep: kit Recipes, _Staging, repo",
+  staged_families: "staged, NOT released: .rfa names in each _Staging\\<folder>, all folders incl. _Archive",
+  released_families: "released (the library people load): .rfa names in 04_Families\\<1-3 capital letters>",
   family_specs: "entries in the spec file",
   family_register: "entries in the register",
 };
@@ -599,7 +599,13 @@ export function overview(deps: ContextDeps) {
   }
 
   return {
-    kit: { found: !!manifest || !!specs, path: k.root, version: manifest?.kit ?? specs?.version ?? "", revision: manifest?.revision ?? "", date: manifest?.date ?? "" },
+    kit: {
+      found: !!manifest || !!specs, path: k.root, version: manifest?.kit ?? specs?.version ?? "", revision: manifest?.revision ?? "", date: manifest?.date ?? "",
+      // F63 rec 3: the revision is what FMC_Kit.json says; nothing updates it when other kit files change.
+      revision_note: manifest
+        ? `revision and date are as written in FMC_Kit.json${manifest.revision ? ` (${manifest.revision}${manifest.date ? `, ${manifest.date}` : ""})` : ""}; the counts below are read from the kit folders now (${new Date().toISOString().slice(0, 16)}Z), so they can be newer than that revision`
+        : "no FMC_Kit.json: no revision; the counts below are read from the kit folders now",
+    },
     counts: {
       family_specs: count("family specs", specs ? specs.families.length : null),
       family_register: count("family register", register ? register.size : null),
@@ -613,7 +619,11 @@ export function overview(deps: ContextDeps) {
       rulebooks: books.length, templates: templateFiles(k).length,
       staged_families: files.staged.size, released_families: files.released.size,
     },
-    count_notes: { ...COUNT_NOTES, other_tools: "Other tools may skip folders, so their counts can differ" },
+    count_notes: {
+      ...COUNT_NOTES,
+      families: `${files.staged.size} staged (not released), ${files.released.size} released; ${recipes.size} recipes are build instructions, not families`,
+      other_tools: "Other tools may skip folders, so their counts can differ",
+    },
     missing: missing.length ? missing.map((m) => `${m}: not readable (a kit change request, or a path in fmc_guard.json)`) : undefined,
     rulebooks: books.map((b) => pbase(b, ".json").replace(/^FMC_Rulebook_/, "")),
     revit: docs.length ? docs : "No Revit with the AI connection on (Formcraft tab › Core › \"AI: off\" switches it on)",

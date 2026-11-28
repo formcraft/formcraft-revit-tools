@@ -168,6 +168,12 @@ test("overview: kit, counts, open documents, the project manifest, AI-use state 
   assert.equal(o.counts.family_specs, 44);
   for (const key of ["recipes", "staged_families", "released_families"]) assert.equal(typeof o.count_notes[key], "string", key);
   assert.equal(typeof o.counts.staged_families, "number", "counts stay plain numbers");
+  // F63 rec 3 and 4: the revision is labelled as the file's, and staged never reads as released.
+  assert.match(o.kit.revision_note, /as written in FMC_Kit\.json \(r4, 2026-10-15\); the counts below are read from the kit folders now/);
+  assert.match(o.count_notes.staged_families, /^staged, NOT released/);
+  assert.match(o.count_notes.released_families, /^released/);
+  assert.match(o.count_notes.recipes, /^build instructions, not families/);
+  assert.match(o.count_notes.families, /^1 staged \(not released\), 1 released; \d+ recipes are build instructions/);
   assert.ok(o.counts.profile_recipes >= 7, "the kit fixture's seven, plus any in the repo's own recipe folders");
   assert.ok(o.counts.recipes > 7, "the repo's door and window recipes too");
   assert.equal(o.counts.design_movements, 4);
