@@ -11,6 +11,9 @@ import { OP, expandSkeletons, familyRoots, opsProblems, resolveFamilyPaths, spli
 import { parseSharedParameters } from "../fmc/specs.js";
 import { resolveMaterial } from "../fmc/materials.js";
 import { readDb } from "./fmc_material.js";
+import { DELETE_COMMAND, confirmProblems, confirmToken, deleteLines, deleteOpsIn, readProposal, saveProposal } from "../fmc/famedit.js";
+import { enqueue, readItem } from "../fmc/aiuse_io.js";
+import { batchKey } from "../fmc/aiuse.js";
 
 const win = path.win32;
 
@@ -69,7 +72,10 @@ export const FMC_DOC_DESCRIPTION =
     "Never a project or workshared model. flex: every type regenerated in turn, constraint errors per type (nothing kept); with follow, each size parameter is also moved from its lowest to its highest value and every named solid reports whether it moved with it. apply: a batch of named ops (set_category, " +
     "set_family_params, add_ref_plane, add_family_param, add_shared_param, set_formula, add_type, set_type_value, " +
     "add_dimension, extrusion and void_extrusion locked to reference planes, set_material_param, set_visibility, add_connector, link_connector_param; LOD 400: add_subcategory with line weights, set_subcategory, sweep and void_sweep with point or FMC_Profile_* profiles, revolution, blend, symbolic_lines (swings, opening lines, per view and detail level), lock_face, add_eq_dimension, load_family from the kit's 04_Families, place_nested with associated parameters; profile_lines: a closed loop of lines and 3-point arcs in a profile family; set_visible_param: a solid's Visible from a Yes/No parameter; add_material: a material from the kit's library with its textures, optionally as a Material parameter's value; recipe ops: set_default_size (the type's Width/Height before any plane, F-026), delete_template_element (template elements by kind/subcategory/name, never by id), array (copies shown by an Integer count, or linear), symbolic_lines with ends on planes, a labelled radius and per-leaf repeats, load_family shared: true for nested hardware); skeleton: Width/Depth/Height planes with labelled dimensions, equalities and an optional mounting height (sent as those ops); start_plane/end_plane put an extrusion end onto a plane or level and lock it; name_template_plane names an unnamed template plane by position; set_type_image: a product picture from 04_Families as the built-in Type Image of every type (shows in Type Properties, schedules and legends); each answers create, update or skip, so a second run changes nothing; a dry run unless dry_run is " +
-    "false, and the dry run is the real run rolled back. Sizes in mm; shared parameters only from the kit's dictionary by GUID.";
+    "false, and the dry run is the real run rolled back. Family editor ops (fmc_fam_param, fmc_fam_type, fmc_fam_ref wrap them): param_rename, " +
+    "param_regroup, param_set_reporting, param_set_formula, type_rename, type_flex_matrix (a read, nothing kept), plane_rename, plane_move; the deletes " +
+    "param_remove, type_delete and plane_delete need a person: the dry run answers a confirm_token, and dry_run false with it only queues the batch for a " +
+    "person's Approve in the pane. Sizes in mm; shared parameters only from the kit's dictionary by GUID.";
 
 export const FMC_DOC_SHAPE = {
   action: z.enum(["open", "report", "screenshot", "save", "close", "list", "apply", "flex", "background"]),
@@ -80,6 +86,8 @@ export const FMC_DOC_SHAPE = {
   session: z.string().optional().default(""),
   path: z.string().optional().default("").describe("save: the target .rfa (inside the write roots, named by the rules)"),
   overwrite: z.boolean().optional().default(false).describe("save: replace an existing file (a person decided)"),
+  confirm_token: z.string().optional().default("").describe("apply with a delete op (param_remove, type_delete, plane_delete) and dry_run false: the token " +
+    "the dry run answered. It never runs the delete: it puts the batch in the pane's approval queue, and a person's Approve runs it"),
   follow: z.array(z.object({ param: z.string().min(1), low_mm: z.number(), high_mm: z.number(), stepped: z.boolean().optional() })).optional()
     .describe("flex: size parameters to move from low to high on one type, reporting which named solids moved with each (Gate A)"),
   detail_level: z.enum(["coarse", "medium", "fine", "all"]).optional().default("fine").describe("screenshot: detail level; all gives one image per level"),
@@ -156,7 +164,28 @@ export async function runFmcDoc(args: FmcDocArgs) {
         notes.push(...r.warnings);
         return { ...o, material: r.material };
       });
-      const dry = args.dry_run !== false;
+      // type_flex_matrix is a read: always the real run rolled back, nothing kept
+      const dry = args.dry_run !== false || ops.some((o) => o.op === "type_flex_matrix");
+      const deletes = deleteOpsIn(ops);
+      const reportsDir = expandEnv(config.reports_dir);
+      if (deletes.length && !dry) {
+        // Deletes need a person (famedit.ts): the token from the dry run, then the pane's approval queue; this call never deletes.
+        const problems = confirmProblems(readProposal(reportsDir, args.confirm_token), args.confirm_token, s.id, ops, new Date());
+        if (problems.length) return reply({ refused: true, reasons: problems }, true);
+        const params = { session: s.id, ops, dry_run: false, shared_parameter_file: expandEnv(config.shared_parameter_file), confirm_token: args.confirm_token.trim(), ...(document ? { document } : {}) };
+        const before = readItem(batchKey(DELETE_COMMAND, params, ""));
+        if (before && before.status === "used")
+          return reply({ session: s.id, queued: false, approval_id: before.id, status: before.status, result: before.result ?? "", detail: before.detail ?? "",
+            next: "A person approved this exact batch and it already ran: fmc_doc report shows the family now. A new delete needs a new dry run" });
+        if (before && before.status === "rejected")
+          return reply({ refused: true, approval_id: before.id, reasons: [`A person rejected this delete (${before.by ?? "pane"}): it won't run`] }, true);
+        const proposal = readProposal(reportsDir, args.confirm_token)!;
+        const item = enqueue(DELETE_COMMAND, params, "", "", "family_delete", deletes.length, process.env, new Date(), deleteLines(ops as any, proposal.plan));
+        log(config, "doc_delete_queued", s.id, item.status, `${item.id} · ${deletes.length} delete(s) · token ${args.confirm_token.trim()}`);
+        return reply({ session: s.id, queued: true, approval_id: item.id, status: item.status, person_lines: item.details ?? [],
+          next: `Waiting for a person: approve batch ${item.id} in the Formcraft pane (Approvals); approving runs it. Call fmc_ai wait with id ${item.id}, ` +
+            "then fmc_doc report. The AI can't approve or run a delete itself" });
+      }
       const r = await sendDoc("fmc_doc_apply",
         { session: s.id, ops, dry_run: dry, shared_parameter_file: expandEnv(config.shared_parameter_file) }, 300000, document);
       if (!dry) {
@@ -165,6 +194,14 @@ export async function runFmcDoc(args: FmcDocArgs) {
         writeLedger(config, ledger);
         log(config, "doc_apply", s.id, "done", `${r?.created ?? 0} created, ${r?.updated ?? 0} updated, ${r?.skipped ?? 0} skipped`);
       }
+      if (deletes.length && dry) {
+        const token = confirmToken(s.id, ops);
+        const plan = ((r?.ops ?? []) as Array<{ op: string; name: string; result: string; detail: string }>).filter((o) => deletes.some((d) => d.op === o.op));
+        saveProposal(reportsDir, { token, session: s.id, document, created: new Date().toISOString(), ops, plan });
+        return reply({ session: s.id, ...r, notes, confirm_token: token, person_lines: deleteLines(ops as any, plan),
+          next: `A delete needs a person. Show these lines to the person; run again with dry_run=false and confirm_token ${token}: that queues it for their Approve in the pane (it runs only then)` });
+      }
+      if (ops.some((o) => o.op === "type_flex_matrix")) return reply({ session: s.id, ...r, notes, next: "Nothing was kept (the flex matrix is a read)" });
       return reply({ session: s.id, ...r, notes, next: dry ? "Run again with dry_run=false to apply" : "save writes it to staging with its build report" });
     }
 

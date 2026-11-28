@@ -98,6 +98,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 ["created"] = results.Count(r => r.Value<string>("result") == "create"),
                 ["updated"] = results.Count(r => r.Value<string>("result") == "update"),
                 ["skipped"] = results.Count(r => r.Value<string>("result") == "skip"),
+                ["deleted"] = results.Count(r => r.Value<string>("result") == "delete"),
                 ["warnings"] = warnings.Count,
             };
             progress["state"] = "finished"; progress["done"] = results.Count; progress["result"] = summary;
@@ -105,7 +106,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             return new JObject
             {
                 ["dry_run"] = dry, ["ops"] = results, ["warnings"] = new JArray(warnings),
-                ["created"] = summary["created"], ["updated"] = summary["updated"], ["skipped"] = summary["skipped"],
+                ["created"] = summary["created"], ["updated"] = summary["updated"], ["skipped"] = summary["skipped"], ["deleted"] = summary["deleted"],
                 ["dimension_sides"] = sides,
                 ["shared_parameter_file"] = FmcSharedParams.Status(app),
             };
@@ -150,7 +151,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                 case "delete_template_element": return FmcDocRecipe.DeleteTemplateElement(doc, op);
                 case "set_default_size": return FmcDocRecipe.SetDefaultSize(doc, op);
                 case "set_type_image": return FmcDocInspect.SetTypeImage(doc, op);
-                default: throw new InvalidOperationException("unknown op " + op.Value<string>("op"));
+                default:
+                    // family editor ops (fmc_fam_param, fmc_fam_type, fmc_fam_ref)
+                    if (FmcFamEditRules.Handles(op.Value<string>("op"))) return FmcFamEdit.Run(doc, op);
+                    throw new InvalidOperationException("unknown op " + op.Value<string>("op"));
             }
         }
 
