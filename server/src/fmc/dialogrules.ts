@@ -438,3 +438,39 @@ export function blockingForJob(job: string, env: NodeJS.ProcessEnv = process.env
   if (!hit.open) return null;
   return { dialog_id: hit.dialog_id, message: hit.message };
 }
+
+// ---------- research tool 34: remove a rule, and ask whether a dialog would be answered ----------
+
+/** Removes one rule by id. A dry run (the default) only shows the result. Removing can only make fewer dialogs answered. */
+export function removeRule(id: string, env: NodeJS.ProcessEnv = process.env, dryRun = true): RuleChange {
+  const current = readRules(env);
+  const hit = current.rules.find((item) => item.id === id);
+  if (!hit) return { dry_run: dryRun, refused: true, reason: `no rule ${id}`, file: current.file, rules: current.rules };
+  const rules = current.rules.filter((item) => item.id !== id);
+  if (!dryRun) writeRules(rules, env);
+  return { dry_run: dryRun, refused: false, rule: hit, file: current.file, rules };
+}
+
+export interface DialogTest {
+  dialog_id: string;
+  message: string;
+  document: string;
+  /** Both cases: during an AI job, and between jobs (a person working). */
+  during_ai_job: DialogDecision;
+  between_jobs: DialogDecision;
+  source: "file" | "default";
+}
+
+/** Would this dialog be answered, and by which rule? Read-only: it runs the same decide() the server uses, on the rules in force. */
+export function testDialog(input: { dialog_id?: string; message?: string; document?: string }, env: NodeJS.ProcessEnv = process.env): DialogTest | { refused: true; reason: string } {
+  const dialogId = String(input.dialog_id ?? "").trim();
+  if (!dialogId) return { refused: true, reason: "test needs dialog_id" };
+  const loaded = readRules(env);
+  const message = String(input.message ?? "");
+  const document = String(input.document ?? "");
+  return {
+    dialog_id: dialogId, message, document, source: loaded.source,
+    during_ai_job: decide(loaded.rules, dialogId, message, document, true),
+    between_jobs: decide(loaded.rules, dialogId, message, document, false),
+  };
+}
