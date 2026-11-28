@@ -1132,5 +1132,32 @@
     "status": "Built, Revit check due",
     "ref": "fmc_generate_bind, docs/tools/fmc_generate_bind.md, server/src/fmc/generatebind.ts, server/src/fmc/sinkoparams.ts",
     "note": "One call makes a door or window family (Metric Door.rft or Metric Window.rft): frame and leaf or glass locked to labelled planes, front and back legend geometry (plane-locked opening lines on Legend Front and Legend Back, the back dashed), and the eleven Sinko-style kit shared parameters bound as type parameters with GUIDs from the kit file, the area columns as formulas. It returns the legend-schedule rows and the fmc_legend placement for Elevation: Front and Elevation: Back (fmc_legend place takes view front or back). dry_run defaults true and writes nothing; a build needs confirm and the dry run's plan_id and runs the fmc_recipe build pipeline into staging with Gate A. Never loads into a project. The eleven names are defined in sinkoparams.ts until the owner confirms them. Needs a Revit check."
+  },
+  {
+    "id": "F127",
+    "area": "Engine",
+    "group": "Families",
+    "feature": "Plane-locked polygon outlines and revolution profiles (G011)",
+    "status": "Built, Revit check due",
+    "ref": "fmc_doc / fmc_recipe extrusion outline_planes, revolution profile_planes and axis_planes; server/src/fmc/ops.ts planeLoopProblems; commandset/Services/Fmc/FmcDocPlaneLoop.cs, FmcPlaneLoopMath.cs; tests/planeloop",
+    "note": "L001 build plan 43 (L003-F368, L001-F20): an extrusion or void outline can be a closed loop of plane crossings (outline_planes) with each edge locked to its plane, so L, U and T shapes flex like rect; a revolution profile can be a loop of plane crossings (profile_planes) and its axis can follow two planes (axis_planes), so curved detail follows the type instead of being fixed at the first size. Sweep path_planes, the array op and extrusion start/end planes were already there. The server checks the loop (three corners or more, neighbours share exactly one plane, no two edges on one plane); the add-in builds the loop from the planes' crossings and fails the op when a lock can't be made. Needs a Revit check of the locks."
+  },
+  {
+    "id": "F128",
+    "area": "Engine",
+    "group": "Families",
+    "feature": "Recipe language ops set_line_weight, envelope, visibility_tier (N064: the generator recipe builds again)",
+    "status": "Built, Revit check due",
+    "ref": "server/src/fmc/recipelang.ts, commandset/Services/Fmc/FmcDocLanguage.cs, tests/recipes/healthcare/generator",
+    "note": "L001 N064 (L003-F509 'generator recipe broken'): the 6 Nov repaired FMC_E_EQ_Generator_Diesel_Standby recipe used three recipe-language ops this server refused (Invalid discriminator value). Ported from the formcraft plugin: set_line_weight (pens of a subcategory, FAM-044 judged on the last one), envelope (the Coarse box between four planes) and visibility_tier (Coarse/Medium/Fine for many solids). The products recipe added one kit material twice and fmc_parts.py now adds each kit material once. flex_test and type_catalogue are not ported."
+  },
+  {
+    "id": "F129",
+    "area": "Engine",
+    "group": "Families",
+    "feature": "Release package: a staged family prepared and validated for release (fmc_release_package)",
+    "status": "Built",
+    "ref": "fmc_release_package, docs/tools/fmc_release_package.md, server/src/fmc/releasepack.ts",
+    "note": "Takes a generated family from staging to a release-ready package under <staging>\\_ReleasePackages\\<Role>\\<family>__<sha12>: checks name, staged file, Gate A (Pass, this family, not stale), recipe (checks clean), build record, size and the package place, then copies the family, recipe, gate and build files with a manifest.json of hashes and checks. dry_run defaults true; a real run needs confirm and the plan_id. It never publishes, never moves the staged file and never writes to the library, a library root, Revit add-ins or a project: release stays the Family Librarian's act in the pane."
   }
 ]

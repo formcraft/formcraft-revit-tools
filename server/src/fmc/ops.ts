@@ -13,6 +13,7 @@ import { SpParam } from "./specs.js";
 import { MaterialDb } from "./materials.js";
 import { graphicsProblems } from "./familygraphics.js";
 import { CurveNode, arcPoints, outlineProblems, segmentsMeet, smoothOps } from "./curves.js";
+import { expandLanguage, languageProblems, withLineWeights } from "./recipelang.js";
 
 const mm = z.number().finite();
 // Fixed-length arrays, not z.tuple: a tuple becomes JSON Schema "items": [a, b], which the Claude API rejects
@@ -103,6 +104,10 @@ export const OP = z.discriminatedUnion("op", [
   z.object({ op: z.literal("extrusion"), name: z.string().min(1),
     rect: z.array(z.string().min(1)).length(4).optional().describe("left, right, front, back reference planes; each side is locked to its plane"),
     points: z.array(node).min(2).optional().describe("or a closed outline in mm (not locked); nodes may be arcs { to, through } or splines { to, spline }"),
+    outline_planes: z.array(corner).min(3).optional().describe(
+      "G011: or a closed outline whose corners are crossings of named planes, in order, e.g. [[\"Left\",\"Front\"],[\"Right\",\"Front\"],[\"Right\",\"Back\"]," +
+      "[\"Notch\",\"Back\"],[\"Notch\",\"Mid\"],[\"Left\",\"Mid\"]]. The loop closes back to the first corner; neighbouring corners share exactly one " +
+      "plane and each edge is locked to it, so an L, U or T outline follows its planes like rect does. A lock Revit can't make fails the op"),
     ...smoothing,
     start: mm.default(0), end: mm.default(1000), start_plane: z.string().optional().describe("a plane or level the bottom goes onto and is locked to (the start moves onto it first, F-064)"),
     end_plane: z.string().optional().describe("a level reference plane, or a level such as Upper Ref. Level, the top goes onto and is locked to (the end moves onto it first)"),
@@ -111,6 +116,10 @@ export const OP = z.discriminatedUnion("op", [
   z.object({ op: z.literal("void_extrusion"), name: z.string().min(1),
     rect: z.array(z.string().min(1)).length(4).optional().describe("left, right, front, back reference planes; each side is locked to its plane"),
     points: z.array(node).min(2).optional().describe("or a closed outline in mm (not locked); nodes may be arcs { to, through } or splines { to, spline }"),
+    outline_planes: z.array(corner).min(3).optional().describe(
+      "G011: or a closed outline whose corners are crossings of named planes, in order, e.g. [[\"Left\",\"Front\"],[\"Right\",\"Front\"],[\"Right\",\"Back\"]," +
+      "[\"Notch\",\"Back\"],[\"Notch\",\"Mid\"],[\"Left\",\"Mid\"]]. The loop closes back to the first corner; neighbouring corners share exactly one " +
+      "plane and each edge is locked to it, so an L, U or T outline follows its planes like rect does. A lock Revit can't make fails the op"),
     ...smoothing,
     start: mm.default(0), end: mm.default(1000), start_plane: z.string().optional().describe("a plane or level the bottom goes onto and is locked to"),
     end_plane: z.string().optional().describe("a level reference plane, or a level, the top goes onto and is locked to"),
@@ -139,9 +148,16 @@ export const OP = z.discriminatedUnion("op", [
   z.object({ op: z.literal("sweep"), ...sweepShape }),
   z.object({ op: z.literal("void_sweep"), ...sweepShape }),
   z.object({ op: z.literal("revolution"), name: z.string().min(1),
-    profile: z.array(node).min(2).describe("closed profile as [r, z] in mm: distance from the axis, height; nodes may be arcs or splines"),
+    profile: z.array(node).min(2).optional().describe("closed profile as [r, z] in mm: distance from the axis, height; nodes may be arcs or splines (fixed: use profile_planes to follow parameters)"),
+    profile_planes: z.array(corner).min(3).optional().describe(
+      "G011: or the profile as a closed loop of plane crossings in the revolution's sketch plane (axis z: the front plane through the axis; " +
+      "axis y and x: the level plane at the axis), e.g. [[\"Axis\",\"Knob Base\"],[\"Knob Radius\",\"Knob Base\"],[\"Knob Radius\",\"Knob Top\"],[\"Axis\",\"Knob Top\"]]. " +
+      "Each edge is locked to the plane its corners share, so a radius plane labelled with a parameter makes the curved part follow the type (L001-F20)"),
+    axis_planes: z.array(z.string().min(1)).length(2).optional().describe(
+      "G011: the two named planes whose crossing the axis runs along, so the axis follows them: axis z [left/right plane, front/back plane]; " +
+      "axis y [left/right plane, level plane]; axis x [front/back plane, level plane]. The sketch is hosted on the second plane and the axis line is locked to the first"),
     ...smoothing,
-    axis_at: point.default([0, 0]).describe("axis z: [x, y] in plan; axis y: [x, z]; axis x: [y, z] (mm)"),
+    axis_at: point.default([0, 0]).describe("axis z: [x, y] in plan; axis y: [x, z]; axis x: [y, z] (mm); with axis_planes, where the planes cross now"),
     axis: z.enum(["z", "y", "x"]).optional().describe("z (default, vertical); y: faces the viewer, profile [r, depth toward -y]; x: profile [r, depth along +x] (knobs, ports, nozzles, LEDs)"),
     start_deg: z.number().default(0), end_deg: z.number().default(360), subcategory: z.string().optional() }),
   z.object({ op: z.literal("blend"), name: z.string().min(1),
@@ -226,6 +242,22 @@ export const OP = z.discriminatedUnion("op", [
   z.object({ op: z.literal("set_default_size"), name: z.string().min(1).describe("identity, e.g. Default size"),
     type: z.string().optional().describe("the type to make current (made when missing); default: the template's current type"),
     values: z.record(mm.positive()).describe("Length parameter → mm, e.g. { \"Width\": 900, \"Height\": 2100 }") }),
+  // N064 (fmc/recipelang.ts): the recipe-language ops the generator recipe (6 Nov repair) is written in.
+  z.object({ op: z.literal("set_line_weight"), name: z.string().min(1).describe("the subcategory (made earlier or in the file)"),
+    projection: z.number().int().min(1).max(16).optional().describe("projection pen; FAM-044: outlines and the Coarse envelope 3, detail edges 2, clearance and hidden 1"),
+    cut: z.number().int().min(1).max(16).optional().describe("cut pen; FAM-044: 4 (1 for clearance and hidden)"),
+    color: z.array(z.number().int().min(0).max(255)).length(3).optional().describe("[r, g, b] line colour: black or dark grey (FAM-044)"),
+    keep_graphics: z.boolean().optional().describe("a deliberate exception to FAM-044") }),
+  z.object({ op: z.literal("envelope"), name: z.string().min(1).describe("the box's name, e.g. Coarse Envelope"),
+    rect: z.array(z.string().min(1)).length(4).describe("left, right, front, back reference planes"),
+    start: mm.default(0), end: mm.default(1000), start_plane: z.string().optional(), end_plane: z.string().optional(),
+    subcategory: z.string().optional().describe("default Coarse Envelope"),
+    tolerance_mm: z.number().min(0).default(15).describe("how far a body part may reach past the box (rails, handles)") }),
+  z.object({ op: z.literal("visibility_tier"), name: z.string().min(1).describe("identity, e.g. Body tier"),
+    solids: z.array(z.string().min(1)).min(1),
+    tier: z.enum(["envelope", "clearance", "body", "medium", "fine", "all"]).optional()
+      .describe("envelope: Coarse only; clearance: Coarse and Medium; body: Medium and Fine; medium: Medium only (under twins); fine: Fine only; all"),
+    coarse: z.boolean().optional(), medium: z.boolean().optional(), fine: z.boolean().optional() }),
   // Owner, 17 Oct: the product picture as Revit's built-in Type Image (Type Properties, schedules, legends).
   z.object({ op: z.literal("set_type_image"), name: z.string().min(1).describe("identity, e.g. Type image"),
     path: z.string().min(1).describe("a .png or .jpg in the kit's families folder, e.g. 04_Families\\_Staging\\<Role>\\_Images\\<family>.png"),
@@ -243,7 +275,8 @@ type SkeletonOp = Extract<Op, { op: "skeleton" }>;
  */
 export function expandSkeletons<T extends { op: string }>(ops: T[]): T[] {
   // and every outline cleaned, a traced one smoothed (fmc/curves.ts), before it's checked or built
-  return smoothOps(ops.flatMap((o) => (o.op === "skeleton" ? (skeletonOps(o as unknown as SkeletonOp) as unknown as T[]) : [o])));
+  // and the recipe-language ops (envelope, visibility_tier) as the ops they stand for (N064, fmc/recipelang.ts)
+  return smoothOps(expandLanguage(ops.flatMap((o) => (o.op === "skeleton" ? (skeletonOps(o as unknown as SkeletonOp) as unknown as T[]) : [o]))));
 }
 
 function skeletonOps(s: SkeletonOp): Array<Record<string, unknown>> {
@@ -353,6 +386,31 @@ export function pathPlaneProblems(o: SweepOp, params: Set<string>, paramTypes: M
   return p;
 }
 
+/**
+ * G011: a closed loop of plane crossings (extrusion outline_planes, revolution profile_planes). The loop closes back to
+ * the first corner (a repeat of it at the end is allowed). Each corner names two different planes; neighbouring corners,
+ * the last and first included, share exactly one plane (the edge runs along it); two edges in a row along the same
+ * plane are one edge; and a loop needs three edges or more. Returns the problems and the plane each edge runs along.
+ */
+export function planeLoopProblems(corners: string[][]): { problems: string[]; along: Array<string | null> } {
+  const p: string[] = [];
+  let c = corners;
+  if (c.length > 1 && new Set(c[0]).size === 2 && c[0].every((x) => c[c.length - 1].includes(x)) && c[c.length - 1].every((x) => c[0].includes(x))) c = c.slice(0, -1);
+  const label = (k: number) => `[${c[k].join(", ")}]`;
+  c.forEach((pair, k) => { if (pair[0] === pair[1]) p.push(`corner ${k + 1} ${label(k)} names one plane twice`); });
+  const along = runningPlanes([...c, c[0]]);
+  if (c.length < 3) p.push(`a closed loop needs three corners or more (found ${c.length})`);
+  along.forEach((pl, k) => {
+    const next = (k + 1) % c.length;
+    if (pl === null) p.push(`edge ${k + 1} from ${label(k)} to ${label(next)} doesn't run along one plane: neighbouring corners share exactly one plane`);
+  });
+  for (let k = 0; k < along.length; k++) {
+    const next = (k + 1) % along.length;
+    if (along[k] !== null && along[k] === along[next] && along.length > 1) p.push(`edges ${k + 1} and ${next + 1} both run along ${along[k]}: drop corner ${next + 1} ${label(next)} (it sits in the middle of one edge)`);
+  }
+  return { problems: p, along };
+}
+
 /** The plane each segment of a path_planes path runs along (the one plane its two corners share), or null. */
 export function runningPlanes(corners: string[][]): Array<string | null> {
   const out: Array<string | null> = [];
@@ -429,8 +487,10 @@ const sharedType = (datatype: string) => (/^YESNO$/i.test(datatype) ? "YesNo" : 
  */
 export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, familiesRoot?: string, materials?: MaterialDb | null,
   opts: OpsCheckOptions = {}): string[] {
-  ops = expandSkeletons(ops);
-  const p: string[] = [];
+  const written = ops;
+  // N064: a later set_line_weight is what the subcategory ends with, so FAM-044 is judged on that (the repair path)
+  ops = withLineWeights(expandSkeletons(ops));
+  const p: string[] = [...languageProblems(written as Array<Record<string, any>>)];
   const seen = new Set<string>();
   const paramTypes = new Map<string, string>();
   const solids = new Set<string>(), connectors = new Set<string>(), subcats = new Set<string>(), lines = new Set<string>(), families = new Set<string>(), nested = new Set<string>();
@@ -507,8 +567,14 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
         break;
       case "extrusion":
       case "void_extrusion":
-        if (!o.rect && !o.points) p.push(`${at}: give rect (four reference planes) or points`);
+        if (!o.rect && !o.points && !o.outline_planes) p.push(`${at}: give rect (four reference planes), outline_planes or points`);
+        if ([o.rect, o.points, o.outline_planes].filter(Boolean).length > 1) p.push(`${at}: give one of rect, outline_planes or points`);
         if (o.points) for (const x of outlineProblems(o.points as CurveNode[])) p.push(`${at}: the outline ${x}`);
+        if (o.outline_planes) {
+          for (const x of planeLoopProblems(o.outline_planes).problems) p.push(`${at}: outline_planes ${x}`);
+          for (const pl of [...new Set(o.outline_planes.flat())]) if (!planes.has(pl) && !(opts.templatePlanes ?? []).includes(pl))
+            p.push(`${at}: reference plane "${pl}" isn't made earlier in this batch or a template default (it may exist in the file: then it's fine)`);
+        }
         if (o.end <= o.start) p.push(`${at}: end (${o.end}) must be above start (${o.start})`);
         if (o.start_plane && o.start_plane === o.end_plane)
           p.push(`${at}: start and end are both locked to "${o.start_plane}", so the solid would be flat: lock one end and let the other keep its thickness`);
@@ -566,7 +632,21 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
         break;
       case "revolution":
         if (o.end_deg === o.start_deg) p.push(`${at}: start_deg and end_deg are the same`);
-        for (const x of outlineProblems(o.profile as CurveNode[], "revolution")) p.push(`${at}: the profile ${x}`);
+        if (!o.profile && !o.profile_planes) p.push(`${at}: give profile ([r, z] points) or profile_planes`);
+        if (o.profile && o.profile_planes) p.push(`${at}: give profile or profile_planes, not both`);
+        if (o.profile) for (const x of outlineProblems(o.profile as CurveNode[], "revolution")) p.push(`${at}: the profile ${x}`);
+        if (o.profile_planes) {
+          for (const x of planeLoopProblems(o.profile_planes).problems) p.push(`${at}: profile_planes ${x}`);
+          if (!o.axis_planes) p.push(`${WARNING} ${at}: profile_planes without axis_planes: the profile follows its planes but the axis stays at axis_at`);
+        }
+        if (o.axis_planes) {
+          if (o.axis_planes[0] === o.axis_planes[1]) p.push(`${at}: axis_planes names one plane twice`);
+          if (o.profile_planes && !o.profile_planes.some((c) => c.includes(o.axis_planes![0])))
+            p.push(`${WARNING} ${at}: no profile corner is on the axis plane "${o.axis_planes[0]}": a profile off the axis makes a ring (fine for a collar, not for a knob)`);
+        }
+        for (const pl of [...new Set([...(o.profile_planes ?? []).flat(), ...(o.axis_planes ?? [])])])
+          if (!planes.has(pl) && !(opts.templatePlanes ?? []).includes(pl))
+            p.push(`${at}: reference plane "${pl}" isn't made earlier in this batch or a template default (it may exist in the file: then it's fine)`);
         if (o.subcategory && !subcats.has(o.subcategory)) p.push(`${at}: ${mayExist("subcategory", o.subcategory)}`);
         solids.add(o.name);
         break;
@@ -643,6 +723,9 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
         if (o.type && !types.has(o.type)) p.push(`${at}: ${mayExist("type", o.type)}`);
         break;
       }
+      case "set_line_weight":
+        if (!subcats.has(o.name)) p.push(`${at}: ${mayExist("subcategory", o.name)}`);
+        break;
       case "set_subcategory":
         if (!solids.has(o.name) && !lines.has(o.name)) p.push(`${at}: ${mayExist("solid or line set", o.name)}`);
         if (!subcats.has(o.subcategory)) p.push(`${at}: ${mayExist("subcategory", o.subcategory)}`);

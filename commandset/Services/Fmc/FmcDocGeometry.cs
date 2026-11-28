@@ -95,17 +95,22 @@ namespace RevitMCPCommandSet.Services.Fmc
             // [y, z] with depth along +x; "plan" (default) draws [x, y] with depth up (z). Before, every extrusion was in plan.
             string sk = (op.Value<string>("sketch") ?? "plan").ToLowerInvariant();
             if (rect != null && sk != "plan") throw new InvalidOperationException("rect (four planes) works with sketch plan only");
+            // G011: outline_planes, a closed loop of plane crossings, each edge on its plane (FmcDocPlaneLoop)
+            List<string[]> outline = FmcDocPlaneLoop.Corners(op["outline_planes"]);
+            if (outline != null && rect != null) throw new InvalidOperationException("give rect or outline_planes, not both");
             // Owner 26 Oct: an outline may hold arcs and splines (FmcCurves); a refused spline is built again as short lines
             Func<double[], XYZ> map = p => sk == "front" ? new XYZ(Mm(p[0]), 0, Mm(p[1])) : sk == "right" ? new XYZ(0, Mm(p[0]), Mm(p[1])) : new XYZ(Mm(p[0]), Mm(p[1]), 0);
-            if (rect == null && FmcCurves.Count(op["points"]) < 2) throw new InvalidOperationException("an extrusion needs rect (four planes) or an outline in points");
+            if (rect == null && outline == null && FmcCurves.Count(op["points"]) < 2) throw new InvalidOperationException("an extrusion needs rect (four planes), outline_planes or an outline in points");
             XYZ normal = sk == "front" ? XYZ.BasisY.Negate() : sk == "right" ? XYZ.BasisX : XYZ.BasisZ;
+            FmcDocPlaneLoop.Loop planeLoop = outline != null ? FmcDocPlaneLoop.Build(doc, outline, Autodesk.Revit.DB.Plane.CreateByNormalAndOrigin(normal, XYZ.Zero), name + " outline_planes") : null;
+            if (planeLoop != null) loop = planeLoop.Curves;
             SketchPlane sketch = SketchPlane.Create(doc, Autodesk.Revit.DB.Plane.CreateByNormalAndOrigin(normal, XYZ.Zero));
             Extrusion made = FmcCurves.WithFallback(splines =>
             {
                 var profile = new CurveArrArray();
-                profile.Append(rect != null ? loop : FmcCurves.Loop(doc, op["points"], map, true, splines));
+                profile.Append(rect != null || planeLoop != null ? loop : FmcCurves.Loop(doc, op["points"], map, true, splines));
                 return doc.FamilyCreate.NewExtrusion(!isVoid, profile, sketch, end - start);
-            }, rect == null && FmcCurves.HasSplines(op["points"]));
+            }, rect == null && planeLoop == null && FmcCurves.HasSplines(op["points"]));
             made.StartOffset = start; made.EndOffset = end;
             Name(made, name);
 
@@ -138,6 +143,12 @@ namespace RevitMCPCommandSet.Services.Fmc
                 View plan = ViewNamed(doc, op.Value<string>("view") ?? "Ref. Level", ViewType.FloorPlan);
                 foreach (ReferencePlane side in sides)
                     if (LockFace(doc, plan, made, side.GetReference(), side.Normal)) locked.Add(side.Name);
+            }
+            if (planeLoop != null)
+            {
+                // outline edges lie on vertical planes in plan, or on the planes square to a front / right sketch
+                View outlineView = sk == "plan" ? ViewNamed(doc, op.Value<string>("view") ?? "Ref. Level", ViewType.FloorPlan) : FmcDocLod.ViewFor(doc, sk);
+                locked.AddRange(FmcDocPlaneLoop.LockOutline(doc, outlineView, made, planeLoop, name));
             }
             if (ends.Count > 0)
             {
