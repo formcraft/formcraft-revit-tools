@@ -8,7 +8,7 @@ import { batchBoard } from "../fmc/batchline.js";
 import { batchLease } from "../fmc/target.js";
 import fs from "node:fs";
 import {
-  CentralFile, NEW_LOCAL_CAVEAT, NewLocalInput, OpenDoc, codeResult, newLocalProbeScript, planNewLocal, runNewLocalSteps,
+  CentralFile, NEW_LOCAL_CAVEAT, NewLocalInput, OpenDoc, codeResult, newLocalProbeScript, planNewLocal, runNewLocalSteps, switchCandidates,
 } from "../fmc/newlocal.js";
 
 export const FMC_NEW_LOCAL_DESCRIPTION =
@@ -19,6 +19,7 @@ export const FMC_NEW_LOCAL_DESCRIPTION =
   "script. document is required (the active document is never assumed). dry_run defaults to true, lists those calls, and " +
   "closes nothing. A real run needs access=full with General On, the same approval as other writes, and in testing mode " +
   "with auto-approve it runs and is listed as auto-approved. " +
+  "The dry run shows old_local (modified, unsynced, size_mb; the backup holds the last saved state only), the switch_to candidates and how the host was chosen (default: an open project that is not workshared and not modified). " +
   NEW_LOCAL_CAVEAT;
 
 export const FMC_NEW_LOCAL_SHAPE = {
@@ -28,6 +29,7 @@ export const FMC_NEW_LOCAL_SHAPE = {
   switch_to: z.string().min(1).optional().describe("Title of another open document to activate first when the local is on screen. Default: any other open project document. In resume mode the script binds to this document."),
   backup_suffix: z.string().min(1).max(64).optional().describe("Suffix on the renamed file. Default .bak-YYYYMMDD. The old local is moved, not copied. An existing backup is not overwritten."),
   dry_run: z.boolean().optional().default(true).describe("Validate and report the plan. Nothing is closed. Default true."),
+  sync_first: z.boolean().optional().default(false).describe("Sync the old local with central before anything is closed (fmc_revit_file sync, approved like any sync). A failed sync stops the run."),
 };
 
 const NO_MODEL = /No open document|is not a local|is not a central|No other open project|switch_to /;
@@ -54,6 +56,7 @@ function docsFromInfo(info: Record<string, unknown>): OpenDoc[] {
       isActive: row.isActive === true,
       isDetached: row.isDetached === true,
       isLinked: row.isLinked === true,
+      ...(typeof row.isModified === "boolean" ? { isModified: row.isModified } : {}),
     });
   }
   return docs;
@@ -76,6 +79,18 @@ function applyCentral(docs: OpenDoc[], body: Record<string, unknown>): CentralFi
     isCentral: body.isCentral === true,
     centralPath: String(body.centralPath ?? ""),
   };
+}
+
+/** Research 60: what the probe read about the old local. unsynced is null when unknown (not saved, or not workshared). */
+export function oldLocalState(body: Record<string, unknown>): { modified: boolean | null; unsynced: boolean | null } {
+  return {
+    modified: typeof body.docModified === "boolean" ? body.docModified : null,
+    unsynced: body.docUnsynced === "yes" ? true : body.docUnsynced === "no" ? false : null,
+  };
+}
+
+function sizeMb(file: string, exists: (p: string) => boolean): number | null {
+  try { return exists(file) ? Math.round(fs.statSync(file).size / 1048576 * 10) / 10 : null; } catch { return null; }
 }
 
 export interface RevitIo {
@@ -132,6 +147,7 @@ export async function runFmcNewLocal(args: NewLocalInput, io?: RevitIo) {
 
   let centralFile: CentralFile = assumed;
   let docs: OpenDoc[] = [];
+  let oldState: { modified: boolean | null; unsynced: boolean | null } = { modified: null, unsynced: null };
   try {
     // A path that exists. A missing local is described nowhere; the central still lists the open documents.
     const info = asRecord(await sendRaw("fmc_document_info", { document: documentInfoKey(args.local, args.central, exists) }));
@@ -154,6 +170,7 @@ export async function runFmcNewLocal(args: NewLocalInput, io?: RevitIo) {
     const body = codeResult(response);
     if (!body) return reply({ refused: true, reasons: ["Revit did not return the central check."], caveat: NEW_LOCAL_CAVEAT, dry_run: dry }, true);
     centralFile = applyCentral(docs, body);
+    oldState = oldLocalState(body);
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     return reply({ refused: true, reasons: [message], caveat: NEW_LOCAL_CAVEAT, dry_run: dry }, true);
@@ -166,10 +183,28 @@ export async function runFmcNewLocal(args: NewLocalInput, io?: RevitIo) {
       dry_run: true, closes: false, resume: plan.resume, document: plan.document, central: plan.central, local: plan.local,
       active: plan.active, switch_to: plan.switch_to, switch_path: plan.switch_path, backup: plan.backup,
       backup_folder_from: plan.backup_folder_from || undefined, backup_folder_to: plan.backup_folder_to || undefined,
-      steps: plan.steps, calls: plan.calls, caveat: plan.caveat, next: "Run again with dry_run=false",
+      steps: args.sync_first ? [`0. fmc_revit_file {action:"sync", document:"${plan.document}"} first; a failed sync stops here`, ...plan.steps] : plan.steps,
+      calls: plan.calls, caveat: plan.caveat,
+      old_local: { ...oldState, size_mb: sizeMb(plan.local, exists), backup_contains: "last saved state: unsaved and unsynced work is not in the backup" },
+      ...(oldState.modified || oldState.unsynced ? { warning: `${plan.document} has ${[oldState.modified ? "unsaved" : "", oldState.unsynced ? "unsynced" : ""].filter(Boolean).join(" and ")} changes: they are lost unless you sync first (sync_first true).` } : {}),
+      sync_first: args.sync_first === true,
+      switch_candidates: switchCandidates(docs.filter((d) => d.title.toLowerCase() !== plan.document.toLowerCase())).map((d) => d.title),
+      switch_chosen_by: (args.switch_to ?? "").trim() ? "given" : "default: not workshared, then unmodified",
+      next: "Run again with dry_run=false",
     });
   }
 
+  if (args.sync_first && !plan.resume) {
+    try {
+      const synced = asRecord(await sendCommand("fmc_revit_file", { action: "sync", document: plan.document }));
+      if (!synced || synced.ok === false || synced.refused === true || synced.success === false) {
+        return reply({ refused: true, step: "sync_first", reasons: [String(synced?.message ?? synced?.error ?? "The sync did not finish.") + " Nothing was closed."], result: synced, caveat: NEW_LOCAL_CAVEAT }, true);
+      }
+    } catch (error) {
+      if (error instanceof JobStillRunning) return reply({ status: "running", step: "sync_first", job: error.job, message: "The sync is still running; nothing was closed. Run fmc_new_local again when it finishes.", caveat: NEW_LOCAL_CAVEAT });
+      return reply({ refused: true, step: "sync_first", reasons: [(error instanceof Error ? error.message : String(error)) + " Nothing was closed."], caveat: NEW_LOCAL_CAVEAT }, true);
+    }
+  }
   try {
     const ran = await runNewLocalSteps(plan, sendCommand);
     if (!ran.ok) return reply({ ...ran, caveat: NEW_LOCAL_CAVEAT }, true);
