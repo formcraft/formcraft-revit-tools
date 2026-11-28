@@ -3,9 +3,11 @@ import path from "node:path";
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
-import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
+import { GuardConfig, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { GATES, Rulebooks, mergeRulebooks, neededParameters, qaFacts, qaReport, runQa, trend } from "../fmc/rules.js";
 import { DEFAULT_LIMIT, qaDigest, rulebooksDigest } from "../fmc/digest.js";
+import { documentTarget } from "../fmc/target.js";
+import { qaDocumentMismatch, qaEvaluated, qaReportPlace } from "../fmc/qaplace.js";
 
 const win = path.win32;
 
@@ -48,6 +50,7 @@ export const FMC_QA_DESCRIPTION =
     "version, why), the exceptions in force and the decisions. run checks the active model for a gate (wip_to_shared, " +
     "shared_to_published, weekly): it only reads, so it runs on live and shared models too; results are Fail, Warning, " +
     "Pass, Not applicable or Not checked per rule, with new/recurring/resolved against the last run and a saved report. " +
+    "run evaluates the document named on the call (document) and says what it read (evaluated: model and counts); a different document answering is FMC-QA-DOCUMENT-MISMATCH. The report goes in project_folder\\06_QA\\Health when the guard allows it; if not, it goes in the reports folder and project_folder says why (FMC-QA-PROJECT-FOLDER-REFUSED). " +
     "select selects elements in Revit (the Zoom on a result). request records an approval or change request for the BIM Manager.";
 
 export const FMC_QA_SHAPE = {
@@ -100,6 +103,10 @@ export async function runFmcQa(args: FmcQaArgs) {
     // run: facts from Revit (read-only), checks from the kit
     if (!books.rules.length) return reply({ refused: true, reasons: books.problems.length ? books.problems : ["The kit's rulebooks have no rules"] }, true);
     const facts = qaFacts(await withRevitConnection((c) => c.sendRaw("fmc_qa_facts", neededParameters(books.rules), 300000)));
+    // The document asked for (the call's `document`) is the one whose facts were read: say so, or refuse.
+    const requested = documentTarget.getStore();
+    const mismatch = qaDocumentMismatch(requested, facts.model);
+    if (mismatch) return reply({ refused: true, code: mismatch.code, document: requested, evaluated_model: facts.model, reasons: [mismatch.message] }, true);
     const today = new Date().toISOString().slice(0, 10);
     const result = runQa(books, facts, args.gate, today, (args.stage ?? "").trim());
     const failing = result.results.filter((x) => x.state === "Fail" || x.state === "Warning").map((x) => x.id);
@@ -118,17 +125,18 @@ export async function runFmcQa(args: FmcQaArgs) {
     // The report goes in the project's 06_QA\Health when the guard allows it, otherwise in the reports folder.
     const stamp = new Date().toISOString().replace(/[-:]/g, "").replace("T", "-").slice(0, 13);
     const name = `FMC_QA_${facts.model.replace(/\.rvt$/i, "")}_${stamp}.md`;
-    let report = args.project_folder ? win.join(args.project_folder, "06_QA", "Health", name) : "";
-    if (!report || !checkWritePath(report, config, { checkName: false }).ok) report = win.join(expandEnv(config.reports_dir), "QA", name);
+    const place = qaReportPlace(args.project_folder, config, name);
+    const report = place.report;
+    const where = { document: requested ?? null, evaluated: qaEvaluated(facts), report_location: place.location, ...(place.project_folder ? { project_folder: place.project_folder } : {}) };
     fs.mkdirSync(win.dirname(report), { recursive: true });
     fs.writeFileSync(report, qaReport(result, new Date()));
     log(config, "qa_run", false, facts.model, "done", `${result.gate}: ${result.fail} fail, ${result.warning} warnings · ${report}`);
 
     const recent = runs.slice(-4).map((r) => ({ at: r.at, failing: r.failing.length }));
-    if (args.detail === "full") return reply({ ...result, trend: t, history: recent, report, rulebook_problems: books.problems });
+    if (args.detail === "full") return reply({ ...result, ...where, trend: t, history: recent, report, rulebook_problems: books.problems });
     // F-009: counts, the verdict and what needs attention; every result is in the saved report.
     const { results, ...head } = result;
-    return reply({ ...head, ...qaDigest(results, args.limit), trend: t, history: recent, report, rulebook_problems: books.problems,
+    return reply({ ...head, ...where, ...qaDigest(results, args.limit), trend: t, history: recent, report, rulebook_problems: books.problems,
       next: "detail: \"full\" returns every result (large); the saved report lists them all" });
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);

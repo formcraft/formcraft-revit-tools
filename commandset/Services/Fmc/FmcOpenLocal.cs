@@ -23,17 +23,28 @@ namespace RevitMCPCommandSet.Services.Fmc
     {
         private static InvalidOperationException Err(string code, string message) => new InvalidOperationException("[" + code + "] " + message);
 
-        /// <summary>The file is the central model: BasicFileInfo says so, or its CentralPath is the file itself.</summary>
+        /// <summary>
+        /// The file is the central model: workshared, not a local, and its central path is the file itself. BasicFileInfo.IsCentral
+        /// alone is not trusted: it answered true for electrical_USER and architectural_USER, which are locals (fmc_docs central=false,
+        /// Revit isLocal=true), so open_local refused them with FMC-FILE-CENTRAL-REFUSED. A file Revit says is a local is never central.
+        /// </summary>
         internal static bool IsCentralFile(BasicFileInfo info, string path)
         {
-            bool central = false;
-            try { central = info.IsCentral; } catch (Exception) { central = false; }
-            if (central) return true;
-            try
-            {
-                return info.IsWorkshared && !string.IsNullOrEmpty(info.CentralPath) && FmcTarget.SamePath(info.CentralPath, path);
-            }
-            catch (Exception) { return false; }
+            bool workshared = false, isLocal = false, flag = false;
+            string centralPath = "";
+            try { workshared = info.IsWorkshared; } catch (Exception) { workshared = false; }
+            try { isLocal = info.IsLocal; } catch (Exception) { isLocal = false; }
+            try { flag = info.IsCentral; } catch (Exception) { flag = false; }
+            try { centralPath = info.CentralPath ?? ""; } catch (Exception) { centralPath = ""; }
+            return CentralRule(workshared, isLocal, flag, centralPath, path);
+        }
+
+        /// <summary>The rule on its own (the same one the server's probe uses, FmcDocsWork.Probe): see IsCentralFile.</summary>
+        internal static bool CentralRule(bool workshared, bool isLocal, bool isCentralFlag, string centralPath, string path)
+        {
+            if (!workshared || isLocal) return false;
+            if (!string.IsNullOrEmpty(centralPath)) return FmcTarget.SamePath(centralPath, path);
+            return isCentralFlag;
         }
 
         /// <summary>An open workshared document that is the central model itself (its central path is its own path).</summary>

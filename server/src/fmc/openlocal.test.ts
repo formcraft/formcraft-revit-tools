@@ -6,6 +6,9 @@ import { clearRememberedProtected } from "./opencopy.js";
 import { FILE_CODES, normaliseWorksets, planCloseLocal, planOpenLocal, type OpenDocRow } from "./openlocal.js";
 import { FMC_FILE_SHAPE } from "../tools/fmc_file.js";
 import { z } from "zod";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 const cfg = { ...DEFAULT_CONFIG, protected_roots: ["D:\\Fomcraft"] };
 const local = "C:\\Users\\USER\\Documents\\F26901-FMC-ZZ-ZZ-M3-A-0002_USER.rvt";
@@ -126,4 +129,33 @@ test("fmc_open_local needs no open document, so it works with Revit on the Home 
   assert.equal(documentDecision("fmc_close_local", two, undefined).ok, false);
   assert.equal(documentDecision("fmc_close_local", two, "B").ok, true);
   assert.equal(documentDecision("fmc_close_local_apply", two, "").ok, false);
+});
+
+test("open_local opens electrical_USER and architectural_USER (workshared locals): only a true central is refused", () => {
+  for (const file of ["C:\\Users\\USER\\Documents\\electrical_USER.rvt", "C:\\Users\\USER\\Documents\\architectural_USER.rvt", "C:\\Users\\USER\\Documents\\plumbing_USER.rvt"]) {
+    const plan = planOpenLocal({ path: file }, cfg, () => true, { exists: true, workshared: true, central: false });
+    assert.equal(plan.ok, true, file);
+    assert.deepEqual(plan.codes, [], file);
+    const refused = planOpenLocal({ path: file }, cfg, () => true, { exists: true, workshared: true, central: true });
+    assert.equal(refused.ok, false, file);
+    assert.deepEqual(refused.codes, [FILE_CODES.CENTRAL_REFUSED], file);
+  }
+});
+
+test("the add-in decides central by the central path, never by BasicFileInfo.IsCentral alone, in open_local and in the fmc_docs probe", () => {
+  const here = path.dirname(fileURLToPath(import.meta.url));
+  const cs = (...p: string[]) => fs.readFileSync(path.resolve(here, "..", "..", "..", "commandset", "Services", "Fmc", ...p), "utf8");
+  const open = cs("FmcOpenLocal.cs");
+  // the rule: not workshared or a local -> never central; a central path -> central only when it is the file itself; the flag only when there is no path
+  const rule = open.slice(open.indexOf("internal static bool CentralRule"), open.indexOf("internal static bool IsCentralDoc"));
+  assert.match(rule, /if \(!workshared \|\| isLocal\) return false;/);
+  assert.match(rule, /if \(!string\.IsNullOrEmpty\(centralPath\)\) return FmcTarget\.SamePath\(centralPath, path\);/);
+  assert.match(rule, /return isCentralFlag;/);
+  assert.match(open, /try \{ isLocal = info\.IsLocal; \}/);
+  // open_local, the probe and as_local open all use it; none reads IsCentral on its own
+  assert.match(open, /if \(IsCentralFile\(info, path\)\)/);
+  const docs = cs("FmcDocsWork.cs");
+  assert.equal((docs.match(/FmcOpenLocal\.IsCentralFile\(info, path\)/g) ?? []).length, 2);
+  assert.doesNotMatch(docs, /central = info\.IsCentral/);
+  assert.doesNotMatch(open.replace(/try \{ flag = info\.IsCentral;[^\n]*\n/, ""), /info\.IsCentral/);
 });

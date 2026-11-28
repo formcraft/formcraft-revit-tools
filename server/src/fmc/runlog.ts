@@ -22,6 +22,8 @@ export interface RunRow {
   source: string;
   /** Ops that changed nothing and were not errors (a reply with applied false and a reason). Only set when above 0. */
   skipped?: number;
+  /** Ops still running in Revit (FMC-JOB-RUNNING): not finished, so neither ok nor failed. Only set when above 0; the line reads RUNNING, never PASS. */
+  running?: number;
   /** The job file name when the log or result gives one (B03_A_door_window_room_tags). */
   name?: string;
   document?: string;
@@ -82,6 +84,17 @@ function codesOfReply(reply: Record<string, unknown>): string[] {
   return found;
 }
 
+/** A job Revit is still working on answers FMC-JOB-RUNNING: that is not a pass (it has not finished) and not yet a failure. */
+export const JOB_RUNNING = "FMC-JOB-RUNNING";
+
+function isRunning(value: unknown): boolean {
+  const row = rec(value);
+  if (!row) return typeof value === "string" && value.includes(JOB_RUNNING);
+  if (row.code === JOB_RUNNING || row.result === "running" || row.status === "running" || row.running === true) return true;
+  if (Array.isArray(row.codes) && row.codes.includes(JOB_RUNNING)) return true;
+  return ["text", "error", "reason", "message", "detail"].some((k) => typeof row[k] === "string" && (row[k] as string).includes(JOB_RUNNING));
+}
+
 function badOp(op: unknown): boolean {
   const row = rec(op);
   if (!row) return true;
@@ -89,7 +102,7 @@ function badOp(op: unknown): boolean {
     || (typeof row.error === "string" && row.error.length > 0) || typeof row.code === "string";
 }
 
-interface Tally { ops: number; ok: number; failed: number; skipped: number; codes: string[] }
+interface Tally { ops: number; ok: number; failed: number; skipped: number; codes: string[]; running?: number }
 
 /** One tool call of a batch: { tool, result }. */
 function tallyStep(step: unknown, into: Tally): void {
@@ -102,12 +115,14 @@ function tallyStep(step: unknown, into: Tally): void {
       into.ops += 1;
       const opRow = rec(op);
       if (opRow) into.codes.push(...codesOfReply(opRow));
-      if (badOp(op)) into.failed += 1;
+      if (isRunning(op)) into.running = (into.running ?? 0) + 1;
+      else if (badOp(op)) into.failed += 1;
       else into.ok += 1;
     }
     return;
   }
   into.ops += 1;
+  if (isRunning(reply)) { into.running = (into.running ?? 0) + 1; return; }
   const text = typeof reply.text === "string" ? reply.text : "";
   const failedText = /\b(execution failed|compile error|error CS\d+)\b/i.test(text);
   if (reply.ok === false || reply.isError === true || reply.refused === true || typeof reply.error === "string" && reply.error.length > 0 || failedText) into.failed += 1;
@@ -118,6 +133,7 @@ function tallyStep(step: unknown, into: Tally): void {
 function rowFrom(id: string, source: string, tally: Tally, extra: Partial<RunRow> = {}): RunRow {
   const row: RunRow = { batch_id: id, ops: tally.ops, ok: tally.ok, failed: tally.failed, codes: [...new Set(tally.codes)], source };
   if (tally.skipped > 0) row.skipped = tally.skipped;
+  if ((tally.running ?? 0) > 0) row.running = tally.running;
   if (extra.name) row.name = extra.name;
   if (extra.document) row.document = extra.document;
   return row;
@@ -155,7 +171,8 @@ export function summariseResult(body: unknown, source: string): RunRow[] {
       tally.ops += 1;
       const opRow = rec(op);
       if (opRow) tally.codes.push(...codesOfReply(opRow));
-      if (badOp(op)) tally.failed += 1;
+      if (isRunning(op)) tally.running = (tally.running ?? 0) + 1;
+      else if (badOp(op)) tally.failed += 1;
       else tally.ok += 1;
     }
     tally.codes.push(...looseCodes(JSON.stringify({ code: row.code, error: row.error, codes: row.codes })));
@@ -167,6 +184,8 @@ export function summariseResult(body: unknown, source: string): RunRow[] {
   const listed = Array.isArray(row.codes) ? row.codes.map((item) => String(item)) : [];
   const codes = [...new Set([...listed, ...looseCodes(JSON.stringify(row))])];
   if (!ops && !failed && !ok && !codes.length && row.ok !== true && row.passed !== true) return [];
+  // a flat result that says FMC-JOB-RUNNING is unfinished: it is not a pass
+  if (isRunning(row) && failed === 0) return [{ batch_id: id, ops: ops || 1, ok: 0, failed: 0, running: ops || 1, codes, source, ...(extra.name ? { name: extra.name } : {}) }];
   return [{ batch_id: id, ops, ok, failed, codes, source, ...(extra.name ? { name: extra.name } : {}) }];
 }
 
@@ -213,21 +232,28 @@ function summariseSection(name: string, lines: string[], source: string): RunRow
   let arrows = 0;
   const codes: string[] = [];
   let errored = false;
+  let runningLines = 0;
   for (const raw of text) {
     const line = raw.trim();
     const batch = /^Batch\s+(\S+)(?:\s+on\s+(.+))?$/.exec(line);
     if (batch) { label = batch[1]; document = (batch[2] ?? "").trim(); continue; }
     if (/^->\s*\S+/.test(line)) { arrows += 1; continue; }
     if (!line || /^(Server|Lease|DONE)\b/.test(line) || /^(Preview|Apply|Verify|Result log):/.test(line)) continue;
-    // anything else the runner printed outside a reply: an error line, a refusal, a decline
+    // anything else the runner printed outside a reply: an error line, a refusal, a decline; a line that says the job is still running is neither
+    if (line.includes(JOB_RUNNING)) { runningLines += 1; codes.push(JOB_RUNNING); continue; }
     codes.push(...bracketCodes(line), ...looseCodes(line).filter((c) => !/^FMC-[A-Z]{2}-[A-Z]{2}-/.test(c)));
     if (/\b(FAIL(ED)?|ERROR|REFUSED|DECLINED|ABORT(ED)?)\b/i.test(line)) errored = true;
   }
   const tally: Tally = { ops: 0, ok: 0, failed: 0, skipped: 0, codes };
   for (const step of blocks) tallyStep(step, tally);
-  // a tool call that printed no parseable reply still counts as an op
-  if (arrows > blocks.length) tally.ops += arrows - blocks.length;
-  if (arrows > blocks.length) tally.ok += errored ? 0 : arrows - blocks.length;
+  // a tool call that printed no parseable reply still counts as an op; one the runner reported as still running is running, not ok
+  if (arrows > blocks.length) {
+    const silent = arrows - blocks.length;
+    const running = Math.min(silent, runningLines);
+    tally.ops += silent;
+    tally.running = (tally.running ?? 0) + running;
+    tally.ok += errored ? 0 : silent - running;
+  } else if (runningLines > 0 && !(tally.running ?? 0)) { tally.ops += 1; tally.running = runningLines; }
   if (errored && tally.failed === 0) tally.failed = 1;
   if (tally.ops === 0 && !errored) return null;
   return rowFrom(label || name, source, tally, { name, document });
@@ -259,12 +285,14 @@ export function summariseLog(text: string, source: string): RunRow[] {
     if (!trimmed) continue;
     const id = BATCH.exec(trimmed)?.[1];
     if (!id) continue;
-    const pass = /\b(PASS|OK)\b/i.test(trimmed) && !/\b(FAIL|ERROR)\b/i.test(trimmed);
+    const running = trimmed.includes(JOB_RUNNING) && !/\b(FAIL|ERROR)\b/i.test(trimmed);
+    const pass = !running && /\b(PASS|OK)\b/i.test(trimmed) && !/\b(FAIL|ERROR)\b/i.test(trimmed);
     const fail = /\b(FAIL|ERROR)\b/i.test(trimmed);
-    if (!pass && !fail) continue;
+    if (!pass && !fail && !running) continue;
     const ops = Number(/ops[=: ]+(\d+)/i.exec(trimmed)?.[1] ?? 0);
-    const ok = Number(/(?:ok|passed)[=: ]+(\d+)/i.exec(trimmed)?.[1] ?? (pass ? ops : 0));
     const failed = Number(/fail(?:ed)?[=: ]+(\d+)/i.exec(trimmed)?.[1] ?? (fail ? 1 : 0));
+    if (running && failed === 0) { rows.push({ batch_id: id, ops: ops || 1, ok: 0, failed: 0, running: ops || 1, codes: looseCodes(trimmed), source }); continue; }
+    const ok = Number(/(?:ok|passed)[=: ]+(\d+)/i.exec(trimmed)?.[1] ?? (pass ? ops : 0));
     rows.push({ batch_id: id, ops, ok, failed, codes: looseCodes(trimmed), source });
   }
   return rows;
@@ -300,9 +328,11 @@ export function summarisePath(target: string): { rows: RunRow[]; errors: string[
 export function formatRows(rows: RunRow[]): string {
   if (!rows.length) return "No batches.";
   return rows.map((row) => {
-    const mark = row.failed > 0 ? "FAIL" : "PASS";
+    // FMC-JOB-RUNNING is unfinished: RUNNING, never PASS
+    const mark = row.failed > 0 ? "FAIL" : row.running ? "RUNNING" : "PASS";
     const codes = row.codes.length ? ` ${row.codes.join(",")}` : "";
     const skipped = row.skipped ? ` skipped=${row.skipped}` : "";
-    return `${mark} ${row.batch_id} ops=${row.ops} ok=${row.ok} failed=${row.failed}${skipped}${codes}`;
+    const running = row.running ? ` running=${row.running}` : "";
+    return `${mark} ${row.batch_id} ops=${row.ops} ok=${row.ok} failed=${row.failed}${running}${skipped}${codes}`;
   }).join("\n");
 }

@@ -79,16 +79,8 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
                 return new JObject { ["exists"] = false, ["workshared"] = false, ["central"] = false };
             var info = BasicFileInfo.Extract(path);
-            bool central = false;
-            try { central = info.IsCentral; } catch (Exception) { central = false; }
-            if (!central && info.IsWorkshared)
-            {
-                try
-                {
-                    central = !string.IsNullOrEmpty(info.CentralPath) && string.Equals(Path.GetFullPath(info.CentralPath), Path.GetFullPath(path), StringComparison.OrdinalIgnoreCase);
-                }
-                catch (Exception) { central = false; }
-            }
+            // Same rule as open_local (FmcOpenLocal.IsCentralFile): a local is never central, whatever IsCentral says.
+            bool central = FmcOpenLocal.IsCentralFile(info, path);
             return new JObject { ["exists"] = true, ["workshared"] = info.IsWorkshared, ["central"] = central, ["read_only"] = true };
         }
 
@@ -101,8 +93,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             string worksets = (Parameters.Value<string>("worksets") ?? "all").Trim().ToLowerInvariant();
             string local = Parameters.Value<string>("local_path") ?? "";
             var info = BasicFileInfo.Extract(path);
-            bool central = false;
-            try { central = info.IsCentral; } catch (Exception) { central = false; }
+            bool central = FmcOpenLocal.IsCentralFile(info, path);
             string openPath = path;
             if (info.IsWorkshared && central && asLocal && !detach)
             {

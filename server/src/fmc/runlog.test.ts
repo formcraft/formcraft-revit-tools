@@ -105,3 +105,67 @@ test("a log that was cut off mid-reply still counts the tool calls it started", 
   assert.equal(row.batch_id, "runner-A-bq");
   assert.equal(row.ops, 1);
 });
+
+test("FMC-JOB-RUNNING is running, never a pass: a step, an op, a flat result, a log section and a one-line log", () => {
+  // a Run-FmcBatch result whose apply step answered FMC-JOB-RUNNING
+  const result = summariseResult({
+    label: "B20", ok: true,
+    steps: [{ tool: "modify_model", result: { ok: true } }, { tool: "fmc_job", result: { code: "FMC-JOB-RUNNING", text: "[FMC-JOB-RUNNING] Revit is still placing it" } }],
+  }, "B20.result-20261128-090000.json")[0];
+  assert.equal(result.running, 1);
+  assert.equal(result.ok, 1, "only the finished step is ok");
+  assert.equal(result.failed, 0, "still running is not a failure either");
+  assert.match(formatRows([result]), /^RUNNING B20 ops=2 ok=1 failed=0 running=1/);
+  assert.doesNotMatch(formatRows([result]), /PASS/);
+
+  // an op in an ops array
+  const ops = summariseResult({ batch_id: "B21", ops: [{ op: "wall", ok: true }, { op: "door", code: "FMC-JOB-RUNNING", error: "[FMC-JOB-RUNNING] still running" }] }, "B21.json")[0];
+  assert.deepEqual([ops.ok, ops.failed, ops.running], [1, 0, 1]);
+  assert.match(formatRows([ops]), /^RUNNING /);
+
+  // an error reply's text also carries the code in brackets: it must not read as a failure
+  const errored = summariseResult({ batch_id: "B22", steps: [{ tool: "x", result: { isError: true, error: "[FMC-JOB-RUNNING] Revit is still placing it" } }] }, "B22.json")[0];
+  assert.deepEqual([errored.ok, errored.failed, errored.running], [0, 0, 1]);
+
+  // a flat result
+  const flat = summariseResult({ batch_id: "B23", ok: true, code: "FMC-JOB-RUNNING" }, "B23.json")[0];
+  assert.equal(flat.running, 1);
+  assert.equal(flat.ok, 0);
+  assert.match(formatRows([flat]), /^RUNNING B23/);
+
+  // a one-line log
+  const line = summariseLog("B24 PASS ops=4 ok=4 failed=0 code=FMC-JOB-RUNNING\nB25 PASS ops=4 ok=4 failed=0", "RUN_ALL_log.txt");
+  assert.match(formatRows(line), /^RUNNING B24/);
+  assert.match(formatRows(line), /\nPASS B25 ops=4 ok=4 failed=0$/);
+
+  // a RUN_ALL_log section whose runner line says the job is still running
+  const section = summariseLog([
+    "==== B26_job 2026-11-28 09:00", "Batch  B26 on architectural_USER", "Apply:", "  -> modify_model", "[FMC-JOB-RUNNING] Revit is still placing it: check fmc_job status", "DONE",
+  ].join("\n"), "RUN_ALL_log.txt");
+  assert.equal(section.length, 1);
+  assert.equal(section[0].failed, 0);
+  assert.equal(section[0].ok, 0);
+  assert.equal(section[0].running, 1);
+  assert.match(formatRows(section), /^RUNNING B26/);
+});
+
+test("a real failure beats running, and a finished batch is still PASS", () => {
+  const mixed = summariseResult({ batch_id: "B30", steps: [{ tool: "a", result: { ok: false, error: "x" } }, { tool: "b", result: { code: "FMC-JOB-RUNNING" } }] }, "B30.json")[0];
+  assert.match(formatRows([mixed]), /^FAIL B30/);
+  const done = summariseResult({ batch_id: "B31", steps: [{ tool: "a", result: { ok: true } }, { tool: "b", result: { ok: true } }] }, "B31.json")[0];
+  assert.equal(done.running, undefined);
+  assert.match(formatRows([done]), /^PASS B31 ops=2 ok=2 failed=0$/);
+});
+
+test("fmc_runlog reports running and incomplete, not a clean run", async () => {
+  const { runFmcRunlog } = await import("../tools/fmc_runlog.js");
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-runlog-running-"));
+  const file = path.join(dir, "B40.json");
+  fs.writeFileSync(file, JSON.stringify({ batch_id: "B40", steps: [{ tool: "fmc_job", result: { code: "FMC-JOB-RUNNING" } }] }));
+  const body = JSON.parse(runFmcRunlog({ path: file }).content[0].text);
+  assert.equal(body.running, 1);
+  assert.equal(body.incomplete, true);
+  assert.equal(body.failed, 0);
+  assert.match(body.text, /^RUNNING B40/);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
