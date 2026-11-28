@@ -243,6 +243,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_close_local_apply",
   // Close spare documents or purge unused elements. Status stays on fmc_memory.
   "fmc_memory_apply",
+  // fmc_central Revit writes: save-as-central and the rule-13 self-test sync. Person-only; the AI gate refuses them even with access=full.
+  "fmc_central_build", "fmc_central_promote", "fmc_central_selftest",
 ]);
 
 /**

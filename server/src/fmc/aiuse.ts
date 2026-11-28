@@ -102,6 +102,9 @@ export const NEVER: Record<string, string> = {
   fmc_new_local: "files (new local)",
   fmc_dynamo: "running a Dynamo graph",
   fmc_script_run: "running a library script",
+  fmc_central_build: "creating a workshared central (save as central)",
+  fmc_central_promote: "saving a workshared central onto the share",
+  fmc_central_selftest: "synchronising a workshared central (self-test)",
 };
 
 /** What a person sees when AI isn't allowed: plain lines, never the lock's wording (owner 26 Oct). */
