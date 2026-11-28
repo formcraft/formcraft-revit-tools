@@ -56,7 +56,7 @@ test("catalogue merges the Details folder and FMC_Details.json and does not inve
   const family = catalogue.details.find((row) => row.id === "D-A-002");
   assert.equal(family?.kind, "family");
   assert.equal(loadCatalogue(path.join(io.dir, "missing")).details.length, 0);
-  assert.match(loadCatalogue(path.join(io.dir, "missing")).problems[0], /Kit change/);
+  assert.match(loadCatalogue(path.join(io.dir, "missing")).problems[0], /kit file missing, see K-03/);
 });
 
 test("a batch file lists detail ids and place stays a dry run until the lease and references are present", async () => {
