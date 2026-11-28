@@ -8,7 +8,7 @@ import { findingDrafts, powerDecision, runId, skipReason, summaryMarkdown } from
 import { callJail, jailArgs, revitCentral } from "../fmc/jailctx.js";
 import { serverInstallFolder } from "../fmc/jail.js";
 import {
-  appRunning, loadScenarios, loadState, powerOverrideWord, readLock, readPower, readTestrunConfig, resultsDir, runForeground, runStatus, statePath, testrunHome,
+  appRunning, defaultScenariosDir, loadScenarios, loadState, powerOverrideWord, readLock, readPower, readTestrunConfig, resultsDir, runForeground, runStatus, statePath, testrunHome,
 } from "../fmc/testrun_runner.js";
 
 function reply(body: object, isError = false) {
@@ -48,8 +48,8 @@ export async function runFmcTestrun(args: FmcTestrunArgs) {
   try {
     const cfg = readTestrunConfig();
     // Project-folder gate: a scenarios folder the caller names must be in the jail, read_only_roots or the server's own
-    // bundled folder (where the default tests/revit lives).
-    const refused = jailArgs("fmc_testrun", await callJail({ central: revitCentral, bundled: [serverInstallFolder()] }), [["scenarios_dir", "list", args.scenarios_dir]]);
+    // bundled folder (where the default tests/revit lives), or the admin's FMC_TESTRUN_SCENARIOS folder.
+    const refused = jailArgs("fmc_testrun", await callJail({ central: revitCentral, bundled: [serverInstallFolder(), defaultScenariosDir()] }), [["scenarios_dir", "list", args.scenarios_dir]]);
     if (refused) return refused;
     const dir = args.scenarios_dir.trim() || cfg.scenarios_dir;
 

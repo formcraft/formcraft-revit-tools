@@ -437,7 +437,12 @@ test("report pages a saved findings file and refuses a copy onto D:", async () =
   const copied = copyTraceFile(file, path.join(home, "handoff"), { ...process.env, LOCALAPPDATA: dir });
   assert.equal(fs.existsSync(copied), true);
   assert.throws(() => copyTraceFile(file, "D:\\Jobs\\out", { ...process.env, LOCALAPPDATA: dir }), /D:/);
-  const reply = await runFmcTrace(parseTraceArgs({ action: "report", path: file, offset: 0, limit: 1, codes: ["FLOW-NO-SYSTEM"] }));
+  // the report reads from %LOCALAPPDATA%\Formcraft\trace (shared state: readable through the project-folder gate)
+  const oldLocal = process.env.LOCALAPPDATA;
+  process.env.LOCALAPPDATA = dir;
+  let reply;
+  try { reply = await runFmcTrace(parseTraceArgs({ action: "report", path: file, offset: 0, limit: 1, codes: ["FLOW-NO-SYSTEM"] })); }
+  finally { process.env.LOCALAPPDATA = oldLocal; }
   const body = JSON.parse(reply.content[0].text);
   assert.equal(body.read_only, true);
   assert.equal(body.findings[0].id, 2);
