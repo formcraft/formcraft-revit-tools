@@ -21,6 +21,14 @@ import { appendSyncAutoLog, damagedNames, judgeAiSync, readDamageDialogs, syncAu
 /** `user` is the plain line a person sees instead of the lock's wording (owner 26 Oct); `reason` is the detail. */
 export interface Gate { ok: boolean; reason: string; user?: string; run?: <T>(exec: () => Promise<T>) => Promise<T> }
 
+/**
+ * X-01: dry runs that run the real write in Revit and roll it back. They go through sendCommand (lease, memory, live
+ * lock) like the real run; at the AI gate they are previews: no approval, but the AI switch must be on and not stopped.
+ */
+export const ROLLBACK_DRY_RUNS = new Set([
+  "fmc_circuits_create", "fmc_schedules_apply", "fmc_ceiling_place", "fmc_ceiling_edit", "fmc_ceiling_sheet", "fmc_diagram_draw",
+]);
+
 export async function aiGate(command: string, params: any, active: DocInfo | null | undefined, cfg: GuardConfig,
   send: (command: string, params: object) => Promise<any>, env: NodeJS.ProcessEnv = process.env): Promise<Gate> {
   if (!active) return { ok: false, reason: "" };
@@ -29,7 +37,7 @@ export async function aiGate(command: string, params: any, active: DocInfo | nul
   // Not set up yet (no ai_modeller section): the person sees the plain line, never the lock's wording.
   if (!ai) return { ok: false, reason: "", user: NEVER[command] ? USER_LINE.admin(NEVER[command]) : USER_LINE.off };
   // Read-only code (owner 26 Oct): its transaction is always rolled back, so it needs no approval, only the code switch.
-  const dryRun = command === "fmc_model_edit" && params?.dry_run === true;
+  const dryRun = (command === "fmc_model_edit" || ROLLBACK_DRY_RUNS.has(command)) && params?.dry_run === true;
   // fmc_replace always rolls the group back. It needs the copy's own AI switch (enable_copy), not an approval that would imply a commit.
   const previewReplace = command === "fmc_replace";
   // A Dynamo or library preview rolls back. It must not save, and it must not reach autoSave.

@@ -89,7 +89,8 @@ export async function runCreateCircuits(args: FmcSystemsArgs, config: GuardConfi
     circuits: args.circuits, dry_run: args.dry_run !== false }, kit, problem);
   if (!payload) return reply({ refused: true, reasons: problems }, true);
   const dry = args.dry_run !== false;
-  const r = await withRevitConnection((c) => dry ? c.sendRaw("fmc_circuits_create", payload, 300000) : c.sendCommand("fmc_circuits_create", payload, 300000)) as Record<string, any>;
+  // X-01: the dry run makes the circuits and rolls them back in Revit, so it goes through the same gates as the real run
+  const r = await withRevitConnection((c) => c.sendCommand("fmc_circuits_create", { ...payload, dry_run: dry }, 300000)) as Record<string, any>;
   const found: string[] = Array.isArray(r?.problems) ? r.problems : [];
   const made = Number(r?.made) || 0;
   if (!dry) log(config, "systems_create_circuits", String(r?.board?.name || args.board), found.length ? "rolled back" : "made",
