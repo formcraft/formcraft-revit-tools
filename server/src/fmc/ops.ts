@@ -14,6 +14,7 @@ import { MaterialDb } from "./materials.js";
 import { graphicsProblems } from "./familygraphics.js";
 import { CurveNode, arcPoints, outlineProblems, segmentsMeet, smoothOps } from "./curves.js";
 import { expandLanguage, languageProblems, withLineWeights } from "./recipelang.js";
+import { B15_OPS, b15Problems } from "./ops_b15.js";
 
 const mm = z.number().finite();
 // Fixed-length arrays, not z.tuple: a tuple becomes JSON Schema "items": [a, b], which the Claude API rejects
@@ -81,6 +82,7 @@ const lockTo = z.union([z.string().min(1), z.object({ plane: z.string().min(1), 
 export const lockPlane = (l: string | { plane: string } | undefined) => (typeof l === "string" ? l : l?.plane);
 
 export const OP = z.discriminatedUnion("op", [
+  ...B15_OPS, // B15: fmc_fam_dim, fmc_fam_visibility, fmc_fam_material, fmc_fam_category (ops_b15.ts)
   z.object({ op: z.literal("set_category"), name: z.string().min(1).describe("Revit category name, e.g. Generic Models, or OST_ name") }),
   z.object({ op: z.literal("set_family_params"), name: z.literal("family"), work_plane_based: z.boolean().optional(),
     always_vertical: z.boolean().optional(), shared: z.boolean().optional(), room_calculation_point: z.boolean().optional(),
@@ -777,6 +779,8 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
   }
   // F-064: geometry Revit refuses mid-build (short dimensions and edges, a locked face just off its plane)
   p.push(...geometryProblems(ops));
+  p.push(...b15Problems(ops as any, { planes, params, paramTypes, solids, lines, subcats,
+    materials: new Set(ops.filter((o) => o.op === "add_material").map((o) => o.name)) }));
   // A plane named only in a warning is fine when the file has it; the hard errors are the ones above other than "may exist".
   return p;
 }

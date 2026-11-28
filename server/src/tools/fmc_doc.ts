@@ -8,6 +8,7 @@ import { SessionRecord, buildReport, familyDocumentOf, idleLimit, markStale, ope
 import { BRIDGE_LIMIT_BYTES, applyEnvelope, isNoAnswer, isStillQueued, progressPath, readProgress, requestBytes, stoppedAt } from "../fmc/recipebuild.js";
 import { serverBuild } from "./fmc_selftest.js";
 import { OP, expandSkeletons, familyRoots, opsProblems, resolveFamilyPaths, splitProblems } from "../fmc/ops.js";
+import { B15_OP_NAMES } from "../fmc/ops_b15.js";
 import { parseSharedParameters } from "../fmc/specs.js";
 import { resolveMaterial } from "../fmc/materials.js";
 import { readDb } from "./fmc_material.js";
@@ -59,6 +60,7 @@ export const FMC_DOC_DESCRIPTION =
     "report: what an open session holds (category, parameters, types, reference planes, warnings, and each solid's name, kind, " +
     "subcategory, detail-level visibility and box in mm, each connector's domain, system, size, origin and facing, nested families " +
     "and the overall extents, F-056). " +
+    "apply also takes the family editor ops " + B15_OP_NAMES.join(", ") + " (fmc_fam_dim, fmc_fam_visibility, fmc_fam_material, fmc_fam_category). " +
     "screenshot: PNGs of its 3D, front and plan views to the reports folder, each cropped to the family's own geometry, " +
     "at a detail level (coarse, medium, fine or all three) and style (shaded, hidden, wireframe, realistic), with reference planes, " +
     "levels and dimensions hidden (F-055). save: to an .rfa in the write roots under a name " +
