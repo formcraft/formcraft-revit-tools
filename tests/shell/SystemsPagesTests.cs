@@ -99,7 +99,8 @@ namespace Formcraft.Shell.Tests
                 vm.Systems.DiagramPlanCommand.Execute(null);
                 var b1 = Buttons();
                 vm.Systems.DiagramGenerateCommand.Execute(null);
-                var t = vm.Dialog!.Title;
+                // F23: the dialog says a redraw resets drawn items a person moved or edited.
+                var t = vm.Dialog!.Title + (vm.Dialog.Message.Contains("resets drawn symbols or texts a person moved or edited") ? "" : " (no reset warning)");
                 vm.Dialog.ConfirmCommand!.Execute(null);
                 var s = vm.Systems.Groups.Single(g => g.Title == "Diagrams · Plumbing").Items.OfType<TableSetting>().Single(x => x.Label == "Sheets").Rows.Count;
                 vm.Systems.DiagramGateCommand.Execute(null);

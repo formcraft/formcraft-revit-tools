@@ -331,8 +331,8 @@ namespace Formcraft.Shell.ViewModels
             string discipline = Discipline;
             int views = _diagram.Views.Count, sheets = _diagram.Sheets.Count;
             _ask(new DialogViewModel("Generate the " + discipline.ToLowerInvariant() + " diagrams?",
-                views + " drafting views are drawn (or redrawn in place, keeping notes a person added) and placed on " + sheets + " Sheet Register sheets, as one Undo each. " +
-                "The model isn't saved.",
+                views + " drafting views are drawn (or redrawn in place) and placed on " + sheets + " Sheet Register sheets: the views, then the sheets, as one Undo each. " +
+                "A redraw keeps notes a person added, but resets drawn symbols or texts a person moved or edited. The model isn't saved.",
                 "Generate", async () =>
                 {
                     _diagram = await _tools.DiagramAsync(DiagramActions.Generate, DiagramKinds[discipline], KitFolder);
