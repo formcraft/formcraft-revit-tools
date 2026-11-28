@@ -1132,5 +1132,14 @@
     "status": "Built, Revit check due",
     "ref": "fmc_fam_param, fmc_doc ops param_rename, param_regroup, param_set_reporting, param_set_formula, param_remove, docs/tools/fmc_fam_param.md, docs/tools/fmc_fam_ops.md",
     "note": "A thin wrapper over fmc_doc ops on an fmc_doc session (Tool Research coverage review, section 5 item 4). list reads fmc_doc report (group, reporting, formula, built_in). Shared and built-in parameters are never renamed. param_remove is person-gated: the dry run (the real run rolled back) answers a confirm_token bound to the session and ops; dry_run false with it only queues the batch in the pane's approval queue (group family_delete), and a person's Approve runs it. The add-in refuses a real delete without a person's approval for exactly that batch and marks it used. Testing-mode auto_approve does not apply. Nothing is saved; fmc_doc save does that."
+  },
+  {
+    "id": "F139",
+    "area": "Engine",
+    "group": "Families",
+    "feature": "Family types: rename, delete, flex matrix (fmc_fam_type)",
+    "status": "Built, Revit check due",
+    "ref": "fmc_fam_type, fmc_doc ops type_rename, type_flex_matrix, type_delete, docs/tools/fmc_fam_type.md",
+    "note": "A thin wrapper over fmc_doc ops. type_flex_matrix is a read sent on its own: each type regenerated with each parameter at 2-6 values from low to high in one TransactionGroup that is rolled back; it lists every failing type and value and never saves. type_delete never removes the last type and is person-gated like param_remove (confirm_token, then the pane's Approve runs it)."
   }
 ]
