@@ -81,7 +81,7 @@ namespace revit_mcp_plugin.Shell
                                       library: new RevitLibraryTools(), qa: new RevitQaTools(),
                                       materials: new RevitMaterialTools(), sheets: new RevitSheetTools(),
                                       annotate: new RevitAnnotateTools(), issue: new RevitIssueTools(), links: new RevitLinkTools(), workshare: new RevitWorkshareTools(), review: new RevitReviewTools(), reports: new RevitReportTools(), liveData: LiveData, flow: new RevitFlowTools(), brief: new RevitBriefTools(), scripts: new RevitScriptTools(), systems: new RevitSystemTools(), build: new RevitBuildTools(), ask: new RevitAskTools(), ai: new RevitAiTools(), release: new RevitReleaseTools(), robot: new RevitRobotTools(),
-                                      casework: new RevitCaseworkTools(), ceilings: new RevitCeilingTools(), options: new RevitOptionsTools(), balance: new RevitBalanceTools(),
+                                      casework: new RevitCaseworkTools(), ceilings: new RevitCeilingTools(), options: new RevitOptionsTools(), balance: new RevitBalanceTools(), graphs: new RevitGraphTools(() => Document.DocumentPath),
                                       // F-013: no update feed yet; the installed build from the build stamp.
                                       updates: new NoFeedUpdateService("build " + revit_mcp_plugin.FmcBuildInfo.Commit + " · " + revit_mcp_plugin.FmcBuildInfo.Time.Replace("T", " ").TrimEnd('Z') + " UTC"))
             {
@@ -225,12 +225,15 @@ namespace revit_mcp_plugin.Shell
 
         public DocumentInfo Current { get; private set; } = new DocumentInfo("No model open", ShellDocState.Live);
         public event EventHandler Changed;
+        /// <summary>The active model's saved path ("" when none), for the server CLI's document argument (Check › Graphs).</summary>
+        public string DocumentPath { get; private set; } = "";
 
         public void Update(Document doc)
         {
             string key = doc == null ? "" : doc.Title + "|" + doc.PathName + "|" + doc.IsFamilyDocument + "|" + doc.IsWorkshared;
             if (key == _key) return;
             _key = key;
+            DocumentPath = doc == null ? "" : doc.PathName ?? "";
             if (doc == null)
             {
                 Current = new DocumentInfo("No model open", ShellDocState.Live);

@@ -127,7 +127,7 @@ namespace Formcraft.Shell.ViewModels
                               IAnnotateTools? annotate = null, IIssueTools? issue = null, ILinkTools? links = null, IWorkshareTools? workshare = null, IReviewTools? review = null, IReportTools? reports = null,
                               IFlowTools? flow = null, IBriefTools? brief = null, IScriptTools? scripts = null, ISystemTools? systems = null, IBuildTools? build = null, IAskTools? ask = null, IAiTools? ai = null, IReleaseTools? release = null, IRobotTools? robot = null, ILiveDataService? liveData = null,
                               ICaseworkTools? casework = null, ICeilingTools? ceilings = null, IVoiceRecorder? recorder = null, IOptionsTools? options = null,
-                              IBalanceTools? balance = null)
+                              IBalanceTools? balance = null, IGraphTools? graphs = null)
         {
             _licence = licence;
             _connection = connection;
@@ -184,6 +184,9 @@ namespace Formcraft.Shell.ViewModels
             _hostSections["Options"] = Options;
             Scripts = new ScriptsPage(scripts ?? new MockScriptTools(), Project, settings, s => Status = s, ShowDialog);
             _hostSections["Scripts"] = Scripts;
+            // Check › Graphs (D6, Builder 7): Dynamo graphs as staff forms; dry run, a person's approval, then Run.
+            Graphs = new GraphsPage(graphs ?? new MockGraphTools(), settings, s => Status = s);
+            _hostSections["Graphs"] = Graphs;
             // Check › Automation (F74): the balance between AI-written code and saved automation, and the move list.
             Automation = new AutomationPage(balance ?? new MockBalanceTools(), Project, settings, s => Status = s, ShowDialog);
             _hostSections["Automation"] = Automation;
@@ -494,6 +497,7 @@ namespace Formcraft.Shell.ViewModels
 
         /// <summary>Check › Scripts: the kit's scripts and automations of Formcraft's own checks (U24).</summary>
         public ScriptsPage Scripts { get; }
+        public GraphsPage Graphs { get; }
 
         /// <summary>Check › Automation: AI code against saved automation, from the call ledger, and the move list (F74).</summary>
         public AutomationPage Automation { get; }
