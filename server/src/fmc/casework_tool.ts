@@ -5,7 +5,8 @@ import { GuardConfig, csvLine, expandEnv } from "./policy.js";
 import { Casework, KitRequest, LibMaterial, Standards, Unit, checkStandards, checkUnits, compute, costs, layoutRun, mergeStandards, readLibrary, Run } from "./casework.js";
 import { KitFamily, RoomRead, coordinationChecks, matchWalls, registerFamily, runFromRoom } from "./casework_place.js";
 import { csvRow } from "../tools/fmc_sheets.js";
-import { StandardsRevision, standardsRevision } from "./casework_run.js";
+import { StandardsRevision, standardsRevision, unitsHash } from "./casework_run.js";
+import { StoredRun, loadRun } from "./casework_store.js";
 import { FmcCaseworkArgs } from "./casework_shape.js";
 
 /** The Revit call: a dry run goes through sendRaw (no lock), a real run through sendCommand (lease, lock, AI gate). */
@@ -15,6 +16,8 @@ export type RevitSend = (command: string, payload: object, dry: boolean, timeout
 export interface CaseworkIo {
   config?: { config: GuardConfig; problem?: string };
   revit?: RevitSend;
+  /** Where saved runs go (default %APPDATA%\\Formcraft\\casework\\runs) */
+  store?: string;
 }
 
 export type Reply = { content: Array<{ type: "text"; text: string }>; isError: boolean };
@@ -28,6 +31,32 @@ export interface Ctx {
   run_id: string;
   send: RevitSend;
   reply: (body: object, isError?: boolean) => Reply;
+  store?: string;
+  /** What this call saves under its run id when it ends (inputs; a room read) */
+  entry: StoredRun;
+  /** The saved run named by run_id, when there is one */
+  saved?: StoredRun;
+}
+
+/**
+ * The call's inputs with a saved run filled in: what the call sends wins, the saved run fills the rest; `modules`
+ * goes over the run's. A run_id that isn't saved is a refusal, never a guess.
+ */
+export function resolveInputs(args: FmcCaseworkArgs, store?: string): { args: FmcCaseworkArgs; saved?: StoredRun } | { refused: object } {
+  let out: FmcCaseworkArgs = args;
+  let saved: StoredRun | undefined;
+  if (args.run_id.trim()) {
+    const got = loadRun(args.run_id, store);
+    if ("problem" in got) return { refused: { refused: true, reasons: [got.problem] } };
+    saved = got.run;
+    const useUnits = !args.run && !args.units?.length && !!saved.units;
+    out = { ...args,
+      run: args.run ?? (args.units?.length || useUnits ? undefined : saved.run as FmcCaseworkArgs["run"]),
+      units: args.units?.length ? args.units : useUnits ? saved.units as FmcCaseworkArgs["units"] : undefined,
+      standards: args.standards ?? saved.standards };
+  }
+  if (args.modules?.length && out.run) out = { ...out, run: { ...out.run, modules: args.modules } };
+  return { args: out, saved };
 }
 
 /** Native paths: on the pilot PC that is win32, and tests on other systems write real files. */
@@ -85,6 +114,8 @@ export interface Prepared {
   libProblem: string;
   requests: KitRequest[];
   revision: StandardsRevision;
+  /** unitsHash of the laid-out units */
+  units_hash: string;
 }
 
 export function prepare(args: FmcCaseworkArgs, config: GuardConfig): { ok: Prepared } | { refused: object } {
@@ -112,7 +143,7 @@ export function prepare(args: FmcCaseworkArgs, config: GuardConfig): { ok: Prepa
   const lib = (() => { const j = readJson(libFile); return j ? readLibrary(j) : null; })();
   const from = kit ? (args.standards ? `${kitFile} with the call's values over it` : kitFile) : "the call (the kit has none)";
   const revision = standardsRevision({ kitFile, kitJson: kit, effective: merged, from, callOverrides: !!args.standards && Object.keys(args.standards).length > 0 });
-  return { ok: { standards: s, from, revision,
+  return { ok: { standards: s, from, revision, units_hash: unitsHash(units),
     casework: compute(units, layout, s), lib, libProblem: lib ? "" : `The kit's material library isn't readable at ${libFile}`, requests } };
 }
 

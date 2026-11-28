@@ -14,9 +14,13 @@ export async function roomAction(ctx: Ctx): Promise<Reply> {
   const read = await readRoom(send, args.room.trim());
   const r = runFromRoom(read);
   const count = (k: string) => r.services.filter((s) => s.kind === k).length;
-  return reply({ room: read.room, run: { walls: r.walls }, services: { water: count("water"), waste: count("waste"), gas: count("gas"), sockets: count("socket"), other: count("other") },
+  // a ready run: the walls with their place in the model, modules left for the person (nothing is defaulted)
+  const run = { walls: r.walls, modules: [] as number[] };
+  ctx.entry.run = run;
+  ctx.entry.room_read = { room: args.room.trim(), at: new Date().toISOString(), read };
+  return reply({ room: read.room, run, services: { water: count("water"), waste: count("waste"), gas: count("gas"), sockets: count("socket"), other: count("other") },
     window_sills: r.sills, notes: r.notes,
-    next: "Add the unit widths (modules), the corner, the sink and the appliances to these walls, then lay out (units, summary) and check against the room" });
+    next: `This run is saved: call again with run_id "${ctx.run_id}" and modules (the unit widths), plus a corner, sink and appliances on the walls if there are any; then lay out (units, summary) and check against the room` });
 }
 
 /** place: the units as the kit's family types, one Undo; a re-run replaces what the same label placed. */

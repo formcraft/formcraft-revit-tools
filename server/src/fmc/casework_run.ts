@@ -28,6 +28,13 @@ function canonical(v: unknown): string {
 
 const sha = (s: string | Buffer) => crypto.createHash("sha256").update(s).digest("hex");
 
+/** A short hash of the unit list (marks, kinds, widths, places, fronts): equal hashes, the same units. */
+export function unitsHash(units: Array<{ mark: string; kind: string; width: number; wall?: string; offset?: number; fronts?: string; layer?: string; drawer_heights?: number[] }>): string {
+  const rows = units.map((u) => ({ mark: u.mark, kind: u.kind, width: u.width, wall: u.wall ?? "", offset: u.offset ?? 0, fronts: u.fronts ?? "",
+    layer: u.layer ?? "", drawer_heights: u.drawer_heights ?? null }));
+  return sha(canonical(rows)).slice(0, 12);
+}
+
 export interface StandardsRevision {
   /** Where the values came from (the kit file, the kit file with the call's values over it, or the call alone) */
   from: string;

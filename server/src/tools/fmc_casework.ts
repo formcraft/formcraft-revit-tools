@@ -1,8 +1,9 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { loadConfig } from "../fmc/policy.js";
 import { newRunId, StandardsRevision } from "../fmc/casework_run.js";
+import { saveRun } from "../fmc/casework_store.js";
 import { FMC_CASEWORK_SHAPE, FmcCaseworkArgs } from "../fmc/casework_shape.js";
-import { CaseworkIo, Ctx, log, prepare, replyOf } from "../fmc/casework_tool.js";
+import { CaseworkIo, Ctx, log, prepare, replyOf, resolveInputs } from "../fmc/casework_tool.js";
 import { checkAction, engineAction, packAction } from "../fmc/casework_actions.js";
 import { placeAction, roomAction, shopAction } from "../fmc/casework_revit.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
@@ -40,19 +41,26 @@ export async function runFmcCasework(args: FmcCaseworkArgs, io: CaseworkIo = {})
   const { config, problem } = io.config ?? loadConfig();
   /** One id per call: in every reply and every log row it writes */
   const run_id = newRunId();
-  let standards_revision: StandardsRevision | undefined;
+  let stamps: { standards_revision?: StandardsRevision; units_hash?: string } = {};
   const send = io.revit ?? ((command: string, payload: object, dry: boolean, ms: number) =>
     withRevitConnection((cl) => dry ? cl.sendRaw(command, payload, ms) : cl.sendCommand(command, payload, ms)));
-  const reply = (body: object, isError = false) => replyOf({ run_id, ...(standards_revision ? { standards_revision } : {}), ...body }, isError);
+  const reply = (body: object, isError = false) => replyOf({ run_id, ...stamps, ...ctx.inputsFrom, ...body }, isError);
   const dry = args.dry_run !== false;
-  const ctx: Ctx = { args, config, problem, dry, run_id, send, reply };
+  const ctx: Ctx & { inputsFrom?: { inputs_from: string } } = { args, config, problem, dry, run_id, send, reply, store: io.store,
+    entry: { id: run_id, at: new Date().toISOString(), action: args.action } };
   try {
+    const resolved = resolveInputs(args, io.store);
+    if ("refused" in resolved) return reply(resolved.refused, true);
+    ctx.args = args = resolved.args;
+    ctx.saved = resolved.saved;
+    if (resolved.saved) ctx.inputsFrom = { inputs_from: resolved.saved.id };
+    ctx.entry = { ...ctx.entry, run: args.run, units: args.units, standards: args.standards };
     // room reading needs no standards: it gives the run's walls, which the person completes
     if (args.action === "room") return await roomAction(ctx);
     const prep = prepare(args, config);
     if ("refused" in prep) return reply(prep.refused, true);
     const p = prep.ok;
-    standards_revision = p.revision;
+    stamps = { standards_revision: p.revision, units_hash: p.units_hash };
     switch (args.action) {
       case "check": return await checkAction(ctx, p);
       case "place": return await placeAction(ctx, p);
@@ -65,6 +73,10 @@ export async function runFmcCasework(args: FmcCaseworkArgs, io: CaseworkIo = {})
     if (args.action === "pack") log(config, dry, args.project_folder, "error", msg, "casework_pack", run_id);
     else if (args.action === "place" || args.action === "shop_drawings") log(config, dry, args.level || args.project_folder, "error", msg, `casework_${args.action}`, run_id);
     return reply({ error: msg }, true);
+  } finally {
+    // the inputs (and a room read) under this call's run id, for the next call's run_id
+    const e = ctx.entry;
+    if (e.run || e.units || e.room_read) saveRun(e, io.store);
   }
 }
 

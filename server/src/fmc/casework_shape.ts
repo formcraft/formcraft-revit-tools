@@ -54,6 +54,10 @@ export const FMC_CASEWORK_SHAPE = {
   type_for: z.record(z.string(), z.string()).optional().describe("place: your choice of register type for a unit kind the family has no type for, e.g. {\"sink\": \"Base\"}"),
   wall_unit_bottom: z.number().positive().optional().describe("place: underside of the wall units above the level, mm (a design input)"),
   sheets: z.array(z.string()).optional().default([]).describe("shop_drawings: the register's joinery sheets to use, e.g. [\"I-4001\"]"),
+  run_id: z.string().optional().default("")
+    .describe("Instead of sending the run, unit list and standards again: the run_id of an earlier reply (its saved inputs are used; what you send overrides them)"),
+  modules: z.array(z.number().positive()).optional()
+    .describe("Unit widths over the run's modules, mm; e.g. with run_id from room, whose run has none yet"),
   dry_run: z.boolean().optional().default(true),
 };
 
