@@ -245,6 +245,12 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_memory_apply",
   // GAP-18 fmc_print_sets: creates or replaces view and sheet sets from the register. One transaction; never deletes a set.
   "fmc_print_sets_apply",
+  // fmc_extstore (GAP-19): FMC_ExtStore records stamped on elements, one transaction, under a batch lease. Reads stay on fmc_extstore_read.
+  "fmc_extstore_write",
+  // fmc_schedule_data (GAP-06): edited marks, comments and key-schedule values, one transaction. Reads stay on fmc_schedule_data_read.
+  "fmc_schedule_data_apply",
+  // fmc_wipe (GAP-02): deletes model clutter in one transaction under a batch lease
+  "fmc_wipe_apply",
 ]);
 
 /**
@@ -305,6 +311,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_groups_audit",
   // COBie-style asset register: facility, spaces, types, components and systems. No transaction; nothing is written.
   "fmc_assets_read",
+  // fmc_exports (GAP-04): exports files, the model is not changed (IFC export is rolled back)
+  "fmc_exports_run",
 ]);
 
 /**

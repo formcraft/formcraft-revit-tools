@@ -852,6 +852,41 @@
       "commandName": "fmc_groups_audit",
       "description": "Formcraft groups: types and instances in the named document (read-only audit).",
       "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_extstore_read",
+      "description": "Formcraft: FMC_ExtStore records (FmcId, BatchId, RecipeHash, Source) on elements, by id or every stamped element (read-only; never creates the schema)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_extstore_write",
+      "description": "Formcraft: FMC_ExtStore records stamped on elements in one transaction, under a batch lease; skips elements another user owns",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_schedule_data_read",
+      "description": "Formcraft: a schedule's fields (kind, built-in, type or instance, read-only) and its rows by element id (read-only)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_schedule_data_apply",
+      "description": "Formcraft: edited marks, comments and key-schedule values written back in one transaction, under a batch lease; calculated, formula and read-only fields and elements another user owns are refused",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_exports_run",
+      "description": "Formcraft exports (GAP-04): IFC4/DWG/NWC/gbXML from the kit setups into the server's hidden arrival folder in 02_Shared or 03_Published, or a check only (dry_run). The model is not changed.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_wipe_scan",
+      "description": "Formcraft wipe scan (GAP-02): unused view templates and filters, unplaced views and schedules, imported CAD, orphan tags and (Revit 2024+) purgeable elements, with ids and checkout. Read-only.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_wipe_apply",
+      "description": "Formcraft wipe (GAP-02): deletes the checked ids in one transaction under a batch lease; skips elements another user owns.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
     }
   ]
 }
