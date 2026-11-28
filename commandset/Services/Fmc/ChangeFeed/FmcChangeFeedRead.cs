@@ -11,14 +11,14 @@ using RevitMCPSDK.API.Interfaces;
 namespace RevitMCPCommandSet.Services.Fmc.ChangeFeed
 {
     /// <summary>
-    /// fmc_model_changes (F19): what changed in one open model, who changed it and when. Read-only, no transaction.
+    /// fmc_change_feed_read (F19): what changed in one open model, who changed it and when. Read-only, no transaction.
     /// Three parts: the session journal (FmcChangeFeed, paged with after_seq); the document's version (Revit's
     /// DocumentVersion: GUID and number of saves); and, with since_version, the elements created, modified and deleted
     /// since that version (Document.GetChangedElements), each with its category, name and, in a workshared model, the
     /// creator, last changed by and owner Revit keeps for the worksharing tooltip. It never syncs, saves, reloads latest,
     /// relinquishes or checks anything out, and it never opens a file: the document must already be open.
     /// </summary>
-    public class FmcModelChangesHandler : IExternalEventHandler, IWaitableExternalEventHandler
+    public class FmcChangeFeedReadHandler : IExternalEventHandler, IWaitableExternalEventHandler
     {
         public const int DefaultElementLimit = 200;
         public const int MaxElementLimit = 1000;
@@ -38,7 +38,7 @@ namespace RevitMCPCommandSet.Services.Fmc.ChangeFeed
             {
                 string key = (Parameters?.Value<string>("document") ?? "").Trim();
                 if (key.Length == 0)
-                    throw new InvalidOperationException("[FMC-DOC-REQUIRED] fmc_model_changes needs document. Refusing to use the active document.");
+                    throw new InvalidOperationException("[FMC-DOC-REQUIRED] fmc_change_feed_read needs document. Refusing to use the active document.");
                 FmcChangeFeed.Hook(app);
                 using (FmcTarget target = FmcTarget.Resolve(app, Parameters, mayOpen: false))
                 {

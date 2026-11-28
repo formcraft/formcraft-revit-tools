@@ -23,7 +23,7 @@ export const FMC_CHANGE_FEED_DESCRIPTION =
   "Formcraft change record and sync feed (F19). Read-only: no dry run is needed because nothing is ever changed. One timeline, " +
   "newest first, of what changed, who changed it and when: the hub call ledger (every Formcraft tool call, its result and who " +
   "started it: ai, pane, job, schedule, cli), hook runs, batches' created elements, the sync log and the managed save/sync clocks, " +
-  "and, when document names an open model, Revit's own record from fmc_model_changes (the session journal of transactions, " +
+  "and, when document names an open model, Revit's own record from fmc_change_feed_read (the session journal of transactions, " +
   "undos, saves and syncs, with the Revit user; with since_version, the elements created, modified and deleted since that " +
   "document version, with creator and last changed by). flows adds fmc_changes' out-of-date flags. The sync section reports the " +
   "last sync, last save and whether the model changed since; it never syncs, saves, reloads latest, relinquishes or checks out: " +
@@ -47,7 +47,7 @@ export const FMC_CHANGE_FEED_SHAPE = {
 export type FmcChangeFeedArgs = z.infer<z.ZodObject<typeof FMC_CHANGE_FEED_SHAPE>>;
 
 export interface ChangeFeedIo {
-  /** fmc_model_changes in the add-in (tests pass a fake). */
+  /** fmc_change_feed_read in the add-in (tests pass a fake). */
   revit?: (body: Record<string, unknown>) => Promise<unknown>;
   /** fmc_changes flags (tests pass a fake). */
   flows?: (projectFolder: string) => Promise<unknown[]>;
@@ -115,7 +115,7 @@ export async function runFmcChangeFeed(args: FmcChangeFeedArgs, io: ChangeFeedIo
         if (args.since_version.trim()) body.since_version = args.since_version.trim();
         const raw = (io.revit
           ? await io.revit(body)
-          : await withRevitConnection((client) => client.sendCommand("fmc_model_changes", body, 60000))) as Record<string, unknown>;
+          : await withRevitConnection((client) => client.sendCommand("fmc_change_feed_read", body, 60000))) as Record<string, unknown>;
         revitFacts = raw ?? {};
         const entries = revitEntries(revitFacts, now);
         all.push(...entries);

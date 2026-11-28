@@ -110,9 +110,9 @@ namespace ChangeFeedCore.Tests
         public static IEnumerable<object[]> Sources() => new[]
         {
             new object[] { Path.Combine("commandset", "Services", "Fmc", "ChangeFeed", "FmcChangeFeed.cs") },
-            new object[] { Path.Combine("commandset", "Services", "Fmc", "ChangeFeed", "FmcModelChanges.cs") },
+            new object[] { Path.Combine("commandset", "Services", "Fmc", "ChangeFeed", "FmcChangeFeedRead.cs") },
             new object[] { Path.Combine("commandset", "Services", "Fmc", "ChangeFeed", "ChangeFeedCore.cs") },
-            new object[] { Path.Combine("commandset", "Commands", "Fmc", "FmcModelChangesCommand.cs") },
+            new object[] { Path.Combine("commandset", "Commands", "Fmc", "FmcChangeFeedReadCommand.cs") },
         };
 
         [Theory]
@@ -128,7 +128,7 @@ namespace ChangeFeedCore.Tests
         [Fact]
         public void The_handler_never_opens_a_file_and_says_it_saved_and_synced_nothing()
         {
-            string h = File.ReadAllText(Path.Combine(Repo(), "commandset", "Services", "Fmc", "ChangeFeed", "FmcModelChanges.cs"));
+            string h = File.ReadAllText(Path.Combine(Repo(), "commandset", "Services", "Fmc", "ChangeFeed", "FmcChangeFeedRead.cs"));
             Assert.Contains("mayOpen: false", h);
             Assert.Contains("[\"saved\"] = false", h);
             Assert.Contains("[\"synced\"] = false", h);

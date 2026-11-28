@@ -11,7 +11,7 @@ namespace RevitMCPCommandSet.Services.Fmc.ChangeFeed
     /// <summary>
     /// The live side of the change feed (F19): listens to Revit's own events for the whole session and writes what it hears
     /// into an in-memory journal. Hooked on Revit's API thread by the first Formcraft call of the session (FmcAiJob) and by
-    /// fmc_model_changes. It only listens: no transaction, no save, no sync with central, no reload latest, no relinquish,
+    /// fmc_change_feed_read. It only listens: no transaction, no save, no sync with central, no reload latest, no relinquish,
     /// no ownership request. A save or a sync someone runs in Revit is recorded after it happened, as an entry.
     /// Nothing is written to disk and nothing leaves this PC.
     /// </summary>

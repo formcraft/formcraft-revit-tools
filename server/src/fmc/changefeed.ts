@@ -8,14 +8,14 @@
  *   created    the batches' created elements (FMC_Created.jsonl), one entry per batch and document
  *   syncs      the sync log (01_WIP\FMC_Sync_Log.csv, else the reports folder) and the managed save and sync clocks
  *              (fmc_sync_state.json): when a model was last synced, saved and changed
- *   revit      fmc_model_changes in the add-in: the session journal of committed, undone and redone transactions, saves
+ *   revit      fmc_change_feed_read in the add-in: the session journal of committed, undone and redone transactions, saves
  *              and syncs Revit reported, and with since_version the elements created, modified and deleted since a
  *              document version, with Revit's creator, last changed by and owner
  *   flows      fmc_changes: what a change in one app makes out of date in the others (a snapshot of now)
  *
  * Read only, decision 5 and CLAUDE.md rule 6: a "sync feed" reports syncs; it never runs one. Nothing here saves,
  * synchronises with central, reloads latest, relinquishes, checks out, starts a transaction or writes a file. The
- * only add-in command it sends is fmc_model_changes (READ_VIA_SEND_COMMAND). Pure apart from the readers it is given.
+ * only add-in command it sends is fmc_change_feed_read (READ_VIA_SEND_COMMAND). Pure apart from the readers it is given.
  */
 import type { CreatedRow } from "./createdlog.js";
 import type { DocClock } from "./docschedule.js";
@@ -26,7 +26,7 @@ export type FeedSource = (typeof FEED_SOURCES)[number];
 export const DEFAULT_SOURCES: FeedSource[] = ["ledger", "external", "created", "syncs", "revit"];
 
 /** The add-in commands this feature may send. Each is a read (policy.ts READ_VIA_SEND_COMMAND); a test holds it. */
-export const CHANGE_FEED_COMMANDS = ["fmc_model_changes"] as const;
+export const CHANGE_FEED_COMMANDS = ["fmc_change_feed_read"] as const;
 
 export interface FeedEntry {
   /** ISO time, UTC. */
@@ -197,7 +197,7 @@ export function syncSummary(entries: FeedEntry[], document: string) {
   };
 }
 
-/** fmc_model_changes' reply as entries: the journal, then the version diff. */
+/** fmc_change_feed_read reply as entries: the journal, then the version diff. */
 export function revitEntries(reply: Record<string, unknown>, now: Date): FeedEntry[] {
   const out: FeedEntry[] = [];
   const doc = str((reply.resolved_document as Record<string, unknown> | undefined)?.title);

@@ -296,7 +296,7 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   // Sheets, title-block legend zone and an existing keynote legend. No transaction.
   "fmc_keynote_legend",
   // F19 change record: the session journal, the document version and elements changed since one. No transaction, no save, no sync.
-  "fmc_model_changes",
+  "fmc_change_feed_read",
 ]);
 
 /**

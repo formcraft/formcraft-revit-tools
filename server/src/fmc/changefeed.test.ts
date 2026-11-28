@@ -171,21 +171,21 @@ test("without document Revit is not called and the reply says why; a failed Revi
 // ---- the hard limit: read only, never a sync, a save or worksharing -------------------------------------------------
 
 test("policy classifies the feed's only add-in command as a read, never a write", () => {
-  assert.deepEqual([...CHANGE_FEED_COMMANDS], ["fmc_model_changes"]);
+  assert.deepEqual([...CHANGE_FEED_COMMANDS], ["fmc_change_feed_read"]);
   for (const c of CHANGE_FEED_COMMANDS) {
     assert.ok(READ_VIA_SEND_COMMAND.has(c), `${c} must be in READ_VIA_SEND_COMMAND`);
     assert.ok(!WRITE_COMMANDS.has(c), `${c} must not be in WRITE_COMMANDS`);
     assert.equal(activityOf(c, {}), "read");
   }
   const manifest = JSON.parse(read("command.json")) as { commands: Array<{ commandName: string }> };
-  assert.ok(manifest.commands.some((c) => c.commandName === "fmc_model_changes"));
+  assert.ok(manifest.commands.some((c) => c.commandName === "fmc_change_feed_read"));
 });
 
-test("the server side sends only fmc_model_changes and never saves, syncs, writes files or runs another Revit command", () => {
+test("the server side sends only fmc_change_feed_read and never saves, syncs, writes files or runs another Revit command", () => {
   const tool = read("server", "src", "tools", "fmc_change_feed.ts");
   const logic = read("server", "src", "fmc", "changefeed.ts");
   const sent = [...tool.matchAll(/send(?:Command|Raw)\(\s*"([^"]+)"/g)].map((m) => m[1]);
-  assert.deepEqual(sent, ["fmc_model_changes"]);
+  assert.deepEqual(sent, ["fmc_change_feed_read"]);
   for (const src of [tool, logic]) {
     const code = src.split("\n").filter((l) => !/^\s*(\*|\/\/|\/\*\*)/.test(l)).join("\n");
     assert.doesNotMatch(code, /writeFileSync|appendFileSync|mkdirSync|renameSync|unlinkSync|rmSync|copyFileSync|createWriteStream/);
@@ -197,9 +197,9 @@ test("the server side sends only fmc_model_changes and never saves, syncs, write
 test("the add-in side never syncs, saves, reloads latest, relinquishes, opens, closes or starts a transaction", () => {
   const files = [
     ["commandset", "Services", "Fmc", "ChangeFeed", "FmcChangeFeed.cs"],
-    ["commandset", "Services", "Fmc", "ChangeFeed", "FmcModelChanges.cs"],
+    ["commandset", "Services", "Fmc", "ChangeFeed", "FmcChangeFeedRead.cs"],
     ["commandset", "Services", "Fmc", "ChangeFeed", "ChangeFeedCore.cs"],
-    ["commandset", "Commands", "Fmc", "FmcModelChangesCommand.cs"],
+    ["commandset", "Commands", "Fmc", "FmcChangeFeedReadCommand.cs"],
   ];
   const forbidden = [
     /SynchronizeWithCentral\s*\(/, /ReloadLatest\s*\(/, /RelinquishOwnership\s*\(/, /\.Save\s*\(/, /\.SaveAs\s*\(/, /\.Close\s*\(/,
@@ -211,11 +211,11 @@ test("the add-in side never syncs, saves, reloads latest, relinquishes, opens, c
     const code = read(...f).split("\n").map((l) => l.replace(/\/\/.*$/, "")).join("\n");
     for (const p of forbidden) assert.doesNotMatch(code, p, `${f.join("/")} must not match ${p}`);
   }
-  const handler = read("commandset", "Services", "Fmc", "ChangeFeed", "FmcModelChanges.cs");
+  const handler = read("commandset", "Services", "Fmc", "ChangeFeed", "FmcChangeFeedRead.cs");
   assert.match(handler, /mayOpen:\s*false/);
   assert.match(handler, /FMC-DOC-REQUIRED/);
   assert.match(handler, /\["saved"\] = false/);
   assert.match(handler, /\["synced"\] = false/);
-  assert.match(read("commandset", "Commands", "Fmc", "FmcModelChangesCommand.cs"), /CommandName => "fmc_model_changes"/);
+  assert.match(read("commandset", "Commands", "Fmc", "FmcChangeFeedReadCommand.cs"), /CommandName => "fmc_change_feed_read"/);
   assert.match(read("commandset", "Bridge", "FmcAiJob.cs"), /FmcChangeFeed\.Hook\(app\)/);
 });
