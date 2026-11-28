@@ -1149,7 +1149,7 @@
     "feature": "Family 2D: masking and filled regions (fmc_fam_2d)",
     "status": "Built, Revit check due",
     "ref": "fmc_fam_2d, server/src/fmc/famtools.ts, docs/tools/fmc_fam_2d.md, commandset/Services/Fmc/FmcDocFam.cs",
-    "note": "New fmc_doc ops filled_region (FilledRegion.Create, type by name), masking_region (CreateMaskingRegion, Revit 2024+), detail_lines (NewDetailCurveArray, line style); symbolic_lines passed through. Not built: model_line, model_text, detail-level visibility for regions. Thin wrapper over fmc_doc sessions (open, apply, save): dry run by default (no session: planned ops only), saves only into family_staging_root, an existing .rfa only with overwrite: true and archived to _Archive first (archivePlan plus .build.json). Branch feat/family-editor-tools; not merged."
+    "note": "New fmc_doc ops filled_region (FilledRegion.Create, type by name), masking_region (CreateMaskingRegion, Revit 2024+), detail_lines (NewDetailCurveArray, line style); symbolic_lines passed through. builder16: new fmc_doc ops model_lines (NewModelCurve on a sketch plane, subcategory) and model_text (NewModelText), both with FamilyElementVisibility (coarse/medium/fine, plan_rcp/front_back/left_right); add_subcategory passed through for FAM-044 line subcategories; visibility flags on regions and detail lines refused (no API for view-specific elements). Thin wrapper over fmc_doc sessions (open, apply, save): dry run by default (no session: planned ops only), saves only into family_staging_root, an existing .rfa only with overwrite: true and archived to _Archive first (archivePlan plus .build.json). Branch feat/family-editor-tools; not merged."
   },
   {
     "id": "FE-04",

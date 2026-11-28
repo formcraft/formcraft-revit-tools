@@ -36,6 +36,8 @@ const end = z.union([point, planeEnd]);
 const visibility = {
   coarse: z.boolean().optional(), medium: z.boolean().optional(), fine: z.boolean().optional(),
 };
+/** Model elements also have view visibility (as set_visibility on a solid): plan/RCP, front/back, left/right. */
+const modelVisibility = { ...visibility, plan_rcp: z.boolean().optional(), front_back: z.boolean().optional(), left_right: z.boolean().optional() };
 // A corner of a parametric sweep path: where two named reference planes (or a level, such as Ref. Level) cross in the
 // path plane view. Two names, an array with .length(2), never z.tuple (see point).
 const corner = z.array(z.string().min(1)).length(2).describe("[plane, plane]: where two named reference planes (or a level) cross");
@@ -177,6 +179,19 @@ export const OP = z.discriminatedUnion("op", [
   z.object({ op: z.literal("text_note"), name: z.string().min(1), view: z.enum(VIEWS_2D).default("annotation"),
     text: z.string().min(1).max(500), at: point.describe("the text's origin, mm in the view's plane"),
     text_type: z.string().optional().describe("a TextNoteType by name (default: the family's default)") }),
+  // FE-03 (fmc_fam_2d, builder16): model lines and model text in a family, with detail-level and view visibility
+  // (Revit FamilyElementVisibility, Model). They show in every view the flags allow, unlike detail lines and regions.
+  z.object({ op: z.literal("model_lines"), name: z.string().min(1).describe("one name for the set"),
+    plane: z.enum(VIEWS).default("plan").describe("plan: [x, y] at height `at`; front: [x, z] at y = `at`; right: [y, z] at x = `at`"),
+    at: mm.default(0), points: z.array(point).min(2).describe("a polyline in the plane, mm (fixed: it doesn't follow parameters)"),
+    closed: z.boolean().optional().describe("join the last point to the first"),
+    subcategory: z.string().min(1).optional().describe("a subcategory of the family category (add_subcategory makes it; FAM-044 pens and colours)"),
+    ...modelVisibility }),
+  z.object({ op: z.literal("model_text"), name: z.string().min(1), text: z.string().min(1).max(200),
+    plane: z.enum(VIEWS).default("front"), at: mm.default(0), point: point.optional().describe("the text's origin in the plane, mm (default [0, 0])"),
+    depth_mm: z.number().positive().max(1000).default(10), align: z.enum(["left", "center", "right"]).default("left"),
+    type_name: z.string().optional().describe("a model text type by name (default: the first one)"),
+    subcategory: z.string().min(1).optional(), ...modelVisibility }),
   // FE-04 (fmc_fam_light): the light source of a lighting fixture family (Revit LightFamily), from the kit hand script
   // docs/handoff/kisic_gap_scripts/revit/16_family_light_source.cs.
   z.object({ op: z.literal("light_source"), name: z.string().min(1).describe("identity, e.g. Light source"),
@@ -184,7 +199,7 @@ export const OP = z.discriminatedUnion("op", [
     distribution: z.enum(["spherical", "hemispherical", "spot"]).default("hemispherical"),
     lumens: z.number().positive().optional().describe("initial flux for every type, lm"),
     lumens_by_type: z.record(z.number().positive()).optional().describe("type name (or its start) → lm; wins over lumens"),
-    kelvin: z.number().min(1000).max(20000).default(3000).describe("initial colour temperature, K"),
+    kelvin: z.number().min(1800).max(20000).default(3000).describe("initial colour temperature, K (Revit takes 1800 to 20000)"),
     beam_deg: z.number().min(1).max(179).optional().describe("spot: beam angle"), field_deg: z.number().min(1).max(179).optional().describe("spot: field angle"),
     source_z_mm: z.number().optional().describe("where the source sits, mm above the family origin") }),
   z.object({ op: z.literal("symbolic_lines"), name: z.string().min(1).describe("one name for the set, e.g. Swing plan"),
@@ -636,6 +651,14 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
         break;
       case "text_note":
         if (/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(o.text)) p.push(`${at}: the text holds control characters`);
+        break;
+      case "model_lines":
+      case "model_text":
+        // FE-03 (builder16)
+        if (o.op === "model_text" && /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(o.text)) p.push(`${at}: the text holds control characters`);
+        if (o.subcategory && !subcats.has(o.subcategory)) p.push(`${at}: ${mayExist("subcategory", o.subcategory)}`);
+        if (o.coarse === false && o.medium === false && o.fine === false) p.push(`${at}: coarse, medium and fine can't all be off (Revit rule)`);
+        if (o.op === "model_lines") lines.add(o.name);
         break;
       case "light_source":
         if (category && !/^(lighting fixtures|ost_lightingfixtures)$/i.test(category)) p.push(`${at}: a light source needs the Lighting Fixtures category (this batch sets ${category})`);

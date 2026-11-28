@@ -8,8 +8,8 @@ using Newtonsoft.Json.Linq;
 namespace RevitMCPCommandSet.Services.Fmc
 {
     /// <summary>
-    /// Family editor tool ops (FE-02 to FE-05): swept blends, filled and masking regions, detail lines, text notes and a
-    /// lighting family's light source, all inside the background family document of an fmc_doc session. Each op answers
+    /// Family editor tool ops (FE-02 to FE-05): swept blends, filled and masking regions, detail lines, model lines and
+    /// model text (FE-03), text notes and a lighting family's light source, all inside the background family document of an fmc_doc session. Each op answers
     /// create, update or skip and names what it makes (FmcDocGeometry.Label), like every other fmc_doc op, so a second run
     /// changes nothing; the dry run is the real run rolled back (FmcDocOps.Apply).
     /// </summary>
@@ -165,6 +165,111 @@ namespace RevitMCPCommandSet.Services.Fmc
             TextNote made = TextNote.Create(doc, view.Id, OnView(view, kind, Arr(op["at"])), text, typeId);
             FmcDocGeometry.Label(made, name);
             return ("create", "text in " + view.Name);
+        }
+
+        // ---- FE-03 (builder16): model lines and model text, with detail-level and view visibility -------------------
+
+        /// <summary>
+        /// The op's coarse/medium/fine/plan_rcp/front_back/left_right flags onto v; true when anything changed. Flags are
+        /// turned on before others are turned off, as set_visibility does: Revit refuses a moment with every detail level off.
+        /// </summary>
+        internal static bool ApplyVisibility(JObject op, FamilyElementVisibility v, List<string> changed)
+        {
+            var flags = new (string key, Func<bool> get, Action<bool> set)[]
+            {
+                ("coarse", () => v.IsShownInCoarse, x => v.IsShownInCoarse = x),
+                ("medium", () => v.IsShownInMedium, x => v.IsShownInMedium = x),
+                ("fine", () => v.IsShownInFine, x => v.IsShownInFine = x),
+                ("plan_rcp", () => v.IsShownInTopBottom, x => v.IsShownInTopBottom = x),
+                ("front_back", () => v.IsShownInFrontBack, x => v.IsShownInFrontBack = x),
+                ("left_right", () => v.IsShownInLeftRight, x => v.IsShownInLeftRight = x),
+            };
+            int before = changed.Count;
+            foreach (bool pass in new[] { true, false })
+                foreach (var f in flags)
+                {
+                    if (op[f.key] == null || op.Value<bool>(f.key) != pass || f.get() == pass) continue;
+                    f.set(pass);
+                    changed.Add(f.key + "=" + pass);
+                }
+            if (!(v.IsShownInCoarse || v.IsShownInMedium || v.IsShownInFine))
+                throw new InvalidOperationException("at least one of coarse, medium and fine must stay on (Revit rule)");
+            return changed.Count > before;
+        }
+
+        public static (string, string) ModelLines(Document doc, JObject op)
+        {
+            string name = op.Value<string>("name");
+            var existing = Named(doc, name).OfType<ModelCurve>().ToList();
+            if (existing.Count > 0)
+            {
+                // a second run only brings the visibility up to date
+                var changed = new List<string>();
+                foreach (ModelCurve c in existing)
+                {
+                    FamilyElementVisibility v = c.GetVisibility();
+                    var mine = new List<string>();
+                    if (ApplyVisibility(op, v, mine)) { c.SetVisibility(v); if (changed.Count == 0) changed.AddRange(mine); }
+                }
+                return changed.Count == 0 ? ("skip", "exists") : ("update", string.Join(", ", changed));
+            }
+            string plane = op.Value<string>("plane") ?? "plan";
+            double at = op.Value<double?>("at") ?? 0;
+            var pts = ((JArray)op["points"]).Select(Arr).Select(p => FmcDocLod.To3D(plane, p, at)).ToList();
+            bool closed = op.Value<bool?>("closed") ?? false;
+            string sub = op.Value<string>("subcategory");
+            GraphicsStyle style = string.IsNullOrEmpty(sub) ? null : FmcDocLod.Subcategory(doc, sub).GetGraphicsStyle(GraphicsStyleType.Projection);
+            var vis = new FamilyElementVisibility(FamilyElementVisibilityType.Model);
+            ApplyVisibility(op, vis, new List<string>());
+            SketchPlane sketch = SketchPlane.Create(doc, FmcDocLod.PlaneOf(plane, at));
+            double shortest = doc.Application.ShortCurveTolerance;
+            int n = closed ? pts.Count : pts.Count - 1, made = 0;
+            for (int k = 0; k < n; k++)
+            {
+                XYZ p0 = pts[k], p1 = pts[(k + 1) % pts.Count];
+                if (p0.DistanceTo(p1) < shortest) continue;
+                ModelCurve mc = doc.FamilyCreate.NewModelCurve(Line.CreateBound(p0, p1), sketch);
+                if (style != null) mc.LineStyle = style;
+                mc.SetVisibility(vis);
+                FmcDocGeometry.Label(mc, name);
+                made++;
+            }
+            if (made == 0) throw new InvalidOperationException("model_lines: every segment is too short");
+            return ("create", made + " model lines in the " + plane + " plane" + (string.IsNullOrEmpty(sub) ? "" : ", " + sub));
+        }
+
+        public static (string, string) ModelTextOp(Document doc, JObject op)
+        {
+            string name = op.Value<string>("name");
+            string text = op.Value<string>("text") ?? throw new InvalidOperationException("model_text needs text");
+            string sub = op.Value<string>("subcategory");
+            ModelText existing = Named(doc, name).OfType<ModelText>().FirstOrDefault();
+            if (existing != null)
+            {
+                var changed = new List<string>();
+                if (existing.Text != text) { existing.Text = text; changed.Add("text"); }
+                FamilyElementVisibility v = existing.GetVisibility();
+                if (ApplyVisibility(op, v, changed)) existing.SetVisibility(v);
+                return changed.Count == 0 ? ("skip", "same text") : ("update", string.Join(", ", changed));
+            }
+            string plane = op.Value<string>("plane") ?? "front";
+            double at = op.Value<double?>("at") ?? 0;
+            double[] pt = op["point"] is JArray a ? Arr(a) : new double[] { 0, 0 };
+            string want = op.Value<string>("type_name");
+            var types = new FilteredElementCollector(doc).OfClass(typeof(ModelTextType)).Cast<ModelTextType>().ToList();
+            ModelTextType type = string.IsNullOrEmpty(want) ? types.FirstOrDefault()
+                : types.FirstOrDefault(t => string.Equals(t.Name, want, StringComparison.OrdinalIgnoreCase));
+            if (type == null) throw new InvalidOperationException(string.IsNullOrEmpty(want) ? "No model text type in this family" : "No model text type " + want);
+            string align = op.Value<string>("align") ?? "left";
+            HorizontalAlign h = align == "center" ? HorizontalAlign.Center : align == "right" ? HorizontalAlign.Right : HorizontalAlign.Left;
+            SketchPlane sketch = SketchPlane.Create(doc, FmcDocLod.PlaneOf(plane, at));
+            ModelText made = doc.FamilyCreate.NewModelText(text, type, sketch, FmcDocLod.To3D(plane, pt, at), h, Mm(op.Value<double?>("depth_mm") ?? 10));
+            if (made == null) throw new InvalidOperationException("Revit made no model text (a model text needs a 3D family, not an annotation one)");
+            if (!string.IsNullOrEmpty(sub)) made.Subcategory = FmcDocLod.Subcategory(doc, sub);
+            var vis = made.GetVisibility();
+            if (ApplyVisibility(op, vis, new List<string>())) made.SetVisibility(vis);
+            FmcDocGeometry.Label(made, name);
+            return ("create", "model text in the " + plane + " plane, " + type.Name);
         }
 
         // ---- FE-04: light source (from docs/handoff/kisic_gap_scripts/revit/16_family_light_source.cs) --------------

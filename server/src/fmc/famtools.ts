@@ -228,10 +228,23 @@ export function formOps(forms: Array<Record<string, unknown>>): { ops: Array<Rec
 
 // ---------- FE-03 fmc_fam_2d ----------
 
-export const TWO_D_OPS = ["masking_region", "filled_region", "detail_lines", "symbolic_lines"] as const;
+// builder16: model_lines, model_text and add_subcategory (FAM-044 checked by opsProblems) added; view-only ops refuse
+// visibility flags instead of dropping them.
+export const TWO_D_OPS = ["masking_region", "filled_region", "detail_lines", "symbolic_lines", "model_lines", "model_text", "add_subcategory"] as const;
+/** Ops drawn in one view only: Revit's API has no detail-level or view visibility for them (FamilyElementVisibility is for model and symbolic elements). */
+export const VIEW_ONLY_2D = ["masking_region", "filled_region", "detail_lines"] as const;
+const VIS_FLAGS = ["coarse", "medium", "fine", "plan_rcp", "front_back", "left_right"] as const;
 export function twoDOps(items: Array<Record<string, unknown>>): { ops: Array<Record<string, unknown>>; problems: string[] } {
   const problems: string[] = [];
-  items.forEach((f, i) => { if (!(TWO_D_OPS as readonly string[]).includes(String(f.op))) problems.push(`items[${i}]: ${String(f.op)} isn't a 2D op (${TWO_D_OPS.join(", ")})`); });
+  items.forEach((f, i) => {
+    const op = String(f.op);
+    if (!(TWO_D_OPS as readonly string[]).includes(op)) { problems.push(`items[${i}]: ${op} isn't a 2D op (${TWO_D_OPS.join(", ")})`); return; }
+    const flags = VIS_FLAGS.filter((k) => f[k] !== undefined);
+    if ((VIEW_ONLY_2D as readonly string[]).includes(op) && flags.length)
+      problems.push(`items[${i}]: ${op} shows only in its own view; Revit's API can't set ${flags.join(", ")} on it (use symbolic_lines or model_lines for detail-level visibility)`);
+    if (op === "symbolic_lines" && flags.some((k) => !["coarse", "medium", "fine"].includes(k)))
+      problems.push(`items[${i}]: symbolic_lines take coarse, medium and fine; the view they show in is their view (plan, front or right)`);
+  });
   return { ops: problems.length ? [] : items, problems };
 }
 
