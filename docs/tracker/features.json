@@ -1123,5 +1123,14 @@
     "status": "Built, Revit check due",
     "ref": "fmc_file open_local, fmc_file close_local, fmc_open_local, fmc_close_local, fmc_close_local_apply, docs/tools/fmc_file.md",
     "note": "open_local opens a person's existing workshared local as the active document with UIApplication.OpenAndActivateDocument (activate=false uses OpenDocumentFile). worksets are all, last_viewed, none or a list of names. DoNotDetach; it never creates a new local, never synchronises, and refuses a central (FMC-FILE-CENTRAL-REFUSED), a missing file, a cloud, protected or live path, and worksets on a file that is not workshared. An already open local is only activated. close_local never syncs or relinquishes; it activates another open project first when the target is active, refuses the only open document (FMC-FILE-ONLY-DOC) and unsaved changes without confirm. save=true is a write (fmc_close_local_apply, in WRITE_COMMANDS: batch_lease, live-model lock, AI gate) and is refused for HEBERT HOSTELS, a protected original, a verification copy or a document never saved. dry_run defaults true. Opening a model in Revit stays a person's choice: the Revit check runs after install, dry run only."
+  },
+  {
+    "id": "F160",
+    "area": "Engine",
+    "group": "Parameters",
+    "feature": "Match type, parameters and overrides (fmc_match)",
+    "status": "Built, Revit check due",
+    "ref": "fmc_match, fmc_match_apply, docs/tools/fmc_match.md",
+    "note": "Gap-analysis proposal 10. Copies the type, instance parameters and one view's graphic overrides from a source element to same-category targets (200 at most), like pyRevit Match. dry_run defaults true and returns a per-target diff and plan_hash; apply needs that plan_hash and batch_lease, plans again and refuses FMC-MATCH-PLAN-CHANGED. fmc_match_apply is in WRITE_COMMANDS: one transaction, any failure rolls back; HEBERT HOSTELS, central, protected and family documents and another user's elements are refused. Mark, level, host, phase, workset and type parameters are never copied. Needs a Revit check after install."
   }
 ]

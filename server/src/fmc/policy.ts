@@ -243,6 +243,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_close_local_apply",
   // Close spare documents or purge unused elements. Status stays on fmc_memory.
   "fmc_memory_apply",
+  // Copy type, instance parameters and view overrides between same-category elements. One transaction. Reads stay on fmc_match.
+  "fmc_match_apply",
 ]);
 
 /**
@@ -276,6 +278,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_family_params",
   // Clear headroom. No transaction.
   "fmc_headroom",
+  // The source and target elements, their type, instance parameters and view overrides. No transaction.
+  "fmc_match",
   // Keynote tags, hosts and plan views. No transaction.
   "fmc_keynote_place",
   // Sheet outlines, view sizes and sheet parameters. No transaction.
