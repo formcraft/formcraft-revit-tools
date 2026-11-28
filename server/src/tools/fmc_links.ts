@@ -76,7 +76,8 @@ export const FMC_LINKS_DESCRIPTION =
 export const FMC_LINKS_SHAPE = {
   action: z.enum(["audit", "link", "pin", "reload", "repath", "unload", "apply", "offline"]),
   document: z.string().optional().default("").describe("Exact title or full path of one open host. Required when several projects are open."),
-  documents: z.array(z.string()).optional().default([]).describe("apply: exact titles or full paths, one per host."),
+  documents: z.array(z.string()).optional().default([]).describe("apply: exact titles or full paths, one per host. audit: other open models to compare coordinates with (coordinates_check)."),
+  suggest: z.boolean().optional().default(false).describe("audit: also return suggested, a ready apply plan (link_set) that fixes the Fix rows; run it as a dry run first."),
   file: z.string().optional().default("").describe("audit or offline: a closed .rvt. Not opened. Ignored when it is already an open document (that document is audited instead)."),
   link_from: z.string().optional().default("").describe("audit: folder to list models from, normally <project>\\02_Shared"),
   models: z.array(z.string()).optional().default([]).describe("link: absolute paths of .rvt models in 02_Shared"),
