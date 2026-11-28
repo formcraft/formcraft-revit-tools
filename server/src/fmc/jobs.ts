@@ -63,12 +63,13 @@ export function readJsonLines(file: string, max = 3000): any[] {
 }
 
 /**
- * expired: the job's record ends at a dialog, but the dialog no longer holds it: it came between jobs, the same Revit
- * finished other work after it, or the job has been silent (no heartbeat) for STALE_DIALOG_MS.
+ * expired: the job's record ends at a dialog that no longer holds it (it came between jobs, the same Revit finished
+ * other work after it, or it has been silent for STALE_DIALOG_MS), or a running row with no fresh heartbeat for that long
+ * (F65: a days-old "running" line is history, not a job in flight).
  */
 export type JobState = "queued" | "running" | "waiting_for_dialog" | "finished" | "failed" | "cancelled" | "no_answer" | "expired";
 
-/** A dialog line with no heartbeat after it for this long is history, not a dialog waiting now. */
+/** A dialog line, or a running row, with no heartbeat for this long is history, not a job waiting now. */
 export const STALE_DIALOG_MS = 30 * 60_000;
 
 export interface JobView {
@@ -178,9 +179,14 @@ export function collectJobs(env: NodeJS.ProcessEnv = process.env, now = Date.now
       j.summary = `Waiting in Revit behind ${j.revit.ahead ?? 1} command(s) since ${j.revit.queued_at}` +
         (j.revit.heartbeat_at && j.revit.heartbeat_at > j.revit.queued_at ? `, last heartbeat ${j.revit.heartbeat_at}` : "") + ": it starts when they end";
     }
-    else if (j.gave_up && j.revit?.heartbeat_at && j.revit.heartbeat_at > j.gave_up) {
+    else if (j.gave_up && j.revit?.heartbeat_at && j.revit.heartbeat_at > j.gave_up && (now - lastAliveMs(j)) <= STALE_DIALOG_MS) {
       j.state = "running";
       j.summary = `Still running in Revit: last heartbeat at ${j.revit.heartbeat_at} (this server stopped waiting at ${j.gave_up}; Revit keeps the answer)`;
+    }
+    else if (j.gave_up && j.revit?.heartbeat_at && j.revit.heartbeat_at > j.gave_up) {
+      const quietMs = now - lastAliveMs(j);
+      j.state = "expired";
+      j.summary = `No heartbeat for ${Math.round(quietMs / 60000)} min (last at ${j.revit.heartbeat_at}): this running row is stale. Revit has probably finished or been closed. Check the model before running it again.`;
     }
     else if (j.gave_up) { j.state = "no_answer"; j.summary = `No answer from Revit by ${j.gave_up}: Revit may still be busy, or blocked by a dialog`; }
     else if (openDialog) {
@@ -204,9 +210,15 @@ export function collectJobs(env: NodeJS.ProcessEnv = process.env, now = Date.now
       }
     }
     else {
-      j.state = "running";
-      j.summary = `Still running in Revit since ${j.revit?.running_since ?? j.started}` +
-        (j.revit?.heartbeat_at ? `, last heartbeat ${j.revit.heartbeat_at}` : "") + (j.cancel_requested ? " (cancel requested)" : "");
+      const quietMs = now - lastAliveMs(j);
+      if (lastAliveMs(j) > 0 && quietMs > STALE_DIALOG_MS) {
+        j.state = "expired";
+        j.summary = `No heartbeat for ${Math.round(quietMs / 60000)} min (last sign ${j.revit?.heartbeat_at || j.revit?.running_since || j.started}): this running row is stale. Revit has probably finished or been closed. Check the model before running it again.`;
+      } else {
+        j.state = "running";
+        j.summary = `Still running in Revit since ${j.revit?.running_since ?? j.started}` +
+          (j.revit?.heartbeat_at ? `, last heartbeat ${j.revit.heartbeat_at}` : "") + (j.cancel_requested ? " (cancel requested)" : "");
+      }
     }
     j.local = { started: localIso(j.started), heartbeat: localIso(j.revit?.heartbeat_at), finished: localIso(j.revit?.finished), result: localIso(j.result_at) };
   }
@@ -251,6 +263,14 @@ export function jobDocumentMatches(jobDocument: string | undefined, asked: strin
   const a = (jobDocument ?? "").trim().toLowerCase().replace(/\\/g, "/").split("/").pop()?.replace(/\.rvt$/, "") ?? "";
   const b = asked.trim().toLowerCase().replace(/\\/g, "/").split("/").pop()?.replace(/\.rvt$/, "") ?? "";
   return !!a && !!b && a === b;
+}
+
+/** Last time this job showed it was still alive (heartbeat, running_since, or started), in ms since 1970; 0 if none parse. */
+export function lastAliveMs(j: { started?: string; revit?: { heartbeat_at?: string; running_since?: string } }): number {
+  const times = [j.revit?.heartbeat_at, j.revit?.running_since, j.started]
+    .map((t) => Date.parse(t ?? ""))
+    .filter((t) => Number.isFinite(t));
+  return times.length ? Math.max(...times) : 0;
 }
 
 /** When the job ended (result, Revit's finished line, or the server giving up), or undefined while it runs. */

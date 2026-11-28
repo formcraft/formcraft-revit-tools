@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { collectJobs, findJob, jobFiles, jobResult, requestCancel } from "./jobs.js";
+import { collectJobs, findJob, jobFiles, jobResult, requestCancel, STALE_DIALOG_MS } from "./jobs.js";
 import { AIUSE_FILES, pickAiRulebook } from "./aiuse.js";
 import { aiRulebookLine } from "./selftest.js";
 
@@ -308,4 +308,21 @@ test("fmc_job: a dialog stops holding a job when it came between jobs, Revit mov
   assert.match(other.notes[0], /plumbing_USER, not electrical_USER/);
   const none = await text({ action: "status", job: "X1", document: "plumbing_USER" });
   assert.match(none.notes[0], /did not record a document/);
+});test("fmc_job: a running row with no fresh heartbeat is expired (F65)", () => {
+  const env = home();
+  const f = jobFiles(env);
+  const now = Date.parse("2026-11-28T08:45:00Z");
+  // ~43.5 days with no heartbeat: the live fmc_queue row.
+  line(f.server, { at: "2026-10-15T20:00:00Z", job: "OLD", event: "running", command: "send_code_to_revit", started: "2026-10-15T20:00:00Z", port: 8080 });
+  line(f.revit, { at: "2026-11-28T08:14:00Z", job: "FRESH", event: "running", command: "fmc_headroom", started: "2026-11-28T08:10:00Z", pid: 5 });
+  line(f.revit, { at: "2026-11-28T08:44:00Z", job: "FRESH", event: "heartbeat", pid: 5 });
+  line(f.revit, { at: "2026-11-28T08:00:00Z", job: "QUIET", event: "running", command: "fmc_find", started: "2026-11-28T07:50:00Z", pid: 5 });
+  line(f.revit, { at: "2026-11-28T08:14:00Z", job: "QUIET", event: "heartbeat", pid: 5 });
+  const by = Object.fromEntries(collectJobs(env, now).map((j) => [j.job, j]));
+  assert.equal(by.OLD.state, "expired");
+  assert.match(by.OLD.summary, /stale/);
+  assert.ok((now - Date.parse(by.OLD.started)) > STALE_DIALOG_MS);
+  assert.equal(by.FRESH.state, "running");
+  assert.equal(by.QUIET.state, "expired");
+  assert.match(by.QUIET.summary, /31 min/);
 });

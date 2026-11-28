@@ -17,7 +17,8 @@ export const FMC_JOB_DESCRIPTION =
     "list filters: state (one or more), command (part of the name), since (ISO time), document (the injected model, or pass one); the list is machine-wide when document is empty. " +
     "Each job shows ended, duration_s, port, pid and document when recorded. status honours document: it says when the job ran on a different model, or recorded none. " +
     "expired: the job's record ends at a dialog that no longer holds Revit (it came between jobs, the same Revit ended later work, " +
-    "or 30 min passed with no heartbeat); check the model before running it again. result with wait_s waits up to 45 s for the answer.";
+    "or 30 min passed with no heartbeat), or a running row has had no heartbeat for 30 min (a days-old running line is stale, not in flight); " +
+    "check the model before running it again. result with wait_s waits up to 45 s for the answer.";
 
 const STATES = ["queued", "running", "waiting_for_dialog", "finished", "failed", "cancelled", "no_answer", "expired"] as const;
 
