@@ -3,10 +3,19 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { toolFailure } from "./failure.js";
 
+/** GSE-3: one object: count, limit, truncated (the limit was reached, there may be more), elements, resolved_document. */
+export function selectedShape(response: unknown, limit: number): unknown {
+  const body = Array.isArray(response) ? { count: response.length, elements: response } : response;
+  if (!body || typeof body !== "object") return body;
+  const row = body as Record<string, unknown>;
+  const count = typeof row.count === "number" ? row.count : 0;
+  return { ...row, limit, truncated: count >= limit, ...(count >= limit ? { note: `The list stopped at limit ${limit}; more may be selected.` } : {}) };
+}
+
 export function registerGetSelectedElementsTool(server: McpServer) {
   server.tool(
     "get_selected_elements",
-    "Get elements currently selected in Revit. You can limit the number of returned elements.",
+    "Get elements currently selected in Revit. You can limit the number of returned elements. The reply is one object: count, limit, truncated, elements and resolved_document.",
     {
       limit: z
         .number()
@@ -27,7 +36,7 @@ export function registerGetSelectedElementsTool(server: McpServer) {
           content: [
             {
               type: "text",
-              text: JSON.stringify(response, null, 2),
+              text: JSON.stringify(selectedShape(response, params.limit), null, 2),
             },
           ],
         };
