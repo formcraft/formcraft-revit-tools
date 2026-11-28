@@ -8,6 +8,9 @@ import { documentTarget, batchLease } from "../fmc/target.js";
 import { callDocument, executeDynamo, executeQueued, namedDocument, protectedInputPaths, runnerClient, runnerKey } from "../fmc/scriptexec.js";
 import { scheduleJobs, scriptJobs, type ScriptJob } from "../fmc/scriptjobs.js";
 import { buildPlan } from "../fmc/graph/plan.js";
+import { graphDecisions } from "../fmc/graph/decisions.js";
+import { projectRootOf } from "../fmc/graph/jail.js";
+import { authorDraft } from "./fmc_graph.js";
 import { planSummary } from "../fmc/scriptexec.js";
 
 function reply(body: object, isError = false) {
@@ -25,12 +28,13 @@ export const FMC_DYNAMO_DESCRIPTION =
   "Inputs are bound by name to the graph's marked inputs; an unknown or ambiguous name refuses the run (FMC-DYNAMO-INPUT), nothing is dropped. " +
   "plan is the dry run on paper: binds inputs, scans for Python, checks packages, the kit lock and the project jail, and returns plan_hash. " +
   "apply, offline, and every run of a graph with Python need a person's approval for that plan_hash: fmc_graph_guard request_approval, the person decides in the pane, " +
-  "then run with approval_id (single use, 30 minutes). dry_run false alone is not a yes. Python graphs always need the person, whatever the access level.";
+  "then run with approval_id (single use, 30 minutes). dry_run false alone is not a yes. Python graphs always need the person, whatever the access level. " +
+  "author writes a new draft graph from a template or a JSON spec into the target model's project drafts folder (same as fmc_graph scaffold/generate); it never runs it.";
 
 const MODE = z.enum(["preview", "apply", "offline"]);
 
 export const FMC_DYNAMO_SHAPE = {
-  action: z.enum(["inspect", "status", "run", "submit", "list", "log", "cancel", "plan"]),
+  action: z.enum(["inspect", "status", "run", "submit", "list", "log", "cancel", "plan", "author"]),
   path: z.string().optional().default("").describe("inspect, run, submit: the .dyn file under 05_Scripts/library or 05_Scripts/Dynamo"),
   inputs: z.record(z.unknown()).optional().describe("Graph inputs by name. At most 50."),
   mode: MODE.optional().describe("preview rolls back. apply keeps changes and needs batch_lease. offline is DynamoCLI with no Revit nodes."),
@@ -43,6 +47,9 @@ export const FMC_DYNAMO_SHAPE = {
   kit_folder: z.string().optional().default("").describe("Kit root. Default: the folder above the guard's specs_path, or FMC_KIT."),
   batch_lease: z.string().optional().describe("Required for apply. The lease id from fmc_batch request."),
   approval_id: z.string().optional().describe("run, submit: a person's approval for this plan (fmc_graph_guard request_approval). Needed for apply, offline and any graph with Python."),
+  template: z.string().optional().describe("author: a template (read_only_report, family_edit, mep_check, sweep_ready)"),
+  name: z.string().optional().describe("author: the draft name"),
+  spec: z.record(z.unknown()).optional().describe("author: a JSON graph spec (see fmc_graph)"),
 };
 
 export type FmcDynamoArgs = z.infer<z.ZodObject<typeof FMC_DYNAMO_SHAPE>>;
@@ -80,6 +87,12 @@ export async function runFmcDynamo(args: FmcDynamoArgs) {
       const parsed = readDyn(args.path);
       if (!parsed.ok) return reply(withResolved({ refused: true, code: "FMC-DYNAMO-PARSE", message: parsed.message }, doc.document), true);
       return reply(withResolved({ ...parsed.inspect, action: "inspect" }, doc.document));
+    }
+    if (args.action === "author") {
+      const doc = callDocument("fmc_dynamo");
+      if (!doc.ok) return reply(withResolved({ refused: true, code: doc.code, message: doc.message }, null), true);
+      const out = authorDraft({ template: args.template, name: args.name, spec: args.spec }, projectRootOf(doc.document?.path ?? ""), graphDecisions(config).drafts_folder);
+      return reply(withResolved({ action: "author", ...out.body }, doc.document), !out.ok);
     }
     if (args.action === "plan") {
       const doc = callDocument("fmc_dynamo");
