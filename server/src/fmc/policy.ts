@@ -295,6 +295,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_tags",
   // Sheets, title-block legend zone and an existing keynote legend. No transaction.
   "fmc_keynote_legend",
+  // Handover package: document, project information and element parameters. No transaction; the server writes the zip.
+  "fmc_handover_read",
 ]);
 
 /**

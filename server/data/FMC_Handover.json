@@ -1,0 +1,23 @@
+{
+  "status": "PROVISIONAL",
+  "note": "Sample only. It is PROVISIONAL and cannot PASS. A kit file at 03_Master_Data/FMC_Handover.json replaces it (Manual Part 15.5: model, parameters, reports, manifest). COBie 2.4 and the IDS check (FMC_Handover_Base.ids) come later.",
+  "categories": [
+    "OST_Rooms", "OST_Walls", "OST_Floors", "OST_Roofs", "OST_Ceilings", "OST_Doors", "OST_Windows", "OST_Stairs",
+    "OST_StructuralColumns", "OST_StructuralFraming", "OST_StructuralFoundation",
+    "OST_MechanicalEquipment", "OST_ElectricalEquipment", "OST_ElectricalFixtures", "OST_LightingFixtures",
+    "OST_PlumbingFixtures", "OST_FireAlarmDevices", "OST_SpecialityEquipment", "OST_Furniture", "OST_Casework"
+  ],
+  "parameters": [
+    "Mark", "Comments", "Assembly Code", "Assembly Description", "Manufacturer", "Model", "Fire Rating",
+    "Number", "Name", "Area", "FMC_AssetTag", "FMC_Maintainable", "FMC_Warranty"
+  ],
+  "required": {
+    "*": ["Mark"],
+    "OST_Rooms": ["Number", "Name"],
+    "OST_Doors": ["Mark", "Fire Rating"],
+    "OST_MechanicalEquipment": ["Mark", "Manufacturer", "Model"],
+    "OST_ElectricalEquipment": ["Mark", "Manufacturer", "Model"]
+  },
+  "project_info": ["Project Name", "Project Number", "Client Name", "Project Address", "Project Status", "Project Issue Date"],
+  "milestones": ["S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "PC", "AB"]
+}
