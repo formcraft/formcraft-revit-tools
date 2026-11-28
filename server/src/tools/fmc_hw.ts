@@ -4,9 +4,9 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { readInstances } from "../fmc/connect.js";
 import { inFlightJob, readRevitJobLines } from "../fmc/notidle.js";
-import { onMemoryHard } from "../fmc/memory.js";
+import { memoryGate, onMemoryHard } from "../fmc/memory.js";
 import {
-  HONESTY, advise, applyGraphicsText, autoFreeIfHard, autosaveWouldSave, buildScan, dedicatedGpu,
+  HONESTY, advise, applyGraphicsText, autoFreeIfHard, autosaveWouldSave, backupIni, buildScan, dedicatedGpu,
   defaultIniPath, graphicsPlan, gpuPreferencePlan, loadGuard, memoryReport, planFree, primeHardwareScan,
   readGraphics, runOffloadJobs, type HwIo, type OpenDoc,
 } from "../fmc/hw.js";
@@ -70,6 +70,7 @@ function defaultIo(over: HwIo = {}): HwIo {
     writeIni: (text) => {
       const file = defaultIniPath();
       if (!file) throw new Error("[FMC-HW] Revit.ini path is not set.");
+      backupIni(file);
       fs.writeFileSync(file, text, "utf8");
     },
     revit: (action, body) => withRevitConnection((client) => client.sendRaw("fmc_hw", { action, ...body }, 120000)),
@@ -105,17 +106,37 @@ export async function runFmcHw(args: FmcHwArgs, io: HwIo = {}) {
       return reply({ tool: "fmc_hw", ...body, honesty: HONESTY }, refused);
     }
     if (args.action === "memory") {
+      // Tool Research (fmc_hw): at 975 MB free the read took 37 s and the next two timed out. Free RAM and the pause
+      // come from the server's own gate at once; Revit's per-document figures are added only if they arrive within
+      // the budget, and are not asked for at all in the hard tier.
+      const view = memoryGate.view();
+      const budget = full.memoryBudgetMs ?? Number(process.env.FMC_HW_MEMORY_BUDGET_MS ?? 3000);
       let docs: OpenDoc[] = [];
       let addin: string | null = null;
-      if (full.revit) {
+      let stale = false;
+      if (full.revit && (view.paused || view.tier === "hard")) {
+        stale = true;
+        addin = `Not asked: ${view.free_mb} MB free is in the hard tier, so Revit was spared a call. Per-document estimates are left out.`;
+      } else if (full.revit) {
+        let timer: NodeJS.Timeout | undefined;
+        const late = new Promise<"late">((resolve) => { timer = setTimeout(() => resolve("late"), Math.max(0, budget)); });
         try {
-          const raw = await full.revit("memory", {}) as { documents?: OpenDoc[] };
-          docs = Array.isArray(raw?.documents) ? raw.documents : [];
+          const raw = await Promise.race([full.revit("memory", {}), late]);
+          if (raw === "late") {
+            stale = true;
+            addin = `Revit did not answer within ${Math.round(budget / 100) / 10} s: these are the server's own figures (free RAM, pause). Per-document estimates are left out.`;
+          } else {
+            const docsRaw = (raw as { documents?: OpenDoc[] })?.documents;
+            docs = Array.isArray(docsRaw) ? docsRaw : [];
+          }
         } catch (error) {
           addin = error instanceof Error ? error.message : String(error);
+        } finally {
+          if (timer) clearTimeout(timer);
         }
       }
-      return reply({ tool: "fmc_hw", action: "memory", ...memoryReport(undefined, docs), addin });
+      const state = view.paused ? "paused" : view.tier;
+      return reply({ tool: "fmc_hw", action: "memory", ...memoryReport(view, docs), state, stale, addin });
     }
     if (args.action === "free") {
       const view = memoryReport();

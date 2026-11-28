@@ -4,6 +4,7 @@
  *
  * The GPU draws views. It does not hold the Revit model, and it does not run the Revit API.
  */
+import fs from "node:fs";
 import os from "node:os";
 import { spawn } from "node:child_process";
 import { memoryGate, type MemoryView } from "./memory.js";
@@ -201,7 +202,11 @@ export function parseDriverDate(value: unknown): string | null {
 export function classifyGpu(name: string, dedicatedMb: number | null): GpuAdapter["kind"] {
   const n = name.toLowerCase();
   if (/basic display|microsoft basic/.test(n)) return "basic";
-  if (/(uhd|iris|hd graphics)/.test(n) && (dedicatedMb == null || dedicatedMb < 512)) return "integrated";
+  // Tool Research (fmc_hw): an Intel UHD 630 reports 1024 MB in WMI AdapterRAM and was labelled dedicated. Intel
+  // graphics other than an Arc A/B card, and AMD's APU "Radeon Graphics", share system RAM whatever the size says.
+  if (/intel/.test(n) && !/\barc\b.*\b[ab]\d{3}/.test(n)) return "integrated";
+  if (/(uhd|iris|hd graphics)/.test(n)) return "integrated";
+  if (/radeon(\(tm\))? graphics\s*$|radeon vega|vega \d+ graphics/.test(n)) return "integrated";
   if (/nvidia|geforce|quadro|rtx|radeon|\brx\b|arc a/.test(n) && (dedicatedMb == null || dedicatedMb >= 512)) return "dedicated";
   if (dedicatedMb != null && dedicatedMb >= 1024) return "dedicated";
   if (/intel/.test(n) && (dedicatedMb == null || dedicatedMb < 512)) return "integrated";
@@ -687,7 +692,21 @@ export function dedicatedGpu(scan: HardwareScan): boolean {
   return scan.gpus.some((gpu) => gpu.kind === "dedicated");
 }
 
+/**
+ * Copies Revit.ini to Revit.ini.fmc-bak beside it before Formcraft rewrites it (the previous backup is replaced).
+ * Returns the backup path, or null when there was no file to keep. Throws when the copy fails, so nothing is written.
+ */
+export function backupIni(file: string, copy: (from: string, to: string) => void = (a, b) => fs.copyFileSync(a, b), exists: (p: string) => boolean = fs.existsSync): string | null {
+  if (!file || !exists(file)) return null;
+  const backup = `${file}.fmc-bak`;
+  try { copy(file, backup); }
+  catch (error) { throw new Error(`[FMC-HW-INI-BACKUP] Revit.ini could not be backed up to ${backup} (${error instanceof Error ? error.message : String(error)}). Nothing was written.`); }
+  return backup;
+}
+
 export interface HwIo {
+  /** fmc_hw memory: how long to wait for Revit's per-document figures before answering from the server's own state. */
+  memoryBudgetMs?: number;
   collect?: () => Promise<HostRaw>;
   now?: () => number;
   readIni?: () => string | null;
