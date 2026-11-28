@@ -132,6 +132,8 @@ export interface CeilingKit {
   families?: Set<string> | null;
   /** CL4: the interiors RCP sheet in 03_Master_Data\FMC_Sheet_Register.csv (the row placed with VT_I_RCP) */
   rcp_sheet?: { number: string; name: string; scale: string } | null;
+  /** Hardening: a short SHA-256 of each kit file read (or "missing"), echoed in every answer and part of the design hash */
+  revisions?: Record<string, string>;
 }
 
 export function emptyKit(problems: string[] = []): CeilingKit {
