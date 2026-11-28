@@ -243,6 +243,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_close_local_apply",
   // Close spare documents or purge unused elements. Status stays on fmc_memory.
   "fmc_memory_apply",
+  // GAP-13: copy templates, filters, legends, revisions or sheets into the target. One transaction, target only.
+  "fmc_transfer_apply",
 ]);
 
 /**
@@ -295,6 +297,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_tags",
   // Sheets, title-block legend zone and an existing keynote legend. No transaction.
   "fmc_keynote_legend",
+  // GAP-13: templates, filters, legends, revisions and sheets in two open documents. No transaction.
+  "fmc_transfer_read",
 ]);
 
 /**
