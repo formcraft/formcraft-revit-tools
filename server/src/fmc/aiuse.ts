@@ -99,6 +99,7 @@ export const NEVER: Record<string, string> = {
   fmc_link_add: "links (coordination)", fmc_link_pin: "links (coordination)", fmc_reload_link: "links (coordination)",
   fmc_link_unload: "links (coordination)", fmc_link_publish: "links (coordination)", fmc_coord_apply: "coordinates (coordination)", fmc_workset_create: "worksets (setup)",
   fmc_material_purge: "purging (deleting)",
+  fmc_memory_apply: "purging (deleting)",
   fmc_new_local: "files (new local)",
   fmc_dynamo: "running a Dynamo graph",
   fmc_script_run: "running a library script",

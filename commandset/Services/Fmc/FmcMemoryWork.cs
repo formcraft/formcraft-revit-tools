@@ -29,7 +29,8 @@ namespace RevitMCPCommandSet.Services.Fmc
             {
                 string action = (Parameters.Value<string>("action") ?? "status").Trim().ToLowerInvariant();
                 if (action == "free") Result = Free(app);
-                else if (action == "purge_unused") Result = Purge(app);
+                else if (action == "purge_unused") Result = Purge(app, legacy: true);
+                else if (action == "purge_unused_v2") Result = Purge(app, legacy: false);
                 else Result = Status(app);
             }
             catch (Exception ex) { Error = ex.Message; }
@@ -67,6 +68,9 @@ namespace RevitMCPCommandSet.Services.Fmc
         {
             var wanted = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (JToken token in Parameters["close"] as JArray ?? new JArray()) wanted.Add(token.ToString());
+            // An empty list closes nothing (it used to mean "no filter").
+            if (wanted.Count == 0)
+                return new JObject { ["closed"] = new JArray(), ["kept"] = new JArray("empty close list: nothing closed"), ["saved"] = false };
             var closed = new JArray();
             var kept = new JArray();
             var open = new List<Document>();
@@ -77,8 +81,9 @@ namespace RevitMCPCommandSet.Services.Fmc
             {
                 string key = string.IsNullOrEmpty(doc.PathName) ? (doc.Title ?? "") : doc.PathName;
                 string title = doc.Title ?? "";
-                if (wanted.Count > 0 && !wanted.Contains(key) && !wanted.Contains(title)) { kept.Add(title + ": not in the plan"); continue; }
+                if (!wanted.Contains(key) && !wanted.Contains(title)) { kept.Add(title + ": not in the plan"); continue; }
                 if (doc.IsModified) { kept.Add(title + ": modified"); continue; }
+                if (string.IsNullOrEmpty(doc.PathName)) { kept.Add(title + ": never saved (no file to reopen)"); continue; }
                 if (active != null && doc.Equals(active)) { kept.Add(title + ": active"); continue; }
                 if (!doc.IsFamilyDocument && doc.IsWorkshared) { kept.Add(title + ": workshared"); continue; }
                 if (left <= 1) { kept.Add(title + ": last document"); break; }
@@ -99,17 +104,25 @@ namespace RevitMCPCommandSet.Services.Fmc
             };
         }
 
-        private JObject Purge(UIApplication app)
+        private static HashSet<string> NameSet(JToken list)
+        {
+            var names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (JToken token in list as JArray ?? new JArray())
+            {
+                string name = token?.ToString()?.Trim() ?? "";
+                if (name.Length > 0) names.Add(name);
+            }
+            return names;
+        }
+
+        /// <summary>legacy: "categories" limits the delete (old servers). v2: keep_categories are never deleted, only_categories limits.</summary>
+        private JObject Purge(UIApplication app, bool legacy)
         {
             using (FmcTarget target = FmcTarget.Resolve(app, Parameters, mayOpen: false))
             {
                 Document doc = target.Doc;
-                var names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-                foreach (JToken token in Parameters["categories"] as JArray ?? new JArray())
-                {
-                    string name = token?.ToString()?.Trim() ?? "";
-                    if (name.Length > 0) names.Add(name);
-                }
+                HashSet<string> names = NameSet(legacy ? Parameters["categories"] : Parameters["only_categories"]);
+                HashSet<string> keep = legacy ? new HashSet<string>(StringComparer.OrdinalIgnoreCase) : NameSet(Parameters["keep_categories"]);
                 PerformanceAdviser adviser = PerformanceAdviser.GetPerformanceAdviser();
                 var rules = adviser.GetAllRuleIds().Where(id =>
                 {
@@ -139,6 +152,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                         Element element = doc.GetElement(id);
                         if (element == null) continue;
                         string category = element.Category?.Name ?? "";
+                        if (keep.Contains(category)) continue;
                         if (names.Count > 0 && !names.Contains(category)) continue;
                         ids.Add(id);
                     }
