@@ -137,3 +137,40 @@ export function auditSummary(model: ModelMaterial[], checks: AuditCheck[], findi
   const offLibrary = findings.filter((f) => f.reasons.includes("not in the database") || f.reasons.includes("name not FMC_")).length;
   return `${model.length} materials: ${offLibrary} off-library (counted once), ${findings.filter((f) => f.survivor).length} duplicates${fails.length ? ", fail: " + fails.join(", ") : ""}, ${model.filter((m) => !m.used).length} unused.`;
 }
+
+function tokens(name: string): string[] {
+  return name.toLowerCase().replace(/^fmc_/, "").split(/[^a-z0-9]+/).filter((t) => t.length > 2 && !/^\d+$/.test(t));
+}
+
+/** Research 57: which database material each off-library model material could map to (from/to given, or the best token match). Plan only. */
+export function planMaterialMap(model: ModelMaterial[], db: MaterialDb, from?: string, to?: string): Array<{ id: number; from: string; to: string | null; how: "given" | "name match" | "none"; candidates: string[] }> {
+  const inDb = new Set(db.materials.map((m) => m.name));
+  const rows = model.filter((m) => !inDb.has(m.name) && (!from || m.name === from));
+  return rows.map((m) => {
+    if (to) return { id: m.id, from: m.name, to: inDb.has(to) ? to : null, how: inDb.has(to) ? "given" as const : "none" as const, candidates: [] };
+    const want = tokens(m.name.replace(/\s*\(\d+\)$/, ""));
+    const scored = db.materials.map((d) => ({ name: d.name, score: tokens(d.name + " " + d.class + " " + d.sub).filter((t) => want.includes(t)).length }))
+      .filter((x) => x.score > 0).sort((a, b) => b.score - a.score || a.name.localeCompare(b.name));
+    const top = scored.filter((x) => x.score === scored[0]?.score).map((x) => x.name);
+    return { id: m.id, from: m.name, to: top.length === 1 ? top[0] : null, how: top.length === 1 ? "name match" as const : "none" as const, candidates: top.slice(0, 5) };
+  });
+}
+
+/** Research 57: where each broken texture should point: the database material's own map, else a kit Textures file with the same name. Plan only. */
+export function planTextureRepair(model: ModelMaterial[], db: MaterialDb | null, materialsFile: string, exists: (p: string) => boolean, kitTextures: string[]): Array<{ id: number; material: string; broken: string; to: string | null; how: "database map" | "same file name" | "none" }> {
+  const win = path.win32;
+  const byName = new Map((db?.materials ?? []).map((m) => [m.name, m]));
+  const out: Array<{ id: number; material: string; broken: string; to: string | null; how: "database map" | "same file name" | "none" }> = [];
+  for (const m of model) {
+    for (const t of m.textures) {
+      if (!t || exists(t)) continue;
+      const base = win.basename(t).toLowerCase();
+      const kit = byName.get(m.name);
+      const own = kit ? resolveMaterial(kit, materialsFile, exists).material.maps.find((x) => x.found && win.basename(x.path).toLowerCase() === base) ?? resolveMaterial(kit, materialsFile, exists).material.maps.find((x) => x.found) : undefined;
+      if (own) { out.push({ id: m.id, material: m.name, broken: t, to: own.path, how: "database map" }); continue; }
+      const same = kitTextures.find((f) => win.basename(f).toLowerCase() === base);
+      out.push({ id: m.id, material: m.name, broken: t, to: same ?? null, how: same ? "same file name" : "none" });
+    }
+  }
+  return out;
+}
